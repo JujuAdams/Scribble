@@ -38,7 +38,7 @@ if ( _text_json >= 0 ) {
 }
 
 if ( !surface_exists( _surface ) ) {
-    _surface = tr_surface_create( _width, _height );
+    _surface = surface_create( _width, _height );
     _scroll_json[? "surface" ] = _surface;
 }
 

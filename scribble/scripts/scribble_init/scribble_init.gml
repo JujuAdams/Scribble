@@ -11,7 +11,6 @@ if ( !SCRIBBLE_AUTO_FONT_INIT ) {
 
 //------------------------------------------------------------------
 
-trace_f( "SCRIBBLE" );
 
 vertex_format_begin();
 vertex_format_add_position_3d();
@@ -19,7 +18,6 @@ vertex_format_add_texcoord();
 vertex_format_add_colour();
 vertex_format_add_normal();
 global.scribble_font_vertex_format = vertex_format_end();
-
 
 draw_set_halign( fa_left );
 draw_set_valign( fa_top );
@@ -30,10 +28,10 @@ var _old_sprite_index = sprite_index;
 x = 0;
 y = 0;
 
-global.scribble_font_json = tr_map_create( "Scribble JSON root", true );
+global.scribble_font_json = ds_map_create();
 
-var _surface = tr_surface_create( SCRIBBLE_SURFACE_SIZE, SCRIBBLE_SURFACE_SIZE, "scribble render surface", false );
-var _char_surface = tr_surface_create( SCRIBBLE_CHARACTER_SURFACE_SIZE, SCRIBBLE_CHARACTER_SURFACE_SIZE, "scribble char surface", false );
+var _surface = surface_create( SCRIBBLE_SURFACE_SIZE, SCRIBBLE_SURFACE_SIZE );
+var _char_surface = surface_create( SCRIBBLE_CHARACTER_SURFACE_SIZE, SCRIBBLE_CHARACTER_SURFACE_SIZE );
 
 surface_set_target( _surface );
     draw_clear_alpha( c_white, 0 );
@@ -62,8 +60,8 @@ var _font_count = array_length_1d( _font_array );
 for( var _i = 0; _i < _font_count; _i++ ) {
     
     var _font = _font_array[_i];
-    var _font_map = tr_map_create( concat( "Scribble: ", font_get_pretty_name( _font ) ), true );
-    tr_map_add_map( global.scribble_font_json, _font, _font_map );
+    var _font_map = ds_map_create();
+    ds_map_add_map( global.scribble_font_json, _font, _font_map );
     _font_map[? "name" ] = font_get_name( _font );
         
     var _uvs = undefined;
@@ -154,15 +152,15 @@ for( var _i = 0; _i < _font_count; _i++ ) {
     
     _font_map[? "uvs" ] = _uvs;
     
-    if ( SCRIBBLE_OUTPUT_MAXIMUM_CHAR_SIZE ) trace( QU, font_get_pretty_name( _font ), QU, " max char size=", _char_max_w, "x", _char_max_h );
+    if ( SCRIBBLE_OUTPUT_MAXIMUM_CHAR_SIZE ) trace( QU, font_get_name( _font ), QU, " max char size=", _char_max_w, "x", _char_max_h );
     
 }
 
 global.scribble_sprite  = sprite_create_from_surface( _surface, 0, 0, SCRIBBLE_SURFACE_SIZE, SCRIBBLE_SURFACE_SIZE, false, false, 0, 0 );
 global.scribble_texture = sprite_get_texture( global.scribble_sprite, 0 );
 
-tr_surface_free( _surface );
-tr_surface_free( _char_surface );
+surface_free( _surface );
+surface_free( _char_surface );
 
 x = _old_x;
 y = _old_y;

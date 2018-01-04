@@ -10,7 +10,7 @@
 
 var _scroll_json = argument0;
 
-if ( surface_exists( _scroll_json[? "surface" ] ) ) tr_surface_free( _scroll_json[? "surface" ] );
-tr_map_destroy( _scroll_json );
+if ( surface_exists( _scroll_json[? "surface" ] ) ) surface_free( _scroll_json[? "surface" ] );
+ds_map_destroy( _scroll_json );
 
 return noone;

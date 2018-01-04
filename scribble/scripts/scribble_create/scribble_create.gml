@@ -1,13 +1,5 @@
 /// @description Creates, and returns, a SCRIBBLE JSON, and its vertex buffer, built from a string
 ///
-/// April 2017
-/// Juju Adams
-/// julian.adams@email.com
-/// @jujuadams
-///
-/// This code and engine are provided under the Creative Commons "Attribution - NonCommerical - ShareAlike" international license.
-/// https://creativecommons.org/licenses/by-nc-sa/4.0/
-///
 /// @param string
 /// @param [box_width]
 /// @param [font]
@@ -32,17 +24,17 @@ _str = string_replace_all( _str,           "\\n", chr(13) );
 
 var _space_width = string_width( " " );
 
-var _json = tr_map_create();
+var _json = ds_map_create();
 scribble_set_shader( _json );
 
-var _text_root_list         = tr_list_create();
-var _hyperlink_map          = tr_map_create();
-var _hyperlink_regions_list = tr_list_create();
-var _vbuff_sprite_list      = tr_list_create();
-tr_map_add_list( _json, "lines"            , _text_root_list );
-tr_map_add_map(  _json, "hyperlinks"       , _hyperlink_map );
-tr_map_add_list( _json, "hyperlink regions", _hyperlink_regions_list );
-tr_map_add_list( _json, "vbuff sprites"    , _vbuff_sprite_list );
+var _text_root_list         = ds_list_create();
+var _hyperlink_map          = ds_map_create();
+var _hyperlink_regions_list = ds_list_create();
+var _vbuff_sprite_list      = ds_list_create();
+ds_map_add_list( _json, "lines"            , _text_root_list );
+ds_map_add_map(  _json, "hyperlinks"       , _hyperlink_map );
+ds_map_add_list( _json, "hyperlink regions", _hyperlink_regions_list );
+ds_map_add_list( _json, "vbuff sprites"    , _vbuff_sprite_list );
 _json[? "string"           ] = _str;
 _json[? "default font"     ] = _def_font;
 _json[? "default colour"   ] = _def_colour;
@@ -278,8 +270,8 @@ while( string_length( _str ) > 0 ) {
                             var _map = _hyperlink_map[? _text_hyperlink ];
                             if ( _map == undefined ) {
                                 
-                                _map = tr_map_create();
-                                tr_map_add_map( _hyperlink_map, _text_hyperlink, _map );
+                                _map = ds_map_create();
+                                ds_map_add_map( _hyperlink_map, _text_hyperlink, _map );
                                 _map[? "over" ] = false;
                                 _map[? "down" ] = false;
                                 
@@ -358,7 +350,7 @@ while( string_length( _str ) > 0 ) {
             _line_map = ds_map_create();
             _line_list = ds_list_create();
             
-            tr_list_add_map( _text_root_list, _line_map );
+            ds_list_add_map( _text_root_list, _line_map );
             
             _line_map[? "x"      ] = 0;
             _line_map[? "y"      ] = _text_y;
@@ -366,7 +358,7 @@ while( string_length( _str ) > 0 ) {
             _line_map[? "height" ] = _line_height;
             _line_map[? "length" ] = 0;
             _line_map[? "halign" ] = _text_halign;
-            tr_map_add_list( _line_map, "words", _line_list );
+            ds_map_add_list( _line_map, "words", _line_list );
             
         }
         
@@ -392,7 +384,7 @@ while( string_length( _str ) > 0 ) {
             _region_map[? "hyperlink" ] = _text_hyperlink;
             _region_map[? "line"      ] = ds_list_size( _text_root_list )-1;
             _region_map[? "word"      ] = ds_list_size( _line_list );
-            tr_list_add_map( _hyperlink_regions_list, _region_map );
+            ds_list_add_map( _hyperlink_regions_list, _region_map );
         }
         
         //Add the word to the line list
@@ -538,7 +530,7 @@ for( var _i = 0; _i < _lines_size; _i++ ) {
             _sprite_map[? "y"      ] = _str_y + sprite_get_yoffset( _sprite );
             _sprite_map[? "sprite" ] = _sprite;
             
-            tr_list_add_map( _vbuff_sprite_list, _sprite_map );
+            ds_list_add_map( _vbuff_sprite_list, _sprite_map );
             
         } else {
             

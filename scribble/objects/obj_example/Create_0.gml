@@ -1,3 +1,5 @@
+scribble_init();
+
 render_time_smoothed = 200;
 test_mode = 0;
 

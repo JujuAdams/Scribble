@@ -1,19 +1,11 @@
 /// @description Handles mouse clicks for a SCRIBBLE JSON
 ///
-/// April 2017
-/// Juju Adams
-/// julian.adams@email.com
-/// @jujuadams
-///
-/// This code and engine are provided under the Creative Commons "Attribution - NonCommerical - ShareAlike" international license.
-/// https://creativecommons.org/licenses/by-nc-sa/4.0/
-///
-/// @param  x
-/// @param  y
-/// @param  json
-/// @param  mouse x
-/// @param  mouse y
-/// @param  destroy if invisible
+/// @param x
+/// @param y
+/// @param json
+/// @param mouse_x
+/// @param mouse_y
+/// @param destroy_if_invisible
 
 var _x       = argument0;
 var _y       = argument1;
