@@ -178,7 +178,7 @@
             "Key": "2ab9cf48-2d17-4415-b8cf-192280c4edc7",
             "Value": {
                 "id": "53c78dc3-4612-43aa-8b7e-e5ebef24f710",
-                "resourcePath": "scripts\\scribble_test_for_click\\scribble_test_for_click.yy",
+                "resourcePath": "scripts\\scribble_hyperlink_clicked\\scribble_hyperlink_clicked.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -487,6 +487,14 @@
             }
         },
         {
+            "Key": "9fe461f0-30b7-449a-8e1b-5a09ac0e36e3",
+            "Value": {
+                "id": "7567a2aa-8e59-4d91-a132-cc4f3a6c8bfa",
+                "resourcePath": "scripts\\scribble_scrollbox_reset_scrollbar\\scribble_scrollbox_reset_scrollbar.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "a1976227-e2b8-4b41-9043-f7ee3cca2792",
             "Value": {
                 "id": "cfabbe8d-b90f-404d-b534-d0e6e318f2c8",
@@ -583,6 +591,14 @@
             }
         },
         {
+            "Key": "b945ea35-b4f5-4819-bbde-bf659bd710dd",
+            "Value": {
+                "id": "be8c15cf-47ab-4cce-92ef-84f5e05125f7",
+                "resourcePath": "scripts\\trace_loud\\trace_loud.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "ba231742-6870-42e3-94bf-3d4279160a9a",
             "Value": {
                 "id": "c6eb69be-40d0-499d-b0d1-f2e6b150731e",
@@ -647,6 +663,14 @@
             }
         },
         {
+            "Key": "e0060651-ee4e-43d3-81e8-8848be2f2724",
+            "Value": {
+                "id": "b50560f2-9811-46ab-b3e8-f6e276b3eee6",
+                "resourcePath": "sprites\\spr_pug\\spr_pug.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "e2828ccc-b946-4eff-b46f-f15bc2348733",
             "Value": {
                 "id": "226f2c3b-edc1-401f-a7a3-ab4d3cdc81b6",
@@ -667,6 +691,14 @@
             "Value": {
                 "id": "41d24f66-b25d-41c5-8d60-a2486032bf70",
                 "resourcePath": "scripts\\scribble_config\\scribble_config.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "f0765136-b559-4f35-b37d-57af11e572b0",
+            "Value": {
+                "id": "29027850-67ed-4552-a080-a20ef38ad466",
+                "resourcePath": "scripts\\example_open_url\\example_open_url.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -737,9 +769,11 @@
         "6e09f251-6a67-4c3e-be51-0d754f469f9c",
         "5784a58b-4aa1-4718-aa7b-c18a317a8d05",
         "2904b833-6c13-4e20-b1db-5acba3beea04",
+        "9fe461f0-30b7-449a-8e1b-5a09ac0e36e3",
         "0d023fbc-328f-4bf3-a0ff-1f1184bb2d84",
         "ce31c3dd-7a84-4cb8-807f-3663f6f91955",
         "1e8242e5-c929-475c-8deb-13cb8dfe9a17",
+        "b945ea35-b4f5-4819-bbde-bf659bd710dd",
         "73b1fcef-fa5a-4292-8041-f63dc4e336e1",
         "1c0274fc-2119-46d9-862b-f1fca1e0fdc3",
         "f1740b91-16cb-4f6b-b642-2dbbed22b95f",
@@ -764,7 +798,8 @@
         "34afaeea-ce32-4ae5-8517-4bb242b3bbba",
         "14d98fbd-768c-4a80-b82b-ba4baad3b316",
         "1c752c65-d69f-4396-9531-0343ee322461",
-        "0e58f5bc-609e-493f-a3f2-5f7f51fe1b43"
+        "0e58f5bc-609e-493f-a3f2-5f7f51fe1b43",
+        "f0765136-b559-4f35-b37d-57af11e572b0"
     ],
     "tutorial": ""
 }

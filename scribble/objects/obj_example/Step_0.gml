@@ -1,6 +1,14 @@
-if ( keyboard_check_pressed( vk_anykey ) && !keyboard_check_pressed( vk_space ) ) test_mode = ( test_mode + 1 ) mod 2;
+if ( keyboard_check_pressed( vk_anykey ) && !keyboard_check_pressed( vk_space ) ) test_mode = ( test_mode + 1 ) mod 3;
 
-if ( test_mode == 1 ) {
+if ( test_mode == 2 ) {
+    
+    var _result = scribble_scrollbox_step( scrollbox_x, scrollbox_y, scrollbox, scrollbox_json, mouse_x, mouse_y, false );
+    if ( scribble_hyperlink_clicked( scrollbox_json, "unique name" ) ) trace_loud( "bork!" );
+    if ( scribble_hyperlink_clicked( scrollbox_json, "twinned link" ) ) {
+        scrollbox_json = outro_text_json;
+        scribble_scrollbox_reset_scrollbar( scrollbox );
+    }
+    
     /*
     //This script returns <noone> when the text has fully faded out
     var _result = text_scrollbox_step( scrollbox_x, scrollbox_y, scrollbox, scrollbox_focus_text, mouse_x, mouse_y, false );

@@ -14,13 +14,14 @@ switch( test_mode ) {
         draw_text_ext( 15, 40, lorem_ipsum_plain, 20, 800 );
         _t = get_timer() - _t;
     break;
-    /*
-    case 1:
+    case 2:
         draw_text( 5, 5, "SCROLLBOX" );
-        text_scrollbox_draw( scrollbox_x, scrollbox_y, scrollbox, scrollbox_focus_text );
+        var _t = get_timer();
+        scribble_scrollbox_draw( scrollbox_x, scrollbox_y, scrollbox, scrollbox_json );
+        _t = get_timer() - _t;
     break;
-    */
 }
 
+draw_text( 150, 5, "Press any key to switch example." );
 render_time_smoothed = lerp( render_time_smoothed, _t, 0.01 );
-draw_text( 100, 5, concat( "Render time=", floor( render_time_smoothed ) ) );
+draw_text( 500, 5, concat( "Render time=", floor( render_time_smoothed )/1000, "ms" ) );
