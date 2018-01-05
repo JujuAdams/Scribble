@@ -119,6 +119,14 @@
             }
         },
         {
+            "Key": "203bd772-2d08-4c2e-8368-7f2268579932",
+            "Value": {
+                "id": "eff03d9c-3108-410d-8919-9e2186b6d126",
+                "resourcePath": "scripts\\__readme\\__readme.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "22f0889f-2e41-4221-9e4c-a9ad123f6aa8",
             "Value": {
                 "id": "fbb57e49-89f5-45c9-a38f-4f2c1cea98c0",
@@ -752,6 +760,7 @@
         }
     ],
     "script_order": [
+        "203bd772-2d08-4c2e-8368-7f2268579932",
         "f0556f0e-af87-4ad4-8998-437bcbb16546",
         "a8cc1594-6150-4635-8385-cfd73fe695c7",
         "26e101ea-d981-47b0-a9a5-a24cf536461e",
