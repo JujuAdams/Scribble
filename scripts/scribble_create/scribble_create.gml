@@ -10,15 +10,15 @@
 
 var _timer = get_timer();
 
-var _str            = __scribble_replace_newlines( argument[0] );
-var _width_limit    = ((argument_count<2) || (argument[1]==undefined))? 9999999999                             : argument[1];
-var _def_font       = ((argument_count<3) || (argument[2]==undefined))? SCRIBBLE_DEFAULT_FONT                  : argument[2];
-var _def_halign     = ((argument_count<4) || (argument[3]==undefined))? fa_left                                : argument[3];
-var _def_colour     = ((argument_count<5) || (argument[4]==undefined))? c_white                                : argument[4];
-var _line_height    = ((argument_count<6) || (argument[5]==undefined))? scribble_font_char_get_height( _def_font, " " ) : argument[5];
-var _generate_vbuff = ((argument_count<7) || (argument[6]==undefined))? true                                   : argument[6];
+var _str             = __scribble_replace_newlines( argument[0] );
+var _width_limit     = ((argument_count<2) || (argument[1]==undefined))? 9999999999                                      : argument[1];
+var _def_font        = ((argument_count<3) || (argument[2]==undefined))? SCRIBBLE_DEFAULT_FONT                           : argument[2];
+var _def_halign      = ((argument_count<4) || (argument[3]==undefined))? fa_left                                         : argument[3];
+var _def_colour      = ((argument_count<5) || (argument[4]==undefined))? c_white                                         : argument[4];
+var _line_min_height = ((argument_count<6) || (argument[5]==undefined))? scribble_font_char_get_height( _def_font, " " ) : argument[5];
+var _generate_vbuff  = ((argument_count<7) || (argument[6]==undefined))? true                                            : argument[6];
 
-var _space_width    = scribble_font_char_get_width( _def_font, " " );
+var _def_space_width = scribble_font_char_get_width( _def_font, " " );
 
 
 
@@ -33,7 +33,7 @@ _json[? "default font"   ] = _def_font;
 _json[? "default colour" ] = _def_colour;
 _json[? "default halign" ] = _def_halign;
 _json[? "width limit"    ] = _width_limit;
-_json[? "line height"    ] = _line_height;
+_json[? "line height"    ] = _line_min_height;
 
 //Main data structure for text storage
 var _text_root_list = ds_list_create();
@@ -102,6 +102,7 @@ var _map = noone;
 var _line_map = noone;
 var _line_list = noone;
 var _line_length = 0;
+var _line_max_height = _line_min_height;
 
 var _text_font      = _def_font;
 var _text_colour    = _def_colour;
@@ -110,6 +111,9 @@ var _text_hyperlink = "";
 var _text_rainbow   = false;
 var _text_shake     = false;
 var _text_wave      = false;
+
+var _font_line_height = _line_min_height;
+var _font_space_width = _def_space_width;
 
 
 
@@ -183,7 +187,9 @@ while( string_length( _str ) > 0 ) {
         
         //If the dev has used the [] command to reset draw state...
         if ( _parameters[0] == "" ) {
-                
+            
+            #region Reset formatting
+            
             _skip = true;
             
             _text_font      = _def_font;
@@ -194,15 +200,20 @@ while( string_length( _str ) > 0 ) {
             _text_shake     = false;
             _text_wave      = false;
             
-        #region Events
+            _font_line_height = _line_min_height;
+            _font_space_width = _def_space_width;
+            
+            #endregion
+            
+            #region Events
         
         } else if ( _parameters[0] == "event" ) {
             
             
             
-        #endregion
+            #endregion
          
-        #region Dynamic effects
+            #region Dynamic effects
         
         //Rainbow effect
         } else if ( _parameters[0] == "rainbow" ) { 
@@ -239,19 +250,21 @@ while( string_length( _str ) > 0 ) {
             _text_wave = false;
             _skip = true;
         
-        #endregion
+            #endregion
         
-        #region Change font
+            #region Change font
         
         //Changing font
         } else if ( scribble_font_exists( _parameters[0] ) ) {
             
             _text_font = _parameters[0];
+            _font_space_width = scribble_font_char_get_width(  _text_font, " " );
+            _font_line_height = scribble_font_char_get_height( _text_font, " " );
             _skip = true;
             
-        #endregion
+            #endregion
             
-        #region Hyperlinks
+            #region Hyperlinks
         
         //Creating a hyperlink
         } else if ( _parameters[0] == "link" ) {
@@ -296,9 +309,9 @@ while( string_length( _str ) > 0 ) {
             _text_hyperlink = "";
             _skip = true;
             
-        #endregion
+            #endregion
         
-        #region Font alignment
+            #region Font alignment
         
         //The command is an alignment keyphrase... set the alignment for the line and force a newline if the previous had content
         } else if ( _parameters[0] == "fa_left" ) {
@@ -331,16 +344,16 @@ while( string_length( _str ) > 0 ) {
                 _force_newline = true;
             }
                 
-        #endregion  
+            #endregion  
                 
         //If the command is something else...
         } else {
             
-            #region Sprites
-            
             //A sprite?
             var _asset = asset_get_index( _parameters[0] );
             if ( _asset >= 0 ) && ( asset_get_type( _parameters[0] ) == asset_sprite ) {
+                
+                #region Sprites
                 
                 _substr_sprite = _asset;
                 _substr_width  = sprite_get_width(  _substr_sprite );
@@ -372,7 +385,7 @@ while( string_length( _str ) > 0 ) {
                     
                 }
                 
-            #endregion
+                #endregion
                 
             } else {
                 
@@ -412,7 +425,8 @@ while( string_length( _str ) > 0 ) {
     } else {
             
         _substr_width  = scribble_font_string_get_width(  _text_font, _substr );
-        _substr_height = scribble_font_string_get_height( _text_font, _substr );
+        _substr_height = scribble_font_char_get_height(   _text_font, " " );
+        //_substr_height = scribble_font_string_get_height( _text_font, _substr );
          
         #endregion
         
@@ -428,11 +442,13 @@ while( string_length( _str ) > 0 ) {
             if ( _line_map != noone ) {
                 
                 _line_map[? "width"  ] = _text_x;
-                _line_map[? "height" ] = _line_height;
+                _line_map[? "height" ] = _line_max_height;
                 
                 _text_x = 0;
-                _text_y += _line_height;
+                _text_y += _line_max_height;
                 _line_length = 0;
+                
+                _line_max_height = _line_min_height;
                 
             }
             
@@ -440,8 +456,8 @@ while( string_length( _str ) > 0 ) {
                 // _map still holds the previous word
                 var _next_separator = _map[? "next separator" ];
                 if ( _next_separator == " " ) || ( _next_separator == "[" ) {
-                    _map[? "width" ] -= _space_width; //If the previous separation character was whitespace, correct the length of the previous word
-                    _line_map[? "width" ] -= _space_width; //...and the previous line
+                    _map[? "width" ] -= _font_space_width; //If the previous separation character was whitespace, correct the length of the previous word
+                    _line_map[? "width" ] -= _font_space_width; //...and the previous line
                 }
             }
             
@@ -454,7 +470,7 @@ while( string_length( _str ) > 0 ) {
             _line_map[? "x"      ] = 0;
             _line_map[? "y"      ] = _text_y;
             _line_map[? "width"  ] = 0;
-            _line_map[? "height" ] = _line_height;
+            _line_map[? "height" ] = _line_min_height;
             _line_map[? "length" ] = 0;
             _line_map[? "halign" ] = _text_halign;
             ds_map_add_list( _line_map, "words", _line_list );
@@ -464,13 +480,16 @@ while( string_length( _str ) > 0 ) {
         
         if ( !_force_newline ) && ( _substr != "" ) {
             
+            _line_max_height = max( _line_max_height, _substr_height );
+            
             //Add a new word
             _new_word = true;
             var _map = ds_map_create();
             _map[? "x"              ] = _text_x;
-            _map[? "y"              ] = ( _substr_sprite == noone )? 0 : ( _line_height - _substr_height ) div 2;
+            _map[? "y"              ] = 0;
             _map[? "width"          ] = _substr_width;
             _map[? "height"         ] = _substr_height;
+            _map[? "valign"         ] = fa_middle;
             _map[? "string"         ] = _substr;
             _map[? "input string"   ] = _input_substr;
             _map[? "sprite"         ] = _substr_sprite;
@@ -502,9 +521,9 @@ while( string_length( _str ) > 0 ) {
         }
         
         _text_x += _substr_width;
-        if ( _sep_char == " " ) _text_x += _space_width; //Add spacing if the separation character is a space
+        if ( _sep_char == " " ) _text_x += _font_space_width; //Add spacing if the separation character is a space
         
-        if ( ( _sep_char == " " ) && _new_word && ( _substr != "" ) ) _map[? "width" ] += _space_width;
+        if ( ( _sep_char == " " ) && _new_word && ( _substr != "" ) ) _map[? "width" ] += _font_space_width;
         
         _line_map[? "length" ] += _substr_length;
         if ( _substr_length > 0 ) _json[? "words" ]++;
@@ -545,7 +564,7 @@ while( string_length( _str ) > 0 ) {
 
 //Finish defining the last line
 _line_map[? "width"  ] = _text_x;
-_line_map[? "height" ] = _line_height;
+_line_map[? "height" ] = _line_max_height;
 _json[? "lines" ] = ds_list_size( _json[? "lines list" ] );
 
 #endregion
@@ -587,6 +606,25 @@ for( var _i = 0; _i < _lines_size; _i++ ) {
         case fa_right:
             _line_map[? "x" ] += _textbox_width - _line_map[? "width" ];
         break;
+    }
+    
+    var _line_height = _line_map[? "height" ];
+    var _word_list   = _line_map[? "words"  ];
+    
+    var _word_count = ds_list_size( _word_list );
+    for( var _word = 0; _word < _word_count; _word++ ) {
+        var _word_map = _word_list[| _word ];
+        switch ( _word_map[? "valign" ] ) {
+            case fa_top:
+                _word_map[? "y" ] = 0;
+            break;
+            case fa_middle:
+                _word_map[? "y" ] = ( _line_height - _word_map[? "height" ] ) div 2;
+            break;
+            case fa_bottom:
+                _word_map[? "y" ] = _line_height - _word_map[? "height" ];
+            break;
+        }
     }
     
 }
