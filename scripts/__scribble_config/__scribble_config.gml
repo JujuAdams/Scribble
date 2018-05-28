@@ -20,7 +20,7 @@
 //     **N.B.** Your spritefonts must have the collision type "Precise per Frame"
 //              Your spritefonts must not have "Separate Texture Page" switched on
 
-#macro SCRIBBLE_FONT_ARRAY [ "fTestA", "fTestB", [ "sSpriteFont", undefined, -1 ] ]
+#macro SCRIBBLE_FONT_ARRAY [ "fTestA", "fTestB", [ "sSpriteFont", undefined, 0 ] ]
 #macro SCRIBBLE_FONT_DIRECTORY "Fonts/"
 
 #macro SCRIBBLE_DEFAULT_FONT "fTestA"
