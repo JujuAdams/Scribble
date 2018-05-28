@@ -1,53 +1,50 @@
 /// @description Handles mouse clicks for a SCRIBBLE JSON
 ///
-/// @param json
 /// @param x
 /// @param y
+/// @param json
 /// @param mouse_x
 /// @param mouse_y
+/// @param destroy_if_invisible
 
-var _json    = argument0;
-var _x       = argument1;
-var _y       = argument2;
+var _x       = argument0;
+var _y       = argument1;
+var _json    = argument2;
 var _mouse_x = argument3;
 var _mouse_y = argument4;
+var _destroy = argument5;
 
-#region Sprite Slots
+if ( _json < 0 ) return noone;
 
-var _sprite_slot_list = _json[? "sprite slots" ];
-var _size = ds_list_size( _sprite_slot_list );
-for( var _i = 0; _i < _size; _i++ ) {
-    
-    var _slot_map = _sprite_slot_list[| _i ];
-    var _number   = _slot_map[? "frames" ];
-    var _image    = _slot_map[? "image"  ];
-    
-    _image += _slot_map[? "speed" ];
-    while ( _image <        0 ) _image += _number;
-    while ( _image >= _number ) _image -= _number;
-    
-    _slot_map[? "image" ] = _image;
-    
+if ( _json[? "transition state" ] == E_SCRIBBLE_STATE.INTRO ) {
+    _json[? "transition timer" ] = clamp( _json[? "transition timer" ] + _json[? "intro speed" ], 0, _json[? "intro max" ] );
+    if ( _json[? "transition timer" ] >= _json[? "intro max" ] ) _json[? "transition state" ] = E_SCRIBBLE_STATE.VISIBLE;
 }
 
-#endregion
+if ( _json[? "transition state" ] == E_SCRIBBLE_STATE.OUTRO ) {
+    _json[? "transition timer" ] = clamp( _json[? "transition timer" ] - _json[? "outro speed" ], 0, _json[? "outro max" ] );
+    if ( _json[? "transition timer" ] <= 0 ) _json[? "transition state" ] = E_SCRIBBLE_STATE.INVISIBLE;
+}
 
-#region Hyperlinks
-
-var _json_lines         = _json[? "lines list" ];
-var _hyperlinks         = _json[? "hyperlinks"              ];
-var _hyperlink_regions  = _json[? "hyperlink regions"       ];
-var _hyperlink_fade_in  = _json[? "hyperlink fade in rate"  ];
-var _hyperlink_fade_out = _json[? "hyperlink fade out rate" ];
-
-var _box_left = _json[? "left" ];
-var _box_top  = _json[? "top"  ];
+var _text_limit        = _json[? "transition timer"  ];
+var _text_font         = _json[? "default font"      ];
+var _text_colour       = _json[? "default colour"    ];
+var _hyperlinks        = _json[? "hyperlinks"        ];
+var _hyperlink_regions = _json[? "hyperlink regions" ];
+var _json_lines        = _json[? "lines"             ];
 
 for( var _key = ds_map_find_first( _hyperlinks ); _key != undefined; _key = ds_map_find_next( _hyperlinks, _key ) ) {
     var _map = _hyperlinks[? _key ];
     _map[? "over" ] = false;
     _map[? "clicked" ] = false;
 }
+
+if ( _json[? "transition state" ] == E_SCRIBBLE_STATE.INVISIBLE ) {
+    scribble_destroy( _json );
+    return noone;
+}
+
+if ( _json[? "transition state" ] != E_SCRIBBLE_STATE.VISIBLE ) return _json;
 
 var _regions = ds_list_size( _hyperlink_regions );
 for( var _i = 0; _i < _regions; _i++ ) {
@@ -61,8 +58,8 @@ for( var _i = 0; _i < _regions; _i++ ) {
     var _words_list = _line_map[? "words" ];
     var _word_map   = _words_list[| _region_word ];
     
-    var _region_x = _x + _line_map[? "x" ] + _word_map[? "x" ] + _box_left;
-    var _region_y = _y + _line_map[? "y" ] + _word_map[? "y" ] + _box_top;
+    var _region_x = _x + _line_map[? "x" ] + _word_map[? "x" ];
+    var _region_y = _y + _line_map[? "y" ] + _word_map[? "y" ];
     if ( _hyperlink_map != undefined ) && ( point_in_rectangle( _mouse_x, _mouse_y,
                                                                 _region_x, _region_y,
                                                                 _region_x + _word_map[? "width" ], _region_y + _word_map[? "height" ] ) ) {
@@ -72,12 +69,8 @@ for( var _i = 0; _i < _regions; _i++ ) {
 }
 
 for( var _key = ds_map_find_first( _hyperlinks ); _key != undefined; _key = ds_map_find_next( _hyperlinks, _key ) ) {
-    
-    var _map   = _hyperlinks[? _key ];
-    var _index = _map[? "index" ];
-    
+    var _map = _hyperlinks[? _key ];
     if ( _map[? "over" ] ) {
-        
         if ( mouse_check_button_pressed( mb_left ) ) {
             _map[? "down" ] = true;
         } else if ( !mouse_check_button( mb_left ) && _map[? "down" ] ) {
@@ -85,18 +78,9 @@ for( var _key = ds_map_find_first( _hyperlinks ); _key != undefined; _key = ds_m
             _map[? "clicked" ] = true;
             if ( script_exists( _map[? "script" ] ) ) script_execute( _map[? "script" ] );
         }
-        
-        _map[? "mix" ] = min( _map[? "mix" ] + _hyperlink_fade_in, 1 );
-        
     } else {
-        
         _map[? "down" ] = false;
-        _map[? "mix" ] = max( _map[? "mix" ] - _hyperlink_fade_out, 0 );
-        
     }
-    
 }
-
-#endregion
 
 return _json;

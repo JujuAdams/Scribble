@@ -1,1 +1,0 @@
-scribble_destroy( test_json );
