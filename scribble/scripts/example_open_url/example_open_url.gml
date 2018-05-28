@@ -1,1 +1,0 @@
-url_open( "https://www.twitter.com/jujuadams/" );
