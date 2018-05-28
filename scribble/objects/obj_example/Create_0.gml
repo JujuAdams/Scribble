@@ -1,4 +1,22 @@
+//Standard runtime texture page creation
 scribble_init();
+
+//Alternate for-production import mode
+/*
+	//Run the game once using this script
+	scribble_init_export();
+	
+	//This will spit out two files (scribble_glyphs.dat & scribble_texture.png) to the sandbox directory
+	//These are precompiled Scribble data files
+	//Add these files to your project as "Included Files" in GM's resource tree
+	
+	//When running production code, instead of using scribble_init(), run this init script instead
+	scribble_init_import( "scribble_glyphs.dat", "scribble_texture.png" );
+	
+	//Scribble should function as normal
+	//Feel free to rename the source files
+	//If you change the order of fonts in the resource tree, rename fonts, or add new fonts you will need to re-export
+*/
 
 render_time_smoothed = 200;
 test_mode = 0;

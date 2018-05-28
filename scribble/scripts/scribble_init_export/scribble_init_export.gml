@@ -158,6 +158,14 @@ for( var _i = 0; _i < _font_count; _i++ ) {
 global.scribble_sprite  = sprite_create_from_surface( _surface, 0, 0, SCRIBBLE_SURFACE_SIZE, SCRIBBLE_SURFACE_SIZE, false, false, 0, 0 );
 global.scribble_texture = sprite_get_texture( global.scribble_sprite, 0 );
 
+surface_save( _surface, "scribble_texture.png" );
+var _string = json_encode( global.scribble_font_json );
+_string = json_prettify( _string, 0, "", 0 );
+var _buffer = buffer_create( string_byte_length( _string )+1, buffer_grow, 1 );
+buffer_write( _buffer, buffer_string, _string );
+buffer_save( _buffer, "scribble_glyphs.dat" );
+buffer_delete( _buffer );
+
 surface_free( _surface );
 surface_free( _char_surface );
 

@@ -1,8 +1,8 @@
 /// @description Internal master definitions
 
-//handytools build information
-#macro SCRIBBLE_VERSION "v1.0.0"
-#macro SCRIBBLE_DATE "2018.01.04" //always use YYYY/MM/DD
+//scribble build information
+#macro SCRIBBLE_VERSION "v1.1.0"
+#macro SCRIBBLE_DATE "2018.04.10" //always use YYYY/MM/DD
 #macro SCRIBBLE_CREDITS "scribble by @jujuadams"
 
 //abbreviations
