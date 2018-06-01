@@ -17,7 +17,6 @@ if ( _vbuff == undefined ) {
 }
 
 if ( os_type == os_macosx ) {
-    show_debug_message( "MacOS" );
     shader_set( shScribblePassthrough );
     scribble_basic_draw( _font, _vbuff, _x, _y );
     shader_reset();
