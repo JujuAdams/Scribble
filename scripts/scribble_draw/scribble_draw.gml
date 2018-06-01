@@ -80,9 +80,22 @@ if ( _json[? "shader master" ] ) {
     
 } else {
     
-    for( var _i = 0; _i < _vbuff_count; _i++ ) {
-        var _vbuff_map = _vbuff_list[| _i ];
-        vertex_submit( _vbuff_map[? "vertex buffer" ], pr_trianglelist, _vbuff_map[? "texture" ] );
+    if ( os_type == os_macosx ) {
+        
+        shader_set( shScribblePassthrough );
+        for( var _i = 0; _i < _vbuff_count; _i++ ) {
+            var _vbuff_map = _vbuff_list[| _i ];
+            vertex_submit( _vbuff_map[? "vertex buffer" ], pr_trianglelist, _vbuff_map[? "texture" ] );
+        }
+        shader_reset();
+        
+    } else {
+        
+        for( var _i = 0; _i < _vbuff_count; _i++ ) {
+            var _vbuff_map = _vbuff_list[| _i ];
+            vertex_submit( _vbuff_map[? "vertex buffer" ], pr_trianglelist, _vbuff_map[? "texture" ] );
+        }
+        
     }
     
 }

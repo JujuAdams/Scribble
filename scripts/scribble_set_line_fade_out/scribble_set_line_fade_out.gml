@@ -1,5 +1,5 @@
 /// @param json
-/// @param line
+/// @param count
 /// @param [smoothness]
 
 var _json = argument[0];

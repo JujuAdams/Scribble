@@ -16,4 +16,11 @@ if ( _vbuff == undefined ) {
     show_debug_message( "Cached <" + string_replace_all( _string, "\n", "\\N" ) + "> as vbuff=" + string( _vbuff ) );
 }
 
-scribble_basic_draw( _font, _vbuff, _x, _y );
+if ( os_type == os_macosx ) {
+    show_debug_message( "MacOS" );
+    shader_set( shScribblePassthrough );
+    scribble_basic_draw( _font, _vbuff, _x, _y );
+    shader_reset();
+} else {
+    scribble_basic_draw( _font, _vbuff, _x, _y );
+}

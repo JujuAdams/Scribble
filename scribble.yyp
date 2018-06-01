@@ -223,6 +223,14 @@
             }
         },
         {
+            "Key": "3cc0941b-8b19-4b9b-b547-39fcb37761a3",
+            "Value": {
+                "id": "afb74e7a-b2e7-4b0a-bd88-ff8e1b3f3e94",
+                "resourcePath": "shaders\\shScribblePassthrough\\shScribblePassthrough.yy",
+                "resourceType": "GMShader"
+            }
+        },
+        {
             "Key": "3cc406d2-882b-416f-802b-eabfadbbb5d7",
             "Value": {
                 "id": "961dd583-424c-477b-a984-d009fdc0a4b4",
