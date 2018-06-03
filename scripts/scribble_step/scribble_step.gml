@@ -1,4 +1,4 @@
-/// @description Handles mouse clicks for a SCRIBBLE JSON
+/// @description Handles mouse clicks for a Scribble JSON
 ///
 /// @param json
 /// @param x
@@ -12,7 +12,11 @@ var _y       = argument2;
 var _mouse_x = argument3;
 var _mouse_y = argument4;
 
-#region Sprite Slots
+#region Clear Events State
+scribble_events_clear( _json );
+#endregion
+
+#region Animate Sprite Slots
 
 var _sprite_slot_list = _json[? "sprite slots" ];
 var _size = ds_list_size( _sprite_slot_list );

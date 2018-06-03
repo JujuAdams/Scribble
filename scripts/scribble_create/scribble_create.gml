@@ -1,4 +1,4 @@
-/// @description Creates, and returns, a SCRIBBLE JSON, and its vertex buffer, built from a string
+/// @description Creates, and returns, a Scribble JSON, and its vertex buffer, built from a string
 ///
 /// @param string
 /// @param [box_width]
@@ -54,11 +54,6 @@ _json[? "length" ] = 0;
 _json[? "lines"  ] = 0;
 _json[? "words"  ] = 0;
 
-//Events
-var _events_map = ds_map_create();
-ds_map_add_map(  _json, "events", _events_map );
-_json[? "events callback" ] = "";
-
 //Hyperlink handling
 var _hyperlink_map          = ds_map_create();
 var _hyperlink_regions_list = ds_list_create();
@@ -87,7 +82,21 @@ repeat( SCRIBBLE_MAX_SPRITE_SLOTS ) {
     ds_list_add( _sprite_slot_list, _slot_map );
     ds_list_mark_as_map( _sprite_slot_list, ds_list_size( _sprite_slot_list )-1 );
 }
-                    
+
+//Event triggering
+var _events_character_list = ds_list_create();
+var _events_name_list      = ds_list_create();
+var _events_data_list      = ds_list_create();
+ds_map_add_list( _json, "events character list", _events_character_list );
+ds_map_add_list( _json, "events name list"     , _events_name_list      );
+ds_map_add_list( _json, "events data list"     , _events_data_list      );
+ds_map_add_list( _json, "events triggered list", ds_list_create()       );
+ds_map_add_map(  _json, "events triggered map" , ds_map_create()        );
+ds_map_add_map(  _json, "events value map"     , ds_map_create()        );
+ds_map_add_map(  _json, "events changed map"   , ds_map_create()        );
+ds_map_add_map(  _json, "events previous map"  , ds_map_create()        );
+ds_map_add_map(  _json, "events different map" , ds_map_create()        );
+
 #endregion
 
 
@@ -170,6 +179,9 @@ while( string_length( _str ) > 0 ) {
             
         #region Command Handling
         
+        //Commands (typically) occupy no space when using the typewriter functionality
+        _substr_length = 0;
+        
         //Strip out commands and parameters
         var _work_str = _substr + "|";
         var _pos = string_pos( "|", _work_str );
@@ -207,9 +219,27 @@ while( string_length( _str ) > 0 ) {
             
             #region Events
         
-        } else if ( _parameters[0] == "event" ) {
+        } else if ( _parameters[0] == "event" ) || ( _parameters[0] == "ev" ) {
             
+            var _parameter_count = array_length_1d( _parameters );
+            if ( _parameter_count <= 1 ) {
+                
+                show_error( "Not enough parameters for event!", false );
+                _skip = true;
+                
+            } else {
+                
+                var _name = _parameters[1];
+                var _data = [];
+                array_copy( _data, 0, _parameters, 2, _parameter_count-2 );
+                
+                ds_list_add( _events_character_list, _json[? "length" ] );
+                ds_list_add( _events_name_list     , _name              );
+                ds_list_add( _events_data_list     , _data              );
+                
+            }
             
+            _skip = true;
             
             #endregion
          
