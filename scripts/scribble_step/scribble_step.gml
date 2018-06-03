@@ -5,12 +5,14 @@
 /// @param y
 /// @param mouse_x
 /// @param mouse_y
+/// @param [do_hyperlinks]
 
-var _json    = argument0;
-var _x       = argument1;
-var _y       = argument2;
-var _mouse_x = argument3;
-var _mouse_y = argument4;
+var _json          = argument[0];
+var _x             = argument[1];
+var _y             = argument[2];
+var _mouse_x       = argument[3];
+var _mouse_y       = argument[4];
+var _do_hyperlinks = ((argument_count>5) && (argument[5]!=undefined))? argument[5] : true;
 
 #region Clear Event State
 scribble_events_clear( _json );
@@ -36,71 +38,77 @@ for( var _i = 0; _i < _size; _i++ ) {
 
 #endregion
 
-#region Hyperlinks
+if ( _do_hyperlinks ) {
+    #region Hyperlinks
 
-var _json_lines         = _json[? "lines list" ];
-var _hyperlinks         = _json[? "hyperlinks"              ];
-var _hyperlink_regions  = _json[? "hyperlink regions"       ];
-var _hyperlink_fade_in  = _json[? "hyperlink fade in rate"  ];
-var _hyperlink_fade_out = _json[? "hyperlink fade out rate" ];
+    var _json_lines         = _json[? "lines list" ];
+    var _hyperlinks         = _json[? "hyperlinks"              ];
+    var _hyperlink_regions  = _json[? "hyperlink regions"       ];
+    var _hyperlink_fade_in  = _json[? "hyperlink fade in rate"  ];
+    var _hyperlink_fade_out = _json[? "hyperlink fade out rate" ];
 
-var _box_left = _json[? "left" ];
-var _box_top  = _json[? "top"  ];
+    var _box_left = _json[? "left" ];
+    var _box_top  = _json[? "top"  ];
 
-for( var _key = ds_map_find_first( _hyperlinks ); _key != undefined; _key = ds_map_find_next( _hyperlinks, _key ) ) {
-    var _map = _hyperlinks[? _key ];
-    _map[? "over" ] = false;
-    _map[? "clicked" ] = false;
-}
-
-var _regions = ds_list_size( _hyperlink_regions );
-for( var _i = 0; _i < _regions; _i++ ) {
-    
-    var _region_map    = _hyperlink_regions[| _i ];
-    var _hyperlink_map = _hyperlinks[? _region_map[? "hyperlink" ] ];
-    var _region_line   = _region_map[? "line" ];
-    var _region_word   = _region_map[? "word" ];
-    
-    var _line_map   = _json_lines[| _region_line ];
-    var _words_list = _line_map[? "words" ];
-    var _word_map   = _words_list[| _region_word ];
-    
-    var _region_x = _x + _line_map[? "x" ] + _word_map[? "x" ] + _box_left;
-    var _region_y = _y + _line_map[? "y" ] + _word_map[? "y" ] + _box_top;
-    if ( _hyperlink_map != undefined ) && ( point_in_rectangle( _mouse_x, _mouse_y,
-                                                                _region_x, _region_y,
-                                                                _region_x + _word_map[? "width" ], _region_y + _word_map[? "height" ] ) ) {
-        _hyperlink_map[? "over" ] = true;
+    for( var _key = ds_map_find_first( _hyperlinks ); _key != undefined; _key = ds_map_find_next( _hyperlinks, _key ) ) {
+        var _map = _hyperlinks[? _key ];
+        _map[? "over" ] = false;
+        _map[? "clicked" ] = false;
     }
-    
-}
 
-for( var _key = ds_map_find_first( _hyperlinks ); _key != undefined; _key = ds_map_find_next( _hyperlinks, _key ) ) {
+    var _regions = ds_list_size( _hyperlink_regions );
+    for( var _i = 0; _i < _regions; _i++ ) {
     
-    var _map   = _hyperlinks[? _key ];
-    var _index = _map[? "index" ];
+        var _region_map    = _hyperlink_regions[| _i ];
+        var _hyperlink_map = _hyperlinks[? _region_map[? "hyperlink" ] ];
+        var _region_line   = _region_map[? "line" ];
+        var _region_word   = _region_map[? "word" ];
     
-    if ( _map[? "over" ] ) {
-        
-        if ( mouse_check_button_pressed( mb_left ) ) {
-            _map[? "down" ] = true;
-        } else if ( !mouse_check_button( mb_left ) && _map[? "down" ] ) {
-            _map[? "down" ] = false;
-            _map[? "clicked" ] = true;
-            if ( script_exists( _map[? "script" ] ) ) script_execute( _map[? "script" ] );
+        var _line_map   = _json_lines[| _region_line ];
+        var _words_list = _line_map[? "words" ];
+        var _word_map   = _words_list[| _region_word ];
+    
+        var _region_x = _x + _line_map[? "x" ] + _word_map[? "x" ] + _box_left;
+        var _region_y = _y + _line_map[? "y" ] + _word_map[? "y" ] + _box_top;
+        if ( _hyperlink_map != undefined ) && ( point_in_rectangle( _mouse_x, _mouse_y,
+                                                                    _region_x, _region_y,
+                                                                    _region_x + _word_map[? "width" ], _region_y + _word_map[? "height" ] ) ) {
+            _hyperlink_map[? "over" ] = true;
         }
-        
-        _map[? "mix" ] = min( _map[? "mix" ] + _hyperlink_fade_in, 1 );
-        
-    } else {
-        
-        _map[? "down" ] = false;
-        _map[? "mix" ] = max( _map[? "mix" ] - _hyperlink_fade_out, 0 );
-        
-    }
     
-}
+    }
+
+    for( var _key = ds_map_find_first( _hyperlinks ); _key != undefined; _key = ds_map_find_next( _hyperlinks, _key ) ) {
+    
+        var _map   = _hyperlinks[? _key ];
+        var _index = _map[? "index" ];
+    
+        if ( _map[? "over" ] ) {
+        
+            _map[? "mix" ] = min( _map[? "mix" ] + _hyperlink_fade_in, 1 );
+        
+            if ( mouse_check_button_pressed( mb_left ) ) {
+                _map[? "down" ] = true;
+            } else if ( !mouse_check_button( mb_left ) && _map[? "down" ] ) {
+                _map[? "down" ] = false;
+                _map[? "clicked" ] = true;
+                if ( script_exists( _map[? "script" ] ) ) script_execute( _map[? "script" ] );
+                if ( global.__scribble_host_destroyed ) {
+                    global.__scribble_host_destroyed = false;
+                    return undefined;
+                }
+            }
+        
+        } else {
+        
+            _map[? "down" ] = false;
+            _map[? "mix"  ] = max( _map[? "mix" ] - _hyperlink_fade_out, 0 );
+        
+        }
+    
+    }
 
 #endregion
+}
 
 return _json;
