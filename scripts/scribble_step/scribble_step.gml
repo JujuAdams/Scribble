@@ -12,7 +12,7 @@ var _y       = argument2;
 var _mouse_x = argument3;
 var _mouse_y = argument4;
 
-#region Clear Events State
+#region Clear Event State
 scribble_events_clear( _json );
 #endregion
 

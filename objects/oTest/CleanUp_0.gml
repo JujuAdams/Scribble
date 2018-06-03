@@ -1,1 +1,2 @@
-scribble_destroy( test_json );
+//Destroy the JSON and the vertex buffers it holds
+scribble_destroy( json );
