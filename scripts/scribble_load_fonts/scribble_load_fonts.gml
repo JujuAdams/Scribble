@@ -1,5 +1,10 @@
 /// @param font_name_array
 
+var _font_array = argument0;
+var _font_count = array_length_1d( _font_array );
+
+
+
 var _old_x = x;
 var _old_y = y;
 var _old_image_xscale = image_xscale;
@@ -10,9 +15,6 @@ image_xscale = 1;
 image_yscale = 1;
 
 
-
-var _font_array = argument0;
-var _font_count = array_length_1d( _font_array );
 
 var _max_width  = 0;
 var _max_height = 0;
@@ -120,6 +122,8 @@ for( var _font = 0; _font < _font_count; _font++ ) {
         var _sprite = asset_get_index( _name );
         var _sprite_string  = ((array_length_1d( _input_array ) > 1) && (_input_array[1] != undefined))? _input_array[1] : SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING;
         var _shift_constant = ((array_length_1d( _input_array ) > 2) && (_input_array[2] != undefined))? _input_array[2] : SCRIBBLE_DEFAULT_SPRITEFONT_SEPARATION;
+        
+        if ( SCRIBBLE_COMPATIBILITY_MODE ) global.__scribble_sprite_font_map[? _name ] = font_add_sprite_ext( _sprite, _sprite_string, true, _shift_constant );
         
         sprite_index = _sprite;
         //sprite_set_offset( _sprite, 0, 0 );
@@ -260,6 +264,8 @@ for( var _font = 0; _font < _font_count; _font++ ) {
     show_debug_message( "Scribble: \"" + _name + "\" loaded" );
     
 }
+
+
 
 x = _old_x;
 y = _old_y;

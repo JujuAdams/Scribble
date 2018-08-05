@@ -396,8 +396,10 @@ while( string_length( _str ) > 0 ) {
                 }
                 
                 if ( string_copy( _parameters[1], 1, 1 ) != "$" ) {
+                    
                     _substr_image = real( _parameters[1] );
                     _substr_sprite_slot = undefined;
+                    
                 } else {
                     
                     _substr_image = 0;

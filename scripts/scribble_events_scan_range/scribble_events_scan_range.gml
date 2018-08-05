@@ -3,6 +3,8 @@
 /// @param character_end
 /// @param [block_0_char]
 
+if ( SCRIBBLE_COMPATIBILITY_MODE ) exit;
+
 var _json       = argument[0];
 var _char_start = argument[1];
 var _char_end   = argument[2];

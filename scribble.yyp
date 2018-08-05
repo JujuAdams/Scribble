@@ -183,6 +183,14 @@
             }
         },
         {
+            "Key": "2ac4a0cc-c5e1-433f-9cc8-1bb998b4bc86",
+            "Value": {
+                "id": "5da28761-52ff-4d6d-875d-e4611a7a909f",
+                "resourcePath": "scripts\\scribble_draw_compatibility\\scribble_draw_compatibility.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "2c474d18-4795-46cc-a042-6c47e90349f9",
             "Value": {
                 "id": "8b0e5acb-3e92-4d73-adc2-556c7928d000",
@@ -228,14 +236,6 @@
                 "id": "2cdd511b-4766-4599-9ac5-8e48dcf7e855",
                 "resourcePath": "views\\3a479606-3abc-4c0a-ba65-b8a104c61c52.yy",
                 "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "3a5af38c-757d-44ae-98c0-5d4b09e14e6a",
-            "Value": {
-                "id": "e1359d11-85dd-455c-a543-b96e96e3d92a",
-                "resourcePath": "options\\ps4\\options_ps4.yy",
-                "resourceType": "GMPS4Options"
             }
         },
         {
@@ -1181,6 +1181,7 @@
         "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
         "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
         "2556e855-8983-412c-8d45-8c59e5d89947",
+        "2ac4a0cc-c5e1-433f-9cc8-1bb998b4bc86",
         "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
         "09e32466-e915-46dd-a035-c612c3c2c3de",
         "9fdb5ea6-7580-494f-9759-66821915ddcc",

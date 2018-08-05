@@ -12,6 +12,11 @@ var _shader          = ((argument_count > 3) && (argument[3] != undefined))? arg
 var _do_hyperlinks   = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : true;
 var _do_sprite_slots = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : true;
 
+if ( SCRIBBLE_COMPATIBILITY_MODE ) {
+    scribble_draw_compatibility( _json, _x, _y, _do_hyperlinks, _do_sprite_slots );
+    exit;
+}
+
 if ( _do_hyperlinks ) {
     //Build an array that describes the hyperlink mix state for each hyperlink
     //(The default max value is 16)
