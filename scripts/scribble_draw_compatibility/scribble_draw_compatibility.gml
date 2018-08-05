@@ -10,6 +10,9 @@ var _y               = ((argument_count > 2) && (argument[2] != undefined))? arg
 var _do_hyperlinks   = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : true;
 var _do_sprite_slots = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : true;
 
+var _old_alpha  = draw_get_alpha();
+var _old_colour = draw_get_colour();
+
 if ( _do_hyperlinks ) {
     //Build an array that describes the hyperlink mix state for each hyperlink
     //(The default max value is 16)
@@ -38,8 +41,10 @@ if ( _do_sprite_slots ) {
 
 
 
-var _old_alpha = draw_get_alpha();
-draw_set_alpha( _json[? "alpha" ] );
+var _base_alpha = _json[? "alpha" ];
+draw_set_alpha( _base_alpha );
+var _char_count = 0;
+var _total_chars = _json[? "char fade t" ] * _json[? "length" ];
 
 var _real_x      = _x + _json[? "left" ];
 var _real_y      = _y + _json[? "top" ];
@@ -80,6 +85,9 @@ for( var _line = 0; _line < _lines_count; _line++ ) {
         
         if ( _sprite >= 0 ) {
             
+            if ( _char_count + 1 > _total_chars ) continue;
+            _char_count++;
+            
             var _sprite_slot = _word_map[? "sprite slot" ];
             _x -= sprite_get_xoffset( _sprite );
             _y -= sprite_get_yoffset( _sprite );
@@ -93,9 +101,17 @@ for( var _line = 0; _line < _lines_count; _line++ ) {
         } else {
             
             var _string    = _word_map[?    "string" ];
+            var _length    = _word_map[?    "length" ];
             var _font_name = _word_map[?      "font" ];
             var _colour    = _word_map[?    "colour" ];
             var _hyperlink = _word_map[? "hyperlink" ];
+            
+            if ( _char_count + _length > _total_chars ) {
+                _string = string_copy( _string, 1, _total_chars - _char_count );
+                _char_count = _total_chars;
+            } else {
+                _char_count += _length;
+            }
             
             if ( _hyperlink != "" ) {
                 var _hyperlink_map = _hyperlinks[? _hyperlink ];
@@ -115,8 +131,12 @@ for( var _line = 0; _line < _lines_count; _line++ ) {
             draw_text( _x, _y, _string );
             
         }
+        
+        if ( _char_count >= _total_chars ) break;
     }
+    if ( _char_count >= _total_chars ) break;
 }
 
+draw_set_colour( _old_colour );
 draw_set_alpha( _old_alpha );
 if ( _x != 0 ) || ( _y != 0 ) matrix_set( matrix_world, _old_matrix );

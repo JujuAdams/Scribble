@@ -4,8 +4,6 @@
 /// @param [event_name]
 /// @param [script]
 
-if ( SCRIBBLE_COMPATIBILITY_MODE ) exit;
-
 var _json = argument[0];
 
 var _triggered_list = _json[? "events triggered list" ];
