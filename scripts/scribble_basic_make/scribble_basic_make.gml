@@ -25,7 +25,7 @@ for( var _pos = 1; _pos <= _length; _pos++ ) {
     
     var _char = string_copy( _string, _pos, 1 );
     
-    if ( ord( _char ) == 10 ) {
+    if ( ord( _char ) == 10 || ord( _char ) == 13) {
         _line++;
         _x = 0;
         _y += _line_height;
