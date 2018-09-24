@@ -255,10 +255,10 @@
             }
         },
         {
-            "Key": "3dee5873-260c-4a48-90d8-0c51f65b6951",
+            "Key": "3f26a63f-a895-485f-81b6-ef35d9ee94cd",
             "Value": {
-                "id": "63127bdc-96de-49e7-8e55-36517dbc9aff",
-                "resourcePath": "sprites\\sSpriteFont\\sSpriteFont.yy",
+                "id": "a997adab-3c28-49f1-b1f7-48a1d2b814b5",
+                "resourcePath": "sprites\\sprFontMain\\sprFontMain.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -276,6 +276,14 @@
                 "id": "c6a361d2-0a6a-4793-8687-d11fd19985e2",
                 "resourcePath": "views\\41eaa15d-6b46-4b31-9a37-fcbba2abcefa.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "4391d373-68b9-4dfc-9f18-229496d9de41",
+            "Value": {
+                "id": "f9519562-accc-4096-96bc-d956a1f682bb",
+                "resourcePath": "sprites\\sprFontSmall\\sprFontSmall.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -343,14 +351,6 @@
             }
         },
         {
-            "Key": "5eaf24bb-b8b7-4ad1-9bd5-85bee32619bd",
-            "Value": {
-                "id": "0b6de6c8-b860-4e7d-bc92-0086faffed30",
-                "resourcePath": "sounds\\sndCrank\\sndCrank.yy",
-                "resourceType": "GMSound"
-            }
-        },
-        {
             "Key": "5f87550b-7fb8-44c6-b07e-5cd3c4197c31",
             "Value": {
                 "id": "244a3f26-f5b6-460d-8319-1a09772016e4",
@@ -372,14 +372,6 @@
                 "id": "9cce4eaf-8054-466c-92f5-66d1f4bf7507",
                 "resourcePath": "scripts\\scribble_shader_line_fade\\scribble_shader_line_fade.yy",
                 "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "633d7395-f018-4c16-a188-1281be2d8da8",
-            "Value": {
-                "id": "b085c432-ef34-436f-9c45-a7b526f7a6cd",
-                "resourcePath": "datafiles_yy\\Fonts\\fTestA.yy.yy",
-                "resourceType": "GMIncludedFile"
             }
         },
         {
@@ -583,14 +575,6 @@
             }
         },
         {
-            "Key": "8c053dc1-a3f7-4d8a-b929-e87126b0ee81",
-            "Value": {
-                "id": "698352dc-88a2-495a-ab3d-3fb5cd6fc5a9",
-                "resourcePath": "datafiles_yy\\Fonts\\fTestB.png.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
             "Key": "9037e147-def6-41fd-842a-036094a9dc58",
             "Value": {
                 "id": "84b4b400-2a1d-4864-984d-bbc5100e00e5",
@@ -663,14 +647,6 @@
             }
         },
         {
-            "Key": "9b08d9da-d0f3-4c56-adba-dd0ede8285f6",
-            "Value": {
-                "id": "d565b0e0-2a0f-4dac-bb24-911af42d498b",
-                "resourcePath": "views\\9b08d9da-d0f3-4c56-adba-dd0ede8285f6.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
             "Key": "9fdb5ea6-7580-494f-9759-66821915ddcc",
             "Value": {
                 "id": "18c2fef6-e21f-4ee6-924a-db12d805e91f",
@@ -700,14 +676,6 @@
                 "id": "c6432cdf-867d-411d-891f-d26bb7501902",
                 "resourcePath": "scripts\\scribble_shader_end\\scribble_shader_end.yy",
                 "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "a6e779ad-19c7-4834-9c11-dc71a106cd12",
-            "Value": {
-                "id": "da6553cb-7da1-44bd-9487-96fce1bbc45e",
-                "resourcePath": "sounds\\sndSwitch\\sndSwitch.yy",
-                "resourceType": "GMSound"
             }
         },
         {
@@ -967,14 +935,6 @@
             }
         },
         {
-            "Key": "d922db80-2bdc-4bd0-bf27-d2b8d139e448",
-            "Value": {
-                "id": "f1997d00-c3a3-4bcc-81a4-bc92e0f37867",
-                "resourcePath": "datafiles_yy\\Fonts\\fTestA.png.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
             "Key": "daa30cee-1636-4fef-a065-02d8785a3f63",
             "Value": {
                 "id": "32f83d8f-2dae-4e51-95b0-668a9df92be5",
@@ -1004,14 +964,6 @@
                 "id": "4e6bbd92-0545-493c-bfc4-2cd9d9d3b297",
                 "resourcePath": "views\\df3afc9f-820f-420b-b9b5-ed2c2222c392.yy",
                 "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "e27a3260-8000-4846-bd5c-f14e05d20a49",
-            "Value": {
-                "id": "00901975-4618-4479-abc0-a928e188f163",
-                "resourcePath": "datafiles_yy\\Fonts\\fTestB.yy.yy",
-                "resourceType": "GMIncludedFile"
             }
         },
         {
