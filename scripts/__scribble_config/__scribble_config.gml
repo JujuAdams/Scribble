@@ -20,11 +20,11 @@
 //     **N.B.** Your spritefonts must have the collision type "Precise per Frame"
 //              Your spritefonts must not have "Separate Texture Page" switched on
 
-#macro SCRIBBLE_FONT_ARRAY [ "fTestA", "fTestB", [ "sSpriteFont", undefined, 0 ] ]
+#macro SCRIBBLE_FONT_ARRAY [ [ "sprFontMain", undefined, 0 ], ["sprFontSmall", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.-;:_+-*/|#", 0] ]
 #macro SCRIBBLE_FONT_DIRECTORY "Fonts/"
 
-#macro SCRIBBLE_DEFAULT_FONT "fTestA"
-#macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
+#macro SCRIBBLE_DEFAULT_FONT "sprFontMain"
+#macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß«»"
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_SEPARATION 0
 #macro SCRIBBLE_DEFAULT_SHADER shScribble
 
