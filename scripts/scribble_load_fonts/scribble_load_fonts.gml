@@ -109,9 +109,7 @@ if ( _max_width > 0 ) && ( _max_height > 0 ) {
 
 
 
-var _texture = sprite_get_texture( _surface_sprite, 0 );
-var _texture_tw = texture_get_texel_width(  _texture );
-var _texture_th = texture_get_texel_height( _texture );
+
 
 for( var _font = 0; _font < _font_count; _font++ ) {
     
@@ -211,6 +209,10 @@ for( var _font = 0; _font < _font_count; _font++ ) {
     } else {
         
         #region Font
+        
+        var _texture = sprite_get_texture( _surface_sprite, 0 );
+        var _texture_tw = texture_get_texel_width(  _texture );
+        var _texture_th = texture_get_texel_height( _texture );
         
         global.__scribble_image_map[? _name ] = _surface_sprite;
         
