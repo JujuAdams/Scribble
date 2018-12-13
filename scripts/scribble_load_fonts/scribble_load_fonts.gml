@@ -30,29 +30,25 @@ for( var _font = 0; _font < _font_count; _font++ ) {
         
     } else {
         
-        var _image_file = SCRIBBLE_FONT_DIRECTORY + _name + ".png";
         var _json_file  = SCRIBBLE_FONT_DIRECTORY + _name + ".yy";
-        
-        if ( !file_exists( _image_file ) ) {
-            show_error( "Could not find \"" + _image_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
-            continue;
-        }
-        
         if ( !file_exists( _json_file ) ) {
             show_error( "Could not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
             continue;
         }
         
-        var _image = sprite_add( _image_file, 0, false, false, 0, 0 );
-        var _image_w = sprite_get_width(  _image );
-        var _image_h = sprite_get_height( _image );
+        var _font_asset = asset_get_index( _name );
+        var _texture    = font_get_texture( _font );
+        var _uvs        = font_get_uvs( _font );
         
-        global.__scribble_image_map[?   _name ] = _image;
-        global.__scribble_image_x_map[? _name ] = 0;
-        global.__scribble_image_y_map[? _name ] = 0;
+        var _image_w = ( _uvs[2] - _uvs[0] ) / texture_get_texel_width(  _texture );
+        var _image_h = ( _uvs[3] - _uvs[1] ) / texture_get_texel_height( _texture );
         
         _max_width += _image_w;
         _max_height = max( _max_height, _image_h );
+        
+        global.__scribble_image_map[?   _name ] = undefined;
+        global.__scribble_image_x_map[? _name ] = 0;
+        global.__scribble_image_y_map[? _name ] = 0;
         
     }
     
@@ -64,48 +60,58 @@ if ( _max_width > 0 ) && ( _max_height > 0 ) {
     
     var _x = 0;
     var _y = 0;
-
+    
     var _surface = surface_create( _max_width, _max_height );
     surface_set_target( _surface );
-    
+        
         draw_clear_alpha( c_white, 0 );
         gpu_set_blendenable( false );
-    
-        for( var _font = 0; _font < _font_count; _font++ ) {
         
+        for( var _font = 0; _font < _font_count; _font++ ) {
+            
             var _name = _font_array[ _font ];
             if ( is_array( _name ) ) _name = _name[0];
-    
+            
             if ( asset_get_type( _name ) != asset_sprite ) {
-            
-                var _image   = global.__scribble_image_map[? _name ];
-                if ( _image == undefined ) continue;
                 
-                var _image_w = sprite_get_width(  _image );
-                var _image_h = sprite_get_height( _image );
-            
-                draw_sprite( _image, 0, _x, _y );
-            
+                var _font_asset = asset_get_index( _name );
+                var _texture    = font_get_texture( _font );
+                var _uvs        = font_get_uvs( _font );
+                
+                var _image_w = (_uvs[2] - _uvs[0]) / texture_get_texel_width(  _texture );
+                var _image_h = (_uvs[3] - _uvs[1]) / texture_get_texel_height( _texture );
+                
+                var _vbuff = vertex_create_buffer();
+                vertex_begin( _vbuff, global.__scribble_vertex_format );
+                vertex_position( _vbuff, _x         , _y          ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_color( _vbuff, c_white, 1 ); vertex_float4( _vbuff, 0,0,0,0 ); vertex_float3( _vbuff, 0,0,0 );
+                vertex_position( _vbuff, _x+_image_w, _y          ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] ); vertex_color( _vbuff, c_white, 1 ); vertex_float4( _vbuff, 0,0,0,0 ); vertex_float3( _vbuff, 0,0,0 );
+                vertex_position( _vbuff, _x         , _y+_image_h ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] ); vertex_color( _vbuff, c_white, 1 ); vertex_float4( _vbuff, 0,0,0,0 ); vertex_float3( _vbuff, 0,0,0 );
+                vertex_position( _vbuff, _x+_image_w, _y+_image_h ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] ); vertex_color( _vbuff, c_white, 1 ); vertex_float4( _vbuff, 0,0,0,0 ); vertex_float3( _vbuff, 0,0,0 );
+                vertex_end( _vbuff );
+                vertex_submit( _vbuff, pr_trianglestrip, _texture );
+                vertex_delete_buffer( _vbuff );
+                
                 global.__scribble_image_x_map[? _name ] = _x;
                 global.__scribble_image_y_map[? _name ] = _y;
                 _x += _image_w;
-            
+                
             }
-        
+            
         }
-    
+        
         gpu_set_blendenable( true );
-    
+        
     surface_reset_target();
     var _surface_sprite = sprite_create_from_surface( _surface,   0, 0, _max_width, _max_height,  false, false, 0, 0 );
-    surface_free( _surface );
-
+    surface_save( _surface, "fonts.png" );
+    
 }
 
 
 
-var _texture_w = _max_width;
-var _texture_h = _max_height;
+var _texture = sprite_get_texture( _surface_sprite, 0 );
+var _texture_tw = texture_get_texel_width(  _texture );
+var _texture_th = texture_get_texel_height( _texture );
 
 for( var _font = 0; _font < _font_count; _font++ ) {
     
@@ -118,6 +124,8 @@ for( var _font = 0; _font < _font_count; _font++ ) {
     }
     
     if ( asset_get_type( _name ) == asset_sprite ) {
+        
+        #region Sprites
         
         var _sprite = asset_get_index( _name );
         var _sprite_string  = ((array_length_1d( _input_array ) > 1) && (_input_array[1] != undefined))? _input_array[1] : SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING;
@@ -198,10 +206,13 @@ for( var _font = 0; _font < _font_count; _font++ ) {
         
         sprite_index = -1;
         
+        #endregion
+        
     } else {
-    
+        
+        #region Font
+        
         global.__scribble_image_map[? _name ] = _surface_sprite;
-        if ( _image == undefined ) continue;
         
         var _image_x_offset = global.__scribble_image_x_map[? _name ];
         var _image_y_offset = global.__scribble_image_y_map[? _name ];
@@ -232,10 +243,10 @@ for( var _font = 0; _font < _font_count; _font++ ) {
             var _w     = _glyph_map[? "w" ];
             var _h     = _glyph_map[? "h" ];
         
-            var _u0    = ( _x + _image_x_offset ) / _texture_w;
-            var _v0    = ( _y + _image_y_offset ) / _texture_h;
-            var _u1    = _u0 + _w / _texture_w;
-            var _v1    = _v0 + _h / _texture_h;
+            var _u0    = ( _x + _image_x_offset ) * _texture_tw;
+            var _v0    = ( _y + _image_y_offset ) * _texture_th;
+            var _u1    = _u0 + _w * _texture_tw;
+            var _v1    = _v0 + _h * _texture_th;
             
             var _array = array_create( __E_SCRIBBLE_GLYPH.__SIZE, 0 );
             
@@ -258,6 +269,8 @@ for( var _font = 0; _font < _font_count; _font++ ) {
         }
         
         ds_map_destroy( _json );
+        
+        #endregion
         
     }
         
