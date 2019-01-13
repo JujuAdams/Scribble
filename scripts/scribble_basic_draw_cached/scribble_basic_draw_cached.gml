@@ -13,7 +13,7 @@ if ( _vbuff == undefined ) {
     _vbuff = scribble_basic_make( _font, _string );
     vertex_freeze( _vbuff );
     global.__scribble_cache_map[? _font + "~~~~~~~~" + _string ] = _vbuff;
-    show_debug_message( "Cached <" + string_replace_all( _string, "\n", "\\N" ) + "> as vbuff=" + string( _vbuff ) );
+    show_debug_message( "Cached \"" + string_replace_all( _string, "\n", "\\n" ) + "\" as vbuff=" + string( _vbuff ) );
 }
 
 if ( os_type == os_macosx ) {
