@@ -7,7 +7,8 @@
         "458f3ba1-9107-4d23-b40e-5ac42f748629",
         "c74fb735-85c2-40e9-9ff3-a8be707292b6",
         "ae6c7458-154b-4c86-aa9c-597d31c14e41",
-        "8a6c8107-e597-49d2-89fb-f5e00ed0ea9d"
+        "8a6c8107-e597-49d2-89fb-f5e00ed0ea9d",
+        "aaa9cd08-db72-4ff0-9431-0a6914d7e7c1"
     ],
     "filterType": "GMScript",
     "folderName": "Fonts",
