@@ -463,14 +463,6 @@
             }
         },
         {
-            "Key": "6f4c6e98-200d-410b-be14-a026e262ff6f",
-            "Value": {
-                "id": "da85e44b-7831-438b-9a91-af46c96edcff",
-                "resourcePath": "scripts\\collision_debug\\collision_debug.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "70d306e8-47c9-45bd-95c7-4f4fafd7f3d1",
             "Value": {
                 "id": "09405ba8-50e1-466c-b6fb-68c27255aad2",
@@ -1306,8 +1298,7 @@
         "601d908a-2676-4fe0-8c28-702fa567bad6",
         "a7b0bcec-e3f0-4cc8-a0d1-000e29a5794a",
         "00fbc8f9-0e51-458c-8834-69a5cbc5e94b",
-        "4b34a333-e9ea-4f43-8365-272c5ab8ca50",
-        "6f4c6e98-200d-410b-be14-a026e262ff6f"
+        "4b34a333-e9ea-4f43-8365-272c5ab8ca50"
     ],
     "tutorial": ""
 }
