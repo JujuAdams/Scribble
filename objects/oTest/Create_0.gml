@@ -23,3 +23,5 @@ scribble_set_hyperlink( json, c_lime, 0.2, 0.2 );
 scribble_set_sprite_slot_speed( json, 0, 0.1 );
 scribble_set_sprite_slot_image( json, 1, 1   );
 scribble_set_sprite_slot_speed( json, 1, 0.2 );
+
+sprite_font = font_add_sprite_ext( sSpriteFont, SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING, true, 0 );
