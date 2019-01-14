@@ -25,7 +25,7 @@ for( var _pos = 1; _pos <= _length; _pos++ ) {
     
     var _char = string_copy( _string, _pos, 1 );
     
-    if ( ord( _char ) == 10 ) {
+    if ( _char == "\n" ) {
         _line++;
         _x = 0;
         _y += _line_height;
@@ -48,7 +48,7 @@ for( var _pos = 1; _pos <= _length; _pos++ ) {
     var _t = _y + _dy;
     var _r = _l + _w;
     var _b = _t + _h;
-    
+                 
     var _char_pc = _pos / _length;
     var _line_pc = _line / _line_max;
     
