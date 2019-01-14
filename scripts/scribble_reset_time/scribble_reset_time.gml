@@ -1,1 +1,0 @@
-global.__scribble_time = global.__scribble_internal_time;

@@ -65,7 +65,7 @@ if ( _real_x != 0 ) || ( _real_y != 0 ) {
 if ( _json[? "shader master" ] ) {
     
     shader_set( _shader );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fTime" ), global.__scribble_time );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fTime" ), global.__scribble_auto_time? (current_time/1000) : global.__scribble_time );
     
     scribble_shader_mix_colour(     _json[? "mix colour" ], _json[? "mix weight" ] );
     scribble_shader_alpha(          _json[? "alpha" ] );

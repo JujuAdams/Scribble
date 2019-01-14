@@ -95,14 +95,6 @@
             }
         },
         {
-            "Key": "0ae9f459-1a83-4a9a-b42b-4a3d831b8d69",
-            "Value": {
-                "id": "53e2ab99-6582-4e79-9001-0147a9db5f60",
-                "resourcePath": "scripts\\__scribble_additional_init_commands\\__scribble_additional_init_commands.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "0b46dab1-9f64-4ed8-97a3-b3cd69d95963",
             "Value": {
                 "id": "16134678-83fc-4172-a076-0d929f986289",
@@ -183,14 +175,6 @@
             }
         },
         {
-            "Key": "2a990a85-9068-4823-837c-39833023e41f",
-            "Value": {
-                "id": "a488e244-57a3-4c04-bebe-f752a61e6b82",
-                "resourcePath": "scripts\\__scribble_init\\__scribble_init.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "2ac4a0cc-c5e1-433f-9cc8-1bb998b4bc86",
             "Value": {
                 "id": "5da28761-52ff-4d6d-875d-e4611a7a909f",
@@ -239,6 +223,14 @@
             }
         },
         {
+            "Key": "375e7330-6e30-4902-8a42-dbc8ad380c16",
+            "Value": {
+                "id": "d2db0b9c-9c8c-442b-91a8-ae470fa06d7f",
+                "resourcePath": "scripts\\scribble_init_add_font\\scribble_init_add_font.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "39ac3524-5f9b-42d1-bbd9-a97aa3b9fd1c",
             "Value": {
                 "id": "d1c56ad6-8778-4e45-b141-029467dee9d1",
@@ -247,11 +239,35 @@
             }
         },
         {
+            "Key": "3a184a7c-b4e5-457f-865c-aa18b0b9fcbf",
+            "Value": {
+                "id": "ee59f17f-d455-4726-b8df-f51a412848c3",
+                "resourcePath": "scripts\\scribble_init_end\\scribble_init_end.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "3a479606-3abc-4c0a-ba65-b8a104c61c52",
             "Value": {
                 "id": "2cdd511b-4766-4599-9ac5-8e48dcf7e855",
                 "resourcePath": "views\\3a479606-3abc-4c0a-ba65-b8a104c61c52.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "3a5af38c-757d-41ae-98c0-5d4b09e14e6a",
+            "Value": {
+                "id": "84863e63-2052-410f-8d38-deb25757eaf7",
+                "resourcePath": "options\\switch\\options_switch.yy",
+                "resourceType": "GMSwitchOptions"
+            }
+        },
+        {
+            "Key": "3a5af38c-757d-44ae-98c0-5d4b09e14e6a",
+            "Value": {
+                "id": "aa68403c-cc8c-4945-bfcb-3cfa130c1464",
+                "resourcePath": "options\\ps4\\options_ps4.yy",
+                "resourceType": "GMPS4Options"
             }
         },
         {
@@ -275,6 +291,14 @@
             "Value": {
                 "id": "961dd583-424c-477b-a984-d009fdc0a4b4",
                 "resourcePath": "views\\3cc406d2-882b-416f-802b-eabfadbbb5d7.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "3d8687c3-8ee1-4113-b3fd-792a133e900a",
+            "Value": {
+                "id": "1bc3d4ed-abe9-49d3-b732-7d7dead59527",
+                "resourcePath": "views\\3d8687c3-8ee1-4113-b3fd-792a133e900a.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -315,6 +339,14 @@
             "Value": {
                 "id": "76c1ba2a-1a9d-4010-beeb-8ba085484216",
                 "resourcePath": "scripts\\scribble_get_sprite_slot_image\\scribble_get_sprite_slot_image.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "47e1b15d-62b0-4314-b60a-40c3b5fc4fe8",
+            "Value": {
+                "id": "fac9b287-6f73-4df6-a95a-b0dd4f2ff5a9",
+                "resourcePath": "scripts\\scribble_font_set_default\\scribble_font_set_default.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -527,6 +559,14 @@
             }
         },
         {
+            "Key": "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
+            "Value": {
+                "id": "3a4b0f89-2fa4-4413-8cc7-ab92eb0d137b",
+                "resourcePath": "scripts\\scribble_init_add_spritefont\\scribble_init_add_spritefont.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "796cd212-dc41-4f02-8698-e25a72a51527",
             "Value": {
                 "id": "71c85668-ffaa-4b5e-9636-dc1426d90079",
@@ -631,6 +671,14 @@
             }
         },
         {
+            "Key": "89e8adda-438e-48f9-ab78-0e8b396b3850",
+            "Value": {
+                "id": "337c9a61-8476-4832-8ae3-a501a4acc257",
+                "resourcePath": "scripts\\scribble_init_start\\scribble_init_start.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "8a6c8107-e597-49d2-89fb-f5e00ed0ea9d",
             "Value": {
                 "id": "63776fce-8e2a-4917-bf95-89f8ebeb7062",
@@ -674,7 +722,7 @@
             "Key": "93fc3a32-40a0-44bc-ae95-a2a0104fa566",
             "Value": {
                 "id": "fb48e857-ac47-4ca7-a371-f41bb8a166c9",
-                "resourcePath": "scripts\\scribble_reset_time\\scribble_reset_time.yy",
+                "resourcePath": "scripts\\scribble_auto_time\\scribble_auto_time.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -1034,7 +1082,7 @@
             "Key": "cde37a69-8721-4221-9756-d9a7c949bdfe",
             "Value": {
                 "id": "86e33070-0e59-4ea8-89d6-b08e8f6b46b5",
-                "resourcePath": "objects\\oScribble\\oScribble.yy",
+                "resourcePath": "objects\\oInit\\oInit.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1183,14 +1231,6 @@
             }
         },
         {
-            "Key": "f8b224db-be83-4933-9f3d-9972f6b6b1a1",
-            "Value": {
-                "id": "e3c94f64-6718-493b-973e-d1845f24f382",
-                "resourcePath": "scripts\\__scribble_controller_object_create\\__scribble_controller_object_create.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
             "Value": {
                 "id": "5dbea209-936c-42d4-8bd9-9bd0f2508e30",
@@ -1210,11 +1250,8 @@
     "script_order": [
         "65693674-8df2-47ef-8e65-871d54e3be32",
         "acb26a39-8033-4289-87d0-228ed7921bc8",
-        "0ae9f459-1a83-4a9a-b42b-4a3d831b8d69",
         "e4cf84c7-17cf-4f40-a5c9-0dc4ce15311f",
         "7dddb463-46f0-4bec-b07b-0cef53bc6061",
-        "f8b224db-be83-4933-9f3d-9972f6b6b1a1",
-        "2a990a85-9068-4823-837c-39833023e41f",
         "e316a90a-0519-41f7-ac12-d02c46bf2b2a",
         "daa30cee-1636-4fef-a065-02d8785a3f63",
         "1558b790-cdd0-44ee-b943-b3fb39711aee",
@@ -1222,8 +1259,13 @@
         "b7aa2953-0362-4289-968c-b009abff24e5",
         "9037e147-def6-41fd-842a-036094a9dc58",
         "d3cd0568-2965-4817-ac3a-9487f23a70f1",
+        "89e8adda-438e-48f9-ab78-0e8b396b3850",
+        "375e7330-6e30-4902-8a42-dbc8ad380c16",
+        "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
+        "3a184a7c-b4e5-457f-865c-aa18b0b9fcbf",
         "458f3ba1-9107-4d23-b40e-5ac42f748629",
         "c74fb735-85c2-40e9-9ff3-a8be707292b6",
+        "47e1b15d-62b0-4314-b60a-40c3b5fc4fe8",
         "024b852e-2d96-41a0-b3f4-95cb334626ab",
         "d85935ce-774d-4c9f-8dc4-2d4e4351e417",
         "96e1323d-fe7a-4443-9903-35325b94f194",

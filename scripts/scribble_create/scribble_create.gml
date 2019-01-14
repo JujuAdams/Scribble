@@ -12,7 +12,7 @@ var _timer = get_timer();
 
 var _str             = __scribble_replace_newlines( argument[0] );
 var _width_limit     = ((argument_count<2) || (argument[1]==undefined))? 9999999999                                      : argument[1];
-var _def_font        = ((argument_count<3) || (argument[2]==undefined))? SCRIBBLE_DEFAULT_FONT                           : argument[2];
+var _def_font        = ((argument_count<3) || (argument[2]==undefined))? global.__scribble_default_font                  : argument[2];
 var _def_halign      = ((argument_count<4) || (argument[3]==undefined))? fa_left                                         : argument[3];
 var _def_colour      = ((argument_count<5) || (argument[4]==undefined))? c_white                                         : argument[4];
 var _line_min_height = ((argument_count<6) || (argument[5]==undefined))? scribble_font_char_get_height( _def_font, " " ) : argument[5];

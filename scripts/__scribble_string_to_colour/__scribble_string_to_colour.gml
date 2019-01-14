@@ -1,8 +1,8 @@
 /// @description string_to_colour( name )
 /// @param name
 
-switch( string( argument0 ) ) {
-    
+switch( string( argument0 ) )
+{
     case "c_test": return make_colour_rgb( 100, 150, 200 ); break;
     
     case "c_aqua":    return c_aqua;    break;
@@ -25,5 +25,4 @@ switch( string( argument0 ) ) {
     case "c_yellow":  return c_yellow;  break;
     
     default: return noone; break;
-    
 }

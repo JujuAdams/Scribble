@@ -15,6 +15,7 @@ var _mouse_y       = argument[4];
 var _do_hyperlinks = ((argument_count>5) && (argument[5]!=undefined))? argument[5] : true;
 
 #region Clear Event State
+global.__scribble_host_destroyed = false;
 scribble_events_clear( _json );
 #endregion
 

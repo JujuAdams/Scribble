@@ -1,4 +1,8 @@
-gml_pragma( "global", "__scribble_init()" );
+if ( variable_global_exists( "__scribble_init_font_array" ) )
+{
+    show_error( "scribble_init_start() may not be called twice\n ", false );
+    exit;
+}
 
 global.__scribble_image_map       = ds_map_create();
 global.__scribble_image_x_map     = ds_map_create();
@@ -7,11 +11,11 @@ global.__scribble_glyphs_map      = ds_map_create();
 global.__scribble_cache_map       = ds_map_create();
 global.__scribble_sprite_font_map = ds_map_create();
 global.__scribble_cjk_wrapping    = false;
-global.__scribble_internal_time   = current_time/1000;
-global.__scribble_time            = global.__scribble_internal_time;
+global.__scribble_time            = current_time/1000;
+global.__scribble_auto_time       = true;
 global.__scribble_host_destroyed  = false;
-
-if ( !instance_exists( oScribble ) ) room_instance_add( room_first, 0, 0, oScribble );
+global.__scribble_init_font_array = [];
+global.__scribble_default_font    = "";
 
 vertex_format_begin();
 vertex_format_add_position();
