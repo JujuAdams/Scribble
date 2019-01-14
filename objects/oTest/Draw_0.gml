@@ -8,7 +8,7 @@ draw_rectangle( _box[0], _box[1], _box[2], _box[3], true );
 
 
 //Fun extra function that draws a cached vbuff
-scribble_basic_draw_cached( "sSpriteFont", "The quick brown fox jumps over the lazy dog?", 10, 10 );
+scribble_basic_draw( "sSpriteFont", "The quick brown fox jumps over the lazy dog?", 10, 10 );
 
 draw_set_font( sprite_font );
 draw_text( 10, 30, "The quick brown fox jumps over the lazy dog?" );
