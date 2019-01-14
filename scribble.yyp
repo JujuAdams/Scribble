@@ -255,22 +255,6 @@
             }
         },
         {
-            "Key": "3a5af38c-757d-41ae-98c0-5d4b09e14e6a",
-            "Value": {
-                "id": "84863e63-2052-410f-8d38-deb25757eaf7",
-                "resourcePath": "options\\switch\\options_switch.yy",
-                "resourceType": "GMSwitchOptions"
-            }
-        },
-        {
-            "Key": "3a5af38c-757d-44ae-98c0-5d4b09e14e6a",
-            "Value": {
-                "id": "aa68403c-cc8c-4945-bfcb-3cfa130c1464",
-                "resourcePath": "options\\ps4\\options_ps4.yy",
-                "resourceType": "GMPS4Options"
-            }
-        },
-        {
             "Key": "3a8861ec-6c71-430c-a34e-5a3b1397ead9",
             "Value": {
                 "id": "6f272fd9-9bd6-454f-8726-08bd41ab8bad",
@@ -991,14 +975,6 @@
             }
         },
         {
-            "Key": "b7aa2953-0362-4289-968c-b009abff24e5",
-            "Value": {
-                "id": "bd998065-4ae7-488b-bfba-ca0f08dbcc82",
-                "resourcePath": "scripts\\__scribble_update_time\\__scribble_update_time.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "b94ea7f5-36e2-4f93-bf04-8eca82ed17a2",
             "Value": {
                 "id": "7f2d0c3c-705b-410d-8440-2eb6d9683b63",
@@ -1256,7 +1232,6 @@
         "daa30cee-1636-4fef-a065-02d8785a3f63",
         "1558b790-cdd0-44ee-b943-b3fb39711aee",
         "af003c68-d106-4feb-b68b-86eb2df45e37",
-        "b7aa2953-0362-4289-968c-b009abff24e5",
         "9037e147-def6-41fd-842a-036094a9dc58",
         "d3cd0568-2965-4817-ac3a-9487f23a70f1",
         "89e8adda-438e-48f9-ab78-0e8b396b3850",
