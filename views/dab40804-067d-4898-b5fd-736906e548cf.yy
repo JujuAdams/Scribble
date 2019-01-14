@@ -9,7 +9,7 @@
         "39ac3524-5f9b-42d1-bbd9-a97aa3b9fd1c"
     ],
     "filterType": "GMScript",
-    "folderName": "Scribble",
+    "folderName": "Scribble (lite)",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

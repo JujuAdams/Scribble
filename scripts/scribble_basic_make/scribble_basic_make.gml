@@ -52,12 +52,12 @@ for( var _pos = 1; _pos <= _length; _pos++ ) {
     var _char_pc = _pos / _length;
     var _line_pc = _line / _line_max;
     
-    vertex_position( _vbuff, _l, _t ); vertex_texcoord( _vbuff, _u0, _v0 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __E_SCRIBBLE_HYPERLINK.UNLINKED, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
-    vertex_position( _vbuff, _l, _b ); vertex_texcoord( _vbuff, _u0, _v1 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __E_SCRIBBLE_HYPERLINK.UNLINKED, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
-    vertex_position( _vbuff, _r, _b ); vertex_texcoord( _vbuff, _u1, _v1 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __E_SCRIBBLE_HYPERLINK.UNLINKED, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
-    vertex_position( _vbuff, _r, _b ); vertex_texcoord( _vbuff, _u1, _v1 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __E_SCRIBBLE_HYPERLINK.UNLINKED, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
-    vertex_position( _vbuff, _r, _t ); vertex_texcoord( _vbuff, _u1, _v0 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __E_SCRIBBLE_HYPERLINK.UNLINKED, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
-    vertex_position( _vbuff, _l, _t ); vertex_texcoord( _vbuff, _u0, _v0 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __E_SCRIBBLE_HYPERLINK.UNLINKED, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
+    vertex_position( _vbuff, _l, _t ); vertex_texcoord( _vbuff, _u0, _v0 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __SCRIBBLE_NO_HYPERLINK, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
+    vertex_position( _vbuff, _l, _b ); vertex_texcoord( _vbuff, _u0, _v1 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __SCRIBBLE_NO_HYPERLINK, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
+    vertex_position( _vbuff, _r, _b ); vertex_texcoord( _vbuff, _u1, _v1 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __SCRIBBLE_NO_HYPERLINK, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
+    vertex_position( _vbuff, _r, _b ); vertex_texcoord( _vbuff, _u1, _v1 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __SCRIBBLE_NO_HYPERLINK, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
+    vertex_position( _vbuff, _r, _t ); vertex_texcoord( _vbuff, _u1, _v0 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __SCRIBBLE_NO_HYPERLINK, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
+    vertex_position( _vbuff, _l, _t ); vertex_texcoord( _vbuff, _u0, _v0 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __SCRIBBLE_NO_HYPERLINK, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
     
     _x += _shf;
     

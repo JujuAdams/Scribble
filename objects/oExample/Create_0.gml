@@ -14,10 +14,6 @@ scribble_set_shake( json, 4 );
 scribble_set_wave( json, 4 );
 scribble_set_rainbow( json, 0.4 );
 
-//Set how our hyperlinks should look. Fade in/out rates are deltas per frame (0 < rate <= 1)
-//By default, there is a maximum of 4 hyperlinks
-scribble_set_hyperlink( json, c_lime, 0.2, 0.2 );
-
 //Set properties for sprite slots. Sprite slots are used to animate sprites
 //By default, there is a maximum of 4 sprite slots
 scribble_set_sprite_slot_speed( json, 0, 0.1 );

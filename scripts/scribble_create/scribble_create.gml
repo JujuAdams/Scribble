@@ -221,24 +221,7 @@ while( string_length( _str ) > 0 ) {
         
         } else if ( _parameters[0] == "event" ) || ( _parameters[0] == "ev" ) {
             
-            var _parameter_count = array_length_1d( _parameters );
-            if ( _parameter_count <= 1 ) {
-                
-                show_error( "Not enough parameters for event!", false );
-                _skip = true;
-                
-            } else {
-                
-                var _name = _parameters[1];
-                var _data = [];
-                array_copy( _data, 0, _parameters, 2, _parameter_count-2 );
-                
-                ds_list_add( _events_character_list, _json[? "length" ] );
-                ds_list_add( _events_name_list     , _name              );
-                ds_list_add( _events_data_list     , _data              );
-                
-            }
-            
+            show_debug_message( "Events aren't supported in the lite version of Scribble" );
             _skip = true;
             
             #endregion
@@ -298,40 +281,8 @@ while( string_length( _str ) > 0 ) {
         
         //Creating a hyperlink
         } else if ( _parameters[0] == "link" ) {
-                        
-            if ( array_length_1d( _parameters ) >= 2 ) {
-                            
-                _text_hyperlink = _parameters[1];
-                
-                if ( !ds_map_exists( _hyperlink_map, _text_hyperlink ) ) {
-                    
-                    _map = ds_map_create();
-                    ds_map_add_map( _hyperlink_map, _text_hyperlink, _map );
-                    _map[? "over"  ] = false;
-                    _map[? "down"  ] = false;
-                    _map[? "index" ] = ds_list_size( _hyperlink_list );
-                    _map[? "mix"   ] = 0;
-                                
-                    if ( array_length_1d( _parameters ) >= 3 ) {
-                        _map[? "script name" ] = _parameters[2];
-                        _map[? "script"      ] = asset_get_index( _parameters[2] );
-                    } else {
-                        _map[? "script name" ] = "";
-                        _map[? "script"      ] = asset_get_index( "" );
-                    }
-                    
-                    ds_list_add( _hyperlink_list, _text_hyperlink );
-                    if ( ds_list_size( _hyperlink_list ) > SCRIBBLE_MAX_HYPERLINKS ) show_debug_message( "Warning! Maximum hyperlink count (" + string( SCRIBBLE_MAX_HYPERLINKS ) + ") exceeded!" );
-                    
-                }
-                        
-                            
-            } else {
-                            
-                _text_hyperlink = "";
-                            
-            }
-                    
+            
+            show_debug_message( "Hyperlinks aren't supported in the lite version of Scribble" );
             _skip = true;
                     
         } else if ( _parameters[0] == "/link" ) {

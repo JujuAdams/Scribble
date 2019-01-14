@@ -1,33 +1,15 @@
 /// @param json
 /// @param [x]
 /// @param [y]
-/// @param [do_hyperlinks]
 /// @param [do_sprite_slots]
 
 var _json            = argument[0];
 var _x               = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
 var _y               = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
-var _do_hyperlinks   = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : true;
-var _do_sprite_slots = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : true;
+var _do_sprite_slots = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : true;
 
 var _old_alpha  = draw_get_alpha();
 var _old_colour = draw_get_colour();
-
-if ( _do_hyperlinks ) {
-    //Build an array that describes the hyperlink mix state for each hyperlink
-    //(The default max value is 16)
-    var _mix_array = array_create( SCRIBBLE_MAX_HYPERLINKS, 0 );
-    var _hyperlinks = _json[? "hyperlinks" ];
-    var _hyperlink_list = _json[? "hyperlink list" ];
-    var _size = min( SCRIBBLE_MAX_HYPERLINKS, ds_list_size( _hyperlink_list ) );
-    for( var _i = 0; _i < _size; _i++ ) {
-    
-        var _hyperlink_name = _hyperlink_list[| _i ];
-        var _hyperlink_map = _hyperlinks[? _hyperlink_name ];
-        _mix_array[ _i ] = _hyperlink_map[? "mix" ];
-    
-    }
-}
 
 if ( _do_sprite_slots ) {
     var _sprite_slot_array = array_create( SCRIBBLE_MAX_SPRITE_SLOTS, 0 );
