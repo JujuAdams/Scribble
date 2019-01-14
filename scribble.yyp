@@ -919,14 +919,6 @@
             }
         },
         {
-            "Key": "cb956d73-9044-40fe-9130-44b325fa3657",
-            "Value": {
-                "id": "9ab3a1b6-b46b-4a2a-86ce-460dc1cc1b24",
-                "resourcePath": "objects\\oTest\\oTest.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
             "Key": "cc98d028-7bdd-4680-85f3-c87a7baa481e",
             "Value": {
                 "id": "a4a671e8-7a67-41ec-aeac-662bfabcc64b",

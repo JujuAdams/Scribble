@@ -1,5 +1,5 @@
 //Draw the JSON
-scribble_draw( json,   x, y );
+scribble_draw( json, x, y );
 
 //Find the size and position of the bounding box (plus a bit) and draw it
 var _box = scribble_get_box( json,   x, y,   4, 4,   4, 4 );
