@@ -4,4 +4,4 @@
 //  
 //  Intended for use with GMS2.2.1 and later
 //  
-//  The "lite" version of Scribble removes events and hyperlinks
+//  The "lite" version of Scribble removes Events and Hyperlinks
