@@ -19,13 +19,17 @@
 //     
 //     **N.B.** Your spritefonts must have the collision type "Precise per Frame"
 //              Your spritefonts must not have "Separate Texture Page" switched on
+//              Please add a 1px empty border around your spritefont to avoid errors
+//              Don't include an empty space character in your spritefonts, put something in the image
+//              Check that your spritefont's bounding box is accurate (GMS2.2.1 has bugs in the IDE)
 
 #macro SCRIBBLE_FONT_ARRAY [ "fTestA", "fTestB", [ "sSpriteFont", undefined, 0 ] ]
 #macro SCRIBBLE_FONT_DIRECTORY "Fonts/"
 
 #macro SCRIBBLE_DEFAULT_FONT "fTestA"
-#macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
+#macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_SEPARATION 0
+#macro SCRIBBLE_LEGACY_GMS220_SPRITEFONT_SPACING false //GMS2.2.1 made spritefonts much more spaced out for some reason
 #macro SCRIBBLE_DEFAULT_SHADER shScribble
 
 #macro SCRIBBLE_HASH_NEWLINE true
@@ -35,10 +39,9 @@
 #region -- Internal Definitions --
 
 #macro __SCRIBBLE_VERSION "02.02.00"
-#macro __SCRIBBLE_DATE    "2018/08/05"
+#macro __SCRIBBLE_DATE    "2018/01/13"
 
-#macro SCRIBBLE_VERTEX_FORMAT global.__scribble_vertex_format
-
+#macro SCRIBBLE_VERTEX_FORMAT    global.__scribble_vertex_format
 #macro SCRIBBLE_MAX_HYPERLINKS   4 //Additionally change the constant in shScribble
 #macro SCRIBBLE_MAX_SPRITE_SLOTS 4 //Additionally change the constant in shScribble
 
