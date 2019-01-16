@@ -11,14 +11,32 @@
 var _timer = get_timer();
 
 var _str             = __scribble_replace_newlines( argument[0] );
-var _width_limit     = ((argument_count<2) || (argument[1]==undefined))? 9999999999                                      : argument[1];
+var _width_limit     = ((argument_count<2) || (argument[1]==undefined))? -1                                              : argument[1];
 var _def_font        = ((argument_count<3) || (argument[2]==undefined))? global.__scribble_default_font                  : argument[2];
 var _def_halign      = ((argument_count<4) || (argument[3]==undefined))? fa_left                                         : argument[3];
 var _def_colour      = ((argument_count<5) || (argument[4]==undefined))? c_white                                         : argument[4];
+
+if ( !is_string( _def_font ) )
+{
+    if ( !font_exists( _def_font ) )
+    {
+        show_error( "Font \"" + string( _def_font ) + "\" does not exist. Using default font \"" + global.__scribble_default_font + "\"\n\nAdditionally, please provide the name of the font you wish to use as a string.\n ", false );
+        _def_font = global.__scribble_default_font;
+    }
+    else
+    {
+        show_error( "Please provide the name of the font you wish to use as a string.\n ", false );
+        _def_font = font_get_name( _def_font );
+    }
+}
+else
+{
+    if ( string_upper( _def_font ) == "DEFAULT" ) _def_font = global.__scribble_default_font;
+}
+var _def_space_width = scribble_font_char_get_width( _def_font, " " );
+
 var _line_min_height = ((argument_count<6) || (argument[5]==undefined))? scribble_font_char_get_height( _def_font, " " ) : argument[5];
 var _generate_vbuff  = ((argument_count<7) || (argument[6]==undefined))? true                                            : argument[6];
-
-var _def_space_width = scribble_font_char_get_width( _def_font, " " );
 
 
 
@@ -420,7 +438,7 @@ while( string_length( _str ) > 0 ) {
         #region Position and store word
         
         //If we've run over the maximum width of the string
-        if ( _substr_width + _text_x > _width_limit ) || ( _line_map == noone ) || ( _sep_prev_char == chr(13) ) || ( _force_newline ) {
+        if ( (_substr_width + _text_x > _width_limit) && (_width_limit > 0) ) || ( _line_map == noone ) || ( _sep_prev_char == chr(13) ) || ( _force_newline ) {
             
             if ( _line_map != noone ) {
                 

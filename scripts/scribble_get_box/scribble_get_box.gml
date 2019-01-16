@@ -1,14 +1,14 @@
 /// @param json
-/// @param [x]
-/// @param [y]
-/// @param [left_margin]
-/// @param [top_margin]
-/// @param [right_margin]
-/// @param [bottom_margin]
+/// @param x
+/// @param y
+/// @param [leftMargin]
+/// @param [topMargin]
+/// @param [rightMargin]
+/// @param [bottomMargin]
 
 var _json   = argument[0];
-var _x      = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
-var _y      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
+var _x      = argument[1];
+var _y      = argument[2];
 var _left   = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
 var _top    = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
 var _right  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;

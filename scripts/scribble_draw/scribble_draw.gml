@@ -1,12 +1,12 @@
 /// @param json
-/// @param [x]
-/// @param [y]
+/// @param x
+/// @param y
 /// @param [shader]
-/// @param [do_sprite_slots]
+/// @param [doSpriteSlots]
 
 var _json            = argument[0];
-var _x               = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
-var _y               = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
+var _x               = argument[1];
+var _y               = argument[2];
 var _shader          = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_SHADER;
 var _do_sprite_slots = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : true;
 

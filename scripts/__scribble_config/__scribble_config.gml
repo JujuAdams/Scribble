@@ -11,8 +11,8 @@
 
 #region -- Internal Definitions --
 
-#macro __SCRIBBLE_VERSION "02.03.02 (lite)"
-#macro __SCRIBBLE_DATE    "2018/01/14"
+#macro SCRIBBLE_VERSION "2.3.2 (lite)"
+#macro __SCRIBBLE_DATE  "2018/01/16"
 
 #macro SCRIBBLE_VERTEX_FORMAT    global.__scribble_vertex_format
 #macro SCRIBBLE_MAX_SPRITE_SLOTS 4 //Additionally change the constant in shScribble

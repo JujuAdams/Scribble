@@ -8,6 +8,8 @@ var _string = argument1;
 var _x      = argument2;
 var _y      = argument3;
 
+_string = string( _string );
+
 var _vbuff = global.__scribble_cache_map[? _font + "~~~~~~~~" + _string ];
 if ( _vbuff == undefined ) {
     _vbuff = scribble_basic_make( _font, _string );

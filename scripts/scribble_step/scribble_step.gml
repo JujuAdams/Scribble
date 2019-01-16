@@ -1,19 +1,8 @@
-/// @description Handles mouse clicks for a Scribble JSON
+/// @description Handles sprite animation
 ///
 /// @param json
-/// @param x
-/// @param y
-/// @param mouse_x
-/// @param mouse_y
 
-var _json          = argument[0];
-var _x             = argument[1];
-var _y             = argument[2];
-var _mouse_x       = argument[3];
-var _mouse_y       = argument[4];
-var _do_hyperlinks = false;
-
-global.__scribble_host_destroyed = false;
+var _json = argument0;
 
 #region Animate Sprite Slots
 

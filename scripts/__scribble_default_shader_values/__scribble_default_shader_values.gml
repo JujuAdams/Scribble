@@ -12,8 +12,8 @@ _json[? "mix weight" ] = 0;
 _json[? "alpha" ] = 1;
 
 //Dynamic effects
-_json[? "wave size"      ] = 1;
-_json[? "shake size"     ] = 1;
+_json[? "wave size"      ] = 5;
+_json[? "shake size"     ] = 3;
 _json[? "rainbow weight" ] = 1;
 
 //Character fade
