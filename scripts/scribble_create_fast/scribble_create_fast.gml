@@ -217,6 +217,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
     
     if ( _in_command_tag )
     {
+        #region Command Handling
         ds_list_add( _parameters_list, _input_substr );
         
         if ( _sep_char != "]" )
@@ -225,241 +226,250 @@ for( var _i = 0; _i < _separator_count; _i++ )
         }
         else
         {
-            #region Command Handling
-        
-            //Commands (typically) occupy no space when using the typewriter functionality
             _substr_length = 0;
-        
-            if ( _parameters_list[| 0] == "" ) //If the dev has used the [] command to reset draw state...
+            
+            switch( _parameters_list[| 0 ] )
             {
                 #region Reset formatting
-                _text_font      = _def_font;
-                _text_colour    = _def_colour;
-                _text_hyperlink = "";
+                case "":
+                    _text_font      = _def_font;
+                    _text_colour    = _def_colour;
+                    _text_hyperlink = "";
                 
-                _text_rainbow   = false;
-                _text_shake     = false;
-                _text_wave      = false;
+                    _text_rainbow   = false;
+                    _text_shake     = false;
+                    _text_wave      = false;
             
-                _font_line_height = _line_min_height;
-                _font_space_width = _def_space_width;
-                #endregion
-                _skip = true;
-            }
-            else if ( _parameters_list[| 0] == "event" ) || ( _parameters_list[| 0] == "ev" )
-            {
-                #region Events
-                var _parameter_count = ds_list_size( _parameters_list );
-                if ( _parameter_count <= 1 )
-                {
-                    show_error( "Not enough parameters for event!", false );
+                    _font_line_height = _line_min_height;
+                    _font_space_width = _def_space_width;
                     _skip = true;
-                }
-                else
-                {
-                    var _name = _parameters_list[| 1];
-                    var _data = array_create( _parameter_count-2, "" );
-                    for( var _j = 2; _j < _parameter_count; _j++ ) _data[ _j-2 ] = _parameters_list[| _j ];
-                
-                    ds_list_add( _events_character_list, _json[? "length" ] );
-                    ds_list_add( _events_name_list     , _name              );
-                    ds_list_add( _events_data_list     , _data              );
-                }
+                break;
                 #endregion
-                _skip = true;
-            }
-            else if ( _parameters_list[| 0] == "rainbow" ) //Rainbow effect
-            {
-                _text_rainbow = true;
-                _skip = true;
-            }
-            else if ( _parameters_list[| 0] == "/rainbow" )
-            { 
-                _text_rainbow = false;
-                _skip = true;
-            }
-            else if ( _parameters_list[| 0] == "shake" ) //Shake effect
-            { 
-                _text_shake = true;
-                _skip = true; 
-            }
-            else if ( _parameters_list[| 0] == "/shake" )
-            { 
-                _text_shake = false;
-                _skip = true;
-            }
-            else if ( _parameters_list[| 0] == "wave" ) //Wave effect
-            { 
-                _text_wave = true;
-                _skip = true;
-            }
-            else if ( _parameters_list[| 0] == "/wave" )
-            { 
-                _text_wave = false;
-                _skip = true;
-            }
-            else if ( scribble_font_exists( _parameters_list[| 0] ) )
-            {
-                #region Change font
-                _text_font = _parameters_list[| 0];
-                _font_space_width = scribble_font_char_get_width(  _text_font, " " );
-                _font_line_height = scribble_font_char_get_height( _text_font, " " );
-                #endregion
-                _skip = true;
-            }
-            else if ( _parameters_list[| 0] == "link" )
-            {
-                #region Hyperlinks     
-                if ( ds_list_size( _parameters_list ) >= 2 )
-                {  
-                    _text_hyperlink = _parameters_list[| 1];
                 
-                    if ( !ds_map_exists( _hyperlink_map, _text_hyperlink ) )
+                #region Events
+                case "event":
+                case "ev":
+                    var _parameter_count = ds_list_size( _parameters_list );
+                    if ( _parameter_count <= 1 )
                     {
-                        _map = ds_map_create();
-                        ds_map_add_map( _hyperlink_map, _text_hyperlink, _map );
-                        _map[? "over"  ] = false;
-                        _map[? "down"  ] = false;
-                        _map[? "index" ] = ds_list_size( _hyperlink_list );
-                        _map[? "mix"   ] = 0;
-                                
-                        if ( ds_list_size( _parameters_list ) >= 3 )
-                        {
-                            _map[? "script name" ] = _parameters_list[| 2];
-                            _map[? "script"      ] = asset_get_index( _parameters_list[| 2] );
-                        }
-                        else
-                        {
-                            _map[? "script name" ] = "";
-                            _map[? "script"      ] = asset_get_index( "" );
-                        }
-                    
-                        ds_list_add( _hyperlink_list, _text_hyperlink );
-                        if ( ds_list_size( _hyperlink_list ) > SCRIBBLE_MAX_HYPERLINKS ) show_debug_message( "Warning! Maximum hyperlink count (" + string( SCRIBBLE_MAX_HYPERLINKS ) + ") exceeded!" );
-                    }      
-                }
-                else
-                {          
-                    _text_hyperlink = "";      
-                }
-                #endregion
-                _skip = true;
-            }
-            else if ( _parameters_list[| 0] == "/link" )
-            {        
-                _text_hyperlink = "";
-                _skip = true;
-            }
-            else if ( _parameters_list[| 0] == "fa_left" ) //The command is an alignment keyphrase... set the alignment for the line and force a newline if the previous had content
-            {
-                _text_halign = fa_left;
-                _substr = "";
-            
-                if ( _first_character )
-                {
-                    if ( _line_map != noone ) _line_map[? "halign" ] = _text_halign;
-                }
-                else
-                {
-                    _force_newline = true;
-                }
-            }
-            else if ( ( _parameters_list[| 0] == "fa_center" ) || ( _parameters_list[| 0] == "fa_centre" ) )
-            {
-                _text_halign = fa_center;
-                _substr = "";
-            
-                if ( _first_character )
-                {
-                    if ( _line_map != noone ) _line_map[? "halign" ] = _text_halign;
-                }
-                else
-                {
-                    _force_newline = true;
-                }
-            }
-            else if ( _parameters_list[| 0] == "fa_right" )
-            {
-                _text_halign = fa_right;
-                _substr = "";
-            
-                if ( _first_character )
-                {
-                    if ( _line_map != noone ) _line_map[? "halign" ] = _text_halign;
-                }
-                else
-                {
-                    _force_newline = true;
-                }
-            }
-            else //If the command is something else...
-            {
-                //A sprite?
-                var _asset = asset_get_index( _parameters_list[| 0] );
-                if ( _asset >= 0 ) && ( asset_get_type( _parameters_list[| 0] ) == asset_sprite )
-                {
-                    #region Sprites
-                    _substr_sprite = _asset;
-                    _substr_width  = sprite_get_width(  _substr_sprite );
-                    _substr_height = sprite_get_height( _substr_sprite );
-                    _substr_length = 1;
-                
-                    if ( ds_list_size( _parameters_list ) <= 1 )
-                    {
-                        show_debug_message( "Scribble: Warning! Second argument not passed for sprite \"" + sprite_get_name( _substr_sprite ) + "\". Sprite commands must either specify a frame to show (\"[sSprite|2]\"), or a sprite slot (\"[sSprite|$0]\")." );
-                        _parameters_list[| 1] = "0";
-                    }
-                
-                    if ( string_copy( _parameters_list[| 1], 1, 1 ) != "$" )
-                    {
-                        _substr_image = real( _parameters_list[| 1] );
-                        _substr_sprite_slot = undefined;
+                        show_error( "Not enough parameters for event!", false );
+                        _skip = true;
                     }
                     else
                     {
-                        _substr_image = 0;
-                        _substr_sprite_slot = real( string_delete( _parameters_list[| 1], 1, 1 ) );
+                        var _name = _parameters_list[| 1];
+                        var _data = array_create( _parameter_count-2, "" );
+                        for( var _j = 2; _j < _parameter_count; _j++ ) _data[ _j-2 ] = _parameters_list[| _j ];
+                
+                        ds_list_add( _events_character_list, _json[? "length" ] );
+                        ds_list_add( _events_name_list     , _name              );
+                        ds_list_add( _events_data_list     , _data              );
+                    }
                     
-                        var _slot_map = _sprite_slot_list[| _substr_sprite_slot ];
-                        if ( _slot_map[? "sprite" ] != undefined )
-                        {
-                            if ( _slot_map[? "frames" ] != sprite_get_number( _substr_sprite ) )
-                            {
-                                show_debug_message( "Scribble: Warning! Sprite length mismatch for slot " + string( _substr_sprite_slot ) + ": New sprite (" + sprite_get_name( _substr_sprite ) + ") has " + string( sprite_get_number( _substr_sprite ) ) + " frames vs. Old sprite (" + _slot_map[? "name" ] + ") has " + string( _slot_map[? "frames" ] ) + " frames" );
-                            }
-                        }
-                    
-                        _slot_map[? "sprite" ] = _substr_sprite;
-                        _slot_map[? "name"   ] = sprite_get_name( _substr_sprite );
-                        _slot_map[? "frames" ] = sprite_get_number( _substr_sprite );
-                    }
-                    #endregion
-                }
-                else
-                {
-                    #region Colours
-                    var _colour = __scribble_string_to_colour( _parameters_list[| 0] ); //Test if it's a colour
-                    if ( _colour != noone )
-                    {
-                        _text_colour = _colour;
-                    }
-                    else //Test if it's a hexcode
-                    {     
-                        var _colour_string = string_upper( _parameters_list[| 0] );
-                        if ( string_length( _colour_string ) <= 7 ) && ( string_copy( _colour_string, 1, 1 ) == "$" )
-                        {
-                            var _hex = "0123456789ABCDEF";
-                            var _red   = max( string_pos( string_copy( _colour_string, 3, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 2, 1 ), _hex )-1, 0 ) << 4 );
-                            var _green = max( string_pos( string_copy( _colour_string, 5, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 4, 1 ), _hex )-1, 0 ) << 4 );
-                            var _blue  = max( string_pos( string_copy( _colour_string, 7, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 6, 1 ), _hex )-1, 0 ) << 4 );
-                            _text_colour = make_colour_rgb( _red, _green, _blue );     
-                        }
-                    }
-                    #endregion
                     _skip = true;
-                }
+                break;
+                #endregion
+                
+                #region Rainbow
+                case "rainbow":
+                    _text_rainbow = true;
+                    _skip = true;
+                break;
+                case "/rainbow":
+                    _text_rainbow = false;
+                    _skip = true;
+                break;
+                #endregion
+                
+                #region Shake
+                case "shake":
+                    _text_shake = true;
+                    _skip = true;
+                break;
+                case "/shake":
+                    _text_shake = false;
+                    _skip = true;
+                break;
+                #endregion
+                
+                #region Wave
+                case "wave":
+                    _text_wave = true;
+                    _skip = true;
+                break;
+                case "/wave":
+                    _text_wave = false;
+                    _skip = true;
+                break;
+                #endregion
+                
+                #region Link
+                case "link": 
+                    if ( ds_list_size( _parameters_list ) >= 2 )
+                    {  
+                        _text_hyperlink = _parameters_list[| 1];
+                
+                        if ( !ds_map_exists( _hyperlink_map, _text_hyperlink ) )
+                        {
+                            _map = ds_map_create();
+                            ds_map_add_map( _hyperlink_map, _text_hyperlink, _map );
+                            _map[? "over"  ] = false;
+                            _map[? "down"  ] = false;
+                            _map[? "index" ] = ds_list_size( _hyperlink_list );
+                            _map[? "mix"   ] = 0;
+                                
+                            if ( ds_list_size( _parameters_list ) >= 3 )
+                            {
+                                _map[? "script name" ] = _parameters_list[| 2];
+                                _map[? "script"      ] = asset_get_index( _parameters_list[| 2] );
+                            }
+                            else
+                            {
+                                _map[? "script name" ] = "";
+                                _map[? "script"      ] = asset_get_index( "" );
+                            }
+                    
+                            ds_list_add( _hyperlink_list, _text_hyperlink );
+                            if ( ds_list_size( _hyperlink_list ) > SCRIBBLE_MAX_HYPERLINKS ) show_debug_message( "Warning! Maximum hyperlink count (" + string( SCRIBBLE_MAX_HYPERLINKS ) + ") exceeded!" );
+                        }      
+                    }
+                    else
+                    {          
+                        _text_hyperlink = "";      
+                    }
+                    
+                    _skip = true;
+                break;
+                
+                case "/link":
+                    _text_hyperlink = "";
+                    _skip = true;
+                break;
+                #endregion
+                
+                #region Font Alignment
+                case "fa_left":
+                    _text_halign = fa_left;
+                    _substr = "";
+                    
+                    if ( _first_character )
+                    {
+                        if ( _line_map != noone ) _line_map[? "halign" ] = _text_halign;
+                    }
+                    else
+                    {
+                        _force_newline = true;
+                    }
+                break;
+                
+                case "fa_right":
+                    _text_halign = fa_right;
+                    _substr = "";
+                    
+                    if ( _first_character )
+                    {
+                        if ( _line_map != noone ) _line_map[? "halign" ] = _text_halign;
+                    }
+                    else
+                    {
+                        _force_newline = true;
+                    }
+                break;
+                
+                case "fa_center":
+                case "fa_centre":
+                    _text_halign = fa_center;
+                    _substr = "";
+                    
+                    if ( _first_character )
+                    {
+                        if ( _line_map != noone ) _line_map[? "halign" ] = _text_halign;
+                    }
+                    else
+                    {
+                        _force_newline = true;
+                    }
+                break;
+                #endregion
+                
+                default:
+                    if ( scribble_font_exists( _parameters_list[| 0] ) )
+                    {
+                        #region Change font
+                        _text_font = _parameters_list[| 0];
+                        _font_space_width = scribble_font_char_get_width(  _text_font, " " );
+                        _font_line_height = scribble_font_char_get_height( _text_font, " " );
+                        _skip = true;
+                        #endregion
+                    }
+                    else
+                    {
+                        var _asset = asset_get_index( _parameters_list[| 0] );
+                        if ( _asset >= 0 ) && ( asset_get_type( _parameters_list[| 0] ) == asset_sprite )
+                        {
+                            #region Sprites
+                            _substr_sprite = _asset;
+                            _substr_width  = sprite_get_width(  _substr_sprite );
+                            _substr_height = sprite_get_height( _substr_sprite );
+                            _substr_length = 1;
+                
+                            if ( ds_list_size( _parameters_list ) <= 1 )
+                            {
+                                show_debug_message( "Scribble: Warning! Second argument not passed for sprite \"" + sprite_get_name( _substr_sprite ) + "\". Sprite commands must either specify a frame to show (\"[sSprite|2]\"), or a sprite slot (\"[sSprite|$0]\")." );
+                                _parameters_list[| 1] = "0";
+                            }
+                
+                            if ( string_copy( _parameters_list[| 1], 1, 1 ) != "$" )
+                            {
+                                _substr_image = real( _parameters_list[| 1] );
+                                _substr_sprite_slot = undefined;
+                            }
+                            else
+                            {
+                                _substr_image = 0;
+                                _substr_sprite_slot = real( string_delete( _parameters_list[| 1], 1, 1 ) );
+                    
+                                var _slot_map = _sprite_slot_list[| _substr_sprite_slot ];
+                                if ( _slot_map[? "sprite" ] != undefined )
+                                {
+                                    if ( _slot_map[? "frames" ] != sprite_get_number( _substr_sprite ) )
+                                    {
+                                        show_debug_message( "Scribble: Warning! Sprite length mismatch for slot " + string( _substr_sprite_slot ) + ": New sprite (" + sprite_get_name( _substr_sprite ) + ") has " + string( sprite_get_number( _substr_sprite ) ) + " frames vs. Old sprite (" + _slot_map[? "name" ] + ") has " + string( _slot_map[? "frames" ] ) + " frames" );
+                                    }
+                                }
+                    
+                                _slot_map[? "sprite" ] = _substr_sprite;
+                                _slot_map[? "name"   ] = sprite_get_name( _substr_sprite );
+                                _slot_map[? "frames" ] = sprite_get_number( _substr_sprite );
+                            }
+                            #endregion
+                        }
+                        else
+                        {
+                            #region Colours
+                            var _colour = __scribble_string_to_colour( _parameters_list[| 0] ); //Test if it's a colour
+                            if ( _colour != noone )
+                            {
+                                _text_colour = _colour;
+                            }
+                            else //Test if it's a hexcode
+                            {     
+                                var _colour_string = string_upper( _parameters_list[| 0] );
+                                if ( string_length( _colour_string ) <= 7 ) && ( string_copy( _colour_string, 1, 1 ) == "$" )
+                                {
+                                    var _hex = "0123456789ABCDEF";
+                                    var _red   = max( string_pos( string_copy( _colour_string, 3, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 2, 1 ), _hex )-1, 0 ) << 4 );
+                                    var _green = max( string_pos( string_copy( _colour_string, 5, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 4, 1 ), _hex )-1, 0 ) << 4 );
+                                    var _blue  = max( string_pos( string_copy( _colour_string, 7, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 6, 1 ), _hex )-1, 0 ) << 4 );
+                                    _text_colour = make_colour_rgb( _red, _green, _blue );     
+                                }
+                            }
+                            _skip = true;
+                            #endregion
+                        }
+                    }
+                break;
             }
-            #endregion
             
             ds_list_clear( _parameters_list );
             _in_command_tag = false;
@@ -470,6 +480,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 continue;
             }
         }
+        #endregion
     }
     else
     {  
@@ -569,14 +580,11 @@ for( var _i = 0; _i < _separator_count; _i++ )
     if ( (_sep_char == " ") && _new_word && (_substr != "") ) _map[? "width" ] += _font_space_width;
     #endregion
     
+    if ( _sep_char == "[" ) _in_command_tag = true;
+    
     _line_map[? "length" ] += _substr_length;
     if ( _substr_length > 0 ) _json[? "words" ]++;
     _json[? "length" ] += _substr_length;
-    
-    if ( _sep_char == "[" )
-    {
-        _in_command_tag = true;
-    }
 }
 
 //Finish defining the last line
@@ -646,7 +654,6 @@ for( var _i = 0; _i < _lines_size; _i++ )
             break;
         }
     }
-    
 }
 
 scribble_set_box_alignment( _json );
@@ -655,11 +662,8 @@ scribble_set_box_alignment( _json );
 
 
 
-#region Make vertex buffers
-
 if ( _generate_vbuff ) scribble_rebuild_vertex_buffers( _json );
 
-#endregion
 
 
 buffer_delete( _buffer );

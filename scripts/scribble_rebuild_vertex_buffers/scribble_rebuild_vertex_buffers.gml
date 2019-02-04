@@ -21,8 +21,8 @@ var _max_char  = _json[? "length" ] - 1;
 
 var _lines = _json[? "lines list" ];
 var _lines_size = ds_list_size( _lines );
-for( var _line = 0; _line < _lines_size; _line++ ) {
-    
+for( var _line = 0; _line < _lines_size; _line++ )
+{
     var _line_map = _lines[| _line ];
     var _line_l = _line_map[? "x" ] + _force_offset_x;
     var _line_t = _line_map[? "y" ] + _force_offset_y;
@@ -31,8 +31,8 @@ for( var _line = 0; _line < _lines_size; _line++ ) {
     
     var _words = _line_map[? "words" ];
     var _words_size = ds_list_size( _words );
-    for( var _word = 0; _word < _words_size; _word++ ) {
-        
+    for( var _word = 0; _word < _words_size; _word++ )
+    {
         var _word_map = _words[| _word ];
         var _word_l   = _line_l + _word_map[? "x" ];
         var _word_t   = _line_t + _word_map[? "y" ];
@@ -43,8 +43,8 @@ for( var _line = 0; _line < _lines_size; _line++ ) {
         var _hyperlink_data_map = _hyperlink_map[? _hyperlink ];
         if ( _hyperlink_data_map != undefined ) _hyperlink_index = _hyperlink_data_map[? "index" ];
         
-        if ( _sprite != noone ) {
-            
+        if ( _sprite != noone )
+        {
             #region Add a sprite
             
             _previous_font = "";
@@ -56,26 +56,30 @@ for( var _line = 0; _line < _lines_size; _line++ ) {
             var _shake       = _word_map[? "shake"       ];
             var _wave        = _word_map[? "wave"        ];
             
-            if ( _sprite_slot == undefined ) {
+            if ( _sprite_slot == undefined )
+            {
                 var _image_min = _word_map[? "image" ];
                 var _image_max = _image_min;
                 var _no_animation = true;
-            } else {
+            }
+            else
+            {
                 var _image_min = 0;
                 var _image_max = sprite_get_number( _sprite )-1;
                 var _no_animation = false;
             }
             
-            for( var _image = _image_min; _image <= _image_max; _image++ ) {
-                
+            for( var _image = _image_min; _image <= _image_max; _image++ )
+            {
                 var _sprite_texture = sprite_get_texture( _sprite, _image );
             
-                if ( _sprite_texture != _previous_texture ) {
+                if ( _sprite_texture != _previous_texture )
+                {
                     _previous_texture = _sprite_texture;
                     
                     var _vbuff_map = _texture_to_vbuff_map[? _sprite_texture ];
-                    if ( _vbuff_map == undefined ) {
-                
+                    if ( _vbuff_map == undefined )
+                    {
                         var _vbuff = vertex_create_buffer();
                         vertex_begin( _vbuff, global.__scribble_vertex_format );
                 
@@ -87,11 +91,11 @@ for( var _line = 0; _line < _lines_size; _line++ ) {
                         ds_list_mark_as_map( _vbuff_list, ds_list_size( _vbuff_list )-1 );
                 
                         _texture_to_vbuff_map[? _sprite_texture ] = _vbuff_map;
-                
-                    } else {
+                    }
+                    else
+                    {
                         var _vbuff = _vbuff_map[? "vertex buffer" ];
                     }
-                
                 }
             
                 var _uvs = sprite_get_uvs( _sprite, _image );
@@ -108,31 +112,32 @@ for( var _line = 0; _line < _lines_size; _line++ ) {
                 vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, _hyperlink_index, _compound_index ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
                 vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, _hyperlink_index, _compound_index ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
                 vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, _hyperlink_index, _compound_index ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-            
             }
             
             _text_char++;
             
             #endregion
-            
-        } else {
-            
+        }
+        else
+        {
             #region Check the font and texture to see if we need a new vertex buffer
             var _font = _word_map[? "font" ];
             
-            if ( _font != _previous_font ) {
+            if ( _font != _previous_font )
+            {
                 _previous_font = _font;
                 
                 var _font_glyphs_map = global.__scribble_glyphs_map[? _font ];
                 var _font_sprite     = global.__scribble_image_map[?  _font ];
                 var _font_texture    = sprite_get_texture( _font_sprite, 0 );     
                 
-                if ( _font_texture != _previous_texture ) {
+                if ( _font_texture != _previous_texture )
+                {
                     _previous_texture = _font_texture;
                     
                     var _vbuff_map = _texture_to_vbuff_map[? _font_texture ];
-                    if ( _vbuff_map == undefined ) {
-                
+                    if ( _vbuff_map == undefined )
+                    {
                         var _vbuff = vertex_create_buffer();
                         vertex_begin( _vbuff, global.__scribble_vertex_format );
                 
@@ -144,30 +149,29 @@ for( var _line = 0; _line < _lines_size; _line++ ) {
                         ds_list_mark_as_map( _vbuff_list, ds_list_size( _vbuff_list )-1 );
                 
                         _texture_to_vbuff_map[? _font_texture ] = _vbuff_map;
-                
-                    } else {
+                    }
+                    else
+                    {
                         var _vbuff = _vbuff_map[? "vertex buffer" ];
                     }
-                
                 }
-                
             }
             #endregion
             
             #region Add vertex data for each character in the string
             
-            var _colour  = _word_map[? "colour" ];
+            var _colour  = _word_map[? "colour"  ];
             var _rainbow = _word_map[? "rainbow" ];
-            var _shake   = _word_map[? "shake" ];
-            var _wave    = _word_map[? "wave" ];
+            var _shake   = _word_map[? "shake"   ];
+            var _wave    = _word_map[? "wave"    ];
             
             var _str = _word_map[? "string" ];
             var _string_size = string_length( _str );
             
             var _char_l = _word_l;
             var _char_t = _word_t;
-            for( var _char = 1; _char <= _string_size; _char++ ) {
-                
+            for( var _char = 1; _char <= _string_size; _char++ )
+            {
                 var _array = _font_glyphs_map[? string_copy( _str, _char, 1 ) ];
                 if ( _array == undefined ) continue;
                 
@@ -197,20 +201,17 @@ for( var _line = 0; _line < _lines_size; _line++ ) {
                 
                 _char_l += _glyph_shf;
                 _text_char++;
-                
             }
             
             #endregion
-            
         }
-        
     }
-    
 }
 
 //Finish off and freeze all the vertex buffers we created
 var _vbuff_count = ds_list_size( _vbuff_list );
-for( var _i = 0; _i < _vbuff_count; _i++ ) {
+for( var _i = 0; _i < _vbuff_count; _i++ )
+{
     var _vbuff_map = _vbuff_list[| _i ];
     var _vbuff = _vbuff_map[? "vertex buffer" ];
     vertex_end( _vbuff );
