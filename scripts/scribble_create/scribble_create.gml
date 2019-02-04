@@ -135,13 +135,6 @@ var _result = __scribble_find_separator( _str, " "    , _sep_char, _sep_pos ); _
     _result = __scribble_find_separator( _str, chr(13), _sep_char, _sep_pos ); _sep_char = _result[0]; _sep_pos = _result[1];
     _result = __scribble_find_separator( _str, "["    , _sep_char, _sep_pos ); _sep_char = _result[0]; _sep_pos = _result[1];
 
-if ( global.__scribble_cjk_wrapping ) {
-    if ( _sep_pos > 1 ) {
-        _sep_char = "";
-        _sep_pos = 2;
-    }
-}
-
 //Iterate over the entire string...
 while( string_length( _str ) > 0 ) {
     
@@ -580,13 +573,6 @@ while( string_length( _str ) > 0 ) {
         _result = __scribble_find_separator( _str, " "    , _sep_char, _sep_pos ); _sep_char = _result[0]; _sep_pos = _result[1];
         _result = __scribble_find_separator( _str, chr(13), _sep_char, _sep_pos ); _sep_char = _result[0]; _sep_pos = _result[1];
         _result = __scribble_find_separator( _str, "["    , _sep_char, _sep_pos ); _sep_char = _result[0]; _sep_pos = _result[1];
-        
-        if ( global.__scribble_cjk_wrapping ) {
-            if ( _sep_pos > 1 ) {
-                _sep_char = "";
-                _sep_pos = 2;
-            }
-        }
         
     }
     

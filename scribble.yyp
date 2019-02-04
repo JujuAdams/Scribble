@@ -255,6 +255,22 @@
             }
         },
         {
+            "Key": "3a5af38c-757d-41ae-98c0-5d4b09e14e6a",
+            "Value": {
+                "id": "5d25c3e7-4b7f-44e6-af1f-4c2ddba141c0",
+                "resourcePath": "options\\switch\\options_switch.yy",
+                "resourceType": "GMSwitchOptions"
+            }
+        },
+        {
+            "Key": "3a5af38c-757d-44ae-98c0-5d4b09e14e6a",
+            "Value": {
+                "id": "d27a44bd-3ab8-4668-8171-f48658784bf6",
+                "resourcePath": "options\\ps4\\options_ps4.yy",
+                "resourceType": "GMPS4Options"
+            }
+        },
+        {
             "Key": "3a8861ec-6c71-430c-a34e-5a3b1397ead9",
             "Value": {
                 "id": "6f272fd9-9bd6-454f-8726-08bd41ab8bad",
@@ -507,14 +523,6 @@
             "Value": {
                 "id": "9fdc1f65-8074-48f2-99ad-7e839d451264",
                 "resourcePath": "scripts\\scribble_events_get_value\\scribble_events_get_value.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "7403a154-bd14-4179-8f68-1c0df01667de",
-            "Value": {
-                "id": "8947b127-1e7f-4f9d-b068-0ca3f6f07133",
-                "resourcePath": "scripts\\scribble_set_cjk_wrapping\\scribble_set_cjk_wrapping.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -1143,6 +1151,14 @@
             }
         },
         {
+            "Key": "df6df2ef-b108-4a0d-b542-812338df9817",
+            "Value": {
+                "id": "6d766f46-bd4c-4d02-ba39-0136309706dd",
+                "resourcePath": "scripts\\scribble_create_fast\\scribble_create_fast.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "e316a90a-0519-41f7-ac12-d02c46bf2b2a",
             "Value": {
                 "id": "80e35819-8339-4bde-85dd-585d1bdf85f1",
@@ -1263,13 +1279,13 @@
         "264604f9-b4d9-497c-952b-d39608faf127",
         "c16bc21c-277e-4cea-9c20-ce39745a0430",
         "0f93cf4e-7fc4-45b0-abb4-cd4040e3aa39",
+        "df6df2ef-b108-4a0d-b542-812338df9817",
         "86be87df-87d5-438a-a8e0-49bc2ac80815",
         "b94ea7f5-36e2-4f93-bf04-8eca82ed17a2",
         "2ac4a0cc-c5e1-433f-9cc8-1bb998b4bc86",
         "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
         "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
         "2556e855-8983-412c-8d45-8c59e5d89947",
-        "7403a154-bd14-4179-8f68-1c0df01667de",
         "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
         "09e32466-e915-46dd-a035-c612c3c2c3de",
         "9fdb5ea6-7580-494f-9759-66821915ddcc",

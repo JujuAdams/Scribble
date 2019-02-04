@@ -26,18 +26,19 @@ var _event_count = ds_list_size( _events_char_list );
 var _event = 0;
 while ( _event < _event_count ) && ( _events_char_list[| _event ] <= _char_a ) _event++;
 
-for( var _char = _char_a+1; _char <= _char_b; _char++ ) {
-    
+for( var _char = _char_a+1; _char <= _char_b; _char++ )
+{
     var _name = "";
     
-    while ( _event < _event_count ) && ( _events_char_list[| _event ] <= _char ) {
-        
+    while ( _event < _event_count ) && ( _events_char_list[| _event ] <= _char )
+    {
         var _name      = _events_name_list[|   _event ];
         var _data      = _events_data_list[|   _event ];
         var _old_data  = _events_value_map[?    _name ];
         var _old_event = _events_previous_map[? _name ];
     
-        if ( !ds_map_exists( _events_triggered_map, _name ) ) {
+        if ( !ds_map_exists( _events_triggered_map, _name ) )
+        {
             ds_list_add( _events_triggered_list, _name );
             _events_triggered_map[? _name ] = true;
         }
@@ -45,15 +46,21 @@ for( var _char = _char_a+1; _char <= _char_b; _char++ ) {
         _events_value_map[?    _name ] = _data;
         _events_previous_map[? _name ] = _event;
         
-        if ( _old_data == undefined ) {
+        if ( _old_data == undefined )
+        {
             _events_changed_map[? _name ] = true;
-        } else {
+        }
+        else
+        {
             _events_changed_map[? _name ] = !array_equals( _data, _old_data );
         }
         
-        if ( _old_event == undefined ) {
+        if ( _old_event == undefined )
+        {
             _events_different_map[? _name ] = true;
-        } else {
+        } 
+        else
+        {
             _events_different_map[? _name ] = _old_event != _event;
         }
         
@@ -62,11 +69,11 @@ for( var _char = _char_a+1; _char <= _char_b; _char++ ) {
         if ( _name == "break" ) || ( _name == "pause" ) break;
     }
     
-    if ( _name == "break" ) || ( _name == "pause" ) {
+    if ( _name == "break" ) || ( _name == "pause" )
+    {
         _char_end = _char;
         break;
     }
-    
 }
 
 return _char_end;

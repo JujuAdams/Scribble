@@ -10,7 +10,6 @@ global.__scribble_image_y_map     = ds_map_create();
 global.__scribble_glyphs_map      = ds_map_create();
 global.__scribble_cache_map       = ds_map_create();
 global.__scribble_sprite_font_map = ds_map_create();
-global.__scribble_cjk_wrapping    = false;
 global.__scribble_time            = current_time/1000;
 global.__scribble_auto_time       = true;
 global.__scribble_host_destroyed  = false;
