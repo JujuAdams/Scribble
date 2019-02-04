@@ -50,7 +50,7 @@ repeat( _buffer_size )
         {
             if ( _value == 93 ) _in_command_tag = false;
             buffer_poke( _buffer, _i, buffer_u8, 0 );
-            ds_list_add( _separator_list, chr(_value) );
+            ds_list_add( _separator_list, _value );
             ds_list_add( _position_list, _i );
         }
     }
@@ -175,7 +175,7 @@ var _font_space_width = _def_space_width;
 #endregion
 
 //Iterate over the entire string...
-var _sep_char = "";
+var _sep_char = 0;
 var _in_command_tag = false;
 var _new_word = false;
 
@@ -220,7 +220,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
         #region Command Handling
         ds_list_add( _parameters_list, _input_substr );
         
-        if ( _sep_char != "]" )
+        if ( _sep_char != 93 ) // ]
         {
             continue;
         }
@@ -575,12 +575,12 @@ for( var _i = 0; _i < _separator_count; _i++ )
     }
     
     _text_x += _substr_width;
-    if ( _sep_char == " " ) _text_x += _font_space_width; //Add spacing if the separation character is a space
+    if ( _sep_char == 32 ) _text_x += _font_space_width; //Add spacing if the separation character is a space
     
-    if ( (_sep_char == " ") && _new_word && (_substr != "") ) _map[? "width" ] += _font_space_width;
+    if ( (_sep_char == 32) && _new_word && (_substr != "") ) _map[? "width" ] += _font_space_width;
     #endregion
     
-    if ( _sep_char == "[" ) _in_command_tag = true;
+    if ( _sep_char == 91 ) _in_command_tag = true; // [
     
     _line_map[? "length" ] += _substr_length;
     if ( _substr_length > 0 ) _json[? "words" ]++;
