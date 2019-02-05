@@ -67,13 +67,14 @@ if ( _do_hyperlinks ) {
     
         var _line_map   = _json_lines[| _region_line ];
         var _words_list = _line_map[? "words" ];
-        var _word_map   = _words_list[| _region_word ];
+        var _word_array = _words_list[| _region_word ];
     
-        var _region_x = _x + _line_map[? "x" ] + _word_map[? "x" ] + _box_left;
-        var _region_y = _y + _line_map[? "y" ] + _word_map[? "y" ] + _box_top;
+        var _region_x = _x + _line_map[? "x" ] + _word_array[ __E_SCRIBBLE_WORD.X ] + _box_left;
+        var _region_y = _y + _line_map[? "y" ] + _word_array[ __E_SCRIBBLE_WORD.Y ] + _box_top;
         if ( _hyperlink_map != undefined ) && ( point_in_rectangle( _mouse_x, _mouse_y,
                                                                     _region_x, _region_y,
-                                                                    _region_x + _word_map[? "width" ], _region_y + _word_map[? "height" ] ) ) {
+                                                                    _region_x + _word_array[ __E_SCRIBBLE_WORD.WIDTH  ],
+                                                                    _region_y + _word_array[ __E_SCRIBBLE_WORD.HEIGHT ] ) ) {
             _hyperlink_map[? "over" ] = true;
         }
     
