@@ -14,25 +14,35 @@ _json[? "halign" ] = _halign;
 _json[? "valign" ] = _valign;
 
 //Horizontal justification
-if ( _halign == fa_left ) {
+if ( _halign == fa_left )
+{
     _json[? "left"  ] = 0;
     _json[? "right" ] = _width;
-} else if ( _halign == fa_center ) {
+}
+else if ( _halign == fa_center )
+{
     _json[? "left"  ] = -_width div 2;
     _json[? "right" ] =  _width div 2;
-} else if ( _halign == fa_right ) {
+}
+else if ( _halign == fa_right )
+{
     _json[? "left"  ] = -_width;
     _json[? "right" ] = 0;
 }
 
 //Vertical justification
-if ( _valign == fa_top ) {
+if ( _valign == fa_top )
+{
     _json[? "top"    ] = 0;
     _json[? "bottom" ] = _height;
-} else if ( _valign == fa_middle ) {
+}
+else if ( _valign == fa_middle )
+{
     _json[? "top"    ] = -_height div 2;
     _json[? "bottom" ] =  _height div 2;
-} else if ( _valign == fa_bottom ) {
+}
+else if ( _valign == fa_bottom )
+{
     _json[? "top"    ] = -_height;
     _json[? "bottom" ] = 0;
 }

@@ -23,23 +23,23 @@ var _lines = _json[? "lines list" ];
 var _lines_size = ds_list_size( _lines );
 for( var _line = 0; _line < _lines_size; _line++ )
 {
-    var _line_map = _lines[| _line ];
-    var _line_l = _line_map[? "x" ] + _force_offset_x;
-    var _line_t = _line_map[? "y" ] + _force_offset_y;
+    var _line_array = _lines[| _line ];
+    var _line_l = _line_array[ E_SCRIBBLE_LINE.X ] + _force_offset_x;
+    var _line_t = _line_array[ E_SCRIBBLE_LINE.Y ] + _force_offset_y;
     
     var _line_pc = _line / _lines_size;
     
-    var _words = _line_map[? "words" ];
-    var _words_size = ds_list_size( _words );
-    for( var _word = 0; _word < _words_size; _word++ )
+    var _line_word_array = _line_array[ E_SCRIBBLE_LINE.WORDS ];
+    var _words_count = array_length_1d( _line_word_array );
+    for( var _word = 0; _word < _words_count; _word++ )
     {
-        var _word_array = _words[| _word ];
-        var _word_l   = _line_l + _word_array[ __E_SCRIBBLE_WORD.X ];
-        var _word_t   = _line_t + _word_array[ __E_SCRIBBLE_WORD.Y ];
-        var _sprite   = _word_array[ __E_SCRIBBLE_WORD.SPRITE ];
+        var _word_array = _line_word_array[ _word ];
+        var _word_l   = _line_l + _word_array[ E_SCRIBBLE_WORD.X ];
+        var _word_t   = _line_t + _word_array[ E_SCRIBBLE_WORD.Y ];
+        var _sprite   = _word_array[ E_SCRIBBLE_WORD.SPRITE ];
         
         var _hyperlink_index = __E_SCRIBBLE_HYPERLINK.UNLINKED;
-        var _hyperlink = _word_array[ __E_SCRIBBLE_WORD.HYPERLINK ];
+        var _hyperlink = _word_array[ E_SCRIBBLE_WORD.HYPERLINK ];
         var _hyperlink_data_map = _hyperlink_map[? _hyperlink ];
         if ( _hyperlink_data_map != undefined ) _hyperlink_index = _hyperlink_data_map[? "index" ];
         
@@ -50,15 +50,15 @@ for( var _line = 0; _line < _lines_size; _line++ )
             _previous_font = "";
             
             var _char_pc     = _text_char / _max_char;
-            var _sprite_slot = _word_array[ __E_SCRIBBLE_WORD.SPRITE_SLOT ];
-            var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR      ];
-            var _rainbow     = _word_array[ __E_SCRIBBLE_WORD.RAINBOW     ];
-            var _shake       = _word_array[ __E_SCRIBBLE_WORD.SHAKE       ];
-            var _wave        = _word_array[ __E_SCRIBBLE_WORD.WAVE        ];
+            var _sprite_slot = _word_array[ E_SCRIBBLE_WORD.SPRITE_SLOT ];
+            var _colour      = _word_array[ E_SCRIBBLE_WORD.COLOUR      ];
+            var _rainbow     = _word_array[ E_SCRIBBLE_WORD.RAINBOW     ];
+            var _shake       = _word_array[ E_SCRIBBLE_WORD.SHAKE       ];
+            var _wave        = _word_array[ E_SCRIBBLE_WORD.WAVE        ];
             
             if ( _sprite_slot == undefined )
             {
-                var _image_min = _word_array[ __E_SCRIBBLE_WORD.IMAGE ];
+                var _image_min = _word_array[ E_SCRIBBLE_WORD.IMAGE ];
                 var _image_max = _image_min;
                 var _no_animation = true;
             }
@@ -121,7 +121,7 @@ for( var _line = 0; _line < _lines_size; _line++ )
         else
         {
             #region Check the font and texture to see if we need a new vertex buffer
-            var _font = _word_array[ __E_SCRIBBLE_WORD.FONT ];
+            var _font = _word_array[ E_SCRIBBLE_WORD.FONT ];
             
             if ( _font != _previous_font )
             {
@@ -160,12 +160,12 @@ for( var _line = 0; _line < _lines_size; _line++ )
             
             #region Add vertex data for each character in the string
             
-            var _colour  = _word_array[ __E_SCRIBBLE_WORD.COLOUR  ];
-            var _rainbow = _word_array[ __E_SCRIBBLE_WORD.RAINBOW ];
-            var _shake   = _word_array[ __E_SCRIBBLE_WORD.SHAKE   ];
-            var _wave    = _word_array[ __E_SCRIBBLE_WORD.WAVE    ];
+            var _colour  = _word_array[ E_SCRIBBLE_WORD.COLOUR  ];
+            var _rainbow = _word_array[ E_SCRIBBLE_WORD.RAINBOW ];
+            var _shake   = _word_array[ E_SCRIBBLE_WORD.SHAKE   ];
+            var _wave    = _word_array[ E_SCRIBBLE_WORD.WAVE    ];
             
-            var _str = _word_array[ __E_SCRIBBLE_WORD.STRING ];
+            var _str = _word_array[ E_SCRIBBLE_WORD.STRING ];
             var _string_size = string_length( _str );
             
             var _char_l = _word_l;

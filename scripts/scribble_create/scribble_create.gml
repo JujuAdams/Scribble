@@ -158,12 +158,12 @@ ds_map_add_map(  _json, "events different map" , ds_map_create()        );
 var _text_x = 0;
 var _text_y = 0;
 
-var _map = noone;
-var _word_array = noone;
-var _line_map = noone;
-var _line_list = noone;
-var _line_length = 0;
-var _line_max_height = _line_min_height;
+var _map              = noone;
+var _word_array       = noone;
+var _line_array       = noone;
+var _line_words_array = noone;
+var _line_length      = 0;
+var _line_max_height  = _line_min_height;
 
 var _text_font      = _def_font;
 var _text_colour    = _def_colour;
@@ -189,7 +189,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
         _sep_char = _separator_list[| _i ];
     var _sep_pos  =  _position_list[| _i ];
     
-    if ( _new_word ) _word_array[ __E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = _sep_char;
+    if ( _new_word ) _word_array[@ E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = _sep_char;
     _new_word = false;
     
     var _input_substr = buffer_read( _buffer, buffer_string );
@@ -207,15 +207,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
     var _substr_image       = undefined;
     var _substr_sprite_slot = undefined;
     
-    var _first_character = false;
-    if ( _line_list == noone )
-    {
-        _first_character = true;
-    }
-    else if ( ds_list_size( _line_list ) <= 1 )
-    {
-        _first_character = true;
-    }
+    var _first_character = ( is_array( _line_words_array ) && (array_length_1d( _line_words_array ) <= 1) );
     #endregion
     
     if ( _in_command_tag )
@@ -357,7 +349,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     
                     if ( _first_character )
                     {
-                        if ( _line_map != noone ) _line_map[? "halign" ] = _text_halign;
+                        if ( _line_array != noone ) _line_array[@ E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
                     }
                     else
                     {
@@ -371,7 +363,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     
                     if ( _first_character )
                     {
-                        if ( _line_map != noone ) _line_map[? "halign" ] = _text_halign;
+                        if ( _line_array != noone ) _line_array[@ E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
                     }
                     else
                     {
@@ -386,7 +378,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     
                     if ( _first_character )
                     {
-                        if ( _line_map != noone ) _line_map[? "halign" ] = _text_halign;
+                        if ( _line_array != noone ) _line_array[@ E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
                     }
                     else
                     {
@@ -488,19 +480,18 @@ for( var _i = 0; _i < _separator_count; _i++ )
     else
     {  
         _substr_width  = scribble_font_string_get_width(  _text_font, _substr );
-        _substr_height = scribble_font_char_get_height(   _text_font, " " );
-        //_substr_height = scribble_font_string_get_height( _text_font, _substr );
+        _substr_height = scribble_font_char_get_height(   _text_font, " " ); //_substr_height = scribble_font_string_get_height( _text_font, _substr );
     }
     
     #region Position and store word
         
     //If we've run over the maximum width of the string
-    if ( _substr_width + _text_x > _width_limit ) || ( _line_map == noone ) || ( _sep_prev_char == 13 ) || ( _force_newline )
+    if ( _substr_width + _text_x > _width_limit ) || ( _line_array == noone ) || ( _sep_prev_char == 13 ) || ( _force_newline )
     {
-        if ( _line_map != noone )
+        if ( _line_array != noone )
         {
-            _line_map[? "width"  ] = _text_x;
-            _line_map[? "height" ] = _line_max_height;
+            _line_array[@ E_SCRIBBLE_LINE.WIDTH  ] = _text_x;
+            _line_array[@ E_SCRIBBLE_LINE.HEIGHT ] = _line_max_height;
             
             _text_x = 0;
             _text_y += _line_max_height;
@@ -512,27 +503,26 @@ for( var _i = 0; _i < _separator_count; _i++ )
         if ( _word_array != noone )
         {
             // _word_array still holds the previous word
-            var _next_separator = _word_array[ __E_SCRIBBLE_WORD.NEXT_SEPARATOR ];
+            var _next_separator = _word_array[ E_SCRIBBLE_WORD.NEXT_SEPARATOR ];
             if ( _next_separator == 32 ) || ( _next_separator == 91 ) // <space> or [
             {
-                _word_array[ __E_SCRIBBLE_WORD.WIDTH ] -= _font_space_width; //If the previous separation character was whitespace, correct the length of the previous word
-                _line_map[? "width" ] -= _font_space_width; //...and the previous line
+                _word_array[@ E_SCRIBBLE_WORD.WIDTH ] -= _font_space_width; //If the previous separation character was whitespace, correct the length of the previous word
+                _line_array[@ E_SCRIBBLE_LINE.WIDTH ] -= _font_space_width; //...and the previous line
             }
         }
         
-        _line_map = ds_map_create();
-        _line_list = ds_list_create();
+        var _line_array = array_create( E_SCRIBBLE_LINE.__SIZE, 0 );
         
-        ds_list_add( _text_root_list, _line_map );
-        ds_list_mark_as_map( _text_root_list, ds_list_size( _text_root_list )-1 );
+        var _line_words_array = array_create( 0, 0 );
+        _line_array[ E_SCRIBBLE_LINE.X      ] = 0;
+        _line_array[ E_SCRIBBLE_LINE.Y      ] = _text_y;
+        _line_array[ E_SCRIBBLE_LINE.WIDTH  ] = 0;
+        _line_array[ E_SCRIBBLE_LINE.HEIGHT ] = _line_min_height;
+        _line_array[ E_SCRIBBLE_LINE.LENGTH ] = 0;
+        _line_array[ E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
+        _line_array[ E_SCRIBBLE_LINE.WORDS  ] = _line_words_array;
         
-        _line_map[? "x"      ] = 0;
-        _line_map[? "y"      ] = _text_y;
-        _line_map[? "width"  ] = 0;
-        _line_map[? "height" ] = _line_min_height;
-        _line_map[? "length" ] = 0;
-        _line_map[? "halign" ] = _text_halign;
-        ds_map_add_list( _line_map, "words", _line_list );
+        ds_list_add( _text_root_list, _line_array );
     }
     
     if ( !_force_newline ) && ( _substr != "" )
@@ -541,25 +531,25 @@ for( var _i = 0; _i < _separator_count; _i++ )
         
         //Add a new word
         _new_word = true;
-        var _word_array = array_create( __E_SCRIBBLE_WORD.__SIZE, 0 );         //var _map = ds_map_create();
-        _word_array[ __E_SCRIBBLE_WORD.X              ] = _text_x;             //_map[? "x"              ] = _text_x;
-        _word_array[ __E_SCRIBBLE_WORD.Y              ] = 0;                   //_map[? "y"              ] = 0;
-        _word_array[ __E_SCRIBBLE_WORD.WIDTH          ] = _substr_width;       //_map[? "width"          ] = _substr_width;
-        _word_array[ __E_SCRIBBLE_WORD.HEIGHT         ] = _substr_height;      //_map[? "height"         ] = _substr_height;
-        _word_array[ __E_SCRIBBLE_WORD.VALIGN         ] = fa_middle;           //_map[? "valign"         ] = fa_middle;
-        _word_array[ __E_SCRIBBLE_WORD.STRING         ] = _substr;             //_map[? "string"         ] = _substr;
-        _word_array[ __E_SCRIBBLE_WORD.INPUT_STRING   ] = _input_substr;       //_map[? "input string"   ] = _input_substr;
-        _word_array[ __E_SCRIBBLE_WORD.SPRITE         ] = _substr_sprite;      //_map[? "sprite"         ] = _substr_sprite;
-        _word_array[ __E_SCRIBBLE_WORD.IMAGE          ] = _substr_image;       //_map[? "image"          ] = _substr_image;
-        _word_array[ __E_SCRIBBLE_WORD.SPRITE_SLOT    ] = _substr_sprite_slot; //_map[? "sprite slot"    ] = _substr_sprite_slot;
-        _word_array[ __E_SCRIBBLE_WORD.LENGTH         ] = _substr_length;      //_map[? "length"         ] = _substr_length;     //Include the separator character!
-        _word_array[ __E_SCRIBBLE_WORD.FONT           ] = _text_font;          //_map[? "font"           ] = _text_font;
-        _word_array[ __E_SCRIBBLE_WORD.COLOUR         ] = _text_colour;        //_map[? "colour"         ] = _text_colour;
-        _word_array[ __E_SCRIBBLE_WORD.HYPERLINK      ] = _text_hyperlink;     //_map[? "hyperlink"      ] = _text_hyperlink;
-        _word_array[ __E_SCRIBBLE_WORD.RAINBOW        ] = _text_rainbow;       //_map[? "rainbow"        ] = _text_rainbow;
-        _word_array[ __E_SCRIBBLE_WORD.SHAKE          ] = _text_shake;         //_map[? "shake"          ] = _text_shake;
-        _word_array[ __E_SCRIBBLE_WORD.WAVE           ] = _text_wave;          //_map[? "wave"           ] = _text_wave;
-        _word_array[ __E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = "";                  //_map[? "next separator" ] = "";
+        var _word_array = array_create( E_SCRIBBLE_WORD.__SIZE, 0 );
+        _word_array[ E_SCRIBBLE_WORD.X              ] = _text_x;
+        _word_array[ E_SCRIBBLE_WORD.Y              ] = 0;
+        _word_array[ E_SCRIBBLE_WORD.WIDTH          ] = _substr_width;
+        _word_array[ E_SCRIBBLE_WORD.HEIGHT         ] = _substr_height;
+        _word_array[ E_SCRIBBLE_WORD.VALIGN         ] = fa_middle;
+        _word_array[ E_SCRIBBLE_WORD.STRING         ] = _substr;
+        _word_array[ E_SCRIBBLE_WORD.INPUT_STRING   ] = _input_substr;
+        _word_array[ E_SCRIBBLE_WORD.SPRITE         ] = _substr_sprite;
+        _word_array[ E_SCRIBBLE_WORD.IMAGE          ] = _substr_image;
+        _word_array[ E_SCRIBBLE_WORD.SPRITE_SLOT    ] = _substr_sprite_slot;
+        _word_array[ E_SCRIBBLE_WORD.LENGTH         ] = _substr_length; //Include the separator character!
+        _word_array[ E_SCRIBBLE_WORD.FONT           ] = _text_font;
+        _word_array[ E_SCRIBBLE_WORD.COLOUR         ] = _text_colour;
+        _word_array[ E_SCRIBBLE_WORD.HYPERLINK      ] = _text_hyperlink;
+        _word_array[ E_SCRIBBLE_WORD.RAINBOW        ] = _text_rainbow;
+        _word_array[ E_SCRIBBLE_WORD.SHAKE          ] = _text_shake;
+        _word_array[ E_SCRIBBLE_WORD.WAVE           ] = _text_wave;
+        _word_array[ E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = "";
         
         //If we've got a word with a hyperlink, add it to our list of hyperlink regions
         if ( _text_hyperlink != "" )
@@ -567,31 +557,30 @@ for( var _i = 0; _i < _separator_count; _i++ )
             var _region_map = ds_map_create();
             _region_map[? "hyperlink" ] = _text_hyperlink;
             _region_map[? "line"      ] = ds_list_size( _text_root_list )-1;
-            _region_map[? "word"      ] = ds_list_size( _line_list );
+            _region_map[? "word"      ] = array_length_1d( _line_words_array );
             ds_list_add( _hyperlink_regions_list, _region_map );
-            ds_list_mark_as_map( _hyperlink_regions_list, ds_list_size( _hyperlink_regions_list )-1 );
+            ds_list_mark_as_map( _hyperlink_regions_list, ds_list_size(_hyperlink_regions_list)-1 );
         }
         
         //Add the word to the line list
-        ds_list_add( _line_list, _word_array );
+        _line_words_array[@ array_length_1d(_line_words_array) ] = _word_array;
     }
     
     _text_x += _substr_width;
     if ( _sep_char == 32 ) _text_x += _font_space_width; //Add spacing if the separation character is a space
-    
-    if ( (_sep_char == 32) && _new_word && (_substr != "") ) _word_array[ __E_SCRIBBLE_WORD.WIDTH ] += _font_space_width;
+    if ( (_sep_char == 32) && _new_word && (_substr != "") ) _word_array[@ E_SCRIBBLE_WORD.WIDTH ] += _font_space_width;
     #endregion
     
     if ( _sep_char == 91 ) _in_command_tag = true; // [
     
-    _line_map[? "length" ] += _substr_length;
+    _line_array[@ E_SCRIBBLE_LINE.LENGTH ] += _substr_length;
     if ( _substr_length > 0 ) _json[? "words" ]++;
     _json[? "length" ] += _substr_length;
 }
 
 //Finish defining the last line
-_line_map[? "width"  ] = _text_x;
-_line_map[? "height" ] = _line_max_height;
+_line_array[@ E_SCRIBBLE_LINE.WIDTH  ] = _text_x;
+_line_array[@ E_SCRIBBLE_LINE.HEIGHT ] = _line_max_height;
 _json[? "lines" ] = ds_list_size( _json[? "lines list" ] );
 #endregion
 
@@ -605,12 +594,12 @@ var _lines_size = ds_list_size( _text_root_list );
 var _textbox_width = 0;
 for( var _i = 0; _i < _lines_size; _i++ )
 {
-    var _line_map = _text_root_list[| _i ];
-    _textbox_width = max( _textbox_width, _line_map[? "width" ] );
+    var _line_array = _text_root_list[| _i ];
+    _textbox_width = max( _textbox_width, _line_array[ E_SCRIBBLE_LINE.WIDTH ] );
 }
 
-var _line_map = _text_root_list[| _lines_size - 1 ];
-var _textbox_height = _line_map[? "y" ] + _line_map[? "height" ];
+var _line_array = _text_root_list[| _lines_size - 1 ];
+var _textbox_height = _line_array[ E_SCRIBBLE_LINE.Y ] + _line_array[ E_SCRIBBLE_LINE.HEIGHT ];
   
 _json[? "width"  ] = _textbox_width;
 _json[? "height" ] = _textbox_height;
@@ -618,48 +607,46 @@ _json[? "height" ] = _textbox_height;
 var _hyperlink_region_size = ds_list_size( _hyperlink_regions_list );
 
 //Adjust word positions
-for( var _i = 0; _i < _lines_size; _i++ )
+for( var _line = 0; _line < _lines_size; _line++ )
 {
-    var _line_map = _text_root_list[| _i ];
-    var _halign = _line_map[? "halign" ];
-    
-    switch( _halign )
+    var _line_array = _text_root_list[| _line ];
+    switch( _line_array[ E_SCRIBBLE_LINE.HALIGN ] )
     {
         case fa_left:
-            _line_map[? "x" ] = 0;
+            _line_array[@ E_SCRIBBLE_LINE.X ] = 0;
         break;
         case fa_center:
-            _line_map[? "x" ] += ( _textbox_width - _line_map[? "width" ] ) div 2;
+            _line_array[@ E_SCRIBBLE_LINE.X ] += (_textbox_width - _line_array[ E_SCRIBBLE_LINE.WIDTH ]) div 2;
         break;
         case fa_right:
-            _line_map[? "x" ] += _textbox_width - _line_map[? "width" ];
+            _line_array[@ E_SCRIBBLE_LINE.X ] += _textbox_width - _line_array[ E_SCRIBBLE_LINE.WIDTH ];
         break;
     }
     
-    var _line_height = _line_map[? "height" ];
-    var _word_list   = _line_map[? "words"  ];
+    var _line_height     = _line_array[ E_SCRIBBLE_LINE.HEIGHT ];
+    var _line_word_array = _line_array[ E_SCRIBBLE_LINE.WORDS  ];
     
-    var _word_count = ds_list_size( _word_list );
+    var _word_count = array_length_1d( _line_word_array );
     for( var _word = 0; _word < _word_count; _word++ )
     {
-        var _word_array = _word_list[| _word ];
-        switch ( _word_array[ __E_SCRIBBLE_WORD.VALIGN ] )
+        var _word_array = _line_word_array[ _word ];
+        
+        switch( _word_array[ E_SCRIBBLE_WORD.VALIGN ] )
         {
             case fa_top:
-                _word_array[ __E_SCRIBBLE_WORD.Y ] = 0;
+                _word_array[@ E_SCRIBBLE_WORD.Y ] = 0;
             break;
             case fa_middle:
-                _word_array[ __E_SCRIBBLE_WORD.Y ] = ( _line_height - _word_array[ __E_SCRIBBLE_WORD.HEIGHT ] ) div 2;
+                _word_array[@ E_SCRIBBLE_WORD.Y ] = ( _line_height - _word_array[ E_SCRIBBLE_WORD.HEIGHT ] ) div 2;
             break;
             case fa_bottom:
-                _word_array[ __E_SCRIBBLE_WORD.Y ] = _line_height - _word_array[ __E_SCRIBBLE_WORD.HEIGHT ];
+                _word_array[@ E_SCRIBBLE_WORD.Y ] = _line_height - _word_array[ E_SCRIBBLE_WORD.HEIGHT ];
             break;
         }
     }
 }
 
 scribble_set_box_alignment( _json );
-
 #endregion
 
 

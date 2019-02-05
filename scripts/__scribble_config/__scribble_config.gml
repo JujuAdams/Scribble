@@ -20,7 +20,7 @@
 
 #macro __SCRIBBLE_NO_SPRITE -1
 
-enum __E_SCRIBBLE_WORD
+enum E_SCRIBBLE_WORD
 {
     X, Y,
     WIDTH, HEIGHT,
@@ -30,6 +30,15 @@ enum __E_SCRIBBLE_WORD
     LENGTH, FONT, COLOUR,
     HYPERLINK,
     RAINBOW, SHAKE, WAVE, NEXT_SEPARATOR,
+    __SIZE
+}
+
+enum E_SCRIBBLE_LINE
+{
+    X, Y,
+    WIDTH, HEIGHT,
+    LENGTH, HALIGN,
+    WORDS,
     __SIZE
 }
 
