@@ -36,11 +36,13 @@ uniform float u_fSpriteImage[MAX_SPRITES];
 
 
 
-float rand( vec2 co ) {
+float rand( vec2 co )
+{
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
-vec3 hsv2rgb( vec3 c ) {
+vec3 hsv2rgb( vec3 c )
+{
     vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
     vec3 P = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
     return c.z * mix(K.xxx, clamp(P - K.xxx, 0.0, 1.0), c.y);
@@ -48,14 +50,14 @@ vec3 hsv2rgb( vec3 c ) {
 
 
 
-void main() {
-    
+void main()
+{
     float charPc        = in_Colour2.r;
     float linePc        = in_Colour2.g;
     int   hyperlink     = int( in_Colour2.b );
     float compoundIndex = in_Colour2.a;
-    int imageIndex      = int( compoundIndex / float( MAX_SPRITES ) );
-    int spriteIndex     = int( compoundIndex ) - MAX_SPRITES*imageIndex;
+    int   imageIndex    = int( compoundIndex / float( MAX_SPRITES ) );
+    int   spriteIndex   = int( compoundIndex ) - MAX_SPRITES*imageIndex;
     
     float wave    = in_Colour3.r*u_vOptions.r;
     float shake   = in_Colour3.g*u_vOptions.g;
@@ -73,7 +75,8 @@ void main() {
     v_vColour = in_Colour;
     v_vColour.rgb = mix( v_vColour.rgb, u_vColour.rgb, u_vColour.a );
     v_vColour.rgb = mix( v_vColour.rgb, hsv2rgb( vec3( charPc + u_fTime, 1., 1. ) ), rainbow );
-    for( int i = 0; i < MAX_HYPERLINKS; i++ ) {
+    for( int i = 0; i < MAX_HYPERLINKS; i++ )
+    {
         if ( hyperlink == i ) v_vColour.rgb = mix( v_vColour.rgb, u_vHyperlinkColour, u_fHyperlinkMix[i] );
     }
     
@@ -81,15 +84,21 @@ void main() {
     
     float alpha = u_fAlpha;
     
-    if ( u_fCharFadeT < ( 1. + u_fCharFadeSmoothness ) ) {
+    if ( u_fCharFadeT < (1. + u_fCharFadeSmoothness) )
+    {
          alpha *= clamp( ( u_fCharFadeT - charPc ) / u_fCharFadeSmoothness, 0., 1. );
-    } else {
+    }
+    else
+    {
          alpha *= 1. - clamp( ( u_fCharFadeT - (1. + u_fCharFadeSmoothness) - charPc ) / u_fCharFadeSmoothness, 0., 1. );
     }
     
-    if ( u_fLineFadeT < 1. + u_fLineFadeSmoothness ) {
+    if ( u_fLineFadeT < (1. + u_fLineFadeSmoothness) )
+    {
          alpha *= clamp( ( u_fLineFadeT - linePc ) / u_fLineFadeSmoothness, 0., 1. );
-    } else {
+    }
+    else
+    {
          alpha *= 1. - clamp( ( u_fLineFadeT - (1. + u_fLineFadeSmoothness) - linePc ) / u_fLineFadeSmoothness, 0., 1. );
     }
     
@@ -100,5 +109,4 @@ void main() {
     
     
     v_vTexcoord = in_TextureCoord;
-    
 }
