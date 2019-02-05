@@ -21,11 +21,11 @@ var _y = 0;
 var _line_height = scribble_font_char_get_height( _font, " " );
 
 var _length = string_length( _string );
-for( var _pos = 1; _pos <= _length; _pos++ ) {
-    
-    var _char = string_copy( _string, _pos, 1 );
-    
-    if ( _char == "\n" ) {
+for( var _pos = 1; _pos <= _length; _pos++ )
+{
+    var _char = string_char_at( _string, _pos );
+    if ( _char == "\n" )
+    {
         ++_line;
         _x = 0;
         _y += _line_height;
@@ -60,7 +60,6 @@ for( var _pos = 1; _pos <= _length; _pos++ ) {
     vertex_position( _vbuff, _l, _t ); vertex_texcoord( _vbuff, _u0, _v0 ); vertex_colour( _vbuff, _colour, _alpha ); vertex_float4( _vbuff, _char_pc, _line_pc, __E_SCRIBBLE_HYPERLINK.UNLINKED, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, 0, 0, 0 );
     
     _x += _shf;
-    
 }
 
 vertex_end( _vbuff );

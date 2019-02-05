@@ -2,10 +2,11 @@
 
 var _string = argument0;
 
-if ( SCRIBBLE_HASH_NEWLINE ) _string = string_replace_all( _string, "#", chr(13) );
-_string = string_replace_all( _string, chr(10)+chr(13), chr(13) );
-_string = string_replace_all( _string, chr(13)+chr(10), chr(13) );
-_string = string_replace_all( _string,         chr(10), chr(13) );
-_string = string_replace_all( _string,           "\\n", chr(13) );
+if ( SCRIBBLE_HASH_NEWLINE ) _string = string_replace_all( _string, "#", "\n" );
+_string = string_replace_all( _string, "\n\r", "\n" );
+_string = string_replace_all( _string, "\r\n", "\n" );
+_string = string_replace_all( _string,   "\n", "\n" );
+_string = string_replace_all( _string,  "\\n", "\n" );
+_string = string_replace_all( _string,  "\\r", "\n" );
 
 return _string;

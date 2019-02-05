@@ -9,17 +9,21 @@ var _x      = argument2;
 var _y      = argument3;
 
 var _vbuff = global.__scribble_cache_map[? _font + "~~~~~~~~" + _string ];
-if ( _vbuff == undefined ) {
-    _vbuff = scribble_basic_make( _font, _string );
+if ( _vbuff == undefined )
+{
+    _vbuff = scribble_basic_manual_make( _font, _string );
     vertex_freeze( _vbuff );
     global.__scribble_cache_map[? _font + "~~~~~~~~" + _string ] = _vbuff;
     show_debug_message( "Cached \"" + string_replace_all( _string, "\n", "\\n" ) + "\" as vbuff=" + string( _vbuff ) );
 }
 
-if ( os_type == os_macosx ) {
+if ( os_type == os_macosx )
+{
     shader_set( shScribblePassthrough );
-    scribble_basic_draw_manual( _font, _vbuff, _x, _y );
+    scribble_basic_manual_draw( _font, _vbuff, _x, _y );
     shader_reset();
-} else {
-    scribble_basic_draw_manual( _font, _vbuff, _x, _y );
+}
+else
+{
+    scribble_basic_manual_draw( _font, _vbuff, _x, _y );
 }

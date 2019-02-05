@@ -57,7 +57,7 @@ repeat( _buffer_size )
     }
     else
     {
-        if ( _value == 13 ) || ( _value == 32 ) || ( _value == 91 ) //\r or <space> or [
+        if ( _value == 10 ) || ( _value == 32 ) || ( _value == 91 ) //\n or <space> or [
         {
             if ( _value == 91 ) _in_command_tag = true;
             buffer_poke( _buffer, _i, buffer_u8, 0 );
@@ -486,7 +486,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
     #region Position and store word
         
     //If we've run over the maximum width of the string
-    if ( _substr_width + _text_x > _width_limit ) || ( _line_array == noone ) || ( _sep_prev_char == 13 ) || ( _force_newline )
+    if ( _substr_width + _text_x > _width_limit ) || ( _line_array == noone ) || ( _sep_prev_char == 10 ) || ( _force_newline )
     {
         if ( _line_array != noone )
         {

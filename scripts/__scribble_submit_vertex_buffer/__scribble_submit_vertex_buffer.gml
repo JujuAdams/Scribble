@@ -8,8 +8,8 @@ var _texture = argument1;
 var _x       = argument2;
 var _y       = argument3;
 
-if ( _x != 0 ) || ( _y != 0 ) {
-    
+if ( _x != 0 ) || ( _y != 0 )
+{
     var _old_matrix = matrix_get( matrix_world );
     
     var _matrix;
@@ -24,9 +24,8 @@ if ( _x != 0 ) || ( _y != 0 ) {
     vertex_submit( _vbuff, pr_trianglelist, _texture );
     
     matrix_set( matrix_world, _old_matrix );
-    
-} else {
-    
+}
+else
+{
     vertex_submit( _vbuff, pr_trianglelist, _texture );
-    
 }

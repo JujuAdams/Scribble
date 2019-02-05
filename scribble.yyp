@@ -858,7 +858,7 @@
             "Key": "aa8d4049-f4ef-4594-bf5d-6b0bb90f0aee",
             "Value": {
                 "id": "99933ad0-8803-4e1a-b96c-d62bdc31feed",
-                "resourcePath": "scripts\\scribble_basic_make\\scribble_basic_make.yy",
+                "resourcePath": "scripts\\scribble_basic_manual_make\\scribble_basic_manual_make.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -994,7 +994,7 @@
             "Key": "c16bc21c-277e-4cea-9c20-ce39745a0430",
             "Value": {
                 "id": "21d95e87-7757-428a-ac96-ba7a312b3a87",
-                "resourcePath": "scripts\\scribble_basic_draw_manual\\scribble_basic_draw_manual.yy",
+                "resourcePath": "scripts\\scribble_basic_manual_draw\\scribble_basic_manual_draw.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -1267,8 +1267,8 @@
         "cb08b753-39b6-42d9-a1ed-97f5b3ee1e10",
         "afc5a9d3-812e-4fe0-a470-125760409f74",
         "963dfbc6-d5a2-48c1-b2ed-1eb466d455fb",
-        "aa8d4049-f4ef-4594-bf5d-6b0bb90f0aee",
         "264604f9-b4d9-497c-952b-d39608faf127",
+        "aa8d4049-f4ef-4594-bf5d-6b0bb90f0aee",
         "c16bc21c-277e-4cea-9c20-ce39745a0430",
         "df6df2ef-b108-4a0d-b542-812338df9817",
         "86be87df-87d5-438a-a8e0-49bc2ac80815",

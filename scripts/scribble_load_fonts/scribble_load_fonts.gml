@@ -23,19 +23,21 @@ if ( _in_gms221 ) show_debug_message( "Using GMS2.2.1 code" );
 var _max_width  = 0;
 var _max_height = 0;
 
-for( var _font = 0; _font < _font_count; _font++ ) {
-    
+for( var _font = 0; _font < _font_count; _font++ )
+{
     var _name = _font_array[ _font ];
     if ( is_array( _name ) ) _name = _name[0];
     
-    if ( asset_get_type( _name ) == asset_sprite ) {
+    if ( asset_get_type( _name ) == asset_sprite )
+    {
         
         global.__scribble_image_map[? _name ] = asset_get_index( _name );
-        
-    } else {
-        
+    }
+    else
+    {
         var _json_file  = SCRIBBLE_FONT_DIRECTORY + _name + ".yy";
-        if ( !file_exists( _json_file ) ) {
+        if ( !file_exists( _json_file ) )
+        {
             show_error( "Could not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
             continue;
         }
@@ -53,15 +55,13 @@ for( var _font = 0; _font < _font_count; _font++ ) {
         global.__scribble_image_map[?   _name ] = undefined;
         global.__scribble_image_x_map[? _name ] = 0;
         global.__scribble_image_y_map[? _name ] = 0;
-        
     }
-    
 }
 
 
 
-if ( _max_width > 0 ) && ( _max_height > 0 ) {
-    
+if ( _max_width > 0 ) && ( _max_height > 0 )
+{
     var _x = 0;
     var _y = 0;
     
@@ -71,13 +71,13 @@ if ( _max_width > 0 ) && ( _max_height > 0 ) {
         draw_clear_alpha( c_white, 0 );
         gpu_set_blendenable( false );
         
-        for( var _font = 0; _font < _font_count; _font++ ) {
-            
+        for( var _font = 0; _font < _font_count; _font++ )
+        {
             var _name = _font_array[ _font ];
             if ( is_array( _name ) ) _name = _name[0];
             
-            if ( asset_get_type( _name ) != asset_sprite ) {
-                
+            if ( asset_get_type( _name ) != asset_sprite )
+            {
                 var _font_asset = asset_get_index( _name );
                 var _texture    = font_get_texture( _font );
                 var _uvs        = font_get_uvs( _font );
@@ -98,9 +98,7 @@ if ( _max_width > 0 ) && ( _max_height > 0 ) {
                 global.__scribble_image_x_map[? _name ] = _x;
                 global.__scribble_image_y_map[? _name ] = _y;
                 _x += _image_w;
-                
             }
-            
         }
         
         gpu_set_blendenable( true );
@@ -108,34 +106,31 @@ if ( _max_width > 0 ) && ( _max_height > 0 ) {
     surface_reset_target();
     var _surface_sprite = sprite_create_from_surface( _surface,   0, 0, _max_width, _max_height,  false, false, 0, 0 );
     surface_save( _surface, "fonts.png" );
-    
 }
 
 
 
-var _texture = sprite_get_texture( _surface_sprite, 0 );
-var _texture_tw = texture_get_texel_width(  _texture );
-var _texture_th = texture_get_texel_height( _texture );
-
-for( var _font = 0; _font < _font_count; _font++ ) {
-    
+for( var _font = 0; _font < _font_count; _font++ )
+{
     var _input_array = [];
     var _name = _font_array[ _font ];
     
-    if ( is_array( _name ) ) {
+    if ( is_array( _name ) )
+    {
         var _input_array = _name;
         _name = _input_array[0];
     }
     
-    if ( asset_get_type( _name ) == asset_sprite ) {
-        
+    if ( asset_get_type( _name ) == asset_sprite )
+    {
         #region Sprites
         
         var _sprite = asset_get_index( _name );
         if ( sprite_get_bbox_left(   _sprite ) == 0 )
         || ( sprite_get_bbox_top(    _sprite ) == 0 )
         || ( sprite_get_bbox_right(  _sprite ) == sprite_get_width(  _sprite )-1 )
-        || ( sprite_get_bbox_bottom( _sprite ) == sprite_get_height( _sprite )-1 ) {
+        || ( sprite_get_bbox_bottom( _sprite ) == sprite_get_height( _sprite )-1 )
+        {
             show_debug_message( "WARNING! \"" + _name + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed" );
         }
         
@@ -155,9 +150,9 @@ for( var _font = 0; _font < _font_count; _font++ ) {
         
         //Strip out a map of of glyphs
         var _length = string_length( _sprite_string );
-        for( var _i = 0; _i < _length; _i++ ) {
-    
-            var _char = string_copy( _sprite_string, _i+1, 1 );
+        for( var _i = 0; _i < _length; _i++ )
+        {
+            var _char = string_char_at( _sprite_string, _i+1 );
             if ( ds_map_exists( _font_glyphs_map, _char ) ) continue;
             if ( _char == " " ) show_debug_message( "WARNING! It is strongly recommended that you do *not* use a space character in your sprite font in GMS2.2.1 and above due to IDE bugs. Use scribble_font_char_set_*() to define a space character" );
             
@@ -182,8 +177,8 @@ for( var _font = 0; _font < _font_count; _font++ ) {
             _array[ __E_SCRIBBLE_GLYPH.X    ] = undefined;
             _array[ __E_SCRIBBLE_GLYPH.Y    ] = undefined;
             
-            if ( _left == _right ) && ( _top == _bottom ) {
-                
+            if ( _left == _right ) && ( _top == _bottom )
+            {
                 show_debug_message( "WARNING! Character " + string( ord( _char ) ) + "(" + _char + ") for sprite font \"" + _name + "\" is empty" );
                 
                 _array[ __E_SCRIBBLE_GLYPH.W    ] = 1;
@@ -196,10 +191,11 @@ for( var _font = 0; _font < _font_count; _font++ ) {
                 _array[ __E_SCRIBBLE_GLYPH.U1   ] = 0;
                 _array[ __E_SCRIBBLE_GLYPH.V1   ] = 0;
                 _font_glyphs_map[? _char ] = _array;
-                
-            } else {
-                
-                if ( _in_gms221 ) {
+            }
+            else
+            {
+                if ( _in_gms221 )
+                {
                     //GMS2.2.1 does some weeeird things to sprite fonts
                     var _glyph_width  = 3 + _right - _left;
                     var _glyph_height = 3 + _bottom - _top;
@@ -212,7 +208,9 @@ for( var _font = 0; _font < _font_count; _font++ ) {
                     _array[ __E_SCRIBBLE_GLYPH.V0   ] = _uvs[1];
                     _array[ __E_SCRIBBLE_GLYPH.U1   ] = _uvs[2];
                     _array[ __E_SCRIBBLE_GLYPH.V1   ] = _uvs[3];
-                } else {
+                }
+                else
+                {
                     --_left;
                     ++_bottom;
                     var _glyph_width  = _right - _left;
@@ -229,17 +227,18 @@ for( var _font = 0; _font < _font_count; _font++ ) {
                 }
                 
                 _font_glyphs_map[? _char ] = _array;
-                
             }
-            
         }
         
-        if ( !ds_map_exists( _font_glyphs_map, " " ) ) {
-            
-            if ( _in_gms221 ) {
+        if ( !ds_map_exists( _font_glyphs_map, " " ) )
+        {
+            if ( _in_gms221 )
+            {
                 var _glyph_width  = sprite_get_width(  _sprite );
                 var _glyph_height = sprite_get_height( _sprite );
-            } else {
+            }
+            else
+            {
                 var _glyph_width  = sprite_get_width(  _sprite )-2;
                 var _glyph_height = sprite_get_height( _sprite );
             }
@@ -266,9 +265,14 @@ for( var _font = 0; _font < _font_count; _font++ ) {
         
         #endregion
         
-    } else {
-        
+    }
+    else
+    {
         #region Font
+        
+        var _texture = sprite_get_texture( _surface_sprite, 0 );
+        var _texture_tw = texture_get_texel_width(  _texture );
+        var _texture_th = texture_get_texel_height( _texture );
         
         global.__scribble_image_map[? _name ] = _surface_sprite;
         
@@ -329,11 +333,8 @@ for( var _font = 0; _font < _font_count; _font++ ) {
         ds_map_destroy( _json );
         
         #endregion
-        
     }
-        
     show_debug_message( "Scribble: \"" + _name + "\" loaded" );
-    
 }
 
 
