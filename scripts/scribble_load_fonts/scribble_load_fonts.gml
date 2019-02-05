@@ -30,7 +30,6 @@ for( var _font = 0; _font < _font_count; _font++ )
     
     if ( asset_get_type( _name ) == asset_sprite )
     {
-        
         global.__scribble_image_map[? _name ] = asset_get_index( _name );
     }
     else
@@ -42,9 +41,8 @@ for( var _font = 0; _font < _font_count; _font++ )
             continue;
         }
         
-        var _font_asset = asset_get_index( _name );
-        var _texture    = font_get_texture( _font );
-        var _uvs        = font_get_uvs( _font );
+        var _texture = font_get_texture( _font );
+        var _uvs     = font_get_uvs(     _font );
         
         var _image_w = ( _uvs[2] - _uvs[0] ) / texture_get_texel_width(  _texture );
         var _image_h = ( _uvs[3] - _uvs[1] ) / texture_get_texel_height( _texture );
@@ -78,9 +76,8 @@ if ( _max_width > 0 ) && ( _max_height > 0 )
             
             if ( asset_get_type( _name ) != asset_sprite )
             {
-                var _font_asset = asset_get_index( _name );
-                var _texture    = font_get_texture( _font );
-                var _uvs        = font_get_uvs( _font );
+                var _texture = font_get_texture( _font );
+                var _uvs     = font_get_uvs(     _font );
                 
                 var _image_w = (_uvs[2] - _uvs[0]) / texture_get_texel_width(  _texture );
                 var _image_h = (_uvs[3] - _uvs[1]) / texture_get_texel_height( _texture );
@@ -264,7 +261,6 @@ for( var _font = 0; _font < _font_count; _font++ )
         sprite_index = -1;
         
         #endregion
-        
     }
     else
     {
@@ -293,8 +289,8 @@ for( var _font = 0; _font < _font_count; _font++ )
         
         var _glyph_list = _json[? "glyphs" ];
         var _size = ds_list_size( _glyph_list );
-        for( var _i = 0; _i < _size; _i++ ) {
-        
+        for( var _i = 0; _i < _size; _i++ )
+        {
             var _glyph_map = _glyph_list[| _i ];
             _glyph_map = _glyph_map[? "Value" ];
     
@@ -327,13 +323,13 @@ for( var _font = 0; _font < _font_count; _font++ )
             _array[ __E_SCRIBBLE_GLYPH.V1   ] = _v1;
             
             _font_glyphs_map[? _char ] = _array;
-    
         }
         
         ds_map_destroy( _json );
         
         #endregion
     }
+    
     show_debug_message( "Scribble: \"" + _name + "\" loaded" );
 }
 
