@@ -17,31 +17,36 @@ var _texture_to_vbuff_map = ds_map_create();
 var _previous_font = "";
 var _previous_texture = -1;
 var _text_char = 0;
-var _max_char  = _json[? "length" ] - 1;
+var _max_char = _json[? "length" ]-1;
 
 var _lines = _json[? "lines list" ];
 var _lines_size = ds_list_size( _lines );
-for( var _line = 0; _line < _lines_size; _line++ )
+var _line = 0;
+repeat( _lines_size )
 {
+    var _line_pc = _line / _lines_size;
+    
     var _line_array = _lines[| _line ];
     var _line_l = _line_array[ E_SCRIBBLE_LINE.X ] + _force_offset_x;
     var _line_t = _line_array[ E_SCRIBBLE_LINE.Y ] + _force_offset_y;
     
-    var _line_pc = _line / _lines_size;
-    
     var _line_word_array = _line_array[ E_SCRIBBLE_LINE.WORDS ];
     var _words_count = array_length_1d( _line_word_array );
-    for( var _word = 0; _word < _words_count; _word++ )
+    var _word = 0;
+    repeat( _words_count )
     {
         var _word_array = _line_word_array[ _word ];
-        var _word_l   = _line_l + _word_array[ E_SCRIBBLE_WORD.X ];
-        var _word_t   = _line_t + _word_array[ E_SCRIBBLE_WORD.Y ];
-        var _sprite   = _word_array[ E_SCRIBBLE_WORD.SPRITE ];
+        var _word_l = _word_array[ E_SCRIBBLE_WORD.X      ] + _line_l;
+        var _word_t = _word_array[ E_SCRIBBLE_WORD.Y      ] + _line_t;
+        var _sprite = _word_array[ E_SCRIBBLE_WORD.SPRITE ];
         
         var _hyperlink_index = __E_SCRIBBLE_HYPERLINK.UNLINKED;
         var _hyperlink = _word_array[ E_SCRIBBLE_WORD.HYPERLINK ];
-        var _hyperlink_data_map = _hyperlink_map[? _hyperlink ];
-        if ( _hyperlink_data_map != undefined ) _hyperlink_index = _hyperlink_data_map[? "index" ];
+        if ( _hyperlink != "" )
+        {
+            var _hyperlink_data_map = _hyperlink_map[? _hyperlink ];
+            if ( _hyperlink_data_map != undefined ) _hyperlink_index = _hyperlink_data_map[? "index" ];
+        }
         
         if ( _sprite != noone )
         {
@@ -69,10 +74,10 @@ for( var _line = 0; _line < _lines_size; _line++ )
                 var _no_animation = false;
             }
             
-            for( var _image = _image_min; _image <= _image_max; _image++ )
+            var _image = _image_min;
+            repeat( 1 + _image_max - _image_min )
             {
                 var _sprite_texture = sprite_get_texture( _sprite, _image );
-            
                 if ( _sprite_texture != _previous_texture )
                 {
                     _previous_texture = _sprite_texture;
@@ -104,7 +109,7 @@ for( var _line = 0; _line < _lines_size; _line++ )
                 var _glyph_r = _glyph_l + _uvs[6]*sprite_get_width(  _sprite );
                 var _glyph_b = _glyph_t + _uvs[7]*sprite_get_height( _sprite );
                 
-                var _compound_index = _no_animation? __SCRIBBLE_NO_SPRITE : ( SCRIBBLE_MAX_SPRITE_SLOTS*_image + _sprite_slot );
+                var _compound_index = _no_animation? __SCRIBBLE_NO_SPRITE : (SCRIBBLE_MAX_SPRITE_SLOTS*_image + _sprite_slot);
                 
                 vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, _hyperlink_index, _compound_index ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
                 vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, _hyperlink_index, _compound_index ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
@@ -112,10 +117,11 @@ for( var _line = 0; _line < _lines_size; _line++ )
                 vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, _hyperlink_index, _compound_index ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
                 vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, _hyperlink_index, _compound_index ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
                 vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, _hyperlink_index, _compound_index ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                
+                ++_image;
             }
             
-            _text_char++;
-            
+            ++_text_char;
             #endregion
         }
         else
@@ -159,7 +165,6 @@ for( var _line = 0; _line < _lines_size; _line++ )
             #endregion
             
             #region Add vertex data for each character in the string
-            
             var _colour  = _word_array[ E_SCRIBBLE_WORD.COLOUR  ];
             var _rainbow = _word_array[ E_SCRIBBLE_WORD.RAINBOW ];
             var _shake   = _word_array[ E_SCRIBBLE_WORD.SHAKE   ];
@@ -170,9 +175,10 @@ for( var _line = 0; _line < _lines_size; _line++ )
             
             var _char_l = _word_l;
             var _char_t = _word_t;
-            for( var _char = 1; _char <= _string_size; _char++ )
+            var _char_index = 1;
+            repeat( _string_size )
             {
-                var _array = _font_glyphs_map[? string_copy( _str, _char, 1 ) ];
+                var _array = _font_glyphs_map[? string_char_at( _str, _char_index ) ];
                 if ( _array == undefined ) continue;
                 
                 var _glyph_w   = _array[ __E_SCRIBBLE_GLYPH.W   ];
@@ -200,12 +206,16 @@ for( var _line = 0; _line < _lines_size; _line++ )
                 vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, _hyperlink_index, __SCRIBBLE_NO_SPRITE ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
                 
                 _char_l += _glyph_shf;
-                _text_char++;
+                ++_text_char;
+                ++_char_index;
             }
-            
             #endregion
         }
+        
+        ++_word;
     }
+    
+    ++_line;
 }
 
 //Finish off and freeze all the vertex buffers we created

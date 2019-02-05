@@ -39,6 +39,6 @@ for( var _event = 0; _event < _event_count; _event++ ) {
         _events_different_map[? _name ] = _old_event != _event;
     }
         
-    _event++;
+    ++_event;
     
 }

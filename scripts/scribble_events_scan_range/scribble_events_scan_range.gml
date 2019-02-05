@@ -24,7 +24,7 @@ var _events_different_map  = _json[? "events different map"  ];
 
 var _event_count = ds_list_size( _events_char_list );
 var _event = 0;
-while ( _event < _event_count ) && ( _events_char_list[| _event ] <= _char_a ) _event++;
+while ( _event < _event_count ) && ( _events_char_list[| _event ] <= _char_a ) ++_event;
 
 for( var _char = _char_a+1; _char <= _char_b; _char++ )
 {
@@ -64,7 +64,7 @@ for( var _char = _char_a+1; _char <= _char_b; _char++ )
             _events_different_map[? _name ] = _old_event != _event;
         }
         
-        _event++;
+        ++_event;
         
         if ( _name == "break" ) || ( _name == "pause" ) break;
     }

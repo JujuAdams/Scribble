@@ -26,7 +26,7 @@ for( var _pos = 1; _pos <= _length; _pos++ ) {
     var _char = string_copy( _string, _pos, 1 );
     
     if ( _char == "\n" ) {
-        _line++;
+        ++_line;
         _x = 0;
         _y += _line_height;
     }

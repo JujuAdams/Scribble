@@ -66,7 +66,7 @@ repeat( _buffer_size )
         }
     }
     
-    _i++;
+    ++_i;
 }
 #endregion
 
@@ -574,7 +574,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
     if ( _sep_char == 91 ) _in_command_tag = true; // [
     
     _line_array[@ E_SCRIBBLE_LINE.LENGTH ] += _substr_length;
-    if ( _substr_length > 0 ) _json[? "words" ]++;
+    if ( _substr_length > 0 ) ++_json[? "words" ];
     _json[? "length" ] += _substr_length;
 }
 

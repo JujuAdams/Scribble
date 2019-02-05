@@ -86,7 +86,7 @@ for( var _line = 0; _line < _lines_count; _line++ ) {
         if ( _sprite >= 0 ) {
             
             if ( _char_count + 1 > _total_chars ) continue;
-            _char_count++;
+            ++_char_count;
             
             var _sprite_slot = _word_map[? "sprite slot" ];
             _x -= sprite_get_xoffset( _sprite );
