@@ -9,7 +9,7 @@ var _y    = argument2;
 if ( is_array( _name ) ) _name = _name[0];
 if ( asset_get_type( _name ) == asset_sprite )
 {
-    show_debug_message( "Scribble: Cannot draw a spritefont texture." );
+    show_debug_message( "Scribble: Cannot draw a spritefont texture" );
     return undefined;
 }
 
@@ -20,7 +20,7 @@ var _uvs     = font_get_uvs(     _asset );
 var _image_w = (_uvs[2] - _uvs[0]) / texture_get_texel_width(  _texture );
 var _image_h = (_uvs[3] - _uvs[1]) / texture_get_texel_height( _texture );
 
-show_debug_message( "Scribble: Drawing font \"" + _name + "\" (" + string( _asset ) + ") texture at " + string( _x ) + "," + string( _y ) + " (size=" + string( _image_w ) + "x" + string( _image_h ) + ")" );
+show_debug_message( "Scribble: Drawing font \"" + _name + "\" texture at " + string( _x ) + "," + string( _y ) + " (size=" + string( _image_w ) + "x" + string( _image_h ) + ")" );
 
 var _vbuff = vertex_create_buffer();
 vertex_begin( _vbuff, global.__scribble_vertex_format );
@@ -32,4 +32,4 @@ vertex_end( _vbuff );
 vertex_submit( _vbuff, pr_trianglestrip, _texture );
 vertex_delete_buffer( _vbuff );
 
-return [ _image_w, _image_h ];
+return true;
