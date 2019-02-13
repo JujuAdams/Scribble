@@ -1,5 +1,7 @@
 /// @param font_name_array
 
+show_debug_message( "Scribble: Font initialisation started" );
+
 var _font_array = argument0;
 var _font_count = array_length_1d( _font_array );
 
@@ -16,7 +18,7 @@ image_xscale = 1;
 image_yscale = 1;
 
 var _in_gms221 = __scribble_in_gms221();
-if ( _in_gms221 ) show_debug_message( "Using legacy (GMS2.2.0 and prior) compatibility mode" );
+if ( _in_gms221 ) show_debug_message( "Scribble: Using legacy (GMS2.2.0 and prior) compatibility mode" );
 
 
 
@@ -31,15 +33,18 @@ for( var _font = 0; _font < _font_count; _font++ )
     if ( asset_get_type( _name ) == asset_sprite )
     {
         global.__scribble_image_map[? _name ] = asset_get_index( _name );
+        show_debug_message( "Scribble: Found spritefont \"" + _name + "\" (" + string( _font+1 ) + " of " + string( _font_count ) + ")" );
     }
     else
     {
         var _json_file  = SCRIBBLE_FONT_DIRECTORY + _name + ".yy";
         if ( !file_exists( _json_file ) )
         {
-            show_error( "Could not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
+            show_error( "Scribble:\n\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
             continue;
         }
+        
+        show_debug_message( "Scribble: Found font \"" + _name + "\" (" + string( _font+1 ) + " of " + string( _font_count ) + ")" );
         
         var _texture = font_get_texture( _font );
         var _uvs     = font_get_uvs(     _font );
@@ -56,7 +61,7 @@ for( var _font = 0; _font < _font_count; _font++ )
     }
 }
 
-
+show_debug_message( "Scribble: Font surface is " + string( _max_width ) + " x " + string( _max_height ) );
 
 if ( _max_width > 0 ) && ( _max_height > 0 )
 {
@@ -82,6 +87,8 @@ if ( _max_width > 0 ) && ( _max_height > 0 )
                 var _image_w = (_uvs[2] - _uvs[0]) / texture_get_texel_width(  _texture );
                 var _image_h = (_uvs[3] - _uvs[1]) / texture_get_texel_height( _texture );
                 
+                show_debug_message( "Scribble: Drawing font \"" + _name + "\" texture to surface at " + string( _x ) + "," + string( _y ) + " (size=" + string( _image_w ) + "x" + string( _image_h ) + ")" );
+                
                 var _vbuff = vertex_create_buffer();
                 vertex_begin( _vbuff, global.__scribble_vertex_format );
                 vertex_position( _vbuff, _x         , _y          ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_color( _vbuff, c_white, 1 ); vertex_float4( _vbuff, 0,0,0,0 ); vertex_float3( _vbuff, 0,0,0 );
@@ -102,7 +109,7 @@ if ( _max_width > 0 ) && ( _max_height > 0 )
         
     surface_reset_target();
     var _surface_sprite = sprite_create_from_surface( _surface,   0, 0, _max_width, _max_height,  false, false, 0, 0 );
-    surface_save( _surface, "fonts.png" );
+    //surface_save( _surface, "fonts.png" );
 }
 
 
@@ -120,6 +127,8 @@ for( var _font = 0; _font < _font_count; _font++ )
     
     if ( asset_get_type( _name ) == asset_sprite )
     {
+        show_debug_message( "Scribble: Processing characters for spritefont \"" + _name + "\"" );
+        
         #region Sprites
         
         var _sprite = asset_get_index( _name );
@@ -147,6 +156,7 @@ for( var _font = 0; _font < _font_count; _font++ )
         
         //Strip out a map of of glyphs
         var _length = string_length( _sprite_string );
+        show_debug_message( "Scribble: " + string( _length ) + " characters found" );
         for( var _i = 0; _i < _length; _i++ )
         {
             var _char = string_char_at( _sprite_string, _i+1 );
@@ -259,12 +269,15 @@ for( var _font = 0; _font < _font_count; _font++ )
         }
         
         sprite_index = -1;
+        show_debug_message( "Scribble: Spritefont \"" + _name + "\" loaded" );
         
         #endregion
     }
     else
     {
         #region Font
+        
+        show_debug_message( "Scribble: Processing characters for font \"" + _name + "\"" );
         
         var _texture = sprite_get_texture( _surface_sprite, 0 );
         var _texture_tw = texture_get_texel_width(  _texture );
@@ -289,6 +302,7 @@ for( var _font = 0; _font < _font_count; _font++ )
         
         var _glyph_list = _json[? "glyphs" ];
         var _size = ds_list_size( _glyph_list );
+        show_debug_message( "Scribble: " + string( _size ) + " characters found" );
         for( var _i = 0; _i < _size; _i++ )
         {
             var _glyph_map = _glyph_list[| _i ];
@@ -326,14 +340,14 @@ for( var _font = 0; _font < _font_count; _font++ )
         }
         
         ds_map_destroy( _json );
+        show_debug_message( "Scribble: Font \"" + _name + "\" loaded" );
         
         #endregion
     }
-    
-    show_debug_message( "Scribble: \"" + _name + "\" loaded" );
 }
 
 
+show_debug_message( "Scribble: Font initialisation complete" );
 
 x = _old_x;
 y = _old_y;
