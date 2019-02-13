@@ -6,7 +6,7 @@ attribute vec3 in_Position;
 attribute vec2 in_TextureCoord;
 attribute vec4 in_Colour;
 attribute vec4 in_Colour2; //Character / Word / Line index / Sprite+Image index
-attribute vec3 in_Colour3; //Extra data
+attribute vec3 in_Colour3; //Extra data (wave/shake/rainbow)
 
 
 
