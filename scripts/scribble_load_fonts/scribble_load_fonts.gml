@@ -16,7 +16,7 @@ image_xscale = 1;
 image_yscale = 1;
 
 var _in_gms221 = __scribble_in_gms221();
-if ( _in_gms221 ) show_debug_message( "Using GMS2.2.1 code" );
+if ( _in_gms221 ) show_debug_message( "Using legacy (GMS2.2.0 and prior) compatibility mode" );
 
 
 

@@ -46,12 +46,11 @@ draw_set_alpha( _base_alpha );
 var _char_count = 0;
 var _total_chars = _json[? "char fade t" ] * _json[? "length" ];
 
-var _real_x      = _x + _json[? "left" ];
-var _real_y      = _y + _json[? "top" ];
-var _vbuff_list  = _json[? "vertex buffer list" ];
-var _vbuff_count = ds_list_size( _vbuff_list );
+var _real_x = _x + _json[? "left" ];
+var _real_y = _y + _json[? "top" ];
 
-if ( _real_x != 0 ) || ( _real_y != 0 ) {
+if ( _real_x != 0 ) || ( _real_y != 0 )
+{
     var _old_matrix = matrix_get( matrix_world );
     var _matrix;
     _matrix[15] =  1;
@@ -68,23 +67,23 @@ var _hyperlink_colour = _json[? "hyperlink colour" ];
 
 var _text_root_list = _json[? "lines list" ];
 var _lines_count = ds_list_size( _text_root_list );
-for( var _line = 0; _line < _lines_count; _line++ ) {
-    
+for( var _line = 0; _line < _lines_count; _line++ )
+{
     var _line_json = _text_root_list[| _line ];
     var _line_x = _line_json[? "x" ];
     var _line_y = _line_json[? "y" ];
     
     var _words_list = _line_json[? "words" ];
     var _words_count = ds_list_size( _words_list );
-    for( var _word = 0; _word < _words_count; _word++ ) {
-        
+    for( var _word = 0; _word < _words_count; _word++ )
+    {
         var _word_map  = _words_list[| _word ];
         var _x         = _word_map[?      "x" ] + _line_x;
         var _y         = _word_map[?      "y" ] + _line_y;
         var _sprite    = _word_map[? "sprite" ];
         
-        if ( _sprite >= 0 ) {
-            
+        if ( _sprite >= 0 )
+        {
             if ( _char_count + 1 > _total_chars ) continue;
             ++_char_count;
             
@@ -92,46 +91,54 @@ for( var _line = 0; _line < _lines_count; _line++ ) {
             _x -= sprite_get_xoffset( _sprite );
             _y -= sprite_get_yoffset( _sprite );
             
-            if ( _sprite_slot == undefined ) {
+            if ( _sprite_slot == undefined )
+            {
                 draw_sprite( _sprite, _word_map[? "image" ], _x, _y );
-            } else {
+            }
+            else 
+            {
                 draw_sprite( _sprite, _sprite_slot_array[ _sprite_slot ], _x, _y );
             }
-            
-        } else {
-            
+        }
+        else
+        {
             var _string    = _word_map[?    "string" ];
             var _length    = _word_map[?    "length" ];
             var _font_name = _word_map[?      "font" ];
             var _colour    = _word_map[?    "colour" ];
             var _hyperlink = _word_map[? "hyperlink" ];
             
-            if ( _char_count + _length > _total_chars ) {
+            if ( _char_count + _length > _total_chars )
+            {
                 _string = string_copy( _string, 1, _total_chars - _char_count );
                 _char_count = _total_chars;
-            } else {
+            }
+            else
+            {
                 _char_count += _length;
             }
             
-            if ( _hyperlink != "" ) {
+            if ( _hyperlink != "" )
+            {
                 var _hyperlink_map = _hyperlinks[? _hyperlink ];
                 var _hyperlink_mix = _hyperlink_map[? "mix" ];
                 _colour = merge_colour( _colour, _hyperlink_colour, _hyperlink_mix );
             }
             
             var _font = asset_get_index( _font_name );
-            if ( _font >= 0 ) && ( asset_get_type( _font_name ) == asset_font ) {
+            if ( _font >= 0 ) && ( asset_get_type( _font_name ) == asset_font )
+            {
                 draw_set_font( _font );
-            } else {
+            }
+            else
+            {
                 var _font = global.__scribble_sprite_font_map[? _font_name ];
                 if ( _font != undefined ) draw_set_font( _font );
             }
             
             draw_set_colour( _colour );
             draw_text( _x, _y, _string );
-            
         }
-        
         if ( _char_count >= _total_chars ) break;
     }
     if ( _char_count >= _total_chars ) break;

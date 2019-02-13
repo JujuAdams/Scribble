@@ -81,18 +81,21 @@ if ( _do_hyperlinks )
         }
     }
 
-    for( var _key = ds_map_find_first( _hyperlinks ); _key != undefined; _key = ds_map_find_next( _hyperlinks, _key ) ) {
-    
+    for( var _key = ds_map_find_first( _hyperlinks ); _key != undefined; _key = ds_map_find_next( _hyperlinks, _key ) )
+    {
         var _map   = _hyperlinks[? _key ];
-        var _index = _map[? "index" ];
+        //var _index = _map[? "index" ];
     
-        if ( _map[? "over" ] ) {
-        
+        if ( _map[? "over" ] )
+        {
             _map[? "mix" ] = min( _map[? "mix" ] + _hyperlink_fade_in, 1 );
         
-            if ( mouse_check_button_pressed( mb_left ) ) {
+            if ( mouse_check_button_pressed( mb_left ) )
+            {
                 _map[? "down" ] = true;
-            } else if ( !mouse_check_button( mb_left ) && _map[? "down" ] ) {
+            }
+            else if ( !mouse_check_button( mb_left ) && _map[? "down" ] )
+            {
                 _map[? "down" ] = false;
                 _map[? "clicked" ] = true;
                 if ( script_exists( _map[? "script" ] ) ) script_execute( _map[? "script" ] );
@@ -101,17 +104,14 @@ if ( _do_hyperlinks )
                     return undefined;
                 }
             }
-        
-        } else {
-        
+        }
+        else
+        {
             _map[? "down" ] = false;
             _map[? "mix"  ] = max( _map[? "mix" ] - _hyperlink_fade_out, 0 );
-        
         }
-    
     }
-
-#endregion
+    #endregion
 }
 
 return _json;

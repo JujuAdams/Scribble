@@ -187,7 +187,6 @@ for( var _i = 0; _i < _separator_count; _i++ )
 {
     var _sep_prev_char = _sep_char;
         _sep_char = _separator_list[| _i ];
-    var _sep_pos  =  _position_list[| _i ];
     
     if ( _new_word ) _word_array[@ E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = _sep_char;
     _new_word = false;
@@ -603,8 +602,6 @@ var _textbox_height = _line_array[ E_SCRIBBLE_LINE.Y ] + _line_array[ E_SCRIBBLE
   
 _json[? "width"  ] = _textbox_width;
 _json[? "height" ] = _textbox_height;
-
-var _hyperlink_region_size = ds_list_size( _hyperlink_regions_list );
 
 //Adjust word positions
 for( var _line = 0; _line < _lines_size; _line++ )
