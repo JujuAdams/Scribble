@@ -11,8 +11,8 @@
 
 #region -- Internal Definitions --
 
-#macro __SCRIBBLE_VERSION "02.04.00"
-#macro __SCRIBBLE_DATE    "2018/02/05"
+#macro __SCRIBBLE_VERSION "2.5.0"
+#macro __SCRIBBLE_DATE    "2018/02/13"
 
 #macro SCRIBBLE_VERTEX_FORMAT    global.__scribble_vertex_format
 #macro SCRIBBLE_MAX_HYPERLINKS   4 //Additionally change the constant in shScribble
