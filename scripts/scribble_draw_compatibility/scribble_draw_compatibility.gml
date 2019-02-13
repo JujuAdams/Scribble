@@ -10,6 +10,10 @@ var _y               = ((argument_count > 2) && (argument[2] != undefined))? arg
 var _do_hyperlinks   = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : true;
 var _do_sprite_slots = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : true;
 
+var _old_matrix = undefined;
+var _old_halign = draw_get_halign();
+var _old_valign = draw_get_valign();
+var _old_font   = draw_get_font();
 var _old_alpha  = draw_get_alpha();
 var _old_colour = draw_get_colour();
 
@@ -20,13 +24,13 @@ if ( _do_hyperlinks )
     var _mix_array = array_create( SCRIBBLE_MAX_HYPERLINKS, 0 );
     var _hyperlinks = _json[? "hyperlinks" ];
     var _hyperlink_list = _json[? "hyperlink list" ];
-    var _size = min( SCRIBBLE_MAX_HYPERLINKS, ds_list_size( _hyperlink_list ) );
-    for( var _i = 0; _i < _size; _i++ ) {
     
+    var _size = min( SCRIBBLE_MAX_HYPERLINKS, ds_list_size( _hyperlink_list ) );
+    for( var _i = 0; _i < _size; _i++ )
+    {
         var _hyperlink_name = _hyperlink_list[| _i ];
         var _hyperlink_map = _hyperlinks[? _hyperlink_name ];
         _mix_array[ _i ] = _hyperlink_map[? "mix" ];
-    
     }
 }
 
@@ -34,6 +38,7 @@ if ( _do_sprite_slots )
 {
     var _sprite_slot_array = array_create( SCRIBBLE_MAX_SPRITE_SLOTS, 0 );
     var _sprite_slot_list = _json[? "sprite slots" ];
+    
     var _size = ds_list_size( _sprite_slot_list );
     for( var _i = 0; _i < _size; _i++ ) {
         var _slot_map = _sprite_slot_list[| _i ];
@@ -146,6 +151,10 @@ for( var _line = 0; _line < _lines_count; _line++ )
     if ( _char_count >= _total_chars ) break;
 }
 
+draw_set_halign( _old_halign );
+draw_set_valign( _old_valign );
+draw_set_font(   _old_font   );
 draw_set_colour( _old_colour );
-draw_set_alpha( _old_alpha );
-if ( _x != 0 ) || ( _y != 0 ) matrix_set( matrix_world, _old_matrix );
+draw_set_alpha(  _old_alpha  );
+
+if ( _old_matrix != undefined ) matrix_set( matrix_world, _old_matrix );
