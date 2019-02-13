@@ -69,31 +69,31 @@ var _text_root_list = _json[? "lines list" ];
 var _lines_count = ds_list_size( _text_root_list );
 for( var _line = 0; _line < _lines_count; _line++ )
 {
-    var _line_json = _text_root_list[| _line ];
-    var _line_x = _line_json[? "x" ];
-    var _line_y = _line_json[? "y" ];
+    var _line_array = _text_root_list[| _line ];
+    var _line_x = _line_array[ E_SCRIBBLE_LINE.X ];
+    var _line_y = _line_array[ E_SCRIBBLE_LINE.Y ];
     
-    var _words_list = _line_json[? "words" ];
-    var _words_count = ds_list_size( _words_list );
+    var _line_word_array = _line_array[ E_SCRIBBLE_LINE.WORDS ];
+    var _words_count = array_length_1d( _line_word_array );
     for( var _word = 0; _word < _words_count; _word++ )
     {
-        var _word_map  = _words_list[| _word ];
-        var _x         = _word_map[?      "x" ] + _line_x;
-        var _y         = _word_map[?      "y" ] + _line_y;
-        var _sprite    = _word_map[? "sprite" ];
+        var _word_array = _line_word_array[ _word ];
+        var _x          = _word_array[ E_SCRIBBLE_WORD.X      ] + _line_x;
+        var _y          = _word_array[ E_SCRIBBLE_WORD.Y      ] + _line_y;
+        var _sprite     = _word_array[ E_SCRIBBLE_WORD.SPRITE ];
         
         if ( _sprite >= 0 )
         {
             if ( _char_count + 1 > _total_chars ) continue;
             ++_char_count;
             
-            var _sprite_slot = _word_map[? "sprite slot" ];
+            var _sprite_slot = _word_array[ E_SCRIBBLE_WORD.SPRITE_SLOT ];
             _x -= sprite_get_xoffset( _sprite );
             _y -= sprite_get_yoffset( _sprite );
             
             if ( _sprite_slot == undefined )
             {
-                draw_sprite( _sprite, _word_map[? "image" ], _x, _y );
+                draw_sprite( _sprite, _word_array[ E_SCRIBBLE_WORD.IMAGE ], _x, _y );
             }
             else 
             {
@@ -102,11 +102,11 @@ for( var _line = 0; _line < _lines_count; _line++ )
         }
         else
         {
-            var _string    = _word_map[?    "string" ];
-            var _length    = _word_map[?    "length" ];
-            var _font_name = _word_map[?      "font" ];
-            var _colour    = _word_map[?    "colour" ];
-            var _hyperlink = _word_map[? "hyperlink" ];
+            var _string    = _word_array[ E_SCRIBBLE_WORD.STRING    ];
+            var _length    = _word_array[ E_SCRIBBLE_WORD.LENGTH    ];
+            var _font_name = _word_array[ E_SCRIBBLE_WORD.FONT      ];
+            var _colour    = _word_array[ E_SCRIBBLE_WORD.COLOUR    ];
+            var _hyperlink = _word_array[ E_SCRIBBLE_WORD.HYPERLINK ];
             
             if ( _char_count + _length > _total_chars )
             {
