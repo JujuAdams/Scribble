@@ -657,6 +657,6 @@ ds_list_destroy( _separator_list );
 ds_list_destroy( _position_list );
 ds_list_destroy( _parameters_list );
 
-show_debug_message( "scribble_create() took " + string( get_timer() - _timer ) + "us" );
+show_debug_message( "scribble_create() took " + string( (get_timer() - _timer)/1000 ) + "ms" );
 
 return _json;
