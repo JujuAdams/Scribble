@@ -303,6 +303,14 @@
             }
         },
         {
+            "Key": "3e1a48a7-b769-4d4f-8246-51c3021ad641",
+            "Value": {
+                "id": "fcec5e9f-01fc-478d-b121-50e31c7acff7",
+                "resourcePath": "scripts\\__scribble_draw_font_texture\\__scribble_draw_font_texture.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "41a4ab61-6627-485e-a01b-c23c177c916e",
             "Value": {
                 "id": "4a9f845a-e929-4be8-8062-87b7b56c0a62",
@@ -999,6 +1007,14 @@
             }
         },
         {
+            "Key": "c2d60cf9-ffb4-42bd-a0c7-c7cf77ca5452",
+            "Value": {
+                "id": "56f40119-8e95-4e4d-8b63-97f5328b5535",
+                "resourcePath": "datafiles_yy\\Fonts\\fChineseTest.yy.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "c39d5f2a-a3f2-46be-9ac8-35f0203336cc",
             "Value": {
                 "id": "f791940e-167a-445d-b833-0f746337f238",
@@ -1199,6 +1215,14 @@
             }
         },
         {
+            "Key": "ed7bf3dd-c437-4d69-a9e3-133bbf5000f5",
+            "Value": {
+                "id": "878bde36-1ef6-4b6a-b250-f2e513c33b20",
+                "resourcePath": "fonts\\fChineseTest\\fChineseTest.yy",
+                "resourceType": "GMFont"
+            }
+        },
+        {
             "Key": "f418569b-3bdd-4706-a0e4-364317f54032",
             "Value": {
                 "id": "f0cb9727-2298-4848-9f10-5fabdd8d25b9",
@@ -1242,6 +1266,7 @@
         "af003c68-d106-4feb-b68b-86eb2df45e37",
         "9037e147-def6-41fd-842a-036094a9dc58",
         "d3cd0568-2965-4817-ac3a-9487f23a70f1",
+        "3e1a48a7-b769-4d4f-8246-51c3021ad641",
         "89e8adda-438e-48f9-ab78-0e8b396b3850",
         "375e7330-6e30-4902-8a42-dbc8ad380c16",
         "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
