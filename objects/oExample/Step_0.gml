@@ -5,7 +5,7 @@ scribble_step( json,   x, y,   mouse_x, mouse_y );
 //Certain events ("break"/"pause") can interrupt scanning so the character position may end up less than expected
 //This means we need to pass the character position back into the variable
 //(Bear in mind that in compatibility mode, event callbacks are not scanned nor executed)
-char_pos = scribble_events_scan_range( json, char_pos, char_pos + 0.5 );
+char_pos = scribble_events_scan_range( json, char_pos, char_pos + 0.2 );
     
 //Run scripts for each type of event we found
 //(Bear in mind that in compatibility mode, event callbacks are not scanned nor executed)
