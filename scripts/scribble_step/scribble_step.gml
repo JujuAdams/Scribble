@@ -9,7 +9,12 @@ var _do_typewriter = ((argument_count > 1) && (argument[1] != undefined))? argum
 #region Events
 
 global.__scribble_host_destroyed = false;
-scribble_events_clear( _json );
+
+//Clear this JSON's events state
+ds_list_clear( _json[? "events triggered list" ] );
+ds_map_clear(  _json[? "events triggered map"  ] );
+ds_map_clear(  _json[? "events changed map"    ] );
+ds_map_clear(  _json[? "events different map"  ] );
 
 if ( _do_typewriter )
 {
@@ -17,7 +22,6 @@ if ( _do_typewriter )
     var _tw_pos   = _json[? "typewriter position" ];
     
     _tw_pos = scribble_events_scan_range( _json, _tw_pos, _tw_pos + _tw_speed );
-    scribble_events_callback( _json,   "sound", oExample_handle_sound,   "portrait", oExample_handle_portrait );
     _tw_pos = min( _tw_pos, scribble_get_length( _json ) );
     scribble_set_char_fade_in( _json, _tw_pos );
     

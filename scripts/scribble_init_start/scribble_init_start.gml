@@ -15,6 +15,7 @@ global.__scribble_cache_map         = ds_map_create();
 global.__scribble_sprite_font_map   = ds_map_create();
 global.__scribble_sprites           = ds_list_create();
 global.__scribble_custom_colours    = ds_map_create();
+global.__scribble_events            = ds_map_create();
 global.__scribble_host_destroyed    = false;
 global.__scribble_init_font_array   = [];
 global.__scribble_default_font      = "";

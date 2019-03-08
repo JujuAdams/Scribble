@@ -8,7 +8,8 @@
         "375e7330-6e30-4902-8a42-dbc8ad380c16",
         "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
         "3a184a7c-b4e5-457f-865c-aa18b0b9fcbf",
-        "bc334b9f-3e78-4213-8e02-f63a7b8776d3"
+        "bc334b9f-3e78-4213-8e02-f63a7b8776d3",
+        "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd"
     ],
     "filterType": "GMScript",
     "folderName": "Setup",

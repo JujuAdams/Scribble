@@ -76,4 +76,17 @@ for( var _char = _char_a+1; _char <= _char_b; _char++ )
     }
 }
 
+var _triggered_list = _json[? "events triggered list" ];
+var _value_map      = _json[? "events value map"      ];
+var _changed_map    = _json[? "events changed map"    ];
+var _different_map  = _json[? "events different map"  ];
+
+var _triggered_count = ds_list_size( _triggered_list );
+for( var _event = 0; _event < _triggered_count; _event++ )
+{
+    var _event_name = _triggered_list[| _event ];
+    var _script = global.__scribble_events[? _event_name ];
+    if ( _script != undefined ) script_execute( _script, _json, _value_map[? _event_name ], _changed_map[? _event_name ], _different_map[? _event_name ] );
+}
+
 return _char_end;

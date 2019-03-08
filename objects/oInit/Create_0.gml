@@ -9,6 +9,10 @@ scribble_init_end();
 //Define a custom colour for use later in our text
 scribble_add_custom_colour( "c_test", make_colour_rgb( 100, 150, 200 ) );
 
+//You can define custom events that execute scripts
+//Here's a basic example of playing a sound
+scribble_add_event( "sound", play_sound_example );
+
 //We're finished here, so destroy this instance and move to the next room
 instance_destroy();
 room_goto_next();

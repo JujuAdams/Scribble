@@ -14,6 +14,3 @@ scribble_set_box_alignment( json, fa_center, fa_middle );
 scribble_set_sprite_slot_speed( json, 0, 0.1 );
 scribble_set_sprite_slot_image( json, 1, 1   );
 scribble_set_sprite_slot_speed( json, 1, 0.2 );
-
-//Variable to track which character of the string we've revealed
-//char_pos = 0;
