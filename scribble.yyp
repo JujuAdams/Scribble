@@ -127,14 +127,6 @@
             }
         },
         {
-            "Key": "264604f9-b4d9-497c-952b-d39608faf127",
-            "Value": {
-                "id": "f12d691b-d569-4740-9544-f91117fef432",
-                "resourcePath": "scripts\\scribble_basic_draw\\scribble_basic_draw.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "2a20c65d-c14a-48e7-9c93-1cb705f18736",
             "Value": {
                 "id": "cead518f-1a6e-4c2e-bd22-c52f7bfcc792",
@@ -815,14 +807,6 @@
             }
         },
         {
-            "Key": "aa8d4049-f4ef-4594-bf5d-6b0bb90f0aee",
-            "Value": {
-                "id": "99933ad0-8803-4e1a-b96c-d62bdc31feed",
-                "resourcePath": "scripts\\scribble_basic_manual_make\\scribble_basic_manual_make.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "aa978402-d26f-4c96-9d71-9d3ae1229413",
             "Value": {
                 "id": "04114292-3fa8-4d4e-9a00-e44d70c07a00",
@@ -943,14 +927,6 @@
             }
         },
         {
-            "Key": "c16bc21c-277e-4cea-9c20-ce39745a0430",
-            "Value": {
-                "id": "21d95e87-7757-428a-ac96-ba7a312b3a87",
-                "resourcePath": "scripts\\scribble_basic_manual_draw\\scribble_basic_manual_draw.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "c2d60cf9-ffb4-42bd-a0c7-c7cf77ca5452",
             "Value": {
                 "id": "56f40119-8e95-4e4d-8b63-97f5328b5535",
@@ -971,14 +947,6 @@
             "Value": {
                 "id": "63678702-206e-457b-8663-7692fe299513",
                 "resourcePath": "views\\c459431b-207e-415b-b3a7-92d0d49053d1.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "c57a078b-9269-49d5-9c0e-ad032982f126",
-            "Value": {
-                "id": "015f2c70-a0fe-445a-bdcf-53d855e7c384",
-                "resourcePath": "views\\c57a078b-9269-49d5-9c0e-ad032982f126.yy",
                 "resourceType": "GMFolder"
             }
         },
@@ -1229,9 +1197,6 @@
         "cb08b753-39b6-42d9-a1ed-97f5b3ee1e10",
         "afc5a9d3-812e-4fe0-a470-125760409f74",
         "963dfbc6-d5a2-48c1-b2ed-1eb466d455fb",
-        "264604f9-b4d9-497c-952b-d39608faf127",
-        "aa8d4049-f4ef-4594-bf5d-6b0bb90f0aee",
-        "c16bc21c-277e-4cea-9c20-ce39745a0430",
         "df6df2ef-b108-4a0d-b542-812338df9817",
         "86be87df-87d5-438a-a8e0-49bc2ac80815",
         "b94ea7f5-36e2-4f93-bf04-8eca82ed17a2",

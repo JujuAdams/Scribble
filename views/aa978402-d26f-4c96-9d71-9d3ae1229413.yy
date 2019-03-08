@@ -17,7 +17,7 @@
         "41eaa15d-6b46-4b31-9a37-fcbba2abcefa"
     ],
     "filterType": "GMScript",
-    "folderName": "Advanced",
+    "folderName": "Core",
     "isDefaultView": false,
     "localisedFolderName": ""
 }
