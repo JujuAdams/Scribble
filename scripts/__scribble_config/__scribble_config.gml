@@ -9,7 +9,7 @@
 #macro SCRIBBLE_DEFAULT_LINE_SMOOTHNESS      0
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED     0.2
 
-#macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false //GMS2.2.1 made spritefonts much more spaced out for some reason
+#macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
 #macro SCRIBBLE_HASH_NEWLINE                       true //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COMPATIBILITY_MODE                false //Forces Scribble functions to use GM's native renderer. Turn this on if certain platforms are causing problems
 
@@ -19,8 +19,6 @@
 
 #macro __SCRIBBLE_VERSION "2.5.0 (light)"
 #macro __SCRIBBLE_DATE    "2019/03/08"
-
-#macro SCRIBBLE_VERTEX_FORMAT    global.__scribble_vertex_format
 
 enum E_SCRIBBLE_WORD
 {

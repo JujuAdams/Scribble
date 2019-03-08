@@ -20,7 +20,7 @@ if ( _do_typewriter )
     var _tw_pos   = _json[? "typewriter position" ];
     
     _tw_pos = scribble_events_scan_range( _json, _tw_pos, _tw_pos + _tw_speed );
-    _tw_pos = min( _tw_pos, scribble_get_length( _json ) );
+    _tw_pos = min( _tw_pos, _json[? "length" ] );
     scribble_set_char_fade_in( _json, _tw_pos );
     
     _json[? "typewriter position" ] = _tw_pos;
