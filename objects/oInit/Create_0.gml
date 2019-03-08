@@ -6,6 +6,9 @@ scribble_init_add_spritefont( "sSpriteFont", 3 ); //GM's spritefont renderer han
 scribble_init_add_font( "fChineseTest" );
 scribble_init_end();
 
+//Define a custom colour for use later in our text
+scribble_add_custom_colour( "c_test", make_colour_rgb( 100, 150, 200 ) );
+
 //We're finished here, so destroy this instance and move to the next room
 instance_destroy();
 room_goto_next();

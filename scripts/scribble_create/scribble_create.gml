@@ -425,8 +425,8 @@ for( var _i = 0; _i < _separator_count; _i++ )
                         else
                         {
                             #region Colours
-                            var _colour = __scribble_string_to_colour( _parameters_list[| 0] ); //Test if it's a colour
-                            if ( _colour != noone )
+                            var _colour = global.__scribble_custom_colours[? _parameters_list[| 0] ]; //Test if it's a colour
+                            if ( _colour != undefined )
                             {
                                 _text_colour = _colour;
                             }
