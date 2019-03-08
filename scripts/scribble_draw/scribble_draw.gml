@@ -135,11 +135,12 @@ else
     
     shader_set( shScribbleLight );
     shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fTime" ), SCRIBBLE_TIME );
-
-    scribble_shader_alpha(          draw_get_alpha() ); //Feature reduced in "light" version, now inherits draw_get_alpha()
-    scribble_shader_options(        _json[? "wave size" ], _json[? "shake size" ], _json[? "rainbow weight" ] );
-    scribble_shader_character_fade( _json[? "char fade t" ], _json[? "char fade smoothness" ] );
-    scribble_shader_line_fade(      _json[? "line fade t" ], _json[? "line fade smoothness" ] );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fAlpha" ), draw_get_alpha() );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_vOptions" ), _json[? "wave size" ], _json[? "shake size" ], _json[? "rainbow weight" ] );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fCharFadeT"          ), _json[? "char fade t" ] / (1-_json[? "char fade smoothness" ]) );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fCharFadeSmoothness" ), _json[? "char fade smoothness" ] );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fLineFadeT"          ), _json[? "line fade t" ] / (1-_json[? "line fade smoothness" ]) );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fLineFadeSmoothness" ), _json[? "line fade smoothness" ] );
     
     for( var _i = 0; _i < _vbuff_count; _i++ )
     {
