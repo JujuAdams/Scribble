@@ -7,6 +7,7 @@
 #macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT       0.4
 #macro SCRIBBLE_DEFAULT_CHARACTER_SMOOTHNESS 0
 #macro SCRIBBLE_DEFAULT_LINE_SMOOTHNESS      0
+#macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED     0.2
 
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false //GMS2.2.1 made spritefonts much more spaced out for some reason
 #macro SCRIBBLE_HASH_NEWLINE                       true //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour

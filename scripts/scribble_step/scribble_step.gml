@@ -1,20 +1,29 @@
-/// @description Handles mouse clicks for a Scribble JSON
+/// @description Sprite animation and text typewriter-ing
 ///
 /// @param json
-/// @param x
-/// @param y
-/// @param mouse_x
-/// @param mouse_y
+/// @param [do_typewriter]
 
 var _json          = argument[0];
-var _x             = argument[1];
-var _y             = argument[2];
-var _mouse_x       = argument[3];
-var _mouse_y       = argument[4];
+var _do_typewriter = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : true;
 
-#region Clear Event State
+#region Events
+
 global.__scribble_host_destroyed = false;
 scribble_events_clear( _json );
+
+if ( _do_typewriter )
+{
+    var _tw_speed = _json[? "typewriter speed"    ];
+    var _tw_pos   = _json[? "typewriter position" ];
+    
+    _tw_pos = scribble_events_scan_range( _json, _tw_pos, _tw_pos + _tw_speed );
+    scribble_events_callback( _json,   "sound", oExample_handle_sound,   "portrait", oExample_handle_portrait );
+    _tw_pos = min( _tw_pos, scribble_get_length( _json ) );
+    scribble_set_char_fade_in( _json, _tw_pos );
+    
+    _json[? "typewriter position" ] = _tw_pos;
+}
+
 #endregion
 
 #region Animate Sprite Slots
