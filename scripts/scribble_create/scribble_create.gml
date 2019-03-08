@@ -360,8 +360,15 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     {
                         #region Change font
                         _text_font = _parameters_list[| 0];
-                        _font_space_width = scribble_font_char_get_width(  _text_font, " " );
-                        _font_line_height = scribble_font_char_get_height( _text_font, " " );
+                        
+                        var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
+                        var _array = _font_glyphs_map[? " " ];
+                        _font_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
+                        
+                        var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
+                        var _array = _font_glyphs_map[? " " ];
+                        _font_line_height = _array[ __E_SCRIBBLE_GLYPH.H ];
+                        
                         _skip = true;
                         #endregion
                     }
@@ -446,9 +453,40 @@ for( var _i = 0; _i < _separator_count; _i++ )
         #endregion
     }
     else
-    {  
-        _substr_width  = scribble_font_string_get_width(  _text_font, _substr );
-        _substr_height = scribble_font_char_get_height(   _text_font, " " ); //_substr_height = scribble_font_string_get_height( _text_font, _substr );
+    {
+        //Find the substring width
+        var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
+
+        var _x            = 0;
+        var _substr_width = 0;
+
+        var _length = string_length( _substr );
+        for( var _j = 1; _j <= _length-1; _j++ ) {
+    
+            var _char = string_copy( _substr, _j, 1 );
+            if ( ord( _char ) == 10 ) _x = 0;
+    
+            var _array = _font_glyphs_map[? _char ];
+            if ( _array == undefined ) continue;
+    
+            _x += _array[ __E_SCRIBBLE_GLYPH.SHF ];
+            _substr_width = max( _substr_width, _x );
+    
+        }
+
+        var _char = string_copy( _substr, _length, 1 );
+        var _array = _font_glyphs_map[? _char ];
+        if ( _array != undefined ) {
+            _x += _array[ __E_SCRIBBLE_GLYPH.DX ] + _array[ __E_SCRIBBLE_GLYPH.W ];
+            _substr_width = max( _substr_width, _x );
+        }
+        
+        //Choose the height of a space for the substring's height
+        var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
+        var _array = _font_glyphs_map[? argument1 ];
+        return _array[ __E_SCRIBBLE_GLYPH.H ];
+        
+        _substr_height = scribble_font_char_get_height(   _text_font, " " );
     }
     
     #region Position and store word

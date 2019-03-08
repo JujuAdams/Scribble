@@ -55,14 +55,6 @@
             }
         },
         {
-            "Key": "07d26665-c291-43f4-a732-3bb30ae4f4c6",
-            "Value": {
-                "id": "960eb3d6-c3b5-4a7d-8476-9d7b94562238",
-                "resourcePath": "scripts\\scribble_font_string_get_height\\scribble_font_string_get_height.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "0983f652-6ae8-4dd0-b1df-11881acb290e",
             "Value": {
                 "id": "a9052d48-7523-437f-a0e1-597cc264b99d",
@@ -107,14 +99,6 @@
             "Value": {
                 "id": "5da28761-52ff-4d6d-875d-e4611a7a909f",
                 "resourcePath": "scripts\\scribble_draw_compatibility\\scribble_draw_compatibility.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "2c474d18-4795-46cc-a042-6c47e90349f9",
-            "Value": {
-                "id": "8b0e5acb-3e92-4d73-adc2-556c7928d000",
-                "resourcePath": "scripts\\scribble_font_string_get_width\\scribble_font_string_get_width.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -339,14 +323,6 @@
             "Value": {
                 "id": "9cce4eaf-8054-466c-92f5-66d1f4bf7507",
                 "resourcePath": "scripts\\scribble_shader_line_fade\\scribble_shader_line_fade.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "62c177d1-ed38-48ee-ad2e-6cc9acc82598",
-            "Value": {
-                "id": "e7f57c92-300c-4b77-8da3-8add9f7cd5ed",
-                "resourcePath": "scripts\\scribble_font_char_get_width\\scribble_font_char_get_width.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -939,10 +915,7 @@
         "458f3ba1-9107-4d23-b40e-5ac42f748629",
         "c74fb735-85c2-40e9-9ff3-a8be707292b6",
         "de8e46c6-6932-4ddf-8e6f-bf23cab25515",
-        "62c177d1-ed38-48ee-ad2e-6cc9acc82598",
         "25e350ed-4075-46e3-b19b-0e7e850c59aa",
-        "2c474d18-4795-46cc-a042-6c47e90349f9",
-        "07d26665-c291-43f4-a732-3bb30ae4f4c6",
         "df6df2ef-b108-4a0d-b542-812338df9817",
         "86be87df-87d5-438a-a8e0-49bc2ac80815",
         "b94ea7f5-36e2-4f93-bf04-8eca82ed17a2",
