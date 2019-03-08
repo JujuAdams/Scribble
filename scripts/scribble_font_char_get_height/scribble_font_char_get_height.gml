@@ -1,4 +1,6 @@
 /// @param font
 /// @param character
 
-return __scribble_font_char_get_property( argument0, argument1, __E_SCRIBBLE_GLYPH.H );
+var _font_glyphs_map = global.__scribble_glyphs_map[? argument0 ];
+var _array = _font_glyphs_map[? argument1 ];
+return _array[ __E_SCRIBBLE_GLYPH.H ];

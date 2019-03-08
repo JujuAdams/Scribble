@@ -703,14 +703,6 @@
             }
         },
         {
-            "Key": "af003c68-d106-4feb-b68b-86eb2df45e37",
-            "Value": {
-                "id": "f87e9752-f4c3-4765-ba4c-05eb7a5ba607",
-                "resourcePath": "scripts\\__scribble_font_char_get_property\\__scribble_font_char_get_property.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "b1d302c2-0fa0-4efb-8e77-0aa33c500be6",
             "Value": {
                 "id": "c82b71e2-a66c-43a9-a7c4-597472cf21f2",
@@ -964,7 +956,6 @@
         "acb26a39-8033-4289-87d0-228ed7921bc8",
         "7dddb463-46f0-4bec-b07b-0cef53bc6061",
         "e316a90a-0519-41f7-ac12-d02c46bf2b2a",
-        "af003c68-d106-4feb-b68b-86eb2df45e37",
         "d3cd0568-2965-4817-ac3a-9487f23a70f1",
         "3e1a48a7-b769-4d4f-8246-51c3021ad641",
         "86e5f4a9-1c6e-456f-b8a7-a735d8b27ba7",
