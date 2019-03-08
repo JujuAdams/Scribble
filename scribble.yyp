@@ -87,14 +87,6 @@
             }
         },
         {
-            "Key": "1558b790-cdd0-44ee-b943-b3fb39711aee",
-            "Value": {
-                "id": "3021b5e5-1daf-4378-be4e-0c052792a640",
-                "resourcePath": "scripts\\__scribble_font_char_set_property\\__scribble_font_char_set_property.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "2556e855-8983-412c-8d45-8c59e5d89947",
             "Value": {
                 "id": "6dcc3d43-e77d-40d7-b352-598e681ca430",
@@ -599,14 +591,6 @@
             }
         },
         {
-            "Key": "9037e147-def6-41fd-842a-036094a9dc58",
-            "Value": {
-                "id": "84b4b400-2a1d-4864-984d-bbc5100e00e5",
-                "resourcePath": "scripts\\__scribble_submit_vertex_buffer\\__scribble_submit_vertex_buffer.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "91f01296-feff-4575-aaa8-eb403aecfb7c",
             "Value": {
                 "id": "ce3a6f09-2302-435b-a83c-319c2d2706bc",
@@ -1021,9 +1005,7 @@
         "7dddb463-46f0-4bec-b07b-0cef53bc6061",
         "e316a90a-0519-41f7-ac12-d02c46bf2b2a",
         "daa30cee-1636-4fef-a065-02d8785a3f63",
-        "1558b790-cdd0-44ee-b943-b3fb39711aee",
         "af003c68-d106-4feb-b68b-86eb2df45e37",
-        "9037e147-def6-41fd-842a-036094a9dc58",
         "d3cd0568-2965-4817-ac3a-9487f23a70f1",
         "3e1a48a7-b769-4d4f-8246-51c3021ad641",
         "86e5f4a9-1c6e-456f-b8a7-a735d8b27ba7",
