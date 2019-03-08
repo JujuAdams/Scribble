@@ -46,59 +46,50 @@ repeat( _lines_size )
             _previous_font = "";
             
             var _char_pc     = _text_char / _max_char;
-            var _colour      = _word_array[ E_SCRIBBLE_WORD.COLOUR      ];
-            var _rainbow     = _word_array[ E_SCRIBBLE_WORD.RAINBOW     ];
-            var _shake       = _word_array[ E_SCRIBBLE_WORD.SHAKE       ];
-            var _wave        = _word_array[ E_SCRIBBLE_WORD.WAVE        ];
+            var _colour      = _word_array[ E_SCRIBBLE_WORD.COLOUR  ];
+            var _rainbow     = _word_array[ E_SCRIBBLE_WORD.RAINBOW ];
+            var _shake       = _word_array[ E_SCRIBBLE_WORD.SHAKE   ];
+            var _wave        = _word_array[ E_SCRIBBLE_WORD.WAVE    ];
+            var _image       = _word_array[ E_SCRIBBLE_WORD.IMAGE   ];
             
-            var _image_min = _word_array[ E_SCRIBBLE_WORD.IMAGE ];
-            var _image_max = _image_min;
-            var _no_animation = true;
-            
-            var _image = _image_min;
-            repeat( 1 + _image_max - _image_min )
+            var _sprite_texture = sprite_get_texture( _sprite, _image );
+            if ( _sprite_texture != _previous_texture )
             {
-                var _sprite_texture = sprite_get_texture( _sprite, _image );
-                if ( _sprite_texture != _previous_texture )
-                {
-                    _previous_texture = _sprite_texture;
+                _previous_texture = _sprite_texture;
                     
-                    var _vbuff_map = _texture_to_vbuff_map[? _sprite_texture ];
-                    if ( _vbuff_map == undefined )
-                    {
-                        var _vbuff = vertex_create_buffer();
-                        vertex_begin( _vbuff, global.__scribble_vertex_format );
+                var _vbuff_map = _texture_to_vbuff_map[? _sprite_texture ];
+                if ( _vbuff_map == undefined )
+                {
+                    var _vbuff = vertex_create_buffer();
+                    vertex_begin( _vbuff, global.__scribble_vertex_format );
                 
-                        _vbuff_map = ds_map_create();
-                        _vbuff_map[? "vertex buffer" ] = _vbuff;
-                        _vbuff_map[? "sprite"        ] = _sprite;
-                        _vbuff_map[? "texture"       ] = _sprite_texture;
-                        ds_list_add( _vbuff_list, _vbuff_map );
-                        ds_list_mark_as_map( _vbuff_list, ds_list_size( _vbuff_list )-1 );
-                
-                        _texture_to_vbuff_map[? _sprite_texture ] = _vbuff_map;
-                    }
-                    else
-                    {
-                        var _vbuff = _vbuff_map[? "vertex buffer" ];
-                    }
+                    _vbuff_map = ds_map_create();
+                    _vbuff_map[? "vertex buffer" ] = _vbuff;
+                    _vbuff_map[? "sprite"        ] = _sprite;
+                    _vbuff_map[? "texture"       ] = _sprite_texture;
+                    ds_list_add( _vbuff_list, _vbuff_map );
+                    ds_list_mark_as_map( _vbuff_list, ds_list_size( _vbuff_list )-1 );
+                    
+                    _texture_to_vbuff_map[? _sprite_texture ] = _vbuff_map;
                 }
-            
-                var _uvs = sprite_get_uvs( _sprite, _image );
-                var _glyph_l = _word_l  + _uvs[4] + sprite_get_xoffset( _sprite );
-                var _glyph_t = _word_t  + _uvs[5] + sprite_get_yoffset( _sprite );
-                var _glyph_r = _glyph_l + _uvs[6]*sprite_get_width(  _sprite );
-                var _glyph_b = _glyph_t + _uvs[7]*sprite_get_height( _sprite );
-                
-                vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                
-                ++_image;
+                else
+                {
+                    var _vbuff = _vbuff_map[? "vertex buffer" ];
+                }
             }
+            
+            var _uvs = sprite_get_uvs( _sprite, _image );
+            var _glyph_l = _word_l  + _uvs[4] + sprite_get_xoffset( _sprite );
+            var _glyph_t = _word_t  + _uvs[5] + sprite_get_yoffset( _sprite );
+            var _glyph_r = _glyph_l + _uvs[6]*sprite_get_width(  _sprite );
+            var _glyph_b = _glyph_t + _uvs[7]*sprite_get_height( _sprite );
+                
+            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+            vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+            vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
             
             ++_text_char;
             #endregion
