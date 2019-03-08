@@ -11,8 +11,6 @@
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false //GMS2.2.1 made spritefonts much more spaced out for some reason
 #macro SCRIBBLE_HASH_NEWLINE                       true //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COMPATIBILITY_MODE                false //Forces Scribble functions to use GM's native renderer. Turn this on if certain platforms are causing problems
-#macro SCRIBBLE_SAFE_MODE                          true //Pedantic checking
-#macro SCRIBBLE_DEFAULT_SHADER          shScribbleLight
 
 #region -- Internal Definitions --
 
