@@ -351,6 +351,14 @@
             }
         },
         {
+            "Key": "62c177d1-ed38-48ee-ad2e-6cc9acc82598",
+            "Value": {
+                "id": "e7f57c92-300c-4b77-8da3-8add9f7cd5ed",
+                "resourcePath": "scripts\\scribble_font_char_get_width\\scribble_font_char_get_width.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "64852edf-e8a6-439d-8f62-8a11eaa32f8d",
             "Value": {
                 "id": "49ae5d08-acf8-4866-a740-88b10e000efb",
@@ -831,14 +839,6 @@
             }
         },
         {
-            "Key": "daa30cee-1636-4fef-a065-02d8785a3f63",
-            "Value": {
-                "id": "32f83d8f-2dae-4e51-95b0-668a9df92be5",
-                "resourcePath": "scripts\\__scribble_replace_newlines\\__scribble_replace_newlines.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "dab40804-067d-4898-b5fd-736906e548cf",
             "Value": {
                 "id": "e871500f-99e9-4b0d-8eb4-c76c17b9d120",
@@ -859,6 +859,14 @@
             "Value": {
                 "id": "aed70f06-cf51-41a9-967b-cd7da0776870",
                 "resourcePath": "scripts\\scribble_shader_options\\scribble_shader_options.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "de8e46c6-6932-4ddf-8e6f-bf23cab25515",
+            "Value": {
+                "id": "8c880fb3-4b91-43c1-9fae-ac9855eb2f24",
+                "resourcePath": "scripts\\scribble_font_set_space_size\\scribble_font_set_space_size.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -956,7 +964,6 @@
         "acb26a39-8033-4289-87d0-228ed7921bc8",
         "7dddb463-46f0-4bec-b07b-0cef53bc6061",
         "e316a90a-0519-41f7-ac12-d02c46bf2b2a",
-        "daa30cee-1636-4fef-a065-02d8785a3f63",
         "af003c68-d106-4feb-b68b-86eb2df45e37",
         "d3cd0568-2965-4817-ac3a-9487f23a70f1",
         "3e1a48a7-b769-4d4f-8246-51c3021ad641",
@@ -967,6 +974,8 @@
         "3a184a7c-b4e5-457f-865c-aa18b0b9fcbf",
         "458f3ba1-9107-4d23-b40e-5ac42f748629",
         "c74fb735-85c2-40e9-9ff3-a8be707292b6",
+        "de8e46c6-6932-4ddf-8e6f-bf23cab25515",
+        "62c177d1-ed38-48ee-ad2e-6cc9acc82598",
         "25e350ed-4075-46e3-b19b-0e7e850c59aa",
         "2c474d18-4795-46cc-a042-6c47e90349f9",
         "07d26665-c291-43f4-a732-3bb30ae4f4c6",

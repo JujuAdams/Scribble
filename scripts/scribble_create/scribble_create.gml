@@ -10,7 +10,7 @@
 
 var _timer = get_timer();
 
-var _str             = __scribble_replace_newlines( argument[0] );
+var _str             = argument[0];
 var _width_limit     = ((argument_count<2) || (argument[1]==undefined))? 9999999999                                      : argument[1];
 var _def_font        = ((argument_count<3) || (argument[2]==undefined))? global.__scribble_default_font                  : argument[2];
 var _def_halign      = ((argument_count<4) || (argument[3]==undefined))? fa_left                                         : argument[3];
@@ -22,6 +22,14 @@ var _generate_vbuff  = ((argument_count<7) || (argument[6]==undefined))? true   
 var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
 var _array = _font_glyphs_map[? " " ];
 var _def_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
+
+//Strip out weird newlines
+if ( SCRIBBLE_HASH_NEWLINE ) _str = string_replace_all( _str, "#", "\n" );
+_str = string_replace_all( _str, "\n\r", "\n" );
+_str = string_replace_all( _str, "\r\n", "\n" );
+_str = string_replace_all( _str,   "\n", "\n" );
+_str = string_replace_all( _str,  "\\n", "\n" );
+_str = string_replace_all( _str,  "\\r", "\n" );
 
 
 
