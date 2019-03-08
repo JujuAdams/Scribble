@@ -1,4 +1,5 @@
 /// @param spritefont
+/// @param [spaceWidth]
 /// @param [mapString]
 /// @param [separation]
 
@@ -18,17 +19,22 @@ if ( asset_get_type( _font ) != asset_sprite )
 
 if ( argument_count == 1 )
 {
-    global.__scribble_init_font_array[ array_length_1d( global.__scribble_init_font_array ) ] = [ _font, SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING, 0 ];
+    global.__scribble_init_font_array[ array_length_1d( global.__scribble_init_font_array ) ] = [ _font, SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING, 0, undefined ];
     if ( global.__scribble_default_font == "" ) global.__scribble_default_font = _font;
 }
 else if ( argument_count == 2 )
 {
-    global.__scribble_init_font_array[ array_length_1d( global.__scribble_init_font_array ) ] = [ _font, argument[1], 0 ];
+    global.__scribble_init_font_array[ array_length_1d( global.__scribble_init_font_array ) ] = [ _font, SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING, 0, argument[1] ]; //Wacky ordering due to argument order not matching array order
     if ( global.__scribble_default_font == "" ) global.__scribble_default_font = _font;
 }
 else if ( argument_count == 3 )
 {
-    global.__scribble_init_font_array[ array_length_1d( global.__scribble_init_font_array ) ] = [ _font, argument[1], argument[2] ];
+    global.__scribble_init_font_array[ array_length_1d( global.__scribble_init_font_array ) ] = [ _font, argument[2], 0, undefined ];
+    if ( global.__scribble_default_font == "" ) global.__scribble_default_font = _font;
+}
+else if ( argument_count == 4 )
+{
+    global.__scribble_init_font_array[ array_length_1d( global.__scribble_init_font_array ) ] = [ _font, argument[2], argument[3], argument[1] ];
     if ( global.__scribble_default_font == "" ) global.__scribble_default_font = _font;
 }
 else

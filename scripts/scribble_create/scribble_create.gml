@@ -11,17 +11,25 @@
 var _timer = get_timer();
 
 var _str             = argument[0];
-var _width_limit     = ((argument_count<2) || (argument[1]==undefined))? 9999999999                                      : argument[1];
-var _def_font        = ((argument_count<3) || (argument[2]==undefined))? global.__scribble_default_font                  : argument[2];
-var _def_halign      = ((argument_count<4) || (argument[3]==undefined))? fa_left                                         : argument[3];
-var _def_colour      = ((argument_count<5) || (argument[4]==undefined))? c_white                                         : argument[4];
-var _line_min_height = ((argument_count<6) || (argument[5]==undefined))? scribble_font_char_get_height( _def_font, " " ) : argument[5];
-var _generate_vbuff  = ((argument_count<7) || (argument[6]==undefined))? true                                            : argument[6];
+var _width_limit     = ((argument_count<2) || (argument[1]==undefined))? 9999999999                     : argument[1];
+var _def_font        = ((argument_count<3) || (argument[2]==undefined))? global.__scribble_default_font : argument[2];
+var _def_halign      = ((argument_count<4) || (argument[3]==undefined))? fa_left                        : argument[3];
+var _def_colour      = ((argument_count<5) || (argument[4]==undefined))? c_white                        : argument[4];
+var _line_min_height = ((argument_count<6) || (argument[5]==undefined))? undefined                      : argument[5];
+var _generate_vbuff  = ((argument_count<7) || (argument[6]==undefined))? true                           : argument[6];
 
 //Find the default font's space width
 var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
 var _array = _font_glyphs_map[? " " ];
 var _def_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
+
+//Find the default line minimum height if not specified
+if ( _line_min_height == undefined )
+{
+    var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
+    var _array = _font_glyphs_map[? " " ];
+    _line_min_height = _array[ __E_SCRIBBLE_GLYPH.H ];
+}
 
 //Strip out weird newlines
 if ( SCRIBBLE_HASH_NEWLINE ) _str = string_replace_all( _str, "#", "\n" );
