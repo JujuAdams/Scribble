@@ -21,9 +21,6 @@
 #macro __SCRIBBLE_DATE    "2019/03/08"
 
 #macro SCRIBBLE_VERTEX_FORMAT    global.__scribble_vertex_format
-#macro SCRIBBLE_MAX_SPRITE_SLOTS 4 //Additionally change the constant in shScribbleLight
-
-#macro __SCRIBBLE_NO_SPRITE -1
 
 enum E_SCRIBBLE_WORD
 {
@@ -31,7 +28,7 @@ enum E_SCRIBBLE_WORD
     WIDTH, HEIGHT,
     VALIGN,
     STRING, INPUT_STRING,
-    SPRITE, IMAGE, SPRITE_SLOT,
+    SPRITE, IMAGE,
     LENGTH, FONT, COLOUR,
     RAINBOW, SHAKE, WAVE, NEXT_SEPARATOR,
     __SIZE

@@ -146,21 +146,6 @@ _json[? "char fade smoothness" ] = SCRIBBLE_DEFAULT_CHARACTER_SMOOTHNESS;
 _json[? "line fade t"          ] = 1;
 _json[? "line fade smoothness" ] = SCRIBBLE_DEFAULT_LINE_SMOOTHNESS;
 
-//Sprite slots
-var _sprite_slot_list = ds_list_create();
-ds_map_add_list( _json, "sprite slots", _sprite_slot_list );
-repeat( SCRIBBLE_MAX_SPRITE_SLOTS )
-{
-    var _slot_map = ds_map_create();
-    _slot_map[? "sprite" ] = undefined;
-    _slot_map[? "name"   ] = "<unknown>";
-    _slot_map[? "image"  ] = 0;
-    _slot_map[? "speed"  ] = 1;
-    _slot_map[? "frames" ] = 1;
-    ds_list_add( _sprite_slot_list, _slot_map );
-    ds_list_mark_as_map( _sprite_slot_list, ds_list_size( _sprite_slot_list )-1 );
-}
-
 //Event triggering
 var _events_character_list = ds_list_create();
 var _events_name_list      = ds_list_create();
@@ -230,7 +215,6 @@ for( var _i = 0; _i < _separator_count; _i++ )
     var _substr_length      = string_length( _input_substr );
     var _substr_sprite      = noone;
     var _substr_image       = undefined;
-    var _substr_sprite_slot = undefined;
     
     var _first_character = ( is_array( _line_words_array ) && (array_length_1d( _line_words_array ) <= 1) );
     #endregion
@@ -390,40 +374,16 @@ for( var _i = 0; _i < _separator_count; _i++ )
                         if ( _asset >= 0 ) && ( asset_get_type( _parameters_list[| 0] ) == asset_sprite )
                         {
                             #region Sprites
+                            
                             _substr_sprite = _asset;
                             _substr_width  = sprite_get_width(  _substr_sprite );
                             _substr_height = sprite_get_height( _substr_sprite );
                             _substr_length = 1;
                 
-                            if ( ds_list_size( _parameters_list ) <= 1 )
-                            {
-                                show_debug_message( "Scribble: Warning! Second argument not passed for sprite \"" + sprite_get_name( _substr_sprite ) + "\". Sprite commands must either specify a frame to show (\"[sSprite|2]\"), or a sprite slot (\"[sSprite|$0]\")." );
-                                _parameters_list[| 1] = "0";
-                            }
-                
-                            if ( string_copy( _parameters_list[| 1], 1, 1 ) != "$" )
-                            {
-                                _substr_image = real( _parameters_list[| 1] );
-                                _substr_sprite_slot = undefined;
-                            }
-                            else
-                            {
-                                _substr_image = 0;
-                                _substr_sprite_slot = real( string_delete( _parameters_list[| 1], 1, 1 ) );
-                    
-                                var _slot_map = _sprite_slot_list[| _substr_sprite_slot ];
-                                if ( _slot_map[? "sprite" ] != undefined )
-                                {
-                                    if ( _slot_map[? "frames" ] != sprite_get_number( _substr_sprite ) )
-                                    {
-                                        show_debug_message( "Scribble: Warning! Sprite length mismatch for slot " + string( _substr_sprite_slot ) + ": New sprite (" + sprite_get_name( _substr_sprite ) + ") has " + string( sprite_get_number( _substr_sprite ) ) + " frames vs. Old sprite (" + _slot_map[? "name" ] + ") has " + string( _slot_map[? "frames" ] ) + " frames" );
-                                    }
-                                }
-                    
-                                _slot_map[? "sprite" ] = _substr_sprite;
-                                _slot_map[? "name"   ] = sprite_get_name( _substr_sprite );
-                                _slot_map[? "frames" ] = sprite_get_number( _substr_sprite );
-                            }
+                            if ( ds_list_size( _parameters_list ) <= 1 ) _parameters_list[| 1] = "0";
+                            
+                            _substr_image = real( _parameters_list[| 1] );
+                            
                             #endregion
                         }
                         else
@@ -557,7 +517,6 @@ for( var _i = 0; _i < _separator_count; _i++ )
         _word_array[ E_SCRIBBLE_WORD.INPUT_STRING   ] = _input_substr;
         _word_array[ E_SCRIBBLE_WORD.SPRITE         ] = _substr_sprite;
         _word_array[ E_SCRIBBLE_WORD.IMAGE          ] = _substr_image;
-        _word_array[ E_SCRIBBLE_WORD.SPRITE_SLOT    ] = _substr_sprite_slot;
         _word_array[ E_SCRIBBLE_WORD.LENGTH         ] = _substr_length; //Include the separator character!
         _word_array[ E_SCRIBBLE_WORD.FONT           ] = _text_font;
         _word_array[ E_SCRIBBLE_WORD.COLOUR         ] = _text_colour;

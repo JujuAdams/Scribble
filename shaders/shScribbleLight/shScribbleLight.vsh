@@ -27,8 +27,6 @@ uniform float u_fCharFadeSmoothness;
 uniform float u_fLineFadeT;
 uniform float u_fLineFadeSmoothness;
 
-uniform float u_fSpriteImage[MAX_SPRITES];
-
 
 
 float rand( vec2 co )
@@ -47,11 +45,8 @@ vec3 hsv2rgb( vec3 c )
 
 void main()
 {
-    float charPc        = in_Colour2.r;
-    float linePc        = in_Colour2.g;
-    float compoundIndex = in_Colour2.a;
-    int   imageIndex    = int( compoundIndex / float( MAX_SPRITES ) );
-    int   spriteIndex   = int( compoundIndex ) - MAX_SPRITES*imageIndex;
+    float charPc = in_Colour2.r;
+    float linePc = in_Colour2.g;
     
     float wave    = in_Colour3.r*u_vOptions.r;
     float shake   = in_Colour3.g*u_vOptions.g;
@@ -92,7 +87,6 @@ void main()
     }
     
     v_vColour.a *= alpha;
-    if ( ( compoundIndex >= 0. ) && ( imageIndex != int( u_fSpriteImage[spriteIndex] ) ) ) v_vColour.a = 0.;
     if ( u_fPremultiplyAlpha > 0.5 ) v_vColour.rgb *= v_vColour.a;
     
     

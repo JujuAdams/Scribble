@@ -16,15 +16,6 @@ if ( SCRIBBLE_COMPATIBILITY_MODE )
     var _old_font   = draw_get_font();
     var _old_alpha  = draw_get_alpha();
     var _old_colour = draw_get_colour();
-    
-    var _sprite_slot_array = array_create( SCRIBBLE_MAX_SPRITE_SLOTS, 0 );
-    var _sprite_slot_list = _json[? "sprite slots" ];
-    
-    var _size = ds_list_size( _sprite_slot_list );
-    for( var _i = 0; _i < _size; _i++ ) {
-        var _slot_map = _sprite_slot_list[| _i ];
-        _sprite_slot_array[ _i ] = _slot_map[? "image" ];
-    }
 
 
 
@@ -68,19 +59,11 @@ if ( SCRIBBLE_COMPATIBILITY_MODE )
             {
                 if ( _char_count + 1 > _total_chars ) continue;
                 ++_char_count;
-            
-                var _sprite_slot = _word_array[ E_SCRIBBLE_WORD.SPRITE_SLOT ];
+                
                 _x -= sprite_get_xoffset( _sprite );
                 _y -= sprite_get_yoffset( _sprite );
-            
-                if ( _sprite_slot == undefined )
-                {
-                    draw_sprite( _sprite, _word_array[ E_SCRIBBLE_WORD.IMAGE ], _x, _y );
-                }
-                else 
-                {
-                    draw_sprite( _sprite, _sprite_slot_array[ _sprite_slot ], _x, _y );
-                }
+                
+                draw_sprite( _sprite, _word_array[ E_SCRIBBLE_WORD.IMAGE ], _x, _y );
             }
             else
             {
@@ -132,15 +115,6 @@ else
 {
     #region Normal mode
     
-    var _sprite_slot_array = array_create( SCRIBBLE_MAX_SPRITE_SLOTS, 0 );
-    var _sprite_slot_list = _json[? "sprite slots" ];
-    var _size = ds_list_size( _sprite_slot_list );
-    for( var _i = 0; _i < _size; _i++ )
-    {
-        var _slot_map = _sprite_slot_list[| _i ];
-        _sprite_slot_array[ _i ] = _slot_map[? "image" ];
-    }
-    
     var _real_x      = _x + _json[? "left" ];
     var _real_y      = _y + _json[? "top" ];
     var _vbuff_list  = _json[? "vertex buffer list" ];
@@ -166,7 +140,6 @@ else
     scribble_shader_options(        _json[? "wave size" ], _json[? "shake size" ], _json[? "rainbow weight" ] );
     scribble_shader_character_fade( _json[? "char fade t" ], _json[? "char fade smoothness" ] );
     scribble_shader_line_fade(      _json[? "line fade t" ], _json[? "line fade smoothness" ] );
-    scribble_shader_sprite_slots(   _sprite_slot_array );
     
     for( var _i = 0; _i < _vbuff_count; _i++ )
     {
