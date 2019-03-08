@@ -1,2 +1,2 @@
-//Execute a step for the JSON. This animates sprites and handles the typewriter effect
+//Execute a step for the JSON. This handles the typewriter effect and events
 scribble_step( json );

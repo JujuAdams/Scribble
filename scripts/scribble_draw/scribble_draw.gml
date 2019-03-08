@@ -135,7 +135,8 @@ else
     var _sprite_slot_array = array_create( SCRIBBLE_MAX_SPRITE_SLOTS, 0 );
     var _sprite_slot_list = _json[? "sprite slots" ];
     var _size = ds_list_size( _sprite_slot_list );
-    for( var _i = 0; _i < _size; _i++ ) {
+    for( var _i = 0; _i < _size; _i++ )
+    {
         var _slot_map = _sprite_slot_list[| _i ];
         _sprite_slot_array[ _i ] = _slot_map[? "image" ];
     }
@@ -145,7 +146,8 @@ else
     var _vbuff_list  = _json[? "vertex buffer list" ];
     var _vbuff_count = ds_list_size( _vbuff_list );
     
-    if ( _real_x != 0 ) || ( _real_y != 0 ) {
+    if ( _real_x != 0 ) || ( _real_y != 0 )
+    {
         var _old_matrix = matrix_get( matrix_world );
         var _matrix;
         _matrix[15] =  1;
@@ -166,7 +168,8 @@ else
     scribble_shader_line_fade(      _json[? "line fade t" ], _json[? "line fade smoothness" ] );
     scribble_shader_sprite_slots(   _sprite_slot_array );
     
-    for( var _i = 0; _i < _vbuff_count; _i++ ) {
+    for( var _i = 0; _i < _vbuff_count; _i++ )
+    {
         var _vbuff_map = _vbuff_list[| _i ];
         vertex_submit( _vbuff_map[? "vertex buffer" ], pr_trianglelist, _vbuff_map[? "texture" ] );
     }
