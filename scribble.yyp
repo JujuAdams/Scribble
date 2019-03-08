@@ -279,14 +279,6 @@
             }
         },
         {
-            "Key": "41a4ab61-6627-485e-a01b-c23c177c916e",
-            "Value": {
-                "id": "4a9f845a-e929-4be8-8062-87b7b56c0a62",
-                "resourcePath": "scripts\\scribble_shader_hyperlink\\scribble_shader_hyperlink.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "41eaa15d-6b46-4b31-9a37-fcbba2abcefa",
             "Value": {
                 "id": "c6a361d2-0a6a-4793-8687-d11fd19985e2",
@@ -895,14 +887,6 @@
             }
         },
         {
-            "Key": "b3b137d8-b8aa-4634-b3a5-88f3f88c107e",
-            "Value": {
-                "id": "47af83ac-df17-4f64-8815-833620ed55e3",
-                "resourcePath": "scripts\\scribble_shader_mix_colour\\scribble_shader_mix_colour.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "b64374c5-1f61-4ac6-86e6-aa1f8fa8615e",
             "Value": {
                 "id": "9b2eae76-259a-46a1-981e-a6707d938671",
@@ -1222,12 +1206,10 @@
         "4b72dbe3-61a8-49a7-ba1f-ea7369c8ad60",
         "99742f87-401a-4bc2-b3a9-d3a92cd8115e",
         "b1260fe3-12fa-422e-9f00-290806018fa5",
-        "b3b137d8-b8aa-4634-b3a5-88f3f88c107e",
         "8bdbfb2c-6507-4628-8d58-037987d9af87",
         "de649027-cf99-49aa-b753-bdf87458944d",
         "2ce8c186-d717-4d2e-bc0d-627dc70a6111",
         "6280ab69-9951-427e-bfd3-ab5172458d00",
-        "41a4ab61-6627-485e-a01b-c23c177c916e",
         "8988371a-4e1a-4781-be84-c3e23412b433",
         "a4842a55-638c-4426-82c4-29c17402811f",
         "2dc9c1ea-1e6b-4a45-bf4b-0bcb3c1e0749",
