@@ -109,7 +109,19 @@ _json[? "words"  ] = 0;
 //Vertex buffer/shader values
 var _vbuff_list = ds_list_create();
 ds_map_add_list( _json, "vertex buffer list", _vbuff_list );
-__scribble_default_shader_values( _json );
+
+//Animation effects
+_json[? "wave size"            ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
+_json[? "shake size"           ] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
+_json[? "rainbow weight"       ] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
+
+//Character fade
+_json[? "char fade t"          ] = 1;
+_json[? "char fade smoothness" ] = SCRIBBLE_DEFAULT_CHARACTER_SMOOTHNESS;
+
+//Line fade
+_json[? "line fade t"          ] = 1;
+_json[? "line fade smoothness" ] = SCRIBBLE_DEFAULT_LINE_SMOOTHNESS;
 
 //Sprite slots
 var _sprite_slot_list = ds_list_create();

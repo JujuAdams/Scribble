@@ -6,6 +6,8 @@ scribble_init_add_spritefont( "sSpriteFont" );
 scribble_init_add_font( "fChineseTest" );
 scribble_init_end();
 
+scribble_font_set_space_size( "sSpriteFont", 3 ); //GM's spritefont renderer handles spaces really weirdly
+
 //We're finished here, so destroy this instance and move to the next room
 instance_destroy();
 room_goto_next();

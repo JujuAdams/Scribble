@@ -1,13 +1,18 @@
 #macro SCRIBBLE_FONT_DIRECTORY "Fonts/"
 
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
-#macro SCRIBBLE_DEFAULT_SPRITEFONT_SEPARATION 0
-#macro SCRIBBLE_DEFAULT_SHADER shScribbleLight
 
-#macro SCRIBBLE_LEGACY_GMS220_SPRITEFONT_SPACING false //GMS2.2.1 made spritefonts much more spaced out for some reason
-#macro SCRIBBLE_HASH_NEWLINE true                      //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
-#macro SCRIBBLE_COMPATIBILITY_MODE false               //Forces Scribble functions to use GM's native renderer. Turn this on if certain platforms are causing problems
-#macro SCRIBBLE_SAFE_MODE true                         //Pedantic checking
+#macro SCRIBBLE_DEFAULT_WAVE_SIZE            4
+#macro SCRIBBLE_DEFAULT_SHAKE_SIZE           0.4
+#macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT       1
+#macro SCRIBBLE_DEFAULT_CHARACTER_SMOOTHNESS 0
+#macro SCRIBBLE_DEFAULT_LINE_SMOOTHNESS      0
+
+#macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false //GMS2.2.1 made spritefonts much more spaced out for some reason
+#macro SCRIBBLE_HASH_NEWLINE true                       //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
+#macro SCRIBBLE_COMPATIBILITY_MODE false                //Forces Scribble functions to use GM's native renderer. Turn this on if certain platforms are causing problems
+#macro SCRIBBLE_SAFE_MODE true                          //Pedantic checking
+#macro SCRIBBLE_DEFAULT_SHADER shScribbleLight
 
 #region -- Internal Definitions --
 
