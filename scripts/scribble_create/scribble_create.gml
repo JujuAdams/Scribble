@@ -2,7 +2,6 @@
 ///
 /// @param string
 /// @param [box_width]
-/// @param [typewriter_speed]
 /// @param [font]
 /// @param [line_halign]
 /// @param [colour]
@@ -12,11 +11,10 @@ var _timer = get_timer();
 
 var _str              = argument[0];
 var _width_limit      = ((argument_count<2) || (argument[1]==undefined))? 9999999999                        : argument[1];
-var _typewriter_speed = ((argument_count<3) || (argument[2]==undefined))? SCRIBBLE_DEFAULT_TYPEWRITER_SPEED : argument[2];
-var _def_font         = ((argument_count<4) || (argument[3]==undefined))? global.__scribble_default_font    : argument[3];
-var _def_halign       = ((argument_count<5) || (argument[4]==undefined))? fa_left                           : argument[4];
-var _def_colour       = ((argument_count<6) || (argument[5]==undefined))? c_white                           : argument[5];
-var _line_min_height  = ((argument_count<7) || (argument[6]==undefined))? undefined                         : argument[6];
+var _def_font         = ((argument_count<3) || (argument[2]==undefined))? global.__scribble_default_font    : argument[2];
+var _def_halign       = ((argument_count<4) || (argument[3]==undefined))? fa_left                           : argument[3];
+var _def_colour       = ((argument_count<5) || (argument[4]==undefined))? c_white                           : argument[4];
+var _line_min_height  = ((argument_count<6) || (argument[5]==undefined))? undefined                         : argument[5];
 
 //Find the default font's space width
 var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
@@ -126,8 +124,10 @@ _json[? "lines"  ] = 0;
 _json[? "words"  ] = 0;
 
 //Typewriter
-_json[? "typewriter speed"    ] = _typewriter_speed;
+_json[? "typewriter do"       ] = false;
+_json[? "typewriter speed"    ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
 _json[? "typewriter position" ] = 0;
+_json[? "typewriter method"   ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
 
 //Vertex buffer/shader values
 var _vbuff_list = ds_list_create();
