@@ -23,6 +23,7 @@ var _def_space_width = scribble_font_char_get_width( _def_font, " " );
 
 
 #region Break down string into sections using a buffer
+
 var _separator_list  = ds_list_create();
 var _position_list   = ds_list_create();
 var _parameters_list = ds_list_create();
@@ -68,6 +69,7 @@ repeat( _buffer_size )
     
     ++_i;
 }
+
 #endregion
 
 
@@ -103,16 +105,6 @@ _json[? "bottom" ] = 0;
 _json[? "length" ] = 0;
 _json[? "lines"  ] = 0;
 _json[? "words"  ] = 0;
-
-//Hyperlink handling
-var _hyperlink_map          = ds_map_create();
-var _hyperlink_regions_list = ds_list_create();
-var _hyperlink_list         = ds_list_create();
-ds_map_add_map(  _json, "hyperlinks"       , _hyperlink_map );
-ds_map_add_list( _json, "hyperlink regions", _hyperlink_regions_list );
-ds_map_add_list( _json, "hyperlink list"   , _hyperlink_list );
-_json[? "hyperlink fade in rate"  ] = 0.05;
-_json[? "hyperlink fade out rate" ] = 0.05;
 
 //Vertex buffer/shader values
 var _vbuff_list = ds_list_create();
@@ -168,7 +160,6 @@ var _line_max_height  = _line_min_height;
 var _text_font      = _def_font;
 var _text_colour    = _def_colour;
 var _text_halign    = _def_halign;
-var _text_hyperlink = "";
 var _text_rainbow   = false;
 var _text_shake     = false;
 var _text_wave      = false;
@@ -228,7 +219,6 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 case "":
                     _text_font      = _def_font;
                     _text_colour    = _def_colour;
-                    _text_hyperlink = "";
                 
                     _text_rainbow   = false;
                     _text_shake     = false;
@@ -293,50 +283,6 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 break;
                 case "/wave":
                     _text_wave = false;
-                    _skip = true;
-                break;
-                #endregion
-                
-                #region Link
-                case "link": 
-                    if ( ds_list_size( _parameters_list ) >= 2 )
-                    {  
-                        _text_hyperlink = _parameters_list[| 1];
-                
-                        if ( !ds_map_exists( _hyperlink_map, _text_hyperlink ) )
-                        {
-                            _map = ds_map_create();
-                            ds_map_add_map( _hyperlink_map, _text_hyperlink, _map );
-                            _map[? "over"  ] = false;
-                            _map[? "down"  ] = false;
-                            _map[? "index" ] = ds_list_size( _hyperlink_list );
-                            _map[? "mix"   ] = 0;
-                                
-                            if ( ds_list_size( _parameters_list ) >= 3 )
-                            {
-                                _map[? "script name" ] = _parameters_list[| 2];
-                                _map[? "script"      ] = asset_get_index( _parameters_list[| 2] );
-                            }
-                            else
-                            {
-                                _map[? "script name" ] = "";
-                                _map[? "script"      ] = asset_get_index( "" );
-                            }
-                    
-                            ds_list_add( _hyperlink_list, _text_hyperlink );
-                            if ( ds_list_size( _hyperlink_list ) > SCRIBBLE_MAX_HYPERLINKS ) show_debug_message( "Warning! Maximum hyperlink count (" + string( SCRIBBLE_MAX_HYPERLINKS ) + ") exceeded!" );
-                        }      
-                    }
-                    else
-                    {          
-                        _text_hyperlink = "";      
-                    }
-                    
-                    _skip = true;
-                break;
-                
-                case "/link":
-                    _text_hyperlink = "";
                     _skip = true;
                 break;
                 #endregion
@@ -544,22 +490,10 @@ for( var _i = 0; _i < _separator_count; _i++ )
         _word_array[ E_SCRIBBLE_WORD.LENGTH         ] = _substr_length; //Include the separator character!
         _word_array[ E_SCRIBBLE_WORD.FONT           ] = _text_font;
         _word_array[ E_SCRIBBLE_WORD.COLOUR         ] = _text_colour;
-        _word_array[ E_SCRIBBLE_WORD.HYPERLINK      ] = _text_hyperlink;
         _word_array[ E_SCRIBBLE_WORD.RAINBOW        ] = _text_rainbow;
         _word_array[ E_SCRIBBLE_WORD.SHAKE          ] = _text_shake;
         _word_array[ E_SCRIBBLE_WORD.WAVE           ] = _text_wave;
         _word_array[ E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = "";
-        
-        //If we've got a word with a hyperlink, add it to our list of hyperlink regions
-        if ( _text_hyperlink != "" )
-        {
-            var _region_map = ds_map_create();
-            _region_map[? "hyperlink" ] = _text_hyperlink;
-            _region_map[? "line"      ] = ds_list_size( _text_root_list )-1;
-            _region_map[? "word"      ] = array_length_1d( _line_words_array );
-            ds_list_add( _hyperlink_regions_list, _region_map );
-            ds_list_mark_as_map( _hyperlink_regions_list, ds_list_size(_hyperlink_regions_list)-1 );
-        }
         
         //Add the word to the line list
         _line_words_array[@ array_length_1d(_line_words_array) ] = _word_array;

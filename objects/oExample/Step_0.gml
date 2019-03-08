@@ -1,4 +1,4 @@
-//Execute a step for the JSON. This clears event state, animates sprites and handles hyperlinks
+//Execute a step for the JSON. This clears event state and animates sprites
 scribble_step( json,   x, y,   mouse_x, mouse_y );
 
 //Scan for any events from char_pos to char_pos+1

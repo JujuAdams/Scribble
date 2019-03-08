@@ -31,8 +31,6 @@ if ( _do_sprite_slots )
 
 
 
-//var _base_alpha = _json[? "alpha" ];
-//draw_set_alpha( _old_alpha ); //Feature reduced in "light" version, now inherits draw_get_alpha()
 var _char_count = 0;
 var _total_chars = _json[? "char fade t" ] * _json[? "length" ];
 
@@ -93,7 +91,6 @@ for( var _line = 0; _line < _lines_count; _line++ )
             var _length    = _word_array[ E_SCRIBBLE_WORD.LENGTH    ];
             var _font_name = _word_array[ E_SCRIBBLE_WORD.FONT      ];
             var _colour    = _word_array[ E_SCRIBBLE_WORD.COLOUR    ];
-            var _hyperlink = _word_array[ E_SCRIBBLE_WORD.HYPERLINK ];
             
             if ( _char_count + _length > _total_chars )
             {

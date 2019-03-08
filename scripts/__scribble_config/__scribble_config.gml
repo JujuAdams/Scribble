@@ -15,7 +15,6 @@
 #macro __SCRIBBLE_DATE    "2019/03/08"
 
 #macro SCRIBBLE_VERTEX_FORMAT    global.__scribble_vertex_format
-//#macro SCRIBBLE_MAX_HYPERLINKS   4 //Additionally change the constant in shScribble //Feature removed in "light" version
 #macro SCRIBBLE_MAX_SPRITE_SLOTS 4 //Additionally change the constant in shScribbleLight
 
 #macro __SCRIBBLE_NO_SPRITE -1
@@ -28,7 +27,6 @@ enum E_SCRIBBLE_WORD
     STRING, INPUT_STRING,
     SPRITE, IMAGE, SPRITE_SLOT,
     LENGTH, FONT, COLOUR,
-    HYPERLINK,
     RAINBOW, SHAKE, WAVE, NEXT_SEPARATOR,
     __SIZE
 }
@@ -58,12 +56,6 @@ enum __E_SCRIBBLE_GLYPH
     U1,    //11
     V1,    //12
     __SIZE //13
-}
-
-enum __E_SCRIBBLE_HYPERLINK
-{
-    NONE = -2,
-    UNLINKED = -1
 }
 
 #endregion
