@@ -649,7 +649,7 @@ scribble_set_box_alignment( _json );
 
 
 
-if ( _generate_vbuff ) scribble_rebuild_vertex_buffers( _json );
+if ( _generate_vbuff ) __scribble_rebuild_vertex_buffers( _json );
 
 
 

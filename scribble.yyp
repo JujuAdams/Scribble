@@ -74,7 +74,7 @@
             "Key": "2556e855-8983-412c-8d45-8c59e5d89947",
             "Value": {
                 "id": "6dcc3d43-e77d-40d7-b352-598e681ca430",
-                "resourcePath": "scripts\\scribble_rebuild_vertex_buffers\\scribble_rebuild_vertex_buffers.yy",
+                "resourcePath": "scripts\\__scribble_rebuild_vertex_buffers\\__scribble_rebuild_vertex_buffers.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -852,6 +852,7 @@
         "acb26a39-8033-4289-87d0-228ed7921bc8",
         "7dddb463-46f0-4bec-b07b-0cef53bc6061",
         "86e5f4a9-1c6e-456f-b8a7-a735d8b27ba7",
+        "2556e855-8983-412c-8d45-8c59e5d89947",
         "89e8adda-438e-48f9-ab78-0e8b396b3850",
         "375e7330-6e30-4902-8a42-dbc8ad380c16",
         "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
@@ -860,7 +861,6 @@
         "86be87df-87d5-438a-a8e0-49bc2ac80815",
         "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
         "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
-        "2556e855-8983-412c-8d45-8c59e5d89947",
         "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
         "b64374c5-1f61-4ac6-86e6-aa1f8fa8615e",
         "64852edf-e8a6-439d-8f62-8a11eaa32f8d",
