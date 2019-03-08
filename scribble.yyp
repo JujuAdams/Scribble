@@ -79,14 +79,6 @@
             }
         },
         {
-            "Key": "140cb725-b06b-40dd-8501-556d46dc28fe",
-            "Value": {
-                "id": "f663dc0d-7af0-4ce8-ab91-46809764498e",
-                "resourcePath": "scripts\\scribble_font_get_texture\\scribble_font_get_texture.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "2556e855-8983-412c-8d45-8c59e5d89947",
             "Value": {
                 "id": "6dcc3d43-e77d-40d7-b352-598e681ca430",
@@ -359,14 +351,6 @@
             }
         },
         {
-            "Key": "6449cae3-8ba7-43e5-8e71-6c5709f6cef0",
-            "Value": {
-                "id": "87727657-503e-4a8f-94b4-c4c569a845f0",
-                "resourcePath": "scripts\\scribble_font_char_get_x_offset\\scribble_font_char_get_x_offset.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "64852edf-e8a6-439d-8f62-8a11eaa32f8d",
             "Value": {
                 "id": "49ae5d08-acf8-4866-a740-88b10e000efb",
@@ -463,14 +447,6 @@
             }
         },
         {
-            "Key": "7988295d-95ff-4386-aaee-4a12fe000159",
-            "Value": {
-                "id": "6b291adb-c715-4d47-ab33-36b699f2b834",
-                "resourcePath": "scripts\\scribble_font_char_get_y_offset\\scribble_font_char_get_y_offset.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "79bdef1e-caad-4a90-86ce-7360d93b86a8",
             "Value": {
                 "id": "0f08f8ab-725a-4fe4-963d-12b0ea7c09d3",
@@ -547,14 +523,6 @@
             "Value": {
                 "id": "db676330-646f-4e59-91cd-418d0be5773e",
                 "resourcePath": "scripts\\scribble_shader_sprite_slots\\scribble_shader_sprite_slots.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "89d3995b-0bc5-46d1-a68b-11c8054985ed",
-            "Value": {
-                "id": "62d6d1a8-41f2-4fa6-83ef-84a7b49f1f07",
-                "resourcePath": "scripts\\scribble_font_char_get_width\\scribble_font_char_get_width.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -692,14 +660,6 @@
                 "id": "90c740c6-2b0d-4907-a395-8f3afe4fa4ad",
                 "resourcePath": "options\\linux\\options_linux.yy",
                 "resourceType": "GMLinuxOptions"
-            }
-        },
-        {
-            "Key": "a94e314e-5518-4616-9363-954242837a95",
-            "Value": {
-                "id": "6af6f566-d344-4471-aee3-7cbb36b752b8",
-                "resourcePath": "scripts\\scribble_font_char_get_x_shift\\scribble_font_char_get_x_shift.yy",
-                "resourceType": "GMScript"
             }
         },
         {
@@ -843,14 +803,6 @@
             "Value": {
                 "id": "15f35d88-af79-486f-b885-d72df4393c60",
                 "resourcePath": "scripts\\scribble_get_sprite_slot_sprite_name\\scribble_get_sprite_slot_sprite_name.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "d2083aa0-366e-459c-9ecc-fbdebe9e8c4f",
-            "Value": {
-                "id": "de54886c-568c-4cca-93ae-aad5f73a19cd",
-                "resourcePath": "scripts\\scribble_font_set_space_size\\scribble_font_set_space_size.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -1015,15 +967,9 @@
         "3a184a7c-b4e5-457f-865c-aa18b0b9fcbf",
         "458f3ba1-9107-4d23-b40e-5ac42f748629",
         "c74fb735-85c2-40e9-9ff3-a8be707292b6",
-        "d2083aa0-366e-459c-9ecc-fbdebe9e8c4f",
-        "6449cae3-8ba7-43e5-8e71-6c5709f6cef0",
-        "7988295d-95ff-4386-aaee-4a12fe000159",
-        "89d3995b-0bc5-46d1-a68b-11c8054985ed",
         "25e350ed-4075-46e3-b19b-0e7e850c59aa",
-        "a94e314e-5518-4616-9363-954242837a95",
         "2c474d18-4795-46cc-a042-6c47e90349f9",
         "07d26665-c291-43f4-a732-3bb30ae4f4c6",
-        "140cb725-b06b-40dd-8501-556d46dc28fe",
         "df6df2ef-b108-4a0d-b542-812338df9817",
         "86be87df-87d5-438a-a8e0-49bc2ac80815",
         "b94ea7f5-36e2-4f93-bf04-8eca82ed17a2",

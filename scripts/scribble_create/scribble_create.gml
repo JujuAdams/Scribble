@@ -18,7 +18,10 @@ var _def_colour      = ((argument_count<5) || (argument[4]==undefined))? c_white
 var _line_min_height = ((argument_count<6) || (argument[5]==undefined))? scribble_font_char_get_height( _def_font, " " ) : argument[5];
 var _generate_vbuff  = ((argument_count<7) || (argument[6]==undefined))? true                                            : argument[6];
 
-var _def_space_width = scribble_font_char_get_width( _def_font, " " );
+//Find the default font's space width
+var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
+var _array = _font_glyphs_map[? " " ];
+var _def_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
 
 
 
