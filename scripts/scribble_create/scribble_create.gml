@@ -356,7 +356,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 #endregion
                 
                 default:
-                    if ( scribble_font_exists( _parameters_list[| 0] ) )
+                    if ( ds_map_exists( global.__scribble_glyphs_map, _parameters_list[| 0] ) )
                     {
                         #region Change font
                         _text_font = _parameters_list[| 0];
