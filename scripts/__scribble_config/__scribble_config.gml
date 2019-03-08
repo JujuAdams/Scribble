@@ -12,6 +12,8 @@
 #macro SCRIBBLE_HASH_NEWLINE                       true //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COMPATIBILITY_MODE                false //Forces Scribble functions to use GM's native renderer. Turn this on if certain platforms are causing problems
 
+#macro SCRIBBLE_TIME (current_time/1000) //The value that Scribble uses to calculate effects
+
 #region -- Internal Definitions --
 
 #macro __SCRIBBLE_VERSION "2.5.0 (light)"

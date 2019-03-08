@@ -158,7 +158,7 @@ else
     }
     
     shader_set( shScribbleLight );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fTime" ), global.__scribble_auto_time? (current_time/1000) : global.__scribble_time );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fTime" ), SCRIBBLE_TIME );
 
     scribble_shader_alpha(          draw_get_alpha() ); //Feature reduced in "light" version, now inherits draw_get_alpha()
     scribble_shader_options(        _json[? "wave size" ], _json[? "shake size" ], _json[? "rainbow weight" ] );
