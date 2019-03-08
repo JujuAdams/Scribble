@@ -21,7 +21,20 @@ image_yscale = 1;
 
 
 
-var _in_gms221 = __scribble_in_gms221();
+///Work out if we're in version 2.2.1 or later
+var _string = GM_runtime_version;
+
+var _major = string_copy( _string, 1, string_pos( ".", _string )-1 );
+_string = string_delete( _string, 1, string_pos( ".", _string ) );
+
+var _minor = string_copy( _string, 1, string_pos( ".", _string )-1 );
+_string = string_delete( _string, 1, string_pos( ".", _string ) );
+
+var _patch = string_copy( _string, 1, string_pos( ".", _string )-1 );
+
+//var _rev = string_delete( _string, 1, string_pos( ".", _string ) );
+
+var _in_gms221 = ( (real( _major ) >= 2) && (real( _minor ) >= 2) && (real( _patch ) >= 1) );
 if ( _in_gms221 ) show_debug_message( "Scribble: Using legacy (GMS2.2.0 and prior) compatibility mode" );
 
 
