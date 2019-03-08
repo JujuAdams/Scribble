@@ -483,10 +483,8 @@ for( var _i = 0; _i < _separator_count; _i++ )
         
         //Choose the height of a space for the substring's height
         var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
-        var _array = _font_glyphs_map[? argument1 ];
-        return _array[ __E_SCRIBBLE_GLYPH.H ];
-        
-        _substr_height = scribble_font_char_get_height(   _text_font, " " );
+        var _array = _font_glyphs_map[? " " ];
+        _substr_height = _array[ __E_SCRIBBLE_GLYPH.H ];
     }
     
     #region Position and store word
