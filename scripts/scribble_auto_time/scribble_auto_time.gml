@@ -1,1 +1,0 @@
-global.__scribble_auto_time = true;

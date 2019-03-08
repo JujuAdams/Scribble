@@ -1,4 +1,3 @@
-const int MAX_HYPERLINKS = 4;
 const int MAX_SPRITES = 4;
 
 
@@ -17,7 +16,6 @@ varying vec4 v_vColour;
 
 uniform float u_fPremultiplyAlpha;
 
-uniform vec4  u_vColour;
 uniform float u_fAlpha;
 
 uniform vec3  u_vOptions;
@@ -28,9 +26,6 @@ uniform float u_fCharFadeSmoothness;
 
 uniform float u_fLineFadeT;
 uniform float u_fLineFadeSmoothness;
-
-uniform vec3  u_vHyperlinkColour;
-uniform float u_fHyperlinkMix[MAX_HYPERLINKS];
 
 uniform float u_fSpriteImage[MAX_SPRITES];
 
@@ -54,7 +49,6 @@ void main()
 {
     float charPc        = in_Colour2.r;
     float linePc        = in_Colour2.g;
-    int   hyperlink     = int( in_Colour2.b );
     float compoundIndex = in_Colour2.a;
     int   imageIndex    = int( compoundIndex / float( MAX_SPRITES ) );
     int   spriteIndex   = int( compoundIndex ) - MAX_SPRITES*imageIndex;
@@ -73,12 +67,7 @@ void main()
     
     
     v_vColour = in_Colour;
-    v_vColour.rgb = mix( v_vColour.rgb, u_vColour.rgb, u_vColour.a );
     v_vColour.rgb = mix( v_vColour.rgb, hsv2rgb( vec3( charPc + u_fTime, 1., 1. ) ), rainbow );
-    for( int i = 0; i < MAX_HYPERLINKS; i++ )
-    {
-        if ( hyperlink == i ) v_vColour.rgb = mix( v_vColour.rgb, u_vHyperlinkColour, u_fHyperlinkMix[i] );
-    }
     
     
     

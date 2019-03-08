@@ -2,7 +2,7 @@
 
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_SEPARATION 0
-#macro SCRIBBLE_DEFAULT_SHADER shScribble
+#macro SCRIBBLE_DEFAULT_SHADER shScribbleLight
 
 #macro SCRIBBLE_LEGACY_GMS220_SPRITEFONT_SPACING false //GMS2.2.1 made spritefonts much more spaced out for some reason
 #macro SCRIBBLE_HASH_NEWLINE true                      //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
@@ -11,12 +11,12 @@
 
 #region -- Internal Definitions --
 
-#macro __SCRIBBLE_VERSION "2.5.0"
-#macro __SCRIBBLE_DATE    "2018/02/13"
+#macro __SCRIBBLE_VERSION "2.5.0 (light)"
+#macro __SCRIBBLE_DATE    "2019/03/08"
 
 #macro SCRIBBLE_VERTEX_FORMAT    global.__scribble_vertex_format
-#macro SCRIBBLE_MAX_HYPERLINKS   4 //Additionally change the constant in shScribble
-#macro SCRIBBLE_MAX_SPRITE_SLOTS 4 //Additionally change the constant in shScribble
+//#macro SCRIBBLE_MAX_HYPERLINKS   4 //Additionally change the constant in shScribble //Feature removed in "light" version
+#macro SCRIBBLE_MAX_SPRITE_SLOTS 4 //Additionally change the constant in shScribbleLight
 
 #macro __SCRIBBLE_NO_SPRITE -1
 

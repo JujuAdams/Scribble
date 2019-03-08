@@ -15,6 +15,3 @@ shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fCharFadeSmoothne
 
 shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fLineFadeT"          ), 1 );
 shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fLineFadeSmoothness" ), 0 );
-
-shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fHyperlinkOver"      ), -1 );
-shader_set_uniform_f( shader_get_uniform( shader_current(), "u_vHyperlinkColour"    ), 1, 1, 1, 0 );

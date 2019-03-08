@@ -1,14 +1,12 @@
 /// @param json
 /// @param [x]
 /// @param [y]
-/// @param [do_hyperlinks]
 /// @param [do_sprite_slots]
 
 var _json            = argument[0];
 var _x               = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
 var _y               = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
-var _do_hyperlinks   = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : true;
-var _do_sprite_slots = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : true;
+var _do_sprite_slots = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : true;
 
 var _old_matrix = undefined;
 var _old_halign = draw_get_halign();
@@ -17,22 +15,7 @@ var _old_font   = draw_get_font();
 var _old_alpha  = draw_get_alpha();
 var _old_colour = draw_get_colour();
 
-if ( _do_hyperlinks )
-{
-    //Build an array that describes the hyperlink mix state for each hyperlink
-    //(The default max value is 16)
-    var _mix_array = array_create( SCRIBBLE_MAX_HYPERLINKS, 0 );
-    var _hyperlinks = _json[? "hyperlinks" ];
-    var _hyperlink_list = _json[? "hyperlink list" ];
-    
-    var _size = min( SCRIBBLE_MAX_HYPERLINKS, ds_list_size( _hyperlink_list ) );
-    for( var _i = 0; _i < _size; _i++ )
-    {
-        var _hyperlink_name = _hyperlink_list[| _i ];
-        var _hyperlink_map = _hyperlinks[? _hyperlink_name ];
-        _mix_array[ _i ] = _hyperlink_map[? "mix" ];
-    }
-}
+
 
 if ( _do_sprite_slots )
 {
@@ -48,8 +31,8 @@ if ( _do_sprite_slots )
 
 
 
-var _base_alpha = _json[? "alpha" ];
-draw_set_alpha( _base_alpha );
+//var _base_alpha = _json[? "alpha" ];
+//draw_set_alpha( _old_alpha ); //Feature reduced in "light" version, now inherits draw_get_alpha()
 var _char_count = 0;
 var _total_chars = _json[? "char fade t" ] * _json[? "length" ];
 
@@ -68,9 +51,6 @@ if ( _real_x != 0 ) || ( _real_y != 0 )
     _matrix[13] = _real_y;
     matrix_set( matrix_world, _matrix );
 }
-
-var _hyperlinks = _json[? "hyperlinks" ];
-var _hyperlink_colour = _json[? "hyperlink colour" ];
 
 var _text_root_list = _json[? "lines list" ];
 var _lines_count = ds_list_size( _text_root_list );
@@ -123,13 +103,6 @@ for( var _line = 0; _line < _lines_count; _line++ )
             else
             {
                 _char_count += _length;
-            }
-            
-            if ( _hyperlink != "" )
-            {
-                var _hyperlink_map = _hyperlinks[? _hyperlink ];
-                var _hyperlink_mix = _hyperlink_map[? "mix" ];
-                _colour = merge_colour( _colour, _hyperlink_colour, _hyperlink_mix );
             }
             
             var _font = asset_get_index( _font_name );

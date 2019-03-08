@@ -9,15 +9,6 @@ json = scribble_create( _string, 200, "sSpriteFont", fa_center, make_colour_hsv(
 //Here, we're setting the alignment so that the middle/centre of the box is at the draw coordinate
 scribble_set_box_alignment( json, fa_center, fa_middle );
 
-//Set some properties for dyanmic text effects
-scribble_set_shake( json, 4 );
-scribble_set_wave( json, 4 );
-scribble_set_rainbow( json, 0.4 );
-
-//Set how our hyperlinks should look. Fade in/out rates are deltas per frame (0 < rate <= 1)
-//By default, there is a maximum of 4 hyperlinks
-scribble_set_hyperlink( json, c_lime, 0.2, 0.2 );
-
 //Set properties for sprite slots. Sprite slots are used to animate sprites
 //By default, there is a maximum of 4 sprite slots
 scribble_set_sprite_slot_speed( json, 0, 0.1 );
