@@ -39,37 +39,27 @@ if ( !_block_zero && (_char_a == 0) )
         _events_value_map[?    _name ] = _data;
         _events_previous_map[? _name ] = _event;
         
-        if ( _old_data == undefined )
-        {
-            _events_changed_map[? _name ] = true;
-        }
-        else
-        {
-            _events_changed_map[? _name ] = !array_equals( _data, _old_data );
-        }
+        //Record whether this particular trigger contains different data to the last time this same event type was triggered
+        _events_changed_map[? _name ] = (_old_data == undefined)? true : !array_equals( _data, _old_data );
         
-        if ( _old_event == undefined )
-        {
-            _events_different_map[? _name ] = true;
-        }
-        else
-        {
-            _events_different_map[? _name ] = _old_event != _event;
-        }
+        //Record whether this trigger is a different trigger to the last one (but may contain the same data)
+        _events_different_map[? _name ] = (_old_event == undefined)? true : (_old_event != _event);
         
         ++_event;
     }
 }
 #endregion
 
+//Scan through all our events until we find an event at a text position we haven't met yet
 var _event = 0;
-while ( _event < _event_count ) && ( _events_char_list[| _event ] <= _char_a ) ++_event;
+while (_event < _event_count) && (_events_char_list[| _event ] <= _char_a) ++_event;
 
+//Now iterate from our current character position to the next character position
 for( var _char = _char_a+1; _char <= _char_b; _char++ )
 {
     var _name = "";
     
-    while ( _event < _event_count ) && ( _events_char_list[| _event ] <= _char )
+    while (_event < _event_count) && (_events_char_list[| _event ] <= _char)
     {
         var _name      = _events_name_list[|   _event ];
         var _data      = _events_data_list[|   _event ];
@@ -85,23 +75,11 @@ for( var _char = _char_a+1; _char <= _char_b; _char++ )
         _events_value_map[?    _name ] = _data;
         _events_previous_map[? _name ] = _event;
         
-        if ( _old_data == undefined )
-        {
-            _events_changed_map[? _name ] = true;
-        }
-        else
-        {
-            _events_changed_map[? _name ] = !array_equals( _data, _old_data );
-        }
+        //Record whether this particular trigger contains different data to the last time this same event type was triggered
+        _events_changed_map[? _name ] = (_old_data == undefined)? true : !array_equals( _data, _old_data );
         
-        if ( _old_event == undefined )
-        {
-            _events_different_map[? _name ] = true;
-        } 
-        else
-        {
-            _events_different_map[? _name ] = _old_event != _event;
-        }
+        //Record whether this trigger is a different trigger to the last one (but may contain the same data)
+        _events_different_map[? _name ] = (_old_event == undefined)? true : (_old_event != _event);
         
         ++_event;
         
@@ -124,7 +102,11 @@ for( var _event = 0; _event < _triggered_count; _event++ )
 {
     var _event_name = _events_triggered_list[| _event ];
     var _script = global.__scribble_events[? _event_name ];
-    if ( _script != undefined ) script_execute( _script, _json, _events_value_map[? _event_name ], _events_changed_map[? _event_name ], _events_different_map[? _event_name ] );
+    if ( _script != undefined ) script_execute( _script,
+                                                _json,
+                                                _events_value_map[?     _event_name ],
+                                                _events_changed_map[?   _event_name ],
+                                                _events_different_map[? _event_name ] );
 }
 
 #endregion
