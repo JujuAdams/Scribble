@@ -1,12 +1,10 @@
 /// @param json
 /// @param character_start
 /// @param character_end
-/// @param [block_0_char]
 
 var _json       = argument[0];
 var _char_start = argument[1];
 var _char_end   = argument[2];
-var _block_zero = ((argument_count>3) && (argument[3]!=undefined))? argument[3] : false;
 
 var _events_char_list      = _json[? "events character list" ];
 var _events_name_list      = _json[? "events name list"      ];
@@ -24,11 +22,11 @@ var _char_b = floor( _char_end   );
 var _event_count = ds_list_size( _events_char_list );
 
 #region Check the 0th character for events if we're starting at 0
-if ( !_block_zero && (_char_a == 0) )
+if ( _char_a == 0 )
 {
     for( var _event = 0; _event < _event_count; _event++ )
     {
-        if ( _events_char_list[| _event ] != _char ) continue;
+        if ( _events_char_list[| _event ] != _char_a ) continue;
         
         var _name      = _events_name_list[|   _event ];
         var _data      = _events_data_list[|   _event ];
@@ -83,14 +81,14 @@ for( var _char = _char_a+1; _char <= _char_b; _char++ )
         
         ++_event;
         
-        if ( _name == "break" ) || ( _name == "pause" ) break;
+        //if ( _name == "break" ) || ( _name == "pause" ) break;
     }
     
-    if ( _name == "break" ) || ( _name == "pause" )
-    {
-        _char_end = _char;
-        break;
-    }
+    //if ( _name == "break" ) || ( _name == "pause" )
+    //{
+    //    _char_end = _char;
+    //    break;
+    //}
 }
 
 

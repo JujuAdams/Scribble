@@ -11,7 +11,7 @@
 #macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT        0.4
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED      0.3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS 10
+#macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS 3
 
 #macro SCRIBBLE_FONT_DIRECTORY                    "Fonts/" 
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
