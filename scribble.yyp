@@ -223,14 +223,6 @@
             }
         },
         {
-            "Key": "75cc4a2f-613d-4433-94a2-4529b0b8a28c",
-            "Value": {
-                "id": "b3455e45-2929-4d36-8254-e710b641aa68",
-                "resourcePath": "sprites\\sPixel\\sPixel.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
             "Key": "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
             "Value": {
                 "id": "3a4b0f89-2fa4-4413-8cc7-ab92eb0d137b",
