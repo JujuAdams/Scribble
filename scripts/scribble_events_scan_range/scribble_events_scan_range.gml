@@ -8,10 +8,6 @@ var _char_start = argument[1];
 var _char_end   = argument[2];
 var _block_zero = ((argument_count>3) && (argument[3]!=undefined))? argument[3] : false;
 
-var _char_a = floor( _char_start );
-var _char_b = floor( _char_end   );
-if ( !_block_zero && ( _char_a == 0 ) ) scribble_events_scan_at( _json, 0 );
-
 var _events_char_list      = _json[? "events character list" ];
 var _events_name_list      = _json[? "events name list"      ];
 var _events_data_list      = _json[? "events data list"      ];
@@ -22,7 +18,50 @@ var _events_changed_map    = _json[? "events changed map"    ];
 var _events_previous_map   = _json[? "events previous map"   ];
 var _events_different_map  = _json[? "events different map"  ];
 
+var _char_a = floor( _char_start );
+var _char_b = floor( _char_end   );
+
 var _event_count = ds_list_size( _events_char_list );
+
+#region Check the 0th character for events if we're starting at 0
+if ( !_block_zero && (_char_a == 0) )
+{
+    for( var _event = 0; _event < _event_count; _event++ )
+    {
+        if ( _events_char_list[| _event ] != _char ) continue;
+        
+        var _name      = _events_name_list[|   _event ];
+        var _data      = _events_data_list[|   _event ];
+        var _old_data  = _events_value_map[?    _name ];
+        var _old_event = _events_previous_map[? _name ];
+        
+        ds_list_add( _events_triggered_list, _name );
+        _events_value_map[?    _name ] = _data;
+        _events_previous_map[? _name ] = _event;
+        
+        if ( _old_data == undefined )
+        {
+            _events_changed_map[? _name ] = true;
+        }
+        else
+        {
+            _events_changed_map[? _name ] = !array_equals( _data, _old_data );
+        }
+        
+        if ( _old_event == undefined )
+        {
+            _events_different_map[? _name ] = true;
+        }
+        else
+        {
+            _events_different_map[? _name ] = _old_event != _event;
+        }
+        
+        ++_event;
+    }
+}
+#endregion
+
 var _event = 0;
 while ( _event < _event_count ) && ( _events_char_list[| _event ] <= _char_a ) ++_event;
 
@@ -76,17 +115,21 @@ for( var _char = _char_a+1; _char <= _char_b; _char++ )
     }
 }
 
-var _triggered_list = _json[? "events triggered list" ];
-var _value_map      = _json[? "events value map"      ];
-var _changed_map    = _json[? "events changed map"    ];
-var _different_map  = _json[? "events different map"  ];
 
-var _triggered_count = ds_list_size( _triggered_list );
+
+#region Iterate over the list of triggered events and perform callback
+
+var _triggered_count = ds_list_size( _events_triggered_list );
 for( var _event = 0; _event < _triggered_count; _event++ )
 {
-    var _event_name = _triggered_list[| _event ];
+    var _event_name = _events_triggered_list[| _event ];
     var _script = global.__scribble_events[? _event_name ];
-    if ( _script != undefined ) script_execute( _script, _json, _value_map[? _event_name ], _changed_map[? _event_name ], _different_map[? _event_name ] );
+    if ( _script != undefined ) script_execute( _script, _json, _events_value_map[? _event_name ], _events_changed_map[? _event_name ], _events_different_map[? _event_name ] );
 }
 
+#endregion
+
+
+
+//Return the character position we got up to
 return _char_end;
