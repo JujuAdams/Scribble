@@ -1,4 +1,4 @@
-//  Scribble (light) v2.5.1
+//  Scribble (light) v2.5.2
 //  2019/03/09
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
