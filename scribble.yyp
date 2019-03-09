@@ -138,7 +138,7 @@
             "Key": "4af4d3c7-1882-48bb-b61a-c6fa76fad4f1",
             "Value": {
                 "id": "771e0377-a1c5-4215-969e-9cc31f3756f2",
-                "resourcePath": "scripts\\scribble_events_scan_range\\scribble_events_scan_range.yy",
+                "resourcePath": "scripts\\__scribble_scan_events\\__scribble_scan_events.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -562,6 +562,7 @@
     "script_order": [
         "acb26a39-8033-4289-87d0-228ed7921bc8",
         "86e5f4a9-1c6e-456f-b8a7-a735d8b27ba7",
+        "4af4d3c7-1882-48bb-b61a-c6fa76fad4f1",
         "89e8adda-438e-48f9-ab78-0e8b396b3850",
         "375e7330-6e30-4902-8a42-dbc8ad380c16",
         "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
@@ -577,7 +578,6 @@
         "13548f19-dd1d-4dc1-9444-205ee176ef6f",
         "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
         "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
-        "4af4d3c7-1882-48bb-b61a-c6fa76fad4f1",
         "00fbc8f9-0e51-458c-8834-69a5cbc5e94b"
     ],
     "tutorial": ""
