@@ -29,27 +29,40 @@
 
 enum __E_SCRIBBLE_FONT
 {
-    NAME, TYPE,
-    TEXTURE_WIDTH, TEXTURE_HEIGHT,
-    SPACE_WIDTH, MAPSTRING, SEPARATION,
-    SPRITE, SPRITE_X, SPRITE_Y,
-    __SIZE
+    NAME,           // 0
+    TYPE,           // 1
+    TEXTURE_WIDTH,  // 2
+    TEXTURE_HEIGHT, // 3
+    SPACE_WIDTH,    // 4
+    MAPSTRING,      // 5
+    SEPARATION,     // 6
+    SPRITE,         // 7
+    SPRITE_X,       // 8
+    SPRITE_Y,       // 9
+    __SIZE          //10
 }
 
 enum __E_SCRIBBLE_SURFACE
 {
-    WIDTH, HEIGHT,
-    FONTS, LOCKED,
-    __SIZE
+    WIDTH,  //0
+    HEIGHT, //1
+    FONTS,  //2
+    LOCKED, //3
+    __SIZE  //4
 }
 
 enum __E_SCRIBBLE_LINE
 {
-    X, Y,
-    WIDTH, HEIGHT,
-    LENGTH, HALIGN,
-    WORDS,
-    __SIZE
+    X,          //0
+    Y,          //1
+    WIDTH,      //2
+    HEIGHT,     //3
+    LENGTH,     //4
+    FIRST_CHAR, //5
+    LAST_CHAR,  //6
+    HALIGN,     //7
+    WORDS,      //8
+    __SIZE      //9
 }
 
 enum __E_SCRIBBLE_WORD

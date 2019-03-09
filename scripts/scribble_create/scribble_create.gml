@@ -177,12 +177,13 @@ ds_map_add_map(  _json, "events different map" , ds_map_create()        );
 var _text_x = 0;
 var _text_y = 0;
 
-var _map              = noone;
-var _word_array       = noone;
-var _line_array       = noone;
-var _line_words_array = noone;
-var _line_length      = 0;
-var _line_max_height  = _line_min_height;
+var _map                  = noone;
+var _word_array           = noone;
+var _line_array           = noone;
+var _line_words_array     = noone;
+var _line_length          = 0;
+var _line_prev_last_index = 0;
+var _line_max_height      = _line_min_height;
 
 var _text_font      = _def_font;
 var _text_colour    = _def_colour;
@@ -473,11 +474,14 @@ for( var _i = 0; _i < _separator_count; _i++ )
     {
         if ( _line_array != noone )
         {
-            _line_array[@ __E_SCRIBBLE_LINE.WIDTH  ] = _text_x;
-            _line_array[@ __E_SCRIBBLE_LINE.HEIGHT ] = _line_max_height;
+            _line_array[@ __E_SCRIBBLE_LINE.WIDTH     ] = _text_x;
+            _line_array[@ __E_SCRIBBLE_LINE.HEIGHT    ] = _line_max_height;
+            _line_array[@ __E_SCRIBBLE_LINE.LENGTH    ] = _line_length;
+            _line_array[@ __E_SCRIBBLE_LINE.LAST_CHAR ] = _line_array[ __E_SCRIBBLE_LINE.FIRST_CHAR ] + _line_length;
             
             _text_x = 0;
             _text_y += _line_max_height;
+            _line_prev_last_index += _line_length;
             _line_length = 0;
             
             _line_max_height = _line_min_height;
@@ -496,14 +500,16 @@ for( var _i = 0; _i < _separator_count; _i++ )
         
         var _line_array = array_create( __E_SCRIBBLE_LINE.__SIZE, 0 );
         
-        var _line_words_array = array_create( 0, 0 );
-        _line_array[ __E_SCRIBBLE_LINE.X      ] = 0;
-        _line_array[ __E_SCRIBBLE_LINE.Y      ] = _text_y;
-        _line_array[ __E_SCRIBBLE_LINE.WIDTH  ] = 0;
-        _line_array[ __E_SCRIBBLE_LINE.HEIGHT ] = _line_min_height;
-        _line_array[ __E_SCRIBBLE_LINE.LENGTH ] = 0;
-        _line_array[ __E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
-        _line_array[ __E_SCRIBBLE_LINE.WORDS  ] = _line_words_array;
+        var _line_words_array = [];
+        _line_array[ __E_SCRIBBLE_LINE.X          ] = 0;
+        _line_array[ __E_SCRIBBLE_LINE.Y          ] = _text_y;
+        _line_array[ __E_SCRIBBLE_LINE.WIDTH      ] = 0;
+        _line_array[ __E_SCRIBBLE_LINE.HEIGHT     ] = _line_min_height;
+        _line_array[ __E_SCRIBBLE_LINE.LENGTH     ] = 0;
+        _line_array[ __E_SCRIBBLE_LINE.FIRST_CHAR ] = _line_prev_last_index;
+        _line_array[ __E_SCRIBBLE_LINE.LAST_CHAR  ] = _line_prev_last_index;
+        _line_array[ __E_SCRIBBLE_LINE.HALIGN     ] = _text_halign;
+        _line_array[ __E_SCRIBBLE_LINE.WORDS      ] = _line_words_array;
         
         ds_list_add( _text_root_list, _line_array );
     }
@@ -543,14 +549,16 @@ for( var _i = 0; _i < _separator_count; _i++ )
     
     if ( _sep_char == 91 ) _in_command_tag = true; // [
     
-    _line_array[@ __E_SCRIBBLE_LINE.LENGTH ] += _substr_length;
+    _line_length += _substr_length;
     if ( _substr_length > 0 ) ++_json[? "words" ];
     _json[? "length" ] += _substr_length;
 }
 
 //Finish defining the last line
-_line_array[@ __E_SCRIBBLE_LINE.WIDTH  ] = _text_x;
-_line_array[@ __E_SCRIBBLE_LINE.HEIGHT ] = _line_max_height;
+_line_array[@ __E_SCRIBBLE_LINE.WIDTH     ] = _text_x;
+_line_array[@ __E_SCRIBBLE_LINE.HEIGHT    ] = _line_max_height;
+_line_array[@ __E_SCRIBBLE_LINE.LENGTH    ] = _line_length;
+_line_array[@ __E_SCRIBBLE_LINE.LAST_CHAR ] = _line_array[@ __E_SCRIBBLE_LINE.FIRST_CHAR ] + _line_length;
 _json[? "lines" ] = ds_list_size( _json[? "lines list" ] );
 #endregion
 
@@ -627,7 +635,7 @@ ds_list_destroy( _parameters_list );
 
 
 
-#region Build the vertex buffer
+#region Build the vertex buffers
 
 var _json_offset_x = _json[? "left" ];
 var _json_offset_y = _json[? "top"  ];
