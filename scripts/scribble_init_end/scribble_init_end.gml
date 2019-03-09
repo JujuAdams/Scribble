@@ -1,6 +1,6 @@
 var _timer = get_timer();
 
-if ( !variable_global_exists( "__scribble_sprite_map" ) )
+if ( !variable_global_exists( "__scribble_texture_page_size" ) )
 {
     show_error( "scribble_init_end() can only be called after scribble_init_start()\n ", false );
     exit;

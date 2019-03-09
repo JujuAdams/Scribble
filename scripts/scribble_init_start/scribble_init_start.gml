@@ -1,6 +1,6 @@
 /// @param texturePageSize
 
-if ( variable_global_exists( "__scribble_init_font_array" ) )
+if ( variable_global_exists( "__scribble_texture_page_size" ) )
 {
     show_error( "scribble_init_start() may not be called twice\n ", false );
     exit;
