@@ -14,20 +14,28 @@ ds_map_clear(  _json[? "events different map"  ] );
 
 if ( _json[? "typewriter do" ] )
 {
-    var _tw_speed = _json[? "typewriter speed"    ];
     var _tw_pos   = _json[? "typewriter position" ];
+    var _tw_speed = _json[? "typewriter speed"    ];
+    
+    var _do_event_scan = true;
+    var _scan_range_a = _tw_pos;
+    var _scan_range_b = _tw_pos + _tw_speed;
+    
+    #region Advance typewriter
     
     switch( _json[? "typewriter method" ] )
     {
         case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-            _tw_pos = scribble_events_scan_range( _json, _tw_pos, _tw_pos + _tw_speed );
+            _tw_pos += _tw_speed;
             _tw_pos = min( _tw_pos, _json[? "length" ] );
             scribble_set_char_fade_in( _json, _tw_pos );
             _json[? "typewriter position" ] = _tw_pos;
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_LINE:
-            //_tw_pos = scribble_events_scan_range( _json, _tw_pos, _tw_pos + _tw_speed );
+            _do_event_scan = false;
+            
+            _tw_pos += _tw_speed;
             _tw_pos = min( _tw_pos, _json[? "lines" ] );
             scribble_set_line_fade_in( _json, _tw_pos );
             _json[? "typewriter position" ] = _tw_pos;
@@ -35,8 +43,11 @@ if ( _json[? "typewriter do" ] )
         
         default:
             show_error( "Typewriter method not recognised.\nPlease use SCRIBBLE_TYPEWRITER_PER_CHARACTER or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false );
+            _do_event_scan = false;
         break;
     }
+    
+    #endregion
 }
 
 return _json;
