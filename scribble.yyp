@@ -295,14 +295,6 @@
             }
         },
         {
-            "Key": "86e5f4a9-1c6e-456f-b8a7-a735d8b27ba7",
-            "Value": {
-                "id": "41c74328-7bc8-4e40-a0a4-951f65630c3e",
-                "resourcePath": "scripts\\__scribble_get_font_texture_size\\__scribble_get_font_texture_size.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "89d48886-20f5-4316-bc9c-1908defb08ac",
             "Value": {
                 "id": "279a42e3-5696-4b2a-8c4d-a217be86dd49",
@@ -561,7 +553,6 @@
     ],
     "script_order": [
         "acb26a39-8033-4289-87d0-228ed7921bc8",
-        "86e5f4a9-1c6e-456f-b8a7-a735d8b27ba7",
         "4af4d3c7-1882-48bb-b61a-c6fa76fad4f1",
         "89e8adda-438e-48f9-ab78-0e8b396b3850",
         "375e7330-6e30-4902-8a42-dbc8ad380c16",

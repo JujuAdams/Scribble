@@ -719,7 +719,7 @@ repeat( _lines_size )
                 _previous_font = _font;
                 
                 var _font_glyphs_map = global.__scribble_glyphs_map[? _font ];
-                var _font_sprite     = global.__scribble_image_map[?  _font ];
+                var _font_sprite     = global.__scribble_sprite_map[?  _font ];
                 var _font_texture    = sprite_get_texture( _font_sprite, 0 );     
                 
                 if ( _font_texture != _previous_texture )
