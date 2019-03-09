@@ -16,6 +16,12 @@ var _def_halign       = ((argument_count<4) || (argument[3]==undefined))? fa_lef
 var _def_colour       = ((argument_count<5) || (argument[4]==undefined))? c_white                           : argument[4];
 var _line_min_height  = ((argument_count<6) || (argument[5]==undefined))? undefined                         : argument[5];
 
+if ( !ds_map_exists( global.__scribble_font_data, _def_font ) )
+{
+    show_error( "\"" + string( _def_font ) + "\" not recognised as a font\n ", false );
+    var _def_font = global.__scribble_default_font;
+}
+
 //Find the default font's space width
 var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
 var _array = _font_glyphs_map[? " " ];
