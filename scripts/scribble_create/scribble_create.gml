@@ -141,11 +141,11 @@ _json[? "rainbow weight"       ] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
 
 //Character fade
 _json[? "char fade t"          ] = 1;
-_json[? "char fade smoothness" ] = SCRIBBLE_DEFAULT_CHARACTER_SMOOTHNESS;
+_json[? "char fade smoothness" ] = 0;
 
 //Line fade
 _json[? "line fade t"          ] = 1;
-_json[? "line fade smoothness" ] = SCRIBBLE_DEFAULT_LINE_SMOOTHNESS;
+_json[? "line fade smoothness" ] = 0;
 
 //Event triggering
 var _events_character_list = ds_list_create();
