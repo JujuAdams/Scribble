@@ -6,12 +6,6 @@ if ( !variable_global_exists( "__scribble_sprite_map" ) )
     exit;
 }
 
-if ( global.__scribble_sprite_map == undefined )
-{
-    show_error( "scribble_init_end() may only be called once\n ", false );
-    exit;
-}
-
 show_debug_message( "Scribble: Font initialisation started" );
 
 
@@ -67,7 +61,6 @@ repeat( _font_count )
     var _font_data = global.__scribble_font_data[? _name ];
     if ( _font_data[ __E_SCRIBBLE_FONT.TYPE ] == asset_sprite )
     {
-        global.__scribble_sprite_map[? _name ] = asset_get_index( _name );
         show_debug_message( "Scribble: Found spritefont \"" + _name + "\"" );
     }
     else if ( _font_data[ __E_SCRIBBLE_FONT.TYPE ] )
@@ -87,8 +80,6 @@ repeat( _font_count )
             show_error( "Scribble:\n\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
             continue;
         }
-        
-        global.__scribble_sprite_map[? _name ] = undefined;
         
         if ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] > global.__scribble_texture_page_size )
         || ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] > global.__scribble_texture_page_size )
@@ -301,7 +292,12 @@ for( var _s = 0; _s < _surface_count; _s++ )
     
     ds_list_add( global.__scribble_sprites, _surface_sprite );
     
-    for( var _f = 0; _f < _surface_font_count; _f++ ) global.__scribble_sprite_map[? _surface_fonts[_f] ] = _surface_sprite;
+    for( var _f = 0; _f < _surface_font_count; _f++ )
+    {
+        var _name = _surface_fonts[ _f ];
+        var _font_data = global.__scribble_font_data[? _name ];
+        _font_data[@ __E_SCRIBBLE_FONT.SPRITE ] = _surface_sprite;
+    }
 }
     
 show_debug_message( "Scribble: Surface rendering finished" );
@@ -474,7 +470,7 @@ for( var _font = 0; _font < _font_count; _font++ )
         
         show_debug_message( "Scribble: Processing characters for font \"" + _name + "\"" );
         
-        var _surface_sprite = global.__scribble_sprite_map[? _name ];
+        var _surface_sprite = _font_data[ __E_SCRIBBLE_FONT.SPRITE   ];
         var _image_x_offset = _font_data[ __E_SCRIBBLE_FONT.SPRITE_X ];
         var _image_y_offset = _font_data[ __E_SCRIBBLE_FONT.SPRITE_Y ];
         
