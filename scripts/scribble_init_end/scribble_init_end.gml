@@ -88,9 +88,7 @@ repeat( _font_count )
             continue;
         }
         
-        global.__scribble_sprite_map[?   _name ] = undefined;
-        global.__scribble_sprite_x_map[? _name ] = 0;
-        global.__scribble_sprite_y_map[? _name ] = 0;
+        global.__scribble_sprite_map[? _name ] = undefined;
         
         if ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] > global.__scribble_texture_page_size )
         || ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] > global.__scribble_texture_page_size )
@@ -144,8 +142,8 @@ while( !ds_priority_empty( _priority_queue ) )
             var _target_name = _surface_fonts[_f];
             var _target_data = global.__scribble_font_data[? _target_name ];
             
-            var _l = global.__scribble_sprite_x_map[? _target_name ] + _target_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH ];
-            var _t = global.__scribble_sprite_y_map[? _target_name ];
+            var _l = _target_data[ __E_SCRIBBLE_FONT.SPRITE_X ] + _target_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH ];
+            var _t = _target_data[ __E_SCRIBBLE_FONT.SPRITE_Y ];
             var _r = _l + _texture_w - 1;
             var _b = _t + _texture_h - 1;
                 
@@ -160,13 +158,11 @@ while( !ds_priority_empty( _priority_queue ) )
             {
                 var _check_name = _surface_fonts[_g];
                 var _check_data = global.__scribble_font_data[? _check_name ];
-                var _check_texture_w = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ];
-                var _check_texture_h = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ];
                 
-                var _check_l = global.__scribble_sprite_x_map[? _check_name ];
-                var _check_t = global.__scribble_sprite_y_map[? _check_name ];
-                var _check_r = _check_l + _check_texture_w - 1;
-                var _check_b = _check_t + _check_texture_h - 1;
+                var _check_l = _check_data[ __E_SCRIBBLE_FONT.SPRITE_X ];
+                var _check_t = _check_data[ __E_SCRIBBLE_FONT.SPRITE_Y ];
+                var _check_r = _check_l + _check_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] - 1;
+                var _check_b = _check_t + _check_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] - 1;
                 
                 if ( rectangle_in_rectangle( _l, _t, _r, _b,   _check_l, _check_t, _check_r, _check_b ) )
                 {
@@ -188,8 +184,8 @@ while( !ds_priority_empty( _priority_queue ) )
                 var _target_name = _surface_fonts[_f];
                 var _target_data = global.__scribble_font_data[? _target_name ];
                 
-                var _l = global.__scribble_sprite_x_map[? _target_name ];
-                var _t = global.__scribble_sprite_y_map[? _target_name ] + _target_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ];
+                var _l = _target_data[ __E_SCRIBBLE_FONT.SPRITE_X ];
+                var _t = _target_data[ __E_SCRIBBLE_FONT.SPRITE_Y ] + _target_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ];
                 var _r = _l + _texture_w - 1;
                 var _b = _t + _texture_h - 1;
                 
@@ -204,13 +200,11 @@ while( !ds_priority_empty( _priority_queue ) )
                 {
                     var _check_name = _surface_fonts[_g];
                     var _check_data = global.__scribble_font_data[? _check_name ];
-                    var _check_texture_w = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ];
-                    var _check_texture_h = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ];
                     
-                    var _check_l = global.__scribble_sprite_x_map[? _check_name ];
-                    var _check_t = global.__scribble_sprite_y_map[? _check_name ];
-                    var _check_r = _check_l + _check_texture_w - 1;
-                    var _check_b = _check_t + _check_texture_h - 1;
+                    var _check_l = _check_data[ __E_SCRIBBLE_FONT.SPRITE_X ];
+                    var _check_t = _check_data[ __E_SCRIBBLE_FONT.SPRITE_Y ];
+                    var _check_r = _check_l + _check_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] - 1;
+                    var _check_b = _check_t + _check_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] - 1;
                     
                     if ( rectangle_in_rectangle( _l, _t, _r, _b,   _check_l, _check_t, _check_r, _check_b ) )
                     {
@@ -227,8 +221,8 @@ while( !ds_priority_empty( _priority_queue ) )
         {
             show_debug_message( "Scribble:         At " + string( _l ) + "," + string( _t ) + " on surface " + string( _s ) );
             _surface_fonts[@ array_length_1d( _surface_fonts ) ] = _name;
-            global.__scribble_sprite_x_map[? _name ] = _l;
-            global.__scribble_sprite_y_map[? _name ] = _t;
+            _font_data[@ __E_SCRIBBLE_FONT.SPRITE_X ] = _l;
+            _font_data[@ __E_SCRIBBLE_FONT.SPRITE_Y ] = _t;
             _surface_data[@ __E_SCRIBBLE_SURFACE.WIDTH  ] = max( _surface_w, _r+1 );
             _surface_data[@ __E_SCRIBBLE_SURFACE.HEIGHT ] = max( _surface_h, _b+1 );
             break;
@@ -238,6 +232,9 @@ while( !ds_priority_empty( _priority_queue ) )
     if ( !_found )
     {
         show_debug_message( "Scribble:         No space found. Defining new surface (id=" + string( array_length_1d( _surface_array ) ) + ", " + string( _texture_w ) + "x" + string( _texture_h ) + ")" );
+        
+        _font_data[@ __E_SCRIBBLE_FONT.SPRITE_X ] = 0;
+        _font_data[@ __E_SCRIBBLE_FONT.SPRITE_Y ] = 0;
         
         var _surface_data = array_create( __E_SCRIBBLE_SURFACE.__SIZE );
         _surface_data[ __E_SCRIBBLE_SURFACE.WIDTH  ] = _texture_w;
@@ -272,13 +269,13 @@ for( var _s = 0; _s < _surface_count; _s++ )
     var _surface_font_count = array_length_1d( _surface_fonts );
     for( var _f = 0; _f < _surface_font_count; _f++ )
     {
-        var _name = _surface_fonts[_f];
-        var _x    = global.__scribble_sprite_x_map[? _name ];
-        var _y    = global.__scribble_sprite_y_map[? _name ];
+        var _name = _surface_fonts[ _f ];
         
         var _font_data = global.__scribble_font_data[? _name ];
         var _texture_w = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ];
         var _texture_h = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ];
+        var _x         = _font_data[ __E_SCRIBBLE_FONT.SPRITE_X       ];
+        var _y         = _font_data[ __E_SCRIBBLE_FONT.SPRITE_Y       ];
         
         show_debug_message( "Scribble:         \"" + _name + "\" at " + string( _x ) + "," + string( _y ) + " (size=" + string( _texture_w ) + "x" + string( _texture_h ) + ")" );
         
@@ -478,8 +475,8 @@ for( var _font = 0; _font < _font_count; _font++ )
         show_debug_message( "Scribble: Processing characters for font \"" + _name + "\"" );
         
         var _surface_sprite = global.__scribble_sprite_map[? _name ];
-        var _image_x_offset = global.__scribble_sprite_x_map[? _name ];
-        var _image_y_offset = global.__scribble_sprite_y_map[? _name ];
+        var _image_x_offset = _font_data[ __E_SCRIBBLE_FONT.SPRITE_X ];
+        var _image_y_offset = _font_data[ __E_SCRIBBLE_FONT.SPRITE_Y ];
         
         var _texture = sprite_get_texture( _surface_sprite, 0 );
         var _texture_tw = texture_get_texel_width(  _texture );

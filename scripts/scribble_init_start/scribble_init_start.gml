@@ -9,8 +9,6 @@ if ( variable_global_exists( "__scribble_init_font_array" ) )
 global.__scribble_texture_page_size = argument0;
 global.__scribble_font_data         = ds_map_create();
 global.__scribble_sprite_map        = ds_map_create();
-global.__scribble_sprite_x_map      = ds_map_create();
-global.__scribble_sprite_y_map      = ds_map_create();
 global.__scribble_glyphs_map        = ds_map_create();
 global.__scribble_sprites           = ds_list_create();
 global.__scribble_colours           = ds_map_create(); //Stores colour definitions, including custom colours
