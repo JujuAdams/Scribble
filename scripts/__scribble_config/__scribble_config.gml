@@ -1,4 +1,4 @@
-//  Scribble (light) v2.5.0
+//  Scribble (light) v2.5.1
 //  2019/03/09
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
@@ -24,7 +24,7 @@
 
 #region -- Internal Definitions --
 
-#macro __SCRIBBLE_VERSION "2.5.0 (light)"
+#macro __SCRIBBLE_VERSION "2.5.1 (light)"
 #macro __SCRIBBLE_DATE    "2019/03/09"
 
 enum __E_SCRIBBLE_FONT
@@ -67,14 +67,23 @@ enum __E_SCRIBBLE_LINE
 
 enum __E_SCRIBBLE_WORD
 {
-    X, Y,
-    WIDTH, HEIGHT,
-    VALIGN,
-    STRING, INPUT_STRING,
-    SPRITE, IMAGE,
-    LENGTH, FONT, COLOUR,
-    RAINBOW, SHAKE, WAVE, NEXT_SEPARATOR,
-    __SIZE
+    X,              // 0
+    Y,              // 1
+    WIDTH,          // 2
+    HEIGHT,         // 3
+    VALIGN,         // 4
+    STRING,         // 5
+    INPUT_STRING,   // 6
+    SPRITE,         // 7
+    IMAGE,          // 8
+    LENGTH,         // 9
+    FONT,           //10
+    COLOUR,         //11
+    RAINBOW,        //12
+    SHAKE,          //13
+    WAVE,           //14
+    NEXT_SEPARATOR, //15
+    __SIZE          //16
 }
 
 enum __E_SCRIBBLE_GLYPH

@@ -1,4 +1,4 @@
-//  Scribble (light) v2.5.0
+//  Scribble (light) v2.5.1
 //  2019/03/09
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
@@ -9,7 +9,7 @@
 scribble_init_start( 2048 ); //Set to the same value as the texture page size for your target platform
 scribble_init_add_font( "fTestA" ); //The first font added is the default font
 scribble_init_add_font( "fTestB" );
-scribble_init_add_spritefont( "sSpriteFont", 3 ); //GM's spritefont renderer handles spaces really weirdly so it's best to specify a width
+scribble_init_add_spritefont( "sSpriteFont", 3 ); //GM's spritefont renderer handles spaces weirdly so it's best to specify a width
 scribble_init_add_font( "fChineseTest" );
 scribble_init_end();
 
