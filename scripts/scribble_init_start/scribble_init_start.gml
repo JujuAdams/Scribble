@@ -14,8 +14,8 @@ global.__scribble_glyphs_map        = ds_map_create();
 global.__scribble_cache_map         = ds_map_create();
 global.__scribble_sprite_font_map   = ds_map_create();
 global.__scribble_sprites           = ds_list_create();
-global.__scribble_custom_colours    = ds_map_create();
-global.__scribble_events            = ds_map_create();
+global.__scribble_colours           = ds_map_create(); //Stores colour definitions, including custom colours
+global.__scribble_events            = ds_map_create(); //Stores event bindings
 global.__scribble_init_font_array   = [];
 global.__scribble_default_font      = "";
 
