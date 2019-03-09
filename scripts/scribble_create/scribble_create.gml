@@ -200,7 +200,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
     var _sep_prev_char = _sep_char;
         _sep_char = _separator_list[| _i ];
     
-    if ( _new_word ) _word_array[@ E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = _sep_char;
+    if ( _new_word ) _word_array[@ __E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = _sep_char;
     _new_word = false;
     
     var _input_substr = buffer_read( _buffer, buffer_string );
@@ -314,7 +314,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     
                     if ( _first_character )
                     {
-                        if ( _line_array != noone ) _line_array[@ E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
+                        if ( _line_array != noone ) _line_array[@ __E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
                     }
                     else
                     {
@@ -328,7 +328,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     
                     if ( _first_character )
                     {
-                        if ( _line_array != noone ) _line_array[@ E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
+                        if ( _line_array != noone ) _line_array[@ __E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
                     }
                     else
                     {
@@ -343,7 +343,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     
                     if ( _first_character )
                     {
-                        if ( _line_array != noone ) _line_array[@ E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
+                        if ( _line_array != noone ) _line_array[@ __E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
                     }
                     else
                     {
@@ -467,8 +467,8 @@ for( var _i = 0; _i < _separator_count; _i++ )
     {
         if ( _line_array != noone )
         {
-            _line_array[@ E_SCRIBBLE_LINE.WIDTH  ] = _text_x;
-            _line_array[@ E_SCRIBBLE_LINE.HEIGHT ] = _line_max_height;
+            _line_array[@ __E_SCRIBBLE_LINE.WIDTH  ] = _text_x;
+            _line_array[@ __E_SCRIBBLE_LINE.HEIGHT ] = _line_max_height;
             
             _text_x = 0;
             _text_y += _line_max_height;
@@ -480,24 +480,24 @@ for( var _i = 0; _i < _separator_count; _i++ )
         if ( _word_array != noone )
         {
             // _word_array still holds the previous word
-            var _next_separator = _word_array[ E_SCRIBBLE_WORD.NEXT_SEPARATOR ];
+            var _next_separator = _word_array[ __E_SCRIBBLE_WORD.NEXT_SEPARATOR ];
             if ( _next_separator == 32 ) || ( _next_separator == 91 ) // <space> or [
             {
-                _word_array[@ E_SCRIBBLE_WORD.WIDTH ] -= _font_space_width; //If the previous separation character was whitespace, correct the length of the previous word
-                _line_array[@ E_SCRIBBLE_LINE.WIDTH ] -= _font_space_width; //...and the previous line
+                _word_array[@ __E_SCRIBBLE_WORD.WIDTH ] -= _font_space_width; //If the previous separation character was whitespace, correct the length of the previous word
+                _line_array[@ __E_SCRIBBLE_LINE.WIDTH ] -= _font_space_width; //...and the previous line
             }
         }
         
-        var _line_array = array_create( E_SCRIBBLE_LINE.__SIZE, 0 );
+        var _line_array = array_create( __E_SCRIBBLE_LINE.__SIZE, 0 );
         
         var _line_words_array = array_create( 0, 0 );
-        _line_array[ E_SCRIBBLE_LINE.X      ] = 0;
-        _line_array[ E_SCRIBBLE_LINE.Y      ] = _text_y;
-        _line_array[ E_SCRIBBLE_LINE.WIDTH  ] = 0;
-        _line_array[ E_SCRIBBLE_LINE.HEIGHT ] = _line_min_height;
-        _line_array[ E_SCRIBBLE_LINE.LENGTH ] = 0;
-        _line_array[ E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
-        _line_array[ E_SCRIBBLE_LINE.WORDS  ] = _line_words_array;
+        _line_array[ __E_SCRIBBLE_LINE.X      ] = 0;
+        _line_array[ __E_SCRIBBLE_LINE.Y      ] = _text_y;
+        _line_array[ __E_SCRIBBLE_LINE.WIDTH  ] = 0;
+        _line_array[ __E_SCRIBBLE_LINE.HEIGHT ] = _line_min_height;
+        _line_array[ __E_SCRIBBLE_LINE.LENGTH ] = 0;
+        _line_array[ __E_SCRIBBLE_LINE.HALIGN ] = _text_halign;
+        _line_array[ __E_SCRIBBLE_LINE.WORDS  ] = _line_words_array;
         
         ds_list_add( _text_root_list, _line_array );
     }
@@ -508,23 +508,23 @@ for( var _i = 0; _i < _separator_count; _i++ )
         
         //Add a new word
         _new_word = true;
-        var _word_array = array_create( E_SCRIBBLE_WORD.__SIZE, 0 );
-        _word_array[ E_SCRIBBLE_WORD.X              ] = _text_x;
-        _word_array[ E_SCRIBBLE_WORD.Y              ] = 0;
-        _word_array[ E_SCRIBBLE_WORD.WIDTH          ] = _substr_width;
-        _word_array[ E_SCRIBBLE_WORD.HEIGHT         ] = _substr_height;
-        _word_array[ E_SCRIBBLE_WORD.VALIGN         ] = fa_middle;
-        _word_array[ E_SCRIBBLE_WORD.STRING         ] = _substr;
-        _word_array[ E_SCRIBBLE_WORD.INPUT_STRING   ] = _input_substr;
-        _word_array[ E_SCRIBBLE_WORD.SPRITE         ] = _substr_sprite;
-        _word_array[ E_SCRIBBLE_WORD.IMAGE          ] = _substr_image;
-        _word_array[ E_SCRIBBLE_WORD.LENGTH         ] = _substr_length; //Include the separator character!
-        _word_array[ E_SCRIBBLE_WORD.FONT           ] = _text_font;
-        _word_array[ E_SCRIBBLE_WORD.COLOUR         ] = _text_colour;
-        _word_array[ E_SCRIBBLE_WORD.RAINBOW        ] = _text_rainbow;
-        _word_array[ E_SCRIBBLE_WORD.SHAKE          ] = _text_shake;
-        _word_array[ E_SCRIBBLE_WORD.WAVE           ] = _text_wave;
-        _word_array[ E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = "";
+        var _word_array = array_create( __E_SCRIBBLE_WORD.__SIZE, 0 );
+        _word_array[ __E_SCRIBBLE_WORD.X              ] = _text_x;
+        _word_array[ __E_SCRIBBLE_WORD.Y              ] = 0;
+        _word_array[ __E_SCRIBBLE_WORD.WIDTH          ] = _substr_width;
+        _word_array[ __E_SCRIBBLE_WORD.HEIGHT         ] = _substr_height;
+        _word_array[ __E_SCRIBBLE_WORD.VALIGN         ] = fa_middle;
+        _word_array[ __E_SCRIBBLE_WORD.STRING         ] = _substr;
+        _word_array[ __E_SCRIBBLE_WORD.INPUT_STRING   ] = _input_substr;
+        _word_array[ __E_SCRIBBLE_WORD.SPRITE         ] = _substr_sprite;
+        _word_array[ __E_SCRIBBLE_WORD.IMAGE          ] = _substr_image;
+        _word_array[ __E_SCRIBBLE_WORD.LENGTH         ] = _substr_length; //Include the separator character!
+        _word_array[ __E_SCRIBBLE_WORD.FONT           ] = _text_font;
+        _word_array[ __E_SCRIBBLE_WORD.COLOUR         ] = _text_colour;
+        _word_array[ __E_SCRIBBLE_WORD.RAINBOW        ] = _text_rainbow;
+        _word_array[ __E_SCRIBBLE_WORD.SHAKE          ] = _text_shake;
+        _word_array[ __E_SCRIBBLE_WORD.WAVE           ] = _text_wave;
+        _word_array[ __E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = "";
         
         //Add the word to the line list
         _line_words_array[@ array_length_1d(_line_words_array) ] = _word_array;
@@ -532,19 +532,19 @@ for( var _i = 0; _i < _separator_count; _i++ )
     
     _text_x += _substr_width;
     if ( _sep_char == 32 ) _text_x += _font_space_width; //Add spacing if the separation character is a space
-    if ( (_sep_char == 32) && _new_word && (_substr != "") ) _word_array[@ E_SCRIBBLE_WORD.WIDTH ] += _font_space_width;
+    if ( (_sep_char == 32) && _new_word && (_substr != "") ) _word_array[@ __E_SCRIBBLE_WORD.WIDTH ] += _font_space_width;
     #endregion
     
     if ( _sep_char == 91 ) _in_command_tag = true; // [
     
-    _line_array[@ E_SCRIBBLE_LINE.LENGTH ] += _substr_length;
+    _line_array[@ __E_SCRIBBLE_LINE.LENGTH ] += _substr_length;
     if ( _substr_length > 0 ) ++_json[? "words" ];
     _json[? "length" ] += _substr_length;
 }
 
 //Finish defining the last line
-_line_array[@ E_SCRIBBLE_LINE.WIDTH  ] = _text_x;
-_line_array[@ E_SCRIBBLE_LINE.HEIGHT ] = _line_max_height;
+_line_array[@ __E_SCRIBBLE_LINE.WIDTH  ] = _text_x;
+_line_array[@ __E_SCRIBBLE_LINE.HEIGHT ] = _line_max_height;
 _json[? "lines" ] = ds_list_size( _json[? "lines list" ] );
 #endregion
 
@@ -559,11 +559,11 @@ var _textbox_width = 0;
 for( var _i = 0; _i < _lines_size; _i++ )
 {
     var _line_array = _text_root_list[| _i ];
-    _textbox_width = max( _textbox_width, _line_array[ E_SCRIBBLE_LINE.WIDTH ] );
+    _textbox_width = max( _textbox_width, _line_array[ __E_SCRIBBLE_LINE.WIDTH ] );
 }
 
 var _line_array = _text_root_list[| _lines_size - 1 ];
-var _textbox_height = _line_array[ E_SCRIBBLE_LINE.Y ] + _line_array[ E_SCRIBBLE_LINE.HEIGHT ];
+var _textbox_height = _line_array[ __E_SCRIBBLE_LINE.Y ] + _line_array[ __E_SCRIBBLE_LINE.HEIGHT ];
   
 _json[? "width"  ] = _textbox_width;
 _json[? "height" ] = _textbox_height;
@@ -572,37 +572,37 @@ _json[? "height" ] = _textbox_height;
 for( var _line = 0; _line < _lines_size; _line++ )
 {
     var _line_array = _text_root_list[| _line ];
-    switch( _line_array[ E_SCRIBBLE_LINE.HALIGN ] )
+    switch( _line_array[ __E_SCRIBBLE_LINE.HALIGN ] )
     {
         case fa_left:
-            _line_array[@ E_SCRIBBLE_LINE.X ] = 0;
+            _line_array[@ __E_SCRIBBLE_LINE.X ] = 0;
         break;
         case fa_center:
-            _line_array[@ E_SCRIBBLE_LINE.X ] += (_textbox_width - _line_array[ E_SCRIBBLE_LINE.WIDTH ]) div 2;
+            _line_array[@ __E_SCRIBBLE_LINE.X ] += (_textbox_width - _line_array[ __E_SCRIBBLE_LINE.WIDTH ]) div 2;
         break;
         case fa_right:
-            _line_array[@ E_SCRIBBLE_LINE.X ] += _textbox_width - _line_array[ E_SCRIBBLE_LINE.WIDTH ];
+            _line_array[@ __E_SCRIBBLE_LINE.X ] += _textbox_width - _line_array[ __E_SCRIBBLE_LINE.WIDTH ];
         break;
     }
     
-    var _line_height     = _line_array[ E_SCRIBBLE_LINE.HEIGHT ];
-    var _line_word_array = _line_array[ E_SCRIBBLE_LINE.WORDS  ];
+    var _line_height     = _line_array[ __E_SCRIBBLE_LINE.HEIGHT ];
+    var _line_word_array = _line_array[ __E_SCRIBBLE_LINE.WORDS  ];
     
     var _word_count = array_length_1d( _line_word_array );
     for( var _word = 0; _word < _word_count; _word++ )
     {
         var _word_array = _line_word_array[ _word ];
         
-        switch( _word_array[ E_SCRIBBLE_WORD.VALIGN ] )
+        switch( _word_array[ __E_SCRIBBLE_WORD.VALIGN ] )
         {
             case fa_top:
-                _word_array[@ E_SCRIBBLE_WORD.Y ] = 0;
+                _word_array[@ __E_SCRIBBLE_WORD.Y ] = 0;
             break;
             case fa_middle:
-                _word_array[@ E_SCRIBBLE_WORD.Y ] = ( _line_height - _word_array[ E_SCRIBBLE_WORD.HEIGHT ] ) div 2;
+                _word_array[@ __E_SCRIBBLE_WORD.Y ] = ( _line_height - _word_array[ __E_SCRIBBLE_WORD.HEIGHT ] ) div 2;
             break;
             case fa_bottom:
-                _word_array[@ E_SCRIBBLE_WORD.Y ] = _line_height - _word_array[ E_SCRIBBLE_WORD.HEIGHT ];
+                _word_array[@ __E_SCRIBBLE_WORD.Y ] = _line_height - _word_array[ __E_SCRIBBLE_WORD.HEIGHT ];
             break;
         }
     }
@@ -641,18 +641,18 @@ repeat( _lines_size )
     var _line_pc = _line / _lines_size;
     
     var _line_array = _lines[| _line ];
-    var _line_l = _line_array[ E_SCRIBBLE_LINE.X ] + _json_offset_x;
-    var _line_t = _line_array[ E_SCRIBBLE_LINE.Y ] + _json_offset_y;
+    var _line_l = _line_array[ __E_SCRIBBLE_LINE.X ] + _json_offset_x;
+    var _line_t = _line_array[ __E_SCRIBBLE_LINE.Y ] + _json_offset_y;
     
-    var _line_word_array = _line_array[ E_SCRIBBLE_LINE.WORDS ];
+    var _line_word_array = _line_array[ __E_SCRIBBLE_LINE.WORDS ];
     var _words_count = array_length_1d( _line_word_array );
     var _word = 0;
     repeat( _words_count )
     {
         var _word_array = _line_word_array[ _word ];
-        var _word_l = _word_array[ E_SCRIBBLE_WORD.X      ] + _line_l;
-        var _word_t = _word_array[ E_SCRIBBLE_WORD.Y      ] + _line_t;
-        var _sprite = _word_array[ E_SCRIBBLE_WORD.SPRITE ];
+        var _word_l = _word_array[ __E_SCRIBBLE_WORD.X      ] + _line_l;
+        var _word_t = _word_array[ __E_SCRIBBLE_WORD.Y      ] + _line_t;
+        var _sprite = _word_array[ __E_SCRIBBLE_WORD.SPRITE ];
         
         if ( _sprite != noone )
         {
@@ -661,11 +661,11 @@ repeat( _lines_size )
             _previous_font = "";
             
             var _char_pc     = _text_char / _max_char;
-            var _colour      = _word_array[ E_SCRIBBLE_WORD.COLOUR  ];
-            var _rainbow     = _word_array[ E_SCRIBBLE_WORD.RAINBOW ];
-            var _shake       = _word_array[ E_SCRIBBLE_WORD.SHAKE   ];
-            var _wave        = _word_array[ E_SCRIBBLE_WORD.WAVE    ];
-            var _image       = _word_array[ E_SCRIBBLE_WORD.IMAGE   ];
+            var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR  ];
+            var _rainbow     = _word_array[ __E_SCRIBBLE_WORD.RAINBOW ];
+            var _shake       = _word_array[ __E_SCRIBBLE_WORD.SHAKE   ];
+            var _wave        = _word_array[ __E_SCRIBBLE_WORD.WAVE    ];
+            var _image       = _word_array[ __E_SCRIBBLE_WORD.IMAGE   ];
             
             var _sprite_texture = sprite_get_texture( _sprite, _image );
             if ( _sprite_texture != _previous_texture )
@@ -712,7 +712,7 @@ repeat( _lines_size )
         else
         {
             #region Check the font and texture to see if we need a new vertex buffer
-            var _font = _word_array[ E_SCRIBBLE_WORD.FONT ];
+            var _font = _word_array[ __E_SCRIBBLE_WORD.FONT ];
             
             if ( _font != _previous_font )
             {
@@ -750,12 +750,12 @@ repeat( _lines_size )
             #endregion
             
             #region Add vertex data for each character in the string
-            var _colour  = _word_array[ E_SCRIBBLE_WORD.COLOUR  ];
-            var _rainbow = _word_array[ E_SCRIBBLE_WORD.RAINBOW ];
-            var _shake   = _word_array[ E_SCRIBBLE_WORD.SHAKE   ];
-            var _wave    = _word_array[ E_SCRIBBLE_WORD.WAVE    ];
+            var _colour  = _word_array[ __E_SCRIBBLE_WORD.COLOUR  ];
+            var _rainbow = _word_array[ __E_SCRIBBLE_WORD.RAINBOW ];
+            var _shake   = _word_array[ __E_SCRIBBLE_WORD.SHAKE   ];
+            var _wave    = _word_array[ __E_SCRIBBLE_WORD.WAVE    ];
             
-            var _str = _word_array[ E_SCRIBBLE_WORD.STRING ];
+            var _str = _word_array[ __E_SCRIBBLE_WORD.STRING ];
             var _string_size = string_length( _str );
             
             var _char_l = _word_l;
