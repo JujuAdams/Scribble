@@ -9,10 +9,11 @@
         "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
         "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
         "5b698267-e679-4285-95af-7d896e27c33e",
+        "0f5a7def-2f28-4745-bfe7-d3e4c13ae8b4",
+        "13548f19-dd1d-4dc1-9444-205ee176ef6f",
         "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
         "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
-        "3cc406d2-882b-416f-802b-eabfadbbb5d7",
-        "41eaa15d-6b46-4b31-9a37-fcbba2abcefa"
+        "4af4d3c7-1882-48bb-b61a-c6fa76fad4f1"
     ],
     "filterType": "GMScript",
     "folderName": "Core",

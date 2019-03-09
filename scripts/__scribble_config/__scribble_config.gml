@@ -23,8 +23,9 @@
 
 #macro SCRIBBLE_TIME (current_time/1000) //The value that Scribble uses to calculate effects
 
-#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER 0
-#macro SCRIBBLE_TYPEWRITER_PER_LINE      1
+#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER      0
+#macro SCRIBBLE_TYPEWRITER_PER_LINE           1
+#macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS 3
 
 #region -- Internal Definitions --
 

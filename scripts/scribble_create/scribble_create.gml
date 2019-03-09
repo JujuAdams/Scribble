@@ -124,10 +124,11 @@ _json[? "lines"  ] = 0;
 _json[? "words"  ] = 0;
 
 //Typewriter
-_json[? "typewriter do"       ] = false;
-_json[? "typewriter speed"    ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
-_json[? "typewriter position" ] = 0;
-_json[? "typewriter method"   ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+_json[? "typewriter direction"  ] = 0;
+_json[? "typewriter speed"      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+_json[? "typewriter position"   ] = 0;
+_json[? "typewriter method"     ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+_json[? "typewriter smoothness" ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
 
 //Vertex buffer/shader values
 var _vbuff_list = ds_list_create();

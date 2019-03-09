@@ -1,8 +1,8 @@
 {
-    "id": "64852edf-e8a6-439d-8f62-8a11eaa32f8d",
+    "id": "5b698267-e679-4285-95af-7d896e27c33e",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "scribble_set_char_fade_out",
+    "name": "scribble_typewriter_fade_in",
     "IsCompatibility": false,
     "IsDnD": false
 }
