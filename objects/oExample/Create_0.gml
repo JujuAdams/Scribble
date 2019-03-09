@@ -13,7 +13,7 @@ var _string = "[ev|sound|sndCrank][rainbow]abcdef[] ABCDEF##[wave][c_orange]0123
 json = scribble_create( _string, 200, "sSpriteFont", fa_center, make_colour_hsv( 35, 140, 210 ) );
 
 //Set this text to be displayed typewriter style
-scribble_typewriter_fade_in( json, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER );
+scribble_typewriter_in( json, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER );
 
 //Set how the text should be aligned relative to the draw coordinate
 //Here, we're setting the alignment so that the middle/centre of the box is at the draw coordinate

@@ -8,5 +8,5 @@ scribble_step( json );
 //1 < State < 2  : Text is fading out
 //2 = State      : Text fully faded out
 
-if ( scribble_typewriter_state( json ) == 1 ) scribble_typewriter_fade_out( json );
-if ( scribble_typewriter_state( json ) == 2 ) scribble_typewriter_fade_in( json );
+if ( scribble_typewriter_state( json ) == 1 ) scribble_typewriter_out( json );
+if ( scribble_typewriter_state( json ) == 2 ) scribble_typewriter_in( json );

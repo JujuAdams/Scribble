@@ -58,7 +58,7 @@
             "Key": "0f5a7def-2f28-4745-bfe7-d3e4c13ae8b4",
             "Value": {
                 "id": "5c4f9417-d316-492a-880b-970c2081867c",
-                "resourcePath": "scripts\\scribble_typewriter_fade_out\\scribble_typewriter_fade_out.yy",
+                "resourcePath": "scripts\\scribble_typewriter_out\\scribble_typewriter_out.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -162,7 +162,7 @@
             "Key": "5b698267-e679-4285-95af-7d896e27c33e",
             "Value": {
                 "id": "3c53b923-f8b4-4066-b653-9a628d969aab",
-                "resourcePath": "scripts\\scribble_typewriter_fade_in\\scribble_typewriter_fade_in.yy",
+                "resourcePath": "scripts\\scribble_typewriter_in\\scribble_typewriter_in.yy",
                 "resourceType": "GMScript"
             }
         },
