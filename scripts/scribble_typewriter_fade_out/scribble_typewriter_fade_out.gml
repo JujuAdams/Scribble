@@ -8,9 +8,8 @@ var _speed      = (argument_count > 1)? argument[1] : undefined;
 var _method     = (argument_count > 2)? argument[2] : undefined;
 var _smoothness = (argument_count > 3)? argument[3] : SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
 
-_json[? "typewriter finished"  ] = false;
 _json[? "typewriter direction" ] = -1;
-_json[? "typewriter position"  ] = 0;
+_json[? "typewriter position"  ] =  0;
 
 if ( _speed      != undefined ) _json[? "typewriter speed"      ] = _speed;
 if ( _method     != undefined ) _json[? "typewriter method"     ] = _method;
