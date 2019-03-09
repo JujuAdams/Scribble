@@ -199,14 +199,6 @@
             }
         },
         {
-            "Key": "601d908a-2676-4fe0-8c28-702fa567bad6",
-            "Value": {
-                "id": "acbabbf7-e197-4bb2-8493-2362277de489",
-                "resourcePath": "scripts\\scribble_events_get_triggered_list\\scribble_events_get_triggered_list.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "64852edf-e8a6-439d-8f62-8a11eaa32f8d",
             "Value": {
                 "id": "49ae5d08-acf8-4866-a740-88b10e000efb",
@@ -252,14 +244,6 @@
                 "id": "559e402a-c64c-4409-9612-507c72f5be72",
                 "resourcePath": "views\\73d76eff-c580-4c7f-8a7a-50753795d711.yy",
                 "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "73dc7154-9c37-4dd0-80d5-255814000240",
-            "Value": {
-                "id": "9fdc1f65-8074-48f2-99ad-7e839d451264",
-                "resourcePath": "scripts\\scribble_events_get_value\\scribble_events_get_value.yy",
-                "resourceType": "GMScript"
             }
         },
         {
@@ -375,14 +359,6 @@
             }
         },
         {
-            "Key": "91f01296-feff-4575-aaa8-eb403aecfb7c",
-            "Value": {
-                "id": "ce3a6f09-2302-435b-a83c-319c2d2706bc",
-                "resourcePath": "views\\91f01296-feff-4575-aaa8-eb403aecfb7c.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
             "Key": "946479bd-e52d-41cb-994f-9184d806b8b5",
             "Value": {
                 "id": "42472f94-8ec7-488a-bdeb-1e502bc60846",
@@ -436,14 +412,6 @@
                 "id": "da6553cb-7da1-44bd-9487-96fce1bbc45e",
                 "resourcePath": "sounds\\sndSwitch\\sndSwitch.yy",
                 "resourceType": "GMSound"
-            }
-        },
-        {
-            "Key": "a7b0bcec-e3f0-4cc8-a0d1-000e29a5794a",
-            "Value": {
-                "id": "3b366f14-a573-4f16-9db9-61768b59fa4d",
-                "resourcePath": "scripts\\scribble_events_get_name\\scribble_events_get_name.yy",
-                "resourceType": "GMScript"
             }
         },
         {
@@ -519,14 +487,6 @@
             }
         },
         {
-            "Key": "c39d5f2a-a3f2-46be-9ac8-35f0203336cc",
-            "Value": {
-                "id": "f791940e-167a-445d-b833-0f746337f238",
-                "resourcePath": "scripts\\scribble_events_get_different_event\\scribble_events_get_different_event.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "c459431b-207e-415b-b3a7-92d0d49053d1",
             "Value": {
                 "id": "63678702-206e-457b-8663-7692fe299513",
@@ -556,14 +516,6 @@
                 "id": "897c9eeb-3a61-4efe-bf6f-c17ad23d001f",
                 "resourcePath": "views\\d31795bd-3e13-4c6b-bec6-ccf6cfdf0bce.yy",
                 "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "d8726d83-4f85-4a2d-a870-936986e91955",
-            "Value": {
-                "id": "f8306501-938d-4382-870a-002fe9655eb9",
-                "resourcePath": "scripts\\scribble_events_get_changed\\scribble_events_get_changed.yy",
-                "resourceType": "GMScript"
             }
         },
         {
@@ -677,11 +629,6 @@
         "a2ec27d1-19b6-4771-9029-9d786c4379df",
         "2d76568f-37bb-4d13-8f3a-9954003a0507",
         "4af4d3c7-1882-48bb-b61a-c6fa76fad4f1",
-        "d8726d83-4f85-4a2d-a870-936986e91955",
-        "c39d5f2a-a3f2-46be-9ac8-35f0203336cc",
-        "73dc7154-9c37-4dd0-80d5-255814000240",
-        "601d908a-2676-4fe0-8c28-702fa567bad6",
-        "a7b0bcec-e3f0-4cc8-a0d1-000e29a5794a",
         "00fbc8f9-0e51-458c-8834-69a5cbc5e94b"
     ],
     "tutorial": ""
