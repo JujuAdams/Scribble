@@ -5,15 +5,14 @@
 var _json = argument[0];
 
 var _typewriter_direction = _json[? "typewriter direction" ];
-
-//Clear this JSON's events state
-ds_list_clear( _json[? "events triggered list" ] );
-ds_map_clear(  _json[? "events triggered map"  ] );
-ds_map_clear(  _json[? "events changed map"    ] );
-ds_map_clear(  _json[? "events different map"  ] );
-
 if ( _typewriter_direction != 0 )
 {
+    //Clear this JSON's events state
+    ds_list_clear( _json[? "events triggered list" ] );
+    ds_map_clear(  _json[? "events triggered map"  ] );
+    ds_map_clear(  _json[? "events changed map"    ] );
+    ds_map_clear(  _json[? "events different map"  ] );
+    
     var _tw_pos   = _json[? "typewriter position" ];
     var _tw_speed = _json[? "typewriter speed"    ];
     
@@ -54,5 +53,3 @@ if ( _typewriter_direction != 0 )
     
     #endregion
 }
-
-return _json;

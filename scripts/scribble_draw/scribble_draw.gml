@@ -133,10 +133,10 @@ else
         matrix_set( matrix_world, _matrix );
     }
     
-    shader_set( shScribbleLight );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fTime" ), SCRIBBLE_TIME );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fAlpha" ), draw_get_alpha() );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_vOptions" ), _json[? "wave size" ], _json[? "shake size" ], _json[? "rainbow weight" ] );
+    shader_set( shScribble );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fTime"               ), SCRIBBLE_TIME );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fAlpha"              ), draw_get_alpha() );
+    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_vOptions"            ), _json[? "wave size" ], _json[? "shake size" ], _json[? "rainbow weight" ] );
     shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fCharFadeT"          ), _json[? "char fade t" ] / (1-_json[? "char fade smoothness" ]) );
     shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fCharFadeSmoothness" ), _json[? "char fade smoothness" ] );
     shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fLineFadeT"          ), _json[? "line fade t" ] / (1-_json[? "line fade smoothness" ]) );

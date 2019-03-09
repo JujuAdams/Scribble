@@ -66,7 +66,7 @@
             "Key": "13548f19-dd1d-4dc1-9444-205ee176ef6f",
             "Value": {
                 "id": "7300137d-5a2d-41a1-83fc-949bea48cd43",
-                "resourcePath": "scripts\\scribble_typewriter_state\\scribble_typewriter_state.yy",
+                "resourcePath": "scripts\\scribble_typewriter_get_state\\scribble_typewriter_get_state.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -74,7 +74,7 @@
             "Key": "30fbaaf9-cdd9-41ed-a938-9cb6f0c2d718",
             "Value": {
                 "id": "80f66a75-cc75-490e-bc27-98e1810f6564",
-                "resourcePath": "shaders\\shScribbleLight\\shScribbleLight.yy",
+                "resourcePath": "shaders\\shScribble\\shScribble.yy",
                 "resourceType": "GMShader"
             }
         },
@@ -194,7 +194,7 @@
             "Key": "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
             "Value": {
                 "id": "3fc323a0-9d11-4146-a119-45a4dfa93389",
-                "resourcePath": "scripts\\scribble_set_box_alignment\\scribble_set_box_alignment.yy",
+                "resourcePath": "scripts\\scribble_box_alignment\\scribble_box_alignment.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -556,11 +556,11 @@
         "86be87df-87d5-438a-a8e0-49bc2ac80815",
         "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
         "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
+        "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
+        "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
         "5b698267-e679-4285-95af-7d896e27c33e",
         "0f5a7def-2f28-4745-bfe7-d3e4c13ae8b4",
         "13548f19-dd1d-4dc1-9444-205ee176ef6f",
-        "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
-        "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
         "00fbc8f9-0e51-458c-8834-69a5cbc5e94b"
     ],
     "tutorial": ""
