@@ -71,7 +71,7 @@ repeat( _buffer_size )
     
     if ( _in_command_tag )
     {
-        if ( _value == 93 ) || ( _value == 124 ) // ] or |
+        if ( _value == 93 ) || ( _value == 44 ) // ] or ,
         {
             if ( _value == 93 ) _in_command_tag = false;
             buffer_poke( _buffer, _i, buffer_u8, 0 );
