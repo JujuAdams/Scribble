@@ -14,6 +14,14 @@ global.__scribble_colours           = ds_map_create(); //Stores colour definitio
 global.__scribble_events            = ds_map_create(); //Stores event bindings
 global.__scribble_default_font      = "";
 
+global.__scribble_uniform_time            = shader_get_uniform( shScribble, "u_fTime"               );
+global.__scribble_uniform_alpha           = shader_get_uniform( shScribble, "u_fAlpha"              );
+global.__scribble_uniform_options         = shader_get_uniform( shScribble, "u_vOptions"            );
+global.__scribble_uniform_char_t          = shader_get_uniform( shScribble, "u_fCharFadeT"          );
+global.__scribble_uniform_char_smoothness = shader_get_uniform( shScribble, "u_fCharFadeSmoothness" );
+global.__scribble_uniform_line_t          = shader_get_uniform( shScribble, "u_fLineFadeT"          );
+global.__scribble_uniform_line_smoothness = shader_get_uniform( shScribble, "u_fLineFadeSmoothness" );
+
 vertex_format_begin();
 vertex_format_add_position();
 vertex_format_add_texcoord();

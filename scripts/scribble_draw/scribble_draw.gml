@@ -134,13 +134,13 @@ else
     }
     
     shader_set( shScribble );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fTime"               ), SCRIBBLE_TIME );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fAlpha"              ), draw_get_alpha() );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_vOptions"            ), _json[? "wave size" ], _json[? "shake size" ], _json[? "rainbow weight" ] );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fCharFadeT"          ), _json[? "char fade t" ] / (1-_json[? "char fade smoothness" ]) );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fCharFadeSmoothness" ), _json[? "char fade smoothness" ] );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fLineFadeT"          ), _json[? "line fade t" ] / (1-_json[? "line fade smoothness" ]) );
-    shader_set_uniform_f( shader_get_uniform( shader_current(), "u_fLineFadeSmoothness" ), _json[? "line fade smoothness" ] );
+    shader_set_uniform_f( global.__scribble_uniform_time           , SCRIBBLE_TIME );
+    shader_set_uniform_f( global.__scribble_uniform_alpha          , draw_get_alpha() );
+    shader_set_uniform_f( global.__scribble_uniform_options        , _json[? "wave size" ], _json[? "shake size" ], _json[? "rainbow weight" ] );
+    shader_set_uniform_f( global.__scribble_uniform_char_t         , _json[? "char fade t" ] / (1-_json[? "char fade smoothness" ]) );
+    shader_set_uniform_f( global.__scribble_uniform_char_smoothness, _json[? "char fade smoothness" ] );
+    shader_set_uniform_f( global.__scribble_uniform_line_t         , _json[? "line fade t" ] / (1-_json[? "line fade smoothness" ]) );
+    shader_set_uniform_f( global.__scribble_uniform_line_smoothness, _json[? "line fade smoothness" ] );
     
     for( var _i = 0; _i < _vbuff_count; _i++ )
     {
