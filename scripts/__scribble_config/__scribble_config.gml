@@ -17,10 +17,13 @@
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
 #macro SCRIBBLE_HASH_NEWLINE                       true    //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COMPATIBILITY_MODE                false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
-#macro SCRIBBLE_TIME                              (current_time/1000) //The value that Scribble uses to calculate effects
+#macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //First 127 ASCII chars only
 
-#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER      0
-#macro SCRIBBLE_TYPEWRITER_PER_LINE           1
+#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER 0
+#macro SCRIBBLE_TYPEWRITER_PER_LINE      1
+#macro SCRIBBLE_TIME                     (current_time/1000) //The value that Scribble uses to calculate effects
 
 #region -- Internal Definitions --
 

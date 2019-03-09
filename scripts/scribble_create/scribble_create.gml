@@ -71,9 +71,9 @@ repeat( _buffer_size )
     
     if ( _in_command_tag )
     {
-        if ( _value == 93 ) || ( _value == 44 ) // ] or ,
+        if ( _value == SCRIBBLE_COMMAND_TAG_CLOSE ) || ( _value == SCRIBBLE_COMMAND_TAG_ARGUMENT ) // ] or ,
         {
-            if ( _value == 93 ) _in_command_tag = false;
+            if ( _value == SCRIBBLE_COMMAND_TAG_CLOSE ) _in_command_tag = false;
             buffer_poke( _buffer, _i, buffer_u8, 0 );
             ds_list_add( _separator_list, _value );
             ds_list_add( _position_list, _i );
@@ -81,9 +81,9 @@ repeat( _buffer_size )
     }
     else
     {
-        if ( _value == 10 ) || ( _value == 32 ) || ( _value == 91 ) //\n or <space> or [
+        if ( _value == 10 ) || ( _value == 32 ) || ( _value == SCRIBBLE_COMMAND_TAG_OPEN ) //\n or <space> or [
         {
-            if ( _value == 91 ) _in_command_tag = true;
+            if ( _value == SCRIBBLE_COMMAND_TAG_OPEN ) _in_command_tag = true;
             buffer_poke( _buffer, _i, buffer_u8, 0 );
             ds_list_add( _separator_list, _value );
             ds_list_add( _position_list, _i );
@@ -232,7 +232,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
         #region Command Handling
         ds_list_add( _parameters_list, _input_substr );
         
-        if ( _sep_char != 93 ) // ]
+        if ( _sep_char != SCRIBBLE_COMMAND_TAG_CLOSE ) // ]
         {
             continue;
         }
@@ -491,7 +491,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
         {
             // _word_array still holds the previous word
             var _next_separator = _word_array[ __E_SCRIBBLE_WORD.NEXT_SEPARATOR ];
-            if ( _next_separator == 32 ) || ( _next_separator == 91 ) // <space> or [
+            if ( _next_separator == 32 ) || ( _next_separator == SCRIBBLE_COMMAND_TAG_OPEN ) // <space> or [
             {
                 _word_array[@ __E_SCRIBBLE_WORD.WIDTH ] -= _font_space_width; //If the previous separation character was whitespace, correct the length of the previous word
                 _line_array[@ __E_SCRIBBLE_LINE.WIDTH ] -= _font_space_width; //...and the previous line
@@ -547,7 +547,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
     if ( (_sep_char == 32) && _new_word && (_substr != "") ) _word_array[@ __E_SCRIBBLE_WORD.WIDTH ] += _font_space_width;
     #endregion
     
-    if ( _sep_char == 91 ) _in_command_tag = true; // [
+    if ( _sep_char == SCRIBBLE_COMMAND_TAG_OPEN ) _in_command_tag = true; // [
     
     _line_length += _substr_length;
     if ( _substr_length > 0 ) ++_json[? "words" ];
