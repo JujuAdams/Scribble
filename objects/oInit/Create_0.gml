@@ -1,3 +1,10 @@
+//  Scribble (light) v2.5.0
+//  2019/03/08
+//  @jujuadams
+//  With thanks to glitchroy and Rob van Saaze
+//  
+//  Intended for use with GMS2.2.1 and later
+
 //Start up Scribble and load some fonts
 scribble_init_start( 2048 ); //Set to the same value as the texture page size for your target platform
 scribble_init_add_font( "fTestA" ); //The first font added is the default font

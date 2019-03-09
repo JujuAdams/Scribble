@@ -1,3 +1,10 @@
+//  Scribble (light) v2.5.0
+//  2019/03/08
+//  @jujuadams
+//  With thanks to glitchroy and Rob van Saaze
+//  
+//  Intended for use with GMS2.2.1 and later
+
 //Define a temporary string. This is the data Scribble will parse to make a JSON
 var _string = "[ev|sound|sndCrank][rainbow]abcdef[] ABCDEF##[wave][c_orange]0123456789[] .,<>\"'&[sCoin][ev|sound|sndSwitch][sCoin|1][ev|sound|sndSwitch][sCoin|2][ev|sound|sndSwitch][sCoin|3][ev|sound|sndSwitch][shake][rainbow]!?[]\n\nthe quick brown fox [wave]jumps[] over the lazy dog\n\n[fa_right]THE [$FF4499][shake]QUICK [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER []THE LAZY DOG.";
 
