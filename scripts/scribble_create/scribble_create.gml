@@ -608,7 +608,7 @@ for( var _line = 0; _line < _lines_size; _line++ )
     }
 }
 
-scribble_set_box_alignment( _json );
+scribble_box_alignment( _json );
 #endregion
 
 
