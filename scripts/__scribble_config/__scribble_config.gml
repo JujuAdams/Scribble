@@ -1,5 +1,5 @@
 //  Scribble (light) v2.5.0
-//  2019/03/08
+//  2019/03/09
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
@@ -25,7 +25,7 @@
 #region -- Internal Definitions --
 
 #macro __SCRIBBLE_VERSION "2.5.0 (light)"
-#macro __SCRIBBLE_DATE    "2019/03/08"
+#macro __SCRIBBLE_DATE    "2019/03/09"
 
 enum __E_SCRIBBLE_FONT
 {
