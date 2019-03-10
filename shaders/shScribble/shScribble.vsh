@@ -13,7 +13,7 @@ varying vec4 v_vColour;
 
 uniform float u_fPremultiplyAlpha;
 
-uniform float u_fAlpha;
+uniform vec4 u_vColour;
 
 uniform vec3  u_vOptions;
 uniform float u_fTime;
@@ -60,10 +60,11 @@ void main()
     
     v_vColour = in_Colour;
     v_vColour.rgb = mix( v_vColour.rgb, hsv2rgb( vec3( charPc + u_fTime, 1., 1. ) ), rainbow );
+    v_vColour.rgb *= u_vColour.rgb;
     
     
     
-    float alpha = u_fAlpha;
+    float alpha = u_vColour.a;
     
     if ( u_fCharFadeT < (1. + u_fCharFadeSmoothness) )
     {

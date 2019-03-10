@@ -1,42 +1,40 @@
 /// @param json
 /// @param [x]
 /// @param [y]
+/// @param [xscale]
+/// @param [yscale]
+/// @param [colour]
+/// @param [alpha]
 
-var _json = argument[0];
-var _x    = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
-var _y    = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
+var _json   = argument[0];
+var _x      = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
+var _y      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
+var _xscale = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 1;
+var _yscale = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 1;
+var _angle  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
+var _colour = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : draw_get_colour();
+var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : draw_get_alpha();
+
+var _old_matrix = matrix_get( matrix_world );
+
+var _matrix = matrix_build( _json[? "left" ], _json[? "top" ], 0,   0,0,0,   1,1,1 );
+    _matrix = matrix_multiply( _matrix, matrix_build( 0,0,0,   0,0,0,   _xscale,_yscale,1 ) );
+    _matrix = matrix_multiply( _matrix, matrix_build( 0,0,0,   0,0,_angle,   1,1,1 ) );
+    _matrix = matrix_multiply( _matrix, matrix_build( _x,_y,0,   0,0,0,   1,1,1 ) );
+matrix_set( matrix_world, _matrix );
 
 if ( SCRIBBLE_COMPATIBILITY_MODE )
 {
     #region Compatibility mode
     
-    var _old_matrix = undefined;
-    var _old_halign = draw_get_halign();
-    var _old_valign = draw_get_valign();
-    var _old_font   = draw_get_font();
+    var _old_halign = 0; //draw_get_halign();
+    var _old_valign = 0; //draw_get_valign();
+    var _old_font   = 0; //draw_get_font();
     var _old_alpha  = draw_get_alpha();
     var _old_colour = draw_get_colour();
-
-
-
+    
     var _char_count = 0;
     var _total_chars = _json[? "char fade t" ] * _json[? "length" ];
-
-    var _real_x = _x + _json[? "left" ];
-    var _real_y = _y + _json[? "top" ];
-
-    if ( _real_x != 0 ) || ( _real_y != 0 )
-    {
-        var _old_matrix = matrix_get( matrix_world );
-        var _matrix;
-        _matrix[15] =  1;
-        _matrix[ 0] =  1;
-        _matrix[ 5] =  1;
-        _matrix[10] =  1;
-        _matrix[12] = _real_x;
-        _matrix[13] = _real_y;
-        matrix_set( matrix_world, _matrix );
-    }
 
     var _text_root_list = _json[? "lines list" ];
     var _lines_count = ds_list_size( _text_root_list );
@@ -106,8 +104,6 @@ if ( SCRIBBLE_COMPATIBILITY_MODE )
     draw_set_font(   _old_font   );
     draw_set_colour( _old_colour );
     draw_set_alpha(  _old_alpha  );
-
-    if ( _old_matrix != undefined ) matrix_set( matrix_world, _old_matrix );
     
     #endregion
 }
@@ -120,22 +116,9 @@ else
     var _vbuff_list  = _json[? "vertex buffer list" ];
     var _vbuff_count = ds_list_size( _vbuff_list );
     
-    if ( _real_x != 0 ) || ( _real_y != 0 )
-    {
-        var _old_matrix = matrix_get( matrix_world );
-        var _matrix;
-        _matrix[15] =  1;
-        _matrix[ 0] =  1;
-        _matrix[ 5] =  1;
-        _matrix[10] =  1;
-        _matrix[12] = _real_x;
-        _matrix[13] = _real_y;
-        matrix_set( matrix_world, _matrix );
-    }
-    
     shader_set( shScribble );
     shader_set_uniform_f( global.__scribble_uniform_time           , SCRIBBLE_TIME                                                             );
-    shader_set_uniform_f( global.__scribble_uniform_alpha          , draw_get_alpha()                                                          );
+    shader_set_uniform_f( global.__scribble_uniform_colour         , colour_get_red( _colour )/255, colour_get_green( _colour )/255, colour_get_blue( _colour )/255, _alpha );
     shader_set_uniform_f( global.__scribble_uniform_options        , _json[? "wave size" ], _json[? "shake size" ], _json[? "rainbow weight" ] );
     shader_set_uniform_f( global.__scribble_uniform_char_t         , _json[? "char fade t" ] / (1-_json[? "char fade smoothness" ])            );
     shader_set_uniform_f( global.__scribble_uniform_char_smoothness, _json[? "char fade smoothness" ]                                          );
@@ -150,7 +133,7 @@ else
     
     shader_reset();
     
-    if ( _real_x != 0 ) || ( _real_y != 0 ) matrix_set( matrix_world, _old_matrix );
-    
     #endregion
 }
+
+matrix_set( matrix_world, _old_matrix );

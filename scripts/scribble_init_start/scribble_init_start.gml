@@ -16,7 +16,7 @@ global.__scribble_events            = ds_map_create(); //Stores event bindings
 global.__scribble_default_font      = "";
 
 global.__scribble_uniform_time            = shader_get_uniform( shScribble, "u_fTime"               );
-global.__scribble_uniform_alpha           = shader_get_uniform( shScribble, "u_fAlpha"              );
+global.__scribble_uniform_colour          = shader_get_uniform( shScribble, "u_vColour"             );
 global.__scribble_uniform_options         = shader_get_uniform( shScribble, "u_vOptions"            );
 global.__scribble_uniform_char_t          = shader_get_uniform( shScribble, "u_fCharFadeT"          );
 global.__scribble_uniform_char_smoothness = shader_get_uniform( shScribble, "u_fCharFadeSmoothness" );
