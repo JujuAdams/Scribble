@@ -10,11 +10,11 @@
 var _timer = get_timer();
 
 var _str              = argument[0];
-var _width_limit      = ((argument_count<2) || (argument[1]==undefined))? 9999999999                        : argument[1];
-var _def_font         = ((argument_count<3) || (argument[2]==undefined))? global.__scribble_default_font    : argument[2];
-var _def_halign       = ((argument_count<4) || (argument[3]==undefined))? fa_left                           : argument[3];
-var _def_colour       = ((argument_count<5) || (argument[4]==undefined))? c_white                           : argument[4];
-var _line_min_height  = ((argument_count<6) || (argument[5]==undefined))? undefined                         : argument[5];
+var _width_limit      = ((argument_count<2) || (argument[1]==undefined))? -1                             : argument[1];
+var _def_font         = ((argument_count<3) || (argument[2]==undefined))? global.__scribble_default_font : argument[2];
+var _def_halign       = ((argument_count<4) || (argument[3]==undefined))? fa_left                        : argument[3];
+var _def_colour       = ((argument_count<5) || (argument[4]==undefined))? c_white                        : argument[4];
+var _line_min_height  = ((argument_count<6) || (argument[5]==undefined))? undefined                      : argument[5];
 
 if ( !ds_map_exists( global.__scribble_font_data, _def_font ) )
 {
@@ -470,7 +470,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
     #region Position and store word
         
     //If we've run over the maximum width of the string
-    if ( _substr_width + _text_x > _width_limit ) || ( _line_array == noone ) || ( _sep_prev_char == 10 ) || ( _force_newline )
+    if ( (_substr_width + _text_x > _width_limit) && (_width_limit >= 0) ) || (_line_array == noone) || (_sep_prev_char == 10) || (_force_newline)
     {
         if ( _line_array != noone )
         {
