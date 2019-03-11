@@ -75,7 +75,7 @@ void applyPerCharacterFade( float time, float smoothness, inout vec4 colour )
 {
     if ( time < (1.0 + smoothness) )
     {
-         colour.a *= clamp( ( time - in_Normal.x ) / smoothness, 0.0, 1.0 );
+         colour.a *= clamp( time - in_Normal.x) / smoothness, 0.0, 1.0 );
     }
     else
     {
