@@ -1,5 +1,28 @@
 /// @description Creates a Scribble data structure from a text string
 /// 
+/// Formatting commands:
+/// []                              : Reset formatting to defaults
+/// [<name of colour>]              : Set colour
+/// [#colour hex code]              : Set colour via a hexcode, using normal RGB values (#RRGGBB)
+/// [/colour]                       : Reset colour to the default
+/// [<name of font>]                : Set font
+/// [/font]                         : Reset font to the default
+/// [<name of sprite>,<image>]      : Insert a static sprite using the specified image index
+/// [fa_left]                       : Align horizontally to the left
+/// [fa_right]                      : Align horizontally to the right
+/// [fa_center]                     : Align centrally
+/// [fa_centre]                     : As above
+/// [wave]                          : Set text to wave up and down
+/// [/wave]                         : Unset wave animation
+/// [shake]                         : Set text to shake
+/// [/shake]                        : Unset shake animation
+/// [rainbow]                       : Set text to cycle through rainbow colours
+/// [/rainbow]                      : Unset rainbow animation
+/// [flag,<index>]                  : Set a formatting flag with the specified index N.B. flags 0,1,2 are reserved for wave/shake/rainbow effects respectively
+/// [/flag,<index>]                 : Unset a formatting flag with the specified index
+/// [event,<name>,<arg0>,<arg1>...] : Execute a script bound to an event name (previously defined using scribble_add_event()) with the specified arguments
+/// [ev,<name>,<arg0>,<arg1>...]    : As above
+/// 
 /// @param string
 /// @param [minLineHeight]
 /// @param [maxLineWidth]
@@ -285,15 +308,28 @@ for( var _i = 0; _i < _separator_count; _i++ )
             switch( _parameters_list[| 0 ] )
             {
                 #region Reset formatting
+                
                 case "":
-                    _text_font   = _def_font;
-                    _text_colour = _def_colour;
-                    _text_flags  = array_create( SCRIBBLE_MAX_FLAGS, 0 );
-            
+                    _text_font        = _def_font;
+                    _text_colour      = _def_colour;
+                    _text_flags       = array_create( SCRIBBLE_MAX_FLAGS, 0 );
                     _font_line_height = _line_min_height;
                     _font_space_width = _def_space_width;
                     _skip = true;
                 break;
+                
+                case "/font":
+                    _text_font        = _def_font;
+                    _font_line_height = _line_min_height;
+                    _font_space_width = _def_space_width;
+                    _skip = true;
+                break;
+                
+                case "/colour":
+                    _text_colour = _def_colour;
+                    _skip = true;
+                break;
+                
                 #endregion
                 
                 #region Events
