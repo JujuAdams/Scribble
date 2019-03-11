@@ -16,6 +16,8 @@ var _def_colour       = ((argument_count > 3) && (argument[3] != undefined))? ar
 var _def_font         = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : global.__scribble_default_font;
 var _def_halign       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : fa_left;
 
+
+
 //Strip out weird newlines
 if (SCRIBBLE_FIX_NEWLINES)
 {
@@ -46,6 +48,17 @@ var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
 var _array = _font_glyphs_map[? " " ];
 var _def_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
 
+//Try to use a custom colour if the "startingColour" parameter is a string
+if ( is_string( _def_colour ) )
+{
+    _def_colour = global.__scribble_colours[? _def_colour ];
+    if ( _def_colour == undefined )
+    {
+        show_error( "The starting colour \"" + _def_colour + "\" has not been defined as a custom colour. Defaulting to c_white.\n ", false );
+        _def_colour = c_white;
+    }
+}
+
 
 
 #region Break down string into sections using a buffer
@@ -65,16 +78,16 @@ repeat( _buffer_size )
 {
     var _value = buffer_peek( _buffer, _i, buffer_u8 );
     
-    if ( _value == 0 ) //<null>
+    if (_value == 0) //<null>
     {
         ds_list_add( _separator_list, "" );
         ds_list_add( _position_list, _i );
         break;
     }
     
-    if ( _in_command_tag )
+    if (_in_command_tag)
     {
-        if ( _value == SCRIBBLE_COMMAND_TAG_CLOSE ) || ( _value == SCRIBBLE_COMMAND_TAG_ARGUMENT ) // ] or ,
+        if (_value == SCRIBBLE_COMMAND_TAG_CLOSE) || (_value == SCRIBBLE_COMMAND_TAG_ARGUMENT)
         {
             if ( _value == SCRIBBLE_COMMAND_TAG_CLOSE ) _in_command_tag = false;
             buffer_poke( _buffer, _i, buffer_u8, 0 );
@@ -84,7 +97,7 @@ repeat( _buffer_size )
     }
     else
     {
-        if ( _value == 10 ) || ( _value == 32 ) || ( _value == SCRIBBLE_COMMAND_TAG_OPEN ) //\n or <space> or [
+        if (_value == 10) || (_value == 32) || (_value == SCRIBBLE_COMMAND_TAG_OPEN) //\n or <space> or a command tag open character
         {
             if ( _value == SCRIBBLE_COMMAND_TAG_OPEN ) _in_command_tag = true;
             buffer_poke( _buffer, _i, buffer_u8, 0 );
@@ -100,68 +113,71 @@ repeat( _buffer_size )
 
 
 
-#region Create the JSON
+#region Create the data structure
 
-var _json = ds_list_create();
-_json[| __E_SCRIBBLE.__SIZE               ] = __SCRIBBLE_VERSION;
+var _json                  = ds_list_create(); //The main data structure
+var _text_root_list        = ds_list_create(); //Stores each line of text
+var _vbuff_list            = ds_list_create(); //Stores all the vertex buffers needed to render the text and sprites
+var _events_character_list = ds_list_create(); //Stores each event's triggering character
+var _events_name_list      = ds_list_create(); //Stores each event's name
+var _events_data_list      = ds_list_create(); //Stores each event's parameters
 
-_json[| __E_SCRIBBLE.__SECTION0           ] = "-- Parameters --";
-_json[| __E_SCRIBBLE.STRING               ] = _str;
-_json[| __E_SCRIBBLE.DEFAULT_FONT         ] = _def_font;
-_json[| __E_SCRIBBLE.DEFAULT_COLOUR       ] = _def_colour;
-_json[| __E_SCRIBBLE.DEFAULT_HALIGN       ] = _def_halign;
-_json[| __E_SCRIBBLE.WIDTH_LIMIT          ] = _width_limit;
-_json[| __E_SCRIBBLE.LINE_HEIGHT          ] = _line_min_height;
+_json[| __E_SCRIBBLE.__SIZE             ] = __SCRIBBLE_VERSION;
 
-_json[| __E_SCRIBBLE.__SECTION1           ] = "-- Statistics --";
-_json[| __E_SCRIBBLE.HALIGN               ] = fa_left;
-_json[| __E_SCRIBBLE.VALIGN               ] = fa_top;
-_json[| __E_SCRIBBLE.WIDTH                ] = 0;
-_json[| __E_SCRIBBLE.HEIGHT               ] = 0;
-_json[| __E_SCRIBBLE.LEFT                 ] = 0;
-_json[| __E_SCRIBBLE.TOP                  ] = 0;
-_json[| __E_SCRIBBLE.RIGHT                ] = 0;
-_json[| __E_SCRIBBLE.BOTTOM               ] = 0;
-_json[| __E_SCRIBBLE.LENGTH               ] = 0;
-_json[| __E_SCRIBBLE.LINES                ] = 0;
-_json[| __E_SCRIBBLE.WORDS                ] = 0;
+_json[| __E_SCRIBBLE.__SECTION0         ] = "-- Parameters --";
+_json[| __E_SCRIBBLE.STRING             ] = _str;
+_json[| __E_SCRIBBLE.DEFAULT_FONT       ] = _def_font;
+_json[| __E_SCRIBBLE.DEFAULT_COLOUR     ] = _def_colour;
+_json[| __E_SCRIBBLE.DEFAULT_HALIGN     ] = _def_halign;
+_json[| __E_SCRIBBLE.WIDTH_LIMIT        ] = _width_limit;
+_json[| __E_SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
 
-_json[| __E_SCRIBBLE.__SECTION2           ] = "-- Typewriter --";
-_json[| __E_SCRIBBLE.TW_DIRECTION         ] = 0;
-_json[| __E_SCRIBBLE.TW_SPEED             ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
-_json[| __E_SCRIBBLE.TW_POSITION          ] = 0;
-_json[| __E_SCRIBBLE.TW_METHOD            ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-_json[| __E_SCRIBBLE.TW_SMOOTHNESS        ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
-_json[| __E_SCRIBBLE.CHAR_FADE_T          ] = 1;
-_json[| __E_SCRIBBLE.LINE_FADE_T          ] = 1;
+_json[| __E_SCRIBBLE.__SECTION1         ] = "-- Statistics --";
+_json[| __E_SCRIBBLE.HALIGN             ] = fa_left;
+_json[| __E_SCRIBBLE.VALIGN             ] = fa_top;
+_json[| __E_SCRIBBLE.WIDTH              ] = 0;
+_json[| __E_SCRIBBLE.HEIGHT             ] = 0;
+_json[| __E_SCRIBBLE.LEFT               ] = 0;
+_json[| __E_SCRIBBLE.TOP                ] = 0;
+_json[| __E_SCRIBBLE.RIGHT              ] = 0;
+_json[| __E_SCRIBBLE.BOTTOM             ] = 0;
+_json[| __E_SCRIBBLE.LENGTH             ] = 0;
+_json[| __E_SCRIBBLE.LINES              ] = 0;
+_json[| __E_SCRIBBLE.WORDS              ] = 0;
 
-_json[| __E_SCRIBBLE.__SECTION3           ] = "-- Animation --";
-_json[| __E_SCRIBBLE.WAVE_SIZE            ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
-_json[| __E_SCRIBBLE.SHAKE_SIZE           ] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
-_json[| __E_SCRIBBLE.RAINBOW_WEIGHT       ] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
-_json[| __E_SCRIBBLE.ANIMATION_TIME       ] = 0;
+_json[| __E_SCRIBBLE.__SECTION2         ] = "-- Typewriter --";
+_json[| __E_SCRIBBLE.TW_DIRECTION       ] = 0;
+_json[| __E_SCRIBBLE.TW_SPEED           ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+_json[| __E_SCRIBBLE.TW_POSITION        ] = 0;
+_json[| __E_SCRIBBLE.TW_METHOD          ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+_json[| __E_SCRIBBLE.TW_SMOOTHNESS      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
+_json[| __E_SCRIBBLE.CHAR_FADE_T        ] = 1;
+_json[| __E_SCRIBBLE.LINE_FADE_T        ] = 1;
 
-var _text_root_list = ds_list_create();
-var _vbuff_list     = ds_list_create();
+_json[| __E_SCRIBBLE.__SECTION3         ] = "-- Animation --";
+_json[| __E_SCRIBBLE.WAVE_SIZE          ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
+_json[| __E_SCRIBBLE.SHAKE_SIZE         ] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
+_json[| __E_SCRIBBLE.RAINBOW_WEIGHT     ] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
+_json[| __E_SCRIBBLE.ANIMATION_TIME     ] = 0;
+
 _json[| __E_SCRIBBLE.__SECTION4         ] = "-- Lists --";
 _json[| __E_SCRIBBLE.LINE_LIST          ] = _text_root_list;
 _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST ] = _vbuff_list;
+
+_json[| __E_SCRIBBLE.__SECTION5         ] = "-- Events --";
+_json[| __E_SCRIBBLE.EV_CHARACTER_LIST  ] = _events_character_list; //Stores each event's triggering cha
+_json[| __E_SCRIBBLE.EV_NAME_LIST       ] = _events_name_list;      //Stores each event's name
+_json[| __E_SCRIBBLE.EV_DATA_LIST       ] = _events_data_list;      //Stores each event's parameters
+_json[| __E_SCRIBBLE.EV_TRIGGERED_LIST  ] = ds_list_create();
+_json[| __E_SCRIBBLE.EV_TRIGGERED_MAP   ] = ds_map_create();
+_json[| __E_SCRIBBLE.EV_VALUE_MAP       ] = ds_map_create();
+_json[| __E_SCRIBBLE.EV_CHANGED_MAP     ] = ds_map_create();
+_json[| __E_SCRIBBLE.EV_PREVIOUS_MAP    ] = ds_map_create();
+_json[| __E_SCRIBBLE.EV_DIFFERENT_MAP   ] = ds_map_create();
+
+//Now bind the child data structures to the root list
 ds_list_mark_as_list( _json, __E_SCRIBBLE.LINE_LIST          );
 ds_list_mark_as_list( _json, __E_SCRIBBLE.VERTEX_BUFFER_LIST );
-
-var _events_character_list = ds_list_create();
-var _events_name_list      = ds_list_create();
-var _events_data_list      = ds_list_create();
-_json[| __E_SCRIBBLE.__SECTION5        ] = "-- Events --";
-_json[| __E_SCRIBBLE.EV_CHARACTER_LIST ] = _events_character_list;
-_json[| __E_SCRIBBLE.EV_NAME_LIST      ] = _events_name_list;
-_json[| __E_SCRIBBLE.EV_DATA_LIST      ] = _events_data_list;
-_json[| __E_SCRIBBLE.EV_TRIGGERED_LIST ] = ds_list_create();
-_json[| __E_SCRIBBLE.EV_TRIGGERED_MAP  ] = ds_map_create();
-_json[| __E_SCRIBBLE.EV_VALUE_MAP      ] = ds_map_create();
-_json[| __E_SCRIBBLE.EV_CHANGED_MAP    ] = ds_map_create();
-_json[| __E_SCRIBBLE.EV_PREVIOUS_MAP   ] = ds_map_create();
-_json[| __E_SCRIBBLE.EV_DIFFERENT_MAP  ] = ds_map_create();
 ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_CHARACTER_LIST  );
 ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_NAME_LIST       );
 ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_DATA_LIST       );
@@ -179,6 +195,7 @@ ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_DIFFERENT_MAP   );
 #region Parser
 
 #region Initial parser state
+
 var _text_x = 0;
 var _text_y = 0;
 
@@ -190,15 +207,16 @@ var _line_length          = 0;
 var _line_prev_last_index = 0;
 var _line_max_height      = _line_min_height;
 
-var _text_font      = _def_font;
-var _text_colour    = _def_colour;
-var _text_halign    = _def_halign;
-var _text_rainbow   = false;
-var _text_shake     = false;
-var _text_wave      = false;
+var _text_font            = _def_font;
+var _text_colour          = _def_colour;
+var _text_halign          = _def_halign;
+var _text_rainbow         = false;
+var _text_shake           = false;
+var _text_wave            = false;
 
-var _font_line_height = _line_min_height;
-var _font_space_width = _def_space_width;
+var _font_line_height     = _line_min_height;
+var _font_space_width     = _def_space_width;
+
 #endregion
 
 //Iterate over the entire string...
@@ -219,6 +237,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
     var _substr = _input_substr;
     
     #region Reset state
+    
     var _skip          = false;
     var _force_newline = false;
     var _new_word      = false;
@@ -230,11 +249,12 @@ for( var _i = 0; _i < _separator_count; _i++ )
     var _substr_image       = undefined;
     
     var _first_character = ( is_array( _line_words_array ) && (array_length_1d( _line_words_array ) <= 1) );
+    
     #endregion
     
     if ( _in_command_tag )
     {
-        #region Command Handling
+        #region Command tag handling
         ds_list_add( _parameters_list, _input_substr );
         
         if ( _sep_char != SCRIBBLE_COMMAND_TAG_CLOSE ) // ]
@@ -278,8 +298,8 @@ for( var _i = 0; _i < _separator_count; _i++ )
                         for( var _j = 2; _j < _parameter_count; _j++ ) _data[ _j-2 ] = _parameters_list[| _j ];
                 
                         ds_list_add( _events_character_list, _json[| __E_SCRIBBLE.LENGTH ] );
-                        ds_list_add( _events_name_list     , _name              );
-                        ds_list_add( _events_data_list     , _data              );
+                        ds_list_add( _events_name_list     , _name                         );
+                        ds_list_add( _events_data_list     , _data                         );
                     }
                     
                     _skip = true;
@@ -408,10 +428,11 @@ for( var _i = 0; _i < _separator_count; _i++ )
                                 _text_colour = _colour;
                             }
                             else //Test if it's a hexcode
-                            {     
-                                var _colour_string = string_upper( _parameters_list[| 0] );
+                            {
+                                var _colour_string = _parameters_list[| 0];
                                 if ( string_length( _colour_string ) <= 7 ) && ( string_copy( _colour_string, 1, 1 ) == "$" )
                                 {
+                                    _colour_string = string_upper( _colour_string );
                                     var _hex = "0123456789ABCDEF";
                                     var _red   = max( string_pos( string_copy( _colour_string, 3, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 2, 1 ), _hex )-1, 0 ) << 4 );
                                     var _green = max( string_pos( string_copy( _colour_string, 5, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 4, 1 ), _hex )-1, 0 ) << 4 );
@@ -564,12 +585,14 @@ _line_array[@ __E_SCRIBBLE_LINE.WIDTH     ] = _text_x;
 _line_array[@ __E_SCRIBBLE_LINE.HEIGHT    ] = _line_max_height;
 _line_array[@ __E_SCRIBBLE_LINE.LENGTH    ] = _line_length;
 _line_array[@ __E_SCRIBBLE_LINE.LAST_CHAR ] = _line_array[@ __E_SCRIBBLE_LINE.FIRST_CHAR ] + _line_length;
+
 _json[| __E_SCRIBBLE.LINES ] = ds_list_size( _json[| __E_SCRIBBLE.LINE_LIST ] );
+
 #endregion
 
 
 
-#region Set box width/height and adjust line positions
+#region Set box width/height and adjust line positions based on alignment
 
 //Textbox width and height
 var _lines_size = ds_list_size( _text_root_list );
@@ -596,9 +619,11 @@ for( var _line = 0; _line < _lines_size; _line++ )
         case fa_left:
             _line_array[@ __E_SCRIBBLE_LINE.X ] = 0;
         break;
+        
         case fa_center:
             _line_array[@ __E_SCRIBBLE_LINE.X ] += (_textbox_width - _line_array[ __E_SCRIBBLE_LINE.WIDTH ]) div 2;
         break;
+        
         case fa_right:
             _line_array[@ __E_SCRIBBLE_LINE.X ] += _textbox_width - _line_array[ __E_SCRIBBLE_LINE.WIDTH ];
         break;
@@ -617,9 +642,11 @@ for( var _line = 0; _line < _lines_size; _line++ )
             case fa_top:
                 _word_array[@ __E_SCRIBBLE_WORD.Y ] = 0;
             break;
+            
             case fa_middle:
                 _word_array[@ __E_SCRIBBLE_WORD.Y ] = ( _line_height - _word_array[ __E_SCRIBBLE_WORD.HEIGHT ] ) div 2;
             break;
+            
             case fa_bottom:
                 _word_array[@ __E_SCRIBBLE_WORD.Y ] = _line_height - _word_array[ __E_SCRIBBLE_WORD.HEIGHT ];
             break;
@@ -633,6 +660,7 @@ scribble_set_box_alignment( _json );
 
 
 
+//Clean up some misc data structures that we needed
 buffer_delete( _buffer );
 ds_list_destroy( _separator_list  );
 ds_list_destroy( _position_list   );
