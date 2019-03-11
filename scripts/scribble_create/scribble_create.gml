@@ -130,9 +130,7 @@ _json[| __E_SCRIBBLE.TW_POSITION          ] = 0;
 _json[| __E_SCRIBBLE.TW_METHOD            ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
 _json[| __E_SCRIBBLE.TW_SMOOTHNESS        ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
 _json[| __E_SCRIBBLE.CHAR_FADE_T          ] = 1;
-_json[| __E_SCRIBBLE.CHAR_FADE_SMOOTHNESS ] = 0;
 _json[| __E_SCRIBBLE.LINE_FADE_T          ] = 1;
-_json[| __E_SCRIBBLE.LINE_FADE_SMOOTHNESS ] = 0;
 
 _json[| __E_SCRIBBLE.__SECTION3           ] = "-- Animation --";
 _json[| __E_SCRIBBLE.WAVE_SIZE            ] = SCRIBBLE_DEFAULT_WAVE_SIZE;

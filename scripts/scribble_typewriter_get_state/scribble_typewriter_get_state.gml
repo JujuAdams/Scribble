@@ -10,6 +10,10 @@ var _json = argument0;
 
 switch( _json[| __E_SCRIBBLE.TW_METHOD ] )
 {
+    case SCRIBBLE_TYPEWRITER_WHOLE:
+        return ((_json[| __E_SCRIBBLE.TW_DIRECTION ] < 0)? 1 : 0) + _json[| __E_SCRIBBLE.TW_POSITION ];
+    break;
+    
     case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
         return _json[| __E_SCRIBBLE.CHAR_FADE_T ];
     break;

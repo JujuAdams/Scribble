@@ -17,17 +17,22 @@ if ( _smoothness != undefined ) _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] = _smoothne
 
 switch( _json[| __E_SCRIBBLE.TW_METHOD ] )
 {
+    case SCRIBBLE_TYPEWRITER_WHOLE:
+        _json[| __E_SCRIBBLE.CHAR_FADE_T ] = 1;
+        _json[| __E_SCRIBBLE.LINE_FADE_T ] = 1;
+    break;
+    
     case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-        _json[| __E_SCRIBBLE.CHAR_FADE_T          ] = 0;
-        _json[| __E_SCRIBBLE.CHAR_FADE_SMOOTHNESS ] = _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] / _json[| __E_SCRIBBLE.LENGTH ];
+        _json[| __E_SCRIBBLE.CHAR_FADE_T ] = 0;
+        _json[| __E_SCRIBBLE.LINE_FADE_T ] = 1;
     break;
     
     case SCRIBBLE_TYPEWRITER_PER_LINE:
-        _json[| __E_SCRIBBLE.LINE_FADE_T          ] = 0;
-        _json[| __E_SCRIBBLE.LINE_FADE_SMOOTHNESS ] = _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] / _json[| __E_SCRIBBLE.LINES ];
+        _json[| __E_SCRIBBLE.CHAR_FADE_T ] = 1;
+        _json[| __E_SCRIBBLE.LINE_FADE_T ] = 0;
     break;
     
     default:
-        show_error( "Typewriter method not recognised.\nPlease use SCRIBBLE_TYPEWRITER_PER_CHARACTER or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false );
+        show_error( "Typewriter method not recognised.\nPlease use SCRIBBLE_TYPEWRITER_WHOLE, SCRIBBLE_TYPEWRITER_PER_CHARACTER, or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false );
     break;
 }

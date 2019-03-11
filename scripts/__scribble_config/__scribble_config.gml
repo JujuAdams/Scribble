@@ -22,8 +22,9 @@
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //First 127 ASCII chars only
 #macro SCRIBBLE_ANIMATION_SPEED                   0.02     //Speed of shader animation effects
 
-#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER 0
-#macro SCRIBBLE_TYPEWRITER_PER_LINE      1
+#macro SCRIBBLE_TYPEWRITER_WHOLE         0
+#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER 1
+#macro SCRIBBLE_TYPEWRITER_PER_LINE      2
 
 #region -- Internal Definitions --
 
@@ -145,32 +146,30 @@ enum __E_SCRIBBLE
     TW_METHOD,            //23
     TW_SMOOTHNESS,        //24
     CHAR_FADE_T,          //25
-    CHAR_FADE_SMOOTHNESS, //26
-    LINE_FADE_T,          //27
-    LINE_FADE_SMOOTHNESS, //28
+    LINE_FADE_T,          //26
     
-    __SECTION3,           //29
-    WAVE_SIZE,            //30
-    SHAKE_SIZE,           //31
-    RAINBOW_WEIGHT,       //32
-    ANIMATION_TIME,       //33
+    __SECTION3,           //27
+    WAVE_SIZE,            //28
+    SHAKE_SIZE,           //29
+    RAINBOW_WEIGHT,       //30
+    ANIMATION_TIME,       //31
     
-    __SECTION4,           //34
-    LINE_LIST,            //35
-    VERTEX_BUFFER_LIST,   //36
+    __SECTION4,           //32
+    LINE_LIST,            //33
+    VERTEX_BUFFER_LIST,   //34
     
-    __SECTION5,           //37
-    EV_CHARACTER_LIST,    //38
-    EV_NAME_LIST,         //39
-    EV_DATA_LIST,         //40
-    EV_TRIGGERED_LIST,    //41
-    EV_TRIGGERED_MAP,     //42
-    EV_VALUE_MAP,         //43
-    EV_CHANGED_MAP,       //44
-    EV_PREVIOUS_MAP,      //45
-    EV_DIFFERENT_MAP,     //46
+    __SECTION5,           //35
+    EV_CHARACTER_LIST,    //36
+    EV_NAME_LIST,         //37
+    EV_DATA_LIST,         //38
+    EV_TRIGGERED_LIST,    //39
+    EV_TRIGGERED_MAP,     //40
+    EV_VALUE_MAP,         //41
+    EV_CHANGED_MAP,       //42
+    EV_PREVIOUS_MAP,      //43
+    EV_DIFFERENT_MAP,     //44
     
-    __SIZE                //47
+    __SIZE                //45
 }
 
 #endregion

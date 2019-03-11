@@ -21,6 +21,24 @@ if ( _typewriter_direction != 0 )
     
     switch( _json[| __E_SCRIBBLE.TW_METHOD ] )
     {
+        case SCRIBBLE_TYPEWRITER_WHOLE:
+            _do_event_scan = false;
+            
+            if ( _typewriter_direction > 0 )
+            {
+                if ( floor(_tw_pos) < floor(_tw_pos + _tw_speed) )
+                {
+                    var _scan_range_a = 0;
+                    var _scan_range_b = _json[| __E_SCRIBBLE.LENGTH ];
+                    _do_event_scan = true;
+                }
+            }
+            
+            _tw_pos += _tw_speed;
+            _tw_pos = clamp( _tw_pos, 0, 1 );
+            _json[| __E_SCRIBBLE.TW_POSITION ] = _tw_pos;
+        break;
+        
         case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
             if ( _typewriter_direction > 0 )
             {
@@ -33,8 +51,8 @@ if ( _typewriter_direction != 0 )
             _tw_pos += _tw_speed;
             _tw_pos = min( _tw_pos, _length );
             
-            _json[| __E_SCRIBBLE.TW_POSITION  ] = _tw_pos;
-            _json[| __E_SCRIBBLE.CHAR_FADE_T          ] = ((_typewriter_direction < 0)? 1 : 0) + clamp( _tw_pos / _length, 0, 1 );
+            _json[| __E_SCRIBBLE.TW_POSITION ] = _tw_pos;
+            _json[| __E_SCRIBBLE.CHAR_FADE_T ] = ((_typewriter_direction < 0)? 1 : 0) + clamp( _tw_pos / _length, 0, 1 );
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_LINE:
@@ -57,7 +75,7 @@ if ( _typewriter_direction != 0 )
             _tw_pos = min( _tw_pos, _lines );
             
             _json[| __E_SCRIBBLE.TW_POSITION ] = _tw_pos;
-            _json[| __E_SCRIBBLE.LINE_FADE_T         ] = ((_typewriter_direction < 0)? 1 : 0) + clamp( _tw_pos / _lines, 0, 1 );
+            _json[| __E_SCRIBBLE.LINE_FADE_T ] = ((_typewriter_direction < 0)? 1 : 0) + clamp( _tw_pos / _lines, 0, 1 );
         break;
         
         default:
