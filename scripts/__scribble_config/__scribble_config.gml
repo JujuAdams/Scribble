@@ -1,5 +1,5 @@
-//  Scribble (light) v2.5.3
-//  2019/03/09
+//  Scribble (light) v2.5.4
+//  2019/03/11
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
@@ -27,8 +27,8 @@
 
 #region -- Internal Definitions --
 
-#macro __SCRIBBLE_VERSION "2.5.3 (light)"
-#macro __SCRIBBLE_DATE    "2019/03/09"
+#macro __SCRIBBLE_VERSION "2.5.4 (light)"
+#macro __SCRIBBLE_DATE    "2019/03/11"
 
 enum __E_SCRIBBLE_GLYPH
 {

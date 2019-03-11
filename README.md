@@ -1,4 +1,4 @@
-<h1 align="center">scribble (light) 2.5.3</h1>
+<h1 align="center">scribble (light) 2.5.4</h1>
 
 ### @jujuadams
 
