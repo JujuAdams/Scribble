@@ -38,9 +38,17 @@ if ( !ds_map_exists( global.__scribble_font_data, _def_font ) )
     var _def_font = global.__scribble_default_font;
 }
 
-var _font_data       = global.__scribble_font_data[? _def_font ];
-var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS ];
-var _space_array     = _font_glyphs_map[? " " ];
+var _font_data = global.__scribble_font_data[? _def_font ];
+var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
+if ( _font_glyphs_array == undefined )
+{
+    var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS ];
+    var _space_array     = _font_glyphs_map[? " " ];
+}
+else
+{
+    var _space_array = _array[ 32 - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
+}
 
 //Find the default font's space width
 var _def_space_width = _space_array[ __E_SCRIBBLE_GLYPH.W ];

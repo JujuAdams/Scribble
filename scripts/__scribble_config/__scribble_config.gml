@@ -35,6 +35,10 @@
 #macro SCRIBBLE_GLYPH_Y_OFFSET   __E_SCRIBBLE_GLYPH.DY
 #macro SCRIBBLE_GLYPH_SEPARATION __E_SCRIBBLE_GLYPH.SHF
 
+#macro SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX true
+#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE 1000 //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
+#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES 0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
+
 //scribble_get_box() constants
 enum E_SCRIBBLE_BOX
 {
@@ -54,9 +58,9 @@ enum __E_SCRIBBLE_FONT
     NAME,           // 0
     TYPE,           // 1
     GLYPHS_DS,      // 2
-    GLYPH_MIN,      // 3
-    GLYPH_MAX,      // 4
-    GLYPH_USE_LIST, // 5
+    GLYPHS_ARRAY,   // 3
+    GLYPH_MIN,      // 4
+    GLYPH_MAX,      // 5
     TEXTURE_WIDTH,  // 6
     TEXTURE_HEIGHT, // 7
     SPACE_WIDTH,    // 8
