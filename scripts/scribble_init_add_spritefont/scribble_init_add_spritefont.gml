@@ -1,4 +1,4 @@
-/// @param spritefont
+/// @param fontName
 /// @param [spaceWidth]
 /// @param [mapString]
 /// @param [separation]
@@ -9,7 +9,7 @@ if ( !variable_global_exists( "__scribble_default_font" ) )
     exit;
 }
 
-var _font        = argument[0];
+var _font        =                                                       argument[0];
 var _space_width =  (argument_count > 1)?                                argument[1] : undefined;
 var _mapstring   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING;
 var _separation  = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;

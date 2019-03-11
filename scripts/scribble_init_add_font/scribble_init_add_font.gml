@@ -1,4 +1,4 @@
-/// @param font
+/// @param fontName
 
 if ( !variable_global_exists( "__scribble_default_font" ) )
 {
