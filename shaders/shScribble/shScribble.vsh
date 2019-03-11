@@ -104,7 +104,7 @@ void applyPerLineFade( float time, float smoothness, inout vec4 colour )
 
 void main()
 {
-    //Unpack the flags
+    //Unpack the flag value into an array
     float flagArray[MAX_FLAGS];
     unpackFlags( in_Normal.z, flagArray );
     
