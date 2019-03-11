@@ -691,24 +691,24 @@ repeat( _lines_size )
             {
                 _previous_texture = _sprite_texture;
                     
-                var _vbuff_map = _texture_to_vbuff_map[? _sprite_texture ];
-                if ( _vbuff_map == undefined )
+                var _vbuff_data = _texture_to_vbuff_map[? _sprite_texture ];
+                if ( _vbuff_data == undefined )
                 {
                     var _vbuff = vertex_create_buffer();
                     vertex_begin( _vbuff, global.__scribble_vertex_format );
                 
-                    _vbuff_map = ds_map_create();
-                    _vbuff_map[? "vertex buffer" ] = _vbuff;
-                    _vbuff_map[? "sprite"        ] = _sprite;
-                    _vbuff_map[? "texture"       ] = _sprite_texture;
-                    ds_list_add( _vbuff_list, _vbuff_map );
-                    ds_list_mark_as_map( _vbuff_list, ds_list_size( _vbuff_list )-1 );
+                    _vbuff_data = ds_list_create();
+                    _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
+                    _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.SPRITE        ] = _sprite;
+                    _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _sprite_texture;
+                    ds_list_add( _vbuff_list, _vbuff_data );
+                    ds_list_mark_as_list( _vbuff_list, ds_list_size( _vbuff_list )-1 );
                     
-                    _texture_to_vbuff_map[? _sprite_texture ] = _vbuff_map;
+                    _texture_to_vbuff_map[? _sprite_texture ] = _vbuff_data;
                 }
                 else
                 {
-                    var _vbuff = _vbuff_map[? "vertex buffer" ];
+                    var _vbuff = _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
                 }
             }
             
@@ -746,24 +746,24 @@ repeat( _lines_size )
                 {
                     _previous_texture = _font_texture;
                     
-                    var _vbuff_map = _texture_to_vbuff_map[? _font_texture ];
-                    if ( _vbuff_map == undefined )
+                    var _vbuff_data = _texture_to_vbuff_map[? _font_texture ];
+                    if ( _vbuff_data == undefined )
                     {
                         var _vbuff = vertex_create_buffer();
                         vertex_begin( _vbuff, global.__scribble_vertex_format );
                 
-                        _vbuff_map = ds_map_create();
-                        _vbuff_map[? "vertex buffer" ] = _vbuff;
-                        _vbuff_map[? "sprite"        ] = _font_sprite;
-                        _vbuff_map[? "texture"       ] = _font_texture;
-                        ds_list_add( _vbuff_list, _vbuff_map );
-                        ds_list_mark_as_map( _vbuff_list, ds_list_size( _vbuff_list )-1 );
+                        _vbuff_data = ds_list_create();
+                        _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
+                        _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.SPRITE        ] = _font_sprite;
+                        _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _font_texture;
+                        ds_list_add( _vbuff_list, _vbuff_data );
+                        ds_list_mark_as_list( _vbuff_list, ds_list_size( _vbuff_list )-1 );
                 
-                        _texture_to_vbuff_map[? _font_texture ] = _vbuff_map;
+                        _texture_to_vbuff_map[? _font_texture ] = _vbuff_data;
                     }
                     else
                     {
-                        var _vbuff = _vbuff_map[? "vertex buffer" ];
+                        var _vbuff = _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
                     }
                 }
             }
@@ -827,8 +827,8 @@ repeat( _lines_size )
 var _vbuff_count = ds_list_size( _vbuff_list );
 for( var _i = 0; _i < _vbuff_count; _i++ )
 {
-    var _vbuff_map = _vbuff_list[| _i ];
-    var _vbuff = _vbuff_map[? "vertex buffer" ];
+    var _vbuff_data = _vbuff_list[| _i ];
+    var _vbuff = _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
     vertex_end( _vbuff );
     vertex_freeze( _vbuff );
 }

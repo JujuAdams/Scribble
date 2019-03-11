@@ -138,8 +138,8 @@ else
     
     for( var _i = 0; _i < _vbuff_count; _i++ )
     {
-        var _vbuff_map = _vbuff_list[| _i ];
-        vertex_submit( _vbuff_map[? "vertex buffer" ], pr_trianglelist, _vbuff_map[? "texture" ] );
+        var _vbuff_data = _vbuff_list[| _i ];
+        vertex_submit( _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ], pr_trianglelist, _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE ] );
     }
     
     shader_reset();

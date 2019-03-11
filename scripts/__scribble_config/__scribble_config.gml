@@ -30,6 +30,24 @@
 #macro __SCRIBBLE_VERSION "2.5.3 (light)"
 #macro __SCRIBBLE_DATE    "2019/03/09"
 
+enum __E_SCRIBBLE_GLYPH
+{
+    CHAR,  //0
+    ORD,   //1
+    X,     //2
+    Y,     //3
+    W,     //4
+    H,     //5
+    DX,    //6
+    DY,    //7
+    SHF,   //8
+    U0,    //9
+    V0,    //10
+    U1,    //11
+    V1,    //12
+    __SIZE //13
+}
+
 enum __E_SCRIBBLE_FONT
 {
     NAME,           // 0
@@ -89,22 +107,12 @@ enum __E_SCRIBBLE_WORD
     __SIZE          //16
 }
 
-enum __E_SCRIBBLE_GLYPH
+enum __E_SCRIBBLE_VERTEX_BUFFER
 {
-    CHAR,  //0
-    ORD,   //1
-    X,     //2
-    Y,     //3
-    W,     //4
-    H,     //5
-    DX,    //6
-    DY,    //7
-    SHF,   //8
-    U0,    //9
-    V0,    //10
-    U1,    //11
-    V1,    //12
-    __SIZE //13
+    VERTEX_BUFFER,
+    SPRITE,
+    TEXTURE,
+    __SIZE
 }
 
 enum __E_SCRIBBLE
