@@ -3,10 +3,12 @@
 /// Formatting commands:
 /// []                              : Reset formatting to defaults
 /// [<name of colour>]              : Set colour
-/// [#colour hex code]              : Set colour via a hexcode, using normal RGB values (#RRGGBB)
+/// [#<hex code>]                   : Set colour via a hexcode, using normal RGB values (#RRGGBB)
 /// [/colour]                       : Reset colour to the default
+/// [/c]                            : As above
 /// [<name of font>]                : Set font
 /// [/font]                         : Reset font to the default
+/// [/f]                            : As above
 /// [<name of sprite>,<image>]      : Insert a static sprite using the specified image index
 /// [fa_left]                       : Align horizontally to the left
 /// [fa_right]                      : Align horizontally to the right
@@ -319,6 +321,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 break;
                 
                 case "/font":
+                case "/f":
                     _text_font        = _def_font;
                     _font_line_height = _line_min_height;
                     _font_space_width = _def_space_width;
@@ -326,6 +329,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 break;
                 
                 case "/colour":
+                case "/c":
                     _text_colour = _def_colour;
                     _skip = true;
                 break;
