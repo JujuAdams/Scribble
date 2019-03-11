@@ -3,6 +3,7 @@
 /// @param [y]
 /// @param [xscale]
 /// @param [yscale]
+/// @param [angle]
 /// @param [colour]
 /// @param [alpha]
 
@@ -17,11 +18,17 @@ var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] 
 
 var _old_matrix = matrix_get( matrix_world );
 
-var _matrix = matrix_build( _json[? "left" ], _json[? "top" ], 0,   0,0,0,   1,1,1 );
-    _matrix = matrix_multiply( _matrix, matrix_build( 0,0,0,   0,0,0,   _xscale,_yscale,1 ) );
-    _matrix = matrix_multiply( _matrix, matrix_build( 0,0,0,   0,0,_angle,   1,1,1 ) );
-    _matrix = matrix_multiply( _matrix, matrix_build( _x,_y,0,   0,0,0,   1,1,1 ) );
-    _matrix = matrix_multiply( _matrix, _old_matrix );
+if ((_xscale == 1) && (_yscale == 1) && (_angle == 1))
+{
+    var _matrix = matrix_build( _json[? "left" ] + _x, _json[? "top" ] + _y, 0,   0,0,0,   1,1,1 );
+}
+else
+{
+    var _matrix = matrix_build( _json[? "left" ], _json[? "top" ], 0,   0,0,0,   1,1,1 );
+        _matrix = matrix_multiply( _matrix, matrix_build( _x,_y,0,   0,0,_angle,   _xscale,_yscale,1 ) );
+}
+
+_matrix = matrix_multiply( _matrix, _old_matrix );
 matrix_set( matrix_world, _matrix );
 
 if ( SCRIBBLE_COMPATIBILITY_MODE )
