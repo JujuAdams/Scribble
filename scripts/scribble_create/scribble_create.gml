@@ -835,12 +835,12 @@ repeat( _lines_size )
             var _glyph_r = _glyph_l + _uvs[6]*sprite_get_width(  _sprite );
             var _glyph_b = _glyph_t + _uvs[7]*sprite_get_height( _sprite );
                 
-            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-            vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-            vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_colour( _vbuff, c_white, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
+            vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] );
+            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
+            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
+            vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] );
+            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
             
             ++_text_char;
             #endregion
@@ -896,6 +896,7 @@ repeat( _lines_size )
             var _rainbow = _word_array[ __E_SCRIBBLE_WORD.RAINBOW ];
             var _shake   = _word_array[ __E_SCRIBBLE_WORD.SHAKE   ];
             var _wave    = _word_array[ __E_SCRIBBLE_WORD.WAVE    ];
+            var _flags   = _wave + 2*_shake + 4*_rainbow;
             
             var _str = _word_array[ __E_SCRIBBLE_WORD.STRING ];
             var _string_size = string_length( _str );
@@ -928,12 +929,12 @@ repeat( _lines_size )
                     
                     var _char_pc = _text_char / _max_char;
                     
-                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                    vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                    vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
+                    vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 );
+                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
                     
                     _char_l += _glyph_shf;
                     ++_text_char;
@@ -966,12 +967,12 @@ repeat( _lines_size )
                     
                     var _char_pc = _text_char / _max_char;
                     
-                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                    vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                    vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
+                    vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 );
+                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
                     
                     _char_l += _glyph_shf;
                     ++_text_char;

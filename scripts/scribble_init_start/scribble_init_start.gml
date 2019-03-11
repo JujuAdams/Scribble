@@ -60,10 +60,9 @@ global.__scribble_uniform_line_smoothness = shader_get_uniform( shScribble, "u_f
 //Create a vertex format for our text
 vertex_format_begin();
 vertex_format_add_position();
-vertex_format_add_texcoord();
+vertex_format_add_normal(); //X = character index, Y = line index, Z = option flags (wave=1, shake=2, rainbow=4)
 vertex_format_add_colour();
-vertex_format_add_custom( vertex_type_float4, vertex_usage_colour ); //R = character index, G = line index, B = unused, A = unused
-vertex_format_add_custom( vertex_type_float3, vertex_usage_colour ); //R = wave boolean, G = shake boolean, B = rainbow boolean
+vertex_format_add_texcoord();
 global.__scribble_vertex_format = vertex_format_end();
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
