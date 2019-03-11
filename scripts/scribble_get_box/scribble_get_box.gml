@@ -16,9 +16,9 @@ var _left   = ((argument_count > 3) && (argument[3] != undefined))? argument[3] 
 var _top    = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
 var _right  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
 var _bottom = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 0;
-var _xscale = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : 1;
-var _yscale = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : 1;
-var _angle  = ((argument_count > 9) && (argument[9] != undefined))? argument[9] : 0;
+var _xscale = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : SCRIBBLE_DEFAULT_XSCALE;
+var _yscale = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : SCRIBBLE_DEFAULT_YSCALE;
+var _angle  = ((argument_count > 9) && (argument[9] != undefined))? argument[9] : SCRIBBLE_DEFAULT_ANGLE;
 
 if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {

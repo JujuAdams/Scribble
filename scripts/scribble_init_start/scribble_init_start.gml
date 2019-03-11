@@ -49,6 +49,7 @@ global.__scribble_events            = ds_map_create();  //Stores event bindings;
 global.__scribble_default_font      = "";
 
 //Cache uniform indexes
+global.__scribble_uniform_pma             = shader_get_uniform( shScribble, "u_fPremultiplyAlpha"   );
 global.__scribble_uniform_time            = shader_get_uniform( shScribble, "u_fTime"               );
 global.__scribble_uniform_colour          = shader_get_uniform( shScribble, "u_vColour"             );
 global.__scribble_uniform_options         = shader_get_uniform( shScribble, "u_vOptions"            );

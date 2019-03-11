@@ -6,15 +6,17 @@
 /// @param [angle]
 /// @param [colour]
 /// @param [alpha]
+/// @param [premultiplyAlpha]
 
 var _json   = argument[0];
 var _x      = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
 var _y      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
-var _xscale = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 1;
-var _yscale = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 1;
-var _angle  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
+var _xscale = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_XSCALE;
+var _yscale = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : SCRIBBLE_DEFAULT_YSCALE;
+var _angle  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : SCRIBBLE_DEFAULT_ANGLE;
 var _colour = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : draw_get_colour();
 var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : draw_get_alpha();
+var _pma    = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA;
 
 var _old_matrix = matrix_get( matrix_world );
 
@@ -153,6 +155,7 @@ else
     }
     
     shader_set( shScribble );
+    shader_set_uniform_f( global.__scribble_uniform_pma            , _pma );
     shader_set_uniform_f( global.__scribble_uniform_time           , _json[| __E_SCRIBBLE.ANIMATION_TIME ]*SCRIBBLE_ANIMATION_SPEED );
     shader_set_uniform_f( global.__scribble_uniform_options        , _json[| __E_SCRIBBLE.WAVE_SIZE      ],
                                                                      _json[| __E_SCRIBBLE.SHAKE_SIZE     ],

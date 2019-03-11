@@ -12,6 +12,10 @@
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED      0.3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS 3
+#macro SCRIBBLE_DEFAULT_XSCALE                1
+#macro SCRIBBLE_DEFAULT_YSCALE                1
+#macro SCRIBBLE_DEFAULT_ANGLE                 0
+#macro SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA     false
 
 #macro SCRIBBLE_ANIMATION_SPEED                    0.02    //Speed of shader animation effects
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
