@@ -500,7 +500,7 @@ for( var _font = 0; _font < _font_count; _font++ )
         
         var _ds_map_fallback = true;
         
-        if (SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX)
+        if (__SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX)
         {
             #region Sequential glyph index
             
