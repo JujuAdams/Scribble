@@ -20,10 +20,10 @@
 #macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //First 127 ASCII chars only
+#macro SCRIBBLE_ANIMATION_SPEED                   0.02     //Speed of shader animation effects
 
 #macro SCRIBBLE_TYPEWRITER_PER_CHARACTER 0
 #macro SCRIBBLE_TYPEWRITER_PER_LINE      1
-#macro SCRIBBLE_TIME                     (current_time/1000) //The value that Scribble uses to calculate effects
 
 #region -- Internal Definitions --
 

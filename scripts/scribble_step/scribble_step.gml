@@ -6,6 +6,8 @@
 var _json      = argument[0];
 var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : 1;
 
+_json[? "animation time" ] += _step_size;
+
 var _typewriter_direction = _json[? "typewriter direction" ];
 if ( _typewriter_direction != 0 )
 {

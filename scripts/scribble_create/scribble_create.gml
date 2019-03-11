@@ -144,6 +144,7 @@ ds_map_add_list( _json, "vertex buffer list", _vbuff_list );
 _json[? "wave size"            ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
 _json[? "shake size"           ] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
 _json[? "rainbow weight"       ] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
+_json[? "animation time"       ] = 0;
 
 //Character fade
 _json[? "char fade t"          ] = 1;
