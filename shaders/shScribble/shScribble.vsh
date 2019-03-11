@@ -1,27 +1,19 @@
-const int MAX_FLAGS = 6;
+const int MAX_FLAGS = 6; //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
 
 attribute vec3 in_Position;
 attribute vec3 in_Normal; //Character / Line index / Flags
 attribute vec4 in_Colour;
 attribute vec2 in_TextureCoord;
 
-
-
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
-
-
 uniform float u_fPremultiplyAlpha;
-
-uniform vec4 u_vColour;
-
+uniform vec4  u_vColourBlend;
 uniform float u_aFlagData[MAX_FLAGS];
 uniform float u_fTime;
-
 uniform float u_fCharFadeT;
 uniform float u_fCharFadeSmoothness;
-
 uniform float u_fLineFadeT;
 uniform float u_fLineFadeSmoothness;
 
@@ -117,7 +109,7 @@ void main()
     //Colour
     v_vColour = in_Colour;
     applyRainbow( flagArray[2], v_vColour );
-    applyColourBlend( u_vColour, v_vColour );
+    applyColourBlend( u_vColourBlend, v_vColour );
     applyPerCharacterFade( u_fCharFadeT, u_fCharFadeSmoothness, v_vColour );
     applyPerLineFade( u_fLineFadeT, u_fLineFadeSmoothness, v_vColour );
     applyPremultiplyAlpha( v_vColour );

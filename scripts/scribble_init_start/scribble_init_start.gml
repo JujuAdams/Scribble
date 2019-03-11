@@ -51,7 +51,7 @@ global.__scribble_default_font      = "";
 //Cache uniform indexes
 global.__scribble_uniform_pma             = shader_get_uniform( shScribble, "u_fPremultiplyAlpha"   );
 global.__scribble_uniform_time            = shader_get_uniform( shScribble, "u_fTime"               );
-global.__scribble_uniform_colour          = shader_get_uniform( shScribble, "u_vColour"             );
+global.__scribble_uniform_colour_blend    = shader_get_uniform( shScribble, "u_vColourBlend"        );
 global.__scribble_uniform_char_t          = shader_get_uniform( shScribble, "u_fCharFadeT"          );
 global.__scribble_uniform_char_smoothness = shader_get_uniform( shScribble, "u_fCharFadeSmoothness" );
 global.__scribble_uniform_line_t          = shader_get_uniform( shScribble, "u_fLineFadeT"          );
