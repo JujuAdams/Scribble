@@ -20,6 +20,10 @@ scribble_add_custom_colour( "c_test", make_colour_rgb( 100, 150, 200 ) );
 //Here's a basic example of playing a sound
 scribble_add_event( "sound", play_sound_example );
 
+//Some characters need a bit of fine adjustment, and it's sometimes not possible to fix this in the font itself
+scribble_set_glyph_property( "sSpriteFont", "f", SCRIBBLE_GLYPH_SEPARATION, -1, true );
+scribble_set_glyph_property( "sSpriteFont", "q", SCRIBBLE_GLYPH_SEPARATION, -1, true );
+
 //We're finished here, so destroy this instance and move to the next room
 instance_destroy();
 room_goto_next();

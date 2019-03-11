@@ -25,14 +25,14 @@ if ( !ds_map_exists( global.__scribble_font_data, _def_font ) )
 //Find the default font's space width
 var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
 var _array = _font_glyphs_map[? " " ];
-var _def_space_width = _array[ E_SCRIBBLE_GLYPH.W ];
+var _def_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
 
 //Find the default line minimum height if not specified
 if ( _line_min_height == undefined )
 {
     var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
     var _array = _font_glyphs_map[? " " ];
-    _line_min_height = _array[ E_SCRIBBLE_GLYPH.H ];
+    _line_min_height = _array[ __E_SCRIBBLE_GLYPH.H ];
 }
 
 //Strip out weird newlines
@@ -369,11 +369,11 @@ for( var _i = 0; _i < _separator_count; _i++ )
                         
                         var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
                         var _array = _font_glyphs_map[? " " ];
-                        _font_space_width = _array[ E_SCRIBBLE_GLYPH.W ];
+                        _font_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
                         
                         var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
                         var _array = _font_glyphs_map[? " " ];
-                        _font_line_height = _array[ E_SCRIBBLE_GLYPH.H ];
+                        _font_line_height = _array[ __E_SCRIBBLE_GLYPH.H ];
                         
                         _skip = true;
                         #endregion
@@ -451,7 +451,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
             var _array = _font_glyphs_map[? _char ];
             if ( _array == undefined ) continue;
     
-            _x += _array[ E_SCRIBBLE_GLYPH.SHF ];
+            _x += _array[ __E_SCRIBBLE_GLYPH.SHF ];
             _substr_width = max( _substr_width, _x );
     
         }
@@ -459,14 +459,14 @@ for( var _i = 0; _i < _separator_count; _i++ )
         var _char = string_copy( _substr, _length, 1 );
         var _array = _font_glyphs_map[? _char ];
         if ( _array != undefined ) {
-            _x += _array[ E_SCRIBBLE_GLYPH.DX ] + _array[ E_SCRIBBLE_GLYPH.W ];
+            _x += _array[ __E_SCRIBBLE_GLYPH.DX ] + _array[ __E_SCRIBBLE_GLYPH.W ];
             _substr_width = max( _substr_width, _x );
         }
         
         //Choose the height of a space for the substring's height
         var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
         var _array = _font_glyphs_map[? " " ];
-        _substr_height = _array[ E_SCRIBBLE_GLYPH.H ];
+        _substr_height = _array[ __E_SCRIBBLE_GLYPH.H ];
     }
     
     #region Position and store word
@@ -624,7 +624,7 @@ for( var _line = 0; _line < _lines_size; _line++ )
     }
 }
 
-scribble_box_alignment( _json );
+scribble_set_box_alignment( _json );
 
 #endregion
 
@@ -784,15 +784,15 @@ repeat( _lines_size )
                 var _array = _font_glyphs_map[? string_char_at( _str, _char_index ) ];
                 if ( _array == undefined ) continue;
                 
-                var _glyph_w   = _array[ E_SCRIBBLE_GLYPH.W   ];
-                var _glyph_h   = _array[ E_SCRIBBLE_GLYPH.H   ];
-                var _glyph_u0  = _array[ E_SCRIBBLE_GLYPH.U0  ];
-                var _glyph_v0  = _array[ E_SCRIBBLE_GLYPH.V0  ];
-                var _glyph_u1  = _array[ E_SCRIBBLE_GLYPH.U1  ];
-                var _glyph_v1  = _array[ E_SCRIBBLE_GLYPH.V1  ];
-                var _glyph_dx  = _array[ E_SCRIBBLE_GLYPH.DX  ];
-                var _glyph_dy  = _array[ E_SCRIBBLE_GLYPH.DY  ];
-                var _glyph_shf = _array[ E_SCRIBBLE_GLYPH.SHF ];
+                var _glyph_w   = _array[ __E_SCRIBBLE_GLYPH.W   ];
+                var _glyph_h   = _array[ __E_SCRIBBLE_GLYPH.H   ];
+                var _glyph_u0  = _array[ __E_SCRIBBLE_GLYPH.U0  ];
+                var _glyph_v0  = _array[ __E_SCRIBBLE_GLYPH.V0  ];
+                var _glyph_u1  = _array[ __E_SCRIBBLE_GLYPH.U1  ];
+                var _glyph_v1  = _array[ __E_SCRIBBLE_GLYPH.V1  ];
+                var _glyph_dx  = _array[ __E_SCRIBBLE_GLYPH.DX  ];
+                var _glyph_dy  = _array[ __E_SCRIBBLE_GLYPH.DY  ];
+                var _glyph_shf = _array[ __E_SCRIBBLE_GLYPH.SHF ];
                 
                 var _glyph_l = _char_l + _glyph_dx;
                 var _glyph_t = _char_t + _glyph_dy;

@@ -22,27 +22,18 @@
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //First 127 ASCII chars only
 #macro SCRIBBLE_ANIMATION_SPEED                   0.02     //Speed of shader animation effects
 
+//Typewriter constants
+//Used as arguments for scribble_typewriter_in() and scribble_typewrite_out()
 #macro SCRIBBLE_TYPEWRITER_WHOLE         0
 #macro SCRIBBLE_TYPEWRITER_PER_CHARACTER 1
 #macro SCRIBBLE_TYPEWRITER_PER_LINE      2
 
-enum E_SCRIBBLE_GLYPH
-{
-    CHAR,  //0
-    ORD,   //1
-    X,     //2
-    Y,     //3
-    W,     //4
-    H,     //5
-    DX,    //6
-    DY,    //7
-    SHF,   //8
-    U0,    //9
-    V0,    //10
-    U1,    //11
-    V1,    //12
-    __SIZE //13
-}
+//Glyph property constants
+//Used as arguments for scribble_font_character_property()
+//These link into internal glyph properties
+#macro SCRIBBLE_GLYPH_X_OFFSET   __E_SCRIBBLE_GLYPH.DX
+#macro SCRIBBLE_GLYPH_Y_OFFSET   __E_SCRIBBLE_GLYPH.DY
+#macro SCRIBBLE_GLYPH_SEPARATION __E_SCRIBBLE_GLYPH.SHF
 
 #region -- Internal Definitions --
 
@@ -62,6 +53,24 @@ enum __E_SCRIBBLE_FONT
     SPRITE_X,       // 8
     SPRITE_Y,       // 9
     __SIZE          //10
+}
+
+enum __E_SCRIBBLE_GLYPH
+{
+    CHAR,  // 0
+    ORD,   // 1
+    X,     // 2
+    Y,     // 3
+    W,     // 4
+    H,     // 5
+    DX,    // 6
+    DY,    // 7
+    SHF,   // 8
+    U0,    // 9
+    V0,    //10
+    U1,    //11
+    V1,    //12
+    __SIZE //13
 }
 
 enum __E_SCRIBBLE_SURFACE

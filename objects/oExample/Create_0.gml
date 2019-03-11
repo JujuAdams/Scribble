@@ -17,4 +17,4 @@ scribble_typewriter_in( json, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER );
 
 //Set how the text should be aligned relative to the draw coordinate
 //Here, we're setting the alignment so that the middle/centre of the box is at the draw coordinate
-scribble_box_alignment( json, fa_center, fa_middle );
+scribble_set_box_alignment( json, fa_center, fa_middle );
