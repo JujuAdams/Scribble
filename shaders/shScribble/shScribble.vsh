@@ -1,4 +1,5 @@
-const int MAX_FLAGS = 6; //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
+const int   MAX_FLAGS = 6;                //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
+const float MAX_FLAGS_CHECK_VALUE = 32.0; //Must be set relative to the above constant: 2^(MAX_FLAGS-1)
 
 attribute vec3 in_Position;
 attribute vec3 in_Normal; //Character / Line index / Flags
@@ -33,7 +34,7 @@ vec3 hsv2rgb( vec3 c )
 
 void unpackFlags( float flagValue, inout float array[MAX_FLAGS] )
 {
-    float check = pow( 2.0, float(MAX_FLAGS-1) );
+    float check = MAX_FLAGS_CHECK_VALUE;
     for( int i = MAX_FLAGS-1; i >= 0; i-- )
     {
         if (flagValue >= check)
