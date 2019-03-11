@@ -99,6 +99,80 @@ repeat( _buffer_size )
 
 #region Create the JSON
 
+//var _json                  = ds_list_create();
+//var _text_root_list        = ds_list_create();
+//var _vbuff_list            = ds_list_create();
+//var _events_character_list = ds_list_create();
+//var _events_name_list      = ds_list_create();
+//var _events_data_list      = ds_list_create();
+//
+//_json[| __E_SCRIBBLE.__SIZE               ] = __SCRIBBLE_VERSION;
+//
+//_json[| __E_SCRIBBLE.__SECTION0           ] = "-- Parameters --";
+//_json[| __E_SCRIBBLE.STRING               ] = _str;
+//_json[| __E_SCRIBBLE.DEFAULT_FONT         ] = _def_font;
+//_json[| __E_SCRIBBLE.DEFAULT_COLOUR       ] = _def_colour;
+//_json[| __E_SCRIBBLE.DEFAULT_HALIGN       ] = _def_halign;
+//_json[| __E_SCRIBBLE.WIDTH_LIMIT          ] = _width_limit;
+//_json[| __E_SCRIBBLE.LINE_HEIGHT          ] = _line_min_height;
+//
+//_json[| __E_SCRIBBLE.__SECTION1           ] = "-- Statistics --";
+//_json[| __E_SCRIBBLE.HALIGN               ] = fa_left;
+//_json[| __E_SCRIBBLE.VALIGN               ] = fa_top;
+//_json[| __E_SCRIBBLE.WIDTH                ] = 0;
+//_json[| __E_SCRIBBLE.HEIGHT               ] = 0;
+//_json[| __E_SCRIBBLE.LEFT                 ] = 0;
+//_json[| __E_SCRIBBLE.TOP                  ] = 0;
+//_json[| __E_SCRIBBLE.RIGHT                ] = 0;
+//_json[| __E_SCRIBBLE.BOTTOM               ] = 0;
+//_json[| __E_SCRIBBLE.LENGTH               ] = 0;
+//_json[| __E_SCRIBBLE.LINES                ] = 0;
+//_json[| __E_SCRIBBLE.WORDS                ] = 0;
+//
+//_json[| __E_SCRIBBLE.__SECTION2           ] = "-- Typewriter --";
+//_json[| __E_SCRIBBLE.TW_DIRECTION         ] = 0;
+//_json[| __E_SCRIBBLE.TW_SPEED             ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+//_json[| __E_SCRIBBLE.TW_POSITION          ] = 0;
+//_json[| __E_SCRIBBLE.TW_METHOD            ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+//_json[| __E_SCRIBBLE.TW_SMOOTHNESS        ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
+//_json[| __E_SCRIBBLE.CHAR_FADE_T          ] = 1;
+//_json[| __E_SCRIBBLE.CHAR_FADE_SMOOTHNESS ] = 0;
+//_json[| __E_SCRIBBLE.LINE_FADE_T          ] = 1;
+//_json[| __E_SCRIBBLE.LINE_FADE_SMOOTHNESS ] = 0;
+//
+//_json[| __E_SCRIBBLE.__SECTION3           ] = "-- Animation --";
+//_json[| __E_SCRIBBLE.WAVE_SIZE            ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
+//_json[| __E_SCRIBBLE.SHAKE_SIZE           ] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
+//_json[| __E_SCRIBBLE.RAINBOW_WEIGHT       ] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
+//_json[| __E_SCRIBBLE.ANIMATION_TIME       ] = 0;
+//
+//_json[| __E_SCRIBBLE.__SECTION4           ] = "-- Lists --";
+//_json[| __E_SCRIBBLE.LINE_LIST            ] = _text_root_list;
+//_json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST   ] = _vbuff_list;
+//
+//_json[| __E_SCRIBBLE.__SECTION5           ] = "-- Events --";
+//_json[| __E_SCRIBBLE.EV_CHARACTER_LIST    ] = _events_character_list;
+//_json[| __E_SCRIBBLE.EV_NAME_LIST         ] = _events_name_list;
+//_json[| __E_SCRIBBLE.EV_DATA_LIST         ] = _events_data_list;
+//_json[| __E_SCRIBBLE.EV_TRIGGERED_LIST    ] = ds_list_create();
+//_json[| __E_SCRIBBLE.EV_TRIGGERED_MAP     ] = ds_map_create();
+//_json[| __E_SCRIBBLE.EV_VALUE_MAP         ] = ds_map_create();
+//_json[| __E_SCRIBBLE.EV_CHANGED_MAP       ] = ds_map_create();
+//_json[| __E_SCRIBBLE.EV_PREVIOUS_MAP      ] = ds_map_create();
+//_json[| __E_SCRIBBLE.EV_DIFFERENT_MAP     ] = ds_map_create();
+//
+//ds_list_mark_as_list( _json, __E_SCRIBBLE.LINE_LIST          );
+//ds_list_mark_as_list( _json, __E_SCRIBBLE.VERTEX_BUFFER_LIST );
+//ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_CHARACTER_LIST  );
+//ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_NAME_LIST       );
+//ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_DATA_LIST       );
+//ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_TRIGGERED_LIST  );
+//ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_TRIGGERED_MAP   );
+//ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_VALUE_MAP       );
+//ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_CHANGED_MAP     );
+//ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_PREVIOUS_MAP    );
+//ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_DIFFERENT_MAP   );
+
 //Create data structures
 var _json = ds_map_create();
 

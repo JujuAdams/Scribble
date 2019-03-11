@@ -160,7 +160,9 @@ enum __E_SCRIBBLE
     EV_VALUE_MAP,         //43
     EV_CHANGED_MAP,       //44
     EV_PREVIOUS_MAP,      //45
-    EV_DIFFERENT_MAP      //46
+    EV_DIFFERENT_MAP,     //46
+    
+    __SIZE                //47
 }
 
 #endregion
