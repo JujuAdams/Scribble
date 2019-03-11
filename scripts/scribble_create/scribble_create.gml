@@ -341,12 +341,12 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 break;
                 
                 case "wave":
-                    _text_flags[1] = true;
+                    _text_flags[0] = true;
                     _skip = true;
                 break;
                 
                 case "/wave":
-                    _text_flags[1] = false;
+                    _text_flags[0] = false;
                     _skip = true;
                 break;
                 
@@ -356,7 +356,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 break;
                 
                 case "/shake":
-                    _text_flags[2] = false;
+                    _text_flags[1] = false;
                     _skip = true;
                 break;
                 
