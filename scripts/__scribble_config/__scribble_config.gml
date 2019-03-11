@@ -131,11 +131,9 @@ enum __E_SCRIBBLE_WORD
     LENGTH,         // 9
     FONT,           //10
     COLOUR,         //11
-    RAINBOW,        //12
-    SHAKE,          //13
-    WAVE,           //14
-    NEXT_SEPARATOR, //15
-    __SIZE          //16
+    FLAG_DATA,      //12
+    NEXT_SEPARATOR, //13
+    __SIZE          //14
 }
 
 enum __E_SCRIBBLE_VERTEX_BUFFER

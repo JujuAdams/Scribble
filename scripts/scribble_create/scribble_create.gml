@@ -228,9 +228,7 @@ var _line_max_height      = _line_min_height;
 var _text_font            = _def_font;
 var _text_colour          = _def_colour;
 var _text_halign          = _def_halign;
-var _text_rainbow         = false;
-var _text_shake           = false;
-var _text_wave            = false;
+var _text_flags           = array_create( SCRIBBLE_MAX_FLAGS, 0 );
 
 var _font_line_height     = _line_min_height;
 var _font_space_width     = _def_space_width;
@@ -260,11 +258,11 @@ for( var _i = 0; _i < _separator_count; _i++ )
     var _force_newline = false;
     var _new_word      = false;
     
-    var _substr_width       = 0;
-    var _substr_height      = 0;
-    var _substr_length      = string_length( _input_substr );
-    var _substr_sprite      = noone;
-    var _substr_image       = undefined;
+    var _substr_width  = 0;
+    var _substr_height = 0;
+    var _substr_length = string_length( _input_substr );
+    var _substr_sprite = noone;
+    var _substr_image  = undefined;
     
     var _first_character = ( is_array( _line_words_array ) && (array_length_1d( _line_words_array ) <= 1) );
     
@@ -273,6 +271,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
     if ( _in_command_tag )
     {
         #region Command tag handling
+        
         ds_list_add( _parameters_list, _input_substr );
         
         if ( _sep_char != SCRIBBLE_COMMAND_TAG_CLOSE ) // ]
@@ -287,12 +286,9 @@ for( var _i = 0; _i < _separator_count; _i++ )
             {
                 #region Reset formatting
                 case "":
-                    _text_font      = _def_font;
-                    _text_colour    = _def_colour;
-                
-                    _text_rainbow   = false;
-                    _text_shake     = false;
-                    _text_wave      = false;
+                    _text_font   = _def_font;
+                    _text_colour = _def_colour;
+                    _text_flags  = array_create( SCRIBBLE_MAX_FLAGS, 0 );
             
                     _font_line_height = _line_min_height;
                     _font_space_width = _def_space_width;
@@ -324,40 +320,60 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 break;
                 #endregion
                 
-                #region Rainbow
-                case "rainbow":
-                    _text_rainbow = true;
-                    _skip = true;
-                break;
-                case "/rainbow":
-                    _text_rainbow = false;
-                    _skip = true;
-                break;
-                #endregion
+                #region Flags
                 
-                #region Shake
-                case "shake":
-                    _text_shake = true;
+                case "flag":
+                    var _parameter_count = ds_list_size( _parameters_list );
+                    if ( _parameter_count == 2 )
+                    {
+                        _text_flags[ real( _parameters_list[| 1] ) ] = true;
+                    }
                     _skip = true;
                 break;
-                case "/shake":
-                    _text_shake = false;
-                    _skip = true;
-                break;
-                #endregion
                 
-                #region Wave
+                case "/flag":
+                    var _parameter_count = ds_list_size( _parameters_list );
+                    if ( _parameter_count == 2 )
+                    {
+                        _text_flags[ real( _parameters_list[| 1] ) ] = false;
+                    }
+                    _skip = true;
+                break;
+                
                 case "wave":
-                    _text_wave = true;
+                    _text_flags[1] = true;
                     _skip = true;
                 break;
+                
                 case "/wave":
-                    _text_wave = false;
+                    _text_flags[1] = false;
                     _skip = true;
                 break;
+                
+                case "shake":
+                    _text_flags[1] = true;
+                    _skip = true;
+                break;
+                
+                case "/shake":
+                    _text_flags[2] = false;
+                    _skip = true;
+                break;
+                
+                case "rainbow":
+                    _text_flags[2] = true;
+                    _skip = true;
+                break;
+                
+                case "/rainbow":
+                    _text_flags[2] = false;
+                    _skip = true;
+                break;
+                
                 #endregion
                 
                 #region Font Alignment
+                
                 case "fa_left":
                     _text_halign = fa_left;
                     _substr = "";
@@ -439,7 +455,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                             _substr_width  = sprite_get_width(  _substr_sprite );
                             _substr_height = sprite_get_height( _substr_sprite );
                             _substr_length = 1;
-                
+                            
                             if ( ds_list_size( _parameters_list ) <= 1 ) _parameters_list[| 1] = "0";
                             
                             _substr_image = real( _parameters_list[| 1] );
@@ -649,13 +665,15 @@ for( var _i = 0; _i < _separator_count; _i++ )
         _word_array[ __E_SCRIBBLE_WORD.LENGTH         ] = _substr_length; //Include the separator character!
         _word_array[ __E_SCRIBBLE_WORD.FONT           ] = _text_font;
         _word_array[ __E_SCRIBBLE_WORD.COLOUR         ] = _text_colour;
-        _word_array[ __E_SCRIBBLE_WORD.RAINBOW        ] = _text_rainbow;
-        _word_array[ __E_SCRIBBLE_WORD.SHAKE          ] = _text_shake;
-        _word_array[ __E_SCRIBBLE_WORD.WAVE           ] = _text_wave;
+        _word_array[ __E_SCRIBBLE_WORD.FLAG_DATA      ] = _text_flags;
         _word_array[ __E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = "";
         
         //Add the word to the line list
         _line_words_array[@ array_length_1d(_line_words_array) ] = _word_array;
+        
+        var _new_text_flags = array_create( SCRIBBLE_MAX_FLAGS, 0 );
+        array_copy( _new_text_flags, 0, _text_flags, 0, SCRIBBLE_MAX_FLAGS );
+        _text_flags = _new_text_flags;
     }
     
     _text_x += _substr_width;
@@ -799,11 +817,17 @@ repeat( _lines_size )
             _previous_font = "";
             
             var _char_pc     = _text_char / _max_char;
-            var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR  ];
-            var _rainbow     = _word_array[ __E_SCRIBBLE_WORD.RAINBOW ];
-            var _shake       = _word_array[ __E_SCRIBBLE_WORD.SHAKE   ];
-            var _wave        = _word_array[ __E_SCRIBBLE_WORD.WAVE    ];
-            var _image       = _word_array[ __E_SCRIBBLE_WORD.IMAGE   ];
+            var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR    ];
+            var _flag_data   = _word_array[ __E_SCRIBBLE_WORD.FLAG_DATA ];
+            var _image       = _word_array[ __E_SCRIBBLE_WORD.IMAGE     ];
+            
+            var _flags  = 0;
+            var _offset = 1;
+            for( var _i = 0; _i < SCRIBBLE_MAX_FLAGS; _i++ )
+            {
+                _flags += _flag_data[_i] * _offset;
+                _offset *= 2;
+            }
             
             var _sprite_texture = sprite_get_texture( _sprite, _image );
             if ( _sprite_texture != _previous_texture )
@@ -894,11 +918,16 @@ repeat( _lines_size )
             
             #region Add vertex data for each character in the string
             
-            var _colour  = _word_array[ __E_SCRIBBLE_WORD.COLOUR  ];
-            var _rainbow = _word_array[ __E_SCRIBBLE_WORD.RAINBOW ];
-            var _shake   = _word_array[ __E_SCRIBBLE_WORD.SHAKE   ];
-            var _wave    = _word_array[ __E_SCRIBBLE_WORD.WAVE    ];
-            var _flags   = _wave + 2*_shake + 4*_rainbow;
+            var _colour    = _word_array[ __E_SCRIBBLE_WORD.COLOUR    ];
+            var _flag_data = _word_array[ __E_SCRIBBLE_WORD.FLAG_DATA ];
+            
+            var _flags  = 0;
+            var _offset = 1;
+            for( var _i = 0; _i < SCRIBBLE_MAX_FLAGS; _i++ )
+            {
+                _flags += _flag_data[_i] * _offset;
+                _offset *= 2;
+            }
             
             var _str = _word_array[ __E_SCRIBBLE_WORD.STRING ];
             var _string_size = string_length( _str );
