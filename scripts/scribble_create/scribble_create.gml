@@ -18,6 +18,8 @@ var _def_halign       = ((argument_count > 5) && (argument[5] != undefined))? ar
 
 
 
+#region Process input parameters
+
 //Strip out weird newlines
 if (SCRIBBLE_FIX_NEWLINES)
 {
@@ -58,6 +60,8 @@ if ( is_string( _def_colour ) )
         _def_colour = c_white;
     }
 }
+
+#endregion
 
 
 
@@ -192,7 +196,7 @@ ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_DIFFERENT_MAP   );
 
 
 
-#region Parser
+#region Parse the string
 
 #region Initial parser state
 
@@ -433,12 +437,6 @@ for( var _i = 0; _i < _separator_count; _i++ )
                                 if ( string_length( _colour_string ) <= 7 ) && ( string_copy( _colour_string, 1, 1 ) == "$" )
                                 {
                                     #region Hex string decoding
-                                    
-                                    //_colour_string = string_upper( _colour_string );
-                                    //var _hex = "0123456789ABCDEF";
-                                    //var _red   = max( string_pos( string_copy( _colour_string, 3, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 2, 1 ), _hex )-1, 0 ) << 4 );
-                                    //var _green = max( string_pos( string_copy( _colour_string, 5, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 4, 1 ), _hex )-1, 0 ) << 4 );
-                                    //var _blue  = max( string_pos( string_copy( _colour_string, 7, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 6, 1 ), _hex )-1, 0 ) << 4 );
                                     
                                     var _ord = ord( string_char_at( _colour_string, 3 ) );
                                     var _lsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
@@ -686,7 +684,7 @@ scribble_set_box_alignment( _json );
 
 
 
-//Clean up some misc data structures that we needed
+//Clean up some misc data structures that we used
 buffer_delete( _buffer );
 ds_list_destroy( _separator_list  );
 ds_list_destroy( _position_list   );

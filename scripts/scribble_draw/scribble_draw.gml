@@ -31,7 +31,7 @@ else
 _matrix = matrix_multiply( _matrix, _old_matrix );
 matrix_set( matrix_world, _matrix );
 
-if ( SCRIBBLE_COMPATIBILITY_DRAW )
+if (SCRIBBLE_COMPATIBILITY_DRAW)
 {
     #region Compatibility mode
     
@@ -95,7 +95,7 @@ if ( SCRIBBLE_COMPATIBILITY_DRAW )
                 }
                 else
                 {
-                    var _font = global.__scribble_sprite_font_map[? _font_name ];
+                    var _font = global.__scribble_spritefont_map[? _font_name ];
                     if ( _font != undefined ) draw_set_font( _font );
                 }
             

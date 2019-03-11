@@ -41,12 +41,12 @@ if (_tpage_size < 512) || (_tpage_size > 8192)
 //Declare global variables
 global.__scribble_font_directory    = _font_directory;
 global.__scribble_texture_page_size = _tpage_size;
-global.__scribble_font_data         = ds_map_create();
-global.__scribble_glyphs_map        = ds_map_create();
-global.__scribble_sprites           = ds_list_create();
-global.__scribble_sprite_font_map   = ds_map_create();
-global.__scribble_colours           = ds_map_create(); //Stores colour definitions, including custom colours
-global.__scribble_events            = ds_map_create(); //Stores event bindings
+global.__scribble_font_data         = ds_map_create();  //Stores a data array for each font defined inside Scribble
+global.__scribble_glyphs_map        = ds_map_create();  //Stores each font's glyph map
+global.__scribble_sprites           = ds_list_create(); //Stores every sprite created during font packing
+global.__scribble_spritefont_map    = ds_map_create();  //Stores a ds_map of all the spritefonts, for use with COMPATIBILITY_DRAW
+global.__scribble_colours           = ds_map_create();  //Stores colour definitions, including custom colours
+global.__scribble_events            = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
 global.__scribble_default_font      = "";
 
 //Cache uniform indexes
