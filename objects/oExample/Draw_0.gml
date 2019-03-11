@@ -2,5 +2,12 @@
 scribble_draw( json, x, y );
 
 //Find the size and position of the bounding box (plus a bit) and draw it
-var _box = scribble_get_box( json,   x, y,   4, 4,   4, 4 );
-draw_rectangle( _box[0], _box[1], _box[2], _box[3], true );
+var _box = scribble_get_box( json,   x, y,   5, 5,   5, 5 );
+
+//scribble_get_box() return 4 coordinate pairs, one for each corner of the box
+//This means you can rotate the textbox and still get useful coordinates
+//Most of the time, you'll only want to use box[0],box[1] (top left) and box[6],box[7] (bottom right)
+draw_line( _box[0], _box[1], _box[2], _box[3] );
+draw_line( _box[0], _box[1], _box[4], _box[5] );
+draw_line( _box[2], _box[3], _box[6], _box[7] );
+draw_line( _box[4], _box[5], _box[6], _box[7] );

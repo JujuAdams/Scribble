@@ -18,7 +18,7 @@ var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] 
 
 var _old_matrix = matrix_get( matrix_world );
 
-if ((_xscale == 1) && (_yscale == 1) && (_angle == 1))
+if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {
     var _matrix = matrix_build( _json[? "left" ] + _x, _json[? "top" ] + _y, 0,   0,0,0,   1,1,1 );
 }
