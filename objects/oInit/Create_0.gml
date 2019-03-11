@@ -6,7 +6,7 @@
 //  Intended for use with GMS2.2.1 and later
 
 //Start up Scribble and load some fonts
-scribble_init_start( 2048 ); //Set to the same value as the texture page size for your target platform. GM uses 2048x2048 texture pages by default
+scribble_init_start( "Fonts", 2048 ); //Set to the same value as the texture page size for your target platform. GM uses 2048x2048 texture pages by default
 scribble_init_add_font( "fTestA" ); //The first font added is the default font
 scribble_init_add_font( "fTestB" );
 scribble_init_add_spritefont( "sSpriteFont", 3 ); //GM's spritefont renderer handles spaces weirdly so it's best to specify a width
@@ -14,7 +14,10 @@ scribble_init_add_font( "fChineseTest" );
 scribble_init_end();
 
 //Define a custom colour for use later in our text
-scribble_add_custom_colour( "c_test", make_colour_rgb( 100, 150, 200 ) );
+scribble_add_custom_colour( "c_coquelicot", $ff3800, true );
+scribble_add_custom_colour( "c_smaragdine", $50c875, true );
+scribble_add_custom_colour( "c_xanadu"    , $738678, true );
+scribble_add_custom_colour( "c_amaranth"  , $e52b50, true );
 
 //You can define custom events that execute scripts
 //Here's a basic example of playing a sound

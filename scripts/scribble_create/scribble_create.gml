@@ -1,11 +1,11 @@
 /// @description Creates, and returns, a Scribble JSON, and its vertex buffer, built from a string
 ///
 /// @param string
-/// @param [box_width]
+/// @param [maxLineWidth]
 /// @param [font]
-/// @param [line_halign]
+/// @param [lineHalign]
 /// @param [colour]
-/// @param [line_height]
+/// @param [minLineHeight]
 
 var _timer = get_timer();
 

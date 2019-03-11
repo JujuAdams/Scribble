@@ -1,4 +1,7 @@
+/// @param fontDirectory
 /// @param texturePageSize
+///
+/// 
 
 if ( variable_global_exists( "__scribble_texture_page_size" ) )
 {
@@ -6,7 +9,19 @@ if ( variable_global_exists( "__scribble_texture_page_size" ) )
     exit;
 }
 
-var _tpage_size = argument0;
+var _font_directory = argument0;
+var _tpage_size     = argument1;
+
+//Fix the font directory name if it's weird
+var _char = string_char_at( _font_directory, string_length( _font_directory ) );
+if ( _char != "\\" ) && ( _char != "/" ) _font_directory += "\\";
+
+//Check if the directory exists
+if ( !directory_exists( _font_directory ) )
+{
+    show_error( "Font directory \"" + string( _font_directory ) + "\" could not be found in \"" + game_save_id + "\"!\n ", true );
+    exit;
+}
 
 //Check texture page size for user error
 var _exp = ln(_tpage_size)/ln(2);
@@ -24,6 +39,7 @@ if (_tpage_size < 512) || (_tpage_size > 8192)
 }
 
 //Declare global variables
+global.__scribble_font_directory    = _font_directory;
 global.__scribble_texture_page_size = _tpage_size;
 global.__scribble_font_data         = ds_map_create();
 global.__scribble_glyphs_map        = ds_map_create();

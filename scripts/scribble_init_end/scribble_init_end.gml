@@ -65,7 +65,13 @@ repeat( _font_count )
     }
     else if ( _font_data[ __E_SCRIBBLE_FONT.TYPE ] )
     {
-        var _asset   = asset_get_index(  _name  );
+        var _asset = asset_get_index(  _name  );
+        if ( _asset < 0 )
+        {
+            show_error( "Font \"" + _name + "\" was not found in the project!\n ", true );
+            exit;
+        }
+        
         var _texture = font_get_texture( _asset );
         var _uvs     = font_get_uvs(     _asset );
         
@@ -74,7 +80,7 @@ repeat( _font_count )
         _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] = _texture_w;
         _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] = _texture_h;
         
-        var _json_file  = SCRIBBLE_FONT_DIRECTORY + _name + ".yy";
+        var _json_file  = global.__scribble_font_directory + _name + ".yy";
         if ( !file_exists( _json_file ) )
         {
             show_error( "Scribble:\n\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
@@ -480,7 +486,7 @@ for( var _font = 0; _font < _font_count; _font++ )
         
         
         
-        var _json_buffer = buffer_load( SCRIBBLE_FONT_DIRECTORY + _name + ".yy" );
+        var _json_buffer = buffer_load( global.__scribble_font_directory + _name + ".yy" );
         var _json_string = buffer_read( _json_buffer, buffer_text );
         buffer_delete( _json_buffer );
         var _json = json_decode( _json_string );

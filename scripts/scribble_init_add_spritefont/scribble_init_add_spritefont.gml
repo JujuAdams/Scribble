@@ -20,6 +20,19 @@ if ( ds_map_exists( global.__scribble_font_data, _font ) )
     return undefined;
 }
 
+if ( !is_string( _font ) )
+{
+    if ( is_real( _font ) )
+    {
+        show_error( "Fonts should be initialised using their name as a string.\n(Input to script was \"" + string( _font ) + "\", which might be sprite \"" + sprite_get_name( _font ) + "\")\n ", false );
+    }
+    else
+    {
+        show_error( "Fonts should be initialised using their name as a string.\n(Input to script was an invalid datatype)\n ", false );
+    }
+    exit;
+}
+
 if ( asset_get_type( _font ) != asset_sprite )
 {
     show_error( "To add a normal font, please use scribble_init_add_font()\n ", false );
