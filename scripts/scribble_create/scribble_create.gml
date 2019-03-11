@@ -432,12 +432,38 @@ for( var _i = 0; _i < _separator_count; _i++ )
                                 var _colour_string = _parameters_list[| 0];
                                 if ( string_length( _colour_string ) <= 7 ) && ( string_copy( _colour_string, 1, 1 ) == "$" )
                                 {
-                                    _colour_string = string_upper( _colour_string );
-                                    var _hex = "0123456789ABCDEF";
-                                    var _red   = max( string_pos( string_copy( _colour_string, 3, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 2, 1 ), _hex )-1, 0 ) << 4 );
-                                    var _green = max( string_pos( string_copy( _colour_string, 5, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 4, 1 ), _hex )-1, 0 ) << 4 );
-                                    var _blue  = max( string_pos( string_copy( _colour_string, 7, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 6, 1 ), _hex )-1, 0 ) << 4 );
-                                    _text_colour = make_colour_rgb( _red, _green, _blue );     
+                                    #region Hex string decoding
+                                    
+                                    //_colour_string = string_upper( _colour_string );
+                                    //var _hex = "0123456789ABCDEF";
+                                    //var _red   = max( string_pos( string_copy( _colour_string, 3, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 2, 1 ), _hex )-1, 0 ) << 4 );
+                                    //var _green = max( string_pos( string_copy( _colour_string, 5, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 4, 1 ), _hex )-1, 0 ) << 4 );
+                                    //var _blue  = max( string_pos( string_copy( _colour_string, 7, 1 ), _hex )-1, 0 ) + ( max( string_pos( string_copy( _colour_string, 6, 1 ), _hex )-1, 0 ) << 4 );
+                                    
+                                    var _ord = ord( string_char_at( _colour_string, 3 ) );
+                                    var _lsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                    var _ord = ord( string_char_at( _colour_string, 2 ) );
+                                    var _hsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                    
+                                    var _red = _lsf + (_hsf << 4);
+                                    
+                                    var _ord = ord( string_char_at( _colour_string, 5 ) );
+                                    var _lsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                    var _ord = ord( string_char_at( _colour_string, 4 ) );
+                                    var _hsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                    
+                                    var _green = _lsf + (_hsf << 4);
+                                    
+                                    var _ord = ord( string_char_at( _colour_string, 7 ) );
+                                    var _lsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                    var _ord = ord( string_char_at( _colour_string, 6 ) );
+                                    var _hsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                    
+                                    var _blue = _lsf + (_hsf << 4);
+                                    
+                                    #endregion
+                                    
+                                    _text_colour = make_colour_rgb( _red, _green, _blue );
                                 }
                             }
                             _skip = true;
