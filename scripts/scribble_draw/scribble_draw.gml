@@ -21,6 +21,7 @@ var _matrix = matrix_build( _json[? "left" ], _json[? "top" ], 0,   0,0,0,   1,1
     _matrix = matrix_multiply( _matrix, matrix_build( 0,0,0,   0,0,0,   _xscale,_yscale,1 ) );
     _matrix = matrix_multiply( _matrix, matrix_build( 0,0,0,   0,0,_angle,   1,1,1 ) );
     _matrix = matrix_multiply( _matrix, matrix_build( _x,_y,0,   0,0,0,   1,1,1 ) );
+    _matrix = matrix_multiply( _matrix, _old_matrix );
 matrix_set( matrix_world, _matrix );
 
 if ( SCRIBBLE_COMPATIBILITY_MODE )
