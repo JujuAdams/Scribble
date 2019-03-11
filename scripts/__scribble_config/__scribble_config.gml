@@ -35,6 +35,14 @@
 #macro SCRIBBLE_GLYPH_Y_OFFSET   __E_SCRIBBLE_GLYPH.DY
 #macro SCRIBBLE_GLYPH_SEPARATION __E_SCRIBBLE_GLYPH.SHF
 
+enum E_SCRIBBLE_BOX
+{
+    X0, Y0, //Top left corner
+    X1, Y1, //Top right corner
+    X2, Y2, //Bottom left corner
+    X3, Y3  //Bottom right corner
+}
+
 #region -- Internal Definitions --
 
 #macro __SCRIBBLE_VERSION "2.5.5 (light)"
