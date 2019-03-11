@@ -1,4 +1,4 @@
-//  Scribble (light) v2.5.4
+//  Scribble (light) v2.5.5
 //  2019/03/11
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
@@ -26,12 +26,7 @@
 #macro SCRIBBLE_TYPEWRITER_PER_CHARACTER 1
 #macro SCRIBBLE_TYPEWRITER_PER_LINE      2
 
-#region -- Internal Definitions --
-
-#macro __SCRIBBLE_VERSION "2.5.4 (light)"
-#macro __SCRIBBLE_DATE    "2019/03/11"
-
-enum __E_SCRIBBLE_GLYPH
+enum E_SCRIBBLE_GLYPH
 {
     CHAR,  //0
     ORD,   //1
@@ -48,6 +43,11 @@ enum __E_SCRIBBLE_GLYPH
     V1,    //12
     __SIZE //13
 }
+
+#region -- Internal Definitions --
+
+#macro __SCRIBBLE_VERSION "2.5.5 (light)"
+#macro __SCRIBBLE_DATE    "2019/03/11"
 
 enum __E_SCRIBBLE_FONT
 {
