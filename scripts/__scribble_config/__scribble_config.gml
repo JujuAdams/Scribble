@@ -16,15 +16,8 @@
 #macro SCRIBBLE_DEFAULT_YSCALE                1
 #macro SCRIBBLE_DEFAULT_ANGLE                 0
 #macro SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA     false
-
-#macro SCRIBBLE_ANIMATION_SPEED                    0.02    //Speed of shader animation effects
-#macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
-#macro SCRIBBLE_HASH_NEWLINE                       true    //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
-#macro SCRIBBLE_FIX_NEWLINES                       true    //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
-#macro SCRIBBLE_COMPATIBILITY_DRAW                false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
-#macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //Character used to open a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //Character used to close a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_ANIMATION_SPEED               0.02 //Speed of shader animation effects
+#macro SCRIBBLE_HASH_NEWLINE                  true //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 
 //Typewriter constants
 //Used as arguments for scribble_typewriter_in() and scribble_typewrite_out()
@@ -39,8 +32,16 @@
 #macro SCRIBBLE_GLYPH_Y_OFFSET   __E_SCRIBBLE_GLYPH.DY
 #macro SCRIBBLE_GLYPH_SEPARATION __E_SCRIBBLE_GLYPH.SHF
 
-#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE 200 //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
-#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES 0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
+//Advanced users only!
+#macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
+#macro SCRIBBLE_FIX_NEWLINES                       true    //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
+#macro SCRIBBLE_COMPATIBILITY_DRAW                false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
+#macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //Character used to open a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //Character used to close a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_MAX_FLAGS                         6
+#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE        200      //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
+#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES        0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
 //scribble_get_box() constants
 enum E_SCRIBBLE_BOX
@@ -178,27 +179,25 @@ enum __E_SCRIBBLE
     LINE_FADE_T,          //26
     
     __SECTION3,           //27
-    WAVE_SIZE,            //28
-    SHAKE_SIZE,           //29
-    RAINBOW_WEIGHT,       //30
-    ANIMATION_TIME,       //31
+    FLAG_DATA,            //28
+    ANIMATION_TIME,       //29
     
-    __SECTION4,           //32
-    LINE_LIST,            //33
-    VERTEX_BUFFER_LIST,   //34
+    __SECTION4,           //30
+    LINE_LIST,            //31
+    VERTEX_BUFFER_LIST,   //32
     
-    __SECTION5,           //35
-    EV_CHARACTER_LIST,    //36
-    EV_NAME_LIST,         //37
-    EV_DATA_LIST,         //38
-    EV_TRIGGERED_LIST,    //39
-    EV_TRIGGERED_MAP,     //40
-    EV_VALUE_MAP,         //41
-    EV_CHANGED_MAP,       //42
-    EV_PREVIOUS_MAP,      //43
-    EV_DIFFERENT_MAP,     //44
+    __SECTION5,           //33
+    EV_CHARACTER_LIST,    //34
+    EV_NAME_LIST,         //35
+    EV_DATA_LIST,         //36
+    EV_TRIGGERED_LIST,    //37
+    EV_TRIGGERED_MAP,     //38
+    EV_VALUE_MAP,         //39
+    EV_CHANGED_MAP,       //49
+    EV_PREVIOUS_MAP,      //41
+    EV_DIFFERENT_MAP,     //42
     
-    __SIZE                //45
+    __SIZE                //43
 }
 
 #macro __SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX true

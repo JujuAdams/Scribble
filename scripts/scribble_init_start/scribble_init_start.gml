@@ -52,16 +52,16 @@ global.__scribble_default_font      = "";
 global.__scribble_uniform_pma             = shader_get_uniform( shScribble, "u_fPremultiplyAlpha"   );
 global.__scribble_uniform_time            = shader_get_uniform( shScribble, "u_fTime"               );
 global.__scribble_uniform_colour          = shader_get_uniform( shScribble, "u_vColour"             );
-global.__scribble_uniform_options         = shader_get_uniform( shScribble, "u_vOptions"            );
 global.__scribble_uniform_char_t          = shader_get_uniform( shScribble, "u_fCharFadeT"          );
 global.__scribble_uniform_char_smoothness = shader_get_uniform( shScribble, "u_fCharFadeSmoothness" );
 global.__scribble_uniform_line_t          = shader_get_uniform( shScribble, "u_fLineFadeT"          );
 global.__scribble_uniform_line_smoothness = shader_get_uniform( shScribble, "u_fLineFadeSmoothness" );
+global.__scribble_uniform_flag_data       = shader_get_uniform( shScribble, "u_aFlagData"           );
 
 //Create a vertex format for our text
 vertex_format_begin();
 vertex_format_add_position();
-vertex_format_add_normal(); //X = character index, Y = line index, Z = option flags (wave=1, shake=2, rainbow=4)
+vertex_format_add_normal(); //X = character index, Y = line index, Z = flags
 vertex_format_add_colour();
 vertex_format_add_texcoord();
 global.__scribble_vertex_format = vertex_format_end();

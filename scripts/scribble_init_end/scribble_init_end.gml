@@ -543,7 +543,7 @@ for( var _font = 0; _font < _font_count; _font++ )
                 ds_map_destroy( _glyph_map );
                 var _fraction = _holes / _glyph_count;
                 
-                show_debug_message( ((_holes == 1)? "Scribble: There is 1 hole, " : ("Scribble: There are " + string( _holes ) + " holes, ")) + string( _fraction*100 ) + "%" );
+                show_debug_message( "Scribble: There are " + string( _holes ) + " holes, " + string( _fraction*100 ) + "%" );
                 
                 if ( _fraction > SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES )
                 {

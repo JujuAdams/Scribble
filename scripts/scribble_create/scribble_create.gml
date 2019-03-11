@@ -170,10 +170,12 @@ _json[| __E_SCRIBBLE.TW_SMOOTHNESS      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNE
 _json[| __E_SCRIBBLE.CHAR_FADE_T        ] = 1;
 _json[| __E_SCRIBBLE.LINE_FADE_T        ] = 1;
 
+var _flag_data = array_create( SCRIBBLE_MAX_FLAGS );
+_flag_data[0] = SCRIBBLE_DEFAULT_WAVE_SIZE;
+_flag_data[1] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
+_flag_data[2] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
 _json[| __E_SCRIBBLE.__SECTION3         ] = "-- Animation --";
-_json[| __E_SCRIBBLE.WAVE_SIZE          ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
-_json[| __E_SCRIBBLE.SHAKE_SIZE         ] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
-_json[| __E_SCRIBBLE.RAINBOW_WEIGHT     ] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
+_json[| __E_SCRIBBLE.FLAG_DATA          ] = _flag_data;
 _json[| __E_SCRIBBLE.ANIMATION_TIME     ] = 0;
 
 _json[| __E_SCRIBBLE.__SECTION4         ] = "-- Lists --";
