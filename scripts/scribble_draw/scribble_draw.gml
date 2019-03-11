@@ -168,7 +168,7 @@ else
                                                                      colour_get_green( _colour )/255,
                                                                      colour_get_blue(  _colour )/255,
                                                                      _alpha );
-                                                                     
+    
     shader_set_uniform_f_array( global.__scribble_uniform_flag_data, _json[| __E_SCRIBBLE.FLAG_DATA ] );
     
     for( var _i = 0; _i < _vbuff_count; _i++ )

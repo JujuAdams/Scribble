@@ -281,10 +281,10 @@ for( var _s = 0; _s < _surface_count; _s++ )
         
         var _vbuff = vertex_create_buffer();
         vertex_begin( _vbuff, global.__scribble_vertex_format );
-        vertex_position( _vbuff, _x           , _y            ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] ); vertex_color( _vbuff, c_white, 1 ); vertex_normal( _vbuff, 0,0,0 );
-        vertex_position( _vbuff, _x+_texture_w, _y            ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] ); vertex_color( _vbuff, c_white, 1 ); vertex_normal( _vbuff, 0,0,0 );
-        vertex_position( _vbuff, _x           , _y+_texture_h ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] ); vertex_color( _vbuff, c_white, 1 ); vertex_normal( _vbuff, 0,0,0 );
-        vertex_position( _vbuff, _x+_texture_w, _y+_texture_h ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] ); vertex_color( _vbuff, c_white, 1 ); vertex_normal( _vbuff, 0,0,0 );
+        vertex_position( _vbuff, _x           , _y            ); vertex_normal( _vbuff, 0,0,0 ); vertex_color( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
+        vertex_position( _vbuff, _x+_texture_w, _y            ); vertex_normal( _vbuff, 0,0,0 ); vertex_color( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] );
+        vertex_position( _vbuff, _x           , _y+_texture_h ); vertex_normal( _vbuff, 0,0,0 ); vertex_color( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] );
+        vertex_position( _vbuff, _x+_texture_w, _y+_texture_h ); vertex_normal( _vbuff, 0,0,0 ); vertex_color( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
         vertex_end( _vbuff );
         vertex_submit( _vbuff, pr_trianglestrip, _texture );
         vertex_delete_buffer( _vbuff );
