@@ -57,7 +57,7 @@ enum __E_SCRIBBLE_FONT
 {
     NAME,           // 0
     TYPE,           // 1
-    GLYPHS_DS,      // 2
+    GLYPHS_MAP,     // 2
     GLYPHS_ARRAY,   // 3
     GLYPH_MIN,      // 4
     GLYPH_MAX,      // 5

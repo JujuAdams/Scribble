@@ -29,6 +29,7 @@ if (SCRIBBLE_FIX_NEWLINES)
     _str = string_replace_all( _str,  "\\n", "\n" );
     _str = string_replace_all( _str,  "\\r", "\n" );
 }
+
 if (SCRIBBLE_HASH_NEWLINE) _str = string_replace_all( _str, "#", "\n" );
 
 //Check if the default font even exists
@@ -42,16 +43,21 @@ var _font_data = global.__scribble_font_data[? _def_font ];
 var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
 if ( _font_glyphs_array == undefined )
 {
-    var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS ];
-    var _space_array     = _font_glyphs_map[? " " ];
+    var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP ];
+    var _array           = _font_glyphs_map[? " " ];
 }
 else
 {
-    var _space_array = _array[ 32 - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
+    var _array = _array[ 32 - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
+    if ( _array == undefined )
+    {
+        show_error( "The space character is missing from font definition for \"" + _def_font + "\"\n ", true );
+        exit;
+    }
 }
 
 //Find the default font's space width
-var _def_space_width = _space_array[ __E_SCRIBBLE_GLYPH.W ];
+var _def_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
 
 //Find the default line minimum height if not specified
 if ( _line_min_height < 0 ) _line_min_height = _space_array[ __E_SCRIBBLE_GLYPH.H ];
@@ -402,10 +408,19 @@ for( var _i = 0; _i < _separator_count; _i++ )
                         
                         _text_font = _parameters_list[| 0];
                         
-                        var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS ];
-                        _space_array = _font_glyphs_map[? " " ];
-                        _font_space_width = _space_array[ __E_SCRIBBLE_GLYPH.W ];
-                        _font_line_height = _space_array[ __E_SCRIBBLE_GLYPH.H ];
+                        var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
+                        if ( _font_glyphs_array == undefined )
+                        {
+                            var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP ];
+                            var _array           = _font_glyphs_map[? " " ];
+                        }
+                        else
+                        {
+                            var _array = _font_glyphs_array[ 32 - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
+                        }
+                        
+                        _font_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
+                        _font_line_height = _array[ __E_SCRIBBLE_GLYPH.H ];
                         
                         _skip = true;
                         
@@ -490,37 +505,80 @@ for( var _i = 0; _i < _separator_count; _i++ )
     }
     else
     {
-        //Find the substring width
-        var _font_data = global.__scribble_font_data[? _text_font ];
-        var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS ];
-
+        #region Find the substring's width and height
+        
+        var _font_data    = global.__scribble_font_data[? _text_font ];
         var _x            = 0;
         var _substr_width = 0;
-
-        var _length = string_length( _substr );
-        for( var _j = 1; _j <= _length-1; _j++ ) {
-    
-            var _char = string_copy( _substr, _j, 1 );
-            if ( ord( _char ) == 10 ) _x = 0;
-    
+        
+        var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
+        if ( _font_glyphs_array == undefined )
+        {
+            //If we don't have a glyphs array, use the ds_map fallback
+            var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP ];
+            
+            //Add up the "shift" values for each character...
+            var _length = string_length( _substr );
+            for( var _j = 1; _j <= _length-1; _j++ )
+            {
+                var _char = string_copy( _substr, _j, 1 );
+                if ( ord(_char) == 10 ) _x = 0; //If we've hit a newline, reset back to 0
+                
+                var _array = _font_glyphs_map[? _char ];
+                if ( _array == undefined ) continue;
+                
+                _x += _array[ __E_SCRIBBLE_GLYPH.SHF ];
+                _substr_width = max( _substr_width, _x );
+            }
+            
+            //...but not the last one. We want to use the last character's width instead
+            var _char = string_copy( _substr, _length, 1 );
             var _array = _font_glyphs_map[? _char ];
-            if ( _array == undefined ) continue;
-    
-            _x += _array[ __E_SCRIBBLE_GLYPH.SHF ];
-            _substr_width = max( _substr_width, _x );
-    
+            if ( _array != undefined )
+            {
+                _x += _array[ __E_SCRIBBLE_GLYPH.DX ] + _array[ __E_SCRIBBLE_GLYPH.W ];
+                _substr_width = max( _substr_width, _x );
+            }
+            
+            //Choose the height of a space for the substring's height
+            var _array = _font_glyphs_map[? " " ];
+            _substr_height = _array[ __E_SCRIBBLE_GLYPH.H ];
         }
-
-        var _char = string_copy( _substr, _length, 1 );
-        var _array = _font_glyphs_map[? _char ];
-        if ( _array != undefined ) {
-            _x += _array[ __E_SCRIBBLE_GLYPH.DX ] + _array[ __E_SCRIBBLE_GLYPH.W ];
-            _substr_width = max( _substr_width, _x );
+        else
+        {
+            var _glyph_min = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ];
+            var _glyph_max = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MAX ];
+            
+            //Add up the "shift" values for each character...
+            var _length = string_length( _substr );
+            for( var _j = 1; _j <= _length-1; _j++ )
+            {
+                var _ord = ord( string_copy( _substr, _j, 1 ) );
+                if ( _ord == 10 ) _x = 0; //If we've hit a newline, reset back to 0
+                if ( _ord < _glyph_min ) || ( _ord > _glyph_max ) continue; //If we're out of range, ignore this glyph
+                
+                var _array = _font_glyphs_array[ _ord - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
+                if ( _array == undefined ) continue; //If this character is missing, ignore this glyph
+                
+                _x += _array[ __E_SCRIBBLE_GLYPH.SHF ];
+                _substr_width = max( _substr_width, _x );
+            }
+            
+            //...but not the last one. We want to use the last character's xOffset+width instead
+            var _ord = ord( string_copy( _substr, _j, 1 ) );
+            if ( _ord >= _glyph_min ) && ( _ord <= _glyph_max )
+            {
+                var _array = _font_glyphs_array[ _ord - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
+                _x += _array[ __E_SCRIBBLE_GLYPH.DX ] + _array[ __E_SCRIBBLE_GLYPH.W ];
+                _substr_width = max( _substr_width, _x );
+            }
+            
+            //Choose the height of a space for the substring's height
+            var _array = _font_glyphs_array[ 32 - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
+            _substr_height = _array[ __E_SCRIBBLE_GLYPH.H ];
         }
         
-        //Choose the height of a space for the substring's height
-        var _space_array = _font_glyphs_map[? " " ];
-        _substr_height = _space_array[ __E_SCRIBBLE_GLYPH.H ];
+        #endregion
     }
     
     #region Position and store word
@@ -790,16 +848,19 @@ repeat( _lines_size )
         else
         {
             #region Check the font and texture to see if we need a new vertex buffer
-            var _font = _word_array[ __E_SCRIBBLE_WORD.FONT ];
             
+            var _font = _word_array[ __E_SCRIBBLE_WORD.FONT ];
             if ( _font != _previous_font )
             {
                 _previous_font = _font;
                 
-                var _font_data       = global.__scribble_font_data[? _font ];
-                var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS ];
-                var _font_sprite     = _font_data[ __E_SCRIBBLE_FONT.SPRITE    ];
-                var _font_texture    = sprite_get_texture( _font_sprite, 0 );     
+                var _font_data         = global.__scribble_font_data[? _font ];
+                var _font_glyphs_map   = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP   ];
+                var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
+                var _font_glyphs_min   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN    ];
+                var _font_glyphs_max   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MAX    ];
+                var _font_sprite       = _font_data[ __E_SCRIBBLE_FONT.SPRITE       ];
+                var _font_texture      = sprite_get_texture( _font_sprite, 0 );     
                 
                 if ( _font_texture != _previous_texture )
                 {
@@ -826,9 +887,11 @@ repeat( _lines_size )
                     }
                 }
             }
+            
             #endregion
             
             #region Add vertex data for each character in the string
+            
             var _colour  = _word_array[ __E_SCRIBBLE_WORD.COLOUR  ];
             var _rainbow = _word_array[ __E_SCRIBBLE_WORD.RAINBOW ];
             var _shake   = _word_array[ __E_SCRIBBLE_WORD.SHAKE   ];
@@ -840,39 +903,82 @@ repeat( _lines_size )
             var _char_l = _word_l;
             var _char_t = _word_t;
             var _char_index = 1;
-            repeat( _string_size )
+            
+            if ( _font_glyphs_array == undefined )
             {
-                var _array = _font_glyphs_map[? string_char_at( _str, _char_index ) ];
-                if ( _array == undefined ) continue;
-                
-                var _glyph_w   = _array[ __E_SCRIBBLE_GLYPH.W   ];
-                var _glyph_h   = _array[ __E_SCRIBBLE_GLYPH.H   ];
-                var _glyph_u0  = _array[ __E_SCRIBBLE_GLYPH.U0  ];
-                var _glyph_v0  = _array[ __E_SCRIBBLE_GLYPH.V0  ];
-                var _glyph_u1  = _array[ __E_SCRIBBLE_GLYPH.U1  ];
-                var _glyph_v1  = _array[ __E_SCRIBBLE_GLYPH.V1  ];
-                var _glyph_dx  = _array[ __E_SCRIBBLE_GLYPH.DX  ];
-                var _glyph_dy  = _array[ __E_SCRIBBLE_GLYPH.DY  ];
-                var _glyph_shf = _array[ __E_SCRIBBLE_GLYPH.SHF ];
-                
-                var _glyph_l = _char_l + _glyph_dx;
-                var _glyph_t = _char_t + _glyph_dy;
-                var _glyph_r = _glyph_l + _glyph_w;
-                var _glyph_b = _glyph_t + _glyph_h;
-                
-                var _char_pc = _text_char / _max_char;
-                
-                vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
-                
-                _char_l += _glyph_shf;
-                ++_text_char;
-                ++_char_index;
+                repeat( _string_size )
+                {
+                    var _array = _font_glyphs_map[? string_char_at( _str, _char_index ) ];
+                    if ( _array == undefined ) continue;
+                    
+                    var _glyph_w   = _array[ __E_SCRIBBLE_GLYPH.W   ];
+                    var _glyph_h   = _array[ __E_SCRIBBLE_GLYPH.H   ];
+                    var _glyph_u0  = _array[ __E_SCRIBBLE_GLYPH.U0  ];
+                    var _glyph_v0  = _array[ __E_SCRIBBLE_GLYPH.V0  ];
+                    var _glyph_u1  = _array[ __E_SCRIBBLE_GLYPH.U1  ];
+                    var _glyph_v1  = _array[ __E_SCRIBBLE_GLYPH.V1  ];
+                    var _glyph_dx  = _array[ __E_SCRIBBLE_GLYPH.DX  ];
+                    var _glyph_dy  = _array[ __E_SCRIBBLE_GLYPH.DY  ];
+                    var _glyph_shf = _array[ __E_SCRIBBLE_GLYPH.SHF ];
+                    
+                    var _glyph_l = _char_l + _glyph_dx;
+                    var _glyph_t = _char_t + _glyph_dy;
+                    var _glyph_r = _glyph_l + _glyph_w;
+                    var _glyph_b = _glyph_t + _glyph_h;
+                    
+                    var _char_pc = _text_char / _max_char;
+                    
+                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    
+                    _char_l += _glyph_shf;
+                    ++_text_char;
+                    ++_char_index;
+                }
             }
+            else
+            {
+                repeat( _string_size )
+                {
+                    var _ord = ord( string_char_at( _str, _char_index ) );
+                    if (_ord < _font_glyphs_min ) || (_ord > _font_glyphs_max) continue;
+                    var _array = _font_glyphs_array[ _ord - _font_glyphs_min ];
+                    if ( _array == undefined ) continue;
+                    
+                    var _glyph_w   = _array[ __E_SCRIBBLE_GLYPH.W   ];
+                    var _glyph_h   = _array[ __E_SCRIBBLE_GLYPH.H   ];
+                    var _glyph_u0  = _array[ __E_SCRIBBLE_GLYPH.U0  ];
+                    var _glyph_v0  = _array[ __E_SCRIBBLE_GLYPH.V0  ];
+                    var _glyph_u1  = _array[ __E_SCRIBBLE_GLYPH.U1  ];
+                    var _glyph_v1  = _array[ __E_SCRIBBLE_GLYPH.V1  ];
+                    var _glyph_dx  = _array[ __E_SCRIBBLE_GLYPH.DX  ];
+                    var _glyph_dy  = _array[ __E_SCRIBBLE_GLYPH.DY  ];
+                    var _glyph_shf = _array[ __E_SCRIBBLE_GLYPH.SHF ];
+                    
+                    var _glyph_l = _char_l + _glyph_dx;
+                    var _glyph_t = _char_t + _glyph_dy;
+                    var _glyph_r = _glyph_l + _glyph_w;
+                    var _glyph_b = _glyph_t + _glyph_h;
+                    
+                    var _char_pc = _text_char / _max_char;
+                    
+                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 ); vertex_colour( _vbuff, _colour, 1 ); vertex_float4( _vbuff, _char_pc, _line_pc, 0, 0 ); vertex_float3( _vbuff, _wave, _shake, _rainbow );
+                    
+                    _char_l += _glyph_shf;
+                    ++_text_char;
+                    ++_char_index;
+                }
+            }
+            
             #endregion
         }
         
