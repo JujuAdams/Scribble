@@ -1,4 +1,4 @@
-<h1 align="center">scribble (light) 3.0.0</h1>
+<h1 align="center">scribble (light) 3.1.0</h1>
 
 ### @jujuadams
 
