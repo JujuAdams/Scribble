@@ -35,6 +35,7 @@
 #macro SCRIBBLE_GLYPH_Y_OFFSET   __E_SCRIBBLE_GLYPH.DY
 #macro SCRIBBLE_GLYPH_SEPARATION __E_SCRIBBLE_GLYPH.SHF
 
+//scribble_get_box() constants
 enum E_SCRIBBLE_BOX
 {
     X0, Y0, //Top left corner
@@ -52,15 +53,19 @@ enum __E_SCRIBBLE_FONT
 {
     NAME,           // 0
     TYPE,           // 1
-    TEXTURE_WIDTH,  // 2
-    TEXTURE_HEIGHT, // 3
-    SPACE_WIDTH,    // 4
-    MAPSTRING,      // 5
-    SEPARATION,     // 6
-    SPRITE,         // 7
-    SPRITE_X,       // 8
-    SPRITE_Y,       // 9
-    __SIZE          //10
+    GLYPHS_DS,      // 2
+    GLYPH_MIN,      // 3
+    GLYPH_MAX,      // 4
+    GLYPH_USE_LIST, // 5
+    TEXTURE_WIDTH,  // 6
+    TEXTURE_HEIGHT, // 7
+    SPACE_WIDTH,    // 8
+    MAPSTRING,      // 9
+    SEPARATION,     //10
+    SPRITE,         //11
+    SPRITE_X,       //12
+    SPRITE_Y,       //13
+    __SIZE          //14
 }
 
 enum __E_SCRIBBLE_GLYPH

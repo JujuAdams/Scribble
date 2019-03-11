@@ -31,24 +31,22 @@ if (SCRIBBLE_FIX_NEWLINES)
 }
 if (SCRIBBLE_HASH_NEWLINE) _str = string_replace_all( _str, "#", "\n" );
 
-//Find the default line minimum height if not specified
-if ( _line_min_height < 0 )
-{
-    var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
-    var _array = _font_glyphs_map[? " " ];
-    _line_min_height = _array[ __E_SCRIBBLE_GLYPH.H ];
-}
-
+//Check if the default font even exists
 if ( !ds_map_exists( global.__scribble_font_data, _def_font ) )
 {
     show_error( "\"" + string( _def_font ) + "\" not recognised as a font\n ", false );
     var _def_font = global.__scribble_default_font;
 }
 
+var _font_data       = global.__scribble_font_data[? _def_font ];
+var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS ];
+var _space_array     = _font_glyphs_map[? " " ];
+
 //Find the default font's space width
-var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
-var _array = _font_glyphs_map[? " " ];
-var _def_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
+var _def_space_width = _space_array[ __E_SCRIBBLE_GLYPH.W ];
+
+//Find the default line minimum height if not specified
+if ( _line_min_height < 0 ) _line_min_height = _space_array[ __E_SCRIBBLE_GLYPH.H ];
 
 //Try to use a custom colour if the "startingColour" parameter is a string
 if ( is_string( _def_colour ) )
@@ -389,20 +387,20 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 #endregion
                 
                 default:
-                    if ( ds_map_exists( global.__scribble_glyphs_map, _parameters_list[| 0] ) )
+                    var _font_data = global.__scribble_font_data[? _parameters_list[| 0] ];
+                    if ( _font_data != undefined )
                     {
                         #region Change font
+                        
                         _text_font = _parameters_list[| 0];
                         
-                        var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
-                        var _array = _font_glyphs_map[? " " ];
-                        _font_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
-                        
-                        var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
-                        var _array = _font_glyphs_map[? " " ];
-                        _font_line_height = _array[ __E_SCRIBBLE_GLYPH.H ];
+                        var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS ];
+                        _space_array = _font_glyphs_map[? " " ];
+                        _font_space_width = _space_array[ __E_SCRIBBLE_GLYPH.W ];
+                        _font_line_height = _space_array[ __E_SCRIBBLE_GLYPH.H ];
                         
                         _skip = true;
+                        
                         #endregion
                     }
                     else
@@ -485,7 +483,8 @@ for( var _i = 0; _i < _separator_count; _i++ )
     else
     {
         //Find the substring width
-        var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
+        var _font_data = global.__scribble_font_data[? _text_font ];
+        var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS ];
 
         var _x            = 0;
         var _substr_width = 0;
@@ -512,9 +511,8 @@ for( var _i = 0; _i < _separator_count; _i++ )
         }
         
         //Choose the height of a space for the substring's height
-        var _font_glyphs_map = global.__scribble_glyphs_map[? _text_font ];
-        var _array = _font_glyphs_map[? " " ];
-        _substr_height = _array[ __E_SCRIBBLE_GLYPH.H ];
+        var _space_array = _font_glyphs_map[? " " ];
+        _substr_height = _space_array[ __E_SCRIBBLE_GLYPH.H ];
     }
     
     #region Position and store word
@@ -790,9 +788,9 @@ repeat( _lines_size )
             {
                 _previous_font = _font;
                 
-                var _font_glyphs_map = global.__scribble_glyphs_map[? _font ];
-                var _font_data       = global.__scribble_font_data[?  _font ];
-                var _font_sprite     = _font_data[ __E_SCRIBBLE_FONT.SPRITE ];
+                var _font_data       = global.__scribble_font_data[? _font ];
+                var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS ];
+                var _font_sprite     = _font_data[ __E_SCRIBBLE_FONT.SPRITE    ];
                 var _font_texture    = sprite_get_texture( _font_sprite, 0 );     
                 
                 if ( _font_texture != _previous_texture )

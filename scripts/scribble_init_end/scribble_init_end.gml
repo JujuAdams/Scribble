@@ -330,9 +330,10 @@ for( var _font = 0; _font < _font_count; _font++ )
             show_debug_message( "WARNING! \"" + _name + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed" );
         }
         
-        var _sprite_string  = _font_data[ __E_SCRIBBLE_FONT.MAPSTRING   ];
-        var _shift_constant = _font_data[ __E_SCRIBBLE_FONT.SEPARATION  ];
-        var _space_width    = _font_data[ __E_SCRIBBLE_FONT.SPACE_WIDTH ];
+        var _sprite_string   = _font_data[ __E_SCRIBBLE_FONT.MAPSTRING   ];
+        var _shift_constant  = _font_data[ __E_SCRIBBLE_FONT.SEPARATION  ];
+        var _space_width     = _font_data[ __E_SCRIBBLE_FONT.SPACE_WIDTH ];
+        var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS   ];
         if ( SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING && _in_gms221 ) _shift_constant -= 2;
         
         if ( SCRIBBLE_COMPATIBILITY_DRAW ) global.__scribble_spritefont_map[? _name ] = font_add_sprite_ext( _sprite, _sprite_string, true, _shift_constant );
@@ -341,9 +342,6 @@ for( var _font = 0; _font < _font_count; _font++ )
         mask_index   = _sprite;
         x = -sprite_get_xoffset( _sprite );
         y = -sprite_get_yoffset( _sprite );
-        
-        var _font_glyphs_map = ds_map_create();
-        ds_map_add_map( global.__scribble_glyphs_map, _name, _font_glyphs_map  );
         
         //Strip out a map of of glyphs
         var _length = string_length( _sprite_string );
@@ -476,9 +474,10 @@ for( var _font = 0; _font < _font_count; _font++ )
         
         show_debug_message( "Scribble: Processing characters for font \"" + _name + "\"" );
         
-        var _surface_sprite = _font_data[ __E_SCRIBBLE_FONT.SPRITE   ];
-        var _image_x_offset = _font_data[ __E_SCRIBBLE_FONT.SPRITE_X ];
-        var _image_y_offset = _font_data[ __E_SCRIBBLE_FONT.SPRITE_Y ];
+        var _surface_sprite  = _font_data[ __E_SCRIBBLE_FONT.SPRITE     ];
+        var _image_x_offset  = _font_data[ __E_SCRIBBLE_FONT.SPRITE_X   ];
+        var _image_y_offset  = _font_data[ __E_SCRIBBLE_FONT.SPRITE_Y   ];
+        var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_DS  ];
         
         var _texture = sprite_get_texture( _surface_sprite, 0 );
         var _texture_tw = texture_get_texel_width(  _texture );
@@ -492,9 +491,6 @@ for( var _font = 0; _font < _font_count; _font++ )
         var _json = json_decode( _json_string );
         
         
-        
-        var _font_glyphs_map = ds_map_create();
-        ds_map_add_map( global.__scribble_glyphs_map, _name, _font_glyphs_map  );
         
         var _glyph_list = _json[? "glyphs" ];
         var _size = ds_list_size( _glyph_list );
