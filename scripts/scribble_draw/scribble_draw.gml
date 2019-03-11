@@ -20,11 +20,11 @@ var _old_matrix = matrix_get( matrix_world );
 
 if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {
-    var _matrix = matrix_build( _json[? "left" ] + _x, _json[? "top" ] + _y, 0,   0,0,0,   1,1,1 );
+    var _matrix = matrix_build( _json[| __E_SCRIBBLE.LEFT ] + _x, _json[| __E_SCRIBBLE.TOP ] + _y, 0,   0,0,0,   1,1,1 );
 }
 else
 {
-    var _matrix = matrix_build( _json[? "left" ], _json[? "top" ], 0,   0,0,0,   1,1,1 );
+    var _matrix = matrix_build( _json[| __E_SCRIBBLE.LEFT ], _json[| __E_SCRIBBLE.TOP ], 0,   0,0,0,   1,1,1 );
         _matrix = matrix_multiply( _matrix, matrix_build( _x,_y,0,   0,0,_angle,   _xscale,_yscale,1 ) );
 }
 
@@ -42,9 +42,9 @@ if ( SCRIBBLE_COMPATIBILITY_MODE )
     var _old_colour = draw_get_colour();
     
     var _char_count = 0;
-    var _total_chars = _json[? "char fade t" ] * _json[? "length" ];
+    var _total_chars = _json[| __E_SCRIBBLE.CHAR_FADE_T ] * _json[| __E_SCRIBBLE.LENGTH ];
 
-    var _text_root_list = _json[? "lines list" ];
+    var _text_root_list = _json[| __E_SCRIBBLE.LINE_LIST ];
     var _lines_count = ds_list_size( _text_root_list );
     for( var _line = 0; _line < _lines_count; _line++ )
     {
@@ -119,18 +119,18 @@ else
 {
     #region Normal mode
     
-    var _real_x      = _x + _json[? "left" ];
-    var _real_y      = _y + _json[? "top" ];
-    var _vbuff_list  = _json[? "vertex buffer list" ];
+    var _real_x      = _x + _json[| __E_SCRIBBLE.LEFT ];
+    var _real_y      = _y + _json[| __E_SCRIBBLE.TOP ];
+    var _vbuff_list  = _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST ];
     var _vbuff_count = ds_list_size( _vbuff_list );
     
     shader_set( shScribble );
-    shader_set_uniform_f( global.__scribble_uniform_time           , _json[? "animation time" ]*SCRIBBLE_ANIMATION_SPEED                       );
-    shader_set_uniform_f( global.__scribble_uniform_options        , _json[? "wave size" ], _json[? "shake size" ], _json[? "rainbow weight" ] );
-    shader_set_uniform_f( global.__scribble_uniform_char_t         , _json[? "char fade t" ] / (1-_json[? "char fade smoothness" ])            );
-    shader_set_uniform_f( global.__scribble_uniform_char_smoothness, _json[? "char fade smoothness" ]                                          );
-    shader_set_uniform_f( global.__scribble_uniform_line_t         , _json[? "line fade t" ] / (1-_json[? "line fade smoothness" ])            );
-    shader_set_uniform_f( global.__scribble_uniform_line_smoothness, _json[? "line fade smoothness" ]                                          );
+    shader_set_uniform_f( global.__scribble_uniform_time           , _json[| __E_SCRIBBLE.ANIMATION_TIME ]*SCRIBBLE_ANIMATION_SPEED                       );
+    shader_set_uniform_f( global.__scribble_uniform_options        , _json[| __E_SCRIBBLE.WAVE_SIZE ], _json[| __E_SCRIBBLE.SHAKE_SIZE ], _json[| __E_SCRIBBLE.RAINBOW_WEIGHT ] );
+    shader_set_uniform_f( global.__scribble_uniform_char_t         , _json[| __E_SCRIBBLE.CHAR_FADE_T ] / (1-_json[| __E_SCRIBBLE.CHAR_FADE_SMOOTHNESS ])            );
+    shader_set_uniform_f( global.__scribble_uniform_char_smoothness, _json[| __E_SCRIBBLE.CHAR_FADE_SMOOTHNESS ]                                          );
+    shader_set_uniform_f( global.__scribble_uniform_line_t         , _json[| __E_SCRIBBLE.LINE_FADE_T ] / (1-_json[| __E_SCRIBBLE.LINE_FADE_SMOOTHNESS ])            );
+    shader_set_uniform_f( global.__scribble_uniform_line_smoothness, _json[| __E_SCRIBBLE.LINE_FADE_SMOOTHNESS ]                                          );
     shader_set_uniform_f( global.__scribble_uniform_colour         , colour_get_red(   _colour )/255,
                                                                      colour_get_green( _colour )/255,
                                                                      colour_get_blue(  _colour )/255,

@@ -8,23 +8,23 @@ var _speed      = (argument_count > 1)? argument[1] : undefined;
 var _method     = (argument_count > 2)? argument[2] : undefined;
 var _smoothness = (argument_count > 3)? argument[3] : SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
 
-_json[? "typewriter direction" ] = 1;
-_json[? "typewriter position"  ] = 0;
+_json[| __E_SCRIBBLE.TW_DIRECTION ] = 1;
+_json[| __E_SCRIBBLE.TW_POSITION  ] = 0;
 
-if ( _speed      != undefined ) _json[? "typewriter speed"      ] = _speed;
-if ( _method     != undefined ) _json[? "typewriter method"     ] = _method;
-if ( _smoothness != undefined ) _json[? "typewriter smoothness" ] = _smoothness;
+if ( _speed      != undefined ) _json[| __E_SCRIBBLE.TW_SPEED      ] = _speed;
+if ( _method     != undefined ) _json[| __E_SCRIBBLE.TW_METHOD     ] = _method;
+if ( _smoothness != undefined ) _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] = _smoothness;
 
-switch( _json[? "typewriter method" ] )
+switch( _json[| __E_SCRIBBLE.TW_METHOD ] )
 {
     case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-        _json[? "char fade t"          ] = 0;
-        _json[? "char fade smoothness" ] = _json[? "typewriter smoothness" ] / _json[? "length" ];
+        _json[| __E_SCRIBBLE.CHAR_FADE_T          ] = 0;
+        _json[| __E_SCRIBBLE.CHAR_FADE_SMOOTHNESS ] = _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] / _json[| __E_SCRIBBLE.LENGTH ];
     break;
     
     case SCRIBBLE_TYPEWRITER_PER_LINE:
-        _json[? "line fade t"          ] = 0;
-        _json[? "line fade smoothness" ] = _json[? "typewriter smoothness" ] / _json[? "lines" ];
+        _json[| __E_SCRIBBLE.LINE_FADE_T          ] = 0;
+        _json[| __E_SCRIBBLE.LINE_FADE_SMOOTHNESS ] = _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] / _json[| __E_SCRIBBLE.LINES ];
     break;
     
     default:

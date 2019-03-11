@@ -99,148 +99,77 @@ repeat( _buffer_size )
 
 #region Create the JSON
 
-//var _json                  = ds_list_create();
-//var _text_root_list        = ds_list_create();
-//var _vbuff_list            = ds_list_create();
-//var _events_character_list = ds_list_create();
-//var _events_name_list      = ds_list_create();
-//var _events_data_list      = ds_list_create();
-//
-//_json[| __E_SCRIBBLE.__SIZE               ] = __SCRIBBLE_VERSION;
-//
-//_json[| __E_SCRIBBLE.__SECTION0           ] = "-- Parameters --";
-//_json[| __E_SCRIBBLE.STRING               ] = _str;
-//_json[| __E_SCRIBBLE.DEFAULT_FONT         ] = _def_font;
-//_json[| __E_SCRIBBLE.DEFAULT_COLOUR       ] = _def_colour;
-//_json[| __E_SCRIBBLE.DEFAULT_HALIGN       ] = _def_halign;
-//_json[| __E_SCRIBBLE.WIDTH_LIMIT          ] = _width_limit;
-//_json[| __E_SCRIBBLE.LINE_HEIGHT          ] = _line_min_height;
-//
-//_json[| __E_SCRIBBLE.__SECTION1           ] = "-- Statistics --";
-//_json[| __E_SCRIBBLE.HALIGN               ] = fa_left;
-//_json[| __E_SCRIBBLE.VALIGN               ] = fa_top;
-//_json[| __E_SCRIBBLE.WIDTH                ] = 0;
-//_json[| __E_SCRIBBLE.HEIGHT               ] = 0;
-//_json[| __E_SCRIBBLE.LEFT                 ] = 0;
-//_json[| __E_SCRIBBLE.TOP                  ] = 0;
-//_json[| __E_SCRIBBLE.RIGHT                ] = 0;
-//_json[| __E_SCRIBBLE.BOTTOM               ] = 0;
-//_json[| __E_SCRIBBLE.LENGTH               ] = 0;
-//_json[| __E_SCRIBBLE.LINES                ] = 0;
-//_json[| __E_SCRIBBLE.WORDS                ] = 0;
-//
-//_json[| __E_SCRIBBLE.__SECTION2           ] = "-- Typewriter --";
-//_json[| __E_SCRIBBLE.TW_DIRECTION         ] = 0;
-//_json[| __E_SCRIBBLE.TW_SPEED             ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
-//_json[| __E_SCRIBBLE.TW_POSITION          ] = 0;
-//_json[| __E_SCRIBBLE.TW_METHOD            ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-//_json[| __E_SCRIBBLE.TW_SMOOTHNESS        ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
-//_json[| __E_SCRIBBLE.CHAR_FADE_T          ] = 1;
-//_json[| __E_SCRIBBLE.CHAR_FADE_SMOOTHNESS ] = 0;
-//_json[| __E_SCRIBBLE.LINE_FADE_T          ] = 1;
-//_json[| __E_SCRIBBLE.LINE_FADE_SMOOTHNESS ] = 0;
-//
-//_json[| __E_SCRIBBLE.__SECTION3           ] = "-- Animation --";
-//_json[| __E_SCRIBBLE.WAVE_SIZE            ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
-//_json[| __E_SCRIBBLE.SHAKE_SIZE           ] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
-//_json[| __E_SCRIBBLE.RAINBOW_WEIGHT       ] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
-//_json[| __E_SCRIBBLE.ANIMATION_TIME       ] = 0;
-//
-//_json[| __E_SCRIBBLE.__SECTION4           ] = "-- Lists --";
-//_json[| __E_SCRIBBLE.LINE_LIST            ] = _text_root_list;
-//_json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST   ] = _vbuff_list;
-//
-//_json[| __E_SCRIBBLE.__SECTION5           ] = "-- Events --";
-//_json[| __E_SCRIBBLE.EV_CHARACTER_LIST    ] = _events_character_list;
-//_json[| __E_SCRIBBLE.EV_NAME_LIST         ] = _events_name_list;
-//_json[| __E_SCRIBBLE.EV_DATA_LIST         ] = _events_data_list;
-//_json[| __E_SCRIBBLE.EV_TRIGGERED_LIST    ] = ds_list_create();
-//_json[| __E_SCRIBBLE.EV_TRIGGERED_MAP     ] = ds_map_create();
-//_json[| __E_SCRIBBLE.EV_VALUE_MAP         ] = ds_map_create();
-//_json[| __E_SCRIBBLE.EV_CHANGED_MAP       ] = ds_map_create();
-//_json[| __E_SCRIBBLE.EV_PREVIOUS_MAP      ] = ds_map_create();
-//_json[| __E_SCRIBBLE.EV_DIFFERENT_MAP     ] = ds_map_create();
-//
-//ds_list_mark_as_list( _json, __E_SCRIBBLE.LINE_LIST          );
-//ds_list_mark_as_list( _json, __E_SCRIBBLE.VERTEX_BUFFER_LIST );
-//ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_CHARACTER_LIST  );
-//ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_NAME_LIST       );
-//ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_DATA_LIST       );
-//ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_TRIGGERED_LIST  );
-//ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_TRIGGERED_MAP   );
-//ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_VALUE_MAP       );
-//ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_CHANGED_MAP     );
-//ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_PREVIOUS_MAP    );
-//ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_DIFFERENT_MAP   );
+var _json = ds_list_create();
+_json[| __E_SCRIBBLE.__SIZE               ] = __SCRIBBLE_VERSION;
 
-//Create data structures
-var _json = ds_map_create();
+_json[| __E_SCRIBBLE.__SECTION0           ] = "-- Parameters --";
+_json[| __E_SCRIBBLE.STRING               ] = _str;
+_json[| __E_SCRIBBLE.DEFAULT_FONT         ] = _def_font;
+_json[| __E_SCRIBBLE.DEFAULT_COLOUR       ] = _def_colour;
+_json[| __E_SCRIBBLE.DEFAULT_HALIGN       ] = _def_halign;
+_json[| __E_SCRIBBLE.WIDTH_LIMIT          ] = _width_limit;
+_json[| __E_SCRIBBLE.LINE_HEIGHT          ] = _line_min_height;
 
-//Input values
-_json[? "string"         ] = _str;
-_json[? "default font"   ] = _def_font;
-_json[? "default colour" ] = _def_colour;
-_json[? "default halign" ] = _def_halign;
-_json[? "width limit"    ] = _width_limit;
-_json[? "line height"    ] = _line_min_height;
+_json[| __E_SCRIBBLE.__SECTION1           ] = "-- Statistics --";
+_json[| __E_SCRIBBLE.HALIGN               ] = fa_left;
+_json[| __E_SCRIBBLE.VALIGN               ] = fa_top;
+_json[| __E_SCRIBBLE.WIDTH                ] = 0;
+_json[| __E_SCRIBBLE.HEIGHT               ] = 0;
+_json[| __E_SCRIBBLE.LEFT                 ] = 0;
+_json[| __E_SCRIBBLE.TOP                  ] = 0;
+_json[| __E_SCRIBBLE.RIGHT                ] = 0;
+_json[| __E_SCRIBBLE.BOTTOM               ] = 0;
+_json[| __E_SCRIBBLE.LENGTH               ] = 0;
+_json[| __E_SCRIBBLE.LINES                ] = 0;
+_json[| __E_SCRIBBLE.WORDS                ] = 0;
 
-//Main data structure for text storage
+_json[| __E_SCRIBBLE.__SECTION2           ] = "-- Typewriter --";
+_json[| __E_SCRIBBLE.TW_DIRECTION         ] = 0;
+_json[| __E_SCRIBBLE.TW_SPEED             ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+_json[| __E_SCRIBBLE.TW_POSITION          ] = 0;
+_json[| __E_SCRIBBLE.TW_METHOD            ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+_json[| __E_SCRIBBLE.TW_SMOOTHNESS        ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
+_json[| __E_SCRIBBLE.CHAR_FADE_T          ] = 1;
+_json[| __E_SCRIBBLE.CHAR_FADE_SMOOTHNESS ] = 0;
+_json[| __E_SCRIBBLE.LINE_FADE_T          ] = 1;
+_json[| __E_SCRIBBLE.LINE_FADE_SMOOTHNESS ] = 0;
+
+_json[| __E_SCRIBBLE.__SECTION3           ] = "-- Animation --";
+_json[| __E_SCRIBBLE.WAVE_SIZE            ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
+_json[| __E_SCRIBBLE.SHAKE_SIZE           ] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
+_json[| __E_SCRIBBLE.RAINBOW_WEIGHT       ] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
+_json[| __E_SCRIBBLE.ANIMATION_TIME       ] = 0;
+
 var _text_root_list = ds_list_create();
-ds_map_add_list( _json, "lines list", _text_root_list );
+var _vbuff_list     = ds_list_create();
+_json[| __E_SCRIBBLE.__SECTION4         ] = "-- Lists --";
+_json[| __E_SCRIBBLE.LINE_LIST          ] = _text_root_list;
+_json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST ] = _vbuff_list;
+ds_list_mark_as_list( _json, __E_SCRIBBLE.LINE_LIST          );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.VERTEX_BUFFER_LIST );
 
-//Box alignment and dimensions
-_json[? "halign" ] = fa_left;
-_json[? "valign" ] = fa_top;
-_json[? "width"  ] = 0;
-_json[? "height" ] = 0;
-_json[? "left"   ] = 0;
-_json[? "top"    ] = 0;
-_json[? "right"  ] = 0;
-_json[? "bottom" ] = 0;
-
-//Stats
-_json[? "length" ] = 0;
-_json[? "lines"  ] = 0;
-_json[? "words"  ] = 0;
-
-//Typewriter
-_json[? "typewriter direction"  ] = 0;
-_json[? "typewriter speed"      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
-_json[? "typewriter position"   ] = 0;
-_json[? "typewriter method"     ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-_json[? "typewriter smoothness" ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
-
-//Vertex buffer/shader values
-var _vbuff_list = ds_list_create();
-ds_map_add_list( _json, "vertex buffer list", _vbuff_list );
-
-//Animation effects
-_json[? "wave size"            ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
-_json[? "shake size"           ] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
-_json[? "rainbow weight"       ] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
-_json[? "animation time"       ] = 0;
-
-//Character fade
-_json[? "char fade t"          ] = 1;
-_json[? "char fade smoothness" ] = 0;
-
-//Line fade
-_json[? "line fade t"          ] = 1;
-_json[? "line fade smoothness" ] = 0;
-
-//Event triggering
 var _events_character_list = ds_list_create();
 var _events_name_list      = ds_list_create();
 var _events_data_list      = ds_list_create();
-ds_map_add_list( _json, "events character list", _events_character_list );
-ds_map_add_list( _json, "events name list"     , _events_name_list      );
-ds_map_add_list( _json, "events data list"     , _events_data_list      );
-ds_map_add_list( _json, "events triggered list", ds_list_create()       );
-ds_map_add_map(  _json, "events triggered map" , ds_map_create()        );
-ds_map_add_map(  _json, "events value map"     , ds_map_create()        );
-ds_map_add_map(  _json, "events changed map"   , ds_map_create()        );
-ds_map_add_map(  _json, "events previous map"  , ds_map_create()        );
-ds_map_add_map(  _json, "events different map" , ds_map_create()        );
+_json[| __E_SCRIBBLE.__SECTION5        ] = "-- Events --";
+_json[| __E_SCRIBBLE.EV_CHARACTER_LIST ] = _events_character_list;
+_json[| __E_SCRIBBLE.EV_NAME_LIST      ] = _events_name_list;
+_json[| __E_SCRIBBLE.EV_DATA_LIST      ] = _events_data_list;
+_json[| __E_SCRIBBLE.EV_TRIGGERED_LIST ] = ds_list_create();
+_json[| __E_SCRIBBLE.EV_TRIGGERED_MAP  ] = ds_map_create();
+_json[| __E_SCRIBBLE.EV_VALUE_MAP      ] = ds_map_create();
+_json[| __E_SCRIBBLE.EV_CHANGED_MAP    ] = ds_map_create();
+_json[| __E_SCRIBBLE.EV_PREVIOUS_MAP   ] = ds_map_create();
+_json[| __E_SCRIBBLE.EV_DIFFERENT_MAP  ] = ds_map_create();
+ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_CHARACTER_LIST  );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_NAME_LIST       );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_DATA_LIST       );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_TRIGGERED_LIST  );
+ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_TRIGGERED_MAP   );
+ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_VALUE_MAP       );
+ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_CHANGED_MAP     );
+ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_PREVIOUS_MAP    );
+ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_DIFFERENT_MAP   );
 
 #endregion
 
@@ -347,7 +276,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                         var _data = array_create( _parameter_count-2, "" );
                         for( var _j = 2; _j < _parameter_count; _j++ ) _data[ _j-2 ] = _parameters_list[| _j ];
                 
-                        ds_list_add( _events_character_list, _json[? "length" ] );
+                        ds_list_add( _events_character_list, _json[| __E_SCRIBBLE.LENGTH ] );
                         ds_list_add( _events_name_list     , _name              );
                         ds_list_add( _events_data_list     , _data              );
                     }
@@ -625,8 +554,8 @@ for( var _i = 0; _i < _separator_count; _i++ )
     if ( _sep_char == SCRIBBLE_COMMAND_TAG_OPEN ) _in_command_tag = true; // [
     
     _line_length += _substr_length;
-    if ( _substr_length > 0 ) ++_json[? "words" ];
-    _json[? "length" ] += _substr_length;
+    if ( _substr_length > 0 ) ++_json[| __E_SCRIBBLE.WORDS ];
+    _json[| __E_SCRIBBLE.LENGTH ] += _substr_length;
 }
 
 //Finish defining the last line
@@ -634,7 +563,7 @@ _line_array[@ __E_SCRIBBLE_LINE.WIDTH     ] = _text_x;
 _line_array[@ __E_SCRIBBLE_LINE.HEIGHT    ] = _line_max_height;
 _line_array[@ __E_SCRIBBLE_LINE.LENGTH    ] = _line_length;
 _line_array[@ __E_SCRIBBLE_LINE.LAST_CHAR ] = _line_array[@ __E_SCRIBBLE_LINE.FIRST_CHAR ] + _line_length;
-_json[? "lines" ] = ds_list_size( _json[? "lines list" ] );
+_json[| __E_SCRIBBLE.LINES ] = ds_list_size( _json[| __E_SCRIBBLE.LINE_LIST ] );
 #endregion
 
 
@@ -654,8 +583,8 @@ for( var _i = 0; _i < _lines_size; _i++ )
 var _line_array = _text_root_list[| _lines_size - 1 ];
 var _textbox_height = _line_array[ __E_SCRIBBLE_LINE.Y ] + _line_array[ __E_SCRIBBLE_LINE.HEIGHT ];
   
-_json[? "width"  ] = _textbox_width;
-_json[? "height" ] = _textbox_height;
+_json[| __E_SCRIBBLE.WIDTH  ] = _textbox_width;
+_json[| __E_SCRIBBLE.HEIGHT ] = _textbox_height;
 
 //Adjust word positions
 for( var _line = 0; _line < _lines_size; _line++ )
@@ -712,18 +641,18 @@ ds_list_destroy( _parameters_list );
 
 #region Build the vertex buffers
 
-var _json_offset_x = _json[? "left" ];
-var _json_offset_y = _json[? "top"  ];
-var _vbuff_list    = _json[? "vertex buffer list" ];
+var _json_offset_x = _json[| __E_SCRIBBLE.LEFT ];
+var _json_offset_y = _json[| __E_SCRIBBLE.TOP  ];
+var _vbuff_list    = _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST ];
 
 var _texture_to_vbuff_map = ds_map_create();
 
 var _previous_font = "";
 var _previous_texture = -1;
 var _text_char = 0;
-var _max_char = _json[? "length" ]-1;
+var _max_char = _json[| __E_SCRIBBLE.LENGTH ]-1;
 
-var _lines = _json[? "lines list" ];
+var _lines = _json[| __E_SCRIBBLE.LINE_LIST ];
 var _lines_size = ds_list_size( _lines );
 var _line = 0;
 repeat( _lines_size )

@@ -8,14 +8,14 @@
 
 var _json = argument0;
 
-switch( _json[? "typewriter method" ] )
+switch( _json[| __E_SCRIBBLE.TW_METHOD ] )
 {
     case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-        return _json[? "char fade t" ];
+        return _json[| __E_SCRIBBLE.CHAR_FADE_T ];
     break;
     
     case SCRIBBLE_TYPEWRITER_PER_LINE:
-        return _json[? "line fade t" ];
+        return _json[| __E_SCRIBBLE.LINE_FADE_T ];
     break;
 }
 
