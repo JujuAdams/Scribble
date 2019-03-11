@@ -335,7 +335,7 @@ for( var _font = 0; _font < _font_count; _font++ )
         var _space_width    = _font_data[ __E_SCRIBBLE_FONT.SPACE_WIDTH ];
         if ( SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING && _in_gms221 ) _shift_constant -= 2;
         
-        if ( SCRIBBLE_COMPATIBILITY_MODE ) global.__scribble_sprite_font_map[? _name ] = font_add_sprite_ext( _sprite, _sprite_string, true, _shift_constant );
+        if ( SCRIBBLE_COMPATIBILITY_DRAW ) global.__scribble_sprite_font_map[? _name ] = font_add_sprite_ext( _sprite, _sprite_string, true, _shift_constant );
         
         sprite_index = _sprite;
         mask_index   = _sprite;

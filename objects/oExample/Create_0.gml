@@ -12,7 +12,7 @@ var _string  = "[ev,sound,sndCrank][rainbow]abcdef[] [c_test]ABCDEF[]##";
     _string += "[fa_right]the [$FF4499][shake]QUICK [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER []THE LAZY DOG.";
 
 //Build Scribble data structure that describes how the text should be laid out
-text = scribble_create( _string, 450, "fTestB", fa_center, make_colour_hsv( 35, 140, 210 ) );
+text = scribble_create( _string, -1, 450, make_colour_hsv( 35, 140, 210 ), "fTestB", fa_center );
 
 //Set this text to be displayed typewriter style, fading in per character
 scribble_typewriter_in( text, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER );

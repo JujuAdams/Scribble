@@ -1,20 +1,39 @@
-/// @description Creates, and returns, a Scribble JSON, and its vertex buffer, built from a string
-///
+/// @description Creates a Scribble data structure from a text string
+/// 
 /// @param string
-/// @param [maxLineWidth]
-/// @param [font]
-/// @param [lineHalign]
-/// @param [colour]
 /// @param [minLineHeight]
+/// @param [maxLineWidth]
+/// @param [startingColour]
+/// @param [startingFont]
+/// @param [startingHAlign]
 
 var _timer = get_timer();
 
 var _str              = argument[0];
-var _width_limit      = ((argument_count<2) || (argument[1]==undefined))? -1                             : argument[1];
-var _def_font         = ((argument_count<3) || (argument[2]==undefined))? global.__scribble_default_font : argument[2];
-var _def_halign       = ((argument_count<4) || (argument[3]==undefined))? fa_left                        : argument[3];
-var _def_colour       = ((argument_count<5) || (argument[4]==undefined))? c_white                        : argument[4];
-var _line_min_height  = ((argument_count<6) || (argument[5]==undefined))? undefined                      : argument[5];
+var _line_min_height  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
+var _width_limit      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : -1;
+var _def_colour       = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : c_white;
+var _def_font         = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : global.__scribble_default_font;
+var _def_halign       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : fa_left;
+
+//Strip out weird newlines
+if (SCRIBBLE_FIX_NEWLINES)
+{
+    _str = string_replace_all( _str, "\n\r", "\n" );
+    _str = string_replace_all( _str, "\r\n", "\n" );
+    _str = string_replace_all( _str,   "\n", "\n" );
+    _str = string_replace_all( _str,  "\\n", "\n" );
+    _str = string_replace_all( _str,  "\\r", "\n" );
+}
+if (SCRIBBLE_HASH_NEWLINE) _str = string_replace_all( _str, "#", "\n" );
+
+//Find the default line minimum height if not specified
+if ( _line_min_height < 0 )
+{
+    var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
+    var _array = _font_glyphs_map[? " " ];
+    _line_min_height = _array[ __E_SCRIBBLE_GLYPH.H ];
+}
 
 if ( !ds_map_exists( global.__scribble_font_data, _def_font ) )
 {
@@ -26,22 +45,6 @@ if ( !ds_map_exists( global.__scribble_font_data, _def_font ) )
 var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
 var _array = _font_glyphs_map[? " " ];
 var _def_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
-
-//Find the default line minimum height if not specified
-if ( _line_min_height == undefined )
-{
-    var _font_glyphs_map = global.__scribble_glyphs_map[? _def_font ];
-    var _array = _font_glyphs_map[? " " ];
-    _line_min_height = _array[ __E_SCRIBBLE_GLYPH.H ];
-}
-
-//Strip out weird newlines
-if ( SCRIBBLE_HASH_NEWLINE ) _str = string_replace_all( _str, "#", "\n" );
-_str = string_replace_all( _str, "\n\r", "\n" );
-_str = string_replace_all( _str, "\r\n", "\n" );
-_str = string_replace_all( _str,   "\n", "\n" );
-_str = string_replace_all( _str,  "\\n", "\n" );
-_str = string_replace_all( _str,  "\\r", "\n" );
 
 
 

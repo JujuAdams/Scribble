@@ -13,13 +13,14 @@
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS 3
 
+#macro SCRIBBLE_ANIMATION_SPEED                    0.02    //Speed of shader animation effects
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
 #macro SCRIBBLE_HASH_NEWLINE                       true    //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
-#macro SCRIBBLE_COMPATIBILITY_MODE                false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
-#macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //First 127 ASCII chars only
-#macro SCRIBBLE_ANIMATION_SPEED                   0.02     //Speed of shader animation effects
+#macro SCRIBBLE_FIX_NEWLINES                       true    //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
+#macro SCRIBBLE_COMPATIBILITY_DRAW                false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
+#macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //Character used to open a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //Character used to close a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
 //Typewriter constants
 //Used as arguments for scribble_typewriter_in() and scribble_typewrite_out()

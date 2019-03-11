@@ -13,7 +13,7 @@ scribble_init_add_spritefont( "sSpriteFont", 3 ); //GM's spritefont renderer han
 scribble_init_add_font( "fChineseTest" );
 scribble_init_end();
 
-//Define a custom colour for use later in our text
+//Define custom colours for use later in our text
 scribble_add_custom_colour( "c_coquelicot", $ff3800, true );
 scribble_add_custom_colour( "c_smaragdine", $50c875, true );
 scribble_add_custom_colour( "c_xanadu"    , $738678, true );

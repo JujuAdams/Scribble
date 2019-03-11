@@ -31,7 +31,7 @@ else
 _matrix = matrix_multiply( _matrix, _old_matrix );
 matrix_set( matrix_world, _matrix );
 
-if ( SCRIBBLE_COMPATIBILITY_MODE )
+if ( SCRIBBLE_COMPATIBILITY_DRAW )
 {
     #region Compatibility mode
     
