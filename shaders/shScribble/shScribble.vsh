@@ -53,51 +53,75 @@ void unpackFlags( float flagValue, inout float array[MAX_FLAGS] )
     }
 }
 
+void applyWave( float amplitude, inout vec4 pos )
+{
+    pos.y += amplitude*sin( 10.*( in_Normal.x + u_fTime ) );
+}
+
+void applyShake( float magnitude, inout vec4 pos )
+{
+    pos.xy += magnitude*( vec2( rand( vec2( in_Normal.x + 2.0*u_fTime, in_Normal.x - 0.5*u_fTime ) ), rand( vec2( in_Normal.x - 2.0*u_fTime, in_Normal.x + 0.5*u_fTime ) ) ) - 0.5 );
+}
+
+void applyRainbow( float weight, inout vec4 colour )
+{
+    colour.rgb = mix( colour.rgb, hsv2rgb( vec3( in_Normal.x + u_fTime, 1.0, 1.0 ) ), weight );
+}
+
+void applyColourBlend( vec4 colourInput, inout vec4 colourTarget )
+{
+    colourTarget *= colourInput;
+}
+
+void applyPremultiplyAlpha( inout vec4 colour )
+{
+    if ( u_fPremultiplyAlpha > 0.5 ) colour.rgb *= colour.a;
+}
+
+void applyPerCharacterFade( float time, float smoothness, inout vec4 colour )
+{
+    if ( time < (1.0 + smoothness) )
+    {
+         colour.a *= clamp( ( time - in_Normal.x ) / smoothness, 0.0, 1.0 );
+    }
+    else
+    {
+         colour.a *= 1.0 - clamp( ( time - (1.0 + smoothness) - in_Normal.x ) / smoothness, 0.0, 1.0 );
+    }
+}
+
+void applyPerLineFade( float time, float smoothness, inout vec4 colour )
+{
+    if ( time < (1.0 + smoothness) )
+    {
+         colour.a *= clamp( (time - in_Normal.y) / smoothness, 0.0, 1.0 );
+    }
+    else
+    {
+         colour.a *= 1.0 - clamp( (time - (1.0 + smoothness) - in_Normal.y) / smoothness, 0.0, 1.0 );
+    }
+}
+
 void main()
 {
-    float charPc = in_Normal.x;
-    float linePc = in_Normal.y;
-    
+    //Unpack the flags
     float flagArray[MAX_FLAGS];
     unpackFlags( in_Normal.z, flagArray );
     
+    //Vertex animation
     vec4 pos = vec4( in_Position.xyz, 1.0 );
-    pos.xy += flagArray[1]*( vec2( rand( vec2( charPc + 2.0*u_fTime, charPc - 0.5*u_fTime ) ), rand( vec2( charPc - 2.0*u_fTime, charPc + 0.5*u_fTime ) ) ) - 0.5 );
-    pos.y += flagArray[0]*sin( 10.*( charPc + u_fTime ) );
+    applyWave( flagArray[0], pos );
+    applyShake( flagArray[1], pos );
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
     
-    
-    
+    //Colour
     v_vColour = in_Colour;
-    v_vColour.rgb = mix( v_vColour.rgb, hsv2rgb( vec3( charPc + u_fTime, 1.0, 1.0 ) ), flagArray[2] );
-    v_vColour.rgb *= u_vColour.rgb;
+    applyRainbow( flagArray[2], v_vColour );
+    applyColourBlend( u_vColour, v_vColour );
+    applyPerCharacterFade( u_fCharFadeT, u_fCharFadeSmoothness, v_vColour );
+    applyPerLineFade( u_fLineFadeT, u_fLineFadeSmoothness, v_vColour );
+    applyPremultiplyAlpha( v_vColour );
     
-    
-    
-    float alpha = u_vColour.a;
-    
-    if ( u_fCharFadeT < (1. + u_fCharFadeSmoothness) )
-    {
-         alpha *= clamp( ( u_fCharFadeT - charPc ) / u_fCharFadeSmoothness, 0.0, 1.0 );
-    }
-    else
-    {
-         alpha *= 1. - clamp( ( u_fCharFadeT - (1. + u_fCharFadeSmoothness) - charPc ) / u_fCharFadeSmoothness, 0.0, 1.0 );
-    }
-    
-    if ( u_fLineFadeT < (1. + u_fLineFadeSmoothness) )
-    {
-         alpha *= clamp( ( u_fLineFadeT - linePc ) / u_fLineFadeSmoothness, 0.0, 1.0 );
-    }
-    else
-    {
-         alpha *= 1.0 - clamp( ( u_fLineFadeT - (1.0 + u_fLineFadeSmoothness) - linePc ) / u_fLineFadeSmoothness, 0.0, 1.0 );
-    }
-    
-    v_vColour.a *= alpha;
-    if ( u_fPremultiplyAlpha > 0.5 ) v_vColour.rgb *= v_vColour.a;
-    
-    
-    
+    //Texture
     v_vTexcoord = in_TextureCoord;
 }
