@@ -48,7 +48,7 @@ if ( _font_glyphs_array == undefined )
 }
 else
 {
-    var _array = _array[ 32 - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
+    var _array = _font_glyphs_array[ 32 - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
     if ( _array == undefined )
     {
         show_error( "The space character is missing from font definition for \"" + _def_font + "\"\n ", true );
@@ -60,7 +60,7 @@ else
 var _def_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
 
 //Find the default line minimum height if not specified
-if ( _line_min_height < 0 ) _line_min_height = _space_array[ __E_SCRIBBLE_GLYPH.H ];
+if ( _line_min_height < 0 ) _line_min_height = _array[ __E_SCRIBBLE_GLYPH.H ];
 
 //Try to use a custom colour if the "startingColour" parameter is a string
 if ( is_string( _def_colour ) )
