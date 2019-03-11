@@ -1,8 +1,10 @@
 /// @description Text typewriter-ing
 ///
 /// @param json
+/// @param stepSize
 
-var _json = argument[0];
+var _json      = argument[0];
+var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : 1;
 
 var _typewriter_direction = _json[? "typewriter direction" ];
 if ( _typewriter_direction != 0 )
@@ -13,6 +15,7 @@ if ( _typewriter_direction != 0 )
     
     var _tw_pos   = _json[? "typewriter position" ];
     var _tw_speed = _json[? "typewriter speed"    ];
+    _tw_speed *= _step_size;
     
     switch( _json[? "typewriter method" ] )
     {
