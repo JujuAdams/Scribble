@@ -1,4 +1,4 @@
-//  Scribble (light) v3.1.1
+//  Scribble v3.1.1
 //  2019/03/11
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
