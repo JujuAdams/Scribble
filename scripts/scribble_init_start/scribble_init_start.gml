@@ -9,6 +9,8 @@ if ( variable_global_exists( "__scribble_texture_page_size" ) )
     exit;
 }
 
+show_debug_message( "Scribble: Welcome! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE );
+
 var _font_directory = argument0;
 var _tpage_size     = argument1;
 
@@ -46,6 +48,7 @@ global.__scribble_sprites           = ds_list_create(); //Stores every sprite cr
 global.__scribble_spritefont_map    = ds_map_create();  //Stores a ds_map of all the spritefonts, for use with COMPATIBILITY_DRAW
 global.__scribble_colours           = ds_map_create();  //Stores colour definitions, including custom colours
 global.__scribble_events            = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
+global.__scribble_flags             = ds_map_create();  //Bidirectional lookup
 global.__scribble_default_font      = "";
 
 //Cache uniform indexes
@@ -85,6 +88,11 @@ scribble_add_custom_colour( "c_silver",  c_silver  );
 scribble_add_custom_colour( "c_teal",    c_teal    );
 scribble_add_custom_colour( "c_white",   c_white   );
 scribble_add_custom_colour( "c_yellow",  c_yellow  );
+
+//Add bindings for default flag names
+scribble_add_custom_flag_name( "wave"   , 0 );
+scribble_add_custom_flag_name( "shake"  , 1 );
+scribble_add_custom_flag_name( "rainbow", 2 );
 
 //Hex converter array
 var _min = ord("0");

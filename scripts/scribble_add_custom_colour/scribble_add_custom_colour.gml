@@ -24,3 +24,5 @@ if ( !_native )
 }
 
 global.__scribble_colours[? _name ] = _colour;
+
+show_debug_message( "Scribble: Added colour name \"" + _name + "\" as colour " + string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)) + " (" + string(_colour) + ")" );

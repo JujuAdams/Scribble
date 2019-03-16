@@ -310,7 +310,6 @@ for( var _i = 0; _i < _separator_count; _i++ )
             switch( _parameters_list[| 0 ] )
             {
                 #region Reset formatting
-                
                 case "":
                     _text_font        = _def_font;
                     _text_colour      = _def_colour;
@@ -333,7 +332,6 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     _text_colour = _def_colour;
                     _skip = true;
                 break;
-                
                 #endregion
                 
                 #region Events
@@ -364,49 +362,13 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 
                 case "flag":
                     var _parameter_count = ds_list_size( _parameters_list );
-                    if ( _parameter_count == 2 )
-                    {
-                        _text_flags[ real( _parameters_list[| 1] ) ] = true;
-                    }
+                    if ( _parameter_count == 2 ) _text_flags[ real( _parameters_list[| 1] ) ] = true;
                     _skip = true;
                 break;
                 
                 case "/flag":
                     var _parameter_count = ds_list_size( _parameters_list );
-                    if ( _parameter_count == 2 )
-                    {
-                        _text_flags[ real( _parameters_list[| 1] ) ] = false;
-                    }
-                    _skip = true;
-                break;
-                
-                case "wave":
-                    _text_flags[0] = true;
-                    _skip = true;
-                break;
-                
-                case "/wave":
-                    _text_flags[0] = false;
-                    _skip = true;
-                break;
-                
-                case "shake":
-                    _text_flags[1] = true;
-                    _skip = true;
-                break;
-                
-                case "/shake":
-                    _text_flags[1] = false;
-                    _skip = true;
-                break;
-                
-                case "rainbow":
-                    _text_flags[2] = true;
-                    _skip = true;
-                break;
-                
-                case "/rainbow":
-                    _text_flags[2] = false;
+                    if ( _parameter_count == 2 ) _text_flags[ real( _parameters_list[| 1] ) ] = false;
                     _skip = true;
                 break;
                 
@@ -458,96 +420,119 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 break;
                 #endregion
                 
+                #region Flags, fonts, sprites, and colours
                 default:
-                    var _font_data = global.__scribble_font_data[? _parameters_list[| 0] ];
-                    if ( _font_data != undefined )
+                    //Check if this is a flag name
+                    var _flag_index = global.__scribble_flags[? _parameters_list[| 0] ];
+                    if ( _flag_index != undefined )
                     {
-                        #region Change font
-                        
-                        _text_font = _parameters_list[| 0];
-                        
-                        var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
-                        if ( _font_glyphs_array == undefined )
-                        {
-                            var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP ];
-                            var _array           = _font_glyphs_map[? " " ];
-                        }
-                        else
-                        {
-                            var _array = _font_glyphs_array[ 32 - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
-                        }
-                        
-                        _font_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
-                        _font_line_height = _array[ __E_SCRIBBLE_GLYPH.H ];
-                        
+                        _text_flags[ _flag_index ] = true;
                         _skip = true;
-                        
-                        #endregion
                     }
                     else
                     {
-                        var _asset = asset_get_index( _parameters_list[| 0] );
-                        if ( _asset >= 0 ) && ( asset_get_type( _parameters_list[| 0] ) == asset_sprite )
+                        //Check if this is a flag name, but with a forward slash at the front
+                        var _flag_index = undefined;
+                        if ( string_char_at( _parameters_list[| 0], 1 ) == "/" ) _flag_index = global.__scribble_flags[? string_delete( _parameters_list[| 0], 1, 1 ) ];
+                        if ( _flag_index != undefined )
                         {
-                            #region Sprites
-                            
-                            _substr_sprite = _asset;
-                            _substr_width  = sprite_get_width(  _substr_sprite );
-                            _substr_height = sprite_get_height( _substr_sprite );
-                            _substr_length = 1;
-                            
-                            if ( ds_list_size( _parameters_list ) <= 1 ) _parameters_list[| 1] = "0";
-                            
-                            _substr_image = real( _parameters_list[| 1] );
-                            
-                            #endregion
+                            _text_flags[ _flag_index ] = false;
+                            _skip = true;
                         }
                         else
                         {
-                            #region Colours
-                            var _colour = global.__scribble_colours[? _parameters_list[| 0] ]; //Test if it's a colour
-                            if ( _colour != undefined )
+                            var _font_data = global.__scribble_font_data[? _parameters_list[| 0] ];
+                            if ( _font_data != undefined )
                             {
-                                _text_colour = _colour;
-                            }
-                            else //Test if it's a hexcode
-                            {
-                                var _colour_string = _parameters_list[| 0];
-                                if ( string_length( _colour_string ) <= 7 ) && ( string_copy( _colour_string, 1, 1 ) == "$" )
+                                #region Change font
+                        
+                                _text_font = _parameters_list[| 0];
+                        
+                                var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
+                                if ( _font_glyphs_array == undefined )
                                 {
-                                    #region Hex string decoding
-                                    
-                                    var _ord = ord( string_char_at( _colour_string, 3 ) );
-                                    var _lsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
-                                    var _ord = ord( string_char_at( _colour_string, 2 ) );
-                                    var _hsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
-                                    
-                                    var _red = _lsf + (_hsf << 4);
-                                    
-                                    var _ord = ord( string_char_at( _colour_string, 5 ) );
-                                    var _lsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
-                                    var _ord = ord( string_char_at( _colour_string, 4 ) );
-                                    var _hsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
-                                    
-                                    var _green = _lsf + (_hsf << 4);
-                                    
-                                    var _ord = ord( string_char_at( _colour_string, 7 ) );
-                                    var _lsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
-                                    var _ord = ord( string_char_at( _colour_string, 6 ) );
-                                    var _hsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
-                                    
-                                    var _blue = _lsf + (_hsf << 4);
-                                    
+                                    var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP ];
+                                    var _array           = _font_glyphs_map[? " " ];
+                                }
+                                else
+                                {
+                                    var _array = _font_glyphs_array[ 32 - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
+                                }
+                        
+                                _font_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
+                                _font_line_height = _array[ __E_SCRIBBLE_GLYPH.H ];
+                        
+                                _skip = true;
+                        
+                                #endregion
+                            }
+                            else
+                            {
+                                var _asset = asset_get_index( _parameters_list[| 0] );
+                                if ( _asset >= 0 ) && ( asset_get_type( _parameters_list[| 0] ) == asset_sprite )
+                                {
+                                    #region Sprites
+                            
+                                    _substr_sprite = _asset;
+                                    _substr_width  = sprite_get_width(  _substr_sprite );
+                                    _substr_height = sprite_get_height( _substr_sprite );
+                                    _substr_length = 1;
+                            
+                                    if ( ds_list_size( _parameters_list ) <= 1 ) _parameters_list[| 1] = "0";
+                            
+                                    _substr_image = real( _parameters_list[| 1] );
+                            
                                     #endregion
+                                }
+                                else
+                                {
+                                    #region Colours
+                                    var _colour = global.__scribble_colours[? _parameters_list[| 0] ]; //Test if it's a colour
+                                    if ( _colour != undefined )
+                                    {
+                                        _text_colour = _colour;
+                                    }
+                                    else //Test if it's a hexcode
+                                    {
+                                        var _colour_string = _parameters_list[| 0];
+                                        if ( string_length( _colour_string ) <= 7 ) && ( string_copy( _colour_string, 1, 1 ) == "$" )
+                                        {
+                                            #region Hex string decoding
                                     
-                                    _text_colour = make_colour_rgb( _red, _green, _blue );
+                                            var _ord = ord( string_char_at( _colour_string, 3 ) );
+                                            var _lsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                            var _ord = ord( string_char_at( _colour_string, 2 ) );
+                                            var _hsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                    
+                                            var _red = _lsf + (_hsf << 4);
+                                    
+                                            var _ord = ord( string_char_at( _colour_string, 5 ) );
+                                            var _lsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                            var _ord = ord( string_char_at( _colour_string, 4 ) );
+                                            var _hsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                    
+                                            var _green = _lsf + (_hsf << 4);
+                                    
+                                            var _ord = ord( string_char_at( _colour_string, 7 ) );
+                                            var _lsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                            var _ord = ord( string_char_at( _colour_string, 6 ) );
+                                            var _hsf = ( _ord >= global.__scribble_hex_min ) && ( _ord <= global.__scribble_hex_max )? global.__scribble_hex_array[ _ord - global.__scribble_hex_min ] : 0;
+                                    
+                                            var _blue = _lsf + (_hsf << 4);
+                                    
+                                            #endregion
+                                    
+                                            _text_colour = make_colour_rgb( _red, _green, _blue );
+                                        }
+                                    }
+                                    _skip = true;
+                                    #endregion
                                 }
                             }
-                            _skip = true;
-                            #endregion
                         }
                     }
                 break;
+                #endregion
             }
             
             ds_list_clear( _parameters_list );

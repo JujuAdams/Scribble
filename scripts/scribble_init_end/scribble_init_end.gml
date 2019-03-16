@@ -657,3 +657,4 @@ image_yscale = _old_image_yscale;
 mask_index = _old_mask_index;
 
 show_debug_message( "Scribble: Font initialisation complete, took " + string( (get_timer() - _timer)/1000 ) + "ms" );
+show_debug_message( "Scribble: Thanks for using Scribble! @jujuadams" );
