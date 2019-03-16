@@ -1,8 +1,8 @@
 var _timer = get_timer();
 
-if ( !variable_global_exists( "__scribble_texture_page_size" ) )
+if ( !variable_global_exists( "__scribble_init_complete" ) )
 {
-    show_error( "scribble_init_end() can only be called after scribble_init_start()\n ", false );
+    show_error( "scribble_init_end() should be called after scribble_init_start()\n ", false );
     exit;
 }
 
@@ -658,3 +658,5 @@ mask_index = _old_mask_index;
 
 show_debug_message( "Scribble: Font initialisation complete, took " + string( (get_timer() - _timer)/1000 ) + "ms" );
 show_debug_message( "Scribble: Thanks for using Scribble! @jujuadams" );
+
+global.__scribble_init_complete = true;

@@ -18,6 +18,12 @@ var _colour = ((argument_count > 6) && (argument[6] != undefined))? argument[6] 
 var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : draw_get_alpha();
 var _pma    = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA;
 
+if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
+{
+    show_error( "Scribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false );
+    exit;
+}
+
 var _old_matrix = matrix_get( matrix_world );
 
 if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))

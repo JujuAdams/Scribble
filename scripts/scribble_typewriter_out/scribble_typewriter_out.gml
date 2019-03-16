@@ -8,6 +8,12 @@ var _speed      = (argument_count > 1)? argument[1] : undefined;
 var _method     = (argument_count > 2)? argument[2] : undefined;
 var _smoothness = (argument_count > 3)? argument[3] : SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
 
+if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
+{
+    show_error( "Scribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false );
+    exit;
+}
+
 _json[| __E_SCRIBBLE.TW_DIRECTION ] = -1;
 _json[| __E_SCRIBBLE.TW_POSITION  ] =  0;
 

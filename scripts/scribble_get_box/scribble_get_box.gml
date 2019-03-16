@@ -20,6 +20,12 @@ var _xscale = ((argument_count > 7) && (argument[7] != undefined))? argument[7] 
 var _yscale = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : SCRIBBLE_DEFAULT_YSCALE;
 var _angle  = ((argument_count > 9) && (argument[9] != undefined))? argument[9] : SCRIBBLE_DEFAULT_ANGLE;
 
+if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
+{
+    show_error( "Scribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false );
+    exit;
+}
+
 if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {
     //Avoid using matrices if we can

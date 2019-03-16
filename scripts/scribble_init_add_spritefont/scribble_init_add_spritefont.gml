@@ -3,10 +3,16 @@
 /// @param [mapString]
 /// @param [separation]
 
-if ( !variable_global_exists( "__scribble_default_font" ) )
+if ( !variable_global_exists( "__scribble_init_complete" ) )
 {
-    show_error( "scribble_init_add_spritefont() can only be called after scribble_init_start() and before scribble_init_end()\n ", true );
+    show_error( "scribble_init_add_spritefont() should be called after scribble_init_start() and before scribble_init_end()\n ", true );
     exit;
+}
+
+if ( global.__scribble_init_complete )
+{
+    show_error( "scribble_init_add_spritefont() should be called before scribble_init_end()\n ", true );
+    return undefined;
 }
 
 var _font        =                                                       argument[0];

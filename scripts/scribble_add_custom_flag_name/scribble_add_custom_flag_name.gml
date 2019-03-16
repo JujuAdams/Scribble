@@ -4,6 +4,12 @@
 var _name  = argument0;
 var _index = argument1;
 
+if ( !variable_global_exists( "__scribble_init_complete" ) )
+{
+    show_error( "scribble_add_custom_flag_name() should be called after initialising Scribble.\n ", false );
+    exit;
+}
+
 if ( !is_string(_name) )
 {
     show_error( "Custom flag names should be strings.\n ", false );

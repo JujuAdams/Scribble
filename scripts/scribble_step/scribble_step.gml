@@ -6,6 +6,12 @@
 var _json      = argument[0];
 var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : 1;
 
+if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
+{
+    show_error( "Scribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false );
+    exit;
+}
+
 _json[| __E_SCRIBBLE.ANIMATION_TIME ] += _step_size;
 
 var _typewriter_direction = _json[| __E_SCRIBBLE.TW_DIRECTION ];

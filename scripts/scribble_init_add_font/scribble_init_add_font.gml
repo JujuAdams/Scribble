@@ -2,9 +2,15 @@
 ///
 ///
 
-if ( !variable_global_exists( "__scribble_default_font" ) )
+if ( !variable_global_exists( "__scribble_init_complete" ) )
 {
-    show_error( "scribble_init_add_font() can only be called after scribble_init_start()\n ", true );
+    show_error( "scribble_init_add_font() should be called after scribble_init_start()\n ", true );
+    return undefined;
+}
+
+if ( global.__scribble_init_complete )
+{
+    show_error( "scribble_init_add_font() should be called before scribble_init_end()\n ", true );
     return undefined;
 }
 

@@ -8,6 +8,12 @@ var _json   = argument[0];
 var _halign = ((argument_count<2) || (argument[1]==undefined))? fa_left : argument[1];
 var _valign = ((argument_count<3) || (argument[2]==undefined))? fa_top  : argument[2];
 
+if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
+{
+    show_error( "Scribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false );
+    exit;
+}
+
 var _width  = _json[| __E_SCRIBBLE.WIDTH  ];
 var _height = _json[| __E_SCRIBBLE.HEIGHT ];
 _json[| __E_SCRIBBLE.HALIGN ] = _halign;

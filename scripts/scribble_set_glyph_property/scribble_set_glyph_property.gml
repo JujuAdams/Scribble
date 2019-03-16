@@ -10,6 +10,18 @@ var _property  = argument[2];
 var _value     = argument[3];
 var _relative  = (argument_count > 4)? argument[4] : false;
 
+if ( !variable_global_exists( "__scribble_init_complete" ) )
+{
+    show_error( "scribble_set_glyph_property() should be called after initialising Scribble.\n ", false );
+    exit;
+}
+
+if ( !global.__scribble_init_complete )
+{
+    show_error( "scribble_set_glyph_property() should be called after initialising Scribble.\n ", false );
+    exit;
+}
+
 var _font_data = global.__scribble_font_data[? _font ];
 
 var _array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];

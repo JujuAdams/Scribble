@@ -8,6 +8,12 @@
 
 var _json = argument0;
 
+if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
+{
+    show_error( "Scribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false );
+    exit;
+}
+
 switch( _json[| __E_SCRIBBLE.TW_METHOD ] )
 {
     case SCRIBBLE_TYPEWRITER_WHOLE:

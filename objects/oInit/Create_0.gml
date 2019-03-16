@@ -15,7 +15,7 @@ scribble_init_end();
 
 //Define custom colours for use later in our text
 //This function defaults to *NOT* using GM's native colour format because it's a silly format
-//Use the optional argument to specific if you want to use GM's native colour format
+//Use the optional argument to specify if you want to use GM's native colour format
 scribble_add_custom_colour( "c_coquelicot", $ff3800 );
 scribble_add_custom_colour( "c_smaragdine", $50c875 );
 scribble_add_custom_colour( "c_xanadu"    , $738678 );

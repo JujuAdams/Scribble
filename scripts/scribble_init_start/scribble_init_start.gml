@@ -1,15 +1,13 @@
 /// @param fontDirectory
 /// @param texturePageSize
-///
-/// 
 
-if ( variable_global_exists( "__scribble_texture_page_size" ) )
+if ( variable_global_exists( "__scribble_init_complete" ) )
 {
-    show_error( "scribble_init_start() may not be called twice\n ", false );
+    show_error( "scribble_init_start() should not be called twice!\n ", false );
     exit;
 }
 
-show_debug_message( "Scribble: Welcome! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE );
+show_debug_message( "Scribble: Welcome to Scribble! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE );
 
 var _font_directory = argument0;
 var _tpage_size     = argument1;
@@ -50,6 +48,7 @@ global.__scribble_colours           = ds_map_create();  //Stores colour definiti
 global.__scribble_events            = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
 global.__scribble_flags             = ds_map_create();  //Bidirectional lookup
 global.__scribble_default_font      = "";
+global.__scribble_init_complete     = false;
 
 //Cache uniform indexes
 global.__scribble_uniform_pma             = shader_get_uniform( shScribble, "u_fPremultiplyAlpha"   );
