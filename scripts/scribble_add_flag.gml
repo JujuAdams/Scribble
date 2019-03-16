@@ -7,7 +7,7 @@
 var _name  = argument0;
 var _index = argument1;
 
-if ( global.__scribble_init_complete ) {
+if ( global.__scribble_init_complete == SCRIBBLE_INIT_START ) {
     show_error( "scribble_add_custom_flag_name() should be called after initialising Scribble.", false );
     exit;
 }
@@ -18,7 +18,7 @@ if ( !is_string(_name) ) {
 }
 
 if ( !is_real(_index) || (_index != floor(_index)) || (_index < 0) || (_index > (SCRIBBLE_MAX_FLAGS-1)) ) {
-    show_error( "Custom flag indexes should be an integer from 0 to " + string(SCRIBBLE_MAX_FLAGS-1) + " (inclusive).\nTo increase the maximum number of flags, see __scribble_config()\n(Index was " + string(_index) + "\n ", false );
+    show_error( "Custom flag indexes should be an integer from 0 to " + string(SCRIBBLE_MAX_FLAGS-1) + " (inclusive).To increase the maximum number of flags, see __scribble_config() (Index was " + string(_index), false );
     exit;
 }
 

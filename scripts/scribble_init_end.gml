@@ -574,7 +574,7 @@ for( var _font = 0; _font < _font_count; _font++ ) {
                 var _v1    = _v0 + _h * _texture_th;
                 
                 var _array = array_create( __E_SCRIBBLE_GLYPH.__SIZE);
-                array_clear(_aray, 0);
+                array_clear(_array, 0);
                 _array[ __E_SCRIBBLE_GLYPH.CHAR ] = _char;
                 _array[ __E_SCRIBBLE_GLYPH.ORD  ] = _index;
                 _array[ __E_SCRIBBLE_GLYPH.X    ] = _x + _image_x_offset;
@@ -608,4 +608,4 @@ mask_index = _old_mask_index;
 show_debug_message( "Scribble: Font initialisation complete, took " + string( (get_timer() - _timer)/1000 ) + "ms" );
 show_debug_message( "Scribble: Thanks for using Scribble! @jujuadams" );
 
-global.__scribble_init_complete = true;
+global.__scribble_init_complete = SCRIBBLE_INIT_COMPLETE;

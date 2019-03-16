@@ -17,14 +17,34 @@
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json   = argument[0];
-var _x      = ternary((argument_count > 1) && (argument[1] != undefined), argument[1], 0);
-var _y      = ternary((argument_count > 2) && (argument[2] != undefined), argument[2], 0);
-var _xscale = ternary((argument_count > 3) && (argument[3] != undefined), argument[3], SCRIBBLE_DEFAULT_XSCALE);
-var _yscale = ternary((argument_count > 4) && (argument[4] != undefined), argument[4], SCRIBBLE_DEFAULT_YSCALE);
-var _angle  = ternary((argument_count > 5) && (argument[5] != undefined), argument[5], SCRIBBLE_DEFAULT_ANGLE);
-var _colour = ternary((argument_count > 6) && (argument[6] != undefined), argument[6], draw_get_colour());
-var _alpha  = ternary((argument_count > 7) && (argument[7] != undefined), argument[7], draw_get_alpha());
-var _pma    = ternary((argument_count > 8) && (argument[8] != undefined), argument[8], SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA);
+var _x      = 0;
+var _y      = 0;
+var _xscale = SCRIBBLE_DEFAULT_XSCALE;
+var _yscale = SCRIBBLE_DEFAULT_YSCALE;
+var _angle  = SCRIBBLE_DEFAULT_ANGLE;
+var _colour = draw_get_colour();
+var _alpha  = draw_get_alpha();
+var _pma    = SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA;
+
+switch (argument_count){
+    case 9:
+        if ( argument[8] != undefined ) _pma = argument[8];
+    case 8:
+        if ( argument[7] != undefined ) _alpha = argument[7];
+    case 7:
+        if ( argument[6] != undefined ) _colour = argument[6];
+    case 6:
+        if ( argument[5] != undefined ) _angle = argument[5];
+    case 5:
+        if ( argument[4] != undefined ) _yscale = argument[4];
+    case 4:
+        if ( argument[3] != undefined ) _xscale = argument[3];
+    case 3:
+        if ( argument[2] != undefined ) _y = argument[2];
+    case 2:
+        if ( argument[1] != undefined ) _x = argument[1];
+        break;
+}
 
 if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) ) {
     show_error( "Scribble data structure " + string( _json ) + " doesn't exist!", false );

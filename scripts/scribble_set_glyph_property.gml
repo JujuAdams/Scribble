@@ -21,7 +21,13 @@ var _font      = argument[0];
 var _character = argument[1];
 var _property  = argument[2];
 var _value     = argument[3];
-var _relative  = ternary((argument_count > 4) && (argument[4] != undefined), argument[4], false);
+var _relative  = false;
+
+switch (argument_count){
+    case 5:
+        if ( argument[4] != undefined ) _relative = argument[4];
+        break;
+}
 
 if ( global.__scribble_init_complete == SCRIBBLE_INIT_START ) {
     show_error( "scribble_set_glyph_property() should be called after initialising Scribble.", false );
@@ -29,8 +35,8 @@ if ( global.__scribble_init_complete == SCRIBBLE_INIT_START ) {
 }
 
 if ( global.__scribble_init_complete == SCRIBBLE_INIT_DURING ) {
-    show_error( "scribble_set_glyph_property() should be called after initialising Scribble.", false );
-    exit;
+    show_error( "scribble_init_add_spritefont() should be called before scribble_init_end()", true );
+    return undefined;
 }
 
 var _font_data = global.__scribble_font_data[? _font ];

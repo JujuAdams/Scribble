@@ -18,15 +18,37 @@
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json   = argument[0];
-var _x      = ternary((argument_count > 1) && (argument[1] != undefined), argument[1], 0);
-var _y      = ternary((argument_count > 2) && (argument[2] != undefined), argument[2], 0);
-var _left   = ternary((argument_count > 3) && (argument[3] != undefined), argument[3], 0);
-var _top    = ternary((argument_count > 4) && (argument[4] != undefined), argument[4], 0);
-var _right  = ternary((argument_count > 5) && (argument[5] != undefined), argument[5], 0);
-var _bottom = ternary((argument_count > 6) && (argument[6] != undefined), argument[6], 0);
-var _xscale = ternary((argument_count > 7) && (argument[7] != undefined), argument[7], SCRIBBLE_DEFAULT_XSCALE);
-var _yscale = ternary((argument_count > 8) && (argument[8] != undefined), argument[8], SCRIBBLE_DEFAULT_YSCALE);
-var _angle  = ternary((argument_count > 9) && (argument[9] != undefined), argument[9], SCRIBBLE_DEFAULT_ANGLE);
+var _x      = 0;
+var _y      = 0;
+var _left   = 0;
+var _top    = 0;
+var _right  = 0;
+var _bottom = 0;
+var _xscale = SCRIBBLE_DEFAULT_XSCALE;
+var _yscale = SCRIBBLE_DEFAULT_YSCALE;
+var _angle  = SCRIBBLE_DEFAULT_ANGLE;
+
+switch (argument_count){
+    case 10:
+        if ( argument[9] != undefined ) _angle = argument[9];
+    case 9:
+        if ( argument[8] != undefined ) _yscale = argument[8];
+    case 8:
+        if ( argument[7] != undefined ) _xscale = argument[7];
+    case 7:
+        if ( argument[6] != undefined ) _bottom = argument[6];
+    case 6:
+        if ( argument[5] != undefined ) _right = argument[5];
+    case 5:
+        if ( argument[4] != undefined ) _top = argument[4];
+    case 4:
+        if ( argument[3] != undefined ) _left = argument[3];
+    case 3:
+        if ( argument[2] != undefined ) _y = argument[2];
+    case 2:
+        if ( argument[1] != undefined ) _x = argument[1];
+        break;
+}
 
 if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) ) {
     show_error( "Scribble data structure " + string( _json ) + " doesn't exist!", false );

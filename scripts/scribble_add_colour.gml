@@ -12,9 +12,15 @@
 
 var _name   = argument[0];
 var _colour = argument[1];
-var _native = ternary((argument_count > 2) && (argument[2] != undefined), argument[2], false);
+var _native = false;
 
-if ( global.__scribble_init_complete ) {
+switch (argument_count){
+    case 3:
+        if ( argument[2] != undefined ) _native = argument[2];
+        break;
+}
+
+if ( global.__scribble_init_complete == SCRIBBLE_INIT_START ) {
     show_error( "scribble_add_colour() should be called after initialising Scribble.", false );
     exit;
 }

@@ -49,12 +49,28 @@ if ( global.__scribble_init_complete == SCRIBBLE_INIT_DURING ) {
 var _timer = get_timer();
 
 var _str              = argument[0];
-var _line_min_height  = ternary((argument_count > 1) && (argument[1] != undefined), argument[1], -1);
-var _width_limit      = ternary((argument_count > 2) && (argument[2] != undefined), argument[2], -1);
-var _def_colour       = ternary((argument_count > 3) && (argument[3] != undefined), argument[3], c_white);
-var _def_font         = ternary((argument_count > 4) && (argument[4] != undefined), argument[4], global.__scribble_default_font);
-var _def_halign       = ternary((argument_count > 5) && (argument[5] != undefined), argument[5], fa_left);
-var _data_fields_in   = ternary((argument_count > 6) &&    is_array(argument[6]), argument[6], undefined);
+var _line_min_height  = -1;
+var _width_limit      = -1;
+var _def_colour       = c_white;
+var _def_font         = global.__scribble_default_font;
+var _def_halign       = fa_left;
+var _data_fields_in   = undefined;
+
+switch (argument_count){
+    case 7:
+        if ( is_array(argument[6]) ) _data_fields_in = argument[6];
+    case 6:
+        if ( argument[5] != undefined ) _def_halign = argument[5];
+    case 5:
+        if ( argument[4] != undefined ) _def_font = argument[4];
+    case 4:
+        if ( argument[3] != undefined ) _def_colour = argument[3];
+    case 3:
+        if ( argument[2] != undefined ) _width_limit = argument[2];
+    case 2:
+        if ( argument[1] != undefined ) _line_min_height = argument[1];
+        break;
+}
 
 // Process input parameters
 

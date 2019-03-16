@@ -21,10 +21,20 @@ if ( global.__scribble_init_complete == SCRIBBLE_INIT_COMPLETE ) {
     return undefined;
 }
 
-var _font        =                                                       argument[0];
-var _space_width =  ternary(argument_count > 1, argument[1], undefined);
-var _mapstring   = ternary((argument_count > 2) && (argument[2] != undefined),  argument[2], SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING);
-var _separation  = ternary((argument_count > 3) && (argument[3] != undefined), argument[3], 0);
+var _font        = argument[0];
+var _space_width = undefined;
+var _mapstring   = SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING;
+var _separation  = 0;
+
+switch (argument_count){
+    case 4:
+        if ( argument[3] != undefined ) _separation = argument[3];
+    case 3:
+        if ( argument[2] != undefined ) _mapstring = argument[2];
+    case 2:
+        if ( argument[1] != undefined ) _space_width = argument[1];
+        break;
+}
 
 if ( ds_map_exists( global.__scribble_font_data, _font ) ) {
     show_error( "Font " + _font + " has already been defined", false );

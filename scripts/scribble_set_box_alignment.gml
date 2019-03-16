@@ -13,8 +13,16 @@
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json   = argument[0];
-var _halign = ternary((argument_count > 1) && (argument[1] != undefined), argument[1], SCRIBBLE_DEFAULT_BOX_HALIGN);
-var _valign = ternary((argument_count > 2) && (argument[2] != undefined), argument[2], SCRIBBLE_DEFAULT_BOX_VALIGN);
+var _halign = SCRIBBLE_DEFAULT_BOX_HALIGN;
+var _valign = SCRIBBLE_DEFAULT_BOX_VALIGN;
+
+switch (argument_count){
+    case 3:
+        if ( argument[2] != undefined ) _valign = argument[2];
+    case 2:
+        if ( argument[1] != undefined ) _halign = argument[1];
+        break;
+}
 
 if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) ) {
     show_error( "Scribble data structure " + string( _json ) + " doesn't exist!", false );

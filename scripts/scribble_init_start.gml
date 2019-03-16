@@ -17,7 +17,7 @@
 ///
 /// Initialisation is only fully complete once scribble_init_end() is called
 
-if ( global.__scribble_init_complete ) {
+if ( global.__scribble_init_complete != SCRIBBLE_INIT_START ) {
     show_error( "scribble_init_start() should not be called twice!\n ", false );
     exit;
 }
