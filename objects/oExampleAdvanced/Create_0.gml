@@ -5,7 +5,7 @@
 //  
 //  Intended for use with GMS2.2.1 and later
 
-var _string  = "[ev,sound,sndCrank][rainbow]abcdef[] [c_test]ABCDEF[]##";
+var _string  = "[ev,sound,sndCrank][rainbow]abcdef[] ABCDEF##";
     _string += "[wave][c_orange]0123456789[] .,<>\"'&[sCoin][ev,sound,sndSwitch][sCoin,1][ev,sound,sndSwitch][sCoin,2][ev,sound,sndSwitch][sCoin,3][ev,sound,sndSwitch][shake][rainbow]!?[]\n\n";
     _string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][flag,1]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/flag,1]LAZY [fTestB]DOG.";
