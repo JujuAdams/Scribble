@@ -214,8 +214,8 @@ _json[| __E_SCRIBBLE.WIDTH_LIMIT        ] = _width_limit;
 _json[| __E_SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
 
 _json[| __E_SCRIBBLE.__SECTION1         ] = "-- Statistics --";
-_json[| __E_SCRIBBLE.HALIGN             ] = fa_left;
-_json[| __E_SCRIBBLE.VALIGN             ] = fa_top;
+_json[| __E_SCRIBBLE.HALIGN             ] = SCRIBBLE_DEFAULT_BOX_HALIGN;
+_json[| __E_SCRIBBLE.VALIGN             ] = SCRIBBLE_DEFAULT_BOX_VALIGN;
 _json[| __E_SCRIBBLE.WIDTH              ] = 0;
 _json[| __E_SCRIBBLE.HEIGHT             ] = 0;
 _json[| __E_SCRIBBLE.LEFT               ] = 0;

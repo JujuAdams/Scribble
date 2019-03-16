@@ -1,13 +1,20 @@
-/// @param json
-/// @param [x]
-/// @param [y]
-/// @param [leftMargin]
-/// @param [topMargin]
-/// @param [rightMargin]
-/// @param [bottomMargin]
-/// @param [xscale]
-/// @param [yscale]
-/// @param [angle]
+/// Sets the relative position of the textbox for a Scribble data structure
+///
+/// This script returns the positions of each corner of a box that encapsulates the text.
+/// It returns an 8-element array. You can use the E_SCRIBBLE_BOX enum to conveniently reference each coordinate.
+///
+/// @param json             The Scribble data structure to use
+/// @param [x]              The x position in the room to draw at. Defaults to 0
+/// @param [y]              The y position in the room to draw at. Defaults to 0
+/// @param [leftMargin]     The additional space to add to the left-hand side of the box. Positive values create more space. Defaults to 0
+/// @param [topMargin]      The additional space to add to the top of the box. Positive values create more space. Defaults to 0
+/// @param [rightMargin]    The additional space to add to the right-hand side of the box. Positive values create more space. Defaults to 0
+/// @param [bottomMargin]   The additional space to add to the bottom of the box. Positive values create more space. Defaults to 0
+/// @param [xscale]         The horizontal scaling of the text. Defaults to the value set in __scribble_config()
+/// @param [yscale]         The vertical scaling of the text. Defaults to the value set in __scribble_config()
+/// @param [angle]          The rotation of the text. Defaults to the value set in __scribble_config()
+///
+/// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json   = argument[0];
 var _x      = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
@@ -48,9 +55,9 @@ var _r = _json[| __E_SCRIBBLE.RIGHT  ] + _right;
 var _b = _json[| __E_SCRIBBLE.BOTTOM ] + _bottom;
 
 var _result = array_create(8);
-var _vertex = matrix_transform_vertex( _matrix, _l, _t, 0 ); _result[0] = _vertex[0]; _result[1] = _vertex[1];
-var _vertex = matrix_transform_vertex( _matrix, _r, _t, 0 ); _result[2] = _vertex[0]; _result[3] = _vertex[1];
-var _vertex = matrix_transform_vertex( _matrix, _l, _b, 0 ); _result[4] = _vertex[0]; _result[5] = _vertex[1];
-var _vertex = matrix_transform_vertex( _matrix, _r, _b, 0 ); _result[6] = _vertex[0]; _result[7] = _vertex[1];
+var _vertex = matrix_transform_vertex( _matrix, _l, _t, 0 ); _result[E_SCRIBBLE_BOX.X0] = _vertex[0]; _result[E_SCRIBBLE_BOX.Y0] = _vertex[1];
+var _vertex = matrix_transform_vertex( _matrix, _r, _t, 0 ); _result[E_SCRIBBLE_BOX.X1] = _vertex[0]; _result[E_SCRIBBLE_BOX.Y1] = _vertex[1];
+var _vertex = matrix_transform_vertex( _matrix, _l, _b, 0 ); _result[E_SCRIBBLE_BOX.X2] = _vertex[0]; _result[E_SCRIBBLE_BOX.Y2] = _vertex[1];
+var _vertex = matrix_transform_vertex( _matrix, _r, _b, 0 ); _result[E_SCRIBBLE_BOX.X3] = _vertex[0]; _result[E_SCRIBBLE_BOX.Y3] = _vertex[1];
 
 return _result;

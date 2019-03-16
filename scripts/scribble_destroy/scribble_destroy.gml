@@ -1,3 +1,5 @@
+/// Destroys a Scribble data structure and frees up the memory it was using
+///
 /// @param json
 
 var _json = argument0;

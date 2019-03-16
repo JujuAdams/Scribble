@@ -1,7 +1,9 @@
-/// 
+/// Advances the typewriter effect for a Scribble data structure, and executes events as they appear
 ///
-/// @param json
-/// @param [stepSize]
+/// @param json         The Scribble data structure to manipulate
+/// @param [stepSize]   The step size e.g. a delta time coefficient. Defaults to 1
+///
+/// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json      = argument[0];
 var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : 1;

@@ -1,12 +1,19 @@
-/// @description Sets the alignment of a Scribble JSON
-///              Pass in no additional arguments to reset the Scribble alignment to left+top
-/// @param json
-/// @param [halign]
-/// @param [valign]
+/// Sets the relative position of the textbox for a Scribble data structure
+///
+/// Scribble text is drawn at a position inside an invisible box. By default, the relative position
+/// of that box to the draw coordinate is such that the top-left corner of the box is at the
+/// draw coordinate. This script allows you to change that behaviour e.g. drawing the box
+/// centred on the draw coordinate.
+///
+/// @param json       The Scribble data structure to manipulate. See scribble_create()
+/// @param [halign]   The horizontal alignment of the textbox. Defaults to the value set in __scribble_config()
+/// @param [valign]   The vertical alignment of the textbox. Defaults to the value set in __scribble_config()
+///
+/// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json   = argument[0];
-var _halign = ((argument_count<2) || (argument[1]==undefined))? fa_left : argument[1];
-var _valign = ((argument_count<3) || (argument[2]==undefined))? fa_top  : argument[2];
+var _halign = ((argument_count > 1) && (argument[1] != undefined))? SCRIBBLE_DEFAULT_BOX_HALIGN : argument[1];
+var _valign = ((argument_count > 2) && (argument[2] != undefined))? SCRIBBLE_DEFAULT_BOX_VALIGN : argument[2];
 
 if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
 {

@@ -1,6 +1,13 @@
-/// @param name
-/// @param colour
-/// @param [colourIsGameMakerBGR]
+/// Adds a custom colour for use as an in-line colour definition for scribble_create() 
+///
+/// This script allows for the definition of a custom colour that can be referenced by name in scribble_create()
+/// This script assumes you're *NOT* using GameMaker's wacky BGR colour format.
+///
+/// @param name                     String name of the colour
+/// @param colour                   The colour itself as a 24-bit integer
+/// @param [colourIsGameMakerBGR]   Whether the colour is a native GM colour value. Defaults to <false>
+///
+/// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _name   = argument[0];
 var _colour = argument[1];

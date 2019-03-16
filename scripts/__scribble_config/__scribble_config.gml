@@ -7,14 +7,24 @@
 
 //Basic input and draw settings
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
-#macro SCRIBBLE_DEFAULT_XSCALE                1
-#macro SCRIBBLE_DEFAULT_YSCALE                1
-#macro SCRIBBLE_DEFAULT_ANGLE                 0
-#macro SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA     false
 #macro SCRIBBLE_ANIMATION_SPEED               0.02 //Speed of shader animation effects
 #macro SCRIBBLE_HASH_NEWLINE                  true //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 
-//Animation settings
+//Default draw settings
+#macro SCRIBBLE_DEFAULT_XSCALE            1
+#macro SCRIBBLE_DEFAULT_YSCALE            1
+#macro SCRIBBLE_DEFAULT_ANGLE             0
+#macro SCRIBBLE_DEFAULT_BOX_HALIGN        fa_left
+#macro SCRIBBLE_DEFAULT_BOX_VALIGN        fa_top
+#macro SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA false
+
+//Typewriter mode constants
+//Used as arguments for scribble_typewriter_in() and scribble_typewrite_out()
+#macro SCRIBBLE_TYPEWRITER_WHOLE         0
+#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER 1
+#macro SCRIBBLE_TYPEWRITER_PER_LINE      2
+
+//Default animation settings
 #macro SCRIBBLE_DEFAULT_WAVE_SIZE              4
 #macro SCRIBBLE_DEFAULT_WAVE_FREQUENCY        50
 #macro SCRIBBLE_DEFAULT_WAVE_SPEED            10
@@ -24,19 +34,6 @@
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
-
-//Typewriter mode constants
-//Used as arguments for scribble_typewriter_in() and scribble_typewrite_out()
-#macro SCRIBBLE_TYPEWRITER_WHOLE         0
-#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER 1
-#macro SCRIBBLE_TYPEWRITER_PER_LINE      2
-
-//Glyph property constants
-//Used as arguments for scribble_font_character_property()
-//These link into internal glyph properties
-#macro SCRIBBLE_GLYPH_X_OFFSET   __E_SCRIBBLE_GLYPH.DX
-#macro SCRIBBLE_GLYPH_Y_OFFSET   __E_SCRIBBLE_GLYPH.DY
-#macro SCRIBBLE_GLYPH_SEPARATION __E_SCRIBBLE_GLYPH.SHF
 
 //Advanced users only!
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
@@ -49,6 +46,12 @@
 #macro SCRIBBLE_MAX_DATA_FIELDS                   6        //Change MAX_DATA_FIELDS in the shader if you change this value!
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE        200      //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES        0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
+
+//Glyph property constants
+//Used as arguments for scribble_font_character_property()
+#macro SCRIBBLE_GLYPH_X_OFFSET                    __E_SCRIBBLE_GLYPH.DX
+#macro SCRIBBLE_GLYPH_Y_OFFSET                    __E_SCRIBBLE_GLYPH.DY
+#macro SCRIBBLE_GLYPH_SEPARATION                  __E_SCRIBBLE_GLYPH.SHF
 
 //scribble_get_box() constants
 enum E_SCRIBBLE_BOX
