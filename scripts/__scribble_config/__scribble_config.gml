@@ -48,7 +48,7 @@
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES        0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
 //Glyph property constants
-//Used as arguments for scribble_font_character_property()
+//Used as arguments for scribble_set_glyph_property() and scribble_get_glyph_property()
 #macro SCRIBBLE_GLYPH_X_OFFSET                    __E_SCRIBBLE_GLYPH.DX
 #macro SCRIBBLE_GLYPH_Y_OFFSET                    __E_SCRIBBLE_GLYPH.DY
 #macro SCRIBBLE_GLYPH_SEPARATION                  __E_SCRIBBLE_GLYPH.SHF
