@@ -1,9 +1,9 @@
-//  Scribble v-3.2.3
+//  Scribble v3.2.3
 //  2019/03/16
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
-//  Experimental version for GMS1.4.9999 by @DragoniteSpam
+//  Backwards ported by @DragoniteSpam to 1.4.9999 so if it doesn't work yell at him
 
 gml_pragma("global", "__scribble_config();");
 

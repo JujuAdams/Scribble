@@ -3,9 +3,70 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
+  <datafiles number="3" name="datafiles">
+    <datafiles number="3" name="Fonts">
+      <datafile>
+        <name>fChineseTest.yy</name>
+        <exists>-1</exists>
+        <size>777493</size>
+        <exportAction>2</exportAction>
+        <exportDir></exportDir>
+        <overwrite>0</overwrite>
+        <freeData>-1</freeData>
+        <removeEnd>0</removeEnd>
+        <store>0</store>
+        <ConfigOptions>
+          <Config name="Default">
+            <CopyToMask>9223372036854775807</CopyToMask>
+          </Config>
+        </ConfigOptions>
+        <filename>fChineseTest.yy</filename>
+      </datafile>
+      <datafile>
+        <name>fTestA.yy</name>
+        <exists>-1</exists>
+        <size>56850</size>
+        <exportAction>2</exportAction>
+        <exportDir></exportDir>
+        <overwrite>0</overwrite>
+        <freeData>-1</freeData>
+        <removeEnd>0</removeEnd>
+        <store>0</store>
+        <ConfigOptions>
+          <Config name="Default">
+            <CopyToMask>9223372036854775807</CopyToMask>
+          </Config>
+        </ConfigOptions>
+        <filename>fTestA.yy</filename>
+      </datafile>
+      <datafile>
+        <name>fTestB.yy</name>
+        <exists>-1</exists>
+        <size>60934</size>
+        <exportAction>2</exportAction>
+        <exportDir></exportDir>
+        <overwrite>0</overwrite>
+        <freeData>-1</freeData>
+        <removeEnd>0</removeEnd>
+        <store>0</store>
+        <ConfigOptions>
+          <Config name="Default">
+            <CopyToMask>9223372036854775807</CopyToMask>
+          </Config>
+        </ConfigOptions>
+        <filename>fTestB.yy</filename>
+      </datafile>
+    </datafiles>
+  </datafiles>
   <NewExtensions/>
-  <sounds name="sound"/>
-  <sprites name="sprites"/>
+  <sounds name="sound">
+    <sound>sound\sndCrank</sound>
+    <sound>sound\sndSwitch</sound>
+  </sounds>
+  <sprites name="sprites">
+    <sprite>sprites\sCoin</sprite>
+    <sprite>sprites\sSpriteFont</sprite>
+  </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
   <scripts name="scripts">
@@ -40,9 +101,38 @@
       <script>scripts\scribble_get_glyph_property.gml</script>
       <script>scripts\scribble_set_glyph_property.gml</script>
     </scripts>
+    <script>scripts\play_sound_example.gml</script>
   </scripts>
+  <shaders name="shaders">
+    <shader type="GLSLES">shaders\shScribble.shader</shader>
+  </shaders>
+  <objects name="objects">
+    <objects name="Beginner">
+      <object>objects\oInit</object>
+      <object>objects\oExample</object>
+    </objects>
+    <objects name="Intermediate">
+      <object>objects\oInitIntermediate</object>
+      <object>objects\oExampleIntermediate</object>
+    </objects>
+    <objects name="Advanced">
+      <object>objects\oInitAdvanced</object>
+      <object>objects\oExampleAdvanced</object>
+    </objects>
+  </objects>
   <rooms name="rooms">
-    <room>rooms\room0</room>
+    <rooms name="Beginner">
+      <room>rooms\rInit</room>
+      <room>rooms\rExample</room>
+    </rooms>
+    <rooms name="Intermediate">
+      <room>rooms\rInitIntermediate</room>
+      <room>rooms\rExampleIntermediate</room>
+    </rooms>
+    <rooms name="Advanced">
+      <room>rooms\rInitAdvanced</room>
+      <room>rooms\rExampleAdvanced</room>
+    </rooms>
   </rooms>
   <constants number="38">
     <constant name="SCRIBBLE_INIT_START">0</constant>
