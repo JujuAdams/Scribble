@@ -1,6 +1,15 @@
-/// @param fontName
-/// @param character
-/// @param property
+/// Returns a property value for a character in a font previously added to Scribble
+///
+/// Three properties are available:
+/// 1) SCRIBBLE_GLYPH_X_OFFSET   - The relative x-position to display the glyph
+/// 2) SCRIBBLE_GLYPH_Y_OFFSET   - The relative y-position to display the glyph
+/// 3) SCRIBBLE_GLYPH_SEPARATION - The effective width of the glyph
+///
+/// @param fontName    The font name (as a string) of the font
+/// @param character   The character (as a string)
+/// @param property    The property to return. See description for more details
+///
+/// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _font      = argument0;
 var _character = argument1;

@@ -1,5 +1,9 @@
-/// @param name
-/// @param index
+/// Defines a flag name, allowing for behaviours to be set per-character when calling scribble_create()
+///
+///
+///
+/// @param name    Event name, as a string
+/// @param index   Integer flag index, from 0 to SCRIBBLE_MAX_FLAGS-1 inclusive
 
 var _name  = argument0;
 var _index = argument1;
@@ -16,9 +20,9 @@ if ( !is_string(_name) )
     exit;
 }
 
-if ( !is_real(_index) || (_index != floor(_index)) || (_index < 0) || (_index > SCRIBBLE_MAX_FLAGS) )
+if ( !is_real(_index) || (_index != floor(_index)) || (_index < 0) || (_index > (SCRIBBLE_MAX_FLAGS-1)) )
 {
-    show_error( "Custom flag indexes should be an integer from 0 to " + string(SCRIBBLE_MAX_FLAGS) + ".\nTo increase the maximum number of flags, see __scribble_config()\n(Index was \"" + string(_index) + "\"\n ", false );
+    show_error( "Custom flag indexes should be an integer from 0 to " + string(SCRIBBLE_MAX_FLAGS-1) + " (inclusive).\nTo increase the maximum number of flags, see __scribble_config()\n(Index was \"" + string(_index) + "\"\n ", false );
     exit;
 }
 
