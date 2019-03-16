@@ -9,7 +9,6 @@
 /// 2 = State      : Text fully faded out
 ///
 /// You can start fade effects using scribble_typewriter_in() and scribble_typewriter_out().
-/// Please note that to advance the typewriter fade effect for a Scribble data structure, scribble_step() must be called.
 ///
 /// @param json   The Scribble data structure to get the typewriter state from
 

@@ -12,11 +12,5 @@ var _string  = "[ev,sound,sndCrank][rainbow]abcdef[] [c_test]ABCDEF[]##";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][flag,1]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/flag,1]LAZY [fTestB]DOG.";
 
 //Build Scribble data structure that describes how the text should be laid out
-text = scribble_create( _string, -1, 450, "c_xanadu", "fTestB", fa_center );
-
-//Set this text to be displayed typewriter style, fading in per character
-scribble_typewriter_in( text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3 );
-
-//Set how the text should be aligned relative to the draw coordinate
-//Here, we're setting the alignment so that the middle/centre of the box is at the draw coordinate
-scribble_set_box_alignment( text, fa_center, fa_middle );
+//Since we're not specifying what font to use, Scribble will default to the first font added during initialisation (fTestA)
+text = scribble_create( _string, -1, 450 );

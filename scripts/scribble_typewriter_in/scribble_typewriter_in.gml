@@ -2,7 +2,6 @@
 ///
 /// This script sets a Scribble data structure to fade in progressively over time.
 /// Please note that this immediately sets visibility of the text to 0%.
-/// To advance the typewriter fade effect for a Scribble data structure, scribble_step() must be called.
 ///
 /// Three modes are supported:
 /// 1) SCRIBBLE_TYPEWRITER_WHOLE         - Fades in the entire textbox at the same time

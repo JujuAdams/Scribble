@@ -1,4 +1,3 @@
-//Draw the text
 scribble_draw( text, x, y );
 
 //Find the size and position of the bounding box (plus a bit) and draw it
