@@ -1,6 +1,6 @@
 /// @param name
 /// @param colour
-/// @param [gamemakerBGR]
+/// @param [colourIsGameMakerBGR]
 
 var _name   = argument[0];
 var _colour = argument[1];

@@ -1,37 +1,41 @@
-/// @description Creates a Scribble data structure from a text string
-/// 
+/// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw()
+///
+/// @param string              The string to be parsed. See below for the various in-line formatting commands
+/// @param [minLineHeight]     The minimum line height for each line of text. Defaults to the height of a space character of the default font
+/// @param [maxLineWidth]      The maximum line width for each line of text. Use a negative number for no limit. Defaults to no limit
+/// @param [startingColour]    The (initial) blend colour for the text. Defaults to white
+/// @param [startingFont]      The (initial) font for the text. The font name should be provided as a string. Defaults to Scribble's global default font (the first font added during initialisation)
+/// @param [startingHAlign]    The (initial) horizontal alignment for the test. Defaults to left justified
+/// @param [dataFieldsArray]   The data field array that'll be passed into the shader to control various effects. Defaults to values set in __scribble_config()
+///
+/// All optional arguments accept <undefined> to indicate that the default value should be used.
+///
 /// Formatting commands:
-/// []                              : Reset formatting to defaults
-/// [<name of colour>]              : Set colour
-/// [#<hex code>]                   : Set colour via a hexcode, using normal RGB values (#RRGGBB)
-/// [/colour]                       : Reset colour to the default
-/// [/c]                            : As above
-/// [<name of font>]                : Set font
-/// [/font]                         : Reset font to the default
-/// [/f]                            : As above
-/// [<name of sprite>,<image>]      : Insert a static sprite using the specified image index
-/// [fa_left]                       : Align horizontally to the left
-/// [fa_right]                      : Align horizontally to the right
-/// [fa_center]                     : Align centrally
-/// [fa_centre]                     : As above
-/// [wave]                          : Set text to wave up and down
-/// [/wave]                         : Unset wave animation
-/// [shake]                         : Set text to shake
-/// [/shake]                        : Unset shake animation
-/// [rainbow]                       : Set text to cycle through rainbow colours
-/// [/rainbow]                      : Unset rainbow animation
-/// [flag,<index>]                  : Set a formatting flag with the specified index N.B. flags 0,1,2 are reserved for wave/shake/rainbow effects respectively
-/// [/flag,<index>]                 : Unset a formatting flag with the specified index
-/// [event,<name>,<arg0>,<arg1>...] : Execute a script bound to an event name (previously defined using scribble_add_event()) with the specified arguments
-/// [ev,<name>,<arg0>,<arg1>...]    : As above
-/// 
-/// @param string
-/// @param [minLineHeight]
-/// @param [maxLineWidth]
-/// @param [startingColour]
-/// @param [startingFont]
-/// @param [startingHAlign]
-/// @param [dataFieldsArray]
+/// []                                Reset formatting to defaults
+/// [<name of colour>]                Set colour
+/// [#<hex code>]                     Set colour via a hexcode, using normal RGB values (#RRGGBB)
+/// [/colour]                         Reset colour to the default
+/// [/c]                              As above
+/// [<name of font>]                  Set font
+/// [/font]                           Reset font to the default
+/// [/f]                              As above
+/// [<name of sprite>,<image>]        Insert a static sprite using the specified image index
+/// [fa_left]                         Align horizontally to the left
+/// [fa_right]                        Align horizontally to the right
+/// [fa_center]                       Align centrally
+/// [fa_centre]                       As above
+/// [wave]                            Set text to wave up and down
+/// [/wave]                           Unset wave animation
+/// [shake]                           Set text to shake
+/// [/shake]                          Unset shake animation
+/// [rainbow]                         Set text to cycle through rainbow colours
+/// [/rainbow]                        Unset rainbow animation
+/// [flag,<index>]                    Set a formatting flag with the specified index N.B. flags 0,1,2 are reserved for wave/shake/rainbow effects respectively
+/// [/flag,<index>]                   Unset a formatting flag with the specified index
+/// [event,<name>,<arg0>,<arg1>...]   Execute a script bound to an event name (previously defined using scribble_add_event()) with the specified arguments
+/// [ev,<name>,<arg0>,<arg1>...]      As above
+
+
 
 if ( !variable_global_exists( "__scribble_init_complete" ) )
 {
@@ -112,6 +116,7 @@ if ( is_string( _def_colour ) )
     }
 }
 
+//Build an array that contains data that'll (eventually) get sent into the shader
 var _data_fields = array_create( SCRIBBLE_MAX_DATA_FIELDS );
 if ( is_array( _data_fields_in ) )
 {

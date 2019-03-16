@@ -1,12 +1,19 @@
-/// @param json
-/// @param [x]
-/// @param [y]
-/// @param [xscale]
-/// @param [yscale]
-/// @param [angle]
-/// @param [colour]
-/// @param [alpha]
-/// @param [premultiplyAlpha]
+/// Draws a Scribble data structure created with scribble_create()
+///
+/// If compatibility mode is switched on (SCRIBBLE_COMPATIBILITY_DRAW), all dynamic effects will be inactive
+/// Compatibility mode is intended for debugging rendering glitches on platforms that may have vertex buffer bugs in GameMaker
+///
+/// @param json                 The Scribble data structure to be drawn. See scribble_create()
+/// @param [x]                  The x position in the room to draw at. Defaults to 0
+/// @param [y]                  The y position in the room to draw at. Defaults to 0
+/// @param [xscale]             The horizontal scaling of the text. Defaults to the value set in __scribble_config()
+/// @param [yscale]             The vertical scaling of the text. Defaults to the value set in __scribble_config()
+/// @param [angle]              The rotation of the text. Defaults to the value set in __scribble_config()
+/// @param [colour]             The blend colour for the text. Defaults to draw_get_colour()
+/// @param [alpha]              The alpha blend for the text. Defaults to draw_get_alpha()
+/// @param [premultiplyAlpha]   Whether to multiply the RGB channels by the resulting alpha value in the shader. Useful for fixing blending defects
+///
+/// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json   = argument[0];
 var _x      = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;

@@ -6,8 +6,8 @@
     "children": [
         "acb26a39-8033-4289-87d0-228ed7921bc8",
         "3d8687c3-8ee1-4113-b3fd-792a133e900a",
-        "aa978402-d26f-4c96-9d71-9d3ae1229413",
-        "e96eec5d-efb0-4a51-8fc4-4ba5d3b2e29f"
+        "e96eec5d-efb0-4a51-8fc4-4ba5d3b2e29f",
+        "9d9821ed-c862-4ad3-b808-0ad07915decb"
     ],
     "filterType": "GMScript",
     "folderName": "Scribble",

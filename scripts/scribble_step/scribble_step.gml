@@ -1,7 +1,7 @@
-/// @description Text typewriter-ing
+/// 
 ///
 /// @param json
-/// @param stepSize
+/// @param [stepSize]
 
 var _json      = argument[0];
 var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : 1;

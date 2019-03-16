@@ -1,3 +1,13 @@
+/// Completes initialisation for Scribble
+/// This script should be called after scribble_init_start() and scribble_init_font() / scribble_init_spritefont()
+///
+/// This script achieves the following things:
+/// 1) Works out if we need GMS2.2.1+ fixes
+/// 2) Packs fonts onto surfaces so we can draw glyphs more easily and more efficiently
+/// 3) Process glyph data from .yy files and store it in lots of data structures
+///
+/// Once this script has been run, Scribble is ready for use!
+
 var _timer = get_timer();
 
 if ( !variable_global_exists( "__scribble_init_complete" ) )
@@ -107,6 +117,8 @@ repeat( _font_count )
 #endregion
 
 
+
+#region Figure out where to place the fonts
 
 show_debug_message( "Scribble: " + string( ds_priority_size( _priority_queue ) ) + " font(s) to pack" );
 
@@ -245,7 +257,11 @@ while( !ds_priority_empty( _priority_queue ) )
 
 ds_priority_destroy( _priority_queue );
 
+#endregion
 
+
+
+#region Actually draw the fonts to surfaces
 
 var _surface_count = array_length_1d( _surface_array );
 show_debug_message( "Scribble: " + string( _surface_count ) + " surface(s) needed" );
@@ -308,7 +324,11 @@ for( var _s = 0; _s < _surface_count; _s++ )
     
 show_debug_message( "Scribble: Surface rendering finished" );
 
+#endregion
 
+
+
+#region Process glyph data from .yy files
 
 for( var _font = 0; _font < _font_count; _font++ )
 {
@@ -647,6 +667,8 @@ for( var _font = 0; _font < _font_count; _font++ )
     
     show_debug_message( "Scribble: \"" + _name + "\" finished" );
 }
+
+#endregion
 
 
 

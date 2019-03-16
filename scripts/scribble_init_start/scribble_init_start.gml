@@ -1,5 +1,20 @@
-/// @param fontDirectory
-/// @param texturePageSize
+/// Starts initialisation for Scribble
+/// This script should be called before scribble_init_font()/_scribble_init_spritefont() and scribble_init_end()
+///
+/// @param fontDirectory     Directory to look in (relative to game_save_id) for font .yy files
+/// @param texturePageSize   Maximum surface size that Scribble uses to pack fonts
+///
+/// This script achieves the following things:
+/// 1) Define the default font directory to pull font .yy files from
+/// 2) Define the maximum texture page size available for Scribble
+/// 3) Create global data structures to store data
+/// 4) Define custom colours analogues for GM's native colour constants
+/// 5) Define flag names for default effects - wave, shake, rainbow
+/// 6) Creates a vertex format
+/// 7) Cache uniform indexes for the shScribble shader
+/// 8) Build a lookup table for decoding hexcode colours in scribble_create()
+///
+/// Initialisation is only fully complete once scribble_init_end() is called
 
 if ( variable_global_exists( "__scribble_init_complete" ) )
 {
@@ -50,24 +65,6 @@ global.__scribble_flags             = ds_map_create();  //Bidirectional lookup
 global.__scribble_default_font      = "";
 global.__scribble_init_complete     = false;
 
-//Cache uniform indexes
-global.__scribble_uniform_pma             = shader_get_uniform( shScribble, "u_fPremultiplyAlpha"   );
-global.__scribble_uniform_time            = shader_get_uniform( shScribble, "u_fTime"               );
-global.__scribble_uniform_colour_blend    = shader_get_uniform( shScribble, "u_vColourBlend"        );
-global.__scribble_uniform_char_t          = shader_get_uniform( shScribble, "u_fCharFadeT"          );
-global.__scribble_uniform_char_smoothness = shader_get_uniform( shScribble, "u_fCharFadeSmoothness" );
-global.__scribble_uniform_line_t          = shader_get_uniform( shScribble, "u_fLineFadeT"          );
-global.__scribble_uniform_line_smoothness = shader_get_uniform( shScribble, "u_fLineFadeSmoothness" );
-global.__scribble_uniform_data_fields     = shader_get_uniform( shScribble, "u_aDataFields"         );
-
-//Create a vertex format for our text
-vertex_format_begin();
-vertex_format_add_position();
-vertex_format_add_normal(); //X = character index, Y = line index, Z = flags
-vertex_format_add_colour();
-vertex_format_add_texcoord();
-global.__scribble_vertex_format = vertex_format_end();
-
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_add_custom_colour( "c_aqua",    c_aqua    );
 scribble_add_custom_colour( "c_black",   c_black   );
@@ -93,31 +90,49 @@ scribble_add_custom_flag_name( "wave"   , 0 );
 scribble_add_custom_flag_name( "shake"  , 1 );
 scribble_add_custom_flag_name( "rainbow", 2 );
 
+//Create a vertex format for our text
+vertex_format_begin();
+vertex_format_add_position();
+vertex_format_add_normal(); //X = character index, Y = line index, Z = flags
+vertex_format_add_colour();
+vertex_format_add_texcoord();
+global.__scribble_vertex_format = vertex_format_end();
+
+//Cache uniform indexes
+global.__scribble_uniform_pma             = shader_get_uniform( shScribble, "u_fPremultiplyAlpha"   );
+global.__scribble_uniform_time            = shader_get_uniform( shScribble, "u_fTime"               );
+global.__scribble_uniform_colour_blend    = shader_get_uniform( shScribble, "u_vColourBlend"        );
+global.__scribble_uniform_char_t          = shader_get_uniform( shScribble, "u_fCharFadeT"          );
+global.__scribble_uniform_char_smoothness = shader_get_uniform( shScribble, "u_fCharFadeSmoothness" );
+global.__scribble_uniform_line_t          = shader_get_uniform( shScribble, "u_fLineFadeT"          );
+global.__scribble_uniform_line_smoothness = shader_get_uniform( shScribble, "u_fLineFadeSmoothness" );
+global.__scribble_uniform_data_fields     = shader_get_uniform( shScribble, "u_aDataFields"         );
+
 //Hex converter array
 var _min = ord("0");
 var _max = ord("f");
 global.__scribble_hex_min = _min;
 global.__scribble_hex_max = _max;
 global.__scribble_hex_array = array_create( 1 + _max - _min );
-global.__scribble_hex_array[@ ord("0") - _min ] =  0;
-global.__scribble_hex_array[@ ord("1") - _min ] =  1;
-global.__scribble_hex_array[@ ord("2") - _min ] =  2;
-global.__scribble_hex_array[@ ord("3") - _min ] =  3;
-global.__scribble_hex_array[@ ord("4") - _min ] =  4;
-global.__scribble_hex_array[@ ord("5") - _min ] =  5;
-global.__scribble_hex_array[@ ord("6") - _min ] =  6;
-global.__scribble_hex_array[@ ord("7") - _min ] =  7;
-global.__scribble_hex_array[@ ord("8") - _min ] =  8;
-global.__scribble_hex_array[@ ord("9") - _min ] =  9;
-global.__scribble_hex_array[@ ord("A") - _min ] = 10;
-global.__scribble_hex_array[@ ord("B") - _min ] = 11;
-global.__scribble_hex_array[@ ord("C") - _min ] = 12;
-global.__scribble_hex_array[@ ord("D") - _min ] = 13;
-global.__scribble_hex_array[@ ord("E") - _min ] = 14;
-global.__scribble_hex_array[@ ord("F") - _min ] = 15;
-global.__scribble_hex_array[@ ord("a") - _min ] = 10;
-global.__scribble_hex_array[@ ord("b") - _min ] = 11;
-global.__scribble_hex_array[@ ord("c") - _min ] = 12;
-global.__scribble_hex_array[@ ord("d") - _min ] = 13;
-global.__scribble_hex_array[@ ord("e") - _min ] = 14;
-global.__scribble_hex_array[@ ord("f") - _min ] = 15;
+global.__scribble_hex_array[@ ord("0") - _min ] =  0; //ascii  48 = array  0
+global.__scribble_hex_array[@ ord("1") - _min ] =  1; //ascii  49 = array  1
+global.__scribble_hex_array[@ ord("2") - _min ] =  2; //ascii  50 = array  2
+global.__scribble_hex_array[@ ord("3") - _min ] =  3; //ascii  51 = array  3
+global.__scribble_hex_array[@ ord("4") - _min ] =  4; //ascii  52 = array  4
+global.__scribble_hex_array[@ ord("5") - _min ] =  5; //ascii  53 = array  5
+global.__scribble_hex_array[@ ord("6") - _min ] =  6; //ascii  54 = array  6
+global.__scribble_hex_array[@ ord("7") - _min ] =  7; //ascii  55 = array  7
+global.__scribble_hex_array[@ ord("8") - _min ] =  8; //ascii  56 = array  8
+global.__scribble_hex_array[@ ord("9") - _min ] =  9; //ascii  57 = array  9
+global.__scribble_hex_array[@ ord("A") - _min ] = 10; //ascii  65 = array 17
+global.__scribble_hex_array[@ ord("B") - _min ] = 11; //ascii  66 = array 18
+global.__scribble_hex_array[@ ord("C") - _min ] = 12; //ascii  67 = array 19
+global.__scribble_hex_array[@ ord("D") - _min ] = 13; //ascii  68 = array 20
+global.__scribble_hex_array[@ ord("E") - _min ] = 14; //ascii  69 = array 21
+global.__scribble_hex_array[@ ord("F") - _min ] = 15; //ascii  70 = array 22
+global.__scribble_hex_array[@ ord("a") - _min ] = 10; //ascii  97 = array 49
+global.__scribble_hex_array[@ ord("b") - _min ] = 11; //ascii  98 = array 50
+global.__scribble_hex_array[@ ord("c") - _min ] = 12; //ascii  99 = array 51
+global.__scribble_hex_array[@ ord("d") - _min ] = 13; //ascii 100 = array 52
+global.__scribble_hex_array[@ ord("e") - _min ] = 14; //ascii 101 = array 53
+global.__scribble_hex_array[@ ord("f") - _min ] = 15; //ascii 102 = array 54
