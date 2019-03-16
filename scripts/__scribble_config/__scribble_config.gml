@@ -1,5 +1,5 @@
-//  Scribble (light) v3.1.1
-//  2019/03/11
+//  Scribble (light) v3.1.2
+//  2019/03/16
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
@@ -54,8 +54,8 @@ enum E_SCRIBBLE_BOX
 
 #region -- Internal Definitions --
 
-#macro __SCRIBBLE_VERSION "3.1.1 (light)"
-#macro __SCRIBBLE_DATE    "2019/03/11"
+#macro __SCRIBBLE_VERSION "3.1.2 (light)"
+#macro __SCRIBBLE_DATE    "2019/03/16"
 
 enum __E_SCRIBBLE_FONT
 {
