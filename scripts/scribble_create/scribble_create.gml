@@ -31,6 +31,7 @@
 /// @param [startingColour]
 /// @param [startingFont]
 /// @param [startingHAlign]
+/// @param [dataFieldsArray]
 
 if ( !variable_global_exists( "__scribble_init_complete" ) )
 {
@@ -52,6 +53,7 @@ var _width_limit      = ((argument_count > 2) && (argument[2] != undefined))? ar
 var _def_colour       = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : c_white;
 var _def_font         = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : global.__scribble_default_font;
 var _def_halign       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : fa_left;
+var _data_fields_in   = ((argument_count > 6) &&    is_array(argument[6])  )? argument[6] : undefined;
 
 
 
@@ -108,6 +110,27 @@ if ( is_string( _def_colour ) )
         show_error( "The starting colour \"" + _def_colour + "\" has not been defined as a custom colour. Defaulting to c_white.\n ", false );
         _def_colour = c_white;
     }
+}
+
+var _data_fields = array_create( SCRIBBLE_MAX_DATA_FIELDS );
+if ( is_array( _data_fields_in ) )
+{
+    var _length = array_length_1d( _data_fields_in );
+    if ( _length > SCRIBBLE_MAX_DATA_FIELDS )
+    {
+        show_error( "Length of custom data field array (" + string( _length ) + ") is greater than SCRIBBLE_MAX_DATA_FIELDS (" + string(SCRIBBLE_MAX_DATA_FIELDS) + ")\n ", false )
+        _length = SCRIBBLE_MAX_DATA_FIELDS;
+    }
+    array_copy( _data_fields, 0, _data_fields_in, 0, _length );
+}
+else
+{
+    _data_fields[0] = SCRIBBLE_DEFAULT_WAVE_SIZE;
+    _data_fields[1] = SCRIBBLE_DEFAULT_WAVE_FREQUENCY;
+    _data_fields[2] = SCRIBBLE_DEFAULT_WAVE_SPEED;
+    _data_fields[3] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
+    _data_fields[4] = SCRIBBLE_DEFAULT_SHAKE_SPEED;
+    _data_fields[5] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
 }
 
 #endregion
@@ -207,13 +230,6 @@ _json[| __E_SCRIBBLE.TW_SMOOTHNESS      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNE
 _json[| __E_SCRIBBLE.CHAR_FADE_T        ] = 1;
 _json[| __E_SCRIBBLE.LINE_FADE_T        ] = 1;
 
-var _data_fields = array_create( SCRIBBLE_MAX_FLAGS );
-_data_fields[0] = SCRIBBLE_DEFAULT_WAVE_SIZE;
-_data_fields[1] = SCRIBBLE_DEFAULT_WAVE_FREQUENCY;
-_data_fields[2] = SCRIBBLE_DEFAULT_WAVE_SPEED;
-_data_fields[3] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
-_data_fields[4] = SCRIBBLE_DEFAULT_SHAKE_SPEED;
-_data_fields[5] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
 _json[| __E_SCRIBBLE.__SECTION3         ] = "-- Animation --";
 _json[| __E_SCRIBBLE.DATA_FIELDS        ] = _data_fields;
 _json[| __E_SCRIBBLE.ANIMATION_TIME     ] = 0;
