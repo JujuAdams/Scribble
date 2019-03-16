@@ -23,7 +23,8 @@ uniform float u_aDataFields[MAX_DATA_FIELDS];
 //1 = wave frequency
 //2 = wave speed
 //3 = shake size
-//4 = rainbow weight
+//4 = shake speed
+//5 = rainbow weight
 
 float rand( vec2 co )
 {
@@ -56,9 +57,17 @@ void applyWave( float amplitude, float frequency, float speed, inout vec4 pos )
     pos.y += amplitude*sin( frequency*in_Normal.x + speed*u_fTime );
 }
 
-void applyShake( float magnitude, inout vec4 pos )
+void applyShake( float magnitude, float speed, inout vec4 pos )
 {
-    pos.xy += magnitude*( vec2( rand( vec2( in_Normal.x + 2.0*u_fTime, in_Normal.x - 0.5*u_fTime ) ), rand( vec2( in_Normal.x - 2.0*u_fTime, in_Normal.x + 0.5*u_fTime ) ) ) - 0.5 );
+    float time = u_fTime*speed + 0.5;
+    float floorTime = floor( time );
+    float merge = 1.0 - abs(2.0*(time - floorTime) - 1.0);
+    
+    //Use some misc prime numbers to try to get a varied-looking shake
+    vec2 delta = vec2( rand( vec2( 149.0*in_Normal.x + 13.0*floorTime, 727.0*in_Normal.x - 331.0*floorTime ) ),
+                       rand( vec2( 501.0*in_Normal.x - 19.0*floorTime, 701.0*in_Normal.x + 317.0*floorTime ) ) );
+    
+    pos.xy += magnitude*merge*(2.0*delta-1.0);
 }
 
 void applyRainbow( float weight, inout vec4 colour )
@@ -109,12 +118,12 @@ void main()
     //Vertex animation
     vec4 pos = vec4( in_Position.xyz, 1.0 );
     applyWave( flagArray[0]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos );
-    applyShake( flagArray[1]*u_aDataFields[3], pos );
+    applyShake( flagArray[1]*u_aDataFields[3], u_aDataFields[4], pos );
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
     
     //Colour
     v_vColour = in_Colour;
-    applyRainbow( flagArray[2]*u_aDataFields[4], v_vColour );
+    applyRainbow( flagArray[2]*u_aDataFields[5], v_vColour );
     applyColourBlend( u_vColourBlend, v_vColour );
     applyPerCharacterFade( u_fCharFadeT, u_fCharFadeSmoothness, v_vColour );
     applyPerLineFade( u_fLineFadeT, u_fLineFadeSmoothness, v_vColour );

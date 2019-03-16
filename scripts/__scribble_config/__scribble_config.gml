@@ -15,14 +15,15 @@
 #macro SCRIBBLE_HASH_NEWLINE                  true //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 
 //Animation settings
-#macro SCRIBBLE_DEFAULT_WAVE_SIZE             4
+#macro SCRIBBLE_DEFAULT_WAVE_SIZE              4
 #macro SCRIBBLE_DEFAULT_WAVE_FREQUENCY        50
 #macro SCRIBBLE_DEFAULT_WAVE_SPEED            10
-#macro SCRIBBLE_DEFAULT_SHAKE_SIZE            4
-#macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT        0.5
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED      0.3
+#macro SCRIBBLE_DEFAULT_SHAKE_SIZE             4
+#macro SCRIBBLE_DEFAULT_SHAKE_SPEED           22
+#macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT         0.5
+#macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3
+#macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS 3
 
 //Typewriter mode constants
 //Used as arguments for scribble_typewriter_in() and scribble_typewrite_out()
