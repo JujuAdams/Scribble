@@ -59,7 +59,7 @@ global.__scribble_uniform_char_t          = shader_get_uniform( shScribble, "u_f
 global.__scribble_uniform_char_smoothness = shader_get_uniform( shScribble, "u_fCharFadeSmoothness" );
 global.__scribble_uniform_line_t          = shader_get_uniform( shScribble, "u_fLineFadeT"          );
 global.__scribble_uniform_line_smoothness = shader_get_uniform( shScribble, "u_fLineFadeSmoothness" );
-global.__scribble_uniform_flag_data       = shader_get_uniform( shScribble, "u_aFlagData"           );
+global.__scribble_uniform_data_fields     = shader_get_uniform( shScribble, "u_aDataFields"         );
 
 //Create a vertex format for our text
 vertex_format_begin();

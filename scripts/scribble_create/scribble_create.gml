@@ -195,12 +195,14 @@ _json[| __E_SCRIBBLE.TW_SMOOTHNESS      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNE
 _json[| __E_SCRIBBLE.CHAR_FADE_T        ] = 1;
 _json[| __E_SCRIBBLE.LINE_FADE_T        ] = 1;
 
-var _flag_data = array_create( SCRIBBLE_MAX_FLAGS );
-_flag_data[0] = SCRIBBLE_DEFAULT_WAVE_SIZE;
-_flag_data[1] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
-_flag_data[2] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
+var _data_fields = array_create( SCRIBBLE_MAX_FLAGS );
+_data_fields[0] = SCRIBBLE_DEFAULT_WAVE_SIZE;
+_data_fields[1] = SCRIBBLE_DEFAULT_WAVE_FREQUENCY;
+_data_fields[2] = SCRIBBLE_DEFAULT_WAVE_SPEED;
+_data_fields[3] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
+_data_fields[4] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
 _json[| __E_SCRIBBLE.__SECTION3         ] = "-- Animation --";
-_json[| __E_SCRIBBLE.FLAG_DATA          ] = _flag_data;
+_json[| __E_SCRIBBLE.DATA_FIELDS        ] = _data_fields;
 _json[| __E_SCRIBBLE.ANIMATION_TIME     ] = 0;
 
 _json[| __E_SCRIBBLE.__SECTION4         ] = "-- Lists --";
@@ -690,7 +692,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
         _word_array[ __E_SCRIBBLE_WORD.LENGTH         ] = _substr_length; //Include the separator character!
         _word_array[ __E_SCRIBBLE_WORD.FONT           ] = _text_font;
         _word_array[ __E_SCRIBBLE_WORD.COLOUR         ] = _text_colour;
-        _word_array[ __E_SCRIBBLE_WORD.FLAG_DATA      ] = _text_flags;
+        _word_array[ __E_SCRIBBLE_WORD.FLAGS          ] = _text_flags;
         _word_array[ __E_SCRIBBLE_WORD.NEXT_SEPARATOR ] = "";
         
         //Add the word to the line list
@@ -842,9 +844,9 @@ repeat( _lines_size )
             _previous_font = "";
             
             var _char_pc     = _text_char / _max_char;
-            var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR    ];
-            var _flag_data   = _word_array[ __E_SCRIBBLE_WORD.FLAG_DATA ];
-            var _image       = _word_array[ __E_SCRIBBLE_WORD.IMAGE     ];
+            var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR ];
+            var _flag_data   = _word_array[ __E_SCRIBBLE_WORD.FLAGS  ];
+            var _image       = _word_array[ __E_SCRIBBLE_WORD.IMAGE  ];
             
             var _flags  = 0;
             var _offset = 1;
@@ -943,8 +945,8 @@ repeat( _lines_size )
             
             #region Add vertex data for each character in the string
             
-            var _colour    = _word_array[ __E_SCRIBBLE_WORD.COLOUR    ];
-            var _flag_data = _word_array[ __E_SCRIBBLE_WORD.FLAG_DATA ];
+            var _colour    = _word_array[ __E_SCRIBBLE_WORD.COLOUR ];
+            var _flag_data = _word_array[ __E_SCRIBBLE_WORD.FLAGS  ];
             
             var _flags  = 0;
             var _offset = 1;

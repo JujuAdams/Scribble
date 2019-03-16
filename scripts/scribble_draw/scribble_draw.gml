@@ -155,21 +155,21 @@ else
     }
     
     shader_set( shScribble );
-    shader_set_uniform_f( global.__scribble_uniform_pma            , _pma );
-    shader_set_uniform_f( global.__scribble_uniform_time           , _json[| __E_SCRIBBLE.ANIMATION_TIME ]*SCRIBBLE_ANIMATION_SPEED );
+    shader_set_uniform_f( global.__scribble_uniform_pma              , _pma );
+    shader_set_uniform_f( global.__scribble_uniform_time             , _json[| __E_SCRIBBLE.ANIMATION_TIME ]*SCRIBBLE_ANIMATION_SPEED );
     
-    shader_set_uniform_f( global.__scribble_uniform_char_t         , _char_t          );
-    shader_set_uniform_f( global.__scribble_uniform_char_smoothness, _char_smoothness );
+    shader_set_uniform_f( global.__scribble_uniform_char_t           , _char_t          );
+    shader_set_uniform_f( global.__scribble_uniform_char_smoothness  , _char_smoothness );
     
-    shader_set_uniform_f( global.__scribble_uniform_line_t         , _line_t          );
-    shader_set_uniform_f( global.__scribble_uniform_line_smoothness, _line_smoothness );
+    shader_set_uniform_f( global.__scribble_uniform_line_t           , _line_t          );
+    shader_set_uniform_f( global.__scribble_uniform_line_smoothness  , _line_smoothness );
     
-    shader_set_uniform_f( global.__scribble_uniform_colour_blend   , colour_get_red(   _colour )/255,
-                                                                     colour_get_green( _colour )/255,
-                                                                     colour_get_blue(  _colour )/255,
-                                                                     _alpha );
+    shader_set_uniform_f( global.__scribble_uniform_colour_blend     , colour_get_red(   _colour )/255,
+                                                                       colour_get_green( _colour )/255,
+                                                                       colour_get_blue(  _colour )/255,
+                                                                       _alpha );
     
-    shader_set_uniform_f_array( global.__scribble_uniform_flag_data, _json[| __E_SCRIBBLE.FLAG_DATA ] );
+    shader_set_uniform_f_array( global.__scribble_uniform_data_fields, _json[| __E_SCRIBBLE.DATA_FIELDS ] );
     
     for( var _i = 0; _i < _vbuff_count; _i++ )
     {

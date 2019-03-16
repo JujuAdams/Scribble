@@ -1,5 +1,5 @@
-const int   MAX_FLAGS = 6;                //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
-const float MAX_FLAGS_CHECK_VALUE = 32.0; //Must be set relative to the above constant: 2^(MAX_FLAGS-1)
+const int MAX_FLAGS = 6;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
+const int MAX_DATA_FIELDS = 6; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
 
 attribute vec3 in_Position;
 attribute vec3 in_Normal; //Character / Line index / Flags
@@ -11,14 +11,19 @@ varying vec4 v_vColour;
 
 uniform float u_fPremultiplyAlpha;
 uniform vec4  u_vColourBlend;
-uniform float u_aFlagData[MAX_FLAGS];
 uniform float u_fTime;
 uniform float u_fCharFadeT;
 uniform float u_fCharFadeSmoothness;
 uniform float u_fLineFadeT;
 uniform float u_fLineFadeSmoothness;
 
-
+uniform float u_aDataFields[MAX_DATA_FIELDS];
+//By default, the data fields are:
+//0 = wave size
+//1 = wave frequency
+//2 = wave speed
+//3 = shake size
+//4 = rainbow weight
 
 float rand( vec2 co )
 {
@@ -34,21 +39,21 @@ vec3 hsv2rgb( vec3 c )
 
 void unpackFlags( float flagValue, inout float array[MAX_FLAGS] )
 {
-    float check = MAX_FLAGS_CHECK_VALUE;
+    float check = pow( 2.0, float(MAX_FLAGS)-1.0 );
     for( int i = MAX_FLAGS-1; i >= 0; i-- )
     {
         if (flagValue >= check)
         {
-            array[i] = u_aFlagData[i];
+            array[i] = 1.0;
             flagValue -= check;
         }
         check /= 2.0;
     }
 }
 
-void applyWave( float amplitude, inout vec4 pos )
+void applyWave( float amplitude, float frequency, float speed, inout vec4 pos )
 {
-    pos.y += amplitude*sin( 10.*( in_Normal.x + u_fTime ) );
+    pos.y += amplitude*sin( frequency*in_Normal.x + speed*u_fTime );
 }
 
 void applyShake( float magnitude, inout vec4 pos )
@@ -103,13 +108,13 @@ void main()
     
     //Vertex animation
     vec4 pos = vec4( in_Position.xyz, 1.0 );
-    applyWave( flagArray[0], pos );
-    applyShake( flagArray[1], pos );
+    applyWave( flagArray[0]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos );
+    applyShake( flagArray[1]*u_aDataFields[3], pos );
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
     
     //Colour
     v_vColour = in_Colour;
-    applyRainbow( flagArray[2], v_vColour );
+    applyRainbow( flagArray[2]*u_aDataFields[4], v_vColour );
     applyColourBlend( u_vColourBlend, v_vColour );
     applyPerCharacterFade( u_fCharFadeT, u_fCharFadeSmoothness, v_vColour );
     applyPerLineFade( u_fLineFadeT, u_fLineFadeSmoothness, v_vColour );
