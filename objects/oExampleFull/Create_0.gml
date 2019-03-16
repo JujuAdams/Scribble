@@ -1,4 +1,4 @@
-//  Scribble (light) v3.2.0
+//  Scribble (light) v3.2.1
 //  2019/03/16
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
@@ -15,7 +15,7 @@ var _string  = "[ev,sound,sndCrank][rainbow]abcdef[] [c_test]ABCDEF[]##";
 text = scribble_create( _string, -1, 450, "c_xanadu", "fTestB", fa_center );
 
 //Set this text to be displayed typewriter style, fading in per character
-scribble_typewriter_in( text, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER );
+scribble_typewriter_in( text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3 );
 
 //Set how the text should be aligned relative to the draw coordinate
 //Here, we're setting the alignment so that the middle/centre of the box is at the draw coordinate
