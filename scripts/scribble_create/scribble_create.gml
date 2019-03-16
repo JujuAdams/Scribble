@@ -108,12 +108,13 @@ if ( _line_min_height < 0 ) _line_min_height = _array[ __E_SCRIBBLE_GLYPH.H ];
 //Try to use a custom colour if the "startingColour" parameter is a string
 if ( is_string( _def_colour ) )
 {
-    _def_colour = global.__scribble_colours[? _def_colour ];
-    if ( _def_colour == undefined )
+    var _value = global.__scribble_colours[? _def_colour ];
+    if ( _value == undefined )
     {
-        show_error( "The starting colour \"" + _def_colour + "\" has not been defined as a custom colour. Defaulting to c_white.\n ", false );
-        _def_colour = c_white;
+        show_error( "The starting colour (\"" + _def_colour + "\") has not been added as a custom colour. Defaulting to c_white.\n ", false );
+        _value = c_white;
     }
+    _def_colour = _value;
 }
 
 //Build an array that contains data that'll (eventually) get sent into the shader

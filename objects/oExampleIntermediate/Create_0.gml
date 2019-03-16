@@ -10,7 +10,7 @@ var _string  = "[rainbow]abcdef[] ABCDEF##";
     _string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][shake]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fTestB]DOG.";
 
-text = scribble_create( _string, -1, 450, "c_xanadu", "fTestB", fa_center );
+text = scribble_create( _string, -1, 450, c_teal, "fTestB", fa_center );
 
 //Set this text to be displayed typewriter style, fading in per character
 scribble_typewriter_in( text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3 );

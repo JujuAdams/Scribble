@@ -12,5 +12,5 @@ var _string  = "[rainbow]abcdef[] ABCDEF##";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][shake]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fTestB]DOG.";
 
 //Build Scribble data structure that describes how the text should be laid out
-//Since we're not specifying what font to use, Scribble will default to the first font added during initialisation (fTestA)
-text = scribble_create( _string, -1, 450 );
+//Since we're specifying what font to use, Scribble will use that font instead of the default (first font added during initialisation)
+text = scribble_create( _string, -1, 450, c_teal, "fTestB" );
