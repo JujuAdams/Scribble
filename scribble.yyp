@@ -490,7 +490,7 @@
             "Key": "baaa6707-db8c-472e-90b1-562acc7d6c47",
             "Value": {
                 "id": "1486762f-d20c-4164-8cba-c37959344e23",
-                "resourcePath": "scripts\\scribble_add_custom_flag_name\\scribble_add_custom_flag_name.yy",
+                "resourcePath": "scripts\\scribble_add_flag\\scribble_add_flag.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -506,7 +506,7 @@
             "Key": "bc334b9f-3e78-4213-8e02-f63a7b8776d3",
             "Value": {
                 "id": "fef4c8b6-b6af-4cbc-aa31-36f02613e354",
-                "resourcePath": "scripts\\scribble_add_custom_colour\\scribble_add_custom_colour.yy",
+                "resourcePath": "scripts\\scribble_add_colour\\scribble_add_colour.yy",
                 "resourceType": "GMScript"
             }
         },

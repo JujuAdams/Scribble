@@ -8,7 +8,7 @@
         "66869739-b0df-4075-8fc0-6ef5b09d0d07"
     ],
     "filterType": "GMObject",
-    "folderName": "Fun Optional Stuff",
+    "folderName": "Intermediate",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

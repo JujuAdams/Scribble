@@ -8,7 +8,7 @@
         "dbcf1cbf-cbd0-40fa-9a88-c5c9e80976c1"
     ],
     "filterType": "GMRoom",
-    "folderName": "Core",
+    "folderName": "Beginner",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

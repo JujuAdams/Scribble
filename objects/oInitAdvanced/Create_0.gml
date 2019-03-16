@@ -12,14 +12,18 @@ scribble_init_add_spritefont( "sSpriteFont", 3 );
 scribble_init_add_font( "fChineseTest" );
 scribble_init_end();
 
-scribble_add_custom_colour( "c_coquelicot", $ff3800 );
-scribble_add_custom_colour( "c_smaragdine", $50c875 );
-scribble_add_custom_colour( "c_xanadu"    , $738678 );
-scribble_add_custom_colour( "c_amaranth"  , $e52b50 );
+scribble_add_colour( "c_coquelicot", $ff3800 );
+scribble_add_colour( "c_smaragdine", $50c875 );
+scribble_add_colour( "c_xanadu"    , $738678 );
+scribble_add_colour( "c_amaranth"  , $e52b50 );
 
 //You can define custom events that execute scripts
 //Here's a basic example of playing a sound
 scribble_add_event( "sound", play_sound_example );
+
+//Flags can be used to set formatting state which can be used to control text effects
+//In this case, we're going to overwrite the default "shake" formatting flag with a new one called "rumble"
+scribble_add_flag( "rumble", 1 );
 
 //Some characters need a bit of fine adjustment in code since it's not always possible to fix this in the font itself
 scribble_set_glyph_property( "sSpriteFont", "f", SCRIBBLE_GLYPH_SEPARATION, -1, true );

@@ -8,7 +8,7 @@
         "9d531882-0dcf-4be8-8225-d8370e77e70b"
     ],
     "filterType": "GMRoom",
-    "folderName": "Fun Optional Stuff",
+    "folderName": "Intermediate",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

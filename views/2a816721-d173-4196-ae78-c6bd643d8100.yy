@@ -8,7 +8,7 @@
         "70d306e8-47c9-45bd-95c7-4f4fafd7f3d1"
     ],
     "filterType": "GMObject",
-    "folderName": "Advanced Things For Serious People",
+    "folderName": "Advanced",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

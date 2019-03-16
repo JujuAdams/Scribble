@@ -15,7 +15,7 @@ var _native = ((argument_count > 2) && (argument[2] != undefined))? argument[2] 
 
 if ( !variable_global_exists( "__scribble_init_complete" ) )
 {
-    show_error( "scribble_add_custom_colour() should be called after initialising Scribble.\n ", false );
+    show_error( "scribble_add_colour() should be called after initialising Scribble.\n ", false );
     exit;
 }
 
