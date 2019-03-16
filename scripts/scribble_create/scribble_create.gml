@@ -30,8 +30,8 @@
 /// [/shake]                          Unset shake animation
 /// [rainbow]                         Set text to cycle through rainbow colours
 /// [/rainbow]                        Unset rainbow animation
-/// [flag,<index>]                    Set a formatting flag with the specified index N.B. flags 0,1,2 are reserved for wave/shake/rainbow effects respectively
-/// [/flag,<index>]                   Unset a formatting flag with the specified index
+/// [<flag name>]                     Set a custom formatting flag
+/// [/<flag name>]                    Unset a custom formatting flag
 /// [event,<name>,<arg0>,<arg1>...]   Execute a script bound to an event name (previously defined using scribble_add_event()) with the specified arguments
 /// [ev,<name>,<arg0>,<arg1>...]      As above
 
@@ -392,22 +392,6 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     
                     _skip = true;
                 break;
-                #endregion
-                
-                #region Flags
-                
-                case "flag":
-                    var _parameter_count = ds_list_size( _parameters_list );
-                    if ( _parameter_count == 2 ) _text_flags[ real( _parameters_list[| 1] ) ] = true;
-                    _skip = true;
-                break;
-                
-                case "/flag":
-                    var _parameter_count = ds_list_size( _parameters_list );
-                    if ( _parameter_count == 2 ) _text_flags[ real( _parameters_list[| 1] ) ] = false;
-                    _skip = true;
-                break;
-                
                 #endregion
                 
                 #region Font Alignment
