@@ -126,6 +126,10 @@
     </objects>
   </objects>
   <rooms name="rooms">
+    <rooms name="Beginner">
+      <room>rooms\rInit</room>
+      <room>rooms\rExample</room>
+    </rooms>
     <rooms name="Intermediate">
       <room>rooms\rInitIntermediate</room>
       <room>rooms\rExampleIntermediate</room>
@@ -133,10 +137,6 @@
     <rooms name="Advanced">
       <room>rooms\rInitAdvanced</room>
       <room>rooms\rExampleAdvanced</room>
-    </rooms>
-    <rooms name="Beginner">
-      <room>rooms\rInit</room>
-      <room>rooms\rExample</room>
     </rooms>
   </rooms>
   <constants number="39">

@@ -61,7 +61,7 @@ if ( _typewriter_direction != 0 ) {
             _tw_pos = min( _tw_pos, _length );
             
             _json[| __E_SCRIBBLE.TW_POSITION ] = _tw_pos;
-            _json[| __E_SCRIBBLE.CHAR_FADE_T ] = ((_typewriter_direction < 0)? 1 : 0) + clamp( _tw_pos / _length, 0, 1 );
+            _json[| __E_SCRIBBLE.CHAR_FADE_T ] = ternary(_typewriter_direction < 0, 1, 0) + clamp( _tw_pos / _length, 0, 1 );
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_LINE:
@@ -129,10 +129,10 @@ if ( _typewriter_direction != 0 ) {
                 _events_previous_map[? _name ] = _event;
                 
                 //Record whether this particular trigger contains different data to the last time this same event type was triggered
-                _events_changed_map[? _name ] = (_old_data == undefined)? true : !array_equals( _data, _old_data );
+                _events_changed_map[? _name ] = ternary(_old_data == undefined, true, !array_equals( _data, _old_data ));
                 
                 //Record whether this trigger is a different trigger to the last one (but may contain the same data)
-                _events_different_map[? _name ] = (_old_event == undefined)? true : (_old_event != _event);
+                _events_different_map[? _name ] = ternary(_old_event == undefined, true, (_old_event != _event));
                 
                 ++_event;
             }
@@ -161,10 +161,10 @@ if ( _typewriter_direction != 0 ) {
                 _events_previous_map[? _name ] = _event;
                 
                 //Record whether this particular trigger contains different data to the last time this same event type was triggered
-                _events_changed_map[? _name ] = (_old_data == undefined)? true : !array_equals( _data, _old_data );
+                _events_changed_map[? _name ] = ternary(_old_data == undefined, true, !array_equals( _data, _old_data ));
                 
                 //Record whether this trigger is a different trigger to the last one (but may contain the same data)
-                _events_different_map[? _name ] = (_old_event == undefined)? true : (_old_event != _event);
+                _events_different_map[? _name ] = ternary(_old_event == undefined, true, (_old_event != _event));
                 
                 ++_event;
                 
