@@ -49,8 +49,12 @@ var _patch = string_copy( _string, 1, string_pos( ".", _string )-1 );
 
 //var _rev = string_delete( _string, 1, string_pos( ".", _string ) );
 
-var _in_gms221 = ( (real( _major ) >= 2) && (real( _minor ) >= 2) && (real( _patch ) >= 1) );
-if ( _in_gms221 ) show_debug_message( "Scribble: Using legacy (GMS2.2.0 and prior) compatibility mode" );
+var _later_than_gms220 = (( (real(_major) > 2) || (real(_minor) > 2) ) || ( (real(_major) == 2) && (real(_minor) == 2) && (real(_patch) > 0) ));
+if ( _later_than_gms220 )
+{
+    show_debug_message( "Scribble: Legacy (GMS2.2.0 and prior) spritefont emulation available" );
+    if ( SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING && _later_than_gms220 ) show_debug_message( "Scribble: Using legacy spritefont emulation" );
+}
 
 #endregion
 
@@ -357,7 +361,7 @@ for( var _font = 0; _font < _font_count; _font++ )
         var _font_glyphs_map = ds_map_create();
         _font_data[@ __E_SCRIBBLE_FONT.GLYPHS_MAP ] = _font_glyphs_map;
         
-        if ( SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING && _in_gms221 ) _shift_constant -= 2;
+        if ( SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING && _later_than_gms220 ) _shift_constant -= 2;
         if ( SCRIBBLE_COMPATIBILITY_DRAW ) global.__scribble_spritefont_map[? _name ] = font_add_sprite_ext( _sprite, _sprite_string, true, _shift_constant );
         
         sprite_index = _sprite;
@@ -412,7 +416,7 @@ for( var _font = 0; _font < _font_count; _font++ )
             }
             else
             {
-                if ( _in_gms221 )
+                if ( _later_than_gms220 )
                 {
                     //GMS2.2.1 does some weeeird things to sprite fonts
                     var _glyph_width  = 3 + _right - _left;
@@ -450,7 +454,7 @@ for( var _font = 0; _font < _font_count; _font++ )
         
         if ( !ds_map_exists( _font_glyphs_map, " " ) )
         {
-            if ( _in_gms221 )
+            if ( _later_than_gms220 )
             {
                 var _glyph_width  = sprite_get_width(  _sprite );
                 var _glyph_height = sprite_get_height( _sprite );

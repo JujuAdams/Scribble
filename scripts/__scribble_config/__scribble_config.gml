@@ -1,4 +1,4 @@
-﻿//  Scribble v3.2.3
+//  Scribble v3.2.3
 //  2019/03/16
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
@@ -36,7 +36,7 @@
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
 
 //Advanced users only!
-#macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING false    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
+#macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING  true    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
 #macro SCRIBBLE_FIX_NEWLINES                       true    //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
 #macro SCRIBBLE_COMPATIBILITY_DRAW                false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
 #macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //Character used to open a command tag. First 127 ASCII chars only
