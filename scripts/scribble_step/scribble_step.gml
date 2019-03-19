@@ -8,6 +8,8 @@
 var _json      = argument[0];
 var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : 1;
 
+if (!SCRIBBLE_CALL_STEP_IN_DRAW) _json[| __E_SCRIBBLE.HAS_CALLED_STEP ] = true;
+
 if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
 {
     show_error( "Scribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false );

@@ -31,6 +31,32 @@ if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
     exit;
 }
 
+#region Check if we should've called scribble_step() for this Scribble data structure
+
+if ( (_json[| __E_SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __E_SCRIBBLE.EV_CHARACTER_LIST ]) > 0) )
+{
+    if ( !_json[| __E_SCRIBBLE.HAS_CALLED_STEP ] )
+    {
+        if (SCRIBBLE_CALL_STEP_IN_DRAW)
+        {
+            scribble_step( _json );
+        }
+        else
+        {
+            if ( _json[| __E_SCRIBBLE.NO_STEP_COUNT ] >= 1 ) //Give GM one frame of grace before throwing an error
+            {
+                show_error( "scribble_step() must be called in the Step event for events and typewriter effects to work.\n ", false );
+            }
+            else
+            {
+                _json[| __E_SCRIBBLE.NO_STEP_COUNT ]++;
+            }
+        }
+    }
+}
+
+#endregion
+
 var _old_matrix = matrix_get( matrix_world );
 
 if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))

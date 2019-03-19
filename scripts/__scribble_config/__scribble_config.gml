@@ -1,4 +1,4 @@
-//  Scribble v3.2.3
+//  Scribble v3.2.4
 //  2019/03/16
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
@@ -36,6 +36,7 @@
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
 
 //Advanced users only!
+#macro SCRIBBLE_CALL_STEP_IN_DRAW                 false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING  true    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
 #macro SCRIBBLE_FIX_NEWLINES                       true    //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
 #macro SCRIBBLE_COMPATIBILITY_DRAW                false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
@@ -64,7 +65,7 @@ enum E_SCRIBBLE_BOX
 
 #region -- Internal Definitions --
 
-#macro __SCRIBBLE_VERSION "3.2.3"
+#macro __SCRIBBLE_VERSION "3.2.4"
 #macro __SCRIBBLE_DATE    "2019/03/16"
 
 enum __E_SCRIBBLE_FONT
@@ -187,25 +188,27 @@ enum __E_SCRIBBLE
     LINE_FADE_T,          //26
     
     __SECTION3,           //27
-    DATA_FIELDS,          //28
-    ANIMATION_TIME,       //29
+    HAS_CALLED_STEP,      //28
+    NO_STEP_COUNT,        //29
+    DATA_FIELDS,          //30
+    ANIMATION_TIME,       //31
     
-    __SECTION4,           //30
-    LINE_LIST,            //31
-    VERTEX_BUFFER_LIST,   //32
+    __SECTION4,           //32
+    LINE_LIST,            //33
+    VERTEX_BUFFER_LIST,   //34
     
-    __SECTION5,           //33
-    EV_CHARACTER_LIST,    //34
-    EV_NAME_LIST,         //35
-    EV_DATA_LIST,         //36
-    EV_TRIGGERED_LIST,    //37
-    EV_TRIGGERED_MAP,     //38
-    EV_VALUE_MAP,         //39
-    EV_CHANGED_MAP,       //49
-    EV_PREVIOUS_MAP,      //41
-    EV_DIFFERENT_MAP,     //42
+    __SECTION5,           //35
+    EV_CHARACTER_LIST,    //36
+    EV_NAME_LIST,         //37
+    EV_DATA_LIST,         //38
+    EV_TRIGGERED_LIST,    //39
+    EV_TRIGGERED_MAP,     //40
+    EV_VALUE_MAP,         //41
+    EV_CHANGED_MAP,       //42
+    EV_PREVIOUS_MAP,      //43
+    EV_DIFFERENT_MAP,     //44
     
-    __SIZE                //43
+    __SIZE                //45
 }
 
 #macro __SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX true
