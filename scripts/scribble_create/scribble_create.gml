@@ -204,6 +204,9 @@ var _events_character_list = ds_list_create(); //Stores each event's triggering 
 var _events_name_list      = ds_list_create(); //Stores each event's name
 var _events_data_list      = ds_list_create(); //Stores each event's parameters
 
+global.__scribble_global_count++;
+global.__scribble_alive[? global.__scribble_global_count ] = _json;
+
 _json[| __E_SCRIBBLE.__SIZE             ] = __SCRIBBLE_VERSION;
 
 _json[| __E_SCRIBBLE.__SECTION0         ] = "-- Parameters --";
@@ -226,6 +229,7 @@ _json[| __E_SCRIBBLE.BOTTOM             ] = 0;
 _json[| __E_SCRIBBLE.LENGTH             ] = 0;
 _json[| __E_SCRIBBLE.LINES              ] = 0;
 _json[| __E_SCRIBBLE.WORDS              ] = 0;
+_json[| __E_SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count;
 
 _json[| __E_SCRIBBLE.__SECTION2         ] = "-- Typewriter --";
 _json[| __E_SCRIBBLE.TW_DIRECTION       ] = 0;

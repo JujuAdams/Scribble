@@ -177,38 +177,39 @@ enum __E_SCRIBBLE
     LENGTH,               //16
     LINES,                //17
     WORDS,                //18
+    GLOBAL_INDEX,         //19
     
-    __SECTION2,           //19
-    TW_DIRECTION,         //20
-    TW_SPEED,             //21
-    TW_POSITION,          //22
-    TW_METHOD,            //23
-    TW_SMOOTHNESS,        //24
-    CHAR_FADE_T,          //25
-    LINE_FADE_T,          //26
+    __SECTION2,           //20
+    TW_DIRECTION,         //21
+    TW_SPEED,             //22
+    TW_POSITION,          //23
+    TW_METHOD,            //24
+    TW_SMOOTHNESS,        //25
+    CHAR_FADE_T,          //26
+    LINE_FADE_T,          //27
     
-    __SECTION3,           //27
-    HAS_CALLED_STEP,      //28
-    NO_STEP_COUNT,        //29
-    DATA_FIELDS,          //30
-    ANIMATION_TIME,       //31
+    __SECTION3,           //28
+    HAS_CALLED_STEP,      //29
+    NO_STEP_COUNT,        //30
+    DATA_FIELDS,          //31
+    ANIMATION_TIME,       //32
     
-    __SECTION4,           //32
-    LINE_LIST,            //33
-    VERTEX_BUFFER_LIST,   //34
+    __SECTION4,           //33
+    LINE_LIST,            //34
+    VERTEX_BUFFER_LIST,   //35
     
-    __SECTION5,           //35
-    EV_CHARACTER_LIST,    //36
-    EV_NAME_LIST,         //37
-    EV_DATA_LIST,         //38
-    EV_TRIGGERED_LIST,    //39
-    EV_TRIGGERED_MAP,     //40
-    EV_VALUE_MAP,         //41
-    EV_CHANGED_MAP,       //42
-    EV_PREVIOUS_MAP,      //43
-    EV_DIFFERENT_MAP,     //44
+    __SECTION5,           //36
+    EV_CHARACTER_LIST,    //37
+    EV_NAME_LIST,         //38
+    EV_DATA_LIST,         //39
+    EV_TRIGGERED_LIST,    //40
+    EV_TRIGGERED_MAP,     //41
+    EV_VALUE_MAP,         //42
+    EV_CHANGED_MAP,       //43
+    EV_PREVIOUS_MAP,      //44
+    EV_DIFFERENT_MAP,     //45
     
-    __SIZE                //45
+    __SIZE                //46
 }
 
 #macro __SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX true

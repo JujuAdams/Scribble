@@ -4,7 +4,9 @@
 
 var _json = argument0;
 
-if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
+ds_map_delete( global.__scribble_alive, _json[| __E_SCRIBBLE.GLOBAL_INDEX ] );
+
+if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 {
     show_debug_message( "Scribble: Data structure \"" + string( _json ) + "\" doesn't exist!\n " );
     exit;

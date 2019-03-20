@@ -61,7 +61,9 @@ global.__scribble_sprites           = ds_list_create(); //Stores every sprite cr
 global.__scribble_spritefont_map    = ds_map_create();  //Stores a ds_map of all the spritefonts, for use with COMPATIBILITY_DRAW
 global.__scribble_colours           = ds_map_create();  //Stores colour definitions, including custom colours
 global.__scribble_events            = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
-global.__scribble_flags             = ds_map_create();  //Bidirectional lookup
+global.__scribble_flags             = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_alive             = ds_map_create();  //ds_map of all alive Scribble data structures
+global.__scribble_global_count      = 0;
 global.__scribble_default_font      = "";
 global.__scribble_init_complete     = false;
 
