@@ -32,10 +32,9 @@ var _char = string_char_at( _font_directory, string_length( _font_directory ) );
 if ( _char != "\\" ) && ( _char != "/" ) _font_directory += "\\";
 
 //Check if the directory exists
-if ( !directory_exists( _font_directory ) )
+if ( !directory_exists(_font_directory) )
 {
-    show_error( "Font directory \"" + string( _font_directory ) + "\" could not be found in \"" + game_save_id + "\"!\n ", true );
-    exit;
+    show_debug_message( "Scribble: WARNING! Font directory \"" + string( _font_directory ) + "\" could not be found in \"" + game_save_id + "\"!" );
 }
 
 //Check texture page size for user error
