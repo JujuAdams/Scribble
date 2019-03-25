@@ -73,45 +73,79 @@ repeat( _font_count )
     
     //If this is a standard font, grab the texture dimensions
     var _font_data = global.__scribble_font_data[? _name ];
-    if ( _font_data[ __E_SCRIBBLE_FONT.TYPE ] == asset_sprite )
+    switch( _font_data[ __E_SCRIBBLE_FONT.TYPE ] )
     {
-        show_debug_message( "Scribble: Found spritefont \"" + _name + "\"" );
-    }
-    else if ( _font_data[ __E_SCRIBBLE_FONT.TYPE ] )
-    {
-        var _asset = asset_get_index(  _name  );
-        if ( _asset < 0 )
-        {
-            show_error( "Font \"" + _name + "\" was not found in the project!\n ", true );
-            exit;
-        }
+        case __E_SCRIBBLE_FONT_TYPE.SPRITE:
+        break;
         
-        var _texture = font_get_texture( _asset );
-        var _uvs     = font_get_uvs(     _asset );
+        case __E_SCRIBBLE_FONT_TYPE.FONT:
+            var _asset = asset_get_index(  _name  );
+            if ( _asset < 0 )
+            {
+                show_error( "Font \"" + _name + "\" was not found in the project!\n ", true );
+                exit;
+            }
+            
+            var _texture = font_get_texture( _asset );
+            var _uvs     = font_get_uvs(     _asset );
+            
+            var _texture_w = (_uvs[2] - _uvs[0]) / texture_get_texel_width(  _texture );
+            var _texture_h = (_uvs[3] - _uvs[1]) / texture_get_texel_height( _texture );
+            _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] = _texture_w;
+            _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] = _texture_h;
+            
+            var _json_file  = global.__scribble_font_directory + _name + ".yy";
+            if ( !file_exists( _json_file ) )
+            {
+                show_error( "Scribble:\n\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
+                continue;
+            }
+            
+            if ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] > global.__scribble_texture_page_size )
+            || ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] > global.__scribble_texture_page_size )
+            {
+                show_debug_message( "Scribble: WARNING! The texture for \"" + _name + "\" is larger than Scribble's maximum texture page size (" + string( _texture_w ) + "x" + string( _texture_h ) + " > " + string( global.__scribble_texture_page_size ) + "x" + string( global.__scribble_texture_page_size ) + ")" );
+                var _bigger_size = power(2,ceil(ln(max( _texture_w, _texture_h ))/ln(2)));
+                show_debug_message( "Scribble:          Please use a larger texture page size in Scribble and GameMaker (e.g. " + string( _bigger_size ) + "x" + string( _bigger_size ) + ") to avoid bugs and blurry text" );
+            }
+            
+            var _priority = _texture_h*global.__scribble_texture_page_size + _texture_w;
+            ds_priority_add( _priority_queue, _name, _priority );
+            show_debug_message( "Scribble: Queuing \"" + _name + "\" (standard) for packing (size=" + string( _texture_w ) + "x" + string( _texture_h ) + ", weight=" + string( _priority ) + ") as a standard font" );
+        break;
         
-        var _texture_w = (_uvs[2] - _uvs[0]) / texture_get_texel_width(  _texture );
-        var _texture_h = (_uvs[3] - _uvs[1]) / texture_get_texel_height( _texture );
-        _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] = _texture_w;
-        _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] = _texture_h;
+        case __E_SCRIBBLE_FONT_TYPE.MSDF:
+            var _json_file  = global.__scribble_font_directory + _name + ".json";
+            if ( !file_exists( _json_file ) )
+            {
+                show_error( "Scribble:\n\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
+                continue;
+            }
+            
+            var _png_file  = global.__scribble_font_directory + _name + ".png";
+            if ( !file_exists( _json_file ) )
+            {
+                show_error( "Scribble:\n\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
+                continue;
+            }
+            
+            var _texture_w = 0;
+            var _texture_h = 0; 
+            _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] = _texture_w;
+            _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] = _texture_h;
         
-        var _json_file  = global.__scribble_font_directory + _name + ".yy";
-        if ( !file_exists( _json_file ) )
-        {
-            show_error( "Scribble:\n\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
-            continue;
-        }
+            if ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] > global.__scribble_texture_page_size )
+            || ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] > global.__scribble_texture_page_size )
+            {
+                show_debug_message( "Scribble: WARNING! The texture for \"" + _name + "\" is larger than Scribble's maximum texture page size (" + string( _texture_w ) + "x" + string( _texture_h ) + " > " + string( global.__scribble_texture_page_size ) + "x" + string( global.__scribble_texture_page_size ) + ")" );
+                var _bigger_size = power(2,ceil(ln(max( _texture_w, _texture_h ))/ln(2)));
+                show_debug_message( "Scribble:          Please use a larger texture page size in Scribble and GameMaker (e.g. " + string( _bigger_size ) + "x" + string( _bigger_size ) + ") to avoid bugs and blurry text" );
+            }
         
-        if ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] > global.__scribble_texture_page_size )
-        || ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] > global.__scribble_texture_page_size )
-        {
-            show_debug_message( "Scribble: WARNING! The texture for \"" + _name + "\" is larger than Scribble's maximum texture page size (" + string( _texture_w ) + "x" + string( _texture_h ) + " > " + string( global.__scribble_texture_page_size ) + "x" + string( global.__scribble_texture_page_size ) + ")" );
-            var _bigger_size = power(2,ceil(ln(max( _texture_w, _texture_h ))/ln(2)));
-            show_debug_message( "Scribble:          Please use a larger texture page size in Scribble and GameMaker (e.g. " + string( _bigger_size ) + "x" + string( _bigger_size ) + ") to avoid bugs and blurry text" );
-        }
-        
-        var _priority = _texture_h*global.__scribble_texture_page_size + _texture_w;
-        ds_priority_add( _priority_queue, _name, _priority );
-        show_debug_message( "Scribble: Queuing \"" + _name + "\" for packing (size=" + string( _texture_w ) + "x" + string( _texture_h ) + ", weight=" + string( _priority ) + ")" );
+            var _priority = _texture_h*global.__scribble_texture_page_size + _texture_w;
+            ds_priority_add( _priority_queue, _name, _priority );
+            show_debug_message( "Scribble: Queuing \"" + _name + "\" for packing (size=" + string( _texture_w ) + "x" + string( _texture_h ) + ", weight=" + string( _priority ) + ") as an MSDF font" );
+        break;
     }
     
     _name = ds_map_find_next( global.__scribble_font_data, _name );
@@ -278,6 +312,12 @@ for( var _s = 0; _s < _surface_count; _s++ )
     var _surface_locked = _surface_data[ __E_SCRIBBLE_SURFACE.LOCKED ];
     show_debug_message( "Scribble: Drawing surface " + string( _s ) + ", " + string( _surface_w ) + " x " + string( _surface_h ) + (_surface_locked? " (locked)" : "") );
     
+    if ( (_surface_w == 0) || (_surface_h == 0) )
+    {
+        show_debug_message( "Scribble:         Weird zero-size surface, skipping" );
+        continue;
+    }
+    
     var _surface = surface_create( _surface_w, _surface_h );
     surface_set_target( _surface );
     draw_clear_alpha( c_white, 0 );
@@ -289,6 +329,12 @@ for( var _s = 0; _s < _surface_count; _s++ )
         var _name = _surface_fonts[ _f ];
         
         var _font_data = global.__scribble_font_data[? _name ];
+        if ( _font_data[ __E_SCRIBBLE_FONT.TYPE ] == __E_SCRIBBLE_FONT_TYPE.MSDF )
+        {
+            show_message( "Scribble:         Skipping MSDF font \"" + _name + "\"" );
+            continue;
+        }
+        
         var _texture_w = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ];
         var _texture_h = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ];
         var _x         = _font_data[ __E_SCRIBBLE_FONT.SPRITE_X       ];
@@ -339,11 +385,12 @@ for( var _font = 0; _font < _font_count; _font++ )
     var _name = _font_array[ _font ];
     var _font_data = global.__scribble_font_data[? _name ];
     
-    if ( _font_data[ __E_SCRIBBLE_FONT.TYPE ] == asset_sprite )
+    switch( _font_data[ __E_SCRIBBLE_FONT.TYPE ] )
     {
-        show_debug_message( "Scribble: Processing characters for spritefont \"" + _name + "\"" );
-        
+        case __E_SCRIBBLE_FONT_TYPE.SPRITE:
         #region Spritefont
+        
+        show_debug_message( "Scribble: Processing characters for spritefont \"" + _name + "\"" );
         
         var _sprite = asset_get_index( _name );
         if ( sprite_get_bbox_left(   _sprite ) == 0 )
@@ -493,9 +540,9 @@ for( var _font = 0; _font < _font_count; _font++ )
         sprite_index = -1;
         
         #endregion
-    }
-    else
-    {
+        break;
+        
+        case __E_SCRIBBLE_FONT_TYPE.FONT:
         #region Font
         
         show_debug_message( "Scribble: Processing characters for font \"" + _name + "\"" );
@@ -667,6 +714,11 @@ for( var _font = 0; _font < _font_count; _font++ )
         ds_map_destroy( _json );
         
         #endregion
+        break;
+        
+        case __E_SCRIBBLE_FONT_TYPE.MSDF:
+        show_debug_message( "Scribble: Skipping MSDF font \"" + _name + "\"" );
+        break;
     }
     
     show_debug_message( "Scribble: \"" + _name + "\" finished" );

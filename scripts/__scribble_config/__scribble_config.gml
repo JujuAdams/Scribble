@@ -92,6 +92,13 @@ enum __E_SCRIBBLE_FONT
     __SIZE          //14
 }
 
+enum __E_SCRIBBLE_FONT_TYPE
+{
+    FONT,
+    SPRITE,
+    MSDF
+}
+
 enum __E_SCRIBBLE_GLYPH
 {
     CHAR,  // 0

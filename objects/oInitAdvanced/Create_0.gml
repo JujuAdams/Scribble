@@ -14,6 +14,7 @@ scribble_init_add_font( "fTestA" );
 scribble_init_add_font( "fTestB" );
 scribble_init_add_spritefont( "sSpriteFont", 3 );
 scribble_init_add_font( "fChineseTest" );
+scribble_init_add_msdf_font( "custom" );
 scribble_init_end();
 
 scribble_add_colour( "c_coquelicot", $ff3800 );
