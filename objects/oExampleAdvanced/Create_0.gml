@@ -1,7 +1,11 @@
-//  Scribble v3.2.4
-//  2019/03/16
+//  Scribble v4.0.0
+//  2019/03/25
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
+//  
+//  MSDF texture page generator by donmccurdy:
+//  https://github.com/donmccurdy/msdf-bmfont-web
+//  https://msdf-bmfont.donmccurdy.com/
 //  
 //  Intended for use with GMS2.2.1 and later
 

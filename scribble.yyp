@@ -191,6 +191,14 @@
             }
         },
         {
+            "Key": "57c17942-c669-42ff-89e8-5ac7b87b2eeb",
+            "Value": {
+                "id": "5326c544-bb56-4198-8797-0169bdb19c31",
+                "resourcePath": "scripts\\scribble_init_add_msdf_font\\scribble_init_add_msdf_font.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "5b698267-e679-4285-95af-7d896e27c33e",
             "Value": {
                 "id": "3c53b923-f8b4-4066-b653-9a628d969aab",
@@ -683,6 +691,7 @@
         "acb26a39-8033-4289-87d0-228ed7921bc8",
         "89e8adda-438e-48f9-ab78-0e8b396b3850",
         "375e7330-6e30-4902-8a42-dbc8ad380c16",
+        "57c17942-c669-42ff-89e8-5ac7b87b2eeb",
         "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
         "3a184a7c-b4e5-457f-865c-aa18b0b9fcbf",
         "df6df2ef-b108-4a0d-b542-812338df9817",
