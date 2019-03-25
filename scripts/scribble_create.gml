@@ -76,14 +76,13 @@ switch (argument_count){
 
 //Strip out weird newlines
 if (SCRIBBLE_FIX_NEWLINES) {
-    _str = string_replace_all( _str, "\n\r", "\n" );
-    _str = string_replace_all( _str, "\r\n", "\n" );
-    _str = string_replace_all( _str,   "\n", "\n" );
-    _str = string_replace_all( _str,  "\\n", "\n" );
-    _str = string_replace_all( _str,  "\\r", "\n" );
+    _str = string_replace_all( _str, "\n\r", chr(10) );
+    _str = string_replace_all( _str, "\r\n", chr(10) );
+    _str = string_replace_all( _str,   "\n", chr(10) );
+    _str = string_replace_all( _str,  "\\n", chr(10) );
+    _str = string_replace_all( _str,  "\\r", chr(10) );
 }
-
-if (SCRIBBLE_HASH_NEWLINE) _str = string_replace_all( _str, "#", "\n" );
+_str = string_replace_all( _str,  "#", chr(10) );
 
 //Check if the default font even exists
 if ( !ds_map_exists( global.__scribble_font_data, _def_font ) ) {

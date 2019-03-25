@@ -5,7 +5,7 @@
 /// This script achieves the following things:
 /// 1) Works out if we need GMS2.2.1+ fixes
 /// 2) Packs fonts onto surfaces so we can draw glyphs more easily and more efficiently
-/// 3) Process glyph data from .yy files and store it in lots of data structures
+/// 3) Process glyph data from .font.gmx files and store it in lots of data structures
 ///
 /// Once this script has been run, Scribble is ready for use!
 
@@ -33,7 +33,7 @@ var _priority_queue = ds_priority_create();
 
 // the runtime version isn't available in GMS1 afaik so if you're not using 1.4.9999 ¯\_(ツ)_/¯
 
-var _in_gms221 = true;
+var _in_gms221 = false;
 
 /*
  * Work out if we're in version 2.2.1 or later
@@ -83,9 +83,9 @@ repeat( _font_count ) {
         _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] = _texture_w;
         _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] = _texture_h;
         
-        var _json_file  = global.__scribble_font_directory + _name + ".yy";
-        if ( !file_exists( _json_file ) ) {
-            show_error( "Scribble: Could not find " + _json_file + " in Included Files. Please add this file to your project.", false );
+        var _xml_file  = global.__scribble_font_directory + _name + ".font.gmx";
+        if ( !file_exists( _xml_file ) ) {
+            show_error( "Scribble: Could not find " + _xml_file + " in Included Files. Please add this file to your project.", false );
             continue;
         }
         
@@ -288,7 +288,7 @@ for( var _s = 0; _s < _surface_count; _s++ ) {
     
 show_debug_message( "Scribble: Surface rendering finished" );
 
-// Process glyph data from .yy files
+// Process glyph data from .font.gmx files
 
 for( var _font = 0; _font < _font_count; _font++ ) {
     var _name = _font_array[ _font ];
@@ -442,7 +442,7 @@ for( var _font = 0; _font < _font_count; _font++ ) {
         var _surface_sprite  = _font_data[ __E_SCRIBBLE_FONT.SPRITE     ];
         var _image_x_offset  = _font_data[ __E_SCRIBBLE_FONT.SPRITE_X   ];
         var _image_y_offset  = _font_data[ __E_SCRIBBLE_FONT.SPRITE_Y   ];
-        var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP  ];
+        var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP ];
         
         var _texture = sprite_get_texture( _surface_sprite, 0 );
         var _texture_tw = texture_get_texel_width(  _texture );
@@ -450,14 +450,103 @@ for( var _font = 0; _font < _font_count; _font++ ) {
         
         
         
-        var _json_buffer = buffer_load( global.__scribble_font_directory + _name + ".yy" );
-        var _json_string = buffer_read( _json_buffer, buffer_text );
-        buffer_delete( _json_buffer );
-        var _json = json_decode( _json_string );
+        //Read the XML out of the .font.gmx file
+        var _xml_buffer = buffer_load( global.__scribble_font_directory + _name + ".font.gmx" );
+        var _xml_string = buffer_read( _xml_buffer, buffer_text );
+        buffer_delete( _xml_buffer );
         
+        //Find the juicy centre portion that contains the glyph characters
+        _xml_string = string_delete( _xml_string, 1, string_pos( "<glyphs>", _xml_string )+9 );
+        _xml_string = string_replace_all( _xml_string, "    ", "" );
+        _xml_string = string_copy( _xml_string, 1, string_pos( "</glyphs>", _xml_string )-4 );
         
+        //Strip out character data
+        var _yy_glyph_list = ds_list_create();
+        var _start_pos = string_pos( "<glyph character=", _xml_string );
+        while( _start_pos > 0 )
+        {
+            //Grab the line of XML
+            _xml_string = string_delete( _xml_string, 1, _start_pos+16 );
+            var _close_pos = string_pos( "/>", _xml_string );
+            var _string = string_copy( _xml_string, 1, _close_pos-1 );
+            _xml_string = string_delete( _xml_string, 1, _close_pos+3 );
+            
+            //Character
+            var _pos = string_pos( '"', _string );
+            _string = string_delete( _string, 1, _pos );
+            
+            var _pos = string_pos( '"', _string );
+            var _char_index = real(string_copy( _string, 1, _pos-1 ));
+            _string = string_delete( _string, 1, _pos );
+            
+            //x
+            var _pos = string_pos( '"', _string );
+            _string = string_delete( _string, 1, _pos );
+            
+            var _pos = string_pos( '"', _string );
+            var _char_x = real(string_copy( _string, 1, _pos-1 ));
+            _string = string_delete( _string, 1, _pos );
+            
+            //y
+            var _pos = string_pos( '"', _string );
+            _string = string_delete( _string, 1, _pos );
+            
+            var _pos = string_pos( '"', _string );
+            var _char_y = real(string_copy( _string, 1, _pos-1 ));
+            _string = string_delete( _string, 1, _pos );
+            
+            //w
+            var _pos = string_pos( '"', _string );
+            _string = string_delete( _string, 1, _pos );
+            
+            var _pos = string_pos( '"', _string );
+            var _char_w = real(string_copy( _string, 1, _pos-1 ));
+            _string = string_delete( _string, 1, _pos );
+            
+            //h
+            var _pos = string_pos( '"', _string );
+            _string = string_delete( _string, 1, _pos );
+            
+            var _pos = string_pos( '"', _string );
+            var _char_h = real(string_copy( _string, 1, _pos-1 ));
+            _string = string_delete( _string, 1, _pos );
+            
+            //Shift
+            var _pos = string_pos( '"', _string );
+            _string = string_delete( _string, 1, _pos );
+            
+            var _pos = string_pos( '"', _string );
+            var _char_shift = real(string_copy( _string, 1, _pos-1 ));
+            _string = string_delete( _string, 1, _pos );
+            
+            //Offset
+            var _pos = string_pos( '"', _string );
+            _string = string_delete( _string, 1, _pos );
+            
+            var _pos = string_pos( '"', _string );
+            var _char_offset = real(string_copy( _string, 1, _pos-1 ));
+            _string = string_delete( _string, 1, _pos );
+            
+            //Create a map for this character, emulating the .yy JSON from GMS2
+            var _outer_map = ds_map_create();
+            _outer_map[? "Key" ] = _char_index;
+            var _inner_map = ds_map_create();
+            ds_map_add_map( _outer_map, "Value", _inner_map );
+            _inner_map[? "character" ] = _char_index;
+            _inner_map[? "x" ]         = _char_x;
+            _inner_map[? "y" ]         = _char_y;
+            _inner_map[? "w" ]         = _char_w;
+            _inner_map[? "h" ]         = _char_h;
+            _inner_map[? "shift" ]     = _char_shift;
+            _inner_map[? "offset" ]    = _char_offset;
+            
+            //Now add this ds_map to our overall list
+            ds_list_add( _yy_glyph_list, _outer_map );
+            ds_list_mark_as_map( _yy_glyph_list, ds_list_size(_yy_glyph_list)-1 );
+            
+            _start_pos = string_pos( "<glyph character=", _xml_string );
+        }
         
-        var _yy_glyph_list = _json[? "glyphs" ];
         var _size = ds_list_size( _yy_glyph_list );
         show_debug_message( "Scribble: " + _name + " has " + string( _size ) + " characters" );
         
@@ -593,7 +682,7 @@ for( var _font = 0; _font < _font_count; _font++ ) {
             }
         }
         
-        ds_map_destroy( _json );
+        ds_list_destroy( _yy_glyph_list );
     }
     
     show_debug_message( "Scribble: " + _name + " finished" );

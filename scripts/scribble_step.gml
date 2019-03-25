@@ -129,7 +129,7 @@ if ( _typewriter_direction != 0 ) {
                 _events_previous_map[? _name ] = _event;
                 
                 //Record whether this particular trigger contains different data to the last time this same event type was triggered
-                _events_changed_map[? _name ] = ternary(_old_data == undefined, true, !array_equals( _data, _old_data ));
+                _events_changed_map[? _name ] = ternary(_old_data == undefined, true, !array_equals_safe( _data, _old_data ));
                 
                 //Record whether this trigger is a different trigger to the last one (but may contain the same data)
                 _events_different_map[? _name ] = ternary(_old_event == undefined, true, (_old_event != _event));
@@ -161,7 +161,7 @@ if ( _typewriter_direction != 0 ) {
                 _events_previous_map[? _name ] = _event;
                 
                 //Record whether this particular trigger contains different data to the last time this same event type was triggered
-                _events_changed_map[? _name ] = ternary(_old_data == undefined, true, !array_equals( _data, _old_data ));
+                _events_changed_map[? _name ] = ternary(_old_data == undefined, true, !array_equals_safe( _data, _old_data ));
                 
                 //Record whether this trigger is a different trigger to the last one (but may contain the same data)
                 _events_different_map[? _name ] = ternary(_old_event == undefined, true, (_old_event != _event));

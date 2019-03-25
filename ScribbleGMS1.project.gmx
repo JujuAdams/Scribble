@@ -3,12 +3,12 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
-  <datafiles number="3" name="datafiles">
-    <datafiles number="3" name="Fonts">
+  <datafiles number="6" name="datafiles">
+    <datafiles number="6" name="Fonts">
       <datafile>
-        <name>fChineseTest.yy</name>
+        <name>fChineseTest.font.gmx</name>
         <exists>-1</exists>
-        <size>777493</size>
+        <size>18675</size>
         <exportAction>2</exportAction>
         <exportDir></exportDir>
         <overwrite>0</overwrite>
@@ -20,12 +20,12 @@
             <CopyToMask>9223372036854775807</CopyToMask>
           </Config>
         </ConfigOptions>
-        <filename>fChineseTest.yy</filename>
+        <filename>fChineseTest.font.gmx</filename>
       </datafile>
       <datafile>
-        <name>fTestA.yy</name>
+        <name>fTestA.font.gmx</name>
         <exists>-1</exists>
-        <size>56850</size>
+        <size>18239</size>
         <exportAction>2</exportAction>
         <exportDir></exportDir>
         <overwrite>0</overwrite>
@@ -37,12 +37,12 @@
             <CopyToMask>9223372036854775807</CopyToMask>
           </Config>
         </ConfigOptions>
-        <filename>fTestA.yy</filename>
+        <filename>fTestA.font.gmx</filename>
       </datafile>
       <datafile>
-        <name>fTestB.yy</name>
+        <name>fTestB.font.gmx</name>
         <exists>-1</exists>
-        <size>60934</size>
+        <size>18558</size>
         <exportAction>2</exportAction>
         <exportDir></exportDir>
         <overwrite>0</overwrite>
@@ -54,7 +54,7 @@
             <CopyToMask>9223372036854775807</CopyToMask>
           </Config>
         </ConfigOptions>
-        <filename>fTestB.yy</filename>
+        <filename>fTestB.font.gmx</filename>
       </datafile>
     </datafiles>
   </datafiles>
@@ -74,18 +74,19 @@
     <scripts name="Compensation for GMS1">
       <script>scripts\array_clear.gml</script>
       <script>scripts\array_compose.gml</script>
+      <script>scripts\array_equals_safe.gml</script>
       <script>scripts\ternary.gml</script>
     </scripts>
     <scripts name="Scribble Core">
-      <script>scripts\scribble_create.gml</script>
-      <script>scripts\scribble_destroy.gml</script>
-      <script>scripts\scribble_draw.gml</script>
+      <script>scripts\scribble_init_start.gml</script>
       <script>scripts\scribble_init_add_font.gml</script>
       <script>scripts\scribble_init_add_spritefont.gml</script>
       <script>scripts\scribble_init_end.gml</script>
-      <script>scripts\scribble_init_start.gml</script>
       <script>scripts\scribble_set_box_alignment.gml</script>
+      <script>scripts\scribble_create.gml</script>
       <script>scripts\scribble_step.gml</script>
+      <script>scripts\scribble_draw.gml</script>
+      <script>scripts\scribble_destroy.gml</script>
     </scripts>
     <scripts name="Scribble Fun Optional Stuff">
       <script>scripts\scribble_add_color.gml</script>
@@ -126,6 +127,10 @@
     </objects>
   </objects>
   <rooms name="rooms">
+    <rooms name="Advanced">
+      <room>rooms\rInitAdvanced</room>
+      <room>rooms\rExampleAdvanced</room>
+    </rooms>
     <rooms name="Beginner">
       <room>rooms\rInit</room>
       <room>rooms\rExample</room>
@@ -134,12 +139,8 @@
       <room>rooms\rInitIntermediate</room>
       <room>rooms\rExampleIntermediate</room>
     </rooms>
-    <rooms name="Advanced">
-      <room>rooms\rInitAdvanced</room>
-      <room>rooms\rExampleAdvanced</room>
-    </rooms>
   </rooms>
-  <constants number="39">
+  <constants number="38">
     <constant name="__SCRIBBLE_DATE">"2019/03/16"</constant>
     <constant name="__SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX">true</constant>
     <constant name="__SCRIBBLE_VERSION">"-3.2.3"</constant>
@@ -164,11 +165,10 @@
     <constant name="SCRIBBLE_DEFAULT_XSCALE">1</constant>
     <constant name="SCRIBBLE_DEFAULT_YSCALE">1</constant>
     <constant name="SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING">true /* GMS2.2.1 made spritefonts much more spaced out for some reason. you are presumably not using GMS2.2.1 though so don't touch this */</constant>
-    <constant name="SCRIBBLE_FIX_NEWLINES">true /* The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow */</constant>
+    <constant name="SCRIBBLE_FIX_NEWLINES">false /* The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow */</constant>
     <constant name="SCRIBBLE_GLYPH_SEPARATION">__E_SCRIBBLE_GLYPH.SHF</constant>
     <constant name="SCRIBBLE_GLYPH_X_OFFSET">__E_SCRIBBLE_GLYPH.DX</constant>
     <constant name="SCRIBBLE_GLYPH_Y_OFFSET">__E_SCRIBBLE_GLYPH.DY</constant>
-    <constant name="SCRIBBLE_HASH_NEWLINE">true /*replaces </constant>
     <constant name="SCRIBBLE_INIT_COMPLETE">2</constant>
     <constant name="SCRIBBLE_INIT_DURING">1</constant>
     <constant name="SCRIBBLE_INIT_START">0</constant>
