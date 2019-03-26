@@ -272,17 +272,18 @@ _json[| __E_SCRIBBLE.EV_PREVIOUS_MAP         ] = ds_map_create();
 _json[| __E_SCRIBBLE.EV_DIFFERENT_MAP        ] = ds_map_create();
 
 //Now bind the child data structures to the root list
-ds_list_mark_as_list( _json, __E_SCRIBBLE.LINE_LIST          );
-ds_list_mark_as_list( _json, __E_SCRIBBLE.VERTEX_BUFFER_LIST );
-ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_CHARACTER_LIST  );
-ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_NAME_LIST       );
-ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_DATA_LIST       );
-ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_TRIGGERED_LIST  );
-ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_TRIGGERED_MAP   );
-ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_VALUE_MAP       );
-ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_CHANGED_MAP     );
-ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_PREVIOUS_MAP    );
-ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_DIFFERENT_MAP   );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.LINE_LIST               );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.VERTEX_BUFFER_LIST      );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.MSDF_VERTEX_BUFFER_LIST );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_CHARACTER_LIST       );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_NAME_LIST            );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_DATA_LIST            );
+ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_TRIGGERED_LIST       );
+ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_TRIGGERED_MAP        );
+ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_VALUE_MAP            );
+ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_CHANGED_MAP          );
+ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_PREVIOUS_MAP         );
+ds_list_mark_as_map(  _json, __E_SCRIBBLE.EV_DIFFERENT_MAP        );
 
 #endregion
 
