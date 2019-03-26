@@ -13,6 +13,7 @@
 /// (Including .yy files isn't necessary for spritefonts)
 ///
 /// @param fontName   String name of the font to add
+/// @param spaceWidth Width of a space character
 
 if ( !variable_global_exists( "__scribble_init_complete" ) )
 {
@@ -26,7 +27,8 @@ if ( global.__scribble_init_complete )
     return undefined;
 }
 
-var _font = argument0;
+var _font        = argument0;
+var _space_width = argument1;
 
 if ( ds_map_exists( global.__scribble_font_data, _font ) )
 {
@@ -57,10 +59,11 @@ _data[ __E_SCRIBBLE_FONT.GLYPH_MIN      ] = 32;
 _data[ __E_SCRIBBLE_FONT.GLYPH_MAX      ] = 32;
 _data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] = undefined;
 _data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] = undefined;
-_data[ __E_SCRIBBLE_FONT.SPACE_WIDTH    ] = undefined;
+_data[ __E_SCRIBBLE_FONT.SPACE_WIDTH    ] = _space_width;
 _data[ __E_SCRIBBLE_FONT.MAPSTRING      ] = undefined;
 _data[ __E_SCRIBBLE_FONT.SEPARATION     ] = undefined;
-_data[ __E_SCRIBBLE_FONT.SPRITE         ] = undefined;
+_data[ __E_SCRIBBLE_FONT.IMPORT_SPRITE  ] = undefined;
+_data[ __E_SCRIBBLE_FONT.PACKED_SPRITE  ] = undefined;
 _data[ __E_SCRIBBLE_FONT.SPRITE_X       ] = undefined;
 _data[ __E_SCRIBBLE_FONT.SPRITE_Y       ] = undefined;
 global.__scribble_font_data[? _font ] = _data;

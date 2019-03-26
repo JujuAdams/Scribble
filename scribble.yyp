@@ -50,7 +50,7 @@
             "Key": "039aeb31-f896-49f1-a9f1-c7c7929c312f",
             "Value": {
                 "id": "ee7d2cf9-ed1e-4de8-b0fd-712e0e9a8427",
-                "resourcePath": "datafiles_yy\\Fonts\\custom.json.yy",
+                "resourcePath": "datafiles_yy\\Fonts\\msdf.json.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -447,6 +447,14 @@
             }
         },
         {
+            "Key": "a7d3829d-cf26-4739-be56-c692d5dd7a1c",
+            "Value": {
+                "id": "11da6721-e2b6-44ef-8bbc-38a2dfad2a9e",
+                "resourcePath": "shaders\\shScribbleMSDF\\shScribbleMSDF.yy",
+                "resourceType": "GMShader"
+            }
+        },
+        {
             "Key": "a9188620-a624-4a5a-83ae-a1b53faf038b",
             "Value": {
                 "id": "90c740c6-2b0d-4907-a395-8f3afe4fa4ad",
@@ -658,7 +666,7 @@
             "Key": "f3f78417-0499-4404-8ea3-f104863598db",
             "Value": {
                 "id": "557cd1f8-fa92-436b-926f-5d6c44d05dfa",
-                "resourcePath": "datafiles_yy\\Fonts\\custom.png.yy",
+                "resourcePath": "datafiles_yy\\Fonts\\msdf.png.yy",
                 "resourceType": "GMIncludedFile"
             }
         },

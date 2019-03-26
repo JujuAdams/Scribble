@@ -72,6 +72,7 @@ enum E_SCRIBBLE_BOX
 
 #macro __SCRIBBLE_VERSION "4.0.0"
 #macro __SCRIBBLE_DATE    "2019/03/25"
+#macro __SCRIBBLE_DEBUG   true
 
 enum __E_SCRIBBLE_FONT
 {
@@ -86,10 +87,11 @@ enum __E_SCRIBBLE_FONT
     SPACE_WIDTH,    // 8
     MAPSTRING,      // 9
     SEPARATION,     //10
-    SPRITE,         //11
-    SPRITE_X,       //12
-    SPRITE_Y,       //13
-    __SIZE          //14
+    IMPORT_SPRITE,  //11
+    PACKED_SPRITE,  //12
+    SPRITE_X,       //13
+    SPRITE_Y,       //14
+    __SIZE          //15
 }
 
 enum __E_SCRIBBLE_FONT_TYPE

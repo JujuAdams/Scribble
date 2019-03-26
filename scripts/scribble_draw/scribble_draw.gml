@@ -193,7 +193,7 @@ else
         break;
     }
     
-    shader_set( shScribble );
+    shader_set( shScribbleMSDF );
     shader_set_uniform_f( global.__scribble_uniform_pma              , _pma );
     shader_set_uniform_f( global.__scribble_uniform_time             , _json[| __E_SCRIBBLE.ANIMATION_TIME ]*SCRIBBLE_ANIMATION_SPEED );
     

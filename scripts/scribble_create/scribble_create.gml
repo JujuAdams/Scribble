@@ -933,11 +933,11 @@ repeat( _lines_size )
                 _previous_font = _font;
                 
                 var _font_data         = global.__scribble_font_data[? _font ];
-                var _font_glyphs_map   = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP   ];
-                var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
-                var _font_glyphs_min   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN    ];
-                var _font_glyphs_max   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MAX    ];
-                var _font_sprite       = _font_data[ __E_SCRIBBLE_FONT.SPRITE       ];
+                var _font_glyphs_map   = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP    ];
+                var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY  ];
+                var _font_glyphs_min   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN     ];
+                var _font_glyphs_max   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MAX     ];
+                var _font_sprite       = _font_data[ __E_SCRIBBLE_FONT.PACKED_SPRITE ];
                 var _font_texture      = sprite_get_texture( _font_sprite, 0 );     
                 
                 if ( _font_texture != _previous_texture )
