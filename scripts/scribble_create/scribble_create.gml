@@ -299,6 +299,7 @@ var _text_font            = _def_font;
 var _text_colour          = _def_colour;
 var _text_halign          = _def_halign;
 var _text_flags           = array_create( SCRIBBLE_MAX_FLAGS, 0 );
+var _text_scale           = 1;
 
 var _font_line_height     = _line_min_height;
 var _font_space_width     = _def_space_width;
@@ -359,6 +360,8 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     _text_font        = _def_font;
                     _text_colour      = _def_colour;
                     _text_flags       = array_create( SCRIBBLE_MAX_FLAGS, 0 );
+                    _text_scale       = 1;
+                    
                     _font_line_height = _line_min_height;
                     _font_space_width = _def_space_width;
                     _skip = true;
@@ -375,6 +378,28 @@ for( var _i = 0; _i < _separator_count; _i++ )
                 case "/colour":
                 case "/c":
                     _text_colour = _def_colour;
+                    _skip = true;
+                break;
+                
+                case "/scale":
+                case "/s":
+                    _text_scale = 1;
+                    _skip = true;
+                break;
+                #endregion
+                
+                #region Scale
+                case "scale":
+                    var _parameter_count = ds_list_size( _parameters_list );
+                    if ( _parameter_count <= 1 )
+                    {
+                        show_error( "Not enough parameters for scale tag!", false );
+                    }
+                    else
+                    {
+                        var _text_scale = real(_parameters_list[| 1]);
+                    }
+                    
                     _skip = true;
                 break;
                 #endregion
@@ -503,8 +528,8 @@ for( var _i = 0; _i < _separator_count; _i++ )
                                     #region Sprites
                             
                                     _substr_sprite = _asset;
-                                    _substr_width  = sprite_get_width(  _substr_sprite );
-                                    _substr_height = sprite_get_height( _substr_sprite );
+                                    _substr_width  = sprite_get_width(  _substr_sprite )*_text_scale;
+                                    _substr_height = sprite_get_height( _substr_sprite )*_text_scale;
                                     _substr_length = 1;
                             
                                     if ( ds_list_size( _parameters_list ) <= 1 ) _parameters_list[| 1] = "0";
@@ -650,6 +675,9 @@ for( var _i = 0; _i < _separator_count; _i++ )
             _substr_height = _array[ __E_SCRIBBLE_GLYPH.H ];
         }
         
+        _substr_width  *= _text_scale;
+        _substr_height *= _text_scale;
+        
         #endregion
     }
     
@@ -711,6 +739,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
         _word_array[ __E_SCRIBBLE_WORD.Y              ] = 0;
         _word_array[ __E_SCRIBBLE_WORD.WIDTH          ] = _substr_width;
         _word_array[ __E_SCRIBBLE_WORD.HEIGHT         ] = _substr_height;
+        _word_array[ __E_SCRIBBLE_WORD.SCALE          ] = _text_scale;
         _word_array[ __E_SCRIBBLE_WORD.VALIGN         ] = fa_middle;
         _word_array[ __E_SCRIBBLE_WORD.STRING         ] = _substr;
         _word_array[ __E_SCRIBBLE_WORD.INPUT_STRING   ] = _input_substr;
@@ -878,6 +907,7 @@ repeat( _lines_size )
             var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR ];
             var _flag_data   = _word_array[ __E_SCRIBBLE_WORD.FLAGS  ];
             var _image       = _word_array[ __E_SCRIBBLE_WORD.IMAGE  ];
+            var _scale       = _word_array[ __E_SCRIBBLE_WORD.SCALE  ];
             
             var _flags  = 0;
             var _offset = 1;
@@ -917,8 +947,8 @@ repeat( _lines_size )
             var _uvs = sprite_get_uvs( _sprite, _image );
             var _glyph_l = _word_l  + _uvs[4] + sprite_get_xoffset( _sprite );
             var _glyph_t = _word_t  + _uvs[5] + sprite_get_yoffset( _sprite );
-            var _glyph_r = _glyph_l + _uvs[6]*sprite_get_width(  _sprite );
-            var _glyph_b = _glyph_t + _uvs[7]*sprite_get_height( _sprite );
+            var _glyph_r = _glyph_l + _uvs[6]*sprite_get_width(  _sprite )*_scale;
+            var _glyph_b = _glyph_t + _uvs[7]*sprite_get_height( _sprite )*_scale;
                 
             vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
             vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] );
@@ -984,6 +1014,7 @@ repeat( _lines_size )
             
             var _colour    = _word_array[ __E_SCRIBBLE_WORD.COLOUR ];
             var _flag_data = _word_array[ __E_SCRIBBLE_WORD.FLAGS  ];
+            var _scale     = _word_array[ __E_SCRIBBLE_WORD.SCALE  ];
             
             var _flags  = 0;
             var _offset = 1;
@@ -1017,10 +1048,10 @@ repeat( _lines_size )
                     var _glyph_dy  = _array[ __E_SCRIBBLE_GLYPH.DY  ];
                     var _glyph_shf = _array[ __E_SCRIBBLE_GLYPH.SHF ];
                     
-                    var _glyph_l = _char_l + _glyph_dx;
-                    var _glyph_t = _char_t + _glyph_dy;
-                    var _glyph_r = _glyph_l + _glyph_w;
-                    var _glyph_b = _glyph_t + _glyph_h;
+                    var _glyph_l = _char_l + _glyph_dx*_scale;
+                    var _glyph_t = _char_t + _glyph_dy*_scale;
+                    var _glyph_r = _glyph_l + _glyph_w*_scale;
+                    var _glyph_b = _glyph_t + _glyph_h*_scale;
                     
                     var _char_pc = _text_char / _max_char;
                     
@@ -1031,7 +1062,7 @@ repeat( _lines_size )
                     vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 );
                     vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
                     
-                    _char_l += _glyph_shf;
+                    _char_l += _glyph_shf*_scale;
                     ++_text_char;
                     ++_char_index;
                 }
@@ -1055,10 +1086,10 @@ repeat( _lines_size )
                     var _glyph_dy  = _array[ __E_SCRIBBLE_GLYPH.DY  ];
                     var _glyph_shf = _array[ __E_SCRIBBLE_GLYPH.SHF ];
                     
-                    var _glyph_l = _char_l + _glyph_dx;
-                    var _glyph_t = _char_t + _glyph_dy;
-                    var _glyph_r = _glyph_l + _glyph_w;
-                    var _glyph_b = _glyph_t + _glyph_h;
+                    var _glyph_l = _char_l + _glyph_dx*_scale;
+                    var _glyph_t = _char_t + _glyph_dy*_scale;
+                    var _glyph_r = _glyph_l + _glyph_w*_scale;
+                    var _glyph_b = _glyph_t + _glyph_h*_scale;
                     
                     var _char_pc = _text_char / _max_char;
                     
@@ -1069,7 +1100,7 @@ repeat( _lines_size )
                     vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 );
                     vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
                     
-                    _char_l += _glyph_shf;
+                    _char_l += _glyph_shf*_scale;
                     ++_text_char;
                     ++_char_index;
                 }

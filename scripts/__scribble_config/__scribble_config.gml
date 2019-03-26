@@ -148,17 +148,18 @@ enum __E_SCRIBBLE_WORD
     Y,              // 1
     WIDTH,          // 2
     HEIGHT,         // 3
-    VALIGN,         // 4
-    STRING,         // 5
-    INPUT_STRING,   // 6
-    SPRITE,         // 7
-    IMAGE,          // 8
-    LENGTH,         // 9
-    FONT,           //10
-    COLOUR,         //11
-    FLAGS,          //12
-    NEXT_SEPARATOR, //13
-    __SIZE          //14
+    SCALE,          // 4
+    VALIGN,         // 5
+    STRING,         // 6
+    INPUT_STRING,   // 7
+    SPRITE,         // 8
+    IMAGE,          // 9
+    LENGTH,         //10
+    FONT,           //11
+    COLOUR,         //12
+    FLAGS,          //13
+    NEXT_SEPARATOR, //14
+    __SIZE          //15
 }
 
 enum __E_SCRIBBLE_VERTEX_BUFFER
