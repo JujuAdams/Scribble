@@ -118,6 +118,8 @@ global.__scribble_msdf_uniform_char_smoothness = shader_get_uniform( shScribbleM
 global.__scribble_msdf_uniform_line_t          = shader_get_uniform( shScribbleMSDF, "u_fLineFadeT"          );
 global.__scribble_msdf_uniform_line_smoothness = shader_get_uniform( shScribbleMSDF, "u_fLineFadeSmoothness" );
 global.__scribble_msdf_uniform_data_fields     = shader_get_uniform( shScribbleMSDF, "u_aDataFields"         );
+global.__scribble_msdf_uniform_texel           = shader_get_uniform( shScribbleMSDF, "u_vTexel"              );
+global.__scribble_msdf_uniform_texture_size    = shader_get_uniform( shScribbleMSDF, "u_vTextureSize"        );
 
 //Hex converter array
 var _min = ord("0");

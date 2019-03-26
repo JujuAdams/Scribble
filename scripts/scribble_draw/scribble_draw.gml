@@ -247,7 +247,11 @@ else
         for( var _i = 0; _i < _count; _i++ )
         {
             var _vbuff_data = _msdf_vbuff_list[| _i ];
-            vertex_submit( _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ], pr_trianglelist, _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE ] );
+            var _texture = _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE ];
+            var _sprite  = _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.SPRITE  ];
+            shader_set_uniform_f( global.__scribble_msdf_uniform_texel, texture_get_texel_width(_texture), texture_get_texel_height(_texture) );
+            shader_set_uniform_f( global.__scribble_msdf_uniform_texture_size, sprite_get_width(_sprite), sprite_get_height(_sprite) );
+            vertex_submit( _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ], pr_trianglelist, _texture );
         }
         
         shader_reset();

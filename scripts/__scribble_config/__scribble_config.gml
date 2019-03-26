@@ -36,13 +36,13 @@
 #macro SCRIBBLE_DEFAULT_SHAKE_SIZE             4
 #macro SCRIBBLE_DEFAULT_SHAKE_SPEED           22
 #macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT         0.5
-#macro SCRIBBLE_DEFAULT_MSDF_THICK_SCALE      1.6
+#macro SCRIBBLE_DEFAULT_MSDF_THICK_SCALE       1.6
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
 
 //Advanced users only!
-#macro SCRIBBLE_COMPATIBILITY_DRAW                true     //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
+#macro SCRIBBLE_COMPATIBILITY_DRAW                false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
 #macro SCRIBBLE_CALL_STEP_IN_DRAW                 false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING true     //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
 #macro SCRIBBLE_FIX_NEWLINES                      true     //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
