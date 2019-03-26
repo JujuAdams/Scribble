@@ -100,14 +100,23 @@ vertex_format_add_texcoord();
 global.__scribble_vertex_format = vertex_format_end();
 
 //Cache uniform indexes
-global.__scribble_uniform_pma             = shader_get_uniform( shScribble, "u_fPremultiplyAlpha"   );
-global.__scribble_uniform_time            = shader_get_uniform( shScribble, "u_fTime"               );
-global.__scribble_uniform_colour_blend    = shader_get_uniform( shScribble, "u_vColourBlend"        );
-global.__scribble_uniform_char_t          = shader_get_uniform( shScribble, "u_fCharFadeT"          );
-global.__scribble_uniform_char_smoothness = shader_get_uniform( shScribble, "u_fCharFadeSmoothness" );
-global.__scribble_uniform_line_t          = shader_get_uniform( shScribble, "u_fLineFadeT"          );
-global.__scribble_uniform_line_smoothness = shader_get_uniform( shScribble, "u_fLineFadeSmoothness" );
-global.__scribble_uniform_data_fields     = shader_get_uniform( shScribble, "u_aDataFields"         );
+global.__scribble_uniform_pma                  = shader_get_uniform( shScribble, "u_fPremultiplyAlpha"   );
+global.__scribble_uniform_time                 = shader_get_uniform( shScribble, "u_fTime"               );
+global.__scribble_uniform_colour_blend         = shader_get_uniform( shScribble, "u_vColourBlend"        );
+global.__scribble_uniform_char_t               = shader_get_uniform( shScribble, "u_fCharFadeT"          );
+global.__scribble_uniform_char_smoothness      = shader_get_uniform( shScribble, "u_fCharFadeSmoothness" );
+global.__scribble_uniform_line_t               = shader_get_uniform( shScribble, "u_fLineFadeT"          );
+global.__scribble_uniform_line_smoothness      = shader_get_uniform( shScribble, "u_fLineFadeSmoothness" );
+global.__scribble_uniform_data_fields          = shader_get_uniform( shScribble, "u_aDataFields"         );
+
+global.__scribble_msdf_uniform_pma             = shader_get_uniform( shScribbleMSDF, "u_fPremultiplyAlpha"   );
+global.__scribble_msdf_uniform_time            = shader_get_uniform( shScribbleMSDF, "u_fTime"               );
+global.__scribble_msdf_uniform_colour_blend    = shader_get_uniform( shScribbleMSDF, "u_vColourBlend"        );
+global.__scribble_msdf_uniform_char_t          = shader_get_uniform( shScribbleMSDF, "u_fCharFadeT"          );
+global.__scribble_msdf_uniform_char_smoothness = shader_get_uniform( shScribbleMSDF, "u_fCharFadeSmoothness" );
+global.__scribble_msdf_uniform_line_t          = shader_get_uniform( shScribbleMSDF, "u_fLineFadeT"          );
+global.__scribble_msdf_uniform_line_smoothness = shader_get_uniform( shScribbleMSDF, "u_fLineFadeSmoothness" );
+global.__scribble_msdf_uniform_data_fields     = shader_get_uniform( shScribbleMSDF, "u_aDataFields"         );
 
 //Hex converter array
 var _min = ord("0");

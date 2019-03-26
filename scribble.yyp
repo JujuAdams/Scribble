@@ -447,14 +447,6 @@
             }
         },
         {
-            "Key": "a7d3829d-cf26-4739-be56-c692d5dd7a1c",
-            "Value": {
-                "id": "11da6721-e2b6-44ef-8bbc-38a2dfad2a9e",
-                "resourcePath": "shaders\\shScribbleMSDF\\shScribbleMSDF.yy",
-                "resourceType": "GMShader"
-            }
-        },
-        {
             "Key": "a9188620-a624-4a5a-83ae-a1b53faf038b",
             "Value": {
                 "id": "90c740c6-2b0d-4907-a395-8f3afe4fa4ad",
@@ -500,6 +492,14 @@
                 "id": "0da0116c-a677-4b9d-8896-84ba7c285811",
                 "resourcePath": "views\\b62a40f5-05f9-46d9-a12d-b70dfd3faff7.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "b833a55f-4f83-454e-9097-c76bb3941d96",
+            "Value": {
+                "id": "2ade2e11-627d-462a-8d8c-9435f19627a4",
+                "resourcePath": "shaders\\shScribbleMSDF\\shScribbleMSDF.yy",
+                "resourceType": "GMShader"
             }
         },
         {

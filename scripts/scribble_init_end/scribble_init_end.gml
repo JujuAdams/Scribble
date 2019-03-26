@@ -788,7 +788,7 @@ for( var _font = 0; _font < _font_count; _font++ )
             var _w     = _json_glyph_map[? "width" ];
             var _h     = _json_glyph_map[? "height" ];
             
-            show_debug_message( "Scribble:     Adding data for character \"" + string(_char) + "\" (" + string(_index) + ")" );
+            if (__SCRIBBLE_DEBUG) show_debug_message( "Scribble:     Adding data for character \"" + string(_char) + "\" (" + string(_index) + ")" );
             
             var _u0    = ( _x + _image_x_offset ) * _texture_tw;
             var _v0    = ( _y + _image_y_offset ) * _texture_th;

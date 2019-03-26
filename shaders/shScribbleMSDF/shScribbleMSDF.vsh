@@ -9,7 +9,6 @@ attribute vec2 in_TextureCoord;
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
-uniform float u_fPremultiplyAlpha;
 uniform vec4  u_vColourBlend;
 uniform float u_fTime;
 uniform float u_fCharFadeT;
@@ -80,11 +79,6 @@ void applyColourBlend( vec4 colourInput, inout vec4 colourTarget )
     colourTarget *= colourInput;
 }
 
-void applyPremultiplyAlpha( inout vec4 colour )
-{
-    if ( u_fPremultiplyAlpha > 0.5 ) colour.rgb *= colour.a;
-}
-
 void applyPerCharacterFade( float time, float smoothness, inout vec4 colour )
 {
     if ( time < (1.0 + smoothness) )
@@ -127,7 +121,6 @@ void main()
     applyColourBlend( u_vColourBlend, v_vColour );
     applyPerCharacterFade( u_fCharFadeT, u_fCharFadeSmoothness, v_vColour );
     applyPerLineFade( u_fLineFadeT, u_fLineFadeSmoothness, v_vColour );
-    applyPremultiplyAlpha( v_vColour );
     
     //Texture
     v_vTexcoord = in_TextureCoord;

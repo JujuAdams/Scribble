@@ -72,7 +72,7 @@ enum E_SCRIBBLE_BOX
 
 #macro __SCRIBBLE_VERSION "4.0.0"
 #macro __SCRIBBLE_DATE    "2019/03/25"
-#macro __SCRIBBLE_DEBUG   true
+#macro __SCRIBBLE_DEBUG   false
 
 enum __E_SCRIBBLE_FONT
 {
@@ -171,59 +171,60 @@ enum __E_SCRIBBLE_VERTEX_BUFFER
 
 enum __E_SCRIBBLE
 {
-    __SECTION0,           // 0
-    STRING,               // 1
-    DEFAULT_FONT,         // 2
-    DEFAULT_COLOUR,       // 3
-    DEFAULT_HALIGN,       // 4
-    WIDTH_LIMIT,          // 5
-    LINE_HEIGHT,          // 6
+    __SECTION0,              // 0
+    STRING,                  // 1
+    DEFAULT_FONT,            // 2
+    DEFAULT_COLOUR,          // 3
+    DEFAULT_HALIGN,          // 4
+    WIDTH_LIMIT,             // 5
+    LINE_HEIGHT,             // 6
     
-    __SECTION1,           // 7
-    HALIGN,               // 8
-    VALIGN,               // 9
-    WIDTH,                //10
-    HEIGHT,               //11
-    LEFT,                 //12
-    TOP,                  //13
-    RIGHT,                //14
-    BOTTOM,               //15
-    LENGTH,               //16
-    LINES,                //17
-    WORDS,                //18
-    GLOBAL_INDEX,         //19
+    __SECTION1,              // 7
+    HALIGN,                  // 8
+    VALIGN,                  // 9
+    WIDTH,                   //10
+    HEIGHT,                  //11
+    LEFT,                    //12
+    TOP,                     //13
+    RIGHT,                   //14
+    BOTTOM,                  //15
+    LENGTH,                  //16
+    LINES,                   //17
+    WORDS,                   //18
+    GLOBAL_INDEX,            //19
     
-    __SECTION2,           //20
-    TW_DIRECTION,         //21
-    TW_SPEED,             //22
-    TW_POSITION,          //23
-    TW_METHOD,            //24
-    TW_SMOOTHNESS,        //25
-    CHAR_FADE_T,          //26
-    LINE_FADE_T,          //27
+    __SECTION2,              //20
+    TW_DIRECTION,            //21
+    TW_SPEED,                //22
+    TW_POSITION,             //23
+    TW_METHOD,               //24
+    TW_SMOOTHNESS,           //25
+    CHAR_FADE_T,             //26
+    LINE_FADE_T,             //27
     
-    __SECTION3,           //28
-    HAS_CALLED_STEP,      //29
-    NO_STEP_COUNT,        //30
-    DATA_FIELDS,          //31
-    ANIMATION_TIME,       //32
+    __SECTION3,              //28
+    HAS_CALLED_STEP,         //29
+    NO_STEP_COUNT,           //30
+    DATA_FIELDS,             //31
+    ANIMATION_TIME,          //32
     
-    __SECTION4,           //33
-    LINE_LIST,            //34
-    VERTEX_BUFFER_LIST,   //35
+    __SECTION4,              //33
+    LINE_LIST,               //34
+    VERTEX_BUFFER_LIST,      //35
+    MSDF_VERTEX_BUFFER_LIST, //36
     
-    __SECTION5,           //36
-    EV_CHARACTER_LIST,    //37
-    EV_NAME_LIST,         //38
-    EV_DATA_LIST,         //39
-    EV_TRIGGERED_LIST,    //40
-    EV_TRIGGERED_MAP,     //41
-    EV_VALUE_MAP,         //42
-    EV_CHANGED_MAP,       //43
-    EV_PREVIOUS_MAP,      //44
-    EV_DIFFERENT_MAP,     //45
+    __SECTION5,              //37
+    EV_CHARACTER_LIST,       //38
+    EV_NAME_LIST,            //39
+    EV_DATA_LIST,            //40
+    EV_TRIGGERED_LIST,       //41
+    EV_TRIGGERED_MAP,        //42
+    EV_VALUE_MAP,            //43
+    EV_CHANGED_MAP,          //44
+    EV_PREVIOUS_MAP,         //45
+    EV_DIFFERENT_MAP,        //46
     
-    __SIZE                //46
+    __SIZE                   //47
 }
 
 #macro __SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX true
