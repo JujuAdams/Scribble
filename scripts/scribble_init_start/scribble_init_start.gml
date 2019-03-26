@@ -90,6 +90,7 @@ scribble_add_colour( "c_yellow",  c_yellow  );
 scribble_add_flag( "wave"   , 0 );
 scribble_add_flag( "shake"  , 1 );
 scribble_add_flag( "rainbow", 2 );
+scribble_add_flag( "thick"  , 3 );
 
 //Create a vertex format for our text
 vertex_format_begin();

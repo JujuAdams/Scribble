@@ -1,7 +1,8 @@
 #extension GL_OES_standard_derivatives : enable
 
-varying vec2 v_vTexcoord;
-varying vec4 v_vColour;
+varying vec2  v_vTexcoord;
+varying vec4  v_vColour;
+varying float v_fThickness;
 
 uniform float u_fPremultiplyAlpha;
 
@@ -13,7 +14,7 @@ float median( float a, float b, float c )
 void main()
 {
     vec3 sample = texture2D( gm_BaseTexture, v_vTexcoord ).rgb;
-    float dist = median( sample.r, sample.g, sample.b );
+    float dist = v_fThickness*median( sample.r, sample.g, sample.b );
     float width = fwidth( dist );
     float alpha = smoothstep( 0.5 - width, 0.5 + width, dist );
     

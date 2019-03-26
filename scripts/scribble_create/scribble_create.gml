@@ -137,6 +137,7 @@ else
     _data_fields[3] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
     _data_fields[4] = SCRIBBLE_DEFAULT_SHAKE_SPEED;
     _data_fields[5] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
+    _data_fields[6] = SCRIBBLE_DEFAULT_MSDF_THICK_SCALE;
 }
 
 #endregion

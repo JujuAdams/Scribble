@@ -1,5 +1,19 @@
-const int MAX_FLAGS = 6;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
-const int MAX_DATA_FIELDS = 6; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
+const int MAX_FLAGS = 4;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
+//By default, the flags are:
+//0 = wave
+//1 = shake
+//2 = rainbow
+//3 = MSDF thick (not used in this shader)
+
+const int MAX_DATA_FIELDS = 7; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
+//By default, the data fields are:
+//0 = wave size
+//1 = wave frequency
+//2 = wave speed
+//3 = shake size
+//4 = shake speed
+//5 = rainbow weight
+//6 = MSDF thickness factor (not used in this shader)
 
 attribute vec3 in_Position;
 attribute vec3 in_Normal; //Character / Line index / Flags
@@ -17,13 +31,6 @@ uniform float u_fLineFadeT;
 uniform float u_fLineFadeSmoothness;
 
 uniform float u_aDataFields[MAX_DATA_FIELDS];
-//By default, the data fields are:
-//0 = wave size
-//1 = wave frequency
-//2 = wave speed
-//3 = shake size
-//4 = shake speed
-//5 = rainbow weight
 
 float rand( vec2 co )
 {
