@@ -18,6 +18,6 @@
 ////scribble_typewriter_in( text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3 );
 //scribble_set_box_alignment( text, fa_center, fa_middle );
 
-var _string = "[msdf]The [rainbow]quick[/rainbow] brown [scale,3]fox[/scale] jumps [scale,0.5][msdf]over the [thick]lazy[/thick] dog.";
+var _string = "[msdf]The [rainbow]quick[/rainbow] brown [scale,3]fox[/scale] jumps [scale,1][msdf]over the [thick]lazy[/thick] dog.";
 text = scribble_create( _string, -1, 450 );
 scribble_set_box_alignment( text, fa_center, fa_middle );

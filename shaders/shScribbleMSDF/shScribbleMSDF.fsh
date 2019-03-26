@@ -26,16 +26,16 @@ void main()
     float dist = median( sample.r, sample.g, sample.b );
     
     //Hard edge
-    //float alpha = step( 0.5, dist );
+    //float alpha = step( 0.5, v_fThickness*dist );
     
     //AA Method 1
     //float width = fwidth( dist );
-    //float alpha = smoothstep( 0.5 - width, 0.5 + width, dist );
+    //float alpha = smoothstep( 0.5 - width, 0.5 + width, v_fThickness*dist );
     
     //AA Method 2
-    float dx = dFdx( v_vTexcoord.x )*u_vTextureSize.x;
-    float dy = dFdy( v_vTexcoord.y )*u_vTextureSize.y;
-    float alpha = clamp( 0.5 + 4.0*inversesqrt(dx*dx + dy*dy)*(dist-0.5), 0.0, 1.0 );
+    float dx = dFdx(v_vTexcoord.x)*u_vTextureSize.x;
+    float dy = dFdy(v_vTexcoord.y)*u_vTextureSize.y;
+    float alpha = clamp( v_fThickness*0.5 + 4.0*inversesqrt(dx*dx + dy*dy)*(dist-0.5), 0.0, 1.0 );
     
     //AA Method 3
     //float alpha = clamp( dot(u_vTexel, 1.0/fwidth(v_vTexcoord))*(v_fThickness*dist - 0.5) + 0.5, 0.0, 1.0);
