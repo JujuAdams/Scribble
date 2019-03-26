@@ -24,12 +24,19 @@
 /// [fa_right]                        Align horizontally to the right
 /// [fa_center]                       Align centrally
 /// [fa_centre]                       As above
+/// [scale,<factor>]                  Scale text
+/// [/scale]                          Reset scaling to 1
+/// [/s]                              As above
 /// [wave]                            Set text to wave up and down
 /// [/wave]                           Unset wave animation
 /// [shake]                           Set text to shake
 /// [/shake]                          Unset shake animation
 /// [rainbow]                         Set text to cycle through rainbow colours
 /// [/rainbow]                        Unset rainbow animation
+/// [thick]                           Set MSDF fonts to be thick
+/// [/thick]                          Unset MSDF thickness
+/// [slant]                           Set italic emulation
+/// [/slant]                          Unset italic emulation
 /// [<flag name>]                     Set a custom formatting flag
 /// [/<flag name>]                    Unset a custom formatting flag
 /// [event,<name>,<arg0>,<arg1>...]   Execute a script bound to an event name (previously defined using scribble_add_event()) with the specified arguments
@@ -301,6 +308,7 @@ var _text_colour          = _def_colour;
 var _text_halign          = _def_halign;
 var _text_flags           = array_create( SCRIBBLE_MAX_FLAGS, 0 );
 var _text_scale           = 1;
+var _text_slant           = false;
 
 var _font_line_height     = _line_min_height;
 var _font_space_width     = _def_space_width;
@@ -362,6 +370,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     _text_colour      = _def_colour;
                     _text_flags       = array_create( SCRIBBLE_MAX_FLAGS, 0 );
                     _text_scale       = 1;
+                    _text_slant       = false;
                     
                     _font_line_height = _line_min_height;
                     _font_space_width = _def_space_width;
@@ -387,6 +396,11 @@ for( var _i = 0; _i < _separator_count; _i++ )
                     _text_scale = 1;
                     _skip = true;
                 break;
+                
+                case "/slant":
+                    _text_slant = false;
+                    _skip = true;
+                break;
                 #endregion
                 
                 #region Scale
@@ -401,6 +415,13 @@ for( var _i = 0; _i < _separator_count; _i++ )
                         var _text_scale = real(_parameters_list[| 1]);
                     }
                     
+                    _skip = true;
+                break;
+                #endregion
+                
+                #region Slant (italics emulation)
+                case "slant":
+                    _text_slant = true;
                     _skip = true;
                 break;
                 #endregion
@@ -741,6 +762,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
         _word_array[ __E_SCRIBBLE_WORD.WIDTH          ] = _substr_width;
         _word_array[ __E_SCRIBBLE_WORD.HEIGHT         ] = _substr_height;
         _word_array[ __E_SCRIBBLE_WORD.SCALE          ] = _text_scale;
+        _word_array[ __E_SCRIBBLE_WORD.SLANT          ] = _text_slant;
         _word_array[ __E_SCRIBBLE_WORD.VALIGN         ] = fa_middle;
         _word_array[ __E_SCRIBBLE_WORD.STRING         ] = _substr;
         _word_array[ __E_SCRIBBLE_WORD.INPUT_STRING   ] = _input_substr;
@@ -1016,6 +1038,8 @@ repeat( _lines_size )
             var _colour    = _word_array[ __E_SCRIBBLE_WORD.COLOUR ];
             var _flag_data = _word_array[ __E_SCRIBBLE_WORD.FLAGS  ];
             var _scale     = _word_array[ __E_SCRIBBLE_WORD.SCALE  ];
+            var _slant     = _word_array[ __E_SCRIBBLE_WORD.SLANT  ];
+            var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_scale*_slant;
             
             var _flags  = 0;
             var _offset = 1;
@@ -1056,12 +1080,12 @@ repeat( _lines_size )
                     
                     var _char_pc = _text_char / _max_char;
                     
-                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
-                    vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 );
-                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
-                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
-                    vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 );
-                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
+                    vertex_position( _vbuff, _glyph_l+_slant_offset, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
+                    vertex_position( _vbuff, _glyph_l              , _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r              , _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r              , _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r+_slant_offset, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 );
+                    vertex_position( _vbuff, _glyph_l+_slant_offset, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
                     
                     _char_l += _glyph_shf*_scale;
                     ++_text_char;
@@ -1094,12 +1118,12 @@ repeat( _lines_size )
                     
                     var _char_pc = _text_char / _max_char;
                     
-                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
-                    vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 );
-                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
-                    vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
-                    vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 );
-                    vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
+                    vertex_position( _vbuff, _glyph_l+_slant_offset, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
+                    vertex_position( _vbuff, _glyph_l              , _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r              , _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r              , _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v1 );
+                    vertex_position( _vbuff, _glyph_r+_slant_offset, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u1, _glyph_v0 );
+                    vertex_position( _vbuff, _glyph_l+_slant_offset, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, 1 ); vertex_texcoord( _vbuff, _glyph_u0, _glyph_v0 );
                     
                     _char_l += _glyph_shf*_scale;
                     ++_text_char;

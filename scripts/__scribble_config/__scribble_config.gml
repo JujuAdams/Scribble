@@ -42,6 +42,7 @@
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
 
 //Advanced users only!
+#macro SCRIBBLE_SLANT_AMOUNT                      4
 #macro SCRIBBLE_CALL_STEP_IN_DRAW                 false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING  true    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
 #macro SCRIBBLE_FIX_NEWLINES                       true    //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
@@ -150,17 +151,18 @@ enum __E_SCRIBBLE_WORD
     WIDTH,          // 2
     HEIGHT,         // 3
     SCALE,          // 4
-    VALIGN,         // 5
-    STRING,         // 6
-    INPUT_STRING,   // 7
-    SPRITE,         // 8
-    IMAGE,          // 9
-    LENGTH,         //10
-    FONT,           //11
-    COLOUR,         //12
-    FLAGS,          //13
-    NEXT_SEPARATOR, //14
-    __SIZE          //15
+    SLANT,          // 5
+    VALIGN,         // 6
+    STRING,         // 7
+    INPUT_STRING,   // 8
+    SPRITE,         // 9
+    IMAGE,          //10
+    LENGTH,         //11
+    FONT,           //12
+    COLOUR,         //13
+    FLAGS,          //14
+    NEXT_SEPARATOR, //15
+    __SIZE          //16
 }
 
 enum __E_SCRIBBLE_VERTEX_BUFFER
