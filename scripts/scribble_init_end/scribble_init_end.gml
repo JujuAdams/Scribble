@@ -768,6 +768,10 @@ for( var _font = 0; _font < _font_count; _font++ )
         
         
         
+        var _json_common_map = _json[? "common" ];
+        var _json_base_height = _json_common_map[? "base" ];
+        var _json_line_height = _json_common_map[? "lineHeight" ];
+        
         var _json_glyph_list = _json[? "chars" ];
         var _size = ds_list_size( _json_glyph_list );
         show_debug_message( "Scribble: MSDF \"" + _name + "\" has " + string( _size ) + " characters" );
@@ -814,12 +818,9 @@ for( var _font = 0; _font < _font_count; _font++ )
         }
         
         //Now handle the space character
-        var _json_common_map = _json[? "common" ];
-        var _json_line_height = _json_common_map[? "lineHeight" ];
-        
         var _array = _font_glyphs_map[? " " ];
         _array[@ __E_SCRIBBLE_GLYPH.W   ] = _space_width;
-        _array[@ __E_SCRIBBLE_GLYPH.H   ] = _json_common_map[? "lineHeight" ];
+        _array[@ __E_SCRIBBLE_GLYPH.H   ] = _json_line_height;
         _array[@ __E_SCRIBBLE_GLYPH.SHF ] = _space_width;
         
         ds_map_destroy( _json );
