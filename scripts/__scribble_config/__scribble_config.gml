@@ -12,8 +12,8 @@
 
 //Basic input and draw settings
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
-#macro SCRIBBLE_ANIMATION_SPEED               0.02 //Speed of shader animation effects
-#macro SCRIBBLE_HASH_NEWLINE                  true //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
+#macro SCRIBBLE_ANIMATION_SPEED               0.02  //Speed of shader animation effects
+#macro SCRIBBLE_HASH_NEWLINE                  true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 
 //Default draw settings
 #macro SCRIBBLE_DEFAULT_XSCALE            1
@@ -42,11 +42,11 @@
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
 
 //Advanced users only!
-#macro SCRIBBLE_SLANT_AMOUNT                      4
+#macro SCRIBBLE_COMPATIBILITY_DRAW                true     //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
 #macro SCRIBBLE_CALL_STEP_IN_DRAW                 false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
-#macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING  true    //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
-#macro SCRIBBLE_FIX_NEWLINES                       true    //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
-#macro SCRIBBLE_COMPATIBILITY_DRAW                false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
+#macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING true     //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
+#macro SCRIBBLE_FIX_NEWLINES                      true     //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
+#macro SCRIBBLE_SLANT_AMOUNT                      4
 #macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only

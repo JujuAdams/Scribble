@@ -521,8 +521,17 @@ for( var _i = 0; _i < _separator_count; _i++ )
                             if ( _font_data != undefined )
                             {
                                 #region Change font
-                        
-                                _text_font = _parameters_list[| 0];
+                                
+                                if ( (_font_data[ __E_SCRIBBLE_FONT.TYPE ] == __E_SCRIBBLE_FONT_TYPE.MSDF) && SCRIBBLE_COMPATIBILITY_DRAW )
+                                {
+                                    _text_font = _def_font;
+                                    _font_data = global.__scribble_font_data[? _text_font ];
+                                    show_debug_message( "Scribble: WARNING! MSDF font \"" + string(_parameters_list[| 0]) + "\" not available in compatibility mode. Defaulting to \"" + string(_text_font) + "\"" );
+                                }
+                                else
+                                {
+                                    _text_font = _parameters_list[| 0];
+                                }
                         
                                 var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
                                 if ( _font_glyphs_array == undefined )
@@ -537,7 +546,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                         
                                 _font_space_width = _array[ __E_SCRIBBLE_GLYPH.W ];
                                 _font_line_height = _array[ __E_SCRIBBLE_GLYPH.H ];
-                        
+                                
                                 _skip = true;
                         
                                 #endregion
