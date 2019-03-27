@@ -134,5 +134,5 @@ void main()
     v_vTexcoord = in_TextureCoord;
     
     //MSDF thickness factor
-    v_fThickness = mix( 1.0, u_aDataFields[6], flagArray[3] );
+    v_fThickness = u_aDataFields[6]*flagArray[3];
 }
