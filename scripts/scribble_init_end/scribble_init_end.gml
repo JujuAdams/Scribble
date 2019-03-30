@@ -53,7 +53,14 @@ var _later_than_gms220 = (( (real(_major) > 2) || (real(_minor) > 2) ) || ( (rea
 if ( _later_than_gms220 )
 {
     show_debug_message( "Scribble: Legacy (GMS2.2.0 and prior) spritefont emulation available" );
-    if ( SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING && _later_than_gms220 ) show_debug_message( "Scribble: Using legacy spritefont emulation" );
+    if (SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING)
+    {
+        show_debug_message( "Scribble: Using legacy spritefont emulation" );
+    }
+    else
+    {
+        show_debug_message( "Scribble: *Not* using legacy spritefont emulation" );
+    }
 }
 
 #endregion
