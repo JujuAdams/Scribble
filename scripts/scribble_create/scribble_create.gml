@@ -937,13 +937,13 @@ repeat( _lines_size )
             _previous_font = "";
             
             var _char_pc     = _text_char / _max_char;
-            var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR ];
+            //var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR ];
             var _flag_data   = _word_array[ __E_SCRIBBLE_WORD.FLAGS  ];
             var _image       = _word_array[ __E_SCRIBBLE_WORD.IMAGE  ];
             var _scale       = _word_array[ __E_SCRIBBLE_WORD.SCALE  ];
             
-            var _flags  = 0;
-            var _offset = 1;
+            var _flags  = 1; //First bit ON indicates that this is a sprite
+            var _offset = 2;
             for( var _i = 0; _i < SCRIBBLE_MAX_FLAGS; _i++ )
             {
                 _flags += _flag_data[_i] * _offset;
@@ -982,13 +982,18 @@ repeat( _lines_size )
             var _glyph_t = _word_t  + _uvs[5] + sprite_get_yoffset( _sprite );
             var _glyph_r = _glyph_l + _uvs[6]*sprite_get_width(  _sprite )*_scale;
             var _glyph_b = _glyph_t + _uvs[7]*sprite_get_height( _sprite )*_scale;
-                
-            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
-            vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] );
-            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
-            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
-            vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] );
-            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, c_white, 1 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
+            
+            var _image_start = 0;
+            var _image_speed = 1;
+            var _colour = make_colour_rgb( _image, sprite_get_number(_sprite)-1, floor(_image_speed*127.5) );
+            show_debug_message( string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)));
+            
+            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
+            vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] );
+            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
+            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
+            vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] );
+            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
             
             ++_text_char;
             #endregion
@@ -1051,8 +1056,8 @@ repeat( _lines_size )
             var _slant     = _word_array[ __E_SCRIBBLE_WORD.SLANT  ];
             var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_scale*_slant;
             
-            var _flags  = 0;
-            var _offset = 1;
+            var _flags  = 0; //First bit OFF indicates that this is text
+            var _offset = 2;
             for( var _i = 0; _i < SCRIBBLE_MAX_FLAGS; _i++ )
             {
                 _flags += _flag_data[_i] * _offset;

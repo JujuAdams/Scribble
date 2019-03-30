@@ -1,9 +1,10 @@
-const int MAX_FLAGS = 4;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
+const int MAX_FLAGS = 5;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
 //By default, the flags are:
-//0 = wave
-//1 = shake
-//2 = rainbow
-//3 = MSDF thick
+//0 = is a sprite
+//1 = wave
+//2 = shake
+//3 = rainbow
+//4 = MSDF thick
 
 const int MAX_DATA_FIELDS = 7; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
 //By default, the data fields are:
@@ -119,13 +120,13 @@ void main()
     
     //Vertex animation
     vec4 pos = vec4( in_Position.xyz, 1.0 );
-    applyWave( flagArray[0]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos );
-    applyShake( flagArray[1]*u_aDataFields[3], u_aDataFields[4], pos );
+    applyWave( flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos );
+    applyShake( flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos );
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
     
     //Colour
     v_vColour = in_Colour;
-    applyRainbow( flagArray[2]*u_aDataFields[5], v_vColour );
+    applyRainbow( flagArray[3]*u_aDataFields[5], v_vColour );
     applyColourBlend( u_vColourBlend, v_vColour );
     applyPerCharacterFade( u_fCharFadeT, u_fCharFadeSmoothness, v_vColour );
     applyPerLineFade( u_fLineFadeT, u_fLineFadeSmoothness, v_vColour );
@@ -134,5 +135,5 @@ void main()
     v_vTexcoord = in_TextureCoord;
     
     //MSDF thickness factor
-    v_fThickness = u_aDataFields[6]*flagArray[3];
+    v_fThickness = flagArray[4]*u_aDataFields[6];
 }

@@ -1,9 +1,10 @@
-const int MAX_FLAGS = 4;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
+const int MAX_FLAGS = 5;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
 //By default, the flags are:
-//0 = wave
-//1 = shake
-//2 = rainbow
-//3 = MSDF thick (not used in this shader)
+//0 = is a sprite
+//1 = wave
+//2 = shake
+//3 = rainbow
+//4 = MSDF thick (not used in this shader)
 
 const int MAX_DATA_FIELDS = 7; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
 //By default, the data fields are:
@@ -76,6 +77,20 @@ void applyShake( float magnitude, float speed, inout vec4 pos )
     pos.xy += magnitude*merge*(2.0*delta-1.0);
 }
 
+void applySprite( float isSprite, inout vec4 colour )
+{
+    if ( isSprite == 1.0 )
+    {
+        float myImage    = in_Colour.r*255.0; //First byte is the index of this sprite
+        float imageMax   = 1.0+in_Colour.g*255.0; //Second byte is the maximum number of images in the sprite
+        float imageSpeed = in_Colour.b*2.0;   //Third byte is half of the image speed
+        float imageStart = in_Colour.a*255.0; //Fourth byte is the image offset
+        
+        float displayImage = floor(mod( imageSpeed*u_fTime + imageStart, imageMax ));
+        colour = vec4((myImage == displayImage)? 1.0 : 0.0);
+    }
+}
+
 void applyRainbow( float weight, inout vec4 colour )
 {
     colour.rgb = mix( colour.rgb, hsv2rgb( vec3( in_Normal.x + u_fTime, 1.0, 1.0 ) ), weight );
@@ -118,13 +133,14 @@ void main()
     
     //Vertex animation
     vec4 pos = vec4( in_Position.xyz, 1.0 );
-    applyWave( flagArray[0]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos );
-    applyShake( flagArray[1]*u_aDataFields[3], u_aDataFields[4], pos );
+    applyWave( flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos );
+    applyShake( flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos );
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
     
     //Colour
     v_vColour = in_Colour;
-    applyRainbow( flagArray[2]*u_aDataFields[5], v_vColour );
+    applySprite( flagArray[0], v_vColour );
+    applyRainbow( flagArray[3]*u_aDataFields[5], v_vColour );
     applyColourBlend( u_vColourBlend, v_vColour );
     applyPerCharacterFade( u_fCharFadeT, u_fCharFadeSmoothness, v_vColour );
     applyPerLineFade( u_fLineFadeT, u_fLineFadeSmoothness, v_vColour );

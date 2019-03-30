@@ -15,7 +15,7 @@ var _string  = "[ev,sound,sndCrank][rainbow]abcdef[] ABCDEF##";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][rumble]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/rumble]LAZY [fTestB]DOG.";
 
 text = scribble_create( _string, -1, 450, "c_xanadu", "fTestB", fa_center );
-scribble_typewriter_in( text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3 );
+//scribble_typewriter_in( text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3 );
 scribble_set_box_alignment( text, fa_center, fa_middle );
 
 //var _string = "[msdf]The [rainbow]quick[/rainbow] brown [scale,3]fox[/scale] jumps [scale,1][msdf]over the [thick]lazy[/thick] dog.";

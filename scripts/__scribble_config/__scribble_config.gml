@@ -50,7 +50,7 @@
 #macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_MAX_FLAGS                         4        //Change MAX_FLAGS in the shader if you change this value!
+#macro SCRIBBLE_MAX_FLAGS                         5        //Change MAX_FLAGS in the shader if you change this value!
 #macro SCRIBBLE_MAX_DATA_FIELDS                   7        //Change MAX_DATA_FIELDS in the shader if you change this value!
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE        200      //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES        0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
