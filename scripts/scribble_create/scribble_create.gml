@@ -33,8 +33,6 @@
 /// [/shake]                          Unset shake animation
 /// [rainbow]                         Set text to cycle through rainbow colours
 /// [/rainbow]                        Unset rainbow animation
-/// [thick]                           Set MSDF fonts to be thick
-/// [/thick]                          Unset MSDF thickness
 /// [slant]                           Set italic emulation
 /// [/slant]                          Unset italic emulation
 /// [<flag name>]                     Set a custom formatting flag
@@ -144,7 +142,6 @@ else
     _data_fields[3] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
     _data_fields[4] = SCRIBBLE_DEFAULT_SHAKE_SPEED;
     _data_fields[5] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
-    _data_fields[6] = SCRIBBLE_DEFAULT_MSDF_THICK_SCALE;
 }
 
 #endregion
@@ -208,7 +205,6 @@ repeat( _buffer_size )
 var _json                  = ds_list_create(); //The main data structure
 var _text_root_list        = ds_list_create(); //Stores each line of text
 var _vbuff_list            = ds_list_create(); //Stores all the vertex buffers needed to render the text and sprites
-var _msdf_vbuff_list       = ds_list_create();
 var _events_character_list = ds_list_create(); //Stores each event's triggering character
 var _events_name_list      = ds_list_create(); //Stores each event's name
 var _events_data_list      = ds_list_create(); //Stores each event's parameters
@@ -258,7 +254,6 @@ _json[| __E_SCRIBBLE.ANIMATION_TIME          ] = 0;
 _json[| __E_SCRIBBLE.__SECTION4              ] = "-- Lists --";
 _json[| __E_SCRIBBLE.LINE_LIST               ] = _text_root_list;
 _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST      ] = _vbuff_list;
-_json[| __E_SCRIBBLE.MSDF_VERTEX_BUFFER_LIST ] = _msdf_vbuff_list;
 
 _json[| __E_SCRIBBLE.__SECTION5              ] = "-- Events --";
 _json[| __E_SCRIBBLE.EV_CHARACTER_LIST       ] = _events_character_list; //Stores each event's triggering cha
@@ -274,7 +269,6 @@ _json[| __E_SCRIBBLE.EV_DIFFERENT_MAP        ] = ds_map_create();
 //Now bind the child data structures to the root list
 ds_list_mark_as_list( _json, __E_SCRIBBLE.LINE_LIST               );
 ds_list_mark_as_list( _json, __E_SCRIBBLE.VERTEX_BUFFER_LIST      );
-ds_list_mark_as_list( _json, __E_SCRIBBLE.MSDF_VERTEX_BUFFER_LIST );
 ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_CHARACTER_LIST       );
 ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_NAME_LIST            );
 ds_list_mark_as_list( _json, __E_SCRIBBLE.EV_DATA_LIST            );
@@ -525,16 +519,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
                             {
                                 #region Change font
                                 
-                                if ( (_font_data[ __E_SCRIBBLE_FONT.TYPE ] == __E_SCRIBBLE_FONT_TYPE.MSDF) && SCRIBBLE_COMPATIBILITY_DRAW )
-                                {
-                                    _text_font = _def_font;
-                                    _font_data = global.__scribble_font_data[? _text_font ];
-                                    show_debug_message( "Scribble: WARNING! MSDF font \"" + string(_parameters_list[| 0]) + "\" not available in compatibility mode. Defaulting to \"" + string(_text_font) + "\"" );
-                                }
-                                else
-                                {
-                                    _text_font = _parameters_list[| 0];
-                                }
+                                _text_font = _parameters_list[| 0];
                         
                                 var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
                                 if ( _font_glyphs_array == undefined )
@@ -905,14 +890,11 @@ ds_list_destroy( _parameters_list );
 var _json_offset_x   = _json[| __E_SCRIBBLE.LEFT                    ];
 var _json_offset_y   = _json[| __E_SCRIBBLE.TOP                     ];
 var _vbuff_list      = _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST      ];
-var _msdf_vbuff_list = _json[| __E_SCRIBBLE.MSDF_VERTEX_BUFFER_LIST ];
 
-var _texture_to_vbuff_map      = ds_map_create();
-var _texture_to_msdf_vbuff_map = ds_map_create();
+var _texture_to_vbuff_map = ds_map_create();
 
 var _previous_font    = "";
 var _previous_texture = -1;
-var _previous_msdf    = false;
 
 var _text_char = 0;
 var _max_char = _json[| __E_SCRIBBLE.LENGTH ]-1;
@@ -987,10 +969,9 @@ repeat( _lines_size )
                 }
                 
                 var _sprite_texture = sprite_get_texture( _sprite, _image );
-                if (_sprite_texture != _previous_texture) || (_previous_msdf)
+                if (_sprite_texture != _previous_texture)
                 {
                     _previous_texture = _sprite_texture;
-                    _previous_msdf    = false;
                     
                     var _vbuff_data = _texture_to_vbuff_map[? _sprite_texture ];
                     if ( _vbuff_data == undefined )
@@ -1045,16 +1026,14 @@ repeat( _lines_size )
                 var _font_glyphs_min   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN     ];
                 var _font_glyphs_max   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MAX     ];
                 var _font_sprite       = _font_data[ __E_SCRIBBLE_FONT.PACKED_SPRITE ];
-                var _font_msdf         = (_font_data[ __E_SCRIBBLE_FONT.TYPE ] == __E_SCRIBBLE_FONT_TYPE.MSDF);
                 var _font_texture      = sprite_get_texture( _font_sprite, 0 );     
                 
-                if (_font_texture != _previous_texture) || (_font_msdf != _previous_msdf)
+                if (_font_texture != _previous_texture)
                 {
                     _previous_texture = _font_texture;
-                    _previous_msdf    = _font_msdf;
                     
-                    var _lookup_map   = _font_msdf? _texture_to_msdf_vbuff_map : _texture_to_vbuff_map;
-                    var _storage_list = _font_msdf? _msdf_vbuff_list : _vbuff_list;
+                    var _lookup_map   = _texture_to_vbuff_map;
+                    var _storage_list = _vbuff_list;
                     
                     var _vbuff_data = _lookup_map[? _font_texture ];
                     if ( _vbuff_data == undefined )
@@ -1197,17 +1176,7 @@ for( var _i = 0; _i < _count; _i++ )
     vertex_freeze( _vbuff );
 }
 
-var _count = ds_list_size( _msdf_vbuff_list );
-for( var _i = 0; _i < _count; _i++ )
-{
-    var _vbuff_data = _msdf_vbuff_list[| _i ];
-    var _vbuff = _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
-    vertex_end( _vbuff );
-    vertex_freeze( _vbuff );
-}
-
-ds_map_destroy( _texture_to_vbuff_map      );
-ds_map_destroy( _texture_to_msdf_vbuff_map );
+ds_map_destroy( _texture_to_vbuff_map );
 
 #endregion
 

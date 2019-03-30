@@ -21,13 +21,4 @@ for( var _i = 0; _i < _count; _i++ )
     vertex_delete_buffer( _vbuff );
 }
 
-var _vbuff_list = _json[| __E_SCRIBBLE.MSDF_VERTEX_BUFFER_LIST ];
-var _count = ds_list_size( _vbuff_list );
-for( var _i = 0; _i < _count; _i++ )
-{
-    var _vbuff_data = _vbuff_list[| _i ];
-    var _vbuff = _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
-    vertex_delete_buffer( _vbuff );
-}
-
 ds_list_destroy( _json );

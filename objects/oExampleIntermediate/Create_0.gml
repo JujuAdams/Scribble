@@ -3,14 +3,10 @@
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
-//  MSDF texture page generator by donmccurdy:
-//  https://github.com/donmccurdy/msdf-bmfont-web
-//  https://msdf-bmfont.donmccurdy.com/
-//  
 //  Intended for use with GMS2.2.1 and later
 
 var _string  = "[rainbow]abcdef[] ABCDEF##";
-    _string += "[wave][c_orange]0123456789[] .,<>\"'&[sCoin][sCoin,1][sCoin,2][sCoin,3][shake][rainbow]!?[]\n\n";
+    _string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][sCoin][sCoin,1][sCoin,2][sCoin,3][shake][][rainbow]!?[]\n\n";
     _string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][shake]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fTestB]DOG.";
 

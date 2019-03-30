@@ -22,7 +22,7 @@ if ( !is_string(_name) )
 
 if ( !is_real(_index) || (_index != floor(_index)) || (_index < 1) || (_index > (SCRIBBLE_MAX_FLAGS-1)) )
 {
-    show_error( "Custom flag indexes should be an integer from 1 to " + string(SCRIBBLE_MAX_FLAGS-1) + " (inclusive).\nTo increase the maximum number of flags, see __scribble_config()\n(Index was \"" + string(_index) + "\"\n ", false );
+    show_error( "Custom flag indexes should be an integer from 1 to " + string(SCRIBBLE_MAX_FLAGS-1) + " (inclusive).\nTo increase the maximum number of flags, see __scribble_config()\n(Index was \"" + string(_index) + "\")\n ", false );
     exit;
 }
 

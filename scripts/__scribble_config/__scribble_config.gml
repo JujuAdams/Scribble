@@ -3,10 +3,6 @@
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
-//  MSDF texture page generator by donmccurdy:
-//  https://github.com/donmccurdy/msdf-bmfont-web
-//  https://msdf-bmfont.donmccurdy.com/
-//  
 //  
 //  Intended for use with GMS2.2.1 and later
 
@@ -37,7 +33,6 @@
 #macro SCRIBBLE_DEFAULT_SHAKE_SIZE             4
 #macro SCRIBBLE_DEFAULT_SHAKE_SPEED           22
 #macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT         0.5
-#macro SCRIBBLE_DEFAULT_MSDF_THICK_SCALE       0.4
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
@@ -53,8 +48,8 @@
 #macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_MAX_FLAGS                         5        //Change MAX_FLAGS in the shader if you change this value!
-#macro SCRIBBLE_MAX_DATA_FIELDS                   7        //Change MAX_DATA_FIELDS in the shader if you change this value!
+#macro SCRIBBLE_MAX_FLAGS                         4        //Change MAX_FLAGS in the shader if you change this value!
+#macro SCRIBBLE_MAX_DATA_FIELDS                   6        //Change MAX_DATA_FIELDS in the shader if you change this value!
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE        200      //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES        0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
@@ -102,8 +97,7 @@ enum __E_SCRIBBLE_FONT
 enum __E_SCRIBBLE_FONT_TYPE
 {
     FONT,
-    SPRITE,
-    MSDF
+    SPRITE
 }
 
 enum __E_SCRIBBLE_GLYPH
@@ -219,20 +213,19 @@ enum __E_SCRIBBLE
     __SECTION4,              //33
     LINE_LIST,               //34
     VERTEX_BUFFER_LIST,      //35
-    MSDF_VERTEX_BUFFER_LIST, //36
     
-    __SECTION5,              //37
-    EV_CHARACTER_LIST,       //38
-    EV_NAME_LIST,            //39
-    EV_DATA_LIST,            //40
-    EV_TRIGGERED_LIST,       //41
-    EV_TRIGGERED_MAP,        //42
-    EV_VALUE_MAP,            //43
-    EV_CHANGED_MAP,          //44
-    EV_PREVIOUS_MAP,         //45
-    EV_DIFFERENT_MAP,        //46
+    __SECTION5,              //36
+    EV_CHARACTER_LIST,       //37
+    EV_NAME_LIST,            //38
+    EV_DATA_LIST,            //39
+    EV_TRIGGERED_LIST,       //40
+    EV_TRIGGERED_MAP,        //41
+    EV_VALUE_MAP,            //42
+    EV_CHANGED_MAP,          //43
+    EV_PREVIOUS_MAP,         //44
+    EV_DIFFERENT_MAP,        //45
     
-    __SIZE                   //47
+    __SIZE                   //46
 }
 
 #macro __SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX true

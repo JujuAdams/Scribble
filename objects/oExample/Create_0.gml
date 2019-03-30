@@ -3,10 +3,6 @@
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
-//  MSDF texture page generator by donmccurdy:
-//  https://github.com/donmccurdy/msdf-bmfont-web
-//  https://msdf-bmfont.donmccurdy.com/
-//  
 //  Intended for use with GMS2.2.1 and later
 
 //Define a temporary string. This is the data Scribble will parse

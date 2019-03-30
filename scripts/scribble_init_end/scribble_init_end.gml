@@ -120,42 +120,6 @@ repeat( _font_count )
             ds_priority_add( _priority_queue, _name, _priority );
             show_debug_message( "Scribble: Queuing \"" + _name + "\" (standard) for packing (size=" + string( _texture_w ) + "x" + string( _texture_h ) + ", weight=" + string( _priority ) + ") as a standard font" );
         break;
-        
-        case __E_SCRIBBLE_FONT_TYPE.MSDF:
-            var _json_file  = global.__scribble_font_directory + _name + ".json";
-            if ( !file_exists( _json_file ) )
-            {
-                show_error( "Scribble:\n\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
-                continue;
-            }
-            
-            var _png_file  = global.__scribble_font_directory + _name + ".png";
-            if ( !file_exists( _json_file ) )
-            {
-                show_error( "Scribble:\n\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", false );
-                continue;
-            }
-            
-            var _import_sprite = sprite_add( _png_file, 0, false, false, 0, 0 );
-            
-            var _texture_w = sprite_get_width(  _import_sprite );
-            var _texture_h = sprite_get_height( _import_sprite );
-            _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] = _texture_w;
-            _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] = _texture_h;
-            _font_data[@ __E_SCRIBBLE_FONT.IMPORT_SPRITE  ] = _import_sprite;
-            
-            if ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] > global.__scribble_texture_page_size )
-            || ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] > global.__scribble_texture_page_size )
-            {
-                show_debug_message( "Scribble: WARNING! The texture for \"" + _name + "\" is larger than Scribble's maximum texture page size (" + string( _texture_w ) + "x" + string( _texture_h ) + " > " + string( global.__scribble_texture_page_size ) + "x" + string( global.__scribble_texture_page_size ) + ")" );
-                var _bigger_size = power(2,ceil(ln(max( _texture_w, _texture_h ))/ln(2)));
-                show_debug_message( "Scribble:          Please use a larger texture page size in Scribble and GameMaker (e.g. " + string( _bigger_size ) + "x" + string( _bigger_size ) + ") to avoid bugs and blurry text" );
-            }
-        
-            var _priority = _texture_h*global.__scribble_texture_page_size + _texture_w;
-            ds_priority_add( _priority_queue, _name, _priority );
-            show_debug_message( "Scribble: Queuing \"" + _name + "\" for packing (size=" + string( _texture_w ) + "x" + string( _texture_h ) + ", weight=" + string( _priority ) + ") as an MSDF font" );
-        break;
     }
     
     _name = ds_map_find_next( global.__scribble_font_data, _name );
@@ -362,18 +326,6 @@ for( var _s = 0; _s < _surface_count; _s++ )
                 vertex_submit( _vbuff, pr_trianglestrip, _texture );
                 vertex_delete_buffer( _vbuff );
             break;
-            
-            case __E_SCRIBBLE_FONT_TYPE.MSDF:
-                var _texture_w = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ];
-                var _texture_h = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ];
-                var _x         = _font_data[ __E_SCRIBBLE_FONT.SPRITE_X       ];
-                var _y         = _font_data[ __E_SCRIBBLE_FONT.SPRITE_Y       ];
-                var _sprite    = _font_data[ __E_SCRIBBLE_FONT.IMPORT_SPRITE  ];
-                
-                show_debug_message( "Scribble:         Drawing MSDF font \"" + _name + "\" at " + string( _x ) + "," + string( _y ) + " (size=" + string( _texture_w ) + "x" + string( _texture_h ) + ")" );
-                
-                draw_sprite( _sprite, 0, _x, _y );
-            break;
         }
     }
     
@@ -396,14 +348,6 @@ for( var _s = 0; _s < _surface_count; _s++ )
         var _name = _surface_fonts[ _f ];
         var _font_data = global.__scribble_font_data[? _name ];
         _font_data[@ __E_SCRIBBLE_FONT.PACKED_SPRITE ] = _surface_sprite;
-        
-        if (_font_data[ __E_SCRIBBLE_FONT.TYPE ] == __E_SCRIBBLE_FONT_TYPE.MSDF)
-        {
-            var _sprite = _font_data[ __E_SCRIBBLE_FONT.IMPORT_SPRITE ];
-            show_debug_message( "Scribble:         Deleting imported sprite for \"" + _name + "\"" );
-            sprite_delete( _sprite );
-            _font_data[@ __E_SCRIBBLE_FONT.IMPORT_SPRITE ] = undefined;
-        }
     }
 }
     
@@ -745,90 +689,6 @@ for( var _font = 0; _font < _font_count; _font++ )
                 _font_glyphs_map[? _char ] = _array;
             }
         }
-        
-        ds_map_destroy( _json );
-        
-        #endregion
-        break;
-        
-        case __E_SCRIBBLE_FONT_TYPE.MSDF:
-        #region MSDF
-        
-        show_debug_message( "Scribble: Processing characters for font \"" + _name + "\"" );
-        
-        var _surface_sprite  = _font_data[ __E_SCRIBBLE_FONT.PACKED_SPRITE ];
-        var _image_x_offset  = _font_data[ __E_SCRIBBLE_FONT.SPRITE_X      ];
-        var _image_y_offset  = _font_data[ __E_SCRIBBLE_FONT.SPRITE_Y      ];
-        var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP    ];
-        var _space_width     = _font_data[ __E_SCRIBBLE_FONT.SPACE_WIDTH   ];
-        
-        var _texture = sprite_get_texture( _surface_sprite, 0 );
-        var _texture_tw = texture_get_texel_width(  _texture );
-        var _texture_th = texture_get_texel_height( _texture );
-        
-        
-        
-        var _json_buffer = buffer_load( global.__scribble_font_directory + _name + ".json" );
-        var _json_string = buffer_read( _json_buffer, buffer_text );
-        buffer_delete( _json_buffer );
-        var _json = json_decode( _json_string );
-        
-        
-        
-        var _json_common_map = _json[? "common" ];
-        var _json_base_height = _json_common_map[? "base" ];
-        var _json_line_height = _json_common_map[? "lineHeight" ];
-        
-        var _json_glyph_list = _json[? "chars" ];
-        var _size = ds_list_size( _json_glyph_list );
-        show_debug_message( "Scribble: MSDF \"" + _name + "\" has " + string( _size ) + " characters" );
-        
-        show_debug_message( "Scribble: Using a ds_map to index glyphs" );
-        
-        var _font_glyphs_map = ds_map_create();
-        _font_data[@ __E_SCRIBBLE_FONT.GLYPHS_MAP ] = _font_glyphs_map;
-        
-        for( var _i = 0; _i < _size; _i++ )
-        {
-            var _json_glyph_map = _json_glyph_list[| _i ];
-            
-            var _char  = _json_glyph_map[? "char" ];
-            var _index = ord(_char);
-            var _x     = _json_glyph_map[? "x" ];
-            var _y     = _json_glyph_map[? "y" ];
-            var _w     = _json_glyph_map[? "width" ];
-            var _h     = _json_glyph_map[? "height" ];
-            
-            if (__SCRIBBLE_DEBUG) show_debug_message( "Scribble:     Adding data for character \"" + string(_char) + "\" (" + string(_index) + ")" );
-            
-            var _u0    = ( _x + _image_x_offset ) * _texture_tw;
-            var _v0    = ( _y + _image_y_offset ) * _texture_th;
-            var _u1    = _u0 + _w * _texture_tw;
-            var _v1    = _v0 + _h * _texture_th;
-            
-            var _array = array_create( __E_SCRIBBLE_GLYPH.__SIZE, 0 );
-            _array[ __E_SCRIBBLE_GLYPH.CHAR ] = _char;
-            _array[ __E_SCRIBBLE_GLYPH.ORD  ] = _index;
-            _array[ __E_SCRIBBLE_GLYPH.X    ] = _x + _image_x_offset;
-            _array[ __E_SCRIBBLE_GLYPH.Y    ] = _y + _image_y_offset;
-            _array[ __E_SCRIBBLE_GLYPH.W    ] = _w;
-            _array[ __E_SCRIBBLE_GLYPH.H    ] = _h;
-            _array[ __E_SCRIBBLE_GLYPH.DX   ] = _json_glyph_map[? "xoffset" ];
-            _array[ __E_SCRIBBLE_GLYPH.DY   ] = _json_glyph_map[? "yoffset" ];
-            _array[ __E_SCRIBBLE_GLYPH.SHF  ] = _json_glyph_map[? "xadvance" ];
-            _array[ __E_SCRIBBLE_GLYPH.U0   ] = _u0;
-            _array[ __E_SCRIBBLE_GLYPH.V0   ] = _v0;
-            _array[ __E_SCRIBBLE_GLYPH.U1   ] = _u1;
-            _array[ __E_SCRIBBLE_GLYPH.V1   ] = _v1;
-            
-            _font_glyphs_map[? _char ] = _array;
-        }
-        
-        //Now handle the space character
-        var _array = _font_glyphs_map[? " " ];
-        _array[@ __E_SCRIBBLE_GLYPH.W   ] = _space_width;
-        _array[@ __E_SCRIBBLE_GLYPH.H   ] = _json_line_height;
-        _array[@ __E_SCRIBBLE_GLYPH.SHF ] = _space_width;
         
         ds_map_destroy( _json );
         

@@ -77,7 +77,6 @@ global.__scribble_alive             = ds_map_create();  //ds_map of all alive Sc
 global.__scribble_global_count      = 0;
 global.__scribble_default_font      = "";
 global.__scribble_init_complete     = false;
-global.__scribble_msdf_shader       = asset_get_index("shScribbleMSDF");
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_add_colour( "c_aqua",    c_aqua    );
@@ -104,7 +103,6 @@ scribble_add_colour( "c_yellow",  c_yellow  );
 scribble_add_flag( "wave"   , 1 );
 scribble_add_flag( "shake"  , 2 );
 scribble_add_flag( "rainbow", 3 );
-scribble_add_flag( "thick"  , 4 );
 
 //Create a vertex format for our text
 vertex_format_begin();
@@ -124,26 +122,6 @@ global.__scribble_uniform_char_smoothness      = shader_get_uniform( shScribble,
 global.__scribble_uniform_line_t               = shader_get_uniform( shScribble, "u_fLineFadeT"          );
 global.__scribble_uniform_line_smoothness      = shader_get_uniform( shScribble, "u_fLineFadeSmoothness" );
 global.__scribble_uniform_data_fields          = shader_get_uniform( shScribble, "u_aDataFields"         );
-
-
-if (global.__scribble_msdf_shader < 0)
-{
-    show_debug_message( "Scribble: WARNING! Shader \"shScribbleMSDF\" has not been found in the project. MSDF rendering will not be available." );
-}
-else
-{
-    global.__scribble_msdf_uniform_time            = shader_get_uniform( global.__scribble_msdf_shader, "u_fTime"               );
-    global.__scribble_msdf_uniform_plain_time      = shader_get_uniform( global.__scribble_msdf_shader, "u_fPlainTime"          );
-    global.__scribble_msdf_uniform_pma             = shader_get_uniform( global.__scribble_msdf_shader, "u_fPremultiplyAlpha"   );
-    global.__scribble_msdf_uniform_colour_blend    = shader_get_uniform( global.__scribble_msdf_shader, "u_vColourBlend"        );
-    global.__scribble_msdf_uniform_char_t          = shader_get_uniform( global.__scribble_msdf_shader, "u_fCharFadeT"          );
-    global.__scribble_msdf_uniform_char_smoothness = shader_get_uniform( global.__scribble_msdf_shader, "u_fCharFadeSmoothness" );
-    global.__scribble_msdf_uniform_line_t          = shader_get_uniform( global.__scribble_msdf_shader, "u_fLineFadeT"          );
-    global.__scribble_msdf_uniform_line_smoothness = shader_get_uniform( global.__scribble_msdf_shader, "u_fLineFadeSmoothness" );
-    global.__scribble_msdf_uniform_data_fields     = shader_get_uniform( global.__scribble_msdf_shader, "u_aDataFields"         );
-    global.__scribble_msdf_uniform_texel           = shader_get_uniform( global.__scribble_msdf_shader, "u_vTexel"              );
-    global.__scribble_msdf_uniform_texture_size    = shader_get_uniform( global.__scribble_msdf_shader, "u_vTextureSize"        );
-}
 
 //Hex converter array
 var _min = ord("0");

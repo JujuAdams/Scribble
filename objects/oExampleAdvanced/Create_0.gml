@@ -3,10 +3,6 @@
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
-//  MSDF texture page generator by donmccurdy:
-//  https://github.com/donmccurdy/msdf-bmfont-web
-//  https://msdf-bmfont.donmccurdy.com/
-//  
 //  Intended for use with GMS2.2.1 and later
 
 var _string  = "[ev,sound,sndCrank][rainbow]abcdef[] ABCDEF##";
@@ -18,7 +14,3 @@ var _string  = "[ev,sound,sndCrank][rainbow]abcdef[] ABCDEF##";
 text = scribble_create( _string, -1, 450, "c_xanadu", "fTestB", fa_center );
 //scribble_typewriter_in( text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3 );
 scribble_set_box_alignment( text, fa_center, fa_middle );
-
-//var _string = "[msdf]The [rainbow]quick[/rainbow] brown [scale,3]fox[/scale] jumps [scale,1][msdf]over the [thick]lazy[/thick] dog.";
-//text = scribble_create( _string, -1, 450 );
-//scribble_set_box_alignment( text, fa_center, fa_middle );

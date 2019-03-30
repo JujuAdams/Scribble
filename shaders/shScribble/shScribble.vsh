@@ -1,12 +1,11 @@
-const int MAX_FLAGS = 5;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
+const int MAX_FLAGS = 4;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
 //By default, the flags are:
 //0 = is a sprite
 //1 = wave
 //2 = shake
 //3 = rainbow
-//4 = MSDF thick (not used in this shader)
 
-const int MAX_DATA_FIELDS = 7; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
+const int MAX_DATA_FIELDS = 6; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
 //By default, the data fields are:
 //0 = wave size
 //1 = wave frequency
@@ -14,7 +13,6 @@ const int MAX_DATA_FIELDS = 7; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_c
 //3 = shake size
 //4 = shake speed
 //5 = rainbow weight
-//6 = MSDF thickness factor (not used in this shader)
 
 attribute vec3 in_Position;
 attribute vec3 in_Normal; //Character / Line index / Flags
