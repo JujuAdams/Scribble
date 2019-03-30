@@ -1,7 +1,7 @@
 {
     "id": "ed7bf3dd-c437-4d69-a9e3-133bbf5000f5",
     "modelName": "GMFont",
-    "mvc": "1.0",
+    "mvc": "1.1",
     "name": "fChineseTest",
     "AntiAlias": 1,
     "TTFName": "",
@@ -10,6 +10,7 @@
     "charset": 1,
     "first": 0,
     "fontName": "Ditto CN 1.03",
+    "glyphOperations": 0,
     "glyphs": [
         {
             "Key": 32,
@@ -23937,13 +23938,16 @@
             }
         }
     ],
-    "image": null,
+    "hinting": 0,
     "includeTTF": false,
+    "interpreter": 0,
     "italic": false,
     "kerningPairs": [
         
     ],
     "last": 0,
+    "maintainGms1Font": false,
+    "pointRounding": 0,
     "ranges": [
         {
             "x": 32,
