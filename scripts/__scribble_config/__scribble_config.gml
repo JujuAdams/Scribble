@@ -49,6 +49,7 @@
 #macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING true     //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
 #macro SCRIBBLE_FIX_NEWLINES                      true     //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
 #macro SCRIBBLE_SLANT_AMOUNT                      4
+#macro SCRIBBLE_Z                                 0        //Z-value for vertex buffers
 #macro SCRIBBLE_COMMAND_TAG_OPEN                  ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only

@@ -108,7 +108,7 @@ scribble_add_flag( "thick"  , 4 );
 
 //Create a vertex format for our text
 vertex_format_begin();
-vertex_format_add_position();
+vertex_format_add_position_3d();
 vertex_format_add_normal(); //X = character index, Y = line index, Z = flags
 vertex_format_add_colour();
 vertex_format_add_texcoord();
