@@ -27,9 +27,21 @@ show_debug_message( "Scribble: Welcome to Scribble! This is version " + __SCRIBB
 var _font_directory = argument0;
 var _tpage_size     = argument1;
 
-//Fix the font directory name if it's weird
-var _char = string_char_at( _font_directory, string_length( _font_directory ) );
-if ( _char != "\\" ) && ( _char != "/" ) _font_directory += "\\";
+if (__SCRIBBLE_ON_MOBILE)
+{
+    if (_font_directory != "")
+    {
+        show_debug_message( "Scribble: Included Files work a bit strangely on iOS and Android. Please use an empty string for the font directory and place fonts in the root of Included Files." );
+        show_error( "Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files.\n ", true );
+        exit;
+    }
+}
+else
+{
+    //Fix the font directory name if it's weird
+    var _char = string_char_at( _font_directory, string_length( _font_directory ) );
+    if ( _char != "\\" ) && ( _char != "/" ) _font_directory += "\\";
+}
 
 //Check if the directory exists
 if ( !directory_exists(_font_directory) )
