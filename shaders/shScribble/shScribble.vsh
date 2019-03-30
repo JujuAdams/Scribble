@@ -26,6 +26,7 @@ varying vec4 v_vColour;
 
 uniform vec4  u_vColourBlend;
 uniform float u_fTime;
+uniform float u_fPlainTime;
 uniform float u_fCharFadeT;
 uniform float u_fCharFadeSmoothness;
 uniform float u_fLineFadeT;
@@ -81,13 +82,13 @@ void applySprite( float isSprite, inout vec4 colour )
 {
     if ( isSprite == 1.0 )
     {
-        float myImage    = in_Colour.r*255.0; //First byte is the index of this sprite
+        float myImage    = in_Colour.r*255.0;     //First byte is the index of this sprite
         float imageMax   = 1.0+in_Colour.g*255.0; //Second byte is the maximum number of images in the sprite
-        float imageSpeed = in_Colour.b*2.0;   //Third byte is half of the image speed
-        float imageStart = in_Colour.a*255.0; //Fourth byte is the image offset
+        float imageSpeed = in_Colour.b;           //Third byte is half of the image speed
+        float imageStart = in_Colour.a*255.0;     //Fourth byte is the image offset
         
-        float displayImage = floor(mod( imageSpeed*u_fTime + imageStart, imageMax ));
-        colour = vec4((myImage == displayImage)? 1.0 : 0.0);
+        float displayImage = floor(mod( imageSpeed*u_fPlainTime + imageStart, imageMax ));
+        colour = vec4((abs(myImage-displayImage) < 1.0/255.0)? 1.0 : 0.0);
     }
 }
 

@@ -87,10 +87,11 @@ scribble_add_colour( "c_white",   c_white   );
 scribble_add_colour( "c_yellow",  c_yellow  );
 
 //Add bindings for default flag names
-scribble_add_flag( "wave"   , 0 );
-scribble_add_flag( "shake"  , 1 );
-scribble_add_flag( "rainbow", 2 );
-scribble_add_flag( "thick"  , 3 );
+//Flag slot 0 is reversed for sprites
+scribble_add_flag( "wave"   , 1 );
+scribble_add_flag( "shake"  , 2 );
+scribble_add_flag( "rainbow", 3 );
+scribble_add_flag( "thick"  , 4 );
 
 //Create a vertex format for our text
 vertex_format_begin();
@@ -103,6 +104,7 @@ global.__scribble_vertex_format = vertex_format_end();
 //Cache uniform indexes
 global.__scribble_uniform_pma                  = shader_get_uniform( shScribble, "u_fPremultiplyAlpha"   );
 global.__scribble_uniform_time                 = shader_get_uniform( shScribble, "u_fTime"               );
+global.__scribble_uniform_plain_time           = shader_get_uniform( shScribble, "u_fPlainTime"          );
 global.__scribble_uniform_colour_blend         = shader_get_uniform( shScribble, "u_vColourBlend"        );
 global.__scribble_uniform_char_t               = shader_get_uniform( shScribble, "u_fCharFadeT"          );
 global.__scribble_uniform_char_smoothness      = shader_get_uniform( shScribble, "u_fCharFadeSmoothness" );
@@ -112,6 +114,7 @@ global.__scribble_uniform_data_fields          = shader_get_uniform( shScribble,
 
 global.__scribble_msdf_uniform_pma             = shader_get_uniform( shScribbleMSDF, "u_fPremultiplyAlpha"   );
 global.__scribble_msdf_uniform_time            = shader_get_uniform( shScribbleMSDF, "u_fTime"               );
+global.__scribble_msdf_uniform_plain_time      = shader_get_uniform( shScribbleMSDF, "u_fPlainTime"          );
 global.__scribble_msdf_uniform_colour_blend    = shader_get_uniform( shScribbleMSDF, "u_vColourBlend"        );
 global.__scribble_msdf_uniform_char_t          = shader_get_uniform( shScribbleMSDF, "u_fCharFadeT"          );
 global.__scribble_msdf_uniform_char_smoothness = shader_get_uniform( shScribbleMSDF, "u_fCharFadeSmoothness" );

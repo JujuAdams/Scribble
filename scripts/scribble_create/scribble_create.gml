@@ -339,11 +339,13 @@ for( var _i = 0; _i < _separator_count; _i++ )
     var _force_newline = false;
     var _new_word      = false;
     
-    var _substr_width  = 0;
-    var _substr_height = 0;
-    var _substr_length = string_length( _input_substr );
-    var _substr_sprite = noone;
-    var _substr_image  = undefined;
+    var _substr_width       = 0;
+    var _substr_height      = 0;
+    var _substr_length      = string_length( _input_substr );
+    var _substr_sprite      = noone;
+    var _substr_image       = undefined;
+    var _substr_image_speed = 0;
+    _text_flags[@ 0] = false; //Reset sprite flag specifically
     
     var _first_character = ( is_array( _line_words_array ) && (array_length_1d( _line_words_array ) <= 1) );
     
@@ -563,10 +565,14 @@ for( var _i = 0; _i < _separator_count; _i++ )
                                     _substr_width  = sprite_get_width(  _substr_sprite )*_text_scale;
                                     _substr_height = sprite_get_height( _substr_sprite )*_text_scale;
                                     _substr_length = 1;
-                            
+                                    
                                     if ( ds_list_size( _parameters_list ) <= 1 ) _parameters_list[| 1] = "0";
-                            
-                                    _substr_image = real( _parameters_list[| 1] );
+                                    if ( ds_list_size( _parameters_list ) <= 2 ) _parameters_list[| 2] = "0";
+                                    
+                                    _substr_image       = real( _parameters_list[| 1] );
+                                    _substr_image_speed = real( _parameters_list[| 2] );
+                                    
+                                    _text_flags[0] = true;
                             
                                     #endregion
                                 }
@@ -778,6 +784,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
         _word_array[ __E_SCRIBBLE_WORD.INPUT_STRING   ] = _input_substr;
         _word_array[ __E_SCRIBBLE_WORD.SPRITE         ] = _substr_sprite;
         _word_array[ __E_SCRIBBLE_WORD.IMAGE          ] = _substr_image;
+        _word_array[ __E_SCRIBBLE_WORD.IMAGE_SPEED    ] = _substr_image_speed;
         _word_array[ __E_SCRIBBLE_WORD.LENGTH         ] = _substr_length; //Include the separator character!
         _word_array[ __E_SCRIBBLE_WORD.FONT           ] = _text_font;
         _word_array[ __E_SCRIBBLE_WORD.COLOUR         ] = _text_colour;
@@ -787,6 +794,7 @@ for( var _i = 0; _i < _separator_count; _i++ )
         //Add the word to the line list
         _line_words_array[@ array_length_1d(_line_words_array) ] = _word_array;
         
+        //Wipe the text flags
         var _new_text_flags = array_create( SCRIBBLE_MAX_FLAGS, 0 );
         array_copy( _new_text_flags, 0, _text_flags, 0, SCRIBBLE_MAX_FLAGS );
         _text_flags = _new_text_flags;
@@ -937,63 +945,78 @@ repeat( _lines_size )
             _previous_font = "";
             
             var _char_pc     = _text_char / _max_char;
-            //var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR ];
-            var _flag_data   = _word_array[ __E_SCRIBBLE_WORD.FLAGS  ];
-            var _image       = _word_array[ __E_SCRIBBLE_WORD.IMAGE  ];
-            var _scale       = _word_array[ __E_SCRIBBLE_WORD.SCALE  ];
+            //var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR      ];
+            var _flag_data   = _word_array[ __E_SCRIBBLE_WORD.FLAGS       ];
+            var _image_start = _word_array[ __E_SCRIBBLE_WORD.IMAGE       ];
+            var _image_speed = _word_array[ __E_SCRIBBLE_WORD.IMAGE_SPEED ];
+            var _scale       = _word_array[ __E_SCRIBBLE_WORD.SCALE       ];
             
-            var _flags  = 1; //First bit ON indicates that this is a sprite
-            var _offset = 2;
+            var _flags  = 0;
+            var _offset = 1;
             for( var _i = 0; _i < SCRIBBLE_MAX_FLAGS; _i++ )
             {
                 _flags += _flag_data[_i] * _offset;
                 _offset *= 2;
             }
             
-            var _sprite_texture = sprite_get_texture( _sprite, _image );
-            if (_sprite_texture != _previous_texture) || (_previous_msdf)
+            //Default to only adding one image from the sprite to the vertex buffer
+            var _image_a = _image_start;
+            var _image_b = _image_start;
+            
+            //If we want to animate the sprite, add all images from the sprite
+            if (_image_speed > 0)
             {
-                _previous_texture = _sprite_texture;
-                _previous_msdf    = false;
-                    
-                var _vbuff_data = _texture_to_vbuff_map[? _sprite_texture ];
-                if ( _vbuff_data == undefined )
-                {
-                    var _vbuff = vertex_create_buffer();
-                    vertex_begin( _vbuff, global.__scribble_vertex_format );
-                
-                    _vbuff_data = ds_list_create();
-                    _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
-                    _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.SPRITE        ] = _sprite;
-                    _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _sprite_texture;
-                    ds_list_add( _vbuff_list, _vbuff_data );
-                    ds_list_mark_as_list( _vbuff_list, ds_list_size( _vbuff_list )-1 );
-                    
-                    _texture_to_vbuff_map[? _sprite_texture ] = _vbuff_data;
-                }
-                else
-                {
-                    var _vbuff = _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
-                }
+                _image_a = 0;
+                _image_b = sprite_get_number(_sprite)-1;
             }
             
-            var _uvs = sprite_get_uvs( _sprite, _image );
-            var _glyph_l = _word_l  + _uvs[4] + sprite_get_xoffset( _sprite );
-            var _glyph_t = _word_t  + _uvs[5] + sprite_get_yoffset( _sprite );
-            var _glyph_r = _glyph_l + _uvs[6]*sprite_get_width(  _sprite )*_scale;
-            var _glyph_b = _glyph_t + _uvs[7]*sprite_get_height( _sprite )*_scale;
-            
-            var _image_start = 0;
-            var _image_speed = 1;
-            var _colour = make_colour_rgb( _image, sprite_get_number(_sprite)-1, floor(_image_speed*127.5) );
-            show_debug_message( string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)));
-            
-            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
-            vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] );
-            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
-            vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
-            vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] );
-            vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _image_start/255 ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
+            for( var _image = _image_a; _image <= _image_b; _image++ )
+            {
+                //Encode image, sprite length, and image speed into the colour channels
+                var _colour = make_colour_rgb( _image, sprite_get_number(_sprite)-1, _image_speed*255 );
+                //Encode the starting image into the alpha channel
+                var _alpha = _image_start/255;
+                
+                var _sprite_texture = sprite_get_texture( _sprite, _image );
+                if (_sprite_texture != _previous_texture) || (_previous_msdf)
+                {
+                    _previous_texture = _sprite_texture;
+                    _previous_msdf    = false;
+                    
+                    var _vbuff_data = _texture_to_vbuff_map[? _sprite_texture ];
+                    if ( _vbuff_data == undefined )
+                    {
+                        var _vbuff = vertex_create_buffer();
+                        vertex_begin( _vbuff, global.__scribble_vertex_format );
+                        
+                        _vbuff_data = ds_list_create();
+                        _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
+                        _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.SPRITE        ] = _sprite;
+                        _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _sprite_texture;
+                        ds_list_add( _vbuff_list, _vbuff_data );
+                        ds_list_mark_as_list( _vbuff_list, ds_list_size( _vbuff_list )-1 );
+                    
+                        _texture_to_vbuff_map[? _sprite_texture ] = _vbuff_data;
+                    }
+                    else
+                    {
+                        var _vbuff = _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
+                    }
+                }
+                
+                var _uvs = sprite_get_uvs( _sprite, _image );
+                var _glyph_l = _word_l  + _uvs[4] + sprite_get_xoffset( _sprite );
+                var _glyph_t = _word_t  + _uvs[5] + sprite_get_yoffset( _sprite );
+                var _glyph_r = _glyph_l + _uvs[6]*sprite_get_width(  _sprite )*_scale;
+                var _glyph_b = _glyph_t + _uvs[7]*sprite_get_height( _sprite )*_scale;
+                
+                vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _alpha ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
+                vertex_position( _vbuff, _glyph_l, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _alpha ); vertex_texcoord( _vbuff, _uvs[0], _uvs[3] );
+                vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _alpha ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
+                vertex_position( _vbuff, _glyph_r, _glyph_b ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _alpha ); vertex_texcoord( _vbuff, _uvs[2], _uvs[3] );
+                vertex_position( _vbuff, _glyph_r, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _alpha ); vertex_texcoord( _vbuff, _uvs[2], _uvs[1] );
+                vertex_position( _vbuff, _glyph_l, _glyph_t ); vertex_normal( _vbuff, _char_pc, _line_pc, _flags ); vertex_colour( _vbuff, _colour, _alpha ); vertex_texcoord( _vbuff, _uvs[0], _uvs[1] );
+            }
             
             ++_text_char;
             #endregion
@@ -1056,8 +1079,8 @@ repeat( _lines_size )
             var _slant     = _word_array[ __E_SCRIBBLE_WORD.SLANT  ];
             var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_scale*_slant;
             
-            var _flags  = 0; //First bit OFF indicates that this is text
-            var _offset = 2;
+            var _flags  = 0;
+            var _offset = 1;
             for( var _i = 0; _i < SCRIBBLE_MAX_FLAGS; _i++ )
             {
                 _flags += _flag_data[_i] * _offset;

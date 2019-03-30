@@ -160,7 +160,7 @@ else
 {
     #region Normal mode
     
-    var _time            = _json[| __E_SCRIBBLE.ANIMATION_TIME          ]*SCRIBBLE_ANIMATION_SPEED;
+    var _time            = _json[| __E_SCRIBBLE.ANIMATION_TIME          ];
     var _data_fields     = _json[| __E_SCRIBBLE.DATA_FIELDS             ];
     var _vbuff_list      = _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST      ];
     var _msdf_vbuff_list = _json[| __E_SCRIBBLE.MSDF_VERTEX_BUFFER_LIST ];
@@ -200,7 +200,8 @@ else
     {
         shader_set( shScribble );
         shader_set_uniform_f( global.__scribble_uniform_pma              , _pma );
-        shader_set_uniform_f( global.__scribble_uniform_time             , _time );
+        shader_set_uniform_f( global.__scribble_uniform_time             , _time*SCRIBBLE_ANIMATION_SPEED );
+        shader_set_uniform_f( global.__scribble_uniform_plain_time       , _time );
         
         shader_set_uniform_f( global.__scribble_uniform_char_t           , _char_t          );
         shader_set_uniform_f( global.__scribble_uniform_char_smoothness  , _char_smoothness );
@@ -229,7 +230,8 @@ else
     {
         shader_set( shScribbleMSDF );
         shader_set_uniform_f( global.__scribble_msdf_uniform_pma              , _pma );
-        shader_set_uniform_f( global.__scribble_msdf_uniform_time             , _time );
+        shader_set_uniform_f( global.__scribble_msdf_uniform_time             , _time*SCRIBBLE_ANIMATION_SPEED );
+        shader_set_uniform_f( global.__scribble_msdf_uniform_plain_time       , _time );
         
         shader_set_uniform_f( global.__scribble_msdf_uniform_char_t           , _char_t          );
         shader_set_uniform_f( global.__scribble_msdf_uniform_char_smoothness  , _char_smoothness );

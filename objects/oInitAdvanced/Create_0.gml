@@ -28,7 +28,7 @@ scribble_add_event( "sound", play_sound_example );
 
 //Flags can be used to set formatting state which can be used to control text effects
 //In this case, we're going to overwrite the default "shake" formatting flag with a new one called "rumble"
-scribble_add_flag( "rumble", 1 );
+scribble_add_flag( "rumble", 2 );
 
 //Some characters need a bit of fine adjustment in code since it's not always possible to fix this in the font itself
 scribble_set_glyph_property( "sSpriteFont", "f", SCRIBBLE_GLYPH_SEPARATION, -1, true );

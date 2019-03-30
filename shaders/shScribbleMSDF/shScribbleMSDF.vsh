@@ -27,6 +27,7 @@ varying float v_fThickness;
 
 uniform vec4  u_vColourBlend;
 uniform float u_fTime;
+uniform float u_fPlainTime;
 uniform float u_fCharFadeT;
 uniform float u_fCharFadeSmoothness;
 uniform float u_fLineFadeT;
