@@ -945,15 +945,17 @@ repeat( _lines_size )
             _previous_font = "";
             
             var _char_pc     = _text_char / _max_char;
-            //var _colour      = _word_array[ __E_SCRIBBLE_WORD.COLOUR      ];
-            var _flag_data   = _word_array[ __E_SCRIBBLE_WORD.FLAGS       ];
-            var _image_start = _word_array[ __E_SCRIBBLE_WORD.IMAGE       ];
-            var _image_speed = _word_array[ __E_SCRIBBLE_WORD.IMAGE_SPEED ];
-            var _scale       = _word_array[ __E_SCRIBBLE_WORD.SCALE       ];
+            var _colour      = SCRIBBLE_COLOURISE_SPRITES? _word_array[ __E_SCRIBBLE_WORD.COLOUR ] : c_white;
+            var _flag_data   = _word_array[ __E_SCRIBBLE_WORD.FLAGS  ];
+            var _image_start = _word_array[ __E_SCRIBBLE_WORD.IMAGE  ];
+            var _scale       = _word_array[ __E_SCRIBBLE_WORD.SCALE  ];
+            var _image_speed = SCRIBBLE_FORCE_NO_SPRITE_ANIMATION? 0 : _word_array[ __E_SCRIBBLE_WORD.IMAGE_SPEED ];
             
             var _flags  = 0;
-            var _offset = 1;
-            for( var _i = 0; _i < SCRIBBLE_MAX_FLAGS; _i++ )
+            if (_image_speed > 0) _flags += 1; //Set the "is sprite" flag only if we're animating the sprite
+            var _offset = 2;
+            
+            for( var _i = 1; _i < SCRIBBLE_MAX_FLAGS; _i++ )
             {
                 _flags += _flag_data[_i] * _offset;
                 _offset *= 2;
@@ -972,10 +974,17 @@ repeat( _lines_size )
             
             for( var _image = _image_a; _image <= _image_b; _image++ )
             {
-                //Encode image, sprite length, and image speed into the colour channels
-                var _colour = make_colour_rgb( _image, sprite_get_number(_sprite)-1, _image_speed*255 );
-                //Encode the starting image into the alpha channel
-                var _alpha = _image_start/255;
+                if (_image_speed > 0)
+                {
+                    //Encode image, sprite length, and image speed into the colour channels
+                    _colour = make_colour_rgb( _image, sprite_get_number(_sprite)-1, _image_speed*255 );
+                    //Encode the starting image into the alpha channel
+                    var _alpha = _image_start/255;
+                }
+                else
+                {
+                    var _alpha = 1;
+                }
                 
                 var _sprite_texture = sprite_get_texture( _sprite, _image );
                 if (_sprite_texture != _previous_texture) || (_previous_msdf)
