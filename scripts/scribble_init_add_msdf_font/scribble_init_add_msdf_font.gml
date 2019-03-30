@@ -27,6 +27,12 @@ if ( global.__scribble_init_complete )
     return undefined;
 }
 
+if (global.__scribble_msdf_shader < 0)
+{
+    show_error( "MSDF rendering is not available. Please import \"shScribbleMSDF\" to your project.\n ", true );
+    return undefined;
+}
+
 var _font        = argument0;
 var _space_width = argument1;
 

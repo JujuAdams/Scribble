@@ -228,7 +228,7 @@ else
     var _count = ds_list_size( _msdf_vbuff_list );
     if (_count > 0)
     {
-        shader_set( shScribbleMSDF );
+        shader_set( global.__scribble_msdf_shader );
         shader_set_uniform_f( global.__scribble_msdf_uniform_pma              , _pma );
         shader_set_uniform_f( global.__scribble_msdf_uniform_time             , _time*SCRIBBLE_ANIMATION_SPEED );
         shader_set_uniform_f( global.__scribble_msdf_uniform_plain_time       , _time );
