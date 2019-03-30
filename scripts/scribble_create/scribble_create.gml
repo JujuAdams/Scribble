@@ -1014,6 +1014,12 @@ repeat( _lines_size )
                 }
                 
                 var _uvs = sprite_get_uvs( _sprite, _image );
+                if (!__SCRIBBLE_ON_DIRECTX)
+                {
+                    _uvs[1] = 1 - _uvs[1];
+                    _uvs[3] = 1 - _uvs[3];
+                }
+                
                 var _glyph_l = _word_l  + _uvs[4] + sprite_get_xoffset( _sprite );
                 var _glyph_t = _word_t  + _uvs[5] + sprite_get_yoffset( _sprite );
                 var _glyph_r = _glyph_l + _uvs[6]*sprite_get_width(  _sprite )*_scale;
@@ -1120,6 +1126,12 @@ repeat( _lines_size )
                     var _glyph_dy  = _array[ __E_SCRIBBLE_GLYPH.DY  ];
                     var _glyph_shf = _array[ __E_SCRIBBLE_GLYPH.SHF ];
                     
+                    if (!__SCRIBBLE_ON_DIRECTX)
+                    {
+                        _glyph_v0 = 1 - _glyph_v0;
+                        _glyph_v1 = 1 - _glyph_v1;
+                    }
+                    
                     var _glyph_l = _char_l + _glyph_dx*_scale;
                     var _glyph_t = _char_t + _glyph_dy*_scale;
                     var _glyph_r = _glyph_l + _glyph_w*_scale;
@@ -1157,6 +1169,12 @@ repeat( _lines_size )
                     var _glyph_dx  = _array[ __E_SCRIBBLE_GLYPH.DX  ];
                     var _glyph_dy  = _array[ __E_SCRIBBLE_GLYPH.DY  ];
                     var _glyph_shf = _array[ __E_SCRIBBLE_GLYPH.SHF ];
+                    
+                    if (!__SCRIBBLE_ON_DIRECTX)
+                    {
+                        _glyph_v0 = 1 - _glyph_v0;
+                        _glyph_v1 = 1 - _glyph_v1;
+                    }
                     
                     var _glyph_l = _char_l + _glyph_dx*_scale;
                     var _glyph_t = _char_t + _glyph_dy*_scale;
