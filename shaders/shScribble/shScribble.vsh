@@ -54,6 +54,10 @@ void unpackFlags( float flagValue, inout float array[MAX_FLAGS] )
             array[i] = 1.0;
             flagValue -= check;
         }
+        else
+        {
+            array[i] = 0.0;
+        }
         check /= 2.0;
     }
 }
