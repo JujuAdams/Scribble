@@ -1,4 +1,4 @@
-//  Scribble v4.1.0
+//  Scribble v4.2.0
 //  2019/03/30
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
@@ -70,7 +70,7 @@ enum E_SCRIBBLE_BOX
 
 #region -- Internal Definitions --
 
-#macro __SCRIBBLE_VERSION "4.1.0"
+#macro __SCRIBBLE_VERSION "4.2.0"
 #macro __SCRIBBLE_DATE    "2019/03/30"
 #macro __SCRIBBLE_DEBUG   false
 
