@@ -222,7 +222,9 @@ enum __E_SCRIBBLE
 }
 
 #macro __SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX true
+
 #macro __SCRIBBLE_ON_DIRECTX ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
-#macro __SCRIBBLE_ON_MOBILE ((os_type == os_ios) || (os_type == os_android))
+#macro __SCRIBBLE_ON_OPENGL  !__SCRIBBLE_ON_DIRECTX
+#macro __SCRIBBLE_ON_MOBILE  ((os_type == os_ios) || (os_type == os_android))
 
 #endregion

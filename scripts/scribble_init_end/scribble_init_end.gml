@@ -22,13 +22,9 @@ show_debug_message( "Scribble: Font initialisation started" );
 
 var _old_x = x;
 var _old_y = y;
-var _old_image_xscale = image_xscale;
-var _old_image_yscale = image_yscale;
-var _old_mask_index   = mask_index;
+var _old_mask_index = mask_index;
 x = 0;
 y = 0;
-image_xscale = 1;
-image_yscale = 1;
 
 
 
@@ -36,13 +32,13 @@ image_yscale = 1;
 
 var _string = GM_runtime_version;
 
-var _major = string_copy( _string, 1, string_pos( ".", _string )-1 );
-_string = string_delete( _string, 1, string_pos( ".", _string ) );
+var _major = string_copy(_string, 1, string_pos(".", _string)-1);
+ _string = string_delete(_string, 1, string_pos(".", _string));
 
-var _minor = string_copy( _string, 1, string_pos( ".", _string )-1 );
-_string = string_delete( _string, 1, string_pos( ".", _string ) );
+var _minor = string_copy(_string, 1, string_pos(".", _string)-1);
+ _string = string_delete(_string, 1, string_pos(".", _string));
 
-var _patch = string_copy( _string, 1, string_pos( ".", _string )-1 );
+var _patch = string_copy(_string, 1, string_pos(".", _string)-1);
 
 //var _rev = string_delete( _string, 1, string_pos( ".", _string ) );
 
@@ -82,10 +78,10 @@ repeat(_font_count)
         var _sprite = asset_get_index(_name);
         _font_data[@ __E_SCRIBBLE_FONT.TEXTURE ] = sprite_get_texture(_sprite, 0);
         
-        if ( sprite_get_bbox_left(   _sprite ) == 0 )
-        || ( sprite_get_bbox_top(    _sprite ) == 0 )
-        || ( sprite_get_bbox_right(  _sprite ) == sprite_get_width(  _sprite )-1 )
-        || ( sprite_get_bbox_bottom( _sprite ) == sprite_get_height( _sprite )-1 )
+        if ( sprite_get_bbox_left(  _sprite) == 0 )
+        || ( sprite_get_bbox_top(   _sprite) == 0 )
+        || ( sprite_get_bbox_right( _sprite) == sprite_get_width(_sprite)-1 )
+        || ( sprite_get_bbox_bottom(_sprite) == sprite_get_height(_sprite)-1 )
         {
             show_debug_message("WARNING! \"" + _name + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed");
         }
@@ -107,7 +103,7 @@ repeat(_font_count)
         
         //Strip out a map of of glyphs
         var _length = string_length(_sprite_string);
-        show_debug_message("Scribble: \"" + _name + "\" has " + string( _length ) + " characters");
+        show_debug_message("Scribble: \"" + _name + "\" has " + string(_length) + " characters");
         for( var _i = 0; _i < _length; _i++ )
         {
             var _char = string_char_at(_sprite_string, _i+1);
@@ -129,13 +125,13 @@ repeat(_font_count)
             while( !collision_line(bbox_left-1,    _bottom, bbox_right+1,       _bottom, id, true, false) && (_bottom > _top ) ) --_bottom;
             
             //Build an array to store this glyph's properties
-            var _array = array_create( __E_SCRIBBLE_GLYPH.__SIZE, 0 );
+            var _array = array_create(__E_SCRIBBLE_GLYPH.__SIZE, 0);
             _array[ __E_SCRIBBLE_GLYPH.CHAR ] = _char;
             _array[ __E_SCRIBBLE_GLYPH.ORD  ] = ord( _char );
             
             if (_left == _right) && (_top == _bottom)
             {
-                show_debug_message("WARNING! Character " + string( ord( _char ) ) + "(" + _char + ") for sprite font \"" + _name + "\" is empty");
+                show_debug_message("WARNING! Character " + string(ord(_char)) + "(" + _char + ") for sprite font \"" + _name + "\" is empty");
                 
                 _array[ __E_SCRIBBLE_GLYPH.W   ] = 1;
                 _array[ __E_SCRIBBLE_GLYPH.H   ] = sprite_get_height(_sprite);
@@ -171,15 +167,15 @@ repeat(_font_count)
                     ++_bottom;
                     var _glyph_width  = _right - _left;
                     var _glyph_height = _bottom - _top;
-                    _array[ __E_SCRIBBLE_GLYPH.W    ] = _glyph_width;
-                    _array[ __E_SCRIBBLE_GLYPH.H    ] = _glyph_height;
-                    _array[ __E_SCRIBBLE_GLYPH.DX   ] = _left;
-                    _array[ __E_SCRIBBLE_GLYPH.DY   ] = _top;
-                    _array[ __E_SCRIBBLE_GLYPH.SHF  ] = _glyph_width + _shift_constant;
-                    _array[ __E_SCRIBBLE_GLYPH.U0   ] = _uvs[0];
-                    _array[ __E_SCRIBBLE_GLYPH.V0   ] = _uvs[1];
-                    _array[ __E_SCRIBBLE_GLYPH.U1   ] = _uvs[2];
-                    _array[ __E_SCRIBBLE_GLYPH.V1   ] = _uvs[3];
+                    _array[ __E_SCRIBBLE_GLYPH.W   ] = _glyph_width;
+                    _array[ __E_SCRIBBLE_GLYPH.H   ] = _glyph_height;
+                    _array[ __E_SCRIBBLE_GLYPH.DX  ] = _left;
+                    _array[ __E_SCRIBBLE_GLYPH.DY  ] = _top;
+                    _array[ __E_SCRIBBLE_GLYPH.SHF ] = _glyph_width + _shift_constant;
+                    _array[ __E_SCRIBBLE_GLYPH.U0  ] = _uvs[0];
+                    _array[ __E_SCRIBBLE_GLYPH.V0  ] = _uvs[1];
+                    _array[ __E_SCRIBBLE_GLYPH.U1  ] = _uvs[2];
+                    _array[ __E_SCRIBBLE_GLYPH.V1  ] = _uvs[3];
                 }
                 
                 _font_glyphs_map[? _char ] = _array;
@@ -294,8 +290,8 @@ repeat(_font_count)
                 var _index = _yy_glyph_map[? "character" ];
                 
                 _glyph_map[? _index ] = _i;
-                _glyph_min = min( _glyph_min, _index );
-                _glyph_max = max( _glyph_max, _index );
+                _glyph_min = min(_glyph_min, _index);
+                _glyph_max = max(_glyph_max, _index);
             }
             
             _font_data[@ __E_SCRIBBLE_FONT.GLYPH_MIN ] = _glyph_min;
@@ -315,11 +311,11 @@ repeat(_font_count)
                 ds_map_destroy(_glyph_map);
                 var _fraction = _holes / _glyph_count;
                 
-                show_debug_message("Scribble: There are " + string( _holes ) + " holes, " + string( _fraction*100 ) + "%");
+                show_debug_message("Scribble: There are " + string( _holes ) + " holes, " + string(_fraction*100) + "%");
                 
                 if (_fraction > SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES)
                 {
-                    show_debug_message("Scribble: Hole proportion exceeds maximum (" + string( SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES*100 ) + "%)!");
+                    show_debug_message("Scribble: Hole proportion exceeds maximum (" + string(SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES*100) + "%)!");
                 }
                 else
                 {
@@ -335,7 +331,7 @@ repeat(_font_count)
                             _yy_glyph_map = _yy_glyph_map[? "Value" ];
                         
                         var _index = _yy_glyph_map[? "character" ];
-                        var _char  = chr( _index );
+                        var _char  = chr(_index);
                         var _x     = _yy_glyph_map[? "x" ];
                         var _y     = _yy_glyph_map[? "y" ];
                         var _w     = _yy_glyph_map[? "w" ];
@@ -425,11 +421,9 @@ repeat(_font_count)
 
 x = _old_x;
 y = _old_y;
-image_xscale = _old_image_xscale;
-image_yscale = _old_image_yscale;
 mask_index = _old_mask_index;
 
-show_debug_message( "Scribble: Font initialisation complete, took " + string( (get_timer() - _timer)/1000 ) + "ms" );
-show_debug_message( "Scribble: Thanks for using Scribble! @jujuadams" );
+show_debug_message("Scribble: Font initialisation complete, took " + string((get_timer() - _timer)/1000) + "ms");
+show_debug_message("Scribble: Thanks for using Scribble! @jujuadams");
 
 global.__scribble_init_complete = true;
