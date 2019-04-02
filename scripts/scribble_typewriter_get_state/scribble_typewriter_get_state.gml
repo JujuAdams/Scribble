@@ -16,7 +16,7 @@ var _json = argument0;
 
 if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 {
-    show_error("Scribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
+    show_error("Scribble:\n\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
 }
 

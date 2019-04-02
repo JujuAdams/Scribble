@@ -29,7 +29,7 @@ var _angle  = ((argument_count > 9) && (argument[9] != undefined))? argument[9] 
 
 if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 {
-    show_error("Scribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
+    show_error("Scribble:\n\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
 }
 

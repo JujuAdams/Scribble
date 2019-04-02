@@ -10,25 +10,25 @@ var _script = argument1;
 
 if ( !variable_global_exists("__scribble_init_complete") )
 {
-    show_error("scribble_add_event() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\n\nscribble_add_event() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
 if ( !is_string(_name) )
 {
-    show_error("Event names should be strings.\n(Input to script was \"" + string(_name) + "\")\n ", false);
+    show_error("Scribble:\n\nEvent names should be strings.\n(Input to script was \"" + string(_name) + "\")\n ", false);
     exit;
 }
 
 if ( !is_real(_script) )
 {
-    show_error("Scripts should be numerical script indices e.g. scribble_add_event(\"example\", your_script);\n(Input to script was \"" + string(_name) + "\")\n ", false);
+    show_error("Scribble:\n\nScripts should be numerical script indices e.g. scribble_add_event(\"example\", your_script);\n(Input to script was \"" + string(_name) + "\")\n ", false);
     exit;
 }
 
 if ( !script_exists(_script) )
 {
-    show_error("Script (" + string(_script) + ") doesn't exist!\n ", false);
+    show_error("Scribble:\n\nScript (" + string(_script) + ") doesn't exist!\n ", false);
     exit;
 }
 

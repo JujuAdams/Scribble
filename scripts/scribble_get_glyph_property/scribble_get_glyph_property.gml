@@ -17,13 +17,13 @@ var _property  = argument2;
 
 if ( !variable_global_exists("__scribble_init_complete") )
 {
-    show_error("scribble_get_glyph_property() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\n\nscribble_get_glyph_property() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
 if (!global.__scribble_init_complete)
 {
-    show_error("scribble_get_glyph_property() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\n\nscribble_get_glyph_property() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
@@ -43,7 +43,7 @@ else
 
 if (_glyph_data == undefined)
 {
-    show_error("Character \"" + _character + "\" not found for font \"" + _font + "\"", false);
+    show_error("Scribble:\n\nCharacter \"" + _character + "\" not found for font \"" + _font + "\"", false);
     return undefined;
 }
 

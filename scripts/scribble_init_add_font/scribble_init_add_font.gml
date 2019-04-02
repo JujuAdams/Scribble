@@ -9,13 +9,13 @@
 
 if ( !variable_global_exists("__scribble_init_complete") )
 {
-    show_error("scribble_init_add_font() should be called after scribble_init_start()\n ", true);
+    show_error("Scribble:\n\nscribble_init_add_font() should be called after scribble_init_start()\n ", true);
     return undefined;
 }
 
 if (global.__scribble_init_complete)
 {
-    show_error("scribble_init_add_font() should be called before scribble_init_end()\n ", true);
+    show_error("Scribble:\n\nscribble_init_add_font() should be called before scribble_init_end()\n ", true);
     return undefined;
 }
 
@@ -23,7 +23,7 @@ var _font = argument0;
 
 if ( ds_map_exists(global.__scribble_font_data, _font) )
 {
-    show_error("Font \"" + _font + "\" has already been defined\n ", false);
+    show_error("Scribble:\n\nFont \"" + _font + "\" has already been defined\n ", false);
     return undefined;
 }
 
@@ -31,18 +31,18 @@ if ( !is_string(_font) )
 {
     if ( is_real(_font) )
     {
-        show_error("Fonts should be initialised using their name as a string.\n(Input was \"" + string(_font) + "\", which might be font \"" + font_get_name(_font) + "\")\n ", false);
+        show_error("Scribble:\n\nFonts should be initialised using their name as a string.\n(Input was \"" + string(_font) + "\", which might be font \"" + font_get_name(_font) + "\")\n ", false);
     }
     else
     {
-        show_error("Fonts should be initialised using their name as a string.\n(Input was an invalid datatype)\n ", false);
+        show_error("Scribble:\n\nFonts should be initialised using their name as a string.\n(Input was an invalid datatype)\n ", false);
     }
     exit;
 }
 
 if (asset_get_type(_font) == asset_sprite)
 {
-    show_error("To add a spritefont, please use scribble_init_add_spritefont()\n ", false);
+    show_error("Scribble:\n\nTo add a spritefont, please use scribble_init_add_spritefont()\n ", false);
     return scribble_init_add_spritefont(_font);
 }
 

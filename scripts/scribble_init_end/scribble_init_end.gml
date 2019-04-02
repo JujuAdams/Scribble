@@ -12,7 +12,7 @@ var _timer = get_timer();
 
 if ( !variable_global_exists("__scribble_init_complete" ) )
 {
-    show_error("scribble_init_end() should be called after scribble_init_start()\n ", false);
+    show_error("Scribble:\n\nscribble_init_end() should be called after scribble_init_start()\n ", false);
     exit;
 }
 
@@ -229,7 +229,7 @@ repeat(_font_count)
         var _asset = asset_get_index(_name);
         if (_asset < 0)
         {
-            show_error("Font \"" + _name + "\" was not found in the project!\n ", true);
+            show_error("Scribble:\n\nFont \"" + _name + "\" was not found in the project!\n ", true);
             exit;
         }
         
