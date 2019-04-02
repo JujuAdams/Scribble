@@ -5,7 +5,7 @@
 //  
 //  Intended for use with GMS2.2.1 and later
 
-scribble_init_start( "Fonts", 2048 );
+scribble_init_start( "Fonts" );
 scribble_init_add_font( "fTestA" );
 scribble_init_add_font( "fTestB" );
 scribble_init_add_spritefont( "sSpriteFont", 3 );
