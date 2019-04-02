@@ -55,23 +55,16 @@ if ( asset_get_type( _font ) != asset_sprite )
 if ( global.__scribble_default_font == "" ) global.__scribble_default_font = _font;
 
 var _data;
-_data[ __E_SCRIBBLE_FONT.NAME           ] = _font;
-_data[ __E_SCRIBBLE_FONT.TYPE           ] = __E_SCRIBBLE_FONT_TYPE.SPRITE;
-_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP     ] = undefined;
-_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY   ] = undefined;
-_data[ __E_SCRIBBLE_FONT.GLYPH_MIN      ] = 32;
-_data[ __E_SCRIBBLE_FONT.GLYPH_MAX      ] = 32;
-_data[ __E_SCRIBBLE_FONT.TEXTURE        ] = undefined;
-_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] = undefined;
-_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] = undefined;
-_data[ __E_SCRIBBLE_FONT.TEXTURE_UVS    ] = undefined;
-_data[ __E_SCRIBBLE_FONT.SPACE_WIDTH    ] = _space_width;
-_data[ __E_SCRIBBLE_FONT.MAPSTRING      ] = _mapstring;
-_data[ __E_SCRIBBLE_FONT.SEPARATION     ] = _separation;
-_data[ __E_SCRIBBLE_FONT.IMPORT_SPRITE  ] = undefined;
-_data[ __E_SCRIBBLE_FONT.PACKED_SPRITE  ] = asset_get_index( _font );
-_data[ __E_SCRIBBLE_FONT.SPRITE_X       ] = undefined;
-_data[ __E_SCRIBBLE_FONT.SPRITE_Y       ] = undefined;
+_data[ __E_SCRIBBLE_FONT.NAME         ] = _font;
+_data[ __E_SCRIBBLE_FONT.TYPE         ] = __E_SCRIBBLE_FONT_TYPE.SPRITE;
+_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
+_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
+_data[ __E_SCRIBBLE_FONT.GLYPH_MIN    ] = 32;
+_data[ __E_SCRIBBLE_FONT.GLYPH_MAX    ] = 32;
+_data[ __E_SCRIBBLE_FONT.TEXTURE      ] = undefined;
+_data[ __E_SCRIBBLE_FONT.SPACE_WIDTH  ] = _space_width;
+_data[ __E_SCRIBBLE_FONT.MAPSTRING    ] = _mapstring;
+_data[ __E_SCRIBBLE_FONT.SEPARATION   ] = _separation;
 global.__scribble_font_data[? _font ] = _data;
 
 show_debug_message( "Scribble: Defined \"" + _font + "\" as a spritefont" );

@@ -981,7 +981,6 @@ repeat( _lines_size )
                         
                         _vbuff_data = ds_list_create();
                         _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
-                        _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.SPRITE        ] = _sprite;
                         _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _sprite_texture;
                         ds_list_add( _vbuff_list, _vbuff_data );
                         ds_list_mark_as_list( _vbuff_list, ds_list_size( _vbuff_list )-1 );
@@ -1021,12 +1020,11 @@ repeat( _lines_size )
                 _previous_font = _font;
                 
                 var _font_data         = global.__scribble_font_data[? _font ];
-                var _font_glyphs_map   = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP    ];
-                var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY  ];
-                var _font_glyphs_min   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN     ];
-                var _font_glyphs_max   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MAX     ];
-                var _font_sprite       = _font_data[ __E_SCRIBBLE_FONT.PACKED_SPRITE ];
-                var _font_texture      = _font_data[ __E_SCRIBBLE_FONT.TEXTURE       ];
+                var _font_glyphs_map   = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP   ];
+                var _font_glyphs_array = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ];
+                var _font_glyphs_min   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN    ];
+                var _font_glyphs_max   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MAX    ];
+                var _font_texture      = _font_data[ __E_SCRIBBLE_FONT.TEXTURE      ];
                 
                 if (_font_texture != _previous_texture)
                 {
@@ -1043,7 +1041,6 @@ repeat( _lines_size )
                         
                         _vbuff_data = ds_list_create();
                         _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
-                        _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.SPRITE        ] = _font_sprite;
                         _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _font_texture;
                         ds_list_add( _storage_list, _vbuff_data );
                         ds_list_mark_as_list( _storage_list, ds_list_size( _storage_list )-1 );

@@ -84,17 +84,10 @@ enum __E_SCRIBBLE_FONT
     GLYPH_MIN,      // 4
     GLYPH_MAX,      // 5
     TEXTURE,        // 6
-    TEXTURE_WIDTH,  // 7
-    TEXTURE_HEIGHT, // 8
-    TEXTURE_UVS,    // 9
-    SPACE_WIDTH,    //10
-    MAPSTRING,      //11
-    SEPARATION,     //12
-    IMPORT_SPRITE,  //13
-    PACKED_SPRITE,  //14
-    SPRITE_X,       //15
-    SPRITE_Y,       //16
-    __SIZE          //17
+    SPACE_WIDTH,    // 7
+    MAPSTRING,      // 8
+    SEPARATION,     // 9
+    __SIZE          //10
 }
 
 enum __E_SCRIBBLE_FONT_TYPE
@@ -107,18 +100,16 @@ enum __E_SCRIBBLE_GLYPH
 {
     CHAR,  // 0
     ORD,   // 1
-    X,     // 2
-    Y,     // 3
-    W,     // 4
-    H,     // 5
-    DX,    // 6
-    DY,    // 7
-    SHF,   // 8
-    U0,    // 9
-    V0,    //10
-    U1,    //11
-    V1,    //12
-    __SIZE //13
+    W,     // 2
+    H,     // 3
+    DX,    // 4
+    DY,    // 5
+    SHF,   // 6
+    U0,    // 7
+    V0,    // 8
+    U1,    // 9
+    V1,    //10
+    __SIZE //11
 }
 
 enum __E_SCRIBBLE_SURFACE
@@ -169,7 +160,6 @@ enum __E_SCRIBBLE_WORD
 enum __E_SCRIBBLE_VERTEX_BUFFER
 {
     VERTEX_BUFFER,
-    SPRITE,
     TEXTURE,
     __SIZE
 }
