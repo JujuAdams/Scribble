@@ -1,4 +1,4 @@
-//  Scribble v4.3.0
+//  Scribble v4.3.1
 //  2019/04/02
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
@@ -8,7 +8,6 @@
 
 //Basic input and draw settings
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
-#macro SCRIBBLE_ANIMATION_SPEED               0.02  //Speed of text animation effects
 #macro SCRIBBLE_HASH_NEWLINE                  true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COLOURISE_SPRITES             true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
 
@@ -30,10 +29,11 @@
 //Default animation settings
 #macro SCRIBBLE_DEFAULT_WAVE_SIZE              4
 #macro SCRIBBLE_DEFAULT_WAVE_FREQUENCY        50
-#macro SCRIBBLE_DEFAULT_WAVE_SPEED            10
+#macro SCRIBBLE_DEFAULT_WAVE_SPEED             0.2
 #macro SCRIBBLE_DEFAULT_SHAKE_SIZE             4
-#macro SCRIBBLE_DEFAULT_SHAKE_SPEED           22
+#macro SCRIBBLE_DEFAULT_SHAKE_SPEED            0.4
 #macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT         0.5
+#macro SCRIBBLE_DEFAULT_RAINBOW_SPEED          0.01
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD     SCRIBBLE_TYPEWRITER_PER_CHARACTER
@@ -50,7 +50,7 @@
 #macro SCRIBBLE_COMMAND_TAG_CLOSE                 ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT              ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_MAX_FLAGS                         4        //Change MAX_FLAGS in the shader if you change this value!
-#macro SCRIBBLE_MAX_DATA_FIELDS                   6        //Change MAX_DATA_FIELDS in the shader if you change this value!
+#macro SCRIBBLE_MAX_DATA_FIELDS                   7        //Change MAX_DATA_FIELDS in the shader if you change this value!
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE        200      //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES        0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
@@ -71,7 +71,7 @@ enum E_SCRIBBLE_BOX
 
 #region -- Internal Definitions --
 
-#macro __SCRIBBLE_VERSION "4.3.0"
+#macro __SCRIBBLE_VERSION "4.3.1"
 #macro __SCRIBBLE_DATE    "2019/04/02"
 #macro __SCRIBBLE_DEBUG   false
 

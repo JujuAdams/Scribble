@@ -5,7 +5,7 @@ const int MAX_FLAGS = 4;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config(
 //2 = shake
 //3 = rainbow
 
-const int MAX_DATA_FIELDS = 6; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
+const int MAX_DATA_FIELDS = 7; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
 //By default, the data fields are:
 //0 = wave size
 //1 = wave frequency
@@ -24,7 +24,6 @@ varying vec4 v_vColour;
 
 uniform vec4  u_vColourBlend;
 uniform float u_fTime;
-uniform float u_fPlainTime;
 uniform float u_fCharFadeT;
 uniform float u_fCharFadeSmoothness;
 uniform float u_fLineFadeT;
@@ -69,13 +68,13 @@ void applyWave(float amplitude, float frequency, float speed, inout vec4 pos)
 
 void applyShake(float magnitude, float speed, inout vec4 pos)
 {
-    float time = u_fTime*speed + 0.5;
+    float time = speed*u_fTime + 0.5;
     float floorTime = floor(time);
     float merge = 1.0 - abs(2.0*(time - floorTime) - 1.0);
     
     //Use some misc prime numbers to try to get a varied-looking shake
-    vec2 delta = vec2(rand( vec2( 149.0*in_Normal.x + 13.0*floorTime, 727.0*in_Normal.x - 331.0*floorTime ) ),
-                      rand( vec2( 501.0*in_Normal.x - 19.0*floorTime, 701.0*in_Normal.x + 317.0*floorTime ) ));
+    vec2 delta = vec2(rand(vec2(149.0*in_Normal.x + 13.0*floorTime, 727.0*in_Normal.x - 331.0*floorTime)),
+                      rand(vec2(501.0*in_Normal.x - 19.0*floorTime, 701.0*in_Normal.x + 317.0*floorTime)));
     
     pos.xy += magnitude*merge*(2.0*delta-1.0);
 }
@@ -89,14 +88,14 @@ void applySprite(float isSprite, inout vec4 colour)
         float imageSpeed = in_Colour.b;           //Third byte is half of the image speed
         float imageStart = in_Colour.a*255.0;     //Fourth byte is the image offset
         
-        float displayImage = floor(mod( imageSpeed*u_fPlainTime + imageStart, imageMax ));
+        float displayImage = floor(mod(imageSpeed*u_fTime + imageStart, imageMax));
         colour = vec4((abs(myImage-displayImage) < 1.0/255.0)? 1.0 : 0.0);
     }
 }
 
-void applyRainbow(float weight, inout vec4 colour)
+void applyRainbow(float weight, float speed, inout vec4 colour)
 {
-    colour.rgb = mix( colour.rgb, hsv2rgb( vec3( in_Normal.x + u_fTime, 1.0, 1.0 ) ), weight);
+    colour.rgb = mix(colour.rgb, hsv2rgb(vec3(in_Normal.x + speed*u_fTime, 1.0, 1.0)), weight);
 }
 
 void applyColourBlend(vec4 colourInput, inout vec4 colourTarget)
@@ -118,7 +117,7 @@ void applyPerCharacterFade(float time, float smoothness, inout vec4 colour)
 
 void applyPerLineFade(float time, float smoothness, inout vec4 colour)
 {
-    if ( time < (1.0 + smoothness) )
+    if (time < (1.0 + smoothness))
     {
          colour.a *= clamp((time - in_Normal.y) / smoothness, 0.0, 1.0);
     }
@@ -143,7 +142,7 @@ void main()
     //Colour
     v_vColour = in_Colour;
     applySprite(flagArray[0], v_vColour);
-    applyRainbow(flagArray[3]*u_aDataFields[5], v_vColour);
+    applyRainbow(flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
     applyColourBlend(u_vColourBlend, v_vColour);
     applyPerCharacterFade(u_fCharFadeT, u_fCharFadeSmoothness, v_vColour);
     applyPerLineFade(u_fLineFadeT, u_fLineFadeSmoothness, v_vColour);

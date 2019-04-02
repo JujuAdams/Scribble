@@ -160,65 +160,65 @@ else
 {
     #region Normal mode
     
-    var _time            = _json[| __E_SCRIBBLE.ANIMATION_TIME     ];
-    var _data_fields     = _json[| __E_SCRIBBLE.DATA_FIELDS        ];
-    var _vbuff_list      = _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST ];
-    
-    var _char_smoothness = 0;
-    var _char_t          = 1;
-    
-    var _line_smoothness = 0;
-    var _line_t          = 1;
-    
-    switch(_json[| __E_SCRIBBLE.TW_METHOD ])
-    {
-        case SCRIBBLE_TYPEWRITER_WHOLE:
-            if (_json[| __E_SCRIBBLE.TW_DIRECTION ] > 0)
-            {
-                _alpha *= _json[| __E_SCRIBBLE.TW_POSITION ];
-            }
-            else
-            {
-                _alpha *= 1 - _json[| __E_SCRIBBLE.TW_POSITION ];
-            }
-        break;
-        
-        case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-            _char_smoothness = _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] / _json[| __E_SCRIBBLE.LENGTH ];
-            _char_t          = _json[| __E_SCRIBBLE.CHAR_FADE_T ] / (1-_char_smoothness);
-        break;
-        
-        case SCRIBBLE_TYPEWRITER_PER_LINE:
-            _line_smoothness = _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] / _json[| __E_SCRIBBLE.LINES ];
-            _line_t          = _json[| __E_SCRIBBLE.LINE_FADE_T ] / (1-_line_smoothness);
-        break;
-    }
+    var _vbuff_list = _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST ];
     
     var _count = ds_list_size(_vbuff_list);
     if (_count > 0)
     {
+        var _time            = _json[| __E_SCRIBBLE.ANIMATION_TIME     ];
+        var _data_fields     = _json[| __E_SCRIBBLE.DATA_FIELDS        ];
+        var _char_smoothness = 0;
+        var _char_t          = 1;
+        var _line_smoothness = 0;
+        var _line_t          = 1;
+        
+        switch(_json[| __E_SCRIBBLE.TW_METHOD ])
+        {
+            case SCRIBBLE_TYPEWRITER_WHOLE:
+                if (_json[| __E_SCRIBBLE.TW_DIRECTION ] > 0)
+                {
+                    _alpha *= _json[| __E_SCRIBBLE.TW_POSITION ];
+                }
+                else
+                {
+                    _alpha *= 1 - _json[| __E_SCRIBBLE.TW_POSITION ];
+                }
+            break;
+            
+            case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
+                _char_smoothness = _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] / _json[| __E_SCRIBBLE.LENGTH ];
+                _char_t          = _json[| __E_SCRIBBLE.CHAR_FADE_T ] / (1-_char_smoothness);
+            break;
+            
+            case SCRIBBLE_TYPEWRITER_PER_LINE:
+                _line_smoothness = _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] / _json[| __E_SCRIBBLE.LINES ];
+                _line_t          = _json[| __E_SCRIBBLE.LINE_FADE_T ] / (1-_line_smoothness);
+            break;
+        }
+        
         shader_set(shScribble);
-        shader_set_uniform_f(global.__scribble_uniform_pma              , _pma);
-        shader_set_uniform_f(global.__scribble_uniform_time             , _time*SCRIBBLE_ANIMATION_SPEED);
-        shader_set_uniform_f(global.__scribble_uniform_plain_time       , _time);
+        shader_set_uniform_f(global.__scribble_uniform_pma            , _pma);
+        shader_set_uniform_f(global.__scribble_uniform_time           , _time);
         
-        shader_set_uniform_f(global.__scribble_uniform_char_t           , _char_t         );
-        shader_set_uniform_f(global.__scribble_uniform_char_smoothness  , _char_smoothness);
+        shader_set_uniform_f(global.__scribble_uniform_char_t         , _char_t);
+        shader_set_uniform_f(global.__scribble_uniform_char_smoothness, _char_smoothness);
         
-        shader_set_uniform_f(global.__scribble_uniform_line_t           , _line_t         );
-        shader_set_uniform_f(global.__scribble_uniform_line_smoothness  , _line_smoothness);
+        shader_set_uniform_f(global.__scribble_uniform_line_t         , _line_t);
+        shader_set_uniform_f(global.__scribble_uniform_line_smoothness, _line_smoothness);
         
-        shader_set_uniform_f(global.__scribble_uniform_colour_blend     , colour_get_red(  _colour)/255,
-                                                                          colour_get_green(_colour)/255,
-                                                                          colour_get_blue( _colour)/255,
-                                                                          _alpha);
+        shader_set_uniform_f(global.__scribble_uniform_colour_blend   , colour_get_red(  _colour)/255,
+                                                                        colour_get_green(_colour)/255,
+                                                                        colour_get_blue( _colour)/255,
+                                                                        _alpha);
         
         shader_set_uniform_f_array(global.__scribble_uniform_data_fields, _data_fields);
         
-        for(var _i = 0; _i < _count; _i++)
+        var _i = 0;
+        repeat(_count)
         {
             var _vbuff_data = _vbuff_list[| _i ];
             vertex_submit(_vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ], pr_trianglelist, _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE ]);
+            _i++;
         }
         
         shader_reset();
