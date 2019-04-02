@@ -60,24 +60,24 @@ global.__scribble_default_font   = "";
 global.__scribble_init_complete  = false;
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
-scribble_add_colour("c_aqua",    c_aqua  );
-scribble_add_colour("c_black",   c_black );
-scribble_add_colour("c_blue",    c_blue  );
-scribble_add_colour("c_dkgray",  c_dkgray);
+scribble_add_colour("c_aqua",    c_aqua   );
+scribble_add_colour("c_black",   c_black  );
+scribble_add_colour("c_blue",    c_blue   );
+scribble_add_colour("c_dkgray",  c_dkgray );
 scribble_add_colour("c_fuchsia", c_fuchsia);
-scribble_add_colour("c_green",   c_green );
-scribble_add_colour("c_lime",    c_lime  );
-scribble_add_colour("c_ltgray",  c_ltgray);
-scribble_add_colour("c_maroon",  c_maroon);
-scribble_add_colour("c_navy",    c_navy  );
-scribble_add_colour("c_olive",   c_olive );
-scribble_add_colour("c_orange",  c_orange);
-scribble_add_colour("c_purple",  c_purple);
-scribble_add_colour("c_red",     c_red   );
-scribble_add_colour("c_silver",  c_silver);
-scribble_add_colour("c_teal",    c_teal  );
-scribble_add_colour("c_white",   c_white );
-scribble_add_colour("c_yellow",  c_yellow);
+scribble_add_colour("c_green",   c_green  );
+scribble_add_colour("c_lime",    c_lime   );
+scribble_add_colour("c_ltgray",  c_ltgray );
+scribble_add_colour("c_maroon",  c_maroon );
+scribble_add_colour("c_navy",    c_navy   );
+scribble_add_colour("c_olive",   c_olive  );
+scribble_add_colour("c_orange",  c_orange );
+scribble_add_colour("c_purple",  c_purple );
+scribble_add_colour("c_red",     c_red    );
+scribble_add_colour("c_silver",  c_silver );
+scribble_add_colour("c_teal",    c_teal   );
+scribble_add_colour("c_white",   c_white  );
+scribble_add_colour("c_yellow",  c_yellow );
 
 //Add bindings for default flag names
 //Flag slot 0 is reversed for sprites
