@@ -29,7 +29,7 @@ var _separation  = ((argument_count > 3) && (argument[3] != undefined))? argumen
 
 if ( ds_map_exists(global.__scribble_font_data, _font) )
 {
-    show_error( "Font \"" + _font + "\" has already been defined\n ", false );
+    show_error("Font \"" + _font + "\" has already been defined\n ", false);
     return undefined;
 }
 
@@ -37,7 +37,7 @@ if ( !is_string(_font) )
 {
     if ( is_real(_font) )
     {
-        show_error("Fonts should be initialised using their name as a string.\n(Input to script was \"" + string( _font ) + "\", which might be sprite \"" + sprite_get_name( _font ) + "\")\n ", false);
+        show_error("Fonts should be initialised using their name as a string.\n(Input to script was \"" + string(_font) + "\", which might be sprite \"" + sprite_get_name(_font) + "\")\n ", false);
     }
     else
     {

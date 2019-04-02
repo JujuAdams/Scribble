@@ -60,24 +60,24 @@ global.__scribble_default_font   = "";
 global.__scribble_init_complete  = false;
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
-scribble_add_colour("c_aqua",    c_aqua   );
-scribble_add_colour("c_black",   c_black  );
-scribble_add_colour("c_blue",    c_blue   );
-scribble_add_colour("c_dkgray",  c_dkgray );
+scribble_add_colour("c_aqua",    c_aqua  );
+scribble_add_colour("c_black",   c_black );
+scribble_add_colour("c_blue",    c_blue  );
+scribble_add_colour("c_dkgray",  c_dkgray);
 scribble_add_colour("c_fuchsia", c_fuchsia);
-scribble_add_colour("c_green",   c_green  );
-scribble_add_colour("c_lime",    c_lime   );
-scribble_add_colour("c_ltgray",  c_ltgray );
-scribble_add_colour("c_maroon",  c_maroon );
-scribble_add_colour("c_navy",    c_navy   );
-scribble_add_colour("c_olive",   c_olive  );
-scribble_add_colour("c_orange",  c_orange );
-scribble_add_colour("c_purple",  c_purple );
-scribble_add_colour("c_red",     c_red    );
-scribble_add_colour("c_silver",  c_silver );
-scribble_add_colour("c_teal",    c_teal   );
-scribble_add_colour("c_white",   c_white  );
-scribble_add_colour("c_yellow",  c_yellow );
+scribble_add_colour("c_green",   c_green );
+scribble_add_colour("c_lime",    c_lime  );
+scribble_add_colour("c_ltgray",  c_ltgray);
+scribble_add_colour("c_maroon",  c_maroon);
+scribble_add_colour("c_navy",    c_navy  );
+scribble_add_colour("c_olive",   c_olive );
+scribble_add_colour("c_orange",  c_orange);
+scribble_add_colour("c_purple",  c_purple);
+scribble_add_colour("c_red",     c_red   );
+scribble_add_colour("c_silver",  c_silver);
+scribble_add_colour("c_teal",    c_teal  );
+scribble_add_colour("c_white",   c_white );
+scribble_add_colour("c_yellow",  c_yellow);
 
 //Add bindings for default flag names
 //Flag slot 0 is reversed for sprites
@@ -94,15 +94,15 @@ vertex_format_add_texcoord();
 global.__scribble_vertex_format = vertex_format_end();
 
 //Cache uniform indexes
-global.__scribble_uniform_time            = shader_get_uniform(shScribble, "u_fTime"              );
-global.__scribble_uniform_plain_time      = shader_get_uniform(shScribble, "u_fPlainTime"         );
-global.__scribble_uniform_pma             = shader_get_uniform(shScribble, "u_fPremultiplyAlpha"  );
-global.__scribble_uniform_colour_blend    = shader_get_uniform(shScribble, "u_vColourBlend"       );
-global.__scribble_uniform_char_t          = shader_get_uniform(shScribble, "u_fCharFadeT"         );
+global.__scribble_uniform_time            = shader_get_uniform(shScribble, "u_fTime"             );
+global.__scribble_uniform_plain_time      = shader_get_uniform(shScribble, "u_fPlainTime"        );
+global.__scribble_uniform_pma             = shader_get_uniform(shScribble, "u_fPremultiplyAlpha" );
+global.__scribble_uniform_colour_blend    = shader_get_uniform(shScribble, "u_vColourBlend"      );
+global.__scribble_uniform_char_t          = shader_get_uniform(shScribble, "u_fCharFadeT"        );
 global.__scribble_uniform_char_smoothness = shader_get_uniform(shScribble, "u_fCharFadeSmoothness");
-global.__scribble_uniform_line_t          = shader_get_uniform(shScribble, "u_fLineFadeT"         );
+global.__scribble_uniform_line_t          = shader_get_uniform(shScribble, "u_fLineFadeT"        );
 global.__scribble_uniform_line_smoothness = shader_get_uniform(shScribble, "u_fLineFadeSmoothness");
-global.__scribble_uniform_data_fields     = shader_get_uniform(shScribble, "u_aDataFields"        );
+global.__scribble_uniform_data_fields     = shader_get_uniform(shScribble, "u_aDataFields"       );
 
 //Hex converter array
 var _min = ord("0");

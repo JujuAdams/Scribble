@@ -25,9 +25,9 @@ var _colour = ((argument_count > 6) && (argument[6] != undefined))? argument[6] 
 var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : draw_get_alpha();
 var _pma    = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA;
 
-if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
+if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 {
-    show_error( "Scribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false );
+    show_error("Scribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
 }
 
@@ -39,13 +39,13 @@ if ( (_json[| __E_SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __E_SCR
     {
         if (SCRIBBLE_CALL_STEP_IN_DRAW)
         {
-            scribble_step( _json );
+            scribble_step( _json);
         }
         else
         {
             if ( _json[| __E_SCRIBBLE.NO_STEP_COUNT ] >= 1 ) //Give GM one frame of grace before throwing an error
             {
-                show_error( "scribble_step() must be called in the Step event for events and typewriter effects to work.\n ", false );
+                show_error("scribble_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
             }
             else
             {
@@ -57,20 +57,20 @@ if ( (_json[| __E_SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __E_SCR
 
 #endregion
 
-var _old_matrix = matrix_get( matrix_world );
+var _old_matrix = matrix_get(matrix_world);
 
 if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {
-    var _matrix = matrix_build( _json[| __E_SCRIBBLE.LEFT ] + _x, _json[| __E_SCRIBBLE.TOP ] + _y, 0,   0,0,0,   1,1,1 );
+    var _matrix = matrix_build(_json[| __E_SCRIBBLE.LEFT ] + _x, _json[| __E_SCRIBBLE.TOP ] + _y, 0,   0,0,0,   1,1,1);
 }
 else
 {
-    var _matrix = matrix_build( _json[| __E_SCRIBBLE.LEFT ], _json[| __E_SCRIBBLE.TOP ], 0,   0,0,0,   1,1,1 );
-        _matrix = matrix_multiply( _matrix, matrix_build( _x,_y,0,   0,0,_angle,   _xscale,_yscale,1 ) );
+    var _matrix = matrix_build(_json[| __E_SCRIBBLE.LEFT ], _json[| __E_SCRIBBLE.TOP ], 0,   0,0,0,   1,1,1);
+        _matrix = matrix_multiply(_matrix, matrix_build(_x,_y,0,   0,0,_angle,   _xscale,_yscale,1));
 }
 
-_matrix = matrix_multiply( _matrix, _old_matrix );
-matrix_set( matrix_world, _matrix );
+_matrix = matrix_multiply(_matrix, _old_matrix);
+matrix_set(matrix_world, _matrix);
 
 if (SCRIBBLE_COMPATIBILITY_DRAW)
 {
@@ -86,42 +86,42 @@ if (SCRIBBLE_COMPATIBILITY_DRAW)
     var _total_chars = _json[| __E_SCRIBBLE.CHAR_FADE_T ] * _json[| __E_SCRIBBLE.LENGTH ];
 
     var _text_root_list = _json[| __E_SCRIBBLE.LINE_LIST ];
-    var _lines_count = ds_list_size( _text_root_list );
-    for( var _line = 0; _line < _lines_count; _line++ )
+    var _lines_count = ds_list_size( _text_root_list);
+    for(var _line = 0; _line < _lines_count; _line++)
     {
         var _line_array = _text_root_list[| _line ];
         var _line_x = _line_array[ __E_SCRIBBLE_LINE.X ];
         var _line_y = _line_array[ __E_SCRIBBLE_LINE.Y ];
     
         var _line_word_array = _line_array[ __E_SCRIBBLE_LINE.WORDS ];
-        var _words_count = array_length_1d( _line_word_array );
-        for( var _word = 0; _word < _words_count; _word++ )
+        var _words_count = array_length_1d(_line_word_array);
+        for(var _word = 0; _word < _words_count; _word++)
         {
             var _word_array = _line_word_array[ _word ];
             var _x          = _word_array[ __E_SCRIBBLE_WORD.X      ] + _line_x;
             var _y          = _word_array[ __E_SCRIBBLE_WORD.Y      ] + _line_y;
             var _sprite     = _word_array[ __E_SCRIBBLE_WORD.SPRITE ];
         
-            if ( _sprite >= 0 )
+            if (_sprite >= 0)
             {
-                if ( _char_count + 1 > _total_chars ) continue;
+                if (_char_count + 1 > _total_chars) continue;
                 ++_char_count;
                 
-                _x -= sprite_get_xoffset( _sprite );
-                _y -= sprite_get_yoffset( _sprite );
+                _x -= sprite_get_xoffset(_sprite);
+                _y -= sprite_get_yoffset(_sprite);
                 
-                draw_sprite( _sprite, _word_array[ __E_SCRIBBLE_WORD.IMAGE ], _x, _y );
+                draw_sprite(_sprite, _word_array[ __E_SCRIBBLE_WORD.IMAGE ], _x, _y);
             }
             else
             {
-                var _string    = _word_array[ __E_SCRIBBLE_WORD.STRING    ];
-                var _length    = _word_array[ __E_SCRIBBLE_WORD.LENGTH    ];
-                var _font_name = _word_array[ __E_SCRIBBLE_WORD.FONT      ];
-                var _colour    = _word_array[ __E_SCRIBBLE_WORD.COLOUR    ];
+                var _string    = _word_array[ __E_SCRIBBLE_WORD.STRING ];
+                var _length    = _word_array[ __E_SCRIBBLE_WORD.LENGTH ];
+                var _font_name = _word_array[ __E_SCRIBBLE_WORD.FONT   ];
+                var _colour    = _word_array[ __E_SCRIBBLE_WORD.COLOUR ];
             
-                if ( _char_count + _length > _total_chars )
+                if (_char_count + _length > _total_chars)
                 {
-                    _string = string_copy( _string, 1, _total_chars - _char_count );
+                    _string = string_copy(_string, 1, _total_chars - _char_count);
                     _char_count = _total_chars;
                 }
                 else
@@ -129,30 +129,30 @@ if (SCRIBBLE_COMPATIBILITY_DRAW)
                     _char_count += _length;
                 }
             
-                var _font = asset_get_index( _font_name );
-                if ( _font >= 0 ) && ( asset_get_type( _font_name ) == asset_font )
+                var _font = asset_get_index(_font_name);
+                if (_font >= 0) && (asset_get_type(_font_name ) == asset_font)
                 {
-                    draw_set_font( _font );
+                    draw_set_font(_font);
                 }
                 else
                 {
                     var _font = global.__scribble_spritefont_map[? _font_name ];
-                    if ( _font != undefined ) draw_set_font( _font );
+                    if (_font != undefined) draw_set_font(_font);
                 }
             
-                draw_set_colour( _colour );
-                draw_text( _x, _y, _string );
+                draw_set_colour(_colour);
+                draw_text(_x, _y, _string);
             }
-            if ( _char_count >= _total_chars ) break;
+            if (_char_count >= _total_chars) break;
         }
-        if ( _char_count >= _total_chars ) break;
+        if (_char_count >= _total_chars) break;
     }
 
-    draw_set_halign( _old_halign );
-    draw_set_valign( _old_valign );
-    draw_set_font(   _old_font   );
-    draw_set_colour( _old_colour );
-    draw_set_alpha(  _old_alpha  );
+    draw_set_halign(_old_halign);
+    draw_set_valign(_old_valign);
+    draw_set_font(  _old_font  );
+    draw_set_colour(_old_colour);
+    draw_set_alpha( _old_alpha );
     
     #endregion
 }
@@ -170,10 +170,10 @@ else
     var _line_smoothness = 0;
     var _line_t          = 1;
     
-    switch( _json[| __E_SCRIBBLE.TW_METHOD ] )
+    switch(_json[| __E_SCRIBBLE.TW_METHOD ])
     {
         case SCRIBBLE_TYPEWRITER_WHOLE:
-            if ( _json[| __E_SCRIBBLE.TW_DIRECTION ] > 0 )
+            if (_json[| __E_SCRIBBLE.TW_DIRECTION ] > 0)
             {
                 _alpha *= _json[| __E_SCRIBBLE.TW_POSITION ];
             }
@@ -194,31 +194,31 @@ else
         break;
     }
     
-    var _count = ds_list_size( _vbuff_list );
+    var _count = ds_list_size(_vbuff_list);
     if (_count > 0)
     {
-        shader_set( shScribble );
-        shader_set_uniform_f( global.__scribble_uniform_pma              , _pma );
-        shader_set_uniform_f( global.__scribble_uniform_time             , _time*SCRIBBLE_ANIMATION_SPEED );
-        shader_set_uniform_f( global.__scribble_uniform_plain_time       , _time );
+        shader_set(shScribble);
+        shader_set_uniform_f(global.__scribble_uniform_pma              , _pma);
+        shader_set_uniform_f(global.__scribble_uniform_time             , _time*SCRIBBLE_ANIMATION_SPEED);
+        shader_set_uniform_f(global.__scribble_uniform_plain_time       , _time);
         
-        shader_set_uniform_f( global.__scribble_uniform_char_t           , _char_t          );
-        shader_set_uniform_f( global.__scribble_uniform_char_smoothness  , _char_smoothness );
+        shader_set_uniform_f(global.__scribble_uniform_char_t           , _char_t         );
+        shader_set_uniform_f(global.__scribble_uniform_char_smoothness  , _char_smoothness);
         
-        shader_set_uniform_f( global.__scribble_uniform_line_t           , _line_t          );
-        shader_set_uniform_f( global.__scribble_uniform_line_smoothness  , _line_smoothness );
+        shader_set_uniform_f(global.__scribble_uniform_line_t           , _line_t         );
+        shader_set_uniform_f(global.__scribble_uniform_line_smoothness  , _line_smoothness);
         
-        shader_set_uniform_f( global.__scribble_uniform_colour_blend     , colour_get_red(   _colour )/255,
-                                                                           colour_get_green( _colour )/255,
-                                                                           colour_get_blue(  _colour )/255,
-                                                                           _alpha );
+        shader_set_uniform_f(global.__scribble_uniform_colour_blend     , colour_get_red(  _colour)/255,
+                                                                          colour_get_green(_colour)/255,
+                                                                          colour_get_blue( _colour)/255,
+                                                                          _alpha);
         
-        shader_set_uniform_f_array( global.__scribble_uniform_data_fields, _data_fields );
+        shader_set_uniform_f_array(global.__scribble_uniform_data_fields, _data_fields);
         
-        for( var _i = 0; _i < _count; _i++ )
+        for(var _i = 0; _i < _count; _i++)
         {
             var _vbuff_data = _vbuff_list[| _i ];
-            vertex_submit( _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ], pr_trianglelist, _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE ] );
+            vertex_submit(_vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ], pr_trianglelist, _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE ]);
         }
         
         shader_reset();
@@ -227,4 +227,4 @@ else
     #endregion
 }
 
-matrix_set( matrix_world, _old_matrix );
+matrix_set(matrix_world, _old_matrix);

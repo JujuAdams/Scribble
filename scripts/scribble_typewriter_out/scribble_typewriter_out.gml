@@ -22,7 +22,7 @@ var _smoothness = ((argument_count > 3) && (argument[3] != undefined))? argument
 
 if ( !is_real( _json ) || !ds_exists( _json, ds_type_list ) )
 {
-    show_error( "Scribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false );
+    show_error("Scribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false);
     exit;
 }
 
@@ -43,6 +43,6 @@ switch( _json[| __E_SCRIBBLE.TW_METHOD ] )
     break;
     
     default:
-        show_error( "Typewriter method not recognised.\nPlease use SCRIBBLE_TYPEWRITER_WHOLE, SCRIBBLE_TYPEWRITER_PER_CHARACTER, or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false );
+        show_error("Typewriter method not recognised.\nPlease use SCRIBBLE_TYPEWRITER_WHOLE, SCRIBBLE_TYPEWRITER_PER_CHARACTER, or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false);
     break;
 }
