@@ -69,20 +69,23 @@ if ( _later_than_gms220 )
 
 #region Iterate over the font data global ds_map and prioritise fonts that we need to pack onto surfaces
 
-var _font_count = ds_map_size( global.__scribble_font_data );
-var _font_array = array_create( _font_count );
+var _font_count = ds_map_size(global.__scribble_font_data);
+var _font_array = array_create(_font_count);
 
 var _i = 0;
-var _name = ds_map_find_first( global.__scribble_font_data );
-repeat( _font_count )
+var _name = ds_map_find_first(global.__scribble_font_data);
+repeat(_font_count)
 {
     _font_array[ _i ] = _name;
     
     //If this is a standard font, grab the texture dimensions
     var _font_data = global.__scribble_font_data[? _name ];
-    switch( _font_data[ __E_SCRIBBLE_FONT.TYPE ] )
+    switch(_font_data[ __E_SCRIBBLE_FONT.TYPE ])
     {
         case __E_SCRIBBLE_FONT_TYPE.SPRITE:
+            var _sprite = asset_get_index(_name);
+            var _texture = sprite_get_texture(_sprite, 0);
+            _font_data[@ __E_SCRIBBLE_FONT.TEXTURE ] = _texture;
         break;
         
         case __E_SCRIBBLE_FONT_TYPE.FONT:
@@ -96,10 +99,12 @@ repeat( _font_count )
             var _texture = font_get_texture( _asset );
             var _uvs     = font_get_uvs(     _asset );
             
-            var _texture_w = (_uvs[2] - _uvs[0]) / texture_get_texel_width(  _texture );
-            var _texture_h = (_uvs[3] - _uvs[1]) / texture_get_texel_height( _texture );
+            var _texture_w = (_uvs[2] - _uvs[0])/texture_get_texel_width(  _texture );
+            var _texture_h = (_uvs[3] - _uvs[1])/texture_get_texel_height( _texture );
+            _font_data[@ __E_SCRIBBLE_FONT.TEXTURE        ] = _texture;
             _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] = _texture_w;
             _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] = _texture_h;
+            _font_data[@ __E_SCRIBBLE_FONT.TEXTURE_UVS    ] = _uvs;
             
             var _json_file  = global.__scribble_font_directory + _name + ".yy";
             if ( !file_exists( _json_file ) )
@@ -108,17 +113,17 @@ repeat( _font_count )
                 continue;
             }
             
-            if ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] > global.__scribble_texture_page_size )
-            || ( _font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] > global.__scribble_texture_page_size )
+            if (_font_data[ __E_SCRIBBLE_FONT.TEXTURE_WIDTH  ] > global.__scribble_texture_page_size)
+            || (_font_data[ __E_SCRIBBLE_FONT.TEXTURE_HEIGHT ] > global.__scribble_texture_page_size)
             {
                 show_debug_message( "Scribble: WARNING! The texture for \"" + _name + "\" is larger than Scribble's maximum texture page size (" + string( _texture_w ) + "x" + string( _texture_h ) + " > " + string( global.__scribble_texture_page_size ) + "x" + string( global.__scribble_texture_page_size ) + ")" );
                 var _bigger_size = power(2,ceil(ln(max( _texture_w, _texture_h ))/ln(2)));
                 show_debug_message( "Scribble:          Please use a larger texture page size in Scribble and GameMaker (e.g. " + string( _bigger_size ) + "x" + string( _bigger_size ) + ") to avoid bugs and blurry text" );
             }
             
-            var _priority = _texture_h*global.__scribble_texture_page_size + _texture_w;
-            ds_priority_add( _priority_queue, _name, _priority );
-            show_debug_message( "Scribble: Queuing \"" + _name + "\" (standard) for packing (size=" + string( _texture_w ) + "x" + string( _texture_h ) + ", weight=" + string( _priority ) + ") as a standard font" );
+            //var _priority = _texture_h*global.__scribble_texture_page_size + _texture_w;
+            //ds_priority_add( _priority_queue, _name, _priority );
+            //show_debug_message( "Scribble: Queuing \"" + _name + "\" (standard) for packing (size=" + string( _texture_w ) + "x" + string( _texture_h ) + ", weight=" + string( _priority ) + ") as a standard font" );
         break;
     }
     
@@ -339,6 +344,7 @@ for( var _s = 0; _s < _surface_count; _s++ )
     }
     
     var _surface_sprite = sprite_create_from_surface( _surface,   0, 0, _surface_w, _surface_h,  false, false, 0, 0 );
+    var _texture = sprite_get_texture(_surface_sprite, 0);
     surface_free( _surface );
     
     ds_list_add( global.__scribble_sprites, _surface_sprite );
@@ -348,6 +354,7 @@ for( var _s = 0; _s < _surface_count; _s++ )
         var _name = _surface_fonts[ _f ];
         var _font_data = global.__scribble_font_data[? _name ];
         _font_data[@ __E_SCRIBBLE_FONT.PACKED_SPRITE ] = _surface_sprite;
+        _font_data[@ __E_SCRIBBLE_FONT.TEXTURE       ] = _texture;
     }
 }
     
@@ -527,11 +534,12 @@ for( var _font = 0; _font < _font_count; _font++ )
         show_debug_message( "Scribble: Processing characters for font \"" + _name + "\"" );
         
         var _surface_sprite  = _font_data[ __E_SCRIBBLE_FONT.PACKED_SPRITE ];
-        var _image_x_offset  = _font_data[ __E_SCRIBBLE_FONT.SPRITE_X      ];
-        var _image_y_offset  = _font_data[ __E_SCRIBBLE_FONT.SPRITE_Y      ];
+        var _image_x_offset  = 0; //_font_data[ __E_SCRIBBLE_FONT.SPRITE_X      ];
+        var _image_y_offset  = 0; //_font_data[ __E_SCRIBBLE_FONT.SPRITE_Y      ];
         var _font_glyphs_map = _font_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP    ];
+        var _texture         = _font_data[ __E_SCRIBBLE_FONT.TEXTURE       ];
+        var _texture_uvs     = _font_data[ __E_SCRIBBLE_FONT.TEXTURE_UVS   ];
         
-        var _texture = sprite_get_texture(_surface_sprite, 0);
         var _texture_tw = texture_get_texel_width(_texture);
         var _texture_th = texture_get_texel_height(_texture);
         
@@ -619,8 +627,8 @@ for( var _font = 0; _font < _font_count; _font++ )
                         var _w     = _yy_glyph_map[? "w" ];
                         var _h     = _yy_glyph_map[? "h" ];
                         
-                        var _u0    = (_x + _image_x_offset) * _texture_tw;
-                        var _v0    = (_y + _image_y_offset) * _texture_th;
+                        var _u0    = (_x + _image_x_offset)*_texture_tw + _texture_uvs[0];
+                        var _v0    = (_y + _image_y_offset)*_texture_th + _texture_uvs[1];
                         var _u1    = _u0 + _w * _texture_tw;
                         var _v1    = _v0 + _h * _texture_th;
                         
@@ -666,10 +674,10 @@ for( var _font = 0; _font < _font_count; _font++ )
                 var _w     = _yy_glyph_map[? "w" ];
                 var _h     = _yy_glyph_map[? "h" ];
                 
-                var _u0    = ( _x + _image_x_offset ) * _texture_tw;
-                var _v0    = ( _y + _image_y_offset ) * _texture_th;
-                var _u1    = _u0 + _w * _texture_tw;
-                var _v1    = _v0 + _h * _texture_th;
+                var _u0    = (_x + _image_x_offset)*_texture_tw + _texture_uvs[0];
+                var _v0    = (_y + _image_y_offset)*_texture_th + _texture_uvs[1];
+                var _u1    = _u0 + _w*_texture_tw;
+                var _v1    = _v0 + _h*_texture_th;
                 
                 var _array = array_create(__E_SCRIBBLE_GLYPH.__SIZE, 0);
                 _array[ __E_SCRIBBLE_GLYPH.CHAR ] = _char;

@@ -160,9 +160,9 @@ else
 {
     #region Normal mode
     
-    var _time            = _json[| __E_SCRIBBLE.ANIMATION_TIME          ];
-    var _data_fields     = _json[| __E_SCRIBBLE.DATA_FIELDS             ];
-    var _vbuff_list      = _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST      ];
+    var _time            = _json[| __E_SCRIBBLE.ANIMATION_TIME     ];
+    var _data_fields     = _json[| __E_SCRIBBLE.DATA_FIELDS        ];
+    var _vbuff_list      = _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST ];
     
     var _char_smoothness = 0;
     var _char_t          = 1;

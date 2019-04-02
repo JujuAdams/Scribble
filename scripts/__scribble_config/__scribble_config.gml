@@ -82,16 +82,18 @@ enum __E_SCRIBBLE_FONT
     GLYPHS_ARRAY,   // 3
     GLYPH_MIN,      // 4
     GLYPH_MAX,      // 5
-    TEXTURE_WIDTH,  // 6
-    TEXTURE_HEIGHT, // 7
-    SPACE_WIDTH,    // 8
-    MAPSTRING,      // 9
-    SEPARATION,     //10
-    IMPORT_SPRITE,  //11
-    PACKED_SPRITE,  //12
-    SPRITE_X,       //13
-    SPRITE_Y,       //14
-    __SIZE          //15
+    TEXTURE,        // 6
+    TEXTURE_WIDTH,  // 7
+    TEXTURE_HEIGHT, // 8
+    TEXTURE_UVS,    // 9
+    SPACE_WIDTH,    //10
+    MAPSTRING,      //11
+    SEPARATION,     //12
+    IMPORT_SPRITE,  //13
+    PACKED_SPRITE,  //14
+    SPRITE_X,       //15
+    SPRITE_Y,       //16
+    __SIZE          //17
 }
 
 enum __E_SCRIBBLE_FONT_TYPE

@@ -1026,7 +1026,7 @@ repeat( _lines_size )
                 var _font_glyphs_min   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN     ];
                 var _font_glyphs_max   = _font_data[ __E_SCRIBBLE_FONT.GLYPH_MAX     ];
                 var _font_sprite       = _font_data[ __E_SCRIBBLE_FONT.PACKED_SPRITE ];
-                var _font_texture      = sprite_get_texture( _font_sprite, 0 );     
+                var _font_texture      = _font_data[ __E_SCRIBBLE_FONT.TEXTURE       ];
                 
                 if (_font_texture != _previous_texture)
                 {
