@@ -26,6 +26,18 @@ if (!is_real(_index) || (_index != floor(_index)) || (_index < 1) || (_index > (
     exit;
 }
 
+if ( ds_map_exists(global.__scribble_colours, _name) )
+{
+    show_debug_message("Scribble: WARNING! Flag name \"" + _name + "\" has already been defined as a colour" );
+    exit;
+}
+
+if ( ds_map_exists(global.__scribble_events, _name) )
+{
+    show_debug_message("Scribble: WARNING! Flag name \"" + _name + "\" has already been defined as an event" );
+    exit;
+}
+
 var _old_name = global.__scribble_flags[? _index ];
 if (_old_name != undefined)
 {

@@ -32,4 +32,23 @@ if ( !script_exists(_script) )
     exit;
 }
 
+if ( ds_map_exists(global.__scribble_colours, _name) )
+{
+    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as a colour" );
+    exit;
+}
+
+if ( ds_map_exists(global.__scribble_flags, _name) )
+{
+    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as a flag" );
+    exit;
+}
+
+var _old_script = global.__scribble_events[? _name ];
+if ( is_real(_old_script) )
+{
+    show_debug_message("Scribble: WARNING! Overwriting event \"" + _name + "\" tied to script \"" + script_get_name(_old_script) + "()\"" );
+}
+
 global.__scribble_events[? _name ] = _script;
+show_debug_message("Scribble: Tying event \"" + _name + "\" to script \"" + script_get_name(_script) + "()\"" );

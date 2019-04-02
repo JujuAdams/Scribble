@@ -36,6 +36,24 @@ if (!_native)
     _colour = make_colour_rgb(colour_get_blue(_colour), colour_get_green(_colour), colour_get_red(_colour));
 }
 
+if ( ds_map_exists(global.__scribble_events, _name) )
+{
+    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as an event" );
+    exit;
+}
+
+if ( ds_map_exists(global.__scribble_flags, _name) )
+{
+    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as a flag" );
+    exit;
+}
+
+var _old_colour = global.__scribble_colours[? _name ];
+if ( is_real(_old_colour) )
+{
+    show_debug_message("Scribble: WARNING! Overwriting colour \"" + _name + "\" (" + string(colour_get_red(_old_colour)) + "," + string(colour_get_green(_old_colour)) + "," + string(colour_get_blue(_old_colour)) + ", u32=" + string(_old_colour) + ")");
+}
+
 global.__scribble_colours[? _name ] = _colour;
 
-show_debug_message("Scribble: Added colour name \"" + _name + "\" as colour " + string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)) + " (" + string(_colour) + ")");
+show_debug_message("Scribble: Added colour \"" + _name + "\" as " + string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)) + ", u32=" + string(_colour));
