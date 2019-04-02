@@ -18,6 +18,7 @@
 #macro SCRIBBLE_DEFAULT_ANGLE             0
 #macro SCRIBBLE_DEFAULT_BOX_HALIGN        fa_left
 #macro SCRIBBLE_DEFAULT_BOX_VALIGN        fa_top
+#macro SCRIBBLE_DEFAULT_STEP_SIZE         (delta_time/16667)
 #macro SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA false
 
 //Typewriter mode constants

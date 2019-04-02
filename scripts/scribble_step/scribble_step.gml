@@ -6,7 +6,7 @@
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json      = argument[0];
-var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : 1;
+var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_STEP_SIZE;
 
 if (!SCRIBBLE_CALL_STEP_IN_DRAW) _json[| __E_SCRIBBLE.HAS_CALLED_STEP ] = true;
 

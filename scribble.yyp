@@ -79,19 +79,19 @@
             }
         },
         {
+            "Key": "1cadf0e8-8394-480c-8ce1-0cce13ec62dc",
+            "Value": {
+                "id": "bb522334-ff54-458e-ae82-93d8210f76ba",
+                "resourcePath": "shaders\\shScribble\\shScribble.yy",
+                "resourceType": "GMShader"
+            }
+        },
+        {
             "Key": "2a816721-d173-4196-ae78-c6bd643d8100",
             "Value": {
                 "id": "beacae7a-2d9b-423b-abc0-7fc4c26af2c2",
                 "resourcePath": "views\\2a816721-d173-4196-ae78-c6bd643d8100.yy",
                 "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "30fbaaf9-cdd9-41ed-a938-9cb6f0c2d718",
-            "Value": {
-                "id": "80f66a75-cc75-490e-bc27-98e1810f6564",
-                "resourcePath": "shaders\\shScribble\\shScribble.yy",
-                "resourceType": "GMShader"
             }
         },
         {
