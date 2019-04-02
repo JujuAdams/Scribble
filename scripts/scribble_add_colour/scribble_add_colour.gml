@@ -15,19 +15,19 @@ var _native = ((argument_count > 2) && (argument[2] != undefined))? argument[2] 
 
 if ( !variable_global_exists("__scribble_init_complete") )
 {
-    show_error("Scribble:\n\nscribble_add_colour() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\nscribble_add_colour() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
 if ( !is_string(_name) )
 {
-    show_error("Scribble:\n\nCustom colour names should be strings.\n ", false);
+    show_error("Scribble:\nCustom colour names should be strings.\n ", false);
     exit;
 }
 
 if ( !is_real(_colour) )
 {
-    show_error("Scribble:\n\nCustom colours should be specificed as 24-bit integers.\n ", false);
+    show_error("Scribble:\nCustom colours should be specificed as 24-bit integers.\n ", false);
     exit;
 }
 

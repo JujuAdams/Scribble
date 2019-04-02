@@ -17,7 +17,7 @@
 
 if ( variable_global_exists("__scribble_init_complete") )
 {
-    show_error("Scribble:\n\nscribble_init_start() should not be called twice!\n ", false);
+    show_error("Scribble:\nscribble_init_start() should not be called twice!\n ", false);
     exit;
 }
 
@@ -30,7 +30,7 @@ if (__SCRIBBLE_ON_MOBILE)
     if (_font_directory != "")
     {
         show_debug_message("Scribble: Included Files work a bit strangely on iOS and Android. Please use an empty string for the font directory and place fonts in the root of Included Files.");
-        show_error("Scribble:\n\nGameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files.\n ", true);
+        show_error("Scribble:\nGameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files.\n ", true);
         exit;
     }
 }

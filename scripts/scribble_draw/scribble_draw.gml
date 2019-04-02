@@ -27,7 +27,7 @@ var _pma    = ((argument_count > 8) && (argument[8] != undefined))? argument[8] 
 
 if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 {
-    show_error("Scribble:\n\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
+    show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
 }
 
@@ -45,7 +45,7 @@ if ( (_json[| __E_SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __E_SCR
         {
             if ( _json[| __E_SCRIBBLE.NO_STEP_COUNT ] >= 1 ) //Give GM one frame of grace before throwing an error
             {
-                show_error("Scribble:\n\nscribble_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
+                show_error("Scribble:\nscribble_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
             }
             else
             {

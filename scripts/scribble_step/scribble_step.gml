@@ -12,7 +12,7 @@ if (!SCRIBBLE_CALL_STEP_IN_DRAW) _json[| __E_SCRIBBLE.HAS_CALLED_STEP ] = true;
 
 if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 {
-    show_error("Scribble:\n\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
+    show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
 }
 
@@ -89,7 +89,7 @@ if (_typewriter_direction != 0)
         break;
         
         default:
-            show_error("Scribble:\n\nTypewriter method not recognised.\nPlease use SCRIBBLE_TYPEWRITER_PER_CHARACTER or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false);
+            show_error("Scribble:\nTypewriter method not recognised.\nPlease use SCRIBBLE_TYPEWRITER_PER_CHARACTER or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false);
         break;
     }
     

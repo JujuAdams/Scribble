@@ -12,7 +12,7 @@ var _timer = get_timer();
 
 if ( !variable_global_exists("__scribble_init_complete" ) )
 {
-    show_error("Scribble:\n\nscribble_init_end() should be called after scribble_init_start()\n ", false);
+    show_error("Scribble:\nscribble_init_end() should be called after scribble_init_start()\n ", false);
     exit;
 }
 
@@ -229,14 +229,14 @@ repeat(_font_count)
         var _asset = asset_get_index(_name);
         if (_asset < 0)
         {
-            show_error("Scribble:\n\nFont \"" + _name + "\" was not found in the project!\n ", true);
+            show_error("Scribble:\nFont \"" + _name + "\" was not found in the project!\n ", true);
             exit;
         }
         
         var _json_file  = global.__scribble_font_directory + _name + ".yy";
         if ( !file_exists(_json_file) )
         {
-            show_error("Scribble:\n\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", true);
+            show_error("Scribble:\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", true);
             exit;
         }
         

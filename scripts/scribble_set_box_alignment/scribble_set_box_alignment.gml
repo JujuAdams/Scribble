@@ -17,7 +17,7 @@ var _valign = ((argument_count > 2) && (argument[2] != undefined))? argument[2] 
 
 if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 {
-    show_error("Scribble:\n\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
+    show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
 }
 

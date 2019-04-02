@@ -10,19 +10,19 @@ var _index = argument1;
 
 if ( !variable_global_exists("__scribble_init_complete") )
 {
-    show_error("Scribble:\n\nscribble_add_custom_flag_name() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\nscribble_add_custom_flag_name() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
 if ( !is_string(_name) )
 {
-    show_error("Scribble:\n\nCustom flag names should be strings.\n ", false);
+    show_error("Scribble:\nCustom flag names should be strings.\n ", false);
     exit;
 }
 
 if (!is_real(_index) || (_index != floor(_index)) || (_index < 1) || (_index > (SCRIBBLE_MAX_FLAGS-1)))
 {
-    show_error("Scribble:\n\nCustom flag indexes should be an integer from 1 to " + string(SCRIBBLE_MAX_FLAGS-1) + " (inclusive).\nTo increase the maximum number of flags, see __scribble_config()\n(Index was \"" + string(_index) + "\")\n ", false);
+    show_error("Scribble:\nCustom flag indexes should be an integer from 1 to " + string(SCRIBBLE_MAX_FLAGS-1) + " (inclusive).\nTo increase the maximum number of flags, see __scribble_config()\n(Index was \"" + string(_index) + "\")\n ", false);
     exit;
 }
 

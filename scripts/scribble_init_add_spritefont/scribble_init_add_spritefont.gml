@@ -12,13 +12,13 @@
 
 if ( !variable_global_exists("__scribble_init_complete") )
 {
-    show_error("Scribble:\n\nscribble_init_add_spritefont() should be called after scribble_init_start() and before scribble_init_end()\n ", true);
+    show_error("Scribble:\nscribble_init_add_spritefont() should be called after scribble_init_start() and before scribble_init_end()\n ", true);
     exit;
 }
 
 if (global.__scribble_init_complete)
 {
-    show_error("Scribble:\n\nscribble_init_add_spritefont() should be called before scribble_init_end()\n ", true);
+    show_error("Scribble:\nscribble_init_add_spritefont() should be called before scribble_init_end()\n ", true);
     return undefined;
 }
 
@@ -29,7 +29,7 @@ var _separation  = ((argument_count > 3) && (argument[3] != undefined))? argumen
 
 if ( ds_map_exists(global.__scribble_font_data, _font) )
 {
-    show_error("Scribble:\n\nFont \"" + _font + "\" has already been defined\n ", false);
+    show_error("Scribble:\nFont \"" + _font + "\" has already been defined\n ", false);
     return undefined;
 }
 
@@ -37,18 +37,18 @@ if ( !is_string(_font) )
 {
     if ( is_real(_font) )
     {
-        show_error("Scribble:\n\nFonts should be initialised using their name as a string.\n(Input to script was \"" + string(_font) + "\", which might be sprite \"" + sprite_get_name(_font) + "\")\n ", false);
+        show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input to script was \"" + string(_font) + "\", which might be sprite \"" + sprite_get_name(_font) + "\")\n ", false);
     }
     else
     {
-        show_error("Scribble:\n\nFonts should be initialised using their name as a string.\n(Input to script was an invalid datatype)\n ", false);
+        show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input to script was an invalid datatype)\n ", false);
     }
     exit;
 }
 
 if (asset_get_type(_font) != asset_sprite)
 {
-    show_error("Scribble:\n\nTo add a normal font, please use scribble_init_add_font()\n ", false);
+    show_error("Scribble:\nTo add a normal font, please use scribble_init_add_font()\n ", false);
     return scribble_init_add_font(_font);
 }
 

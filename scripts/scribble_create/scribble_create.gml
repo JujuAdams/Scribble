@@ -43,13 +43,13 @@
 
 if ( !variable_global_exists("__scribble_init_complete") )
 {
-    show_error("Scribble:\n\nscribble_create() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\nscribble_create() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
 if (!global.__scribble_init_complete)
 {
-    show_error("Scribble:\n\nscribble_create() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\nscribble_create() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
@@ -82,7 +82,7 @@ if (SCRIBBLE_HASH_NEWLINE) _str = string_replace_all(_str, "#", "\n");
 //Check if the default font even exists
 if ( !ds_map_exists(global.__scribble_font_data, _def_font) )
 {
-    show_error("Scribble:\n\n\"" + string(_def_font) + "\" not recognised as a font\n ", false);
+    show_error("Scribble:\n\"" + string(_def_font) + "\" not recognised as a font\n ", false);
     var _def_font = global.__scribble_default_font;
 }
 
@@ -98,7 +98,7 @@ else
     var _array = _font_glyphs_array[ 32 - _font_data[ __E_SCRIBBLE_FONT.GLYPH_MIN ] ];
     if (_array == undefined)
     {
-        show_error("Scribble:\n\nThe space character is missing from font definition for \"" + _def_font + "\"\n ", true);
+        show_error("Scribble:\nThe space character is missing from font definition for \"" + _def_font + "\"\n ", true);
         exit;
     }
 }
@@ -115,7 +115,7 @@ if ( is_string(_def_colour) )
     var _value = global.__scribble_colours[? _def_colour ];
     if (_value == undefined)
     {
-        show_error("Scribble:\n\nThe starting colour (\"" + _def_colour + "\") has not been added as a custom colour. Defaulting to c_white.\n ", false);
+        show_error("Scribble:\nThe starting colour (\"" + _def_colour + "\") has not been added as a custom colour. Defaulting to c_white.\n ", false);
         _value = c_white;
     }
     _def_colour = _value;
@@ -128,7 +128,7 @@ if ( is_array(_data_fields_in) )
     var _length = array_length_1d(_data_fields_in);
     if (_length > SCRIBBLE_MAX_DATA_FIELDS)
     {
-        show_error("Scribble:\n\nLength of custom data field array (" + string(_length) + ") is greater than SCRIBBLE_MAX_DATA_FIELDS (" + string(SCRIBBLE_MAX_DATA_FIELDS) + ")\n ", false);
+        show_error("Scribble:\nLength of custom data field array (" + string(_length) + ") is greater than SCRIBBLE_MAX_DATA_FIELDS (" + string(SCRIBBLE_MAX_DATA_FIELDS) + ")\n ", false);
         _length = SCRIBBLE_MAX_DATA_FIELDS;
     }
     array_copy(_data_fields, 0, _data_fields_in, 0, _length);
@@ -405,7 +405,7 @@ for(var _i = 0; _i < _separator_count; _i++)
                 case "scale":
                     if (_parameter_count <= 1)
                     {
-                        show_error("Scribble:\n\nNot enough parameters for scale tag!", false);
+                        show_error("Scribble:\nNot enough parameters for scale tag!", false);
                     }
                     else
                     {
