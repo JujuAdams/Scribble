@@ -10,15 +10,15 @@
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
-if ( !variable_global_exists( "__scribble_init_complete" ) )
+if ( !variable_global_exists("__scribble_init_complete") )
 {
-    show_error( "scribble_init_add_spritefont() should be called after scribble_init_start() and before scribble_init_end()\n ", true );
+    show_error("scribble_init_add_spritefont() should be called after scribble_init_start() and before scribble_init_end()\n ", true);
     exit;
 }
 
-if ( global.__scribble_init_complete )
+if (global.__scribble_init_complete)
 {
-    show_error( "scribble_init_add_spritefont() should be called before scribble_init_end()\n ", true );
+    show_error("scribble_init_add_spritefont() should be called before scribble_init_end()\n ", true);
     return undefined;
 }
 
@@ -27,32 +27,32 @@ var _space_width =  (argument_count > 1)?                                argumen
 var _mapstring   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING;
 var _separation  = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
 
-if ( ds_map_exists( global.__scribble_font_data, _font ) )
+if ( ds_map_exists(global.__scribble_font_data, _font) )
 {
     show_error( "Font \"" + _font + "\" has already been defined\n ", false );
     return undefined;
 }
 
-if ( !is_string( _font ) )
+if ( !is_string(_font) )
 {
-    if ( is_real( _font ) )
+    if ( is_real(_font) )
     {
-        show_error( "Fonts should be initialised using their name as a string.\n(Input to script was \"" + string( _font ) + "\", which might be sprite \"" + sprite_get_name( _font ) + "\")\n ", false );
+        show_error("Fonts should be initialised using their name as a string.\n(Input to script was \"" + string( _font ) + "\", which might be sprite \"" + sprite_get_name( _font ) + "\")\n ", false);
     }
     else
     {
-        show_error( "Fonts should be initialised using their name as a string.\n(Input to script was an invalid datatype)\n ", false );
+        show_error("Fonts should be initialised using their name as a string.\n(Input to script was an invalid datatype)\n ", false);
     }
     exit;
 }
 
-if ( asset_get_type( _font ) != asset_sprite )
+if (asset_get_type(_font) != asset_sprite)
 {
-    show_error( "To add a normal font, please use scribble_init_add_font()\n ", false );
-    return scribble_init_add_font( _font );
+    show_error("To add a normal font, please use scribble_init_add_font()\n ", false);
+    return scribble_init_add_font(_font);
 }
 
-if ( global.__scribble_default_font == "" ) global.__scribble_default_font = _font;
+if (global.__scribble_default_font == "") global.__scribble_default_font = _font;
 
 var _data;
 _data[ __E_SCRIBBLE_FONT.NAME         ] = _font;
@@ -67,4 +67,4 @@ _data[ __E_SCRIBBLE_FONT.MAPSTRING    ] = _mapstring;
 _data[ __E_SCRIBBLE_FONT.SEPARATION   ] = _separation;
 global.__scribble_font_data[? _font ] = _data;
 
-show_debug_message( "Scribble: Defined \"" + _font + "\" as a spritefont" );
+show_debug_message("Scribble: Defined \"" + _font + "\" as a spritefont");
