@@ -11,33 +11,37 @@
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 ///
 /// Formatting commands:
-/// []                                Reset formatting to defaults
-/// [<name of colour>]                Set colour
-/// [#<hex code>]                     Set colour via a hexcode, using normal RGB values (#RRGGBB)
-/// [/colour]                         Reset colour to the default
-/// [/c]                              As above
-/// [<name of font>]                  Set font
-/// [/font]                           Reset font to the default
-/// [/f]                              As above
-/// [<name of sprite>,<image>]        Insert a static sprite using the specified image index
-/// [fa_left]                         Align horizontally to the left
-/// [fa_right]                        Align horizontally to the right
-/// [fa_center]                       Align centrally
-/// [fa_centre]                       As above
-/// [scale,<factor>]                  Scale text
-/// [/scale]                          Reset scaling to 1
-/// [/s]                              As above
-/// [wave]                            Set text to wave up and down
-/// [/wave]                           Unset wave animation
-/// [shake]                           Set text to shake
-/// [/shake]                          Unset shake animation
-/// [rainbow]                         Set text to cycle through rainbow colours
-/// [/rainbow]                        Unset rainbow animation
-/// [slant]                           Set italic emulation
-/// [/slant]                          Unset italic emulation
-/// [<flag name>]                     Set a custom formatting flag
-/// [/<flag name>]                    Unset a custom formatting flag
-/// [<event name>,<arg0>,<arg1>...]   Execute a script bound to an event name (previously defined using scribble_add_event()) with the specified arguments
+/// []                                  Reset formatting to defaults
+/// [<name of colour>]                  Set colour
+/// [#<hex code>]                       Set colour via a hexcode, using normal RGB values (#RRGGBB)
+/// [/colour]                           Reset colour to the default
+/// [/c]                                As above
+/// [<name of font>]                    Set font
+/// [/font]                             Reset font to the default
+/// [/f]                                As above
+/// [<name of sprite>]                  Insert an animated sprite starting on image 0 and animating using SCRIBBLE_DEFAULT_SPRITE_SPEED
+/// [<name of sprite>,<image>]          Insert a static sprite using the specified image index
+/// [<name of sprite>,<image>,<speed>]  Insert animated sprite using the specified image index and animation speed
+/// [fa_left]                           Align horizontally to the left
+/// [fa_right]                          Align horizontally to the right
+/// [fa_center]                         Align centrally
+/// [fa_centre]                         As above
+/// [scale,<factor>]                    Scale text
+/// [/scale]                            Reset scaling to 1
+/// [/s]                                As above
+/// [slant]                             Set italic emulation
+/// [/slant]                            Unset italic emulation
+/// [<event name>,<arg0>,<arg1>...]     Execute a script bound to an event name (previously defined using scribble_add_event()) with the specified arguments
+/// [<flag name>]                       Set a custom formatting flag
+/// [/<flag name>]                      Unset a custom formatting flag
+/// 
+/// Scribble has the following flags as defaults:
+/// [wave]                              Set text to wave up and down
+/// [/wave]                             Unset wave animation
+/// [shake]                             Set text to shake
+/// [/shake]                            Unset shake animation
+/// [rainbow]                           Set text to cycle through rainbow colours
+/// [/rainbow]                          Unset rainbow animation
 
 
 
@@ -135,13 +139,7 @@ if ( is_array(_data_fields_in) )
 }
 else
 {
-    _data_fields[0] = SCRIBBLE_DEFAULT_WAVE_SIZE;
-    _data_fields[1] = SCRIBBLE_DEFAULT_WAVE_FREQUENCY;
-    _data_fields[2] = SCRIBBLE_DEFAULT_WAVE_SPEED;
-    _data_fields[3] = SCRIBBLE_DEFAULT_SHAKE_SIZE;
-    _data_fields[4] = SCRIBBLE_DEFAULT_SHAKE_SPEED;
-    _data_fields[5] = SCRIBBLE_DEFAULT_RAINBOW_WEIGHT;
-    _data_fields[6] = SCRIBBLE_DEFAULT_RAINBOW_SPEED;
+    _data_fields = SCRIBBLE_DEFAULT_DATA_FIELDS;
 }
 
 #endregion
@@ -558,13 +556,25 @@ for(var _i = 0; _i < _separator_count; _i++)
                             _substr_width  = sprite_get_width(_substr_sprite)*_text_scale;
                             _substr_height = sprite_get_height(_substr_sprite)*_text_scale;
                             _substr_length = 1;
-                                    
-                            if (ds_list_size(_parameters_list) <= 1) _parameters_list[| 1] = "0";
-                            if (ds_list_size(_parameters_list) <= 2) _parameters_list[| 2] = "0";
-                                    
-                            _substr_image       = real(_parameters_list[| 1]);
-                            _substr_image_speed = real(_parameters_list[| 2]);
-                                    
+                            
+                            switch(ds_list_size(_parameters_list))
+                            {
+                                case 1:
+                                    _substr_image = 0;
+                                    _substr_image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
+                                break;
+                                
+                                case 2:
+                                    _substr_image = real(_parameters_list[| 1]);
+                                    _substr_image_speed = 0;
+                                break;
+                                
+                                case 3:
+                                    _substr_image = real(_parameters_list[| 1]);
+                                    _substr_image_speed = real(_parameters_list[| 2]);
+                                break;
+                            }
+                            
                             _text_flags[0] = true;
                             _found = true;
                         }
