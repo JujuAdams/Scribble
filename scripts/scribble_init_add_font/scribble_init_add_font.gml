@@ -49,16 +49,16 @@ if (asset_get_type(_font) == asset_sprite)
 if (global.__scribble_default_font == "") global.__scribble_default_font = _font;
 
 var _data;
-_data[ __E_SCRIBBLE_FONT.NAME         ] = _font;
-_data[ __E_SCRIBBLE_FONT.TYPE         ] = __E_SCRIBBLE_FONT_TYPE.FONT;
-_data[ __E_SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
-_data[ __E_SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
-_data[ __E_SCRIBBLE_FONT.GLYPH_MIN    ] = 32;
-_data[ __E_SCRIBBLE_FONT.GLYPH_MAX    ] = 32;
-_data[ __E_SCRIBBLE_FONT.TEXTURE      ] = undefined;
-_data[ __E_SCRIBBLE_FONT.SPACE_WIDTH  ] = undefined;
-_data[ __E_SCRIBBLE_FONT.MAPSTRING    ] = undefined;
-_data[ __E_SCRIBBLE_FONT.SEPARATION   ] = undefined;
+_data[ __SCRIBBLE_FONT.NAME         ] = _font;
+_data[ __SCRIBBLE_FONT.TYPE         ] = __SCRIBBLE_FONT_TYPE.FONT;
+_data[ __SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
+_data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
+_data[ __SCRIBBLE_FONT.GLYPH_MIN    ] = 32;
+_data[ __SCRIBBLE_FONT.GLYPH_MAX    ] = 32;
+_data[ __SCRIBBLE_FONT.TEXTURE      ] = undefined;
+_data[ __SCRIBBLE_FONT.SPACE_WIDTH  ] = undefined;
+_data[ __SCRIBBLE_FONT.MAPSTRING    ] = undefined;
+_data[ __SCRIBBLE_FONT.SEPARATION   ] = undefined;
 global.__scribble_font_data[? _font ] = _data;
 
 show_debug_message("Scribble: Defined \"" + _font + "\" as a standard font");

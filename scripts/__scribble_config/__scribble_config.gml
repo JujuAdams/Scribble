@@ -39,7 +39,7 @@
 #macro SCRIBBLE_TYPEWRITER_PER_CHARACTER       1                                  //Fade each character individually
 #macro SCRIBBLE_TYPEWRITER_PER_LINE            2                                  //Fade each line of text as a group
 
-//Advanced settings
+//Miscellaneous advanced settings
 #macro SCRIBBLE_COMPATIBILITY_DRAW                 false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
 #macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION          false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
 #macro SCRIBBLE_CALL_STEP_IN_DRAW                  false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
@@ -47,21 +47,9 @@
 #macro SCRIBBLE_FIX_NEWLINES                       true     //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
 #macro SCRIBBLE_SLANT_AMOUNT                       4        //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_Z                                  0        //The z-value for vertexes
-#macro SCRIBBLE_COMMAND_TAG_OPEN                   ord("[") //Character used to open a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_CLOSE                  ord("]") //Character used to close a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_ARGUMENT               ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE         200      //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
-#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES         0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
-#macro SCRIBBLE_MAX_FLAGS                          4        //Change MAX_FLAGS in the shader if you change this value!
-#macro SCRIBBLE_MAX_DATA_FIELDS                    7        //Change MAX_DATA_FIELDS in the shader if you change this value!
-#macro SCRIBBLE_DEFAULT_DATA_FIELDS                [SCRIBBLE_DEFAULT_WAVE_SIZE, SCRIBBLE_DEFAULT_WAVE_FREQUENCY, SCRIBBLE_DEFAULT_WAVE_SPEED, SCRIBBLE_DEFAULT_SHAKE_SIZE, SCRIBBLE_DEFAULT_SHAKE_SPEED, SCRIBBLE_DEFAULT_RAINBOW_WEIGHT, SCRIBBLE_DEFAULT_RAINBOW_SPEED]
-//Use these contants for scribble_set_glyph_property() and scribble_get_glyph_property()
-#macro SCRIBBLE_GLYPH_X_OFFSET                     __E_SCRIBBLE_GLYPH.DX
-#macro SCRIBBLE_GLYPH_Y_OFFSET                     __E_SCRIBBLE_GLYPH.DY
-#macro SCRIBBLE_GLYPH_SEPARATION                   __E_SCRIBBLE_GLYPH.SHF
 
 //scribble_get_box() constants
-enum E_SCRIBBLE_BOX
+enum SCRIBBLE_BOX
 {
     X0, Y0, //Top left corner
     X1, Y1, //Top right corner
@@ -69,13 +57,49 @@ enum E_SCRIBBLE_BOX
     X3, Y3  //Bottom right corner
 }
 
+//scribble_set_glyph_property() and scribble_get_glyph_property() constants
+//You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
+enum SCRIBBLE_GLYPH
+{
+    CHARACTER,  // 0
+    INDEX,      // 1
+    WIDTH,      // 2
+    HEIGHT,     // 3
+    X_OFFSET,   // 4
+    Y_OFFSET,   // 5
+    SEPARATION, // 6
+    U0,         // 7
+    V0,         // 8
+    U1,         // 9
+    V1,         //10
+    __SIZE      //11
+}
+
+//Sequential glyph indexing settings
+//Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
+//However, some font definitons may have disjointed character indexes (e.g. Chinese). Scribble will detect these fonts and use a ds_map instead for glyph data lookup
+#macro SCRIBBLE_SEQUENTIAL_GLYPH_TRY               true
+#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE         200      //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
+#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES         0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
+
+//Command tag customisation
+#macro SCRIBBLE_COMMAND_TAG_OPEN                   ord("[") //Character used to open a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_CLOSE                  ord("]") //Character used to close a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_ARGUMENT               ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
+
+//Shader constants
+//SCRIBBLE_MAX_FLAGS or SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shScribble
+#macro SCRIBBLE_MAX_FLAGS                          4  //The maximum number of flags. "Flags" are boolean values that can be set per character, and are sent into shScribble to trigger animation effects etc.
+#macro SCRIBBLE_MAX_DATA_FIELDS                    7  //The maximum number of data fields. "Data fields" are misc 
+#macro SCRIBBLE_DEFAULT_DATA_FIELDS                [SCRIBBLE_DEFAULT_WAVE_SIZE, SCRIBBLE_DEFAULT_WAVE_FREQUENCY, SCRIBBLE_DEFAULT_WAVE_SPEED, SCRIBBLE_DEFAULT_SHAKE_SIZE, SCRIBBLE_DEFAULT_SHAKE_SPEED, SCRIBBLE_DEFAULT_RAINBOW_WEIGHT, SCRIBBLE_DEFAULT_RAINBOW_SPEED]
+
 #region -- Internal Definitions --
 
 #macro __SCRIBBLE_VERSION  "4.4.1"
 #macro __SCRIBBLE_DATE     "2019/04/02"
 #macro __SCRIBBLE_DEBUG    false
 
-enum __E_SCRIBBLE_FONT
+enum __SCRIBBLE_FONT
 {
     NAME,         // 0
     TYPE,         // 1
@@ -90,38 +114,13 @@ enum __E_SCRIBBLE_FONT
     __SIZE        //10
 }
 
-enum __E_SCRIBBLE_FONT_TYPE
+enum __SCRIBBLE_FONT_TYPE
 {
     FONT,
     SPRITE
 }
 
-enum __E_SCRIBBLE_GLYPH
-{
-    CHAR,  // 0
-    ORD,   // 1
-    W,     // 2
-    H,     // 3
-    DX,    // 4
-    DY,    // 5
-    SHF,   // 6
-    U0,    // 7
-    V0,    // 8
-    U1,    // 9
-    V1,    //10
-    __SIZE //11
-}
-
-enum __E_SCRIBBLE_SURFACE
-{
-    WIDTH,  //0
-    HEIGHT, //1
-    FONTS,  //2
-    LOCKED, //3
-    __SIZE  //4
-}
-
-enum __E_SCRIBBLE_LINE
+enum __SCRIBBLE_LINE
 {
     X,          //0
     Y,          //1
@@ -135,7 +134,7 @@ enum __E_SCRIBBLE_LINE
     __SIZE      //9
 }
 
-enum __E_SCRIBBLE_WORD
+enum __SCRIBBLE_WORD
 {
     X,              // 0
     Y,              // 1
@@ -157,14 +156,14 @@ enum __E_SCRIBBLE_WORD
     __SIZE          //17
 }
 
-enum __E_SCRIBBLE_VERTEX_BUFFER
+enum __SCRIBBLE_VERTEX_BUFFER
 {
     VERTEX_BUFFER,
     TEXTURE,
     __SIZE
 }
 
-enum __E_SCRIBBLE
+enum __SCRIBBLE
 {
     __SECTION0,          // 0
     STRING,              // 1
@@ -220,8 +219,6 @@ enum __E_SCRIBBLE
     
     __SIZE               //46
 }
-
-#macro __SCRIBBLE_TRY_SEQUENTIAL_GLYPH_INDEX true
 
 #macro __SCRIBBLE_ON_DIRECTX ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
 #macro __SCRIBBLE_ON_OPENGL  !__SCRIBBLE_ON_DIRECTX
