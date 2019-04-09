@@ -15,6 +15,139 @@
 ///
 /// Initialisation is only fully complete once scribble_init_end() is called
 
+#region Internal Macro Definitions
+
+#macro __SCRIBBLE_VERSION  "4.5.0"
+#macro __SCRIBBLE_DATE     "2019/04/09"
+#macro __SCRIBBLE_DEBUG    false
+
+enum __SCRIBBLE_FONT
+{
+    NAME,         // 0
+    TYPE,         // 1
+    GLYPHS_MAP,   // 2
+    GLYPHS_ARRAY, // 3
+    GLYPH_MIN,    // 4
+    GLYPH_MAX,    // 5
+    TEXTURE,      // 6
+    SPACE_WIDTH,  // 7
+    MAPSTRING,    // 8
+    SEPARATION,   // 9
+    __SIZE        //10
+}
+
+enum __SCRIBBLE_FONT_TYPE
+{
+    FONT,
+    SPRITE
+}
+
+enum __SCRIBBLE_LINE
+{
+    X,          //0
+    Y,          //1
+    WIDTH,      //2
+    HEIGHT,     //3
+    LENGTH,     //4
+    FIRST_CHAR, //5
+    LAST_CHAR,  //6
+    HALIGN,     //7
+    WORDS,      //8
+    __SIZE      //9
+}
+
+enum __SCRIBBLE_WORD
+{
+    X,              // 0
+    Y,              // 1
+    WIDTH,          // 2
+    HEIGHT,         // 3
+    SCALE,          // 4
+    SLANT,          // 5
+    VALIGN,         // 6
+    STRING,         // 7
+    INPUT_STRING,   // 8
+    SPRITE,         // 9
+    IMAGE,          //10
+    IMAGE_SPEED,    //11
+    LENGTH,         //12
+    FONT,           //13
+    COLOUR,         //14
+    FLAGS,          //15
+    NEXT_SEPARATOR, //16
+    __SIZE          //17
+}
+
+enum __SCRIBBLE_VERTEX_BUFFER
+{
+    VERTEX_BUFFER,
+    TEXTURE,
+    __SIZE
+}
+
+enum __SCRIBBLE
+{
+    __SECTION0,          // 0
+    STRING,              // 1
+    DEFAULT_FONT,        // 2
+    DEFAULT_COLOUR,      // 3
+    DEFAULT_HALIGN,      // 4
+    WIDTH_LIMIT,         // 5
+    LINE_HEIGHT,         // 6
+    
+    __SECTION1,          // 7
+    HALIGN,              // 8
+    VALIGN,              // 9
+    WIDTH,               //10
+    HEIGHT,              //11
+    LEFT,                //12
+    TOP,                 //13
+    RIGHT,               //14
+    BOTTOM,              //15
+    LENGTH,              //16
+    LINES,               //17
+    WORDS,               //18
+    GLOBAL_INDEX,        //19
+    
+    __SECTION2,          //20
+    TW_DIRECTION,        //21
+    TW_SPEED,            //22
+    TW_POSITION,         //23
+    TW_METHOD,           //24
+    TW_SMOOTHNESS,       //25
+    CHAR_FADE_T,         //26
+    LINE_FADE_T,         //27
+    
+    __SECTION3,          //28
+    HAS_CALLED_STEP,     //29
+    NO_STEP_COUNT,       //30
+    DATA_FIELDS,         //31
+    ANIMATION_TIME,      //32
+    
+    __SECTION4,          //33
+    LINE_LIST,           //34
+    VERTEX_BUFFER_LIST,  //35
+    
+    __SECTION5,          //36
+    EV_CHARACTER_LIST,   //37
+    EV_NAME_LIST,        //38
+    EV_DATA_LIST,        //39
+    EV_TRIGGERED_LIST,   //40
+    EV_TRIGGERED_MAP,    //41
+    EV_VALUE_MAP,        //42
+    EV_CHANGED_MAP,      //43
+    EV_PREVIOUS_MAP,     //44
+    EV_DIFFERENT_MAP,    //45
+    
+    __SIZE               //46
+}
+
+#macro __SCRIBBLE_ON_DIRECTX ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
+#macro __SCRIBBLE_ON_OPENGL  !__SCRIBBLE_ON_DIRECTX
+#macro __SCRIBBLE_ON_MOBILE  ((os_type == os_ios) || (os_type == os_android))
+
+#endregion
+
 if ( variable_global_exists("__scribble_init_complete") )
 {
     show_error("Scribble:\nscribble_init_start() should not be called twice!\n ", false);
