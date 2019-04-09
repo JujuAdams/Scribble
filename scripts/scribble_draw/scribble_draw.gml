@@ -33,9 +33,9 @@ if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 
 #region Check if we should've called scribble_step() for this Scribble data structure
 
-if ( (_json[| __E_SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __E_SCRIBBLE.EV_CHARACTER_LIST ]) > 0) )
+if ( (_json[| __SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __SCRIBBLE.EV_CHARACTER_LIST ]) > 0) )
 {
-    if ( !_json[| __E_SCRIBBLE.HAS_CALLED_STEP ] )
+    if ( !_json[| __SCRIBBLE.HAS_CALLED_STEP ] )
     {
         if (SCRIBBLE_CALL_STEP_IN_DRAW)
         {
@@ -43,13 +43,13 @@ if ( (_json[| __E_SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __E_SCR
         }
         else
         {
-            if ( _json[| __E_SCRIBBLE.NO_STEP_COUNT ] >= 1 ) //Give GM one frame of grace before throwing an error
+            if ( _json[| __SCRIBBLE.NO_STEP_COUNT ] >= 1 ) //Give GM one frame of grace before throwing an error
             {
                 show_error("Scribble:\nscribble_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
             }
             else
             {
-                _json[| __E_SCRIBBLE.NO_STEP_COUNT ]++;
+                _json[| __SCRIBBLE.NO_STEP_COUNT ]++;
             }
         }
     }
@@ -61,11 +61,11 @@ var _old_matrix = matrix_get(matrix_world);
 
 if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {
-    var _matrix = matrix_build(_json[| __E_SCRIBBLE.LEFT ] + _x, _json[| __E_SCRIBBLE.TOP ] + _y, 0,   0,0,0,   1,1,1);
+    var _matrix = matrix_build(_json[| __SCRIBBLE.LEFT ] + _x, _json[| __SCRIBBLE.TOP ] + _y, 0,   0,0,0,   1,1,1);
 }
 else
 {
-    var _matrix = matrix_build(_json[| __E_SCRIBBLE.LEFT ], _json[| __E_SCRIBBLE.TOP ], 0,   0,0,0,   1,1,1);
+    var _matrix = matrix_build(_json[| __SCRIBBLE.LEFT ], _json[| __SCRIBBLE.TOP ], 0,   0,0,0,   1,1,1);
         _matrix = matrix_multiply(_matrix, matrix_build(_x,_y,0,   0,0,_angle,   _xscale,_yscale,1));
 }
 
@@ -83,24 +83,24 @@ if (SCRIBBLE_COMPATIBILITY_DRAW)
     var _old_colour = draw_get_colour();
     
     var _char_count = 0;
-    var _total_chars = _json[| __E_SCRIBBLE.CHAR_FADE_T ] * _json[| __E_SCRIBBLE.LENGTH ];
+    var _total_chars = _json[| __SCRIBBLE.CHAR_FADE_T ] * _json[| __SCRIBBLE.LENGTH ];
 
-    var _text_root_list = _json[| __E_SCRIBBLE.LINE_LIST ];
+    var _text_root_list = _json[| __SCRIBBLE.LINE_LIST ];
     var _lines_count = ds_list_size( _text_root_list);
     for(var _line = 0; _line < _lines_count; _line++)
     {
         var _line_array = _text_root_list[| _line ];
-        var _line_x = _line_array[ __E_SCRIBBLE_LINE.X ];
-        var _line_y = _line_array[ __E_SCRIBBLE_LINE.Y ];
+        var _line_x = _line_array[ __SCRIBBLE_LINE.X ];
+        var _line_y = _line_array[ __SCRIBBLE_LINE.Y ];
     
-        var _line_word_array = _line_array[ __E_SCRIBBLE_LINE.WORDS ];
+        var _line_word_array = _line_array[ __SCRIBBLE_LINE.WORDS ];
         var _words_count = array_length_1d(_line_word_array);
         for(var _word = 0; _word < _words_count; _word++)
         {
             var _word_array = _line_word_array[ _word ];
-            var _x          = _word_array[ __E_SCRIBBLE_WORD.X      ] + _line_x;
-            var _y          = _word_array[ __E_SCRIBBLE_WORD.Y      ] + _line_y;
-            var _sprite     = _word_array[ __E_SCRIBBLE_WORD.SPRITE ];
+            var _x          = _word_array[ __SCRIBBLE_WORD.X      ] + _line_x;
+            var _y          = _word_array[ __SCRIBBLE_WORD.Y      ] + _line_y;
+            var _sprite     = _word_array[ __SCRIBBLE_WORD.SPRITE ];
         
             if (_sprite >= 0)
             {
@@ -110,14 +110,14 @@ if (SCRIBBLE_COMPATIBILITY_DRAW)
                 _x -= sprite_get_xoffset(_sprite);
                 _y -= sprite_get_yoffset(_sprite);
                 
-                draw_sprite(_sprite, _word_array[ __E_SCRIBBLE_WORD.IMAGE ], _x, _y);
+                draw_sprite(_sprite, _word_array[ __SCRIBBLE_WORD.IMAGE ], _x, _y);
             }
             else
             {
-                var _string    = _word_array[ __E_SCRIBBLE_WORD.STRING ];
-                var _length    = _word_array[ __E_SCRIBBLE_WORD.LENGTH ];
-                var _font_name = _word_array[ __E_SCRIBBLE_WORD.FONT   ];
-                var _colour    = _word_array[ __E_SCRIBBLE_WORD.COLOUR ];
+                var _string    = _word_array[ __SCRIBBLE_WORD.STRING ];
+                var _length    = _word_array[ __SCRIBBLE_WORD.LENGTH ];
+                var _font_name = _word_array[ __SCRIBBLE_WORD.FONT   ];
+                var _colour    = _word_array[ __SCRIBBLE_WORD.COLOUR ];
             
                 if (_char_count + _length > _total_chars)
                 {
@@ -160,39 +160,39 @@ else
 {
     #region Normal mode
     
-    var _vbuff_list = _json[| __E_SCRIBBLE.VERTEX_BUFFER_LIST ];
+    var _vbuff_list = _json[| __SCRIBBLE.VERTEX_BUFFER_LIST ];
     
     var _count = ds_list_size(_vbuff_list);
     if (_count > 0)
     {
-        var _time            = _json[| __E_SCRIBBLE.ANIMATION_TIME     ];
-        var _data_fields     = _json[| __E_SCRIBBLE.DATA_FIELDS        ];
+        var _time            = _json[| __SCRIBBLE.ANIMATION_TIME     ];
+        var _data_fields     = _json[| __SCRIBBLE.DATA_FIELDS        ];
         var _char_smoothness = 0;
         var _char_t          = 1;
         var _line_smoothness = 0;
         var _line_t          = 1;
         
-        switch(_json[| __E_SCRIBBLE.TW_METHOD ])
+        switch(_json[| __SCRIBBLE.TW_METHOD ])
         {
             case SCRIBBLE_TYPEWRITER_WHOLE:
-                if (_json[| __E_SCRIBBLE.TW_DIRECTION ] > 0)
+                if (_json[| __SCRIBBLE.TW_DIRECTION ] > 0)
                 {
-                    _alpha *= _json[| __E_SCRIBBLE.TW_POSITION ];
+                    _alpha *= _json[| __SCRIBBLE.TW_POSITION ];
                 }
                 else
                 {
-                    _alpha *= 1 - _json[| __E_SCRIBBLE.TW_POSITION ];
+                    _alpha *= 1 - _json[| __SCRIBBLE.TW_POSITION ];
                 }
             break;
             
             case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-                _char_smoothness = _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] / _json[| __E_SCRIBBLE.LENGTH ];
-                _char_t          = _json[| __E_SCRIBBLE.CHAR_FADE_T ] / (1-_char_smoothness);
+                _char_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS ] / _json[| __SCRIBBLE.LENGTH ];
+                _char_t          = _json[| __SCRIBBLE.CHAR_FADE_T ] / (1-_char_smoothness);
             break;
             
             case SCRIBBLE_TYPEWRITER_PER_LINE:
-                _line_smoothness = _json[| __E_SCRIBBLE.TW_SMOOTHNESS ] / _json[| __E_SCRIBBLE.LINES ];
-                _line_t          = _json[| __E_SCRIBBLE.LINE_FADE_T ] / (1-_line_smoothness);
+                _line_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS ] / _json[| __SCRIBBLE.LINES ];
+                _line_t          = _json[| __SCRIBBLE.LINE_FADE_T ] / (1-_line_smoothness);
             break;
         }
         
@@ -217,7 +217,7 @@ else
         repeat(_count)
         {
             var _vbuff_data = _vbuff_list[| _i ];
-            vertex_submit(_vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ], pr_trianglelist, _vbuff_data[| __E_SCRIBBLE_VERTEX_BUFFER.TEXTURE ]);
+            vertex_submit(_vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ], pr_trianglelist, _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE ]);
             _i++;
         }
         

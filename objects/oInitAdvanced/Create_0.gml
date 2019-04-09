@@ -1,5 +1,5 @@
-//  Scribble v4.4.1
-//  2019/04/02
+//  Scribble v4.5.0
+//  2019/04/09
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
@@ -26,8 +26,8 @@ scribble_add_event("sound", play_sound_example);
 scribble_add_flag("rumble", 2);
 
 //Some characters need a bit of fine adjustment in code since it's not always possible to fix this in the font itself
-scribble_set_glyph_property("sSpriteFont", "f", SCRIBBLE_GLYPH_SEPARATION, -1, true);
-scribble_set_glyph_property("sSpriteFont", "q", SCRIBBLE_GLYPH_SEPARATION, -1, true);
+scribble_set_glyph_property("sSpriteFont", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
+scribble_set_glyph_property("sSpriteFont", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 
 instance_destroy();
 room_goto_next();
