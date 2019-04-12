@@ -1,9 +1,9 @@
-//  Scribble v4.5.0
-//  2019/04/09
+//  Scribble v4.5.1
+//  2019/04/12
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
-//  Intended for use with GMS2.2.1 and later
+//  For use with GMS2.2.2 and later
 
 var _string  = "[sound,sndCrank][rainbow]abcdef[] ABCDEF##";
     _string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][sCoin,0][sound,sndSwitch][sCoin,1][sound,sndSwitch][sCoin,2][sound,sndSwitch][sCoin,3][sound,sndSwitch][][rumble][rainbow]!?[]\n";

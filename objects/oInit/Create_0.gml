@@ -1,9 +1,9 @@
-//  Scribble v4.5.0
-//  2019/04/09
+//  Scribble v4.5.1
+//  2019/04/12
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
-//  Intended for use with GMS2.2.1 and later
+//  For use with GMS2.2.2 and later
 
 //Start up Scribble and load some fonts
 scribble_init_start("Fonts"); //Set to the same value as the texture page size for your target platform. GM uses 2048x2048 texture pages by default
