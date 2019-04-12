@@ -1,10 +1,10 @@
-//  Scribble v4.5.0
-//  2019/04/09
+//  Scribble v4.5.1
+//  2019/04/12
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
 //  
-//  Intended for use with GMS2.2.1 and later
+//  For use with GMS2.2.2 and later
 
 //Basic input and draw settings
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
@@ -43,7 +43,6 @@
 #macro SCRIBBLE_COMPATIBILITY_DRAW                 false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
 #macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION          false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
 #macro SCRIBBLE_CALL_STEP_IN_DRAW                  false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
-#macro SCRIBBLE_EMULATE_LEGACY_SPRITEFONT_SPACING  true     //GMS2.2.1 made spritefonts much more spaced out for some reason. Turn this if you want to replicate pre-GMS2.2.1 spritefont behaviour
 #macro SCRIBBLE_FIX_NEWLINES                       true     //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
 #macro SCRIBBLE_SLANT_AMOUNT                       4        //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_Z                                  0        //The z-value for vertexes

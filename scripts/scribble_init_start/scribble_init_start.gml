@@ -17,8 +17,8 @@
 
 #region Internal Macro Definitions
 
-#macro __SCRIBBLE_VERSION  "4.5.0"
-#macro __SCRIBBLE_DATE     "2019/04/09"
+#macro __SCRIBBLE_VERSION  "4.5.1"
+#macro __SCRIBBLE_DATE     "2019/04/12"
 #macro __SCRIBBLE_DEBUG    false
 
 enum __SCRIBBLE_FONT
@@ -193,24 +193,24 @@ global.__scribble_default_font   = "";
 global.__scribble_init_complete  = false;
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
-scribble_add_colour("c_aqua",    c_aqua   );
-scribble_add_colour("c_black",   c_black  );
-scribble_add_colour("c_blue",    c_blue   );
-scribble_add_colour("c_dkgray",  c_dkgray );
-scribble_add_colour("c_fuchsia", c_fuchsia);
-scribble_add_colour("c_green",   c_green  );
-scribble_add_colour("c_lime",    c_lime   );
-scribble_add_colour("c_ltgray",  c_ltgray );
-scribble_add_colour("c_maroon",  c_maroon );
-scribble_add_colour("c_navy",    c_navy   );
-scribble_add_colour("c_olive",   c_olive  );
-scribble_add_colour("c_orange",  c_orange );
-scribble_add_colour("c_purple",  c_purple );
-scribble_add_colour("c_red",     c_red    );
-scribble_add_colour("c_silver",  c_silver );
-scribble_add_colour("c_teal",    c_teal   );
-scribble_add_colour("c_white",   c_white  );
-scribble_add_colour("c_yellow",  c_yellow );
+scribble_add_colour("c_aqua",    c_aqua   , true);
+scribble_add_colour("c_black",   c_black  , true);
+scribble_add_colour("c_blue",    c_blue   , true);
+scribble_add_colour("c_dkgray",  c_dkgray , true);
+scribble_add_colour("c_fuchsia", c_fuchsia, true);
+scribble_add_colour("c_green",   c_green  , true);
+scribble_add_colour("c_lime",    c_lime   , true);
+scribble_add_colour("c_ltgray",  c_ltgray , true);
+scribble_add_colour("c_maroon",  c_maroon , true);
+scribble_add_colour("c_navy",    c_navy   , true);
+scribble_add_colour("c_olive",   c_olive  , true);
+scribble_add_colour("c_orange",  c_orange , true);
+scribble_add_colour("c_purple",  c_purple , true);
+scribble_add_colour("c_red",     c_red    , true);
+scribble_add_colour("c_silver",  c_silver , true);
+scribble_add_colour("c_teal",    c_teal   , true);
+scribble_add_colour("c_white",   c_white  , true);
+scribble_add_colour("c_yellow",  c_yellow , true);
 
 //Add bindings for default flag names
 //Flag slot 0 is reversed for sprites

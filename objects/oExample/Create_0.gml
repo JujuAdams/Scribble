@@ -1,9 +1,9 @@
-//  Scribble v4.5.0
-//  2019/04/09
+//  Scribble v4.5.1
+//  2019/04/12
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
-//  Intended for use with GMS2.2.1 and later
+//  For use with GMS2.2.2 and later
 
 //Define a temporary string. This is the data Scribble will parse
 var _string  = "[rainbow]abcdef[] ABCDEF##";
