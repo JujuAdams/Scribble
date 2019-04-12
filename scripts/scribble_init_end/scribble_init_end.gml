@@ -98,31 +98,30 @@ repeat(_font_count)
             {
                 show_debug_message("Scribble:     WARNING! Character " + string(ord(_char)) + "(" + _char + ") for sprite font \"" + _name + "\" is empty");
                 
-                _array[ SCRIBBLE_GLYPH.WIDTH   ] = 1;
-                _array[ SCRIBBLE_GLYPH.HEIGHT   ] = sprite_get_height(_sprite);
-                _array[ SCRIBBLE_GLYPH.X_OFFSET  ] = 0;
-                _array[ SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
+                _array[ SCRIBBLE_GLYPH.WIDTH      ] = 1;
+                _array[ SCRIBBLE_GLYPH.HEIGHT     ] = sprite_get_height(_sprite);
+                _array[ SCRIBBLE_GLYPH.X_OFFSET   ] = 0;
+                _array[ SCRIBBLE_GLYPH.Y_OFFSET   ] = 0;
                 _array[ SCRIBBLE_GLYPH.SEPARATION ] = 1 + _shift_constant;
-                _array[ SCRIBBLE_GLYPH.U0  ] = 0;
-                _array[ SCRIBBLE_GLYPH.V0  ] = 0;
-                _array[ SCRIBBLE_GLYPH.U1  ] = 0;
-                _array[ SCRIBBLE_GLYPH.V1  ] = 0;
+                _array[ SCRIBBLE_GLYPH.U0         ] = 0;
+                _array[ SCRIBBLE_GLYPH.V0         ] = 0;
+                _array[ SCRIBBLE_GLYPH.U1         ] = 0;
+                _array[ SCRIBBLE_GLYPH.V1         ] = 0;
                 _font_glyphs_map[? _char ] = _array;
             }
             else
             {
-                //GMS2.2.2 does some weeeird things to sprite fonts
                 var _glyph_width  = 1 + _right - _left;
                 var _glyph_height = 1 + _bottom - _top;
-                _array[ SCRIBBLE_GLYPH.WIDTH   ] = _glyph_width;
-                _array[ SCRIBBLE_GLYPH.HEIGHT   ] = _glyph_height;
-                _array[ SCRIBBLE_GLYPH.X_OFFSET  ] = _left - bbox_left;
-                _array[ SCRIBBLE_GLYPH.Y_OFFSET  ] = _top-1;
+                _array[ SCRIBBLE_GLYPH.WIDTH      ] = _glyph_width;
+                _array[ SCRIBBLE_GLYPH.HEIGHT     ] = _glyph_height;
+                _array[ SCRIBBLE_GLYPH.X_OFFSET   ] = _left - bbox_left;
+                _array[ SCRIBBLE_GLYPH.Y_OFFSET   ] = _top-1;
                 _array[ SCRIBBLE_GLYPH.SEPARATION ] = _glyph_width + _shift_constant;
-                _array[ SCRIBBLE_GLYPH.U0  ] = _uvs[0];
-                _array[ SCRIBBLE_GLYPH.V0  ] = _uvs[1];
-                _array[ SCRIBBLE_GLYPH.U1  ] = _uvs[2];
-                _array[ SCRIBBLE_GLYPH.V1  ] = _uvs[3];
+                _array[ SCRIBBLE_GLYPH.U0         ] = _uvs[0];
+                _array[ SCRIBBLE_GLYPH.V0         ] = _uvs[1];
+                _array[ SCRIBBLE_GLYPH.U1         ] = _uvs[2];
+                _array[ SCRIBBLE_GLYPH.V1         ] = _uvs[3];
                 
                 _font_glyphs_map[? _char ] = _array;
             }
@@ -135,24 +134,24 @@ repeat(_font_count)
             
             //Build an array to store this glyph's properties
             var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
-            _array[ SCRIBBLE_GLYPH.CHARACTER ] = " ";
-            _array[ SCRIBBLE_GLYPH.INDEX  ] = 32;
-            _array[ SCRIBBLE_GLYPH.WIDTH    ] = _glyph_width;
-            _array[ SCRIBBLE_GLYPH.HEIGHT    ] = _glyph_height;
+            _array[ SCRIBBLE_GLYPH.CHARACTER  ] = " ";
+            _array[ SCRIBBLE_GLYPH.INDEX      ] = 32;
+            _array[ SCRIBBLE_GLYPH.WIDTH      ] = _glyph_width;
+            _array[ SCRIBBLE_GLYPH.HEIGHT     ] = _glyph_height;
             _array[ SCRIBBLE_GLYPH.X_OFFSET   ] = 0;
             _array[ SCRIBBLE_GLYPH.Y_OFFSET   ] = 0;
-            _array[ SCRIBBLE_GLYPH.SEPARATION  ] = _glyph_width + _shift_constant;
-            _array[ SCRIBBLE_GLYPH.U0   ] = 0;
-            _array[ SCRIBBLE_GLYPH.V0   ] = 0;
-            _array[ SCRIBBLE_GLYPH.U1   ] = 0;
-            _array[ SCRIBBLE_GLYPH.V1   ] = 0;
+            _array[ SCRIBBLE_GLYPH.SEPARATION ] = _glyph_width + _shift_constant;
+            _array[ SCRIBBLE_GLYPH.U0         ] = 0;
+            _array[ SCRIBBLE_GLYPH.V0         ] = 0;
+            _array[ SCRIBBLE_GLYPH.U1         ] = 0;
+            _array[ SCRIBBLE_GLYPH.V1         ] = 0;
             _font_glyphs_map[? " " ] = _array;
         }
         
         if (_space_width != undefined)
         {
             var _array = _font_glyphs_map[? " " ];
-            _array[@ SCRIBBLE_GLYPH.WIDTH   ] = _space_width;
+            _array[@ SCRIBBLE_GLYPH.WIDTH      ] = _space_width;
             _array[@ SCRIBBLE_GLYPH.SEPARATION ] = _space_width;
         }
         
@@ -332,17 +331,17 @@ repeat(_font_count)
                 var _v1    = _v0 + _h*_texture_th;
                 
                 var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
-                _array[ SCRIBBLE_GLYPH.CHARACTER ] = _char;
-                _array[ SCRIBBLE_GLYPH.INDEX  ] = _index;
-                _array[ SCRIBBLE_GLYPH.WIDTH    ] = _w;
-                _array[ SCRIBBLE_GLYPH.HEIGHT    ] = _h;
+                _array[ SCRIBBLE_GLYPH.CHARACTER  ] = _char;
+                _array[ SCRIBBLE_GLYPH.INDEX      ] = _index;
+                _array[ SCRIBBLE_GLYPH.WIDTH      ] = _w;
+                _array[ SCRIBBLE_GLYPH.HEIGHT     ] = _h;
                 _array[ SCRIBBLE_GLYPH.X_OFFSET   ] = _yy_glyph_map[? "offset" ];
                 _array[ SCRIBBLE_GLYPH.Y_OFFSET   ] = 0;
-                _array[ SCRIBBLE_GLYPH.SEPARATION  ] = _yy_glyph_map[? "shift" ];
-                _array[ SCRIBBLE_GLYPH.U0   ] = _u0;
-                _array[ SCRIBBLE_GLYPH.V0   ] = _v0;
-                _array[ SCRIBBLE_GLYPH.U1   ] = _u1;
-                _array[ SCRIBBLE_GLYPH.V1   ] = _v1;
+                _array[ SCRIBBLE_GLYPH.SEPARATION ] = _yy_glyph_map[? "shift" ];
+                _array[ SCRIBBLE_GLYPH.U0         ] = _u0;
+                _array[ SCRIBBLE_GLYPH.V0         ] = _v0;
+                _array[ SCRIBBLE_GLYPH.U1         ] = _u1;
+                _array[ SCRIBBLE_GLYPH.V1         ] = _v1;
                 
                 _font_glyphs_map[? _char ] = _array;
             }
