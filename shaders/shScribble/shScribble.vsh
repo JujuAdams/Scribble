@@ -103,27 +103,17 @@ void applyColourBlend(vec4 colourInput, inout vec4 colourTarget)
     colourTarget *= colourInput;
 }
 
-void applyPerCharacterFade(float time, float smoothness, inout vec4 colour)
+void applyTypewriterFade(float time, float smoothness, float param, inout vec4 colour)
 {
-    if (time < (1.0 + smoothness))
+    if (time < 1.0)
     {
-         colour.a *= clamp((time - in_Normal.x) / smoothness, 0.0, 1.0);
+         float adjustedTime = time*(1.0 + smoothness);
+         colour.a *= clamp((adjustedTime - param)/smoothness, 0.0, 1.0);
     }
     else
     {
-         colour.a *= 1.0 - clamp((time - (1.0 + smoothness) - in_Normal.x) / smoothness, 0.0, 1.0);
-    }
-}
-
-void applyPerLineFade(float time, float smoothness, inout vec4 colour)
-{
-    if (time < (1.0 + smoothness))
-    {
-         colour.a *= clamp((time - in_Normal.y) / smoothness, 0.0, 1.0);
-    }
-    else
-    {
-         colour.a *= 1.0 - clamp((time - (1.0 + smoothness) - in_Normal.y) / smoothness, 0.0, 1.0);
+         float adjustedTime = (time - 1.0)*(1.0 + smoothness);
+         colour.a *= 1.0 - clamp((adjustedTime - param)/smoothness, 0.0, 1.0);
     }
 }
 
@@ -144,8 +134,8 @@ void main()
     applySprite(flagArray[0], v_vColour);
     applyRainbow(flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
     applyColourBlend(u_vColourBlend, v_vColour);
-    applyPerCharacterFade(u_fCharFadeT, u_fCharFadeSmoothness, v_vColour);
-    applyPerLineFade(u_fLineFadeT, u_fLineFadeSmoothness, v_vColour);
+    applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, in_Normal.x, v_vColour);
+    applyTypewriterFade(u_fLineFadeT, u_fLineFadeSmoothness, in_Normal.y, v_vColour);
     
     //Texture
     v_vTexcoord = in_TextureCoord;

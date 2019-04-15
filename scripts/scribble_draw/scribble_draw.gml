@@ -187,12 +187,12 @@ else
             
             case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
                 _char_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS ] / _json[| __SCRIBBLE.LENGTH ];
-                _char_t          = _json[| __SCRIBBLE.CHAR_FADE_T ] / (1-_char_smoothness);
+                _char_t          = _json[| __SCRIBBLE.CHAR_FADE_T ];
             break;
             
             case SCRIBBLE_TYPEWRITER_PER_LINE:
                 _line_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS ] / _json[| __SCRIBBLE.LINES ];
-                _line_t          = _json[| __SCRIBBLE.LINE_FADE_T ] / (1-_line_smoothness);
+                _line_t          = _json[| __SCRIBBLE.LINE_FADE_T ];
             break;
         }
         
