@@ -1,4 +1,4 @@
-//  Scribble v4.5.1
+//  Scribble v4.6.0
 //  2019/04/12
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
@@ -6,12 +6,16 @@
 //  
 //  For use with GMS2.2.2 and later
 
-//Basic input and draw settings
+#region Global behaviours
+
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
 #macro SCRIBBLE_HASH_NEWLINE                  true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COLOURISE_SPRITES             true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
 
-//Default draw settings
+#endregion
+
+#region Default draw parameters
+
 #macro SCRIBBLE_DEFAULT_XSCALE             1                   //The default x-scale of the textbox
 #macro SCRIBBLE_DEFAULT_YSCALE             1                   //The default y-scale of the textbox
 #macro SCRIBBLE_DEFAULT_BOX_HALIGN         fa_left             //The default alignment of the textbox. fa_left places the left-hand side of the box at the draw coordinate when using scribble_draw()
@@ -21,7 +25,10 @@
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED       0.1                 //The default animation speed for sprites inserted into text
 #macro SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA  false               //Whether or not to premultiply alpha by default
 
-//Default animation settings
+#endregion
+
+#region Default text animation
+
 #macro SCRIBBLE_DEFAULT_WAVE_SIZE          4     //The default magnitude of the text wave animation. A value of "4" will cause the wave to extend 4 pixels above and 4 pixels below the line of text
 #macro SCRIBBLE_DEFAULT_WAVE_FREQUENCY    50     //The default frequency of the text wave animation. Higher values cause the wave peaks to be closer together
 #macro SCRIBBLE_DEFAULT_WAVE_SPEED         0.2   //The default speed of the text wave animation
@@ -30,7 +37,10 @@
 #macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT     0.5   //The default blend weight of the rainbow effect. A value of "0.5" will equally blend the text's original colour with the rainbow colour
 #macro SCRIBBLE_DEFAULT_RAINBOW_SPEED      0.01  //The default speed of the rainbow effect
 
-//Typewriter effect settings
+#endregion
+
+#region Typewriter effect
+
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3                                //The default speed of the typewriter effect, in characters/lines per frame
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3                                  //The default smoothhness of the typewriter effect. A value of "0" disables smooth fading
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD      SCRIBBLE_TYPEWRITER_PER_CHARACTER  //The default typewriter effect method
@@ -39,7 +49,10 @@
 #macro SCRIBBLE_TYPEWRITER_PER_CHARACTER       1                                  //Fade each character individually
 #macro SCRIBBLE_TYPEWRITER_PER_LINE            2                                  //Fade each line of text as a group
 
-//Miscellaneous advanced settings
+#endregion
+
+#region Miscellaneous advanced settings
+
 #macro SCRIBBLE_COMPATIBILITY_DRAW                 false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
 #macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION          false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
 #macro SCRIBBLE_CALL_STEP_IN_DRAW                  false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
@@ -47,7 +60,10 @@
 #macro SCRIBBLE_SLANT_AMOUNT                       4        //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_Z                                  0        //The z-value for vertexes
 
-//scribble_get_box() constants
+#endregion
+
+#region scribble_get_box() constants
+
 enum SCRIBBLE_BOX
 {
     X0, Y0, //Top left corner
@@ -56,7 +72,10 @@ enum SCRIBBLE_BOX
     X3, Y3  //Bottom right corner
 }
 
-//scribble_set_glyph_property() and scribble_get_glyph_property() constants
+#endregion
+
+#region scribble_set_glyph_property() and scribble_get_glyph_property() constants
+
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
 enum SCRIBBLE_GLYPH
 {
@@ -74,20 +93,31 @@ enum SCRIBBLE_GLYPH
     __SIZE      //11
 }
 
-//Sequential glyph indexing settings
+#endregion
+
+#region Sequential glyph indexing
+
 //Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
 //However, some font definitons may have disjointed character indexes (e.g. Chinese). Scribble will detect these fonts and use a ds_map instead for glyph data lookup
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_TRY               true
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE         200      //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES         0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
-//Command tag customisation
+#endregion
+
+#region Command tag customisation
+
 #macro SCRIBBLE_COMMAND_TAG_OPEN                   ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE                  ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT               ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
-//Shader constants
+#endregion
+
+#region Shader constants
+
 //SCRIBBLE_MAX_FLAGS or SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shScribble
 #macro SCRIBBLE_MAX_FLAGS                          4  //The maximum number of flags. "Flags" are boolean values that can be set per character, and are sent into shScribble to trigger animation effects etc.
 #macro SCRIBBLE_MAX_DATA_FIELDS                    7  //The maximum number of data fields. "Data fields" are misc 
 #macro SCRIBBLE_DEFAULT_DATA_FIELDS                [SCRIBBLE_DEFAULT_WAVE_SIZE, SCRIBBLE_DEFAULT_WAVE_FREQUENCY, SCRIBBLE_DEFAULT_WAVE_SPEED, SCRIBBLE_DEFAULT_SHAKE_SIZE, SCRIBBLE_DEFAULT_SHAKE_SPEED, SCRIBBLE_DEFAULT_RAINBOW_WEIGHT, SCRIBBLE_DEFAULT_RAINBOW_SPEED]
+
+#endregion

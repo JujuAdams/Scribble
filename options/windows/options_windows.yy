@@ -31,7 +31,7 @@
     "option_windows_version": {
         "build": 0,
         "major": 4,
-        "minor": 5,
+        "minor": 6,
         "revision": 0
     },
     "option_windows_vsync": false

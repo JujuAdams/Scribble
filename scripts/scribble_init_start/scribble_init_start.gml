@@ -2,6 +2,8 @@
 /// This script should be called before scribble_init_add_font() / scribble_init_add_spritefont() and scribble_init_end()
 ///
 /// @param fontDirectory     Directory to look in (relative to game_save_id) for font .yy files
+/// @param defaultFont       The name of the default Scribble font, as a string
+/// @param autoScan          Set to <true> to automatically find standard font .yy files in the font directory. This only works for standard fonts, and on desktop platforms
 ///
 /// This script achieves the following things:
 /// 1) Define the default font directory to pull font .yy files from
@@ -17,23 +19,24 @@
 
 #region Internal Macro Definitions
 
-#macro __SCRIBBLE_VERSION  "4.5.1"
+#macro __SCRIBBLE_VERSION  "4.6.0"
 #macro __SCRIBBLE_DATE     "2019/04/12"
 #macro __SCRIBBLE_DEBUG    false
 
 enum __SCRIBBLE_FONT
 {
     NAME,         // 0
-    TYPE,         // 1
-    GLYPHS_MAP,   // 2
-    GLYPHS_ARRAY, // 3
-    GLYPH_MIN,    // 4
-    GLYPH_MAX,    // 5
-    TEXTURE,      // 6
-    SPACE_WIDTH,  // 7
-    MAPSTRING,    // 8
-    SEPARATION,   // 9
-    __SIZE        //10
+    PATH,         // 1
+    TYPE,         // 2
+    GLYPHS_MAP,   // 3
+    GLYPHS_ARRAY, // 4
+    GLYPH_MIN,    // 5
+    GLYPH_MAX,    // 6
+    TEXTURE,      // 7
+    SPACE_WIDTH,  // 8
+    MAPSTRING,    // 9
+    SEPARATION,   //10
+    __SIZE        //11
 }
 
 enum __SCRIBBLE_FONT_TYPE
@@ -157,6 +160,8 @@ if ( variable_global_exists("__scribble_init_complete") )
 show_debug_message("\nScribble: Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
 
 var _font_directory = argument0;
+var _default_font   = argument1;
+var _auto_scan      = argument2;
 
 if (__SCRIBBLE_ON_MOBILE)
 {
@@ -180,6 +185,26 @@ if ( !directory_exists(_font_directory) )
     show_debug_message("Scribble: WARNING! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
 }
 
+//Check if the default font parameter is the correct datatype
+if (!is_string(_default_font))
+{
+    if (is_real(_default_font) && (asset_get_type(font_get_name(_default_font)) == asset_font))
+    {
+        show_error("Scribble:\nThe default font should be defined using its name as a string.\n(Input was \"" + string(_default_font) + "\", which might be font \"" + font_get_name(_default_font) + "\")\n ", false);
+    }
+    else
+    {
+        show_error("Scribble:\nThe default font should be defined using its name as a string.\n(Input was an invalid datatype)\n ", false);
+    }
+    
+    _default_font = "";
+}
+else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_default_font) != asset_sprite) && (_default_font != "")) //Check if the default font even exists!
+{
+    show_error("Scribble:\nTThe default font \"" + _default_font + "\" could not be found in the project.\n ", true);
+    _default_font = "";
+}
+
 //Declare global variables
 global.__scribble_font_directory = _font_directory;
 global.__scribble_font_data      = ds_map_create();  //Stores a data array for each font defined inside Scribble
@@ -189,7 +214,7 @@ global.__scribble_events         = ds_map_create();  //Stores event bindings; ke
 global.__scribble_flags          = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_alive          = ds_map_create();  //ds_map of all alive Scribble data structures
 global.__scribble_global_count   = 0;
-global.__scribble_default_font   = "";
+global.__scribble_default_font   = _default_font;
 global.__scribble_init_complete  = false;
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
@@ -264,3 +289,62 @@ global.__scribble_hex_array[@ ord("c") - _min ] = 12; //ascii  99 = array 51
 global.__scribble_hex_array[@ ord("d") - _min ] = 13; //ascii 100 = array 52
 global.__scribble_hex_array[@ ord("e") - _min ] = 14; //ascii 101 = array 53
 global.__scribble_hex_array[@ ord("f") - _min ] = 15; //ascii 102 = array 54
+
+if (_auto_scan)
+{
+    var _directory_list = ds_list_create();
+    ds_list_add(_directory_list, _font_directory);
+    while(!ds_list_empty(_directory_list))
+    {
+        var _directory = _directory_list[| 0];
+        ds_list_delete(_directory_list, 0);
+        
+        var _file = file_find_first(_directory + "*.*", fa_readonly | fa_hidden | fa_directory);
+        while(_file != "")
+        {
+            if (directory_exists(_directory + _file))
+            {
+                ds_list_add(_directory_list, _font_directory + _file + "\\");
+            }
+            
+            _file = file_find_next();
+        }
+        file_find_close();
+        
+        var _file = file_find_first(_directory + "*.*", 0);
+        while(_file != "")
+        {
+            if (filename_ext(_file) == ".yy")
+            {
+                var _font = filename_change_ext(_file, "");
+
+                if (asset_get_type(_font) != asset_font)
+                {
+                    show_debug_message("Scribble: WARNING! Autoscan found \"" + _file + "\", but \"" + _font + "\" was not found in the project");
+                }
+                else
+                {
+                    var _data = array_create(__SCRIBBLE_FONT.__SIZE);
+                    _data[ __SCRIBBLE_FONT.NAME         ] = _font;
+                    _data[ __SCRIBBLE_FONT.PATH         ] = _directory + _file;
+                    _data[ __SCRIBBLE_FONT.TYPE         ] = __SCRIBBLE_FONT_TYPE.FONT;
+                    _data[ __SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
+                    _data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
+                    _data[ __SCRIBBLE_FONT.GLYPH_MIN    ] = 32;
+                    _data[ __SCRIBBLE_FONT.GLYPH_MAX    ] = 32;
+                    _data[ __SCRIBBLE_FONT.TEXTURE      ] = undefined;
+                    _data[ __SCRIBBLE_FONT.SPACE_WIDTH  ] = undefined;
+                    _data[ __SCRIBBLE_FONT.MAPSTRING    ] = undefined;
+                    _data[ __SCRIBBLE_FONT.SEPARATION   ] = undefined;
+                    global.__scribble_font_data[? _font ] = _data;
+                    
+                    show_debug_message("Scribble: Autoscan added \"" + _font + "\" as a standard font");
+                }
+            }
+            
+            _file = file_find_next();
+        }
+        file_find_close();
+    }
+    ds_list_destroy(_directory_list);
+}

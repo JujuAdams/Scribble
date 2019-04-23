@@ -8,7 +8,7 @@
     "exportAction": 0,
     "exportDir": "",
     "fileName": "fChineseTest.yy",
-    "filePath": "datafiles\\Fonts",
+    "filePath": "datafiles\\Fonts\\CJK",
     "freeData": false,
     "origName": "",
     "overwrite": false,

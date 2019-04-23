@@ -6,7 +6,7 @@
     "children": [
         "79bdef1e-caad-4a90-86ce-7360d93b86a8",
         "84f6b7ba-9a5a-4882-8ab1-0f577bbb590f",
-        "c2d60cf9-ffb4-42bd-a0c7-c7cf77ca5452"
+        "690b2cf6-b7e8-4af4-8ec5-887589a01974"
     ],
     "filterType": "GMIncludedFile",
     "folderName": "Fonts",

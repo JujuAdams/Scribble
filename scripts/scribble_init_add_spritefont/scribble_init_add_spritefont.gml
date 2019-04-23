@@ -46,16 +46,21 @@ if ( !is_string(_font) )
     exit;
 }
 
-if (asset_get_type(_font) != asset_sprite)
+if (asset_get_type(_font) == asset_font)
 {
     show_error("Scribble:\nTo add a normal font, please use scribble_init_add_font()\n ", false);
     return scribble_init_add_font(_font);
 }
 
-if (global.__scribble_default_font == "") global.__scribble_default_font = _font;
+if (asset_get_type(_font) != asset_sprite)
+{
+    show_error("Scribble:\nSprite \"" + _font + "\" not found in the project\n ", false);
+    return undefined;
+}
 
 var _data;
 _data[ __SCRIBBLE_FONT.NAME         ] = _font;
+_data[ __SCRIBBLE_FONT.PATH         ] = undefined;
 _data[ __SCRIBBLE_FONT.TYPE         ] = __SCRIBBLE_FONT_TYPE.SPRITE;
 _data[ __SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
 _data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
@@ -67,4 +72,4 @@ _data[ __SCRIBBLE_FONT.MAPSTRING    ] = _mapstring;
 _data[ __SCRIBBLE_FONT.SEPARATION   ] = _separation;
 global.__scribble_font_data[? _font ] = _data;
 
-show_debug_message("Scribble: Defined \"" + _font + "\" as a spritefont");
+show_debug_message("Scribble: Added \"" + _font + "\" as a spritefont");
