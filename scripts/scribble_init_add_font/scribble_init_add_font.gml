@@ -6,6 +6,8 @@
 /// (Including .yy files isn't necessary for spritefonts)
 ///
 /// @param fontName   String name of the font to add
+/// @param [path]     File path for the font's .yy file, including the .yy extension, relative to the font directory defined by scribble_init_start()
+///                   If not specified, Scribble will look in the root of the font directory
 
 if ( !variable_global_exists("__scribble_init_complete") )
 {
@@ -19,7 +21,8 @@ if (global.__scribble_init_complete)
     return undefined;
 }
 
-var _font = argument0;
+var _font = argument[0];
+var _path = global.__scribble_font_directory + ((argument_count > 1)? argument[1] : (_font + ".yy"));
 
 if ( ds_map_exists(global.__scribble_font_data, _font) )
 {
@@ -46,10 +49,15 @@ if (asset_get_type(_font) == asset_sprite)
     return scribble_init_add_spritefont(_font);
 }
 
-if (global.__scribble_default_font == "") global.__scribble_default_font = _font;
+if (asset_get_type(_font) != asset_font)
+{
+    show_error("Scribble:\nFont \"" + _font + "\" not found in the project\n ", false);
+    return undefined;
+}
 
 var _data;
 _data[ __SCRIBBLE_FONT.NAME         ] = _font;
+_data[ __SCRIBBLE_FONT.PATH         ] = _path;
 _data[ __SCRIBBLE_FONT.TYPE         ] = __SCRIBBLE_FONT_TYPE.FONT;
 _data[ __SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
 _data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
@@ -61,4 +69,4 @@ _data[ __SCRIBBLE_FONT.MAPSTRING    ] = undefined;
 _data[ __SCRIBBLE_FONT.SEPARATION   ] = undefined;
 global.__scribble_font_data[? _font ] = _data;
 
-show_debug_message("Scribble: Defined \"" + _font + "\" as a standard font");
+show_debug_message("Scribble: Added \"" + _font + "\" as a standard font");

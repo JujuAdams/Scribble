@@ -28,6 +28,21 @@ y = 0;
 
 
 
+//Make sure the default font is valid
+if (global.__scribble_default_font == "")
+{
+    global.__scribble_default_font = ds_map_find_first(global.__scribble_font_data);
+    show_debug_message("Scribble: No default font provided, using \"" + string(global.__scribble_default_font) + "\" as the default font");
+}
+else if (!ds_map_exists(global.__scribble_font_data, global.__scribble_default_font))
+{
+    var _new_default_font = ds_map_find_first(global.__scribble_font_data);
+    show_error("Scribble:\nDefault font \"" + string(global.__scribble_default_font) + "\" was not added during initialisation.\nScribble will use \"" + string(_new_default_font) + "\" as the new default font.\n ", false);
+    global.__scribble_default_font = _new_default_font;
+}
+
+
+
 var _font_count = ds_map_size(global.__scribble_font_data);
 var _name = ds_map_find_first(global.__scribble_font_data);
 repeat(_font_count)
@@ -168,15 +183,21 @@ repeat(_font_count)
         var _asset = asset_get_index(_name);
         if (_asset < 0)
         {
-            show_error("Scribble:\nFont \"" + _name + "\" was not found in the project!\n ", true);
-            exit;
+            show_error("Scribble:\nFont \"" + _path + "\" was not found in the project.\nScribble font \"" + string(_name) + "\" will not be available.\n ", false);
+            var _new_name = ds_map_find_next(global.__scribble_font_data, _name);
+            ds_map_delete(global.__scribble_font_data, _name);
+            _name = _new_name;
+            continue;
         }
         
-        var _json_file  = global.__scribble_font_directory + _name + ".yy";
-        if ( !file_exists(_json_file) )
+        var _path = _font_data[ __SCRIBBLE_FONT.PATH ];
+        if ( !file_exists(_path) )
         {
-            show_error("Scribble:\nCould not find \"" + _json_file + "\" in Included Files.\nPlease add this file to your project.\n ", true);
-            exit;
+            show_error("Scribble:\nCould not find \"" + _path + "\" in Included Files. Please add this file to your project.\nScribble font \"" + string(_name) + "\" will not be available.\n ", false);
+            var _new_name = ds_map_find_next(global.__scribble_font_data, _name);
+            ds_map_delete(global.__scribble_font_data, _name);
+            _name = _new_name;
+            continue;
         }
         
         var _texture     = font_get_texture(_asset);
@@ -196,7 +217,7 @@ repeat(_font_count)
         
         
         
-        var _json_buffer = buffer_load(global.__scribble_font_directory + _name + ".yy");
+        var _json_buffer = buffer_load(_path);
         var _json_string = buffer_read(_json_buffer, buffer_text);
         buffer_delete(_json_buffer);
         var _json = json_decode(_json_string);
