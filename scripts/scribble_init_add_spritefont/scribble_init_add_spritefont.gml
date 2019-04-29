@@ -10,16 +10,10 @@
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
-if ( !variable_global_exists("__scribble_init_complete") )
+if ( !variable_global_exists("__scribble_global_count") )
 {
-    show_error("Scribble:\nscribble_init_add_spritefont() should be called after scribble_init_start() and before scribble_init_end()\n ", true);
+    show_error("Scribble:\nscribble_init_add_spritefont() should be called after scribble_start() and before scribble_end()\n ", true);
     exit;
-}
-
-if (global.__scribble_init_complete)
-{
-    show_error("Scribble:\nscribble_init_add_spritefont() should be called before scribble_init_end()\n ", true);
-    return undefined;
 }
 
 var _font        =                                                       argument[0];
