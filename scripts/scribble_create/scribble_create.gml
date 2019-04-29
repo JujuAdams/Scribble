@@ -892,7 +892,7 @@ for(var _page = 0; _page < _pages_size; _page++)
     }
     
     var _line_array = _lines[ _lines_count-1 ];
-    _textbox_height = max(_line_array[ __SCRIBBLE_LINE.Y ] + _line_array[ __SCRIBBLE_LINE.HEIGHT ]);
+    _textbox_height = max(_textbox_height, _line_array[ __SCRIBBLE_LINE.Y ] + _line_array[ __SCRIBBLE_LINE.HEIGHT ]);
 }
 
 _json[| __SCRIBBLE.WIDTH  ] = _textbox_width;
