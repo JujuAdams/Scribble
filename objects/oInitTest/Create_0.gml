@@ -6,18 +6,18 @@
 //  For use with GMS2.2.2 and later
 
 scribble_init("Fonts", "fTestA", false);
-scribble_init_add_font("fTestA");
-scribble_init_add_font("fTestB");
-scribble_init_add_font("fChineseTest", "CJK\\fChineseTest.yy");
-scribble_init_add_spritefont("sSpriteFont", 11);
+scribble_define_font("fTestA");
+scribble_define_font("fTestB");
+scribble_define_font("fChineseTest", "CJK\\fChineseTest.yy");
+scribble_define_spritefont("sSpriteFont", 11);
 
-scribble_add_colour("c_coquelicot", $ff3800);
-scribble_add_colour("c_smaragdine", $50c875);
-scribble_add_colour("c_xanadu"    , $738678);
-scribble_add_colour("c_amaranth"  , $e52b50);
+scribble_define_colour("c_coquelicot", $ff3800);
+scribble_define_colour("c_smaragdine", $50c875);
+scribble_define_colour("c_xanadu"    , $738678);
+scribble_define_colour("c_amaranth"  , $e52b50);
 
-scribble_add_event("sound", play_sound_example);
-scribble_add_flag("rumble", 2);
+scribble_define_event("sound", play_sound_example);
+scribble_define_flag("rumble", 2);
 
 scribble_set_glyph_property("sSpriteFont", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 scribble_set_glyph_property("sSpriteFont", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);

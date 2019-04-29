@@ -46,7 +46,7 @@ if ( !is_string(_font) )
 if (asset_get_type(_font) == asset_sprite)
 {
     show_error("Scribble:\nTo add a spritefont, please use scribble_init_add_spritefont()\n ", false);
-    return scribble_init_add_spritefont(_font);
+    return scribble_define_spritefont(_font);
 }
 
 if (asset_get_type(_font) != asset_font)

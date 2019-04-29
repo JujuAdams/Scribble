@@ -43,7 +43,7 @@ if ( !is_string(_font) )
 if (asset_get_type(_font) == asset_font)
 {
     show_error("Scribble:\nTo add a normal font, please use scribble_init_add_font()\n ", false);
-    return scribble_init_add_font(_font);
+    return scribble_define_font(_font);
 }
 
 if (asset_get_type(_font) != asset_sprite)

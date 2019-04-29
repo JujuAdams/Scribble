@@ -8,7 +8,7 @@
         "b9c3b946-515e-4f7f-8f0e-687f9b63de18"
     ],
     "filterType": "GMObject",
-    "folderName": "Beginner",
+    "folderName": "Basic Text Formatting",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

@@ -8,7 +8,7 @@
         "94a2d6ab-abc6-4785-9bd3-09b66392e1e8"
     ],
     "filterType": "GMRoom",
-    "folderName": "Test",
+    "folderName": "(Dev Testing)",
     "isDefaultView": false,
     "localisedFolderName": ""
 }
