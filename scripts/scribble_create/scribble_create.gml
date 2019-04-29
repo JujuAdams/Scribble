@@ -245,8 +245,6 @@ _json[| __SCRIBBLE.CHAR_FADE_T        ] = 1;
 _json[| __SCRIBBLE.LINE_FADE_T        ] = 1;
 
 _json[| __SCRIBBLE.__SECTION3         ] = "-- Animation --";
-_json[| __SCRIBBLE.HAS_CALLED_STEP    ] = false;
-_json[| __SCRIBBLE.NO_STEP_COUNT      ] = 0;
 _json[| __SCRIBBLE.DATA_FIELDS        ] = _data_fields;
 _json[| __SCRIBBLE.ANIMATION_TIME     ] = 0;
 
