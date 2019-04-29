@@ -91,7 +91,6 @@ enum __SCRIBBLE_WORD
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {
-    BUFFER,
     VERTEX_BUFFER,
     TEXTURE,
     __SIZE
@@ -262,7 +261,6 @@ vertex_format_add_normal(); //X = character index, Y = line index, Z = flags
 vertex_format_add_colour();
 vertex_format_add_texcoord();
 global.__scribble_vertex_format = vertex_format_end();
-#macro __SCRIBBLE_VERTEX_BYTE_SIZE 36
 
 //Cache uniform indexes
 global.__scribble_uniform_time            = shader_get_uniform(shScribble, "u_fTime"              );
