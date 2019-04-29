@@ -74,7 +74,7 @@ global.__scribble_font_data[? _font ] = _data;
 
 
 
-show_debug_message("Scribble:   Processing font \"" + _font + "\"");
+show_debug_message("Scribble: Processing font \"" + _font + "\"");
 
 var _old_x            = x;
 var _old_y            = y;
@@ -89,7 +89,7 @@ if (sprite_get_bbox_left(_sprite)   == 0)
 || (sprite_get_bbox_right(_sprite)  == sprite_get_width(_sprite)-1)
 || (sprite_get_bbox_bottom(_sprite) == sprite_get_height(_sprite)-1)
 {
-    show_debug_message("Scribble:     WARNING! \"" + _font + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed");
+    show_debug_message("Scribble:   WARNING! \"" + _font + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed");
 }
 
 var _font_glyphs_map = ds_map_create();
@@ -104,12 +104,12 @@ y = -sprite_get_yoffset(_sprite);
 
 //Strip out a map of of glyphs
 var _length = string_length(_mapstring);
-show_debug_message("Scribble:     \"" + _font + "\" has " + string(_length) + " characters");
+show_debug_message("Scribble:   \"" + _font + "\" has " + string(_length) + " characters");
 for(var _i = 0; _i < _length; _i++)
 {
     var _char = string_char_at(_mapstring, _i+1);
     if ( ds_map_exists(_font_glyphs_map, _char) ) continue;
-    if (_char == " ") show_debug_message("Scribble:     WARNING! It is strongly recommended that you do *not* use a space character in your sprite font in GMS2.2.1 and above due to IDE bugs. Use scribble_font_char_set_*() to define a space character");
+    if (_char == " ") show_debug_message("Scribble:   WARNING! It is strongly recommended that you do *not* use a space character in your sprite font in GMS2.2.1 and above due to IDE bugs. Use scribble_font_char_set_*() to define a space character");
     
     image_index = _i;
     var _uvs = sprite_get_uvs(_sprite, image_index);
@@ -132,7 +132,7 @@ for(var _i = 0; _i < _length; _i++)
     
     if (_left == _right) && (_top == _bottom)
     {
-        show_debug_message("Scribble:     WARNING! Character " + string(ord(_char)) + "(" + _char + ") for sprite font \"" + _font + "\" is empty");
+        show_debug_message("Scribble:   WARNING! Character " + string(ord(_char)) + "(" + _char + ") for sprite font \"" + _font + "\" is empty");
         
         _array[ SCRIBBLE_GLYPH.WIDTH      ] = 1;
         _array[ SCRIBBLE_GLYPH.HEIGHT     ] = sprite_get_height(_sprite);
@@ -190,8 +190,6 @@ if (_space_width != undefined)
     _array[@ SCRIBBLE_GLYPH.WIDTH      ] = _space_width;
     _array[@ SCRIBBLE_GLYPH.SEPARATION ] = _space_width;
 }
-
-show_debug_message("Scribble: Added \"" + _font + "\" as a spritefont");
 
 x            = _old_x;
 y            = _old_y;

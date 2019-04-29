@@ -7,7 +7,6 @@
 
 scribble_init("Fonts", "fTestA", true);
 scribble_init_add_spritefont("sSpriteFont", 3);
-//scribble_init_end();
 
 scribble_add_colour("c_coquelicot", $ff3800);
 scribble_add_colour("c_smaragdine", $50c875);

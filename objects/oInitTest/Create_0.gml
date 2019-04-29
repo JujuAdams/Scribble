@@ -5,10 +5,10 @@
 //  
 //  For use with GMS2.2.2 and later
 
-scribble_init("Fonts", "fTestA", true);
-//scribble_init_add_font("fTestA");
-//scribble_init_add_font("fTestB");
-//scribble_init_add_font("fChineseTest", "CJK\\fChineseTest.yy");
+scribble_init("Fonts", "fTestA", false);
+scribble_init_add_font("fTestA");
+scribble_init_add_font("fTestB");
+scribble_init_add_font("fChineseTest", "CJK\\fChineseTest.yy");
 scribble_init_add_spritefont("sSpriteFont", 8);
 
 scribble_add_colour("c_coquelicot", $ff3800);
