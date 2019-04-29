@@ -5,8 +5,8 @@
 ///
 /// @param json                 The Scribble data structure to be drawn. See scribble_create()
 /// @param page
-/// @param [x]                  The x position in the room to draw at. Defaults to 0
-/// @param [y]                  The y position in the room to draw at. Defaults to 0
+/// @param x                    The x position in the room to draw at. Defaults to 0
+/// @param y                    The y position in the room to draw at. Defaults to 0
 /// @param [xscale]             The horizontal scaling of the text. Defaults to the value set in __scribble_config()
 /// @param [yscale]             The vertical scaling of the text. Defaults to the value set in __scribble_config()
 /// @param [angle]              The rotation of the text. Defaults to the value set in __scribble_config()
@@ -18,8 +18,8 @@
 
 var _json   = argument[0];
 var _page   = argument[1];
-var _x      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
-var _y      = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
+var _x      = argument[2];
+var _y      = argument[3];
 var _xscale = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 1;
 var _yscale = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 1;
 var _angle  = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 0;

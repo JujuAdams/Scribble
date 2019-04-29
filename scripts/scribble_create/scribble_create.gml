@@ -1047,8 +1047,8 @@ repeat(_pages_size)
                             vertex_begin(_vbuff, global.__scribble_vertex_format);
                             
                             _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
-                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
-                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _sprite_texture;
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER   ] = _vbuff;
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE         ] = _sprite_texture;
                             
                             _vbuffs_array[@ array_length_1d(_vbuffs_array) ] = _vbuff_data;
                             
