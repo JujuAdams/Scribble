@@ -50,7 +50,13 @@ enum __SCRIBBLE_PAGE
     LENGTH,              //0
     LINES_ARRAY,         //1
     VERTEX_BUFFER_ARRAY, //2
-    __SIZE               //3
+    EV_SCAN_DO,          //3
+    EV_SCAN_A,           //4
+    EV_SCAN_B,           //5
+    EV_CHAR_ARRAY,       //6
+    EV_NAME_ARRAY,       //7
+    EV_DATA_ARRAY,       //8
+    __SIZE               //9
 }
 
 enum __SCRIBBLE_LINE
@@ -137,15 +143,16 @@ enum __SCRIBBLE
     
     __SECTION4,     //33
     PAGE_ARRAY,     //34
+    DEAD,           //35
     
-    __SECTION5,     //35
-    EV_SCAN_DO,     //36
-    EV_SCAN_A,      //37
-    EV_SCAN_B,      //38
-    EV_CHAR_ARRAY,  //39
-    EV_NAME_ARRAY,  //40
-    EV_DATA_ARRAY,  //41
-    __SIZE          //42
+    __SECTION5,     //36
+    EV_SCAN_DO,     //37
+    EV_SCAN_A,      //38
+    EV_SCAN_B,      //39
+    EV_CHAR_ARRAY,  //40
+    EV_NAME_ARRAY,  //41
+    EV_DATA_ARRAY,  //42
+    __SIZE          //43
 }
 
 #macro __SCRIBBLE_ON_DIRECTX ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))

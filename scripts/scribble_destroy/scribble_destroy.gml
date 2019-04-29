@@ -4,15 +4,15 @@
 
 var _json = argument0;
 
-if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
+if (!is_array(_json))
 {
     show_debug_message("Scribble: Data structure \"" + string(_json) + "\" doesn't exist!\n ");
     exit;
 }
 
-ds_map_delete(global.__scribble_alive, _json[| __SCRIBBLE.GLOBAL_INDEX ]);
+ds_map_delete(global.__scribble_alive, _json[ __SCRIBBLE.GLOBAL_INDEX ]);
 
-var _pages = _json[| __SCRIBBLE.PAGE_ARRAY ];
+var _pages = _json[ __SCRIBBLE.PAGE_ARRAY ];
 for(var _p = array_length_1d(_pages)-1; _p >= 0; _p--)
 {
     var _page_array  = _pages[ _p ];
@@ -26,4 +26,4 @@ for(var _p = array_length_1d(_pages)-1; _p >= 0; _p--)
     }
 }
 
-ds_list_destroy(_json);
+_json[@ __SCRIBBLE.DEAD ] = true;

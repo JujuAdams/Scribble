@@ -27,7 +27,7 @@ var _colour = ((argument_count > 7) && (argument[7] != undefined))? argument[7] 
 var _alpha  = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : draw_get_alpha();
 var _pma    = ((argument_count > 9) && (argument[8] != undefined))? argument[9] : false;
 
-if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
+if (!is_array(_json))
 {
     show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
@@ -37,19 +37,19 @@ if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 
 #region Handle typewriter
 
-_json[| __SCRIBBLE.ANIMATION_TIME ] += SCRIBBLE_STEP_SIZE;
+_json[@ __SCRIBBLE.ANIMATION_TIME ] += SCRIBBLE_STEP_SIZE;
 
-var _typewriter_direction = _json[| __SCRIBBLE.TW_DIRECTION ];
+var _typewriter_direction = _json[ __SCRIBBLE.TW_DIRECTION ];
 if (_typewriter_direction != 0)
 {
     var _do_event_scan = false;
-    var _scan_range_b = _json[| __SCRIBBLE.EV_SCAN_B ];
+    var _scan_range_b = _json[ __SCRIBBLE.EV_SCAN_B ];
     
-    var _tw_pos   = _json[| __SCRIBBLE.TW_POSITION ];
-    var _tw_speed = _json[| __SCRIBBLE.TW_SPEED    ];
+    var _tw_pos   = _json[ __SCRIBBLE.TW_POSITION ];
+    var _tw_speed = _json[ __SCRIBBLE.TW_SPEED    ];
     _tw_speed *= SCRIBBLE_STEP_SIZE;
     
-    switch(_json[| __SCRIBBLE.TW_METHOD ])
+    switch(_json[ __SCRIBBLE.TW_METHOD ])
     {
         case SCRIBBLE_TYPEWRITER_WHOLE:
             _do_event_scan = false;
@@ -58,14 +58,14 @@ if (_typewriter_direction != 0)
             {
                 if ( floor(_tw_pos) < floor(_tw_pos + _tw_speed) )
                 {
-                    var _scan_range_b = _json[| __SCRIBBLE.LENGTH ];
+                    var _scan_range_b = _json[ __SCRIBBLE.LENGTH ];
                     _do_event_scan = true;
                 }
             }
             
             _tw_pos += _tw_speed;
             _tw_pos = clamp(_tw_pos, 0, 1);
-            _json[| __SCRIBBLE.TW_POSITION ] = _tw_pos;
+            _json[@ __SCRIBBLE.TW_POSITION ] = _tw_pos;
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
@@ -75,24 +75,24 @@ if (_typewriter_direction != 0)
                 var _scan_range_b = _tw_pos + _tw_speed;
             }
             
-            var _length = _json[| __SCRIBBLE.LENGTH ];
+            var _length = _json[ __SCRIBBLE.LENGTH ];
             _tw_pos += _tw_speed;
             _tw_pos = min(_tw_pos, _length);
             
-            _json[| __SCRIBBLE.TW_POSITION ] = _tw_pos;
-            _json[| __SCRIBBLE.CHAR_FADE_T ] = ((_typewriter_direction < 0)? 1 : 0) + clamp(_tw_pos / _length, 0, 1);
+            _json[@ __SCRIBBLE.TW_POSITION ] = _tw_pos;
+            _json[@ __SCRIBBLE.CHAR_FADE_T ] = ((_typewriter_direction < 0)? 1 : 0) + clamp(_tw_pos / _length, 0, 1);
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_LINE:
-            var _lines = _json[| __SCRIBBLE.LINES ];
+            var _lines = _json[ __SCRIBBLE.LINES ];
             
             if (_typewriter_direction > 0)
             {
-                //var _list = _json[| __SCRIBBLE.LINE_LIST ];
+                //var _list = _json[ __SCRIBBLE.LINE_LIST ];
                 //if ( floor(_tw_pos) > floor(_tw_pos - _tw_speed) )
                 //{
-                //    var _line_a = _list[| floor(_tw_pos) ];
-                //    var _line_b = _list[| min(floor(_tw_pos + _tw_speed), _lines-1) ];
+                //    var _line_a = _list[ floor(_tw_pos) ];
+                //    var _line_b = _list[ min(floor(_tw_pos + _tw_speed), _lines-1) ];
                 //    var _scan_range_b = _line_b[ __SCRIBBLE_LINE.LAST_CHAR  ];
                 //    _do_event_scan = true;
                 //}
@@ -101,8 +101,8 @@ if (_typewriter_direction != 0)
             _tw_pos += _tw_speed;
             _tw_pos = min(_tw_pos, _lines);
             
-            _json[| __SCRIBBLE.TW_POSITION ] = _tw_pos;
-            _json[| __SCRIBBLE.LINE_FADE_T ] = ((_typewriter_direction < 0)? 1 : 0) + clamp(_tw_pos / _lines, 0, 1);
+            _json[@ __SCRIBBLE.TW_POSITION ] = _tw_pos;
+            _json[@ __SCRIBBLE.LINE_FADE_T ] = ((_typewriter_direction < 0)? 1 : 0) + clamp(_tw_pos / _lines, 0, 1);
         break;
         
         default:
@@ -110,8 +110,8 @@ if (_typewriter_direction != 0)
         break;
     }
     
-    _json[| __SCRIBBLE.EV_SCAN_DO ] = _do_event_scan;
-    _json[| __SCRIBBLE.EV_SCAN_B  ] = _scan_range_b;
+    _json[@ __SCRIBBLE.EV_SCAN_DO ] = _do_event_scan;
+    _json[@ __SCRIBBLE.EV_SCAN_B  ] = _scan_range_b;
 }
 
 #endregion
@@ -122,11 +122,11 @@ var _old_matrix = matrix_get(matrix_world);
 
 if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {
-    var _matrix = matrix_build(_json[| __SCRIBBLE.LEFT ] + _x, _json[| __SCRIBBLE.TOP ] + _y, 0,   0,0,0,   1,1,1);
+    var _matrix = matrix_build(_json[ __SCRIBBLE.LEFT ] + _x, _json[ __SCRIBBLE.TOP ] + _y, 0,   0,0,0,   1,1,1);
 }
 else
 {
-    var _matrix = matrix_build(_json[| __SCRIBBLE.LEFT ], _json[| __SCRIBBLE.TOP ], 0,   0,0,0,   1,1,1);
+    var _matrix = matrix_build(_json[ __SCRIBBLE.LEFT ], _json[ __SCRIBBLE.TOP ], 0,   0,0,0,   1,1,1);
         _matrix = matrix_multiply(_matrix, matrix_build(_x,_y,0,   0,0,_angle,   _xscale,_yscale,1));
 }
 
@@ -144,13 +144,13 @@ if (SCRIBBLE_COMPATIBILITY_DRAW)
     //var _old_colour = draw_get_colour();
     //
     //var _char_count = 0;
-    //var _total_chars = _json[| __SCRIBBLE.CHAR_FADE_T ] * _json[| __SCRIBBLE.LENGTH ];
+    //var _total_chars = _json[ __SCRIBBLE.CHAR_FADE_T ] * _json[ __SCRIBBLE.LENGTH ];
     //
-    //var _text_root_list = _json[| __SCRIBBLE.LINE_LIST ];
+    //var _text_root_list = _json[ __SCRIBBLE.LINE_LIST ];
     //var _lines_count = ds_list_size( _text_root_list);
     //for(var _line = 0; _line < _lines_count; _line++)
     //{
-    //    var _line_array = _text_root_list[| _line ];
+    //    var _line_array = _text_root_list[ _line ];
     //    var _line_x = _line_array[ __SCRIBBLE_LINE.X ];
     //    var _line_y = _line_array[ __SCRIBBLE_LINE.Y ];
     //
@@ -221,41 +221,41 @@ else
 {
     #region Normal mode
     
-    var _pages       = _json[| __SCRIBBLE.PAGE_ARRAY ];
+    var _pages       = _json[ __SCRIBBLE.PAGE_ARRAY ];
     var _page_array  = _pages[ _page ];
     var _vbuff_array = _page_array[ __SCRIBBLE_PAGE.VERTEX_BUFFER_ARRAY ];
     
     var _count = array_length_1d(_vbuff_array);
     if (_count > 0)
     {
-        var _time            = _json[| __SCRIBBLE.ANIMATION_TIME     ];
-        var _data_fields     = _json[| __SCRIBBLE.DATA_FIELDS        ];
+        var _time            = _json[ __SCRIBBLE.ANIMATION_TIME     ];
+        var _data_fields     = _json[ __SCRIBBLE.DATA_FIELDS        ];
         var _char_smoothness = 0;
         var _char_t          = 1;
         var _line_smoothness = 0;
         var _line_t          = 1;
         
-        switch(_json[| __SCRIBBLE.TW_METHOD ])
+        switch(_json[ __SCRIBBLE.TW_METHOD ])
         {
             case SCRIBBLE_TYPEWRITER_WHOLE:
-                if (_json[| __SCRIBBLE.TW_DIRECTION ] > 0)
+                if (_json[ __SCRIBBLE.TW_DIRECTION ] > 0)
                 {
-                    _alpha *= _json[| __SCRIBBLE.TW_POSITION ];
+                    _alpha *= _json[ __SCRIBBLE.TW_POSITION ];
                 }
                 else
                 {
-                    _alpha *= 1 - _json[| __SCRIBBLE.TW_POSITION ];
+                    _alpha *= 1 - _json[ __SCRIBBLE.TW_POSITION ];
                 }
             break;
             
             case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-                _char_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS ] / _json[| __SCRIBBLE.LENGTH ];
-                _char_t          = _json[| __SCRIBBLE.CHAR_FADE_T ];
+                _char_smoothness = _json[ __SCRIBBLE.TW_SMOOTHNESS ] / _json[ __SCRIBBLE.LENGTH ];
+                _char_t          = _json[ __SCRIBBLE.CHAR_FADE_T ];
             break;
             
             case SCRIBBLE_TYPEWRITER_PER_LINE:
-                _line_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS ] / _json[| __SCRIBBLE.LINES ];
-                _line_t          = _json[| __SCRIBBLE.LINE_FADE_T ];
+                _line_smoothness = _json[ __SCRIBBLE.TW_SMOOTHNESS ] / _json[ __SCRIBBLE.LINES ];
+                _line_t          = _json[ __SCRIBBLE.LINE_FADE_T ];
             break;
         }
         

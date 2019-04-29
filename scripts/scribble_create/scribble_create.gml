@@ -198,64 +198,65 @@ repeat(_buffer_size)
 
 #region Create the data structure
 
-var _json              = ds_list_create(); //The main data structure
+var _scribble_array    = array_create(__SCRIBBLE.__SIZE); //The main data structure
 var _text_page_array   = array_create(0);
 var _events_char_array = array_create(0); //Stores each event's triggering character
 var _events_name_array = array_create(0); //Stores each event's name
 var _events_data_array = array_create(0); //Stores each event's parameters
 
 global.__scribble_global_count++;
-global.__scribble_alive[? global.__scribble_global_count ] = _json;
+global.__scribble_alive[? global.__scribble_global_count ] = _scribble_array;
 
-_json[| __SCRIBBLE.__SIZE         ] = __SCRIBBLE_VERSION;
+_scribble_array[@ __SCRIBBLE.__SIZE         ] = __SCRIBBLE_VERSION;
 
-_json[| __SCRIBBLE.__SECTION0     ] = "-- Parameters --";
-_json[| __SCRIBBLE.STRING         ] = _str;
-_json[| __SCRIBBLE.DEFAULT_FONT   ] = _def_font;
-_json[| __SCRIBBLE.DEFAULT_COLOUR ] = _def_colour;
-_json[| __SCRIBBLE.DEFAULT_HALIGN ] = _def_halign;
-_json[| __SCRIBBLE.WIDTH_LIMIT    ] = _width_limit;
-_json[| __SCRIBBLE.HEIGHT_LIMIT   ] = _height_limit;
-_json[| __SCRIBBLE.LINE_HEIGHT    ] = _line_min_height;
+_scribble_array[@ __SCRIBBLE.__SECTION0     ] = "-- Parameters --";
+_scribble_array[@ __SCRIBBLE.STRING         ] = _str;
+_scribble_array[@ __SCRIBBLE.DEFAULT_FONT   ] = _def_font;
+_scribble_array[@ __SCRIBBLE.DEFAULT_COLOUR ] = _def_colour;
+_scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN ] = _def_halign;
+_scribble_array[@ __SCRIBBLE.WIDTH_LIMIT    ] = _width_limit;
+_scribble_array[@ __SCRIBBLE.HEIGHT_LIMIT   ] = _height_limit;
+_scribble_array[@ __SCRIBBLE.LINE_HEIGHT    ] = _line_min_height;
 
-_json[| __SCRIBBLE.__SECTION1     ] = "-- Statistics --";
-_json[| __SCRIBBLE.HALIGN         ] = fa_left;
-_json[| __SCRIBBLE.VALIGN         ] = fa_top;
-_json[| __SCRIBBLE.WIDTH          ] = 0;
-_json[| __SCRIBBLE.HEIGHT         ] = 0;
-_json[| __SCRIBBLE.LEFT           ] = 0;
-_json[| __SCRIBBLE.TOP            ] = 0;
-_json[| __SCRIBBLE.RIGHT          ] = 0;
-_json[| __SCRIBBLE.BOTTOM         ] = 0;
-_json[| __SCRIBBLE.PAGES          ] = 0;
-_json[| __SCRIBBLE.LINES          ] = 0;
-_json[| __SCRIBBLE.WORDS          ] = 0;
-_json[| __SCRIBBLE.LENGTH         ] = 0;
-_json[| __SCRIBBLE.GLOBAL_INDEX   ] = global.__scribble_global_count;
+_scribble_array[@ __SCRIBBLE.__SECTION1     ] = "-- Statistics --";
+_scribble_array[@ __SCRIBBLE.HALIGN         ] = fa_left;
+_scribble_array[@ __SCRIBBLE.VALIGN         ] = fa_top;
+_scribble_array[@ __SCRIBBLE.WIDTH          ] = 0;
+_scribble_array[@ __SCRIBBLE.HEIGHT         ] = 0;
+_scribble_array[@ __SCRIBBLE.LEFT           ] = 0;
+_scribble_array[@ __SCRIBBLE.TOP            ] = 0;
+_scribble_array[@ __SCRIBBLE.RIGHT          ] = 0;
+_scribble_array[@ __SCRIBBLE.BOTTOM         ] = 0;
+_scribble_array[@ __SCRIBBLE.PAGES          ] = 0;
+_scribble_array[@ __SCRIBBLE.LINES          ] = 0;
+_scribble_array[@ __SCRIBBLE.WORDS          ] = 0;
+_scribble_array[@ __SCRIBBLE.LENGTH         ] = 0;
+_scribble_array[@ __SCRIBBLE.GLOBAL_INDEX   ] = global.__scribble_global_count;
 
-_json[| __SCRIBBLE.__SECTION2     ] = "-- Typewriter --";
-_json[| __SCRIBBLE.TW_DIRECTION   ] = 0;
-_json[| __SCRIBBLE.TW_SPEED       ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
-_json[| __SCRIBBLE.TW_POSITION    ] = 0;
-_json[| __SCRIBBLE.TW_METHOD      ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-_json[| __SCRIBBLE.TW_SMOOTHNESS  ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
-_json[| __SCRIBBLE.CHAR_FADE_T    ] = 1;
-_json[| __SCRIBBLE.LINE_FADE_T    ] = 1;
+_scribble_array[@ __SCRIBBLE.__SECTION2     ] = "-- Typewriter --";
+_scribble_array[@ __SCRIBBLE.TW_DIRECTION   ] = 0;
+_scribble_array[@ __SCRIBBLE.TW_SPEED       ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+_scribble_array[@ __SCRIBBLE.TW_POSITION    ] = 0;
+_scribble_array[@ __SCRIBBLE.TW_METHOD      ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+_scribble_array[@ __SCRIBBLE.TW_SMOOTHNESS  ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
+_scribble_array[@ __SCRIBBLE.CHAR_FADE_T    ] = 1;
+_scribble_array[@ __SCRIBBLE.LINE_FADE_T    ] = 1;
 
-_json[| __SCRIBBLE.__SECTION3     ] = "-- Animation --";
-_json[| __SCRIBBLE.DATA_FIELDS    ] = _data_fields;
-_json[| __SCRIBBLE.ANIMATION_TIME ] = 0;
+_scribble_array[@ __SCRIBBLE.__SECTION3     ] = "-- Animation --";
+_scribble_array[@ __SCRIBBLE.DATA_FIELDS    ] = _data_fields;
+_scribble_array[@ __SCRIBBLE.ANIMATION_TIME ] = 0;
 
-_json[| __SCRIBBLE.__SECTION4     ] = "-- Lists --";
-_json[| __SCRIBBLE.PAGE_ARRAY     ] = _text_page_array;
+_scribble_array[@ __SCRIBBLE.__SECTION4     ] = "-- Lists --";
+_scribble_array[@ __SCRIBBLE.PAGE_ARRAY     ] = _text_page_array;
+_scribble_array[@ __SCRIBBLE.DEAD           ] = false;
 
-_json[| __SCRIBBLE.__SECTION5     ] = "-- Events --";
-_json[| __SCRIBBLE.EV_SCAN_DO     ] = false;
-_json[| __SCRIBBLE.EV_SCAN_A      ] = 0;
-_json[| __SCRIBBLE.EV_SCAN_B      ] = 0;
-_json[| __SCRIBBLE.EV_CHAR_ARRAY  ] = _events_char_array; //Stores each event's triggering cha
-_json[| __SCRIBBLE.EV_NAME_ARRAY  ] = _events_name_array; //Stores each event's name
-_json[| __SCRIBBLE.EV_DATA_ARRAY  ] = _events_data_array; //Stores each event's parameters
+_scribble_array[@ __SCRIBBLE.__SECTION5     ] = "-- Events --";
+_scribble_array[@ __SCRIBBLE.EV_SCAN_DO     ] = false;
+_scribble_array[@ __SCRIBBLE.EV_SCAN_A      ] = 0;
+_scribble_array[@ __SCRIBBLE.EV_SCAN_B      ] = 0;
+_scribble_array[@ __SCRIBBLE.EV_CHAR_ARRAY  ] = _events_char_array; //Stores each event's triggering cha
+_scribble_array[@ __SCRIBBLE.EV_NAME_ARRAY  ] = _events_name_array; //Stores each event's name
+_scribble_array[@ __SCRIBBLE.EV_DATA_ARRAY  ] = _events_data_array; //Stores each event's parameters
 
 #endregion
 
@@ -471,7 +472,7 @@ for(var _i = 0; _i < _separator_count; _i++)
                             var _data = array_create(_parameter_count-1, "");
                             for(var _j = 1; _j < _parameter_count; _j++) _data[ _j-1 ] = _parameters_list[| _j ];
                             
-                            _events_char_array[@ array_length_1d(_events_char_array) ] = _json[| __SCRIBBLE.LENGTH ];
+                            _events_char_array[@ array_length_1d(_events_char_array) ] = _scribble_array[ __SCRIBBLE.LENGTH ];
                             _events_name_array[@ array_length_1d(_events_name_array) ] = _name;
                             _events_data_array[@ array_length_1d(_events_data_array) ] = _data;
                             
@@ -830,8 +831,8 @@ for(var _i = 0; _i < _separator_count; _i++)
     
     _page_length += _substr_length;
     _line_length += _substr_length;
-    if (_substr_length > 0) ++_json[| __SCRIBBLE.WORDS ];
-    _json[| __SCRIBBLE.LENGTH ] += _substr_length;
+    if (_substr_length > 0) ++_scribble_array[ __SCRIBBLE.WORDS ];
+    _scribble_array[@ __SCRIBBLE.LENGTH ] += _substr_length;
 }
 
 //Finish defining the last line and last page
@@ -853,7 +854,7 @@ _page_lines_array[@ array_length_1d(_page_lines_array) ] = _line_array;
 var _textbox_width  = 0;
 var _textbox_height = 0;
 
-var _pages = _json[| __SCRIBBLE.PAGE_ARRAY ];
+var _pages = _scribble_array[ __SCRIBBLE.PAGE_ARRAY ];
 var _pages_size = array_length_1d(_pages);
 for(var _page = 0; _page < _pages_size; _page++)
 {
@@ -871,8 +872,8 @@ for(var _page = 0; _page < _pages_size; _page++)
     _textbox_height = max(_textbox_height, _line_array[ __SCRIBBLE_LINE.Y ] + _line_array[ __SCRIBBLE_LINE.HEIGHT ]);
 }
 
-_json[| __SCRIBBLE.WIDTH  ] = _textbox_width;
-_json[| __SCRIBBLE.HEIGHT ] = _textbox_height;
+_scribble_array[@ __SCRIBBLE.WIDTH  ] = _textbox_width;
+_scribble_array[@ __SCRIBBLE.HEIGHT ] = _textbox_height;
     
 for(var _page = 0; _page < _pages_size; _page++)
 {
@@ -925,7 +926,7 @@ for(var _page = 0; _page < _pages_size; _page++)
     }
 }
 
-scribble_set_box_alignment(_json);
+scribble_set_box_alignment(_scribble_array);
 
 #endregion
 
@@ -941,12 +942,12 @@ ds_list_destroy(_parameters_list);
 
 #region Build the vertex buffers
 
-var _json_offset_x = _json[| __SCRIBBLE.LEFT ];
-var _json_offset_y = _json[| __SCRIBBLE.TOP  ];
+var _json_offset_x = _scribble_array[ __SCRIBBLE.LEFT ];
+var _json_offset_y = _scribble_array[ __SCRIBBLE.TOP  ];
 
 var _texture_to_vbuff_map = ds_map_create();
 
-var _pages = _json[| __SCRIBBLE.PAGE_ARRAY ];
+var _pages = _scribble_array[ __SCRIBBLE.PAGE_ARRAY ];
 var _pages_size = array_length_1d(_pages);
 var _page = 0;
 repeat(_pages_size)
@@ -1251,4 +1252,4 @@ ds_map_destroy(_texture_to_vbuff_map);
 
 show_debug_message("Scribble: scribble_create() took " + string((get_timer() - _timer)/1000) + "ms");
 
-return _json;
+return _scribble_array;
