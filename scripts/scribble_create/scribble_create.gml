@@ -1,8 +1,8 @@
 /// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw()
 ///
 /// @param string              The string to be parsed. See below for the various in-line formatting commands
-/// @param [maxBoxWidth]       The maximum line width for each line of text. Use a negative number for no limit. Defaults to no limit
-/// @param [maxBoxHeight]      The maximum box beight for each page of text. Use a negative number for no limit. Defaults to no limit
+/// @param [boxWidth]          The maximum line width for each line of text. Use a negative number for no limit. Defaults to no limit
+/// @param [boxHeight]         The maximum box beight for each page of text. Use a negative number for no limit. Defaults to no limit
 /// @param [startingColour]    The (initial) blend colour for the text. Defaults to white
 /// @param [startingFont]      The (initial) font for the text. The font name should be provided as a string. Defaults to Scribble's global default font (the first font added during initialisation)
 /// @param [startingHAlign]    The (initial) horizontal alignment for the test. Defaults to left justified
@@ -874,6 +874,9 @@ _page_lines_array[@ array_length_1d(_page_lines_array) ] = _line_array;
 
 #region Set box width/height and adjust line positions based on alignment
 
+var _textbox_width  = 0;
+var _textbox_height = 0;
+
 var _pages = _json[| __SCRIBBLE.PAGE_ARRAY ];
 var _pages_size = array_length_1d(_pages);
 for(var _page = 0; _page < _pages_size; _page++)
@@ -882,18 +885,24 @@ for(var _page = 0; _page < _pages_size; _page++)
     var _lines       = _page_array[ __SCRIBBLE_PAGE.LINES_ARRAY ];
     var _lines_count = array_length_1d(_lines);
     
-    var _textbox_width = 0;
     for(var _i = 0; _i < _lines_count; _i++)
     {
         var _line_array = _lines[ _i ];
         _textbox_width = max(_textbox_width, _line_array[ __SCRIBBLE_LINE.WIDTH ]);
     }
     
-    var _line_array = _lines[ _lines_count - 1 ];
-    var _textbox_height = _line_array[ __SCRIBBLE_LINE.Y ] + _line_array[ __SCRIBBLE_LINE.HEIGHT ];
+    var _line_array = _lines[ _lines_count-1 ];
+    _textbox_height = max(_line_array[ __SCRIBBLE_LINE.Y ] + _line_array[ __SCRIBBLE_LINE.HEIGHT ]);
+}
+
+_json[| __SCRIBBLE.WIDTH  ] = _textbox_width;
+_json[| __SCRIBBLE.HEIGHT ] = _textbox_height;
     
-    _json[| __SCRIBBLE.WIDTH  ] = _textbox_width;
-    _json[| __SCRIBBLE.HEIGHT ] = _textbox_height;
+for(var _page = 0; _page < _pages_size; _page++)
+{
+    var _page_array = _pages[ _page ];
+    var _lines       = _page_array[ __SCRIBBLE_PAGE.LINES_ARRAY ];
+    var _lines_count = array_length_1d(_lines);
     
     //Adjust word positions
     for(var _line = 0; _line < _lines_count; _line++)

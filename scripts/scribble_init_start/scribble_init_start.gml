@@ -132,25 +132,28 @@ enum __SCRIBBLE
     LINE_FADE_T,         //29
     
     __SECTION3,          //30
-    HAS_CALLED_STEP,     //31
-    NO_STEP_COUNT,       //32
-    DATA_FIELDS,         //33
-    ANIMATION_TIME,      //34
+    HAS_EVENTS,          //31
+    HAS_CALLED_STEP,     //32
+    NO_STEP_COUNT,       //33
+    DATA_FIELDS,         //34
+    ANIMATION_TIME,      //35
     
-    __SECTION4,          //35
-    PAGE_ARRAY,          //36
+    __SECTION4,          //36
+    PAGE_ARRAY,          //37
     
     __SECTION5,          //38
-    EV_CHARACTER_LIST,   //39
-    EV_NAME_LIST,        //40
-    EV_DATA_LIST,        //41
-    EV_TRIGGERED_LIST,   //42
-    EV_TRIGGERED_MAP,    //43
-    EV_VALUE_MAP,        //44
-    EV_CHANGED_MAP,      //45
-    EV_PREVIOUS_MAP,     //46
-    EV_DIFFERENT_MAP,    //47
-    __SIZE               //48
+    EV_SCAN_A,           //39
+    EV_SCAN_B,           //40
+    EV_CHARACTER_LIST,   //41
+    EV_NAME_LIST,        //42
+    EV_DATA_LIST,        //43
+    EV_TRIGGERED_LIST,   //44
+    EV_TRIGGERED_MAP,    //45
+    EV_VALUE_MAP,        //46
+    EV_CHANGED_MAP,      //47
+    EV_PREVIOUS_MAP,     //48
+    EV_DIFFERENT_MAP,    //49
+    __SIZE               //50
 }
 
 #macro __SCRIBBLE_ON_DIRECTX ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
