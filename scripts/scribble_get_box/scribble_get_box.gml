@@ -4,8 +4,8 @@
 /// It returns an 8-element array. You can use the SCRIBBLE_BOX enum to conveniently reference each coordinate.
 ///
 /// @param json             The Scribble data structure to use
-/// @param [x]              The x position in the room to draw at. Defaults to 0
-/// @param [y]              The y position in the room to draw at. Defaults to 0
+/// @param x                The x position in the room to draw at. Defaults to 0
+/// @param y                The y position in the room to draw at. Defaults to 0
 /// @param [leftMargin]     The additional space to add to the left-hand side of the box. Positive values create more space. Defaults to 0
 /// @param [topMargin]      The additional space to add to the top of the box. Positive values create more space. Defaults to 0
 /// @param [rightMargin]    The additional space to add to the right-hand side of the box. Positive values create more space. Defaults to 0
@@ -17,8 +17,8 @@
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json   = argument[0];
-var _x      = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
-var _y      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
+var _x      = argument[1];
+var _y      = argument[2];
 var _left   = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
 var _top    = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
 var _right  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
