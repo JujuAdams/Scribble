@@ -6,7 +6,7 @@
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json      = argument[0];
-var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_STEP_SIZE;
+var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : (delta_time/game_get_speed(gamespeed_microseconds));
 
 if (!SCRIBBLE_CALL_STEP_IN_DRAW) _json[| __SCRIBBLE.HAS_CALLED_STEP ] = true;
 
@@ -70,15 +70,15 @@ if (_typewriter_direction != 0)
             
             if (_typewriter_direction > 0)
             {
-                var _list = _json[| __SCRIBBLE.LINE_LIST ];
-                if ( floor(_tw_pos) > floor(_tw_pos - _tw_speed) )
-                {
-                    var _line_a = _list[| floor(_tw_pos) ];
-                    var _line_b = _list[| min(floor(_tw_pos + _tw_speed), _lines-1) ];
-                    var _scan_range_a = _line_a[ __SCRIBBLE_LINE.FIRST_CHAR ];
-                    var _scan_range_b = _line_b[ __SCRIBBLE_LINE.LAST_CHAR  ];
-                    _do_event_scan = true;
-                }
+                //var _list = _json[| __SCRIBBLE.LINE_LIST ];
+                //if ( floor(_tw_pos) > floor(_tw_pos - _tw_speed) )
+                //{
+                //    var _line_a = _list[| floor(_tw_pos) ];
+                //    var _line_b = _list[| min(floor(_tw_pos + _tw_speed), _lines-1) ];
+                //    var _scan_range_a = _line_a[ __SCRIBBLE_LINE.FIRST_CHAR ];
+                //    var _scan_range_b = _line_b[ __SCRIBBLE_LINE.LAST_CHAR  ];
+                //    _do_event_scan = true;
+                //}
             }
             
             _tw_pos += _tw_speed;

@@ -1,16 +1,18 @@
 /// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw()
 ///
 /// @param string              The string to be parsed. See below for the various in-line formatting commands
-/// @param [minLineHeight]     The minimum line height for each line of text. Defaults to the height of a space character of the default font
-/// @param [maxLineWidth]      The maximum line width for each line of text. Use a negative number for no limit. Defaults to no limit
+/// @param [maxBoxWidth]       The maximum line width for each line of text. Use a negative number for no limit. Defaults to no limit
+/// @param [maxBoxHeight]      The maximum box beight for each page of text. Use a negative number for no limit. Defaults to no limit
 /// @param [startingColour]    The (initial) blend colour for the text. Defaults to white
 /// @param [startingFont]      The (initial) font for the text. The font name should be provided as a string. Defaults to Scribble's global default font (the first font added during initialisation)
 /// @param [startingHAlign]    The (initial) horizontal alignment for the test. Defaults to left justified
+/// @param [minLineHeight]     The minimum line height for each line of text. Defaults to the height of a space character of the default font
 /// @param [dataFieldsArray]   The data field array that'll be passed into the shader to control various effects. Defaults to values set in __scribble_config()
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 ///
 /// Formatting commands:
+/// [page]                              Force a new page of text
 /// []                                  Reset formatting to defaults
 /// [<name of colour>]                  Set colour
 /// [#<hex code>]                       Set colour via a hexcode, using normal RGB values (#RRGGBB)
@@ -60,12 +62,13 @@ if (!global.__scribble_init_complete)
 var _timer = get_timer();
 
 var _str              = argument[0];
-var _line_min_height  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
-var _width_limit      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : -1;
+var _width_limit      = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
+var _height_limit     = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : -1;
 var _def_colour       = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : c_white;
 var _def_font         = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : global.__scribble_default_font;
 var _def_halign       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : fa_left;
-var _data_fields_in   = ((argument_count > 6) &&    is_array(argument[6])  )? argument[6] : undefined;
+var _line_min_height  = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : -1;
+var _data_fields_in   = ((argument_count > 7) &&    is_array(argument[6])  )? argument[7] : undefined;
 
 
 
@@ -202,7 +205,8 @@ repeat(_buffer_size)
 #region Create the data structure
 
 var _json                  = ds_list_create(); //The main data structure
-var _text_root_list        = ds_list_create(); //Stores each line of text
+var _text_page_array       = array_create(0);
+var _text_line_list        = ds_list_create(); //Stores each line of text
 var _vbuff_list            = ds_list_create(); //Stores all the vertex buffers needed to render the text and sprites
 var _events_character_list = ds_list_create(); //Stores each event's triggering character
 var _events_name_list      = ds_list_create(); //Stores each event's name
@@ -211,63 +215,62 @@ var _events_data_list      = ds_list_create(); //Stores each event's parameters
 global.__scribble_global_count++;
 global.__scribble_alive[? global.__scribble_global_count ] = _json;
 
-_json[| __SCRIBBLE.__SIZE                  ] = __SCRIBBLE_VERSION;
+_json[| __SCRIBBLE.__SIZE             ] = __SCRIBBLE_VERSION;
 
-_json[| __SCRIBBLE.__SECTION0              ] = "-- Parameters --";
-_json[| __SCRIBBLE.STRING                  ] = _str;
-_json[| __SCRIBBLE.DEFAULT_FONT            ] = _def_font;
-_json[| __SCRIBBLE.DEFAULT_COLOUR          ] = _def_colour;
-_json[| __SCRIBBLE.DEFAULT_HALIGN          ] = _def_halign;
-_json[| __SCRIBBLE.WIDTH_LIMIT             ] = _width_limit;
-_json[| __SCRIBBLE.LINE_HEIGHT             ] = _line_min_height;
+_json[| __SCRIBBLE.__SECTION0         ] = "-- Parameters --";
+_json[| __SCRIBBLE.STRING             ] = _str;
+_json[| __SCRIBBLE.DEFAULT_FONT       ] = _def_font;
+_json[| __SCRIBBLE.DEFAULT_COLOUR     ] = _def_colour;
+_json[| __SCRIBBLE.DEFAULT_HALIGN     ] = _def_halign;
+_json[| __SCRIBBLE.WIDTH_LIMIT        ] = _width_limit;
+_json[| __SCRIBBLE.HEIGHT_LIMIT       ] = _height_limit;
+_json[| __SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
 
-_json[| __SCRIBBLE.__SECTION1              ] = "-- Statistics --";
-_json[| __SCRIBBLE.HALIGN                  ] = SCRIBBLE_DEFAULT_BOX_HALIGN;
-_json[| __SCRIBBLE.VALIGN                  ] = SCRIBBLE_DEFAULT_BOX_VALIGN;
-_json[| __SCRIBBLE.WIDTH                   ] = 0;
-_json[| __SCRIBBLE.HEIGHT                  ] = 0;
-_json[| __SCRIBBLE.LEFT                    ] = 0;
-_json[| __SCRIBBLE.TOP                     ] = 0;
-_json[| __SCRIBBLE.RIGHT                   ] = 0;
-_json[| __SCRIBBLE.BOTTOM                  ] = 0;
-_json[| __SCRIBBLE.LENGTH                  ] = 0;
-_json[| __SCRIBBLE.LINES                   ] = 0;
-_json[| __SCRIBBLE.WORDS                   ] = 0;
-_json[| __SCRIBBLE.GLOBAL_INDEX            ] = global.__scribble_global_count;
+_json[| __SCRIBBLE.__SECTION1         ] = "-- Statistics --";
+_json[| __SCRIBBLE.HALIGN             ] = fa_left;
+_json[| __SCRIBBLE.VALIGN             ] = fa_top;
+_json[| __SCRIBBLE.WIDTH              ] = 0;
+_json[| __SCRIBBLE.HEIGHT             ] = 0;
+_json[| __SCRIBBLE.LEFT               ] = 0;
+_json[| __SCRIBBLE.TOP                ] = 0;
+_json[| __SCRIBBLE.RIGHT              ] = 0;
+_json[| __SCRIBBLE.BOTTOM             ] = 0;
+_json[| __SCRIBBLE.PAGES              ] = 0;
+_json[| __SCRIBBLE.LINES              ] = 0;
+_json[| __SCRIBBLE.WORDS              ] = 0;
+_json[| __SCRIBBLE.LENGTH             ] = 0;
+_json[| __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count;
 
-_json[| __SCRIBBLE.__SECTION2              ] = "-- Typewriter --";
-_json[| __SCRIBBLE.TW_DIRECTION            ] = 0;
-_json[| __SCRIBBLE.TW_SPEED                ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
-_json[| __SCRIBBLE.TW_POSITION             ] = 0;
-_json[| __SCRIBBLE.TW_METHOD               ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-_json[| __SCRIBBLE.TW_SMOOTHNESS           ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
-_json[| __SCRIBBLE.CHAR_FADE_T             ] = 1;
-_json[| __SCRIBBLE.LINE_FADE_T             ] = 1;
+_json[| __SCRIBBLE.__SECTION2         ] = "-- Typewriter --";
+_json[| __SCRIBBLE.TW_DIRECTION       ] = 0;
+_json[| __SCRIBBLE.TW_SPEED           ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+_json[| __SCRIBBLE.TW_POSITION        ] = 0;
+_json[| __SCRIBBLE.TW_METHOD          ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+_json[| __SCRIBBLE.TW_SMOOTHNESS      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
+_json[| __SCRIBBLE.CHAR_FADE_T        ] = 1;
+_json[| __SCRIBBLE.LINE_FADE_T        ] = 1;
 
-_json[| __SCRIBBLE.__SECTION3              ] = "-- Animation --";
-_json[| __SCRIBBLE.HAS_CALLED_STEP         ] = false;
-_json[| __SCRIBBLE.NO_STEP_COUNT           ] = 0;
-_json[| __SCRIBBLE.DATA_FIELDS             ] = _data_fields;
-_json[| __SCRIBBLE.ANIMATION_TIME          ] = 0;
+_json[| __SCRIBBLE.__SECTION3         ] = "-- Animation --";
+_json[| __SCRIBBLE.HAS_CALLED_STEP    ] = false;
+_json[| __SCRIBBLE.NO_STEP_COUNT      ] = 0;
+_json[| __SCRIBBLE.DATA_FIELDS        ] = _data_fields;
+_json[| __SCRIBBLE.ANIMATION_TIME     ] = 0;
 
-_json[| __SCRIBBLE.__SECTION4              ] = "-- Lists --";
-_json[| __SCRIBBLE.LINE_LIST               ] = _text_root_list;
-_json[| __SCRIBBLE.VERTEX_BUFFER_LIST      ] = _vbuff_list;
+_json[| __SCRIBBLE.__SECTION4         ] = "-- Lists --";
+_json[| __SCRIBBLE.PAGE_ARRAY         ] = _text_page_array;
 
-_json[| __SCRIBBLE.__SECTION5              ] = "-- Events --";
-_json[| __SCRIBBLE.EV_CHARACTER_LIST       ] = _events_character_list; //Stores each event's triggering cha
-_json[| __SCRIBBLE.EV_NAME_LIST            ] = _events_name_list;      //Stores each event's name
-_json[| __SCRIBBLE.EV_DATA_LIST            ] = _events_data_list;      //Stores each event's parameters
-_json[| __SCRIBBLE.EV_TRIGGERED_LIST       ] = ds_list_create();
-_json[| __SCRIBBLE.EV_TRIGGERED_MAP        ] = ds_map_create();
-_json[| __SCRIBBLE.EV_VALUE_MAP            ] = ds_map_create();
-_json[| __SCRIBBLE.EV_CHANGED_MAP          ] = ds_map_create();
-_json[| __SCRIBBLE.EV_PREVIOUS_MAP         ] = ds_map_create();
-_json[| __SCRIBBLE.EV_DIFFERENT_MAP        ] = ds_map_create();
+_json[| __SCRIBBLE.__SECTION5         ] = "-- Events --";
+_json[| __SCRIBBLE.EV_CHARACTER_LIST  ] = _events_character_list; //Stores each event's triggering cha
+_json[| __SCRIBBLE.EV_NAME_LIST       ] = _events_name_list;      //Stores each event's name
+_json[| __SCRIBBLE.EV_DATA_LIST       ] = _events_data_list;      //Stores each event's parameters
+_json[| __SCRIBBLE.EV_TRIGGERED_LIST  ] = ds_list_create();
+_json[| __SCRIBBLE.EV_TRIGGERED_MAP   ] = ds_map_create();
+_json[| __SCRIBBLE.EV_VALUE_MAP       ] = ds_map_create();
+_json[| __SCRIBBLE.EV_CHANGED_MAP     ] = ds_map_create();
+_json[| __SCRIBBLE.EV_PREVIOUS_MAP    ] = ds_map_create();
+_json[| __SCRIBBLE.EV_DIFFERENT_MAP   ] = ds_map_create();
 
 //Now bind the child data structures to the root list
-ds_list_mark_as_list(_json, __SCRIBBLE.LINE_LIST         );
-ds_list_mark_as_list(_json, __SCRIBBLE.VERTEX_BUFFER_LIST);
 ds_list_mark_as_list(_json, __SCRIBBLE.EV_CHARACTER_LIST );
 ds_list_mark_as_list(_json, __SCRIBBLE.EV_NAME_LIST      );
 ds_list_mark_as_list(_json, __SCRIBBLE.EV_DATA_LIST      );
@@ -289,12 +292,16 @@ ds_list_mark_as_map( _json, __SCRIBBLE.EV_DIFFERENT_MAP  );
 var _text_x = 0;
 var _text_y = 0;
 
-var _word_array           = noone;
+var _page_array           = noone;
+var _page_length          = 0;
+
 var _line_array           = noone;
 var _line_words_array     = noone;
 var _line_length          = 0;
 var _line_prev_last_index = 0;
 var _line_max_height      = _line_min_height;
+
+var _word_array           = noone;
 
 var _text_font            = _def_font;
 var _text_colour          = _def_colour;
@@ -329,6 +336,7 @@ for(var _i = 0; _i < _separator_count; _i++)
     
     var _skip          = false;
     var _force_newline = false;
+    var _force_newpage = false;
     var _new_word      = false;
     
     var _substr_width       = 0;
@@ -396,6 +404,13 @@ for(var _i = 0; _i < _separator_count; _i++)
                 case "/slant":
                     _text_slant = false;
                     _skip = true;
+                break;
+                #endregion
+                
+                #region Force new page
+                case "page":
+                    _substr = "";
+                    _force_newpage = true;
                 break;
                 #endregion
                 
@@ -731,8 +746,8 @@ for(var _i = 0; _i < _separator_count; _i++)
     
     #region Position and store word
     
-    //If we've run over the maximum width of the string
-    if ((_substr_width + _text_x > _width_limit) && (_width_limit >= 0)) || (_line_array == noone) || (_sep_prev_char == 10) || (_force_newline)
+    //If we've run over the maximum width of the box
+    if (((_substr_width + _text_x > _width_limit) && (_width_limit >= 0)) || (_line_array == noone) || (_sep_prev_char == 10) || _force_newline || _force_newpage)
     {
         if (_line_array != noone)
         {
@@ -741,10 +756,10 @@ for(var _i = 0; _i < _separator_count; _i++)
             _line_array[@ __SCRIBBLE_LINE.LENGTH    ] = _line_length;
             _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _line_array[ __SCRIBBLE_LINE.FIRST_CHAR ] + _line_length;
             
-            _text_x = 0;
-            _text_y += _line_max_height;
+            _text_x                = 0;
+            _text_y               += _line_max_height;
             _line_prev_last_index += _line_length;
-            _line_length = 0;
+            _line_length           = 0;
             
             _line_max_height = _line_min_height;
         }
@@ -760,28 +775,48 @@ for(var _i = 0; _i < _separator_count; _i++)
             }
         }
         
-        var _line_array = array_create(__SCRIBBLE_LINE.__SIZE, 0);
+        //If we've run over the maximum height of the box
+        if (((_text_y > _height_limit) && (_height_limit >= 0)) || (_page_array == noone) || _force_newpage)
+        {
+            if (_page_array != noone)
+            {
+                _page_array[@ __SCRIBBLE_PAGE.LENGTH ] = _page_length;
+            }
+            
+            var _page_array = array_create(__SCRIBBLE_PAGE.__SIZE);
+            var _page_lines_array = [];
+            _page_array[@ __SCRIBBLE_PAGE.LENGTH              ] = 0;
+            _page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _page_lines_array;
+            _page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFER_ARRAY ] = array_create(0);
+            
+            _text_page_array[@ array_length_1d(_text_page_array) ] = _page_array;
+            
+            _text_y      = 0;
+            _page_length = 0;
+        }
         
+        var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
         var _line_words_array = [];
-        _line_array[ __SCRIBBLE_LINE.X          ] = 0;
-        _line_array[ __SCRIBBLE_LINE.Y          ] = _text_y;
-        _line_array[ __SCRIBBLE_LINE.WIDTH      ] = 0;
-        _line_array[ __SCRIBBLE_LINE.HEIGHT     ] = _line_min_height;
-        _line_array[ __SCRIBBLE_LINE.LENGTH     ] = 0;
-        _line_array[ __SCRIBBLE_LINE.FIRST_CHAR ] = _line_prev_last_index;
-        _line_array[ __SCRIBBLE_LINE.LAST_CHAR  ] = _line_prev_last_index;
-        _line_array[ __SCRIBBLE_LINE.HALIGN     ] = _text_halign;
-        _line_array[ __SCRIBBLE_LINE.WORDS      ] = _line_words_array;
+        _line_array[@ __SCRIBBLE_LINE.X           ] = 0;
+        _line_array[@ __SCRIBBLE_LINE.Y           ] = _text_y;
+        _line_array[@ __SCRIBBLE_LINE.WIDTH       ] = 0;
+        _line_array[@ __SCRIBBLE_LINE.HEIGHT      ] = _line_min_height;
+        _line_array[@ __SCRIBBLE_LINE.LENGTH      ] = 0;
+        _line_array[@ __SCRIBBLE_LINE.FIRST_CHAR  ] = _line_prev_last_index;
+        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR   ] = _line_prev_last_index;
+        _line_array[@ __SCRIBBLE_LINE.HALIGN      ] = _text_halign;
+        _line_array[@ __SCRIBBLE_LINE.WORDS_ARRAY ] = _line_words_array;
         
-        ds_list_add(_text_root_list, _line_array);
+        _page_lines_array[@ array_length_1d(_page_lines_array) ] = _line_array;
     }
     
-    if (!_force_newline) && (_substr != "")
+    if (!_force_newline && !_force_newpage && (_substr != ""))
     {
         _line_max_height = max(_line_max_height, _substr_height);
         
         //Add a new word
         _new_word = true;
+        
         var _word_array = array_create(__SCRIBBLE_WORD.__SIZE, 0);
         _word_array[ __SCRIBBLE_WORD.X              ] = _text_x;
         _word_array[ __SCRIBBLE_WORD.Y              ] = 0;
@@ -805,7 +840,7 @@ for(var _i = 0; _i < _separator_count; _i++)
         _line_words_array[@ array_length_1d(_line_words_array) ] = _word_array;
         
         //Wipe the text flags
-        var _new_text_flags = array_create(SCRIBBLE_MAX_FLAGS, 0);
+        var _new_text_flags = array_create(SCRIBBLE_MAX_FLAGS);
         array_copy(_new_text_flags, 0, _text_flags, 0, SCRIBBLE_MAX_FLAGS);
         _text_flags = _new_text_flags;
     }
@@ -817,18 +852,21 @@ for(var _i = 0; _i < _separator_count; _i++)
     
     if (_sep_char == SCRIBBLE_COMMAND_TAG_OPEN) _in_command_tag = true; // [
     
+    _page_length += _substr_length;
     _line_length += _substr_length;
     if (_substr_length > 0) ++_json[| __SCRIBBLE.WORDS ];
     _json[| __SCRIBBLE.LENGTH ] += _substr_length;
 }
 
-//Finish defining the last line
+//Finish defining the last line and last page
+_page_array[@ __SCRIBBLE_PAGE.LENGTH    ] = _page_length;
+
 _line_array[@ __SCRIBBLE_LINE.WIDTH     ] = _text_x;
 _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_max_height;
 _line_array[@ __SCRIBBLE_LINE.LENGTH    ] = _line_length;
 _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _line_array[@ __SCRIBBLE_LINE.FIRST_CHAR ] + _line_length;
 
-_json[| __SCRIBBLE.LINES ] = ds_list_size(_json[| __SCRIBBLE.LINE_LIST ]);
+_page_lines_array[@ array_length_1d(_page_lines_array) ] = _line_array;
 
 #endregion
 
@@ -836,62 +874,68 @@ _json[| __SCRIBBLE.LINES ] = ds_list_size(_json[| __SCRIBBLE.LINE_LIST ]);
 
 #region Set box width/height and adjust line positions based on alignment
 
-//Textbox width and height
-var _lines_size = ds_list_size(_text_root_list);
-
-var _textbox_width = 0;
-for(var _i = 0; _i < _lines_size; _i++)
+var _pages = _json[| __SCRIBBLE.PAGE_ARRAY ];
+var _pages_size = array_length_1d(_pages);
+for(var _page = 0; _page < _pages_size; _page++)
 {
-    var _line_array = _text_root_list[| _i ];
-    _textbox_width = max(_textbox_width, _line_array[ __SCRIBBLE_LINE.WIDTH ]);
-}
-
-var _line_array = _text_root_list[| _lines_size - 1 ];
-var _textbox_height = _line_array[ __SCRIBBLE_LINE.Y ] + _line_array[ __SCRIBBLE_LINE.HEIGHT ];
-  
-_json[| __SCRIBBLE.WIDTH  ] = _textbox_width;
-_json[| __SCRIBBLE.HEIGHT ] = _textbox_height;
-
-//Adjust word positions
-for(var _line = 0; _line < _lines_size; _line++)
-{
-    var _line_array = _text_root_list[| _line ];
-    switch(_line_array[ __SCRIBBLE_LINE.HALIGN ])
+    var _page_array = _pages[ _page ];
+    var _lines       = _page_array[ __SCRIBBLE_PAGE.LINES_ARRAY ];
+    var _lines_count = array_length_1d(_lines);
+    
+    var _textbox_width = 0;
+    for(var _i = 0; _i < _lines_count; _i++)
     {
-        case fa_left:
-            _line_array[@ __SCRIBBLE_LINE.X ] = 0;
-        break;
-        
-        case fa_center:
-            _line_array[@ __SCRIBBLE_LINE.X ] += (_textbox_width - _line_array[ __SCRIBBLE_LINE.WIDTH ]) div 2;
-        break;
-        
-        case fa_right:
-            _line_array[@ __SCRIBBLE_LINE.X ] += _textbox_width - _line_array[ __SCRIBBLE_LINE.WIDTH ];
-        break;
+        var _line_array = _lines[ _i ];
+        _textbox_width = max(_textbox_width, _line_array[ __SCRIBBLE_LINE.WIDTH ]);
     }
     
-    var _line_height     = _line_array[ __SCRIBBLE_LINE.HEIGHT ];
-    var _line_word_array = _line_array[ __SCRIBBLE_LINE.WORDS  ];
+    var _line_array = _lines[ _lines_count - 1 ];
+    var _textbox_height = _line_array[ __SCRIBBLE_LINE.Y ] + _line_array[ __SCRIBBLE_LINE.HEIGHT ];
     
-    var _word_count = array_length_1d(_line_word_array);
-    for(var _word = 0; _word < _word_count; _word++)
+    _json[| __SCRIBBLE.WIDTH  ] = _textbox_width;
+    _json[| __SCRIBBLE.HEIGHT ] = _textbox_height;
+    
+    //Adjust word positions
+    for(var _line = 0; _line < _lines_count; _line++)
     {
-        var _word_array = _line_word_array[ _word ];
-        
-        switch(_word_array[ __SCRIBBLE_WORD.VALIGN ])
+        var _line_array = _lines[ _line ];
+        switch(_line_array[ __SCRIBBLE_LINE.HALIGN ])
         {
-            case fa_top:
-                _word_array[@ __SCRIBBLE_WORD.Y ] = 0;
+            case fa_left:
+                _line_array[@ __SCRIBBLE_LINE.X ] = 0;
             break;
             
-            case fa_middle:
-                _word_array[@ __SCRIBBLE_WORD.Y ] = (_line_height - _word_array[ __SCRIBBLE_WORD.HEIGHT ]) div 2;
+            case fa_center:
+                _line_array[@ __SCRIBBLE_LINE.X ] += (_textbox_width - _line_array[ __SCRIBBLE_LINE.WIDTH ]) div 2;
             break;
             
-            case fa_bottom:
-                _word_array[@ __SCRIBBLE_WORD.Y ] = _line_height - _word_array[ __SCRIBBLE_WORD.HEIGHT ];
+            case fa_right:
+                _line_array[@ __SCRIBBLE_LINE.X ] += _textbox_width - _line_array[ __SCRIBBLE_LINE.WIDTH ];
             break;
+        }
+        
+        var _line_height     = _line_array[ __SCRIBBLE_LINE.HEIGHT      ];
+        var _line_word_array = _line_array[ __SCRIBBLE_LINE.WORDS_ARRAY ];
+        
+        var _word_count = array_length_1d(_line_word_array);
+        for(var _word = 0; _word < _word_count; _word++)
+        {
+            var _word_array = _line_word_array[ _word ];
+            
+            switch(_word_array[ __SCRIBBLE_WORD.VALIGN ])
+            {
+                case fa_top:
+                    _word_array[@ __SCRIBBLE_WORD.Y ] = 0;
+                break;
+                
+                case fa_middle:
+                    _word_array[@ __SCRIBBLE_WORD.Y ] = (_line_height - _word_array[ __SCRIBBLE_WORD.HEIGHT ]) div 2;
+                break;
+                
+                case fa_bottom:
+                    _word_array[@ __SCRIBBLE_WORD.Y ] = _line_height - _word_array[ __SCRIBBLE_WORD.HEIGHT ];
+                break;
+            }
         }
     }
 }
@@ -912,296 +956,306 @@ ds_list_destroy(_parameters_list);
 
 #region Build the vertex buffers
 
-var _json_offset_x   = _json[| __SCRIBBLE.LEFT                    ];
-var _json_offset_y   = _json[| __SCRIBBLE.TOP                     ];
-var _vbuff_list      = _json[| __SCRIBBLE.VERTEX_BUFFER_LIST      ];
+var _json_offset_x = _json[| __SCRIBBLE.LEFT ];
+var _json_offset_y = _json[| __SCRIBBLE.TOP  ];
 
 var _texture_to_vbuff_map = ds_map_create();
 
-var _previous_font    = "";
-var _previous_texture = -1;
-
-var _text_char = 0;
-var _max_char = _json[| __SCRIBBLE.LENGTH ]-1;
-
-var _lines = _json[| __SCRIBBLE.LINE_LIST ];
-var _lines_size = ds_list_size(_lines);
-var _line = 0;
-repeat(_lines_size)
+var _pages = _json[| __SCRIBBLE.PAGE_ARRAY ];
+var _pages_size = array_length_1d(_pages);
+var _page = 0;
+repeat(_pages_size)
 {
-    var _line_pc = _line / _lines_size;
+    var _page_array      = _pages[ _page ];
+    var _max_char        = _page_array[ __SCRIBBLE_PAGE.LENGTH              ]-1;
+    var _page_line_array = _page_array[ __SCRIBBLE_PAGE.LINES_ARRAY         ];
+    var _vbuffs_array    = _page_array[ __SCRIBBLE_PAGE.VERTEX_BUFFER_ARRAY ];
     
-    var _line_array = _lines[| _line ];
-    var _line_l = _line_array[ __SCRIBBLE_LINE.X ] + _json_offset_x;
-    var _line_t = _line_array[ __SCRIBBLE_LINE.Y ] + _json_offset_y;
+    var _previous_font    = "";
+    var _previous_texture = -1;
+    var _text_char        = 0;
     
-    var _line_word_array = _line_array[ __SCRIBBLE_LINE.WORDS ];
-    var _words_count = array_length_1d(_line_word_array);
-    var _word = 0;
-    repeat(_words_count)
+    var _lines_count = array_length_1d(_page_line_array);
+    var _line = 0;
+    repeat(_lines_count)
     {
-        var _word_array = _line_word_array[ _word ];
-        var _word_l = _word_array[ __SCRIBBLE_WORD.X      ] + _line_l;
-        var _word_t = _word_array[ __SCRIBBLE_WORD.Y      ] + _line_t;
-        var _sprite = _word_array[ __SCRIBBLE_WORD.SPRITE ];
+        var _line_pc = _line / _lines_count;
         
-        if (_sprite != noone)
+        var _line_array = _page_line_array[ _line ];
+        var _line_l = _line_array[ __SCRIBBLE_LINE.X ] + _json_offset_x;
+        var _line_t = _line_array[ __SCRIBBLE_LINE.Y ] + _json_offset_y;
+        
+        var _line_word_array = _line_array[ __SCRIBBLE_LINE.WORDS_ARRAY ];
+        var _words_count = array_length_1d(_line_word_array);
+        var _word = 0;
+        repeat(_words_count)
         {
-            #region Add a sprite
+            var _word_array = _line_word_array[ _word ];
+            var _word_l = _word_array[ __SCRIBBLE_WORD.X      ] + _line_l;
+            var _word_t = _word_array[ __SCRIBBLE_WORD.Y      ] + _line_t;
+            var _sprite = _word_array[ __SCRIBBLE_WORD.SPRITE ];
             
-            _previous_font = "";
-            
-            var _char_pc     = _text_char / _max_char;
-            var _colour      = SCRIBBLE_COLOURISE_SPRITES? _word_array[ __SCRIBBLE_WORD.COLOUR ] : c_white;
-            var _flag_data   = _word_array[ __SCRIBBLE_WORD.FLAGS  ];
-            var _image_start = _word_array[ __SCRIBBLE_WORD.IMAGE  ];
-            var _scale       = _word_array[ __SCRIBBLE_WORD.SCALE  ];
-            var _image_speed = _word_array[ __SCRIBBLE_WORD.IMAGE_SPEED ];
-            
-            if ((_image_speed > 0) && SCRIBBLE_FORCE_NO_SPRITE_ANIMATION)
+            if (_sprite != noone)
             {
-                _image_speed = 0;
-                _colour = c_white;
-            }
+                #region Add a sprite
+                
+                _previous_font = "";
+                
+                var _char_pc     = _text_char / _max_char;
+                var _colour      = SCRIBBLE_COLOURISE_SPRITES? _word_array[ __SCRIBBLE_WORD.COLOUR ] : c_white;
+                var _flag_data   = _word_array[ __SCRIBBLE_WORD.FLAGS  ];
+                var _image_start = _word_array[ __SCRIBBLE_WORD.IMAGE  ];
+                var _scale       = _word_array[ __SCRIBBLE_WORD.SCALE  ];
+                var _image_speed = _word_array[ __SCRIBBLE_WORD.IMAGE_SPEED ];
+                
+                if ((_image_speed > 0) && SCRIBBLE_FORCE_NO_SPRITE_ANIMATION)
+                {
+                    _image_speed = 0;
+                    _colour = c_white;
+                }
+                
+                var _flags  = 0;
+                if (_image_speed > 0) _flags += 1; //Set the "is sprite" flag only if we're animating the sprite
+                var _offset = 2;
             
-            var _flags  = 0;
-            if (_image_speed > 0) _flags += 1; //Set the "is sprite" flag only if we're animating the sprite
-            var _offset = 2;
-            
-            for(var _i = 1; _i < SCRIBBLE_MAX_FLAGS; _i++)
-            {
-                _flags += _flag_data[_i] * _offset;
-                _offset *= 2;
-            }
-            
-            //Default to only adding one image from the sprite to the vertex buffer
-            var _image_a = _image_start;
-            var _image_b = _image_start;
-            
-            //If we want to animate the sprite, add all images from the sprite
-            if (_image_speed > 0)
-            {
-                _image_a = 0;
-                _image_b = sprite_get_number(_sprite)-1;
-            }
-            
-            for(var _image = _image_a; _image <= _image_b; _image++)
-            {
+                for(var _i = 1; _i < SCRIBBLE_MAX_FLAGS; _i++)
+                {
+                    _flags += _flag_data[_i] * _offset;
+                    _offset *= 2;
+                }
+                
+                //Default to only adding one image from the sprite to the vertex buffer
+                var _image_a = _image_start;
+                var _image_b = _image_start;
+                
+                //If we want to animate the sprite, add all images from the sprite
                 if (_image_speed > 0)
                 {
-                    //Encode image, sprite length, and image speed into the colour channels
-                    _colour = make_colour_rgb(_image, sprite_get_number(_sprite)-1, _image_speed*255);
-                    //Encode the starting image into the alpha channel
-                    var _alpha = _image_start/255;
-                }
-                else
-                {
-                    var _alpha = 1;
+                    _image_a = 0;
+                    _image_b = sprite_get_number(_sprite)-1;
                 }
                 
-                var _sprite_texture = sprite_get_texture(_sprite, _image);
-                if (_sprite_texture != _previous_texture)
+                for(var _image = _image_a; _image <= _image_b; _image++)
                 {
-                    _previous_texture = _sprite_texture;
-                    
-                    var _vbuff_data = _texture_to_vbuff_map[? _sprite_texture ];
-                    if (_vbuff_data == undefined)
+                    if (_image_speed > 0)
                     {
-                        var _vbuff = vertex_create_buffer();
-                        vertex_begin(_vbuff, global.__scribble_vertex_format);
-                        
-                        _vbuff_data = ds_list_create();
-                        _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
-                        _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _sprite_texture;
-                        ds_list_add(_vbuff_list, _vbuff_data);
-                        ds_list_mark_as_list(_vbuff_list, ds_list_size(_vbuff_list)-1);
-                    
-                        _texture_to_vbuff_map[? _sprite_texture ] = _vbuff_data;
+                        //Encode image, sprite length, and image speed into the colour channels
+                        _colour = make_colour_rgb(_image, sprite_get_number(_sprite)-1, _image_speed*255);
+                        //Encode the starting image into the alpha channel
+                        var _alpha = _image_start/255;
                     }
                     else
                     {
-                        var _vbuff = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
+                        var _alpha = 1;
                     }
-                }
-                
-                var _uvs = sprite_get_uvs(_sprite, _image);
-                var _glyph_l = _word_l  + _uvs[4] + sprite_get_xoffset(_sprite);
-                var _glyph_t = _word_t  + _uvs[5] + sprite_get_yoffset(_sprite);
-                var _glyph_r = _glyph_l + _uvs[6]*_scale*sprite_get_width(_sprite);
-                var _glyph_b = _glyph_t + _uvs[7]*_scale*sprite_get_height(_sprite);
-                
-                vertex_position_3d(_vbuff,   _glyph_l, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[1]);
-                vertex_position_3d(_vbuff,   _glyph_l, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[3]);
-                vertex_position_3d(_vbuff,   _glyph_r, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[3]);
-                vertex_position_3d(_vbuff,   _glyph_r, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[3]);
-                vertex_position_3d(_vbuff,   _glyph_r, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[1]);
-                vertex_position_3d(_vbuff,   _glyph_l, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[1]);
-            }
-            
-            ++_text_char;
-            #endregion
-        }
-        else
-        {
-            #region Check the font and texture to see if we need a new vertex buffer
-            
-            var _font = _word_array[ __SCRIBBLE_WORD.FONT ];
-            if (_font != _previous_font)
-            {
-                _previous_font = _font;
-                
-                var _font_data         = global.__scribble_font_data[? _font ];
-                var _font_glyphs_map   = _font_data[ __SCRIBBLE_FONT.GLYPHS_MAP   ];
-                var _font_glyphs_array = _font_data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ];
-                var _font_glyphs_min   = _font_data[ __SCRIBBLE_FONT.GLYPH_MIN    ];
-                var _font_glyphs_max   = _font_data[ __SCRIBBLE_FONT.GLYPH_MAX    ];
-                var _font_texture      = _font_data[ __SCRIBBLE_FONT.TEXTURE      ];
-                
-                if (_font_texture != _previous_texture)
-                {
-                    _previous_texture = _font_texture;
                     
-                    var _lookup_map   = _texture_to_vbuff_map;
-                    var _storage_list = _vbuff_list;
-                    
-                    var _vbuff_data = _lookup_map[? _font_texture ];
-                    if (_vbuff_data == undefined)
+                    var _sprite_texture = sprite_get_texture(_sprite, _image);
+                    if (_sprite_texture != _previous_texture)
                     {
-                        var _vbuff = vertex_create_buffer();
-                        vertex_begin(_vbuff, global.__scribble_vertex_format);
+                        _previous_texture = _sprite_texture;
                         
-                        _vbuff_data = ds_list_create();
-                        _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
-                        _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _font_texture;
-                        ds_list_add(_storage_list, _vbuff_data);
-                        ds_list_mark_as_list(_storage_list, ds_list_size(_storage_list)-1);
+                        var _vbuff_data = _texture_to_vbuff_map[? _sprite_texture ];
+                        if (_vbuff_data == undefined)
+                        {
+                            var _vbuff = vertex_create_buffer();
+                            vertex_begin(_vbuff, global.__scribble_vertex_format);
                             
-                        _lookup_map[? _font_texture ] = _vbuff_data;
+                            _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _sprite_texture;
+                            
+                            _vbuffs_array[@ array_length_1d(_vbuffs_array) ] = _vbuff_data;
+                            
+                            _texture_to_vbuff_map[? _sprite_texture ] = _vbuff_data;
+                        }
+                        else
+                        {
+                            var _vbuff = _vbuff_data[ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
+                        }
                     }
-                    else
-                    {
-                        var _vbuff = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
-                    }
+                    
+                    var _uvs = sprite_get_uvs(_sprite, _image);
+                    var _glyph_l = _word_l  + _uvs[4] + sprite_get_xoffset(_sprite);
+                    var _glyph_t = _word_t  + _uvs[5] + sprite_get_yoffset(_sprite);
+                    var _glyph_r = _glyph_l + _uvs[6]*_scale*sprite_get_width(_sprite);
+                    var _glyph_b = _glyph_t + _uvs[7]*_scale*sprite_get_height(_sprite);
+                    
+                    vertex_position_3d(_vbuff,   _glyph_l, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[1]);
+                    vertex_position_3d(_vbuff,   _glyph_l, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[3]);
+                    vertex_position_3d(_vbuff,   _glyph_r, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[3]);
+                    vertex_position_3d(_vbuff,   _glyph_r, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[3]);
+                    vertex_position_3d(_vbuff,   _glyph_r, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[1]);
+                    vertex_position_3d(_vbuff,   _glyph_l, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[1]);
                 }
-            }
-            
-            #endregion
-            
-            #region Add vertex data for each character in the string
-            
-            var _colour    = _word_array[ __SCRIBBLE_WORD.COLOUR ];
-            var _flag_data = _word_array[ __SCRIBBLE_WORD.FLAGS  ];
-            var _scale     = _word_array[ __SCRIBBLE_WORD.SCALE  ];
-            var _slant     = _word_array[ __SCRIBBLE_WORD.SLANT  ];
-            var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_scale*_slant;
-            
-            var _flags  = 0;
-            var _offset = 1;
-            for(var _i = 0; _i < SCRIBBLE_MAX_FLAGS; _i++)
-            {
-                _flags += _offset*_flag_data[_i];
-                _offset *= 2;
-            }
-            
-            var _str = _word_array[ __SCRIBBLE_WORD.STRING ];
-            var _string_size = string_length(_str);
-            
-            var _char_l = _word_l;
-            var _char_t = _word_t;
-            var _char_index = 1;
-            
-            if (_font_glyphs_array == undefined)
-            {
-                repeat(_string_size)
-                {
-                    var _array = _font_glyphs_map[? string_char_at(_str, _char_index) ];
-                    if (_array == undefined) continue;
-                    
-                    var _glyph_w   = _array[ SCRIBBLE_GLYPH.WIDTH   ];
-                    var _glyph_h   = _array[ SCRIBBLE_GLYPH.HEIGHT   ];
-                    var _glyph_u0  = _array[ SCRIBBLE_GLYPH.U0  ];
-                    var _glyph_v0  = _array[ SCRIBBLE_GLYPH.V0  ];
-                    var _glyph_u1  = _array[ SCRIBBLE_GLYPH.U1  ];
-                    var _glyph_v1  = _array[ SCRIBBLE_GLYPH.V1  ];
-                    var _glyph_dx  = _array[ SCRIBBLE_GLYPH.X_OFFSET  ];
-                    var _glyph_dy  = _array[ SCRIBBLE_GLYPH.Y_OFFSET  ];
-                    var _glyph_shf = _array[ SCRIBBLE_GLYPH.SEPARATION ];
-                    
-                    var _glyph_l = _char_l + _glyph_dx*_scale;
-                    var _glyph_t = _char_t + _glyph_dy*_scale;
-                    var _glyph_r = _glyph_l + _glyph_w*_scale;
-                    var _glyph_b = _glyph_t + _glyph_h*_scale;
-                    
-                    var _char_pc = _text_char / _max_char;
-                    
-                    vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
-                    vertex_position_3d(_vbuff,   _glyph_l              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v1);
-                    vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
-                    vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
-                    vertex_position_3d(_vbuff,   _glyph_r+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v0);
-                    vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
-                    
-                    _char_l += _glyph_shf*_scale;
-                    ++_text_char;
-                    ++_char_index;
-                }
+                
+                ++_text_char;
+                #endregion
             }
             else
             {
-                repeat(_string_size)
+                #region Check the font and texture to see if we need a new vertex buffer
+                
+                var _font = _word_array[ __SCRIBBLE_WORD.FONT ];
+                if (_font != _previous_font)
                 {
-                    var _ord = ord(string_char_at(_str, _char_index));
-                    if (_ord < _font_glyphs_min) || (_ord > _font_glyphs_max) continue;
-                    var _array = _font_glyphs_array[ _ord - _font_glyphs_min ];
-                    if (_array == undefined) continue;
+                    _previous_font = _font;
                     
-                    var _glyph_w   = _array[ SCRIBBLE_GLYPH.WIDTH   ];
-                    var _glyph_h   = _array[ SCRIBBLE_GLYPH.HEIGHT   ];
-                    var _glyph_u0  = _array[ SCRIBBLE_GLYPH.U0  ];
-                    var _glyph_v0  = _array[ SCRIBBLE_GLYPH.V0  ];
-                    var _glyph_u1  = _array[ SCRIBBLE_GLYPH.U1  ];
-                    var _glyph_v1  = _array[ SCRIBBLE_GLYPH.V1  ];
-                    var _glyph_dx  = _array[ SCRIBBLE_GLYPH.X_OFFSET  ];
-                    var _glyph_dy  = _array[ SCRIBBLE_GLYPH.Y_OFFSET  ];
-                    var _glyph_shf = _array[ SCRIBBLE_GLYPH.SEPARATION ];
+                    var _font_data         = global.__scribble_font_data[? _font ];
+                    var _font_glyphs_map   = _font_data[ __SCRIBBLE_FONT.GLYPHS_MAP   ];
+                    var _font_glyphs_array = _font_data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ];
+                    var _font_glyphs_min   = _font_data[ __SCRIBBLE_FONT.GLYPH_MIN    ];
+                    var _font_glyphs_max   = _font_data[ __SCRIBBLE_FONT.GLYPH_MAX    ];
+                    var _font_texture      = _font_data[ __SCRIBBLE_FONT.TEXTURE      ];
                     
-                    var _glyph_l = _char_l + _glyph_dx*_scale;
-                    var _glyph_t = _char_t + _glyph_dy*_scale;
-                    var _glyph_r = _glyph_l + _glyph_w*_scale;
-                    var _glyph_b = _glyph_t + _glyph_h*_scale;
-                    
-                    var _char_pc = _text_char / _max_char;
-                    
-                    vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
-                    vertex_position_3d(_vbuff,   _glyph_l              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v1);
-                    vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
-                    vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
-                    vertex_position_3d(_vbuff,   _glyph_r+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v0);
-                    vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
-                    
-                    _char_l += _glyph_shf*_scale;
-                    ++_text_char;
-                    ++_char_index;
+                    if (_font_texture != _previous_texture)
+                    {
+                        _previous_texture = _font_texture;
+                        
+                        var _lookup_map = _texture_to_vbuff_map;
+                        
+                        var _vbuff_data = _lookup_map[? _font_texture ];
+                        if (_vbuff_data == undefined)
+                        {
+                            var _vbuff = vertex_create_buffer();
+                            vertex_begin(_vbuff, global.__scribble_vertex_format);
+                            
+                            _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _font_texture;
+                            
+                            _vbuffs_array[@ array_length_1d(_vbuffs_array) ] = _vbuff_data;
+                            
+                            _lookup_map[? _font_texture ] = _vbuff_data;
+                        }
+                        else
+                        {
+                            var _vbuff = _vbuff_data[ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
+                        }
+                    }
                 }
+                
+                #endregion
+                
+                #region Add vertex data for each character in the string
+                
+                var _colour    = _word_array[ __SCRIBBLE_WORD.COLOUR ];
+                var _flag_data = _word_array[ __SCRIBBLE_WORD.FLAGS  ];
+                var _scale     = _word_array[ __SCRIBBLE_WORD.SCALE  ];
+                var _slant     = _word_array[ __SCRIBBLE_WORD.SLANT  ];
+                var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_scale*_slant;
+                
+                var _flags  = 0;
+                var _offset = 1;
+                for(var _i = 0; _i < SCRIBBLE_MAX_FLAGS; _i++)
+                {
+                    _flags += _offset*_flag_data[_i];
+                    _offset *= 2;
+                }
+                
+                var _str = _word_array[ __SCRIBBLE_WORD.STRING ];
+                var _string_size = string_length(_str);
+                
+                var _char_l = _word_l;
+                var _char_t = _word_t;
+                var _char_index = 1;
+                
+                if (_font_glyphs_array == undefined)
+                {
+                    repeat(_string_size)
+                    {
+                        var _array = _font_glyphs_map[? string_char_at(_str, _char_index) ];
+                        if (_array == undefined) continue;
+                        
+                        var _glyph_w   = _array[ SCRIBBLE_GLYPH.WIDTH   ];
+                        var _glyph_h   = _array[ SCRIBBLE_GLYPH.HEIGHT   ];
+                        var _glyph_u0  = _array[ SCRIBBLE_GLYPH.U0  ];
+                        var _glyph_v0  = _array[ SCRIBBLE_GLYPH.V0  ];
+                        var _glyph_u1  = _array[ SCRIBBLE_GLYPH.U1  ];
+                        var _glyph_v1  = _array[ SCRIBBLE_GLYPH.V1  ];
+                        var _glyph_dx  = _array[ SCRIBBLE_GLYPH.X_OFFSET  ];
+                        var _glyph_dy  = _array[ SCRIBBLE_GLYPH.Y_OFFSET  ];
+                        var _glyph_shf = _array[ SCRIBBLE_GLYPH.SEPARATION ];
+                        
+                        var _glyph_l = _char_l + _glyph_dx*_scale;
+                        var _glyph_t = _char_t + _glyph_dy*_scale;
+                        var _glyph_r = _glyph_l + _glyph_w*_scale;
+                        var _glyph_b = _glyph_t + _glyph_h*_scale;
+                        
+                        var _char_pc = _text_char / _max_char;
+                        
+                        vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
+                        vertex_position_3d(_vbuff,   _glyph_l              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v1);
+                        vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
+                        vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
+                        vertex_position_3d(_vbuff,   _glyph_r+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v0);
+                        vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
+                        
+                        _char_l += _glyph_shf*_scale;
+                        ++_text_char;
+                        ++_char_index;
+                    }
+                }
+                else
+                {
+                    repeat(_string_size)
+                    {
+                        var _ord = ord(string_char_at(_str, _char_index));
+                        if (_ord < _font_glyphs_min) || (_ord > _font_glyphs_max) continue;
+                        var _array = _font_glyphs_array[ _ord - _font_glyphs_min ];
+                        if (_array == undefined) continue;
+                        
+                        var _glyph_w   = _array[ SCRIBBLE_GLYPH.WIDTH   ];
+                        var _glyph_h   = _array[ SCRIBBLE_GLYPH.HEIGHT   ];
+                        var _glyph_u0  = _array[ SCRIBBLE_GLYPH.U0  ];
+                        var _glyph_v0  = _array[ SCRIBBLE_GLYPH.V0  ];
+                        var _glyph_u1  = _array[ SCRIBBLE_GLYPH.U1  ];
+                        var _glyph_v1  = _array[ SCRIBBLE_GLYPH.V1  ];
+                        var _glyph_dx  = _array[ SCRIBBLE_GLYPH.X_OFFSET  ];
+                        var _glyph_dy  = _array[ SCRIBBLE_GLYPH.Y_OFFSET  ];
+                        var _glyph_shf = _array[ SCRIBBLE_GLYPH.SEPARATION ];
+                        
+                        var _glyph_l = _char_l + _glyph_dx*_scale;
+                        var _glyph_t = _char_t + _glyph_dy*_scale;
+                        var _glyph_r = _glyph_l + _glyph_w*_scale;
+                        var _glyph_b = _glyph_t + _glyph_h*_scale;
+                        
+                        var _char_pc = _text_char / _max_char;
+                        
+                        vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
+                        vertex_position_3d(_vbuff,   _glyph_l              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v1);
+                        vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
+                        vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
+                        vertex_position_3d(_vbuff,   _glyph_r+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v0);
+                        vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
+                        
+                        _char_l += _glyph_shf*_scale;
+                        ++_text_char;
+                        ++_char_index;
+                    }
+                }
+            
+                #endregion
             }
             
-            #endregion
+            ++_word;
         }
         
-        ++_word;
+        ++_line;
     }
     
-    ++_line;
-}
-
-//Finish off and freeze all the vertex buffers we created
-var _count = ds_list_size(_vbuff_list);
-for(var _i = 0; _i < _count; _i++)
-{
-    var _vbuff_data = _vbuff_list[| _i ];
-    var _vbuff = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
-    vertex_end(_vbuff);
-    vertex_freeze(_vbuff);
+    ds_map_clear(_texture_to_vbuff_map);
+    
+    //Finish off and freeze all the vertex buffers we created
+    var _count = array_length_1d(_vbuffs_array);
+    for(var _i = 0; _i < _count; _i++)
+    {
+        var _vbuff_data = _vbuffs_array[ _i ];
+        var _vbuff = _vbuff_data[ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
+        vertex_end(_vbuff);
+        vertex_freeze(_vbuff);
+    }
+    
+    ++_page;
 }
 
 ds_map_destroy(_texture_to_vbuff_map);

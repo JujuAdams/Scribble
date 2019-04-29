@@ -12,13 +12,18 @@ if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 
 ds_map_delete(global.__scribble_alive, _json[| __SCRIBBLE.GLOBAL_INDEX ]);
 
-var _vbuff_list = _json[| __SCRIBBLE.VERTEX_BUFFER_LIST ];
-var _count = ds_list_size(_vbuff_list);
-for(var _i = 0; _i < _count; _i++)
+var _pages = _json[| __SCRIBBLE.PAGE_ARRAY ];
+for(var _p = array_length_1d(_pages)-1; _p >= 0; _p--)
 {
-    var _vbuff_data = _vbuff_list[| _i ];
-    var _vbuff = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
-    vertex_delete_buffer(_vbuff);
+    var _page_array  = _pages[ _p ];
+    var _vbuff_array = _page_array[ __SCRIBBLE_PAGE.VERTEX_BUFFER_ARRAY ];
+    
+    for(var _v = array_length_1d(_vbuff_array)-1; _v >= 0; _v--)
+    {
+        var _vbuff_data = _vbuff_array[ _v ];
+        var _vbuff = _vbuff_data[ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
+        vertex_delete_buffer(_vbuff);
+    }
 }
 
 ds_list_destroy(_json);

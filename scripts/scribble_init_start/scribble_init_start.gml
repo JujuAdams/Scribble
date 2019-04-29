@@ -45,18 +45,26 @@ enum __SCRIBBLE_FONT_TYPE
     SPRITE
 }
 
+enum __SCRIBBLE_PAGE
+{
+    LENGTH,              //0
+    LINES_ARRAY,         //1
+    VERTEX_BUFFER_ARRAY, //2
+    __SIZE               //3
+}
+
 enum __SCRIBBLE_LINE
 {
-    X,          //0
-    Y,          //1
-    WIDTH,      //2
-    HEIGHT,     //3
-    LENGTH,     //4
-    FIRST_CHAR, //5
-    LAST_CHAR,  //6
-    HALIGN,     //7
-    WORDS,      //8
-    __SIZE      //9
+    X,           //0
+    Y,           //1
+    WIDTH,       //2
+    HEIGHT,      //3
+    LENGTH,      //4
+    FIRST_CHAR,  //5
+    LAST_CHAR,   //6
+    HALIGN,      //7
+    WORDS_ARRAY, //8
+    __SIZE       //9
 }
 
 enum __SCRIBBLE_WORD
@@ -96,53 +104,53 @@ enum __SCRIBBLE
     DEFAULT_COLOUR,      // 3
     DEFAULT_HALIGN,      // 4
     WIDTH_LIMIT,         // 5
-    LINE_HEIGHT,         // 6
+    HEIGHT_LIMIT,        // 6
+    LINE_HEIGHT,         // 7
     
-    __SECTION1,          // 7
-    HALIGN,              // 8
-    VALIGN,              // 9
-    WIDTH,               //10
-    HEIGHT,              //11
-    LEFT,                //12
-    TOP,                 //13
-    RIGHT,               //14
-    BOTTOM,              //15
-    LENGTH,              //16
-    LINES,               //17
-    WORDS,               //18
-    GLOBAL_INDEX,        //19
+    __SECTION1,          // 8
+    HALIGN,              // 9
+    VALIGN,              //10
+    WIDTH,               //11
+    HEIGHT,              //12
+    LEFT,                //13
+    TOP,                 //14
+    RIGHT,               //15
+    BOTTOM,              //16
+    PAGES,               //17
+    LINES,               //18
+    WORDS,               //19
+    LENGTH,              //20
+    GLOBAL_INDEX,        //21
     
-    __SECTION2,          //20
-    TW_DIRECTION,        //21
-    TW_SPEED,            //22
-    TW_POSITION,         //23
-    TW_METHOD,           //24
-    TW_SMOOTHNESS,       //25
-    CHAR_FADE_T,         //26
-    LINE_FADE_T,         //27
+    __SECTION2,          //22
+    TW_DIRECTION,        //23
+    TW_SPEED,            //24
+    TW_POSITION,         //25
+    TW_METHOD,           //26
+    TW_SMOOTHNESS,       //27
+    CHAR_FADE_T,         //28
+    LINE_FADE_T,         //29
     
-    __SECTION3,          //28
-    HAS_CALLED_STEP,     //29
-    NO_STEP_COUNT,       //30
-    DATA_FIELDS,         //31
-    ANIMATION_TIME,      //32
+    __SECTION3,          //30
+    HAS_CALLED_STEP,     //31
+    NO_STEP_COUNT,       //32
+    DATA_FIELDS,         //33
+    ANIMATION_TIME,      //34
     
-    __SECTION4,          //33
-    LINE_LIST,           //34
-    VERTEX_BUFFER_LIST,  //35
+    __SECTION4,          //35
+    PAGE_ARRAY,          //36
     
-    __SECTION5,          //36
-    EV_CHARACTER_LIST,   //37
-    EV_NAME_LIST,        //38
-    EV_DATA_LIST,        //39
-    EV_TRIGGERED_LIST,   //40
-    EV_TRIGGERED_MAP,    //41
-    EV_VALUE_MAP,        //42
-    EV_CHANGED_MAP,      //43
-    EV_PREVIOUS_MAP,     //44
-    EV_DIFFERENT_MAP,    //45
-    
-    __SIZE               //46
+    __SECTION5,          //38
+    EV_CHARACTER_LIST,   //39
+    EV_NAME_LIST,        //40
+    EV_DATA_LIST,        //41
+    EV_TRIGGERED_LIST,   //42
+    EV_TRIGGERED_MAP,    //43
+    EV_VALUE_MAP,        //44
+    EV_CHANGED_MAP,      //45
+    EV_PREVIOUS_MAP,     //46
+    EV_DIFFERENT_MAP,    //47
+    __SIZE               //48
 }
 
 #macro __SCRIBBLE_ON_DIRECTX ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))

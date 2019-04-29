@@ -1,4 +1,4 @@
-scribble_draw(text, x, y);
+scribble_draw(text, 0, x, y);
 
 var _box = scribble_get_box(text,   x, y,   5, 5,   5, 5);
 draw_rectangle(_box[SCRIBBLE_BOX.X0], _box[SCRIBBLE_BOX.Y0],
