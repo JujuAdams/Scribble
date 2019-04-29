@@ -5,10 +5,7 @@
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
-var _json      = argument[0];
-var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : (delta_time/game_get_speed(gamespeed_microseconds));
-
-if (!SCRIBBLE_CALL_STEP_IN_DRAW) _json[| __SCRIBBLE.HAS_CALLED_STEP ] = true;
+var _json = argument[0];
 
 if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 {
@@ -16,7 +13,7 @@ if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
     exit;
 }
 
-_json[| __SCRIBBLE.ANIMATION_TIME ] += _step_size;
+_json[| __SCRIBBLE.ANIMATION_TIME ] += SCRIBBLE_STEP_SIZE;
 
 var _typewriter_direction = _json[| __SCRIBBLE.TW_DIRECTION ];
 if (_typewriter_direction != 0)
@@ -27,7 +24,7 @@ if (_typewriter_direction != 0)
     
     var _tw_pos   = _json[| __SCRIBBLE.TW_POSITION ];
     var _tw_speed = _json[| __SCRIBBLE.TW_SPEED    ];
-    _tw_speed *= _step_size;
+    _tw_speed *= SCRIBBLE_STEP_SIZE;
     
     switch(_json[| __SCRIBBLE.TW_METHOD ])
     {

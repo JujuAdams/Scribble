@@ -11,12 +11,13 @@
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
 #macro SCRIBBLE_HASH_NEWLINE                  true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COLOURISE_SPRITES             true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
+#macro SCRIBBLE_STEP_SIZE                     (delta_time/game_get_speed(gamespeed_microseconds)) //Automatically delta times text effects (including typewriter). Set this macro to a variable to control the step size yourself
 
 #endregion
 
 #region Text animation defaults
 
-#macro SCRIBBLE_DEFAULT_SPRITE_SPEED       0.1                 //The default animation speed for sprites inserted into text
+#macro SCRIBBLE_DEFAULT_SPRITE_SPEED       0.1   //The default animation speed for sprites inserted into text
 #macro SCRIBBLE_DEFAULT_WAVE_SIZE          4     //The default magnitude of the text wave animation. A value of "4" will cause the wave to extend 4 pixels above and 4 pixels below the line of text
 #macro SCRIBBLE_DEFAULT_WAVE_FREQUENCY    50     //The default frequency of the text wave animation. Higher values cause the wave peaks to be closer together
 #macro SCRIBBLE_DEFAULT_WAVE_SPEED         0.2   //The default speed of the text wave animation
@@ -43,7 +44,6 @@
 
 #macro SCRIBBLE_COMPATIBILITY_DRAW                 false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
 #macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION          false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
-#macro SCRIBBLE_CALL_STEP_IN_DRAW                  false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
 #macro SCRIBBLE_FIX_NEWLINES                       true     //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
 #macro SCRIBBLE_SLANT_AMOUNT                       4        //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_Z                                  0        //The z-value for vertexes

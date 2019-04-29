@@ -33,31 +33,89 @@ if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
     exit;
 }
 
-#region Check if we should've called scribble_step() for this Scribble data structure
 
-if ( (_json[| __SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __SCRIBBLE.EV_CHARACTER_LIST ]) > 0) )
+
+#region Handle typewriter
+
+_json[| __SCRIBBLE.ANIMATION_TIME ] += SCRIBBLE_STEP_SIZE;
+
+var _typewriter_direction = _json[| __SCRIBBLE.TW_DIRECTION ];
+if (_typewriter_direction != 0)
 {
-    if ( !_json[| __SCRIBBLE.HAS_CALLED_STEP ] )
+    var _do_event_scan = false;
+    
+    var _tw_pos   = _json[| __SCRIBBLE.TW_POSITION ];
+    var _tw_speed = _json[| __SCRIBBLE.TW_SPEED    ];
+    _tw_speed *= SCRIBBLE_STEP_SIZE;
+    
+    switch(_json[| __SCRIBBLE.TW_METHOD ])
     {
-        if (SCRIBBLE_CALL_STEP_IN_DRAW)
-        {
-            scribble_step( _json);
-        }
-        else
-        {
-            if ( _json[| __SCRIBBLE.NO_STEP_COUNT ] >= 1 ) //Give GM one frame of grace before throwing an error
+        case SCRIBBLE_TYPEWRITER_WHOLE:
+            _do_event_scan = false;
+            
+            if (_typewriter_direction > 0)
             {
-                show_error("Scribble:\nscribble_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
+                if ( floor(_tw_pos) < floor(_tw_pos + _tw_speed) )
+                {
+                    var _scan_range_a = 0;
+                    var _scan_range_b = _json[| __SCRIBBLE.LENGTH ];
+                    _do_event_scan = true;
+                }
             }
-            else
+            
+            _tw_pos += _tw_speed;
+            _tw_pos = clamp(_tw_pos, 0, 1);
+            _json[| __SCRIBBLE.TW_POSITION ] = _tw_pos;
+        break;
+        
+        case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
+            if (_typewriter_direction > 0)
             {
-                _json[| __SCRIBBLE.NO_STEP_COUNT ]++;
+                _do_event_scan = true;
+                var _scan_range_a = _tw_pos;
+                var _scan_range_b = _tw_pos + _tw_speed;
             }
-        }
+            
+            var _length = _json[| __SCRIBBLE.LENGTH ];
+            _tw_pos += _tw_speed;
+            _tw_pos = min(_tw_pos, _length);
+            
+            _json[| __SCRIBBLE.TW_POSITION ] = _tw_pos;
+            _json[| __SCRIBBLE.CHAR_FADE_T ] = ((_typewriter_direction < 0)? 1 : 0) + clamp(_tw_pos / _length, 0, 1);
+        break;
+        
+        case SCRIBBLE_TYPEWRITER_PER_LINE:
+            var _lines = _json[| __SCRIBBLE.LINES ];
+            
+            if (_typewriter_direction > 0)
+            {
+                //var _list = _json[| __SCRIBBLE.LINE_LIST ];
+                //if ( floor(_tw_pos) > floor(_tw_pos - _tw_speed) )
+                //{
+                //    var _line_a = _list[| floor(_tw_pos) ];
+                //    var _line_b = _list[| min(floor(_tw_pos + _tw_speed), _lines-1) ];
+                //    var _scan_range_a = _line_a[ __SCRIBBLE_LINE.FIRST_CHAR ];
+                //    var _scan_range_b = _line_b[ __SCRIBBLE_LINE.LAST_CHAR  ];
+                //    _do_event_scan = true;
+                //}
+            }
+            
+            _tw_pos += _tw_speed;
+            _tw_pos = min(_tw_pos, _lines);
+            
+            _json[| __SCRIBBLE.TW_POSITION ] = _tw_pos;
+            _json[| __SCRIBBLE.LINE_FADE_T ] = ((_typewriter_direction < 0)? 1 : 0) + clamp(_tw_pos / _lines, 0, 1);
+        break;
+        
+        default:
+            show_error("Scribble:\nTypewriter method not recognised.\nPlease use SCRIBBLE_TYPEWRITER_PER_CHARACTER or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false);
+        break;
     }
 }
 
 #endregion
+
+
 
 var _old_matrix = matrix_get(matrix_world);
 
@@ -76,8 +134,8 @@ matrix_set(matrix_world, _matrix);
 
 if (SCRIBBLE_COMPATIBILITY_DRAW)
 {
-    //#region Compatibility mode
-    //
+    #region Compatibility mode
+    
     //var _old_halign = 0; //draw_get_halign();
     //var _old_valign = 0; //draw_get_valign();
     //var _old_font   = 0; //draw_get_font();
@@ -155,8 +213,8 @@ if (SCRIBBLE_COMPATIBILITY_DRAW)
     //draw_set_font(  _old_font  );
     //draw_set_colour(_old_colour);
     //draw_set_alpha( _old_alpha );
-    //
-    //#endregion
+    
+    #endregion
 }
 else
 {
