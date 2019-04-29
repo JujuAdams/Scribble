@@ -866,7 +866,18 @@ _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_max_height;
 _line_array[@ __SCRIBBLE_LINE.LENGTH    ] = _line_length;
 _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _line_array[@ __SCRIBBLE_LINE.FIRST_CHAR ] + _line_length;
 
-_page_lines_array[@ array_length_1d(_page_lines_array) ] = _line_array;
+_text_y += _line_max_height;
+
+//If we've run over the maximum height of the box
+if (((_text_y > _height_limit) && (_height_limit >= 0)) || (_page_array == noone) || _force_newpage)
+{
+    var _page_array = array_create(__SCRIBBLE_PAGE.__SIZE);
+    _page_array[@ __SCRIBBLE_PAGE.LENGTH              ] = 0;
+    _page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = [_line_array];
+    _page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFER_ARRAY ] = array_create(0);
+    
+    _text_page_array[@ array_length_1d(_text_page_array) ] = _page_array;
+}
 
 #endregion
 
@@ -965,8 +976,9 @@ ds_list_destroy(_parameters_list);
 
 #region Build the vertex buffers
 
-var _json_offset_x = _json[| __SCRIBBLE.LEFT ];
-var _json_offset_y = _json[| __SCRIBBLE.TOP  ];
+var _json_offset_x = _json[| __SCRIBBLE.LEFT   ];
+var _json_offset_y = _json[| __SCRIBBLE.TOP    ];
+var _json_length   = _json[| __SCRIBBLE.LENGTH ];
 
 var _texture_to_vbuff_map = ds_map_create();
 
@@ -1066,15 +1078,14 @@ repeat(_pages_size)
                         var _vbuff_data = _texture_to_vbuff_map[? _sprite_texture ];
                         if (_vbuff_data == undefined)
                         {
-                            var _vbuff = vertex_create_buffer();
-                            vertex_begin(_vbuff, global.__scribble_vertex_format);
+                            var _buffer = buffer_create(1, buffer_grow, 1);
                             
                             _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
-                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER        ] = _buffer;
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = undefined;
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _sprite_texture;
                             
                             _vbuffs_array[@ array_length_1d(_vbuffs_array) ] = _vbuff_data;
-                            
                             _texture_to_vbuff_map[? _sprite_texture ] = _vbuff_data;
                         }
                         else
@@ -1089,12 +1100,12 @@ repeat(_pages_size)
                     var _glyph_r = _glyph_l + _uvs[6]*_scale*sprite_get_width(_sprite);
                     var _glyph_b = _glyph_t + _uvs[7]*_scale*sprite_get_height(_sprite);
                     
-                    vertex_position_3d(_vbuff,   _glyph_l, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[1]);
-                    vertex_position_3d(_vbuff,   _glyph_l, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[3]);
-                    vertex_position_3d(_vbuff,   _glyph_r, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[3]);
-                    vertex_position_3d(_vbuff,   _glyph_r, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[3]);
-                    vertex_position_3d(_vbuff,   _glyph_r, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[1]);
-                    vertex_position_3d(_vbuff,   _glyph_l, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[1]);
+                    //vertex_position_3d(_vbuff,   _glyph_l, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[1]);
+                    //vertex_position_3d(_vbuff,   _glyph_l, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[3]);
+                    //vertex_position_3d(_vbuff,   _glyph_r, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[3]);
+                    //vertex_position_3d(_vbuff,   _glyph_r, _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[3]);
+                    //vertex_position_3d(_vbuff,   _glyph_r, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[2], _uvs[1]);
+                    //vertex_position_3d(_vbuff,   _glyph_l, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, _alpha); vertex_texcoord(_vbuff,   _uvs[0], _uvs[1]);
                 }
                 
                 ++_text_char;
@@ -1125,20 +1136,19 @@ repeat(_pages_size)
                         var _vbuff_data = _lookup_map[? _font_texture ];
                         if (_vbuff_data == undefined)
                         {
-                            var _vbuff = vertex_create_buffer();
-                            vertex_begin(_vbuff, global.__scribble_vertex_format);
+                            var _buffer = buffer_create(__SCRIBBLE_VERTEX_BYTE_SIZE*6*_json_length, buffer_grow, 1);
                             
                             _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
-                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER        ] = _buffer;
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = undefined;
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE       ] = _font_texture;
                             
                             _vbuffs_array[@ array_length_1d(_vbuffs_array) ] = _vbuff_data;
-                            
                             _lookup_map[? _font_texture ] = _vbuff_data;
                         }
                         else
                         {
-                            var _vbuff = _vbuff_data[ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
+                            var _buffer = _vbuff_data[ __SCRIBBLE_VERTEX_BUFFER.BUFFER ];
                         }
                     }
                 }
@@ -1152,6 +1162,7 @@ repeat(_pages_size)
                 var _scale     = _word_array[ __SCRIBBLE_WORD.SCALE  ];
                 var _slant     = _word_array[ __SCRIBBLE_WORD.SLANT  ];
                 var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_scale*_slant;
+                var _colour_u32 = (_colour | $FF000000);
                 
                 var _flags  = 0;
                 var _offset = 1;
@@ -1168,81 +1179,73 @@ repeat(_pages_size)
                 var _char_t = _word_t;
                 var _char_index = 1;
                 
-                if (_font_glyphs_array == undefined)
+                repeat(_string_size)
                 {
-                    repeat(_string_size)
+                    var _char = string_char_at(_str, _char_index);
+                    if (_font_glyphs_array == undefined)
                     {
-                        var _array = _font_glyphs_map[? string_char_at(_str, _char_index) ];
-                        if (_array == undefined) continue;
-                        
-                        var _glyph_w   = _array[ SCRIBBLE_GLYPH.WIDTH   ];
-                        var _glyph_h   = _array[ SCRIBBLE_GLYPH.HEIGHT   ];
-                        var _glyph_u0  = _array[ SCRIBBLE_GLYPH.U0  ];
-                        var _glyph_v0  = _array[ SCRIBBLE_GLYPH.V0  ];
-                        var _glyph_u1  = _array[ SCRIBBLE_GLYPH.U1  ];
-                        var _glyph_v1  = _array[ SCRIBBLE_GLYPH.V1  ];
-                        var _glyph_dx  = _array[ SCRIBBLE_GLYPH.X_OFFSET  ];
-                        var _glyph_dy  = _array[ SCRIBBLE_GLYPH.Y_OFFSET  ];
-                        var _glyph_shf = _array[ SCRIBBLE_GLYPH.SEPARATION ];
-                        
-                        var _glyph_l = _char_l + _glyph_dx*_scale;
-                        var _glyph_t = _char_t + _glyph_dy*_scale;
-                        var _glyph_r = _glyph_l + _glyph_w*_scale;
-                        var _glyph_b = _glyph_t + _glyph_h*_scale;
-                        
-                        var _char_pc = _text_char / _max_char;
-                        
-                        vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
-                        vertex_position_3d(_vbuff,   _glyph_l              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v1);
-                        vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
-                        vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
-                        vertex_position_3d(_vbuff,   _glyph_r+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v0);
-                        vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
-                        
-                        _char_l += _glyph_shf*_scale;
-                        ++_text_char;
-                        ++_char_index;
+                        var _array = _font_glyphs_map[? _char ];
                     }
-                }
-                else
-                {
-                    repeat(_string_size)
+                    else
                     {
-                        var _ord = ord(string_char_at(_str, _char_index));
-                        if (_ord < _font_glyphs_min) || (_ord > _font_glyphs_max) continue;
+                        var _ord = ord(_char);
+                        if ((_ord < _font_glyphs_min) || (_ord > _font_glyphs_max)) continue;
                         var _array = _font_glyphs_array[ _ord - _font_glyphs_min ];
-                        if (_array == undefined) continue;
-                        
-                        var _glyph_w   = _array[ SCRIBBLE_GLYPH.WIDTH   ];
-                        var _glyph_h   = _array[ SCRIBBLE_GLYPH.HEIGHT   ];
-                        var _glyph_u0  = _array[ SCRIBBLE_GLYPH.U0  ];
-                        var _glyph_v0  = _array[ SCRIBBLE_GLYPH.V0  ];
-                        var _glyph_u1  = _array[ SCRIBBLE_GLYPH.U1  ];
-                        var _glyph_v1  = _array[ SCRIBBLE_GLYPH.V1  ];
-                        var _glyph_dx  = _array[ SCRIBBLE_GLYPH.X_OFFSET  ];
-                        var _glyph_dy  = _array[ SCRIBBLE_GLYPH.Y_OFFSET  ];
-                        var _glyph_shf = _array[ SCRIBBLE_GLYPH.SEPARATION ];
-                        
-                        var _glyph_l = _char_l + _glyph_dx*_scale;
-                        var _glyph_t = _char_t + _glyph_dy*_scale;
-                        var _glyph_r = _glyph_l + _glyph_w*_scale;
-                        var _glyph_b = _glyph_t + _glyph_h*_scale;
-                        
-                        var _char_pc = _text_char / _max_char;
-                        
-                        vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
-                        vertex_position_3d(_vbuff,   _glyph_l              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v1);
-                        vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
-                        vertex_position_3d(_vbuff,   _glyph_r              , _glyph_b, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v1);
-                        vertex_position_3d(_vbuff,   _glyph_r+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u1, _glyph_v0);
-                        vertex_position_3d(_vbuff,   _glyph_l+_slant_offset, _glyph_t, SCRIBBLE_Z); vertex_normal(_vbuff,   _char_pc, _line_pc, _flags); vertex_colour(_vbuff,   _colour, 1); vertex_texcoord(_vbuff,   _glyph_u0, _glyph_v0);
-                        
-                        _char_l += _glyph_shf*_scale;
-                        ++_text_char;
-                        ++_char_index;
                     }
+                    if (_array == undefined) continue;
+                    
+                    var _glyph_w   = _array[ SCRIBBLE_GLYPH.WIDTH      ];
+                    var _glyph_h   = _array[ SCRIBBLE_GLYPH.HEIGHT     ];
+                    var _glyph_u0  = _array[ SCRIBBLE_GLYPH.U0         ];
+                    var _glyph_v0  = _array[ SCRIBBLE_GLYPH.V0         ];
+                    var _glyph_u1  = _array[ SCRIBBLE_GLYPH.U1         ];
+                    var _glyph_v1  = _array[ SCRIBBLE_GLYPH.V1         ];
+                    var _glyph_dx  = _array[ SCRIBBLE_GLYPH.X_OFFSET   ];
+                    var _glyph_dy  = _array[ SCRIBBLE_GLYPH.Y_OFFSET   ];
+                    var _glyph_shf = _array[ SCRIBBLE_GLYPH.SEPARATION ];
+                    
+                    var _glyph_l = _char_l + _glyph_dx*_scale;
+                    var _glyph_t = _char_t + _glyph_dy*_scale;
+                    var _glyph_r = _glyph_l + _glyph_w*_scale;
+                    var _glyph_b = _glyph_t + _glyph_h*_scale;
+                    
+                    var _char_pc = _text_char / _max_char;
+                    
+                    buffer_write(_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_buffer, buffer_f32, _glyph_t ); buffer_write(_buffer, buffer_f32, SCRIBBLE_Z);
+                    buffer_write(_buffer, buffer_f32, _char_pc              ); buffer_write(_buffer, buffer_f32, _line_pc ); buffer_write(_buffer, buffer_f32, _flags    );
+                    buffer_write(_buffer, buffer_u32, _colour_u32);
+                    buffer_write(_buffer, buffer_f32, _glyph_u0             ); buffer_write(_buffer, buffer_f32, _glyph_v0);
+                    
+                    buffer_write(_buffer, buffer_f32, _glyph_l              ); buffer_write(_buffer, buffer_f32, _glyph_b ); buffer_write(_buffer, buffer_f32, SCRIBBLE_Z);
+                    buffer_write(_buffer, buffer_f32, _char_pc              ); buffer_write(_buffer, buffer_f32, _line_pc ); buffer_write(_buffer, buffer_f32, _flags    );
+                    buffer_write(_buffer, buffer_u32, _colour_u32);
+                    buffer_write(_buffer, buffer_f32, _glyph_u0             ); buffer_write(_buffer, buffer_f32, _glyph_v1);
+                    
+                    buffer_write(_buffer, buffer_f32, _glyph_r              ); buffer_write(_buffer, buffer_f32, _glyph_b ); buffer_write(_buffer, buffer_f32, SCRIBBLE_Z);
+                    buffer_write(_buffer, buffer_f32, _char_pc              ); buffer_write(_buffer, buffer_f32, _line_pc ); buffer_write(_buffer, buffer_f32, _flags    );
+                    buffer_write(_buffer, buffer_u32, _colour_u32);
+                    buffer_write(_buffer, buffer_f32, _glyph_u1             ); buffer_write(_buffer, buffer_f32, _glyph_v1);
+                    
+                    buffer_write(_buffer, buffer_f32, _glyph_r              ); buffer_write(_buffer, buffer_f32, _glyph_b ); buffer_write(_buffer, buffer_f32, SCRIBBLE_Z);
+                    buffer_write(_buffer, buffer_f32, _char_pc              ); buffer_write(_buffer, buffer_f32, _line_pc ); buffer_write(_buffer, buffer_f32, _flags    );
+                    buffer_write(_buffer, buffer_u32, _colour_u32);
+                    buffer_write(_buffer, buffer_f32, _glyph_u1             ); buffer_write(_buffer, buffer_f32, _glyph_v1);
+                    
+                    buffer_write(_buffer, buffer_f32, _glyph_r+_slant_offset); buffer_write(_buffer, buffer_f32, _glyph_t ); buffer_write(_buffer, buffer_f32, SCRIBBLE_Z);
+                    buffer_write(_buffer, buffer_f32, _char_pc              ); buffer_write(_buffer, buffer_f32, _line_pc ); buffer_write(_buffer, buffer_f32, _flags    );
+                    buffer_write(_buffer, buffer_u32, _colour_u32);
+                    buffer_write(_buffer, buffer_f32, _glyph_u1             ); buffer_write(_buffer, buffer_f32, _glyph_v0);
+                    
+                    buffer_write(_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_buffer, buffer_f32, _glyph_t ); buffer_write(_buffer, buffer_f32, SCRIBBLE_Z);
+                    buffer_write(_buffer, buffer_f32, _char_pc              ); buffer_write(_buffer, buffer_f32, _line_pc ); buffer_write(_buffer, buffer_f32, _flags    );
+                    buffer_write(_buffer, buffer_u32, _colour_u32);
+                    buffer_write(_buffer, buffer_f32, _glyph_u0             ); buffer_write(_buffer, buffer_f32, _glyph_v0);
+                    
+                    _char_l += _glyph_shf*_scale;
+                    ++_text_char;
+                    ++_char_index;
                 }
-            
+                
                 #endregion
             }
             
@@ -1259,9 +1262,11 @@ repeat(_pages_size)
     for(var _i = 0; _i < _count; _i++)
     {
         var _vbuff_data = _vbuffs_array[ _i ];
-        var _vbuff = _vbuff_data[ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ];
-        vertex_end(_vbuff);
+        var _buffer     = _vbuff_data[ __SCRIBBLE_VERTEX_BUFFER.BUFFER ];
+        
+        var _vbuff = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, buffer_tell(_buffer)/__SCRIBBLE_VERTEX_BYTE_SIZE);
         vertex_freeze(_vbuff);
+        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER ] = _vbuff;
     }
     
     ++_page;

@@ -76,8 +76,8 @@ matrix_set(matrix_world, _matrix);
 
 if (SCRIBBLE_COMPATIBILITY_DRAW)
 {
-    //#region Compatibility mode
-    //
+    #region Compatibility mode
+    
     //var _old_halign = 0; //draw_get_halign();
     //var _old_valign = 0; //draw_get_valign();
     //var _old_font   = 0; //draw_get_font();
@@ -155,8 +155,8 @@ if (SCRIBBLE_COMPATIBILITY_DRAW)
     //draw_set_font(  _old_font  );
     //draw_set_colour(_old_colour);
     //draw_set_alpha( _old_alpha );
-    //
-    //#endregion
+    
+    #endregion
 }
 else
 {
