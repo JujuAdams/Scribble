@@ -738,7 +738,7 @@
             "Key": "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
             "Value": {
                 "id": "5dbea209-936c-42d4-8bd9-9bd0f2508e30",
-                "resourcePath": "scripts\\scribble_event_step\\scribble_event_step.yy",
+                "resourcePath": "scripts\\scribble_events_call\\scribble_events_call.yy",
                 "resourceType": "GMScript"
             }
         }
@@ -757,10 +757,10 @@
         "5b698267-e679-4285-95af-7d896e27c33e",
         "0f5a7def-2f28-4745-bfe7-d3e4c13ae8b4",
         "13548f19-dd1d-4dc1-9444-205ee176ef6f",
-        "c1f9a882-5c95-4baa-9aa2-288643547505",
-        "bbaf2270-049d-4b2f-b134-efca33e50f7e",
         "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd",
         "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
+        "c1f9a882-5c95-4baa-9aa2-288643547505",
+        "bbaf2270-049d-4b2f-b134-efca33e50f7e",
         "baaa6707-db8c-472e-90b1-562acc7d6c47",
         "00fbc8f9-0e51-458c-8834-69a5cbc5e94b"
     ],
