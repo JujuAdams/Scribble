@@ -200,8 +200,6 @@ repeat(_buffer_size)
 
 var _json                  = ds_list_create(); //The main data structure
 var _text_page_array       = array_create(0);
-var _text_line_list        = ds_list_create(); //Stores each line of text
-var _vbuff_list            = ds_list_create(); //Stores all the vertex buffers needed to render the text and sprites
 var _events_character_list = ds_list_create(); //Stores each event's triggering character
 var _events_name_list      = ds_list_create(); //Stores each event's name
 var _events_data_list      = ds_list_create(); //Stores each event's parameters
@@ -252,6 +250,9 @@ _json[| __SCRIBBLE.__SECTION4         ] = "-- Lists --";
 _json[| __SCRIBBLE.PAGE_ARRAY         ] = _text_page_array;
 
 _json[| __SCRIBBLE.__SECTION5         ] = "-- Events --";
+_json[| __SCRIBBLE.EV_SCAN_DO         ] = false;
+_json[| __SCRIBBLE.EV_SCAN_A          ] = 0;
+_json[| __SCRIBBLE.EV_SCAN_B          ] = 0;
 _json[| __SCRIBBLE.EV_CHARACTER_LIST  ] = _events_character_list; //Stores each event's triggering cha
 _json[| __SCRIBBLE.EV_NAME_LIST       ] = _events_name_list;      //Stores each event's name
 _json[| __SCRIBBLE.EV_DATA_LIST       ] = _events_data_list;      //Stores each event's parameters

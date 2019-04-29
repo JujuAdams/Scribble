@@ -43,6 +43,7 @@ var _typewriter_direction = _json[| __SCRIBBLE.TW_DIRECTION ];
 if (_typewriter_direction != 0)
 {
     var _do_event_scan = false;
+    var _scan_range_b = _json[| __SCRIBBLE.EV_SCAN_B ];
     
     var _tw_pos   = _json[| __SCRIBBLE.TW_POSITION ];
     var _tw_speed = _json[| __SCRIBBLE.TW_SPEED    ];
@@ -57,7 +58,6 @@ if (_typewriter_direction != 0)
             {
                 if ( floor(_tw_pos) < floor(_tw_pos + _tw_speed) )
                 {
-                    var _scan_range_a = 0;
                     var _scan_range_b = _json[| __SCRIBBLE.LENGTH ];
                     _do_event_scan = true;
                 }
@@ -72,7 +72,6 @@ if (_typewriter_direction != 0)
             if (_typewriter_direction > 0)
             {
                 _do_event_scan = true;
-                var _scan_range_a = _tw_pos;
                 var _scan_range_b = _tw_pos + _tw_speed;
             }
             
@@ -94,7 +93,6 @@ if (_typewriter_direction != 0)
                 //{
                 //    var _line_a = _list[| floor(_tw_pos) ];
                 //    var _line_b = _list[| min(floor(_tw_pos + _tw_speed), _lines-1) ];
-                //    var _scan_range_a = _line_a[ __SCRIBBLE_LINE.FIRST_CHAR ];
                 //    var _scan_range_b = _line_b[ __SCRIBBLE_LINE.LAST_CHAR  ];
                 //    _do_event_scan = true;
                 //}
@@ -113,7 +111,6 @@ if (_typewriter_direction != 0)
     }
     
     _json[| __SCRIBBLE.EV_SCAN_DO ] = _do_event_scan;
-    _json[| __SCRIBBLE.EV_SCAN_A  ] = _scan_range_a;
     _json[| __SCRIBBLE.EV_SCAN_B  ] = _scan_range_b;
 }
 
