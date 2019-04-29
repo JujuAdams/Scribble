@@ -53,12 +53,6 @@ if ( !variable_global_exists("__scribble_init_complete") )
     exit;
 }
 
-if (!global.__scribble_init_complete)
-{
-    show_error("Scribble:\nscribble_create() should be called after initialising Scribble.\n ", false);
-    exit;
-}
-
 var _timer = get_timer();
 
 var _str              = argument[0];

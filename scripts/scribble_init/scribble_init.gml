@@ -335,21 +335,21 @@ if (_auto_scan)
                 }
                 else
                 {
-                    var _data = array_create(__SCRIBBLE_FONT.__SIZE);
-                    _data[ __SCRIBBLE_FONT.NAME         ] = _font;
-                    _data[ __SCRIBBLE_FONT.PATH         ] = _directory + _file;
-                    _data[ __SCRIBBLE_FONT.TYPE         ] = __SCRIBBLE_FONT_TYPE.FONT;
-                    _data[ __SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
-                    _data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
-                    _data[ __SCRIBBLE_FONT.GLYPH_MIN    ] = 32;
-                    _data[ __SCRIBBLE_FONT.GLYPH_MAX    ] = 32;
-                    _data[ __SCRIBBLE_FONT.TEXTURE      ] = undefined;
-                    _data[ __SCRIBBLE_FONT.SPACE_WIDTH  ] = undefined;
-                    _data[ __SCRIBBLE_FONT.MAPSTRING    ] = undefined;
-                    _data[ __SCRIBBLE_FONT.SEPARATION   ] = undefined;
-                    global.__scribble_font_data[? _font ] = _data;
-                    
-                    show_debug_message("Scribble: Autoscan added \"" + _font + "\" as a standard font");
+                    show_debug_message("Scribble: Autoscan found standard font \"" + _font + "\"");
+                    scribble_init_add_font(_font, string_replace(_directory + _file, _font_directory, ""));
+                    //var _data = array_create(__SCRIBBLE_FONT.__SIZE);
+                    //_data[ __SCRIBBLE_FONT.NAME         ] = _font;
+                    //_data[ __SCRIBBLE_FONT.PATH         ] = _directory + _file;
+                    //_data[ __SCRIBBLE_FONT.TYPE         ] = __SCRIBBLE_FONT_TYPE.FONT;
+                    //_data[ __SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
+                    //_data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
+                    //_data[ __SCRIBBLE_FONT.GLYPH_MIN    ] = 32;
+                    //_data[ __SCRIBBLE_FONT.GLYPH_MAX    ] = 32;
+                    //_data[ __SCRIBBLE_FONT.TEXTURE      ] = undefined;
+                    //_data[ __SCRIBBLE_FONT.SPACE_WIDTH  ] = undefined;
+                    //_data[ __SCRIBBLE_FONT.MAPSTRING    ] = undefined;
+                    //_data[ __SCRIBBLE_FONT.SEPARATION   ] = undefined;
+                    //global.__scribble_font_data[? _font ] = _data;
                 }
             }
             
