@@ -729,31 +729,7 @@ for(var _i = 0; _i < _separator_count; _i++)
     var _last_line_array = _line_array;
     var _last_word_array = _word_array;
     
-    if (!_force_newline && !_force_newpage && (_substr != ""))
-    {
-        //Add a new word
-        _new_word = true;
-        
-        var _word_array = array_create(__SCRIBBLE_WORD.__SIZE, 0);
-        _word_array[ __SCRIBBLE_WORD.X              ] = _text_x;
-        _word_array[ __SCRIBBLE_WORD.Y              ] = 0;
-        _word_array[ __SCRIBBLE_WORD.WIDTH          ] = _substr_width;
-        _word_array[ __SCRIBBLE_WORD.HEIGHT         ] = _substr_height;
-        _word_array[ __SCRIBBLE_WORD.SCALE          ] = _text_scale;
-        _word_array[ __SCRIBBLE_WORD.SLANT          ] = _text_slant;
-        _word_array[ __SCRIBBLE_WORD.VALIGN         ] = fa_middle;
-        _word_array[ __SCRIBBLE_WORD.STRING         ] = _substr;
-        _word_array[ __SCRIBBLE_WORD.INPUT_STRING   ] = _input_substr;
-        _word_array[ __SCRIBBLE_WORD.SPRITE         ] = _substr_sprite;
-        _word_array[ __SCRIBBLE_WORD.IMAGE          ] = _substr_image;
-        _word_array[ __SCRIBBLE_WORD.IMAGE_SPEED    ] = _substr_image_speed;
-        _word_array[ __SCRIBBLE_WORD.LENGTH         ] = _substr_length; //Include the separator character!
-        _word_array[ __SCRIBBLE_WORD.FONT           ] = _text_font;
-        _word_array[ __SCRIBBLE_WORD.COLOUR         ] = _text_colour;
-        _word_array[ __SCRIBBLE_WORD.FLAGS          ] = _text_flags;
-        _word_array[ __SCRIBBLE_WORD.NEXT_SEPARATOR ] = "";
-    }
-    
+    #region Make page
     
     if (!is_array(_page_array))
     {
@@ -768,7 +744,7 @@ for(var _i = 0; _i < _separator_count; _i++)
         _text_y      = 0;
         _page_length = 0;
     }
-    else if (((_text_y + _substr_height > _height_limit) && (_height_limit >= 0)) || (_page_array == noone) || _force_newpage)
+    else if (((_text_y + _substr_height > _height_limit) && (_height_limit >= 0)) || _force_newpage)
     {
         _last_page_array[@ __SCRIBBLE_PAGE.LENGTH ] = _page_length;
         
@@ -783,6 +759,10 @@ for(var _i = 0; _i < _separator_count; _i++)
         _text_y      = 0;
         _page_length = 0;
     }
+    
+    #endregion
+    
+    #region Make line
     
     if (!is_array(_line_array))
     {
@@ -839,6 +819,36 @@ for(var _i = 0; _i < _separator_count; _i++)
         
         _page_lines_array[@ array_length_1d(_page_lines_array) ] = _line_array;
     }
+    
+    #endregion
+    
+    #region Make word
+    
+    if (!_force_newline && !_force_newpage && (_substr != ""))
+    {
+        _new_word = true;
+        
+        var _word_array = array_create(__SCRIBBLE_WORD.__SIZE, 0);
+        _word_array[ __SCRIBBLE_WORD.X              ] = _text_x;
+        _word_array[ __SCRIBBLE_WORD.Y              ] = 0;
+        _word_array[ __SCRIBBLE_WORD.WIDTH          ] = _substr_width;
+        _word_array[ __SCRIBBLE_WORD.HEIGHT         ] = _substr_height;
+        _word_array[ __SCRIBBLE_WORD.SCALE          ] = _text_scale;
+        _word_array[ __SCRIBBLE_WORD.SLANT          ] = _text_slant;
+        _word_array[ __SCRIBBLE_WORD.VALIGN         ] = fa_middle;
+        _word_array[ __SCRIBBLE_WORD.STRING         ] = _substr;
+        _word_array[ __SCRIBBLE_WORD.INPUT_STRING   ] = _input_substr;
+        _word_array[ __SCRIBBLE_WORD.SPRITE         ] = _substr_sprite;
+        _word_array[ __SCRIBBLE_WORD.IMAGE          ] = _substr_image;
+        _word_array[ __SCRIBBLE_WORD.IMAGE_SPEED    ] = _substr_image_speed;
+        _word_array[ __SCRIBBLE_WORD.LENGTH         ] = _substr_length; //Include the separator character!
+        _word_array[ __SCRIBBLE_WORD.FONT           ] = _text_font;
+        _word_array[ __SCRIBBLE_WORD.COLOUR         ] = _text_colour;
+        _word_array[ __SCRIBBLE_WORD.FLAGS          ] = _text_flags;
+        _word_array[ __SCRIBBLE_WORD.NEXT_SEPARATOR ] = "";
+    }
+    
+    #endregion
     
     if (_new_word)
     {
