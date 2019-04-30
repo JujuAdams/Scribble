@@ -725,74 +725,12 @@ for(var _i = 0; _i < _separator_count; _i++)
     
     #region Position and store word
     
-    //If we've run over the maximum width of the box
-    if (((_substr_width + _text_x > _width_limit) && (_width_limit >= 0)) || (_line_array == noone) || (_sep_prev_char == 10) || _force_newline || _force_newpage)
-    {
-        if (_line_array != noone)
-        {
-            _line_array[@ __SCRIBBLE_LINE.WIDTH     ] = _text_x;
-            _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_max_height;
-            _line_array[@ __SCRIBBLE_LINE.LENGTH    ] = _line_length;
-            _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _line_array[ __SCRIBBLE_LINE.FIRST_CHAR ] + _line_length;
-            
-            _text_x                = 0;
-            _text_y               += _line_max_height;
-            _line_prev_last_index += _line_length;
-            _line_length           = 0;
-            
-            _line_max_height = _line_min_height;
-        }
-            
-        if (_word_array != noone)
-        {
-            // _word_array still holds the previous word
-            var _next_separator = _word_array[ __SCRIBBLE_WORD.NEXT_SEPARATOR ];
-            if (_next_separator == 32) || (_next_separator == SCRIBBLE_COMMAND_TAG_OPEN) // <space> or [
-            {
-                _word_array[@ __SCRIBBLE_WORD.WIDTH ] -= _font_space_width; //If the previous separation character was whitespace, correct the length of the previous word
-                _line_array[@ __SCRIBBLE_LINE.WIDTH ] -= _font_space_width; //...and the previous line
-            }
-        }
-        
-        //If we've run over the maximum height of the box
-        if (((_text_y > _height_limit) && (_height_limit >= 0)) || (_page_array == noone) || _force_newpage)
-        {
-            if (_page_array != noone)
-            {
-                _page_array[@ __SCRIBBLE_PAGE.LENGTH ] = _page_length;
-            }
-            
-            var _page_array = array_create(__SCRIBBLE_PAGE.__SIZE);
-            var _page_lines_array = [];
-            _page_array[@ __SCRIBBLE_PAGE.LENGTH              ] = 0;
-            _page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _page_lines_array;
-            _page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFER_ARRAY ] = array_create(0);
-            
-            _text_page_array[@ array_length_1d(_text_page_array) ] = _page_array;
-            
-            _text_y      = 0;
-            _page_length = 0;
-        }
-        
-        var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
-        var _line_words_array = [];
-        _line_array[@ __SCRIBBLE_LINE.X           ] = 0;
-        _line_array[@ __SCRIBBLE_LINE.Y           ] = _text_y;
-        _line_array[@ __SCRIBBLE_LINE.WIDTH       ] = 0;
-        _line_array[@ __SCRIBBLE_LINE.HEIGHT      ] = _line_min_height;
-        _line_array[@ __SCRIBBLE_LINE.LENGTH      ] = 0;
-        _line_array[@ __SCRIBBLE_LINE.FIRST_CHAR  ] = _line_prev_last_index;
-        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR   ] = _line_prev_last_index;
-        _line_array[@ __SCRIBBLE_LINE.HALIGN      ] = _text_halign;
-        _line_array[@ __SCRIBBLE_LINE.WORDS_ARRAY ] = _line_words_array;
-        
-        _page_lines_array[@ array_length_1d(_page_lines_array) ] = _line_array;
-    }
+    var _last_page_array = _page_array;
+    var _last_line_array = _line_array;
+    var _last_word_array = _word_array;
     
     if (!_force_newline && !_force_newpage && (_substr != ""))
     {
-        _line_max_height = max(_line_max_height, _substr_height);
-        
         //Add a new word
         _new_word = true;
         
@@ -814,6 +752,97 @@ for(var _i = 0; _i < _separator_count; _i++)
         _word_array[ __SCRIBBLE_WORD.COLOUR         ] = _text_colour;
         _word_array[ __SCRIBBLE_WORD.FLAGS          ] = _text_flags;
         _word_array[ __SCRIBBLE_WORD.NEXT_SEPARATOR ] = "";
+    }
+    
+    
+    if (!is_array(_page_array))
+    {
+        var _page_array = array_create(__SCRIBBLE_PAGE.__SIZE);
+        var _page_lines_array = [];
+        _page_array[@ __SCRIBBLE_PAGE.LENGTH              ] = 0;
+        _page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _page_lines_array;
+        _page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFER_ARRAY ] = array_create(0);
+        
+        _text_page_array[@ array_length_1d(_text_page_array) ] = _page_array;
+        
+        _text_y      = 0;
+        _page_length = 0;
+    }
+    else if (((_text_y + _substr_height > _height_limit) && (_height_limit >= 0)) || (_page_array == noone) || _force_newpage)
+    {
+        _last_page_array[@ __SCRIBBLE_PAGE.LENGTH ] = _page_length;
+        
+        var _page_array = array_create(__SCRIBBLE_PAGE.__SIZE);
+        var _page_lines_array = [];
+        _page_array[@ __SCRIBBLE_PAGE.LENGTH              ] = 0;
+        _page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _page_lines_array;
+        _page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFER_ARRAY ] = array_create(0);
+        
+        _text_page_array[@ array_length_1d(_text_page_array) ] = _page_array;
+        
+        _text_y      = 0;
+        _page_length = 0;
+    }
+    
+    if (!is_array(_line_array))
+    {
+        var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
+        var _line_words_array = [];
+        _line_array[@ __SCRIBBLE_LINE.X           ] = 0;
+        _line_array[@ __SCRIBBLE_LINE.Y           ] = _text_y;
+        _line_array[@ __SCRIBBLE_LINE.WIDTH       ] = 0;
+        _line_array[@ __SCRIBBLE_LINE.HEIGHT      ] = _line_min_height;
+        _line_array[@ __SCRIBBLE_LINE.LENGTH      ] = 0;
+        _line_array[@ __SCRIBBLE_LINE.FIRST_CHAR  ] = _line_prev_last_index;
+        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR   ] = _line_prev_last_index;
+        _line_array[@ __SCRIBBLE_LINE.HALIGN      ] = _text_halign;
+        _line_array[@ __SCRIBBLE_LINE.WORDS_ARRAY ] = _line_words_array;
+        
+        _page_lines_array[@ array_length_1d(_page_lines_array) ] = _line_array;
+    }
+    else if (((_substr_width + _text_x > _width_limit) && (_width_limit >= 0)) || (_sep_prev_char == 10) || _force_newline) //If we've run over the maximum width of the box
+    {
+        _line_array[@ __SCRIBBLE_LINE.WIDTH     ] = _text_x;
+        _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_max_height;
+        _line_array[@ __SCRIBBLE_LINE.LENGTH    ] = _line_length;
+        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _line_array[ __SCRIBBLE_LINE.FIRST_CHAR ] + _line_length;
+        
+        _text_x                = 0;
+        _text_y               += _line_max_height;
+        _line_prev_last_index += _line_length;
+        _line_length           = 0;
+        
+        _line_max_height = _line_min_height;
+            
+        if (!is_array(_word_array))
+        {
+            // _word_array still holds the previous word
+            var _next_separator = _last_word_array[ __SCRIBBLE_WORD.NEXT_SEPARATOR ];
+            if (_next_separator == 32) || (_next_separator == SCRIBBLE_COMMAND_TAG_OPEN) // <space> or [
+            {
+                _last_word_array[@ __SCRIBBLE_WORD.WIDTH ] -= _font_space_width; //If the previous separation character was whitespace, correct the length of the previous word
+                _last_line_array[@ __SCRIBBLE_LINE.WIDTH ] -= _font_space_width; //...and the previous line
+            }
+        }
+        
+        var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
+        var _line_words_array = [];
+        _line_array[@ __SCRIBBLE_LINE.X           ] = 0;
+        _line_array[@ __SCRIBBLE_LINE.Y           ] = _text_y;
+        _line_array[@ __SCRIBBLE_LINE.WIDTH       ] = 0;
+        _line_array[@ __SCRIBBLE_LINE.HEIGHT      ] = _line_min_height;
+        _line_array[@ __SCRIBBLE_LINE.LENGTH      ] = 0;
+        _line_array[@ __SCRIBBLE_LINE.FIRST_CHAR  ] = _line_prev_last_index;
+        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR   ] = _line_prev_last_index;
+        _line_array[@ __SCRIBBLE_LINE.HALIGN      ] = _text_halign;
+        _line_array[@ __SCRIBBLE_LINE.WORDS_ARRAY ] = _line_words_array;
+        
+        _page_lines_array[@ array_length_1d(_page_lines_array) ] = _line_array;
+    }
+    
+    if (_new_word)
+    {
+        _line_max_height = max(_line_max_height, _substr_height);
         
         //Add the word to the line list
         _line_words_array[@ array_length_1d(_line_words_array) ] = _word_array;
