@@ -8,10 +8,9 @@
 
 #region Global behaviours
 
-#macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
-#macro SCRIBBLE_HASH_NEWLINE                  true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
-#macro SCRIBBLE_COLOURISE_SPRITES             true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
-#macro SCRIBBLE_STEP_SIZE                     (delta_time/game_get_speed(gamespeed_microseconds)) //Automatically deltatimes text effects (including typewriter). Set this macro to a variable to control the step size yourself
+#macro SCRIBBLE_HASH_NEWLINE       true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
+#macro SCRIBBLE_COLOURISE_SPRITES  true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
+#macro SCRIBBLE_STEP_SIZE          (delta_time/game_get_speed(gamespeed_microseconds)) //Automatically deltatimes text effects (including typewriter). Set this macro to a variable to control the step size yourself
 
 #endregion
 

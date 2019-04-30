@@ -15,6 +15,8 @@ text = scribble_create(_string, 450, -1, "c_xanadu", "fTestB", fa_center);
 scribble_typewriter_in(text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3);
 scribble_set_box_alignment(text, fa_center, fa_middle);
 
+var _spritefont_map_string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
+
 test_string = "The Quick Brown Fox Jumps Over The Lazy Dog!";
-spritefont = font_add_sprite_ext(sSpriteFont, SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING, true, 0);
+spritefont = font_add_sprite_ext(sSpriteFont, _spritefont_map_string, true, 0);
 test_text = scribble_create(test_string, -1, -1, "c_white", "sSpriteFont", fa_left);
