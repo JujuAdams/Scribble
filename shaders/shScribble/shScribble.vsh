@@ -1,22 +1,26 @@
-const int MAX_FLAGS = 5;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
+const int MAX_FLAGS = 6;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
 //By default, the flags are:
 //0 = is a sprite
 //1 = wave
 //2 = shake
 //3 = rainbow
 //4 = wobble
-const int MAX_DATA_FIELDS = 9; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
+//5 = swell
+const int MAX_DATA_FIELDS = 11; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
 //By default, the data fields are:
-//0 = wave size
-//1 = wave frequency
-//2 = wave speed
-//3 = shake size
-//4 = shake speed
-//5 = rainbow weight
-//6 = wobble angle
-//7 = wobble frequency
+// 0 = wave size
+// 1 = wave frequency
+// 2 = wave speed
+// 3 = shake size
+// 4 = shake speed
+// 5 = rainbow weight
+// 6 = rainbow speed
+// 7 = wobble angle
+// 8 = wobble frequency
+// 9 = swell scale
+//10 = swell speed
 const float MAX_LINES = 1000.0; //Change SCRIBBLE_MAX_LINES in __scribble_config() if you change this value!
-
+    
 attribute vec3 in_Position; //       X,        Y, Packed character/line percentages
 attribute vec3 in_Normal;   //Centre X, Centre Y, Packed flags
 attribute vec4 in_Colour;
@@ -132,6 +136,11 @@ void rotateCharacter(inout vec2 position, vec2 centre, float angle)
                              delta.x*_sin + delta.y*_cos);
 }
 
+void scaleCharacter(inout vec2 position, vec2 centre, float scale)
+{
+    position = centre + scale*(position - centre);
+}
+
 void main()
 {
     //Unpack character and line percentages
@@ -144,6 +153,7 @@ void main()
     
     //Vertex animation
     vec4 pos = vec4(in_Position.xy, u_fZ, 1.0);
+    scaleCharacter(pos.xy, in_Normal.xy, 1.0 + flagArray[5]*u_aDataFields[9]*(0.5 + 0.5*sin(u_aDataFields[10]*(250.0*charPC - u_fTime))));
     rotateCharacter(pos.xy, in_Normal.xy, flagArray[4]*u_aDataFields[7]*sin(u_aDataFields[8]*u_fTime));
     applyWave(charPC, flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos);
     applyShake(charPC, flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos);

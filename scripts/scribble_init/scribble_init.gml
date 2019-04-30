@@ -237,7 +237,7 @@ else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_defau
 }
 
 //Declare global variables
-scribble_set_animation(undefined,   4, 50, 0.2,   4, 0.4,   0.5, 0.01,   60, 0.15);
+scribble_set_animation(undefined,   4, 50, 0.2,   4, 0.4,   0.5, 0.01,   60, 0.15,   0.4, 0.1);
 global.__scribble_font_directory               = _font_directory;
 global.__scribble_font_data                    = ds_map_create();  //Stores a data array for each font defined inside Scribble
 global.__scribble_spritefont_map               = ds_map_create();  //Stores a ds_map of all the spritefonts, for use with COMPATIBILITY_DRAW
@@ -274,6 +274,7 @@ scribble_define_flag("wave"   , 1);
 scribble_define_flag("shake"  , 2);
 scribble_define_flag("rainbow", 3);
 scribble_define_flag("wobble" , 4);
+scribble_define_flag("swell"  , 5);
 
 //Create a vertex format for our text
 vertex_format_begin();
