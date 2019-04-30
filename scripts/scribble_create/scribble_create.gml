@@ -237,10 +237,10 @@ _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX   ] = global.__scribble_global_count;
 
 _scribble_array[@ __SCRIBBLE.__SECTION2     ] = "-- Typewriter --";
 _scribble_array[@ __SCRIBBLE.TW_DIRECTION   ] = 0;
-_scribble_array[@ __SCRIBBLE.TW_SPEED       ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+_scribble_array[@ __SCRIBBLE.TW_SPEED       ] = 1;
 _scribble_array[@ __SCRIBBLE.TW_POSITION    ] = 0;
-_scribble_array[@ __SCRIBBLE.TW_METHOD      ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-_scribble_array[@ __SCRIBBLE.TW_SMOOTHNESS  ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
+_scribble_array[@ __SCRIBBLE.TW_METHOD      ] = SCRIBBLE_TYPEWRITER_WHOLE;
+_scribble_array[@ __SCRIBBLE.TW_SMOOTHNESS  ] = 0;
 _scribble_array[@ __SCRIBBLE.CHAR_FADE_T    ] = 1;
 _scribble_array[@ __SCRIBBLE.LINE_FADE_T    ] = 1;
 

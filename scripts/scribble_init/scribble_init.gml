@@ -159,6 +159,11 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_ON_OPENGL  !__SCRIBBLE_ON_DIRECTX
 #macro __SCRIBBLE_ON_MOBILE  ((os_type == os_ios) || (os_type == os_android))
 
+//Use these contants for scribble_typewriter_in() and scribble_typewrite_out():
+#macro SCRIBBLE_TYPEWRITER_WHOLE          0 //Fade the entire textbox in and out
+#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER  1 //Fade each character individually
+#macro SCRIBBLE_TYPEWRITER_PER_LINE       2 //Fade each line of text as a group
+
 #endregion
 
 if ( variable_global_exists("__scribble_global_count") )

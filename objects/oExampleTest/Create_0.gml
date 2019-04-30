@@ -11,8 +11,8 @@ var _string  = "[sound,sndCrank][rainbow]TEST[] ABCDEF##";
     _string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
     _string += "[wobble][fTestA][fa_right]THE [fTestB][$FF4499][rumble]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/rumble]LAZY [fTestB]DOG.";
 
-text = scribble_create(_string, 450, -1, "c_xanadu", "fTestB", fa_center);
-scribble_typewriter_in(text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3);
+text = scribble_create(_string, 450, 200, "c_xanadu", "fTestB", fa_center);
+scribble_typewriter_in(text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3, 3);
 scribble_set_box_alignment(text, fa_center, fa_middle);
 
 var _spritefont_map_string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";

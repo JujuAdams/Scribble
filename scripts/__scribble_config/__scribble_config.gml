@@ -29,18 +29,6 @@
 
 #endregion
 
-#region Typewriter effect
-
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3                                //The default speed of the typewriter effect, in characters/lines per frame
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3                                  //The default smoothhness of the typewriter effect. A value of "0" disables smooth fading
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD      SCRIBBLE_TYPEWRITER_PER_CHARACTER  //The default typewriter effect method
-//Use these contants for scribble_typewriter_in() and scribble_typewrite_out():
-#macro SCRIBBLE_TYPEWRITER_WHOLE               0                                  //Fade the entire textbox in and out
-#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER       1                                  //Fade each character individually
-#macro SCRIBBLE_TYPEWRITER_PER_LINE            2                                  //Fade each line of text as a group
-
-#endregion
-
 #region Miscellaneous advanced settings
 
 #macro SCRIBBLE_COMPATIBILITY_DRAW         false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
