@@ -1,9 +1,21 @@
 /// Returns a property value for a character in a font previously added to Scribble
 ///
-/// Three properties are available:
-/// 1) SCRIBBLE_GLYPH.X_OFFSET   - The relative x-position to display the glyph
-/// 2) SCRIBBLE_GLYPH.Y_OFFSET   - The relative y-position to display the glyph
-/// 3) SCRIBBLE_GLYPH.SEPARATION    - The 
+/// The following properties are available:
+/// enum SCRIBBLE_GLYPH
+/// {
+///     CHARACTER,  // 0
+///     INDEX,      // 1
+///     WIDTH,      // 2
+///     HEIGHT,     // 3
+///     X_OFFSET,   // 4
+///     Y_OFFSET,   // 5
+///     SEPARATION, // 6
+///     U0,         // 7
+///     V0,         // 8
+///     U1,         // 9
+///     V1          //10
+/// }
+/// You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
 ///
 /// @param fontName    The font name (as a string) of the font
 /// @param character   The character (as a string)

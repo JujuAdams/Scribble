@@ -16,6 +16,14 @@
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
+enum SCRIBBLE_BOX
+{
+    X0, Y0, //Top left corner
+    X1, Y1, //Top right corner
+    X2, Y2, //Bottom left corner
+    X3, Y3  //Bottom right corner
+}
+
 var _json   = argument[0];
 var _x      = argument[1];
 var _y      = argument[2];

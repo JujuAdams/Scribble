@@ -183,6 +183,14 @@
             }
         },
         {
+            "Key": "5939dc97-1f00-401e-b413-87dde2c89cc3",
+            "Value": {
+                "id": "22618d25-ccb0-4aa1-a217-18ba59409271",
+                "resourcePath": "scripts\\scribble_set_animation\\scribble_set_animation.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "5b698267-e679-4285-95af-7d896e27c33e",
             "Value": {
                 "id": "3c53b923-f8b4-4066-b653-9a628d969aab",
@@ -743,9 +751,10 @@
         "df6df2ef-b108-4a0d-b542-812338df9817",
         "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
         "86be87df-87d5-438a-a8e0-49bc2ac80815",
-        "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
         "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
+        "5939dc97-1f00-401e-b413-87dde2c89cc3",
         "bc334b9f-3e78-4213-8e02-f63a7b8776d3",
+        "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
         "5b698267-e679-4285-95af-7d896e27c33e",
         "0f5a7def-2f28-4745-bfe7-d3e4c13ae8b4",
         "13548f19-dd1d-4dc1-9444-205ee176ef6f",

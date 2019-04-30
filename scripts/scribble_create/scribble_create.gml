@@ -138,7 +138,7 @@ if ( is_array(_data_fields_in) )
 }
 else
 {
-    _data_fields = SCRIBBLE_DEFAULT_DATA_FIELDS;
+    _data_fields = global.__scribble_default_animation_parameters;
 }
 
 #endregion

@@ -23,6 +23,22 @@
 #macro __SCRIBBLE_DATE     "2019/04/30"
 #macro __SCRIBBLE_DEBUG    false
 
+enum SCRIBBLE_GLYPH
+{
+    CHARACTER,  // 0
+    INDEX,      // 1
+    WIDTH,      // 2
+    HEIGHT,     // 3
+    X_OFFSET,   // 4
+    Y_OFFSET,   // 5
+    SEPARATION, // 6
+    U0,         // 7
+    V0,         // 8
+    U1,         // 9
+    V1,         //10
+    __SIZE      //11
+}
+
 enum __SCRIBBLE_FONT
 {
     NAME,         // 0
@@ -221,15 +237,16 @@ else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_defau
 }
 
 //Declare global variables
-global.__scribble_font_directory = _font_directory;
-global.__scribble_font_data      = ds_map_create();  //Stores a data array for each font defined inside Scribble
-global.__scribble_spritefont_map = ds_map_create();  //Stores a ds_map of all the spritefonts, for use with COMPATIBILITY_DRAW
-global.__scribble_colours        = ds_map_create();  //Stores colour definitions, including custom colours
-global.__scribble_events         = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
-global.__scribble_flags          = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_alive          = ds_map_create();  //ds_map of all alive Scribble data structures
-global.__scribble_global_count   = 0;
-global.__scribble_default_font   = _default_font;
+scribble_set_animation(undefined,   4, 50, 0.2,   4, 0.4,   0.5, 0.01,   60, 0.15);
+global.__scribble_font_directory               = _font_directory;
+global.__scribble_font_data                    = ds_map_create();  //Stores a data array for each font defined inside Scribble
+global.__scribble_spritefont_map               = ds_map_create();  //Stores a ds_map of all the spritefonts, for use with COMPATIBILITY_DRAW
+global.__scribble_colours                      = ds_map_create();  //Stores colour definitions, including custom colours
+global.__scribble_events                       = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
+global.__scribble_flags                        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_alive                        = ds_map_create();  //ds_map of all alive Scribble data structures
+global.__scribble_global_count                 = 0;
+global.__scribble_default_font                 = _default_font;
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_define_colour("c_aqua",    c_aqua   , true);
