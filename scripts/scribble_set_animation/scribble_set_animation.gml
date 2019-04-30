@@ -28,4 +28,5 @@ if (is_array(_json))
 else
 {
     global.__scribble_default_animation_parameters = _array;
+    show_debug_message("Scribble: Set default animation parameters");
 }
