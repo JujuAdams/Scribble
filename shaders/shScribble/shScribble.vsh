@@ -5,7 +5,6 @@ const int MAX_FLAGS = 5;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config(
 //2 = shake
 //3 = rainbow
 //4 = wobble
-
 const int MAX_DATA_FIELDS = 9; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
 //By default, the data fields are:
 //0 = wave size
@@ -16,11 +15,10 @@ const int MAX_DATA_FIELDS = 9; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_c
 //5 = rainbow weight
 //6 = wobble angle
 //7 = wobble frequency
-
 const float MAX_LINES = 1000.0; //Change SCRIBBLE_MAX_LINES in __scribble_config() if you change this value!
 
-attribute vec3 in_Position; //  X,  Y, Packed character/line percentages
-attribute vec3 in_Normal;   // dX, dY, Packed flags
+attribute vec3 in_Position; //       X,        Y, Packed character/line percentages
+attribute vec3 in_Normal;   //Centre X, Centre Y, Packed flags
 attribute vec4 in_Colour;
 attribute vec2 in_TextureCoord;
 
