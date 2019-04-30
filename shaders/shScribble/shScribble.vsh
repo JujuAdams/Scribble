@@ -121,12 +121,15 @@ void applyTypewriterFade(float param, float time, float smoothness, inout vec4 c
     }
 }
 
-void rotateCharacter(inout vec4 position, vec2 centre, float angle)
+void rotateCharacter(inout vec2 position, vec2 centre, float angle)
 {
-    vec2 delta = in_Position.xy - in_Normal.xy;
-    float _sin = sin(0.00872664625*angle);
-    float _cos = cos(0.00872664625*angle);
-    position.xy = in_Normal.xy + vec2(delta.x*_cos - delta.y*_sin, delta.x*_sin + delta.y*_cos);
+    const float DEGTORAD = 0.00872664625;
+    
+    vec2 delta = position - centre;
+    float _sin = sin(DEGTORAD*angle);
+    float _cos = cos(DEGTORAD*angle);
+    position = centre + vec2(delta.x*_cos - delta.y*_sin,
+                             delta.x*_sin + delta.y*_cos);
 }
 
 void main()
@@ -141,7 +144,7 @@ void main()
     
     //Vertex animation
     vec4 pos = vec4(in_Position.xy, u_fZ, 1.0);
-    rotateCharacter(pos, in_Normal.xy, flagArray[4]*u_aDataFields[7]*sin(u_aDataFields[8]*u_fTime));
+    rotateCharacter(pos.xy, in_Normal.xy, flagArray[4]*u_aDataFields[7]*sin(u_aDataFields[8]*u_fTime));
     applyWave(charPC, flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos);
     applyShake(charPC, flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos);
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
