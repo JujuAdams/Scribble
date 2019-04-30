@@ -10,7 +10,7 @@
 /// 2) Define the maximum texture page size available for Scribble
 /// 3) Create global data structures to store data
 /// 4) Define custom colours analogues for GM's native colour constants
-/// 5) Define flag names for default effects - wave, shake, rainbow
+/// 5) Define flag names for default effects - wave, shake, rainbow, wobble
 /// 6) Creates a vertex format
 /// 7) Cache uniform indexes for the shScribble shader
 /// 8) Build a lookup table for decoding hexcode colours in scribble_create()
@@ -251,6 +251,7 @@ scribble_define_colour("c_yellow",  c_yellow , true);
 scribble_define_flag("wave"   , 1);
 scribble_define_flag("shake"  , 2);
 scribble_define_flag("rainbow", 3);
+scribble_define_flag("wobble" , 4);
 
 //Create a vertex format for our text
 vertex_format_begin();

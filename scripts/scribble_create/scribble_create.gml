@@ -44,6 +44,8 @@
 /// [/shake]                            Unset shake animation
 /// [rainbow]                           Set text to cycle through rainbow colours
 /// [/rainbow]                          Unset rainbow animation
+/// [wobble]                            Set text to wobble and rotate in place
+/// [/wobble]                           Unset wobble animation
 
 
 

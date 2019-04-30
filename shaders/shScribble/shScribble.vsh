@@ -1,11 +1,12 @@
-const int MAX_FLAGS = 4;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
+const int MAX_FLAGS = 5;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
 //By default, the flags are:
 //0 = is a sprite
 //1 = wave
 //2 = shake
 //3 = rainbow
+//4 = wobble
 
-const int MAX_DATA_FIELDS = 7; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
+const int MAX_DATA_FIELDS = 9; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
 //By default, the data fields are:
 //0 = wave size
 //1 = wave frequency
@@ -13,6 +14,8 @@ const int MAX_DATA_FIELDS = 7; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_c
 //3 = shake size
 //4 = shake speed
 //5 = rainbow weight
+//6 = wobble angle
+//7 = wobble frequency
 
 const float MAX_LINES = 1000.0; //Change SCRIBBLE_MAX_LINES in __scribble_config() if you change this value!
 
@@ -106,7 +109,7 @@ void applyColourBlend(vec4 colourInput, inout vec4 colourTarget)
     colourTarget *= colourInput;
 }
 
-void applyTypewriterFade(float time, float smoothness, float param, inout vec4 colour)
+void applyTypewriterFade(float param, float time, float smoothness, inout vec4 colour)
 {
     if (time < 1.0)
     {
@@ -118,6 +121,14 @@ void applyTypewriterFade(float time, float smoothness, float param, inout vec4 c
          float adjustedTime = (time - 1.0)*(1.0 + smoothness);
          colour.a *= 1.0 - clamp((adjustedTime - param)/smoothness, 0.0, 1.0);
     }
+}
+
+void rotateCharacter(inout vec4 position, vec2 centre, float angle)
+{
+    vec2 delta = in_Position.xy - in_Normal.xy;
+    float _sin = sin(0.00872664625*angle);
+    float _cos = cos(0.00872664625*angle);
+    position.xy = in_Normal.xy + vec2(delta.x*_cos - delta.y*_sin, delta.x*_sin + delta.y*_cos);
 }
 
 void main()
@@ -132,6 +143,7 @@ void main()
     
     //Vertex animation
     vec4 pos = vec4(in_Position.xy, u_fZ, 1.0);
+    rotateCharacter(pos, in_Normal.xy, flagArray[4]*u_aDataFields[7]*sin(u_aDataFields[8]*u_fTime));
     applyWave(charPC, flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos);
     applyShake(charPC, flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos);
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
@@ -141,8 +153,8 @@ void main()
     applySprite(flagArray[0], v_vColour);
     applyRainbow(charPC, flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
     applyColourBlend(u_vColourBlend, v_vColour);
-    applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, charPC, v_vColour);
-    applyTypewriterFade(u_fLineFadeT, u_fLineFadeSmoothness, linePC, v_vColour);
+    applyTypewriterFade(charPC, u_fCharFadeT, u_fCharFadeSmoothness, v_vColour);
+    applyTypewriterFade(linePC, u_fLineFadeT, u_fLineFadeSmoothness, v_vColour);
     
     //Texture
     v_vTexcoord = in_TextureCoord;
