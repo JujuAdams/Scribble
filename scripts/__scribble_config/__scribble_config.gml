@@ -1,5 +1,5 @@
 //  Scribble v5.0.0
-//  2019/04/12
+//  2019/04/30
 //  @jujuadams
 //  With thanks to glitchroy and Rob van Saaze
 //  
@@ -42,11 +42,12 @@
 
 #region Miscellaneous advanced settings
 
-#macro SCRIBBLE_COMPATIBILITY_DRAW                 false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
-#macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION          false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
-#macro SCRIBBLE_FIX_NEWLINES                       true     //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
-#macro SCRIBBLE_SLANT_AMOUNT                       4        //The x-axis displacement when using the [slant] tag
-#macro SCRIBBLE_Z                                  0        //The z-value for vertexes
+#macro SCRIBBLE_COMPATIBILITY_DRAW         false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
+#macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION  false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
+#macro SCRIBBLE_FIX_NEWLINES               true     //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
+#macro SCRIBBLE_SLANT_AMOUNT               4        //The x-axis displacement when using the [slant] tag
+#macro SCRIBBLE_Z                          0        //The z-value for vertexes
+#macro SCRIBBLE_MAX_LINES                  1000     //Maximum number of lines in a textbox. 
 
 #endregion
 

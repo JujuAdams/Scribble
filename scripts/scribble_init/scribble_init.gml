@@ -268,6 +268,7 @@ global.__scribble_uniform_char_t          = shader_get_uniform(shScribble, "u_fC
 global.__scribble_uniform_char_smoothness = shader_get_uniform(shScribble, "u_fCharFadeSmoothness");
 global.__scribble_uniform_line_t          = shader_get_uniform(shScribble, "u_fLineFadeT"         );
 global.__scribble_uniform_line_smoothness = shader_get_uniform(shScribble, "u_fLineFadeSmoothness");
+global.__scribble_uniform_z               = shader_get_uniform(shScribble, "u_fZ"                 );
 global.__scribble_uniform_data_fields     = shader_get_uniform(shScribble, "u_aDataFields"        );
 
 //Hex converter array

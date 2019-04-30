@@ -14,8 +14,10 @@ const int MAX_DATA_FIELDS = 7; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_c
 //4 = shake speed
 //5 = rainbow weight
 
-attribute vec3 in_Position;
-attribute vec3 in_Normal; //Character / Line index / Flags
+const float MAX_LINES = 1000.0; //Change SCRIBBLE_MAX_LINES in __scribble_config() if you change this value!
+
+attribute vec3 in_Position; //  X,  Y, Packed character/line percentages
+attribute vec3 in_Normal;   // dX, dY, Packed flags
 attribute vec4 in_Colour;
 attribute vec2 in_TextureCoord;
 
@@ -28,6 +30,7 @@ uniform float u_fCharFadeT;
 uniform float u_fCharFadeSmoothness;
 uniform float u_fLineFadeT;
 uniform float u_fLineFadeSmoothness;
+uniform float u_fZ;
 
 uniform float u_aDataFields[MAX_DATA_FIELDS];
 
@@ -61,20 +64,20 @@ void unpackFlags(float flagValue, inout float array[MAX_FLAGS])
     }
 }
 
-void applyWave(float amplitude, float frequency, float speed, inout vec4 pos)
+void applyWave(float charPC, float amplitude, float frequency, float speed, inout vec4 pos)
 {
-    pos.y += amplitude*sin(frequency*in_Normal.x + speed*u_fTime);
+    pos.y += amplitude*sin(frequency*charPC + speed*u_fTime);
 }
 
-void applyShake(float magnitude, float speed, inout vec4 pos)
+void applyShake(float charPC, float magnitude, float speed, inout vec4 pos)
 {
     float time = speed*u_fTime + 0.5;
     float floorTime = floor(time);
     float merge = 1.0 - abs(2.0*(time - floorTime) - 1.0);
     
     //Use some misc prime numbers to try to get a varied-looking shake
-    vec2 delta = vec2(rand(vec2(149.0*in_Normal.x + 13.0*floorTime, 727.0*in_Normal.x - 331.0*floorTime)),
-                      rand(vec2(501.0*in_Normal.x - 19.0*floorTime, 701.0*in_Normal.x + 317.0*floorTime)));
+    vec2 delta = vec2(rand(vec2(149.0*charPC + 13.0*floorTime, 727.0*charPC - 331.0*floorTime)),
+                      rand(vec2(501.0*charPC - 19.0*floorTime, 701.0*charPC + 317.0*floorTime)));
     
     pos.xy += magnitude*merge*(2.0*delta-1.0);
 }
@@ -93,9 +96,9 @@ void applySprite(float isSprite, inout vec4 colour)
     }
 }
 
-void applyRainbow(float weight, float speed, inout vec4 colour)
+void applyRainbow(float charPC, float weight, float speed, inout vec4 colour)
 {
-    colour.rgb = mix(colour.rgb, hsv2rgb(vec3(in_Normal.x + speed*u_fTime, 1.0, 1.0)), weight);
+    colour.rgb = mix(colour.rgb, hsv2rgb(vec3(charPC + speed*u_fTime, 1.0, 1.0)), weight);
 }
 
 void applyColourBlend(vec4 colourInput, inout vec4 colourTarget)
@@ -119,23 +122,27 @@ void applyTypewriterFade(float time, float smoothness, float param, inout vec4 c
 
 void main()
 {
+    //Unpack character and line percentages
+    float charPC = fract(in_Position.z*0.1)*10.0;
+    float linePC = floor(in_Position.z*0.1)*10.0 / MAX_LINES;
+    
     //Unpack the flag value into an array
     float flagArray[MAX_FLAGS];
     unpackFlags(in_Normal.z, flagArray);
     
     //Vertex animation
-    vec4 pos = vec4( in_Position.xyz, 1.0);
-    applyWave(flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos);
-    applyShake(flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos);
+    vec4 pos = vec4(in_Position.xy, u_fZ, 1.0);
+    applyWave(charPC, flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos);
+    applyShake(charPC, flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos);
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
     
     //Colour
     v_vColour = in_Colour;
     applySprite(flagArray[0], v_vColour);
-    applyRainbow(flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
+    applyRainbow(charPC, flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
     applyColourBlend(u_vColourBlend, v_vColour);
-    applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, in_Normal.x, v_vColour);
-    applyTypewriterFade(u_fLineFadeT, u_fLineFadeSmoothness, in_Normal.y, v_vColour);
+    applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, charPC, v_vColour);
+    applyTypewriterFade(u_fLineFadeT, u_fLineFadeSmoothness, linePC, v_vColour);
     
     //Texture
     v_vTexcoord = in_TextureCoord;

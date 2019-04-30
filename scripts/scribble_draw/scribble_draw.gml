@@ -269,6 +269,8 @@ else
         shader_set_uniform_f(global.__scribble_uniform_line_t         , _line_t);
         shader_set_uniform_f(global.__scribble_uniform_line_smoothness, _line_smoothness);
         
+        shader_set_uniform_f(global.__scribble_uniform_z              , SCRIBBLE_Z);
+        
         shader_set_uniform_f(global.__scribble_uniform_colour_blend   , colour_get_red(  _colour)/255,
                                                                         colour_get_green(_colour)/255,
                                                                         colour_get_blue( _colour)/255,
