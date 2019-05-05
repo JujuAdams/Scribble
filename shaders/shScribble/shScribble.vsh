@@ -20,7 +20,7 @@ const int MAX_DATA_FIELDS = 11; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_
 // 9 = swell scale
 //10 = swell speed
 const float MAX_LINES = 1000.0; //Change SCRIBBLE_MAX_LINES in __scribble_config() if you change this value!
-    
+
 attribute vec3 in_Position; //       X,        Y, Packed character/line percentages
 attribute vec3 in_Normal;   //Centre X, Centre Y, Packed flags
 attribute vec4 in_Colour;

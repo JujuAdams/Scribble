@@ -23,6 +23,15 @@
 #macro SCRIBBLE_COMMAND_TAG_CLOSE          ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT       ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
+#region Shader constants
+
+//SCRIBBLE_MAX_FLAGS or SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shScribble
+#macro SCRIBBLE_MAX_FLAGS        6    //The maximum number of flags. "Flags" are boolean values that can be set per character, and are sent into shScribble to trigger animation effects etc.
+#macro SCRIBBLE_MAX_DATA_FIELDS  11   //The maximum number of data fields. "Data fields" are misc 
+#macro SCRIBBLE_MAX_LINES        1000 //The maximum number of lines in a textbox. Use to pack character and line indexes
+
+#endregion
+
 #region Sequential glyph indexing
 
 //Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
@@ -30,15 +39,6 @@
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_TRY        true
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE  200   //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50  //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
-
-#endregion
-
-#region Shader constants
-
-//SCRIBBLE_MAX_FLAGS or SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shScribble
-#macro SCRIBBLE_MAX_FLAGS        6    //The maximum number of flags. "Flags" are boolean values that can be set per character, and are sent into shScribble to trigger animation effects etc.
-#macro SCRIBBLE_MAX_DATA_FIELDS  11   //The maximum number of data fields. "Data fields" are misc 
-#macro SCRIBBLE_MAX_LINES        1000 //The maximum number of lines in a textbox. Use to pack character and line indexes
 
 #endregion
 
