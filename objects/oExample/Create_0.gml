@@ -1,7 +1,7 @@
 //  Scribble v4.6.0
 //  2019/04/12
 //  @jujuadams
-//  With thanks to glitchroy and Rob van Saaze
+//  With thanks to glitchroy, Mark Turner, Rob van Saaze, and DragoniteSpam
 //  
 //  For use with GMS2.2.2 and later
 
