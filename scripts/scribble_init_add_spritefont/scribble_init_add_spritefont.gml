@@ -72,4 +72,4 @@ _data[ __SCRIBBLE_FONT.MAPSTRING    ] = _mapstring;
 _data[ __SCRIBBLE_FONT.SEPARATION   ] = _separation;
 global.__scribble_font_data[? _font ] = _data;
 
-show_debug_message("Scribble: Added \"" + _font + "\" as a spritefont");
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added \"" + _font + "\" as a spritefont");

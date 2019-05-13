@@ -51,4 +51,4 @@ if ( is_real(_old_script) )
 }
 
 global.__scribble_events[? _name ] = _script;
-show_debug_message("Scribble: Tying event \"" + _name + "\" to script \"" + script_get_name(_script) + "()\"" );
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Tying event \"" + _name + "\" to script \"" + script_get_name(_script) + "()\"" );

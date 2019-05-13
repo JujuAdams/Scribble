@@ -1210,6 +1210,6 @@ ds_map_destroy(_texture_to_vbuff_map);
 
 
 
-show_debug_message("Scribble: scribble_create() took " + string((get_timer() - _timer)/1000) + "ms");
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_create() took " + string((get_timer() - _timer)/1000) + "ms");
 
 return _json;

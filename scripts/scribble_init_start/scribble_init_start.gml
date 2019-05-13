@@ -157,7 +157,7 @@ if ( variable_global_exists("__scribble_init_complete") )
     exit;
 }
 
-show_debug_message("\nScribble: Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
+show_debug_message("Scribble: Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
 
 var _font_directory = argument0;
 var _default_font   = argument1;
@@ -338,7 +338,7 @@ if (_auto_scan)
                     _data[ __SCRIBBLE_FONT.SEPARATION   ] = undefined;
                     global.__scribble_font_data[? _font ] = _data;
                     
-                    show_debug_message("Scribble: Autoscan added \"" + _font + "\" as a standard font");
+                    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Autoscan added \"" + _font + "\" as a standard font");
                 }
             }
             
