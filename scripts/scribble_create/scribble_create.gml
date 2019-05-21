@@ -358,6 +358,21 @@ for(var _i = 0; _i < _separator_count; _i++)
             var _parameter_count = ds_list_size(_parameters_list);
             _substr_length = 0;
             
+            #region Replace tags
+            
+            if (_parameter_count == 1)
+            {
+                var _replacement_list = global.__scribble_tag_replace[? _parameters_list[|0]];
+                if (_replacement_list != undefined)
+                {
+                    ds_list_clear(_parameters_list);
+                    ds_list_copy(_parameters_list, _replacement_list);
+                    _parameter_count = ds_list_size(_parameters_list);
+                }
+            }
+            
+            #endregion
+            
             switch(_parameters_list[| 0 ])
             {
                 #region Reset formatting

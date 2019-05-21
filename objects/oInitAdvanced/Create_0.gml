@@ -22,6 +22,10 @@ scribble_add_event("sound", play_sound_example);
 //In this case, we're going to overwrite the default "shake" formatting flag with a new one called "rumble"
 scribble_add_flag("rumble", 2);
 
+//Add a new sprite from a file, then replace all instances of "[green coin]" with use GM's internal name for this sprite
+var _new_sprite = sprite_add("green coin.png", 0, false, false, 0, 0);
+scribble_replace_tag("green coin", sprite_get_name(_new_sprite));
+
 //Some characters need a bit of fine adjustment in code since it's not always possible to fix this in the font itself
 scribble_set_glyph_property("sSpriteFont", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 scribble_set_glyph_property("sSpriteFont", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);

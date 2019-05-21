@@ -19,6 +19,7 @@ scribble_add_colour("c_amaranth"  , $e52b50);
 
 scribble_add_event("sound", play_sound_example);
 scribble_add_flag("rumble", 2);
+scribble_replace_tag("green coin", sprite_get_name(sprite_add("green coin.png", 0, false, false, 0, 0)));
 
 scribble_set_glyph_property("sSpriteFont", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 scribble_set_glyph_property("sSpriteFont", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);
