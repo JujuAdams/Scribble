@@ -275,9 +275,8 @@ ds_list_mark_as_map( _json, __SCRIBBLE.EV_DIFFERENT_MAP  );
 
 ds_list_add(_text_root_list, array_create(__SCRIBBLE_LINE.__SIZE));
 var _line_array           = _text_root_list[| 0];
-var _line_length          = 0;
-var _line_first_character = 0;
 var _line_height          = _line_min_height;
+var _line_first_character = false;
 
 var _text_x               = 0;
 var _text_y               = 0;
@@ -288,15 +287,12 @@ var _text_flags           = 0;
 var _text_scale           = 1;
 var _text_slant           = false;
 
-var _previous_font        = "";
 var _previous_texture     = -1;
-
-var _first_character      = false;
 
 var _meta_characters      = 0;
 var _meta_words           = 0;
 var _meta_lines           = 0;
-var _box_width            = 0;
+var _text_x_max           = 0;
 
 ds_map_clear(global.__scribble_create_texture_to_buffer_map);
 
@@ -318,8 +314,9 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
     var _substr = _input_substr;
     
     //Reset state
-    var _skip          = false;
-    var _force_newline = false;
+    var _skip            = false;
+    var _force_newline   = false;
+    var _natural_newline = false;
     
     var _substr_width  = 0;
     var _substr_height = 0;
@@ -425,20 +422,20 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                 case "fa_left":
                     _text_halign = fa_left;
                     _substr = "";
-                    if (!_first_character) _force_newline = true;
+                    if (!_line_first_character) _force_newline = true;
                 break;
                 
                 case "fa_right":
                     _text_halign = fa_right;
                     _substr = "";
-                    if (!_first_character) _force_newline = true;
+                    if (!_line_first_character) _force_newline = true;
                 break;
                 
                 case "fa_center":
                 case "fa_centre":
                     _text_halign = fa_center;
                     _substr = "";
-                    if (!_first_character) _force_newline = true;
+                    if (!_line_first_character) _force_newline = true;
                 break;
                 #endregion
                 
@@ -520,33 +517,32 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     #region Sprites
                     if (!_found)
                     {
-                        var _asset = asset_get_index(global.__scribble_create_parameters_list[| 0]);
-                        if (_asset >= 0) && (asset_get_type(global.__scribble_create_parameters_list[| 0]) == asset_sprite)
+                        var _sprite_index = asset_get_index(global.__scribble_create_parameters_list[| 0]);
+                        if (_sprite_index >= 0) && (asset_get_type(global.__scribble_create_parameters_list[| 0]) == asset_sprite)
                         {
                             _found = true;
-                            _previous_font = "";
                             
-                            _substr_width  = _text_scale*sprite_get_width(_asset);
-                            _substr_height = _text_scale*sprite_get_height(_asset);
+                            _substr_width  = _text_scale*sprite_get_width(_sprite_index);
+                            _substr_height = _text_scale*sprite_get_height(_sprite_index);
                             _substr_length = 1;
                             
-                            var _sprite_index = 0;
-                            var _image_speed  = 0;
+                            var _image_index = 0;
+                            var _image_speed = 0;
                             switch(ds_list_size(global.__scribble_create_parameters_list))
                             {
                                 case 1:
-                                    _sprite_index = 0;
-                                    _image_speed  = SCRIBBLE_DEFAULT_SPRITE_SPEED;
+                                    _image_index = 0;
+                                    _image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
                                 break;
                                 
                                 case 2:
-                                    _sprite_index = real(global.__scribble_create_parameters_list[| 1]);
-                                    _image_speed  = 0;
+                                    _image_index = real(global.__scribble_create_parameters_list[| 1]);
+                                    _image_speed = 0;
                                 break;
                                 
                                 case 3:
-                                    _sprite_index = real(global.__scribble_create_parameters_list[| 1]);
-                                    _image_speed  = real(global.__scribble_create_parameters_list[| 2]);
+                                    _image_index = real(global.__scribble_create_parameters_list[| 1]);
+                                    _image_speed = real(global.__scribble_create_parameters_list[| 2]);
                                 break;
                             }
                             
@@ -560,68 +556,73 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                             if (_image_speed > 0) _text_flags = _text_flags | 1; //Set the "is sprite" flag only if we're animating the sprite
                             
                             //Default to only adding one image from the sprite to the vertex buffer
-                            var _image_a = _sprite_index;
-                            var _image_b = _sprite_index;
+                            var _image_a = _image_index;
+                            var _image_b = _image_index;
                             
                             //If we want to animate the sprite, add all images from the sprite
                             if (_image_speed > 0)
                             {
                                 _image_a = 0;
-                                _image_b = sprite_get_number(_asset)-1;
+                                _image_b = sprite_get_number(_sprite_index)-1;
+                            }
+                            
+                            //Pre-create vertex buffer arrays for images for this sprite and update WORD_START_TELL at the same time
+                            for(var _image = _image_a; _image <= _image_b; _image++)
+                            {
+                                var _sprite_texture = sprite_get_texture(_sprite_index, _image);
+                                
+                                var _data = global.__scribble_create_texture_to_buffer_map[? _sprite_texture];
+                                if (_data == undefined)
+                                {
+                                    _data = ds_list_create();
+                                    _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = buffer_create(__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
+                                    _data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
+                                    _data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _sprite_texture;
+                                    _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
+                                    _data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_TELL] = 0;
+                                    ds_list_add(_vbuff_list, _data);
+                                    ds_list_mark_as_list(_vbuff_list, ds_list_size(_vbuff_list)-1);
+                                        
+                                    global.__scribble_create_texture_to_buffer_map[? _sprite_texture] = _data;
+                                }
+                                else
+                                {
+                                    _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER]);
+                                }
                             }
                             
                             for(var _image = _image_a; _image <= _image_b; _image++)
                             {
+                                //Swap texture and buffer if needed
+                                var _sprite_texture = sprite_get_texture(_sprite_index, _image);
+                                if (_sprite_texture != _previous_texture)
+                                {
+                                    _previous_texture = _sprite_texture;
+                                    var _vbuff_data = global.__scribble_create_texture_to_buffer_map[? _sprite_texture];
+                                    var _glyph_buffer = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER];
+                                }
+                                
                                 if (_image_speed > 0)
                                 {
                                     //Encode image, sprite length, and image speed into the colour channels
-                                    _colour = make_colour_rgb(_image, sprite_get_number(_asset)-1, _image_speed*255);
+                                    _colour = make_colour_rgb(_image, sprite_get_number(_sprite_index)-1, _image_speed*255);
                                     
                                     //Encode the starting image into the alpha channel
-                                    _colour = (_sprite_index << 24) | _colour;
+                                    _colour = (_image_index << 24) | _colour;
                                 }
                                 else
                                 {
                                     _colour = $FF000000 | _colour;
                                 }
                                 
-                                //Swap texture and buffer if needed
-                                var _sprite_texture = sprite_get_texture(_asset, _image);
-                                if (_sprite_texture != _previous_texture)
-                                {
-                                    _previous_texture = _sprite_texture;
-                                    
-                                    var _vbuff_data = global.__scribble_create_texture_to_buffer_map[? _sprite_texture];
-                                    if (_vbuff_data == undefined)
-                                    {
-                                        var _glyph_buffer = buffer_create(__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
-                                        
-                                        _vbuff_data = ds_list_create();
-                                        _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER       ] = _glyph_buffer;
-                                        _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = undefined;
-                                        _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE      ] = _sprite_texture;
-                                        ds_list_add(_vbuff_list, _vbuff_data);
-                                        ds_list_mark_as_list(_vbuff_list, ds_list_size(_vbuff_list)-1);
-                                        
-                                        global.__scribble_create_texture_to_buffer_map[? _sprite_texture] = _vbuff_data;
-                                    }
-                                    else
-                                    {
-                                        var _glyph_buffer = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER];
-                                    }
-                                }
-                                
-                                var _glyph_buffer_start_tell = buffer_tell(_glyph_buffer);
-                                
                                 //Find the UVs and position of the sprite quad
-                                var _uvs = sprite_get_uvs(_asset, _image);
-                                var _glyph_l = _text_x  + _uvs[4] + sprite_get_xoffset(_asset);
-                                var _glyph_t = _text_y  + _uvs[5] + sprite_get_yoffset(_asset);
-                                var _glyph_r = _glyph_l + _uvs[6]*_text_scale*sprite_get_width(_asset);
-                                var _glyph_b = _glyph_t + _uvs[7]*_text_scale*sprite_get_height(_asset);
+                                var _uvs = sprite_get_uvs(_sprite_index, _image);
+                                var _glyph_l = _text_x  + _uvs[4] + sprite_get_xoffset(_sprite_index);
+                                var _glyph_t = _text_y  + _uvs[5] + sprite_get_yoffset(_sprite_index);
+                                var _glyph_r = _glyph_l + _uvs[6]*_text_scale*sprite_get_width(_sprite_index);
+                                var _glyph_b = _glyph_t + _uvs[7]*_text_scale*sprite_get_height(_sprite_index);
                                 
                                 //                                          X                                                  Y                                                  Z                                                       character %                                                line %                                               flags                                                  colour                                                 U                                                V
-                                
                                 buffer_write(_glyph_buffer, buffer_f32, _glyph_l); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
                                 buffer_write(_glyph_buffer, buffer_f32, _glyph_l); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
                                 buffer_write(_glyph_buffer, buffer_f32, _glyph_r); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
@@ -706,48 +707,46 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
     {
         #region Add vertex data for each character in the string
         
-        if (_text_font != _previous_font)
+        //Swap texture and buffer if needed
+        if (_font_texture != _previous_texture)
         {
-            _previous_font = _text_font;
-            
-            if (_font_texture != _previous_texture)
-            {
-                _previous_texture = _font_texture;
+            _previous_texture = _font_texture;
                 
-                var _vbuff_data = global.__scribble_create_texture_to_buffer_map[? _font_texture];
-                if (_vbuff_data == undefined)
-                {
-                    var _glyph_buffer = buffer_create(__SCRIBBLE_EXPECTED_GLYPHS*__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
+            var _vbuff_data = global.__scribble_create_texture_to_buffer_map[? _font_texture];
+            if (_vbuff_data == undefined)
+            {
+                var _glyph_buffer = buffer_create(__SCRIBBLE_EXPECTED_GLYPHS*__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
                     
-                    _vbuff_data = ds_list_create();
-                    _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER       ] = _glyph_buffer;
-                    _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = undefined;
-                    _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE      ] = _font_texture;
-                    ds_list_add(_vbuff_list, _vbuff_data);
-                    ds_list_mark_as_list(_vbuff_list, ds_list_size(_vbuff_list)-1);
+                _vbuff_data = ds_list_create();
+                _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _glyph_buffer;
+                _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
+                _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _font_texture;
+                _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
+                _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_TELL] = 0;
+                ds_list_add(_vbuff_list, _vbuff_data);
+                ds_list_mark_as_list(_vbuff_list, ds_list_size(_vbuff_list)-1);
                     
-                    global.__scribble_create_texture_to_buffer_map[? _font_texture] = _vbuff_data;
-                }
-                else
-                {
-                    var _glyph_buffer = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER];
-                }
+                global.__scribble_create_texture_to_buffer_map[? _font_texture] = _vbuff_data;
+            }
+            else
+            {
+                var _glyph_buffer = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER];
             }
         }
         
-        var _glyph_buffer_start_tell = buffer_tell(_glyph_buffer);
+        //Update WORD_START_TELL
+        _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
         
         
         
         var _colour = $FF000000 | _text_colour;
         var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant;
         
-        var _char_l = _text_x;
-        var _char_t = _text_y;
-        var _char_index = 1;
-        
+        var _char_x        = _text_x;
+        var _char_index    = 1;
         var _substr_width  = 0;
         var _substr_height = 0;
+        
         repeat(_substr_length)
         {
             if (_font_glyphs_array == undefined)
@@ -773,13 +772,12 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             var _glyph_dy  = _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET  ];
             var _glyph_shf = _glyph_array[SCRIBBLE_GLYPH.SEPARATION];
             
-            var _glyph_l = _char_l + _glyph_dx*_text_scale;
-            var _glyph_t = _char_t + _glyph_dy*_text_scale;
+            var _glyph_l = _char_x + _glyph_dx*_text_scale;
+            var _glyph_t = _text_y + _glyph_dy*_text_scale;
             var _glyph_r = _glyph_l + _glyph_w*_text_scale;
             var _glyph_b = _glyph_t + _glyph_h*_text_scale;
             
             //                                                  X                                                        Y                                                  Z                                                       character %                                               line %                                                flags                                                  colour                                                   U                                                  V
-            
             buffer_write(_glyph_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
             buffer_write(_glyph_buffer, buffer_f32, _glyph_l              ); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
             buffer_write(_glyph_buffer, buffer_f32, _glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
@@ -787,10 +785,10 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             buffer_write(_glyph_buffer, buffer_f32, _glyph_r+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
             buffer_write(_glyph_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
             
-            _substr_width += (_char_index == _substr_length)? _glyph_w : _glyph_shf;
-            
-            _char_l += _glyph_shf*_text_scale;
+            _char_x += _text_scale*_glyph_shf;
             ++_char_index;
+            
+            _substr_width += (_char_index == _substr_length)? _glyph_w : _glyph_shf;
             ++_meta_characters;
         }
         
@@ -798,26 +796,29 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
         var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? " "] : (_font_glyphs_array[32 - _font_glyphs_min]);
         _substr_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
         
+        //Correct for scaling
+        _substr_width  *= _text_scale;
+        _substr_height *= _text_scale;
+        
         #endregion
     }
     
-    //If we've run over the maximum width of the string
-    var _overrun_width = ((_substr_width + _text_x > _width_limit) && (_width_limit >= 0));
-    if (_overrun_width || (_sep_prev_char == 10) || _force_newline)
+    _line_first_character = false;
+    
+    #region Handle new line creation
+    
+    var _natural_newline = ((_substr_width + _text_x > _width_limit) && (_width_limit >= 0));
+    if (_natural_newline || _force_newline || (_sep_prev_char == 10))
     {
         ++_meta_lines;
         
-        if (_overrun_width)
+        if (!_force_newline)
         {
-            if ((_text_flags & 1) > 0)
-            {
-                
-            }
-            else
+            if ((_text_flags & 1) == 0)
             {
                 //Retroactively move the last word to a new line
-                var _tell = (_meta_characters - _substr_length)*__SCRIBBLE_GLYPH_BYTE_SIZE;
-                repeat(6*_substr_length)
+                var _tell = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL];
+                repeat((buffer_tell(_glyph_buffer) - _tell) / __SCRIBBLE_VERTEX_BYTE_SIZE)
                 {
                     buffer_poke(_glyph_buffer, _tell     , buffer_f32, buffer_peek(_glyph_buffer, _tell    , buffer_f32) - _text_x);
                     buffer_poke(_glyph_buffer, _tell +  4, buffer_f32, buffer_peek(_glyph_buffer, _tell + 4, buffer_f32) + _line_height);
@@ -825,52 +826,74 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     _tell += __SCRIBBLE_VERTEX_BYTE_SIZE;
                 }
             }
+            else
+            {
+                for(var _image = _image_a; _image <= _image_b; _image++)
+                {
+                    var _data = global.__scribble_create_texture_to_buffer_map[? sprite_get_texture(_sprite_index, _image)];
+                    var _buffer = _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER];
+                    
+                    var _tell = _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL];
+                    repeat((buffer_tell(_glyph_buffer) - _tell) / __SCRIBBLE_VERTEX_BYTE_SIZE)
+                    {
+                        buffer_poke(_buffer, _tell     , buffer_f32, buffer_peek(_buffer, _tell    , buffer_f32) - _text_x);
+                        buffer_poke(_buffer, _tell +  4, buffer_f32, buffer_peek(_buffer, _tell + 4, buffer_f32) + _line_height);
+                        buffer_poke(_buffer, _tell + 16, buffer_f32, _meta_lines);
+                        _tell += __SCRIBBLE_VERTEX_BYTE_SIZE;
+                    }
+                }
+            }
         }
         
-        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _line_first_character + _line_length;
-        _line_first_character += _line_length;
-        _line_length = 0;
+        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_characters - _substr_length;
         
         var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
-        _line_array[@ __SCRIBBLE_LINE.FIRST_CHAR] = _line_first_character;
-        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _line_first_character;
+        _line_array[@ __SCRIBBLE_LINE.FIRST_CHAR] = _meta_characters - _substr_length;
+        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _meta_characters;
         ds_list_add(_text_root_list, _line_array);
         
         _text_x  = 0;
         _text_y += _line_height;
         _line_height = _line_min_height;
-        _first_character = true;
+        _line_first_character = true;
+        
+        var _v = 0;
+        repeat(ds_list_size(_vbuff_list))
+        {
+            var _data = _vbuff_list[| _v];
+            _data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_TELL] = buffer_tell(_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER]);
+            ++_v;
+        }
     }
     
-    if ((!_force_newline) && (_substr != "")) _line_height = max(_line_height, _substr_height);
+    #endregion
+    
+    if (!_force_newline && (_substr != "")) _line_height = max(_line_height, _substr_height);
     
     _text_x += _substr_width
-            +  ((_sep_char == 32)? _font_space_width : 0); //Add spacing if the separation character is a space
+    _text_x_max = max(_text_x_max, _text_x);
+    _text_x += ((_sep_char == 32)? _font_space_width : 0); //Add spacing if the separation character is a space
     
-    if (_sep_char == SCRIBBLE_COMMAND_TAG_OPEN) _in_command_tag = true; // [
-    
-    _line_length += _substr_length;
     if (_substr_length > 0) ++_meta_words;
     
-    _first_character = false;
-    _box_width = max(_box_width, _text_x);
+    if (_sep_char == SCRIBBLE_COMMAND_TAG_OPEN) _in_command_tag = true; // [
 }
 
 //Finish defining the last line
 ++_meta_lines;
-_line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _line_first_character + _line_length;
+_line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_characters;
 
 _json[| __SCRIBBLE.WORDS ] = _meta_words;
 _json[| __SCRIBBLE.LINES ] = _meta_lines;
 _json[| __SCRIBBLE.LENGTH] = _meta_characters;
-_json[| __SCRIBBLE.WIDTH ] = _box_width;
+_json[| __SCRIBBLE.WIDTH ] = _text_x_max;
 _json[| __SCRIBBLE.HEIGHT] = _text_y + _line_height;
 
 scribble_set_box_alignment(_json, fa_left, fa_top);
 
 //Turn buffers into vertex buffer
-var _size = ds_list_size(_vbuff_list);
-for(var _i = 0; _i < _size; _i++)
+var _i = 0;
+repeat(ds_list_size(_vbuff_list))
 {
     var _data = _vbuff_list[| _i];
     
@@ -882,6 +905,7 @@ for(var _i = 0; _i < _size; _i++)
     _data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _vertex_count);
     
     buffer_delete(_buffer);
+    ++_i;
 }
 
 #endregion
