@@ -150,6 +150,8 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_ON_OPENGL         !__SCRIBBLE_ON_DIRECTX
 #macro __SCRIBBLE_ON_MOBILE         ((os_type == os_ios) || (os_type == os_android))
 #macro __SCRIBBLE_VERTEX_BYTE_SIZE  36
+#macro __SCRIBBLE_GLYPH_BYTE_SIZE   6*__SCRIBBLE_VERTEX_BYTE_SIZE
+#macro __SCRIBBLE_EXPECTED_GLYPHS   100
 
 #endregion
 
