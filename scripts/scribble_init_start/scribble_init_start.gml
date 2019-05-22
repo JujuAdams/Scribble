@@ -47,16 +47,9 @@ enum __SCRIBBLE_FONT_TYPE
 
 enum __SCRIBBLE_LINE
 {
-    X,          //0
-    Y,          //1
-    WIDTH,      //2
-    HEIGHT,     //3
-    LENGTH,     //4
-    FIRST_CHAR, //5
-    LAST_CHAR,  //6
-    HALIGN,     //7
-    WORDS,      //8
-    __SIZE      //9
+    FIRST_CHAR, //0
+    LAST_CHAR,  //1
+    __SIZE      //2
 }
 
 enum __SCRIBBLE_WORD
