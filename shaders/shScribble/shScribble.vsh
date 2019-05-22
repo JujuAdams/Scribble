@@ -1,6 +1,6 @@
 const int MAX_FLAGS = 4;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
 //By default, the flags are:
-//0 = is a sprite
+//0 = is an animated sprite
 //1 = wave
 //2 = shake
 //3 = rainbow
@@ -134,7 +134,7 @@ void main()
     applySprite(flagArray[0], v_vColour);
     applyRainbow(flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
     applyColourBlend(u_vColourBlend, v_vColour);
-    applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, in_Normal.x, v_vColour);
+    //applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, in_Normal.x, v_vColour);
     //applyTypewriterFade(u_fLineFadeT, u_fLineFadeSmoothness, in_Normal.y, v_vColour);
     
     //Texture
