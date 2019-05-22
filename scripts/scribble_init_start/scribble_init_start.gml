@@ -83,6 +83,7 @@ enum __SCRIBBLE_WORD
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {
+    BUFFER,
     VERTEX_BUFFER,
     TEXTURE,
     __SIZE
@@ -145,9 +146,10 @@ enum __SCRIBBLE
     __SIZE               //46
 }
 
-#macro __SCRIBBLE_ON_DIRECTX ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
-#macro __SCRIBBLE_ON_OPENGL  !__SCRIBBLE_ON_DIRECTX
-#macro __SCRIBBLE_ON_MOBILE  ((os_type == os_ios) || (os_type == os_android))
+#macro __SCRIBBLE_ON_DIRECTX        ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
+#macro __SCRIBBLE_ON_OPENGL         !__SCRIBBLE_ON_DIRECTX
+#macro __SCRIBBLE_ON_MOBILE         ((os_type == os_ios) || (os_type == os_android))
+#macro __SCRIBBLE_VERTEX_BYTE_SIZE  36
 
 #endregion
 
@@ -206,17 +208,21 @@ else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_defau
 }
 
 //Declare global variables
-global.__scribble_font_directory = _font_directory;
-global.__scribble_font_data      = ds_map_create();  //Stores a data array for each font defined inside Scribble
-global.__scribble_spritefont_map = ds_map_create();  //Stores a ds_map of all the spritefonts, for use with COMPATIBILITY_DRAW
-global.__scribble_colours        = ds_map_create();  //Stores colour definitions, including custom colours
-global.__scribble_events         = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
-global.__scribble_flags          = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_tag_replace         = ds_map_create();  //Stores asset bindings; key is the name of the event, the value is the script to call
-global.__scribble_alive          = ds_map_create();  //ds_map of all alive Scribble data structures
-global.__scribble_global_count   = 0;
-global.__scribble_default_font   = _default_font;
-global.__scribble_init_complete  = false;
+global.__scribble_font_directory               = _font_directory;
+global.__scribble_font_data                    = ds_map_create();  //Stores a data array for each font defined inside Scribble
+global.__scribble_colours                      = ds_map_create();  //Stores colour definitions, including custom colours
+global.__scribble_events                       = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
+global.__scribble_flags                        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_tag_replace                  = ds_map_create();  //Stores asset bindings; key is the name of the event, the value is the script to call
+global.__scribble_alive                        = ds_map_create();  //ds_map of all alive Scribble data structures
+global.__scribble_global_count                 = 0;
+global.__scribble_default_font                 = _default_font;
+global.__scribble_init_complete                = false;
+global.__scribble_create_separator_list        = ds_list_create();
+global.__scribble_create_position_list         = ds_list_create();
+global.__scribble_create_parameters_list       = ds_list_create();
+global.__scribble_create_texture_to_buffer_map = ds_map_create();
+global.__scribble_create_string_buffer         = buffer_create(1, buffer_grow, 1);
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_add_colour("c_aqua",    c_aqua   , true);
@@ -246,11 +252,11 @@ scribble_add_flag("rainbow", 3);
 
 //Create a vertex format for our text
 vertex_format_begin();
-vertex_format_add_position_3d();
-vertex_format_add_normal(); //X = character index, Y = line index, Z = flags
-vertex_format_add_colour();
-vertex_format_add_texcoord();
-global.__scribble_vertex_format = vertex_format_end();
+vertex_format_add_position_3d(); //12 bytes
+vertex_format_add_normal();      //12 bytes       //X = character index, Y = line index, Z = flags
+vertex_format_add_colour();      // 4 bytes
+vertex_format_add_texcoord();    // 8 bytes
+global.__scribble_vertex_format = vertex_format_end(); //36 bytes per vertex, 108 bytes per tri, 216 bytes per glyph
 
 //Cache uniform indexes
 global.__scribble_uniform_time            = shader_get_uniform(shScribble, "u_fTime"              );

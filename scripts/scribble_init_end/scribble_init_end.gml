@@ -74,8 +74,6 @@ repeat(_font_count)
         var _font_glyphs_map = ds_map_create();
         _font_data[@ __SCRIBBLE_FONT.GLYPHS_MAP ] = _font_glyphs_map;
         
-        if (SCRIBBLE_COMPATIBILITY_DRAW) global.__scribble_spritefont_map[? _name ] = font_add_sprite_ext(_sprite, _sprite_string, true, _shift_constant);
-        
         sprite_index = _sprite;
         mask_index   = _sprite;
         x = -sprite_get_xoffset(_sprite);

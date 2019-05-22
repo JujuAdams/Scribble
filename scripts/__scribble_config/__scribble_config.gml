@@ -11,7 +11,7 @@
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß"
 #macro SCRIBBLE_HASH_NEWLINE                  true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COLOURISE_SPRITES             true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
-#macro SCRIBBLE_VERBOSE                       false //Enables verbose console output to aid with debugging. Turn off if all the console is getting too cluttered for you!
+#macro SCRIBBLE_VERBOSE                       true  //Enables verbose console output to aid with debugging. Turn off if all the console is getting too cluttered for you!
 
 #endregion
 
@@ -54,7 +54,6 @@
 
 #region Miscellaneous advanced settings
 
-#macro SCRIBBLE_COMPATIBILITY_DRAW                 false    //Forces Scribble functions to use GM's native draw_text() renderer. Turn this on if certain platforms are causing problems
 #macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION          false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
 #macro SCRIBBLE_CALL_STEP_IN_DRAW                  false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
 #macro SCRIBBLE_FIX_NEWLINES                       true     //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
