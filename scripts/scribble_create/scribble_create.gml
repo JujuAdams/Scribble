@@ -938,7 +938,8 @@ repeat(ds_list_size(_vertex_buffer_list))
     var _line_break_list = _data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
     var _buffer          = _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
     
-    ds_list_add(_line_break_list, buffer_tell(_buffer));
+    var _buffer_tell = buffer_tell(_buffer);
+    ds_list_add(_line_break_list, _buffer_tell);
     
     var _l = 0;
     repeat(ds_list_size(_line_break_list)-1)
@@ -968,29 +969,14 @@ repeat(ds_list_size(_vertex_buffer_list))
         ++_l;
     }
     
-    ++_v;
-}
-
-
-
-//Turn buffers into vertex buffer
-var _i = 0;
-repeat(ds_list_size(_vertex_buffer_list))
-{
-    var _data = _vertex_buffer_list[| _i];
-    
-    var _buffer = _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER];
-    var _tell = buffer_tell(_buffer);
-    var _vertex_count = _tell / __SCRIBBLE_VERTEX.__SIZE;
-    
-    _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER       ] = undefined;
-    _data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _vertex_count);
-    
-    ds_list_destroy(_data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST]);
     _data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = undefined;
+    ds_list_destroy(_line_break_list);
     
+    _data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _buffer_tell / __SCRIBBLE_VERTEX.__SIZE);
+    _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = undefined;
     buffer_delete(_buffer);
-    ++_i;
+    
+    ++_v;
 }
 
 scribble_set_box_alignment(_json, fa_left, fa_top);
