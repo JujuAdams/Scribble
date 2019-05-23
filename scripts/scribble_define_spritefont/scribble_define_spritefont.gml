@@ -72,6 +72,9 @@ if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Processing font \"" + _font 
 
 var _old_x            = x;
 var _old_y            = y;
+var _old_xscale       = image_xscale;
+var _old_yscale       = image_yscale;
+var _old_angle        = image_angle;
 var _old_mask_index   = mask_index;
 var _old_sprite_index = sprite_index;
 
@@ -89,10 +92,13 @@ if (sprite_get_bbox_left(_sprite)   == 0)
 var _font_glyphs_map = ds_map_create();
 _data[@ __SCRIBBLE_FONT.GLYPHS_MAP ] = _font_glyphs_map;
 
-sprite_index = _sprite;
+x            = -sprite_get_xoffset(_sprite);
+y            = -sprite_get_yoffset(_sprite);
+image_xscale = 1;
+image_yscale = 1;
+image_angle  = 0;
 mask_index   = _sprite;
-x = -sprite_get_xoffset(_sprite);
-y = -sprite_get_yoffset(_sprite);
+sprite_index = _sprite;
 
 //Strip out a map of of glyphs
 var _length = string_length(_mapstring);
@@ -185,5 +191,8 @@ if (_space_width != undefined)
 
 x            = _old_x;
 y            = _old_y;
+image_xscale = _old_xscale;
+image_yscale = _old_yscale;
+image_angle  = _old_angle;
 mask_index   = _old_mask_index;
 sprite_index = _old_sprite_index;
