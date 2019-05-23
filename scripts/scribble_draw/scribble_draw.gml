@@ -104,6 +104,10 @@ if (_typewriter_direction != 0)
             show_error("Scribble:\nTypewriter method not recognised.\nPlease use SCRIBBLE_TYPEWRITER_PER_CHARACTER or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false);
         break;
     }
+    
+    _json[| __SCRIBBLE.EV_SCAN_DO] = _do_event_scan;
+    _json[| __SCRIBBLE.EV_SCAN_A ] = _scan_range_a;
+    _json[| __SCRIBBLE.EV_SCAN_B ] = _scan_range_b;
 }
 
 #endregion

@@ -233,6 +233,9 @@ _json[| __SCRIBBLE.LINE_LIST         ] = _line_list;
 _json[| __SCRIBBLE.VERTEX_BUFFER_LIST] = _vertex_buffer_list;
 
 _json[| __SCRIBBLE.__SECTION5        ] = "-- Events --";
+_json[| __SCRIBBLE.EV_SCAN_DO        ] = false;
+_json[| __SCRIBBLE.EV_SCAN_A         ] = 0;
+_json[| __SCRIBBLE.EV_SCAN_B         ] = 0;
 _json[| __SCRIBBLE.EV_CHARACTER_LIST ] = _events_character_list; //Stores each event's triggering cha
 _json[| __SCRIBBLE.EV_NAME_LIST      ] = _events_name_list;      //Stores each event's name
 _json[| __SCRIBBLE.EV_DATA_LIST      ] = _events_data_list;      //Stores each event's parameters

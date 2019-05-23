@@ -754,7 +754,7 @@
             "Key": "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
             "Value": {
                 "id": "5dbea209-936c-42d4-8bd9-9bd0f2508e30",
-                "resourcePath": "scripts\\scribble_event_step\\scribble_event_step.yy",
+                "resourcePath": "scripts\\scribble_events_call\\scribble_events_call.yy",
                 "resourceType": "GMScript"
             }
         }
