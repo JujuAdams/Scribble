@@ -16,12 +16,6 @@ if ( !variable_global_exists("__scribble_global_count") )
     exit;
 }
 
-if (global.__scribble_global_count)
-{
-    show_error("Scribble:\nscribble_init_add_spritefont() should be called before scribble_init()\n ", true);
-    return undefined;
-}
-
 var _font        =                                                       argument[0];
 var _space_width =  (argument_count > 1)?                                argument[1] : undefined;
 var _mapstring   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING;
