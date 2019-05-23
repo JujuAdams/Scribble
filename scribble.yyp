@@ -114,7 +114,7 @@
             "Key": "375e7330-6e30-4902-8a42-dbc8ad380c16",
             "Value": {
                 "id": "d2db0b9c-9c8c-442b-91a8-ae470fa06d7f",
-                "resourcePath": "scripts\\scribble_init_add_font\\scribble_init_add_font.yy",
+                "resourcePath": "scripts\\scribble_define_font\\scribble_define_font.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -290,7 +290,7 @@
             "Key": "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
             "Value": {
                 "id": "3a4b0f89-2fa4-4413-8cc7-ab92eb0d137b",
-                "resourcePath": "scripts\\scribble_init_add_spritefont\\scribble_init_add_spritefont.yy",
+                "resourcePath": "scripts\\scribble_define_spritefont\\scribble_define_spritefont.yy",
                 "resourceType": "GMScript"
             }
         },

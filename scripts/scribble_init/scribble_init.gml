@@ -1,5 +1,5 @@
 /// Starts initialisation for Scribble
-/// This script should be called before scribble_init_add_font() / scribble_init_add_spritefont()
+/// This script should be called before scribble_define_font() / scribble_define_spritefont()
 ///
 /// @param fontDirectory     Directory to look in (relative to game_save_id) for font .yy files
 /// @param defaultFont       The name of the default Scribble font, as a string
@@ -345,7 +345,7 @@ if (_auto_scan)
                 else
                 {
                     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Autoscan found standard font \"" + _font + "\"");
-                    scribble_init_add_font(_font, string_replace(_directory + _file, _font_directory, ""));
+                    scribble_define_font(_font, string_replace(_directory + _file, _font_directory, ""));
                 }
             }
             

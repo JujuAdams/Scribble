@@ -11,7 +11,7 @@
 
 if ( !variable_global_exists("__scribble_global_count") )
 {
-    show_error("Scribble:\nscribble_init_add_font() should be called after scribble_init()\n ", true);
+    show_error("Scribble:\nscribble_define_font() should be called after scribble_init()\n ", true);
     return undefined;
 }
 
@@ -45,8 +45,8 @@ if ( !is_string(_font) )
 
 if (asset_get_type(_font) == asset_sprite)
 {
-    show_error("Scribble:\nTo add a spritefont, please use scribble_init_add_spritefont()\n ", false);
-    return scribble_init_add_spritefont(_font);
+    show_error("Scribble:\nTo add a spritefont, please use scribble_define_spritefont()\n ", false);
+    return scribble_define_spritefont(_font);
 }
 
 if (asset_get_type(_font) != asset_font)

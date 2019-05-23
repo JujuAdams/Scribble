@@ -6,7 +6,7 @@
 //  For use with GMS2.2.2 and later
 
 scribble_init("Fonts", "fTestA", true);
-scribble_init_add_spritefont("sSpriteFont", 3);
+scribble_define_spritefont("sSpriteFont", 3);
 
 scribble_add_colour("c_coquelicot", $ff3800);
 scribble_add_colour("c_smaragdine", $50c875);
