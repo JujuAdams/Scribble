@@ -982,13 +982,16 @@ repeat(ds_list_size(_vertex_buffer_list))
         ++_l;
     }
     
+    //Wipe buffer start positions
     _data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = undefined;
     ds_list_destroy(_line_break_list);
     
+    //Create vertex buffer
     _data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _buffer_tell / __SCRIBBLE_VERTEX.__SIZE);
     _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = undefined;
     buffer_delete(_buffer);
     
+    //Wipe WORD_START_TELL
     _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = undefined;
     
     ++_v;
