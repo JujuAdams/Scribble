@@ -1,22 +1,16 @@
 /// Animates effects, advances the typewriter effect for a Scribble data structure, and executes events as they appear
 ///
-/// @param json         The Scribble data structure to manipulate
-/// @param [stepSize]   The step size e.g. a delta time coefficient. Defaults to 1
+/// @param json   The Scribble data structure to manipulate
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
-var _json      = argument[0];
-var _step_size = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : (delta_time/game_get_speed(gamespeed_microseconds));
-
-if (!SCRIBBLE_CALL_STEP_IN_DRAW) _json[| __SCRIBBLE.HAS_CALLED_STEP] = true;
+var _json = argument0;
 
 if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 {
     show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
 }
-
-_json[| __SCRIBBLE.ANIMATION_TIME] += _step_size;
 
 var _typewriter_direction = _json[| __SCRIBBLE.TW_DIRECTION];
 if (_typewriter_direction != 0)
@@ -27,7 +21,7 @@ if (_typewriter_direction != 0)
     
     var _tw_pos   = _json[| __SCRIBBLE.TW_POSITION];
     var _tw_speed = _json[| __SCRIBBLE.TW_SPEED   ];
-    _tw_speed *= _step_size;
+    _tw_speed *= SCRIBBLE_STEP_SIZE;
     
     switch(_json[| __SCRIBBLE.TW_METHOD])
     {
@@ -43,26 +37,15 @@ if (_typewriter_direction != 0)
                     _do_event_scan = true;
                 }
             }
-            
-            _tw_pos += _tw_speed;
-            _tw_pos = clamp(_tw_pos, 0, 1);
-            _json[| __SCRIBBLE.TW_POSITION] = _tw_pos;
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
             if (_typewriter_direction > 0)
             {
-                _do_event_scan = true;
                 var _scan_range_a = _tw_pos;
                 var _scan_range_b = _tw_pos + _tw_speed;
+                _do_event_scan = true;
             }
-            
-            var _length = _json[| __SCRIBBLE.LENGTH];
-            _tw_pos += _tw_speed;
-            _tw_pos = min(_tw_pos, _length);
-            
-            _json[| __SCRIBBLE.TW_POSITION] = _tw_pos;
-            _json[| __SCRIBBLE.CHAR_FADE_T] = ((_typewriter_direction < 0)? 1 : 0) + clamp(_tw_pos / _length, 0, 1);
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_LINE:
@@ -80,12 +63,6 @@ if (_typewriter_direction != 0)
                     _do_event_scan = true;
                 }
             }
-            
-            _tw_pos += _tw_speed;
-            _tw_pos = min(_tw_pos, _lines);
-            
-            _json[| __SCRIBBLE.TW_POSITION] = _tw_pos;
-            _json[| __SCRIBBLE.LINE_FADE_T] = ((_typewriter_direction < 0)? 1 : 0) + clamp(_tw_pos / _lines, 0, 1);
         break;
         
         default:
