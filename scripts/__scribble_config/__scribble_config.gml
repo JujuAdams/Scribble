@@ -15,15 +15,9 @@
 
 #endregion
 
-#region Default draw parameters
+#region Text animation defaults
 
-#macro SCRIBBLE_DEFAULT_STEP_SIZE          (delta_time/16667)  //The default step size. "(delta_time/16667)" assumes that the game is running at 60FPS and will delta time effects accordingly
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED       0.1                 //The default animation speed for sprites inserted into text
-
-#endregion
-
-#region Default text animation
-
 #macro SCRIBBLE_DEFAULT_WAVE_SIZE          4     //The default magnitude of the text wave animation. A value of "4" will cause the wave to extend 4 pixels above and 4 pixels below the line of text
 #macro SCRIBBLE_DEFAULT_WAVE_FREQUENCY    50     //The default frequency of the text wave animation. Higher values cause the wave peaks to be closer together
 #macro SCRIBBLE_DEFAULT_WAVE_SPEED         0.2   //The default speed of the text wave animation
