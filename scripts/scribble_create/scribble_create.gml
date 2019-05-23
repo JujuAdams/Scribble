@@ -731,8 +731,6 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
     }
     else
     {
-        #region Add vertex data for each character in the string
-        
         #region Swap texture and buffer if needed
         
         if (_font_texture != _previous_texture)
@@ -834,8 +832,6 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
         //Correct for scaling
         _substr_width  *= _text_scale;
         _substr_height *= _text_scale;
-        
-        #endregion
         
         #endregion
     }
