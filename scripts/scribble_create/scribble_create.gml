@@ -283,21 +283,22 @@ _line_array[@ __SCRIBBLE_LINE.HEIGHT         ] = _line_height;
 _line_array[@ __SCRIBBLE_LINE.HALIGN         ] = _def_halign;
 ds_list_add(_line_list, _line_array);
 
-var _text_x               = 0;
-var _text_y               = 0;
-var _text_font            = _def_font;
-var _text_colour          = _def_colour;
-var _text_halign          = _def_halign;
-var _text_flags           = 0;
-var _text_scale           = 1;
-var _text_slant           = false;
+var _text_x           = 0;
+var _text_y           = 0;
+var _text_font        = _def_font;
+var _text_colour      = _def_colour;
+var _text_halign      = _def_halign;
+var _text_flags       = 0;
+var _text_scale       = 1;
+var _text_slant       = false;
 
-var _previous_texture     = -1;
+var _previous_texture = -1;
 
-var _meta_characters      = 0;
-var _meta_words           = 0;
-var _meta_lines           = 0;
-var _text_x_max           = 0;
+var _meta_characters  = 0;
+var _meta_words       = 0;
+var _meta_lines       = 0;
+var _text_x_max       = 0;
+var _text_y_max       = 0;
 
 ds_map_clear(global.__scribble_create_texture_to_buffer_map);
 
@@ -931,13 +932,14 @@ _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
 
 ++_meta_lines;
 _text_x_max = max(_text_x_max, _line_width);
+_text_y_max = _text_y + _line_height;
 
 //Fill out metadata
 _json[| __SCRIBBLE.WORDS ] = _meta_words;
 _json[| __SCRIBBLE.LINES ] = _meta_lines;
 _json[| __SCRIBBLE.LENGTH] = _meta_characters;
 _json[| __SCRIBBLE.WIDTH ] = _text_x_max;
-_json[| __SCRIBBLE.HEIGHT] = _text_y + _line_height;
+_json[| __SCRIBBLE.HEIGHT] = _text_y_max;
 
 
 
@@ -992,7 +994,39 @@ repeat(ds_list_size(_vertex_buffer_list))
     ++_v;
 }
 
-scribble_set_box_alignment(_json, fa_left, fa_top);
+#endregion
+
+
+
+#region Sort out box alignment
+
+switch(SCRIBBLE_DEFAULT_BOX_HALIGN)
+{
+    case fa_left:
+        _json[| __SCRIBBLE.RIGHT] =  _text_x_max;
+    break;
+    case fa_center:
+        _json[| __SCRIBBLE.LEFT ] = -_text_x_max div 2;
+        _json[| __SCRIBBLE.RIGHT] =  _text_x_max div 2;
+    break;
+    case fa_right:
+        _json[| __SCRIBBLE.LEFT ] = -_text_x_max;
+    break;
+}
+
+switch(SCRIBBLE_DEFAULT_BOX_VALIGN)
+{
+    case fa_top:
+        _json[| __SCRIBBLE.BOTTOM] =  _text_y_max;
+    break;
+    case fa_middle:
+        _json[| __SCRIBBLE.TOP   ] = -_text_y_max div 2;
+        _json[| __SCRIBBLE.BOTTOM] =  _text_y_max div 2;
+    break;
+    case fa_bottom:
+        _json[| __SCRIBBLE.TOP   ] = -_text_y_max;
+    break;
+}
 
 #endregion
 
