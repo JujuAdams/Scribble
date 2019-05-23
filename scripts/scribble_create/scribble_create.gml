@@ -24,7 +24,7 @@
 /// [fa_center] [fa_centre]             Align centrally
 /// [scale,<factor>] [/scale] [/s]      Scale text / Reset scale to 1
 /// [slant] [/slant]                    Set/unset italic emulation
-/// [<event name>,<arg0>,<arg1>...]     Execute a script bound to an event name (previously defined using scribble_add_event()) with the specified arguments
+/// [<event name>,<arg0>,<arg1>...]     Execute a script bound to an event name (previously defined using scribble_define_event()) with the specified arguments
 /// [<flag name>] [/<flag name>]        Set/unset a custom formatting flag
 /// 
 /// Scribble has the following formatting flags as defaults:

@@ -15,7 +15,7 @@ var _native = ((argument_count > 2) && (argument[2] != undefined))? argument[2] 
 
 if ( !variable_global_exists("__scribble_global_count") )
 {
-    show_error("Scribble:\nscribble_add_colour() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\nscribble_define_colour() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
