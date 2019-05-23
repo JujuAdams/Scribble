@@ -147,14 +147,8 @@ enum __SCRIBBLE
     EV_CHARACTER_LIST,   //38
     EV_NAME_LIST,        //39
     EV_DATA_LIST,        //40
-    EV_TRIGGERED_LIST,   //41
-    EV_TRIGGERED_MAP,    //42
-    EV_VALUE_MAP,        //43
-    EV_CHANGED_MAP,      //44
-    EV_PREVIOUS_MAP,     //45
-    EV_DIFFERENT_MAP,    //46
     
-    __SIZE               //47
+    __SIZE               //41
 }
 
 #macro __SCRIBBLE_ON_DIRECTX        ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
