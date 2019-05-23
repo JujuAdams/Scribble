@@ -79,12 +79,12 @@ enum __SCRIBBLE_WORD
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {
-    BUFFER,
-    VERTEX_BUFFER,
-    TEXTURE,
-    WORD_START_TELL,
-    LINE_START_LIST,
-    __SIZE
+    BUFFER,          //0
+    VERTEX_BUFFER,   //1
+    TEXTURE,         //2
+    WORD_START_TELL, //3
+    LINE_START_LIST, //4
+    __SIZE           //5
 }
 
 enum __SCRIBBLE_VERTEX
