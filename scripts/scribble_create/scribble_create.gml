@@ -184,9 +184,9 @@ repeat(_buffer_size)
 var _json               = ds_list_create(); //The main data structure
 var _line_list          = ds_list_create(); //Stores each line of text
 var _vertex_buffer_list = ds_list_create(); //Stores all the vertex buffers needed to render the text and sprites
-var _events_char_list   = ds_list_create(); //Stores each event's triggering character
-var _events_name_list   = ds_list_create(); //Stores each event's name
-var _events_data_list   = ds_list_create(); //Stores each event's parameters
+var _events_char_array  = array_create(0);  //Stores each event's triggering character
+var _events_name_array  = array_create(0);  //Stores each event's name
+var _events_data_array  = array_create(0);  //Stores each event's parameters
 
 global.__scribble_global_count++;
 global.__scribble_alive[? global.__scribble_global_count ] = _json;
@@ -236,16 +236,13 @@ _json[| __SCRIBBLE.__SECTION5        ] = "-- Events --";
 _json[| __SCRIBBLE.EV_SCAN_DO        ] = false;
 _json[| __SCRIBBLE.EV_SCAN_A         ] = 0;
 _json[| __SCRIBBLE.EV_SCAN_B         ] = 0;
-_json[| __SCRIBBLE.EV_CHARACTER_LIST ] = _events_char_list; //Stores each event's triggering cha
-_json[| __SCRIBBLE.EV_NAME_LIST      ] = _events_name_list; //Stores each event's name
-_json[| __SCRIBBLE.EV_DATA_LIST      ] = _events_data_list; //Stores each event's parameters
+_json[| __SCRIBBLE.EV_CHAR_ARRAY     ] = _events_char_array; //Stores each event's triggering cha
+_json[| __SCRIBBLE.EV_NAME_ARRAY     ] = _events_name_array; //Stores each event's name
+_json[| __SCRIBBLE.EV_DATA_ARRAY     ] = _events_data_array; //Stores each event's parameters
 
 //Now bind the child data structures to the root list
 ds_list_mark_as_list(_json, __SCRIBBLE.LINE_LIST         );
 ds_list_mark_as_list(_json, __SCRIBBLE.VERTEX_BUFFER_LIST);
-ds_list_mark_as_list(_json, __SCRIBBLE.EV_CHARACTER_LIST );
-ds_list_mark_as_list(_json, __SCRIBBLE.EV_NAME_LIST      );
-ds_list_mark_as_list(_json, __SCRIBBLE.EV_DATA_LIST      );
 
 #endregion
 
@@ -441,9 +438,9 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                             var _data = array_create(_parameter_count-1, "");
                             for(var _j = 1; _j < _parameter_count; _j++) _data[ _j-1 ] = global.__scribble_create_parameters_list[| _j ];
                             
-                            ds_list_add(_events_char_list, _meta_characters);
-                            ds_list_add(_events_name_list, _name);
-                            ds_list_add(_events_data_list, _data);
+                            _events_char_array[@ array_length_1d(_events_char_array)] = _meta_characters;
+                            _events_name_array[@ array_length_1d(_events_name_array)] = _name;
+                            _events_data_array[@ array_length_1d(_events_data_array)] = _data;
                             
                             _skip = true;
                             _found = true;
