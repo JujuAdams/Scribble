@@ -1,5 +1,5 @@
 /// Starts initialisation for Scribble
-/// This script should be called before scribble_init_add_font() / scribble_init_add_spritefont() and scribble_init_end()
+/// This script should be called before scribble_init_add_font() / scribble_init_add_spritefont()
 ///
 /// @param fontDirectory     Directory to look in (relative to game_save_id) for font .yy files
 /// @param defaultFont       The name of the default Scribble font, as a string
@@ -14,8 +14,6 @@
 /// 6) Creates a vertex format
 /// 7) Cache uniform indexes for the shScribble shader
 /// 8) Build a lookup table for decoding hexcode colours in scribble_create()
-///
-/// Initialisation is only fully complete once scribble_init_end() is called
 
 #region Internal Macro Definitions
 
@@ -166,7 +164,7 @@ enum __SCRIBBLE
 
 if ( variable_global_exists("__scribble_global_count") )
 {
-    show_error("Scribble:\nscribble_init_start() should not be called twice!\n ", false);
+    show_error("Scribble:\nscribble_init() should not be called twice!\n ", false);
     exit;
 }
 

@@ -12,13 +12,13 @@
 
 if ( !variable_global_exists("__scribble_global_count") )
 {
-    show_error("Scribble:\nscribble_init_add_spritefont() should be called after scribble_init_start() and before scribble_init_end()\n ", true);
+    show_error("Scribble:\nscribble_init_add_spritefont() should be called after scribble_init()\n ", true);
     exit;
 }
 
 if (global.__scribble_global_count)
 {
-    show_error("Scribble:\nscribble_init_add_spritefont() should be called before scribble_init_end()\n ", true);
+    show_error("Scribble:\nscribble_init_add_spritefont() should be called before scribble_init()\n ", true);
     return undefined;
 }
 
