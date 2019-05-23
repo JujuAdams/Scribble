@@ -164,7 +164,7 @@ enum __SCRIBBLE
 
 #endregion
 
-if ( variable_global_exists("__scribble_init_complete") )
+if ( variable_global_exists("__scribble_global_count") )
 {
     show_error("Scribble:\nscribble_init_start() should not be called twice!\n ", false);
     exit;
@@ -228,7 +228,6 @@ global.__scribble_tag_replace                  = ds_map_create();  //Stores asse
 global.__scribble_alive                        = ds_map_create();  //ds_map of all alive Scribble data structures
 global.__scribble_global_count                 = 0;
 global.__scribble_default_font                 = _default_font;
-global.__scribble_init_complete                = false;
 global.__scribble_create_separator_list        = ds_list_create();
 global.__scribble_create_position_list         = ds_list_create();
 global.__scribble_create_parameters_list       = ds_list_create();

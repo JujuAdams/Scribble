@@ -34,7 +34,7 @@
 
 
 
-if ( !variable_global_exists("__scribble_init_complete") )
+if ( !variable_global_exists("__scribble_global_count") )
 {
     show_error("Scribble:\nscribble_create() should be called after initialising Scribble.\n ", false);
     exit;

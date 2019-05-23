@@ -8,7 +8,7 @@
 var _old_tag = argument0;
 var _new_tag = argument1;
 
-if (!variable_global_exists("__scribble_init_complete"))
+if (!variable_global_exists("__scribble_global_count"))
 {
     show_error("Scribble:\nscribble_add_asset() should be called after initialising Scribble.\n ", false);
     exit;

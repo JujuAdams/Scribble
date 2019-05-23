@@ -8,7 +8,7 @@
 var _name  = argument0;
 var _index = argument1;
 
-if ( !variable_global_exists("__scribble_init_complete") )
+if ( !variable_global_exists("__scribble_global_count") )
 {
     show_error("Scribble:\nscribble_add_custom_flag_name() should be called after initialising Scribble.\n ", false);
     exit;
