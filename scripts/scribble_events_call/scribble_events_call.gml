@@ -25,7 +25,9 @@ if (_json[| __SCRIBBLE.EV_SCAN_DO])
     var _events_changed_map    = _json[| __SCRIBBLE.EV_CHANGED_MAP   ];
     var _events_previous_map   = _json[| __SCRIBBLE.EV_PREVIOUS_MAP  ];
     var _events_different_map  = _json[| __SCRIBBLE.EV_DIFFERENT_MAP ];
-        
+    
+    _json[| __SCRIBBLE.EV_SCAN_A] = _scan_range_b;
+    
     //Clear this JSON's events state
     ds_list_clear(_events_triggered_list);
     ds_map_clear( _events_triggered_map );
@@ -113,9 +115,9 @@ if (_json[| __SCRIBBLE.EV_SCAN_DO])
         var _event_name = _events_triggered_list[| _event];
         var _script = global.__scribble_events[? _event_name];
         if (_script != undefined) script_execute(_script,
-                                                    _json,
-                                                    _events_value_map[?     _event_name],
-                                                    _events_changed_map[?   _event_name],
-                                                    _events_different_map[? _event_name]);
+                                                 _json,
+                                                 _events_value_map[?     _event_name],
+                                                 _events_changed_map[?   _event_name],
+                                                 _events_different_map[? _event_name]);
     }
 }
