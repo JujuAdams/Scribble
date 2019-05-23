@@ -47,9 +47,12 @@ enum __SCRIBBLE_FONT_TYPE
 
 enum __SCRIBBLE_LINE
 {
-    FIRST_CHAR, //0
-    LAST_CHAR,  //1
-    __SIZE      //2
+    FIRST_CHAR,      //0
+    LAST_CHAR,       //1
+    WIDTH,           //2
+    HEIGHT,          //3
+    HALIGN,          //4
+    __SIZE           //5
 }
 
 enum __SCRIBBLE_WORD
@@ -80,8 +83,22 @@ enum __SCRIBBLE_VERTEX_BUFFER
     VERTEX_BUFFER,
     TEXTURE,
     WORD_START_TELL,
-    LINE_START_TELL,
+    LINE_START_LIST,
     __SIZE
+}
+
+enum __SCRIBBLE_VERTEX
+{
+    X      =  0,
+    Y      =  4,
+    Z      =  8,
+    NX     = 12,
+    NY     = 16,
+    NZ     = 20,
+    C      = 24,
+    U      = 28,
+    V      = 32,
+    __SIZE = 36
 }
 
 enum __SCRIBBLE
@@ -144,8 +161,7 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_ON_DIRECTX        ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
 #macro __SCRIBBLE_ON_OPENGL         !__SCRIBBLE_ON_DIRECTX
 #macro __SCRIBBLE_ON_MOBILE         ((os_type == os_ios) || (os_type == os_android))
-#macro __SCRIBBLE_VERTEX_BYTE_SIZE  36
-#macro __SCRIBBLE_GLYPH_BYTE_SIZE   6*__SCRIBBLE_VERTEX_BYTE_SIZE
+#macro __SCRIBBLE_GLYPH_BYTE_SIZE   6*__SCRIBBLE_VERTEX.__SIZE
 #macro __SCRIBBLE_EXPECTED_GLYPHS   100
 
 #endregion
