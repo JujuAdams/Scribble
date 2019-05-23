@@ -7,7 +7,7 @@
         "1cadf0e8-8394-480c-8ce1-0cce13ec62dc"
     ],
     "filterType": "GMShader",
-    "folderName": "Core",
+    "folderName": "Essential",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

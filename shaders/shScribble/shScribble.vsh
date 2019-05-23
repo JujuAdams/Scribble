@@ -24,10 +24,14 @@ varying vec4 v_vColour;
 
 uniform vec4  u_vColourBlend;
 uniform float u_fTime;
+
 uniform float u_fCharFadeT;
 uniform float u_fCharFadeSmoothness;
+uniform float u_fCharFadeCount;
+
 uniform float u_fLineFadeT;
 uniform float u_fLineFadeSmoothness;
+uniform float u_fLineFadeCount;
 
 uniform float u_aDataFields[MAX_DATA_FIELDS];
 
@@ -134,8 +138,8 @@ void main()
     applySprite(flagArray[0], v_vColour);
     applyRainbow(flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
     applyColourBlend(u_vColourBlend, v_vColour);
-    //applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, in_Normal.x, v_vColour);
-    //applyTypewriterFade(u_fLineFadeT, u_fLineFadeSmoothness, in_Normal.y, v_vColour);
+    applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, in_Normal.x/u_fCharFadeCount, v_vColour);
+    applyTypewriterFade(u_fLineFadeT, u_fLineFadeSmoothness, in_Normal.y/u_fLineFadeCount, v_vColour);
     
     //Texture
     v_vTexcoord = in_TextureCoord;

@@ -14,24 +14,23 @@
 /// []                                  Reset formatting to defaults
 /// [<name of colour>]                  Set colour
 /// [#<hex code>]                       Set colour via a hexcode, using normal RGB values (#RRGGBB)
-/// [/colour]  [/c]                     Reset colour to the default
-/// [<name of font>]  [/font]  [/f]     Set font / Rest font
+/// [/colour] [/c]                      Reset colour to the default
+/// [<name of font>] [/font] [/f]       Set font / Rest font
 /// [<name of sprite>]                  Insert an animated sprite starting on image 0 and animating using SCRIBBLE_DEFAULT_SPRITE_SPEED
 /// [<name of sprite>,<image>]          Insert a static sprite using the specified image index
 /// [<name of sprite>,<image>,<speed>]  Insert animated sprite using the specified image index and animation speed
 /// [fa_left]                           Align horizontally to the left
 /// [fa_right]                          Align horizontally to the right
-/// [fa_center]                         Align centrally
-/// [fa_centre]                         As above
-/// [scale,<factor>]  [/scale]  [/s]    Scale text / Reset scale to 1
-/// [slant]  [/slant]                   Set/unset italic emulation
+/// [fa_center] [fa_centre]             Align centrally
+/// [scale,<factor>] [/scale] [/s]      Scale text / Reset scale to 1
+/// [slant] [/slant]                    Set/unset italic emulation
 /// [<event name>,<arg0>,<arg1>...]     Execute a script bound to an event name (previously defined using scribble_add_event()) with the specified arguments
-/// [<flag name>]  [/<flag name>]       Set/unset a custom formatting flag
+/// [<flag name>] [/<flag name>]        Set/unset a custom formatting flag
 /// 
-/// Scribble has the following flags as defaults:
-/// [wave]     [/wave]                  Set/unset text to wave up and down
-/// [shake]    [/shake]                 Set/unset text to shake
-/// [rainbow]  [/rainbow]               Set/unset text to cycle through rainbow colours
+/// Scribble has the following formatting flags as defaults:
+/// [wave]    [/wave]                   Set/unset text to wave up and down
+/// [shake]   [/shake]                  Set/unset text to shake
+/// [rainbow] [/rainbow]                Set/unset text to cycle through rainbow colours
 
 
 

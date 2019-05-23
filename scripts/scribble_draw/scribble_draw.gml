@@ -78,8 +78,10 @@ if (_count > 0)
     var _data_fields     = _json[| __SCRIBBLE.DATA_FIELDS   ];
     var _char_smoothness = 0;
     var _char_t          = 1;
+    var _char_count      = _json[| __SCRIBBLE.LENGTH];
     var _line_smoothness = 0;
     var _line_t          = 1;
+    var _line_count      = _json[| __SCRIBBLE.LINES];
     
     switch(_json[| __SCRIBBLE.TW_METHOD])
     {
@@ -88,13 +90,13 @@ if (_count > 0)
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-            _char_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS] / _json[| __SCRIBBLE.LENGTH];
-            _char_t          = _json[| __SCRIBBLE.CHAR_FADE_T] * _json[| __SCRIBBLE.LENGTH];
+            _char_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS] / _char_count;
+            _char_t          = _json[| __SCRIBBLE.CHAR_FADE_T];
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_LINE:
-            _line_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS] / _json[| __SCRIBBLE.LINES];
-            _line_t          = _json[| __SCRIBBLE.LINE_FADE_T] * _json[| __SCRIBBLE.LINES];
+            _line_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS] / _line_count;
+            _line_t          = _json[| __SCRIBBLE.LINE_FADE_T];
         break;
     }
     
@@ -104,9 +106,11 @@ if (_count > 0)
     
     shader_set_uniform_f(global.__scribble_uniform_char_t         , _char_t);
     shader_set_uniform_f(global.__scribble_uniform_char_smoothness, _char_smoothness);
+    shader_set_uniform_f(global.__scribble_uniform_char_count     , _char_count);
     
     shader_set_uniform_f(global.__scribble_uniform_line_t         , _line_t);
     shader_set_uniform_f(global.__scribble_uniform_line_smoothness, _line_smoothness);
+    shader_set_uniform_f(global.__scribble_uniform_line_count     , _line_count);
     
     shader_set_uniform_f(global.__scribble_uniform_colour_blend   , colour_get_red(  _colour)/255,
                                                                     colour_get_green(_colour)/255,
