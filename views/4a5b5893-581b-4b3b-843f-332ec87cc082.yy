@@ -8,7 +8,7 @@
         "fab0fef8-eab5-4e5b-bccd-f5ed6f43db50"
     ],
     "filterType": "GMRoom",
-    "folderName": "Extra Fancy",
+    "folderName": "Advanced",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

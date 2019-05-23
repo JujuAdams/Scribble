@@ -8,7 +8,7 @@
 var _name   = argument0;
 var _script = argument1;
 
-if ( !variable_global_exists("__scribble_global_count") )
+if ( !variable_global_exists("__scribble_init_complete") )
 {
     show_error("Scribble:\nscribble_add_event() should be called after initialising Scribble.\n ", false);
     exit;
@@ -51,4 +51,4 @@ if ( is_real(_old_script) )
 }
 
 global.__scribble_events[? _name ] = _script;
-show_debug_message("Scribble: Tying event \"" + _name + "\" to script \"" + script_get_name(_script) + "()\"" );
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Tying event \"" + _name + "\" to script \"" + script_get_name(_script) + "()\"" );

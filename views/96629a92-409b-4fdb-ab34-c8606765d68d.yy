@@ -8,7 +8,7 @@
         "6e50d4a6-cc45-413c-bd8b-e5c75c9e9ab8"
     ],
     "filterType": "GMObject",
-    "folderName": "(Dev Testing)",
+    "folderName": "Test",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

@@ -1,7 +1,7 @@
-//  Scribble v5.0.2
-//  2019/04/30
+//  Scribble v4.7.1
+//  2019/05/23
 //  @jujuadams
-//  With thanks to glitchroy and Rob van Saaze
+//  With thanks to glitchroy, Mark Turner, Rob van Saaze, and DragoniteSpam
 //  
 //  For use with GMS2.2.2 and later
 
@@ -14,4 +14,4 @@ var _string  = "[rainbow]abcdef[] ABCDEF##";
 
 //Build Scribble data structure that describes how the text should be laid out
 //Since we're specifying what font to use, Scribble will use that font instead of the default (first font added during initialisation)
-text = scribble_create(_string, 450, -1, c_teal, "fTestB");
+text = scribble_create(_string, -1, 450, c_teal, "fTestB");

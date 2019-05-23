@@ -13,7 +13,7 @@ var _name   = argument[0];
 var _colour = argument[1];
 var _native = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
 
-if ( !variable_global_exists("__scribble_global_count") )
+if ( !variable_global_exists("__scribble_init_complete") )
 {
     show_error("Scribble:\nscribble_add_colour() should be called after initialising Scribble.\n ", false);
     exit;
@@ -56,4 +56,4 @@ if ( is_real(_old_colour) )
 
 global.__scribble_colours[? _name ] = _colour;
 
-show_debug_message("Scribble: Added colour \"" + _name + "\" as " + string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)) + ", u32=" + string(_colour));
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added colour \"" + _name + "\" as " + string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)) + ", u32=" + string(_colour));

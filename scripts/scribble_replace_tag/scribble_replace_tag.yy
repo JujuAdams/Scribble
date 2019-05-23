@@ -1,8 +1,8 @@
 {
-    "id": "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd",
+    "id": "b267953e-f407-4457-9e84-b719945ec6f9",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "scribble_define_event",
+    "name": "scribble_replace_tag",
     "IsCompatibility": false,
     "IsDnD": false
 }
