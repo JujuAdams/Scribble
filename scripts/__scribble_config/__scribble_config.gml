@@ -17,14 +17,8 @@
 
 #region Default draw parameters
 
-#macro SCRIBBLE_DEFAULT_XSCALE             1                   //The default x-scale of the textbox
-#macro SCRIBBLE_DEFAULT_YSCALE             1                   //The default y-scale of the textbox
-#macro SCRIBBLE_DEFAULT_BOX_HALIGN         fa_left             //The default alignment of the textbox. fa_left places the left-hand side of the box at the draw coordinate when using scribble_draw()
-#macro SCRIBBLE_DEFAULT_BOX_VALIGN         fa_top              //The default alignment of the textbox. fa_top places the top of the box at the draw coordinate when using scribble_draw()
-#macro SCRIBBLE_DEFAULT_ANGLE              0                   //The default rotation of the textbox
 #macro SCRIBBLE_DEFAULT_STEP_SIZE          (delta_time/16667)  //The default step size. "(delta_time/16667)" assumes that the game is running at 60FPS and will delta time effects accordingly
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED       0.1                 //The default animation speed for sprites inserted into text
-#macro SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA  false               //Whether or not to premultiply alpha by default
 
 #endregion
 

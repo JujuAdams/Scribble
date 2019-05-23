@@ -208,8 +208,8 @@ _json[| __SCRIBBLE.WIDTH_LIMIT       ] = _width_limit;
 _json[| __SCRIBBLE.LINE_HEIGHT       ] = _line_min_height;
 
 _json[| __SCRIBBLE.__SECTION1        ] = "-- Statistics --";
-_json[| __SCRIBBLE.HALIGN            ] = SCRIBBLE_DEFAULT_BOX_HALIGN;
-_json[| __SCRIBBLE.VALIGN            ] = SCRIBBLE_DEFAULT_BOX_VALIGN;
+_json[| __SCRIBBLE.HALIGN            ] = fa_left;
+_json[| __SCRIBBLE.VALIGN            ] = fa_right;
 _json[| __SCRIBBLE.WIDTH             ] = 0;
 _json[| __SCRIBBLE.HEIGHT            ] = 0;
 _json[| __SCRIBBLE.LEFT              ] = 0;
@@ -936,6 +936,8 @@ _json[| __SCRIBBLE.LINES ] = _meta_lines;
 _json[| __SCRIBBLE.LENGTH] = _meta_characters;
 _json[| __SCRIBBLE.WIDTH ] = _text_x_max;
 _json[| __SCRIBBLE.HEIGHT] = _text_y_max;
+_json[| __SCRIBBLE.RIGHT ] = _text_x_max;
+_json[| __SCRIBBLE.BOTTOM] = _text_y_max;
 
 
 
@@ -991,40 +993,6 @@ repeat(ds_list_size(_vertex_buffer_list))
     _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = undefined;
     
     ++_v;
-}
-
-#endregion
-
-
-
-#region Sort out box alignment
-
-switch(SCRIBBLE_DEFAULT_BOX_HALIGN)
-{
-    case fa_left:
-        _json[| __SCRIBBLE.RIGHT] =  _text_x_max;
-    break;
-    case fa_center:
-        _json[| __SCRIBBLE.LEFT ] = -_text_x_max div 2;
-        _json[| __SCRIBBLE.RIGHT] =  _text_x_max div 2;
-    break;
-    case fa_right:
-        _json[| __SCRIBBLE.LEFT ] = -_text_x_max;
-    break;
-}
-
-switch(SCRIBBLE_DEFAULT_BOX_VALIGN)
-{
-    case fa_top:
-        _json[| __SCRIBBLE.BOTTOM] =  _text_y_max;
-    break;
-    case fa_middle:
-        _json[| __SCRIBBLE.TOP   ] = -_text_y_max div 2;
-        _json[| __SCRIBBLE.BOTTOM] =  _text_y_max div 2;
-    break;
-    case fa_bottom:
-        _json[| __SCRIBBLE.TOP   ] = -_text_y_max;
-    break;
 }
 
 #endregion

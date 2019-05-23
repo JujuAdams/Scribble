@@ -12,8 +12,8 @@
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _json   = argument[0];
-var _halign = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_BOX_HALIGN;
-var _valign = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : SCRIBBLE_DEFAULT_BOX_VALIGN;
+var _halign = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : fa_left;
+var _valign = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : fa_top;
 
 if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 {
