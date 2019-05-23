@@ -77,7 +77,7 @@ global.__scribble_font_data[? _font ] = _data;
 
 
 
-if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Processing font \"" + _font + "\"");
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Processing font \"" + _font + "\"");
 
 var _asset       = asset_get_index(_font);
 var _texture     = font_get_texture(_asset);
@@ -88,12 +88,15 @@ var _texture_w   = texture_get_width(_texture);
 var _texture_h   = texture_get_height(_texture);
 _data[@ __SCRIBBLE_FONT.TEXTURE ] = _texture;
 
-show_debug_message("Scribble:     \"" + _font +"\""
-                 + ", texture= " + string(_texture)
-                 + ", size= " + string(_texture_w) + " x " + string(_texture_h)
-                 + ", texel= " + string_format(_texture_tw, 1, 10) + " x " + string_format(_texture_th, 1, 10)
-                 + ", uvs= " + string_format(_texture_uvs[0], 1, 10) + "," + string_format(_texture_uvs[1], 1, 10)
-                 + " -> " + string_format(_texture_uvs[2], 1, 10) + "," + string_format(_texture_uvs[3], 1, 10));
+if (SCRIBBLE_VERBOSE)
+{
+    show_debug_message("Scribble:   \"" + _font +"\""
+                     + ", texture= " + string(_texture)
+                     + ", size= " + string(_texture_w) + " x " + string(_texture_h)
+                     + ", texel= " + string_format(_texture_tw, 1, 10) + " x " + string_format(_texture_th, 1, 10)
+                     + ", uvs= " + string_format(_texture_uvs[0], 1, 10) + "," + string_format(_texture_uvs[1], 1, 10)
+                     + " -> " + string_format(_texture_uvs[2], 1, 10) + "," + string_format(_texture_uvs[3], 1, 10));
+}
 
 
 
@@ -106,7 +109,7 @@ var _json = json_decode(_json_string);
 
 var _yy_glyph_list = _json[? "glyphs" ];
 var _size = ds_list_size(_yy_glyph_list);
-show_debug_message("Scribble:     \"" + _font + "\" has " + string(_size) + " characters");
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   \"" + _font + "\" has " + string(_size) + " characters");
 
 
 
@@ -116,7 +119,7 @@ if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
 {
     #region Sequential glyph index
     
-    show_debug_message("Scribble:     Trying sequential glyph index...");
+    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Trying sequential glyph index...");
     
     var _glyph_map = ds_map_create();
     
@@ -142,11 +145,11 @@ if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
     _data[@ __SCRIBBLE_FONT.GLYPH_MAX ] = _glyph_max;
     
     var _glyph_count = 1 + _glyph_max - _glyph_min;
-    show_debug_message("Scribble:     Glyphs start at " + string(_glyph_min) + " and end at " + string(_glyph_max) + ". Range is " + string(_glyph_count-1));
+    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Glyphs start at " + string(_glyph_min) + " and end at " + string(_glyph_max) + ". Range is " + string(_glyph_count-1));
     
     if ((_glyph_count-1) > SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE)
     {
-        show_debug_message("Scribble:     Glyph range exceeds maximum (" + string(SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE) + ")!");
+        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Glyph range exceeds maximum (" + string(SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE) + ")!");
     }
     else
     {
@@ -155,15 +158,15 @@ if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
         ds_map_destroy(_glyph_map);
         var _fraction = _holes / _glyph_count;
         
-        show_debug_message("Scribble:     There are " + string(_holes) + " holes, " + string(_fraction*100) + "%");
+        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   There are " + string(_holes) + " holes, " + string(_fraction*100) + "%");
         
         if (_fraction > SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES)
         {
-            show_debug_message("Scribble: Hole proportion exceeds maximum (" + string(SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES*100) + "%)!");
+            if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Hole proportion exceeds maximum (" + string(SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES*100) + "%)!");
         }
         else
         {
-            show_debug_message("Scribble:     Using an array to index glyphs");
+            if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Using an array to index glyphs");
             _ds_map_fallback = false;
             
             var _font_glyphs_array = array_create(_glyph_count, undefined);
@@ -209,7 +212,7 @@ if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
 
 if (_ds_map_fallback)
 {
-    show_debug_message("Scribble:     Using a ds_map to index glyphs");
+    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Using a ds_map to index glyphs");
     
     var _font_glyphs_map = ds_map_create();
     _data[@ __SCRIBBLE_FONT.GLYPHS_MAP ] = _font_glyphs_map;
@@ -249,5 +252,3 @@ if (_ds_map_fallback)
 }
 
 ds_map_destroy(_json);
-
-if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added \"" + _font + "\" as a standard font");
