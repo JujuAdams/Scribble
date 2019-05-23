@@ -852,30 +852,39 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             
             var _line_break_list = _data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
             var _buffer          = _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
+            var _tell_a          = _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL];
+            var _tell_b          = buffer_tell(_buffer);
             
-            var _tell_a = _line_break_list[| _meta_lines];
-            var _tell_b = buffer_tell(_buffer);
-            show_debug_message("line=" + string(ds_list_size(_line_list)) + ", vertex=" + string(_v) + ", " + string(_tell_a) + " -> " + string(_tell_b));
+            _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_b;
             
             if (!_force_newline && (_tell_a < _tell_b))
             {
-                var _word_tell = _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL];
-                var _tell = _word_tell;
+                repeat((_tell_b - _tell_a) / __SCRIBBLE_GLYPH_BYTE_SIZE)
+                {
+                    if (buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.X, buffer_f32) >= _text_x) break;
+                    _tell_a += __SCRIBBLE_GLYPH_BYTE_SIZE;
+                }
+                ds_list_add(_line_break_list, _tell_a);
                 
                 //Retroactively move the last word to a new line
-                repeat((_tell_b - _word_tell) / __SCRIBBLE_VERTEX.__SIZE)
+                var _tell = _tell_a;
+                repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                 {
-                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X , buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32) - _text_x);
-                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.Y , buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32) + _line_height);
-                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32, _meta_lines+1);
+                    var _x1 = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32);
+                    if (_x1 >= _text_x)
+                    {
+                        buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X , buffer_f32, _x1 - _text_x);
+                        buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.Y , buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32) + _line_height);
+                        buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32, _meta_lines+1);
+                    }
+                    
                     _tell += __SCRIBBLE_VERTEX.__SIZE;
                 }
-                
-                _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_b;
-                _tell_b = _word_tell;
             }
-            
-            ds_list_add(_line_break_list, _tell_b);
+            else
+            {
+                ds_list_add(_line_break_list, _tell_b);
+            }
             
             ++_v;
         }
@@ -978,7 +987,6 @@ repeat(ds_list_size(_vertex_buffer_list))
     _data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _buffer_tell / __SCRIBBLE_VERTEX.__SIZE);
     _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = undefined;
     buffer_delete(_buffer);
-    
     
     _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = undefined;
     
