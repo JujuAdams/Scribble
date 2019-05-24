@@ -10,17 +10,17 @@ if (!is_real(_json) || !ds_exists(_json, ds_type_list))
     exit;
 }
 
-if (_json[| __SCRIBBLE.EV_SCAN_DO])
+if (_json[| SCRIBBLE.EV_SCAN_DO])
 {
-    _json[| __SCRIBBLE.EV_SCAN_DO] = false;
+    _json[| SCRIBBLE.EV_SCAN_DO] = false;
     
-    var _scan_range_a      = _json[| __SCRIBBLE.EV_SCAN_A    ];
-    var _scan_range_b      = _json[| __SCRIBBLE.EV_SCAN_B    ];
-    var _events_char_array = _json[| __SCRIBBLE.EV_CHAR_ARRAY];
-    var _events_name_array = _json[| __SCRIBBLE.EV_NAME_ARRAY];
-    var _events_data_array = _json[| __SCRIBBLE.EV_DATA_ARRAY];
+    var _scan_range_a      = _json[| SCRIBBLE.EV_SCAN_A    ];
+    var _scan_range_b      = _json[| SCRIBBLE.EV_SCAN_B    ];
+    var _events_char_array = _json[| SCRIBBLE.EV_CHAR_ARRAY];
+    var _events_name_array = _json[| SCRIBBLE.EV_NAME_ARRAY];
+    var _events_data_array = _json[| SCRIBBLE.EV_DATA_ARRAY];
     
-    _json[| __SCRIBBLE.EV_SCAN_A] = _scan_range_b;
+    _json[| SCRIBBLE.EV_SCAN_A] = _scan_range_b;
         
     var _char_a = floor(_scan_range_a);
     var _char_b = floor(_scan_range_b);

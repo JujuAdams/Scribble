@@ -174,58 +174,58 @@ var _events_data_array  = array_create(0);  //Stores each event's parameters
 global.__scribble_global_count++;
 global.__scribble_alive[? global.__scribble_global_count] = _json;
 
-_json[| __SCRIBBLE.__SIZE            ] = __SCRIBBLE_VERSION;
+_json[| SCRIBBLE.__SIZE            ] = __SCRIBBLE_VERSION;
 
-_json[| __SCRIBBLE.__SECTION0        ] = "-- Parameters --";
-_json[| __SCRIBBLE.STRING            ] = _input_string;
-_json[| __SCRIBBLE.DEFAULT_FONT      ] = _def_font;
-_json[| __SCRIBBLE.DEFAULT_COLOUR    ] = _def_colour;
-_json[| __SCRIBBLE.DEFAULT_HALIGN    ] = _def_halign;
-_json[| __SCRIBBLE.WIDTH_LIMIT       ] = _width_limit;
-_json[| __SCRIBBLE.LINE_HEIGHT       ] = _line_min_height;
+_json[| SCRIBBLE.__SECTION0        ] = "-- Parameters --";
+_json[| SCRIBBLE.STRING            ] = _input_string;
+_json[| SCRIBBLE.DEFAULT_FONT      ] = _def_font;
+_json[| SCRIBBLE.DEFAULT_COLOUR    ] = _def_colour;
+_json[| SCRIBBLE.DEFAULT_HALIGN    ] = _def_halign;
+_json[| SCRIBBLE.WIDTH_LIMIT       ] = _width_limit;
+_json[| SCRIBBLE.LINE_HEIGHT       ] = _line_min_height;
 
-_json[| __SCRIBBLE.__SECTION1        ] = "-- Statistics --";
-_json[| __SCRIBBLE.BOX_HALIGN        ] = fa_left;
-_json[| __SCRIBBLE.BOX_VALIGN        ] = fa_top;
-_json[| __SCRIBBLE.WIDTH             ] = 0;
-_json[| __SCRIBBLE.HEIGHT            ] = 0;
-_json[| __SCRIBBLE.LEFT              ] = 0;
-_json[| __SCRIBBLE.TOP               ] = 0;
-_json[| __SCRIBBLE.RIGHT             ] = 0;
-_json[| __SCRIBBLE.BOTTOM            ] = 0;
-_json[| __SCRIBBLE.LENGTH            ] = 0;
-_json[| __SCRIBBLE.LINES             ] = 0;
-_json[| __SCRIBBLE.WORDS             ] = 0;
-_json[| __SCRIBBLE.GLOBAL_INDEX      ] = global.__scribble_global_count;
+_json[| SCRIBBLE.__SECTION1        ] = "-- Statistics --";
+_json[| SCRIBBLE.BOX_HALIGN        ] = fa_left;
+_json[| SCRIBBLE.BOX_VALIGN        ] = fa_top;
+_json[| SCRIBBLE.WIDTH             ] = 0;
+_json[| SCRIBBLE.HEIGHT            ] = 0;
+_json[| SCRIBBLE.LEFT              ] = 0;
+_json[| SCRIBBLE.TOP               ] = 0;
+_json[| SCRIBBLE.RIGHT             ] = 0;
+_json[| SCRIBBLE.BOTTOM            ] = 0;
+_json[| SCRIBBLE.LENGTH            ] = 0;
+_json[| SCRIBBLE.LINES             ] = 0;
+_json[| SCRIBBLE.WORDS             ] = 0;
+_json[| SCRIBBLE.GLOBAL_INDEX      ] = global.__scribble_global_count;
 
-_json[| __SCRIBBLE.__SECTION2        ] = "-- Typewriter --";
-_json[| __SCRIBBLE.TW_DIRECTION      ] = 0;
-_json[| __SCRIBBLE.TW_SPEED          ] = 1;
-_json[| __SCRIBBLE.TW_POSITION       ] = 0;
-_json[| __SCRIBBLE.TW_METHOD         ] = SCRIBBLE_TYPEWRITER_WHOLE;
-_json[| __SCRIBBLE.TW_SMOOTHNESS     ] = 0;
-_json[| __SCRIBBLE.CHAR_FADE_T       ] = 1;
-_json[| __SCRIBBLE.LINE_FADE_T       ] = 1;
+_json[| SCRIBBLE.__SECTION2        ] = "-- Typewriter --";
+_json[| SCRIBBLE.TW_DIRECTION      ] = 0;
+_json[| SCRIBBLE.TW_SPEED          ] = 1;
+_json[| SCRIBBLE.TW_POSITION       ] = 0;
+_json[| SCRIBBLE.TW_METHOD         ] = SCRIBBLE_TYPEWRITER_WHOLE;
+_json[| SCRIBBLE.TW_SMOOTHNESS     ] = 0;
+_json[| SCRIBBLE.CHAR_FADE_T       ] = 1;
+_json[| SCRIBBLE.LINE_FADE_T       ] = 1;
 
-_json[| __SCRIBBLE.__SECTION3        ] = "-- Animation --";
-_json[| __SCRIBBLE.DATA_FIELDS       ] = global.__scribble_default_animation_parameters;
-_json[| __SCRIBBLE.ANIMATION_TIME    ] = 0;
+_json[| SCRIBBLE.__SECTION3        ] = "-- Animation --";
+_json[| SCRIBBLE.DATA_FIELDS       ] = global.__scribble_default_animation_parameters;
+_json[| SCRIBBLE.ANIMATION_TIME    ] = 0;
 
-_json[| __SCRIBBLE.__SECTION4        ] = "-- Lists --";
-_json[| __SCRIBBLE.LINE_LIST         ] = _line_list;
-_json[| __SCRIBBLE.VERTEX_BUFFER_LIST] = _vertex_buffer_list;
+_json[| SCRIBBLE.__SECTION4        ] = "-- Lists --";
+_json[| SCRIBBLE.LINE_LIST         ] = _line_list;
+_json[| SCRIBBLE.VERTEX_BUFFER_LIST] = _vertex_buffer_list;
 
-_json[| __SCRIBBLE.__SECTION5        ] = "-- Events --";
-_json[| __SCRIBBLE.EV_SCAN_DO        ] = false;
-_json[| __SCRIBBLE.EV_SCAN_A         ] = 0;
-_json[| __SCRIBBLE.EV_SCAN_B         ] = 0;
-_json[| __SCRIBBLE.EV_CHAR_ARRAY     ] = _events_char_array; //Stores each event's triggering character
-_json[| __SCRIBBLE.EV_NAME_ARRAY     ] = _events_name_array; //Stores each event's name
-_json[| __SCRIBBLE.EV_DATA_ARRAY     ] = _events_data_array; //Stores each event's parameters
+_json[| SCRIBBLE.__SECTION5        ] = "-- Events --";
+_json[| SCRIBBLE.EV_SCAN_DO        ] = false;
+_json[| SCRIBBLE.EV_SCAN_A         ] = 0;
+_json[| SCRIBBLE.EV_SCAN_B         ] = 0;
+_json[| SCRIBBLE.EV_CHAR_ARRAY     ] = _events_char_array; //Stores each event's triggering character
+_json[| SCRIBBLE.EV_NAME_ARRAY     ] = _events_name_array; //Stores each event's name
+_json[| SCRIBBLE.EV_DATA_ARRAY     ] = _events_data_array; //Stores each event's parameters
 
 //Now bind the child data structures to the root list
-ds_list_mark_as_list(_json, __SCRIBBLE.LINE_LIST         );
-ds_list_mark_as_list(_json, __SCRIBBLE.VERTEX_BUFFER_LIST);
+ds_list_mark_as_list(_json, SCRIBBLE.LINE_LIST         );
+ds_list_mark_as_list(_json, SCRIBBLE.VERTEX_BUFFER_LIST);
 
 #endregion
 
@@ -992,13 +992,13 @@ _text_x_max = max(_text_x_max, _line_width);
 _text_y_max = _text_y + _line_height;
 
 //Fill out metadata
-_json[| __SCRIBBLE.WORDS ] = _meta_words;
-_json[| __SCRIBBLE.LINES ] = _meta_lines;
-_json[| __SCRIBBLE.LENGTH] = _meta_characters;
-_json[| __SCRIBBLE.WIDTH ] = _text_x_max;
-_json[| __SCRIBBLE.HEIGHT] = _text_y_max;
-_json[| __SCRIBBLE.RIGHT ] = _text_x_max;
-_json[| __SCRIBBLE.BOTTOM] = _text_y_max;
+_json[| SCRIBBLE.WORDS ] = _meta_words;
+_json[| SCRIBBLE.LINES ] = _meta_lines;
+_json[| SCRIBBLE.LENGTH] = _meta_characters;
+_json[| SCRIBBLE.WIDTH ] = _text_x_max;
+_json[| SCRIBBLE.HEIGHT] = _text_y_max;
+_json[| SCRIBBLE.RIGHT ] = _text_x_max;
+_json[| SCRIBBLE.BOTTOM] = _text_y_max;
 
 
 

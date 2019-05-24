@@ -10,9 +10,9 @@ if (!is_real(_json) || !ds_exists(_json, ds_type_list))
     exit;
 }
 
-ds_map_delete(global.__scribble_alive, _json[| __SCRIBBLE.GLOBAL_INDEX]);
+ds_map_delete(global.__scribble_alive, _json[| SCRIBBLE.GLOBAL_INDEX]);
 
-var _vbuff_list = _json[| __SCRIBBLE.VERTEX_BUFFER_LIST];
+var _vbuff_list = _json[| SCRIBBLE.VERTEX_BUFFER_LIST];
 var _count = ds_list_size(_vbuff_list);
 for(var _i = 0; _i < _count; _i++)
 {
