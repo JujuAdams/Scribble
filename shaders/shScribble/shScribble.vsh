@@ -152,8 +152,8 @@ void scaleCharacter(inout vec2 position, vec2 centre, float scale)
 void main()
 {
     //Unpack character and line percentages
-    float charPC = fract(in_Position.z*0.1)*10.0;
-    float linePC = floor(in_Position.z*0.1)*10.0 / MAX_LINES;
+    float char = floor(in_Position.z/MAX_LINES);
+    float line = in_Position.z - char*MAX_LINES;
     
     //Unpack the flag value into an array
     float flagArray[MAX_FLAGS];
@@ -161,19 +161,19 @@ void main()
     
     //Vertex animation
     vec4 pos = vec4(in_Position.xy + in_Normal.xy, u_fZ, 1.0);
-    scaleCharacter(pos.xy, in_Normal.xy, 1.0 + flagArray[5]*u_aDataFields[9]*(0.5 + 0.5*sin(u_aDataFields[10]*(250.0*charPC - u_fTime))));
+    scaleCharacter(pos.xy, in_Normal.xy, 1.0 + flagArray[5]*u_aDataFields[9]*(0.5 + 0.5*sin(u_aDataFields[10]*(250.0*char - u_fTime))));
     rotateCharacter(pos, in_Normal.xy, flagArray[4]*u_aDataFields[7]*sin(u_aDataFields[8]*u_fTime));
-    applyWave(charPC, flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos);
-    applyShake(charPC, flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos);
+    applyWave(char, flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos);
+    applyShake(char, flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos);
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
     
     //Colour
     v_vColour = in_Colour;
     applySprite(flagArray[0], v_vColour);
-    applyRainbow(charPC, flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
+    applyRainbow(char, flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
     applyColourBlend(u_vColourBlend, v_vColour);
-    applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, charPC/u_fCharFadeCount, v_vColour);
-    applyTypewriterFade(u_fLineFadeT, u_fLineFadeSmoothness, linePC/u_fLineFadeCount, v_vColour);
+    applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, char/u_fCharFadeCount, v_vColour);
+    applyTypewriterFade(u_fLineFadeT, u_fLineFadeSmoothness, line/u_fLineFadeCount, v_vColour);
     
     //Texture
     v_vTexcoord = in_TextureCoord;

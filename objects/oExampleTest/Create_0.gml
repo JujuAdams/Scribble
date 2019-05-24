@@ -14,7 +14,7 @@ var _string  = "[sound,sndCrank][rainbow]TEST[] [wobble]ABCDEF[/wobble]##";
 
 text = scribble_create(_string, -1, 450, "c_xanadu", "fTestB", fa_center);
 scribble_set_animation(text,   4, 50, 0.2,   4, 0.4,   0.5, 0.01,   60, 0.15,   0.4, 0.1);
-//scribble_typewriter_in(text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3);
+scribble_typewriter_in(text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3, 3);
 scribble_set_box_alignment(text, fa_center, fa_middle);
 
 var _spritefont_map_string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";

@@ -489,9 +489,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                         if (_sprite_index >= 0) && (asset_get_type(global.__scribble_create_parameters_list[| 0]) == asset_sprite)
                         {
                             _found = true;
-                            var _packed_pc = 0;
-                            //_meta_characters
-                            //_meta_lines
+                            var _packed_pc = _meta_characters*SCRIBBLE_MAX_LINES + _meta_lines;
                             
                             _substr_width  = _text_scale*sprite_get_width(_sprite_index);
                             _substr_height = _text_scale*sprite_get_height(_sprite_index);
@@ -783,9 +781,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             _glyph_r -= _glyph_cx;
             _glyph_b -= _glyph_cy;
             
-            var _packed_pc = 0; //floor(_line_pc*SCRIBBLE_MAX_LINES*10) + _char_pc;
-            //_meta_characters
-            //_meta_lines
+            var _packed_pc = _meta_characters*SCRIBBLE_MAX_LINES + _meta_lines;
             
             //                                                  X                                                        Y                                                   Z                                                   centre X                                            centre Y                                               flags                                                 colour                                                   U                                                  V
             buffer_write(_glyph_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
@@ -846,7 +842,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     var _x1 = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.NX, buffer_f32);
                     if (_x1 >= _text_x)
                     {
-                        buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.Z , buffer_f32, _meta_lines+1);
+                        buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.Z , buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Z , buffer_f32)+1);
                         buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NX, buffer_f32, _x1 - _text_x);
                         buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32) + _line_height);
                     }
