@@ -1,6 +1,6 @@
 /// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw()
 ///
-/// @param string              The string to be parsed. See below for the various in-line formatting commands
+/// @param string              The string to be parsed. See below for the various in-line formatting tags
 /// @param [minLineHeight]     The minimum line height for each line of text. Defaults to the height of a space character of the default font
 /// @param [maxLineWidth]      The maximum line width for each line of text. Use a negative number for no limit. Defaults to no limit
 /// @param [startingColour]    The (initial) blend colour for the text. Defaults to white
@@ -9,7 +9,7 @@
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 ///
-/// Formatting commands:
+/// Formatting tags:
 /// []                                  Reset formatting to defaults
 /// [<name of colour>]                  Set colour
 /// [#<hex code>]                       Set colour via a hexcode, using normal RGB values (#RRGGBB)
@@ -31,6 +31,7 @@
 /// [shake]   [/shake]                  Set/unset text to shake
 /// [rainbow] [/rainbow]                Set/unset text to cycle through rainbow colours
 /// [wobble]  [/wobble]                 Set/unset text to wobble and rotate in place
+/// [swell]   [/swell]                  Set/unset text to shrink and grow in place
 
 
 
@@ -119,7 +120,7 @@ buffer_seek(  global.__scribble_create_buffer, buffer_seek_start, 0);
 buffer_write( global.__scribble_create_buffer, buffer_string, _input_string);
 buffer_seek(  global.__scribble_create_buffer, buffer_seek_start, 0);
 
-var _in_command_tag = false;
+var _in_tag = false;
 var _i = 0;
 repeat(_buffer_size)
 {
@@ -132,11 +133,11 @@ repeat(_buffer_size)
         break;
     }
     
-    if (_in_command_tag)
+    if (_in_tag)
     {
-        if ((_value == SCRIBBLE_COMMAND_TAG_CLOSE) || (_value == SCRIBBLE_COMMAND_TAG_ARGUMENT))
+        if ((_value == SCRIBBLE_TAG_CLOSE) || (_value == SCRIBBLE_TAG_ARGUMENT))
         {
-            if (_value == SCRIBBLE_COMMAND_TAG_CLOSE) _in_command_tag = false;
+            if (_value == SCRIBBLE_TAG_CLOSE) _in_tag = false;
             buffer_poke(global.__scribble_create_buffer, _i, buffer_u8, 0);
             ds_list_add(global.__scribble_create_separator_list, _value);
             ds_list_add(global.__scribble_create_position_list, _i);
@@ -144,9 +145,9 @@ repeat(_buffer_size)
     }
     else
     {
-        if ((_value == 10) || (_value == 32) || (_value == SCRIBBLE_COMMAND_TAG_OPEN)) //\n or <space> or a command tag open character
+        if ((_value == 10) || (_value == 32) || (_value == SCRIBBLE_TAG_OPEN)) //\n or <space> or a tag open character
         {
-            if (_value == SCRIBBLE_COMMAND_TAG_OPEN) _in_command_tag = true;
+            if (_value == SCRIBBLE_TAG_OPEN) _in_tag = true;
             buffer_poke(global.__scribble_create_buffer, _i, buffer_u8, 0);
             ds_list_add(global.__scribble_create_separator_list, _value);
             ds_list_add(global.__scribble_create_position_list, _i);
@@ -268,7 +269,7 @@ ds_map_clear(global.__scribble_create_texture_to_buffer_map);
 //Iterate over the entire string...
 var _sep_char       = 0;
 var _sep_prev_char  = 0;
-var _in_command_tag = false;
+var _in_tag = false;
 
 var _i = 0;
 repeat(ds_list_size(global.__scribble_create_separator_list))
@@ -289,13 +290,13 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
     var _substr_height = 0;
     var _substr_length = string_length(_input_substr);
     
-    if (_in_command_tag)
+    if (_in_tag)
     {
-        #region Command tag handling
+        #region Tag handling
         
         ds_list_add(global.__scribble_create_parameters_list, _input_substr);
         
-        if (_sep_char != SCRIBBLE_COMMAND_TAG_CLOSE) // ]
+        if (_sep_char != SCRIBBLE_TAG_CLOSE) // ]
         {
             continue;
         }
@@ -686,17 +687,17 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     
                     if (!_found)
                     {
-                        var _command_string = string(_first_param);
-                        for(var _j = 1; _j < _parameter_count; _j++) _command_string += "," + string(global.__scribble_create_parameters_list[| _j]);
+                        var _tag_string = string(_first_param);
+                        for(var _j = 1; _j < _parameter_count; _j++) _tag_string += "," + string(global.__scribble_create_parameters_list[| _j]);
                         
-                        show_debug_message("Scribble: WARNING! Unrecognised command tag [" + _command_string + "]" );
+                        show_debug_message("Scribble: WARNING! Unrecognised tag [" + _tag_string + "]" );
                         _skip = true;
                     }
                 break;
             }
             
             ds_list_clear(global.__scribble_create_parameters_list);
-            _in_command_tag = false;
+            _in_tag = false;
             
             if (_skip)
             {
@@ -906,7 +907,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
     
     if (_substr_length > 0) ++_meta_words;
     
-    if (_sep_char == SCRIBBLE_COMMAND_TAG_OPEN) _in_command_tag = true; // [
+    if (_sep_char == SCRIBBLE_TAG_OPEN) _in_tag = true; // [
 }
 
 _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_characters;

@@ -36,11 +36,11 @@
 
 #endregion
 
-#region Command tag customisation
+#region Tag customisation
 
-#macro SCRIBBLE_COMMAND_TAG_OPEN      ord("[") //Character used to open a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_CLOSE     ord("]") //Character used to close a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_ARGUMENT  ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_TAG_OPEN      ord("[") //Character used to open a tag. First 127 ASCII chars only
+#macro SCRIBBLE_TAG_CLOSE     ord("]") //Character used to close a tag. First 127 ASCII chars only
+#macro SCRIBBLE_TAG_ARGUMENT  ord(",") //Character used to delimit a formatting parameter inside a tag. First 127 ASCII chars only
 
 #endregion
 

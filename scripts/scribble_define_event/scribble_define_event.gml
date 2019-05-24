@@ -1,4 +1,4 @@
-/// Defines an event - a script that can be executed (with parameters) by an in-line command tag
+/// Defines an event - a script that can be executed (with parameters) by an in-line tag
 ///
 ///
 ///

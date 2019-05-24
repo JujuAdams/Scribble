@@ -1,24 +1,24 @@
-/// @param oldTag   Command tag to replace, as a string
-/// @param newTag   New command tag, as a string
+/// @param oldTag   Tag to replace, as a string
+/// @param newTag   New tag, as a string
 
 var _old_tag = argument0;
 var _new_tag = argument1;
 
 if (!variable_global_exists("__scribble_global_count"))
 {
-    show_error("Scribble:\nscribble_add_asset() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\nscribble_define_tag_replace() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
 if (!is_string(_old_tag))
 {
-    show_error("Scribble:\nOld command tags should be strings.\n(Input to script was \"" + string(_old_tag) + "\")\n ", false);
+    show_error("Scribble:\nOld tags should be strings.\n(Input to script was \"" + string(_old_tag) + "\")\n ", false);
     exit;
 }
 
 if (!is_string(_new_tag))
 {
-    show_error("Scribble:\nNew command tags should be strings.\n(Input to script was \"" + string(_new_tag) + "\")\n ", false);
+    show_error("Scribble:\nNew tags should be strings.\n(Input to script was \"" + string(_new_tag) + "\")\n ", false);
     exit;
 }
 
@@ -30,7 +30,7 @@ if (is_real(_old_list) && ds_exists(_old_list, ds_type_list))
     for(var _i = 0; _i < _size; _i++)
     {
         _string += string(_old_list[| _i]);
-        if (_i < _size-1) _string += chr(SCRIBBLE_COMMAND_TAG_ARGUMENT);
+        if (_i < _size-1) _string += chr(SCRIBBLE_TAG_ARGUMENT);
     }
     
     var _string = string(_old_list);
@@ -40,13 +40,13 @@ if (is_real(_old_list) && ds_exists(_old_list, ds_type_list))
 }
 
 var _list = ds_list_create();
-var _work_string = _new_tag + chr(SCRIBBLE_COMMAND_TAG_ARGUMENT);
-var _pos = string_pos(chr(SCRIBBLE_COMMAND_TAG_ARGUMENT), _work_string);
+var _work_string = _new_tag + chr(SCRIBBLE_TAG_ARGUMENT);
+var _pos = string_pos(chr(SCRIBBLE_TAG_ARGUMENT), _work_string);
 while(_pos > 0)
 {
     ds_list_add(_list, string_copy(_work_string, 1, _pos-1));
     _work_string = string_delete(_work_string, 1, _pos);
-    _pos = string_pos(chr(SCRIBBLE_COMMAND_TAG_ARGUMENT), _work_string);
+    _pos = string_pos(chr(SCRIBBLE_TAG_ARGUMENT), _work_string);
 }
 
 ds_map_add_list(global.__scribble_tag_replace, _old_tag, _list);
