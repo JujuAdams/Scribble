@@ -494,6 +494,15 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                             _substr_width  = _text_scale*sprite_get_width(_sprite_index);
                             _substr_height = _text_scale*sprite_get_height(_sprite_index);
                             _substr_length = 1;
+        
+                            if (_substr_height > 255)
+                            {
+                                show_debug_message("Scribble: WARNING! Sprite height over 255px");
+                                _substr_height = 255;
+                            }
+                            
+                            //Store the word height per glyph
+                            buffer_poke(global.__scribble_create_string_buffer, _meta_characters, buffer_u8, _substr_height);
                             
                             #region Figure out what images to add to the buffer
                             
@@ -737,14 +746,22 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
         
         #region Add glyphs
         
+        //Choose the height of a space for the substring's height
+        var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? " "] : (_font_glyphs_array[32 - _font_glyphs_min]);
+        var _substr_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
+        _substr_height *= _text_scale;
+        
+        if (_substr_height > 255)
+        {
+            show_debug_message("Scribble: WARNING! Word height over 255px");
+            _substr_height = 255;
+        }
+        
         var _colour = $FF000000 | _text_colour;
         var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant;
-        
         var _char_x        = _text_x;
         var _char_index    = 1;
         var _substr_width  = 0;
-        var _substr_height = 0;
-        
         repeat(_substr_length)
         {
             if (_font_glyphs_array == undefined)
@@ -794,17 +811,15 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             _char_x += _text_scale*_glyph_shf;
             ++_char_index;
             
+            //Store the word height per glyph
+            buffer_poke(global.__scribble_create_string_buffer, _meta_characters, buffer_u8, _substr_height);
+            
             _substr_width += (_char_index == _substr_length)? _glyph_w : _glyph_shf;
             ++_meta_characters;
         }
         
-        //Choose the height of a space for the substring's height
-        var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? " "] : (_font_glyphs_array[32 - _font_glyphs_min]);
-        _substr_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-        
         //Correct for scaling
-        _substr_width  *= _text_scale;
-        _substr_height *= _text_scale;
+        _substr_width *= _text_scale;
         
         #endregion
     }
@@ -930,22 +945,36 @@ repeat(ds_list_size(_vertex_buffer_list))
     {
         var _line_data = _line_list[| _l];
         var _line_halign = _line_data[ __SCRIBBLE_LINE.HALIGN];
+        var _tell_a = _line_break_list[| _l];
+        var _tell_b = _line_break_list[| _l+1];
         
         if (_line_halign != fa_left)
         {
-            var _line_width = _line_data[ __SCRIBBLE_LINE.WIDTH ];
+            var _line_width = _line_data[ __SCRIBBLE_LINE.WIDTH];
             
             var _offset = 0;
             if (_line_halign == fa_right ) _offset =  _text_x_max - _line_width;
             if (_line_halign == fa_center) _offset = (_text_x_max - _line_width) div 2;
             
-            var _tell_a = _line_break_list[| _l];
-            var _tell_b = _line_break_list[| _l+1];
-            
             var _tell = _tell_a;
             repeat((_tell_b - _tell_a)/__SCRIBBLE_VERTEX.__SIZE)
             {
                 buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NX, buffer_f32, _offset + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.NX, buffer_f32));
+                _tell += __SCRIBBLE_VERTEX.__SIZE;
+            }
+        }
+        
+        var _line_height = _line_data[ __SCRIBBLE_LINE.HEIGHT];
+        var _tell = _tell_a;
+        repeat((_tell_b - _tell_a)/__SCRIBBLE_GLYPH_BYTE_SIZE)
+        {
+            var _character = floor(buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Z, buffer_f32) / SCRIBBLE_MAX_LINES);
+            var _height = buffer_peek(global.__scribble_create_string_buffer, _character, buffer_u8);
+            var _offset = (_line_height - _height) div 2;
+            
+            repeat(6)
+            {
+                buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32, _offset + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32));
                 _tell += __SCRIBBLE_VERTEX.__SIZE;
             }
         }
