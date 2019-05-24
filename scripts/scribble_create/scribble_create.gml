@@ -115,7 +115,6 @@ ds_list_clear(global.__scribble_create_position_list  );
 ds_list_clear(global.__scribble_create_parameters_list);
 
 var _buffer_size = string_byte_length(_input_string)+1;
-buffer_resize(global.__scribble_create_buffer, _buffer_size);
 buffer_seek(  global.__scribble_create_buffer, buffer_seek_start, 0);
 buffer_write( global.__scribble_create_buffer, buffer_string, _input_string);
 buffer_seek(  global.__scribble_create_buffer, buffer_seek_start, 0);
@@ -290,8 +289,6 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
     var _substr_height = 0;
     var _substr_length = string_length(_input_substr);
     
-    _text_flags = ~((~_text_flags) | 1); //Reset animated sprite flag specifically
-    
     if (_in_command_tag)
     {
         #region Command tag handling
@@ -322,7 +319,10 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             
             #endregion
             
-            switch(global.__scribble_create_parameters_list[| 0 ])
+            //Cache this value instead of refetching it
+            var _first_param = global.__scribble_create_parameters_list[| 0];
+            
+            switch(_first_param)
             {
                 #region Reset formatting
                 case "":
@@ -413,12 +413,12 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     #region Events
                     if (!_found)
                     {
-                        var _name = global.__scribble_create_parameters_list[| 0];
+                        var _name = _first_param;
                         var _script = global.__scribble_events[? _name ];
                         if (_script != undefined)
                         {
                             var _data = array_create(_parameter_count-1, "");
-                            for(var _j = 1; _j < _parameter_count; _j++) _data[ _j-1 ] = global.__scribble_create_parameters_list[| _j ];
+                            for(var _j = 1; _j < _parameter_count; _j++) _data[_j-1] = global.__scribble_create_parameters_list[| _j];
                             
                             _events_char_array[@ array_length_1d(_events_char_array)] = _meta_characters;
                             _events_name_array[@ array_length_1d(_events_name_array)] = _name;
@@ -434,7 +434,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     if (!_found)
                     {
                         //Check if this is a flag name
-                        var _flag_index = global.__scribble_flags[? global.__scribble_create_parameters_list[| 0] ];
+                        var _flag_index = global.__scribble_flags[? _first_param];
                         if (_flag_index != undefined)
                         {
                             _text_flags = _text_flags | (1 << _flag_index);
@@ -447,7 +447,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     {
                         //Check if this is a flag name, but with a forward slash at the front
                         var _flag_index = undefined;
-                        if (string_char_at(global.__scribble_create_parameters_list[| 0], 1) == "/") _flag_index = global.__scribble_flags[? string_delete(global.__scribble_create_parameters_list[| 0], 1, 1) ];
+                        if (string_char_at(_first_param, 1) == "/") _flag_index = global.__scribble_flags[? string_delete(_first_param, 1, 1) ];
                         if (_flag_index != undefined)
                         {
                             _text_flags = ~((~_text_flags) | (1 << _flag_index));
@@ -461,10 +461,10 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     if (!_found)
                     {
                         //Change font
-                        var _new_font_data = global.__scribble_font_data[? global.__scribble_create_parameters_list[| 0]];
+                        var _new_font_data = global.__scribble_font_data[? _first_param];
                         if (_new_font_data != undefined)
                         {
-                            _text_font = global.__scribble_create_parameters_list[| 0];
+                            _text_font = _first_param;
                             _font_data = _new_font_data;
                             _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                             _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
@@ -485,8 +485,8 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     #region Sprites
                     if (!_found)
                     {
-                        var _sprite_index = asset_get_index(global.__scribble_create_parameters_list[| 0]);
-                        if (_sprite_index >= 0) && (asset_get_type(global.__scribble_create_parameters_list[| 0]) == asset_sprite)
+                        var _sprite_index = asset_get_index(_first_param);
+                        if (_sprite_index >= 0) && (asset_get_type(_first_param) == asset_sprite)
                         {
                             _found = true;
                             var _packed_pc = _meta_characters*SCRIBBLE_MAX_LINES + _meta_lines;
@@ -633,6 +633,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                             
                             #endregion
                             
+                            _text_flags = ~((~_text_flags) | 1); //Reset animated sprite flag specifically
                             _meta_characters++;
                         }
                     }
@@ -641,7 +642,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     #region Colours
                     if (!_found)
                     {
-                        var _colour = global.__scribble_colours[? global.__scribble_create_parameters_list[| 0]]; //Test if it's a colour
+                        var _colour = global.__scribble_colours[? _first_param]; //Test if it's a colour
                         if (_colour != undefined)
                         {
                             _text_colour = _colour;
@@ -650,7 +651,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                         }
                         else //Test if it's a hexcode
                         {
-                            var _colour_string = global.__scribble_create_parameters_list[| 0];
+                            var _colour_string = _first_param;
                             if (string_length(_colour_string) <= 7) && (string_copy(_colour_string, 1, 1) == "$")
                             {
                                 //Hex string decoding
@@ -685,7 +686,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     
                     if (!_found)
                     {
-                        var _command_string = string(global.__scribble_create_parameters_list[| 0]);
+                        var _command_string = string(_first_param);
                         for(var _j = 1; _j < _parameter_count; _j++) _command_string += "," + string(global.__scribble_create_parameters_list[| _j]);
                         
                         show_debug_message("Scribble: WARNING! Unrecognised command tag [" + _command_string + "]" );
@@ -748,8 +749,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
         
         //Choose the height of a space for the substring's height
         var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? " "] : (_font_glyphs_array[32 - _font_glyphs_min]);
-        var _substr_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-        _substr_height *= _text_scale;
+        _substr_height = _text_scale*_glyph_array[SCRIBBLE_GLYPH.HEIGHT];
         
         if (_substr_height > 255)
         {
@@ -761,7 +761,6 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
         var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant;
         var _char_x        = _text_x;
         var _char_index    = 1;
-        var _substr_width  = 0;
         repeat(_substr_length)
         {
             if (_font_glyphs_array == undefined)
