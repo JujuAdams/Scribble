@@ -151,6 +151,22 @@ enum __SCRIBBLE
     __SIZE              //41
 }
 
+enum SCRIBBLE_GLYPH
+{
+    CHARACTER,  // 0
+    INDEX,      // 1
+    WIDTH,      // 2
+    HEIGHT,     // 3
+    X_OFFSET,   // 4
+    Y_OFFSET,   // 5
+    SEPARATION, // 6
+    U0,         // 7
+    V0,         // 8
+    U1,         // 9
+    V1,         //10
+    __SIZE      //11
+}
+
 #macro __SCRIBBLE_ON_DIRECTX        ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
 #macro __SCRIBBLE_ON_OPENGL         !__SCRIBBLE_ON_DIRECTX
 #macro __SCRIBBLE_ON_MOBILE         ((os_type == os_ios) || (os_type == os_android))
@@ -233,6 +249,7 @@ global.__scribble_create_position_list         = ds_list_create();
 global.__scribble_create_parameters_list       = ds_list_create();
 global.__scribble_create_texture_to_buffer_map = ds_map_create();
 global.__scribble_create_string_buffer         = buffer_create(1, buffer_grow, 1);
+global.__scribble_default_animation_parameters = scribble_set_animation(undefined,   4, 50, 0.2,   4, 0.4,   0.5, 0.01,   60, 0.15);
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_define_colour("c_aqua",    c_aqua   , true);
