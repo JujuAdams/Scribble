@@ -103,8 +103,11 @@ if (is_string(_def_colour))
         show_error("Scribble:\nThe starting colour (\"" + _def_colour + "\") has not been added as a custom colour. Defaulting to c_white.\n ", false);
         _value = c_white;
     }
+    
     _def_colour = _value;
 }
+
+_def_colour = _def_colour | $ff000000;
 
 #endregion
 
@@ -542,7 +545,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                             
                             var _image_index = 0;
                             var _image_speed = 0;
-                            switch(ds_list_size(global.__scribble_create_parameters_list))
+                            switch(_parameter_count)
                             {
                                 case 1:
                                     _image_index = 0;
@@ -560,11 +563,11 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                                 break;
                             }
                             
-                            var _colour = SCRIBBLE_COLOURISE_SPRITES? _text_colour : c_white;
+                            var _colour = SCRIBBLE_COLOURISE_SPRITES? _text_colour : $ffffffff;
                             if ((_image_speed > 0) && SCRIBBLE_FORCE_NO_SPRITE_ANIMATION)
                             {
                                 _image_speed = 0;
-                                _colour = c_white;
+                                _colour = $ffffffff;
                             }
                             
                             if (_image_speed > 0) _text_flags = _text_flags | 1; //Set the "is sprite" flag only if we're animating the sprite
@@ -638,10 +641,6 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                                     //Encode the starting image into the alpha channel
                                     _colour = (_image_index << 24) | _colour;
                                 }
-                                else
-                                {
-                                    _colour = $ff000000 | _colour;
-                                }
                                 
                                 //Find the UVs and position of the sprite quad
                                 var _uvs = sprite_get_uvs(_sprite_index, _image);
@@ -710,7 +709,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                                 
                                 var _blue = _lsf + (_hsf << 4);
                                 
-                                _text_colour = make_colour_rgb(_red, _green, _blue);
+                                _text_colour = $ff000000 | make_colour_rgb(_red, _green, _blue);
                                 _skip = true;
                                 _found = true;
                             }
@@ -782,7 +781,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
         #region Add glyphs
         
         //Choose the height of a space for the substring's height
-        var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? " "] : (_font_glyphs_array[32 - _font_glyphs_min]);
+        var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? " "] : _font_glyphs_array[32 - _font_glyphs_min];
         _substr_height = _text_scale*_glyph_array[SCRIBBLE_GLYPH.HEIGHT];
         
         if (_substr_height > 255)
@@ -791,7 +790,6 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             _substr_height = 255;
         }
         
-        var _colour     = $ff000000 | _text_colour;
         var _char_x     = _text_x;
         var _char_index = 1;
         repeat(_substr_length)
@@ -859,13 +857,13 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     var _new_glyph_cx = _glyph_cx + _dx;
                     var _new_glyph_cy = _glyph_cy + _dy;
                     
-                    //                                                  X                                                               Y                                                   Z                                                      centre X                                                centre Y                                                 flags                                                 colour                                                   U                                                  V
-                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
-                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_l              ); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
-                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
-                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
-                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_r+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
-                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
+                    //                                                  X                                                               Y                                                   Z                                                      centre X                                                centre Y                                                 flags                                                    colour                                                     U                                                  V
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_l              ); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_r+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
                     
                     ++_j;
                 }
@@ -873,21 +871,20 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             
             #endregion
             
-            //                                                  X                                                        Y                                                   Z                                                   centre X                                            centre Y                                               flags                                                 colour                                                   U                                                  V
-            buffer_write(_glyph_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
-            buffer_write(_glyph_buffer, buffer_f32, _glyph_l              ); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
-            buffer_write(_glyph_buffer, buffer_f32, _glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
-            buffer_write(_glyph_buffer, buffer_f32, _glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
-            buffer_write(_glyph_buffer, buffer_f32, _glyph_r+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
-            buffer_write(_glyph_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
-            
-            _char_x += _text_scale*_glyph_shf;
-            ++_char_index;
+            //                                                  X                                                        Y                                                   Z                                                   centre X                                            centre Y                                               flags                                                    colour                                                     U                                                  V
+            buffer_write(_glyph_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
+            buffer_write(_glyph_buffer, buffer_f32, _glyph_l              ); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
+            buffer_write(_glyph_buffer, buffer_f32, _glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
+            buffer_write(_glyph_buffer, buffer_f32, _glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
+            buffer_write(_glyph_buffer, buffer_f32, _glyph_r+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
+            buffer_write(_glyph_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _text_colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
             
             //Store the word height per glyph
             buffer_poke(global.__scribble_create_buffer, _meta_characters, buffer_u8, _substr_height);
             
             _substr_width += (_char_index == _substr_length)? _glyph_w : _glyph_shf;
+            _char_x += _text_scale*_glyph_shf;
+            ++_char_index;
             ++_meta_characters;
         }
         
@@ -1018,7 +1015,7 @@ repeat(ds_list_size(_vertex_buffer_list))
     ds_list_add(_line_break_list, _buffer_tell);
     
     var _l = 0;
-    repeat(ds_list_size(_line_break_list)-1)
+    repeat(_meta_lines)
     {
         var _line_data = _line_list[| _l];
         var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
