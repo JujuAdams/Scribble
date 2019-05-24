@@ -172,7 +172,7 @@ var _events_name_array  = array_create(0);  //Stores each event's name
 var _events_data_array  = array_create(0);  //Stores each event's parameters
 
 global.__scribble_global_count++;
-global.__scribble_alive[? global.__scribble_global_count ] = _json;
+global.__scribble_alive[? global.__scribble_global_count] = _json;
 
 _json[| __SCRIBBLE.__SIZE            ] = __SCRIBBLE_VERSION;
 
@@ -239,11 +239,11 @@ var _line_width  = 0;
 var _line_height = _line_min_height;
 
 var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
-_line_array[@ __SCRIBBLE_LINE.FIRST_CHAR     ] = 1;
-_line_array[@ __SCRIBBLE_LINE.LAST_CHAR      ] = 1;
-_line_array[@ __SCRIBBLE_LINE.WIDTH          ] = _line_width;
-_line_array[@ __SCRIBBLE_LINE.HEIGHT         ] = _line_height;
-_line_array[@ __SCRIBBLE_LINE.HALIGN         ] = _def_halign;
+_line_array[@ __SCRIBBLE_LINE.FIRST_CHAR] = 1;
+_line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = 1;
+_line_array[@ __SCRIBBLE_LINE.WIDTH     ] = _line_width;
+_line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_height;
+_line_array[@ __SCRIBBLE_LINE.HALIGN    ] = _def_halign;
 ds_list_add(_line_list, _line_array);
 
 var _text_x      = 0;
@@ -448,7 +448,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     if (!_found)
                     {
                         var _name = _first_param;
-                        var _script = global.__scribble_events[? _name ];
+                        var _script = global.__scribble_events[? _name];
                         if (_script != undefined)
                         {
                             var _data = array_create(_parameter_count-1, "");
@@ -481,7 +481,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     {
                         //Check if this is a flag name, but with a forward slash at the front
                         var _flag_index = undefined;
-                        if (string_char_at(_first_param, 1) == "/") _flag_index = global.__scribble_flags[? string_delete(_first_param, 1, 1) ];
+                        if (string_char_at(_first_param, 1) == "/") _flag_index = global.__scribble_flags[? string_delete(_first_param, 1, 1)];
                         if (_flag_index != undefined)
                         {
                             _text_flags = ~((~_text_flags) | (1 << _flag_index));
@@ -507,7 +507,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                             _font_texture      = _font_data[__SCRIBBLE_FONT.TEXTURE     ];
                             
                             var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? " "] : _font_glyphs_array[32 - _font_glyphs_min];
-                            _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH];
+                            _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
                             _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
                                 
                             _skip = true;
@@ -1017,13 +1017,13 @@ repeat(ds_list_size(_vertex_buffer_list))
     repeat(ds_list_size(_line_break_list)-1)
     {
         var _line_data = _line_list[| _l];
-        var _line_halign = _line_data[ __SCRIBBLE_LINE.HALIGN];
+        var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
         var _tell_a = _line_break_list[| _l];
         var _tell_b = _line_break_list[| _l+1];
         
         if (_line_halign != fa_left)
         {
-            var _line_width = _line_data[ __SCRIBBLE_LINE.WIDTH];
+            var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
             
             var _offset = 0;
             if (_line_halign == fa_center) _offset = (_text_x_max - _line_width) div 2;
@@ -1040,7 +1040,7 @@ repeat(ds_list_size(_vertex_buffer_list))
         if (SCRIBBLE_TEXT_LINE_VALIGN != fa_top)
         {
             //Vertically align text per line
-            var _line_height = _line_data[ __SCRIBBLE_LINE.HEIGHT];
+            var _line_height = _line_data[__SCRIBBLE_LINE.HEIGHT];
             var _tell = _tell_a;
             repeat((_tell_b - _tell_a)/__SCRIBBLE_GLYPH_BYTE_SIZE)
             {

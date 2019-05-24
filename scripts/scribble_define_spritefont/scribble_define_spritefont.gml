@@ -52,19 +52,19 @@ if (asset_get_type(_font) != asset_sprite)
     return undefined;
 }
 
-var _data;
-_data[ __SCRIBBLE_FONT.NAME         ] = _font;
-_data[ __SCRIBBLE_FONT.PATH         ] = undefined;
-_data[ __SCRIBBLE_FONT.TYPE         ] = __SCRIBBLE_FONT_TYPE.SPRITE;
-_data[ __SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
-_data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
-_data[ __SCRIBBLE_FONT.GLYPH_MIN    ] = 32;
-_data[ __SCRIBBLE_FONT.GLYPH_MAX    ] = 32;
-_data[ __SCRIBBLE_FONT.TEXTURE      ] = undefined;
-_data[ __SCRIBBLE_FONT.SPACE_WIDTH  ] = _space_width;
-_data[ __SCRIBBLE_FONT.MAPSTRING    ] = _mapstring;
-_data[ __SCRIBBLE_FONT.SEPARATION   ] = _separation;
-global.__scribble_font_data[? _font ] = _data;
+var _data = array_create(__SCRIBBLE_FONT.__SIZE);
+_data[@ __SCRIBBLE_FONT.NAME        ] = _font;
+_data[@ __SCRIBBLE_FONT.PATH        ] = undefined;
+_data[@ __SCRIBBLE_FONT.TYPE        ] = __SCRIBBLE_FONT_TYPE.SPRITE;
+_data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
+_data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
+_data[@ __SCRIBBLE_FONT.GLYPH_MIN   ] = 32;
+_data[@ __SCRIBBLE_FONT.GLYPH_MAX   ] = 32;
+_data[@ __SCRIBBLE_FONT.TEXTURE     ] = undefined;
+_data[@ __SCRIBBLE_FONT.SPACE_WIDTH ] = _space_width;
+_data[@ __SCRIBBLE_FONT.MAPSTRING   ] = _mapstring;
+_data[@ __SCRIBBLE_FONT.SEPARATION  ] = _separation;
+global.__scribble_font_data[? _font] = _data;
 
 
 
@@ -79,7 +79,7 @@ var _old_mask_index   = mask_index;
 var _old_sprite_index = sprite_index;
 
 var _sprite = asset_get_index(_font);
-_data[@ __SCRIBBLE_FONT.TEXTURE ] = sprite_get_texture(_sprite, 0);
+_data[@ __SCRIBBLE_FONT.TEXTURE] = sprite_get_texture(_sprite, 0);
 
 if (sprite_get_bbox_left(_sprite)   == 0)
 || (sprite_get_bbox_top(_sprite)    == 0)
@@ -90,7 +90,7 @@ if (sprite_get_bbox_left(_sprite)   == 0)
 }
 
 var _font_glyphs_map = ds_map_create();
-_data[@ __SCRIBBLE_FONT.GLYPHS_MAP ] = _font_glyphs_map;
+_data[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _font_glyphs_map;
 
 x            = -sprite_get_xoffset(_sprite);
 y            = -sprite_get_yoffset(_sprite);
@@ -118,75 +118,75 @@ for(var _i = 0; _i < _length; _i++)
     var _right  = bbox_right+1;
     var _bottom = bbox_bottom+1;
     
-    while( !collision_line(      _left, bbox_top-1,        _left, bbox_bottom+1, id, true, false) && (_left < _right ) ) ++_left;
-    while( !collision_line(bbox_left-1,       _top, bbox_right+1,          _top, id, true, false) && (_top  < _bottom) ) ++_top;
-    while( !collision_line(     _right, bbox_top-1,       _right, bbox_bottom+1, id, true, false) && (_right  > _left) ) --_right;
-    while( !collision_line(bbox_left-1,    _bottom, bbox_right+1,       _bottom, id, true, false) && (_bottom > _top ) ) --_bottom;
+    while(!collision_line(      _left, bbox_top-1,        _left, bbox_bottom+1, id, true, false) && (_left < _right )) ++_left;
+    while(!collision_line(bbox_left-1,       _top, bbox_right+1,          _top, id, true, false) && (_top  < _bottom)) ++_top;
+    while(!collision_line(     _right, bbox_top-1,       _right, bbox_bottom+1, id, true, false) && (_right  > _left)) --_right;
+    while(!collision_line(bbox_left-1,    _bottom, bbox_right+1,       _bottom, id, true, false) && (_bottom > _top )) --_bottom;
     
     //Build an array to store this glyph's properties
     var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
-    _array[ SCRIBBLE_GLYPH.CHARACTER ] = _char;
-    _array[ SCRIBBLE_GLYPH.INDEX  ] = ord(_char);
+    _array[@ SCRIBBLE_GLYPH.CHARACTER] = _char;
+    _array[@ SCRIBBLE_GLYPH.INDEX    ] = ord(_char);
     
     if (_left == _right) && (_top == _bottom)
     {
         show_debug_message("Scribble:   WARNING! Character " + string(ord(_char)) + "(" + _char + ") for sprite font \"" + _font + "\" is empty");
         
-        _array[ SCRIBBLE_GLYPH.WIDTH      ] = 1;
-        _array[ SCRIBBLE_GLYPH.HEIGHT     ] = sprite_get_height(_sprite);
-        _array[ SCRIBBLE_GLYPH.X_OFFSET   ] = 0;
-        _array[ SCRIBBLE_GLYPH.Y_OFFSET   ] = 0;
-        _array[ SCRIBBLE_GLYPH.SEPARATION ] = 1 + _separation;
-        _array[ SCRIBBLE_GLYPH.U0         ] = 0;
-        _array[ SCRIBBLE_GLYPH.V0         ] = 0;
-        _array[ SCRIBBLE_GLYPH.U1         ] = 0;
-        _array[ SCRIBBLE_GLYPH.V1         ] = 0;
-        _font_glyphs_map[? _char ] = _array;
+        _array[@ SCRIBBLE_GLYPH.WIDTH     ] = 1;
+        _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = sprite_get_height(_sprite);
+        _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = 0;
+        _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
+        _array[@ SCRIBBLE_GLYPH.SEPARATION] = 1 + _separation;
+        _array[@ SCRIBBLE_GLYPH.U0        ] = 0;
+        _array[@ SCRIBBLE_GLYPH.V0        ] = 0;
+        _array[@ SCRIBBLE_GLYPH.U1        ] = 0;
+        _array[@ SCRIBBLE_GLYPH.V1        ] = 0;
+        _font_glyphs_map[? _char] = _array;
     }
     else
     {
         var _glyph_width  = 1 + _right - _left;
         var _glyph_height = 1 + _bottom - _top;
-        _array[ SCRIBBLE_GLYPH.WIDTH      ] = _glyph_width;
-        _array[ SCRIBBLE_GLYPH.HEIGHT     ] = _glyph_height;
-        _array[ SCRIBBLE_GLYPH.X_OFFSET   ] = _left - bbox_left;
-        _array[ SCRIBBLE_GLYPH.Y_OFFSET   ] = _top-1;
-        _array[ SCRIBBLE_GLYPH.SEPARATION ] = _glyph_width + _separation;
-        _array[ SCRIBBLE_GLYPH.U0         ] = _uvs[0];
-        _array[ SCRIBBLE_GLYPH.V0         ] = _uvs[1];
-        _array[ SCRIBBLE_GLYPH.U1         ] = _uvs[2];
-        _array[ SCRIBBLE_GLYPH.V1         ] = _uvs[3];
+        _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _glyph_width;
+        _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _glyph_height;
+        _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _left - bbox_left;
+        _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _top-1;
+        _array[@ SCRIBBLE_GLYPH.SEPARATION] = _glyph_width + _separation;
+        _array[@ SCRIBBLE_GLYPH.U0        ] = _uvs[0];
+        _array[@ SCRIBBLE_GLYPH.V0        ] = _uvs[1];
+        _array[@ SCRIBBLE_GLYPH.U1        ] = _uvs[2];
+        _array[@ SCRIBBLE_GLYPH.V1        ] = _uvs[3];
         
-        _font_glyphs_map[? _char ] = _array;
+        _font_glyphs_map[? _char] = _array;
     }
 }
 
-if ( !ds_map_exists(_font_glyphs_map, " ") )
+if (!ds_map_exists(_font_glyphs_map, " "))
 {
     var _glyph_width  = sprite_get_width(_sprite);
     var _glyph_height = sprite_get_height(_sprite);
     
     //Build an array to store this glyph's properties
     var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
-    _array[ SCRIBBLE_GLYPH.CHARACTER  ] = " ";
-    _array[ SCRIBBLE_GLYPH.INDEX      ] = 32;
-    _array[ SCRIBBLE_GLYPH.WIDTH      ] = _glyph_width;
-    _array[ SCRIBBLE_GLYPH.HEIGHT     ] = _glyph_height;
-    _array[ SCRIBBLE_GLYPH.X_OFFSET   ] = 0;
-    _array[ SCRIBBLE_GLYPH.Y_OFFSET   ] = 0;
-    _array[ SCRIBBLE_GLYPH.SEPARATION ] = _glyph_width + _separation;
-    _array[ SCRIBBLE_GLYPH.U0         ] = 0;
-    _array[ SCRIBBLE_GLYPH.V0         ] = 0;
-    _array[ SCRIBBLE_GLYPH.U1         ] = 0;
-    _array[ SCRIBBLE_GLYPH.V1         ] = 0;
-    _font_glyphs_map[? " " ] = _array;
+    _array[@ SCRIBBLE_GLYPH.CHARACTER ] = " ";
+    _array[@ SCRIBBLE_GLYPH.INDEX     ] = 32;
+    _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _glyph_width;
+    _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _glyph_height;
+    _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = 0;
+    _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
+    _array[@ SCRIBBLE_GLYPH.SEPARATION] = _glyph_width + _separation;
+    _array[@ SCRIBBLE_GLYPH.U0        ] = 0;
+    _array[@ SCRIBBLE_GLYPH.V0        ] = 0;
+    _array[@ SCRIBBLE_GLYPH.U1        ] = 0;
+    _array[@ SCRIBBLE_GLYPH.V1        ] = 0;
+    _font_glyphs_map[? " "] = _array;
 }
 
 if (_space_width != undefined)
 {
-    var _array = _font_glyphs_map[? " " ];
-    _array[@ SCRIBBLE_GLYPH.WIDTH      ] = _space_width;
-    _array[@ SCRIBBLE_GLYPH.SEPARATION ] = _space_width;
+    var _array = _font_glyphs_map[? " "];
+    _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _space_width;
+    _array[@ SCRIBBLE_GLYPH.SEPARATION] = _space_width;
 }
 
 x            = _old_x;

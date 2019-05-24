@@ -57,7 +57,7 @@ if (_json[| __SCRIBBLE.EV_SCAN_DO])
             var _name = _events_name_array[_event];
             var _data = _events_data_array[_event];
             
-            var _script = global.__scribble_events[? _name ];
+            var _script = global.__scribble_events[? _name];
             if (_script != undefined) script_execute(_script, _json, _data);
               
             ++_event;

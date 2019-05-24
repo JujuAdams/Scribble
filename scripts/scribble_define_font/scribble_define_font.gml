@@ -55,19 +55,19 @@ if (asset_get_type(_font) != asset_font)
     return undefined;
 }
 
-var _data;
-_data[ __SCRIBBLE_FONT.NAME         ] = _font;
-_data[ __SCRIBBLE_FONT.PATH         ] = _path;
-_data[ __SCRIBBLE_FONT.TYPE         ] = __SCRIBBLE_FONT_TYPE.FONT;
-_data[ __SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
-_data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
-_data[ __SCRIBBLE_FONT.GLYPH_MIN    ] = 32;
-_data[ __SCRIBBLE_FONT.GLYPH_MAX    ] = 32;
-_data[ __SCRIBBLE_FONT.TEXTURE      ] = undefined;
-_data[ __SCRIBBLE_FONT.SPACE_WIDTH  ] = undefined;
-_data[ __SCRIBBLE_FONT.MAPSTRING    ] = undefined;
-_data[ __SCRIBBLE_FONT.SEPARATION   ] = undefined;
-global.__scribble_font_data[? _font ] = _data;
+var _data = array_create(__SCRIBBLE_FONT.__SIZE);
+_data[@ __SCRIBBLE_FONT.NAME        ] = _font;
+_data[@ __SCRIBBLE_FONT.PATH        ] = _path;
+_data[@ __SCRIBBLE_FONT.TYPE        ] = __SCRIBBLE_FONT_TYPE.FONT;
+_data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
+_data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
+_data[@ __SCRIBBLE_FONT.GLYPH_MIN   ] = 32;
+_data[@ __SCRIBBLE_FONT.GLYPH_MAX   ] = 32;
+_data[@ __SCRIBBLE_FONT.TEXTURE     ] = undefined;
+_data[@ __SCRIBBLE_FONT.SPACE_WIDTH ] = undefined;
+_data[@ __SCRIBBLE_FONT.MAPSTRING   ] = undefined;
+_data[@ __SCRIBBLE_FONT.SEPARATION  ] = undefined;
+global.__scribble_font_data[? _font] = _data;
 
 
 
@@ -80,7 +80,7 @@ var _texture_tw  = texture_get_texel_width(_texture);
 var _texture_th  = texture_get_texel_height(_texture);
 var _texture_w   = texture_get_width(_texture);
 var _texture_h   = texture_get_height(_texture);
-_data[@ __SCRIBBLE_FONT.TEXTURE ] = _texture;
+_data[@ __SCRIBBLE_FONT.TEXTURE] = _texture;
 
 if (SCRIBBLE_VERBOSE)
 {
@@ -101,7 +101,7 @@ var _json = json_decode(_json_string);
 
 
 
-var _yy_glyph_list = _json[? "glyphs" ];
+var _yy_glyph_list = _json[? "glyphs"];
 var _size = ds_list_size(_yy_glyph_list);
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   \"" + _font + "\" has " + string(_size) + " characters");
 
@@ -118,25 +118,25 @@ if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
     var _glyph_map = ds_map_create();
     
     var _yy_glyph_map = _yy_glyph_list[| 0];
-        _yy_glyph_map = _yy_glyph_map[? "Value" ];
+        _yy_glyph_map = _yy_glyph_map[? "Value"];
     
-    var _glyph_min = _yy_glyph_map[? "character" ];
+    var _glyph_min = _yy_glyph_map[? "character"];
     var _glyph_max = _glyph_min;
-    _glyph_map[? _glyph_min ] = 0;
+    _glyph_map[? _glyph_min] = 0;
     
     for(var _i = 1; _i < _size; _i++)
     {
-        var _yy_glyph_map = _yy_glyph_list[| _i ];
-            _yy_glyph_map = _yy_glyph_map[? "Value" ];
-        var _index = _yy_glyph_map[? "character" ];
+        var _yy_glyph_map = _yy_glyph_list[| _i];
+            _yy_glyph_map = _yy_glyph_map[? "Value"];
+        var _index = _yy_glyph_map[? "character"];
         
-        _glyph_map[? _index ] = _i;
+        _glyph_map[? _index] = _i;
         _glyph_min = min(_glyph_min, _index);
         _glyph_max = max(_glyph_max, _index);
     }
     
-    _data[@ __SCRIBBLE_FONT.GLYPH_MIN ] = _glyph_min;
-    _data[@ __SCRIBBLE_FONT.GLYPH_MAX ] = _glyph_max;
+    _data[@ __SCRIBBLE_FONT.GLYPH_MIN] = _glyph_min;
+    _data[@ __SCRIBBLE_FONT.GLYPH_MAX] = _glyph_max;
     
     var _glyph_count = 1 + _glyph_max - _glyph_min;
     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Glyphs start at " + string(_glyph_min) + " and end at " + string(_glyph_max) + ". Range is " + string(_glyph_count-1));
@@ -164,19 +164,19 @@ if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
             _ds_map_fallback = false;
             
             var _font_glyphs_array = array_create(_glyph_count, undefined);
-            _data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY ] = _font_glyphs_array;
+            _data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = _font_glyphs_array;
             
             for(var _i = 0; _i < _size; _i++)
             {
-                var _yy_glyph_map = _yy_glyph_list[| _i ];
-                    _yy_glyph_map = _yy_glyph_map[? "Value" ];
+                var _yy_glyph_map = _yy_glyph_list[| _i];
+                    _yy_glyph_map = _yy_glyph_map[? "Value"];
                 
-                var _index = _yy_glyph_map[? "character" ];
+                var _index = _yy_glyph_map[? "character"];
                 var _char  = chr(_index);
-                var _x     = _yy_glyph_map[? "x" ];
-                var _y     = _yy_glyph_map[? "y" ];
-                var _w     = _yy_glyph_map[? "w" ];
-                var _h     = _yy_glyph_map[? "h" ];
+                var _x     = _yy_glyph_map[? "x"];
+                var _y     = _yy_glyph_map[? "y"];
+                var _w     = _yy_glyph_map[? "w"];
+                var _h     = _yy_glyph_map[? "h"];
                 
                 var _u0    = _x*_texture_tw + _texture_uvs[0];
                 var _v0    = _y*_texture_th + _texture_uvs[1];
@@ -184,19 +184,19 @@ if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
                 var _v1    = _v0 + _h * _texture_th;
                 
                 var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
-                _array[ SCRIBBLE_GLYPH.CHARACTER ] = _char;
-                _array[ SCRIBBLE_GLYPH.INDEX  ] = _index;
-                _array[ SCRIBBLE_GLYPH.WIDTH    ] = _w;
-                _array[ SCRIBBLE_GLYPH.HEIGHT    ] = _h;
-                _array[ SCRIBBLE_GLYPH.X_OFFSET   ] = _yy_glyph_map[? "offset" ];
-                _array[ SCRIBBLE_GLYPH.Y_OFFSET   ] = 0;
-                _array[ SCRIBBLE_GLYPH.SEPARATION  ] = _yy_glyph_map[? "shift" ];
-                _array[ SCRIBBLE_GLYPH.U0   ] = _u0;
-                _array[ SCRIBBLE_GLYPH.V0   ] = _v0;
-                _array[ SCRIBBLE_GLYPH.U1   ] = _u1;
-                _array[ SCRIBBLE_GLYPH.V1   ] = _v1;
+                _array[SCRIBBLE_GLYPH.CHARACTER ] = _char;
+                _array[SCRIBBLE_GLYPH.INDEX     ] = _index;
+                _array[SCRIBBLE_GLYPH.WIDTH     ] = _w;
+                _array[SCRIBBLE_GLYPH.HEIGHT    ] = _h;
+                _array[SCRIBBLE_GLYPH.X_OFFSET  ] = _yy_glyph_map[? "offset"];
+                _array[SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
+                _array[SCRIBBLE_GLYPH.SEPARATION] = _yy_glyph_map[? "shift"];
+                _array[SCRIBBLE_GLYPH.U0        ] = _u0;
+                _array[SCRIBBLE_GLYPH.V0        ] = _v0;
+                _array[SCRIBBLE_GLYPH.U1        ] = _u1;
+                _array[SCRIBBLE_GLYPH.V1        ] = _v1;
                 
-                _font_glyphs_array[@ _index - _glyph_min ] = _array;
+                _font_glyphs_array[@ _index - _glyph_min] = _array;
             }
         }
     }
@@ -209,19 +209,19 @@ if (_ds_map_fallback)
     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Using a ds_map to index glyphs");
     
     var _font_glyphs_map = ds_map_create();
-    _data[@ __SCRIBBLE_FONT.GLYPHS_MAP ] = _font_glyphs_map;
+    _data[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _font_glyphs_map;
     
     for(var _i = 0; _i < _size; _i++)
     {
-        var _yy_glyph_map = _yy_glyph_list[| _i ];
-            _yy_glyph_map = _yy_glyph_map[? "Value" ];
+        var _yy_glyph_map = _yy_glyph_list[| _i];
+            _yy_glyph_map = _yy_glyph_map[? "Value"];
         
-        var _index = _yy_glyph_map[? "character" ];
+        var _index = _yy_glyph_map[? "character"];
         var _char  = chr(_index);
-        var _x     = _yy_glyph_map[? "x" ];
-        var _y     = _yy_glyph_map[? "y" ];
-        var _w     = _yy_glyph_map[? "w" ];
-        var _h     = _yy_glyph_map[? "h" ];
+        var _x     = _yy_glyph_map[? "x"];
+        var _y     = _yy_glyph_map[? "y"];
+        var _w     = _yy_glyph_map[? "w"];
+        var _h     = _yy_glyph_map[? "h"];
         
         var _u0    = _x*_texture_tw + _texture_uvs[0];
         var _v0    = _y*_texture_th + _texture_uvs[1];
@@ -229,19 +229,19 @@ if (_ds_map_fallback)
         var _v1    = _v0 + _h*_texture_th;
         
         var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
-        _array[ SCRIBBLE_GLYPH.CHARACTER  ] = _char;
-        _array[ SCRIBBLE_GLYPH.INDEX      ] = _index;
-        _array[ SCRIBBLE_GLYPH.WIDTH      ] = _w;
-        _array[ SCRIBBLE_GLYPH.HEIGHT     ] = _h;
-        _array[ SCRIBBLE_GLYPH.X_OFFSET   ] = _yy_glyph_map[? "offset" ];
-        _array[ SCRIBBLE_GLYPH.Y_OFFSET   ] = 0;
-        _array[ SCRIBBLE_GLYPH.SEPARATION ] = _yy_glyph_map[? "shift" ];
-        _array[ SCRIBBLE_GLYPH.U0         ] = _u0;
-        _array[ SCRIBBLE_GLYPH.V0         ] = _v0;
-        _array[ SCRIBBLE_GLYPH.U1         ] = _u1;
-        _array[ SCRIBBLE_GLYPH.V1         ] = _v1;
+        _array[SCRIBBLE_GLYPH.CHARACTER ] = _char;
+        _array[SCRIBBLE_GLYPH.INDEX     ] = _index;
+        _array[SCRIBBLE_GLYPH.WIDTH     ] = _w;
+        _array[SCRIBBLE_GLYPH.HEIGHT    ] = _h;
+        _array[SCRIBBLE_GLYPH.X_OFFSET  ] = _yy_glyph_map[? "offset"];
+        _array[SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
+        _array[SCRIBBLE_GLYPH.SEPARATION] = _yy_glyph_map[? "shift"];
+        _array[SCRIBBLE_GLYPH.U0        ] = _u0;
+        _array[SCRIBBLE_GLYPH.V0        ] = _v0;
+        _array[SCRIBBLE_GLYPH.U1        ] = _u1;
+        _array[SCRIBBLE_GLYPH.V1        ] = _v1;
         
-        _font_glyphs_map[? _char ] = _array;
+        _font_glyphs_map[? _char] = _array;
     }
 }
 

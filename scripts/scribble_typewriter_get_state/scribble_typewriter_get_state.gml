@@ -14,24 +14,24 @@
 
 var _json = argument0;
 
-if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
+if (!is_real(_json) || !ds_exists(_json, ds_type_list))
 {
     show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
 }
 
-switch(_json[| __SCRIBBLE.TW_METHOD ])
+switch(_json[| __SCRIBBLE.TW_METHOD])
 {
     case SCRIBBLE_TYPEWRITER_WHOLE:
-        return ((_json[| __SCRIBBLE.TW_DIRECTION ] < 0)? 1 : 0) + _json[| __SCRIBBLE.TW_POSITION ];
+        return ((_json[| __SCRIBBLE.TW_DIRECTION] < 0)? 1 : 0) + _json[| __SCRIBBLE.TW_POSITION];
     break;
     
     case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-        return _json[| __SCRIBBLE.CHAR_FADE_T ];
+        return _json[| __SCRIBBLE.CHAR_FADE_T];
     break;
     
     case SCRIBBLE_TYPEWRITER_PER_LINE:
-        return _json[| __SCRIBBLE.LINE_FADE_T ];
+        return _json[| __SCRIBBLE.LINE_FADE_T];
     break;
 }
 

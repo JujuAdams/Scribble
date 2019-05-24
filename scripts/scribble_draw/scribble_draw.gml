@@ -36,7 +36,7 @@ var _typewriter_direction = _json[| __SCRIBBLE.TW_DIRECTION];
 if (_typewriter_direction != 0)
 {
     var _do_event_scan = false;
-    var _scan_range_b = _json[| __SCRIBBLE.EV_SCAN_B ];
+    var _scan_range_b = _json[| __SCRIBBLE.EV_SCAN_B];
     
     var _tw_pos   = _json[| __SCRIBBLE.TW_POSITION];
     var _tw_speed = _json[| __SCRIBBLE.TW_SPEED   ];
@@ -81,11 +81,11 @@ if (_typewriter_direction != 0)
             
             if (_typewriter_direction > 0)
             {
-                var _list = _json[| __SCRIBBLE.LINE_LIST ];
+                var _list = _json[| __SCRIBBLE.LINE_LIST];
                 if ( floor(_tw_pos) > floor(_tw_pos - _tw_speed) )
                 {
-                    var _line_b = _list[| min(floor(_tw_pos + _tw_speed), _lines-1) ];
-                    var _scan_range_b = _line_b[ __SCRIBBLE_LINE.LAST_CHAR  ];
+                    var _line_b = _list[| min(floor(_tw_pos + _tw_speed), _lines-1)];
+                    var _scan_range_b = _line_b[__SCRIBBLE_LINE.LAST_CHAR];
                     _do_event_scan = true;
                 }
             }
@@ -123,7 +123,7 @@ else
 _matrix = matrix_multiply(_matrix, _old_matrix);
 matrix_set(matrix_world, _matrix);
 
-var _vbuff_list = _json[| __SCRIBBLE.VERTEX_BUFFER_LIST ];
+var _vbuff_list = _json[| __SCRIBBLE.VERTEX_BUFFER_LIST];
 
 var _count = ds_list_size(_vbuff_list);
 if (_count > 0)
@@ -145,12 +145,12 @@ if (_count > 0)
         
         case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
             _char_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS] / _char_count;
-            _char_t          = _json[| __SCRIBBLE.CHAR_FADE_T];
+            _char_t          = _json[| __SCRIBBLE.CHAR_FADE_T  ];
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_LINE:
             _line_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS] / _line_count;
-            _line_t          = _json[| __SCRIBBLE.LINE_FADE_T];
+            _line_t          = _json[| __SCRIBBLE.LINE_FADE_T  ];
         break;
     }
     
