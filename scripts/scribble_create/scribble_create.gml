@@ -6,7 +6,6 @@
 /// @param [startingColour]    The (initial) blend colour for the text. Defaults to white
 /// @param [startingFont]      The (initial) font for the text. The font name should be provided as a string. Defaults to Scribble's global default font (the first font added during initialisation)
 /// @param [startingHAlign]    The (initial) horizontal alignment for the test. Defaults to left justified
-/// @param [dataFieldsArray]   The data field array that'll be passed into the shader to control various effects. Defaults to values set in __scribble_config()
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 ///
@@ -49,7 +48,6 @@ var _width_limit      = ((argument_count > 2) && (argument[2] != undefined))? ar
 var _def_colour       = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : c_white;
 var _def_font         = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : global.__scribble_default_font;
 var _def_halign       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : fa_left;
-var _data_fields_in   = ((argument_count > 6) &&    is_array(argument[6])  )? argument[6] : undefined;
 
 
 
@@ -104,23 +102,6 @@ if (is_string(_def_colour))
         _value = c_white;
     }
     _def_colour = _value;
-}
-
-//Build an array that contains data that'll (eventually) get sent into the shader
-var _data_fields = array_create(SCRIBBLE_MAX_DATA_FIELDS);
-if (is_array(_data_fields_in))
-{
-    var _length = array_length_1d(_data_fields_in);
-    if (_length > SCRIBBLE_MAX_DATA_FIELDS)
-    {
-        show_error("Scribble:\nLength of custom data field array (" + string(_length) + ") is greater than SCRIBBLE_MAX_DATA_FIELDS (" + string(SCRIBBLE_MAX_DATA_FIELDS) + ")\n ", false);
-        _length = SCRIBBLE_MAX_DATA_FIELDS;
-    }
-    array_copy(_data_fields, 0, _data_fields_in, 0, _length);
-}
-else
-{
-    _data_fields = global.__scribble_default_animation_parameters;
 }
 
 #endregion
@@ -226,7 +207,7 @@ _json[| __SCRIBBLE.CHAR_FADE_T       ] = 1;
 _json[| __SCRIBBLE.LINE_FADE_T       ] = 1;
 
 _json[| __SCRIBBLE.__SECTION3        ] = "-- Animation --";
-_json[| __SCRIBBLE.DATA_FIELDS       ] = _data_fields;
+_json[| __SCRIBBLE.DATA_FIELDS       ] = global.__scribble_default_animation_parameters;
 _json[| __SCRIBBLE.ANIMATION_TIME    ] = 0;
 
 _json[| __SCRIBBLE.__SECTION4        ] = "-- Lists --";
