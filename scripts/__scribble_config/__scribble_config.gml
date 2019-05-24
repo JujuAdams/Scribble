@@ -22,6 +22,7 @@
 #macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION  false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
 #macro SCRIBBLE_FIX_NEWLINES               true     //The newline fix stops unexpected newline types from breaking the parser, but it can be a bit slow
 #macro SCRIBBLE_SLANT_GRADIENT             0.27     //The x-axis displacement when using the [slant] tag. 1.00 = 45 degrees, 0.27 = 15 degrees
+#macro SCRIBBLE_DEFAULT_THICKNESS          0.33     //The default thickness when using the [thick] tag
 #macro SCRIBBLE_Z                          0        //The z-value for vertexes
 
 #endregion

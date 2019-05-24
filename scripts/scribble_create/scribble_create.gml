@@ -22,9 +22,10 @@
 /// [fa_right]                          Align horizontally to the right
 /// [fa_center] [fa_centre]             Align centrally
 /// [scale,<factor>] [/scale] [/s]      Scale text / Reset scale to 1
-/// [slant] [/slant]                    Set/unset italic emulation
 /// [<event name>,<arg0>,<arg1>...]     Execute a script bound to an event name (previously defined using scribble_define_event()) with the specified arguments
 /// [<flag name>] [/<flag name>]        Set/unset a custom formatting flag
+/// [slant] [/slant]                    Set/unset italic emulation
+/// [thick] [/thick]                    Set/unset bold emulation
 /// 
 /// Scribble has the following formatting flags as defaults:
 /// [wave]    [/wave]                   Set/unset text to wave up and down
@@ -245,14 +246,15 @@ _line_array[@ __SCRIBBLE_LINE.HEIGHT         ] = _line_height;
 _line_array[@ __SCRIBBLE_LINE.HALIGN         ] = _def_halign;
 ds_list_add(_line_list, _line_array);
 
-var _text_x           = 0;
-var _text_y           = 0;
-var _text_font        = _def_font;
-var _text_colour      = _def_colour;
-var _text_halign      = _def_halign;
-var _text_flags       = 0;
-var _text_scale       = 1;
-var _text_slant       = false;
+var _text_x      = 0;
+var _text_y      = 0;
+var _text_font   = _def_font;
+var _text_colour = _def_colour;
+var _text_halign = _def_halign;
+var _text_flags  = 0;
+var _text_scale  = 1;
+var _text_slant  = false;
+var _text_thick  = 0;
 
 var _previous_texture = -1;
 
@@ -267,9 +269,9 @@ ds_map_clear(global.__scribble_create_texture_to_buffer_map);
 #endregion
 
 //Iterate over the entire string...
-var _sep_char       = 0;
-var _sep_prev_char  = 0;
-var _in_tag = false;
+var _sep_char      = 0;
+var _sep_prev_char = 0;
+var _in_tag        = false;
 
 var _i = 0;
 repeat(ds_list_size(global.__scribble_create_separator_list))
@@ -326,12 +328,14 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             switch(_first_param)
             {
                 #region Reset formatting
+                
                 case "":
                     _text_font        = _def_font;
                     _text_colour      = _def_colour;
                     _text_flags       = 0;
                     _text_scale       = 1;
                     _text_slant       = false;
+                    _text_thick       = 0;
                     
                     _font_line_height = _line_min_height;
                     _font_space_width = _def_space_width;
@@ -362,9 +366,16 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     _text_slant = false;
                     _skip = true;
                 break;
+                
+                case "/thick":
+                    _text_thick = 0;
+                    _skip = true;
+                break;
+                
                 #endregion
                 
                 #region Scale
+                
                 case "scale":
                     if (_parameter_count <= 1)
                     {
@@ -372,18 +383,38 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     }
                     else
                     {
-                        var _text_scale = real(global.__scribble_create_parameters_list[| 1]);
+                        _text_scale = real(global.__scribble_create_parameters_list[| 1]);
                     }
                     
                     _skip = true;
                 break;
+                
                 #endregion
                 
                 #region Slant (italics emulation)
+                
                 case "slant":
                     _text_slant = true;
                     _skip = true;
                 break;
+                
+                #endregion
+                
+                #region Thick (bold emulation)
+                
+                case "thick":
+                    if (_parameter_count <= 1)
+                    {
+                        _text_thick = SCRIBBLE_DEFAULT_THICKNESS;
+                    }
+                    else
+                    {
+                        _text_thick = real(global.__scribble_create_parameters_list[| 1]);
+                    }
+                    
+                    _skip = true;
+                break;
+                
                 #endregion
                 
                 #region Font Alignment
@@ -800,6 +831,45 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             _glyph_b -= _glyph_cy;
             
             var _packed_pc = _meta_characters*SCRIBBLE_MAX_LINES + _meta_lines;
+            
+            #region Thick
+            
+            if (_text_thick > 0)
+            {
+                var _j = 0;
+                repeat(4)
+                {
+                    var _dx = 0;
+                    var _dy = 0;
+                    
+                    switch(_j)
+                    {
+                        case 0: _dx =  _text_thick;                     break;
+                        case 1:                     _dy = -_text_thick; break;
+                        case 2: _dx = -_text_thick;                     break;
+                        case 3:                     _dy =  _text_thick; break;
+                    }
+                    
+                    var _new_glyph_l  = _glyph_l  + _dx;
+                    var _new_glyph_t  = _glyph_t  + _dy;
+                    var _new_glyph_r  = _glyph_r  + _dx;
+                    var _new_glyph_b  = _glyph_b  + _dy;
+                    var _new_glyph_cx = _glyph_cx + _dx;
+                    var _new_glyph_cy = _glyph_cy + _dy;
+                    
+                    //                                                  X                                                               Y                                                   Z                                                      centre X                                                centre Y                                                 flags                                                 colour                                                   U                                                  V
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_l              ); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_r              ); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_b); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_r+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u1); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
+                    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _new_glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
+                    
+                    ++_j;
+                }
+            }
+            
+            #endregion
             
             //                                                  X                                                        Y                                                   Z                                                   centre X                                            centre Y                                               flags                                                 colour                                                   U                                                  V
             buffer_write(_glyph_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, _packed_pc);    buffer_write(_glyph_buffer, buffer_f32, _glyph_cx); buffer_write(_glyph_buffer, buffer_f32, _glyph_cy); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
