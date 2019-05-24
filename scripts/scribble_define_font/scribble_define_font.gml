@@ -27,7 +27,7 @@ if ( ds_map_exists(global.__scribble_font_data, _font) )
 if ( !file_exists(_path) )
 {
     show_error("Scribble:\nCould not find \"" + _path + "\" in Included Files. Please add this file to your project.\nScribble font \"" + string(_font) + "\" will not be available.\n ", false);
-    exit;
+    return undefined;
 }
 
 if ( !is_string(_font) )
@@ -40,13 +40,13 @@ if ( !is_string(_font) )
     {
         show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input was an invalid datatype)\n ", false);
     }
-    exit;
+    return undefined;
 }
 
 if (asset_get_type(_font) == asset_sprite)
 {
     show_error("Scribble:\nTo add a spritefont, please use scribble_define_spritefont()\n ", false);
-    return scribble_define_spritefont(_font);
+    return undefined;
 }
 
 if (asset_get_type(_font) != asset_font)

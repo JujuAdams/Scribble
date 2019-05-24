@@ -4,22 +4,22 @@
 /// All Scribble spritefonts are proportional (see font_add_sprite() for more details).
 ///
 /// @param fontName       String name of the spritefont to add
+/// @param mapString      Same behaviour as GameMaker's native font_add_sprite()
+/// @param separation     Same behaviour as GameMaker's native font_add_sprite()
 /// @param [spaceWidth]   Pixel width of the space character. Defaults to emulating GameMaker's behaviour
-/// @param [mapString]    Same behaviour as GameMaker's native font_add_sprite(). Defaults to the value set in __scribble_config()
-/// @param [separation]   Same behaviour as GameMaker's native font_add_sprite(). Defaults to the value set in __scribble_config()
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 if ( !variable_global_exists("__scribble_global_count") )
 {
     show_error("Scribble:\nscribble_define_spritefont() should be called after scribble_init()\n ", true);
-    exit;
+    return undefined;
 }
 
-var _font        =                                                       argument[0];
-var _space_width =  (argument_count > 1)?                                argument[1] : undefined;
-var _mapstring   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : SCRIBBLE_DEFAULT_SPRITEFONT_MAPSTRING;
-var _separation  = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
+var _font        =                        argument[0];
+var _mapstring   =                        argument[1];
+var _separation  =                        argument[2];
+var _space_width =  (argument_count > 3)? argument[3] : undefined;
 
 if ( ds_map_exists(global.__scribble_font_data, _font) )
 {
@@ -37,13 +37,13 @@ if ( !is_string(_font) )
     {
         show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input to script was an invalid datatype)\n ", false);
     }
-    exit;
+    return undefined;
 }
 
 if (asset_get_type(_font) == asset_font)
 {
     show_error("Scribble:\nTo add a normal font, please use scribble_define_font()\n ", false);
-    return scribble_define_font(_font);
+    return undefined;
 }
 
 if (asset_get_type(_font) != asset_sprite)
