@@ -98,7 +98,7 @@ enum __SCRIBBLE_VERTEX
     __SIZE = 36
 }
 
-enum __SCRIBBLE
+enum SCRIBBLE
 {
     __SECTION0,         // 0
     STRING,             // 1
