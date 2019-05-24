@@ -1000,7 +1000,11 @@ _json[| SCRIBBLE.HEIGHT] = _text_y_max;
 _json[| SCRIBBLE.RIGHT ] = _text_x_max;
 _json[| SCRIBBLE.BOTTOM] = _text_y_max;
 
+#endregion
 
+
+
+#region Turn glyph buffers into vertex buffers ready for drawing
 
 var _v = 0;
 repeat(ds_list_size(_vertex_buffer_list))
