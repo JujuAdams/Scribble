@@ -952,8 +952,8 @@ repeat(ds_list_size(_vertex_buffer_list))
             var _line_width = _line_data[ __SCRIBBLE_LINE.WIDTH];
             
             var _offset = 0;
-            if (_line_halign == fa_right ) _offset =  _text_x_max - _line_width;
             if (_line_halign == fa_center) _offset = (_text_x_max - _line_width) div 2;
+            if (_line_halign == fa_right ) _offset =  _text_x_max - _line_width;
             
             var _tell = _tell_a;
             repeat((_tell_b - _tell_a)/__SCRIBBLE_VERTEX.__SIZE)
@@ -963,18 +963,25 @@ repeat(ds_list_size(_vertex_buffer_list))
             }
         }
         
-        var _line_height = _line_data[ __SCRIBBLE_LINE.HEIGHT];
-        var _tell = _tell_a;
-        repeat((_tell_b - _tell_a)/__SCRIBBLE_GLYPH_BYTE_SIZE)
+        if (SCRIBBLE_TEXT_LINE_VALIGN != fa_top)
         {
-            var _character = floor(buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Z, buffer_f32) / SCRIBBLE_MAX_LINES);
-            var _height = buffer_peek(global.__scribble_create_buffer, _character, buffer_u8);
-            var _offset = (_line_height - _height) div 2;
-            
-            repeat(6)
+            //Vertically align text per line
+            var _line_height = _line_data[ __SCRIBBLE_LINE.HEIGHT];
+            var _tell = _tell_a;
+            repeat((_tell_b - _tell_a)/__SCRIBBLE_GLYPH_BYTE_SIZE)
             {
-                buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32, _offset + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32));
-                _tell += __SCRIBBLE_VERTEX.__SIZE;
+                var _character = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Z, buffer_f32) div SCRIBBLE_MAX_LINES;
+                var _height = buffer_peek(global.__scribble_create_buffer, _character, buffer_u8);
+                
+                var _offset = 0;
+                if (SCRIBBLE_TEXT_LINE_VALIGN == fa_middle) _offset = (_line_height - _height) div 2;
+                if (SCRIBBLE_TEXT_LINE_VALIGN == fa_bottom) _offset =  _line_height - _height;
+            
+                repeat(6)
+                {
+                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32, _offset + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32));
+                    _tell += __SCRIBBLE_VERTEX.__SIZE;
+                }
             }
         }
         
