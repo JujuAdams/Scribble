@@ -368,6 +368,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                 break;
                 
                 case "/thick":
+                case "/thicc":
                     _text_thick = 0;
                     _skip = true;
                 break;
@@ -403,6 +404,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                 #region Thick (bold emulation)
                 
                 case "thick":
+                case "thicc":
                     if (_parameter_count <= 1)
                     {
                         _text_thick = SCRIBBLE_DEFAULT_THICKNESS;
