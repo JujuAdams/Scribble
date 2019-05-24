@@ -10,7 +10,7 @@
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
-if ( !variable_global_exists("__scribble_global_count") )
+if (!variable_global_exists("__scribble_global_count"))
 {
     show_error("Scribble:\nscribble_define_spritefont() should be called after scribble_init()\n ", true);
     return undefined;
@@ -21,15 +21,15 @@ var _mapstring   =                        argument[1];
 var _separation  =                        argument[2];
 var _space_width =  (argument_count > 3)? argument[3] : undefined;
 
-if ( ds_map_exists(global.__scribble_font_data, _font) )
+if (ds_map_exists(global.__scribble_font_data, _font))
 {
     show_error("Scribble:\nFont \"" + _font + "\" has already been defined\n ", false);
     return undefined;
 }
 
-if ( !is_string(_font) )
+if (!is_string(_font))
 {
-    if ( is_real(_font) )
+    if (is_real(_font))
     {
         show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input to script was \"" + string(_font) + "\", which might be sprite \"" + sprite_get_name(_font) + "\")\n ", false);
     }
@@ -106,7 +106,7 @@ if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   \"" + _font + "\" has " + 
 for(var _i = 0; _i < _length; _i++)
 {
     var _char = string_char_at(_mapstring, _i+1);
-    if ( ds_map_exists(_font_glyphs_map, _char) ) continue;
+    if (ds_map_exists(_font_glyphs_map, _char)) continue;
     if (_char == " ") show_debug_message("Scribble:   WARNING! It is strongly recommended that you do *not* use a space character in your sprite font in GMS2.2.1 and above due to IDE bugs. Use scribble_font_char_set_*() to define a space character");
     
     image_index = _i;

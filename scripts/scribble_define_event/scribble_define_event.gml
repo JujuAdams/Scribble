@@ -20,7 +20,7 @@ if (!is_string(_name))
     exit;
 }
 
-if ( !is_real(_script) )
+if (!is_real(_script))
 {
     show_error("Scribble:\nScripts should be numerical script indices e.g. scribble_define_event(\"example\", your_script);\n(Input to script was \"" + string(_name) + "\")\n ", false);
     exit;
@@ -34,21 +34,21 @@ if (!script_exists(_script))
 
 if (ds_map_exists(global.__scribble_colours, _name))
 {
-    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as a colour" );
+    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as a colour");
     exit;
 }
 
 if (ds_map_exists(global.__scribble_flags, _name))
 {
-    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as a flag" );
+    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as a flag");
     exit;
 }
 
 var _old_script = global.__scribble_events[? _name];
-if ( is_real(_old_script) )
+if (is_real(_old_script))
 {
-    show_debug_message("Scribble: WARNING! Overwriting event \"" + _name + "\" tied to script \"" + script_get_name(_old_script) + "()\"" );
+    show_debug_message("Scribble: WARNING! Overwriting event \"" + _name + "\" tied to script \"" + script_get_name(_old_script) + "()\"");
 }
 
 global.__scribble_events[? _name] = _script;
-if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Tying event \"" + _name + "\" to script \"" + script_get_name(_script) + "()\"" );
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Tying event \"" + _name + "\" to script \"" + script_get_name(_script) + "()\"");

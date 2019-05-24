@@ -28,13 +28,13 @@ if (!is_real(_index) || (_index != floor(_index)) || (_index < 1) || (_index > (
 
 if (ds_map_exists(global.__scribble_colours, _name))
 {
-    show_debug_message("Scribble: WARNING! Flag name \"" + _name + "\" has already been defined as a colour" );
+    show_debug_message("Scribble: WARNING! Flag name \"" + _name + "\" has already been defined as a colour");
     exit;
 }
 
 if (ds_map_exists(global.__scribble_events, _name))
 {
-    show_debug_message("Scribble: WARNING! Flag name \"" + _name + "\" has already been defined as an event" );
+    show_debug_message("Scribble: WARNING! Flag name \"" + _name + "\" has already been defined as an event");
     exit;
 }
 

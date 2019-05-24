@@ -179,7 +179,7 @@ enum SCRIBBLE_GLYPH
 
 #endregion
 
-if ( variable_global_exists("__scribble_global_count") )
+if (variable_global_exists("__scribble_global_count"))
 {
     show_error("Scribble:\nscribble_init() should not be called twice!\n ", false);
     exit;
@@ -208,7 +208,7 @@ else
 }
 
 //Check if the directory exists
-if ( !directory_exists(_font_directory) )
+if (!directory_exists(_font_directory))
 {
     show_debug_message("Scribble: WARNING! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
 }

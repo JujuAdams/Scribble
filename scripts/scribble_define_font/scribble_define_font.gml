@@ -9,7 +9,7 @@
 /// @param [path]     File path for the font's .yy file, including the .yy extension, relative to the font directory defined by scribble_init()
 ///                   If not specified, Scribble will look in the root of the font directory
 
-if ( !variable_global_exists("__scribble_global_count") )
+if (!variable_global_exists("__scribble_global_count"))
 {
     show_error("Scribble:\nscribble_define_font() should be called after scribble_init()\n ", true);
     return undefined;
@@ -18,21 +18,21 @@ if ( !variable_global_exists("__scribble_global_count") )
 var _font = argument[0];
 var _path = global.__scribble_font_directory + ((argument_count > 1)? argument[1] : (_font + ".yy"));
 
-if ( ds_map_exists(global.__scribble_font_data, _font) )
+if (ds_map_exists(global.__scribble_font_data, _font))
 {
     show_error("Scribble:\nFont \"" + _font + "\" has already been defined\n ", false);
     return undefined;
 }
 
-if ( !file_exists(_path) )
+if (!file_exists(_path))
 {
     show_error("Scribble:\nCould not find \"" + _path + "\" in Included Files. Please add this file to your project.\nScribble font \"" + string(_font) + "\" will not be available.\n ", false);
     return undefined;
 }
 
-if ( !is_string(_font) )
+if (!is_string(_font))
 {
-    if ( is_real(_font) )
+    if (is_real(_font))
     {
         show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input was \"" + string(_font) + "\", which might be font \"" + font_get_name(_font) + "\")\n ", false);
     }
@@ -148,7 +148,7 @@ if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
     else
     {
         var _holes = 0;
-        for(var _i = _glyph_min; _i <= _glyph_max; _i++) if ( !ds_map_exists(_glyph_map, _i) ) _holes++;
+        for(var _i = _glyph_min; _i <= _glyph_max; _i++) if (!ds_map_exists(_glyph_map, _i)) _holes++;
         ds_map_destroy(_glyph_map);
         var _fraction = _holes / _glyph_count;
         

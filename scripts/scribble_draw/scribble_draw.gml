@@ -82,7 +82,7 @@ if (_typewriter_direction != 0)
             if (_typewriter_direction > 0)
             {
                 var _list = _json[| __SCRIBBLE.LINE_LIST];
-                if ( floor(_tw_pos) > floor(_tw_pos - _tw_speed) )
+                if (floor(_tw_pos) > floor(_tw_pos - _tw_speed))
                 {
                     var _line_b = _list[| min(floor(_tw_pos + _tw_speed), _lines-1)];
                     var _scan_range_b = _line_b[__SCRIBBLE_LINE.LAST_CHAR];

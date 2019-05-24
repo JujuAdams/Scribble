@@ -36,7 +36,7 @@
 
 
 
-if ( !variable_global_exists("__scribble_global_count") )
+if (!variable_global_exists("__scribble_global_count"))
 {
     show_error("Scribble:\nscribble_create() should be called after initialising Scribble.\n ", false);
     exit;
@@ -117,9 +117,9 @@ ds_list_clear(global.__scribble_create_position_list  );
 ds_list_clear(global.__scribble_create_parameters_list);
 
 var _buffer_size = string_byte_length(_input_string)+1;
-buffer_seek(  global.__scribble_create_buffer, buffer_seek_start, 0);
-buffer_write( global.__scribble_create_buffer, buffer_string, _input_string);
-buffer_seek(  global.__scribble_create_buffer, buffer_seek_start, 0);
+buffer_seek( global.__scribble_create_buffer, buffer_seek_start, 0);
+buffer_write(global.__scribble_create_buffer, buffer_string, _input_string);
+buffer_seek( global.__scribble_create_buffer, buffer_seek_start, 0);
 
 var _in_tag = false;
 var _i = 0;
@@ -723,7 +723,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                         var _tag_string = string(_first_param);
                         for(var _j = 1; _j < _parameter_count; _j++) _tag_string += "," + string(global.__scribble_create_parameters_list[| _j]);
                         
-                        show_debug_message("Scribble: WARNING! Unrecognised tag [" + _tag_string + "]" );
+                        show_debug_message("Scribble: WARNING! Unrecognised tag [" + _tag_string + "]");
                         _skip = true;
                     }
                 break;

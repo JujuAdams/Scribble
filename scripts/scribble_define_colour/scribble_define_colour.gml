@@ -38,18 +38,18 @@ if (!_native)
 
 if (ds_map_exists(global.__scribble_events, _name))
 {
-    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as an event" );
+    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as an event");
     exit;
 }
 
 if (ds_map_exists(global.__scribble_flags, _name))
 {
-    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as a flag" );
+    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as a flag");
     exit;
 }
 
 var _old_colour = global.__scribble_colours[? _name];
-if ( is_real(_old_colour) )
+if (is_real(_old_colour))
 {
     show_debug_message("Scribble: WARNING! Overwriting colour \"" + _name + "\" (" + string(colour_get_red(_old_colour)) + "," + string(colour_get_green(_old_colour)) + "," + string(colour_get_blue(_old_colour)) + ", u32=" + string(_old_colour) + ")");
 }
