@@ -157,6 +157,11 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_GLYPH_BYTE_SIZE   (6*__SCRIBBLE_VERTEX.__SIZE)
 #macro __SCRIBBLE_EXPECTED_GLYPHS   100
 
+//Use these contants for scribble_typewriter_in() and scribble_typewrite_out():
+#macro SCRIBBLE_TYPEWRITER_WHOLE          0 //Fade the entire textbox in and out
+#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER  1 //Fade each character individually
+#macro SCRIBBLE_TYPEWRITER_PER_LINE       2 //Fade each line of text as a group
+
 #endregion
 
 if ( variable_global_exists("__scribble_global_count") )

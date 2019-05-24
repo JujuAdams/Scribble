@@ -18,27 +18,15 @@
 #region Text animation defaults
 
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED       0.1   //The default animation speed for sprites inserted into text
-#macro SCRIBBLE_DEFAULT_WAVE_SIZE          4     //The default magnitude of the text wave animation. A value of "4" will cause the wave to extend 4 pixels above and 4 pixels below the line of text
+#macro SCRIBBLE_DEFAULT_WAVE_SIZE          4.0   //The default magnitude of the text wave animation. A value of "4" will cause the wave to extend 4 pixels above and 4 pixels below the line of text
 #macro SCRIBBLE_DEFAULT_WAVE_FREQUENCY    50.0   //The default frequency of the text wave animation. Higher values cause the wave peaks to be closer together
 #macro SCRIBBLE_DEFAULT_WAVE_SPEED         0.2   //The default speed of the text wave animation
-#macro SCRIBBLE_DEFAULT_SHAKE_SIZE         4     //The default magnitude of the text shake animation. A value of "4" will cause the shake to extend 4 pixels along each axis
+#macro SCRIBBLE_DEFAULT_SHAKE_SIZE         4.0   //The default magnitude of the text shake animation. A value of "4" will cause the shake to extend 4 pixels along each axis
 #macro SCRIBBLE_DEFAULT_SHAKE_SPEED        0.4   //The default speed of the text shake animation
 #macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT     0.5   //The default blend weight of the rainbow effect. A value of "0.5" will equally blend the text's original colour with the rainbow colour
 #macro SCRIBBLE_DEFAULT_RAINBOW_SPEED      0.01  //The default speed of the rainbow effect
 #macro SCRIBBLE_DEFAULT_WOBBLE_ANGLE      60.0   //
 #macro SCRIBBLE_DEFAULT_WOBBLE_FREQUENCY   0.15  //
-
-#endregion
-
-#region Typewriter effect
-
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3                                //The default speed of the typewriter effect, in characters/lines per frame
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3                                  //The default smoothhness of the typewriter effect. A value of "0" disables smooth fading
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD      SCRIBBLE_TYPEWRITER_PER_CHARACTER  //The default typewriter effect method
-//Use these contants for scribble_typewriter_in() and scribble_typewrite_out():
-#macro SCRIBBLE_TYPEWRITER_WHOLE               0                                  //Fade the entire textbox in and out
-#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER       1                                  //Fade each character individually
-#macro SCRIBBLE_TYPEWRITER_PER_LINE            2                                  //Fade each line of text as a group
 
 #endregion
 

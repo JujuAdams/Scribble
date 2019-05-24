@@ -218,10 +218,10 @@ _json[| __SCRIBBLE.GLOBAL_INDEX      ] = global.__scribble_global_count;
 
 _json[| __SCRIBBLE.__SECTION2        ] = "-- Typewriter --";
 _json[| __SCRIBBLE.TW_DIRECTION      ] = 0;
-_json[| __SCRIBBLE.TW_SPEED          ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+_json[| __SCRIBBLE.TW_SPEED          ] = 1;
 _json[| __SCRIBBLE.TW_POSITION       ] = 0;
-_json[| __SCRIBBLE.TW_METHOD         ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-_json[| __SCRIBBLE.TW_SMOOTHNESS     ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
+_json[| __SCRIBBLE.TW_METHOD         ] = SCRIBBLE_TYPEWRITER_WHOLE;
+_json[| __SCRIBBLE.TW_SMOOTHNESS     ] = 0;
 _json[| __SCRIBBLE.CHAR_FADE_T       ] = 1;
 _json[| __SCRIBBLE.LINE_FADE_T       ] = 1;
 
