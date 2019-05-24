@@ -6,7 +6,7 @@ var _json = argument0;
 
 if (!is_real(_json) || !ds_exists(_json, ds_type_list))
 {
-    show_debug_message("Scribble: WARNING! Data structure \"" + string(_json) + "\" doesn't exist!\n ");
+    show_debug_message("Scribble: WARNING! Data structure \"" + string(_json) + "\" doesn't exist!");
     exit;
 }
 
