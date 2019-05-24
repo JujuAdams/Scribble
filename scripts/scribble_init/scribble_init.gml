@@ -19,7 +19,6 @@
 
 #macro __SCRIBBLE_VERSION  "4.7.1"
 #macro __SCRIBBLE_DATE     "2019/05/23"
-#macro __SCRIBBLE_DEBUG    false
 
 enum __SCRIBBLE_FONT
 {

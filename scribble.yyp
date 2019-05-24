@@ -522,7 +522,7 @@
             "Key": "b267953e-f407-4457-9e84-b719945ec6f9",
             "Value": {
                 "id": "b78383c5-4fd5-47a9-8996-54861685baf9",
-                "resourcePath": "scripts\\scribble_replace_tag\\scribble_replace_tag.yy",
+                "resourcePath": "scripts\\scribble_define_tag_replace\\scribble_define_tag_replace.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -776,10 +776,10 @@
         "13548f19-dd1d-4dc1-9444-205ee176ef6f",
         "c1f9a882-5c95-4baa-9aa2-288643547505",
         "bbaf2270-049d-4b2f-b134-efca33e50f7e",
-        "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd",
-        "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
         "baaa6707-db8c-472e-90b1-562acc7d6c47",
         "b267953e-f407-4457-9e84-b719945ec6f9",
+        "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd",
+        "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
         "00fbc8f9-0e51-458c-8834-69a5cbc5e94b"
     ],
     "tutorial": ""

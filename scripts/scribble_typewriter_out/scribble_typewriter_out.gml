@@ -6,7 +6,7 @@
 /// Three modes are supported:
 /// 1) SCRIBBLE_TYPEWRITER_WHOLE         - Fades in the entire textbox at the same time
 /// 2) SCRIBBLE_TYPEWRITER_PER_CHARACTER - Fades in the text one character at a time
-/// 3) SCRIBBLE_TYPEWRITER_LINE          - Fades in the text one line at a time
+/// 3) SCRIBBLE_TYPEWRITER_PER_LINE      - Fades in the text one line at a time
 ///
 /// @param json           The Scribble data structure to target
 /// @param [method]       The fade method to use. See description for more details. Defaults to "don't change this value"
