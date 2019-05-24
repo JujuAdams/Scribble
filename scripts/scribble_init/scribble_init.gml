@@ -249,7 +249,7 @@ global.__scribble_create_position_list         = ds_list_create();
 global.__scribble_create_parameters_list       = ds_list_create();
 global.__scribble_create_texture_to_buffer_map = ds_map_create();
 global.__scribble_create_string_buffer         = buffer_create(1, buffer_grow, 1);
-global.__scribble_default_animation_parameters = scribble_set_animation(undefined,   4, 50, 0.2,   4, 0.4,   0.5, 0.01,   60, 0.15);
+global.__scribble_default_animation_parameters = scribble_set_animation(undefined,   4, 50, 0.2,   4, 0.4,   0.5, 0.01,   60, 0.15,   0.4, 0.1);
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_define_colour("c_aqua",    c_aqua   , true);
@@ -276,7 +276,8 @@ scribble_define_colour("c_yellow",  c_yellow , true);
 scribble_define_flag("wave"   , 1);
 scribble_define_flag("shake"  , 2);
 scribble_define_flag("rainbow", 3);
-scribble_define_flag("wobble",  4);
+scribble_define_flag("wobble" , 4);
+scribble_define_flag("swell"  , 5);
 
 //Create a vertex format for our text
 vertex_format_begin();

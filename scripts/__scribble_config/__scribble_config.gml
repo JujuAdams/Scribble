@@ -47,8 +47,8 @@
 #region Shader constants
 
 //SCRIBBLE_MAX_FLAGS or SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shScribble
-#macro SCRIBBLE_MAX_FLAGS           5  //The maximum number of flags. "Flags" are boolean values that can be set per character, and are sent into shScribble to trigger animation effects etc.
-#macro SCRIBBLE_MAX_DATA_FIELDS     9  //The maximum number of data fields. "Data fields" are misc 
+#macro SCRIBBLE_MAX_FLAGS           6  //The maximum number of flags. "Flags" are boolean values that can be set per character, and are sent into shScribble to trigger animation effects etc.
+#macro SCRIBBLE_MAX_DATA_FIELDS    11  //The maximum number of data fields. "Data fields" are misc 
 #macro SCRIBBLE_MAX_LINES        1000  //Maximum number of lines in a textbox.
 
 #endregion
