@@ -23,8 +23,8 @@ if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 
 var _width  = _json[| __SCRIBBLE.WIDTH  ];
 var _height = _json[| __SCRIBBLE.HEIGHT ];
-_json[| __SCRIBBLE.HALIGN ] = _halign;
-_json[| __SCRIBBLE.VALIGN ] = _valign;
+_json[| __SCRIBBLE.BOX_HALIGN ] = _halign;
+_json[| __SCRIBBLE.BOX_VALIGN ] = _valign;
 
 //Horizontal justification
 if (_halign == fa_left)

@@ -115,16 +115,16 @@ ds_list_clear(global.__scribble_create_position_list  );
 ds_list_clear(global.__scribble_create_parameters_list);
 
 var _buffer_size = string_byte_length(_input_string)+1;
-buffer_resize(global.__scribble_create_string_buffer, _buffer_size);
-buffer_seek(  global.__scribble_create_string_buffer, buffer_seek_start, 0);
-buffer_write( global.__scribble_create_string_buffer, buffer_string, _input_string);
-buffer_seek(  global.__scribble_create_string_buffer, buffer_seek_start, 0);
+buffer_resize(global.__scribble_create_buffer, _buffer_size);
+buffer_seek(  global.__scribble_create_buffer, buffer_seek_start, 0);
+buffer_write( global.__scribble_create_buffer, buffer_string, _input_string);
+buffer_seek(  global.__scribble_create_buffer, buffer_seek_start, 0);
 
 var _in_command_tag = false;
 var _i = 0;
 repeat(_buffer_size)
 {
-    var _value = buffer_peek(global.__scribble_create_string_buffer, _i, buffer_u8);
+    var _value = buffer_peek(global.__scribble_create_buffer, _i, buffer_u8);
     
     if (_value == 0) //<null>
     {
@@ -138,7 +138,7 @@ repeat(_buffer_size)
         if ((_value == SCRIBBLE_COMMAND_TAG_CLOSE) || (_value == SCRIBBLE_COMMAND_TAG_ARGUMENT))
         {
             if (_value == SCRIBBLE_COMMAND_TAG_CLOSE) _in_command_tag = false;
-            buffer_poke(global.__scribble_create_string_buffer, _i, buffer_u8, 0);
+            buffer_poke(global.__scribble_create_buffer, _i, buffer_u8, 0);
             ds_list_add(global.__scribble_create_separator_list, _value);
             ds_list_add(global.__scribble_create_position_list, _i);
         }
@@ -148,7 +148,7 @@ repeat(_buffer_size)
         if ((_value == 10) || (_value == 32) || (_value == SCRIBBLE_COMMAND_TAG_OPEN)) //\n or <space> or a command tag open character
         {
             if (_value == SCRIBBLE_COMMAND_TAG_OPEN) _in_command_tag = true;
-            buffer_poke(global.__scribble_create_string_buffer, _i, buffer_u8, 0);
+            buffer_poke(global.__scribble_create_buffer, _i, buffer_u8, 0);
             ds_list_add(global.__scribble_create_separator_list, _value);
             ds_list_add(global.__scribble_create_position_list, _i);
         }
@@ -184,8 +184,8 @@ _json[| __SCRIBBLE.WIDTH_LIMIT       ] = _width_limit;
 _json[| __SCRIBBLE.LINE_HEIGHT       ] = _line_min_height;
 
 _json[| __SCRIBBLE.__SECTION1        ] = "-- Statistics --";
-_json[| __SCRIBBLE.HALIGN            ] = fa_left;
-_json[| __SCRIBBLE.VALIGN            ] = fa_right;
+_json[| __SCRIBBLE.BOX_HALIGN        ] = fa_left;
+_json[| __SCRIBBLE.BOX_VALIGN        ] = fa_top;
 _json[| __SCRIBBLE.WIDTH             ] = 0;
 _json[| __SCRIBBLE.HEIGHT            ] = 0;
 _json[| __SCRIBBLE.LEFT              ] = 0;
@@ -218,7 +218,7 @@ _json[| __SCRIBBLE.__SECTION5        ] = "-- Events --";
 _json[| __SCRIBBLE.EV_SCAN_DO        ] = false;
 _json[| __SCRIBBLE.EV_SCAN_A         ] = 0;
 _json[| __SCRIBBLE.EV_SCAN_B         ] = 0;
-_json[| __SCRIBBLE.EV_CHAR_ARRAY     ] = _events_char_array; //Stores each event's triggering cha
+_json[| __SCRIBBLE.EV_CHAR_ARRAY     ] = _events_char_array; //Stores each event's triggering character
 _json[| __SCRIBBLE.EV_NAME_ARRAY     ] = _events_name_array; //Stores each event's name
 _json[| __SCRIBBLE.EV_DATA_ARRAY     ] = _events_data_array; //Stores each event's parameters
 
@@ -278,7 +278,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
     _sep_char = global.__scribble_create_separator_list[| _i];
     ++_i;
     
-    var _input_substr = buffer_read(global.__scribble_create_string_buffer, buffer_string);
+    var _input_substr = buffer_read(global.__scribble_create_buffer, buffer_string);
     var _substr = _input_substr;
     
     //Reset state
@@ -502,7 +502,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                             }
                             
                             //Store the word height per glyph
-                            buffer_poke(global.__scribble_create_string_buffer, _meta_characters, buffer_u8, _substr_height);
+                            buffer_poke(global.__scribble_create_buffer, _meta_characters, buffer_u8, _substr_height);
                             
                             #region Figure out what images to add to the buffer
                             
@@ -812,7 +812,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             ++_char_index;
             
             //Store the word height per glyph
-            buffer_poke(global.__scribble_create_string_buffer, _meta_characters, buffer_u8, _substr_height);
+            buffer_poke(global.__scribble_create_buffer, _meta_characters, buffer_u8, _substr_height);
             
             _substr_width += (_char_index == _substr_length)? _glyph_w : _glyph_shf;
             ++_meta_characters;
@@ -969,7 +969,7 @@ repeat(ds_list_size(_vertex_buffer_list))
         repeat((_tell_b - _tell_a)/__SCRIBBLE_GLYPH_BYTE_SIZE)
         {
             var _character = floor(buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Z, buffer_f32) / SCRIBBLE_MAX_LINES);
-            var _height = buffer_peek(global.__scribble_create_string_buffer, _character, buffer_u8);
+            var _height = buffer_peek(global.__scribble_create_buffer, _character, buffer_u8);
             var _offset = (_line_height - _height) div 2;
             
             repeat(6)
