@@ -759,7 +759,6 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
         }
         
         var _colour = $FF000000 | _text_colour;
-        var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant;
         var _char_x        = _text_x;
         var _char_index    = 1;
         repeat(_substr_length)
@@ -786,6 +785,8 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             var _glyph_dx  = _glyph_array[SCRIBBLE_GLYPH.X_OFFSET  ];
             var _glyph_dy  = _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET  ];
             var _glyph_shf = _glyph_array[SCRIBBLE_GLYPH.SEPARATION];
+            
+            var _slant_offset = SCRIBBLE_SLANT_GRADIENT*_text_scale*_text_slant*_glyph_h;
             
             var _glyph_l  = _char_x + _glyph_dx*_text_scale;
             var _glyph_t  = _text_y + _glyph_dy*_text_scale;
