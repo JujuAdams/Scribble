@@ -330,12 +330,12 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                 #region Reset formatting
                 
                 case "":
-                    _text_font        = _def_font;
-                    _text_colour      = _def_colour;
-                    _text_flags       = 0;
-                    _text_scale       = 1;
-                    _text_slant       = false;
-                    _text_thick       = 0;
+                    _text_font   = _def_font;
+                    _text_colour = _def_colour;
+                    _text_flags  = 0;
+                    _text_scale  = 1;
+                    _text_slant  = false;
+                    _text_thick  = 0;
                     
                     _font_line_height = _line_min_height;
                     _font_space_width = _def_space_width;
@@ -791,9 +791,9 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             _substr_height = 255;
         }
         
-        var _colour = $ff000000 | _text_colour;
-        var _char_x        = _text_x;
-        var _char_index    = 1;
+        var _colour     = $ff000000 | _text_colour;
+        var _char_x     = _text_x;
+        var _char_index = 1;
         repeat(_substr_length)
         {
             if (_font_glyphs_array == undefined)
