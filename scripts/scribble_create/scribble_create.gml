@@ -640,7 +640,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                                 }
                                 else
                                 {
-                                    _colour = $FF000000 | _colour;
+                                    _colour = $ff000000 | _colour;
                                 }
                                 
                                 //Find the UVs and position of the sprite quad
@@ -791,7 +791,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             _substr_height = 255;
         }
         
-        var _colour = $FF000000 | _text_colour;
+        var _colour = $ff000000 | _text_colour;
         var _char_x        = _text_x;
         var _char_index    = 1;
         repeat(_substr_length)
