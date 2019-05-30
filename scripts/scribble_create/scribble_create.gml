@@ -644,10 +644,18 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                                 
                                 //Find the UVs and position of the sprite quad
                                 var _uvs = sprite_get_uvs(_sprite_index, _image);
-                                var _glyph_l  = _text_x  + _uvs[4] + sprite_get_xoffset(_sprite_index);
-                                var _glyph_t  = _text_y  + _uvs[5] + sprite_get_yoffset(_sprite_index);
-                                var _glyph_r  = _glyph_l + _uvs[6]*_text_scale*sprite_get_width(_sprite_index);
-                                var _glyph_b  = _glyph_t + _uvs[7]*_text_scale*sprite_get_height(_sprite_index);
+                                if (SCRIBBLE_IGNORE_SPRITE_ORIGINS)
+                                {
+                                    var _glyph_l  = _text_x  + _uvs[4];
+                                    var _glyph_t  = _text_y  + _uvs[5];
+                                }
+                                else
+                                {
+                                    var _glyph_l  = _text_x  + _uvs[4] + (_substr_width  div 2) - _text_scale*sprite_get_xoffset(_sprite_index);
+                                    var _glyph_t  = _text_y  + _uvs[5] + (_substr_height div 2) - _text_scale*sprite_get_yoffset(_sprite_index);
+                                }
+                                var _glyph_r  = _glyph_l + _uvs[6]*_substr_width;
+                                var _glyph_b  = _glyph_t + _uvs[7]*_substr_height;
                                 var _glyph_cx = 0.5*(_glyph_l + _glyph_r);
                                 var _glyph_cy = 0.5*(_glyph_t + _glyph_b);
                                 _glyph_l -= _glyph_cx;
