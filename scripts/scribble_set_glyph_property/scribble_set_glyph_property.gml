@@ -22,11 +22,13 @@ var _property  = argument[2];
 var _value     = argument[3];
 var _relative  = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : false;
 
-if ( !variable_global_exists("__scribble_init_complete") )
-{
-    show_error("Scribble:\nscribble_set_glyph_property() should be called after initialising Scribble.\n ", false);
-    exit;
-}
+// variable_global_exists() gives false positives in GMS2.2.3.425 :(
+//
+//if ( !variable_global_exists("__scribble_init_complete") )
+//{
+//    show_error("Scribble:\nscribble_set_glyph_property() should be called after initialising Scribble.\n ", false);
+//    exit;
+//}
 
 if (!global.__scribble_init_complete)
 {

@@ -8,11 +8,13 @@
 var _old_tag = argument0;
 var _new_tag = argument1;
 
-if (!variable_global_exists("__scribble_init_complete"))
-{
-    show_error("Scribble:\nscribble_add_asset() should be called after initialising Scribble.\n ", false);
-    exit;
-}
+// variable_global_exists() gives false positives in GMS2.2.3.425 :(
+//
+//if (!variable_global_exists("__scribble_init_complete"))
+//{
+//    show_error("Scribble:\nscribble_add_asset() should be called after initialising Scribble.\n ", false);
+//    exit;
+//}
 
 if (!is_string(_old_tag))
 {

@@ -166,11 +166,13 @@ enum __SCRIBBLE
 
 #endregion
 
-if ( variable_global_exists("__scribble_init_complete") )
-{
-    show_error("Scribble:\nscribble_init_start() should not be called twice!\n ", false);
-    exit;
-}
+// variable_global_exists() gives false positives in GMS2.2.3.425 :(
+//
+//if ( variable_global_exists("__scribble_init_complete") )
+//{
+//    show_error("Scribble:\nscribble_init_start() should not be called twice!\n ", false);
+//    exit;
+//}
 
 show_debug_message("Scribble: Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
 
