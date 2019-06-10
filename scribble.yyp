@@ -167,6 +167,14 @@
             }
         },
         {
+            "Key": "4c412e25-cc5e-4720-b6a2-e1a92ebe91ca",
+            "Value": {
+                "id": "1329720a-cea9-47fd-bb98-fcf7e26cc984",
+                "resourcePath": "scripts\\scribble_draw\\scribble_draw.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "503cf607-27a8-45bf-a70c-c4f6011d4644",
             "Value": {
                 "id": "2e664e4e-8780-406d-a7c5-9db63c8ff808",
@@ -346,7 +354,7 @@
             "Key": "86be87df-87d5-438a-a8e0-49bc2ac80815",
             "Value": {
                 "id": "4387c923-5e87-47d2-b717-cbad5267028b",
-                "resourcePath": "scripts\\scribble_draw\\scribble_draw.yy",
+                "resourcePath": "scripts\\scribble_draw_from\\scribble_draw_from.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -758,6 +766,7 @@
         "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
         "df6df2ef-b108-4a0d-b542-812338df9817",
         "86be87df-87d5-438a-a8e0-49bc2ac80815",
+        "4c412e25-cc5e-4720-b6a2-e1a92ebe91ca",
         "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
         "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
         "5044992f-3fea-47aa-a11b-2b6d850ac7ee",

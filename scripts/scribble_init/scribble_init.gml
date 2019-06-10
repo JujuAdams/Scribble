@@ -102,52 +102,48 @@ enum SCRIBBLE
 {
     __SECTION0,         // 0
     STRING,             // 1
-    DEFAULT_FONT,       // 2
-    DEFAULT_COLOUR,     // 3
-    DEFAULT_HALIGN,     // 4
-    WIDTH_LIMIT,        // 5
-    LINE_HEIGHT,        // 6
+    WIDTH_LIMIT,        // 2
+    LINE_HEIGHT,        // 3
     
-    __SECTION1,         // 7
-    BOX_HALIGN,         // 8
-    BOX_VALIGN,         // 9
-    WIDTH,              //10
-    HEIGHT,             //11
-    LEFT,               //12
-    TOP,                //13
-    RIGHT,              //14
-    BOTTOM,             //15
-    LENGTH,             //16
-    LINES,              //17
-    WORDS,              //18
-    GLOBAL_INDEX,       //19
+    __SECTION1,         // 4
+    BOX_HALIGN,         // 5
+    BOX_VALIGN,         // 6
+    WIDTH,              // 7
+    HEIGHT,             // 8
+    LEFT,               // 9
+    TOP,                //10
+    RIGHT,              //11
+    BOTTOM,             //12
+    LENGTH,             //13
+    LINES,              //14
+    WORDS,              //15
+    GLOBAL_INDEX,       //16
     
-    __SECTION2,         //20
-    TW_DIRECTION,       //21
-    TW_SPEED,           //22
-    TW_POSITION,        //23
-    TW_METHOD,          //24
-    TW_SMOOTHNESS,      //25
-    CHAR_FADE_T,        //26
-    LINE_FADE_T,        //27
+    __SECTION2,         //17
+    TW_DIRECTION,       //18
+    TW_SPEED,           //19
+    TW_POSITION,        //20
+    TW_METHOD,          //21
+    TW_SMOOTHNESS,      //22
+    CHAR_FADE_T,        //23
+    LINE_FADE_T,        //24
     
-    __SECTION3,         //28
-    DATA_FIELDS,        //29
-    ANIMATION_TIME,     //30
+    __SECTION3,         //25
+    DATA_FIELDS,        //26
+    ANIMATION_TIME,     //27
     
-    __SECTION4,         //31
-    LINE_LIST,          //32
-    VERTEX_BUFFER_LIST, //33
+    __SECTION4,         //28
+    LINE_LIST,          //29
+    VERTEX_BUFFER_LIST, //30
     
-    __SECTION5,         //34
-    EV_SCAN_DO,         //35
-    EV_SCAN_A,          //36
-    EV_SCAN_B,          //37
-    EV_CHAR_ARRAY,      //38
-    EV_NAME_ARRAY,      //39
-    EV_DATA_ARRAY,      //40
-    
-    __SIZE              //41
+    __SECTION5,         //31
+    EV_SCAN_DO,         //32
+    EV_SCAN_A,          //33
+    EV_SCAN_B,          //34
+    EV_CHAR_ARRAY,      //35
+    EV_NAME_ARRAY,      //36
+    EV_DATA_ARRAY,      //37
+    __SIZE              //38
 }
 
 enum SCRIBBLE_GLYPH
@@ -179,7 +175,7 @@ enum SCRIBBLE_GLYPH
 
 #endregion
 
-if (variable_global_exists("__scribble_global_count"))
+if (variable_global_get("__scribble_global_count") != undefined)
 {
     show_error("Scribble:\nscribble_init() should not be called twice!\n ", false);
     exit;
@@ -241,6 +237,8 @@ global.__scribble_events                       = ds_map_create();  //Stores even
 global.__scribble_flags                        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_tag_replace                  = ds_map_create();  //Stores asset bindings; key is the name of the event, the value is the script to call
 global.__scribble_alive                        = ds_map_create();  //ds_map of all alive Scribble data structures
+global.__scribble_cache_map                    = ds_map_create();
+global.__scribble_cache_priority_queue         = ds_priority_create();
 global.__scribble_global_count                 = 0;
 global.__scribble_default_font                 = _default_font;
 global.__scribble_create_separator_list        = ds_list_create();

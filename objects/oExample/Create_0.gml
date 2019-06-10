@@ -6,7 +6,7 @@
 //  For use with GMS2.2.2 and later
 
 //Define a temporary string. This is the data Scribble will parse
-var _string  = "[rainbow]abcdef[] ABCDEF##";
+var _string  = "[c_teal][fTestB][rainbow]abcdef[] ABCDEF##";
     _string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][sCoin,0][sCoin,1][sCoin,2][sCoin,3][shake][rainbow]!?[]\n";
     _string += "[fa_centre][sCoin][sCoin][sCoin][sCoin]\n";
     _string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
@@ -14,4 +14,4 @@ var _string  = "[rainbow]abcdef[] ABCDEF##";
 
 //Build Scribble data structure that describes how the text should be laid out
 //Since we're specifying what font to use, Scribble will use that font instead of the default (first font added during initialisation)
-text = scribble_create(_string, -1, 450, c_teal, "fTestB");
+text = scribble_create(_string, -1, 450);

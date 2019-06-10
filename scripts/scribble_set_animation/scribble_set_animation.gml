@@ -30,7 +30,7 @@ if (is_real(_json) && ds_exists(_json, ds_type_list))
 {
     array_copy(_array, 0, _json[| SCRIBBLE.DATA_FIELDS], 0, SCRIBBLE_MAX_DATA_FIELDS);
 }
-else if (variable_global_exists("__scribble_default_animation_parameters"))
+else if (variable_global_get("__scribble_default_animation_parameters") != undefined)
 {
     array_copy(_array, 0, global.__scribble_default_animation_parameters, 0, SCRIBBLE_MAX_DATA_FIELDS);
 }

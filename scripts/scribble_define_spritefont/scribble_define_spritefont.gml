@@ -10,7 +10,7 @@
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
-if (!variable_global_exists("__scribble_global_count"))
+if (variable_global_get("__scribble_global_count") == undefined)
 {
     show_error("Scribble:\nscribble_define_spritefont() should be called after scribble_init()\n ", true);
     return undefined;

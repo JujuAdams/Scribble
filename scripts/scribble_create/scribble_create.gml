@@ -1,11 +1,8 @@
-/// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw()
+/// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw_from()
 ///
-/// @param string              The string to be parsed. See below for the various in-line formatting tags
-/// @param [minLineHeight]     The minimum line height for each line of text. Defaults to the height of a space character of the default font
-/// @param [maxLineWidth]      The maximum line width for each line of text. Use a negative number for no limit. Defaults to no limit
-/// @param [startingColour]    The (initial) blend colour for the text. Defaults to white
-/// @param [startingFont]      The (initial) font for the text. The font name should be provided as a string. Defaults to Scribble's global default font (the first font added during initialisation)
-/// @param [startingHAlign]    The (initial) horizontal alignment for the test. Defaults to left justified
+/// @param string           The string to be parsed. See below for the various in-line formatting tags
+/// @param [minLineHeight]  The minimum line height for each line of text. Defaults to the height of a space character of the default font
+/// @param [maxLineWidth]   The maximum line width for each line of text. Use a negative number for no limit. Defaults to no limit
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 ///
@@ -36,7 +33,7 @@
 
 
 
-if (!variable_global_exists("__scribble_global_count"))
+if (variable_global_get("__scribble_global_count") == undefined)
 {
     show_error("Scribble:\nscribble_create() should be called after initialising Scribble.\n ", false);
     exit;
@@ -47,9 +44,14 @@ var _timer = get_timer();
 var _input_string     = argument[0];
 var _line_min_height  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
 var _width_limit      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : -1;
-var _def_colour       = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : c_white;
-var _def_font         = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : global.__scribble_default_font;
-var _def_halign       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : fa_left;
+
+var _def_colour       = c_white;
+var _def_font         = global.__scribble_default_font;
+var _def_halign       = fa_left;
+var _first_colour_set = false;
+var _first_font_set   = false;
+var _first_halign_set = false;
+
 
 
 
@@ -179,11 +181,8 @@ global.__scribble_alive[? global.__scribble_global_count] = _json;
 
 _json[| SCRIBBLE.__SIZE            ] = __SCRIBBLE_VERSION;
 
-_json[| SCRIBBLE.__SECTION0        ] = "-- Parameters --";
+_json[| SCRIBBLE.__SECTION0        ] = "-- Scribble Parameters --";
 _json[| SCRIBBLE.STRING            ] = _input_string;
-_json[| SCRIBBLE.DEFAULT_FONT      ] = _def_font;
-_json[| SCRIBBLE.DEFAULT_COLOUR    ] = _def_colour;
-_json[| SCRIBBLE.DEFAULT_HALIGN    ] = _def_halign;
 _json[| SCRIBBLE.WIDTH_LIMIT       ] = _width_limit;
 _json[| SCRIBBLE.LINE_HEIGHT       ] = _line_min_height;
 
@@ -426,12 +425,26 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                 
                 case "fa_left":
                     _text_halign = fa_left;
+                    
+                    if (!_first_halign_set)
+                    {
+                        _first_halign_set = true;
+                        _def_halign = _text_halign;
+                    }
+                    
                     _substr = "";
                     if (_text_x > 0) _force_newline = true;
                 break;
                 
                 case "fa_right":
                     _text_halign = fa_right;
+                    
+                    if (!_first_halign_set)
+                    {
+                        _first_halign_set = true;
+                        _def_halign = _text_halign;
+                    }
+                    
                     _substr = "";
                     if (_text_x > 0) _force_newline = true;
                 break;
@@ -439,6 +452,13 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                 case "fa_center":
                 case "fa_centre":
                     _text_halign = fa_center;
+                    
+                    if (!_first_halign_set)
+                    {
+                        _first_halign_set = true;
+                        _def_halign = _text_halign;
+                    }
+                    
                     _substr = "";
                     if (_text_x > 0) _force_newline = true;
                 break;
@@ -512,7 +532,13 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                             var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? " "] : _font_glyphs_array[32 - _font_glyphs_min];
                             _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
                             _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-                                
+                            
+                            if (!_first_font_set)
+                            {
+                                _first_font_set = true;
+                                _def_font = _text_font;
+                            }
+                            
                             _skip = true;
                             _found = true;
                         }
@@ -687,6 +713,13 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                         if (_colour != undefined)
                         {
                             _text_colour = _colour;
+                            
+                            if (!_first_colour_set)
+                            {
+                                _first_colour_set = true;
+                                _def_colour = _text_colour;
+                            }
+                            
                             _skip = true;
                             _found = true;
                         }
@@ -718,6 +751,13 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                                 var _blue = _lsf + (_hsf << 4);
                                 
                                 _text_colour = $ff000000 | make_colour_rgb(_red, _green, _blue);
+                                
+                                if (!_first_colour_set)
+                                {
+                                    _first_colour_set = true;
+                                    _def_colour = _text_colour;
+                                }
+                                
                                 _skip = true;
                                 _found = true;
                             }
@@ -749,6 +789,14 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
     }
     else
     {
+        if (_substr != "")
+        {
+            //If this is the first piece of normal text, lock in the colour/font/halign settings
+            _first_colour_set = true;
+            _first_font_set   = true;
+            _first_halign_set = true;
+        }
+        
         #region Swap texture and buffer if needed
         
         if (_font_texture != _previous_texture)

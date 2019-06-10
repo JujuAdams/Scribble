@@ -27,7 +27,7 @@ var _font      = argument0;
 var _character = argument1;
 var _property  = argument2;
 
-if (!variable_global_exists("__scribble_global_count"))
+if (variable_global_get("__scribble_global_count") == undefined)
 {
     show_error("Scribble:\nscribble_get_glyph_property() should be called after initialising Scribble.\n ", false);
     exit;

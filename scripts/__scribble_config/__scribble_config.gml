@@ -10,7 +10,7 @@
 
 #macro SCRIBBLE_HASH_NEWLINE           true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COLOURISE_SPRITES      true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
-#macro SCRIBBLE_VERBOSE                false //Enables verbose console output to aid with debugging. Turn off if all the console is getting too cluttered for you!
+#macro SCRIBBLE_VERBOSE                true  //Enables verbose console output to aid with debugging. Turn off if all the console is getting too cluttered for you!
 #macro SCRIBBLE_STEP_SIZE              (delta_time/game_get_speed(gamespeed_microseconds)) //Automatically delta times text effects (including typewriter). Set this macro to a variable to control the step size yourself
 #macro SCRIBBLE_TEXT_LINE_VALIGN       fa_middle
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED   1.0
@@ -25,6 +25,7 @@
 #macro SCRIBBLE_SLANT_GRADIENT             0.27     //The x-axis displacement when using the [slant] tag. 1.00 = 45 degrees, 0.27 = 15 degrees
 #macro SCRIBBLE_DEFAULT_THICKNESS          0.33     //The default thickness when using the [thick] tag
 #macro SCRIBBLE_Z                          0        //The z-value for vertexes
+#macro SCRIBBLE_CACHE_DECAY                10000    //In milliseconds
 
 #endregion
 

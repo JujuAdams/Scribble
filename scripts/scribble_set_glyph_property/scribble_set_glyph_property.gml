@@ -34,7 +34,7 @@ var _property  = argument[2];
 var _value     = argument[3];
 var _relative  = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : false;
 
-if (!variable_global_exists("__scribble_global_count"))
+if (variable_global_get("__scribble_global_count") == undefined)
 {
     show_error("Scribble:\nscribble_set_glyph_property() should be called after initialising Scribble.\n ", false);
     exit;
