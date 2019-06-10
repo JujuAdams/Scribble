@@ -184,6 +184,7 @@ _json[| SCRIBBLE.__SECTION0        ] = "-- Scribble Parameters --";
 _json[| SCRIBBLE.STRING            ] = _input_string;
 _json[| SCRIBBLE.WIDTH_LIMIT       ] = _width_limit;
 _json[| SCRIBBLE.LINE_HEIGHT       ] = _line_min_height;
+_json[| SCRIBBLE.STATIC            ] = true;
 
 _json[| SCRIBBLE.__SECTION1        ] = "-- Statistics --";
 _json[| SCRIBBLE.STRING_HALIGN     ] = _def_halign;

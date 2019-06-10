@@ -104,10 +104,11 @@ enum SCRIBBLE
     STRING,             // 1
     WIDTH_LIMIT,        // 2
     LINE_HEIGHT,        // 3
+    STATIC,             // 4
     
-    __SECTION1,         // 4
-    STRING_HALIGN,
-    STRING_VALIGN,
+    __SECTION1,         // 5
+    STRING_HALIGN,      // 6
+    STRING_VALIGN,      // 7
     BOX_HALIGN,         // 5
     BOX_VALIGN,         // 6
     WIDTH,              // 7

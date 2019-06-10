@@ -33,6 +33,7 @@ else
 {
     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Adding \"" + _sha1 + "\" to cache");
     _scribble = scribble_create_static(_string);
+    _scribble[| SCRIBBLE.STATIC] = false;
     
     global.__scribble_cache_map[? _sha1] = _scribble;
     ds_priority_add(global.__scribble_cache_priority_queue, _sha1, current_time + SCRIBBLE_CACHE_DECAY);

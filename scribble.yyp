@@ -719,6 +719,14 @@
             }
         },
         {
+            "Key": "f2fddc5b-e581-48ac-8a38-fc84e483dd03",
+            "Value": {
+                "id": "4cace708-a249-4c08-8d6f-cfd4b54b5ae2",
+                "resourcePath": "views\\f2fddc5b-e581-48ac-8a38-fc84e483dd03.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "f3961996-d47d-459e-9c2d-b1d778c13289",
             "Value": {
                 "id": "80562367-e5da-4608-9791-b2cf40594017",
@@ -773,9 +781,6 @@
         "375e7330-6e30-4902-8a42-dbc8ad380c16",
         "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
         "68da0fca-1cb4-47e1-a892-3b5291622f19",
-        "df6df2ef-b108-4a0d-b542-812338df9817",
-        "86be87df-87d5-438a-a8e0-49bc2ac80815",
-        "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
         "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
         "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
         "8d5d3c65-837d-4b2c-80c0-8a6bb92da8f5",
@@ -790,6 +795,9 @@
         "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd",
         "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
         "7b7bd288-7bee-4565-ac2f-fde25c2145cc",
+        "df6df2ef-b108-4a0d-b542-812338df9817",
+        "86be87df-87d5-438a-a8e0-49bc2ac80815",
+        "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
         "00fbc8f9-0e51-458c-8834-69a5cbc5e94b"
     ],
     "tutorial": ""
