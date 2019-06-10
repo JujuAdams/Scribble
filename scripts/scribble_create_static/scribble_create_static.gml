@@ -1,4 +1,4 @@
-/// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw_from()
+/// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw_static()
 ///
 /// @param string           The string to be parsed. See below for the various in-line formatting tags
 /// @param [minLineHeight]  The minimum line height for each line of text. Defaults to the height of a space character of the default font
@@ -35,7 +35,7 @@
 
 if (variable_global_get("__scribble_global_count") == undefined)
 {
-    show_error("Scribble:\nscribble_create() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\nscribble_create_static() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
@@ -45,13 +45,12 @@ var _input_string     = argument[0];
 var _line_min_height  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
 var _width_limit      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : -1;
 
-var _def_colour       = c_white;
-var _def_font         = global.__scribble_default_font;
-var _def_halign       = fa_left;
-var _first_colour_set = false;
-var _first_font_set   = false;
-var _first_halign_set = false;
 
+
+var _def_colour = c_white;
+var _def_font   = global.__scribble_default_font;
+var _def_halign = draw_get_halign();
+var _box_valign = draw_get_valign();
 
 
 
@@ -187,8 +186,10 @@ _json[| SCRIBBLE.WIDTH_LIMIT       ] = _width_limit;
 _json[| SCRIBBLE.LINE_HEIGHT       ] = _line_min_height;
 
 _json[| SCRIBBLE.__SECTION1        ] = "-- Statistics --";
-_json[| SCRIBBLE.BOX_HALIGN        ] = fa_left;
-_json[| SCRIBBLE.BOX_VALIGN        ] = fa_top;
+_json[| SCRIBBLE.STRING_HALIGN     ] = _def_halign;
+_json[| SCRIBBLE.STRING_VALIGN     ] = _box_valign;
+_json[| SCRIBBLE.BOX_HALIGN        ] = _def_halign;
+_json[| SCRIBBLE.BOX_VALIGN        ] = _box_valign;
 _json[| SCRIBBLE.WIDTH             ] = 0;
 _json[| SCRIBBLE.HEIGHT            ] = 0;
 _json[| SCRIBBLE.LEFT              ] = 0;
@@ -233,9 +234,12 @@ ds_list_mark_as_list(_json, SCRIBBLE.VERTEX_BUFFER_LIST);
 
 
 
-#region Parse the string
-
 #region Initial parser state
+
+var _first_colour_set = false;
+var _first_font_set   = false;
+var _first_halign_set = false;
+var _first_valign_set = false;
 
 var _line_width  = 0;
 var _line_height = _line_min_height;
@@ -269,6 +273,10 @@ var _text_y_max       = 0;
 ds_map_clear(global.__scribble_create_texture_to_buffer_map);
 
 #endregion
+
+
+
+#region Parse the string
 
 //Iterate over the entire string...
 var _sep_char      = 0;
@@ -421,7 +429,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                 
                 #endregion
                 
-                #region Font Alignment
+                #region Horizontal Alignment
                 
                 case "fa_left":
                     _text_halign = fa_left;
@@ -457,6 +465,42 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
                     {
                         _first_halign_set = true;
                         _def_halign = _text_halign;
+                    }
+                    
+                    _substr = "";
+                    if (_text_x > 0) _force_newline = true;
+                break;
+                #endregion
+                
+                #region Vertical Alignment
+                
+                case "fa_top":
+                    if (!_first_valign_set)
+                    {
+                        _box_valign = fa_top;
+                        _first_valign_set = true;
+                    }
+                    
+                    _substr = "";
+                    if (_text_x > 0) _force_newline = true;
+                break;
+                
+                case "fa_middle":
+                    if (!_first_valign_set)
+                    {
+                        _box_valign = fa_middle;
+                        _first_valign_set = true;
+                    }
+                    
+                    _substr = "";
+                    if (_text_x > 0) _force_newline = true;
+                break;
+                
+                case "fa_bottom":
+                    if (!_first_valign_set)
+                    {
+                        _box_valign = fa_bottom;
+                        _first_valign_set = true;
                     }
                     
                     _substr = "";
@@ -795,6 +839,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             _first_colour_set = true;
             _first_font_set   = true;
             _first_halign_set = true;
+            _first_valign_set = true;
         }
         
         #region Swap texture and buffer if needed
@@ -1045,13 +1090,15 @@ _text_x_max = max(_text_x_max, _line_width);
 _text_y_max = _text_y + _line_height;
 
 //Fill out metadata
-_json[| SCRIBBLE.WORDS ] = _meta_words;
-_json[| SCRIBBLE.LINES ] = _meta_lines;
-_json[| SCRIBBLE.LENGTH] = _meta_characters;
-_json[| SCRIBBLE.WIDTH ] = _text_x_max;
-_json[| SCRIBBLE.HEIGHT] = _text_y_max;
-_json[| SCRIBBLE.RIGHT ] = _text_x_max;
-_json[| SCRIBBLE.BOTTOM] = _text_y_max;
+_json[| SCRIBBLE.WORDS        ] = _meta_words;
+_json[| SCRIBBLE.LINES        ] = _meta_lines;
+_json[| SCRIBBLE.LENGTH       ] = _meta_characters;
+_json[| SCRIBBLE.WIDTH        ] = _text_x_max;
+_json[| SCRIBBLE.HEIGHT       ] = _text_y_max;
+_json[| SCRIBBLE.RIGHT        ] = _text_x_max;
+_json[| SCRIBBLE.BOTTOM       ] = _text_y_max;
+_json[| SCRIBBLE.STRING_HALIGN] = _def_halign;
+_json[| SCRIBBLE.STRING_VALIGN] = _box_valign;
 
 #endregion
 
@@ -1138,6 +1185,6 @@ repeat(ds_list_size(_vertex_buffer_list))
 
 
 
-if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_create() took " + string((get_timer() - _timer)/1000) + "ms");
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_create_static() took " + string((get_timer() - _timer)/1000) + "ms");
 
 return _json;

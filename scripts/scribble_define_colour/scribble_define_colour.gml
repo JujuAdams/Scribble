@@ -1,6 +1,6 @@
-/// Adds a custom colour for use as an in-line colour definition for scribble_create() 
+/// Adds a custom colour for use as an in-line colour definition for scribble_create_static() 
 ///
-/// This script allows for the definition of a custom colour that can be referenced by name in scribble_create()
+/// This script allows for the definition of a custom colour that can be referenced by name in scribble_create_static()
 /// This script assumes you're *NOT* using GameMaker's wacky BGR colour format.
 ///
 /// @param name                     String name of the colour
@@ -54,6 +54,6 @@ if (is_real(_old_colour))
     show_debug_message("Scribble: WARNING! Overwriting colour \"" + _name + "\" (" + string(colour_get_red(_old_colour)) + "," + string(colour_get_green(_old_colour)) + "," + string(colour_get_blue(_old_colour)) + ", u32=" + string(_old_colour) + ")");
 }
 
-global.__scribble_colours[? _name] = $ff000000 | _colour; //Include alpha (at 100%) to make things a bit faster in scribble_create()
+global.__scribble_colours[? _name] = $ff000000 | _colour; //Include alpha (at 100%) to make things a bit faster in scribble_create_static()
 
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added colour \"" + _name + "\" as " + string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)) + ", u32=" + string(_colour));

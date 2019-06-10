@@ -1,6 +1,6 @@
-/// Draws a Scribble data structure created with scribble_create()
+/// Draws a Scribble data structure created with scribble_create_static()
 ///
-/// @param json                 The Scribble data structure to be drawn. See scribble_create()
+/// @param json                 The Scribble data structure to be drawn. See scribble_create_static()
 /// @param [x]                  The x position in the room to draw at. Defaults to 0
 /// @param [y]                  The y position in the room to draw at. Defaults to 0
 /// @param [xscale]             The horizontal scaling of the text. Defaults to the value set in __scribble_config()
@@ -8,7 +8,6 @@
 /// @param [angle]              The rotation of the text. Defaults to the value set in __scribble_config()
 /// @param [colour]             The blend colour for the text. Defaults to draw_get_colour()
 /// @param [alpha]              The alpha blend for the text. Defaults to draw_get_alpha()
-/// @param [premultiplyAlpha]   Whether to multiply the RGB channels by the resulting alpha value in the shader. Useful for fixing blending defects
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
@@ -20,7 +19,6 @@ var _yscale = ((argument_count > 4) && (argument[4] != undefined))? argument[4] 
 var _angle  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
 var _colour = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : draw_get_colour();
 var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : draw_get_alpha();
-var _pma    = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : false;
 
 if (!is_real(_json) || !ds_exists(_json, ds_type_list))
 {
@@ -155,7 +153,7 @@ if (_count > 0)
     }
     
     shader_set(shScribble);
-    shader_set_uniform_f(global.__scribble_uniform_pma            , _pma);
+    shader_set_uniform_f(global.__scribble_uniform_pma            , global.__scribble_premultiply_alpha);
     shader_set_uniform_f(global.__scribble_uniform_time           , _time);
     
     shader_set_uniform_f(global.__scribble_uniform_char_t         , _char_t);

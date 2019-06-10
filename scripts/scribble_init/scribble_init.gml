@@ -13,7 +13,7 @@
 /// 5) Define flag names for default effects - wave, shake, rainbow, wobble
 /// 6) Creates a vertex format
 /// 7) Cache uniform indexes for the shScribble shader
-/// 8) Build a lookup table for decoding hexcode colours in scribble_create()
+/// 8) Build a lookup table for decoding hexcode colours in scribble_create_static()
 
 #region Internal Macro Definitions
 
@@ -106,6 +106,8 @@ enum SCRIBBLE
     LINE_HEIGHT,        // 3
     
     __SECTION1,         // 4
+    STRING_HALIGN,
+    STRING_VALIGN,
     BOX_HALIGN,         // 5
     BOX_VALIGN,         // 6
     WIDTH,              // 7
@@ -239,6 +241,8 @@ global.__scribble_tag_replace                  = ds_map_create();  //Stores asse
 global.__scribble_alive                        = ds_map_create();  //ds_map of all alive Scribble data structures
 global.__scribble_cache_map                    = ds_map_create();
 global.__scribble_cache_priority_queue         = ds_priority_create();
+global.__scribble_defeat_draw                  = false;
+global.__scribble_premultiply_alpha            = false;
 global.__scribble_global_count                 = 0;
 global.__scribble_default_font                 = _default_font;
 global.__scribble_create_separator_list        = ds_list_create();
@@ -248,7 +252,7 @@ global.__scribble_create_texture_to_buffer_map = ds_map_create();
 global.__scribble_create_buffer                = buffer_create(1, buffer_grow, 1);
 global.__scribble_default_animation_parameters = scribble_set_animation(undefined,   4, 50, 0.2,   4, 0.4,   0.5, 0.01,   40, 0.15,   0.4, 0.1);
 
-//Duplicate GM's native colour constants in string form for access in scribble_create()
+//Duplicate GM's native colour constants in string form for access in scribble_create_static()
 scribble_define_colour("c_aqua",    c_aqua   , true);
 scribble_define_colour("c_black",   c_black  , true);
 scribble_define_colour("c_blue",    c_blue   , true);

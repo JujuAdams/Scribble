@@ -1,4 +1,4 @@
-/// Defines a flag name, allowing for behaviours to be set per-character when calling scribble_create()
+/// Defines a flag name, allowing for behaviours to be set per-character when calling scribble_create_static()
 ///
 ///
 ///

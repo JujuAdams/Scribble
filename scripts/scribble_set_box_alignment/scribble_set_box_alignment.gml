@@ -5,7 +5,7 @@
 /// draw coordinate. This script allows you to change that behaviour e.g. drawing the box
 /// centred on the draw coordinate.
 ///
-/// @param json       The Scribble data structure to manipulate. See scribble_create()
+/// @param json       The Scribble data structure to manipulate. See scribble_create_static()
 /// @param [halign]   The horizontal alignment of the textbox. Defaults to the value set in __scribble_config()
 /// @param [valign]   The vertical alignment of the textbox. Defaults to the value set in __scribble_config()
 ///
