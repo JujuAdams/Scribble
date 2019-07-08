@@ -10,4 +10,4 @@ With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, and Rob van Saaze f
 
 **How do I import Scribble into my game?**
 
-GameMaker Studio 2.2.3 allows you to import assets (including scripts and shaders) directly into your project via the "Local Package" system. From the [Releases](https://github.com/JujuAdams/scribble/releases) tab, download a .yymp file (I suggest starting with the newest version!). In the GameMaker IDE, load up your project and click on "Tools" on the main window toolbar. Select "Import Local Package" from the drop-down menu then import all scripts and shaders from the Scribble package. Now you're all set up!
+GameMaker Studio 2.2.3 allows you to import assets, including scripts and shaders, directly into your project via the "Local Package" system. From the [Releases](https://github.com/JujuAdams/scribble/releases) tab for this repo, download the .yymp file for the latest version. In the GameMaker IDE, load up your project and click on "Tools" on the main window toolbar. Select "Import Local Package" from the drop-down menu then import all scripts and shaders from the Scribble package. Now you're all set up!
