@@ -984,7 +984,7 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             //Store the word height per glyph
             buffer_poke(global.__scribble_create_buffer, _meta_characters, buffer_u8, _substr_height);
             
-            _substr_width += (_char_index == _substr_length)? _glyph_w : _glyph_shf;
+            _substr_width += (_char_index == _substr_length)? max(_glyph_shf, _glyph_w) : _glyph_shf;
             _char_x += _text_scale*_glyph_shf;
             ++_char_index;
             ++_meta_characters;
