@@ -167,6 +167,14 @@
             }
         },
         {
+            "Key": "3faef113-3dac-4ee8-98f2-0fc052305c3a",
+            "Value": {
+                "id": "0d06c264-7550-4128-bb93-873547665d51",
+                "resourcePath": "datafiles_yy\\Fonts\\font_cutscene.yy.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "40dc4cab-af83-4ad9-9cfe-305041f0c01b",
             "Value": {
                 "id": "54c7aeca-8f18-42df-89ee-e10edf503fd2",
@@ -399,6 +407,14 @@
             }
         },
         {
+            "Key": "93566aad-c3b3-48a9-8fa7-9c5ee19f74ac",
+            "Value": {
+                "id": "1cee5268-8b35-41a3-890f-d73bbcbe5ce0",
+                "resourcePath": "options\\tvos\\options_tvos.yy",
+                "resourceType": "GMtvOSOptions"
+            }
+        },
+        {
             "Key": "946479bd-e52d-41cb-994f-9184d806b8b5",
             "Value": {
                 "id": "42472f94-8ec7-488a-bdeb-1e502bc60846",
@@ -444,6 +460,14 @@
                 "id": "81c9abcf-8081-4d51-a544-be7cac5bf2de",
                 "resourcePath": "views\\9a14b894-4693-4a4a-a152-7ede094c183a.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "9a32aafc-e783-40d1-9b27-57186c8e0f6b",
+            "Value": {
+                "id": "b852caa6-53aa-463a-8c56-67654767e093",
+                "resourcePath": "fonts\\font_cutscene\\font_cutscene.yy",
+                "resourceType": "GMFont"
             }
         },
         {

@@ -9,6 +9,7 @@ scribble_init_start("Fonts", "fTestA", false);
 scribble_init_add_font("fTestA");
 scribble_init_add_font("fTestB");
 scribble_init_add_font("fChineseTest", "CJK\\fChineseTest.yy");
+scribble_init_add_font("font_cutscene");
 scribble_init_add_spritefont("sSpriteFont", 11);
 scribble_init_end();
 

@@ -782,6 +782,8 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
         var _substr_width  = 0;
         var _substr_height = 0;
         
+        show_debug_message("Word \"" + _substr + "\" starts at x = " + string(_char_x));
+        
         repeat(_substr_length)
         {
             if (_font_glyphs_array == undefined)
@@ -812,6 +814,8 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             var _glyph_r = _glyph_l + _glyph_w*_text_scale;
             var _glyph_b = _glyph_t + _glyph_h*_text_scale;
             
+            show_debug_message("\"" + string_char_at(_substr, _char_index) + "\" writes to " + string(_glyph_l) + "," + string(_glyph_t) + " -> " + string(_glyph_r) + "," + string(_glyph_b));
+            
             //                                                  X                                                        Y                                                  Z                                                       character %                                               line %                                                flags                                                  colour                                                   U                                                  V
             buffer_write(_glyph_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
             buffer_write(_glyph_buffer, buffer_f32, _glyph_l              ); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v1);
@@ -821,11 +825,23 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
             buffer_write(_glyph_buffer, buffer_f32, _glyph_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _glyph_u0); buffer_write(_glyph_buffer, buffer_f32, _glyph_v0);
             
             _char_x += _text_scale*_glyph_shf;
-            ++_char_index;
             
-            _substr_width += (_char_index == _substr_length)? _glyph_w : _glyph_shf;
+            if (_char_index == _substr_length)
+            {
+                _substr_width += max(_glyph_shf, _glyph_w);
+                show_debug_message("Substring width incremented " + string(max(_glyph_shf, _glyph_w)) + " to " + string(_substr_width) + " (end of word, used width value)");
+            }
+            else
+            {
+                _substr_width += _glyph_shf;
+                show_debug_message("Substring width incremented " + string(_glyph_shf) + " to " + string(_substr_width));
+            }
+            
+            ++_char_index;
             ++_meta_characters;
         }
+        
+        show_debug_message("Word \"" + _substr + "\" ends at x = " + string(_char_x) + ", substring width = " + string(_substr_width));
         
         //Choose the height of a space for the substring's height
         var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? " "] : (_font_glyphs_array[32 - _font_glyphs_min]);
@@ -916,8 +932,14 @@ repeat(ds_list_size(global.__scribble_create_separator_list))
     if (!_force_newline && (_substr != "")) _line_height = max(_line_height, _substr_height);
     
     _text_x += _substr_width
+    show_debug_message("_text_x = " + string(_text_x));
     _line_width = max(_line_width, _text_x);
-    _text_x += ((_sep_char == 32)? _font_space_width : 0); //Add spacing if the separation character is a space
+    
+    if (_sep_char == 32)
+    {
+        _text_x += _font_space_width; //Add spacing if the separation character is a space
+        show_debug_message("Space seperator, padding to " + string(_text_x));
+    }
     
     if (_substr_length > 0) ++_meta_words;
     
