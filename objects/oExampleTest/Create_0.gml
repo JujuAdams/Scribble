@@ -12,11 +12,8 @@ var _string  = "[sound,sndCrank][rainbow]TEST[] ABCDEF##";
     _string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][rumble]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] [/rumble]THE LAZY [fTestB]DOG.";
 
-//text = scribble_create(_string, -1, 450, "c_xanadu", "fTestB", fa_center);
-
-var str = "That's right, BUTT-HEADS! I'm going to send youse back to the barnyard in BODY BAGS!";
-text = scribble_create(str, 16, -1, c_white, "font_cutscene", fa_center);
-//scribble_typewriter_in(text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3);
+text = scribble_create(_string, -1, 450, "c_xanadu", "fTestB", fa_center);
+scribble_typewriter_in(text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3);
 scribble_set_box_alignment(text, fa_center, fa_middle);
 
 test_string = "The Quick Brown Fox Jumps Over The Lazy Dog!";
