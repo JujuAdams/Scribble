@@ -20,7 +20,7 @@
 #region Internal Macro Definitions
 
 #macro __SCRIBBLE_VERSION  "4.7.2"
-#macro __SCRIBBLE_DATE     "2019/06/05"
+#macro __SCRIBBLE_DATE     "2019/07/08"
 #macro __SCRIBBLE_DEBUG    false
 
 enum __SCRIBBLE_FONT
