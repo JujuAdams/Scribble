@@ -1,8 +1,8 @@
 /// @param x
 /// @param y
 /// @param string
-/// @param [minLineHeight]
 /// @param [maxLineWidth]
+/// @param [minLineHeight]
 /// @param [xscale]         The horizontal scaling of the text. Defaults to the value set in __scribble_config()
 /// @param [yscale]         The vertical scaling of the text. Defaults to the value set in __scribble_config()
 /// @param [angle]          The rotation of the text. Defaults to the value set in __scribble_config()
@@ -12,8 +12,8 @@
 var _x               = argument[0];
 var _y               = argument[1];
 var _string          = argument[2];
-var _line_min_height = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : -1;
-var _width_limit     = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : -1;
+var _width_limit     = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : -1;
+var _line_min_height = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : -1;
 var _xscale          = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 1;
 var _yscale          = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 1;
 var _angle           = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : 0;
