@@ -10,13 +10,11 @@
 
 var _timer = get_timer();
 
-// variable_global_exists() gives false positives in GMS2.2.3.425 :(
-//
-//if ( !variable_global_exists("__scribble_init_complete" ) )
-//{
-//    show_error("Scribble:\nscribble_init_end() should be called after scribble_init_start()\n ", false);
-//    exit;
-//}
+if ( !variable_global_exists("__scribble_init_complete" ) )
+{
+    show_error("Scribble:\nscribble_init_end() should be called after scribble_init_start()\n ", false);
+    exit;
+}
 
 if (SCRIBBLE_VERBOSE) show_debug_message("\nScribble: Font initialisation started");
 

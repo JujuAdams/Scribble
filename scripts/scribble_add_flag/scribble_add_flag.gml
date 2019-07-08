@@ -8,13 +8,11 @@
 var _name  = argument0;
 var _index = argument1;
 
-// variable_global_exists() gives false positives in GMS2.2.3.425 :(
-//
-//if ( !variable_global_exists("__scribble_init_complete") )
-//{
-//    show_error("Scribble:\nscribble_add_custom_flag_name() should be called after initialising Scribble.\n ", false);
-//    exit;
-//}
+if ( !variable_global_exists("__scribble_init_complete") )
+{
+    show_error("Scribble:\nscribble_add_custom_flag_name() should be called after initialising Scribble.\n ", false);
+    exit;
+}
 
 if ( !is_string(_name) )
 {

@@ -15,13 +15,11 @@ var _font      = argument0;
 var _character = argument1;
 var _property  = argument2;
 
-// variable_global_exists() gives false positives in GMS2.2.3.425 :(
-//
-//if ( !variable_global_exists("__scribble_init_complete") )
-//{
-//    show_error("Scribble:\nscribble_get_glyph_property() should be called after initialising Scribble.\n ", false);
-//    exit;
-//}
+if ( !variable_global_exists("__scribble_init_complete") )
+{
+    show_error("Scribble:\nscribble_get_glyph_property() should be called after initialising Scribble.\n ", false);
+    exit;
+}
 
 if (!global.__scribble_init_complete)
 {

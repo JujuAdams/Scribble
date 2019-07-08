@@ -13,13 +13,11 @@ var _name   = argument[0];
 var _colour = argument[1];
 var _native = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
 
-// variable_global_exists() gives false positives in GMS2.2.3.425 :(
-//
-//if ( !variable_global_exists("__scribble_init_complete") )
-//{
-//    show_error("Scribble:\nscribble_add_colour() should be called after initialising Scribble.\n ", false);
-//    exit;
-//}
+if ( !variable_global_exists("__scribble_init_complete") )
+{
+    show_error("Scribble:\nscribble_add_colour() should be called after initialising Scribble.\n ", false);
+    exit;
+}
 
 if ( !is_string(_name) )
 {
