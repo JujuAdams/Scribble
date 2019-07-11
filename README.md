@@ -35,7 +35,7 @@ Finally, we need to add some code that tells Scribble how to initialise the font
 ***Please note** that Scribble can only be initialised once which means all Scribble fonts should be defined at the same time.*
 
 e.g.
-```
+```gml
 //Start initialisation:
 //  The font directory is set as the root of the sandbox
 //  The default font is set as "fnt_dialogue"
@@ -66,7 +66,7 @@ Spritefonts work similarly to standard fonts and they are functionally interchan
 
 Here is an example of the code required to initialise a spritefont in Scribble:
 
-```
+```gml
 //Start initialisation:
 //  The font directory is set as the root of the sandbox
 //  The default font is set as "fnt_score"
