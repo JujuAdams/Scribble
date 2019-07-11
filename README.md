@@ -60,7 +60,7 @@ Spritefonts work similarly to standard fonts and they are functionally interchan
 
 1) Spritefonts use a sprite asset rather than a font asset
 2) Sprite fonts do not require a .yy file to be added as an included file
-3) Use scribble_init_add_spritefont() instead of scribble_init_add_font()
+3) Use `scribble_init_add_spritefont()` instead of `scribble_init_add_font()`
 
 ***Please note** that a sprite used for a spritefont must have its collision type set to "Precise Per Frame"*
 
