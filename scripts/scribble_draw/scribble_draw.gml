@@ -1,24 +1,70 @@
 /// @param x
 /// @param y
 /// @param string
-/// @param [maxLineWidth]
-/// @param [minLineHeight]
-/// @param [xscale]         The horizontal scaling of the text. Defaults to the value set in __scribble_config()
-/// @param [yscale]         The vertical scaling of the text. Defaults to the value set in __scribble_config()
-/// @param [angle]          The rotation of the text. Defaults to the value set in __scribble_config()
-/// @param [colour]         The blend colour for the text. Defaults to draw_get_colour()
-/// @param [alpha]          The alpha blend for the text. Defaults to draw_get_alpha()
 
-var _x               = argument[0];
-var _y               = argument[1];
-var _string          = argument[2];
-var _width_limit     = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : -1;
-var _line_min_height = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : -1;
-var _xscale          = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 1;
-var _yscale          = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 1;
-var _angle           = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : 0;
-var _colour          = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : draw_get_colour();
-var _alpha           = ((argument_count > 9) && (argument[9] != undefined))? argument[9] : draw_get_alpha();
+var _x      = argument0;
+var _y      = argument1;
+var _string = argument2;
+
+var _max_time = get_timer() - game_get_speed(gamespeed_microseconds);
+
+if ((global.__scribble_next_blend_instance == id) && (global.__scribble_next_blend_time > _max_time))
+{
+    var _colour = (global.__scribble_next_blend_colour == undefined)? draw_get_colour() : global.__scribble_next_blend_colour;
+    var _alpha  = (global.__scribble_next_blend_alpha  == undefined)? draw_get_alpha()  : global.__scribble_next_blend_alpha;
+    
+    global.__scribble_next_blend_time = -9999999;
+}
+else
+{
+    var _colour = draw_get_colour();
+    var _alpha  = draw_get_alpha();
+}
+
+if ((global.__scribble_next_trans_instance == id) && (global.__scribble_next_trans_time > _max_time))
+{
+    var _xscale = global.__scribble_next_trans_xscale;
+    var _yscale = global.__scribble_next_trans_yscale;
+    var _angle  = global.__scribble_next_trans_angle;
+    
+    global.__scribble_next_trans_time = -9999999;
+}
+else
+{
+    var _xscale = 1;
+    var _yscale = 1;
+    var _angle  = 0;
+}
+
+if ((global.__scribble_next_wrap_instance == id) && (global.__scribble_next_wrap_time > _max_time))
+{
+    var _width_limit     = global.__scribble_next_wrap_line_width;
+    var _line_min_height = global.__scribble_next_wrap_line_height;
+    
+    global.__scribble_next_wrap_time = -9999999;
+}
+else
+{
+    var _width_limit     = -1;
+    var _line_min_height = -1;
+}
+
+if ((global.__scribble_next_tw_instance == id) && (global.__scribble_next_tw_time > _max_time))
+{
+    var _tw_fade_out = global.__scribble_next_tw_fade_out;
+    var _tw_position = global.__scribble_next_tw_position;
+    var _tw_type     = global.__scribble_next_tw_type;
+    var _tw_execute  = global.__scribble_next_tw_execute;
+    
+    global.__scribble_next_tw_time = -9999999;
+}
+else
+{
+    var _tw_fade_out = false;
+    var _tw_position = 1.0;
+    var _tw_type     = SCRIBBLE_TYPEWRITER_WHOLE;
+    var _tw_execute  = false;
+}
 
 
 
@@ -32,7 +78,7 @@ if (_scribble != undefined)
 else
 {
     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Adding \"" + _sha1 + "\" to cache");
-    _scribble = scribble_create_static(_string);
+    _scribble = scribble_static_create(_string, _line_min_height, _width_limit);
     _scribble[| SCRIBBLE.STATIC] = false;
     
     global.__scribble_cache_map[? _sha1] = _scribble;
@@ -42,7 +88,7 @@ else
 if (!global.__scribble_defeat_draw)
 {
     scribble_set_box_alignment(_scribble, _scribble[| SCRIBBLE.STRING_HALIGN], _scribble[| SCRIBBLE.STRING_VALIGN]);
-    scribble_draw_static(_scribble, _x, _y, _xscale, _yscale, _angle, _colour, _alpha);
+    scribble_static_draw(_scribble, _x, _y, _xscale, _yscale, _angle, _colour, _alpha);
 }
 
 
@@ -56,7 +102,7 @@ do
         if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Deleting \"" + _min_sha1 + "\" from cache");
         
         var _scribble = global.__scribble_cache_map[? _min_sha1];
-        scribble_destroy_static(_scribble);
+        scribble_static_destroy(_scribble);
         
         ds_map_delete(global.__scribble_cache_map, _min_sha1);
         ds_priority_delete_min(global.__scribble_cache_priority_queue);
@@ -65,5 +111,7 @@ do
 until (ds_priority_empty(global.__scribble_cache_priority_queue) || (current_time <= _min_time));
 
 
+
+global.__scribble_last_drawn = _scribble;
 
 return _scribble;

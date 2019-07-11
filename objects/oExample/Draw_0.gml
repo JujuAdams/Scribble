@@ -1,2 +1,2 @@
 //Draw the text
-scribble_draw_static(text, x - 150, y - 80);
+scribble_static_draw(text, x - 150, y - 80);

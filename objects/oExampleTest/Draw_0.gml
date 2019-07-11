@@ -5,8 +5,12 @@ var _string  = "[fa_center][fa_middle][fa_left][c_xanadu][fTestB][sound,sndCrank
     _string += "[sSpriteFont][thick]the quick brown fox [wave]jumps[/wave] over the lazy dog";
     _string += "[fTestA][fa_right]THE [fTestB][$ff4499][rumble]QUICK[fTestA] [$d2691e]BROWN [$ff4499]FOX [fa_left]JUMPS OVER[$ffff00] [/rumble]THE LAZY [fTestB]DOG.";
 
+scribble_set_transform(1, 1, 0);
+scribble_set_colour(c_red, 1.0);
+scribble_set_wrap(-1, 350);
+scribble_set_typewriter(false, 0, SCRIBBLE_TYPEWRITER_PER_CHARACTER, true);
 var _scribble = scribble_draw(x, y, _string);
 
-var _box = scribble_get_box(_scribble,   x, y,   0, 0,   0, 0);
-draw_rectangle(_box[SCRIBBLE_BOX.X0], _box[SCRIBBLE_BOX.Y0],
-               _box[SCRIBBLE_BOX.X3], _box[SCRIBBLE_BOX.Y3], true);
+//var _box = scribble_get_box(_scribble,   x, y,   0, 0,   0, 0);
+//draw_rectangle(_box[SCRIBBLE_BOX.X0], _box[SCRIBBLE_BOX.Y0],
+//               _box[SCRIBBLE_BOX.X3], _box[SCRIBBLE_BOX.Y3], true);

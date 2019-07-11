@@ -1,4 +1,4 @@
-scribble_draw_static(text, x, y);
+scribble_static_draw(text, x, y);
 
 //Find the size and position of the bounding box (plus a bit) and draw it
 var _box = scribble_get_box(text,   x, y,   5, 5,   5, 5);

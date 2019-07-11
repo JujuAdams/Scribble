@@ -1,5 +1,5 @@
 /// Starts initialisation for Scribble
-/// This script should be called before scribble_define_font() / scribble_define_spritefont()
+/// This script should be called before scribble_add_font() / scribble_add_spritefont()
 ///
 /// @param fontDirectory     Directory to look in (relative to game_save_id) for font .yy files
 /// @param defaultFont       The name of the default Scribble font, as a string
@@ -253,33 +253,58 @@ global.__scribble_create_texture_to_buffer_map = ds_map_create();
 global.__scribble_create_buffer                = buffer_create(1, buffer_grow, 1);
 global.__scribble_default_animation_parameters = scribble_set_animation(undefined,   4, 50, 0.2,   4, 0.4,   0.5, 0.01,   40, 0.15,   0.4, 0.1);
 
+global.__scribble_last_drawn                   = -1;
+
+global.__scribble_next_wrap_instance           = noone;
+global.__scribble_next_wrap_time               = -9999999;
+global.__scribble_next_wrap_line_width         = -1;
+global.__scribble_next_wrap_line_height        = -1;
+
+global.__scribble_next_trans_instance          = noone;
+global.__scribble_next_trans_time              = -9999999;
+global.__scribble_next_trans_xscale            = 1;
+global.__scribble_next_trans_yscale            = 1;
+global.__scribble_next_trans_angle             = 0;
+
+global.__scribble_next_blend_instance          = noone;
+global.__scribble_next_blend_time              = -9999999;
+global.__scribble_next_blend_colour            = c_white;
+global.__scribble_next_blend_alpha             = 1.0;
+
+global.__scribble_next_tw_instance             = noone;
+global.__scribble_next_tw_time                 = -9999999;
+global.__scribble_next_tw_fade_out             = false;
+global.__scribble_next_tw_position             = 1.0;
+global.__scribble_next_tw_type                 = SCRIBBLE_TYPEWRITER_WHOLE;
+global.__scribble_next_tw_execute              = false;
+
 //Duplicate GM's native colour constants in string form for access in scribble_create_static()
-scribble_define_colour("c_aqua",    c_aqua   , true);
-scribble_define_colour("c_black",   c_black  , true);
-scribble_define_colour("c_blue",    c_blue   , true);
-scribble_define_colour("c_dkgray",  c_dkgray , true);
-scribble_define_colour("c_fuchsia", c_fuchsia, true);
-scribble_define_colour("c_green",   c_green  , true);
-scribble_define_colour("c_lime",    c_lime   , true);
-scribble_define_colour("c_ltgray",  c_ltgray , true);
-scribble_define_colour("c_maroon",  c_maroon , true);
-scribble_define_colour("c_navy",    c_navy   , true);
-scribble_define_colour("c_olive",   c_olive  , true);
-scribble_define_colour("c_orange",  c_orange , true);
-scribble_define_colour("c_purple",  c_purple , true);
-scribble_define_colour("c_red",     c_red    , true);
-scribble_define_colour("c_silver",  c_silver , true);
-scribble_define_colour("c_teal",    c_teal   , true);
-scribble_define_colour("c_white",   c_white  , true);
-scribble_define_colour("c_yellow",  c_yellow , true);
+scribble_add_colour("c_aqua",    c_aqua   , true);
+scribble_add_colour("c_black",   c_black  , true);
+scribble_add_colour("c_blue",    c_blue   , true);
+scribble_add_colour("c_dkgray",  c_dkgray , true);
+scribble_add_colour("c_fuchsia", c_fuchsia, true);
+scribble_add_colour("c_green",   c_green  , true);
+scribble_add_colour("c_lime",    c_lime   , true);
+scribble_add_colour("c_ltgray",  c_ltgray , true);
+scribble_add_colour("c_maroon",  c_maroon , true);
+scribble_add_colour("c_navy",    c_navy   , true);
+scribble_add_colour("c_olive",   c_olive  , true);
+scribble_add_colour("c_orange",  c_orange , true);
+scribble_add_colour("c_purple",  c_purple , true);
+scribble_add_colour("c_red",     c_red    , true);
+scribble_add_colour("c_silver",  c_silver , true);
+scribble_add_colour("c_teal",    c_teal   , true);
+scribble_add_colour("c_white",   c_white  , true);
+scribble_add_colour("c_yellow",  c_yellow , true);
 
 //Add bindings for default flag names
 //Flag slot 0 is reversed for sprites
-scribble_define_flag("wave"   , 1);
-scribble_define_flag("shake"  , 2);
-scribble_define_flag("rainbow", 3);
-scribble_define_flag("wobble" , 4);
-scribble_define_flag("swell"  , 5);
+scribble_add_flag("wave"   , 1);
+scribble_add_flag("shake"  , 2);
+scribble_add_flag("rainbow", 3);
+scribble_add_flag("wobble" , 4);
+scribble_add_flag("swell"  , 5);
 
 //Create a vertex format for our text
 vertex_format_begin();
@@ -366,7 +391,7 @@ if (_auto_scan)
                 else
                 {
                     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Autoscan found standard font \"" + _font + "\"");
-                    scribble_define_font(_font, string_replace(_directory + _file, _font_directory, ""));
+                    scribble_add_font(_font, string_replace(_directory + _file, _font_directory, ""));
                 }
             }
             
