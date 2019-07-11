@@ -18,7 +18,7 @@ GameMaker Studio 2.2.3 allows you to import assets, including scripts and shader
 
 Scribble is made from 8 mandatory scripts and a shader. There are 12 optional scripts that unlock more advanced functionality, though they're not needed for basic use.
 
-Scribble requires that you define fonts specifically for use with Scribble. This is a three-step process:
+Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
 
 1) Add a typical GameMaker font resource through the IDE
 2) Add the font's .yy file as an Included File (found in the font's folder in the project directory)
@@ -73,7 +73,7 @@ Here is an example of the code required to initialise a spritefont in Scribble:
 //  Automatic scanning for fonts ("autoscan") is turned off
 scribble_init_begin("", “fnt_score”, false);
 
-//Add the spritefont called "fnt_dialogue" to Scribble
+//Add the spritefont called "fnt_score" to Scribble
 scribble_init_add_spritefont("fnt_score");`
 
 //Finish initialisation
