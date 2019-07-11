@@ -28,9 +28,11 @@ Let's take this step by step. You're hopefully already familiar with adding reso
 
 Scribble needs to access information that GameMaker generates. All this information is contained in a single .yy file in the font's folder on disk inside the project directory. This file can sometimes be frustrating to locate, but fortunately there's a shortcut we can take. In the IDE, Navigate to the font resource you wish to add and right click on it. From the drop-down menu, select "Show In Explorer". A window will open showing various files for the font resource. You can drag-and-drop the .yy file into the GameMaker IDE to add it as an Included File.
 
-***Please note** that if you change any font properties then the associated .yy file in Included Files will need to be updated too. This is the number one cause of rendering glitches.*
+***Please note** that if you change any font properties then the associated .yy file in Included Files will need to be updated too.*
 
-Finally, we need to add some code that tells Scribble how to initialise the font. This is done through a trio of functions: scfibble_init_start(), scribble_init_add_font(), scribble_init_end(). All font definitions must be executed after scribble_init_start() and before scribble_init_end(). Scribble can only be initialised once which means all Scribble fonts should be defined at the same time.
+Finally, we need to add some code that tells Scribble how to initialise the font. This is done through a trio of functions: `scribble_init_start()`, `scribble_init_add_font()`, and `scribble_init_end()`. All font definitions must be executed after `scribble_init_start()` and before `scribble_init_end()`.
+
+***Please note** that Scribble can only be initialised once which means all Scribble fonts should be defined at the same time.*
 
 e.g.
 ```
@@ -42,6 +44,9 @@ scribble_init_begin("", “fnt_dialogue”, false);
 
 //Add the font called "fnt_dialogue" to Scribble
 scribble_init_add_font("fnt_dialogue");`
+
+//Add the font called "fnt_title" to Scribble
+scribble_init_add_font("fnt_title");`
 
 //Finish initialisation
 scribble_init_end();
