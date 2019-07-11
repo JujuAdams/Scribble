@@ -11,11 +11,10 @@
         "b267953e-f407-4457-9e84-b719945ec6f9",
         "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd",
         "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
-        "7b7bd288-7bee-4565-ac2f-fde25c2145cc",
         "9902c762-4c42-41c5-b924-52b716b9bc80"
     ],
     "filterType": "GMScript",
-    "folderName": "Optional",
+    "folderName": "Advanced",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

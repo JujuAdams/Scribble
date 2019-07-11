@@ -153,7 +153,6 @@ if (_count > 0)
     }
     
     shader_set(shScribble);
-    shader_set_uniform_f(global.__scribble_uniform_pma            , global.__scribble_premultiply_alpha);
     shader_set_uniform_f(global.__scribble_uniform_time           , _time);
     
     shader_set_uniform_f(global.__scribble_uniform_char_t         , _char_t);

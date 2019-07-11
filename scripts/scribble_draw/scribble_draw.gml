@@ -1,6 +1,6 @@
 /// @param x
 /// @param y
-/// @param string
+/// @param stringOrScribbleID
 
 var _x      = argument0;
 var _y      = argument1;
@@ -89,6 +89,7 @@ if (!global.__scribble_defeat_draw)
 {
     scribble_set_box_alignment(_scribble, _scribble[| SCRIBBLE.STRING_HALIGN], _scribble[| SCRIBBLE.STRING_VALIGN]);
     scribble_static_draw(_scribble, _x, _y, _xscale, _yscale, _angle, _colour, _alpha);
+    if (_tw_execute) scribble_events_call(_scribble);
 }
 
 

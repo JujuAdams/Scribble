@@ -243,7 +243,6 @@ global.__scribble_alive                        = ds_map_create();  //ds_map of a
 global.__scribble_cache_map                    = ds_map_create();
 global.__scribble_cache_priority_queue         = ds_priority_create();
 global.__scribble_defeat_draw                  = false;
-global.__scribble_premultiply_alpha            = false;
 global.__scribble_global_count                 = 0;
 global.__scribble_default_font                 = _default_font;
 global.__scribble_create_separator_list        = ds_list_create();
@@ -316,7 +315,6 @@ global.__scribble_vertex_format = vertex_format_end(); //36 bytes per vertex, 10
 
 //Cache uniform indexes
 global.__scribble_uniform_time            = shader_get_uniform(shScribble, "u_fTime"              );
-global.__scribble_uniform_pma             = shader_get_uniform(shScribble, "u_fPremultiplyAlpha"  );
 global.__scribble_uniform_colour_blend    = shader_get_uniform(shScribble, "u_vColourBlend"       );
 global.__scribble_uniform_char_t          = shader_get_uniform(shScribble, "u_fCharFadeT"         );
 global.__scribble_uniform_char_smoothness = shader_get_uniform(shScribble, "u_fCharFadeSmoothness");
