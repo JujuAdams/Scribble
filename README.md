@@ -1,4 +1,4 @@
-<h1 align="center">Scribble 4.7.4</h1>
+<h1 align="center">Scribble 4.8.0</h1>
 
 ### @jujuadams
 
