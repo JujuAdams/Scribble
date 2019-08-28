@@ -197,72 +197,62 @@ var _events_data_list      = ds_list_create(); //Stores each event's parameters
 global.__scribble_global_count++;
 global.__scribble_alive[? global.__scribble_global_count ] = _json;
 
-_json[| __SCRIBBLE.__SIZE            ] = __SCRIBBLE_VERSION;
+_json[| __SCRIBBLE.__SIZE             ] = __SCRIBBLE_VERSION;
+                                      
+_json[| __SCRIBBLE.__SECTION0         ] = "-- Parameters --";
+_json[| __SCRIBBLE.STRING             ] = _input_string;
+_json[| __SCRIBBLE.DEFAULT_FONT       ] = _def_font;
+_json[| __SCRIBBLE.DEFAULT_COLOUR     ] = _def_colour;
+_json[| __SCRIBBLE.DEFAULT_HALIGN     ] = _def_halign;
+_json[| __SCRIBBLE.WIDTH_LIMIT        ] = _width_limit;
+_json[| __SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
+                                      
+_json[| __SCRIBBLE.__SECTION1         ] = "-- Statistics --";
+_json[| __SCRIBBLE.HALIGN             ] = SCRIBBLE_DEFAULT_BOX_HALIGN;
+_json[| __SCRIBBLE.VALIGN             ] = SCRIBBLE_DEFAULT_BOX_VALIGN;
+_json[| __SCRIBBLE.WIDTH              ] = 0;
+_json[| __SCRIBBLE.HEIGHT             ] = 0;
+_json[| __SCRIBBLE.LEFT               ] = 0;
+_json[| __SCRIBBLE.TOP                ] = 0;
+_json[| __SCRIBBLE.RIGHT              ] = 0;
+_json[| __SCRIBBLE.BOTTOM             ] = 0;
+_json[| __SCRIBBLE.LENGTH             ] = 0;
+_json[| __SCRIBBLE.LINES              ] = 0;
+_json[| __SCRIBBLE.WORDS              ] = 0;
+_json[| __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count;
+                                      
+_json[| __SCRIBBLE.__SECTION2         ] = "-- Typewriter --";
+_json[| __SCRIBBLE.TW_DIRECTION       ] = 0;
+_json[| __SCRIBBLE.TW_SPEED           ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+_json[| __SCRIBBLE.TW_POSITION        ] = 0;
+_json[| __SCRIBBLE.TW_METHOD          ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+_json[| __SCRIBBLE.TW_SMOOTHNESS      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
+_json[| __SCRIBBLE.CHAR_FADE_T        ] = 1;
+_json[| __SCRIBBLE.LINE_FADE_T        ] = 1;
 
-_json[| __SCRIBBLE.__SECTION0        ] = "-- Parameters --";
-_json[| __SCRIBBLE.STRING            ] = _input_string;
-_json[| __SCRIBBLE.DEFAULT_FONT      ] = _def_font;
-_json[| __SCRIBBLE.DEFAULT_COLOUR    ] = _def_colour;
-_json[| __SCRIBBLE.DEFAULT_HALIGN    ] = _def_halign;
-_json[| __SCRIBBLE.WIDTH_LIMIT       ] = _width_limit;
-_json[| __SCRIBBLE.LINE_HEIGHT       ] = _line_min_height;
+_json[| __SCRIBBLE.__SECTION3         ] = "-- Animation --";
+_json[| __SCRIBBLE.HAS_CALLED_STEP    ] = false;
+_json[| __SCRIBBLE.NO_STEP_COUNT      ] = 0;
+_json[| __SCRIBBLE.DATA_FIELDS        ] = _data_fields;
+_json[| __SCRIBBLE.ANIMATION_TIME     ] = 0;
 
-_json[| __SCRIBBLE.__SECTION1        ] = "-- Statistics --";
-_json[| __SCRIBBLE.HALIGN            ] = SCRIBBLE_DEFAULT_BOX_HALIGN;
-_json[| __SCRIBBLE.VALIGN            ] = SCRIBBLE_DEFAULT_BOX_VALIGN;
-_json[| __SCRIBBLE.WIDTH             ] = 0;
-_json[| __SCRIBBLE.HEIGHT            ] = 0;
-_json[| __SCRIBBLE.LEFT              ] = 0;
-_json[| __SCRIBBLE.TOP               ] = 0;
-_json[| __SCRIBBLE.RIGHT             ] = 0;
-_json[| __SCRIBBLE.BOTTOM            ] = 0;
-_json[| __SCRIBBLE.LENGTH            ] = 0;
-_json[| __SCRIBBLE.LINES             ] = 0;
-_json[| __SCRIBBLE.WORDS             ] = 0;
-_json[| __SCRIBBLE.GLOBAL_INDEX      ] = global.__scribble_global_count;
+_json[| __SCRIBBLE.__SECTION4         ] = "-- Lists --";
+_json[| __SCRIBBLE.LINE_LIST          ] = _line_list;
+_json[| __SCRIBBLE.VERTEX_BUFFER_LIST ] = _vertex_buffer_list;
 
-_json[| __SCRIBBLE.__SECTION2        ] = "-- Typewriter --";
-_json[| __SCRIBBLE.TW_DIRECTION      ] = 0;
-_json[| __SCRIBBLE.TW_SPEED          ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
-_json[| __SCRIBBLE.TW_POSITION       ] = 0;
-_json[| __SCRIBBLE.TW_METHOD         ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-_json[| __SCRIBBLE.TW_SMOOTHNESS     ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
-_json[| __SCRIBBLE.CHAR_FADE_T       ] = 1;
-_json[| __SCRIBBLE.LINE_FADE_T       ] = 1;
-
-_json[| __SCRIBBLE.__SECTION3        ] = "-- Animation --";
-_json[| __SCRIBBLE.HAS_CALLED_STEP   ] = false;
-_json[| __SCRIBBLE.NO_STEP_COUNT     ] = 0;
-_json[| __SCRIBBLE.DATA_FIELDS       ] = _data_fields;
-_json[| __SCRIBBLE.ANIMATION_TIME    ] = 0;
-
-_json[| __SCRIBBLE.__SECTION4        ] = "-- Lists --";
-_json[| __SCRIBBLE.LINE_LIST         ] = _line_list;
-_json[| __SCRIBBLE.VERTEX_BUFFER_LIST] = _vertex_buffer_list;
-
-_json[| __SCRIBBLE.__SECTION5        ] = "-- Events --";
-_json[| __SCRIBBLE.EV_CHARACTER_LIST ] = _events_character_list; //Stores each event's triggering cha
-_json[| __SCRIBBLE.EV_NAME_LIST      ] = _events_name_list;      //Stores each event's name
-_json[| __SCRIBBLE.EV_DATA_LIST      ] = _events_data_list;      //Stores each event's parameters
-_json[| __SCRIBBLE.EV_TRIGGERED_LIST ] = ds_list_create();
-_json[| __SCRIBBLE.EV_TRIGGERED_MAP  ] = ds_map_create();
-_json[| __SCRIBBLE.EV_VALUE_MAP      ] = ds_map_create();
-_json[| __SCRIBBLE.EV_CHANGED_MAP    ] = ds_map_create();
-_json[| __SCRIBBLE.EV_PREVIOUS_MAP   ] = ds_map_create();
-_json[| __SCRIBBLE.EV_DIFFERENT_MAP  ] = ds_map_create();
+_json[| __SCRIBBLE.__SECTION5         ] = "-- Events --";
+_json[| __SCRIBBLE.EVENT_PREVIOUS     ] = -1;
+_json[| __SCRIBBLE.EVENT_CHAR_PREVIOUS] = -1;
+_json[| __SCRIBBLE.EV_CHAR_LIST       ] = _events_character_list; //Stores each event's triggering cha
+_json[| __SCRIBBLE.EV_NAME_LIST       ] = _events_name_list;      //Stores each event's name
+_json[| __SCRIBBLE.EV_DATA_LIST       ] = _events_data_list;      //Stores each event's parameters
 
 //Now bind the child data structures to the root list
 ds_list_mark_as_list(_json, __SCRIBBLE.LINE_LIST         );
 ds_list_mark_as_list(_json, __SCRIBBLE.VERTEX_BUFFER_LIST);
-ds_list_mark_as_list(_json, __SCRIBBLE.EV_CHARACTER_LIST );
+ds_list_mark_as_list(_json, __SCRIBBLE.EV_CHAR_LIST      );
 ds_list_mark_as_list(_json, __SCRIBBLE.EV_NAME_LIST      );
 ds_list_mark_as_list(_json, __SCRIBBLE.EV_DATA_LIST      );
-ds_list_mark_as_list(_json, __SCRIBBLE.EV_TRIGGERED_LIST );
-ds_list_mark_as_map( _json, __SCRIBBLE.EV_TRIGGERED_MAP  );
-ds_list_mark_as_map( _json, __SCRIBBLE.EV_VALUE_MAP      );
-ds_list_mark_as_map( _json, __SCRIBBLE.EV_CHANGED_MAP    );
-ds_list_mark_as_map( _json, __SCRIBBLE.EV_PREVIOUS_MAP   );
-ds_list_mark_as_map( _json, __SCRIBBLE.EV_DIFFERENT_MAP  );
 
 #endregion
 

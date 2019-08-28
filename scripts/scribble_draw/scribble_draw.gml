@@ -30,7 +30,7 @@ if (!is_real(_json) || !ds_exists(_json, ds_type_list))
 
 #region Check if we should've called scribble_step() for this Scribble data structure
 
-if ((_json[| __SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __SCRIBBLE.EV_CHARACTER_LIST ]) > 0))
+if ((_json[| __SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __SCRIBBLE.EV_CHAR_LIST ]) > 0))
 {
     if ( !_json[| __SCRIBBLE.HAS_CALLED_STEP])
     {

@@ -145,17 +145,13 @@ enum __SCRIBBLE
     VERTEX_BUFFER_LIST,  //35
     
     __SECTION5,          //36
-    EV_CHARACTER_LIST,   //37
-    EV_NAME_LIST,        //38
-    EV_DATA_LIST,        //39
-    EV_TRIGGERED_LIST,   //40
-    EV_TRIGGERED_MAP,    //41
-    EV_VALUE_MAP,        //42
-    EV_CHANGED_MAP,      //43
-    EV_PREVIOUS_MAP,     //44
-    EV_DIFFERENT_MAP,    //45
+    EVENT_PREVIOUS,      //37
+    EVENT_CHAR_PREVIOUS, //38
+    EV_CHAR_LIST,        //39
+    EV_NAME_LIST,        //40
+    EV_DATA_LIST,        //41
     
-    __SIZE               //46
+    __SIZE               //42
 }
 
 #macro __SCRIBBLE_ON_DIRECTX        ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
