@@ -751,6 +751,14 @@
             }
         },
         {
+            "Key": "f85efd3d-bcec-4ec0-8226-da808afda79d",
+            "Value": {
+                "id": "e77aba0a-8650-4de9-9fc0-878f059f9370",
+                "resourcePath": "options\\xboxone\\options_xboxone.yy",
+                "resourceType": "GMXBoxOneOptions"
+            }
+        },
+        {
             "Key": "f86819ac-c627-4fd4-95a4-0e87a325a6ff",
             "Value": {
                 "id": "b13bb939-d2c8-4d06-b135-734b3f3ac81a",

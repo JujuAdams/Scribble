@@ -51,7 +51,7 @@ var _timer = get_timer();
 var _input_string     = argument[0];
 var _line_min_height  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
 var _width_limit      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : -1;
-var _def_colour       = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : c_white;
+var _def_colour       = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_TEXT_COLOUR;
 var _def_font         = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : global.__scribble_default_font;
 var _def_halign       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : fa_left;
 var _data_fields_in   = ((argument_count > 6) &&    is_array(argument[6])  )? argument[6] : undefined;

@@ -15,8 +15,9 @@
 
 #endregion
 
-#region Default draw parameters
+#region Default parameters
 
+#macro SCRIBBLE_DEFAULT_TEXT_COLOUR        c_white             //The default (vertex) colour of text
 #macro SCRIBBLE_DEFAULT_XSCALE             1                   //The default x-scale of the textbox
 #macro SCRIBBLE_DEFAULT_YSCALE             1                   //The default y-scale of the textbox
 #macro SCRIBBLE_DEFAULT_BOX_HALIGN         fa_left             //The default alignment of the textbox. fa_left places the left-hand side of the box at the draw coordinate when using scribble_draw()
