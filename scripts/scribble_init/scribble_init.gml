@@ -227,6 +227,8 @@ global.__scribble_alive          = ds_map_create();  //ds_map of all alive Scrib
 global.__scribble_global_count   = 0;
 global.__scribble_default_font   = _default_font;
 
+global.__scribble_default_animation_parameters = scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
+
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_add_colour("c_aqua",    c_aqua   , true);
 scribble_add_colour("c_black",   c_black  , true);
