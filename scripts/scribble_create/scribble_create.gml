@@ -230,6 +230,7 @@ var _command_tag_parameters = 0;
 
 #endregion
 
+var _command_name  = "";
 var _skip          = false;
 var _force_newline = false;
 var _char_width    = 0;
@@ -276,7 +277,8 @@ repeat(_buffer_size)
             #endregion
             
             _skip = true;
-            switch(_parameters_list[| 0])
+            _command_name = _parameters_list[| 0];
+            switch(_command_name)
             {
                 #region Reset formatting
                 case "":
@@ -354,7 +356,7 @@ repeat(_buffer_size)
                 #endregion
                 
                 default:
-                    var _name = _parameters_list[| 0];
+                    var _name = _command_name;
                     var _script = global.__scribble_events[? _name ];
                     if (_script != undefined)
                     {
@@ -376,7 +378,7 @@ repeat(_buffer_size)
                     }
                     else
                     {
-                        var _flag_index = global.__scribble_flags[? _parameters_list[| 0] ];
+                        var _flag_index = global.__scribble_flags[? _command_name];
                         if (_flag_index != undefined)
                         {
                             #region Set flag
@@ -389,7 +391,7 @@ repeat(_buffer_size)
                         {
                             //Check if this is a flag name, but with a forward slash at the front
                             var _flag_index = undefined;
-                            if (string_char_at(_parameters_list[| 0], 1) == "/") _flag_index = global.__scribble_flags[? string_delete(_parameters_list[| 0], 1, 1)];
+                            if (string_char_at(_command_name, 1) == "/") _flag_index = global.__scribble_flags[? string_delete(_command_name, 1, 1)];
                             if (_flag_index != undefined)
                             {
                                 #region Unset flag
@@ -400,12 +402,12 @@ repeat(_buffer_size)
                             }
                             else
                             {
-                                var _new_font_data = global.__scribble_font_data[? _parameters_list[| 0]];
+                                var _new_font_data = global.__scribble_font_data[? _command_name];
                                 if (_new_font_data != undefined)
                                 {
                                     #region Change font
                                     
-                                    _text_font = _parameters_list[| 0];
+                                    _text_font = _command_name;
                                     _font_data = _new_font_data;
                                     _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
@@ -421,8 +423,8 @@ repeat(_buffer_size)
                                 }
                                 else
                                 {
-                                    var _sprite_index = asset_get_index(_parameters_list[| 0]);
-                                    if ((_sprite_index >= 0) && (asset_get_type(_parameters_list[| 0]) == asset_sprite))
+                                    var _sprite_index = asset_get_index(_command_name);
+                                    if ((_sprite_index >= 0) && (asset_get_type(_command_name) == asset_sprite))
                                     {
                                         #region Write sprites
                                         
@@ -439,7 +441,7 @@ repeat(_buffer_size)
                             
                                         if (_sprite_number >= 256)
                                         {
-                                            show_debug_message("Scribble: Sprites cannot have more than 256 frames (" + string(_parameters_list[| 0]) + ")");
+                                            show_debug_message("Scribble: Sprites cannot have more than 256 frames (" + string(_command_name) + ")");
                                             _sprite_number = 256;
                                         }
                             
@@ -571,7 +573,7 @@ repeat(_buffer_size)
                                     }
                                     else
                                     {
-                                        var _colour = global.__scribble_colours[? _parameters_list[| 0]]; //Test if it's a colour
+                                        var _colour = global.__scribble_colours[? _command_name]; //Test if it's a colour
                                         if (_colour != undefined)
                                         {
                                             #region Set a pre-defined colour
@@ -582,7 +584,7 @@ repeat(_buffer_size)
                                         }
                                         else
                                         {
-                                            var _colour_string = _parameters_list[| 0];
+                                            var _colour_string = _command_name;
                                             if (string_length(_colour_string) <= 7) && (string_copy(_colour_string, 1, 1) == "$")
                                             {
                                                 #region Hex colour decoding
@@ -614,7 +616,7 @@ repeat(_buffer_size)
                                             }
                                             else
                                             {
-                                                var _command_string = string(_parameters_list[| 0]);
+                                                var _command_string = string(_command_name);
                                                 var _j = 0;
                                                 repeat(_command_tag_parameters-1) _command_string += "," + string(_parameters_list[| _j++]);
                                                 show_debug_message("Scribble: WARNING! Unrecognised command tag [" + _command_string + "]" );
