@@ -43,10 +43,15 @@ if (_old_name != undefined)
 {
     show_debug_message("Scribble: WARNING! Overwriting flag index " + string(_index) + " \"" + _old_name + "\"");
     ds_map_delete(global.__scribble_flags, _old_name);
+    ds_map_delete(global.__scribble_flags_slash, "/" + _old_name);
 }
 
 //Bidrectional lookup in the same map made possible because the datatypes are different
 global.__scribble_flags[? _index ] = _name;
 global.__scribble_flags[? _name  ] = _index;
+
+_name = "/" + _name;
+global.__scribble_flags_slash[? _index ] = _name;
+global.__scribble_flags_slash[? _name  ] = _index;
 
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added flag name \"" + _name + "\" as index " + string(_index));

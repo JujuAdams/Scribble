@@ -356,9 +356,7 @@ repeat(_buffer_size)
                 #endregion
                 
                 default:
-                    var _name = _command_name;
-                    var _script = global.__scribble_events[? _name ];
-                    if (_script != undefined)
+                    if (ds_map_exists(global.__scribble_events, _command_name))
                     {
                         #region Events
                         
@@ -371,44 +369,41 @@ repeat(_buffer_size)
                         }
                         
                         ds_list_add(_events_character_list, _meta_characters);
-                        ds_list_add(_events_name_list, _name);
+                        ds_list_add(_events_name_list, _command_name);
                         ds_list_add(_events_data_list, _data);
                         
                         #endregion
                     }
                     else
                     {
-                        var _flag_index = global.__scribble_flags[? _command_name];
-                        if (_flag_index != undefined)
+                        if (ds_map_exists(global.__scribble_flags, _command_name))
                         {
                             #region Set flag
                             
-                            _text_flags = _text_flags | (1 << _flag_index);
+                            _text_flags = _text_flags | (1 << global.__scribble_flags[? _command_name]);
                             
                             #endregion
                         }
                         else
                         {
                             //Check if this is a flag name, but with a forward slash at the front
-                            var _flag_index = undefined;
-                            if (string_char_at(_command_name, 1) == "/") _flag_index = global.__scribble_flags[? string_delete(_command_name, 1, 1)];
-                            if (_flag_index != undefined)
+                            if (ds_map_exists(global.__scribble_flags_slash, _command_name))
                             {
                                 #region Unset flag
                                 
-                                _text_flags = ~((~_text_flags) | (1 << _flag_index));
+                                _text_flags = ~((~_text_flags) | (1 << global.__scribble_flags_slash[? _command_name]));
                                 
                                 #endregion
                             }
                             else
                             {
-                                var _new_font_data = global.__scribble_font_data[? _command_name];
-                                if (_new_font_data != undefined)
+                                if (ds_map_exists(global.__scribble_font_data, _command_name))
                                 {
                                     #region Change font
                                     
                                     _text_font = _command_name;
-                                    _font_data         = _new_font_data;
+                                    
+                                    _font_data         = global.__scribble_font_data[? _command_name];
                                     _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
@@ -423,13 +418,13 @@ repeat(_buffer_size)
                                 }
                                 else
                                 {
-                                    var _sprite_index = asset_get_index(_command_name);
-                                    if ((_sprite_index >= 0) && (asset_get_type(_command_name) == asset_sprite))
+                                    if (asset_get_type(_command_name) == asset_sprite)
                                     {
                                         #region Write sprites
                                         
                                         _skip = false;
                                         
+                                        var _sprite_index  = asset_get_index(_command_name);
                                         var _sprite_x      = _text_x + sprite_get_xoffset(_sprite_index);
                                         var _sprite_y      = _text_y + sprite_get_yoffset(_sprite_index);
                                         var _sprite_width  = _text_scale*sprite_get_width(_sprite_index);
@@ -573,39 +568,37 @@ repeat(_buffer_size)
                                     }
                                     else
                                     {
-                                        var _colour = global.__scribble_colours[? _command_name]; //Test if it's a colour
-                                        if (_colour != undefined)
+                                        if (ds_map_exists(global.__scribble_colours, _command_name))
                                         {
                                             #region Set a pre-defined colour
                                             
-                                            _text_colour = _colour;
+                                            _text_colour = global.__scribble_colours[? _command_name];
                                             
                                             #endregion
                                         }
                                         else
                                         {
-                                            var _colour_string = _command_name;
-                                            if (string_length(_colour_string) <= 7) && (string_copy(_colour_string, 1, 1) == "$")
+                                            if ((string_length(_command_name) <= 7) && (string_copy(_command_name, 1, 1) == "$"))
                                             {
                                                 #region Hex colour decoding
                                                 
-                                                var _ord = ord(string_char_at(_colour_string, 3));
+                                                var _ord = ord(string_char_at(_command_name, 3));
                                                 var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                                var _ord = ord(string_char_at(_colour_string, 2));
+                                                var _ord = ord(string_char_at(_command_name, 2));
                                                 var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
                                                 
                                                 var _red = _lsf + (_hsf << 4);
                                                 
-                                                var _ord = ord(string_char_at(_colour_string, 5));
+                                                var _ord = ord(string_char_at(_command_name, 5));
                                                 var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                                var _ord = ord(string_char_at(_colour_string, 4));
+                                                var _ord = ord(string_char_at(_command_name, 4));
                                                 var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
                                                 
                                                 var _green = _lsf + (_hsf << 4);
                                                 
-                                                var _ord = ord(string_char_at(_colour_string, 7));
+                                                var _ord = ord(string_char_at(_command_name, 7));
                                                 var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                                var _ord = ord(string_char_at(_colour_string, 6));
+                                                var _ord = ord(string_char_at(_command_name, 6));
                                                 var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
                                                 
                                                 var _blue = _lsf + (_hsf << 4);

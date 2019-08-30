@@ -220,6 +220,7 @@ global.__scribble_font_data      = ds_map_create();  //Stores a data array for e
 global.__scribble_colours        = ds_map_create();  //Stores colour definitions, including custom colours
 global.__scribble_events         = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
 global.__scribble_flags          = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_flags_slash    = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_tag_replace    = ds_map_create();  //Stores asset bindings; key is the name of the event, the value is the script to call
 global.__scribble_alive          = ds_map_create();  //ds_map of all alive Scribble data structures
 global.__scribble_global_count   = 0;
