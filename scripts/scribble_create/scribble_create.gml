@@ -754,9 +754,6 @@ repeat(_buffer_size)
             
         #region Add glyph
             
-        var _colour = $FF000000 | _text_colour;
-        var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant;
-            
         if (_font_glyphs_array == undefined)
         {
             var _glyph_array = _font_glyphs_map[? _character_code];
@@ -773,6 +770,9 @@ repeat(_buffer_size)
             var _glyph_t = _text_y  + _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale;
             var _glyph_r = _glyph_l + _glyph_array[SCRIBBLE_GLYPH.WIDTH   ]*_text_scale;
             var _glyph_b = _glyph_t + _glyph_array[SCRIBBLE_GLYPH.HEIGHT  ]*_text_scale;
+            
+            var _colour = $FF000000 | _text_colour;
+            var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_glyph_b - _glyph_t);
             
             var _glyph_u0  = _glyph_array[SCRIBBLE_GLYPH.U0];
             var _glyph_v0  = _glyph_array[SCRIBBLE_GLYPH.V0];

@@ -5,7 +5,7 @@
 //  
 //  For use with GMS2.2.2 and later
 
-var _string  = "[sound,sndCrank][rainbow]TEST[] ABCDEF##";
+var _string  = "[sound,sndCrank][rainbow]TEST[] [slant]AaBbCcDdEeFf[/slant]##";
     _string += "a b c d e f g h i j k l m n o p q r s t u v w x y z\n\n";
     _string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][sCoin,0][sound,sndSwitch][sCoin,1][sound,sndSwitch][sCoin,2][sound,sndSwitch][sCoin,3][sound,sndSwitch][][rumble][rainbow]!?[]\n";
     _string += "[sCoin][sCoin,1,0.1][sCoin,2,0.1][sCoin,3,0.1]    [green coin]\n";

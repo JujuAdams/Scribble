@@ -1,10 +1,3 @@
-Remove SCRIBBLE_DEFAULT_XSCALE             1                   //The default x-scale of the textbox
-Remove SCRIBBLE_DEFAULT_YSCALE             1                   //The default y-scale of the textbox
-Remove SCRIBBLE_DEFAULT_BOX_HALIGN         fa_left             //The default alignment of the textbox. fa_left places the left-hand side of the box at the draw coordinate when using scribble_draw()
-Remove SCRIBBLE_DEFAULT_BOX_VALIGN         fa_top              //The default alignment of the textbox. fa_top places the top of the box at the draw coordinate when using scribble_draw()
-Remove SCRIBBLE_DEFAULT_ANGLE              0                   //The default rotation of the textbox
-Remove SCRIBBLE_DEFAULT_STEP_SIZE          (delta_time/16667)  //The default step size. "(delta_time/16667)" assumes that the game is running at 60FPS and will delta time effects accordingly
-
 Make vertex buffer lists into arrays
 Move typewriter behaviour to scribble_draw()?
 Swap event lists out for arrays
@@ -17,7 +10,5 @@ Fix typewriter effect (looks like a line offset problem) - b8dc1c8
 Add vertical centring
 Replace fixed slant amount with gradient
 Add [thick] tag
-Decapitalise hexcodes
-Make __SCRIBBLE enum "public"
 Minor efficiency boost by using 32-bit colours throughout
 Add caching system
