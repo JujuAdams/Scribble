@@ -231,7 +231,6 @@ var _command_tag_parameters = 0;
 #endregion
 
 var _command_name  = "";
-var _skip          = false;
 var _force_newline = false;
 var _char_width    = 0;
 
@@ -258,6 +257,9 @@ repeat(_buffer_size)
             //Jump back to the start of the command tag and read out strings for the command parameters
             buffer_seek(_string_buffer, buffer_seek_start, _command_tag_start);
             repeat(_command_tag_parameters) ds_list_add(_parameters_list, buffer_read(_string_buffer, buffer_string));
+            
+            //Reset command tag state
+            _command_tag_start = -1;
         
             #region Command tag handling
         
@@ -276,7 +278,6 @@ repeat(_buffer_size)
             
             #endregion
             
-            _skip = true;
             _command_name = _parameters_list[| 0];
             switch(_command_name)
             {
@@ -290,6 +291,8 @@ repeat(_buffer_size)
                     
                     _font_line_height = _line_min_height;
                     _font_space_width = _def_space_width;
+                    
+                    continue; //Skip the rest of the parser step
                 break;
                 
                 case "/font":
@@ -297,20 +300,28 @@ repeat(_buffer_size)
                     _text_font        = _def_font;
                     _font_line_height = _line_min_height;
                     _font_space_width = _def_space_width;
+                    
+                    continue; //Skip the rest of the parser step
                 break;
                 
                 case "/colour":
                 case "/c":
                     _text_colour = _def_colour;
+                    
+                    continue; //Skip the rest of the parser step
                 break;
                 
                 case "/scale":
                 case "/s":
                     _text_scale = 1;
+                    
+                    continue; //Skip the rest of the parser step
                 break;
                 
                 case "/slant":
                     _text_slant = false;
+                    
+                    continue; //Skip the rest of the parser step
                 break;
                 #endregion
                 
@@ -324,34 +335,35 @@ repeat(_buffer_size)
                     {
                         var _text_scale = real(_parameters_list[| 1]);
                     }
+                    
+                    continue; //Skip the rest of the parser step
                 break;
                 #endregion
                 
                 #region Slant (italics emulation)
                 case "slant":
                     _text_slant = true;
+                    
+                    continue; //Skip the rest of the parser step
                 break;
                 #endregion
                 
                 #region Font Alignment
                 
                 case "fa_left":
-                    _skip = false;
                     _text_halign = fa_left;
-                    if (_text_x > 0) _force_newline = true;
+                    if (_text_x > 0) _force_newline = true else continue; //Skip the rest of the parser step
                 break;
                 
                 case "fa_right":
-                    _skip = false;
                     _text_halign = fa_right;
-                    if (_text_x > 0) _force_newline = true;
+                    if (_text_x > 0) _force_newline = true else continue; //Skip the rest of the parser step
                 break;
                 
                 case "fa_center":
                 case "fa_centre":
-                    _skip = false;
                     _text_halign = fa_center;
-                    if (_text_x > 0) _force_newline = true;
+                    if (_text_x > 0) _force_newline = true else continue; //Skip the rest of the parser step
                 break;
                 #endregion
                 
@@ -372,6 +384,8 @@ repeat(_buffer_size)
                         ds_list_add(_events_name_list, _command_name);
                         ds_list_add(_events_data_list, _data);
                         
+                        continue; //Skip the rest of the parser step
+                        
                         #endregion
                     }
                     else
@@ -381,6 +395,8 @@ repeat(_buffer_size)
                             #region Set flag
                             
                             _text_flags = _text_flags | (1 << global.__scribble_flags[? _command_name]);
+                            
+                            continue; //Skip the rest of the parser step
                             
                             #endregion
                         }
@@ -392,6 +408,8 @@ repeat(_buffer_size)
                                 #region Unset flag
                                 
                                 _text_flags = ~((~_text_flags) | (1 << global.__scribble_flags_slash[? _command_name]));
+                                
+                                continue; //Skip the rest of the parser step
                                 
                                 #endregion
                             }
@@ -414,6 +432,8 @@ repeat(_buffer_size)
                                     _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
                                     _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
                                     
+                                    continue; //Skip the rest of the parser step
+                                    
                                     #endregion
                                 }
                                 else
@@ -421,8 +441,6 @@ repeat(_buffer_size)
                                     if (asset_get_type(_command_name) == asset_sprite)
                                     {
                                         #region Write sprites
-                                        
-                                        _skip = false;
                                         
                                         var _sprite_index  = asset_get_index(_command_name);
                                         var _sprite_x      = _text_x + sprite_get_xoffset(_sprite_index);
@@ -574,6 +592,8 @@ repeat(_buffer_size)
                                             
                                             _text_colour = global.__scribble_colours[? _command_name];
                                             
+                                            continue; //Skip the rest of the parser step
+                                            
                                             #endregion
                                         }
                                         else
@@ -605,6 +625,8 @@ repeat(_buffer_size)
                                                 
                                                 _text_colour = make_colour_rgb(_red, _green, _blue);
                                                 
+                                                continue; //Skip the rest of the parser step
+                                                
                                                 #endregion
                                             }
                                             else
@@ -613,6 +635,8 @@ repeat(_buffer_size)
                                                 var _j = 0;
                                                 repeat(_command_tag_parameters-1) _command_string += "," + string(_parameters_list[| _j++]);
                                                 show_debug_message("Scribble: WARNING! Unrecognised command tag [" + _command_string + "]" );
+                                                
+                                                continue; //Skip the rest of the parser step
                                             }
                                         }
                                     }
@@ -624,18 +648,6 @@ repeat(_buffer_size)
             }
         
             #endregion
-            
-            //Reset command tag state
-            _command_tag_start      = -1;
-            _command_tag_parameters = 0;
-            ds_list_clear(_parameters_list);
-            
-            //If a command tag wants us to skip newline behaviour (which is most of them) then do so
-            if (_skip)
-            {
-                _skip = false;
-                continue;
-            }
         }
         else if (_character_code == SCRIBBLE_COMMAND_TAG_ARGUMENT) //If we've hit a command tag argument delimiter character (usually ,)
         {
@@ -654,6 +666,8 @@ repeat(_buffer_size)
     {
         //Record the start of the command tag in the string buffer
         _command_tag_start = buffer_tell(_string_buffer);
+        _command_tag_parameters = 0;
+        ds_list_clear(_parameters_list);
         continue;
     }
     else if ((_character_code == 10) //If we've hit a newline (\n)
