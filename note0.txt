@@ -4,13 +4,11 @@ Remove SCRIBBLE_DEFAULT_BOX_HALIGN         fa_left             //The default ali
 Remove SCRIBBLE_DEFAULT_BOX_VALIGN         fa_top              //The default alignment of the textbox. fa_top places the top of the box at the draw coordinate when using scribble_draw()
 Remove SCRIBBLE_DEFAULT_ANGLE              0                   //The default rotation of the textbox
 Remove SCRIBBLE_DEFAULT_STEP_SIZE          (delta_time/16667)  //The default step size. "(delta_time/16667)" assumes that the game is running at 60FPS and will delta time effects accordingly
-Remove SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA  false               //Whether or not to premultiply alpha by default
 
 Make vertex buffer lists into arrays
 Move typewriter behaviour to scribble_draw()?
 Swap event lists out for arrays
 Rework shader to support character centres
-Bring scribble_define_spritefont() in line with GM's native functions
 Add wobble effect
 Remove typewriter default constants
 Add function to define data fields
