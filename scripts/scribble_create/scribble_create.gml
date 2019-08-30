@@ -256,7 +256,7 @@ repeat(_buffer_size)
             
             if (_command_tag_parameters == 1)
             {
-                var _replacement_list = global.__scribble_tag_replace[? _parameters_list[|0]];
+                var _replacement_list = global.__scribble_tag_copy[? _parameters_list[|0]];
                 if (_replacement_list != undefined)
                 {
                     ds_list_clear(_parameters_list);

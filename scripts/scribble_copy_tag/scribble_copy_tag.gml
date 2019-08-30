@@ -22,7 +22,7 @@ if (!is_string(_new_tag))
     exit;
 }
 
-var _old_list = global.__scribble_tag_replace[? _old_tag];
+var _old_list = global.__scribble_tag_copy[? _old_tag];
 if (is_real(_old_list) && ds_exists(_old_list, ds_type_list))
 {
     var _string = "";
@@ -49,5 +49,5 @@ while(_pos > 0)
     _pos = string_pos(chr(SCRIBBLE_COMMAND_TAG_ARGUMENT), _work_string);
 }
 
-ds_map_add_list(global.__scribble_tag_replace, _old_tag, _list);
+ds_map_add_list(global.__scribble_tag_copy, _old_tag, _list);
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Replacing [" + _old_tag + "] with [" + _new_tag + "]");
