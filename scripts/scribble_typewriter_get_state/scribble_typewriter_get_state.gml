@@ -2,11 +2,11 @@
 ///
 /// A Scribble typewriter state is a decimal value from 0 to 2 (inclusive).
 ///
-///     State = 0  : Text not yet faded in
+///     State = 0  : Text not yet faded in, invisible
 /// 0 < State < 1  : Text is fading in
 ///     State = 1  : Text fully visible
 /// 1 < State < 2  : Text is fading out
-///     State = 2  : Text fully faded out
+///     State = 2  : Text fully faded out, invisible
 ///
 /// You can start fade effects using scribble_typewriter_in() and scribble_typewriter_out().
 ///
