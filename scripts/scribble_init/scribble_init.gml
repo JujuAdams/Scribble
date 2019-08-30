@@ -262,7 +262,6 @@ global.__scribble_vertex_format = vertex_format_end(); //36 bytes per vertex, 10
 
 //Cache uniform indexes
 global.__scribble_uniform_time            = shader_get_uniform(shScribble, "u_fTime"              );
-global.__scribble_uniform_pma             = shader_get_uniform(shScribble, "u_fPremultiplyAlpha"  );
 global.__scribble_uniform_colour_blend    = shader_get_uniform(shScribble, "u_vColourBlend"       );
 global.__scribble_uniform_char_t          = shader_get_uniform(shScribble, "u_fCharFadeT"         );
 global.__scribble_uniform_char_smoothness = shader_get_uniform(shScribble, "u_fCharFadeSmoothness");

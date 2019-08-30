@@ -20,7 +20,6 @@ var _yscale = ((argument_count > 4) && (argument[4] != undefined))? argument[4] 
 var _angle  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : SCRIBBLE_DEFAULT_ANGLE;
 var _colour = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : draw_get_colour();
 var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : draw_get_alpha();
-var _pma    = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA;
 
 if (!is_real(_json) || !ds_exists(_json, ds_type_list))
 {
@@ -101,7 +100,6 @@ if (_count > 0)
     }
     
     shader_set(shScribble);
-    shader_set_uniform_f(global.__scribble_uniform_pma            , _pma);
     shader_set_uniform_f(global.__scribble_uniform_time           , _time);
     
     shader_set_uniform_f(global.__scribble_uniform_char_t         , _char_t);

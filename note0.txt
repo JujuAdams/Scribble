@@ -8,7 +8,6 @@ Remove SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA  false               //Whether or not 
 
 Make vertex buffer lists into arrays
 Move typewriter behaviour to scribble_draw()?
-Remove scribble_init_end() by moving behaviours to font/spritefont adding scripts
 Remove global.__scribble_init_complete
 Swap event lists out for arrays
 Make x/y coords non-optional for draw scripts
@@ -26,4 +25,3 @@ Decapitalise hexcodes
 Make __SCRIBBLE enum "public"
 Minor efficiency boost by using 32-bit colours throughout
 Add caching system
-Remove premultiply alpha option
