@@ -445,14 +445,14 @@ repeat(_buffer_size)
                         {
                             _found = true;
                             
-                            _char_width  = _text_scale*sprite_get_width(_sprite_index);
-                            _line_height = max(_line_height, _text_scale*sprite_get_height(_sprite_index));
-                            
                             var _sprite_x      = _text_x + sprite_get_xoffset(_sprite_index);
                             var _sprite_y      = _text_y + sprite_get_yoffset(_sprite_index);
                             var _sprite_width  = _text_scale*sprite_get_width(_sprite_index);
                             var _sprite_height = _text_scale*sprite_get_height(_sprite_index);
                             var _sprite_number = sprite_get_number(_sprite_index);
+                            
+                            _char_width  = _sprite_width;
+                            _line_height = max(_line_height, _sprite_height);
                             
                             if (_sprite_number >= 256)
                             {
