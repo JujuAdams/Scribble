@@ -87,6 +87,14 @@
             }
         },
         {
+            "Key": "22861d7e-1928-49a8-9a78-2f97b689d2ac",
+            "Value": {
+                "id": "c7362dc0-e6bc-477e-8e32-feafe3876f04",
+                "resourcePath": "scripts\\scribble_typewriter_out\\scribble_typewriter_out.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "24724880-e29f-4fa7-8ee6-fdc0ba981460",
             "Value": {
                 "id": "fbe3d030-fde9-4099-ada4-c3dbb105a876",
@@ -503,14 +511,6 @@
             }
         },
         {
-            "Key": "a94c7f6a-d851-4dc4-a581-07cb479d37a3",
-            "Value": {
-                "id": "00e6d90a-89f5-48d9-af0d-c4904d1d406b",
-                "resourcePath": "scripts\\scribble_typewriter_set_state\\scribble_typewriter_set_state.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "a9c1c006-82cc-4168-94cf-cda9593ef14e",
             "Value": {
                 "id": "b7f2f356-4008-4e35-bc1c-b9f950d1d9c3",
@@ -695,6 +695,14 @@
             }
         },
         {
+            "Key": "dff60c7a-c4e3-479d-a1ae-c79b8e2e8e15",
+            "Value": {
+                "id": "859f0a9c-4ab8-48ce-a9f3-edc752595461",
+                "resourcePath": "scripts\\scribble_typewriter_in\\scribble_typewriter_in.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "e346a946-97e3-4051-96c1-3b6c92346baf",
             "Value": {
                 "id": "a28346b5-8063-4be2-ba61-0588ab782fcc",
@@ -811,7 +819,8 @@
         "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
         "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
         "bc334b9f-3e78-4213-8e02-f63a7b8776d3",
-        "a94c7f6a-d851-4dc4-a581-07cb479d37a3",
+        "dff60c7a-c4e3-479d-a1ae-c79b8e2e8e15",
+        "22861d7e-1928-49a8-9a78-2f97b689d2ac",
         "a2468e81-16e7-4f6b-b398-5589b1b582c2",
         "24724880-e29f-4fa7-8ee6-fdc0ba981460",
         "13548f19-dd1d-4dc1-9444-205ee176ef6f",

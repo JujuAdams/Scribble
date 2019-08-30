@@ -8,7 +8,7 @@
 /// 1 < State < 2  : Text is fading out
 ///     State = 2  : Text fully faded out, invisible
 ///
-/// You can start fade effects using scribble_typewriter_set_state().
+/// You can start fade effects using scribble_typewriter_in() and scribble_typewriter_out().
 ///
 /// @param json   The Scribble data structure to get the typewriter state from
 
