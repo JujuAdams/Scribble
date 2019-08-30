@@ -27,7 +27,7 @@ var _xscale = ((argument_count > 7) && (argument[7] != undefined))? argument[7] 
 var _yscale = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : SCRIBBLE_DEFAULT_YSCALE;
 var _angle  = ((argument_count > 9) && (argument[9] != undefined))? argument[9] : SCRIBBLE_DEFAULT_ANGLE;
 
-if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
+if (!is_real(_json) || !ds_exists(_json, ds_type_list))
 {
     show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
@@ -36,23 +36,23 @@ if ( !is_real(_json) || !ds_exists(_json, ds_type_list) )
 if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {
     //Avoid using matrices if we can
-    var _l = _x + _json[| __SCRIBBLE.LEFT   ] - _left;
-    var _t = _y + _json[| __SCRIBBLE.TOP    ] - _top;
-    var _r = _x + _json[| __SCRIBBLE.RIGHT  ] + _right;
-    var _b = _y + _json[| __SCRIBBLE.BOTTOM ] + _bottom;
+    var _l = _x + _json[| __SCRIBBLE.LEFT  ] - _left;
+    var _t = _y + _json[| __SCRIBBLE.TOP   ] - _top;
+    var _r = _x + _json[| __SCRIBBLE.RIGHT ] + _right;
+    var _b = _y + _json[| __SCRIBBLE.BOTTOM] + _bottom;
     
-    return [ _l, _t,
-             _r, _t,
-             _l, _b,
-             _r, _b ];
+    return [_l, _t,
+            _r, _t,
+            _l, _b,
+            _r, _b ];
 }
 
 var _matrix = matrix_build(_x,_y,0,   0,0,_angle,   _xscale,_yscale,1);
 
-var _l = _json[| __SCRIBBLE.LEFT   ] - _left;
-var _t = _json[| __SCRIBBLE.TOP    ] - _top;
-var _r = _json[| __SCRIBBLE.RIGHT  ] + _right;
-var _b = _json[| __SCRIBBLE.BOTTOM ] + _bottom;
+var _l = _json[| __SCRIBBLE.LEFT  ] - _left;
+var _t = _json[| __SCRIBBLE.TOP   ] - _top;
+var _r = _json[| __SCRIBBLE.RIGHT ] + _right;
+var _b = _json[| __SCRIBBLE.BOTTOM] + _bottom;
 
 var _result = array_create(8);
 var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); _result[SCRIBBLE_BOX.X0] = _vertex[0]; _result[SCRIBBLE_BOX.Y0] = _vertex[1];
