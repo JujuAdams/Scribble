@@ -1,5 +1,4 @@
 Make vertex buffer lists into arrays
-Move typewriter behaviour to scribble_draw()?
 Swap event lists out for arrays
 Rework shader to support character centres
 Add wobble effect
@@ -8,7 +7,6 @@ Add function to define data fields
 Add swell effect
 Fix typewriter effect (looks like a line offset problem) - b8dc1c8
 Add vertical centring
-Replace fixed slant amount with gradient
 Add [thick] tag
 Minor efficiency boost by using 32-bit colours throughout
 Add caching system

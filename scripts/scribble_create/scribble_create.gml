@@ -505,28 +505,26 @@ repeat(_buffer_size)
                                         {
                                             var _sprite_texture = sprite_get_texture(_sprite_index, _image);
                                 
-                                            var _data = _texture_to_buffer_map[? _sprite_texture];
-                                            if (_data == undefined)
+                                            var _vbuff_data = _texture_to_buffer_map[? _sprite_texture];
+                                            if (_vbuff_data == undefined)
                                             {
                                                 var _line_break_list = ds_list_create();
                                                 var _buffer = buffer_create(__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
                                     
-                                                _data = ds_list_create();
-                                                _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _buffer;
-                                                _data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
-                                                _data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _sprite_texture;
-                                                _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
-                                                _data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _line_break_list;
-                                                ds_list_add(_vertex_buffer_list, _data);
-                                                ds_list_mark_as_list(_vertex_buffer_list, ds_list_size(_vertex_buffer_list)-1);
-                                                ds_list_mark_as_list(_data, __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST);
+                                                _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
+                                                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _buffer;
+                                                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
+                                                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _sprite_texture;
+                                                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
+                                                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _line_break_list;
+                                                ds_list_add(_vertex_buffer_list, _vbuff_data);
                                         
-                                                _texture_to_buffer_map[? _sprite_texture] = _data;
+                                                _texture_to_buffer_map[? _sprite_texture] = _vbuff_data;
                                             }
                                             else
                                             {
-                                                var _buffer = _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER];
-                                                _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_buffer);
+                                                var _buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
+                                                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_buffer);
                                             }
                                 
                                             //Fill link break list
@@ -549,7 +547,7 @@ repeat(_buffer_size)
                                             {
                                                 _previous_texture = _sprite_texture;
                                                 var _vbuff_data = _texture_to_buffer_map[? _sprite_texture];
-                                                var _glyph_buffer = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER];
+                                                var _glyph_buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
                                             }
                                 
                                             //Find the UVs and position of the sprite quad
@@ -683,7 +681,7 @@ repeat(_buffer_size)
         repeat(ds_list_size(_vertex_buffer_list))
         {
             var _data = _vertex_buffer_list[| _v];
-            _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER]);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER]);
             ++_v;
         }
     }
@@ -693,7 +691,8 @@ repeat(_buffer_size)
     }
     else//If this character is literally any other character at all
     {
-        //Decode UTF8
+        #region Decode UTF8
+        
         if ((_character_code & $E0) == $C0) //two-byte
         {
         	_character_code  = (                       _character_code & $1F) <<  6;
@@ -713,6 +712,8 @@ repeat(_buffer_size)
         	_character_code +=  buffer_read(_string_buffer, buffer_u8) & $3F;
         }
         
+        #endregion
+        
         #region Swap texture and buffer if needed
             
         if (_font_texture != _previous_texture)
@@ -725,21 +726,19 @@ repeat(_buffer_size)
                 var _line_break_list = ds_list_create();
                 var _glyph_buffer = buffer_create(__SCRIBBLE_EXPECTED_GLYPHS*__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
                 
-                _vbuff_data = ds_list_create();
-                _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _glyph_buffer;
-                _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
-                _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _font_texture;
-                _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
-                _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _line_break_list;
+                _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
+                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _glyph_buffer;
+                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
+                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _font_texture;
+                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
+                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _line_break_list;
                 ds_list_add(_vertex_buffer_list, _vbuff_data);
-                ds_list_mark_as_list(_vertex_buffer_list, ds_list_size(_vertex_buffer_list)-1);
-                ds_list_mark_as_list(_vbuff_data, __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST);
                     
                 _texture_to_buffer_map[? _font_texture] = _vbuff_data;
             }
             else
             {
-                var _glyph_buffer = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER];
+                var _glyph_buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
             }
             
             //Fill link break list
@@ -748,7 +747,7 @@ repeat(_buffer_size)
         }
             
         //Update WORD_START_TELL
-        _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
+        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
             
         #endregion
             
@@ -810,8 +809,8 @@ repeat(_buffer_size)
         {
             var _data = _vertex_buffer_list[| _v];
             
-            var _line_break_list = _data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
-            var _buffer          = _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
+            var _line_break_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
+            var _buffer          = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
             var _tell_b          = buffer_tell(_buffer);
             
             if (_force_newline)
@@ -820,7 +819,7 @@ repeat(_buffer_size)
             }
             else
             {
-                var _tell_a = _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL];
+                var _tell_a = _data[__SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL];
                 ds_list_add(_line_break_list, _tell_a);
                 
                 if (_tell_a < _tell_b)
@@ -842,7 +841,7 @@ repeat(_buffer_size)
                 }
             }
             
-            _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_b;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_b;
             
             ++_v;
         }
@@ -899,8 +898,8 @@ repeat(ds_list_size(_vertex_buffer_list))
 {
     var _data = _vertex_buffer_list[| _v];
     
-    var _line_break_list = _data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
-    var _buffer          = _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
+    var _line_break_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
+    var _buffer          = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
     
     var _buffer_tell = buffer_tell(_buffer);
     ds_list_add(_line_break_list, _buffer_tell);
@@ -934,16 +933,16 @@ repeat(ds_list_size(_vertex_buffer_list))
     }
     
     //Wipe buffer start positions
-    _data[| __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = undefined;
+    _data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = undefined;
     ds_list_destroy(_line_break_list);
     
     //Create vertex buffer
-    _data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _buffer_tell / __SCRIBBLE_VERTEX.__SIZE);
-    _data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = undefined;
+    _data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _buffer_tell / __SCRIBBLE_VERTEX.__SIZE);
+    _data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = undefined;
     buffer_delete(_buffer);
     
     //Wipe WORD_START_TELL
-    _data[| __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = undefined;
+    _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = undefined;
     
     ++_v;
 }

@@ -121,7 +121,7 @@ if (_count > 0)
     repeat(_count)
     {
         var _vbuff_data = _vbuff_list[| _i];
-        vertex_submit(_vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
+        vertex_submit(_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
         _i++;
     }
     
