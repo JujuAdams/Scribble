@@ -1,5 +1,3 @@
-Make vertex buffer lists into arrays
-Swap event lists out for arrays
 Rework shader to support character centres
 Add wobble effect
 Remove typewriter default constants

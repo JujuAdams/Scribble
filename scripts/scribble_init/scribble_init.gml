@@ -145,9 +145,9 @@ enum __SCRIBBLE
     __SECTION5,          //36
     EVENT_PREVIOUS,      //37
     EVENT_CHAR_PREVIOUS, //38
-    EV_CHAR_LIST,        //39
-    EV_NAME_LIST,        //40
-    EV_DATA_LIST,        //41
+    EVENT_CHAR_ARRAY,    //39
+    EVENT_NAME_ARRAY,    //40
+    EVENT_DATA_ARRAY,    //41
     
     __SIZE               //42
 }

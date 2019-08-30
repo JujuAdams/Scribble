@@ -119,9 +119,9 @@ else
 var _json                  = ds_list_create(); //The main data structure
 var _line_list             = ds_list_create(); //Stores each line of text
 var _vertex_buffer_list    = ds_list_create(); //Stores all the vertex buffers needed to render the text and sprites
-var _events_character_list = ds_list_create(); //Stores each event's triggering character
-var _events_name_list      = ds_list_create(); //Stores each event's name
-var _events_data_list      = ds_list_create(); //Stores each event's parameters
+var _events_char_array     = array_create(0);  //Stores each event's triggering character
+var _events_name_array     = array_create(0);  //Stores each event's name
+var _events_data_array     = array_create(0);  //Stores each event's parameters
 var _texture_to_buffer_map = ds_map_create();
 
 global.__scribble_global_count++;
@@ -172,16 +172,13 @@ _json[| __SCRIBBLE.VERTEX_BUFFER_LIST ] = _vertex_buffer_list;
 _json[| __SCRIBBLE.__SECTION5         ] = "-- Events --";
 _json[| __SCRIBBLE.EVENT_PREVIOUS     ] = -1;
 _json[| __SCRIBBLE.EVENT_CHAR_PREVIOUS] = -1;
-_json[| __SCRIBBLE.EV_CHAR_LIST       ] = _events_character_list; //Stores each event's triggering cha
-_json[| __SCRIBBLE.EV_NAME_LIST       ] = _events_name_list;      //Stores each event's name
-_json[| __SCRIBBLE.EV_DATA_LIST       ] = _events_data_list;      //Stores each event's parameters
+_json[| __SCRIBBLE.EVENT_CHAR_ARRAY   ] = _events_char_array; //Stores each event's triggering cha
+_json[| __SCRIBBLE.EVENT_NAME_ARRAY   ] = _events_name_array; //Stores each event's name
+_json[| __SCRIBBLE.EVENT_DATA_ARRAY   ] = _events_data_array; //Stores each event's parameters
 
 //Now bind the child data structures to the root list
 ds_list_mark_as_list(_json, __SCRIBBLE.LINE_LIST         );
 ds_list_mark_as_list(_json, __SCRIBBLE.VERTEX_BUFFER_LIST);
-ds_list_mark_as_list(_json, __SCRIBBLE.EV_CHAR_LIST      );
-ds_list_mark_as_list(_json, __SCRIBBLE.EV_NAME_LIST      );
-ds_list_mark_as_list(_json, __SCRIBBLE.EV_DATA_LIST      );
 
 #endregion
 
@@ -374,9 +371,10 @@ repeat(_buffer_size)
                             ++_j;
                         }
                         
-                        ds_list_add(_events_character_list, _meta_characters);
-                        ds_list_add(_events_name_list, _command_name);
-                        ds_list_add(_events_data_list, _data);
+                        var _count = array_length_1d(_events_char_array);
+                        _events_char_array[@ _count] = _meta_characters;
+                        _events_name_array[@ _count] = _command_name;
+                        _events_data_array[@ _count] = _data;
                         
                         continue; //Skip the rest of the parser step
                         

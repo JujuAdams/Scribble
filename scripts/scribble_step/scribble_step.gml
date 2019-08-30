@@ -75,11 +75,11 @@ if ((_tw_direction != 0) && (_tw_speed > 0))
         {
             #region Scan for new events
             
-            var _event            = _json[| __SCRIBBLE.EVENT_PREVIOUS];
-            var _events_char_list = _json[| __SCRIBBLE.EV_CHAR_LIST  ];
-            var _events_name_list = _json[| __SCRIBBLE.EV_NAME_LIST  ];
-            var _events_data_list = _json[| __SCRIBBLE.EV_DATA_LIST  ];
-            var _event_count      = ds_list_size(_events_char_list);
+            var _event             = _json[| __SCRIBBLE.EVENT_PREVIOUS  ];
+            var _events_char_array = _json[| __SCRIBBLE.EVENT_CHAR_ARRAY];
+            var _events_name_array = _json[| __SCRIBBLE.EVENT_NAME_ARRAY];
+            var _events_data_array = _json[| __SCRIBBLE.EVENT_DATA_ARRAY];
+            var _event_count       = array_length_1d(_events_char_array);
             
             //Always start scanning at the next event
             ++_event;
@@ -89,13 +89,13 @@ if ((_tw_direction != 0) && (_tw_speed > 0))
             var _scan_char = _scan_a;
             repeat(_scan_b - _scan_a)
             {
-                while ((_event < _event_count) && (_events_char_list[| _event] == _scan_char + 1))
+                while ((_event < _event_count) && (_events_char_array[_event] == _scan_char + 1))
                 {
-                    var _script = global.__scribble_events[? _events_name_list[| _event]];
+                    var _script = global.__scribble_events[? _events_name_array[_event]];
                     if (_script != undefined)
                     {
                         _json[| __SCRIBBLE.EVENT_PREVIOUS] = _event;
-                        script_execute(_script, _json, _events_data_list[| _event], _scan_char);
+                        script_execute(_script, _json, _events_data_array[_event], _scan_char);
                     }
                     
                     if (_json[| __SCRIBBLE.TW_SPEED] <= 0.0)
