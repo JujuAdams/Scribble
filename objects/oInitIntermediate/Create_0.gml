@@ -5,8 +5,10 @@
 //  
 //  For use with GMS2.2.2 and later
 
+var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
+
 scribble_init("Fonts", "fTestA", true);
-scribble_add_spritefont("sSpriteFont", 3);
+scribble_add_spritefont("sSpriteFont", _mapstring, 0, 3);
 
 scribble_add_colour("c_coquelicot", $ff3800);
 scribble_add_colour("c_smaragdine", $50c875);
