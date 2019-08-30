@@ -21,4 +21,5 @@ for(var _i = 0; _i < _count; _i++)
     vertex_delete_buffer(_vbuff);
 }
 
-//TODO - Destroy other nested data structures
+ds_list_destroy(_json[@ __SCRIBBLE.LINE_LIST         ]);
+ds_list_destroy(_json[@ __SCRIBBLE.VERTEX_BUFFER_LIST]);
