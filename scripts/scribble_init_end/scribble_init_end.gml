@@ -85,7 +85,7 @@ repeat(_font_count)
         for(var _i = 0; _i < _length; _i++)
         {
             var _char = string_char_at(_sprite_string, _i+1);
-            if ( ds_map_exists(_font_glyphs_map, _char) ) continue;
+            if ( ds_map_exists(_font_glyphs_map, ord(_char)) ) continue;
             if (_char == " ") show_debug_message("Scribble:     WARNING! It is strongly recommended that you do *not* use a space character in your sprite font in GMS2.2.1 and above due to IDE bugs. Use scribble_font_char_set_*() to define a space character");
             
             image_index = _i;
@@ -120,7 +120,7 @@ repeat(_font_count)
                 _array[ SCRIBBLE_GLYPH.V0         ] = 0;
                 _array[ SCRIBBLE_GLYPH.U1         ] = 0;
                 _array[ SCRIBBLE_GLYPH.V1         ] = 0;
-                _font_glyphs_map[? _char ] = _array;
+                _font_glyphs_map[? ord(_char) ] = _array;
             }
             else
             {
@@ -136,11 +136,11 @@ repeat(_font_count)
                 _array[ SCRIBBLE_GLYPH.U1         ] = _uvs[2];
                 _array[ SCRIBBLE_GLYPH.V1         ] = _uvs[3];
                 
-                _font_glyphs_map[? _char ] = _array;
+                _font_glyphs_map[? ord(_char) ] = _array;
             }
         }
         
-        if ( !ds_map_exists(_font_glyphs_map, " ") )
+        if ( !ds_map_exists(_font_glyphs_map, 32) )
         {
             var _glyph_width  = sprite_get_width(_sprite);
             var _glyph_height = sprite_get_height(_sprite);
@@ -158,12 +158,12 @@ repeat(_font_count)
             _array[ SCRIBBLE_GLYPH.V0         ] = 0;
             _array[ SCRIBBLE_GLYPH.U1         ] = 0;
             _array[ SCRIBBLE_GLYPH.V1         ] = 0;
-            _font_glyphs_map[? " " ] = _array;
+            _font_glyphs_map[? 32 ] = _array;
         }
         
         if (_space_width != undefined)
         {
-            var _array = _font_glyphs_map[? " " ];
+            var _array = _font_glyphs_map[? 32 ];
             _array[@ SCRIBBLE_GLYPH.WIDTH      ] = _space_width;
             _array[@ SCRIBBLE_GLYPH.SEPARATION ] = _space_width;
         }
@@ -365,7 +365,7 @@ repeat(_font_count)
                 _array[ SCRIBBLE_GLYPH.U1         ] = _u1;
                 _array[ SCRIBBLE_GLYPH.V1         ] = _v1;
                 
-                _font_glyphs_map[? _char ] = _array;
+                _font_glyphs_map[? ord(_char) ] = _array;
             }
         }
         

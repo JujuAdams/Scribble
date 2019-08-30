@@ -41,7 +41,7 @@ if (_array == undefined)
 {
     //If the glyph array doesn't exist for this font, use the ds_map fallback
     var _map = _font_data[ __SCRIBBLE_FONT.GLYPHS_MAP ];
-    var _glyph_data = _map[? _character ];
+    var _glyph_data = _map[? ord(_character) ];
 }
 else
 {
