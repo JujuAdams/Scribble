@@ -16,7 +16,7 @@ GameMaker Studio 2.2.3 allows you to import assets, including scripts and shader
 
 **How do I set up Scribble?**
 
-Scribble is made from 9 mandatory scripts and a shader. There are 11 optional scripts that unlock more advanced functionality, though they're not needed for basic use.
+Scribble is made from 8 mandatory scripts and a shader. There are 13 optional scripts that unlock more advanced functionality, though they're not needed for basic use.
 
 Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
 
