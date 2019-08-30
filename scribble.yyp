@@ -34,7 +34,7 @@
             "Key": "00fbc8f9-0e51-458c-8834-69a5cbc5e94b",
             "Value": {
                 "id": "42b3b0d9-c735-4f43-8381-aced1076f25d",
-                "resourcePath": "scripts\\play_sound_example\\play_sound_example.yy",
+                "resourcePath": "scripts\\example_play_sound\\example_play_sound.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -154,7 +154,7 @@
             "Key": "3aa4ea7b-a86d-41d9-bc38-f49e0f8c1ce5",
             "Value": {
                 "id": "153909e6-1a0d-49ef-80f9-173178f6d938",
-                "resourcePath": "scripts\\pause_example\\pause_example.yy",
+                "resourcePath": "scripts\\example_pause\\example_pause.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -282,7 +282,7 @@
             "Key": "72f4369d-3eef-432c-b3ff-265dff73c52d",
             "Value": {
                 "id": "60961dda-92c1-4f76-9c91-ab108e317324",
-                "resourcePath": "scripts\\ping_example\\ping_example.yy",
+                "resourcePath": "scripts\\example_ping\\example_ping.yy",
                 "resourceType": "GMScript"
             }
         },

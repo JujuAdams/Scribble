@@ -17,7 +17,7 @@ scribble_add_colour("c_amaranth"  , $e52b50);
 
 //You can define custom events that execute scripts
 //Here's a basic example of playing a sound
-scribble_add_event("sound", play_sound_example);
+scribble_add_event("sound", example_play_sound);
 
 //Flags can be used to set formatting state which can be used to control text effects
 //In this case, we're going to overwrite the default "shake" formatting flag with a new one called "rumble"

@@ -1,13 +1,13 @@
-/// @param json    The Scribble data structure to target
-/// @param speed   The speed of the fade effect
+/// @param scribbleArray   The Scribble data structure to target
+/// @param speed           The speed of the fade effect
 
-var _json  = argument0;
-var _speed = argument1;
+var _scribble_array = argument0;
+var _speed          = argument1;
 
-if (!scribble_exists(_json))
+if (!scribble_exists(_scribble_array))
 {
-    show_error("Scribble:\nScribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false);
+    show_error("Scribble:\nScribble data structure \"" + string(_scribble_array) + "\" doesn't exist!\n ", false);
     exit;
 }
 
-_json[@ __SCRIBBLE.TW_SPEED] = _speed;
+_scribble_array[@ __SCRIBBLE.TW_SPEED] = _speed;

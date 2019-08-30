@@ -8,34 +8,34 @@
 /// 2) SCRIBBLE_TYPEWRITER_PER_CHARACTER - Fades in the text one character at a time
 /// 3) SCRIBBLE_TYPEWRITER_LINE          - Fades in the text one line at a time
 ///
-/// @param json   The Scribble data structure to target
+/// @param scribbleArray   The Scribble data structure to target
 
-var _json = argument0;
+var _scribble_array = argument0;
 
-if (!scribble_exists(_json))
+if (!scribble_exists(_scribble_array))
 {
-    show_error("Scribble:\nScribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false);
+    show_error("Scribble:\nScribble data structure \"" + string( _scribble_array ) + "\" doesn't exist!\n ", false);
     exit;
 }
 
-_json[@ __SCRIBBLE.TW_DIRECTION] = 1;
-_json[@ __SCRIBBLE.TW_POSITION ] = 0;
+_scribble_array[@ __SCRIBBLE.TW_DIRECTION] = 1;
+_scribble_array[@ __SCRIBBLE.TW_POSITION ] = 0;
 
-switch(_json[__SCRIBBLE.TW_METHOD])
+switch(_scribble_array[__SCRIBBLE.TW_METHOD])
 {
     case SCRIBBLE_TYPEWRITER_WHOLE:
-        _json[@ __SCRIBBLE.CHAR_FADE_T] = 1;
-        _json[@ __SCRIBBLE.LINE_FADE_T] = 1;
+        _scribble_array[@ __SCRIBBLE.CHAR_FADE_T] = 1;
+        _scribble_array[@ __SCRIBBLE.LINE_FADE_T] = 1;
     break;
     
     case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-        _json[@ __SCRIBBLE.CHAR_FADE_T] = 0;
-        _json[@ __SCRIBBLE.LINE_FADE_T] = 1;
+        _scribble_array[@ __SCRIBBLE.CHAR_FADE_T] = 0;
+        _scribble_array[@ __SCRIBBLE.LINE_FADE_T] = 1;
     break;
     
     case SCRIBBLE_TYPEWRITER_PER_LINE:
-        _json[@ __SCRIBBLE.CHAR_FADE_T] = 1;
-        _json[@ __SCRIBBLE.LINE_FADE_T] = 0;
+        _scribble_array[@ __SCRIBBLE.CHAR_FADE_T] = 1;
+        _scribble_array[@ __SCRIBBLE.LINE_FADE_T] = 0;
     break;
     
     default:

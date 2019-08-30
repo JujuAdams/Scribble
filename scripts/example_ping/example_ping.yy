@@ -1,8 +1,8 @@
 {
-    "id": "00fbc8f9-0e51-458c-8834-69a5cbc5e94b",
+    "id": "72f4369d-3eef-432c-b3ff-265dff73c52d",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "play_sound_example",
+    "name": "example_ping",
     "IsCompatibility": false,
     "IsDnD": false
 }

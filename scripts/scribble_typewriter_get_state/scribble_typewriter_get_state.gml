@@ -10,28 +10,28 @@
 ///
 /// You can start fade effects using scribble_typewriter_in() and scribble_typewriter_out().
 ///
-/// @param json   The Scribble data structure to get the typewriter state from
+/// @param scribbleArray   The Scribble data structure to get the typewriter state from
 
-var _json = argument0;
+var _scribble_array = argument0;
 
-if (!scribble_exists(_json))
+if (!scribble_exists(_scribble_array))
 {
-    show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
+    show_error("Scribble:\nScribble data structure \"" + string(_scribble_array) + "\" doesn't exist!\n ", false);
     exit;
 }
 
-switch(_json[__SCRIBBLE.TW_METHOD])
+switch(_scribble_array[__SCRIBBLE.TW_METHOD])
 {
     case SCRIBBLE_TYPEWRITER_WHOLE:
-        return ((_json[__SCRIBBLE.TW_DIRECTION] < 0)? 1 : 0) + _json[__SCRIBBLE.TW_POSITION];
+        return ((_scribble_array[__SCRIBBLE.TW_DIRECTION] < 0)? 1 : 0) + _scribble_array[__SCRIBBLE.TW_POSITION];
     break;
     
     case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-        return _json[__SCRIBBLE.CHAR_FADE_T];
+        return _scribble_array[__SCRIBBLE.CHAR_FADE_T];
     break;
     
     case SCRIBBLE_TYPEWRITER_PER_LINE:
-        return _json[__SCRIBBLE.LINE_FADE_T];
+        return _scribble_array[__SCRIBBLE.LINE_FADE_T];
     break;
 }
 
