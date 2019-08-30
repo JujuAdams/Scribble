@@ -77,7 +77,7 @@ if (_count > 0)
     var _data_fields     = _json[| __SCRIBBLE.DATA_FIELDS   ];
     var _char_smoothness = 0;
     var _char_t          = 1;
-    var _char_count      = _json[| __SCRIBBLE.LENGTH];
+    var _char_count      = _json[| __SCRIBBLE.CHARACTERS];
     var _line_smoothness = 0;
     var _line_t          = 1;
     var _line_count      = _json[| __SCRIBBLE.LINES];

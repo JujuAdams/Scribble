@@ -146,7 +146,7 @@ _json[| __SCRIBBLE.LEFT               ] = 0;
 _json[| __SCRIBBLE.TOP                ] = 0;
 _json[| __SCRIBBLE.RIGHT              ] = 0;
 _json[| __SCRIBBLE.BOTTOM             ] = 0;
-_json[| __SCRIBBLE.LENGTH             ] = 0;
+_json[| __SCRIBBLE.CHARACTERS         ] = 0;
 _json[| __SCRIBBLE.LINES              ] = 0;
 _json[| __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count;
                                       
@@ -190,6 +190,15 @@ ds_list_mark_as_list(_json, __SCRIBBLE.VERTEX_BUFFER_LIST);
 
 var _parameters_list = ds_list_create();
 
+var _text_x      = 0;
+var _text_y      = 0;
+var _text_font   = _def_font;
+var _text_colour = _def_colour;
+var _text_halign = _def_halign;
+var _text_flags  = 0;
+var _text_scale  = 1;
+var _text_slant  = false;
+
 var _line_width  = 0;
 var _line_height = _line_min_height;
 
@@ -200,30 +209,19 @@ _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
 _line_array[@ __SCRIBBLE_LINE.HALIGN   ] = _def_halign;
 ds_list_add(_line_list, _line_array);
 
-var _text_x                 = 0;
-var _text_y                 = 0;
-var _text_font              = _def_font;
-var _text_colour            = _def_colour;
-var _text_halign            = _def_halign;
-var _text_flags             = 0;
-var _text_scale             = 1;
-var _text_slant             = false;
+#endregion
 
-var _previous_texture       = -1;
-
-var _meta_characters        = 0;
-var _meta_lines             = 0;
-var _text_x_max             = 0;
-var _text_y_max             = 0;
+var _meta_characters = 0;
+var _meta_lines      = 0;
+var _text_x_max      = 0;
+var _text_y_max      = 0;
 
 var _command_tag_start      = -1;
 var _command_tag_parameters = 0;
-
-#endregion
-
-var _command_name  = "";
-var _force_newline = false;
-var _char_width    = 0;
+var _command_name           = "";
+var _previous_texture       = -1;
+var _force_newline          = false;
+var _char_width             = 0;
 
 //Write the string into a buffer for faster reading
 var _buffer_size = string_byte_length(_input_string)+1;
@@ -884,10 +882,10 @@ _text_x_max = max(_text_x_max, _line_width);
 _text_y_max = _text_y + _line_height;
 
 //Fill out metadata
-_json[| __SCRIBBLE.LINES ] = _meta_lines;
-_json[| __SCRIBBLE.LENGTH] = _meta_characters;
-_json[| __SCRIBBLE.WIDTH ] = _text_x_max;
-_json[| __SCRIBBLE.HEIGHT] = _text_y_max;
+_json[| __SCRIBBLE.LINES     ] = _meta_lines;
+_json[| __SCRIBBLE.CHARACTERS] = _meta_characters;
+_json[| __SCRIBBLE.WIDTH     ] = _text_x_max;
+_json[| __SCRIBBLE.HEIGHT    ] = _text_y_max;
 
 
 

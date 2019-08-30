@@ -119,7 +119,7 @@ enum __SCRIBBLE
     TOP,                 //13
     RIGHT,               //14
     BOTTOM,              //15
-    LENGTH,              //16
+    CHARACTERS,          //16
     LINES,               //17
     GLOBAL_INDEX,        //18
     

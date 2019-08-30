@@ -35,12 +35,12 @@ if ((_tw_direction != 0) && (_tw_speed > 0))
         case SCRIBBLE_TYPEWRITER_WHOLE:
             if ((_tw_direction > 0) && (floor(_tw_pos) < floor(_tw_pos + _tw_speed)))
             {
-                _scan_b = _json[| __SCRIBBLE.LENGTH];
+                _scan_b = _json[| __SCRIBBLE.CHARACTERS];
             }
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-            _pos_max = _json[| __SCRIBBLE.LENGTH];
+            _pos_max = _json[| __SCRIBBLE.CHARACTERS];
             
             if ((_tw_direction > 0) && (ceil(_tw_pos) < ceil(_tw_pos + _tw_speed)))
             {
