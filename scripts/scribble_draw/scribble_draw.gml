@@ -27,7 +27,7 @@ if (!is_real(_json) || !ds_exists(_json, ds_type_list))
     exit;
 }
 
-#region Check if we should've called scribble_step() for this Scribble data structure
+#region Check if we should've called scribble_typewriter_step() for this Scribble data structure
 
 if ((_json[| __SCRIBBLE.TW_DIRECTION] != 0) && (array_length_1d(_json[| __SCRIBBLE.EVENT_CHAR_ARRAY]) > 0))
 {
@@ -35,13 +35,13 @@ if ((_json[| __SCRIBBLE.TW_DIRECTION] != 0) && (array_length_1d(_json[| __SCRIBB
     {
         if (SCRIBBLE_CALL_STEP_IN_DRAW)
         {
-            scribble_step( _json);
+            scribble_typewriter_step( _json);
         }
         else
         {
             if (_json[| __SCRIBBLE.NO_STEP_COUNT] >= 1) //Give GM one frame of grace before throwing an error
             {
-                show_error("Scribble:\nscribble_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
+                show_error("Scribble:\nscribble_typewriter_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
             }
             else
             {

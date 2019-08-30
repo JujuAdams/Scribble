@@ -54,7 +54,7 @@
 #region Miscellaneous advanced settings
 
 #macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION  false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
-#macro SCRIBBLE_CALL_STEP_IN_DRAW          false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
+#macro SCRIBBLE_CALL_STEP_IN_DRAW          false    //Calls scribble_typewriter_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
 #macro SCRIBBLE_SLANT_AMOUNT               0.24     //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_Z                          0        //The z-value for vertexes
 

@@ -1,2 +1,2 @@
 //Update the text. This handles animation
-scribble_step(text);
+scribble_typewriter_step(text);
