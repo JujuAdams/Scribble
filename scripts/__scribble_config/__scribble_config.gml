@@ -44,7 +44,7 @@
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3                                //The default speed of the typewriter effect, in characters/lines per frame
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3                                  //The default smoothhness of the typewriter effect. A value of "0" disables smooth fading
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD      SCRIBBLE_TYPEWRITER_PER_CHARACTER  //The default typewriter effect method
-//Use these contants for scribble_typewriter_in() and scribble_typewrite_out():
+//Use these contants for scribble_typewriter_set_state():
 #macro SCRIBBLE_TYPEWRITER_WHOLE               0                                  //Fade the entire textbox in and out
 #macro SCRIBBLE_TYPEWRITER_PER_CHARACTER       1                                  //Fade each character individually
 #macro SCRIBBLE_TYPEWRITER_PER_LINE            2                                  //Fade each line of text as a group
@@ -53,10 +53,10 @@
 
 #region Miscellaneous advanced settings
 
-#macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION          false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
-#macro SCRIBBLE_CALL_STEP_IN_DRAW                  false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
-#macro SCRIBBLE_SLANT_AMOUNT                       0.24     //The x-axis displacement when using the [slant] tag
-#macro SCRIBBLE_Z                                  0        //The z-value for vertexes
+#macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION  false    //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
+#macro SCRIBBLE_CALL_STEP_IN_DRAW          false    //Calls scribble_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
+#macro SCRIBBLE_SLANT_AMOUNT               0.24     //The x-axis displacement when using the [slant] tag
+#macro SCRIBBLE_Z                          0        //The z-value for vertexes
 
 #endregion
 
@@ -97,25 +97,25 @@ enum SCRIBBLE_GLYPH
 
 //Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
 //However, some font definitons may have disjointed character indexes (e.g. Chinese). Scribble will detect these fonts and use a ds_map instead for glyph data lookup
-#macro SCRIBBLE_SEQUENTIAL_GLYPH_TRY               true
-#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE         300      //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
-#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES         0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
+#macro SCRIBBLE_SEQUENTIAL_GLYPH_TRY        true
+#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE  300      //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
+#macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50     //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
 #endregion
 
 #region Command tag customisation
 
-#macro SCRIBBLE_COMMAND_TAG_OPEN                   ord("[") //Character used to open a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_CLOSE                  ord("]") //Character used to close a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_ARGUMENT               ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_OPEN      ord("[") //Character used to open a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_CLOSE     ord("]") //Character used to close a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_ARGUMENT  ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
 #endregion
 
 #region Shader constants
 
 //SCRIBBLE_MAX_FLAGS or SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shScribble
-#macro SCRIBBLE_MAX_FLAGS                          4  //The maximum number of flags. "Flags" are boolean values that can be set per character, and are sent into shScribble to trigger animation effects etc.
-#macro SCRIBBLE_MAX_DATA_FIELDS                    7  //The maximum number of data fields. "Data fields" are misc 
-#macro SCRIBBLE_DEFAULT_DATA_FIELDS                [SCRIBBLE_DEFAULT_WAVE_SIZE, SCRIBBLE_DEFAULT_WAVE_FREQUENCY, SCRIBBLE_DEFAULT_WAVE_SPEED, SCRIBBLE_DEFAULT_SHAKE_SIZE, SCRIBBLE_DEFAULT_SHAKE_SPEED, SCRIBBLE_DEFAULT_RAINBOW_WEIGHT, SCRIBBLE_DEFAULT_RAINBOW_SPEED]
+#macro SCRIBBLE_MAX_FLAGS            4  //The maximum number of flags. "Flags" are boolean values that can be set per character, and are sent into shScribble to trigger animation effects etc.
+#macro SCRIBBLE_MAX_DATA_FIELDS      7  //The maximum number of data fields. "Data fields" are misc 
+#macro SCRIBBLE_DEFAULT_DATA_FIELDS  [SCRIBBLE_DEFAULT_WAVE_SIZE, SCRIBBLE_DEFAULT_WAVE_FREQUENCY, SCRIBBLE_DEFAULT_WAVE_SPEED, SCRIBBLE_DEFAULT_SHAKE_SIZE, SCRIBBLE_DEFAULT_SHAKE_SPEED, SCRIBBLE_DEFAULT_RAINBOW_WEIGHT, SCRIBBLE_DEFAULT_RAINBOW_SPEED]
 
 #endregion

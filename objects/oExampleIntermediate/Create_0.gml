@@ -14,7 +14,7 @@ var _string  = "[rainbow]abcdef[] ABCDEF##";
 text = scribble_create(_string, -1, 450, c_teal, "fTestB", fa_center);
 
 //Set this text to be displayed typewriter style, fading in per character
-scribble_typewriter_in(text, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3);
+scribble_typewriter_set_state(text, 0);
 
 //Set how the text should be aligned relative to the draw coordinate
 //Here, we're setting the alignment so that the middle/centre of the box is at the draw coordinate

@@ -55,14 +55,6 @@
             }
         },
         {
-            "Key": "0f5a7def-2f28-4745-bfe7-d3e4c13ae8b4",
-            "Value": {
-                "id": "5c4f9417-d316-492a-880b-970c2081867c",
-                "resourcePath": "scripts\\scribble_typewriter_out\\scribble_typewriter_out.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "106349df-7c74-4d84-b86d-182a51ce9237",
             "Value": {
                 "id": "7768da96-e273-4f8e-a9f6-75e39f580386",
@@ -203,14 +195,6 @@
             "Value": {
                 "id": "25075526-07ba-4752-aaae-a42f0252fbfa",
                 "resourcePath": "scripts\\scribble_get_box\\scribble_get_box.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "5b698267-e679-4285-95af-7d896e27c33e",
-            "Value": {
-                "id": "3c53b923-f8b4-4066-b653-9a628d969aab",
-                "resourcePath": "scripts\\scribble_typewriter_in\\scribble_typewriter_in.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -495,6 +479,14 @@
             }
         },
         {
+            "Key": "a2468e81-16e7-4f6b-b398-5589b1b582c2",
+            "Value": {
+                "id": "f96550b0-a9b3-4b0e-956b-55c8e719de14",
+                "resourcePath": "scripts\\scribble_typewriter_set_method\\scribble_typewriter_set_method.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "a6e779ad-19c7-4834-9c11-dc71a106cd12",
             "Value": {
                 "id": "da6553cb-7da1-44bd-9487-96fce1bbc45e",
@@ -508,6 +500,14 @@
                 "id": "90c740c6-2b0d-4907-a395-8f3afe4fa4ad",
                 "resourcePath": "options\\linux\\options_linux.yy",
                 "resourceType": "GMLinuxOptions"
+            }
+        },
+        {
+            "Key": "a94c7f6a-d851-4dc4-a581-07cb479d37a3",
+            "Value": {
+                "id": "00e6d90a-89f5-48d9-af0d-c4904d1d406b",
+                "resourcePath": "scripts\\scribble_typewriter_set_state\\scribble_typewriter_set_state.yy",
+                "resourceType": "GMScript"
             }
         },
         {
@@ -811,8 +811,8 @@
         "6cca0d1c-0dfc-4ca0-97ee-919b4f2c3599",
         "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
         "bc334b9f-3e78-4213-8e02-f63a7b8776d3",
-        "5b698267-e679-4285-95af-7d896e27c33e",
-        "0f5a7def-2f28-4745-bfe7-d3e4c13ae8b4",
+        "a94c7f6a-d851-4dc4-a581-07cb479d37a3",
+        "a2468e81-16e7-4f6b-b398-5589b1b582c2",
         "24724880-e29f-4fa7-8ee6-fdc0ba981460",
         "13548f19-dd1d-4dc1-9444-205ee176ef6f",
         "c1f9a882-5c95-4baa-9aa2-288643547505",

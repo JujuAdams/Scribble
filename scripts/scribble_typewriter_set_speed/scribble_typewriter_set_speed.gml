@@ -1,6 +1,5 @@
-/// 
-/// @param json         The Scribble data structure to target
-/// @param speed        The speed of the fade effect
+/// @param json    The Scribble data structure to target
+/// @param speed   The speed of the fade effect
 
 var _json  = argument0;
 var _speed = argument1;
