@@ -448,11 +448,23 @@ repeat(_buffer_size)
                             _char_width  = _text_scale*sprite_get_width(_sprite_index);
                             _line_height = max(_line_height, _text_scale*sprite_get_height(_sprite_index));
                             
+                            var _sprite_x      = _text_x + sprite_get_xoffset(_sprite_index);
+                            var _sprite_y      = _text_y + sprite_get_yoffset(_sprite_index);
+                            var _sprite_width  = _text_scale*sprite_get_width(_sprite_index);
+                            var _sprite_height = _text_scale*sprite_get_height(_sprite_index);
+                            var _sprite_number = sprite_get_number(_sprite_index);
+                            
+                            if (_sprite_number >= 256)
+                            {
+                                show_debug_message("Scribble: Sprites cannot have more than 256 frames (" + string(_parameters_list[| 0]) + ")");
+                                _sprite_number = 256;
+                            }
+                            
                             #region Figure out what images to add to the buffer
                             
                             var _image_index = 0;
                             var _image_speed = 0;
-                            switch(ds_list_size(_parameters_list))
+                            switch(_command_tag_parameters)
                             {
                                 case 1:
                                     _image_index = 0;
@@ -464,37 +476,40 @@ repeat(_buffer_size)
                                     _image_speed = 0;
                                 break;
                                 
-                                case 3:
+                                default:
                                     _image_index = real(_parameters_list[| 1]);
                                     _image_speed = real(_parameters_list[| 2]);
                                 break;
                             }
                             
                             var _colour = SCRIBBLE_COLOURISE_SPRITES? _text_colour : c_white;
-                            if ((_image_speed > 0) && SCRIBBLE_FORCE_NO_SPRITE_ANIMATION)
+                            if ((_image_speed <= 0) || SCRIBBLE_FORCE_NO_SPRITE_ANIMATION)
                             {
                                 _image_speed = 0;
-                                _colour = c_white;
+                                _sprite_number = 1;
+                                _colour = $FF000000 | _colour;
                             }
-                            
-                            if (_image_speed > 0) _text_flags = _text_flags | 1; //Set the "is sprite" flag only if we're animating the sprite
-                            
-                            //Default to only adding one image from the sprite to the vertex buffer
-                            var _image_a = _image_index;
-                            var _image_b = _image_index;
-                            
-                            //If we want to animate the sprite, add all images from the sprite
-                            if (_image_speed > 0)
+                            else
                             {
-                                _image_a = 0;
-                                _image_b = sprite_get_number(_sprite_index)-1;
+                                //Set the "is sprite" flag only if we're animating the sprite
+                                _text_flags = _text_flags | 1;
+                                
+                                //Encode image, sprite length, and image speed into the colour channels
+                                _colour = make_colour_rgb(0, _sprite_number-1, _image_speed*255);
+                                
+                                //Encode the starting image into the alpha channel
+                                _colour = (_image_index << 24) | _colour;
+                                
+                                //Make sure we store all frames from the sprite
+                                _image_index = 0;
                             }
                             
                             #endregion
                             
                             #region Pre-create vertex buffer arrays for images for this sprite and update WORD_START_TELL at the same time
                             
-                            for(var _image = _image_a; _image <= _image_b; _image++)
+                            var _image = _image_index;
+                            repeat(_sprite_number)
                             {
                                 var _sprite_texture = sprite_get_texture(_sprite_index, _image);
                                 
@@ -525,13 +540,16 @@ repeat(_buffer_size)
                                 //Fill link break list
                                 var _tell = buffer_tell(_buffer);
                                 repeat(ds_list_size(_line_list) - ds_list_size(_line_break_list)) ds_list_add(_line_break_list, _tell);
+                                
+                                ++_image;
                             }
                             
                             #endregion
                             
                             #region Add sprite to buffers
                             
-                            for(var _image = _image_a; _image <= _image_b; _image++)
+                            var _image = _image_index;
+                            repeat(_sprite_number)
                             {
                                 //Swap texture and buffer if needed
                                 var _sprite_texture = sprite_get_texture(_sprite_index, _image);
@@ -542,25 +560,12 @@ repeat(_buffer_size)
                                     var _glyph_buffer = _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.BUFFER];
                                 }
                                 
-                                if (_image_speed > 0)
-                                {
-                                    //Encode image, sprite length, and image speed into the colour channels
-                                    _colour = make_colour_rgb(_image, sprite_get_number(_sprite_index)-1, _image_speed*255);
-                                    
-                                    //Encode the starting image into the alpha channel
-                                    _colour = (_image_index << 24) | _colour;
-                                }
-                                else
-                                {
-                                    _colour = $FF000000 | _colour;
-                                }
-                                
                                 //Find the UVs and position of the sprite quad
                                 var _uvs = sprite_get_uvs(_sprite_index, _image);
-                                var _glyph_l = _text_x  + _uvs[4] + sprite_get_xoffset(_sprite_index);
-                                var _glyph_t = _text_y  + _uvs[5] + sprite_get_yoffset(_sprite_index);
-                                var _glyph_r = _glyph_l + _uvs[6]*_text_scale*sprite_get_width(_sprite_index);
-                                var _glyph_b = _glyph_t + _uvs[7]*_text_scale*sprite_get_height(_sprite_index);
+                                var _glyph_l = _sprite_x + _uvs[4];
+                                var _glyph_t = _sprite_y + _uvs[5];
+                                var _glyph_r = _glyph_l  + _uvs[6]*_sprite_width;
+                                var _glyph_b = _glyph_t  + _uvs[7]*_sprite_height;
                                 
                                 //                                          X                                                  Y                                                  Z                                                       character %                                                line %                                               flags                                                  colour                                                 U                                                V
                                 buffer_write(_glyph_buffer, buffer_f32, _glyph_l); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
@@ -569,12 +574,15 @@ repeat(_buffer_size)
                                 buffer_write(_glyph_buffer, buffer_f32, _glyph_r); buffer_write(_glyph_buffer, buffer_f32, _glyph_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
                                 buffer_write(_glyph_buffer, buffer_f32, _glyph_r); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
                                 buffer_write(_glyph_buffer, buffer_f32, _glyph_l); buffer_write(_glyph_buffer, buffer_f32, _glyph_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
+                                
+                                ++_image;
+                                if (_image_speed > 0) ++_colour;
                             }
                         
                             #endregion
                             
                             _text_flags = ~((~_text_flags) | 1); //Reset animated sprite flag specifically
-                            _meta_characters++;
+                            ++_meta_characters;
                         }
                     }
                     #endregion
