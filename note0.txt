@@ -1,7 +1,5 @@
 Rework shader to support character centres
 Add wobble effect
-Remove typewriter default constants
-Add function to define data fields
 Add swell effect
 Fix typewriter effect (looks like a line offset problem) - b8dc1c8
 Add vertical centring

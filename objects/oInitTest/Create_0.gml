@@ -8,6 +8,8 @@
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 
 scribble_init("Fonts", "fTestA", false);
+scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
+
 scribble_add_font("fTestA");
 scribble_add_font("fTestB");
 scribble_add_font("fChineseTest", "CJK\\fChineseTest.yy");

@@ -8,6 +8,8 @@
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 
 scribble_init("Fonts", "fTestA", true);
+scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
+
 scribble_add_spritefont("sSpriteFont", _mapstring, 0, 3);
 
 scribble_add_colour("c_coquelicot", $ff3800);
