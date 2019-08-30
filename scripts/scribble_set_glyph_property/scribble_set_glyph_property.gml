@@ -22,15 +22,15 @@ var _property  = argument[2];
 var _value     = argument[3];
 var _relative  = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : false;
 
-if ( !variable_global_exists("__scribble_init_complete") )
+if ( !variable_global_exists("__scribble_global_count") )
 {
     show_error("Scribble:\nscribble_set_glyph_property() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
-if (!global.__scribble_init_complete)
+if (!ds_map_exists(global.__scribble_font_data, _font))
 {
-    show_error("Scribble:\nscribble_set_glyph_property() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\nFont \"" + string(_font) + "\" not found\n ", false);
     exit;
 }
 

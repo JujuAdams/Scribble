@@ -122,15 +122,7 @@
             "Key": "375e7330-6e30-4902-8a42-dbc8ad380c16",
             "Value": {
                 "id": "d2db0b9c-9c8c-442b-91a8-ae470fa06d7f",
-                "resourcePath": "scripts\\scribble_init_add_font\\scribble_init_add_font.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "3a184a7c-b4e5-457f-865c-aa18b0b9fcbf",
-            "Value": {
-                "id": "ee59f17f-d455-4726-b8df-f51a412848c3",
-                "resourcePath": "scripts\\scribble_init_end\\scribble_init_end.yy",
+                "resourcePath": "scripts\\scribble_add_font\\scribble_add_font.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -322,7 +314,7 @@
             "Key": "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
             "Value": {
                 "id": "3a4b0f89-2fa4-4413-8cc7-ab92eb0d137b",
-                "resourcePath": "scripts\\scribble_init_add_spritefont\\scribble_init_add_spritefont.yy",
+                "resourcePath": "scripts\\scribble_add_spritefont\\scribble_add_spritefont.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -386,7 +378,7 @@
             "Key": "89e8adda-438e-48f9-ab78-0e8b396b3850",
             "Value": {
                 "id": "337c9a61-8476-4832-8ae3-a501a4acc257",
-                "resourcePath": "scripts\\scribble_init_start\\scribble_init_start.yy",
+                "resourcePath": "scripts\\scribble_init\\scribble_init.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -812,7 +804,6 @@
         "89e8adda-438e-48f9-ab78-0e8b396b3850",
         "375e7330-6e30-4902-8a42-dbc8ad380c16",
         "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
-        "3a184a7c-b4e5-457f-865c-aa18b0b9fcbf",
         "df6df2ef-b108-4a0d-b542-812338df9817",
         "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
         "86be87df-87d5-438a-a8e0-49bc2ac80815",
