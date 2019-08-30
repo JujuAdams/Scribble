@@ -8,9 +8,9 @@
 
 #region Global behaviours
 
-#macro SCRIBBLE_HASH_NEWLINE       true //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
-#macro SCRIBBLE_COLOURISE_SPRITES  true //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
-#macro SCRIBBLE_VERBOSE            true //Enables verbose console output to aid with debugging. Turn off if all the console is getting too cluttered for you!
+#macro SCRIBBLE_HASH_NEWLINE       true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
+#macro SCRIBBLE_COLOURISE_SPRITES  true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
+#macro SCRIBBLE_VERBOSE            true  //Enables verbose console output to aid with debugging. Turn off if all the console is getting too cluttered for you!
 
 #endregion
 

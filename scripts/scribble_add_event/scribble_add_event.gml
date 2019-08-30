@@ -52,7 +52,7 @@ if (is_undefined(_name) || (_name == ""))
 var _old_script = global.__scribble_events[? _name];
 if (is_real(_old_script))
 {
-    show_debug_message("Scribble: WARNING! Overwriting event \"" + _name + "] tied to script " + script_get_name(_old_script) + "()");
+    show_debug_message("Scribble: WARNING! Overwriting event [" + _name + "] tied to script " + script_get_name(_old_script) + "()");
 }
 
 global.__scribble_events[? _name] = _script;
