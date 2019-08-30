@@ -13,29 +13,29 @@ var _json       = argument0;
 var _method     = argument1;
 var _smoothness = argument2;
 
-if (!is_real(_json) || !ds_exists(_json, ds_type_list))
+if (!scribble_exists(_json))
 {
-    show_error("Scribble:\nScribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false);
+    show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
 }
 
-_json[| __SCRIBBLE.TW_METHOD    ] = _method;
-_json[| __SCRIBBLE.TW_SMOOTHNESS] = _smoothness;
+_json[@ __SCRIBBLE.TW_METHOD    ] = _method;
+_json[@ __SCRIBBLE.TW_SMOOTHNESS] = _smoothness;
 
 switch(_method)
 {
     case SCRIBBLE_TYPEWRITER_WHOLE:
-        _json[| __SCRIBBLE.CHAR_FADE_T] = 1;
-        _json[| __SCRIBBLE.LINE_FADE_T] = 1;
+        _json[@ __SCRIBBLE.CHAR_FADE_T] = 1;
+        _json[@ __SCRIBBLE.LINE_FADE_T] = 1;
     break;
     
     case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-        _json[| __SCRIBBLE.CHAR_FADE_T] = ((_json[| __SCRIBBLE.TW_DIRECTION] < 0)? 1 : 0) + clamp(_json[| __SCRIBBLE.TW_POSITION]/_json[| __SCRIBBLE.CHARACTERS], 0, 1);
-        _json[| __SCRIBBLE.LINE_FADE_T] = 1;
+        _json[@ __SCRIBBLE.CHAR_FADE_T] = ((_json[__SCRIBBLE.TW_DIRECTION] < 0)? 1 : 0) + clamp(_json[__SCRIBBLE.TW_POSITION]/_json[__SCRIBBLE.CHARACTERS], 0, 1);
+        _json[@ __SCRIBBLE.LINE_FADE_T] = 1;
     break;
         
     case SCRIBBLE_TYPEWRITER_PER_LINE:
-        _json[| __SCRIBBLE.CHAR_FADE_T] = 1;
-        _json[| __SCRIBBLE.LINE_FADE_T] = ((_json[| __SCRIBBLE.TW_DIRECTION] < 0)? 1 : 0) + clamp(_json[| __SCRIBBLE.TW_POSITION]/_json[| __SCRIBBLE.LINES], 0, 1);
+        _json[@ __SCRIBBLE.CHAR_FADE_T] = 1;
+        _json[@ __SCRIBBLE.LINE_FADE_T] = ((_json[__SCRIBBLE.TW_DIRECTION] < 0)? 1 : 0) + clamp(_json[__SCRIBBLE.TW_POSITION]/_json[__SCRIBBLE.LINES], 0, 1);
     break;
 }

@@ -103,53 +103,54 @@ enum __SCRIBBLE_VERTEX
 enum __SCRIBBLE
 {
     __SECTION0,          // 0
-    STRING,              // 1
-    DEFAULT_FONT,        // 2
-    DEFAULT_COLOUR,      // 3
-    DEFAULT_HALIGN,      // 4
-    WIDTH_LIMIT,         // 5
-    LINE_HEIGHT,         // 6
+    VERSION,             // 1
+    STRING,              // 2
+    DEFAULT_FONT,        // 3
+    DEFAULT_COLOUR,      // 4
+    DEFAULT_HALIGN,      // 5
+    WIDTH_LIMIT,         // 6
+    LINE_HEIGHT,         // 7
     
-    __SECTION1,          // 7
-    HALIGN,              // 8
-    VALIGN,              // 9
-    WIDTH,               //10
-    HEIGHT,              //11
-    LEFT,                //12
-    TOP,                 //13
-    RIGHT,               //14
-    BOTTOM,              //15
-    CHARACTERS,          //16
-    LINES,               //17
-    GLOBAL_INDEX,        //18
+    __SECTION1,          // 8
+    HALIGN,              // 9
+    VALIGN,              //10
+    WIDTH,               //11
+    HEIGHT,              //12
+    LEFT,                //13
+    TOP,                 //14
+    RIGHT,               //15
+    BOTTOM,              //16
+    CHARACTERS,          //17
+    LINES,               //18
+    GLOBAL_INDEX,        //20
     
-    __SECTION2,          //20
-    TW_DIRECTION,        //21
-    TW_SPEED,            //22
-    TW_POSITION,         //23
-    TW_METHOD,           //24
-    TW_SMOOTHNESS,       //25
-    CHAR_FADE_T,         //26
-    LINE_FADE_T,         //27
+    __SECTION2,          //21
+    TW_DIRECTION,        //22
+    TW_SPEED,            //23
+    TW_POSITION,         //24
+    TW_METHOD,           //25
+    TW_SMOOTHNESS,       //26
+    CHAR_FADE_T,         //27
+    LINE_FADE_T,         //28
     
-    __SECTION3,          //28
-    HAS_CALLED_STEP,     //29
-    NO_STEP_COUNT,       //30
-    DATA_FIELDS,         //31
-    ANIMATION_TIME,      //32
+    __SECTION3,          //29
+    HAS_CALLED_STEP,     //30
+    NO_STEP_COUNT,       //31
+    DATA_FIELDS,         //32
+    ANIMATION_TIME,      //33
     
-    __SECTION4,          //33
-    LINE_LIST,           //34
-    VERTEX_BUFFER_LIST,  //35
+    __SECTION4,          //34
+    LINE_LIST,           //35
+    VERTEX_BUFFER_LIST,  //36
     
-    __SECTION5,          //36
-    EVENT_PREVIOUS,      //37
-    EVENT_CHAR_PREVIOUS, //38
-    EVENT_CHAR_ARRAY,    //39
-    EVENT_NAME_ARRAY,    //40
-    EVENT_DATA_ARRAY,    //41
+    __SECTION5,          //37
+    EVENT_PREVIOUS,      //38
+    EVENT_CHAR_PREVIOUS, //39
+    EVENT_CHAR_ARRAY,    //40
+    EVENT_NAME_ARRAY,    //41
+    EVENT_DATA_ARRAY,    //42
     
-    __SIZE               //42
+    __SIZE               //43
 }
 
 #macro __SCRIBBLE_ON_DIRECTX        ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))

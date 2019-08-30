@@ -21,7 +21,7 @@ var _angle  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] 
 var _colour = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : draw_get_colour();
 var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : draw_get_alpha();
 
-if (!is_real(_json) || !ds_exists(_json, ds_type_list))
+if (!scribble_exists(_json))
 {
     show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
     exit;
@@ -29,23 +29,23 @@ if (!is_real(_json) || !ds_exists(_json, ds_type_list))
 
 #region Check if we should've called scribble_typewriter_step() for this Scribble data structure
 
-if ((_json[| __SCRIBBLE.TW_DIRECTION] != 0) && (array_length_1d(_json[| __SCRIBBLE.EVENT_CHAR_ARRAY]) > 0))
+if ((_json[__SCRIBBLE.TW_DIRECTION] != 0) && (array_length_1d(_json[__SCRIBBLE.EVENT_CHAR_ARRAY]) > 0))
 {
-    if ( !_json[| __SCRIBBLE.HAS_CALLED_STEP])
+    if ( !_json[__SCRIBBLE.HAS_CALLED_STEP])
     {
         if (SCRIBBLE_CALL_STEP_IN_DRAW)
         {
-            scribble_typewriter_step( _json);
+            scribble_typewriter_step(_json);
         }
         else
         {
-            if (_json[| __SCRIBBLE.NO_STEP_COUNT] >= 1) //Give GM one frame of grace before throwing an error
+            if (_json[__SCRIBBLE.NO_STEP_COUNT] >= 1) //Give GM one frame of grace before throwing an error
             {
                 show_error("Scribble:\nscribble_typewriter_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
             }
             else
             {
-                _json[| __SCRIBBLE.NO_STEP_COUNT]++;
+                ++_json[@ __SCRIBBLE.NO_STEP_COUNT];
             }
         }
     }
@@ -57,45 +57,45 @@ var _old_matrix = matrix_get(matrix_world);
 
 if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {
-    var _matrix = matrix_build(_json[| __SCRIBBLE.LEFT] + _x, _json[| __SCRIBBLE.TOP] + _y, 0,   0,0,0,   1,1,1);
+    var _matrix = matrix_build(_json[__SCRIBBLE.LEFT] + _x, _json[__SCRIBBLE.TOP] + _y, 0,   0,0,0,   1,1,1);
 }
 else
 {
-    var _matrix = matrix_build(_json[| __SCRIBBLE.LEFT], _json[| __SCRIBBLE.TOP], 0,   0,0,0,   1,1,1);
+    var _matrix = matrix_build(_json[__SCRIBBLE.LEFT], _json[__SCRIBBLE.TOP], 0,   0,0,0,   1,1,1);
         _matrix = matrix_multiply(_matrix, matrix_build(_x,_y,0,   0,0,_angle,   _xscale,_yscale,1));
 }
 
 _matrix = matrix_multiply(_matrix, _old_matrix);
 matrix_set(matrix_world, _matrix);
 
-var _vbuff_list = _json[| __SCRIBBLE.VERTEX_BUFFER_LIST ];
+var _vbuff_list = _json[__SCRIBBLE.VERTEX_BUFFER_LIST ];
 
 var _count = ds_list_size(_vbuff_list);
 if (_count > 0)
 {
-    var _time            = _json[| __SCRIBBLE.ANIMATION_TIME];
-    var _data_fields     = _json[| __SCRIBBLE.DATA_FIELDS   ];
+    var _time            = _json[__SCRIBBLE.ANIMATION_TIME];
+    var _data_fields     = _json[__SCRIBBLE.DATA_FIELDS   ];
     var _char_smoothness = 0;
     var _char_t          = 1;
-    var _char_count      = _json[| __SCRIBBLE.CHARACTERS];
+    var _char_count      = _json[__SCRIBBLE.CHARACTERS];
     var _line_smoothness = 0;
     var _line_t          = 1;
-    var _line_count      = _json[| __SCRIBBLE.LINES];
+    var _line_count      = _json[__SCRIBBLE.LINES];
     
-    switch(_json[| __SCRIBBLE.TW_METHOD])
+    switch(_json[__SCRIBBLE.TW_METHOD])
     {
         case SCRIBBLE_TYPEWRITER_WHOLE:
-            _alpha *= (_json[| __SCRIBBLE.TW_DIRECTION] > 0)? _json[| __SCRIBBLE.TW_POSITION] : (1.0 - _json[| __SCRIBBLE.TW_POSITION]);
+            _alpha *= (_json[__SCRIBBLE.TW_DIRECTION] > 0)? _json[__SCRIBBLE.TW_POSITION] : (1.0 - _json[__SCRIBBLE.TW_POSITION]);
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-            _char_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS] / _char_count;
-            _char_t          = _json[| __SCRIBBLE.CHAR_FADE_T];
+            _char_smoothness = _json[__SCRIBBLE.TW_SMOOTHNESS] / _char_count;
+            _char_t          = _json[__SCRIBBLE.CHAR_FADE_T];
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_LINE:
-            _line_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS] / _line_count;
-            _line_t          = _json[| __SCRIBBLE.LINE_FADE_T];
+            _line_smoothness = _json[__SCRIBBLE.TW_SMOOTHNESS] / _line_count;
+            _line_t          = _json[__SCRIBBLE.LINE_FADE_T];
         break;
     }
     

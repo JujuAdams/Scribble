@@ -4,10 +4,10 @@
 var _json  = argument0;
 var _speed = argument1;
 
-if (!is_real(_json) || !ds_exists(_json, ds_type_list))
+if (!scribble_exists(_json))
 {
     show_error("Scribble:\nScribble data structure \"" + string( _json ) + "\" doesn't exist!\n ", false);
     exit;
 }
 
-_json[| __SCRIBBLE.TW_SPEED] = _speed;
+_json[@ __SCRIBBLE.TW_SPEED] = _speed;

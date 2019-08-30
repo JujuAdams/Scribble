@@ -116,7 +116,7 @@ else
 
 #region Create the data structure
 
-var _json                  = ds_list_create(); //The main data structure
+var _json                  = array_create(__SCRIBBLE.__SIZE); //The main data structure
 var _line_list             = ds_list_create(); //Stores each line of text
 var _vertex_buffer_list    = ds_list_create(); //Stores all the vertex buffers needed to render the text and sprites
 var _events_char_array     = array_create(0);  //Stores each event's triggering character
@@ -127,58 +127,53 @@ var _texture_to_buffer_map = ds_map_create();
 global.__scribble_global_count++;
 global.__scribble_alive[? global.__scribble_global_count ] = _json;
 
-_json[| __SCRIBBLE.__SIZE             ] = __SCRIBBLE_VERSION;
+_json[@ __SCRIBBLE.__SECTION0         ] = "-- Parameters --";
+_json[@ __SCRIBBLE.VERSION            ] = __SCRIBBLE_VERSION;
+_json[@ __SCRIBBLE.STRING             ] = _input_string;
+_json[@ __SCRIBBLE.DEFAULT_FONT       ] = _def_font;
+_json[@ __SCRIBBLE.DEFAULT_COLOUR     ] = _def_colour;
+_json[@ __SCRIBBLE.DEFAULT_HALIGN     ] = _def_halign;
+_json[@ __SCRIBBLE.WIDTH_LIMIT        ] = _width_limit;
+_json[@ __SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
 
-_json[| __SCRIBBLE.__SECTION0         ] = "-- Parameters --";
-_json[| __SCRIBBLE.STRING             ] = _input_string;
-_json[| __SCRIBBLE.DEFAULT_FONT       ] = _def_font;
-_json[| __SCRIBBLE.DEFAULT_COLOUR     ] = _def_colour;
-_json[| __SCRIBBLE.DEFAULT_HALIGN     ] = _def_halign;
-_json[| __SCRIBBLE.WIDTH_LIMIT        ] = _width_limit;
-_json[| __SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
-                                      
-_json[| __SCRIBBLE.__SECTION1         ] = "-- Statistics --";
-_json[| __SCRIBBLE.HALIGN             ] = SCRIBBLE_DEFAULT_BOX_HALIGN;
-_json[| __SCRIBBLE.VALIGN             ] = SCRIBBLE_DEFAULT_BOX_VALIGN;
-_json[| __SCRIBBLE.WIDTH              ] = 0;
-_json[| __SCRIBBLE.HEIGHT             ] = 0;
-_json[| __SCRIBBLE.LEFT               ] = 0;
-_json[| __SCRIBBLE.TOP                ] = 0;
-_json[| __SCRIBBLE.RIGHT              ] = 0;
-_json[| __SCRIBBLE.BOTTOM             ] = 0;
-_json[| __SCRIBBLE.CHARACTERS         ] = 0;
-_json[| __SCRIBBLE.LINES              ] = 0;
-_json[| __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count;
-                                      
-_json[| __SCRIBBLE.__SECTION2         ] = "-- Typewriter --";
-_json[| __SCRIBBLE.TW_DIRECTION       ] = 0;
-_json[| __SCRIBBLE.TW_SPEED           ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
-_json[| __SCRIBBLE.TW_POSITION        ] = 0;
-_json[| __SCRIBBLE.TW_METHOD          ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-_json[| __SCRIBBLE.TW_SMOOTHNESS      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
-_json[| __SCRIBBLE.CHAR_FADE_T        ] = 1;
-_json[| __SCRIBBLE.LINE_FADE_T        ] = 1;
+_json[@ __SCRIBBLE.__SECTION1         ] = "-- Statistics --";
+_json[@ __SCRIBBLE.HALIGN             ] = SCRIBBLE_DEFAULT_BOX_HALIGN;
+_json[@ __SCRIBBLE.VALIGN             ] = SCRIBBLE_DEFAULT_BOX_VALIGN;
+_json[@ __SCRIBBLE.WIDTH              ] = 0;
+_json[@ __SCRIBBLE.HEIGHT             ] = 0;
+_json[@ __SCRIBBLE.LEFT               ] = 0;
+_json[@ __SCRIBBLE.TOP                ] = 0;
+_json[@ __SCRIBBLE.RIGHT              ] = 0;
+_json[@ __SCRIBBLE.BOTTOM             ] = 0;
+_json[@ __SCRIBBLE.CHARACTERS         ] = 0;
+_json[@ __SCRIBBLE.LINES              ] = 0;
+_json[@ __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count;
 
-_json[| __SCRIBBLE.__SECTION3         ] = "-- Animation --";
-_json[| __SCRIBBLE.HAS_CALLED_STEP    ] = false;
-_json[| __SCRIBBLE.NO_STEP_COUNT      ] = 0;
-_json[| __SCRIBBLE.DATA_FIELDS        ] = _data_fields;
-_json[| __SCRIBBLE.ANIMATION_TIME     ] = 0;
+_json[@ __SCRIBBLE.__SECTION2         ] = "-- Typewriter --";
+_json[@ __SCRIBBLE.TW_DIRECTION       ] = 0;
+_json[@ __SCRIBBLE.TW_SPEED           ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+_json[@ __SCRIBBLE.TW_POSITION        ] = 0;
+_json[@ __SCRIBBLE.TW_METHOD          ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+_json[@ __SCRIBBLE.TW_SMOOTHNESS      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
+_json[@ __SCRIBBLE.CHAR_FADE_T        ] = 1;
+_json[@ __SCRIBBLE.LINE_FADE_T        ] = 1;
 
-_json[| __SCRIBBLE.__SECTION4         ] = "-- Lists --";
-_json[| __SCRIBBLE.LINE_LIST          ] = _line_list;
-_json[| __SCRIBBLE.VERTEX_BUFFER_LIST ] = _vertex_buffer_list;
+_json[@ __SCRIBBLE.__SECTION3         ] = "-- Animation --";
+_json[@ __SCRIBBLE.HAS_CALLED_STEP    ] = false;
+_json[@ __SCRIBBLE.NO_STEP_COUNT      ] = 0;
+_json[@ __SCRIBBLE.DATA_FIELDS        ] = _data_fields;
+_json[@ __SCRIBBLE.ANIMATION_TIME     ] = 0;
 
-_json[| __SCRIBBLE.__SECTION5         ] = "-- Events --";
-_json[| __SCRIBBLE.EVENT_PREVIOUS     ] = -1;
-_json[| __SCRIBBLE.EVENT_CHAR_PREVIOUS] = -1;
-_json[| __SCRIBBLE.EVENT_CHAR_ARRAY   ] = _events_char_array; //Stores each event's triggering cha
-_json[| __SCRIBBLE.EVENT_NAME_ARRAY   ] = _events_name_array; //Stores each event's name
-_json[| __SCRIBBLE.EVENT_DATA_ARRAY   ] = _events_data_array; //Stores each event's parameters
+_json[@ __SCRIBBLE.__SECTION4         ] = "-- Lists --";
+_json[@ __SCRIBBLE.LINE_LIST          ] = _line_list;
+_json[@ __SCRIBBLE.VERTEX_BUFFER_LIST ] = _vertex_buffer_list;
 
-//Now bind the child data structures to the root list
-ds_list_mark_as_list(_json, __SCRIBBLE.LINE_LIST         );
-ds_list_mark_as_list(_json, __SCRIBBLE.VERTEX_BUFFER_LIST);
+_json[@ __SCRIBBLE.__SECTION5         ] = "-- Events --";
+_json[@ __SCRIBBLE.EVENT_PREVIOUS     ] = -1;
+_json[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = -1;
+_json[@ __SCRIBBLE.EVENT_CHAR_ARRAY   ] = _events_char_array; //Stores each event's triggering cha
+_json[@ __SCRIBBLE.EVENT_NAME_ARRAY   ] = _events_name_array; //Stores each event's name
+_json[@ __SCRIBBLE.EVENT_DATA_ARRAY   ] = _events_data_array; //Stores each event's parameters
 
 #endregion
 
@@ -882,10 +877,10 @@ _text_x_max = max(_text_x_max, _line_width);
 _text_y_max = _text_y + _line_height;
 
 //Fill out metadata
-_json[| __SCRIBBLE.LINES     ] = _meta_lines;
-_json[| __SCRIBBLE.CHARACTERS] = _meta_characters;
-_json[| __SCRIBBLE.WIDTH     ] = _text_x_max;
-_json[| __SCRIBBLE.HEIGHT    ] = _text_y_max;
+_json[@ __SCRIBBLE.LINES     ] = _meta_lines;
+_json[@ __SCRIBBLE.CHARACTERS] = _meta_characters;
+_json[@ __SCRIBBLE.WIDTH     ] = _text_x_max;
+_json[@ __SCRIBBLE.HEIGHT    ] = _text_y_max;
 
 
 
@@ -952,28 +947,28 @@ repeat(ds_list_size(_vertex_buffer_list))
 switch(SCRIBBLE_DEFAULT_BOX_HALIGN)
 {
     case fa_left:
-        _json[| __SCRIBBLE.RIGHT] =  _text_x_max;
+        _json[@ __SCRIBBLE.RIGHT] =  _text_x_max;
     break;
     case fa_center:
-        _json[| __SCRIBBLE.LEFT ] = -_text_x_max div 2;
-        _json[| __SCRIBBLE.RIGHT] =  _text_x_max div 2;
+        _json[@ __SCRIBBLE.LEFT ] = -_text_x_max div 2;
+        _json[@ __SCRIBBLE.RIGHT] =  _text_x_max div 2;
     break;
     case fa_right:
-        _json[| __SCRIBBLE.LEFT ] = -_text_x_max;
+        _json[@ __SCRIBBLE.LEFT ] = -_text_x_max;
     break;
 }
 
 switch(SCRIBBLE_DEFAULT_BOX_VALIGN)
 {
     case fa_top:
-        _json[| __SCRIBBLE.BOTTOM] =  _text_y_max;
+        _json[@ __SCRIBBLE.BOTTOM] =  _text_y_max;
     break;
     case fa_middle:
-        _json[| __SCRIBBLE.TOP   ] = -_text_y_max div 2;
-        _json[| __SCRIBBLE.BOTTOM] =  _text_y_max div 2;
+        _json[@ __SCRIBBLE.TOP   ] = -_text_y_max div 2;
+        _json[@ __SCRIBBLE.BOTTOM] =  _text_y_max div 2;
     break;
     case fa_bottom:
-        _json[| __SCRIBBLE.TOP   ] = -_text_y_max;
+        _json[@ __SCRIBBLE.TOP   ] = -_text_y_max;
     break;
 }
 
