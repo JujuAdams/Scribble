@@ -303,6 +303,8 @@ global.__scribble_hex_array[@ ord("f") - _min ] = 15; //ascii 102 = array 54
 
 if (_auto_scan)
 {
+    var _root_directory_size = string_length(global.__scribble_font_directory);
+    
     var _directory_list = ds_list_create();
     ds_list_add(_directory_list, _font_directory);
     while(!ds_list_empty(_directory_list))
@@ -335,24 +337,10 @@ if (_auto_scan)
                 }
                 else
                 {
-                    var _data = array_create(__SCRIBBLE_FONT.__SIZE);
-                    _data[ __SCRIBBLE_FONT.NAME         ] = _font;
-                    _data[ __SCRIBBLE_FONT.PATH         ] = _directory + _file;
-                    _data[ __SCRIBBLE_FONT.TYPE         ] = __SCRIBBLE_FONT_TYPE.FONT;
-                    _data[ __SCRIBBLE_FONT.GLYPHS_MAP   ] = undefined;
-                    _data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ] = undefined;
-                    _data[ __SCRIBBLE_FONT.GLYPH_MIN    ] = 32;
-                    _data[ __SCRIBBLE_FONT.GLYPH_MAX    ] = 32;
-                    _data[ __SCRIBBLE_FONT.TEXTURE      ] = undefined;
-                    _data[ __SCRIBBLE_FONT.SPACE_WIDTH  ] = undefined;
-                    _data[ __SCRIBBLE_FONT.MAPSTRING    ] = undefined;
-                    _data[ __SCRIBBLE_FONT.SEPARATION   ] = undefined;
-                    global.__scribble_font_data[? _font ] = _data;
-                    
-                    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Autoscan added \"" + _font + "\" as a standard font");
+                    scribble_add_font(_font, string_delete(_directory + _file, 1, _root_directory_size));
+                    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Autoscan added \"" + _font + "\" as a standard font (via " + string(_directory + _file) + ")");
                 }
             }
-            
             _file = file_find_next();
         }
         file_find_close();
