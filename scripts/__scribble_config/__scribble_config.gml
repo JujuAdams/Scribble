@@ -64,10 +64,10 @@
 
 enum SCRIBBLE_BOX
 {
-    X0, Y0, //Top left corner
-    X1, Y1, //Top right corner
-    X2, Y2, //Bottom left corner
-    X3, Y3  //Bottom right corner
+    TL_X, TL_Y, //Top left corner
+    TR_X, TR_Y, //Top right corner
+    BL_X, BL_Y, //Bottom left corner
+    BR_X, BR_Y  //Bottom right corner
 }
 
 #endregion
