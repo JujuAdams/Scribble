@@ -327,14 +327,6 @@
             }
         },
         {
-            "Key": "79bdef1e-caad-4a90-86ce-7360d93b86a8",
-            "Value": {
-                "id": "0f08f8ab-725a-4fe4-963d-12b0ea7c09d3",
-                "resourcePath": "datafiles_yy\\Fonts\\fTestA.yy.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
             "Key": "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
             "Value": {
                 "id": "f8fc30c6-4365-48e5-95b1-2fc22dc18ee8",
@@ -375,14 +367,6 @@
             }
         },
         {
-            "Key": "84f6b7ba-9a5a-4882-8ab1-0f577bbb590f",
-            "Value": {
-                "id": "203431b0-399c-4909-8a3d-42737f6a3ea2",
-                "resourcePath": "datafiles_yy\\Fonts\\fTestB.yy.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
             "Key": "86be87df-87d5-438a-a8e0-49bc2ac80815",
             "Value": {
                 "id": "4387c923-5e87-47d2-b717-cbad5267028b",
@@ -412,6 +396,14 @@
                 "id": "b2af99e0-571a-490f-8aa9-c58f64a0712c",
                 "resourcePath": "views\\8af41d37-ecf9-419b-baf8-12de7445f9cf.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "8b719297-79d2-452e-a819-2bc38ead33df",
+            "Value": {
+                "id": "134cb2e9-0909-4d71-bcca-93b17102dd6c",
+                "resourcePath": "datafiles_yy\\Fonts\\fTestA.yy.yy",
+                "resourceType": "GMIncludedFile"
             }
         },
         {
@@ -676,6 +668,14 @@
                 "id": "097da67d-0eba-44a0-8a35-8659d042920e",
                 "resourcePath": "rooms\\rExample\\rExample.yy",
                 "resourceType": "GMRoom"
+            }
+        },
+        {
+            "Key": "dd1eb3eb-ccda-480f-8d25-1b232369a0ae",
+            "Value": {
+                "id": "c3de2246-e589-4090-a56b-3d1faef33d9b",
+                "resourcePath": "datafiles_yy\\Fonts\\fTestB.yy.yy",
+                "resourceType": "GMIncludedFile"
             }
         },
         {
