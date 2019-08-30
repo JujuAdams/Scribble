@@ -546,7 +546,7 @@
             "Key": "b267953e-f407-4457-9e84-b719945ec6f9",
             "Value": {
                 "id": "b78383c5-4fd5-47a9-8996-54861685baf9",
-                "resourcePath": "scripts\\scribble_replace_tag\\scribble_replace_tag.yy",
+                "resourcePath": "scripts\\scribble_copy_tag\\scribble_copy_tag.yy",
                 "resourceType": "GMScript"
             }
         },

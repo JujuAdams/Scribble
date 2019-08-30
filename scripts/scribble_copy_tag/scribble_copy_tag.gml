@@ -1,7 +1,3 @@
-/// Defines an asset name
-///
-///
-///
 /// @param oldTag   Command tag to replace, as a string
 /// @param newTag   New command tag, as a string
 
