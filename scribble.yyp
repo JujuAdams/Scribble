@@ -279,6 +279,14 @@
             }
         },
         {
+            "Key": "7113040f-3a00-42da-b19f-4656de5da667",
+            "Value": {
+                "id": "5c94c1e0-c1b2-4a0f-9115-4eeed57847f5",
+                "resourcePath": "scripts\\scribble_freeze\\scribble_freeze.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "72f4369d-3eef-432c-b3ff-265dff73c52d",
             "Value": {
                 "id": "60961dda-92c1-4f76-9c91-ab108e317324",
@@ -838,6 +846,7 @@
         "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd",
         "baaa6707-db8c-472e-90b1-562acc7d6c47",
         "b267953e-f407-4457-9e84-b719945ec6f9",
+        "7113040f-3a00-42da-b19f-4656de5da667",
         "00fbc8f9-0e51-458c-8834-69a5cbc5e94b",
         "3aa4ea7b-a86d-41d9-bc38-f49e0f8c1ce5",
         "72f4369d-3eef-432c-b3ff-265dff73c52d"
