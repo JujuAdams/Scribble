@@ -8,9 +8,7 @@ Remove SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA  false               //Whether or not 
 
 Make vertex buffer lists into arrays
 Move typewriter behaviour to scribble_draw()?
-Remove global.__scribble_init_complete
 Swap event lists out for arrays
-Make x/y coords non-optional for draw scripts
 Rework shader to support character centres
 Bring scribble_define_spritefont() in line with GM's native functions
 Add wobble effect
