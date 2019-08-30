@@ -1,14 +1,13 @@
-//  Scribble v4.7.1
-//  2019/05/23
+//  Scribble v4.8.0
+//  2019/07/08
 //  @jujuadams
-//  With thanks to glitchroy, Mark Turner, Rob van Saaze, and DragoniteSpam
+//  With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
 //  
 //  For use with GMS2.2.2 and later
 
-var _spritefont_map_string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
-
-scribble_init("Fonts", "fTestA", true);
-scribble_add_spritefont("sSpriteFont", _spritefont_map_string, 0, 3);
+scribble_init_start("Fonts", "fTestA", true);
+scribble_init_add_spritefont("sSpriteFont", 3);
+scribble_init_end();
 
 scribble_add_colour("c_coquelicot", $ff3800);
 scribble_add_colour("c_smaragdine", $50c875);
@@ -25,7 +24,7 @@ scribble_add_flag("rumble", 2);
 
 //Add a new sprite from a file, then replace all instances of "[green coin]" with use GM's internal name for this sprite
 var _new_sprite = sprite_add("green coin.png", 0, false, false, 0, 0);
-scribble_add_tag_replace("green coin", sprite_get_name(_new_sprite));
+scribble_replace_tag("green coin", sprite_get_name(_new_sprite));
 
 //Some characters need a bit of fine adjustment in code since it's not always possible to fix this in the font itself
 scribble_set_glyph_property("sSpriteFont", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);

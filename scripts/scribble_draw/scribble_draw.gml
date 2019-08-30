@@ -1,118 +1,133 @@
-/// @param x
-/// @param y
-/// @param stringOrScribbleID
+/// Draws a Scribble data structure created with scribble_create()
+///
+/// @param json                 The Scribble data structure to be drawn. See scribble_create()
+/// @param [x]                  The x position in the room to draw at. Defaults to 0
+/// @param [y]                  The y position in the room to draw at. Defaults to 0
+/// @param [xscale]             The horizontal scaling of the text. Defaults to the value set in __scribble_config()
+/// @param [yscale]             The vertical scaling of the text. Defaults to the value set in __scribble_config()
+/// @param [angle]              The rotation of the text. Defaults to the value set in __scribble_config()
+/// @param [colour]             The blend colour for the text. Defaults to draw_get_colour()
+/// @param [alpha]              The alpha blend for the text. Defaults to draw_get_alpha()
+/// @param [premultiplyAlpha]   Whether to multiply the RGB channels by the resulting alpha value in the shader. Useful for fixing blending defects
+///
+/// All optional arguments accept <undefined> to indicate that the default value should be used.
 
-var _x      = argument0;
-var _y      = argument1;
-var _string = argument2;
+var _json   = argument[0];
+var _x      = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
+var _y      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
+var _xscale = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_XSCALE;
+var _yscale = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : SCRIBBLE_DEFAULT_YSCALE;
+var _angle  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : SCRIBBLE_DEFAULT_ANGLE;
+var _colour = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : draw_get_colour();
+var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : draw_get_alpha();
+var _pma    = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : SCRIBBLE_DEFAULT_PREMULTIPLY_ALPHA;
 
-var _max_time = get_timer() - game_get_speed(gamespeed_microseconds);
-
-if ((global.__scribble_next_blend_instance == id) && (global.__scribble_next_blend_time > _max_time))
+if (!is_real(_json) || !ds_exists(_json, ds_type_list))
 {
-    var _colour = (global.__scribble_next_blend_colour == undefined)? draw_get_colour() : global.__scribble_next_blend_colour;
-    var _alpha  = (global.__scribble_next_blend_alpha  == undefined)? draw_get_alpha()  : global.__scribble_next_blend_alpha;
-    
-    global.__scribble_next_blend_time = -9999999;
-}
-else
-{
-    var _colour = draw_get_colour();
-    var _alpha  = draw_get_alpha();
-}
-
-if ((global.__scribble_next_trans_instance == id) && (global.__scribble_next_trans_time > _max_time))
-{
-    var _xscale = global.__scribble_next_trans_xscale;
-    var _yscale = global.__scribble_next_trans_yscale;
-    var _angle  = global.__scribble_next_trans_angle;
-    
-    global.__scribble_next_trans_time = -9999999;
-}
-else
-{
-    var _xscale = 1;
-    var _yscale = 1;
-    var _angle  = 0;
+    show_error("Scribble:\nScribble data structure \"" + string(_json) + "\" doesn't exist!\n ", false);
+    exit;
 }
 
-if ((global.__scribble_next_wrap_instance == id) && (global.__scribble_next_wrap_time > _max_time))
+#region Check if we should've called scribble_step() for this Scribble data structure
+
+if ((_json[| __SCRIBBLE.TW_DIRECTION ] != 0) && (ds_list_size(_json[| __SCRIBBLE.EV_CHAR_LIST ]) > 0))
 {
-    var _width_limit     = global.__scribble_next_wrap_line_width;
-    var _line_min_height = global.__scribble_next_wrap_line_height;
-    
-    global.__scribble_next_wrap_time = -9999999;
-}
-else
-{
-    var _width_limit     = -1;
-    var _line_min_height = -1;
-}
-
-if ((global.__scribble_next_tw_instance == id) && (global.__scribble_next_tw_time > _max_time))
-{
-    var _tw_fade_out = global.__scribble_next_tw_fade_out;
-    var _tw_position = global.__scribble_next_tw_position;
-    var _tw_type     = global.__scribble_next_tw_type;
-    var _tw_execute  = global.__scribble_next_tw_execute;
-    
-    global.__scribble_next_tw_time = -9999999;
-}
-else
-{
-    var _tw_fade_out = false;
-    var _tw_position = 1.0;
-    var _tw_type     = SCRIBBLE_TYPEWRITER_WHOLE;
-    var _tw_execute  = false;
-}
-
-
-
-var _sha1 = sha1_string_utf8(_string) + ":" + string(_line_min_height) + ":" + string(_width_limit);
-
-var _scribble = global.__scribble_cache_map[? _sha1];
-if (_scribble != undefined)
-{
-    ds_priority_change_priority(global.__scribble_cache_priority_queue, _sha1, current_time + SCRIBBLE_CACHE_DECAY);
-}
-else
-{
-    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Adding \"" + _sha1 + "\" to cache");
-    _scribble = scribble_static_create(_string, _line_min_height, _width_limit);
-    _scribble[| SCRIBBLE.STATIC] = false;
-    
-    global.__scribble_cache_map[? _sha1] = _scribble;
-    ds_priority_add(global.__scribble_cache_priority_queue, _sha1, current_time + SCRIBBLE_CACHE_DECAY);
-}
-
-if (!global.__scribble_defeat_draw)
-{
-    scribble_set_box_alignment(_scribble, _scribble[| SCRIBBLE.STRING_HALIGN], _scribble[| SCRIBBLE.STRING_VALIGN]);
-    scribble_static_draw(_scribble, _x, _y, _xscale, _yscale, _angle, _colour, _alpha);
-    if (_tw_execute) scribble_events_call(_scribble);
-}
-
-
-
-do
-{
-    var _min_sha1 = ds_priority_find_min(global.__scribble_cache_priority_queue);
-    var _min_time = ds_priority_find_priority(global.__scribble_cache_priority_queue, _min_sha1);
-    if (current_time > _min_time)
+    if ( !_json[| __SCRIBBLE.HAS_CALLED_STEP])
     {
-        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Deleting \"" + _min_sha1 + "\" from cache");
-        
-        var _scribble = global.__scribble_cache_map[? _min_sha1];
-        scribble_static_destroy(_scribble);
-        
-        ds_map_delete(global.__scribble_cache_map, _min_sha1);
-        ds_priority_delete_min(global.__scribble_cache_priority_queue);
+        if (SCRIBBLE_CALL_STEP_IN_DRAW)
+        {
+            scribble_step( _json);
+        }
+        else
+        {
+            if (_json[| __SCRIBBLE.NO_STEP_COUNT] >= 1) //Give GM one frame of grace before throwing an error
+            {
+                show_error("Scribble:\nscribble_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
+            }
+            else
+            {
+                _json[| __SCRIBBLE.NO_STEP_COUNT]++;
+            }
+        }
     }
 }
-until (ds_priority_empty(global.__scribble_cache_priority_queue) || (current_time <= _min_time));
 
+#endregion
 
+var _old_matrix = matrix_get(matrix_world);
 
-global.__scribble_last_drawn = _scribble;
+if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
+{
+    var _matrix = matrix_build(_json[| __SCRIBBLE.LEFT] + _x, _json[| __SCRIBBLE.TOP] + _y, 0,   0,0,0,   1,1,1);
+}
+else
+{
+    var _matrix = matrix_build(_json[| __SCRIBBLE.LEFT], _json[| __SCRIBBLE.TOP], 0,   0,0,0,   1,1,1);
+        _matrix = matrix_multiply(_matrix, matrix_build(_x,_y,0,   0,0,_angle,   _xscale,_yscale,1));
+}
 
-return _scribble;
+_matrix = matrix_multiply(_matrix, _old_matrix);
+matrix_set(matrix_world, _matrix);
+
+var _vbuff_list = _json[| __SCRIBBLE.VERTEX_BUFFER_LIST ];
+
+var _count = ds_list_size(_vbuff_list);
+if (_count > 0)
+{
+    var _time            = _json[| __SCRIBBLE.ANIMATION_TIME];
+    var _data_fields     = _json[| __SCRIBBLE.DATA_FIELDS   ];
+    var _char_smoothness = 0;
+    var _char_t          = 1;
+    var _char_count      = _json[| __SCRIBBLE.LENGTH];
+    var _line_smoothness = 0;
+    var _line_t          = 1;
+    var _line_count      = _json[| __SCRIBBLE.LINES];
+    
+    switch(_json[| __SCRIBBLE.TW_METHOD])
+    {
+        case SCRIBBLE_TYPEWRITER_WHOLE:
+            _alpha *= (_json[| __SCRIBBLE.TW_DIRECTION] > 0)? _json[| __SCRIBBLE.TW_POSITION] : (1.0 - _json[| __SCRIBBLE.TW_POSITION]);
+        break;
+        
+        case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
+            _char_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS] / _char_count;
+            _char_t          = _json[| __SCRIBBLE.CHAR_FADE_T];
+        break;
+        
+        case SCRIBBLE_TYPEWRITER_PER_LINE:
+            _line_smoothness = _json[| __SCRIBBLE.TW_SMOOTHNESS] / _line_count;
+            _line_t          = _json[| __SCRIBBLE.LINE_FADE_T];
+        break;
+    }
+    
+    shader_set(shScribble);
+    shader_set_uniform_f(global.__scribble_uniform_pma            , _pma);
+    shader_set_uniform_f(global.__scribble_uniform_time           , _time);
+    
+    shader_set_uniform_f(global.__scribble_uniform_char_t         , _char_t);
+    shader_set_uniform_f(global.__scribble_uniform_char_smoothness, _char_smoothness);
+    shader_set_uniform_f(global.__scribble_uniform_char_count     , _char_count);
+    
+    shader_set_uniform_f(global.__scribble_uniform_line_t         , _line_t);
+    shader_set_uniform_f(global.__scribble_uniform_line_smoothness, _line_smoothness);
+    shader_set_uniform_f(global.__scribble_uniform_line_count     , _line_count);
+    
+    shader_set_uniform_f(global.__scribble_uniform_colour_blend   , colour_get_red(  _colour)/255,
+                                                                    colour_get_green(_colour)/255,
+                                                                    colour_get_blue( _colour)/255,
+                                                                    _alpha);
+        
+    shader_set_uniform_f_array(global.__scribble_uniform_data_fields, _data_fields);
+    
+    var _i = 0;
+    repeat(_count)
+    {
+        var _vbuff_data = _vbuff_list[| _i];
+        vertex_submit(_vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[| __SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
+        _i++;
+    }
+    
+    shader_reset();
+}
+
+matrix_set(matrix_world, _old_matrix);

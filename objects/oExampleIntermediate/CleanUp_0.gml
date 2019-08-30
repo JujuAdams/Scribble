@@ -1,1 +1,1 @@
-scribble_static_destroy(text);
+scribble_destroy(text);

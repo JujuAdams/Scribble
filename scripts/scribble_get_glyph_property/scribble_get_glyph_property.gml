@@ -1,21 +1,9 @@
 /// Returns a property value for a character in a font previously added to Scribble
 ///
-/// The following properties are available:
-/// enum SCRIBBLE_GLYPH
-/// {
-///     CHARACTER,  // 0
-///     INDEX,      // 1
-///     WIDTH,      // 2
-///     HEIGHT,     // 3
-///     X_OFFSET,   // 4
-///     Y_OFFSET,   // 5
-///     SEPARATION, // 6
-///     U0,         // 7
-///     V0,         // 8
-///     U1,         // 9
-///     V1          //10
-/// }
-/// You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
+/// Three properties are available:
+/// 1) SCRIBBLE_GLYPH.X_OFFSET   - The relative x-position to display the glyph
+/// 2) SCRIBBLE_GLYPH.Y_OFFSET   - The relative y-position to display the glyph
+/// 3) SCRIBBLE_GLYPH.SEPARATION    - The 
 ///
 /// @param fontName    The font name (as a string) of the font
 /// @param character   The character (as a string)
@@ -27,24 +15,30 @@ var _font      = argument0;
 var _character = argument1;
 var _property  = argument2;
 
-if (variable_global_get("__scribble_global_count") == undefined)
+if ( !variable_global_exists("__scribble_init_complete") )
 {
     show_error("Scribble:\nscribble_get_glyph_property() should be called after initialising Scribble.\n ", false);
     exit;
 }
 
-var _font_data = global.__scribble_font_data[? _font];
+if (!global.__scribble_init_complete)
+{
+    show_error("Scribble:\nscribble_get_glyph_property() should be called after initialising Scribble.\n ", false);
+    exit;
+}
 
-var _array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
+var _font_data = global.__scribble_font_data[? _font ];
+
+var _array = _font_data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ];
 if (_array == undefined)
 {
     //If the glyph array doesn't exist for this font, use the ds_map fallback
-    var _map = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP];
-    var _glyph_data = _map[? _character];
+    var _map = _font_data[ __SCRIBBLE_FONT.GLYPHS_MAP ];
+    var _glyph_data = _map[? ord(_character) ];
 }
 else
 {
-    var _glyph_data = _array[ord(_character) - _font_data[__SCRIBBLE_FONT.GLYPH_MIN]];
+    var _glyph_data = _array[ ord(_character) - _font_data[ __SCRIBBLE_FONT.GLYPH_MIN ] ];
 }
 
 if (_glyph_data == undefined)
@@ -53,4 +47,4 @@ if (_glyph_data == undefined)
     return undefined;
 }
 
-return _glyph_data[_property];
+return _glyph_data[ _property ];
