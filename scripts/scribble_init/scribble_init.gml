@@ -1,9 +1,9 @@
 /// Starts initialisation for Scribble
 /// This script should be called before scribble_add_font() / scribble_add_spritefont() and scribble_init_end()
 ///
-/// @param fontDirectory     Directory to look in (relative to game_save_id) for font .yy files
-/// @param defaultFont       The name of the default Scribble font, as a string
-/// @param autoScan          Set to <true> to automatically find standard font .yy files in the font directory. This only works for standard fonts, and on desktop platforms
+/// @param fontDirectory    Directory to look in (relative to game_save_id) for font .yy files
+/// @param defaultFont      The name of the default Scribble font, as a string
+/// @param autoScan         Set to <true> to automatically find standard font .yy files in the font directory. This only works for standard fonts, and on desktop platforms
 ///
 /// This script achieves the following things:
 /// 1) Define the default font directory to pull font .yy files from

@@ -10,9 +10,9 @@ if (!scribble_exists(_scribble_array))
     exit;
 }
 
-ds_map_delete(global.__scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX ]);
+ds_map_delete(global.__scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX]);
 
-var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST ];
+var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
 var _count = ds_list_size(_vbuff_list);
 for(var _i = 0; _i < _count; _i++)
 {
