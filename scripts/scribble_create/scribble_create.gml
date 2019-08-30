@@ -408,7 +408,7 @@ repeat(_buffer_size)
                                     #region Change font
                                     
                                     _text_font = _command_name;
-                                    _font_data = _new_font_data;
+                                    _font_data         = _new_font_data;
                                     _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
@@ -416,7 +416,7 @@ repeat(_buffer_size)
                                     _font_texture      = _font_data[__SCRIBBLE_FONT.TEXTURE     ];
                                     
                                     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
-                                    _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH];
+                                    _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
                                     _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
                                     
                                     #endregion
@@ -802,7 +802,7 @@ repeat(_buffer_size)
     
     #region Handle new line creation
     
-    if (((_char_width + _text_x > _width_limit) && (_width_limit >= 0)) || _force_newline)
+    if (_force_newline || ((_char_width + _text_x > _width_limit) && (_width_limit >= 0)))
     {
         var _v = 0;
         repeat(ds_list_size(_vertex_buffer_list))
