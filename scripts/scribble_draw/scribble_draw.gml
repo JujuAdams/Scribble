@@ -1,29 +1,42 @@
 /// Draws a Scribble data structure created with scribble_create()
 ///
-/// @param scribbleArray   The Scribble data structure to be drawn. See scribble_create()
-/// @param x               The x position in the room to draw at. Defaults to 0
-/// @param y               The y position in the room to draw at. Defaults to 0
-/// @param [xscale]        The horizontal scaling of the text. Defaults to the value set in __scribble_config()
-/// @param [yscale]        The vertical scaling of the text. Defaults to the value set in __scribble_config()
-/// @param [angle]         The rotation of the text. Defaults to the value set in __scribble_config()
-/// @param [colour]        The blend colour for the text. Defaults to draw_get_colour()
-/// @param [alpha]         The alpha blend for the text. Defaults to draw_get_alpha()
+/// @param x                  The x position in the room to draw at. Defaults to 0
+/// @param y                  The y position in the room to draw at. Defaults to 0
+/// @param stringOrScribble   The Scribble data structure to be drawn. See scribble_create()
+/// @param [xscale]           The horizontal scaling of the text. Defaults to the value set in __scribble_config()
+/// @param [yscale]           The vertical scaling of the text. Defaults to the value set in __scribble_config()
+/// @param [angle]            The rotation of the text. Defaults to the value set in __scribble_config()
+/// @param [colour]           The blend colour for the text. Defaults to draw_get_colour()
+/// @param [alpha]            The alpha blend for the text. Defaults to draw_get_alpha()
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
-var _scribble_array = argument[0];
-var _x              = argument[1];
-var _y              = argument[2];
-var _xscale         = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_XSCALE;
-var _yscale         = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : SCRIBBLE_DEFAULT_YSCALE;
-var _angle          = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : SCRIBBLE_DEFAULT_ANGLE;
-var _colour         = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : draw_get_colour();
-var _alpha          = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : draw_get_alpha();
+var _x      = argument[0];
+var _y      = argument[1];
+var _string = argument[2];
+var _xscale = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_XSCALE;
+var _yscale = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : SCRIBBLE_DEFAULT_YSCALE;
+var _angle  = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : SCRIBBLE_DEFAULT_ANGLE;
+var _colour = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : draw_get_colour();
+var _alpha  = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : draw_get_alpha();
 
-if (!scribble_exists(_scribble_array))
+if (is_array(_string) && scribble_exists(_string))
 {
-    show_error("Scribble:\nScribble data structure \"" + string(_scribble_array) + "\" doesn't exist!\n ", false);
-    exit;
+    var _scribble_array = _string;
+}
+else
+{
+    _string = string(_string);
+    if (ds_map_exists(global.__scribble_cache_map, _string))
+    {
+        var _scribble_array = global.__scribble_cache_map[? _string];
+    }
+    else
+    {
+        var _scribble_array = scribble_create(_string);
+        global.__scribble_cache_map[? _string] = _scribble_array;
+        ds_list_add(global.__scribble_cache_list, _string);
+    }
 }
 
 #region Check if we should've called scribble_typewriter_step() for this Scribble data structure
@@ -67,13 +80,14 @@ else
 _matrix = matrix_multiply(_matrix, _old_matrix);
 matrix_set(matrix_world, _matrix);
 
-var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST ];
+var _time = _scribble_array[__SCRIBBLE.ANIMATION_TIME] + SCRIBBLE_STEP_SIZE;
+_scribble_array[@ __SCRIBBLE.ANIMATION_TIME] = _time;
 
+var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
 var _count = ds_list_size(_vbuff_list);
 if (_count > 0)
 {
-    var _time            = _scribble_array[__SCRIBBLE.ANIMATION_TIME];
-    var _data_fields     = _scribble_array[__SCRIBBLE.DATA_FIELDS   ];
+    var _data_fields     = _scribble_array[__SCRIBBLE.DATA_FIELDS];
     var _char_smoothness = 0;
     var _char_t          = 1;
     var _char_count      = _scribble_array[__SCRIBBLE.CHARACTERS];
@@ -128,3 +142,5 @@ if (_count > 0)
 }
 
 matrix_set(matrix_world, _old_matrix);
+
+return _scribble_array;

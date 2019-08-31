@@ -7,12 +7,7 @@
 
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 
-scribble_init("Fonts", "fTestA", false);
-scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
-
-scribble_add_font("fTestA");
-scribble_add_font("fTestB");
-scribble_add_font("fChineseTest", "CJK\\fChineseTest.yy");
+scribble_init("Fonts", "fTestA", true);
 scribble_add_spritefont("sSpriteFont", _mapstring, 0, 11);
 
 scribble_add_colour("c_coquelicot", $ff3800);
@@ -29,5 +24,4 @@ scribble_copy_tag("green coin", sprite_get_name(sprite_add("green coin.png", 0, 
 scribble_set_glyph_property("sSpriteFont", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 scribble_set_glyph_property("sSpriteFont", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 
-instance_destroy();
 room_goto_next();

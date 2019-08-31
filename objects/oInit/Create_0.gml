@@ -11,6 +11,5 @@ var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
 scribble_init("Fonts", "fTestA", true);
 scribble_add_spritefont("sSpriteFont", _mapstring, 0, 3); //GM's spritefont renderer handles spaces weirdly so it's best to specify a width
 
-//We're finished here, so destroy this instance and move to the next room
-instance_destroy();
+//We're finished here, so move to the next room
 room_goto_next();

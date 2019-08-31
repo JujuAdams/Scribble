@@ -10,20 +10,19 @@
 
 #macro SCRIBBLE_HASH_NEWLINE       true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COLOURISE_SPRITES  true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
-#macro SCRIBBLE_VERBOSE            true  //Enables verbose console output to aid with debugging. Turn off if all the console is getting too cluttered for you!
+#macro SCRIBBLE_VERBOSE            false //Enables verbose console output to aid with debugging. Turn off if all the console is getting too cluttered for you!
 
 #endregion
 
 #region Default parameters
 
-#macro SCRIBBLE_DEFAULT_TEXT_COLOUR   c_white                                             //The default (vertex) colour of text
-#macro SCRIBBLE_DEFAULT_XSCALE        1                                                   //The default x-scale of the textbox
-#macro SCRIBBLE_DEFAULT_YSCALE        1                                                   //The default y-scale of the textbox
-#macro SCRIBBLE_DEFAULT_BOX_HALIGN    fa_left                                             //The default alignment of the textbox. fa_left places the left-hand side of the box at the draw coordinate when using scribble_draw()
-#macro SCRIBBLE_DEFAULT_BOX_VALIGN    fa_top                                              //The default alignment of the textbox. fa_top places the top of the box at the draw coordinate when using scribble_draw()
-#macro SCRIBBLE_DEFAULT_ANGLE         0                                                   //The default rotation of the textbox
-#macro SCRIBBLE_DEFAULT_STEP_SIZE     (delta_time/game_get_speed(gamespeed_microseconds)) //The default step size. "(delta_time/16667)" assumes that the game is running at 60FPS and will delta time effects accordingly
-#macro SCRIBBLE_DEFAULT_SPRITE_SPEED  0.1                                                 //The default animation speed for sprites inserted into text
+#macro SCRIBBLE_DEFAULT_TEXT_COLOUR   c_white //The default (vertex) colour of text
+#macro SCRIBBLE_DEFAULT_XSCALE        1       //The default x-scale of the textbox
+#macro SCRIBBLE_DEFAULT_YSCALE        1       //The default y-scale of the textbox
+#macro SCRIBBLE_DEFAULT_BOX_HALIGN    fa_left //The default alignment of the textbox. fa_left places the left-hand side of the box at the draw coordinate when using scribble_draw()
+#macro SCRIBBLE_DEFAULT_BOX_VALIGN    fa_top  //The default alignment of the textbox. fa_top places the top of the box at the draw coordinate when using scribble_draw()
+#macro SCRIBBLE_DEFAULT_ANGLE         0       //The default rotation of the textbox
+#macro SCRIBBLE_DEFAULT_SPRITE_SPEED  0.1     //The default animation speed for sprites inserted into text
 
 #endregion
 
@@ -41,6 +40,7 @@
 
 #region Miscellaneous advanced settings
 
+#macro SCRIBBLE_STEP_SIZE                  (delta_time/game_get_speed(gamespeed_microseconds)) //The animation step size. "(delta_time/16667)" assumes that the game is running at 60FPS and will delta time effects accordingly
 #macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION  false //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
 #macro SCRIBBLE_CALL_STEP_IN_DRAW          false //Calls scribble_typewriter_step() at the start of scribble_draw() for convenience. This isn't recommended - you should keep logic and drawing separate where possible in your code!
 #macro SCRIBBLE_SLANT_AMOUNT               0.24  //The x-axis displacement when using the [slant] tag

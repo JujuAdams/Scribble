@@ -1,12 +1,10 @@
 /// Animates effects, advances the typewriter effect for a Scribble data structure, and executes events as they appear
 ///
 /// @param scribbleArray   The Scribble data structure to manipulate
-/// @param [stepSize]      The step size e.g. a delta time coefficient. Defaults to 1
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
-var _scribble_array = argument[0];
-var _step_size      = ((argument_count > 1) && (argument_count[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_STEP_SIZE;
+var _scribble_array = argument0;
 
 if (!SCRIBBLE_CALL_STEP_IN_DRAW) _scribble_array[@ __SCRIBBLE.HAS_CALLED_STEP] = true;
 
@@ -16,9 +14,7 @@ if (!scribble_exists(_scribble_array))
     exit;
 }
 
-_scribble_array[@ __SCRIBBLE.ANIMATION_TIME] += _step_size;
-
-var _tw_speed     = _scribble_array[__SCRIBBLE.TW_SPEED    ]*_step_size;
+var _tw_speed     = _scribble_array[__SCRIBBLE.TW_SPEED    ]*SCRIBBLE_STEP_SIZE;
 var _tw_direction = _scribble_array[__SCRIBBLE.TW_DIRECTION];
 if ((_tw_direction != 0) && (_tw_speed > 0))
 {

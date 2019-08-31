@@ -11,7 +11,8 @@
         "df6df2ef-b108-4a0d-b542-812338df9817",
         "f3e10686-9969-4b0b-9e8e-2198157bdd1a",
         "86be87df-87d5-438a-a8e0-49bc2ac80815",
-        "7c1d8641-a93c-4e1e-8530-37a429b86f1f"
+        "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
+        "7fe06bc8-db42-45cb-a917-e4992c3ddb68"
     ],
     "filterType": "GMScript",
     "folderName": "Essential",

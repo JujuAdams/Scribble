@@ -10,10 +10,10 @@ var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
 scribble_init("Fonts", "fTestA", true);
 scribble_add_spritefont("sSpriteFont", _mapstring, 0, 3);
 
+//Add some colour definitions
 scribble_add_colour("c_coquelicot", $ff3800);
 scribble_add_colour("c_smaragdine", $50c875);
 scribble_add_colour("c_xanadu"    , $738678);
 scribble_add_colour("c_amaranth"  , $e52b50);
 
-instance_destroy();
 room_goto_next();

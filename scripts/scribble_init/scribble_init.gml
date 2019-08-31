@@ -226,6 +226,8 @@ global.__scribble_tag_copy       = ds_map_create();  //Stores asset bindings; ke
 global.__scribble_alive          = ds_map_create();  //ds_map of all alive Scribble data structures
 global.__scribble_global_count   = 0;
 global.__scribble_default_font   = _default_font;
+global.__scribble_cache_map      = ds_map_create();
+global.__scribble_cache_list     = ds_list_create();
 
 global.__scribble_default_animation_parameters = scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
 
