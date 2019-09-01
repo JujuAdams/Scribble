@@ -5,6 +5,20 @@
 //  
 //  For use with GMS2.2.2 and later
 
+scribble_init("Fonts", "fTestA", true);
+var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
+scribble_add_spritefont("sSpriteFont", _mapstring, 0, 3);
+
+//Add some colour definitions
+scribble_add_colour("c_coquelicot", $ff3800);
+scribble_add_colour("c_smaragdine", $50c875);
+scribble_add_colour("c_xanadu"    , $738678);
+scribble_add_colour("c_amaranth"  , $e52b50);
+
+
+
+
+
 var _string  = "[rainbow]abcdef[] ABCDEF##";
     _string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][sCoin,0][sCoin,1][sCoin,2][sCoin,3][shake][][rainbow]!?[]\n";
     _string += "[fa_centre][sCoin][sCoin][sCoin][sCoin]\n";
