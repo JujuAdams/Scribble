@@ -31,6 +31,7 @@ if (ds_map_exists(global.__scribble_cache_map, _cache_string))
 {
     if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
     var _scribble_array = global.__scribble_cache_map[? _cache_string];
+    scribble_typewriter_step(_scribble_array);
     _scribble_array[@ __SCRIBBLE.TIME] = current_time;
 }
 else
@@ -43,7 +44,6 @@ else
 
 if (scribble_typewriter_get_state(_scribble_array) == (_fade_in? 2.0 : 1.0)) scribble_typewriter_perform(_scribble_array, _fade_in);
 scribble_draw(_scribble_array, _x, _y, _xscale, _yscale, _angle, _colour, _alpha);
-scribble_typewriter_step(_scribble_array);
 
 if (SCRIBBLE_CACHE_TIMEOUT > 0)
 {
