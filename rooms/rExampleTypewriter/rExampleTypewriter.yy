@@ -1,6 +1,6 @@
 
 {
-    "name": "rExampleBeginner",
+    "name": "rExampleTypewriter",
     "id": "dbcf1cbf-cbd0-40fa-9a88-c5c9e80976c1",
     "creationCodeFile": "",
     "inheritCode": false,

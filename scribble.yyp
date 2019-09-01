@@ -194,7 +194,7 @@
             "Key": "66869739-b0df-4075-8fc0-6ef5b09d0d07",
             "Value": {
                 "id": "acf4049d-9888-4a83-91fb-4a5216716487",
-                "resourcePath": "objects\\oExampleIntermediate\\oExampleIntermediate.yy",
+                "resourcePath": "objects\\oExampleTypewriter\\oExampleTypewriter.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -226,7 +226,7 @@
             "Key": "70d306e8-47c9-45bd-95c7-4f4fafd7f3d1",
             "Value": {
                 "id": "09405ba8-50e1-466c-b6fb-68c27255aad2",
-                "resourcePath": "objects\\oExampleAdvanced\\oExampleAdvanced.yy",
+                "resourcePath": "objects\\oExampleManual\\oExampleManual.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -402,7 +402,7 @@
             "Key": "9d531882-0dcf-4be8-8225-d8370e77e70b",
             "Value": {
                 "id": "76f13f6c-af69-407b-968e-976b748409e2",
-                "resourcePath": "rooms\\rExampleIntermediate\\rExampleIntermediate.yy",
+                "resourcePath": "rooms\\rExampleBasic\\rExampleBasic.yy",
                 "resourceType": "GMRoom"
             }
         },
@@ -498,7 +498,7 @@
             "Key": "b9c3b946-515e-4f7f-8f0e-687f9b63de18",
             "Value": {
                 "id": "982e0d65-2342-4a68-97d1-58f63d4e81b8",
-                "resourcePath": "objects\\oExampleBeginner\\oExampleBeginner.yy",
+                "resourcePath": "objects\\oExampleBasic\\oExampleBasic.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -586,7 +586,7 @@
             "Key": "dbcf1cbf-cbd0-40fa-9a88-c5c9e80976c1",
             "Value": {
                 "id": "097da67d-0eba-44a0-8a35-8659d042920e",
-                "resourcePath": "rooms\\rExampleBeginner\\rExampleBeginner.yy",
+                "resourcePath": "rooms\\rExampleTypewriter\\rExampleTypewriter.yy",
                 "resourceType": "GMRoom"
             }
         },
@@ -706,7 +706,7 @@
             "Key": "fab0fef8-eab5-4e5b-bccd-f5ed6f43db50",
             "Value": {
                 "id": "7b15668b-51af-4f1a-b2b3-d87d420c610f",
-                "resourcePath": "rooms\\rExampleAdvanced\\rExampleAdvanced.yy",
+                "resourcePath": "rooms\\rExampleManual\\rExampleManual.yy",
                 "resourceType": "GMRoom"
             }
         },

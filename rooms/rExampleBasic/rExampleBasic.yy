@@ -1,6 +1,6 @@
 
 {
-    "name": "rExampleIntermediate",
+    "name": "rExampleBasic",
     "id": "9d531882-0dcf-4be8-8225-d8370e77e70b",
     "creationCodeFile": "",
     "inheritCode": false,
