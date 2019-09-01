@@ -27,6 +27,7 @@ var _alpha           = ((argument_count > 9) && (argument[9] != undefined))? arg
 var _cache_string = string(_string) + ":" + string(_width_limit) + ":" + string(_line_min_height);
 if (ds_map_exists(global.__scribble_cache_map, _cache_string))
 {
+    if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
     var _scribble_array = global.__scribble_cache_map[? _cache_string];
     _scribble_array[@ __SCRIBBLE.TIME] = current_time;
 }
