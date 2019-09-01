@@ -13,7 +13,7 @@ var _string  = "[sound,sndCrank][rainbow]TEST[] [slant]AaBbCcDdEeFf[/slant]##";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][rumble]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] [/rumble]THE LAZY [fTestB]DOG.";
 
 text = scribble_create(_string, -1, 450, "c_xanadu", "fTestB", fa_center);
-scribble_typewriter(text, true);
+scribble_typewriter_perform(text, true);
 scribble_set_box_alignment(text, fa_center, fa_middle);
 
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";

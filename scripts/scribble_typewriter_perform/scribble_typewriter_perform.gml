@@ -1,7 +1,6 @@
-/// Begins a fade-in animation for a Scribble data structure, starting at 0% visible
+/// Begins a fade animation for a Scribble data structure
 ///
-/// This script sets a Scribble data structure to fade in progressively over time.
-/// Please note that this immediately sets visibility of the text to 0%.
+/// This script sets a Scribble data structure to fade in/out progressively over time.
 ///
 /// Three modes are supported:
 /// 1) SCRIBBLE_TYPEWRITER_WHOLE         - Fades in the entire textbox at the same time
