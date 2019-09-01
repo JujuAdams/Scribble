@@ -6,13 +6,13 @@
 
 var _scribble_array = argument0;
 
-if (!SCRIBBLE_CALL_STEP_IN_DRAW) _scribble_array[@ __SCRIBBLE.HAS_CALLED_STEP] = true;
-
 if (!scribble_exists(_scribble_array))
 {
     show_error("Scribble:\nScribble data structure \"" + string(_scribble_array) + "\" doesn't exist!\n ", false);
     exit;
 }
+
+_scribble_array[@ __SCRIBBLE.HAS_CALLED_STEP] = true;
 
 var _tw_speed     = _scribble_array[__SCRIBBLE.TW_SPEED    ]*SCRIBBLE_STEP_SIZE;
 var _tw_direction = _scribble_array[__SCRIBBLE.TW_DIRECTION];

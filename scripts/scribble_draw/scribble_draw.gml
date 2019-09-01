@@ -22,25 +22,17 @@ var _alpha          = ((argument_count > 7) && (argument[7] != undefined))? argu
 
 #region Check if we should've called scribble_typewriter_step() for this Scribble data structure
 
-if ((_scribble_array[__SCRIBBLE.TW_DIRECTION] != 0) && (array_length_1d(_scribble_array[__SCRIBBLE.EVENT_CHAR_ARRAY]) > 0))
+if ((_scribble_array[__SCRIBBLE.TW_DIRECTION] != 0)
+&& (array_length_1d(_scribble_array[__SCRIBBLE.EVENT_CHAR_ARRAY]) > 0)
+&& !_scribble_array[__SCRIBBLE.HAS_CALLED_STEP])
 {
-    if ( !_scribble_array[__SCRIBBLE.HAS_CALLED_STEP])
+    if (_scribble_array[__SCRIBBLE.NO_STEP_COUNT] >= 1) //Give GM one frame of grace before throwing an error
     {
-        if (SCRIBBLE_CALL_STEP_IN_DRAW)
-        {
-            scribble_typewriter_step(_scribble_array);
-        }
-        else
-        {
-            if (_scribble_array[__SCRIBBLE.NO_STEP_COUNT] >= 1) //Give GM one frame of grace before throwing an error
-            {
-                show_error("Scribble:\nscribble_typewriter_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
-            }
-            else
-            {
-                ++_scribble_array[@ __SCRIBBLE.NO_STEP_COUNT];
-            }
-        }
+        show_error("Scribble:\nscribble_typewriter_step() must be called in the Step event for events and typewriter effects to work.\n ", false);
+    }
+    else
+    {
+        ++_scribble_array[@ __SCRIBBLE.NO_STEP_COUNT];
     }
 }
 
