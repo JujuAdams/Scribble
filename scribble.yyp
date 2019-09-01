@@ -338,7 +338,7 @@
             "Key": "7fe06bc8-db42-45cb-a917-e4992c3ddb68",
             "Value": {
                 "id": "2e0b8d99-ceb1-4f9d-91e0-9dc34d8e7a02",
-                "resourcePath": "scripts\\scribble_clear_cache\\scribble_clear_cache.yy",
+                "resourcePath": "scripts\\scribble_clear_draw_text_cache\\scribble_clear_draw_text_cache.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -857,13 +857,13 @@
         "24724880-e29f-4fa7-8ee6-fdc0ba981460",
         "13548f19-dd1d-4dc1-9444-205ee176ef6f",
         "fd3c78ca-4ee7-4cc8-a632-2b15d1b89991",
+        "7fe06bc8-db42-45cb-a917-e4992c3ddb68",
         "c1f9a882-5c95-4baa-9aa2-288643547505",
         "bbaf2270-049d-4b2f-b134-efca33e50f7e",
         "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd",
         "baaa6707-db8c-472e-90b1-562acc7d6c47",
         "b267953e-f407-4457-9e84-b719945ec6f9",
         "7113040f-3a00-42da-b19f-4656de5da667",
-        "7fe06bc8-db42-45cb-a917-e4992c3ddb68",
         "e89348c7-a709-4b5b-9074-c8965f362fb4",
         "00fbc8f9-0e51-458c-8834-69a5cbc5e94b",
         "3aa4ea7b-a86d-41d9-bc38-f49e0f8c1ce5",
