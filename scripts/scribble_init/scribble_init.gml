@@ -20,7 +20,7 @@
 #region Internal Macro Definitions
 
 #macro __SCRIBBLE_VERSION  "4.8.0"
-#macro __SCRIBBLE_DATE     "2019/07/08"
+#macro __SCRIBBLE_DATE     "2019/09/01"
 #macro __SCRIBBLE_DEBUG    false
 
 enum __SCRIBBLE_FONT
@@ -47,11 +47,11 @@ enum __SCRIBBLE_FONT_TYPE
 
 enum __SCRIBBLE_LINE
 {
-    LAST_CHAR,       //0
-    WIDTH,           //1
-    HEIGHT,          //2
-    HALIGN,          //3
-    __SIZE           //4
+    LAST_CHAR, //0
+    WIDTH,     //1
+    HEIGHT,    //2
+    HALIGN,    //3
+    __SIZE     //4
 }
 
 enum __SCRIBBLE_VERTEX_BUFFER
