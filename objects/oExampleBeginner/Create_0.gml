@@ -8,6 +8,6 @@
 //Start up Scribble and load some fonts
 scribble_init("Fonts", "fTestA", true);
 
-//GM's spritefont renderer handles spaces weirdly so it's best to specify a width
+//Add a spritefont to Scribble
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
-scribble_add_spritefont("sSpriteFont", _mapstring, 0, 3);
+scribble_add_spritefont("sSpriteFont", _mapstring, 0, 3); //GM's spritefont renderer handles spaces weirdly so it's best to specify a width

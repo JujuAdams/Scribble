@@ -40,5 +40,10 @@ var _string  = "[sound,sndCrank][rainbow]abcdef[] ABCDEF##";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][rumble]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/rumble]LAZY [fTestB]DOG.";
 
 text = scribble_create(_string, -1, 450, "c_xanadu", "fTestB", fa_center);
+
+//Set this text to be displayed typewriter style, fading in per character
 scribble_typewriter_perform(text, true);
+
+//Set how the text should be aligned relative to the draw coordinate
+//Here, we're setting the alignment so that the middle/centre of the box is at the draw coordinate
 scribble_set_box_alignment(text, fa_center, fa_middle);
