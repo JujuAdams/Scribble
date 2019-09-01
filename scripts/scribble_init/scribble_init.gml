@@ -54,28 +54,6 @@ enum __SCRIBBLE_LINE
     __SIZE           //4
 }
 
-enum __SCRIBBLE_WORD
-{
-    X,              // 0
-    Y,              // 1
-    WIDTH,          // 2
-    HEIGHT,         // 3
-    SCALE,          // 4
-    SLANT,          // 5
-    VALIGN,         // 6
-    STRING,         // 7
-    INPUT_STRING,   // 8
-    SPRITE,         // 9
-    IMAGE,          //10
-    IMAGE_SPEED,    //11
-    LENGTH,         //12
-    FONT,           //13
-    COLOUR,         //14
-    FLAGS,          //15
-    NEXT_SEPARATOR, //16
-    __SIZE          //17
-}
-
 enum __SCRIBBLE_VERTEX_BUFFER
 {
     BUFFER,
