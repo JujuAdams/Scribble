@@ -54,7 +54,7 @@ var _t = _scribble_array[__SCRIBBLE.TOP   ] - _top;
 var _r = _scribble_array[__SCRIBBLE.RIGHT ] + _right;
 var _b = _scribble_array[__SCRIBBLE.BOTTOM] + _bottom;
 
-var _result = array_create(8);
+var _result = array_create(SCRIBBLE_BOX.__SIZE);
 var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); _result[SCRIBBLE_BOX.TL_X] = _vertex[0]; _result[SCRIBBLE_BOX.TL_Y] = _vertex[1];
 var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); _result[SCRIBBLE_BOX.TR_X] = _vertex[0]; _result[SCRIBBLE_BOX.TR_Y] = _vertex[1];
 var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); _result[SCRIBBLE_BOX.BL_X] = _vertex[0]; _result[SCRIBBLE_BOX.BL_Y] = _vertex[1];

@@ -19,7 +19,7 @@
 
 #region Internal Macro Definitions
 
-#macro __SCRIBBLE_VERSION  "4.8.0"
+#macro __SCRIBBLE_VERSION  "5.x.x"
 #macro __SCRIBBLE_DATE     "2019/09/01"
 #macro __SCRIBBLE_DEBUG    false
 

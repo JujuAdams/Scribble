@@ -54,7 +54,8 @@ enum SCRIBBLE_BOX
     TL_X, TL_Y, //Top left corner
     TR_X, TR_Y, //Top right corner
     BL_X, BL_Y, //Bottom left corner
-    BR_X, BR_Y  //Bottom right corner
+    BR_X, BR_Y, //Bottom right corner
+    __SIZE
 }
 
 #endregion
