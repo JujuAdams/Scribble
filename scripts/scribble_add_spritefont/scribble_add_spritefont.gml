@@ -87,11 +87,16 @@ var _space_width    = _data[__SCRIBBLE_FONT.SPACE_WIDTH];
         
 var _font_glyphs_map = ds_map_create();
 _data[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _font_glyphs_map;
-        
+
+var _old_x      = x;
+var _old_y      = y;
+var _old_sprite = sprite_index;
+var _old_mask   = mask_index;
+
 sprite_index = _sprite;
 mask_index   = _sprite;
-x = -sprite_get_xoffset(_sprite);
-y = -sprite_get_yoffset(_sprite);
+x            = -sprite_get_xoffset(_sprite);
+y            = -sprite_get_yoffset(_sprite);
         
 //Strip out a map of of glyphs
 var _length = string_length(_sprite_string);
@@ -181,7 +186,10 @@ if (_space_width != undefined)
     _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _space_width;
     _array[@ SCRIBBLE_GLYPH.SEPARATION] = _space_width;
 }
-        
-sprite_index = -1;
+
+sprite_index = _old_sprite;
+mask_index   = _old_mask;
+x            = _old_x;
+y            = _old_y;
 
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added \"" + _font + "\" as a spritefont");
