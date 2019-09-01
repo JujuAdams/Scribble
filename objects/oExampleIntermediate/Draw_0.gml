@@ -5,7 +5,7 @@ var _string  = "[rainbow]abcdef[] ABCDEF##";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][shake]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fTestB]DOG.";
 
 //Draw the text
-var _scribble = scribble_draw_text(x - 150, y - 80, _string);
+var _scribble = scribble_draw_text_typewriter(x - 150, y - 80, _string, show, !show);
 
 //Find the size and position of the bounding box (plus a bit) and draw it
 var _box = scribble_get_box(_scribble,   x - 150, y - 80,   5, 5,   5, 5);

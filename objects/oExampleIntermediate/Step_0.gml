@@ -1,1 +1,1 @@
-if (keyboard_check_pressed(vk_space)) fade_in = !fade_in;
+if (keyboard_check_pressed(vk_space)) show = !show;

@@ -18,4 +18,4 @@ scribble_add_colour("c_smaragdine", $50c875);
 scribble_add_colour("c_xanadu"    , $738678);
 scribble_add_colour("c_amaranth"  , $e52b50);
 
-fade_in = true;
+show = true;
