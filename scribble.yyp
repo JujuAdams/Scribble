@@ -402,7 +402,7 @@
             "Key": "9d531882-0dcf-4be8-8225-d8370e77e70b",
             "Value": {
                 "id": "76f13f6c-af69-407b-968e-976b748409e2",
-                "resourcePath": "rooms\\rExampleBasic\\rExampleBasic.yy",
+                "resourcePath": "rooms\\rExampleTypewriter\\rExampleTypewriter.yy",
                 "resourceType": "GMRoom"
             }
         },
@@ -586,7 +586,7 @@
             "Key": "dbcf1cbf-cbd0-40fa-9a88-c5c9e80976c1",
             "Value": {
                 "id": "097da67d-0eba-44a0-8a35-8659d042920e",
-                "resourcePath": "rooms\\rExampleTypewriter\\rExampleTypewriter.yy",
+                "resourcePath": "rooms\\rExampleBasic\\rExampleBasic.yy",
                 "resourceType": "GMRoom"
             }
         },
