@@ -1,1 +1,1 @@
-scribble_free(text);
+scribble_free(scribble);

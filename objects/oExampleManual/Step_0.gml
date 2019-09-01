@@ -1,1 +1,0 @@
-if (keyboard_check_pressed(ord("C"))) scribble_free(0);

@@ -39,4 +39,4 @@ var _string  = "[sound,sndCrank][rainbow]abcdef[] ABCDEF##";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][rumble]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/rumble]LAZY [fTestB]DOG.";
 
 //text = scribble_create(_string, -1, 450, "c_xanadu", "fTestB", fa_center);
-text = scribble_cache(_string, undefined);
+scribble = scribble_cache(_string, undefined);
