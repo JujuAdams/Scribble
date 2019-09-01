@@ -28,6 +28,7 @@ var _cache_string = string(_string) + ":" + string(_width_limit) + ":" + string(
 if (ds_map_exists(global.__scribble_cache_map, _cache_string))
 {
     var _scribble_array = global.__scribble_cache_map[? _cache_string];
+    _scribble_array[@ __SCRIBBLE.TIME] = current_time;
 }
 else
 {
@@ -37,5 +38,20 @@ else
 }
 
 scribble_draw(_scribble_array, _x, _y, _xscale, _yscale, _angle, _colour, _alpha);
+
+if (SCRIBBLE_CACHE_TIMEOUT > 0)
+{
+    //Scan through the cache to see if any scribble data structures have elapsed
+    global.__scribble_cache_test_index = (global.__scribble_cache_test_index + 1) mod ds_list_size(global.__scribble_cache_list);
+    var _string = global.__scribble_cache_list[| global.__scribble_cache_test_index];
+    var _scribble_array = global.__scribble_cache_map[? _string];
+    if (_scribble_array[__SCRIBBLE.TIME] + SCRIBBLE_CACHE_TIMEOUT < current_time)
+    {
+        if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Removing \"" + _string + "\" from cache");
+        scribble_destroy(_scribble_array);
+        ds_map_delete(global.__scribble_cache_map, _string);
+        ds_list_delete(global.__scribble_cache_list, global.__scribble_cache_test_index);
+    }
+}
 
 return _scribble_array;

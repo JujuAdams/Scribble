@@ -129,6 +129,7 @@ _scribble_array[@ __SCRIBBLE.BOTTOM             ] = 0;
 _scribble_array[@ __SCRIBBLE.CHARACTERS         ] = 0;
 _scribble_array[@ __SCRIBBLE.LINES              ] = 0;
 _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count;
+_scribble_array[@ __SCRIBBLE.TIME               ] = current_time;
 
 _scribble_array[@ __SCRIBBLE.__SECTION2         ] = "-- Typewriter --";
 _scribble_array[@ __SCRIBBLE.TW_DIRECTION       ] = 0;

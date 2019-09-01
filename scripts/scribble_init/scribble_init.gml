@@ -14,8 +14,6 @@
 /// 6) Creates a vertex format
 /// 7) Cache uniform indexes for the shScribble shader
 /// 8) Build a lookup table for decoding hexcode colours in scribble_create()
-///
-/// Initialisation is only fully complete once scribble_init_end() is called
 
 #region Internal Macro Definitions
 
@@ -101,34 +99,35 @@ enum __SCRIBBLE
     CHARACTERS,          //17
     LINES,               //18
     GLOBAL_INDEX,        //20
+    TIME,                //21
     
-    __SECTION2,          //21
-    TW_DIRECTION,        //22
-    TW_SPEED,            //23
-    TW_POSITION,         //24
-    TW_METHOD,           //25
-    TW_SMOOTHNESS,       //26
-    CHAR_FADE_T,         //27
-    LINE_FADE_T,         //28
+    __SECTION2,          //22
+    TW_DIRECTION,        //23
+    TW_SPEED,            //24
+    TW_POSITION,         //25
+    TW_METHOD,           //26
+    TW_SMOOTHNESS,       //27
+    CHAR_FADE_T,         //28
+    LINE_FADE_T,         //29
     
-    __SECTION3,          //29
-    HAS_CALLED_STEP,     //30
-    NO_STEP_COUNT,       //31
-    DATA_FIELDS,         //32
-    ANIMATION_TIME,      //33
+    __SECTION3,          //30
+    HAS_CALLED_STEP,     //31
+    NO_STEP_COUNT,       //32
+    DATA_FIELDS,         //33
+    ANIMATION_TIME,      //34
     
-    __SECTION4,          //34
-    LINE_LIST,           //35
-    VERTEX_BUFFER_LIST,  //36
+    __SECTION4,          //35
+    LINE_LIST,           //36
+    VERTEX_BUFFER_LIST,  //37
     
-    __SECTION5,          //37
-    EVENT_PREVIOUS,      //38
-    EVENT_CHAR_PREVIOUS, //39
-    EVENT_CHAR_ARRAY,    //40
-    EVENT_NAME_ARRAY,    //41
-    EVENT_DATA_ARRAY,    //42
+    __SECTION5,          //38
+    EVENT_PREVIOUS,      //39
+    EVENT_CHAR_PREVIOUS, //40
+    EVENT_CHAR_ARRAY,    //41
+    EVENT_NAME_ARRAY,    //42
+    EVENT_DATA_ARRAY,    //43
     
-    __SIZE               //43
+    __SIZE               //44
 }
 
 #macro __SCRIBBLE_ON_DIRECTX        ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
@@ -194,18 +193,19 @@ else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_defau
 }
 
 //Declare global variables
-global.__scribble_font_directory = _font_directory;
-global.__scribble_font_data      = ds_map_create();  //Stores a data array for each font defined inside Scribble
-global.__scribble_colours        = ds_map_create();  //Stores colour definitions, including custom colours
-global.__scribble_events         = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
-global.__scribble_flags          = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_flags_slash    = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_tag_copy       = ds_map_create();  //Stores asset bindings; key is the name of the event, the value is the script to call
-global.__scribble_alive          = ds_map_create();  //ds_map of all alive Scribble data structures
-global.__scribble_global_count   = 0;
-global.__scribble_default_font   = _default_font;
-global.__scribble_cache_map      = ds_map_create();
-global.__scribble_cache_list     = ds_list_create();
+global.__scribble_font_directory   = _font_directory;
+global.__scribble_font_data        = ds_map_create();  //Stores a data array for each font defined inside Scribble
+global.__scribble_colours          = ds_map_create();  //Stores colour definitions, including custom colours
+global.__scribble_events           = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
+global.__scribble_flags            = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_flags_slash      = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_tag_copy         = ds_map_create();  //Stores asset bindings; key is the name of the event, the value is the script to call
+global.__scribble_alive            = ds_map_create();  //ds_map of all alive Scribble data structures
+global.__scribble_global_count     = 0;
+global.__scribble_default_font     = _default_font;
+global.__scribble_cache_map        = ds_map_create();
+global.__scribble_cache_list       = ds_list_create();
+global.__scribble_cache_test_index = 0;
 
 global.__scribble_default_animation_parameters = scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
 

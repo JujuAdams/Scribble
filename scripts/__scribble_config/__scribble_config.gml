@@ -44,6 +44,7 @@
 #macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION  false //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
 #macro SCRIBBLE_SLANT_AMOUNT               0.24  //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_Z                          0     //The z-value for vertexes
+#macro SCRIBBLE_CACHE_TIMEOUT              60000 //How long to wait before the cache automatically drops a scribble data structure. Set to 0 (or less) to turn off automatic de-caching (manually call scribble_clear_cache() instead)
 
 #endregion
 
