@@ -1,10 +1,10 @@
-/// Draws a Scribble data structure created with scribble_create()
+/// Draws a string
 ///
-/// @param x               The x position in the room to draw at. Defaults to 0
-/// @param y               The y position in the room to draw at. Defaults to 0
-/// @param string          The Scribble data structure to be drawn. See scribble_create()
-/// @param maxLineWidth    The maximum line width for each line of text. Use a negative number for no limit. Defaults to no limit
-/// @param minLineHeight   The minimum line height for each line of text. Defaults to the height of a space character of the default font
+/// @param x               The x position in the room to draw at
+/// @param y               The y position in the room to draw at
+/// @param string          The string to be drawn. See scribble_create()
+/// @param minLineHeight   The minimum line height for each line of text. Use a negative number to use the height of a space character of the default font
+/// @param maxLineWidth    The maximum line width for each line of text. Use a negative number for no limit
 /// @param [xscale]        The horizontal scaling of the text. Defaults to the value set in __scribble_config()
 /// @param [yscale]        The vertical scaling of the text. Defaults to the value set in __scribble_config()
 /// @param [angle]         The rotation of the text. Defaults to the value set in __scribble_config()
@@ -16,8 +16,8 @@
 var _x               = argument[0];
 var _y               = argument[1];
 var _string          = argument[2];
-var _width_limit     = argument[3];
-var _line_min_height = argument[4];
+var _line_min_height = argument[3];
+var _width_limit     = argument[4];
 var _xscale          = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : SCRIBBLE_DEFAULT_XSCALE;
 var _yscale          = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : SCRIBBLE_DEFAULT_YSCALE;
 var _angle           = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : SCRIBBLE_DEFAULT_ANGLE;

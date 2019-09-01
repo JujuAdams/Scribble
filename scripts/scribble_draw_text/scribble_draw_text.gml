@@ -1,8 +1,8 @@
-/// Draws a Scribble data structure created with scribble_create()
+/// Draws a string
 ///
-/// @param x         The x position in the room to draw at. Defaults to 0
-/// @param y         The y position in the room to draw at. Defaults to 0
-/// @param string    The Scribble data structure to be drawn. See scribble_create()
+/// @param x         The x position in the room to draw at
+/// @param y         The y position in the room to draw at
+/// @param string    The string to be drawn. See scribble_create()
 /// @param [xscale]  The horizontal scaling of the text. Defaults to the value set in __scribble_config()
 /// @param [yscale]  The vertical scaling of the text. Defaults to the value set in __scribble_config()
 /// @param [angle]   The rotation of the text. Defaults to the value set in __scribble_config()
