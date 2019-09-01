@@ -26,24 +26,17 @@ scribble_add_flag("rumble", 2);
 var _new_sprite = sprite_add("green coin.png", 0, false, false, 0, 0);
 scribble_copy_tag("green coin", sprite_get_name(_new_sprite));
 
-
-
-
-
 //Some characters need a bit of fine adjustment in code since it's not always possible to fix this in the font itself
 scribble_set_glyph_property("sSpriteFont", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 scribble_set_glyph_property("sSpriteFont", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);
+
+
+
 var _string  = "[sound,sndCrank][rainbow]abcdef[] ABCDEF##";
     _string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][sCoin,0][sound,sndSwitch][sCoin,1][sound,sndSwitch][sCoin,2][sound,sndSwitch][sCoin,3][sound,sndSwitch][][rumble][rainbow]!?[]\n";
     _string += "[sCoin][sCoin,1,0.1][sCoin,2,0.1][sCoin,3,0.1]\n";
     _string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][rumble]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/rumble]LAZY [fTestB]DOG.";
 
-text = scribble_create(_string, -1, 450, "c_xanadu", "fTestB", fa_center);
-
-//Set this text to be displayed typewriter style, fading in per character
-scribble_typewriter_perform(text, true);
-
-//Set how the text should be aligned relative to the draw coordinate
-//Here, we're setting the alignment so that the middle/centre of the box is at the draw coordinate
-scribble_set_box_alignment(text, fa_center, fa_middle);
+//text = scribble_create(_string, -1, 450, "c_xanadu", "fTestB", fa_center);
+text = scribble_cache(_string, undefined);

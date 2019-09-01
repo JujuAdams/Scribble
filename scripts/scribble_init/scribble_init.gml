@@ -21,6 +21,32 @@
 #macro __SCRIBBLE_DATE     "2019/09/01"
 #macro __SCRIBBLE_DEBUG    false
 
+enum SCRIBBLE_BOX
+{
+    TL_X, TL_Y, //Top left corner
+    TR_X, TR_Y, //Top right corner
+    BL_X, BL_Y, //Bottom left corner
+    BR_X, BR_Y, //Bottom right corner
+    __SIZE
+}
+
+//You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
+enum SCRIBBLE_GLYPH
+{
+    CHARACTER,  // 0
+    INDEX,      // 1
+    WIDTH,      // 2
+    HEIGHT,     // 3
+    X_OFFSET,   // 4
+    Y_OFFSET,   // 5
+    SEPARATION, // 6
+    U0,         // 7
+    V0,         // 8
+    U1,         // 9
+    V1,         //10
+    __SIZE      //11
+}
+
 enum __SCRIBBLE_FONT
 {
     NAME,         // 0
@@ -76,6 +102,29 @@ enum __SCRIBBLE_VERTEX
     __SIZE = 36
 }
 
+enum SCRIBBLE_DRAW
+{
+    XSCALE,
+    YSCALE,
+    ANGLE,
+    COLOUR,
+    ALPHA,
+    LINE_MIN_HEIGHT,
+    MIN_WIDTH,
+    MAX_WIDTH,
+    MIN_HEIGHT,
+    MAX_HEIGHT,
+    HALIGN,
+    VALIGN,
+    TYPEWRITER_FADE_IN,
+    TYPEWRITER_METHOD,
+    TYPEWRITER_SPEED,
+    TYPEWRITER_SMOOTHNESS,
+    ANIMATION_ARRAY,
+    CACHE_GROUP,
+    __SIZE
+}
+
 enum __SCRIBBLE
 {
     __SECTION0,          // 0
@@ -100,41 +149,43 @@ enum __SCRIBBLE
     LINES,               //18
     GLOBAL_INDEX,        //20
     TIME,                //21
+    FREED,               //22
     
-    __SECTION2,          //22
-    TW_DIRECTION,        //23
-    TW_SPEED,            //24
-    TW_POSITION,         //25
-    TW_METHOD,           //26
-    TW_SMOOTHNESS,       //27
-    CHAR_FADE_T,         //28
-    LINE_FADE_T,         //29
+    __SECTION2,          //23
+    TW_DIRECTION,        //24
+    TW_SPEED,            //25
+    TW_POSITION,         //26
+    TW_METHOD,           //27
+    TW_SMOOTHNESS,       //28
+    CHAR_FADE_T,         //29
+    LINE_FADE_T,         //30
     
-    __SECTION3,          //30
-    HAS_CALLED_STEP,     //31
-    NO_STEP_COUNT,       //32
-    DATA_FIELDS,         //33
-    ANIMATION_TIME,      //34
+    __SECTION3,          //31
+    HAS_CALLED_STEP,     //32
+    NO_STEP_COUNT,       //33
+    DATA_FIELDS,         //34
+    ANIMATION_TIME,      //35
     
-    __SECTION4,          //35
-    LINE_LIST,           //36
-    VERTEX_BUFFER_LIST,  //37
+    __SECTION4,          //36
+    LINE_LIST,           //37
+    VERTEX_BUFFER_LIST,  //38
     
-    __SECTION5,          //38
-    EVENT_PREVIOUS,      //39
-    EVENT_CHAR_PREVIOUS, //40
-    EVENT_CHAR_ARRAY,    //41
-    EVENT_NAME_ARRAY,    //42
-    EVENT_DATA_ARRAY,    //43
+    __SECTION5,          //39
+    EVENT_PREVIOUS,      //40
+    EVENT_CHAR_PREVIOUS, //41
+    EVENT_CHAR_ARRAY,    //42
+    EVENT_NAME_ARRAY,    //43
+    EVENT_DATA_ARRAY,    //44
     
-    __SIZE               //44
+    __SIZE               //45
 }
 
-#macro __SCRIBBLE_ON_DIRECTX        ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
-#macro __SCRIBBLE_ON_OPENGL         !__SCRIBBLE_ON_DIRECTX
-#macro __SCRIBBLE_ON_MOBILE         ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
-#macro __SCRIBBLE_GLYPH_BYTE_SIZE   (6*__SCRIBBLE_VERTEX.__SIZE)
-#macro __SCRIBBLE_EXPECTED_GLYPHS   100
+#macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
+#macro __SCRIBBLE_ON_OPENGL            !__SCRIBBLE_ON_DIRECTX
+#macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
+#macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
+#macro __SCRIBBLE_EXPECTED_GLYPHS      100
+#macro __SCRIBBLE_DEFAULT_CACHE_GROUP  0
 
 #endregion
 
@@ -193,21 +244,43 @@ else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_defau
 }
 
 //Declare global variables
-global.__scribble_font_directory   = _font_directory;
-global.__scribble_font_data        = ds_map_create();  //Stores a data array for each font defined inside Scribble
-global.__scribble_colours          = ds_map_create();  //Stores colour definitions, including custom colours
-global.__scribble_events           = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
-global.__scribble_flags            = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_flags_slash      = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_tag_copy         = ds_map_create();  //Stores asset bindings; key is the name of the event, the value is the script to call
-global.__scribble_alive            = ds_map_create();  //ds_map of all alive Scribble data structures
-global.__scribble_global_count     = 0;
-global.__scribble_default_font     = _default_font;
-global.__scribble_cache_map        = ds_map_create();
-global.__scribble_cache_list       = ds_list_create();
-global.__scribble_cache_test_index = 0;
-
+global.__scribble_font_directory    = _font_directory;
+global.__scribble_font_data         = ds_map_create();  //Stores a data array for each font defined inside Scribble
+global.__scribble_colours           = ds_map_create();  //Stores colour definitions, including custom colours
+global.__scribble_events            = ds_map_create();  //Stores event bindings; key is the name of the event, the value is the script to call
+global.__scribble_flags             = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_flags_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_tag_copy          = ds_map_create();  //Stores asset bindings; key is the name of the event, the value is the script to call
+global.__scribble_alive             = ds_map_create();  //ds_map of all alive Scribble data structures
+global.__scribble_global_count      = 0;
+global.__scribble_default_font      = _default_font;
+global.__scribble_global_cache_map  = ds_map_create();
+global.__scribble_global_cache_list = ds_list_create();
+global.__scribble_cache_test_index  = 0;
+global.__scribble_cache_group_map   = ds_map_create();
+ds_map_add_list(global.__scribble_cache_group_map, 0, ds_list_create());
 global.__scribble_default_animation_parameters = scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
+
+//Declare state variables
+global.__scribble_state_xscale          = SCRIBBLE_DEFAULT_XSCALE;
+global.__scribble_state_yscale          = SCRIBBLE_DEFAULT_YSCALE;
+global.__scribble_state_angle           = SCRIBBLE_DEFAULT_ANGLE;
+global.__scribble_state_colour          = c_white;
+global.__scribble_state_alpha           = 1.0;
+global.__scribble_state_line_min_height = -1;
+global.__scribble_state_min_width       = -1;
+global.__scribble_state_max_width       = -1;
+global.__scribble_state_min_height      = -1;
+global.__scribble_state_max_height      = -1;
+global.__scribble_state_box_halign      = SCRIBBLE_DEFAULT_BOX_HALIGN;
+global.__scribble_state_box_valign      = SCRIBBLE_DEFAULT_BOX_VALIGN;
+global.__scribble_state_tw_fade_in      = false;
+global.__scribble_state_tw_method       = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+global.__scribble_state_tw_speed        = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+global.__scribble_state_tw_smoothness   = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
+global.__scribble_state_anim_array      = array_copy([], 0, global.__scribble_default_animation_parameters, 0, SCRIBBLE_MAX_DATA_FIELDS);
+global.__scribble_state_cache_group     = __SCRIBBLE_DEFAULT_CACHE_GROUP;
+global.__scribble_state_default         = scribble_get_state();
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_add_colour("c_aqua",    c_aqua   , true);

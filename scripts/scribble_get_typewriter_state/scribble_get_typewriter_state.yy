@@ -1,8 +1,8 @@
 {
-    "id": "a2468e81-16e7-4f6b-b398-5589b1b582c2",
+    "id": "13548f19-dd1d-4dc1-9444-205ee176ef6f",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "scribble_typewriter_set_method",
+    "name": "scribble_get_typewriter_state",
     "IsCompatibility": false,
     "IsDnD": false
 }

@@ -1,2 +1,2 @@
-scribble_destroy(text);
-scribble_destroy(test_text);
+//scribble_free(text);
+//scribble_free(test_text);

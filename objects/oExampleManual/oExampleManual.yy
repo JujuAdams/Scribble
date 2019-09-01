@@ -5,16 +5,6 @@
     "name": "oExampleManual",
     "eventList": [
         {
-            "id": "fe8b0b7c-050a-4b65-a78e-c0d1dabf4b1c",
-            "modelName": "GMEvent",
-            "mvc": "1.0",
-            "IsDnD": false,
-            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
-            "enumb": 0,
-            "eventtype": 3,
-            "m_owner": "70d306e8-47c9-45bd-95c7-4f4fafd7f3d1"
-        },
-        {
             "id": "f017c22c-6b99-4648-b324-0e3683a20779",
             "modelName": "GMEvent",
             "mvc": "1.0",
@@ -42,6 +32,16 @@
             "collisionObjectId": "00000000-0000-0000-0000-000000000000",
             "enumb": 0,
             "eventtype": 12,
+            "m_owner": "70d306e8-47c9-45bd-95c7-4f4fafd7f3d1"
+        },
+        {
+            "id": "ceef9cdf-574c-414a-b3ef-6df8614dd98f",
+            "modelName": "GMEvent",
+            "mvc": "1.0",
+            "IsDnD": false,
+            "collisionObjectId": "00000000-0000-0000-0000-000000000000",
+            "enumb": 0,
+            "eventtype": 3,
             "m_owner": "70d306e8-47c9-45bd-95c7-4f4fafd7f3d1"
         }
     ],

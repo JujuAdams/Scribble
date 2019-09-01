@@ -10,7 +10,7 @@
 
 #macro SCRIBBLE_HASH_NEWLINE       true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COLOURISE_SPRITES  true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
-#macro SCRIBBLE_VERBOSE            false //Enables verbose console output to aid with debugging. Turn off if all the console is getting too cluttered for you!
+#macro SCRIBBLE_VERBOSE            true  //Enables verbose console output to aid with debugging. Turn off if all the console is getting too cluttered for you!
 
 #endregion
 
@@ -31,7 +31,7 @@
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3                               //The default speed of the typewriter effect, in characters/lines per frame
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3                                 //The default smoothhness of the typewriter effect. A value of "0" disables smooth fading
 #macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD      SCRIBBLE_TYPEWRITER_PER_CHARACTER //The default typewriter effect method
-//Use these contants for scribble_typewriter_in() and scribble_typewriter_out():
+//Use these contants for scribble_set_typewriter():
 #macro SCRIBBLE_TYPEWRITER_WHOLE               0                                 //Fade the entire textbox in and out
 #macro SCRIBBLE_TYPEWRITER_PER_CHARACTER       1                                 //Fade each character individually
 #macro SCRIBBLE_TYPEWRITER_PER_LINE            2                                 //Fade each line of text as a group
@@ -45,40 +45,6 @@
 #macro SCRIBBLE_SLANT_AMOUNT               0.24  //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_Z                          0     //The z-value for vertexes
 #macro SCRIBBLE_CACHE_TIMEOUT              60000 //How long to wait before the cache automatically drops a scribble data structure. Set to 0 (or less) to turn off automatic de-caching (manually call scribble_clear_cache() instead)
-
-#endregion
-
-#region scribble_get_box() constants
-
-enum SCRIBBLE_BOX
-{
-    TL_X, TL_Y, //Top left corner
-    TR_X, TR_Y, //Top right corner
-    BL_X, BL_Y, //Bottom left corner
-    BR_X, BR_Y, //Bottom right corner
-    __SIZE
-}
-
-#endregion
-
-#region scribble_set_glyph_property() and scribble_get_glyph_property() constants
-
-//You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
-enum SCRIBBLE_GLYPH
-{
-    CHARACTER,  // 0
-    INDEX,      // 1
-    WIDTH,      // 2
-    HEIGHT,     // 3
-    X_OFFSET,   // 4
-    Y_OFFSET,   // 5
-    SEPARATION, // 6
-    U0,         // 7
-    V0,         // 8
-    U1,         // 9
-    V1,         //10
-    __SIZE      //11
-}
 
 #endregion
 

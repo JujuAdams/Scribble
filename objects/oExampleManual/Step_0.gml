@@ -1,4 +1,1 @@
-scribble_typewriter_step(text);
-
-if (scribble_typewriter_get_state(text) == 1) scribble_typewriter_perform(text, false);
-if (scribble_typewriter_get_state(text) == 2) scribble_typewriter_perform(text, true);
+if (keyboard_check_pressed(ord("C"))) scribble_free(0);

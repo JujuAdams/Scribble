@@ -10,9 +10,6 @@
 /// @param [topMargin]      The additional space to add to the top of the box. Positive values create more space. Defaults to 0
 /// @param [rightMargin]    The additional space to add to the right-hand side of the box. Positive values create more space. Defaults to 0
 /// @param [bottomMargin]   The additional space to add to the bottom of the box. Positive values create more space. Defaults to 0
-/// @param [xscale]         The horizontal scaling of the text. Defaults to the value set in __scribble_config()
-/// @param [yscale]         The vertical scaling of the text. Defaults to the value set in __scribble_config()
-/// @param [angle]          The rotation of the text. Defaults to the value set in __scribble_config()
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
@@ -23,9 +20,6 @@ var _left           = ((argument_count > 3) && (argument[3] != undefined))? argu
 var _top            = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
 var _right          = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
 var _bottom         = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 0;
-var _xscale         = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : SCRIBBLE_DEFAULT_XSCALE;
-var _yscale         = ((argument_count > 8) && (argument[8] != undefined))? argument[8] : SCRIBBLE_DEFAULT_YSCALE;
-var _angle          = ((argument_count > 9) && (argument[9] != undefined))? argument[9] : SCRIBBLE_DEFAULT_ANGLE;
 
 if (!scribble_exists(_scribble_array))
 {
@@ -33,7 +27,9 @@ if (!scribble_exists(_scribble_array))
     exit;
 }
 
-if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
+if ((global.__scribble_state_xscale == 1)
+&&  (global.__scribble_state_yscale == 1)
+&&  (global.__scribble_state_angle  == 0))
 {
     //Avoid using matrices if we can
     var _l = _x + _scribble_array[__SCRIBBLE.LEFT  ] - _left;
@@ -47,7 +43,9 @@ if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
             _r, _b ];
 }
 
-var _matrix = matrix_build(_x,_y,0,   0,0,_angle,   _xscale,_yscale,1);
+var _matrix = matrix_build(_x, _y, 0, 
+                           0, 0, global.__scribble_state_angle,
+                           global.__scribble_state_xscale, global.__scribble_state_yscale, 1);
 
 var _l = _scribble_array[__SCRIBBLE.LEFT  ] - _left;
 var _t = _scribble_array[__SCRIBBLE.TOP   ] - _top;

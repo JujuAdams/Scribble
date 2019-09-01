@@ -1,11 +1,7 @@
 /// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw()
 ///
-/// @param string              The string to be parsed. See below for the various in-line formatting commands
-/// @param [minLineHeight]     The minimum line height for each line of text. Defaults to the height of a space character of the default font
-/// @param [maxLineWidth]      The maximum line width for each line of text. Use a negative number for no limit. Defaults to no limit
-/// @param [startingColour]    The (initial) blend colour for the text. Defaults to white
-/// @param [startingFont]      The (initial) font for the text. The font name should be provided as a string. Defaults to Scribble's global default font (the first font added during initialisation)
-/// @param [startingHAlign]    The (initial) horizontal alignment for the test. Defaults to left justified
+/// @param string         The string to be parsed. See below for the various in-line formatting commands
+/// @param [cacheGroup]   The cache group. Integers or strings accepted. Use a value of <undefined> for persistent. Cache group 0 is the default group
 ///
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 ///
@@ -41,16 +37,14 @@ if ( !variable_global_exists("__scribble_global_count") )
 
 var _timer_total = get_timer();
 
-var _input_string     = argument[0];
-var _line_min_height  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
-var _width_limit      = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : -1;
-var _def_colour       = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_TEXT_COLOUR;
-var _def_font         = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : global.__scribble_default_font;
-var _def_halign       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : fa_left;
-
-
+var _input_string = argument[0];
+var _cache_group  = (argument_count > 1)? argument[1] : __SCRIBBLE_DEFAULT_CACHE_GROUP;
 
 #region Process input parameters
+
+var _def_colour   = SCRIBBLE_DEFAULT_TEXT_COLOUR;
+var _def_font     = global.__scribble_default_font;
+var _def_halign   = fa_left;
 
 //Check if the default font even exists
 if (!ds_map_exists(global.__scribble_font_data, _def_font))
@@ -73,6 +67,7 @@ if (_glyph_array == undefined)
     exit;
 }
 
+var _line_min_height = global.__scribble_state_line_min_height;
 var _def_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH]; //Find the default font's space width
 if (_line_min_height < 0) _line_min_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT]; //Find the default line minimum height if not specified
 
@@ -105,21 +100,18 @@ var _events_name_array     = array_create(0);  //Stores each event's name
 var _events_data_array     = array_create(0);  //Stores each event's parameters
 var _texture_to_buffer_map = ds_map_create();
 
-global.__scribble_global_count++;
-global.__scribble_alive[? global.__scribble_global_count ] = _scribble_array;
-
 _scribble_array[@ __SCRIBBLE.__SECTION0         ] = "-- Parameters --";
 _scribble_array[@ __SCRIBBLE.VERSION            ] = __SCRIBBLE_VERSION;
 _scribble_array[@ __SCRIBBLE.STRING             ] = _input_string;
 _scribble_array[@ __SCRIBBLE.DEFAULT_FONT       ] = _def_font;
 _scribble_array[@ __SCRIBBLE.DEFAULT_COLOUR     ] = _def_colour;
 _scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN     ] = _def_halign;
-_scribble_array[@ __SCRIBBLE.WIDTH_LIMIT        ] = _width_limit;
+_scribble_array[@ __SCRIBBLE.WIDTH_LIMIT        ] = global.__scribble_state_max_width;
 _scribble_array[@ __SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
 
 _scribble_array[@ __SCRIBBLE.__SECTION1         ] = "-- Statistics --";
-_scribble_array[@ __SCRIBBLE.HALIGN             ] = SCRIBBLE_DEFAULT_BOX_HALIGN;
-_scribble_array[@ __SCRIBBLE.VALIGN             ] = SCRIBBLE_DEFAULT_BOX_VALIGN;
+_scribble_array[@ __SCRIBBLE.HALIGN             ] = global.__scribble_state_box_halign;
+_scribble_array[@ __SCRIBBLE.VALIGN             ] = global.__scribble_state_box_valign;
 _scribble_array[@ __SCRIBBLE.WIDTH              ] = 0;
 _scribble_array[@ __SCRIBBLE.HEIGHT             ] = 0;
 _scribble_array[@ __SCRIBBLE.LEFT               ] = 0;
@@ -128,8 +120,9 @@ _scribble_array[@ __SCRIBBLE.RIGHT              ] = 0;
 _scribble_array[@ __SCRIBBLE.BOTTOM             ] = 0;
 _scribble_array[@ __SCRIBBLE.CHARACTERS         ] = 0;
 _scribble_array[@ __SCRIBBLE.LINES              ] = 0;
-_scribble_array[@ __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count;
+_scribble_array[@ __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count+1;
 _scribble_array[@ __SCRIBBLE.TIME               ] = current_time;
+_scribble_array[@ __SCRIBBLE.FREED              ] = false;
 
 _scribble_array[@ __SCRIBBLE.__SECTION2         ] = "-- Typewriter --";
 _scribble_array[@ __SCRIBBLE.TW_DIRECTION       ] = 0;
@@ -156,6 +149,38 @@ _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = -1;
 _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY   ] = _events_char_array; //Stores each event's triggering cha
 _scribble_array[@ __SCRIBBLE.EVENT_NAME_ARRAY   ] = _events_name_array; //Stores each event's name
 _scribble_array[@ __SCRIBBLE.EVENT_DATA_ARRAY   ] = _events_data_array; //Stores each event's parameters
+
+#endregion
+
+
+
+#region Register the data structure
+
+global.__scribble_global_count++;
+global.__scribble_alive[? global.__scribble_global_count] = _scribble_array;
+
+var _cache_string = string(_input_string) + ":" + string(global.__scribble_state_line_min_height) + ":" + string(global.__scribble_state_max_width);
+if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
+
+//Add this Scribble data structure to the global cache lookup
+global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
+
+//If we've got a valid cache group...
+if (_cache_group != undefined)
+{
+    //Find this cache group's list
+    var _list = global.__scribble_cache_group_map[? _cache_group];
+    if (_list == undefined)
+    {
+        //Create a new list if one doesn't already exist
+        _list = ds_list_create();
+        ds_map_add_list(global.__scribble_cache_group_map, _cache_group, _list);
+    }
+    
+    //Add this string to the cache group's list *and* the global list
+    ds_list_add(_list, _cache_string);
+    ds_list_add(global.__scribble_global_cache_list, _cache_string);
+}
 
 #endregion
 
@@ -775,7 +800,7 @@ repeat(_buffer_size)
     
     #region Handle new line creation
     
-    if (_force_newline || ((_char_width + _text_x > _width_limit) && (_width_limit >= 0)))
+    if (_force_newline || ((_char_width + _text_x > global.__scribble_state_max_width) && (global.__scribble_state_max_width >= 0)))
     {
         var _v = 0;
         repeat(ds_list_size(_vertex_buffer_list))
@@ -926,7 +951,7 @@ repeat(ds_list_size(_vertex_buffer_list))
 
 #region Sort out box alignment
 
-switch(SCRIBBLE_DEFAULT_BOX_HALIGN)
+switch(global.__scribble_state_box_halign)
 {
     case fa_left:
         _scribble_array[@ __SCRIBBLE.RIGHT] =  _text_x_max;
@@ -940,7 +965,7 @@ switch(SCRIBBLE_DEFAULT_BOX_HALIGN)
     break;
 }
 
-switch(SCRIBBLE_DEFAULT_BOX_VALIGN)
+switch(global.__scribble_state_box_valign)
 {
     case fa_top:
         _scribble_array[@ __SCRIBBLE.BOTTOM] =  _text_y_max;
@@ -964,6 +989,6 @@ ds_list_destroy(_parameters_list);
 
 
 
-if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_create() took " + string((get_timer() - _timer_total)/1000) + "ms");
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_cache() took " + string((get_timer() - _timer_total)/1000) + "ms");
 
 return _scribble_array;
