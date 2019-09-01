@@ -12,4 +12,4 @@ var _string  = "[rainbow]abcdef[] ABCDEF##";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][shake]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fTestB]DOG.";
 
 //Draw the text
-scribble_draw(x - 150, y - 80, _string);
+scribble_draw_text(x - 150, y - 80, _string);
