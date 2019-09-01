@@ -4,7 +4,6 @@
 /// @param y                 The y position in the room to draw at
 /// @param string            The string to be drawn. See scribble_create()
 /// @param fadeIn            
-/// @param fadeOut
 /// @param [minLineHeight]   The minimum line height for each line of text. Use a negative number to use the height of a space character of the default font (the default behaviour)
 /// @param [maxLineWidth]    The maximum line width for each line of text. Use a negative number for no limit (the default behaviour)
 /// @param [xscale]          The horizontal scaling of the text. Defaults to the value set in __scribble_config()
@@ -19,14 +18,13 @@ var _x               = argument[0];
 var _y               = argument[1];
 var _string          = argument[2];
 var _fade_in         = argument[3];
-var _fade_out        = argument[4];
-var _line_min_height = ((argument_count >  5) && (argument[ 5] != undefined))? argument[ 5] : -1;
-var _width_limit     = ((argument_count >  6) && (argument[ 6] != undefined))? argument[ 6] : -1;
-var _xscale          = ((argument_count >  7) && (argument[ 7] != undefined))? argument[ 7] : SCRIBBLE_DEFAULT_XSCALE;
-var _yscale          = ((argument_count >  8) && (argument[ 8] != undefined))? argument[ 8] : SCRIBBLE_DEFAULT_YSCALE;
-var _angle           = ((argument_count >  9) && (argument[ 9] != undefined))? argument[ 9] : SCRIBBLE_DEFAULT_ANGLE;
-var _colour          = ((argument_count > 10) && (argument[10] != undefined))? argument[10] : draw_get_colour();
-var _alpha           = ((argument_count > 11) && (argument[11] != undefined))? argument[11] : draw_get_alpha();
+var _line_min_height = ((argument_count >  4) && (argument[ 4] != undefined))? argument[ 4] : -1;
+var _width_limit     = ((argument_count >  5) && (argument[ 5] != undefined))? argument[ 5] : -1;
+var _xscale          = ((argument_count >  6) && (argument[ 6] != undefined))? argument[ 6] : SCRIBBLE_DEFAULT_XSCALE;
+var _yscale          = ((argument_count >  7) && (argument[ 7] != undefined))? argument[ 7] : SCRIBBLE_DEFAULT_YSCALE;
+var _angle           = ((argument_count >  8) && (argument[ 8] != undefined))? argument[ 8] : SCRIBBLE_DEFAULT_ANGLE;
+var _colour          = ((argument_count >  9) && (argument[ 9] != undefined))? argument[ 9] : draw_get_colour();
+var _alpha           = ((argument_count > 10) && (argument[10] != undefined))? argument[10] : draw_get_alpha();
 
 var _cache_string = string(_string) + ":" + string(_width_limit) + ":" + string(_line_min_height);
 if (ds_map_exists(global.__scribble_cache_map, _cache_string))
@@ -43,18 +41,9 @@ else
     ds_list_add(global.__scribble_cache_list, _cache_string);
 }
 
-if (_fade_in && !_fade_out)
-{
-    if (scribble_typewriter_get_state(_scribble_array) == 2.0) scribble_typewriter_perform(_scribble_array, true);
-    scribble_typewriter_step(_scribble_array);
-}
-else if (_fade_out && !_fade_in)
-{
-    if (scribble_typewriter_get_state(_scribble_array) == 1.0) scribble_typewriter_perform(_scribble_array, false);
-    scribble_typewriter_step(_scribble_array);
-}
-
+if (scribble_typewriter_get_state(_scribble_array) == (_fade_in? 2.0 : 1.0)) scribble_typewriter_perform(_scribble_array, _fade_in);
 scribble_draw(_scribble_array, _x, _y, _xscale, _yscale, _angle, _colour, _alpha);
+scribble_typewriter_step(_scribble_array);
 
 if (SCRIBBLE_CACHE_TIMEOUT > 0)
 {
