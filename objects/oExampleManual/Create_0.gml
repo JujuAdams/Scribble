@@ -5,10 +5,14 @@
 //  
 //  For use with GMS2.2.2 and later
 
+//Start up Scribble and load fonts automatically from Included Files
 scribble_init("Fonts", "fTestA", true);
+
+//Add a spritefont to Scribble
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 scribble_add_spritefont("sSpriteFont", _mapstring, 0, 3);
 
+//Add some colour definitions
 scribble_add_colour("c_coquelicot", $ff3800);
 scribble_add_colour("c_smaragdine", $50c875);
 scribble_add_colour("c_xanadu"    , $738678);
@@ -38,8 +42,7 @@ var _string  = "[sound,sndCrank][rainbow]abcdef[] ABCDEF##";
     _string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
     _string += "[fTestA][fa_right]THE [fTestB][$FF4499][rumble]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/rumble]LAZY [fTestB]DOG.";
 
-//text = scribble_create(_string, -1, 450, "c_xanadu", "fTestB", fa_center);
-//scribble_set_typewriter(true, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 3);
+scribble_set_typewriter(true, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 3);
 scribble_set_box_alignment(fa_center, fa_middle);
-scribble = scribble_create(_string, undefined);
+scribble = scribble_create(_string);
 scribble_set_state();

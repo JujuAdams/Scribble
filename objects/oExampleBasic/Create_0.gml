@@ -5,7 +5,7 @@
 //  
 //  For use with GMS2.2.2 and later
 
-//Start up Scribble and load some fonts
+//Start up Scribble and load fonts automatically from Included Files
 scribble_init("Fonts", "fTestA", true);
 
 //Add a spritefont to Scribble

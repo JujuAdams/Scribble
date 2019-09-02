@@ -10,11 +10,14 @@ scribble_set_typewriter(true, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 3);
 scribble_set_box_alignment(fa_center, fa_middle);
 var _scribble = scribble_draw(x, y, _string);
 
-//Find the size and position of the bounding box (plus a bit) and draw it
 var _box = scribble_get_box(_scribble,   x, y,   0, 0,   0, 0);
-
-//scribble_get_box() return 4 coordinate pairs, one for each corner of the box
-//This means you can rotate the textbox and still get useful coordinates
-//Most of the time, you'll only want to use the top-left and bottom-right corners
 draw_rectangle(_box[SCRIBBLE_BOX.TL_X], _box[SCRIBBLE_BOX.TL_Y],
                _box[SCRIBBLE_BOX.BR_X], _box[SCRIBBLE_BOX.BR_Y], true);
+scribble_set_state();
+
+
+draw_set_font(spritefont);
+draw_text(10, 10, test_string);
+draw_set_font(-1);
+
+scribble_draw(10, 30, "[sSpriteFont]" + test_string);

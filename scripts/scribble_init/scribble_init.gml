@@ -185,7 +185,7 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
 #macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
 #macro __SCRIBBLE_EXPECTED_GLYPHS      100
-#macro __SCRIBBLE_DEFAULT_CACHE_GROUP  0
+#macro SCRIBBLE_DEFAULT_CACHE_GROUP  0
 
 #endregion
 
