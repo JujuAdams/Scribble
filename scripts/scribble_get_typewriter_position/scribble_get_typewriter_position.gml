@@ -1,6 +1,8 @@
-/// Returns the state of the typewriter effect for a Scribble data structure
+/// Returns the position of the typewriter effect for a Scribble data structure
 ///
-/// A Scribble typewriter state is a decimal value from 0 to 2 (inclusive).
+/// @param scribbleArray   The Scribble data structure to get the typewriter position from
+///
+/// The typewriter position is a real value from 0 to 2 (inclusive).
 ///
 ///     State = 0  : Text not yet faded in, invisible
 /// 0 < State < 1  : Text is fading in
@@ -8,9 +10,7 @@
 /// 1 < State < 2  : Text is fading out
 ///     State = 2  : Text fully faded out, invisible
 ///
-/// You can start fade effects using scribble_typewriter_in() and scribble_typewriter_out().
-///
-/// @param scribbleArray   The Scribble data structure to get the typewriter state from
+/// You can control the typewriter fade effect using scribble_set_transform().
 
 var _scribble_array = argument0;
 

@@ -105,7 +105,7 @@ else
     if (_tw_fade_in)
     {
         //If directed to, try to start a fade in
-        if (scribble_get_typewriter_state(_scribble_array) == 2.0)
+        if (scribble_get_typewriter_position(_scribble_array) == 2.0)
         {
             _tw_direction = 1;
             _scribble_array[@ __SCRIBBLE.TW_DIRECTION] = 1;
@@ -117,7 +117,7 @@ else
     else
     {
         //Otherwise wait until the typewriter 
-        if (scribble_get_typewriter_state(_scribble_array) == 1.0)
+        if (scribble_get_typewriter_position(_scribble_array) == 1.0)
         {
             _tw_direction = -1;
             _scribble_array[@ __SCRIBBLE.TW_DIRECTION] = -1;

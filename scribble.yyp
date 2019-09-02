@@ -74,7 +74,7 @@
             "Key": "13548f19-dd1d-4dc1-9444-205ee176ef6f",
             "Value": {
                 "id": "7300137d-5a2d-41a1-83fc-949bea48cd43",
-                "resourcePath": "scripts\\scribble_get_typewriter_state\\scribble_get_typewriter_state.yy",
+                "resourcePath": "scripts\\scribble_get_typewriter_position\\scribble_get_typewriter_position.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -742,10 +742,10 @@
         "6646aeb5-5c20-419d-af6d-8d625871911d",
         "88f27f62-071a-4441-b908-675e356b8173",
         "0b7de2e4-423b-4049-ae3c-cefbec9a47a6",
-        "13548f19-dd1d-4dc1-9444-205ee176ef6f",
         "df6df2ef-b108-4a0d-b542-812338df9817",
         "f3e10686-9969-4b0b-9e8e-2198157bdd1a",
         "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
+        "13548f19-dd1d-4dc1-9444-205ee176ef6f",
         "bc334b9f-3e78-4213-8e02-f63a7b8776d3",
         "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd",
         "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
