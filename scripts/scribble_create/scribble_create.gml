@@ -198,7 +198,7 @@ global.scribble_alive[? global.__scribble_global_count] = _scribble_array;
 //If we've got a valid cache group...
 if (_cache_group != undefined)
 {
-    var _cache_string = string(_input_string) + ":" + string(_line_min_height) + ":" + string(_max_width);
+    var _cache_string = string(_input_string) + ":" + string(global.__scribble_state_line_min_height) + ":" + string(global.__scribble_state_max_width);
     if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
     
     //Add this Scribble data structure to the global cache lookup

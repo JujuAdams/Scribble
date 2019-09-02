@@ -78,7 +78,7 @@ else
 #region Unpack state variables
 
 var _tw_direction  = _scribble_array[__SCRIBBLE.TW_DIRECTION];
-var _tw_fade_in    = is_real(global.__scribble_state_tw_fade_in   )? global.__scribble_state_tw_fade_in    : _tw_direction;
+var _tw_fade_in    = is_real(global.__scribble_state_tw_fade_in   )? global.__scribble_state_tw_fade_in    : (_tw_direction == 1);
 var _tw_method     = is_real(global.__scribble_state_tw_method    )? global.__scribble_state_tw_method     : _scribble_array[__SCRIBBLE.TW_METHOD    ];
 var _tw_speed      = is_real(global.__scribble_state_tw_speed     )? global.__scribble_state_tw_speed      : _scribble_array[__SCRIBBLE.TW_SPEED     ];
 var _tw_smoothness = is_real(global.__scribble_state_tw_smoothness)? global.__scribble_state_tw_smoothness : _scribble_array[__SCRIBBLE.TW_SMOOTHNESS];
