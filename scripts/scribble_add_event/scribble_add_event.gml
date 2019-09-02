@@ -1,7 +1,6 @@
 /// Defines an event - a script that can be executed (with parameters) by an in-line command tag
-///
-///
-///
+/// 
+/// 
 /// @param name     Event name, as a string
 /// @param script   Numerical script index e.g. your_script
 

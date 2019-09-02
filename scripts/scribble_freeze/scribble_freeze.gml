@@ -1,4 +1,4 @@
-/// @param scribbleArray   The Scribble data structure to be drawn
+/// @param scribbleArray   The Scribble data structure to be frozen.
 
 var _scribble_array = argument0;
 

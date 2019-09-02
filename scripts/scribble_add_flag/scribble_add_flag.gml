@@ -1,8 +1,7 @@
 /// Defines a flag name, allowing for behaviours to be set per-character when calling scribble_create()
-///
-///
-///
-/// @param name    Event name, as a string
+/// 
+/// 
+/// @param name    Flag name, as a string
 /// @param index   Integer flag index, from 1 to SCRIBBLE_MAX_FLAGS-1 inclusive
 
 var _name  = argument0;

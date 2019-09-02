@@ -1,8 +1,6 @@
 /// Sets the relative position of the textbox for a Scribble data structure
-///
-/// This script returns the positions of each corner of a box that encapsulates the text.
-/// It returns an 8-element array. You can use the SCRIBBLE_BOX enum to conveniently reference each coordinate.
-///
+/// 
+/// 
 /// @param scribbleArray    The Scribble data structure to use
 /// @param x                The x position in the room to draw at. Defaults to 0
 /// @param y                The y position in the room to draw at. Defaults to 0
@@ -10,8 +8,12 @@
 /// @param [topMargin]      The additional space to add to the top of the box. Positive values create more space. Defaults to 0
 /// @param [rightMargin]    The additional space to add to the right-hand side of the box. Positive values create more space. Defaults to 0
 /// @param [bottomMargin]   The additional space to add to the bottom of the box. Positive values create more space. Defaults to 0
-///
+/// 
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
+/// 
+/// 
+/// This script returns the positions of each corner of a box that encapsulates the text.
+/// It returns an 8-element array. You can use the SCRIBBLE_BOX enum to reference each coordinate pair.
 
 var _scribble_array = argument[0];
 var _x              = argument[1];

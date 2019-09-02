@@ -1,5 +1,5 @@
-/// @param oldTag   Command tag to replace, as a string
-/// @param newTag   New command tag, as a string
+/// @param oldTag   Command tag to replace, as a string.
+/// @param newTag   New command tag, as a string.
 
 var _old_tag = argument0;
 var _new_tag = argument1;
