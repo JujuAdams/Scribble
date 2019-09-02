@@ -2,7 +2,7 @@
 /// @param y                         The y position in the room to draw at.
 /// @param string_or_scribbleArray   The input data to be drawn, either a string or Scribble data. See scribble_create() for formatting help.
 /// @param [cacheGroup]              The cache group that stores the Scribble data. If this argument is unused, the default cache group will be used instead.
-///                                  Please use scribble_create() if you wish to use uncached (<undefined> cache group) Scribble data.
+///                                  Please use scribble_create() if you wish to use an <undefined> cache group.
 
 var _x           = argument[0];
 var _y           = argument[1];
@@ -27,6 +27,12 @@ if (is_array(_string))
 }
 else
 {
+    if (_cache_group == undefined)
+    {
+        show_error("Scribble:\n<undefined> cache group not permitted in scribble_draw().\nPlease use scribble_create().\n ", false);
+        _cache_group = SCRIBBLE_DEFAULT_CACHE_GROUP;
+    }
+    
     //Check the cache
     var _cache_string = string(_string) + ":" + string(global.__scribble_state_line_min_height) + ":" + string(global.__scribble_state_max_width);
     if (ds_map_exists(global.__scribble_global_cache_map, _cache_string))
@@ -37,12 +43,6 @@ else
     }
     else
     {
-        if (_cache_group == undefined)
-        {
-            show_error("Scribble:\n<undefined> cache group not permitted in scribble_draw().\nPlease use scribble_create().\n ", false);
-            _cache_group = SCRIBBLE_DEFAULT_CACHE_GROUP;
-        }
-        
         //Cache a new data structure if we don't have a relevant one for this string
         var _scribble_array = scribble_create(_string, _cache_group);
     }
