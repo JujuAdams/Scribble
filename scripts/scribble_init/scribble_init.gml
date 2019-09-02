@@ -151,7 +151,14 @@ enum __SCRIBBLE
     TIME,                //21
     FREED,               //22
     
-    __SECTION2,          //23
+    __SECTION2,
+    XSCALE,
+    YSCALE,
+    ANGLE,
+    BLEND_COLOUR,
+    ALPHA,
+    
+    __SECTION3,          //23
     TW_DIRECTION,        //24
     TW_SPEED,            //25
     TW_POSITION,         //26
@@ -160,17 +167,17 @@ enum __SCRIBBLE
     CHAR_FADE_T,         //29
     LINE_FADE_T,         //30
     
-    __SECTION3,          //31
+    __SECTION4,          //31
     HAS_CALLED_STEP,     //32
     NO_STEP_COUNT,       //33
     DATA_FIELDS,         //34
     ANIMATION_TIME,      //35
     
-    __SECTION4,          //36
+    __SECTION5,          //36
     LINE_LIST,           //37
     VERTEX_BUFFER_LIST,  //38
     
-    __SECTION5,          //39
+    __SECTION6,          //39
     EVENT_PREVIOUS,      //40
     EVENT_CHAR_PREVIOUS, //41
     EVENT_CHAR_ARRAY,    //42

@@ -124,7 +124,14 @@ _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_cou
 _scribble_array[@ __SCRIBBLE.TIME               ] = current_time;
 _scribble_array[@ __SCRIBBLE.FREED              ] = false;
 
-_scribble_array[@ __SCRIBBLE.__SECTION2         ] = "-- Typewriter --";
+_scribble_array[@ __SCRIBBLE.__SECTION2         ] = "-- State --";
+_scribble_array[@ __SCRIBBLE.XSCALE             ] = SCRIBBLE_DEFAULT_XSCALE;
+_scribble_array[@ __SCRIBBLE.YSCALE             ] = SCRIBBLE_DEFAULT_YSCALE;
+_scribble_array[@ __SCRIBBLE.ANGLE              ] = SCRIBBLE_DEFAULT_ANGLE;
+_scribble_array[@ __SCRIBBLE.BLEND_COLOUR       ] = SCRIBBLE_DEFAULT_BLEND_COLOUR;
+_scribble_array[@ __SCRIBBLE.ALPHA              ] = SCRIBBLE_DEFAULT_ALPHA;
+
+_scribble_array[@ __SCRIBBLE.__SECTION3         ] = "-- Typewriter --";
 _scribble_array[@ __SCRIBBLE.TW_DIRECTION       ] = 0;
 _scribble_array[@ __SCRIBBLE.TW_SPEED           ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
 _scribble_array[@ __SCRIBBLE.TW_POSITION        ] = 0;
@@ -133,17 +140,17 @@ _scribble_array[@ __SCRIBBLE.TW_SMOOTHNESS      ] = SCRIBBLE_DEFAULT_TYPEWRITER_
 _scribble_array[@ __SCRIBBLE.CHAR_FADE_T        ] = 1;
 _scribble_array[@ __SCRIBBLE.LINE_FADE_T        ] = 1;
 
-_scribble_array[@ __SCRIBBLE.__SECTION3         ] = "-- Animation --";
+_scribble_array[@ __SCRIBBLE.__SECTION4         ] = "-- Animation --";
 _scribble_array[@ __SCRIBBLE.HAS_CALLED_STEP    ] = false;
 _scribble_array[@ __SCRIBBLE.NO_STEP_COUNT      ] = 0;
 _scribble_array[@ __SCRIBBLE.DATA_FIELDS        ] = global.__scribble_default_animation_parameters;
 _scribble_array[@ __SCRIBBLE.ANIMATION_TIME     ] = 0;
 
-_scribble_array[@ __SCRIBBLE.__SECTION4         ] = "-- Lists --";
+_scribble_array[@ __SCRIBBLE.__SECTION5         ] = "-- Lists --";
 _scribble_array[@ __SCRIBBLE.LINE_LIST          ] = _line_list;
 _scribble_array[@ __SCRIBBLE.VERTEX_BUFFER_LIST ] = _vertex_buffer_list;
 
-_scribble_array[@ __SCRIBBLE.__SECTION5         ] = "-- Events --";
+_scribble_array[@ __SCRIBBLE.__SECTION6         ] = "-- Events --";
 _scribble_array[@ __SCRIBBLE.EVENT_PREVIOUS     ] = -1;
 _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = -1;
 _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY   ] = _events_char_array; //Stores each event's triggering cha
