@@ -1,8 +1,33 @@
+/// Draws text using Scribble's formatting.
+/// 
+/// 
 /// @param x                         The x position in the room to draw at.
 /// @param y                         The y position in the room to draw at.
-/// @param string_or_scribbleArray   The input data to be drawn, either a string or Scribble data. See scribble_create() for formatting help.
-/// @param [cacheGroup]              The cache group that stores the Scribble data. If this argument is unused, the default cache group will be used instead.
-///                                  Please use scribble_create() if you wish to use an <undefined> cache group.
+/// @param string_or_scribbleArray   The text to be drawn. See below for formatting help. (Advanced users can use this script to manually draw Scribble data structures.)
+/// @param [cacheGroup]              Advanced use only. See scribble_create() for more information. Please use scribble_create() if you wish to use an <undefined> cache group.
+/// 
+/// 
+/// Formatting commands:
+/// []                                  Reset formatting to defaults
+/// [<name of colour>]                  Set colour
+/// [#<hex code>]                       Set colour via a hexcode, using the industry standard 24-bit RGB format (#RRGGBB)
+/// [/colour] [/c]                      Reset colour to the default
+/// [<name of font>] [/font] [/f]       Set font / Reset font
+/// [<name of sprite>]                  Insert an animated sprite starting on image 0 and animating using SCRIBBLE_DEFAULT_SPRITE_SPEED
+/// [<name of sprite>,<image>]          Insert a static sprite using the specified image index
+/// [<name of sprite>,<image>,<speed>]  Insert animated sprite using the specified image index and animation speed
+/// [fa_left]                           Align horizontally to the left. This will insert a line break if used in the middle of a line of text
+/// [fa_right]                          Align horizontally to the right. This will insert a line break if used in the middle of a line of text
+/// [fa_center] [fa_centre]             Align centrally. This will insert a line break if used in the middle of a line of text
+/// [scale,<factor>] [/scale] [/s]      Scale text / Reset scale to x1
+/// [slant] [/slant]                    Set/unset italic emulation
+/// [<event name>,<arg0>,<arg1>...]     Execute a script bound to an event name,previously defined using scribble_add_event(), with the specified arguments
+/// [<flag name>] [/<flag name>]        Set/unset a custom shader format flag
+/// 
+/// Scribble has the following formatting flags as defaults:
+/// [wave]    [/wave]                   Set/unset text to wave up and down
+/// [shake]   [/shake]                  Set/unset text to shake
+/// [rainbow] [/rainbow]                Set/unset text to cycle through rainbow colours
 
 var _x           = argument[0];
 var _y           = argument[1];

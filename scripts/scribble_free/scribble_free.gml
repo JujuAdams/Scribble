@@ -1,4 +1,9 @@
-/// @param scribbleArray_or_cacheGroup   The target memory to free. See below.
+/// Frees up memory used by Scribble, targetting either a cache group or a specific Scribble data structure.
+/// 
+/// This script is only meant to be called directly by advanced users. Please read the documentation carefully!
+/// 
+/// 
+/// @param cacheGroup_or_scribbleArray   The target memory to free. See below.
 /// 
 /// 
 /// Scribble uses cache groups to help manage memory. Scribble text that has been added to a cache group will be automatically destroyed if...
@@ -6,7 +11,7 @@
 /// 2) or the text has not been drawn for a period of time (SCRIBBLE_CACHE_TIMEOUT milliseconds).
 /// By default, all Scribble data is put into the same cache group: SCRIBBLE_DEFAULT_CACHE_GROUP. You can specify a different cache group
 /// to manage memory more easily (e.g. one cache group for dialogue, another for an inventory screen). Setting SCRIBBLE_CACHE_TIMEOUT to 0
-/// halts all time-based memory management; instead, you'll need to manually called scribble_free(), targetting the relevant cache group(s).
+/// halts all time-based memory management; instead, you'll need to manually call scribble_free(), targetting the relevant cache group(s).
 /// 
 /// If you're manually creating Scribble data structures by calling scribble_create() directly, you can choose to opt out of using the cache.
 /// By setting the "cacheGroup" argument to <undefined>, Scribble will skip adding the data to the cache. However, this means that the data

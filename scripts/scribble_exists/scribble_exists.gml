@@ -1,4 +1,9 @@
-/// @param scribbleArray
+/// Returns whether a Scribble data structure exists.
+/// 
+/// This script is only meant to be called directly by advanced users. Please read the documentation carefully!
+/// 
+/// 
+/// @param scribbleArray   The Scribble data structure to check the existence of.
 
 var _scribble_array = argument0;
 

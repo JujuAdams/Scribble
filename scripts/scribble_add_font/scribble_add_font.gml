@@ -1,13 +1,12 @@
-/// Adds a standard font definition for Scribble
+/// Adds a normal font for use with Scribble.
+///
+/// @param fontName   String name of the font to add.
+/// @param [path]     File path for the font's .yy file, including the .yy extension, relative to the font directory defined by scribble_init().
+///                   If not specified, Scribble will look in the root of the font directory.
 ///
 /// Scribble requires all standard fonts to have their .yy file added as an included file
 /// This means every time you modify a font you also need to update the included .yy file
-///
 /// (Including .yy files isn't necessary for spritefonts)
-///
-/// @param fontName   String name of the font to add
-/// @param [path]     File path for the font's .yy file, including the .yy extension, relative to the font directory defined by scribble_init()
-///                   If not specified, Scribble will look in the root of the font directory
 
 if (!variable_global_exists("__scribble_global_count"))
 {

@@ -1,14 +1,12 @@
-/// Adds a spritefont definition for Scribble
+/// Adds a spritefont for use with Scribble.
 ///
-/// Scribble's spritefonts emulate GameMaker's native behaviour. Spritefonts otherwise behave indentically to standard fonts
-/// All Scribble spritefonts are proportional (see font_add_sprite() for more details).
+/// @param fontName       String name of the spritefont to add.
+/// @param mapString      String from which sprite sub-image order is taken. (Same behaviour as GameMaker's native font_add_sprite_ext())
+/// @param separation     The space to leave between each letter. (Same behaviour as GameMaker's native font_add_sprite_ext())
+/// @param [spaceWidth]   Pixel width of the space character. Defaults to emulating GameMaker's behaviour.
 ///
-/// @param fontName       String name of the spritefont to add
-/// @param mapString      Same behaviour as GameMaker's native font_add_sprite(). Defaults to the value set in __scribble_config()
-/// @param separation     Same behaviour as GameMaker's native font_add_sprite(). Defaults to the value set in __scribble_config()
-/// @param [spaceWidth]   Pixel width of the space character. Defaults to emulating GameMaker's behaviour
-///
-/// All optional arguments accept <undefined> to indicate that the default value should be used.
+/// Scribble's spritefonts emulate GameMaker's native behaviour. Spritefonts otherwise behave indentically to normal fonts within Scribble.
+/// All Scribble spritefonts are proportional as per GameMaker's font_add_sprite_ext() function.
 
 if (!variable_global_exists("__scribble_global_count"))
 {

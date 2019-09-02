@@ -1,19 +1,30 @@
-/// Starts initialisation for Scribble
-/// This script should be called before scribble_add_font() / scribble_add_spritefont() and scribble_init_end()
-///
-/// @param fontDirectory    Directory to look in (relative to game_save_id) for font .yy files
-/// @param defaultFont      The name of the default Scribble font, as a string
-/// @param autoScan         Set to <true> to automatically find standard font .yy files in the font directory. This only works for standard fonts, and on desktop platforms
-///
+/// Prepares Scribble for use.
+/// This script should be called before any other Scribble script.
+/// 
+/// 
+/// @param fontDirectory    The directory to look in (relative to game_save_id) for font .yy files.
+/// @param defaultFont      The name of the default Scribble font to use, as a string.
+/// @param autoScan         Whether or not to automatically find normal font .yy files in the font directory.
+///                         N.B. This only works for normal fonts, and on desktop platforms.
+/// 
+/// 
 /// This script achieves the following things:
 /// 1) Define the default font directory to pull font .yy files from
-/// 2) Define the maximum texture page size available for Scribble
-/// 3) Create global data structures to store data
-/// 4) Define custom colours analogues for GM's native colour constants
-/// 5) Define flag names for default effects - wave, shake, rainbow
-/// 6) Creates a vertex format
-/// 7) Cache uniform indexes for the shScribble shader
-/// 8) Build a lookup table for decoding hexcode colours in scribble_create()
+/// 2) Create global data structures to store data and state
+/// 3) Define custom colours analogues for GM's native colour constants
+/// 4) Define flag names for default effects - wave, shake, rainbow
+/// 5) Creates a vertex format
+/// 6) Cache uniform indexes for the shScribble shader
+/// 7) Build a lookup table for decoding hexcode colours in scribble_create()
+/// 8) Automatically scans Included Files for fonts (if enabled)
+/// 
+/// 
+/// Scribble v5.x.x
+/// 2019/09/02
+/// @jujuadams
+/// With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
+/// 
+/// For use with GMS2.2.2 and later
 
 #region Internal Macro Definitions
 
@@ -180,11 +191,15 @@ enum __SCRIBBLE
     __SIZE               //45
 }
 
-#macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
-#macro __SCRIBBLE_ON_OPENGL            !__SCRIBBLE_ON_DIRECTX
-#macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
-#macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
-#macro __SCRIBBLE_EXPECTED_GLYPHS      100
+#macro __SCRIBBLE_ON_DIRECTX       ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
+#macro __SCRIBBLE_ON_OPENGL        !__SCRIBBLE_ON_DIRECTX
+#macro __SCRIBBLE_ON_MOBILE        ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
+#macro __SCRIBBLE_GLYPH_BYTE_SIZE  (6*__SCRIBBLE_VERTEX.__SIZE)
+#macro __SCRIBBLE_EXPECTED_GLYPHS  100
+
+#macro SCRIBBLE_TYPEWRITER_WHOLE          0  //Fade the entire textbox in and out
+#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER  1  //Fade each character individually
+#macro SCRIBBLE_TYPEWRITER_PER_LINE       2  //Fade each line of text as a group
 
 #endregion
 

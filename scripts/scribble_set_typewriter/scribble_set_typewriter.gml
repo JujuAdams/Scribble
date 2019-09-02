@@ -1,9 +1,18 @@
-/// @param fadeIn
-/// @param speed
-/// @param method
-/// @param smoothness
+/// Sets Scribble's typewriter fade in/out state.
 /// 
-/// Set any of these arguments to <undefined> to use default values (SCRIBBLE_DEFAULT_BLEND_COLOUR and SCRIBBLE_DEFAULT_ALPHA).
+/// 
+/// @param fadeIn       Whether to fade in or out (boolean)
+/// @param speed        The speed of the typewriter animation, in characters/lines per frame.
+/// @param method       The typewriter method to use. See below for more details.
+/// @param smoothness   The smoothness of the typewriter fade effect (not used for SCRIBBLE_TYPEWRITER_WHOLE). A value of "0" disables smooth fading.
+/// 
+/// Set any of these arguments to <undefined> to set as pass-through (usually inheriting SCRIBBLE_DEFAULT_BLEND_COLOUR and SCRIBBLE_DEFAULT_ALPHA).
+/// 
+/// 
+/// Scribble supports three fade effects, collectively called "typewriter" effects.
+/// SCRIBBLE_TYPEWRITER_PER_CHARACTER: Fade each character individually
+/// SCRIBBLE_TYPEWRITER_WHOLE:         Fade the entire textbox in and out
+/// SCRIBBLE_TYPEWRITER_PER_LINE:      Fade each line of text as a group
 
 global.__scribble_state_tw_fade_in    = argument0;
 global.__scribble_state_tw_speed      = argument1;

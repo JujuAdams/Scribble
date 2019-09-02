@@ -1,7 +1,11 @@
 /// Returns the position of the typewriter effect for a Scribble data structure
-///
+/// 
+/// This script is only meant to be called directly by advanced users. Please read the documentation carefully!
+/// 
+/// 
 /// @param scribbleArray   The Scribble data structure to get the typewriter position from
-///
+/// 
+/// 
 /// The typewriter position is a real value from 0 to 2 (inclusive).
 ///
 ///     State = 0  : Text not yet faded in, invisible

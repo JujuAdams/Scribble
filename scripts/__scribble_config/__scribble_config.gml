@@ -1,10 +1,14 @@
-//  Scribble v5.x.x
-//  2019/09/02
-//  @jujuadams
-//  With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
-//  
-//  
-//  For use with GMS2.2.2 and later
+/// Scribble's macros, used to customise and control behaviour throughout the library.
+/// 
+/// 
+/// Scribble v5.x.x
+/// 2019/09/02
+/// @jujuadams
+/// With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
+/// 
+/// For use with GMS2.2.2 and later
+
+
 
 #region Global behaviours
 
@@ -32,13 +36,9 @@
 
 #region Typewriter effect
 
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3                               //The default speed of the typewriter effect, in characters/lines per frame
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3                                 //The default smoothhness of the typewriter effect. A value of "0" disables smooth fading
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD      SCRIBBLE_TYPEWRITER_PER_CHARACTER //The default typewriter effect method
-//Use these contants for scribble_set_typewriter():
-#macro SCRIBBLE_TYPEWRITER_WHOLE               0                                 //Fade the entire textbox in and out
-#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER       1                                 //Fade each character individually
-#macro SCRIBBLE_TYPEWRITER_PER_LINE            2                                 //Fade each line of text as a group
+#macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3                               //The default speed of the typewriter effect, in characters/lines per frame.
+#macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3                                 //The default smoothhness of the typewriter effect. A value of "0" disables smooth fading.
+#macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD      SCRIBBLE_TYPEWRITER_PER_CHARACTER //The default typewriter effect method. See scribble_set_typewriter() for more details.
 
 #endregion
 
