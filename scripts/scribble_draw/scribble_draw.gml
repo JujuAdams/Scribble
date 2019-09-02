@@ -43,17 +43,18 @@ else
 
 #region Unpack state variables
 
-var _tw_direction = _scribble_array[__SCRIBBLE.TW_DIRECTION];
-var _tw_fade_in   = is_real(global.__scribble_state_tw_fade_in)? global.__scribble_state_tw_fade_in : _tw_direction;
-var _tw_method    = is_real(global.__scribble_state_tw_method )? global.__scribble_state_tw_method  : _scribble_array[__SCRIBBLE.TW_METHOD   ];
-var _tw_speed     = is_real(global.__scribble_state_tw_speed  )? global.__scribble_state_tw_speed   : _scribble_array[__SCRIBBLE.TW_SPEED    ];
-var _xscale       = is_real(global.__scribble_state_xscale    )? global.__scribble_state_xscale     : _scribble_array[__SCRIBBLE.XSCALE      ];
-var _yscale       = is_real(global.__scribble_state_yscale    )? global.__scribble_state_yscale     : _scribble_array[__SCRIBBLE.YSCALE      ];
-var _angle        = is_real(global.__scribble_state_angle     )? global.__scribble_state_angle      : _scribble_array[__SCRIBBLE.ANGLE       ];
-var _colour       = is_real(global.__scribble_state_colour    )? global.__scribble_state_colour     : _scribble_array[__SCRIBBLE.BLEND_COLOUR];
-var _alpha        = is_real(global.__scribble_state_alpha     )? global.__scribble_state_alpha      : _scribble_array[__SCRIBBLE.ALPHA       ];
-var _box_halign   = is_real(global.__scribble_state_box_halign)? global.__scribble_state_box_halign : _scribble_array[__SCRIBBLE.HALIGN      ];
-var _box_valign   = is_real(global.__scribble_state_box_valign)? global.__scribble_state_box_valign : _scribble_array[__SCRIBBLE.VALIGN      ];
+var _tw_direction  = _scribble_array[__SCRIBBLE.TW_DIRECTION];
+var _tw_fade_in    = is_real(global.__scribble_state_tw_fade_in   )? global.__scribble_state_tw_fade_in    : _tw_direction;
+var _tw_method     = is_real(global.__scribble_state_tw_method    )? global.__scribble_state_tw_method     : _scribble_array[__SCRIBBLE.TW_METHOD    ];
+var _tw_speed      = is_real(global.__scribble_state_tw_speed     )? global.__scribble_state_tw_speed      : _scribble_array[__SCRIBBLE.TW_SPEED     ];
+var _tw_smoothness = is_real(global.__scribble_state_tw_smoothness)? global.__scribble_state_tw_smoothness : _scribble_array[__SCRIBBLE.TW_SMOOTHNESS];
+var _xscale        = is_real(global.__scribble_state_xscale       )? global.__scribble_state_xscale        : _scribble_array[__SCRIBBLE.XSCALE       ];
+var _yscale        = is_real(global.__scribble_state_yscale       )? global.__scribble_state_yscale        : _scribble_array[__SCRIBBLE.YSCALE       ];
+var _angle         = is_real(global.__scribble_state_angle        )? global.__scribble_state_angle         : _scribble_array[__SCRIBBLE.ANGLE        ];
+var _colour        = is_real(global.__scribble_state_colour       )? global.__scribble_state_colour        : _scribble_array[__SCRIBBLE.BLEND_COLOUR ];
+var _alpha         = is_real(global.__scribble_state_alpha        )? global.__scribble_state_alpha         : _scribble_array[__SCRIBBLE.ALPHA        ];
+var _box_halign    = is_real(global.__scribble_state_box_halign   )? global.__scribble_state_box_halign    : _scribble_array[__SCRIBBLE.HALIGN       ];
+var _box_valign    = is_real(global.__scribble_state_box_valign   )? global.__scribble_state_box_valign    : _scribble_array[__SCRIBBLE.VALIGN       ];
 
 var _left = 0;
 var _top  = 0;
@@ -126,9 +127,8 @@ else
 
 if (_tw_direction != 0)
 {
-    var _tw_speed     = _tw_speed*SCRIBBLE_STEP_SIZE;
-    var _tw_direction = _scribble_array[__SCRIBBLE.TW_DIRECTION];
-    if ((_tw_direction != 0) && (_tw_speed > 0))
+    _tw_speed *= SCRIBBLE_STEP_SIZE;
+    if (_tw_speed > 0)
     {
         #region Advance typewriter
         
@@ -291,16 +291,16 @@ if (_count > 0)
     switch(_scribble_array[__SCRIBBLE.TW_METHOD])
     {
         case SCRIBBLE_TYPEWRITER_WHOLE:
-            _alpha *= (_scribble_array[__SCRIBBLE.TW_DIRECTION] > 0)? _scribble_array[__SCRIBBLE.TW_POSITION] : (1.0 - _scribble_array[__SCRIBBLE.TW_POSITION]);
+            _alpha *= (_tw_direction > 0)? _scribble_array[__SCRIBBLE.TW_POSITION] : (1.0 - _scribble_array[__SCRIBBLE.TW_POSITION]);
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-            _char_smoothness = _scribble_array[__SCRIBBLE.TW_SMOOTHNESS] / _char_count;
+            _char_smoothness = _tw_smoothness / _char_count;
             _char_t          = _scribble_array[__SCRIBBLE.CHAR_FADE_T];
         break;
         
         case SCRIBBLE_TYPEWRITER_PER_LINE:
-            _line_smoothness = _scribble_array[__SCRIBBLE.TW_SMOOTHNESS] / _line_count;
+            _line_smoothness = _tw_smoothness / _line_count;
             _line_t          = _scribble_array[__SCRIBBLE.LINE_FADE_T];
         break;
     }
