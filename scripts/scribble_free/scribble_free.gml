@@ -1,6 +1,19 @@
-/// Destroys a Scribble data structure and frees up the memory it was using
-///
-/// @param scribbleArray_or_cacheGroup
+/// @param scribbleArray_or_cacheGroup   The target memory to free. See below.
+/// 
+/// 
+/// Scribble uses cache groups to help manage memory. Scribble text that has been added to a cache group will be automatically destroyed if...
+/// 1) scribble_free() has been called targetting the text's cache group
+/// 2) or the text has not been drawn for a period of time (SCRIBBLE_CACHE_TIMEOUT milliseconds).
+/// By default, all Scribble data is put into the same cache group: SCRIBBLE_DEFAULT_CACHE_GROUP. You can specify a different cache group
+/// to manage memory more easily (e.g. one cache group for dialogue, another for an inventory screen). Setting SCRIBBLE_CACHE_TIMEOUT to 0
+/// halts all time-based memory management; instead, you'll need to manually called scribble_free(), targetting the relevant cache group(s).
+/// 
+/// If you're manually creating Scribble data structures by calling scribble_create() directly, you can choose to opt out of using the cache.
+/// By setting the "cacheGroup" argument to <undefined>, Scribble will skip adding the data to the cache. However, this means that the data
+/// you create *will not be automatically destroyed*. To free memory you will have to call scribble_free() manually, using the Scribble text
+/// array as the argument.
+/// 
+/// To track how much Scribble data exists at any one time, call ds_map_size(global.scribble_alive).
 
 var _target = argument0;
 
@@ -12,7 +25,7 @@ if (is_array(_target))
         exit;
     }
     
-    ds_map_delete(global.__scribble_alive, _target[__SCRIBBLE.GLOBAL_INDEX]);
+    ds_map_delete(global.scribble_alive, _target[__SCRIBBLE.GLOBAL_INDEX]);
     
     var _vbuff_list = _target[__SCRIBBLE.VERTEX_BUFFER_LIST];
     var _count = ds_list_size(_vbuff_list);

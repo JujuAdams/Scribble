@@ -1,29 +1,46 @@
-/// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw()
-///
+/// Parses a string and turns it into Scribble data that can be drawn with scribble_draw()
+/// 
 /// @param string         The string to be parsed. See below for the various in-line formatting commands.
-/// @param [cacheGroup]   The cache group. Integers or strings accepted. Use a value of <undefined> for uncached. If this argument is unused, the default cache group will be used.
-///
+/// @param [cacheGroup]   The cache group that stores the Scribble data. If this argument is unused, the default cache group will be used instead.
+///                       A cache group of <undefined> will prevent data from being cached at all. See below for more information.
+/// 
+/// 
 /// Formatting commands:
 /// []                                  Reset formatting to defaults
 /// [<name of colour>]                  Set colour
-/// [#<hex code>]                       Set colour via a hexcode, using normal RGB values (#RRGGBB)
+/// [#<hex code>]                       Set colour via a hexcode, using the industry standard 24-bit RGB format (#RRGGBB)
 /// [/colour] [/c]                      Reset colour to the default
-/// [<name of font>] [/font] [/f]       Set font / Rest font
+/// [<name of font>] [/font] [/f]       Set font / Reset font
 /// [<name of sprite>]                  Insert an animated sprite starting on image 0 and animating using SCRIBBLE_DEFAULT_SPRITE_SPEED
 /// [<name of sprite>,<image>]          Insert a static sprite using the specified image index
 /// [<name of sprite>,<image>,<speed>]  Insert animated sprite using the specified image index and animation speed
-/// [fa_left]                           Align horizontally to the left
-/// [fa_right]                          Align horizontally to the right
-/// [fa_center] [fa_centre]             Align centrally
-/// [scale,<factor>] [/scale] [/s]      Scale text / Reset scale to 1
+/// [fa_left]                           Align horizontally to the left. This will insert a line break if used in the middle of a line of text
+/// [fa_right]                          Align horizontally to the right. This will insert a line break if used in the middle of a line of text
+/// [fa_center] [fa_centre]             Align centrally. This will insert a line break if used in the middle of a line of text
+/// [scale,<factor>] [/scale] [/s]      Scale text / Reset scale to x1
 /// [slant] [/slant]                    Set/unset italic emulation
-/// [<event name>,<arg0>,<arg1>...]     Execute a script bound to an event name (previously defined using scribble_add_event()) with the specified arguments
-/// [<flag name>] [/<flag name>]        Set/unset a custom formatting flag
+/// [<event name>,<arg0>,<arg1>...]     Execute a script bound to an event name,previously defined using scribble_add_event(), with the specified arguments
+/// [<flag name>] [/<flag name>]        Set/unset a custom shader format flag
 /// 
 /// Scribble has the following formatting flags as defaults:
 /// [wave]    [/wave]                   Set/unset text to wave up and down
 /// [shake]   [/shake]                  Set/unset text to shake
 /// [rainbow] [/rainbow]                Set/unset text to cycle through rainbow colours
+/// 
+/// 
+/// Scribble uses cache groups to help manage memory. Scribble text that has been added to a cache group will be automatically destroyed if...
+/// 1) scribble_free() has been called targetting the text's cache group
+/// 2) or the text has not been drawn for a period of time (SCRIBBLE_CACHE_TIMEOUT milliseconds).
+/// By default, all Scribble data is put into the same cache group: SCRIBBLE_DEFAULT_CACHE_GROUP. You can specify a different cache group
+/// to manage memory more easily (e.g. one cache group for dialogue, another for an inventory screen). Setting SCRIBBLE_CACHE_TIMEOUT to 0
+/// halts all time-based memory management; instead, you'll need to manually called scribble_free(), targetting the relevant cache group(s).
+/// 
+/// If you're manually creating Scribble data structures by calling scribble_create() directly, you can choose to opt out of using the cache.
+/// By setting the "cacheGroup" argument to <undefined>, Scribble will skip adding the data to the cache. However, this means that the data
+/// you create *will not be automatically destroyed*. To free memory you will have to call scribble_free() manually, using the Scribble text
+/// array as the argument.
+/// 
+/// To track how much Scribble data exists at any one time, call ds_map_size(global.scribble_alive).
 
 
 
@@ -163,10 +180,10 @@ if (is_real(global.__scribble_state_tw_fade_in) && global.__scribble_state_tw_fa
 
 
 
-#region Register the data structure
+#region Register the data structure in a cache group
 
 global.__scribble_global_count++;
-global.__scribble_alive[? global.__scribble_global_count] = _scribble_array;
+global.scribble_alive[? global.__scribble_global_count] = _scribble_array;
 
 //If we've got a valid cache group...
 if (_cache_group != undefined)
@@ -898,7 +915,11 @@ _scribble_array[@ __SCRIBBLE.CHARACTERS] = _meta_characters;
 _scribble_array[@ __SCRIBBLE.WIDTH     ] = _text_x_max;
 _scribble_array[@ __SCRIBBLE.HEIGHT    ] = _text_y_max;
 
+#endregion
 
+
+
+#region Move glyphs around on a line to finalise alignment
 
 var _v = 0;
 repeat(ds_list_size(_vertex_buffer_list))

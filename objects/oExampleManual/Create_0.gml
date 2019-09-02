@@ -36,13 +36,20 @@ scribble_set_glyph_property("sSpriteFont", "q", SCRIBBLE_GLYPH.SEPARATION, -1, t
 
 
 
-var _string  = "[sound,sndCrank][rainbow]abcdef[] ABCDEF##";
-    _string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][sCoin,0][sound,sndSwitch][sCoin,1][sound,sndSwitch][sCoin,2][sound,sndSwitch][sCoin,3][sound,sndSwitch][][rumble][rainbow]!?[]\n";
-    _string += "[sCoin][sCoin,1,0.1][sCoin,2,0.1][sCoin,3,0.1]\n";
-    _string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
-    _string += "[fTestA][fa_right]THE [fTestB][$FF4499][rumble]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/rumble]LAZY [fTestB]DOG.";
+var _demo_string  = "[sound,sndCrank][rainbow]abcdef[] ABCDEF##";
+    _demo_string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][sCoin,0][sound,sndSwitch][sCoin,1][sound,sndSwitch][sCoin,2][sound,sndSwitch][sCoin,3][sound,sndSwitch][][rumble][rainbow]!?[]\n";
+    _demo_string += "[sCoin][sCoin,1,0.1][sCoin,2,0.1][sCoin,3,0.1]\n";
+    _demo_string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
+    _demo_string += "[fTestA][fa_right]THE [fTestB][$FF4499][rumble]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/rumble]LAZY [fTestB]DOG.";
 
+//Set up the draw state. scribble_create() will inherit whatever draw state is currently being used
 scribble_set_typewriter(true, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 3);
 scribble_set_box_alignment(fa_center, fa_middle);
-scribble = scribble_create(_string);
-scribble_set_state();
+
+//Now parse the string to make some Scribble data
+//We're using an <undefined> cache group here to indicate we want to manage this memory ourselves
+//This isn't strictly necessary (you can use any cache group) but for the sake of example...
+scribble = scribble_create(_demo_string, undefined);
+
+//Don't forget to reset the state!
+scribble_state_reset();

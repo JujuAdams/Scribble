@@ -185,7 +185,6 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
 #macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
 #macro __SCRIBBLE_EXPECTED_GLYPHS      100
-#macro SCRIBBLE_DEFAULT_CACHE_GROUP  0
 
 #endregion
 
@@ -244,7 +243,6 @@ else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_defau
 }
 
 //Declare global variables
-global.__scribble_default_animation_parameters = scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
 global.__scribble_font_directory    = _font_directory;
 global.__scribble_font_data         = ds_map_create();  //Stores a data array for each font defined inside Scribble
 global.__scribble_colours           = ds_map_create();  //Stores colour definitions, including custom colours
@@ -252,7 +250,7 @@ global.__scribble_events            = ds_map_create();  //Stores event bindings;
 global.__scribble_flags             = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_flags_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_tag_copy          = ds_map_create();  //Stores asset bindings; key is the name of the event, the value is the script to call
-global.__scribble_alive             = ds_map_create();  //ds_map of all alive Scribble data structures
+global.scribble_alive               = ds_map_create();  //ds_map of all alive Scribble data structures
 global.__scribble_global_count      = 0;
 global.__scribble_default_font      = _default_font;
 global.__scribble_global_cache_map  = ds_map_create();
@@ -262,23 +260,9 @@ global.__scribble_cache_group_map   = ds_map_create();
 ds_map_add_list(global.__scribble_cache_group_map, 0, ds_list_create());
 
 //Declare state variables
-global.__scribble_state_xscale          = SCRIBBLE_DEFAULT_XSCALE;
-global.__scribble_state_yscale          = SCRIBBLE_DEFAULT_YSCALE;
-global.__scribble_state_angle           = SCRIBBLE_DEFAULT_ANGLE;
-global.__scribble_state_colour          = c_white;
-global.__scribble_state_alpha           = 1.0;
-global.__scribble_state_line_min_height = -1;
-global.__scribble_state_min_width       = -1;
-global.__scribble_state_max_width       = -1;
-global.__scribble_state_min_height      = -1;
-global.__scribble_state_max_height      = -1;
-global.__scribble_state_box_halign      = SCRIBBLE_DEFAULT_BOX_HALIGN;
-global.__scribble_state_box_valign      = SCRIBBLE_DEFAULT_BOX_VALIGN;
-global.__scribble_state_tw_fade_in      = false;
-global.__scribble_state_tw_method       = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-global.__scribble_state_tw_speed        = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
-global.__scribble_state_tw_smoothness   = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
-global.__scribble_state_anim_array      = array_copy([], 0, global.__scribble_default_animation_parameters, 0, SCRIBBLE_MAX_DATA_FIELDS);
+scribble_state_reset();
+global.__scribble_default_animation_parameters = scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
+global.__scribble_state_anim_array             = array_copy([], 0, global.__scribble_default_animation_parameters, 0, SCRIBBLE_MAX_DATA_FIELDS);
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_add_colour("c_aqua",    c_aqua   , true);

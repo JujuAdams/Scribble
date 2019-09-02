@@ -2,6 +2,8 @@
 /// @param speed
 /// @param method
 /// @param smoothness
+/// 
+/// Set any of these arguments to <undefined> to use default values (SCRIBBLE_DEFAULT_BLEND_COLOUR and SCRIBBLE_DEFAULT_ALPHA).
 
 global.__scribble_state_tw_fade_in    = argument0;
 global.__scribble_state_tw_speed      = argument1;

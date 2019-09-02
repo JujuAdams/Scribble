@@ -1,10 +1,13 @@
-/// @param x        The x position in the room to draw at
-/// @param y        The y position in the room to draw at
-/// @param string   The string to be drawn. See scribble_create()
+/// @param x                         The x position in the room to draw at.
+/// @param y                         The y position in the room to draw at.
+/// @param string_or_scribbleArray   The input data to be drawn, either a string or Scribble data. See scribble_create() for formatting help.
+/// @param [cacheGroup]              The cache group that stores the Scribble data. If this argument is unused, the default cache group will be used instead.
+///                                  Please use scribble_create() if you wish to use uncached (<undefined> cache group) Scribble data.
 
-var _x      = argument0;
-var _y      = argument1;
-var _string = argument2;
+var _x           = argument[0];
+var _y           = argument[1];
+var _string      = argument[2];
+var _cache_group = (argument_count > 3)? argument[3] : SCRIBBLE_DEFAULT_CACHE_GROUP;
 
 
 
@@ -34,8 +37,14 @@ else
     }
     else
     {
+        if (_cache_group == undefined)
+        {
+            show_error("Scribble:\n<undefined> cache group not permitted in scribble_draw().\nPlease use scribble_create().\n ", false);
+            _cache_group = SCRIBBLE_DEFAULT_CACHE_GROUP;
+        }
+        
         //Cache a new data structure if we don't have a relevant one for this string
-        var _scribble_array = scribble_create(_string);
+        var _scribble_array = scribble_create(_string, _cache_group);
     }
 }
 

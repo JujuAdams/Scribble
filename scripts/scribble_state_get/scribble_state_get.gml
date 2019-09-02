@@ -1,3 +1,6 @@
+/// Returns an array of data that reflects the current draw state of Scribble.
+/// This can be used to debug code, or used in combination with scribble_set_state() to create template draw states.
+
 var _array = array_create(SCRIBBLE_STATE.__SIZE);
 _array[@ SCRIBBLE_STATE.XSCALE               ] = global.__scribble_state_xscale;
 _array[@ SCRIBBLE_STATE.YSCALE               ] = global.__scribble_state_yscale;
