@@ -1,12 +1,4 @@
 /// Scribble's macros, used to customise and control behaviour throughout the library.
-/// 
-/// 
-/// Scribble v5.x.x
-/// 2019/09/02
-/// @jujuadams
-/// With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
-/// 
-/// For use with GMS2.2.2 and later
 
 #macro SCRIBBLE_HASH_NEWLINE       true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
 #macro SCRIBBLE_COLOURISE_SPRITES  true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)

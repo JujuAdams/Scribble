@@ -1,17 +1,3 @@
-//  Scribble v5.x.x
-//  2019/09/02
-//  @jujuadams
-//  With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
-//  
-//  For use with GMS2.2.2 and later
-
-//  Scribble v5.x.x
-//  2019/09/02
-//  @jujuadams
-//  With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
-//  
-//  For use with GMS2.2.2 and later
-
 scribble_init("Fonts", "fTestA", true);
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 scribble_add_spritefont("sSpriteFont", _mapstring, 0, 11);
