@@ -142,7 +142,7 @@ void main()
     unpackFlags(in_Normal.z, flagArray);
     
     //Vertex animation
-    vec4 pos = vec4( in_Position.xyz, 1.0);
+    vec4 pos = vec4(in_Position.xyz, 1.0);
     applyWave(flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos);
     applyShake(flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos);
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
