@@ -102,7 +102,7 @@ enum __SCRIBBLE_VERTEX
     __SIZE = 36
 }
 
-enum SCRIBBLE_DRAW
+enum SCRIBBLE_STATE
 {
     XSCALE,
     YSCALE,
