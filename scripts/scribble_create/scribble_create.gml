@@ -996,6 +996,6 @@ ds_list_destroy(_parameters_list);
 
 
 
-if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_cache() took " + string((get_timer() - _timer_total)/1000) + "ms");
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_create() took " + string((get_timer() - _timer_total)/1000) + "ms");
 
 return _scribble_array;

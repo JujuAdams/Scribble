@@ -35,7 +35,7 @@ else
     else
     {
         //Cache a new data structure if we don't have a relevant one for this string
-        var _scribble_array = scribble_cache(_string);
+        var _scribble_array = scribble_create(_string);
     }
 }
 

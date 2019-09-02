@@ -626,7 +626,7 @@
             "Key": "df6df2ef-b108-4a0d-b542-812338df9817",
             "Value": {
                 "id": "6d766f46-bd4c-4d02-ba39-0136309706dd",
-                "resourcePath": "scripts\\scribble_cache\\scribble_cache.yy",
+                "resourcePath": "scripts\\scribble_create\\scribble_create.yy",
                 "resourceType": "GMScript"
             }
         },
