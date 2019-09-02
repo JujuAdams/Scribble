@@ -1,12 +1,12 @@
 //  Scribble v5.x.x
-//  2019/07/08
+//  2019/09/02
 //  @jujuadams
 //  With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
 //  
 //  For use with GMS2.2.2 and later
 
 //  Scribble v5.x.x
-//  2019/07/08
+//  2019/09/02
 //  @jujuadams
 //  With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
 //  

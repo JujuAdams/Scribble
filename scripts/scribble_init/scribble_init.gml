@@ -18,7 +18,7 @@
 #region Internal Macro Definitions
 
 #macro __SCRIBBLE_VERSION  "5.x.x"
-#macro __SCRIBBLE_DATE     "2019/09/01"
+#macro __SCRIBBLE_DATE     "2019/09/02"
 #macro __SCRIBBLE_DEBUG    false
 
 enum SCRIBBLE_BOX
