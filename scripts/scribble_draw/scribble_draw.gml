@@ -43,14 +43,32 @@ else
 
 #region Unpack state variables
 
-var _tw_fade_in = is_real(global.__scribble_state_tw_fade_in)? global.__scribble_state_tw_fade_in : (_scribble_array[__SCRIBBLE.TW_DIRECTION] == 1);
-var _tw_method  = is_real(global.__scribble_state_tw_method )? global.__scribble_state_tw_method  : _scribble_array[__SCRIBBLE.TW_METHOD];
-var _tw_speed   = is_real(global.__scribble_state_tw_speed  )? global.__scribble_state_tw_speed   : _scribble_array[__SCRIBBLE.TW_SPEED];
-var _xscale     = is_real(global.__scribble_state_xscale    )? global.__scribble_state_xscale     : _scribble_array[__SCRIBBLE.XSCALE];
-var _yscale     = is_real(global.__scribble_state_yscale    )? global.__scribble_state_yscale     : _scribble_array[__SCRIBBLE.YSCALE];
-var _angle      = is_real(global.__scribble_state_angle     )? global.__scribble_state_angle      : _scribble_array[__SCRIBBLE.ANGLE];
-var _colour     = is_real(global.__scribble_state_colour    )? global.__scribble_state_colour     : _scribble_array[__SCRIBBLE.BLEND_COLOUR];
-var _alpha      = is_real(global.__scribble_state_alpha     )? global.__scribble_state_alpha      : _scribble_array[__SCRIBBLE.ALPHA];
+var _tw_direction = _scribble_array[__SCRIBBLE.TW_DIRECTION];
+var _tw_fade_in   = is_real(global.__scribble_state_tw_fade_in)? global.__scribble_state_tw_fade_in : _tw_direction;
+var _tw_method    = is_real(global.__scribble_state_tw_method )? global.__scribble_state_tw_method  : _scribble_array[__SCRIBBLE.TW_METHOD   ];
+var _tw_speed     = is_real(global.__scribble_state_tw_speed  )? global.__scribble_state_tw_speed   : _scribble_array[__SCRIBBLE.TW_SPEED    ];
+var _xscale       = is_real(global.__scribble_state_xscale    )? global.__scribble_state_xscale     : _scribble_array[__SCRIBBLE.XSCALE      ];
+var _yscale       = is_real(global.__scribble_state_yscale    )? global.__scribble_state_yscale     : _scribble_array[__SCRIBBLE.YSCALE      ];
+var _angle        = is_real(global.__scribble_state_angle     )? global.__scribble_state_angle      : _scribble_array[__SCRIBBLE.ANGLE       ];
+var _colour       = is_real(global.__scribble_state_colour    )? global.__scribble_state_colour     : _scribble_array[__SCRIBBLE.BLEND_COLOUR];
+var _alpha        = is_real(global.__scribble_state_alpha     )? global.__scribble_state_alpha      : _scribble_array[__SCRIBBLE.ALPHA       ];
+var _box_halign   = is_real(global.__scribble_state_box_halign)? global.__scribble_state_box_halign : _scribble_array[__SCRIBBLE.HALIGN      ];
+var _box_valign   = is_real(global.__scribble_state_box_valign)? global.__scribble_state_box_valign : _scribble_array[__SCRIBBLE.VALIGN      ];
+
+var _left = 0;
+var _top  = 0;
+
+switch(_box_halign)
+{
+    case fa_center: _left = -_scribble_array[__SCRIBBLE.WIDTH] div 2; break;
+    case fa_right:  _left = -_scribble_array[__SCRIBBLE.WIDTH];       break;
+}
+
+switch(_box_valign)
+{
+    case fa_middle: _top = -_scribble_array[__SCRIBBLE.HEIGHT] div 2; break;
+    case fa_bottom: _top = -_scribble_array[__SCRIBBLE.HEIGHT];       break;
+}
 
 #endregion
 
@@ -59,11 +77,12 @@ var _alpha      = is_real(global.__scribble_state_alpha     )? global.__scribble
 #region Handle triggering typewriter
 
 //If needed, trigger the fade out typewriter behaviour
-if (_scribble_array[__SCRIBBLE.TW_DIRECTION] == 0)
+if (_tw_direction == 0)
 {
     //If directed to, start a fade in
     if (_tw_fade_in)
     {
+        _tw_direction = 1;
         _scribble_array[@ __SCRIBBLE.TW_DIRECTION] = 1;
         _scribble_array[@ __SCRIBBLE.TW_POSITION ] = 0;
         _scribble_array[@ __SCRIBBLE.CHAR_FADE_T ] = (_tw_method != SCRIBBLE_TYPEWRITER_PER_CHARACTER);
@@ -78,6 +97,7 @@ else
         //If directed to, try to start a fade in
         if (scribble_get_typewriter_state(_scribble_array) == 2.0)
         {
+            _tw_direction = 1;
             _scribble_array[@ __SCRIBBLE.TW_DIRECTION] = 1;
             _scribble_array[@ __SCRIBBLE.TW_POSITION ] = 0;
             _scribble_array[@ __SCRIBBLE.CHAR_FADE_T ] = (_tw_method != SCRIBBLE_TYPEWRITER_PER_CHARACTER);
@@ -89,6 +109,7 @@ else
         //Otherwise wait until the typewriter 
         if (scribble_get_typewriter_state(_scribble_array) == 1.0)
         {
+            _tw_direction = -1;
             _scribble_array[@ __SCRIBBLE.TW_DIRECTION] = -1;
             _scribble_array[@ __SCRIBBLE.TW_POSITION ] =  0;
             _scribble_array[@ __SCRIBBLE.CHAR_FADE_T ] =  1;
@@ -103,7 +124,7 @@ else
 
 #region If we're actively running the typewriter, step through
 
-if (_scribble_array[__SCRIBBLE.TW_DIRECTION] != 0)
+if (_tw_direction != 0)
 {
     var _tw_speed     = _tw_speed*SCRIBBLE_STEP_SIZE;
     var _tw_direction = _scribble_array[__SCRIBBLE.TW_DIRECTION];
@@ -111,11 +132,10 @@ if (_scribble_array[__SCRIBBLE.TW_DIRECTION] != 0)
     {
         #region Advance typewriter
         
-        var _tw_method = _tw_method;
-        var _tw_pos    = _scribble_array[__SCRIBBLE.TW_POSITION];
-        var _pos_max   = 1.0;
-        var _scan_a    = -1;
-        var _scan_b    = -1;
+        var _tw_pos  = _scribble_array[__SCRIBBLE.TW_POSITION];
+        var _pos_max = 1.0;
+        var _scan_a  = -1;
+        var _scan_b  = -1;
         
         switch(_tw_method)
         {
@@ -240,16 +260,14 @@ if (_scribble_array[__SCRIBBLE.TW_DIRECTION] != 0)
 
 var _old_matrix = matrix_get(matrix_world);
 
-if ((_xscale == 1) && (_yscale == 1) && (_angle  == 0))
+if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {
-    var _matrix = matrix_build(_scribble_array[__SCRIBBLE.LEFT] + _x, _scribble_array[__SCRIBBLE.TOP] + _y, 0,   0,0,0,   1,1,1);
+    var _matrix = matrix_build(_left + _x, _top + _y, 0,   0,0,0,   1,1,1);
 }
 else
 {
-    var _matrix = matrix_build(_scribble_array[__SCRIBBLE.LEFT], _scribble_array[__SCRIBBLE.TOP], 0,   0,0,0,   1,1,1);
-        _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
-                                                        0, 0, _angle,
-                                                        _xscale, _yscale, 1));
+    var _matrix = matrix_build(_left, _top, 0,   0,0,0,   1,1,1);
+        _matrix = matrix_multiply(_matrix, matrix_build(_x,_y,0,   0,0,_angle,   _xscale,_yscale,1));
 }
 
 _matrix = matrix_multiply(_matrix, _old_matrix);
@@ -310,7 +328,7 @@ if (_count > 0)
     {
         var _vbuff_data = _vbuff_list[| _i];
         vertex_submit(_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
-        _i++;
+        ++_i;
     }
     
     shader_reset();

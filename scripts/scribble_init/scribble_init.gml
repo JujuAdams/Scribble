@@ -138,10 +138,6 @@ enum __SCRIBBLE
     __SECTION1,          // 8
     WIDTH,               //11
     HEIGHT,              //12
-    LEFT,                //13
-    TOP,                 //14
-    RIGHT,               //15
-    BOTTOM,              //16
     CHARACTERS,          //17
     LINES,               //18
     GLOBAL_INDEX,        //20
@@ -248,6 +244,7 @@ else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_defau
 }
 
 //Declare global variables
+global.__scribble_default_animation_parameters = scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
 global.__scribble_font_directory    = _font_directory;
 global.__scribble_font_data         = ds_map_create();  //Stores a data array for each font defined inside Scribble
 global.__scribble_colours           = ds_map_create();  //Stores colour definitions, including custom colours
@@ -263,7 +260,6 @@ global.__scribble_global_cache_list = ds_list_create();
 global.__scribble_cache_test_index  = 0;
 global.__scribble_cache_group_map   = ds_map_create();
 ds_map_add_list(global.__scribble_cache_group_map, 0, ds_list_create());
-global.__scribble_default_animation_parameters = scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
 
 //Declare state variables
 global.__scribble_state_xscale          = SCRIBBLE_DEFAULT_XSCALE;

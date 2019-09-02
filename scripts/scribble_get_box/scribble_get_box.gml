@@ -16,10 +16,10 @@
 var _scribble_array = argument[0];
 var _x              = argument[1];
 var _y              = argument[2];
-var _left           = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
-var _top            = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
-var _right          = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
-var _bottom         = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 0;
+var _margin_l       = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
+var _margin_t       = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
+var _margin_r       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
+var _margin_b       = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 0;
 
 if (!scribble_exists(_scribble_array))
 {
@@ -27,15 +27,55 @@ if (!scribble_exists(_scribble_array))
     exit;
 }
 
-if ((global.__scribble_state_xscale == 1)
-&&  (global.__scribble_state_yscale == 1)
-&&  (global.__scribble_state_angle  == 0))
+var _xscale     = is_real(global.__scribble_state_xscale    )? global.__scribble_state_xscale     : _scribble_array[__SCRIBBLE.XSCALE];
+var _yscale     = is_real(global.__scribble_state_yscale    )? global.__scribble_state_yscale     : _scribble_array[__SCRIBBLE.YSCALE];
+var _angle      = is_real(global.__scribble_state_angle     )? global.__scribble_state_angle      : _scribble_array[__SCRIBBLE.ANGLE ];
+var _box_halign = is_real(global.__scribble_state_box_halign)? global.__scribble_state_box_halign : _scribble_array[__SCRIBBLE.HALIGN];
+var _box_valign = is_real(global.__scribble_state_box_valign)? global.__scribble_state_box_valign : _scribble_array[__SCRIBBLE.VALIGN];
+
+switch(_box_halign)
+{
+    case fa_left:
+        var _box_l = 0;
+        var _box_r = _scribble_array[__SCRIBBLE.WIDTH];
+    break;
+    
+    case fa_center:
+        var _box_l = -_scribble_array[__SCRIBBLE.WIDTH] div 2;
+        var _box_r = -_box_l;
+    break;
+    
+    case fa_right:
+        var _box_l = -_scribble_array[__SCRIBBLE.WIDTH];
+        var _box_r = 0;
+    break;
+}
+
+switch(_box_valign)
+{
+    case fa_top:
+        var _box_t = 0;
+        var _box_b = _scribble_array[__SCRIBBLE.HEIGHT];
+    break;
+    
+    case fa_middle:
+        var _box_t = -_scribble_array[__SCRIBBLE.HEIGHT] div 2;
+        var _box_b = -_box_t;
+    break;
+    
+    case fa_bottom:
+        var _box_t = -_scribble_array[__SCRIBBLE.HEIGHT];
+        var _box_b = 0;
+    break;
+}
+
+if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 {
     //Avoid using matrices if we can
-    var _l = _x + _scribble_array[__SCRIBBLE.LEFT  ] - _left;
-    var _t = _y + _scribble_array[__SCRIBBLE.TOP   ] - _top;
-    var _r = _x + _scribble_array[__SCRIBBLE.RIGHT ] + _right;
-    var _b = _y + _scribble_array[__SCRIBBLE.BOTTOM] + _bottom;
+    var _l = _x + _box_l - _margin_l;
+    var _t = _y + _box_t - _margin_t;
+    var _r = _x + _box_r + _margin_r;
+    var _b = _y + _box_b + _margin_b;
     
     return [_l, _t,
             _r, _t,
@@ -44,17 +84,17 @@ if ((global.__scribble_state_xscale == 1)
 }
 
 var _matrix = matrix_build(_x, _y, 0, 
-                           0, 0, global.__scribble_state_angle,
-                           global.__scribble_state_xscale, global.__scribble_state_yscale, 1);
+                           0, 0, _angle,
+                           _xscale, _yscale, 1);
 
-var _l = _scribble_array[__SCRIBBLE.LEFT  ] - _left;
-var _t = _scribble_array[__SCRIBBLE.TOP   ] - _top;
-var _r = _scribble_array[__SCRIBBLE.RIGHT ] + _right;
-var _b = _scribble_array[__SCRIBBLE.BOTTOM] + _bottom;
+var _l = _box_l - _margin_l;
+var _t = _box_t - _margin_t;
+var _r = _box_r + _margin_r;
+var _b = _box_b + _margin_b;
 
 var _result = array_create(SCRIBBLE_BOX.__SIZE);
-var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); _result[SCRIBBLE_BOX.TL_X] = _vertex[0]; _result[SCRIBBLE_BOX.TL_Y] = _vertex[1];
-var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); _result[SCRIBBLE_BOX.TR_X] = _vertex[0]; _result[SCRIBBLE_BOX.TR_Y] = _vertex[1];
-var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); _result[SCRIBBLE_BOX.BL_X] = _vertex[0]; _result[SCRIBBLE_BOX.BL_Y] = _vertex[1];
-var _vertex = matrix_transform_vertex(_matrix, _r, _b, 0); _result[SCRIBBLE_BOX.BR_X] = _vertex[0]; _result[SCRIBBLE_BOX.BR_Y] = _vertex[1];
+var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); _result[@ SCRIBBLE_BOX.TL_X] = _vertex[0]; _result[@ SCRIBBLE_BOX.TL_Y] = _vertex[1];
+var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); _result[@ SCRIBBLE_BOX.TR_X] = _vertex[0]; _result[@ SCRIBBLE_BOX.TR_Y] = _vertex[1];
+var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); _result[@ SCRIBBLE_BOX.BL_X] = _vertex[0]; _result[@ SCRIBBLE_BOX.BL_Y] = _vertex[1];
+var _vertex = matrix_transform_vertex(_matrix, _r, _b, 0); _result[@ SCRIBBLE_BOX.BR_X] = _vertex[0]; _result[@ SCRIBBLE_BOX.BR_Y] = _vertex[1];
 return _result;

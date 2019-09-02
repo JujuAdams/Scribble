@@ -40,6 +40,8 @@ var _timer_total = get_timer();
 var _input_string = argument[0];
 var _cache_group  = (argument_count > 1)? argument[1] : __SCRIBBLE_DEFAULT_CACHE_GROUP;
 
+
+
 #region Process input parameters
 
 var _def_colour   = SCRIBBLE_DEFAULT_TEXT_COLOUR;
@@ -112,10 +114,6 @@ _scribble_array[@ __SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
 _scribble_array[@ __SCRIBBLE.__SECTION1         ] = "-- Statistics --";
 _scribble_array[@ __SCRIBBLE.WIDTH              ] = 0;
 _scribble_array[@ __SCRIBBLE.HEIGHT             ] = 0;
-_scribble_array[@ __SCRIBBLE.LEFT               ] = 0;
-_scribble_array[@ __SCRIBBLE.TOP                ] = 0;
-_scribble_array[@ __SCRIBBLE.RIGHT              ] = 0;
-_scribble_array[@ __SCRIBBLE.BOTTOM             ] = 0;
 _scribble_array[@ __SCRIBBLE.CHARACTERS         ] = 0;
 _scribble_array[@ __SCRIBBLE.LINES              ] = 0;
 _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count+1;
@@ -154,6 +152,14 @@ _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = -1;
 _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY   ] = _events_char_array; //Stores each event's triggering cha
 _scribble_array[@ __SCRIBBLE.EVENT_NAME_ARRAY   ] = _events_name_array; //Stores each event's name
 _scribble_array[@ __SCRIBBLE.EVENT_DATA_ARRAY   ] = _events_data_array; //Stores each event's parameters
+
+if (is_real(global.__scribble_state_tw_fade_in) && global.__scribble_state_tw_fade_in)
+{
+    _scribble_array[@ __SCRIBBLE.TW_DIRECTION] = 1;
+    _scribble_array[@ __SCRIBBLE.TW_POSITION ] = 0;
+    _scribble_array[@ __SCRIBBLE.CHAR_FADE_T ] = (_scribble_array[__SCRIBBLE.TW_METHOD] != SCRIBBLE_TYPEWRITER_PER_CHARACTER);
+    _scribble_array[@ __SCRIBBLE.LINE_FADE_T ] = (_scribble_array[__SCRIBBLE.TW_METHOD] != SCRIBBLE_TYPEWRITER_PER_LINE);
+}
 
 #endregion
 
@@ -948,40 +954,6 @@ repeat(ds_list_size(_vertex_buffer_list))
     _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = undefined;
     
     ++_v;
-}
-
-#endregion
-
-
-
-#region Sort out box alignment
-
-switch(global.__scribble_state_box_halign)
-{
-    case fa_left:
-        _scribble_array[@ __SCRIBBLE.RIGHT] =  _text_x_max;
-    break;
-    case fa_center:
-        _scribble_array[@ __SCRIBBLE.LEFT ] = -_text_x_max div 2;
-        _scribble_array[@ __SCRIBBLE.RIGHT] =  _text_x_max div 2;
-    break;
-    case fa_right:
-        _scribble_array[@ __SCRIBBLE.LEFT ] = -_text_x_max;
-    break;
-}
-
-switch(global.__scribble_state_box_valign)
-{
-    case fa_top:
-        _scribble_array[@ __SCRIBBLE.BOTTOM] =  _text_y_max;
-    break;
-    case fa_middle:
-        _scribble_array[@ __SCRIBBLE.TOP   ] = -_text_y_max div 2;
-        _scribble_array[@ __SCRIBBLE.BOTTOM] =  _text_y_max div 2;
-    break;
-    case fa_bottom:
-        _scribble_array[@ __SCRIBBLE.TOP   ] = -_text_y_max;
-    break;
 }
 
 #endregion
