@@ -1,8 +1,12 @@
 /// Scribble's macros, used to customise and control behaviour throughout the library.
 
-#macro SCRIBBLE_HASH_NEWLINE       true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1 behaviour
+
+
+#macro SCRIBBLE_HASH_NEWLINE       true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's behaviour
 #macro SCRIBBLE_COLOURISE_SPRITES  true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
 #macro SCRIBBLE_VERBOSE            false //Enables verbose console output to aid with debugging.
+
+
 
 #region Default parameters
 
@@ -32,6 +36,8 @@
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED  0.1      //The default animation speed for sprites inserted into text.
 
 #endregion
+
+
 
 #region Advanced stuff
 
