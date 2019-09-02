@@ -110,8 +110,6 @@ _scribble_array[@ __SCRIBBLE.WIDTH_LIMIT        ] = global.__scribble_state_max_
 _scribble_array[@ __SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
 
 _scribble_array[@ __SCRIBBLE.__SECTION1         ] = "-- Statistics --";
-_scribble_array[@ __SCRIBBLE.HALIGN             ] = global.__scribble_state_box_halign;
-_scribble_array[@ __SCRIBBLE.VALIGN             ] = global.__scribble_state_box_valign;
 _scribble_array[@ __SCRIBBLE.WIDTH              ] = 0;
 _scribble_array[@ __SCRIBBLE.HEIGHT             ] = 0;
 _scribble_array[@ __SCRIBBLE.LEFT               ] = 0;
@@ -124,19 +122,21 @@ _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_cou
 _scribble_array[@ __SCRIBBLE.TIME               ] = current_time;
 _scribble_array[@ __SCRIBBLE.FREED              ] = false;
 
-_scribble_array[@ __SCRIBBLE.__SECTION2         ] = "-- State --";
-_scribble_array[@ __SCRIBBLE.XSCALE             ] = SCRIBBLE_DEFAULT_XSCALE;
-_scribble_array[@ __SCRIBBLE.YSCALE             ] = SCRIBBLE_DEFAULT_YSCALE;
-_scribble_array[@ __SCRIBBLE.ANGLE              ] = SCRIBBLE_DEFAULT_ANGLE;
-_scribble_array[@ __SCRIBBLE.BLEND_COLOUR       ] = SCRIBBLE_DEFAULT_BLEND_COLOUR;
-_scribble_array[@ __SCRIBBLE.ALPHA              ] = SCRIBBLE_DEFAULT_ALPHA;
+_scribble_array[@ __SCRIBBLE.__SECTION2         ] = "-- Draw State --";
+_scribble_array[@ __SCRIBBLE.XSCALE             ] = is_real(global.__scribble_state_xscale    )? global.__scribble_state_xscale     : SCRIBBLE_DEFAULT_XSCALE;
+_scribble_array[@ __SCRIBBLE.YSCALE             ] = is_real(global.__scribble_state_yscale    )? global.__scribble_state_yscale     : SCRIBBLE_DEFAULT_YSCALE;
+_scribble_array[@ __SCRIBBLE.ANGLE              ] = is_real(global.__scribble_state_angle     )? global.__scribble_state_angle      : SCRIBBLE_DEFAULT_ANGLE;
+_scribble_array[@ __SCRIBBLE.BLEND_COLOUR       ] = is_real(global.__scribble_state_colour    )? global.__scribble_state_colour     : SCRIBBLE_DEFAULT_BLEND_COLOUR;
+_scribble_array[@ __SCRIBBLE.ALPHA              ] = is_real(global.__scribble_state_alpha     )? global.__scribble_state_alpha      : SCRIBBLE_DEFAULT_ALPHA;
+_scribble_array[@ __SCRIBBLE.HALIGN             ] = is_real(global.__scribble_state_box_halign)? global.__scribble_state_box_halign : SCRIBBLE_DEFAULT_BOX_HALIGN;
+_scribble_array[@ __SCRIBBLE.VALIGN             ] = is_real(global.__scribble_state_box_valign)? global.__scribble_state_box_valign : SCRIBBLE_DEFAULT_BOX_VALIGN;
 
 _scribble_array[@ __SCRIBBLE.__SECTION3         ] = "-- Typewriter --";
+_scribble_array[@ __SCRIBBLE.TW_SPEED           ] = is_real(global.__scribble_state_tw_speed     )? global.__scribble_state_tw_speed      : SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
+_scribble_array[@ __SCRIBBLE.TW_METHOD          ] = is_real(global.__scribble_state_tw_method    )? global.__scribble_state_tw_method     : SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
+_scribble_array[@ __SCRIBBLE.TW_SMOOTHNESS      ] = is_real(global.__scribble_state_tw_smoothness)? global.__scribble_state_tw_smoothness : SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
 _scribble_array[@ __SCRIBBLE.TW_DIRECTION       ] = 0;
-_scribble_array[@ __SCRIBBLE.TW_SPEED           ] = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
 _scribble_array[@ __SCRIBBLE.TW_POSITION        ] = 0;
-_scribble_array[@ __SCRIBBLE.TW_METHOD          ] = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
-_scribble_array[@ __SCRIBBLE.TW_SMOOTHNESS      ] = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
 _scribble_array[@ __SCRIBBLE.CHAR_FADE_T        ] = 1;
 _scribble_array[@ __SCRIBBLE.LINE_FADE_T        ] = 1;
 

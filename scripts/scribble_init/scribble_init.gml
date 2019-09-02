@@ -121,7 +121,6 @@ enum SCRIBBLE_STATE
     TYPEWRITER_SPEED,
     TYPEWRITER_SMOOTHNESS,
     ANIMATION_ARRAY,
-    CACHE_GROUP,
     __SIZE
 }
 
@@ -137,8 +136,6 @@ enum __SCRIBBLE
     LINE_HEIGHT,         // 7
     
     __SECTION1,          // 8
-    HALIGN,              // 9
-    VALIGN,              //10
     WIDTH,               //11
     HEIGHT,              //12
     LEFT,                //13
@@ -157,6 +154,8 @@ enum __SCRIBBLE
     ANGLE,
     BLEND_COLOUR,
     ALPHA,
+    HALIGN,              // 9
+    VALIGN,              //10
     
     __SECTION3,          //23
     TW_DIRECTION,        //24
@@ -286,8 +285,6 @@ global.__scribble_state_tw_method       = SCRIBBLE_DEFAULT_TYPEWRITER_METHOD;
 global.__scribble_state_tw_speed        = SCRIBBLE_DEFAULT_TYPEWRITER_SPEED;
 global.__scribble_state_tw_smoothness   = SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS;
 global.__scribble_state_anim_array      = array_copy([], 0, global.__scribble_default_animation_parameters, 0, SCRIBBLE_MAX_DATA_FIELDS);
-global.__scribble_state_cache_group     = __SCRIBBLE_DEFAULT_CACHE_GROUP;
-global.__scribble_state_default         = scribble_get_state();
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_add_colour("c_aqua",    c_aqua   , true);

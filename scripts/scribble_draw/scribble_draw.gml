@@ -42,11 +42,11 @@ else
 
 
 var _tw_fade_in = is_real(global.__scribble_state_tw_fade_in)? global.__scribble_state_tw_fade_in : (_scribble_array[__SCRIBBLE.TW_DIRECTION] == 1);
-var _tw_method  = is_real(global.__scribble_state_tw_method)?  global.__scribble_state_tw_method  : _scribble_array[__SCRIBBLE.TW_METHOD];
-var _tw_speed   = is_real(global.__scribble_state_tw_speed)?   global.__scribble_state_tw_speed   : _scribble_array[__SCRIBBLE.TW_SPEED];
-var _xscale     = is_real(global.__scribble_state_xscale)?     global.__scribble_state_xscale     : _scribble_array[__SCRIBBLE.XSCALE];
-var _yscale     = is_real(global.__scribble_state_yscale)?     global.__scribble_state_yscale     : _scribble_array[__SCRIBBLE.YSCALE];
-var _angle      = is_real(global.__scribble_state_angle)?      global.__scribble_state_angle      : _scribble_array[__SCRIBBLE.ANGLE];
+var _tw_method  = is_real(global.__scribble_state_tw_method )? global.__scribble_state_tw_method  : _scribble_array[__SCRIBBLE.TW_METHOD];
+var _tw_speed   = is_real(global.__scribble_state_tw_speed  )? global.__scribble_state_tw_speed   : _scribble_array[__SCRIBBLE.TW_SPEED];
+var _xscale     = is_real(global.__scribble_state_xscale    )? global.__scribble_state_xscale     : _scribble_array[__SCRIBBLE.XSCALE];
+var _yscale     = is_real(global.__scribble_state_yscale    )? global.__scribble_state_yscale     : _scribble_array[__SCRIBBLE.YSCALE];
+var _angle      = is_real(global.__scribble_state_angle     )? global.__scribble_state_angle      : _scribble_array[__SCRIBBLE.ANGLE];
 
 var _colour = (is_real(global.__scribble_state_colour) && (global.__scribble_state_colour >= 0))? global.__scribble_state_colour : draw_get_colour();
 var _alpha  = (is_real(global.__scribble_state_alpha ) && (global.__scribble_state_alpha  >= 0))? global.__scribble_state_alpha  : draw_get_alpha();

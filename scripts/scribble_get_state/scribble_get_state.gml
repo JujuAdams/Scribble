@@ -16,5 +16,4 @@ _array[@ SCRIBBLE_STATE.TYPEWRITER_METHOD    ] = global.__scribble_state_tw_meth
 _array[@ SCRIBBLE_STATE.TYPEWRITER_SPEED     ] = global.__scribble_state_tw_speed;
 _array[@ SCRIBBLE_STATE.TYPEWRITER_SMOOTHNESS] = global.__scribble_state_tw_smoothness;
 _array[@ SCRIBBLE_STATE.ANIMATION_ARRAY      ] = global.__scribble_state_anim_array;
-_array[@ SCRIBBLE_STATE.CACHE_GROUP          ] = global.__scribble_state_cache_group;
 return _array;
