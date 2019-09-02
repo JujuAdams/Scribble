@@ -68,9 +68,11 @@ var _cache_group  = (argument_count > 1)? argument[1] : SCRIBBLE_DEFAULT_CACHE_G
 
 #region Process input parameters
 
-var _def_colour   = SCRIBBLE_DEFAULT_TEXT_COLOUR;
-var _def_font     = global.__scribble_default_font;
-var _def_halign   = fa_left;
+var _max_width       = is_real(global.__scribble_state_max_width)? global.__scribble_state_max_width : SCRIBBLE_DEFAULT_MAX_WIDTH;
+var _line_min_height = is_real(global.__scribble_state_line_min_height)? global.__scribble_state_line_min_height : SCRIBBLE_DEFAULT_LINE_MIN_HEIGHT;
+var _def_colour      = SCRIBBLE_DEFAULT_TEXT_COLOUR;
+var _def_font        = global.__scribble_default_font;
+var _def_halign      = fa_left;
 
 //Check if the default font even exists
 if (!ds_map_exists(global.__scribble_font_data, _def_font))
@@ -93,7 +95,6 @@ if (_glyph_array == undefined)
     exit;
 }
 
-var _line_min_height = is_real(global.__scribble_state_line_min_height)? global.__scribble_state_line_min_height : -1;
 var _def_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH]; //Find the default font's space width
 if (_line_min_height < 0) _line_min_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT]; //Find the default line minimum height if not specified
 
@@ -132,7 +133,7 @@ _scribble_array[@ __SCRIBBLE.STRING             ] = _input_string;
 _scribble_array[@ __SCRIBBLE.DEFAULT_FONT       ] = _def_font;
 _scribble_array[@ __SCRIBBLE.DEFAULT_COLOUR     ] = _def_colour;
 _scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN     ] = _def_halign;
-_scribble_array[@ __SCRIBBLE.WIDTH_LIMIT        ] = global.__scribble_state_max_width;
+_scribble_array[@ __SCRIBBLE.WIDTH_LIMIT        ] = _max_width;
 _scribble_array[@ __SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
 
 _scribble_array[@ __SCRIBBLE.__SECTION1         ] = "-- Statistics --";
@@ -197,7 +198,7 @@ global.scribble_alive[? global.__scribble_global_count] = _scribble_array;
 //If we've got a valid cache group...
 if (_cache_group != undefined)
 {
-    var _cache_string = string(_input_string) + ":" + string(global.__scribble_state_line_min_height) + ":" + string(global.__scribble_state_max_width);
+    var _cache_string = string(_input_string) + ":" + string(_line_min_height) + ":" + string(_max_width);
     if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
     
     //Add this Scribble data structure to the global cache lookup
@@ -835,7 +836,7 @@ repeat(_buffer_size)
     
     #region Handle new line creation
     
-    if (_force_newline || ((_char_width + _text_x > global.__scribble_state_max_width) && (global.__scribble_state_max_width >= 0)))
+    if (_force_newline || ((_char_width + _text_x > _max_width) && (_max_width >= 0)))
     {
         var _v = 0;
         repeat(ds_list_size(_vertex_buffer_list))
