@@ -167,8 +167,6 @@ enum __SCRIBBLE
     LINE_FADE_T,         //30
     
     __SECTION4,          //31
-    HAS_CALLED_STEP,     //32
-    NO_STEP_COUNT,       //33
     DATA_FIELDS,         //34
     ANIMATION_TIME,      //35
     

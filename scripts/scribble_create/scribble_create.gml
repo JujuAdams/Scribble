@@ -141,8 +141,6 @@ _scribble_array[@ __SCRIBBLE.CHAR_FADE_T        ] = 1;
 _scribble_array[@ __SCRIBBLE.LINE_FADE_T        ] = 1;
 
 _scribble_array[@ __SCRIBBLE.__SECTION4         ] = "-- Animation --";
-_scribble_array[@ __SCRIBBLE.HAS_CALLED_STEP    ] = false;
-_scribble_array[@ __SCRIBBLE.NO_STEP_COUNT      ] = 0;
 _scribble_array[@ __SCRIBBLE.DATA_FIELDS        ] = global.__scribble_default_animation_parameters;
 _scribble_array[@ __SCRIBBLE.ANIMATION_TIME     ] = 0;
 
