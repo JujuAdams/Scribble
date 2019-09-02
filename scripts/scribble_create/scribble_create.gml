@@ -1,9 +1,7 @@
 /// Parses a string and turns it into a Scribble data structure that can be drawn with scribble_draw()
 ///
-/// @param string         The string to be parsed. See below for the various in-line formatting commands
-/// @param [cacheGroup]   The cache group. Integers or strings accepted. Use a value of <undefined> for persistent. Cache group 0 is the default group
-///
-/// All optional arguments accept <undefined> to indicate that the default value should be used.
+/// @param string         The string to be parsed. See below for the various in-line formatting commands.
+/// @param [cacheGroup]   The cache group. Integers or strings accepted. Use a value of <undefined> for uncached. If this argument is unused, the default cache group will be used.
 ///
 /// Formatting commands:
 /// []                                  Reset formatting to defaults
@@ -38,7 +36,7 @@ if ( !variable_global_exists("__scribble_global_count") )
 var _timer_total = get_timer();
 
 var _input_string = argument[0];
-var _cache_group  = (argument_count > 1)? argument[1] : __SCRIBBLE_DEFAULT_CACHE_GROUP;
+var _cache_group  = (argument_count > 1)? argument[1] : SCRIBBLE_DEFAULT_CACHE_GROUP;
 
 
 
@@ -69,7 +67,7 @@ if (_glyph_array == undefined)
     exit;
 }
 
-var _line_min_height = global.__scribble_state_line_min_height;
+var _line_min_height = is_real(global.__scribble_state_line_min_height)? global.__scribble_state_line_min_height : -1;
 var _def_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH]; //Find the default font's space width
 if (_line_min_height < 0) _line_min_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT]; //Find the default line minimum height if not specified
 
@@ -170,15 +168,15 @@ if (is_real(global.__scribble_state_tw_fade_in) && global.__scribble_state_tw_fa
 global.__scribble_global_count++;
 global.__scribble_alive[? global.__scribble_global_count] = _scribble_array;
 
-var _cache_string = string(_input_string) + ":" + string(global.__scribble_state_line_min_height) + ":" + string(global.__scribble_state_max_width);
-if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
-
-//Add this Scribble data structure to the global cache lookup
-global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
-
 //If we've got a valid cache group...
 if (_cache_group != undefined)
 {
+    var _cache_string = string(_input_string) + ":" + string(global.__scribble_state_line_min_height) + ":" + string(global.__scribble_state_max_width);
+    if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
+    
+    //Add this Scribble data structure to the global cache lookup
+    global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
+    
     //Find this cache group's list
     var _list = global.__scribble_cache_group_map[? _cache_group];
     if (_list == undefined)
