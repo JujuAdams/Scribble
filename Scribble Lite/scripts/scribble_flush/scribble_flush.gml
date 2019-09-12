@@ -3,7 +3,7 @@
 /// This script is only meant to be called directly by advanced users. Please read the documentation carefully!
 /// 
 /// 
-/// @param cacheGroup_or_scribbleArray   The target memory to free. See below.
+/// @param cacheGroup  The target memory to free. See below.
 /// 
 /// 
 /// Scribble uses cache groups to help manage memory. Scribble text that has been added to a cache group will be automatically destroyed if...
@@ -22,31 +22,7 @@
 
 var _target = argument0;
 
-if (is_array(_target))
-{
-    if (!scribble_exists(_target))
-    {
-        show_debug_message("Scribble: WARNING! Data structure \"" + string(_target) + "\" doesn't exist!\n ");
-        exit;
-    }
-    
-    ds_map_delete(global.scribble_alive, _target[__SCRIBBLE.GLOBAL_INDEX]);
-    
-    var _vbuff_list = _target[__SCRIBBLE.VERTEX_BUFFER_LIST];
-    var _count = ds_list_size(_vbuff_list);
-    for(var _i = 0; _i < _count; _i++)
-    {
-        var _vbuff_data = _vbuff_list[| _i];
-        var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
-        vertex_delete_buffer(_vbuff);
-    }
-    
-    ds_list_destroy(_target[@ __SCRIBBLE.LINE_LIST         ]);
-    ds_list_destroy(_target[@ __SCRIBBLE.VERTEX_BUFFER_LIST]);
-    
-    _target[@ __SCRIBBLE.FREED] = true;
-}
-else if (ds_map_exists(global.__scribble_cache_group_map, _target))
+if (ds_map_exists(global.__scribble_cache_group_map, _target))
 {
     if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Trying to clear cache group " + string(_target));
     
@@ -57,9 +33,45 @@ else if (ds_map_exists(global.__scribble_cache_group_map, _target))
         scribble_flush(global.__scribble_global_cache_map[? _list[| _i]]);
         ++_i;
     }
+    
     ds_list_clear(_list);
+    
+    return true;
 }
-else
+else if (is_array(_target))
 {
-    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: WARNING! Cache group \"" + string(_target) + "\" has not yet been created");
+    if (!is_array(_target)
+    || (array_length_1d(_target) != __SCRIBBLE.__SIZE)
+    || (_target[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
+    {
+        show_debug_message("Scribble: WARNING! Array \"" + string(_target) + "\" isn't a Scribble array!\n ");
+        return false;
+    }
+    else if (!_target[__SCRIBBLE.FREED])
+    {
+        ds_map_delete(global.scribble_alive, _target[__SCRIBBLE.GLOBAL_INDEX]);
+        
+        var _vbuff_list = _target[__SCRIBBLE.VERTEX_BUFFER_LIST];
+        var _count = ds_list_size(_vbuff_list);
+        for(var _i = 0; _i < _count; _i++)
+        {
+            var _vbuff_data = _vbuff_list[| _i];
+            var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
+            vertex_delete_buffer(_vbuff);
+        }
+        
+        ds_list_destroy(_target[@ __SCRIBBLE.LINE_LIST         ]);
+        ds_list_destroy(_target[@ __SCRIBBLE.VERTEX_BUFFER_LIST]);
+        
+        _target[@ __SCRIBBLE.FREED] = true;
+        return true;
+    }
+    else
+    {
+        //Already been freed
+        return true;
+    }
 }
+
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: WARNING! Cache group \"" + string(_target) + "\" has not yet been created");
+return false;

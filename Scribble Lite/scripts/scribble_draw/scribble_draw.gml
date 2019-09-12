@@ -1055,9 +1055,12 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
         //Scan through the cache to see if any scribble data structures have elapsed
         global.__scribble_cache_test_index = (global.__scribble_cache_test_index + 1) mod _size;
         var _cache_string = global.__scribble_global_cache_list[| global.__scribble_cache_test_index];
-        
         var _scribble_array = global.__scribble_global_cache_map[? _cache_string];
-        if (!scribble_exists(_scribble_array))
+        
+        if (!is_array(_scribble_array)
+        || (array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
+        || (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
+        || _scribble_array[__SCRIBBLE.FREED])
         {
             if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: \"" + _cache_string + "\" exists in cache but doesn't exist elsewhere");
             ds_list_delete(global.__scribble_global_cache_list, global.__scribble_cache_test_index);

@@ -23,7 +23,10 @@ var _margin_t       = ((argument_count > 4) && (argument[4] != undefined))? argu
 var _margin_r       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
 var _margin_b       = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 0;
 
-if (!scribble_exists(_scribble_array))
+if (!is_array(_scribble_array)
+|| (array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
+|| (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
+|| _scribble_array[__SCRIBBLE.FREED])
 {
     show_error("Scribble:\nScribble data structure \"" + string(_scribble_array) + "\" doesn't exist!\n ", false);
     exit;
