@@ -9,20 +9,20 @@ void main()
 {
     gl_FragColor = v_vColour * texture2D(gm_BaseTexture, v_vTexcoord);
     
-    vec4 centre = v_vColour * texture2D(gm_BaseTexture, v_vTexcoord);
-    
-    vec2 texel = vec2(1.0/1024.0, 1.0/2048.0);
-    
-    //Square Outline
-    float sampleMax = texture2D(gm_BaseTexture, v_vTexcoord).a;
-    for(float offsetY = -radiusMax; offsetY <= radiusMax; offsetY += 1.0)
-    {
-        for(float offsetX = -radiusMax; offsetX <= radiusMax; offsetX += 1.0)
-        {
-            sampleMax = max(sampleMax, texture2D(gm_BaseTexture, v_vTexcoord + texel*vec2(offsetX, offsetY)).a);
-        }
-    }
-    gl_FragColor = mix(vec4(1.0, 1.0, 1.0, sampleMax), centre, centre.a);
+    //vec4 centre = v_vColour * texture2D(gm_BaseTexture, v_vTexcoord);
+    //
+    //vec2 texel = vec2(1.0/1024.0, 1.0/2048.0);
+    //
+    ////Square Outline
+    //float sampleMax = texture2D(gm_BaseTexture, v_vTexcoord).a;
+    //for(float offsetY = -radiusMax; offsetY <= radiusMax; offsetY += 1.0)
+    //{
+    //    for(float offsetX = -radiusMax; offsetX <= radiusMax; offsetX += 1.0)
+    //    {
+    //        sampleMax = max(sampleMax, texture2D(gm_BaseTexture, v_vTexcoord + texel*vec2(offsetX, offsetY)).a);
+    //    }
+    //}
+    //gl_FragColor = mix(vec4(1.0, 1.0, 1.0, sampleMax), centre, centre.a);
     
     ////Rounded outline
     //float sampleMax = texture2D(gm_BaseTexture, v_vTexcoord).a;
