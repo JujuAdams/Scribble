@@ -1068,9 +1068,28 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
         else if (_scribble_array[__SCRIBBLE.TIME] + SCRIBBLE_CACHE_TIMEOUT < current_time)
         {
             if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Removing \"" + _cache_string + "\" from cache");
-            scribble_flush(_scribble_array);
+            
+            //Free data (basically a duplicate of scribble_flush)
+            var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
+            var _count = ds_list_size(_vbuff_list);
+            for(var _i = 0; _i < _count; _i++)
+            {
+                var _vbuff_data = _vbuff_list[| _i];
+                var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
+                vertex_delete_buffer(_vbuff);
+            }
+            
+            ds_list_destroy(_scribble_array[@ __SCRIBBLE.LINE_LIST]);
+            ds_list_destroy(_vbuff_list);
+            
+            _scribble_array[@ __SCRIBBLE.FREED] = true;
+            
+            //Remove reference from cache
             ds_map_delete(global.__scribble_global_cache_map,_cache_string);
             ds_list_delete(global.__scribble_global_cache_list, global.__scribble_cache_test_index);
+            
+            //Remove global reference
+            ds_map_delete(global.scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX]);
         }
     }
 }

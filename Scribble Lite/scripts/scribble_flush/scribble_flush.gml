@@ -30,47 +30,36 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
     var _i = 0;
     repeat(ds_list_size(_list))
     {
-        scribble_flush(global.__scribble_global_cache_map[? _list[| _i]]);
+        var _scribble_array = global.__scribble_global_cache_map[? _list[| _i]];
+        
+        if (is_array(_scribble_array)
+        && (array_length_1d(_scribble_array) == __SCRIBBLE.__SIZE)
+        && (_scribble_array[__SCRIBBLE.VERSION] == __SCRIBBLE_VERSION)
+        && _scribble_array[__SCRIBBLE.FREED])
+        {
+            ds_map_delete(global.scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX]);
+        
+            var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
+            var _count = ds_list_size(_vbuff_list);
+            for(var _i = 0; _i < _count; _i++)
+            {
+                var _vbuff_data = _vbuff_list[| _i];
+                var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
+                vertex_delete_buffer(_vbuff);
+            }
+        
+            ds_list_destroy(_scribble_array[@ __SCRIBBLE.LINE_LIST]);
+            ds_list_destroy(_vbuff_list);
+        
+            _scribble_array[@ __SCRIBBLE.FREED] = true;
+        }
+        
         ++_i;
     }
     
     ds_list_clear(_list);
     
     return true;
-}
-else if (is_array(_target))
-{
-    if (!is_array(_target)
-    || (array_length_1d(_target) != __SCRIBBLE.__SIZE)
-    || (_target[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
-    {
-        show_debug_message("Scribble: WARNING! Array \"" + string(_target) + "\" isn't a Scribble array!\n ");
-        return false;
-    }
-    else if (!_target[__SCRIBBLE.FREED])
-    {
-        ds_map_delete(global.scribble_alive, _target[__SCRIBBLE.GLOBAL_INDEX]);
-        
-        var _vbuff_list = _target[__SCRIBBLE.VERTEX_BUFFER_LIST];
-        var _count = ds_list_size(_vbuff_list);
-        for(var _i = 0; _i < _count; _i++)
-        {
-            var _vbuff_data = _vbuff_list[| _i];
-            var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
-            vertex_delete_buffer(_vbuff);
-        }
-        
-        ds_list_destroy(_target[@ __SCRIBBLE.LINE_LIST         ]);
-        ds_list_destroy(_target[@ __SCRIBBLE.VERTEX_BUFFER_LIST]);
-        
-        _target[@ __SCRIBBLE.FREED] = true;
-        return true;
-    }
-    else
-    {
-        //Already been freed
-        return true;
-    }
 }
 
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: WARNING! Cache group \"" + string(_target) + "\" has not yet been created");
