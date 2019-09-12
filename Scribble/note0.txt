@@ -1,0 +1,7 @@
+Rework shader to support character centres
+Add wobble effect
+Add swell effect
+Fix typewriter effect (looks like a line offset problem) - b8dc1c8
+Add vertical centring
+Add [thick] tag
+Minor efficiency boost by using 32-bit colours throughout
