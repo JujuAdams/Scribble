@@ -32,7 +32,7 @@ if (!is_array(_scribble_array)
     exit;
 }
 
-switch(global.__scribble_state_box_halign)
+switch(global.scribble_state_box_halign)
 {
     case fa_left:
         var _box_l = 0;
@@ -50,7 +50,7 @@ switch(global.__scribble_state_box_halign)
     break;
 }
 
-switch(global.__scribble_state_box_valign)
+switch(global.scribble_state_box_valign)
 {
     case fa_top:
         var _box_t = 0;
@@ -68,9 +68,9 @@ switch(global.__scribble_state_box_valign)
     break;
 }
 
-if ((global.__scribble_state_xscale == 1)
-&&  (global.__scribble_state_yscale == 1)
-&&  (global.__scribble_state_angle == 0))
+if ((global.scribble_state_xscale == 1)
+&&  (global.scribble_state_yscale == 1)
+&&  (global.scribble_state_angle == 0))
 {
     //Avoid using matrices if we can
     var _l = _x + _box_l - _margin_l;
@@ -85,8 +85,8 @@ if ((global.__scribble_state_xscale == 1)
 }
 
 var _matrix = matrix_build(_x, _y, 0, 
-                           0, 0, global.__scribble_state_angle,
-                           global.__scribble_state_xscale, global.__scribble_state_yscale, 1);
+                           0, 0, global.scribble_state_angle,
+                           global.scribble_state_xscale, global.scribble_state_yscale, 1);
 
 var _l = _box_l - _margin_l;
 var _t = _box_t - _margin_t;

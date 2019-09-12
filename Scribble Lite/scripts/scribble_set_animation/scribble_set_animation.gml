@@ -17,7 +17,7 @@ if (_count > SCRIBBLE_MAX_DATA_FIELDS)
 var _i = 0;
 repeat(_count)
 {
-    if (argument[_i] != undefined) global.__scribble_state_anim_array[@ _i] = argument[_i];
+    if (argument[_i] != undefined) global.scribble_state_anim_array[@ _i] = argument[_i];
     ++_i;
 }
 
