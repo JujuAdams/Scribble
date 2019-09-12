@@ -1010,22 +1010,46 @@ var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
 var _count = ds_list_size(_vbuff_list);
 if (_count > 0)
 {
-    shader_set(shScribble);
-    shader_set_uniform_f(global.__scribble_uniform_time           , _animation_time);
-    
-    shader_set_uniform_f(global.__scribble_uniform_char_t         , 1.0);
-    shader_set_uniform_f(global.__scribble_uniform_char_smoothness, 0.0);
-    shader_set_uniform_f(global.__scribble_uniform_char_count     , _scribble_array[__SCRIBBLE.CHARACTERS]);
-    
-    shader_set_uniform_f(global.__scribble_uniform_line_t         , 1.0);
-    shader_set_uniform_f(global.__scribble_uniform_line_smoothness, 0.0);
-    shader_set_uniform_f(global.__scribble_uniform_line_count     , _scribble_array[__SCRIBBLE.LINES]);
-    
-    shader_set_uniform_f(global.__scribble_uniform_colour_blend   , colour_get_red(  global.scribble_state_colour)/255,
-                                                                    colour_get_green(global.scribble_state_colour)/255,
-                                                                    colour_get_blue( global.scribble_state_colour)/255,
-                                                                    global.scribble_state_alpha);
+    switch(global.scribble_state_tw_method)
+    {
+        case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
+            var _typewriter_count      = _scribble_array[__SCRIBBLE.CHARACTERS];
+            var _typewriter_smoothness = max(0, global.scribble_state_tw_smoothness/_typewriter_count);
+            var _typewriter_t          = clamp(global.scribble_state_tw_position/_typewriter_count, 0, 1 + _typewriter_smoothness);
+        break;
         
+        case SCRIBBLE_TYPEWRITER_PER_LINE:
+            var _typewriter_count      = _scribble_array[__SCRIBBLE.LINES];
+            var _typewriter_smoothness = max(0, global.scribble_state_tw_smoothness/_typewriter_count);
+            var _typewriter_t          = clamp(global.scribble_state_tw_position/_typewriter_count, 0, 1 + _typewriter_smoothness);
+        break;
+        
+        case SCRIBBLE_TYPEWRITER_WHOLE:
+            var _typewriter_count      = 1;
+            var _typewriter_t          = clamp(global.scribble_state_tw_position, 0, 1);
+            var _typewriter_smoothness = 0;
+        break;
+        
+        default:
+            var _typewriter_count      = 1;
+            var _typewriter_t          = 1;
+            var _typewriter_smoothness = 0;
+        break;
+    }
+    
+    shader_set(shScribble);
+    shader_set_uniform_f(global.__scribble_uniform_time         , _animation_time);
+    
+    shader_set_uniform_f(global.__scribble_uniform_tw_method    , global.scribble_state_tw_fade_in? global.scribble_state_tw_method : -global.scribble_state_tw_method);
+    shader_set_uniform_f(global.__scribble_uniform_tw_t         , _typewriter_t);
+    shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
+    shader_set_uniform_f(global.__scribble_uniform_tw_count     , _typewriter_count);
+    
+    shader_set_uniform_f(global.__scribble_uniform_colour_blend , colour_get_red(  global.scribble_state_colour)/255,
+                                                                  colour_get_green(global.scribble_state_colour)/255,
+                                                                  colour_get_blue( global.scribble_state_colour)/255,
+                                                                  global.scribble_state_alpha);
+    
     shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
     
     var _i = 0;

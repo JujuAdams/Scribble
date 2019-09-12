@@ -25,13 +25,10 @@ varying vec4 v_vColour;
 uniform vec4  u_vColourBlend;
 uniform float u_fTime;
 
-uniform float u_fCharFadeT;
-uniform float u_fCharFadeSmoothness;
-uniform float u_fCharFadeCount;
-
-uniform float u_fLineFadeT;
-uniform float u_fLineFadeSmoothness;
-uniform float u_fLineFadeCount;
+uniform float u_fTypewriterMethod;
+uniform float u_fTypewriterT;
+uniform float u_fTypewriterSmoothness;
+uniform float u_fTypewriterCount;
 
 uniform float u_aDataFields[MAX_DATA_FIELDS];
 
@@ -109,30 +106,21 @@ void applyColourBlend(vec4 colourInput, inout vec4 colourTarget)
 
 void applyTypewriterFade(float time, float smoothness, float param, inout vec4 colour)
 {
-    if (time <= 1.0)
+    float multiplier = 1.0;
+    
+    if (smoothness > 0.0)
     {
-        if (smoothness > 0.0)
-        {
-            float adjustedTime = time*(1.0 + smoothness);
-            colour.a *= clamp((adjustedTime - param)/smoothness, 0.0, 1.0);
-        }
-        else
-        {
-            colour.a *= 1.0 - step(time, param);
-        }
+        float adjustedTime = time*(1.0 + smoothness);
+        multiplier = clamp((adjustedTime - param)/smoothness, 0.0, 1.0);
     }
     else
     {
-        if (smoothness > 0.0)
-        {
-            float adjustedTime = (time - (1.0 + 1.0/u_fCharFadeCount))*(1.0 + smoothness);
-            colour.a *= 1.0 - clamp((adjustedTime - param)/smoothness, 0.0, 1.0);
-        }
-        else
-        {
-            colour.a *= 1.0 - step(param, time - (1.0 + 1.0/u_fCharFadeCount));
-        }
+        multiplier = 1.0 - step(time, param);
     }
+        
+    if (u_fTypewriterMethod >= 0.0) multiplier = 1.0 - multiplier;
+    
+    colour.a *= multiplier;
 }
 
 void main()
@@ -152,8 +140,14 @@ void main()
     applySprite(flagArray[0], v_vColour);
     applyRainbow(flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
     applyColourBlend(u_vColourBlend, v_vColour);
-    applyTypewriterFade(u_fCharFadeT, u_fCharFadeSmoothness, in_Normal.x/u_fCharFadeCount, v_vColour);
-    applyTypewriterFade(u_fLineFadeT, u_fLineFadeSmoothness, in_Normal.y/u_fLineFadeCount, v_vColour);
+    
+    if (u_fTypewriterMethod != 0.0)
+    {
+        applyTypewriterFade(u_fTypewriterT,
+                            u_fTypewriterSmoothness,
+                            ((abs(u_fTypewriterMethod) == 1.0)? in_Normal.x : in_Normal.y)/u_fTypewriterCount,
+                            v_vColour);
+    }
     
     //Texture
     v_vTexcoord = in_TextureCoord;

@@ -179,6 +179,8 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_GLYPH_BYTE_SIZE  (6*__SCRIBBLE_VERTEX.__SIZE)
 #macro __SCRIBBLE_EXPECTED_GLYPHS  100
 
+//These are tied to values in shScribble
+//If you need to change these for some reason, you'll need to change shScribble too
 #macro SCRIBBLE_TYPEWRITER_WHOLE          0  //Fade the entire textbox in and out
 #macro SCRIBBLE_TYPEWRITER_PER_CHARACTER  1  //Fade each character individually
 #macro SCRIBBLE_TYPEWRITER_PER_LINE       2  //Fade each line of text as a group
@@ -296,15 +298,13 @@ vertex_format_add_texcoord();    // 8 bytes
 global.__scribble_vertex_format = vertex_format_end(); //36 bytes per vertex, 108 bytes per tri, 216 bytes per glyph
 
 //Cache uniform indexes
-global.__scribble_uniform_time            = shader_get_uniform(shScribble, "u_fTime"              );
-global.__scribble_uniform_colour_blend    = shader_get_uniform(shScribble, "u_vColourBlend"       );
-global.__scribble_uniform_char_t          = shader_get_uniform(shScribble, "u_fCharFadeT"         );
-global.__scribble_uniform_char_smoothness = shader_get_uniform(shScribble, "u_fCharFadeSmoothness");
-global.__scribble_uniform_char_count      = shader_get_uniform(shScribble, "u_fCharFadeCount"     );
-global.__scribble_uniform_line_t          = shader_get_uniform(shScribble, "u_fLineFadeT"         );
-global.__scribble_uniform_line_smoothness = shader_get_uniform(shScribble, "u_fLineFadeSmoothness");
-global.__scribble_uniform_line_count      = shader_get_uniform(shScribble, "u_fLineFadeCount"     );
-global.__scribble_uniform_data_fields     = shader_get_uniform(shScribble, "u_aDataFields"        );
+global.__scribble_uniform_time          = shader_get_uniform(shScribble, "u_fTime"                );
+global.__scribble_uniform_colour_blend  = shader_get_uniform(shScribble, "u_vColourBlend"         );
+global.__scribble_uniform_tw_method     = shader_get_uniform(shScribble, "u_fTypewriterMethod"    );
+global.__scribble_uniform_tw_t          = shader_get_uniform(shScribble, "u_fTypewriterT"         );
+global.__scribble_uniform_tw_smoothness = shader_get_uniform(shScribble, "u_fTypewriterSmoothness");
+global.__scribble_uniform_tw_count      = shader_get_uniform(shScribble, "u_fTypewriterCount"     );
+global.__scribble_uniform_data_fields   = shader_get_uniform(shScribble, "u_aDataFields"          );
 
 //Hex converter array
 var _min = ord("0");
