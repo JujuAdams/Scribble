@@ -29,13 +29,7 @@ if (!scribble_exists(_scribble_array))
     exit;
 }
 
-var _xscale     = is_real(global.__scribble_state_xscale    )? global.__scribble_state_xscale     : _scribble_array[__SCRIBBLE.XSCALE];
-var _yscale     = is_real(global.__scribble_state_yscale    )? global.__scribble_state_yscale     : _scribble_array[__SCRIBBLE.YSCALE];
-var _angle      = is_real(global.__scribble_state_angle     )? global.__scribble_state_angle      : _scribble_array[__SCRIBBLE.ANGLE ];
-var _box_halign = is_real(global.__scribble_state_box_halign)? global.__scribble_state_box_halign : _scribble_array[__SCRIBBLE.HALIGN];
-var _box_valign = is_real(global.__scribble_state_box_valign)? global.__scribble_state_box_valign : _scribble_array[__SCRIBBLE.VALIGN];
-
-switch(_box_halign)
+switch(global.__scribble_state_box_halign)
 {
     case fa_left:
         var _box_l = 0;
@@ -53,7 +47,7 @@ switch(_box_halign)
     break;
 }
 
-switch(_box_valign)
+switch(global.__scribble_state_box_valign)
 {
     case fa_top:
         var _box_t = 0;
@@ -71,7 +65,9 @@ switch(_box_valign)
     break;
 }
 
-if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
+if ((global.__scribble_state_xscale == 1)
+&&  (global.__scribble_state_yscale == 1)
+&&  (global.__scribble_state_angle == 0))
 {
     //Avoid using matrices if we can
     var _l = _x + _box_l - _margin_l;
@@ -86,8 +82,8 @@ if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
 }
 
 var _matrix = matrix_build(_x, _y, 0, 
-                           0, 0, _angle,
-                           _xscale, _yscale, 1);
+                           0, 0, global.__scribble_state_angle,
+                           global.__scribble_state_xscale, global.__scribble_state_yscale, 1);
 
 var _l = _box_l - _margin_l;
 var _t = _box_t - _margin_t;

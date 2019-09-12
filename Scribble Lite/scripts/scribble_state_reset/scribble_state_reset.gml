@@ -1,19 +1,15 @@
 /// Resets Scribble's draw state to use pass-through values (usually inheriting defaults set in __scribble_config()).
 
-global.__scribble_state_xscale          = undefined;
-global.__scribble_state_yscale          = undefined;
-global.__scribble_state_angle           = undefined;
-global.__scribble_state_colour          = undefined;
-global.__scribble_state_alpha           = undefined;
+global.__scribble_state_xscale          = SCRIBBLE_DEFAULT_XSCALE;
+global.__scribble_state_yscale          = SCRIBBLE_DEFAULT_YSCALE;
+global.__scribble_state_angle           = SCRIBBLE_DEFAULT_ANGLE;
+global.__scribble_state_colour          = SCRIBBLE_DEFAULT_BLEND_COLOUR;
+global.__scribble_state_alpha           = SCRIBBLE_DEFAULT_ALPHA;
 global.__scribble_state_line_min_height = undefined;
 global.__scribble_state_min_width       = undefined;
 global.__scribble_state_max_width       = undefined;
 global.__scribble_state_min_height      = undefined;
 global.__scribble_state_max_height      = undefined;
-global.__scribble_state_box_halign      = undefined;
-global.__scribble_state_box_valign      = undefined;
-global.__scribble_state_tw_fade_in      = undefined;
-global.__scribble_state_tw_method       = undefined;
-global.__scribble_state_tw_speed        = undefined;
-global.__scribble_state_tw_smoothness   = undefined;
-global.__scribble_state_anim_array      = undefined;
+global.__scribble_state_box_halign      = SCRIBBLE_DEFAULT_BOX_HALIGN;
+global.__scribble_state_box_valign      = SCRIBBLE_DEFAULT_BOX_VALIGN;
+array_copy(global.__scribble_state_anim_array, 0, global.__scribble_default_animation_parameters, 0, SCRIBBLE_MAX_DATA_FIELDS);

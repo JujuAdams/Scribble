@@ -1,4 +1,3 @@
-/// @param scribbleArray
 /// @param waveSize
 /// @param waveFrequency
 /// @param waveSpeed
@@ -8,35 +7,18 @@
 /// @param rainbowSpeed
 /// @param ...
 
-var _scribble_array = argument[0];
-var _count          = argument_count-1;
-
+var _count = argument_count;
 if (_count > SCRIBBLE_MAX_DATA_FIELDS)
 {
     show_error("Scribble:\nscribble_set_animation() given " + string(_count) + " parameters but was expecting " + string(SCRIBBLE_MAX_DATA_FIELDS) + "\n ", false);
-    exit;
-}
-else if (_count < SCRIBBLE_MAX_DATA_FIELDS)
-{
-    show_debug_message("Scribble: WARNING! Argument count (" + string(_count) + ") is less than expected " + string(SCRIBBLE_MAX_DATA_FIELDS));
+    return false;
 }
 
-var _array = array_create(SCRIBBLE_MAX_DATA_FIELDS, 0);
-if (scribble_exists(_scribble_array))
-{
-    array_copy(_array, 0, _scribble_array[__SCRIBBLE.DATA_FIELDS], 0, SCRIBBLE_MAX_DATA_FIELDS);
-}
-else if (variable_global_exists("__scribble_default_animation_parameters"))
-{
-    array_copy(_array, 0, global.__scribble_default_animation_parameters, 0, SCRIBBLE_MAX_DATA_FIELDS);
-}
-
-var _i = 1;
+var _i = 0;
 repeat(_count)
 {
-    if (argument[_i] != undefined) _array[@ _i-1] = argument[_i];
+    if (argument[_i] != undefined) global.__scribble_state_anim_array[@ _i] = argument[_i];
     ++_i;
 }
 
-if (is_array(_scribble_array)) _scribble_array[@ __SCRIBBLE.DATA_FIELDS] = _array;
-return _array;
+return true;

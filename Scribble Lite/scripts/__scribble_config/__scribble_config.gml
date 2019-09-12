@@ -4,7 +4,7 @@
 
 #macro SCRIBBLE_HASH_NEWLINE       true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's behaviour
 #macro SCRIBBLE_COLOURISE_SPRITES  true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
-#macro SCRIBBLE_VERBOSE            false //Enables verbose console output to aid with debugging.
+#macro SCRIBBLE_VERBOSE            true  //Enables verbose console output to aid with debugging.
 
 
 
@@ -27,11 +27,6 @@
 #macro SCRIBBLE_DEFAULT_BLEND_COLOUR  c_white  //The default blend colour.
 #macro SCRIBBLE_DEFAULT_ALPHA         1.0      //The default alpha.
 
-//Typewriter
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SPEED       0.3                               //The default speed of the typewriter effect, in characters/lines per frame.
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_SMOOTHNESS  3                                 //The default smoothhness of the typewriter effect. A value of "0" disables smooth fading.
-#macro SCRIBBLE_DEFAULT_TYPEWRITER_METHOD      SCRIBBLE_TYPEWRITER_PER_CHARACTER //The default typewriter effect method. See scribble_set_typewriter() for more details
-
 #macro SCRIBBLE_DEFAULT_TEXT_COLOUR   c_white  //The default (vertex) colour of text.
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED  0.1      //The default animation speed for sprites inserted into text.
 
@@ -47,7 +42,7 @@
 #macro SCRIBBLE_Z                          0     //The z-value for vertexes
 
 #macro SCRIBBLE_DEFAULT_CACHE_GROUP        0     //The name of the default cache group. Real value and strings accepted.
-#macro SCRIBBLE_CACHE_TIMEOUT              60000 //How long to wait before the cache automatically destroys a scribble data. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_free() instead)
+#macro SCRIBBLE_CACHE_TIMEOUT              60000 //How long to wait before the cache automatically destroys a scribble data. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_flush() instead)
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN      ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE     ord("]") //Character used to close a command tag. First 127 ASCII chars only

@@ -152,38 +152,17 @@ enum __SCRIBBLE
     CHARACTERS,          //17
     LINES,               //18
     GLOBAL_INDEX,        //20
+    
+    __SECTION2,          //31
+    ANIMATION_TIME,      //35
     TIME,                //21
     FREED,               //22
     
-    __SECTION2,
-    XSCALE,
-    YSCALE,
-    ANGLE,
-    BLEND_COLOUR,
-    ALPHA,
-    HALIGN,              // 9
-    VALIGN,              //10
-    
-    __SECTION3,          //23
-    TW_DIRECTION,        //24
-    TW_SPEED,            //25
-    TW_POSITION,         //26
-    TW_METHOD,           //27
-    TW_SMOOTHNESS,       //28
-    CHAR_FADE_T,         //29
-    LINE_FADE_T,         //30
-    
-    __SECTION4,          //31
-    DATA_FIELDS,         //34
-    ANIMATION_TIME,      //35
-    
-    __SECTION5,          //36
+    __SECTION3,          //36
     LINE_LIST,           //37
     VERTEX_BUFFER_LIST,  //38
     
-    __SECTION6,          //39
-    EVENT_PREVIOUS,      //40
-    EVENT_CHAR_PREVIOUS, //41
+    __SECTION4,          //39
     EVENT_CHAR_ARRAY,    //42
     EVENT_NAME_ARRAY,    //43
     EVENT_DATA_ARRAY,    //44
@@ -275,9 +254,9 @@ global.__scribble_cache_group_map   = ds_map_create();
 ds_map_add_list(global.__scribble_cache_group_map, 0, ds_list_create());
 
 //Declare state variables
+global.__scribble_default_animation_parameters = [4, 50, 0.2,   4, 0.4,   0.5, 0.01];
+global.__scribble_state_anim_array = array_create(SCRIBBLE_MAX_DATA_FIELDS);
 scribble_state_reset();
-global.__scribble_default_animation_parameters = scribble_set_animation(all,   4, 50, 0.2,   4, 0.4,   0.5, 0.01);
-global.__scribble_state_anim_array             = array_copy([], 0, global.__scribble_default_animation_parameters, 0, SCRIBBLE_MAX_DATA_FIELDS);
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 scribble_add_colour("c_aqua",    c_aqua   , true);
