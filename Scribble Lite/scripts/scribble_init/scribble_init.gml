@@ -115,6 +115,9 @@ enum __SCRIBBLE_VERTEX
 
 enum SCRIBBLE_STATE
 {
+    START_COLOUR,
+    START_FONT,
+    START_HALIGN,
     XSCALE,
     YSCALE,
     ANGLE,
@@ -251,10 +254,10 @@ global.__scribble_global_cache_map  = ds_map_create();
 global.__scribble_global_cache_list = ds_list_create();
 global.__scribble_cache_test_index  = 0;
 global.__scribble_cache_group_map   = ds_map_create();
-ds_map_add_list(global.__scribble_cache_group_map, 0, ds_list_create());
+ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP, global.__scribble_global_cache_list);
 
 //Declare state variables
-global.__scribble_default_animation_parameters = [4, 50, 0.2,   4, 0.4,   0.5, 0.01];
+global.__scribble_default_anim_array = [4, 50, 0.2,   4, 0.4,   0.5, 0.01];
 global.__scribble_state_anim_array = array_create(SCRIBBLE_MAX_DATA_FIELDS);
 scribble_state_reset();
 

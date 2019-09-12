@@ -2,6 +2,9 @@
 /// This can be used to debug code, or used in combination with scribble_set_state() to create template draw states.
 
 var _array = array_create(SCRIBBLE_STATE.__SIZE);
+_array[@ SCRIBBLE_STATE.START_COLOUR         ] = global.__scribble_state_start_colour;
+_array[@ SCRIBBLE_STATE.START_FONT           ] = global.__scribble_state_start_font;
+_array[@ SCRIBBLE_STATE.START_HALIGN         ] = global.__scribble_state_start_halign;
 _array[@ SCRIBBLE_STATE.XSCALE               ] = global.__scribble_state_xscale;
 _array[@ SCRIBBLE_STATE.YSCALE               ] = global.__scribble_state_yscale;
 _array[@ SCRIBBLE_STATE.ANGLE                ] = global.__scribble_state_angle;

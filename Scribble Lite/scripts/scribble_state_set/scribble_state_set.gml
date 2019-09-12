@@ -4,6 +4,9 @@
 /// Updates Scribble's current draw state from an array. Any value that is <undefined> will use the default value instead.
 /// This can be used in combination with scribble_get_state() to create template draw states.
 
+global.__scribble_state_start_colour    = argument0[SCRIBBLE_STATE.START_COLOUR         ];
+global.__scribble_state_start_font      = argument0[SCRIBBLE_STATE.START_FONT           ];
+global.__scribble_state_start_halign    = argument0[SCRIBBLE_STATE.START_HALIGN         ];
 global.__scribble_state_xscale          = argument0[SCRIBBLE_STATE.XSCALE               ];
 global.__scribble_state_yscale          = argument0[SCRIBBLE_STATE.YSCALE               ];
 global.__scribble_state_angle           = argument0[SCRIBBLE_STATE.ANGLE                ];

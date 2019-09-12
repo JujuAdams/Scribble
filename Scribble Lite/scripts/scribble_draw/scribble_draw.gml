@@ -4,8 +4,8 @@
 /// @param x             The x position in the room to draw at.
 /// @param y             The y position in the room to draw at.
 /// @param string        The text to be drawn. See below for formatting help.
-/// @param [cacheGroup]  The cache group that stores the Scribble data. If this argument is unused, the default cache group will be used instead.
-///                      A cache group of <undefined> will prevent data from being cached at all. See below for more information.
+/// @param [cacheGroup]  The cache group that stores the Scribble data. If this argument is unused or is <undefined>, the default cache group will be used instead.
+/// 
 /// 
 /// 
 /// Formatting commands:
@@ -50,7 +50,7 @@
 var _draw_x      = argument[0];
 var _draw_y      = argument[1];
 var _draw_string = argument[2];
-var _cache_group = (argument_count > 3)? argument[3] : SCRIBBLE_DEFAULT_CACHE_GROUP;
+var _cache_group = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_CACHE_GROUP;
 
 
 
@@ -70,40 +70,40 @@ else
     
     
     #region Process input parameters
-        
+    
     var _max_width       = is_real(global.__scribble_state_max_width)? global.__scribble_state_max_width : SCRIBBLE_DEFAULT_MAX_WIDTH;
     var _line_min_height = is_real(global.__scribble_state_line_min_height)? global.__scribble_state_line_min_height : SCRIBBLE_DEFAULT_LINE_MIN_HEIGHT;
-    var _def_colour      = SCRIBBLE_DEFAULT_TEXT_COLOUR;
-    var _def_font        = global.__scribble_default_font;
-    var _def_halign      = fa_left;
-        
+    var _def_colour      = global.__scribble_state_start_colour;
+    var _def_font        = global.__scribble_state_start_font;
+    var _def_halign      = global.__scribble_state_start_halign;
+    
     //Check if the default font even exists
     if (!ds_map_exists(global.__scribble_font_data, _def_font))
     {
         show_error("Scribble:\n\"" + string(_def_font) + "\" not recognised as a font\n ", false);
         var _def_font = global.__scribble_default_font;
     }
-        
+    
     var _font_data         = global.__scribble_font_data[? _def_font];
     var _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
     var _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
     var _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
     var _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
     var _font_texture      = _font_data[__SCRIBBLE_FONT.TEXTURE     ];
-        
+    
     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
     if (_glyph_array == undefined)
     {
         show_error("Scribble:\nThe space character is missing from font definition for \"" + _def_font + "\"\n ", true);
         exit;
     }
-        
+    
     var _def_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH]; //Find the default font's space width
     if (_line_min_height < 0) _line_min_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT]; //Find the default line minimum height if not specified
-        
+    
     var _font_line_height = _line_min_height;
     var _font_space_width = _def_space_width;
-        
+    
     //Try to use a custom colour if the "startingColour" parameter is a string
     if (is_string(_def_colour))
     {
@@ -115,13 +115,13 @@ else
         }
         _def_colour = _value;
     }
-        
+    
     #endregion
     
     
     
     #region Create the data structure
-        
+    
     var _scribble_array        = array_create(__SCRIBBLE.__SIZE); //The main data structure
     var _line_list             = ds_list_create(); //Stores each line of text
     var _vertex_buffer_list    = ds_list_create(); //Stores all the vertex buffers needed to render the text and sprites
@@ -129,68 +129,63 @@ else
     var _events_name_array     = array_create(0);  //Stores each event's name
     var _events_data_array     = array_create(0);  //Stores each event's parameters
     var _texture_to_buffer_map = ds_map_create();
-        
-    _scribble_array[@ __SCRIBBLE.__SECTION0         ] = "-- Parameters --";
-    _scribble_array[@ __SCRIBBLE.VERSION            ] = __SCRIBBLE_VERSION;
-    _scribble_array[@ __SCRIBBLE.STRING             ] = _draw_string;
-    _scribble_array[@ __SCRIBBLE.DEFAULT_FONT       ] = _def_font;
-    _scribble_array[@ __SCRIBBLE.DEFAULT_COLOUR     ] = _def_colour;
-    _scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN     ] = _def_halign;
-    _scribble_array[@ __SCRIBBLE.WIDTH_LIMIT        ] = _max_width;
-    _scribble_array[@ __SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
-        
-    _scribble_array[@ __SCRIBBLE.__SECTION1         ] = "-- Statistics --";
-    _scribble_array[@ __SCRIBBLE.WIDTH              ] = 0;
-    _scribble_array[@ __SCRIBBLE.HEIGHT             ] = 0;
-    _scribble_array[@ __SCRIBBLE.CHARACTERS         ] = 0;
-    _scribble_array[@ __SCRIBBLE.LINES              ] = 0;
-    _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count+1;
-        
-    _scribble_array[@ __SCRIBBLE.__SECTION2         ] = "-- State --";
-    _scribble_array[@ __SCRIBBLE.ANIMATION_TIME     ] = 0;
-    _scribble_array[@ __SCRIBBLE.TIME               ] = current_time;
-    _scribble_array[@ __SCRIBBLE.FREED              ] = false;
-        
-    _scribble_array[@ __SCRIBBLE.__SECTION3         ] = "-- Lists --";
-    _scribble_array[@ __SCRIBBLE.LINE_LIST          ] = _line_list;
-    _scribble_array[@ __SCRIBBLE.VERTEX_BUFFER_LIST ] = _vertex_buffer_list;
-        
-    _scribble_array[@ __SCRIBBLE.__SECTION4         ] = "-- Events --";
-    _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY   ] = _events_char_array; //Stores each event's triggering cha
-    _scribble_array[@ __SCRIBBLE.EVENT_NAME_ARRAY   ] = _events_name_array; //Stores each event's name
-    _scribble_array[@ __SCRIBBLE.EVENT_DATA_ARRAY   ] = _events_data_array; //Stores each event's parameters
-        
+    
+    _scribble_array[@ __SCRIBBLE.__SECTION0        ] = "-- Parameters --";
+    _scribble_array[@ __SCRIBBLE.VERSION           ] = __SCRIBBLE_VERSION;
+    _scribble_array[@ __SCRIBBLE.STRING            ] = _draw_string;
+    _scribble_array[@ __SCRIBBLE.DEFAULT_FONT      ] = _def_font;
+    _scribble_array[@ __SCRIBBLE.DEFAULT_COLOUR    ] = _def_colour;
+    _scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN    ] = _def_halign;
+    _scribble_array[@ __SCRIBBLE.WIDTH_LIMIT       ] = _max_width;
+    _scribble_array[@ __SCRIBBLE.LINE_HEIGHT       ] = _line_min_height;
+    
+    _scribble_array[@ __SCRIBBLE.__SECTION1        ] = "-- Statistics --";
+    _scribble_array[@ __SCRIBBLE.WIDTH             ] = 0;
+    _scribble_array[@ __SCRIBBLE.HEIGHT            ] = 0;
+    _scribble_array[@ __SCRIBBLE.CHARACTERS        ] = 0;
+    _scribble_array[@ __SCRIBBLE.LINES             ] = 0;
+    _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX      ] = global.__scribble_global_count+1;
+    
+    _scribble_array[@ __SCRIBBLE.__SECTION2        ] = "-- State --";
+    _scribble_array[@ __SCRIBBLE.ANIMATION_TIME    ] = 0;
+    _scribble_array[@ __SCRIBBLE.TIME              ] = current_time;
+    _scribble_array[@ __SCRIBBLE.FREED             ] = false;
+    
+    _scribble_array[@ __SCRIBBLE.__SECTION3        ] = "-- Lists --";
+    _scribble_array[@ __SCRIBBLE.LINE_LIST         ] = _line_list;
+    _scribble_array[@ __SCRIBBLE.VERTEX_BUFFER_LIST] = _vertex_buffer_list;
+    
+    _scribble_array[@ __SCRIBBLE.__SECTION4        ] = "-- Events --";
+    _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY  ] = _events_char_array; //Stores each event's triggering cha
+    _scribble_array[@ __SCRIBBLE.EVENT_NAME_ARRAY  ] = _events_name_array; //Stores each event's name
+    _scribble_array[@ __SCRIBBLE.EVENT_DATA_ARRAY  ] = _events_data_array; //Stores each event's parameters
+    
     #endregion
     
     
     
     #region Register the data structure in a cache group
-        
+    
     global.__scribble_global_count++;
     global.scribble_alive[? global.__scribble_global_count] = _scribble_array;
-        
-    //If we've got a valid cache group...
-    if (_cache_group != undefined)
+    
+    if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
+    
+    //Add this Scribble data structure to the global cache lookup
+    if (_cache_group == SCRIBBLE_DEFAULT_CACHE_GROUP) global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
+    
+    //Find this cache group's list
+    var _list = global.__scribble_cache_group_map[? _cache_group];
+    if (_list == undefined)
     {
-        if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
-    
-        //Add this Scribble data structure to the global cache lookup
-        global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
-    
-        //Find this cache group's list
-        var _list = global.__scribble_cache_group_map[? _cache_group];
-        if (_list == undefined)
-        {
-            //Create a new list if one doesn't already exist
-            _list = ds_list_create();
-            ds_map_add_list(global.__scribble_cache_group_map, _cache_group, _list);
-        }
-    
-        //Add this string to the cache group's list *and* the global list
-        ds_list_add(_list, _cache_string);
-        ds_list_add(global.__scribble_global_cache_list, _cache_string);
+        //Create a new list if one doesn't already exist
+        _list = ds_list_create();
+        ds_map_add_list(global.__scribble_cache_group_map, _cache_group, _list);
     }
-
+    
+    //Add this string to the cache group's list
+    ds_list_add(_list, _cache_string);
+    
     #endregion
     
     
@@ -990,10 +985,6 @@ switch(global.__scribble_state_box_valign)
     default:        var _top = 0;                                         break;
 }
 
-
-
-var _old_matrix = matrix_get(matrix_world);
-
 if ((global.__scribble_state_xscale == 1)
 &&  (global.__scribble_state_yscale == 1)
 &&  (global.__scribble_state_angle  == 0))
@@ -1008,6 +999,7 @@ else
                                                         global.__scribble_state_xscale, global.__scribble_state_yscale, 1));
 }
 
+var _old_matrix = matrix_get(matrix_world);
 _matrix = matrix_multiply(_matrix, _old_matrix);
 matrix_set(matrix_world, _matrix);
 

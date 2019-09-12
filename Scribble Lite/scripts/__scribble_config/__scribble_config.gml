@@ -27,7 +27,9 @@
 #macro SCRIBBLE_DEFAULT_BLEND_COLOUR  c_white  //The default blend colour.
 #macro SCRIBBLE_DEFAULT_ALPHA         1.0      //The default alpha.
 
+
 #macro SCRIBBLE_DEFAULT_TEXT_COLOUR   c_white  //The default (vertex) colour of text.
+#macro SCRIBBLE_DEFAULT_HALIGN        fa_left
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED  0.1      //The default animation speed for sprites inserted into text.
 
 #endregion

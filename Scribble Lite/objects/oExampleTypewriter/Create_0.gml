@@ -21,3 +21,5 @@ demo_string += "[fTestA][fa_right]THE [fTestB][$FF4499][shake]QUICK[fTestA] [$D2
 //This variable tracks whether we want to show the demo string or not
 //Scribble will automatically perform a typewriter effect when we flip this variable between <true> and <false>
 show = true;
+
+timer_smoothed = 80;

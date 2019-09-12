@@ -271,6 +271,14 @@
             }
         },
         {
+            "Key": "79884835-18c8-41d8-b5c8-501995fbcaa8",
+            "Value": {
+                "id": "3c41ff16-0052-4600-a990-e2594f9c0f3e",
+                "resourcePath": "scripts\\scribble_set_start_format\\scribble_set_start_format.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
             "Value": {
                 "id": "f8fc30c6-4365-48e5-95b1-2fc22dc18ee8",
@@ -709,12 +717,13 @@
         "b43cf62b-c64f-4436-a8eb-906fd543d4cc",
         "8a72a3a7-a40c-4764-a65f-e44a5bd5746c",
         "e89348c7-a709-4b5b-9074-c8965f362fb4",
+        "79884835-18c8-41d8-b5c8-501995fbcaa8",
         "6646aeb5-5c20-419d-af6d-8d625871911d",
         "88f27f62-071a-4441-b908-675e356b8173",
         "0b7de2e4-423b-4049-ae3c-cefbec9a47a6",
+        "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
         "bc334b9f-3e78-4213-8e02-f63a7b8776d3",
         "aa4ca4db-ff31-4cd0-b9cc-08badea29bdd",
-        "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
         "c1f9a882-5c95-4baa-9aa2-288643547505",
         "bbaf2270-049d-4b2f-b134-efca33e50f7e",
         "baaa6707-db8c-472e-90b1-562acc7d6c47",
