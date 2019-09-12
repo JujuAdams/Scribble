@@ -15,4 +15,8 @@ global.__scribble_state_min_height      = undefined;
 global.__scribble_state_max_height      = undefined;
 global.__scribble_state_box_halign      = SCRIBBLE_DEFAULT_BOX_HALIGN;
 global.__scribble_state_box_valign      = SCRIBBLE_DEFAULT_BOX_VALIGN;
+global.__scribble_state_tw_fade_in      = true;
+global.__scribble_state_tw_position     = 1;
+global.__scribble_state_tw_smoothness   = 0;
+global.__scribble_state_tw_method       = SCRIBBLE_TYPEWRITER_WHOLE;
 array_copy(global.__scribble_state_anim_array, 0, global.__scribble_default_anim_array, 0, SCRIBBLE_MAX_DATA_FIELDS);

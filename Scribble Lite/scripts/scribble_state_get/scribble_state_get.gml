@@ -18,8 +18,8 @@ _array[@ SCRIBBLE_STATE.MAX_HEIGHT           ] = global.__scribble_state_max_hei
 _array[@ SCRIBBLE_STATE.HALIGN               ] = global.__scribble_state_box_halign;
 _array[@ SCRIBBLE_STATE.VALIGN               ] = global.__scribble_state_box_valign;
 _array[@ SCRIBBLE_STATE.TYPEWRITER_FADE_IN   ] = global.__scribble_state_tw_fade_in;
+_array[@ SCRIBBLE_STATE.TYPEWRITER_POSITION  ] = global.__scribble_state_tw_position;
 _array[@ SCRIBBLE_STATE.TYPEWRITER_METHOD    ] = global.__scribble_state_tw_method;
-_array[@ SCRIBBLE_STATE.TYPEWRITER_SPEED     ] = global.__scribble_state_tw_speed;
 _array[@ SCRIBBLE_STATE.TYPEWRITER_SMOOTHNESS] = global.__scribble_state_tw_smoothness;
 _array[@ SCRIBBLE_STATE.ANIMATION_ARRAY      ] = global.__scribble_state_anim_array;
 return _array;

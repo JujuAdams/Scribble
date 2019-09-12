@@ -2,11 +2,9 @@
 /// 
 /// 
 /// @param fadeIn       Whether to fade in or out (boolean)
-/// @param speed        The speed of the typewriter animation, in characters/lines per frame.
+/// @param position     The position of the typewriter animation.
 /// @param method       The typewriter method to use. See below for more details.
 /// @param smoothness   The smoothness of the typewriter fade effect (not used for SCRIBBLE_TYPEWRITER_WHOLE). A value of "0" disables smooth fading.
-/// 
-/// Set any of these arguments to <undefined> to set as pass-through (usually inheriting SCRIBBLE_DEFAULT_BLEND_COLOUR and SCRIBBLE_DEFAULT_ALPHA).
 /// 
 /// 
 /// Scribble supports three fade effects, collectively called "typewriter" effects.
@@ -15,7 +13,7 @@
 /// SCRIBBLE_TYPEWRITER_PER_LINE:      Fade each line of text as a group
 
 global.__scribble_state_tw_fade_in    = argument0;
-global.__scribble_state_tw_speed      = argument1;
+global.__scribble_state_tw_position   = argument1;
 global.__scribble_state_tw_method     = argument2;
 global.__scribble_state_tw_smoothness = argument3;
 
