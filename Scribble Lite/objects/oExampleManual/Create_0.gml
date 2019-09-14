@@ -17,8 +17,8 @@ scribble_set_glyph_property("sSpriteFont", "q", SCRIBBLE_GLYPH.SEPARATION, -1, t
 
 
 
-var _demo_string  = "[sound,sndCrank][rainbow]abcdef[] ABCDEF##";
-    _demo_string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][sCoin,0][sound,sndSwitch][sCoin,1][sound,sndSwitch][sCoin,2][sound,sndSwitch][sCoin,3][sound,sndSwitch][][shake][rainbow]!?[]\n";
+var _demo_string  = "[rainbow]abcdef[] ABCDEF##";
+    _demo_string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][sCoin,0][sCoin,1][sCoin,2][sCoin,3][][shake][rainbow]!?[]\n";
     _demo_string += "[sCoin][sCoin,1,0.1][sCoin,2,0.1][sCoin,3,0.1]\n";
     _demo_string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
     _demo_string += "[fTestA][fa_right]THE [fTestB][$FF4499][shake]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fTestB]DOG.";

@@ -57,9 +57,9 @@ if (!is_array(_draw_string))
     
         var _max_width       = is_real(global.scribble_state_max_width)? global.scribble_state_max_width : SCRIBBLE_DEFAULT_MAX_WIDTH;
         var _line_min_height = is_real(global.scribble_state_line_min_height)? global.scribble_state_line_min_height : SCRIBBLE_DEFAULT_LINE_MIN_HEIGHT;
-        var _def_colour      = global.scribble_state_start_colour;
-        var _def_font        = global.scribble_state_start_font;
-        var _def_halign      = global.scribble_state_start_halign;
+        var _def_colour      = SCRIBBLE_DEFAULT_TEXT_COLOUR;
+        var _def_font        = global.__scribble_default_font;
+        var _def_halign      = SCRIBBLE_DEFAULT_HALIGN;
     
         //Check if the default font even exists
         if (!ds_map_exists(global.__scribble_font_data, _def_font))
@@ -572,7 +572,7 @@ if (!is_array(_draw_string))
                                                 else
                                                 {
                                                     var _command_string = string(_command_name);
-                                                    var _j = 0;
+                                                    var _j = 1;
                                                     repeat(_command_tag_parameters-1) _command_string += "," + string(_parameters_list[| _j++]);
                                                     show_debug_message("Scribble: WARNING! Unrecognised command tag [" + _command_string + "]" );
                                                 
