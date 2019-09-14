@@ -34,12 +34,6 @@ if (!_native)
     _colour = make_colour_rgb(colour_get_blue(_colour), colour_get_green(_colour), colour_get_red(_colour));
 }
 
-if ( ds_map_exists(global.__scribble_events, _name) )
-{
-    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as an event" );
-    exit;
-}
-
 if ( ds_map_exists(global.__scribble_flags, _name) )
 {
     show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as a flag" );
