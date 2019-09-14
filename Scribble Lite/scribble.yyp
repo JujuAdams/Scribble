@@ -58,7 +58,7 @@
             "Key": "0a93a84f-87c9-4473-adf8-f92fd1d1e19f",
             "Value": {
                 "id": "787165ad-1896-42d5-86d1-f7809fbab184",
-                "resourcePath": "scripts\\scribble\\scribble.yy",
+                "resourcePath": "scripts\\scribble_draw\\scribble_draw.yy",
                 "resourceType": "GMScript"
             }
         },
