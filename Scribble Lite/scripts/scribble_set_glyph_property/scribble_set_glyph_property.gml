@@ -1,12 +1,12 @@
 /// Modifies a particular value for a character in a font previously added to Scribble.
 /// 
 /// 
+/// Returns: The new value of the property that was modified.
 /// @param fontName     The font name (as a string) of the font to modify.
 /// @param character    The character (as a string) to modify.
 /// @param property     The property to modify. See below for more details.
 /// @param value        The value to set.
 /// @param [relative]   Whether to add the new value to the existing value, or to overwrite the existing value. Defaults to <false>, overwriting the existing value. Skip this argument or use <undefined> to use the default value.
-/// Returns: The new value of the property that was modified.
 /// 
 /// 
 /// Fonts can often be tricky to render correctly, and this script allows you to change certain properties.

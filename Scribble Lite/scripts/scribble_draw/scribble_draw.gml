@@ -1,9 +1,11 @@
 /// Draws text using Scribble's formatting.
 /// 
 /// 
-/// @param x        The x position in the room to draw at.
-/// @param y        The y position in the room to draw at.
-/// @param string   The text to be drawn. See below for formatting help. Secret feature! You can pass a Scribble data structure directly into this argument.
+/// Returns: A Scribble text element (which is really a complex array)
+/// @param x                   The x position in the room to draw at.
+/// @param y                   The y position in the room to draw at.
+/// @param string(orElement)   The text to be drawn. See below for formatting help.
+///                            Alternatively, you can pass a text element into this argument from a previous call to scribble_draw() e.g. for pre-caching.
 /// 
 /// 
 /// Formatting commands:

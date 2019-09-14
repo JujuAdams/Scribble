@@ -1,19 +1,17 @@
 /// Sets the relative position of the textbox for a Scribble data structure
 /// 
 /// 
-/// @param scribbleArray    The Scribble data structure to use
-/// @param x                The x position in the room to draw at. Defaults to 0
-/// @param y                The y position in the room to draw at. Defaults to 0
-/// @param [leftMargin]     The additional space to add to the left-hand side of the box. Positive values create more space. Defaults to 0
-/// @param [topMargin]      The additional space to add to the top of the box. Positive values create more space. Defaults to 0
-/// @param [rightMargin]    The additional space to add to the right-hand side of the box. Positive values create more space. Defaults to 0
-/// @param [bottomMargin]   The additional space to add to the bottom of the box. Positive values create more space. Defaults to 0
+/// Returns: an 8-element array containing the positions of each corner of the text element's box (use the SCRIBBLE_BOX enum to get each coordinate pair).
+/// @param string(orElement)   The text to get the bounding box for. Alternatively, you can pass a text element into this argument from a previous call to scribble_draw().
+/// @param x                   The x position in the room to draw at. Defaults to 0
+/// @param y                   The y position in the room to draw at. Defaults to 0
+/// @param [leftMargin]        The additional space to add to the left-hand side of the box. Positive values create more space. Defaults to 0
+/// @param [topMargin]         The additional space to add to the top of the box. Positive values create more space. Defaults to 0
+/// @param [rightMargin]       The additional space to add to the right-hand side of the box. Positive values create more space. Defaults to 0
+/// @param [bottomMargin]      The additional space to add to the bottom of the box. Positive values create more space. Defaults to 0
 /// 
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 /// 
-/// 
-/// This script returns the positions of each corner of a box that encapsulates the text.
-/// It returns an 8-element array. You can use the SCRIBBLE_BOX enum to reference each coordinate pair.
 
 var _scribble_array = argument[0];
 var _x              = argument[1];
@@ -28,8 +26,23 @@ if (!is_array(_scribble_array)
 || (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
 || _scribble_array[__SCRIBBLE.FREED])
 {
-    show_error("Scribble:\nScribble data structure \"" + string(_scribble_array) + "\" doesn't exist!\n ", false);
-    exit;
+    var _string = string(_scribble_array);
+    
+    //Check the cache
+    var _cache_string = _string + ":" + string(global.scribble_state_line_min_height) + ":" + string(global.scribble_state_max_width);
+    if (ds_map_exists(global.__scribble_global_cache_map, _cache_string))
+    {
+        //Grab the Scribble data structure, and update the TIME property
+        var _scribble_array = global.__scribble_global_cache_map[? _cache_string];
+        _scribble_array[@ __SCRIBBLE.TIME] = current_time;
+    }
+    else
+    {
+        var _old_allow_draw = global.scribble_state_allow_draw;
+        global.scribble_state_allow_draw = false;
+        _scribble_array = scribble_draw(0, 0, _string);
+        global.scribble_state_allow_draw = _old_allow_draw;
+    }
 }
 
 switch(global.scribble_state_box_halign)
