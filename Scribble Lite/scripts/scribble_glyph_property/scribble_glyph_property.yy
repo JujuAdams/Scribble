@@ -1,8 +1,8 @@
 {
-    "id": "bbaf2270-049d-4b2f-b134-efca33e50f7e",
+    "id": "c1f9a882-5c95-4baa-9aa2-288643547505",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "scribble_get_glyph_property",
+    "name": "scribble_glyph_property",
     "IsCompatibility": false,
     "IsDnD": false
 }
