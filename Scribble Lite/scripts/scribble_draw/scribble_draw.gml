@@ -1,9 +1,10 @@
 /// Draws text using Scribble's formatting.
 /// 
 /// 
-/// @param x             The x position in the room to draw at.
-/// @param y             The y position in the room to draw at.
-/// @param string        The text to be drawn. See below for formatting help.
+/// @param x        The x position in the room to draw at.
+/// @param y        The y position in the room to draw at.
+/// @param string   The text to be drawn. See below for formatting help.
+/// @param [draw]   Whether to draw the text. Defaults to <true>. Set this optional arugment to <false> to pre-cache text.
 /// 
 /// 
 /// Formatting commands:
@@ -30,10 +31,10 @@
 
 
 
-var _draw_x      = argument0;
-var _draw_y      = argument1;
-var _draw_string = argument2;
-
+var _draw_x      = argument[0];
+var _draw_y      = argument[1];
+var _draw_string = argument[2];
+var _draw        = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : true;
 
 
 //Check the cache
@@ -151,7 +152,7 @@ else
     global.__scribble_global_count++;
     global.scribble_alive[? global.__scribble_global_count] = _scribble_array;
     
-    if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
+    if (__SCRIBBLE_DEBUG) show_debug_message(_draw? ("Scribble: Caching \"" + _cache_string + "\"") : ("Scribble: Pre-caching \"" + _cache_string + "\""));
     
     //Add this Scribble data structure to the global cache lookup
     if (global.scribble_state_cache_group == SCRIBBLE_DEFAULT_CACHE_GROUP) global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
@@ -945,109 +946,112 @@ else
     
     
     
-    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_create() took " + string((get_timer() - _timer_total)/1000) + "ms");
+    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_draw() create took " + string((get_timer() - _timer_total)/1000) + "ms");
 }
 
 
 
-#region Draw this Scribble data structure
-
-//Figure out the left/top offset
-switch(global.scribble_state_box_halign)
+if (_draw)
 {
-    case fa_center: var _left = -_scribble_array[__SCRIBBLE.WIDTH] div 2; break;
-    case fa_right:  var _left = -_scribble_array[__SCRIBBLE.WIDTH];       break;
-    default:        var _left = 0;                                        break;
-}
-
-switch(global.scribble_state_box_valign)
-{
-    case fa_middle: var _top = -_scribble_array[__SCRIBBLE.HEIGHT] div 2; break;
-    case fa_bottom: var _top = -_scribble_array[__SCRIBBLE.HEIGHT];       break;
-    default:        var _top = 0;                                         break;
-}
-
-if ((global.scribble_state_xscale == 1)
-&&  (global.scribble_state_yscale == 1)
-&&  (global.scribble_state_angle  == 0))
-{
-    var _matrix = matrix_build(_left + _draw_x, _top + _draw_y, 0,   0,0,0,   1,1,1);
-}
-else
-{
-    var _matrix = matrix_build(_left, _top, 0,   0,0,0,   1,1,1);
-        _matrix = matrix_multiply(_matrix, matrix_build(_draw_x, _draw_y, 0,
-                                                        0, 0, global.scribble_state_angle,
-                                                        global.scribble_state_xscale, global.scribble_state_yscale, 1));
-}
-
-var _old_matrix = matrix_get(matrix_world);
-_matrix = matrix_multiply(_matrix, _old_matrix);
-matrix_set(matrix_world, _matrix);
-
-var _animation_time = _scribble_array[__SCRIBBLE.ANIMATION_TIME] + SCRIBBLE_STEP_SIZE;
-_scribble_array[@ __SCRIBBLE.ANIMATION_TIME] = _animation_time;
-
-var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
-var _count = ds_list_size(_vbuff_list);
-if (_count > 0)
-{
-    switch(global.scribble_state_tw_method)
+    #region Draw this Scribble data structure
+    
+    //Figure out the left/top offset
+    switch(global.scribble_state_box_halign)
     {
-        case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-            var _typewriter_count      = _scribble_array[__SCRIBBLE.CHARACTERS];
-            var _typewriter_smoothness = max(0, global.scribble_state_tw_smoothness/_typewriter_count);
-            var _typewriter_t          = clamp(global.scribble_state_tw_position/_typewriter_count, 0, 1 + _typewriter_smoothness);
-        break;
-        
-        case SCRIBBLE_TYPEWRITER_PER_LINE:
-            var _typewriter_count      = _scribble_array[__SCRIBBLE.LINES];
-            var _typewriter_smoothness = max(0, global.scribble_state_tw_smoothness/_typewriter_count);
-            var _typewriter_t          = clamp(global.scribble_state_tw_position/_typewriter_count, 0, 1 + _typewriter_smoothness);
-        break;
-        
-        case SCRIBBLE_TYPEWRITER_WHOLE:
-            var _typewriter_count      = 1;
-            var _typewriter_t          = clamp(global.scribble_state_tw_position, 0, 1);
-            var _typewriter_smoothness = 0;
-        break;
-        
-        default:
-            var _typewriter_count      = 1;
-            var _typewriter_t          = 1;
-            var _typewriter_smoothness = 0;
-        break;
+        case fa_center: var _left = -_scribble_array[__SCRIBBLE.WIDTH] div 2; break;
+        case fa_right:  var _left = -_scribble_array[__SCRIBBLE.WIDTH];       break;
+        default:        var _left = 0;                                        break;
     }
     
-    shader_set(shScribble);
-    shader_set_uniform_f(global.__scribble_uniform_time         , _animation_time);
-    
-    shader_set_uniform_f(global.__scribble_uniform_tw_method    , global.scribble_state_tw_fade_in? global.scribble_state_tw_method : -global.scribble_state_tw_method);
-    shader_set_uniform_f(global.__scribble_uniform_tw_t         , _typewriter_t);
-    shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
-    shader_set_uniform_f(global.__scribble_uniform_tw_count     , _typewriter_count);
-    
-    shader_set_uniform_f(global.__scribble_uniform_colour_blend , colour_get_red(  global.scribble_state_colour)/255,
-                                                                  colour_get_green(global.scribble_state_colour)/255,
-                                                                  colour_get_blue( global.scribble_state_colour)/255,
-                                                                  global.scribble_state_alpha);
-    
-    shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
-    
-    var _i = 0;
-    repeat(_count)
+    switch(global.scribble_state_box_valign)
     {
-        var _vbuff_data = _vbuff_list[| _i];
-        vertex_submit(_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
-        ++_i;
+        case fa_middle: var _top = -_scribble_array[__SCRIBBLE.HEIGHT] div 2; break;
+        case fa_bottom: var _top = -_scribble_array[__SCRIBBLE.HEIGHT];       break;
+        default:        var _top = 0;                                         break;
     }
     
-    shader_reset();
+    if ((global.scribble_state_xscale == 1)
+    &&  (global.scribble_state_yscale == 1)
+    &&  (global.scribble_state_angle  == 0))
+    {
+        var _matrix = matrix_build(_left + _draw_x, _top + _draw_y, 0,   0,0,0,   1,1,1);
+    }
+    else
+    {
+        var _matrix = matrix_build(_left, _top, 0,   0,0,0,   1,1,1);
+            _matrix = matrix_multiply(_matrix, matrix_build(_draw_x, _draw_y, 0,
+                                                            0, 0, global.scribble_state_angle,
+                                                            global.scribble_state_xscale, global.scribble_state_yscale, 1));
+    }
+    
+    var _old_matrix = matrix_get(matrix_world);
+    _matrix = matrix_multiply(_matrix, _old_matrix);
+    matrix_set(matrix_world, _matrix);
+    
+    var _animation_time = _scribble_array[__SCRIBBLE.ANIMATION_TIME] + SCRIBBLE_STEP_SIZE;
+    _scribble_array[@ __SCRIBBLE.ANIMATION_TIME] = _animation_time;
+    
+    var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
+    var _count = ds_list_size(_vbuff_list);
+    if (_count > 0)
+    {
+        switch(global.scribble_state_tw_method)
+        {
+            case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
+                var _typewriter_count      = _scribble_array[__SCRIBBLE.CHARACTERS];
+                var _typewriter_smoothness = max(0, global.scribble_state_tw_smoothness/_typewriter_count);
+                var _typewriter_t          = clamp(global.scribble_state_tw_position/_typewriter_count, 0, 1 + _typewriter_smoothness);
+            break;
+            
+            case SCRIBBLE_TYPEWRITER_PER_LINE:
+                var _typewriter_count      = _scribble_array[__SCRIBBLE.LINES];
+                var _typewriter_smoothness = max(0, global.scribble_state_tw_smoothness/_typewriter_count);
+                var _typewriter_t          = clamp(global.scribble_state_tw_position/_typewriter_count, 0, 1 + _typewriter_smoothness);
+            break;
+            
+            case SCRIBBLE_TYPEWRITER_WHOLE:
+                var _typewriter_count      = 1;
+                var _typewriter_t          = clamp(global.scribble_state_tw_position, 0, 1);
+                var _typewriter_smoothness = 0;
+            break;
+            
+            default:
+                var _typewriter_count      = 1;
+                var _typewriter_t          = 1;
+                var _typewriter_smoothness = 0;
+            break;
+        }
+        
+        shader_set(shScribble);
+        shader_set_uniform_f(global.__scribble_uniform_time         , _animation_time);
+        
+        shader_set_uniform_f(global.__scribble_uniform_tw_method    , global.scribble_state_tw_fade_in? global.scribble_state_tw_method : -global.scribble_state_tw_method);
+        shader_set_uniform_f(global.__scribble_uniform_tw_t         , _typewriter_t);
+        shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
+        shader_set_uniform_f(global.__scribble_uniform_tw_count     , _typewriter_count);
+        
+        shader_set_uniform_f(global.__scribble_uniform_colour_blend , colour_get_red(  global.scribble_state_colour)/255,
+                                                                      colour_get_green(global.scribble_state_colour)/255,
+                                                                      colour_get_blue( global.scribble_state_colour)/255,
+                                                                      global.scribble_state_alpha);
+        
+        shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
+        
+        var _i = 0;
+        repeat(_count)
+        {
+            var _vbuff_data = _vbuff_list[| _i];
+            vertex_submit(_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
+            ++_i;
+        }
+        
+        shader_reset();
+    }
+    
+    matrix_set(matrix_world, _old_matrix);
+    
+    #endregion
 }
-
-matrix_set(matrix_world, _old_matrix);
-
-#endregion
 
 
 
