@@ -1,4 +1,4 @@
-/// Resets Scribble's draw state to use pass-through values (usually inheriting defaults set in __scribble_config()).
+/// Resets Scribble's draw state to use pass-through values, inheriting defaults set in __scribble_config().
 
 global.scribble_state_xscale          = SCRIBBLE_DEFAULT_XSCALE;
 global.scribble_state_yscale          = SCRIBBLE_DEFAULT_YSCALE;

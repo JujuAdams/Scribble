@@ -210,7 +210,7 @@
             "Key": "69d1d72f-5451-469e-a947-62f1a426ec6b",
             "Value": {
                 "id": "a4a63681-5b27-44d3-8fd6-580560257d99",
-                "resourcePath": "scripts\\scribble_state_set_cache\\scribble_state_set_cache.yy",
+                "resourcePath": "scripts\\scribble_set_cache_group\\scribble_set_cache_group.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -656,8 +656,8 @@
         "bc334b9f-3e78-4213-8e02-f63a7b8776d3",
         "6646aeb5-5c20-419d-af6d-8d625871911d",
         "88f27f62-071a-4441-b908-675e356b8173",
-        "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
         "69d1d72f-5451-469e-a947-62f1a426ec6b",
+        "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
         "c1f9a882-5c95-4baa-9aa2-288643547505"
     ],
     "tutorial": ""

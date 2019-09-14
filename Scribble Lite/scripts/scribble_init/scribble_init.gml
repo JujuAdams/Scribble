@@ -186,7 +186,7 @@ enum __SCRIBBLE
 
 //These are tied to values in shScribble
 //If you need to change these for some reason, you'll need to change shScribble too
-#macro SCRIBBLE_TYPEWRITER_WHOLE          0  //Fade the entire textbox in and out
+#macro SCRIBBLE_TYPEWRITER_NONE           0  //No fade
 #macro SCRIBBLE_TYPEWRITER_PER_CHARACTER  1  //Fade each character individually
 #macro SCRIBBLE_TYPEWRITER_PER_LINE       2  //Fade each line of text as a group
 
