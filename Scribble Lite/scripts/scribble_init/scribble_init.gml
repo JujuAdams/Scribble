@@ -264,24 +264,24 @@ global.scribble_state_anim_array = array_create(SCRIBBLE_MAX_DATA_FIELDS);
 scribble_state_reset();
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
-scribble_add_colour("c_aqua",    c_aqua   , true);
-scribble_add_colour("c_black",   c_black  , true);
-scribble_add_colour("c_blue",    c_blue   , true);
-scribble_add_colour("c_dkgray",  c_dkgray , true);
-scribble_add_colour("c_fuchsia", c_fuchsia, true);
-scribble_add_colour("c_green",   c_green  , true);
-scribble_add_colour("c_lime",    c_lime   , true);
-scribble_add_colour("c_ltgray",  c_ltgray , true);
-scribble_add_colour("c_maroon",  c_maroon , true);
-scribble_add_colour("c_navy",    c_navy   , true);
-scribble_add_colour("c_olive",   c_olive  , true);
-scribble_add_colour("c_orange",  c_orange , true);
-scribble_add_colour("c_purple",  c_purple , true);
-scribble_add_colour("c_red",     c_red    , true);
-scribble_add_colour("c_silver",  c_silver , true);
-scribble_add_colour("c_teal",    c_teal   , true);
-scribble_add_colour("c_white",   c_white  , true);
-scribble_add_colour("c_yellow",  c_yellow , true);
+global.__scribble_colours[? "c_aqua"   ] = c_aqua;
+global.__scribble_colours[? "c_black"  ] = c_black;
+global.__scribble_colours[? "c_blue"   ] = c_blue;
+global.__scribble_colours[? "c_dkgray" ] = c_dkgray;
+global.__scribble_colours[? "c_fuchsia"] = c_fuchsia;
+global.__scribble_colours[? "c_green"  ] = c_green;
+global.__scribble_colours[? "c_lime"   ] = c_lime;
+global.__scribble_colours[? "c_ltgray" ] = c_ltgray;
+global.__scribble_colours[? "c_maroon" ] = c_maroon;
+global.__scribble_colours[? "c_navy"   ] = c_navy;
+global.__scribble_colours[? "c_olive"  ] = c_olive;
+global.__scribble_colours[? "c_orange" ] = c_orange;
+global.__scribble_colours[? "c_purple" ] = c_purple;
+global.__scribble_colours[? "c_red"    ] = c_red;
+global.__scribble_colours[? "c_silver" ] = c_silver;
+global.__scribble_colours[? "c_teal"   ] = c_teal;
+global.__scribble_colours[? "c_white"  ] = c_white;
+global.__scribble_colours[? "c_yellow" ] = c_yellow;
 
 //Add bindings for default flag names
 //Flag slot 0 is reversed for sprites
