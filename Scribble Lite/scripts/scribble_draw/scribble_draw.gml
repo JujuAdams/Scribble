@@ -988,12 +988,6 @@ if (global.scribble_state_allow_draw)
                 var _typewriter_t          = clamp(global.scribble_state_tw_position/_typewriter_count, 0, 1 + _typewriter_smoothness);
             break;
             
-            case SCRIBBLE_TYPEWRITER_WHOLE:
-                var _typewriter_count      = 1;
-                var _typewriter_t          = clamp(global.scribble_state_tw_position, 0, 1);
-                var _typewriter_smoothness = 0;
-            break;
-            
             default:
                 var _typewriter_count      = 1;
                 var _typewriter_t          = 1;

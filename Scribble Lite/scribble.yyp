@@ -482,7 +482,7 @@
             "Key": "c1f9a882-5c95-4baa-9aa2-288643547505",
             "Value": {
                 "id": "7a6002bd-ab6b-4396-b3bd-b3eb90e76cc3",
-                "resourcePath": "scripts\\scribble_glyph_property\\scribble_glyph_property.yy",
+                "resourcePath": "scripts\\scribble_set_glyph_property\\scribble_set_glyph_property.yy",
                 "resourceType": "GMScript"
             }
         },
