@@ -181,6 +181,9 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_GLYPH_BYTE_SIZE  (6*__SCRIBBLE_VERTEX.__SIZE)
 #macro __SCRIBBLE_EXPECTED_GLYPHS  100
 
+///__SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shScribble
+#macro __SCRIBBLE_MAX_DATA_FIELDS  7
+
 //These are tied to values in shScribble
 //If you need to change these for some reason, you'll need to change shScribble too
 #macro SCRIBBLE_TYPEWRITER_WHOLE          0  //Fade the entire textbox in and out
@@ -260,7 +263,7 @@ ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP,
 
 //Declare state variables
 global.__scribble_default_anim_array = [4, 50, 0.2,   4, 0.4,   0.5, 0.01];
-global.scribble_state_anim_array = array_create(SCRIBBLE_MAX_DATA_FIELDS);
+global.scribble_state_anim_array = array_create(__SCRIBBLE_MAX_DATA_FIELDS);
 scribble_state_reset();
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()

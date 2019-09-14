@@ -45,7 +45,7 @@
 #macro SCRIBBLE_Z                          0     //The z-value for vertexes
 
 #macro SCRIBBLE_DEFAULT_CACHE_GROUP        0     //The name of the default cache group. Real value and strings accepted.
-#macro SCRIBBLE_CACHE_TIMEOUT              60000 //How long to wait before the cache automatically destroys a scribble data. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_flush() instead)
+#macro SCRIBBLE_CACHE_TIMEOUT              60000 //How long to wait before the cache automatically destroys a scribble data. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_cache_group_flush() instead)
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN      ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE     ord("]") //Character used to close a command tag. First 127 ASCII chars only
@@ -56,9 +56,5 @@
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_TRY        true
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE  300  //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
-
-//SCRIBBLE_MAX_FLAGS or SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shScribble
-#macro SCRIBBLE_MAX_FLAGS        4 //The maximum number of flags. "Flags" are boolean values that can be set per character, and are sent into shScribble to trigger animation effects etc.
-#macro SCRIBBLE_MAX_DATA_FIELDS  7 //The maximum number of data fields. "Data fields" are misc 
 
 #endregion

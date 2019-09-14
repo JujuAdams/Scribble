@@ -8,9 +8,9 @@
 /// @param ...
 
 var _count = argument_count;
-if (_count > SCRIBBLE_MAX_DATA_FIELDS)
+if (_count > __SCRIBBLE_MAX_DATA_FIELDS)
 {
-    show_error("Scribble:\nscribble_set_animation() given " + string(_count) + " parameters but was expecting " + string(SCRIBBLE_MAX_DATA_FIELDS) + "\n ", false);
+    show_error("Scribble:\nscribble_set_animation() given " + string(_count) + " parameters but was expecting " + string(__SCRIBBLE_MAX_DATA_FIELDS) + "\n ", false);
     return false;
 }
 

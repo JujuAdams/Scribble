@@ -1,11 +1,11 @@
-const int MAX_FLAGS = 4;       //Change SCRIBBLE_MAX_FLAGS in __scribble_config() if you change this value!
+const int MAX_FLAGS = 4;
 //By default, the flags are:
 //0 = is an animated sprite
 //1 = wave
 //2 = shake
 //3 = rainbow
 
-const int MAX_DATA_FIELDS = 7; //Change SCRIBBLE_MAX_DATA_FIELDS in __scribble_config() if you change this value!
+const int MAX_DATA_FIELDS = 7;
 //By default, the data fields are:
 //0 = wave size
 //1 = wave frequency
