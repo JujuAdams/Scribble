@@ -23,4 +23,5 @@ _array[@ SCRIBBLE_STATE.TYPEWRITER_METHOD    ] = global.scribble_state_tw_method
 _array[@ SCRIBBLE_STATE.TYPEWRITER_SMOOTHNESS] = global.scribble_state_tw_smoothness;
 _array[@ SCRIBBLE_STATE.ANIMATION_ARRAY      ] = global.scribble_state_anim_array;
 _array[@ SCRIBBLE_STATE.CACHE_GROUP          ] = global.scribble_state_cache_group;
+_array[@ SCRIBBLE_STATE.ALLOW_DRAW           ] = global.scribble_state_allow_draw;
 return _array;

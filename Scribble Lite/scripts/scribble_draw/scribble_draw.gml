@@ -4,7 +4,6 @@
 /// @param x        The x position in the room to draw at.
 /// @param y        The y position in the room to draw at.
 /// @param string   The text to be drawn. See below for formatting help. Secret feature! You can pass a Scribble data structure directly into this argument.
-/// @param [draw]   Whether to draw the text. Defaults to <true>. Set this optional arugment to <false> to pre-cache text.
 /// 
 /// 
 /// Formatting commands:
@@ -34,7 +33,6 @@
 var _draw_x      = argument[0];
 var _draw_y      = argument[1];
 var _draw_string = argument[2];
-var _draw        = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : true;
 
 
 
@@ -155,7 +153,7 @@ if (!is_array(_draw_string))
         global.__scribble_global_count++;
         global.scribble_alive[? global.__scribble_global_count] = _scribble_array;
         
-        if (__SCRIBBLE_DEBUG) show_debug_message(_draw? ("Scribble: Caching \"" + _cache_string + "\"") : ("Scribble: Pre-caching \"" + _cache_string + "\""));
+        if (__SCRIBBLE_DEBUG) show_debug_message(global.scribble_state_allow_draw? ("Scribble: Caching \"" + _cache_string + "\"") : ("Scribble: Pre-caching \"" + _cache_string + "\""));
         
         //Add this Scribble data structure to the global cache lookup
         if (global.scribble_state_cache_group == SCRIBBLE_DEFAULT_CACHE_GROUP) global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
@@ -952,21 +950,26 @@ if (!is_array(_draw_string))
         if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_draw() create took " + string((get_timer() - _timer_total)/1000) + "ms");
     }
 }
-else if ((array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
+else
+{
+    var _scribble_array = _draw_string;
+    
+    if ((array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
      || (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
-{
-    show_error("Scribble:\nArray passed to scribble_draw() is not a valid Scribble data structure.\n ", false);
-    return undefined;
+    {
+        show_error("Scribble:\nArray passed to scribble_draw() is not a valid Scribble data structure.\n ", false);
+        return undefined;
+    }
+    else if (_scribble_array[__SCRIBBLE.FREED])
+    {
+        //This Scribble data structure has had its memory freed already, ignore it
+        return undefined;
+    }
 }
-else if (!_scribble_array[__SCRIBBLE.FREED])
-{
-    //This Scribble data structure has had its memory freed already, ignore it
-    return undefined;
-}
 
 
 
-if (_draw)
+if (global.scribble_state_allow_draw)
 {
     #region Draw this Scribble data structure
     

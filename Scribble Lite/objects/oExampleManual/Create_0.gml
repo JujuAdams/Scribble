@@ -40,9 +40,10 @@ scribble_set_typewriter(true, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 3);
 scribble_set_box_alignment(fa_center, fa_middle);
 
 //Now parse the string to make some Scribble data
-//We're using an <undefined> cache group here to indicate we want to manage this memory ourselves
-//This isn't strictly necessary (you can use any cache group) but for the sake of example...
-scribble = scribble_draw(0, 0, _demo_string, false);
+//We're using a cache group called "example cache group" to indicate we want to manage this memory ourselves
+scribble_state_set_cache("example cache group", false);
+scribble = scribble_draw(0, 0, _demo_string);
+scribble_state_reset();
 
 //Don't forget to reset the state!
 scribble_state_reset();

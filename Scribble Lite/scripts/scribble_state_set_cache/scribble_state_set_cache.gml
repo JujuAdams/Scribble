@@ -2,6 +2,7 @@
 /// 
 /// 
 /// @param cacheGroup   The cache group that stores the Scribble data. If this argument is <undefined>, the default cache group will be used instead.
+/// @param allowDraw    Whether to draw the text. Defaults to <true>. Set this optional arugment to <false> to pre-cache text.
 /// 
 /// 
 /// Scribble uses cache groups to help manage memory. Scribble text that has been added to a cache group will be automatically destroyed if...
@@ -19,3 +20,4 @@
 /// To track how much Scribble data exists at any one time, call ds_map_size(global.scribble_alive).
 
 global.scribble_state_cache_group = (argument0 != undefined)? argument0 : SCRIBBLE_DEFAULT_CACHE_GROUP;
+global.scribble_state_allow_draw  = argument1;
