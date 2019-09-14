@@ -285,9 +285,12 @@ scribble_add_colour("c_yellow",  c_yellow , true);
 
 //Add bindings for default flag names
 //Flag slot 0 is reversed for sprites
-scribble_add_flag("wave"   , 1);
-scribble_add_flag("shake"  , 2);
-scribble_add_flag("rainbow", 3);
+global.__scribble_flags[?       "wave"    ] = 1;
+global.__scribble_flags[?       "shake"   ] = 2;
+global.__scribble_flags[?       "rainbow" ] = 3;
+global.__scribble_flags_slash[? "/wave"   ] = 1;
+global.__scribble_flags_slash[? "/shake"  ] = 2;
+global.__scribble_flags_slash[? "/rainbow"] = 3;
 
 //Create a vertex format for our text
 vertex_format_begin();
