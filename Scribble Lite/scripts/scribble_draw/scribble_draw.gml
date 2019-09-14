@@ -4,8 +4,6 @@
 /// @param x             The x position in the room to draw at.
 /// @param y             The y position in the room to draw at.
 /// @param string        The text to be drawn. See below for formatting help.
-/// @param [cacheGroup]  The cache group that stores the Scribble data. If this argument is unused or is <undefined>, the default cache group will be used instead.
-/// 
 /// 
 /// 
 /// Formatting commands:
@@ -29,28 +27,12 @@
 /// [wave]    [/wave]                   Set/unset text to wave up and down
 /// [shake]   [/shake]                  Set/unset text to shake
 /// [rainbow] [/rainbow]                Set/unset text to cycle through rainbow colours
-/// 
-/// 
-/// Scribble uses cache groups to help manage memory. Scribble text that has been added to a cache group will be automatically destroyed if...
-/// 1) scribble_flush() has been called targetting the text's cache group
-/// 2) or the text has not been drawn for a period of time (SCRIBBLE_CACHE_TIMEOUT milliseconds).
-/// By default, all Scribble data is put into the same cache group: SCRIBBLE_DEFAULT_CACHE_GROUP. You can specify a different cache group
-/// to manage memory more easily (e.g. one cache group for dialogue, another for an inventory screen). Setting SCRIBBLE_CACHE_TIMEOUT to 0
-/// halts all time-based memory management; instead, you'll need to manually call scribble_flush(), targetting the relevant cache group(s).
-/// 
-/// If you're manually creating Scribble data structures by calling scribble_create() directly, you can choose to opt out of using the cache.
-/// By setting the "cacheGroup" argument to <undefined>, Scribble will skip adding the data to the cache. However, this means that the data
-/// you create *will not be automatically destroyed*. To free memory you will have to call scribble_flush() manually, using the Scribble text
-/// array as the argument.
-/// 
-/// To track how much Scribble data exists at any one time, call ds_map_size(global.scribble_alive).
 
 
 
-var _draw_x      = argument[0];
-var _draw_y      = argument[1];
-var _draw_string = argument[2];
-var _cache_group = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_CACHE_GROUP;
+var _draw_x      = argument0;
+var _draw_y      = argument1;
+var _draw_string = argument2;
 
 
 
@@ -172,15 +154,15 @@ else
     if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
     
     //Add this Scribble data structure to the global cache lookup
-    if (_cache_group == SCRIBBLE_DEFAULT_CACHE_GROUP) global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
+    if (global.scribble_state_cache_group == SCRIBBLE_DEFAULT_CACHE_GROUP) global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
     
     //Find this cache group's list
-    var _list = global.__scribble_cache_group_map[? _cache_group];
+    var _list = global.__scribble_cache_group_map[? global.scribble_state_cache_group];
     if (_list == undefined)
     {
         //Create a new list if one doesn't already exist
         _list = ds_list_create();
-        ds_map_add_list(global.__scribble_cache_group_map, _cache_group, _list);
+        ds_map_add_list(global.__scribble_cache_group_map, global.scribble_state_cache_group, _list);
     }
     
     //Add this string to the cache group's list
