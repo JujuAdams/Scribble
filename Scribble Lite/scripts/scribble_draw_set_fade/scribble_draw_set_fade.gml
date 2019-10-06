@@ -1,10 +1,11 @@
-/// Sets Scribble's typewriter fade in/out state.
+/// Sets Scribble's fade in/out state. This is a manual alternative to using the "autotype" feature.
+/// N.B. Using this script will not trigger autotype events.
 /// 
 /// 
 /// @param fadeIn       Whether to fade in or out (boolean).
-/// @param position     The position of the typewriter animation. See below for more details.
-/// @param method       The typewriter method to use. See below for more details.
-/// @param smoothness   The smoothness of the typewriter fade effect. A value of "0" disables smooth fading.
+/// @param position     The position of the fade effect. See below for more details.
+/// @param method       The fade method to use. See below for more details.
+/// @param smoothness   The smoothness of the fade effect. A value of "0" disables smooth fading.
 /// 
 /// 
 /// Scribble supports two fade effects:

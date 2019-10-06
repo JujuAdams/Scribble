@@ -370,7 +370,7 @@
             "Key": "8a72a3a7-a40c-4764-a65f-e44a5bd5746c",
             "Value": {
                 "id": "65d3b51a-4945-409b-b5c4-3c69855466e4",
-                "resourcePath": "scripts\\scribble_draw_set_typewriter\\scribble_draw_set_typewriter.yy",
+                "resourcePath": "scripts\\scribble_draw_set_fade\\scribble_draw_set_fade.yy",
                 "resourceType": "GMScript"
             }
         },
