@@ -153,27 +153,34 @@ enum __SCRIBBLE
     LINE_HEIGHT,         // 7
     
     __SECTION1,          // 8
-    WIDTH,               //11
-    HEIGHT,              //12
-    CHARACTERS,          //17
-    LINES,               //18
-    GLOBAL_INDEX,        //20
+    WIDTH,               // 9
+    HEIGHT,              //10
+    CHARACTERS,          //11
+    LINES,               //12
+    GLOBAL_INDEX,        //13
     
-    __SECTION2,          //31
-    ANIMATION_TIME,      //35
-    TIME,                //21
-    FREED,               //22
+    __SECTION2,          //14
+    ANIMATION_TIME,      //15
+    TIME,                //16
+    FREED,               //17
     
-    __SECTION3,          //36
-    LINE_LIST,           //37
-    VERTEX_BUFFER_LIST,  //38
+    __SECTION3,          //18
+    LINE_LIST,           //19
+    VERTEX_BUFFER_LIST,  //20
     
-    __SECTION4,          //39
-    EVENT_CHAR_ARRAY,    //42
-    EVENT_NAME_ARRAY,    //43
-    EVENT_DATA_ARRAY,    //44
+    __SECTION4,          //21
+    AUTOTYPE_DIRECTION,  //22
+    AUTOTYPE_SPEED,      //23
+    AUTOTYPE_POSITION,   //24
+    AUTOTYPE_METHOD,     //25
+    AUTOTYPE_SMOOTHNESS, //26
     
-    __SIZE               //45
+    __SECTION5,          //27
+    EVENT_CHAR_ARRAY,    //28
+    EVENT_NAME_ARRAY,    //29
+    EVENT_DATA_ARRAY,    //30
+    
+    __SIZE               //31
 }
 
 #macro __SCRIBBLE_ON_DIRECTX       ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
@@ -253,6 +260,7 @@ global.__scribble_font_data         = ds_map_create();  //Stores a data array fo
 global.__scribble_colours           = ds_map_create();  //Stores colour definitions, including custom colours
 global.__scribble_flags             = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_flags_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_autotype_events   = ds_map_create();
 global.scribble_alive               = ds_map_create();  //ds_map of all alive Scribble data structures
 global.__scribble_global_count      = 0;
 global.__scribble_default_font      = _default_font;
