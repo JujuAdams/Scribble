@@ -137,6 +137,7 @@ enum SCRIBBLE_STATE
     ANIMATION_ARRAY,
     CACHE_GROUP,
     ALLOW_DRAW,
+    FREEZE,
     __SIZE
 }
 
@@ -264,7 +265,7 @@ ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP,
 //Declare state variables
 global.__scribble_default_anim_array = [4, 50, 0.2,   4, 0.4,   0.5, 0.01];
 global.scribble_state_anim_array = array_create(__SCRIBBLE_MAX_DATA_FIELDS);
-scribble_state_reset();
+scribble_draw_reset();
 
 //Duplicate GM's native colour constants in string form for access in scribble_create()
 global.__scribble_colours[? "c_aqua"   ] = c_aqua;

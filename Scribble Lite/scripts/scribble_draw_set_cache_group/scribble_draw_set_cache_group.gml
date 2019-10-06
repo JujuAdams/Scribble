@@ -3,6 +3,7 @@
 /// 
 /// @param cacheGroup   The cache group that stores the Scribble data. If this argument is <undefined>, the default cache group will be used instead.
 /// @param allowDraw    Whether to draw the text. Defaults to <true>. Set this optional arugment to <false> to pre-cache text.
+/// @param freeze       Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster
 /// 
 /// 
 /// Scribble uses cache groups to help manage memory. Scribble text that has been added to a cache group will be automatically destroyed if...
@@ -21,3 +22,4 @@
 
 global.scribble_state_cache_group = (argument0 != undefined)? argument0 : SCRIBBLE_DEFAULT_CACHE_GROUP;
 global.scribble_state_allow_draw  = argument1;
+global.scribble_state_freeze      = argument2;

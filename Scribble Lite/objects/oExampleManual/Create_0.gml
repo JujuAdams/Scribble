@@ -24,13 +24,13 @@ var _demo_string  = "[rainbow]abcdef[] ABCDEF##";
     _demo_string += "[fTestA][fa_right]THE [fTestB][$FF4499][shake]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fTestB]DOG.";
 
 //Set up the draw state. scribble_create() will inherit whatever draw state is currently being used
-scribble_set_typewriter(true, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 3);
-scribble_set_box_alignment(fa_center, fa_middle);
+scribble_draw_set_typewriter(true, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 3);
+scribble_draw_set_box_align(fa_center, fa_middle);
 
 //Now parse the string to make some Scribble data
 //We're using a cache group called "example cache group" to indicate we want to manage this memory ourselves
-scribble_set_cache_group("example cache group", false);
+scribble_draw_set_cache_group("example cache group", false);
 scribble = scribble_draw(0, 0, _demo_string);
 
 //Don't forget to reset the state!
-scribble_state_reset();
+scribble_draw_reset();

@@ -6,10 +6,13 @@
 #macro SCRIBBLE_COLOURISE_SPRITES  true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
 #macro SCRIBBLE_VERBOSE            true  //Enables verbose console output to aid with debugging.
 
-
+draw_get_alpha()
 
 #region Default parameters
 
+//Starting format
+#macro SCRIBBLE_DEFAULT_TEXT_COLOUR   c_white  //The default (vertex) colour of text.
+#macro SCRIBBLE_DEFAULT_HALIGN        fa_left
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED  0.1      //The default animation speed for sprites inserted into text.
 
 //Box alignment
@@ -27,11 +30,7 @@
 
 //Colour blending
 #macro SCRIBBLE_DEFAULT_BLEND_COLOUR  c_white  //The default blend colour.
-#macro SCRIBBLE_DEFAULT_ALPHA         1.0      //The default alpha.
-
-//Starting format
-#macro SCRIBBLE_DEFAULT_TEXT_COLOUR   c_white  //The default (vertex) colour of text.
-#macro SCRIBBLE_DEFAULT_HALIGN        fa_left
+#macro SCRIBBLE_DEFAULT_BLEND_ALPHA   1.0      //The default alpha.
 
 #endregion
 
