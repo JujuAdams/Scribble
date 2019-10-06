@@ -62,12 +62,12 @@ void unpackFlags(float flagValue, inout float array[MAX_FLAGS])
     }
 }
 
-void applyWave(float amplitude, float frequency, float speed, inout vec4 pos)
+float wave(float amplitude, float frequency, float speed)
 {
-    pos.y += amplitude*sin(frequency*in_Normal.x + speed*u_fTime);
+    return amplitude*sin(frequency*in_Normal.x + speed*u_fTime);
 }
 
-void applyShake(float magnitude, float speed, inout vec4 pos)
+vec2 shake(float magnitude, float speed)
 {
     float time = speed*u_fTime + 0.5;
     float floorTime = floor(time);
@@ -77,31 +77,30 @@ void applyShake(float magnitude, float speed, inout vec4 pos)
     vec2 delta = vec2(rand(vec2(149.0*in_Normal.x + 13.0*floorTime, 727.0*in_Normal.x - 331.0*floorTime)),
                       rand(vec2(501.0*in_Normal.x - 19.0*floorTime, 701.0*in_Normal.x + 317.0*floorTime)));
     
-    pos.xy += magnitude*merge*(2.0*delta-1.0);
+    return magnitude*merge*(2.0*delta-1.0);
 }
 
-void applySprite(float isSprite, inout vec4 colour)
+vec4 handleSprites(float isSprite, vec4 colour)
 {
     if (isSprite == 1.0)
     {
-        float myImage    = in_Colour.r*255.0;     //First byte is the index of this sprite
-        float imageMax   = 1.0+in_Colour.g*255.0; //Second byte is the maximum number of images in the sprite
-        float imageSpeed = in_Colour.b;           //Third byte is half of the image speed
-        float imageStart = in_Colour.a*255.0;     //Fourth byte is the image offset
+        float myImage    = colour.r*255.0;       //First byte is the index of this sprite
+        float imageMax   = 1.0 + colour.g*255.0; //Second byte is the maximum number of images in the sprite
+        float imageSpeed = colour.b;             //Third byte is half of the image speed
+        float imageStart = colour.a*255.0;       //Fourth byte is the image offset
         
         float displayImage = floor(mod(imageSpeed*u_fTime + imageStart, imageMax));
-        colour = vec4((abs(myImage-displayImage) < 1.0/255.0)? 1.0 : 0.0);
+        return vec4((abs(myImage-displayImage) < 1.0/255.0)? 1.0 : 0.0);
+    }
+    else
+    {
+        return colour;
     }
 }
 
-void applyRainbow(float weight, float speed, inout vec4 colour)
+vec4 applyRainbow(float weight, float speed, vec4 colour)
 {
-    colour.rgb = mix(colour.rgb, hsv2rgb(vec3(in_Normal.x + speed*u_fTime, 1.0, 1.0)), weight);
-}
-
-void applyColourBlend(vec4 colourInput, inout vec4 colourTarget)
-{
-    colourTarget *= colourInput;
+    return vec4(mix(colour.rgb, hsv2rgb(vec3(in_Normal.x + speed*u_fTime, 1.0, 1.0)), weight), colour.a);
 }
 
 void applyTypewriterFade(float time, float smoothness, float param, inout vec4 colour)
@@ -131,23 +130,22 @@ void main()
     
     //Vertex animation
     vec4 pos = vec4(in_Position.xyz, 1.0);
-    applyWave(flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2], pos);
-    applyShake(flagArray[2]*u_aDataFields[3], u_aDataFields[4], pos);
+    pos.y  += wave(flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2]);
+    pos.xy += shake(flagArray[2]*u_aDataFields[3], u_aDataFields[4]);
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
     
     //Colour
-    v_vColour = in_Colour;
-    applySprite(flagArray[0], v_vColour);
-    applyRainbow(flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
-    applyColourBlend(u_vColourBlend, v_vColour);
+    v_vColour  = handleSprites(flagArray[0], in_Colour);
+    v_vColour  = applyRainbow(flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
+    v_vColour *= u_vColourBlend;
     
-    if (u_fTypewriterMethod != 0.0)
-    {
-        applyTypewriterFade(u_fTypewriterT,
-                            u_fTypewriterSmoothness,
-                            ((abs(u_fTypewriterMethod) == 1.0)? in_Normal.x : in_Normal.y)/u_fTypewriterCount,
-                            v_vColour);
-    }
+    //if (u_fTypewriterMethod != 0.0)
+    //{
+    //    applyTypewriterFade(u_fTypewriterT,
+    //                        u_fTypewriterSmoothness,
+    //                        ((abs(u_fTypewriterMethod) == 1.0)? in_Normal.x : in_Normal.y)/u_fTypewriterCount,
+    //                        v_vColour);
+    //}
     
     //Texture
     v_vTexcoord = in_TextureCoord;
