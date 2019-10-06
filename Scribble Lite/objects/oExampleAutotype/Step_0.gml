@@ -13,5 +13,3 @@ if (scribble_autotype_get(element) == 2)
         scribble_autotype_set(element, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 1, 0, true);
     }
 }
-
-scribble_autotype_execute_events(element);
