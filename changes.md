@@ -4,7 +4,7 @@ Scribble 5 contains some big changes compared to previous versions. The goal wit
 
 `scribble_draw` is now substantially simpler compared to `scribble_create()` found in previous versions of the library. All customisation for Scribble is now done through draw state functions, very much like GameMaker's native draw state. For example, `scribble_draw_set_transform()` allows you to rotate and scale your text for zero extra cost, and `scribble_draw_set_blend()` controls the global colour/alpha blending of drawn text elements. This makes code substantially easier to read and should feel familiar to any GM dev.
 
-```
+```gml
 /// Draw Event
 
 //Set our blend colour to bright red and draw at 80% alpha
@@ -24,7 +24,7 @@ scribble_draw_reset();
 
 The typewriter and event functionality in 4.x.x has been kept as well. This is now called `autotype`. Autotyping can still be applied per-line or per-character. Events are now trigged via `scribble_draw()` rather than a separate script\*. You'll need to pre-cache a text element (for example, running `scribble_draw()` in a Create event) and then use `scribble_autotype_set()` targeting that text element to start the typewriter effect.
 
-```
+```gml
 /// Create Event
 
 //Our dialogue text should be no more than 430px wide
