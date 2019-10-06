@@ -14,6 +14,12 @@ const int MAX_DATA_FIELDS = 7;
 //4 = shake speed
 //5 = rainbow weight
 
+
+
+//--------------------------------------------------------------------------------------------------------
+// Attributes, Varyings, and Uniforms
+
+
 attribute vec3 in_Position;
 attribute vec3 in_Normal; //Character / Line index / Flags
 attribute vec4 in_Colour;
@@ -32,18 +38,14 @@ uniform float u_fTypewriterCount;
 
 uniform float u_aDataFields[MAX_DATA_FIELDS];
 
-float rand(vec2 co)
-{
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
 
-vec3 hsv2rgb(vec3 c)
-{
-    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-    vec3 P = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-    return c.z * mix(K.xxx, clamp(P - K.xxx, 0.0, 1.0), c.y);
-}
 
+//--------------------------------------------------------------------------------------------------------
+// Functions
+// Scroll all the way down to see the main() function for the vertex shader
+
+//Bitwise unpacking of binary effect flags
+//The flag bits are stored in the Z-channel of the Normal attribute
 void unpackFlags(float flagValue, inout float array[MAX_FLAGS])
 {
     float check = pow(2.0, float(MAX_FLAGS)-1.0);
@@ -62,11 +64,22 @@ void unpackFlags(float flagValue, inout float array[MAX_FLAGS])
     }
 }
 
+//Oscillate the character
 float wave(float amplitude, float frequency, float speed)
 {
     return amplitude*sin(frequency*in_Normal.x + speed*u_fTime);
 }
 
+//*That* randomisation function.
+//I haven't found a better method yet, and this is sufficient for our purposes
+float rand(vec2 co)
+{
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+//Shake the character along the x/y axes
+//We use integer time steps so that at low speeds characters don't jump around too much
+//Lots of magic numbers in here to try to get a nice-looking shake
 vec2 shake(float magnitude, float speed)
 {
     float time = speed*u_fTime + 0.5;
@@ -80,6 +93,7 @@ vec2 shake(float magnitude, float speed)
     return magnitude*merge*(2.0*delta-1.0);
 }
 
+//Use RGBA 
 vec4 handleSprites(float isSprite, vec4 colour)
 {
     if (isSprite == 1.0)
@@ -98,12 +112,21 @@ vec4 handleSprites(float isSprite, vec4 colour)
     }
 }
 
-vec4 applyRainbow(float weight, float speed, vec4 colour)
+//HSV->RGB conversion function
+vec3 hsv2rgb(vec3 c)
+{
+    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+    vec3 P = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+    return c.z * mix(K.xxx, clamp(P - K.xxx, 0.0, 1.0), c.y);
+}
+
+//Colour cycling
+vec4 rainbow(float weight, float speed, vec4 colour)
 {
     return vec4(mix(colour.rgb, hsv2rgb(vec3(in_Normal.x + speed*u_fTime, 1.0, 1.0)), weight), colour.a);
 }
 
-void applyTypewriterFade(float time, float smoothness, float param, inout vec4 colour)
+float fade(float time, float smoothness, float limit)
 {
     float multiplier = 1.0;
     
@@ -119,34 +142,54 @@ void applyTypewriterFade(float time, float smoothness, float param, inout vec4 c
         
     if (u_fTypewriterMethod >= 0.0) multiplier = 1.0 - multiplier;
     
-    colour.a *= multiplier;
+    return multiplier;
 }
+
+
+
+//--------------------------------------------------------------------------------------------------------
+
+
 
 void main()
 {
-    //Unpack the flag value into an array
-    float flagArray[MAX_FLAGS];
-    unpackFlags(in_Normal.z, flagArray);
+    //Unpack data fields into variables
+    //This isn't strictly necessary but it makes the shader easier to read
+    float waveAmplitude  = u_aDataFields[0];
+    float waveFrequency  = u_aDataFields[1];
+    float waveSpeed      = u_aDataFields[2];
+    float shakeMagnitude = u_aDataFields[3];
+    float shakeSpeed     = u_aDataFields[4];
+    float rainbowWeight  = u_aDataFields[5];
+    float rainbowSpeed   = u_aDataFields[6];
+    
+    //Unpack the flag value into an array, then into variables for readability
+    float flagArray[MAX_FLAGS]; unpackFlags(in_Normal.z, flagArray);
+    float spriteFlag  = flagArray[0];
+    float waveFlag    = flagArray[1];
+    float shakeFlag   = flagArray[2];
+    float rainbowFlag = flagArray[3];
     
     //Vertex animation
-    vec4 pos = vec4(in_Position.xyz, 1.0);
-    pos.y  += wave(flagArray[1]*u_aDataFields[0], u_aDataFields[1], u_aDataFields[2]);
-    pos.xy += shake(flagArray[2]*u_aDataFields[3], u_aDataFields[4]);
-    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION] * pos;
+    vec4 pos = vec4(in_Position.xyz, 1.0); //Use the input vertex position via attributes
+    pos.y  += wave(waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
+    pos.xy += shake(shakeFlag*shakeMagnitude, shakeSpeed); //Apply the shake effect
     
     //Colour
-    v_vColour  = handleSprites(flagArray[0], in_Colour);
-    v_vColour  = applyRainbow(flagArray[3]*u_aDataFields[5], u_aDataFields[6], v_vColour);
-    v_vColour *= u_vColourBlend;
+    v_vColour  = handleSprites(spriteFlag, in_Colour); //Use RGBA information to filter out sprites
+    v_vColour  = rainbow(rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
+    v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
     
-    //if (u_fTypewriterMethod != 0.0)
-    //{
-    //    applyTypewriterFade(u_fTypewriterT,
-    //                        u_fTypewriterSmoothness,
-    //                        ((abs(u_fTypewriterMethod) == 1.0)? in_Normal.x : in_Normal.y)/u_fTypewriterCount,
-    //                        v_vColour);
-    //}
+    //Only apply the fade if we're given a mathod
+    if (u_fTypewriterMethod != 0.0)
+    {
+        //Figure out
+        float limit = ((abs(u_fTypewriterMethod) == 1.0)? in_Normal.x : in_Normal.y)/u_fTypewriterCount;
+        v_vColour.a *= fade(u_fTypewriterT, u_fTypewriterSmoothness, limit);
+    }
     
     //Texture
     v_vTexcoord = in_TextureCoord;
+    
+    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*pos;
 }
