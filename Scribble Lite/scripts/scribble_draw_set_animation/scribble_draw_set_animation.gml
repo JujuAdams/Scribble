@@ -9,7 +9,7 @@
 /// @param rainbowSpeed   Cycling speed of the [rainbow] effect. Increase to make colour scrolling faster.
 /// 
 /// This script "sets state". All text drawn with scribble_draw() will use these settings until they're overwritten,
-/// either by calling this script again or by calling scribble_state_reset() / scribble_state_set().
+/// either by calling this script again or by calling scribble_draw_reset() / scribble_draw_set_state().
 
 var _count = argument_count;
 if (_count > __SCRIBBLE_MAX_DATA_FIELDS)
