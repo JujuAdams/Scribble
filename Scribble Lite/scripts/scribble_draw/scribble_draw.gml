@@ -46,7 +46,6 @@ if (!is_array(_draw_string))
     {
         //Grab the Scribble data structure, and update the TIME property
         var _scribble_array = global.__scribble_global_cache_map[? _cache_string];
-        _scribble_array[@ __SCRIBBLE.TIME] = current_time;
     }
     else
     {
@@ -986,6 +985,17 @@ if (global.scribble_state_allow_draw)
         default:        var _top = 0;                                         break;
     }
     
+    //Handle the animation timer
+    var _increment_timers = ((current_time - _scribble_array[__SCRIBBLE.TIME]) > __SCRIBBLE_EXPECTED_FRAME_TIME);
+    var _animation_time   = _scribble_array[__SCRIBBLE.ANIMATION_TIME];
+    
+    if (_increment_timers)
+    {
+        _animation_time += SCRIBBLE_STEP_SIZE;
+        _scribble_array[@ __SCRIBBLE.ANIMATION_TIME] = _animation_time;
+    }
+    
+    //Build a matrix to transform the text...
     if ((global.scribble_state_xscale == 1)
     &&  (global.scribble_state_yscale == 1)
     &&  (global.scribble_state_angle  == 0))
@@ -1000,12 +1010,10 @@ if (global.scribble_state_allow_draw)
                                                             global.scribble_state_xscale, global.scribble_state_yscale, 1));
     }
     
+    //...aaaand set the matrix
     var _old_matrix = matrix_get(matrix_world);
     _matrix = matrix_multiply(_matrix, _old_matrix);
     matrix_set(matrix_world, _matrix);
-    
-    var _animation_time = _scribble_array[__SCRIBBLE.ANIMATION_TIME] + SCRIBBLE_STEP_SIZE;
-    _scribble_array[@ __SCRIBBLE.ANIMATION_TIME] = _animation_time;
     
     var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
     var _count = ds_list_size(_vbuff_list);
@@ -1014,6 +1022,7 @@ if (global.scribble_state_allow_draw)
         var _typewriter_method = _scribble_array[__SCRIBBLE.AUTOTYPE_METHOD];
         if (_typewriter_method == SCRIBBLE_TYPEWRITER_NONE)
         {
+            //If the text element's internal autotype method hasn't been set then use the global draw set state value
                 _typewriter_method     = global.scribble_state_tw_method;
             var _typewriter_smoothness = global.scribble_state_tw_smoothness;
             var _typewriter_position   = global.scribble_state_tw_position;
@@ -1111,16 +1120,19 @@ if (global.scribble_state_allow_draw)
             
             var _typewriter_t = clamp(_typewriter_position, 0, _typewriter_count + _typewriter_smoothness);
             
-            //Advance the autotype position
-            _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION] = clamp(_typewriter_position + _scribble_array[__SCRIBBLE.AUTOTYPE_SPEED]*SCRIBBLE_STEP_SIZE, 0, _typewriter_count);
+            //If it's been around-about a frame since we called this scripts...
+            if (_increment_timers)
+            {
+                //...then advance the autotype position
+                _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION] = clamp(_typewriter_position + _typewriter_speed*SCRIBBLE_STEP_SIZE, 0, _typewriter_count);
+            }
         }
         
         //Use a negative typewriter method to communicate a fade-out state to the shader
         //It's a bit hacky but it reduces the uniform count for the shader
         if (!_typewriter_fade_in) _typewriter_method = -_typewriter_method;
         
-        
-        
+        //Set the shader and its uniforms
         shader_set(shScribble);
         shader_set_uniform_f(global.__scribble_uniform_time         , _animation_time);
         
@@ -1135,6 +1147,7 @@ if (global.scribble_state_allow_draw)
         
         shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
         
+        //Now iterate over the text element's vertex buffers and submit them
         var _i = 0;
         repeat(_count)
         {
@@ -1146,10 +1159,16 @@ if (global.scribble_state_allow_draw)
         shader_reset();
     }
     
+    //Make sure we reset the world matrix
     matrix_set(matrix_world, _old_matrix);
     
     #endregion
 }
+
+
+
+//Update when this text element was last drawn
+_scribble_array[@ __SCRIBBLE.TIME] = current_time;
 
 
 

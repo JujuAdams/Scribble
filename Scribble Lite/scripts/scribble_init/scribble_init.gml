@@ -185,11 +185,12 @@ enum __SCRIBBLE
     __SIZE               //33
 }
 
-#macro __SCRIBBLE_ON_DIRECTX       ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
-#macro __SCRIBBLE_ON_OPENGL        !__SCRIBBLE_ON_DIRECTX
-#macro __SCRIBBLE_ON_MOBILE        ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
-#macro __SCRIBBLE_GLYPH_BYTE_SIZE  (6*__SCRIBBLE_VERTEX.__SIZE)
-#macro __SCRIBBLE_EXPECTED_GLYPHS  100
+#macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
+#macro __SCRIBBLE_ON_OPENGL            !__SCRIBBLE_ON_DIRECTX
+#macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
+#macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
+#macro __SCRIBBLE_EXPECTED_GLYPHS      100
+#macro __SCRIBBLE_EXPECTED_FRAME_TIME  (0.95*game_get_speed(gamespeed_microseconds)/1000) //Uses to prevent the autotype from advancing if a draw call is made multiple times a frame to the same text element
 
 ///__SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shScribble
 #macro __SCRIBBLE_MAX_DATA_FIELDS  7
