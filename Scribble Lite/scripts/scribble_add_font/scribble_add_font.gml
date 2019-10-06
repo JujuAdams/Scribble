@@ -77,8 +77,8 @@ var _texture     = font_get_texture(_asset);
 var _texture_uvs = font_get_uvs(_asset);
 var _texture_tw  = texture_get_texel_width(_texture);
 var _texture_th  = texture_get_texel_height(_texture);
-var _texture_w   = texture_get_width(_texture);
-var _texture_h   = texture_get_height(_texture);
+var _texture_w   = (_texture_uvs[2] - _texture_uvs[0])/_texture_tw; //texture_get_width(_texture);
+var _texture_h   = (_texture_uvs[3] - _texture_uvs[1])/_texture_th; //texture_get_height(_texture);
 _data[@ __SCRIBBLE_FONT.TEXTURE] = _texture;
 
 if (SCRIBBLE_VERBOSE)
