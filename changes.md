@@ -33,7 +33,7 @@ scribble_draw_set_wrap(430, -1);
 //Add this text to the "dialogue" cache group, but don't draw it right now, and freeze the vertex buffers
 scribble_draw_set_cache_group("dialogue", false, true); 
 
-//Pre-cache
+//Pre-cache dialogue text
 element_hello       = scribble_draw(0, 0, dialogue_hello      );
 element_how_are_you = scribble_draw(0, 0, dialogue_how_are_you);
 element_goodbye     = scribble_draw(0, 0, dialogue_goodbye    );
