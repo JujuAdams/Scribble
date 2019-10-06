@@ -11,6 +11,16 @@
 
 var _scribble_array = argument0;
 
+//Check if this array is a relevant text element
+if (!is_array(_scribble_array)
+|| (array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
+|| (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
+|| _scribble_array[__SCRIBBLE.FREED])
+{
+    show_debug_message("Scribble: Array passed to scribble_autotype_get() is not a valid Scribble text element.");
+    exit;
+}
+
 //Return an error code if the method is NONE
 var _typewriter_method = _scribble_array[__SCRIBBLE.AUTOTYPE_METHOD];
 if (_typewriter_method == SCRIBBLE_TYPEWRITER_NONE) return -1;
