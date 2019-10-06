@@ -10,6 +10,7 @@
     "option_mac_app_id": "com.company.game",
     "option_mac_build_app_store": false,
     "option_mac_copyright": "(c) 2018 CompanyName",
+    "option_mac_disable_sandbox": false,
     "option_mac_display_cursor": true,
     "option_mac_display_name": "Made in GameMaker Studio 2",
     "option_mac_enable_retina": false,
