@@ -1,10 +1,10 @@
 scribble_draw_set_box_align(fa_center, fa_middle);
 
 //Draw our manually created Scribble data
-scribble_draw(x, y, scribble);
+scribble_draw(x, y, element);
 
 //Find the size and position of the bounding box (plus a bit) and draw it
-var _box = scribble_get_bbox(scribble,   x, y,   5, 5,   5, 5);
+var _box = scribble_get_bbox(element,   x, y,   5, 5,   5, 5);
 
 scribble_draw_reset();
 

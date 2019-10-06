@@ -13,7 +13,7 @@
         "0b7de2e4-423b-4049-ae3c-cefbec9a47a6"
     ],
     "filterType": "GMScript",
-    "folderName": "Draw Options",
+    "folderName": "Drawing Options",
     "isDefaultView": false,
     "localisedFolderName": ""
 }

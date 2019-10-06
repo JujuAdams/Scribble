@@ -71,6 +71,14 @@
             }
         },
         {
+            "Key": "16333f16-885e-4b0b-98e8-9726a0f9c0b0",
+            "Value": {
+                "id": "81a8eb01-5d70-40a0-9a17-20b2193afe01",
+                "resourcePath": "scripts\\example_event_sound\\example_event_sound.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "1cadf0e8-8394-480c-8ce1-0cce13ec62dc",
             "Value": {
                 "id": "bb522334-ff54-458e-ae82-93d8210f76ba",
@@ -744,7 +752,8 @@
         "c1f9a882-5c95-4baa-9aa2-288643547505",
         "853cc3dc-bb29-429c-b828-a68514d4f06e",
         "00322d5b-d6eb-4d4e-b389-bb26da697b1d",
-        "7f249531-321e-43d7-92bc-258842287e9d"
+        "7f249531-321e-43d7-92bc-258842287e9d",
+        "16333f16-885e-4b0b-98e8-9726a0f9c0b0"
     ],
     "tutorial": ""
 }
