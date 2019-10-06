@@ -1,4 +1,4 @@
-/// Sets the relative position of the textbox for a Scribble data structure
+/// Gets the position of the bounding box for a text element.
 /// 
 /// 
 /// Returns: an 8-element array containing the positions of each corner of the text element's box (use the SCRIBBLE_BOX enum to get each coordinate pair).

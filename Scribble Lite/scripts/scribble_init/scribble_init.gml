@@ -176,11 +176,13 @@ enum __SCRIBBLE
     AUTOTYPE_SMOOTHNESS, //26
     
     __SECTION5,          //27
-    EVENT_CHAR_ARRAY,    //28
-    EVENT_NAME_ARRAY,    //29
-    EVENT_DATA_ARRAY,    //30
+    EVENT_PREVIOUS,      //28
+    EVENT_CHAR_PREVIOUS, //29
+    EVENT_CHAR_ARRAY,    //30
+    EVENT_NAME_ARRAY,    //31
+    EVENT_DATA_ARRAY,    //32
     
-    __SIZE               //31
+    __SIZE               //33
 }
 
 #macro __SCRIBBLE_ON_DIRECTX       ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))

@@ -3,7 +3,7 @@ scribble_draw_set_typewriter(true, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 3);
 scribble_draw_set_box_align(fa_center, fa_middle);
 var _scribble = scribble_draw(x, y, demo_string);
 
-var _box = scribble_get_box(_scribble,   x, y,   0, 0,   0, 0);
+var _box = scribble_get_bbox(_scribble,   x, y,   0, 0,   0, 0);
 draw_rectangle(_box[SCRIBBLE_BOX.TL_X], _box[SCRIBBLE_BOX.TL_Y],
                _box[SCRIBBLE_BOX.BR_X], _box[SCRIBBLE_BOX.BR_Y], true);
 scribble_draw_reset();

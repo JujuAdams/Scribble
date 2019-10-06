@@ -149,6 +149,8 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS] = 0;
     
         _scribble_array[@ __SCRIBBLE.__SECTION5         ] = "-- Events --";
+        _scribble_array[@ __SCRIBBLE.EVENT_PREVIOUS     ] = -1;
+        _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = -1;
         _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY   ] = _events_char_array; //Stores each event's triggering cha
         _scribble_array[@ __SCRIBBLE.EVENT_NAME_ARRAY   ] = _events_name_array; //Stores each event's name
         _scribble_array[@ __SCRIBBLE.EVENT_DATA_ARRAY   ] = _events_data_array; //Stores each event's parameters
@@ -347,7 +349,7 @@ if (!is_array(_draw_string))
                                 
                                 var _data = array_create(_command_tag_parameters-1);
                                 var _j = 1;
-                                repeat(_command_tag_parameters)
+                                repeat(_command_tag_parameters-1)
                                 {
                                     _data[@ _j-1] = _parameters_list[| _j];
                                     ++_j;
@@ -1041,7 +1043,7 @@ if (global.scribble_state_allow_draw)
             var _typewriter_t = clamp(_typewriter_position, 0, _typewriter_count + _typewriter_smoothness);
             
             //Advance the autotype position
-            _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION] = clamp(_typewriter_position + _scribble_array[__SCRIBBLE.AUTOTYPE_SPEED], 0, _typewriter_count);
+            _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION] = clamp(_typewriter_position + _scribble_array[__SCRIBBLE.AUTOTYPE_SPEED]*SCRIBBLE_STEP_SIZE, 0, _typewriter_count);
         }
         
         //Use a negative typewriter method to communicate a fade-out state to the shader
