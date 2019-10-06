@@ -1,8 +1,8 @@
-<h1 align="center">Scribble 5.0.0</h1>
+<h1 align="center">Scribble 5.x.x</h1>
 
 ### @jujuadams
 
-Vertex buffer-based text engine. Faster and more comprehensive than GameMaker native rendering. Shader-based processing allows for efficient and flexible dynamic effects without lots of draw_text() calls.
+Vertex buffer-based text engine. Faster and more comprehensive than GameMaker native rendering. Shader-based processing allows for efficient and flexible dynamic effects without lots of expensive CPU-side draw_text() calls.
 
 With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, and Rob van Saaze for testing.
 
@@ -20,7 +20,7 @@ Scribble is made from 14 mandatory scripts and a shader. There are 10 optional s
 
 Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
 
-1) Add a typical GameMaker font resource through the IDE
+1) Add a normal GameMaker font resource through the IDE
 2) Add the font's .yy file as an Included File (found in the font's folder in the project directory)
 3) Add some code that instructs Scribble to use the font.
 
@@ -30,7 +30,7 @@ Scribble needs to access information that GameMaker generates. All this informat
 
 ***Please note** that if you change any font properties then the associated .yy file in Included Files will need to be updated too.*
 
-Finally, we need to add some code that tells Scribble how to initialise the font. This is done through with two functions: `scribble_init()` and `scribble_add_font()`. All font definitions must be executed after `scribble_init()`.
+Finally, we need to add some code that tells Scribble how to initialise the font. This is done through with two functions: `scribble_init()` and `scribble_add_font()`. Call `scribble_init()` first, and then add fonts with `scribble_add_font()`.
 
 ***Please note** that Scribble can only be initialised once which means all Scribble fonts should be defined at the same time.*
 
@@ -49,15 +49,18 @@ scribble_add_font("fnt_dialogue");`
 scribble_add_font("fnt_title");`
 ```
 
+If you don't want to type out all the font names one by one, you can set `scribble_init()` to automatically scan the designated font directory and load fonts for you.
+
 &nbsp;
 
 **How do I use spritefonts?**
 
-Spritefonts work similarly to standard fonts and they are functionally interchangeable when drawing text. They do, however, have some key differences during setup:
+Spritefonts work similarly to standard fonts and they are interchangeable when drawing text. They do, however, have some key differences during setup:
 
 1) Spritefonts use a sprite asset rather than a font asset
-2) Sprite fonts do not require a .yy file to be added as an included file
-3) Use `scribble_add_spritefont()` instead of `scribble_add_font()`
+2) Spritefonts do not require a .yy file to be added as an included file
+3) Spritefonts will not be found using the autoscan feature of `scribble_init()` and must be added manually in code
+4) Use `scribble_add_spritefont()` instead of `scribble_add_font()`
 
 ***Please note** that a sprite used for a spritefont must have its collision type set to "Precise Per Frame"*
 
