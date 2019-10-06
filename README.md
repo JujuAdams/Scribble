@@ -1,8 +1,10 @@
-<h1 align="center">Scribble 5.x.x</h1>
+<h1 align="center">Scribble 5.0.0</h1>
 
 ### @jujuadams
 
 Vertex buffer-based text engine. Faster and more comprehensive than GameMaker native rendering. Shader-based processing allows for efficient and flexible dynamic effects without lots of expensive CPU-side draw_text() calls.
+
+[Find out what's changed since version 4.x.x](https://github.com/JujuAdams/scribble/blob/dev/changes.md)
 
 With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, and Rob van Saaze for testing.
 
