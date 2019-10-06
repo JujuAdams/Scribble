@@ -186,7 +186,7 @@
             "Key": "5975ff47-c888-4c0f-b4ce-34e392e3532a",
             "Value": {
                 "id": "fd4bd7d4-c97d-49c2-883f-eff5c146bc24",
-                "resourcePath": "objects\\obj_example_manual__\\obj_example_manual__.yy",
+                "resourcePath": "objects\\obj_example_precache__\\obj_example_precache__.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -266,7 +266,7 @@
             "Key": "70d306e8-47c9-45bd-95c7-4f4fafd7f3d1",
             "Value": {
                 "id": "09405ba8-50e1-466c-b6fb-68c27255aad2",
-                "resourcePath": "objects\\obj_example_manual\\obj_example_manual.yy",
+                "resourcePath": "objects\\obj_example_precache\\obj_example_precache.yy",
                 "resourceType": "GMObject"
             }
         },
