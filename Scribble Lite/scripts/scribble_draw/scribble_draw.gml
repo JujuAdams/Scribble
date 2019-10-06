@@ -892,8 +892,8 @@ if (!is_array(_draw_string))
             //Create vertex buffer
             var _vertex_buffer = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _buffer_tell / __SCRIBBLE_VERTEX.__SIZE);
             if (global.scribble_state_freeze) vertex_freeze(_vertex_buffer);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = _vertex_buffer;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = undefined;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = _vertex_buffer;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER       ] = undefined;
             buffer_delete(_buffer);
     
             //Wipe WORD_START_TELL

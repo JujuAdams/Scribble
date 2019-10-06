@@ -6,8 +6,6 @@
 #macro SCRIBBLE_COLOURISE_SPRITES  true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
 #macro SCRIBBLE_VERBOSE            true  //Enables verbose console output to aid with debugging.
 
-draw_get_alpha()
-
 #region Default parameters
 
 //Starting format
