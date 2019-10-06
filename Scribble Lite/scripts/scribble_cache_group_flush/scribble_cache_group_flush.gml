@@ -1,4 +1,4 @@
-/// Frees up memory used by Scribble, targetting either a cache group or a specific Scribble data structure.
+/// Frees up memory used by Scribble, targetting either a cache group or a specific text element.
 /// 
 /// This script is only meant to be called directly by advanced users. Please read the documentation carefully!
 /// 
@@ -14,10 +14,10 @@
 /// to manage memory more easily (e.g. one cache group for dialogue, another for an inventory screen). Setting SCRIBBLE_CACHE_TIMEOUT to 0
 /// halts all time-based memory management; instead, you'll need to manually call scribble_flush(), targetting the relevant cache group(s).
 /// 
-/// If you're manually creating Scribble data structures by calling scribble_create() directly, you can choose to opt out of using the cache.
-/// By setting the "cacheGroup" argument to <undefined>, Scribble will skip adding the data to the cache. However, this means that the data
-/// you create *will not be automatically destroyed*. To free memory you will have to call scribble_flush() manually, using the Scribble text
-/// array as the argument.
+/// If you're manually creating text element by calling scribble_create() directly, you can choose to opt out of using the cache.  By setting
+/// the "cacheGroup" argument to <undefined>, Scribble will skip adding the data to the cache. However, this means that the data you create
+/// *will not be automatically destroyed*. To free memory you will have to call scribble_flush() manually, using the Scribble text  array as
+/// the argument.
 /// 
 /// To track how much Scribble data exists at any one time, call ds_map_size(global.scribble_alive).
 

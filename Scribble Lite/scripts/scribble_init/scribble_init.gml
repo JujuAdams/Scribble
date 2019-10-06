@@ -10,7 +10,7 @@
 /// 
 /// This script achieves the following things:
 /// 1) Define the default font directory to pull font .yy files from
-/// 2) Create global data structures to store data and state
+/// 2) Create global text elements to store data and state
 /// 3) Define custom colours analogues for GM's native colour constants
 /// 4) Define flag names for default effects - wave, shake, rainbow
 /// 5) Creates a vertex format
@@ -264,7 +264,7 @@ global.__scribble_colours           = ds_map_create();  //Stores colour definiti
 global.__scribble_flags             = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_flags_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_autotype_events   = ds_map_create();
-global.scribble_alive               = ds_map_create();  //ds_map of all alive Scribble data structures
+global.scribble_alive               = ds_map_create();  //ds_map of all alive text elements
 global.__scribble_global_count      = 0;
 global.__scribble_default_font      = _default_font;
 global.__scribble_global_cache_map  = ds_map_create();

@@ -44,12 +44,12 @@ if (!is_array(_draw_string))
     var _cache_string = string(_draw_string) + ":" + string(global.scribble_state_line_min_height) + ":" + string(global.scribble_state_max_width);
     if (ds_map_exists(global.__scribble_global_cache_map, _cache_string))
     {
-        //Grab the Scribble data structure, and update the TIME property
+        //Grab the text element from the cache
         var _scribble_array = global.__scribble_global_cache_map[? _cache_string];
     }
     else
     {
-        //Cache a new data structure if we don't have a relevant one for this string
+        //Cache a new text element if we don't have a relevant one for this string
         var _timer_total = get_timer();
         
         
@@ -105,9 +105,9 @@ if (!is_array(_draw_string))
         
         
         
-        #region Create the data structure
+        #region Create the text element (an array)
     
-        var _scribble_array        = array_create(__SCRIBBLE.__SIZE); //The main data structure
+        var _scribble_array        = array_create(__SCRIBBLE.__SIZE); //The text element array
         var _line_list             = ds_list_create(); //Stores each line of text
         var _vertex_buffer_list    = ds_list_create(); //Stores all the vertex buffers needed to render the text and sprites
         var _events_char_array     = array_create(0);  //Stores each event's triggering character
@@ -158,14 +158,14 @@ if (!is_array(_draw_string))
         
         
         
-        #region Register the data structure in a cache group
+        #region Register the text element in a cache group
         
         global.__scribble_global_count++;
         global.scribble_alive[? global.__scribble_global_count] = _scribble_array;
         
         if (__SCRIBBLE_DEBUG) show_debug_message(global.scribble_state_allow_draw? ("Scribble: Caching \"" + _cache_string + "\"") : ("Scribble: Pre-caching \"" + _cache_string + "\""));
         
-        //Add this Scribble data structure to the global cache lookup
+        //Add this text element to the global cache lookup
         if (global.scribble_state_cache_group == SCRIBBLE_DEFAULT_CACHE_GROUP) global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
         
         //Find this cache group's list
@@ -954,12 +954,12 @@ else
     if ((array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
      || (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
     {
-        show_error("Scribble:\nArray passed to scribble_draw() is not a valid Scribble data structure.\n ", false);
+        show_error("Scribble:\nArray passed to scribble_draw() is not a valid Scribble text element.\n ", false);
         return undefined;
     }
     else if (_scribble_array[__SCRIBBLE.FREED])
     {
-        //This Scribble data structure has had its memory freed already, ignore it
+        //This text element has had its memory freed already, ignore it
         return undefined;
     }
 }
@@ -968,7 +968,7 @@ else
 
 if (global.scribble_state_allow_draw)
 {
-    #region Draw this Scribble data structure
+    #region Draw this text element
     
     //Figure out the left/top offset
     switch(global.scribble_state_box_halign)
@@ -1179,7 +1179,7 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
     var _size = ds_list_size(global.__scribble_global_cache_list);
     if (_size > 0)
     {
-        //Scan through the cache to see if any scribble data structures have elapsed
+        //Scan through the cache to see if any text elements have elapsed
         global.__scribble_cache_test_index = (global.__scribble_cache_test_index + 1) mod _size;
         var _cache_string = global.__scribble_global_cache_list[| global.__scribble_cache_test_index];
         var _scribble_array = global.__scribble_global_cache_map[? _cache_string];
