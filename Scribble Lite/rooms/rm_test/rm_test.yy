@@ -1,6 +1,6 @@
 
 {
-    "name": "rTest",
+    "name": "rm_test",
     "id": "94a2d6ab-abc6-4785-9bd3-09b66392e1e8",
     "creationCodeFile": "",
     "inheritCode": false,
