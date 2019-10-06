@@ -24,6 +24,6 @@ if ((global.scribble_state_tw_method != SCRIBBLE_TYPEWRITER_NONE)
 &&  (global.scribble_state_tw_method != SCRIBBLE_TYPEWRITER_PER_CHARACTER)
 &&  (global.scribble_state_tw_method != SCRIBBLE_TYPEWRITER_PER_LINE))
 {
-    show_error("Scribble:\nTypewriter method not recognised.\nPlease use SCRIBBLE_TYPEWRITER_NONE, SCRIBBLE_TYPEWRITER_PER_CHARACTER, or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false);
+    show_error("Scribble:\nMethod not recognised.\nPlease use SCRIBBLE_TYPEWRITER_NONE, SCRIBBLE_TYPEWRITER_PER_CHARACTER, or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false);
     global.scribble_state_tw_method = SCRIBBLE_TYPEWRITER_NONE;
 }
