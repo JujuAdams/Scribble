@@ -37,9 +37,9 @@ if (ds_map_exists(global.__scribble_colours, _name))
     exit;
 }
 
-if (ds_map_exists(global.__scribble_flags, _name))
+if (ds_map_exists(global.__scribble_effects, _name))
 {
-    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as a flag");
+    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as an effect");
     exit;
 }
 

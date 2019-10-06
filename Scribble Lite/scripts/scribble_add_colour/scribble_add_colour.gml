@@ -1,4 +1,4 @@
-/// Adds a custom colour for use as an in-line colour definition for scribble_create().
+/// Adds a custom colour for use as an in-line colour definition for scribble_draw().
 /// 
 /// 
 /// @param name                     String name of the colour
@@ -34,9 +34,9 @@ if (!_native)
     _colour = make_colour_rgb(colour_get_blue(_colour), colour_get_green(_colour), colour_get_red(_colour));
 }
 
-if ( ds_map_exists(global.__scribble_flags, _name) )
+if ( ds_map_exists(global.__scribble_effects, _name) )
 {
-    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as a flag" );
+    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as an effect" );
     exit;
 }
 

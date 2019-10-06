@@ -16,7 +16,7 @@ if (!is_array(_scribble_array)
 || (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
 || _scribble_array[__SCRIBBLE.FREED])
 {
-    show_debug_message("Scribble: Array passed to scribble_autotype_set() is not a valid Scribble text element.");
+    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Array passed to scribble_autotype_set() is not a valid Scribble text element.");
     exit;
 }
 

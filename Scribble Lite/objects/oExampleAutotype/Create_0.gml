@@ -23,4 +23,4 @@ var _demo_string  = "[rainbow]abcdef[] ABCDEF[testEvent]##";
     _demo_string += "[fTestA][fa_right]THE [fTestB][$FF4499][shake]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fTestB]DOG.[testEvent][testEvent] [testEvent]";
 
 element = scribble_draw(x - 150, y - 80, _demo_string);
-scribble_autotype_set(element, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.1, 0, true);
+scribble_autotype_set(element, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.5, 0, true);

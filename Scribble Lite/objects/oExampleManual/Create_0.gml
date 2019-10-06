@@ -23,7 +23,8 @@ var _demo_string  = "[rainbow]abcdef[] ABCDEF##";
     _demo_string += "[sSpriteFont]the quick brown fox [wave]jumps[/wave] over the lazy dog";
     _demo_string += "[fTestA][fa_right]THE [fTestB][$FF4499][shake]QUICK[fTestA] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fTestB]DOG.";
 
-//Set up the draw state. scribble_create() will inherit whatever draw state is currently being used
+//Set up the draw state
+//If you're pre-caching text elements, scribble_draw() will inherit whatever draw state is currently being used
 scribble_draw_set_typewriter(true, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 3);
 scribble_draw_set_box_align(fa_center, fa_middle);
 

@@ -1,5 +1,5 @@
-const int MAX_FLAGS = 4;
-//By default, the flags are:
+const int MAX_EFFECTS = 4;
+//By default, the effect indexes are:
 //0 = is an animated sprite
 //1 = wave
 //2 = shake
@@ -21,7 +21,7 @@ const int MAX_DATA_FIELDS = 7;
 
 
 attribute vec3 in_Position;
-attribute vec3 in_Normal; //Character / Line index / Flags
+attribute vec3 in_Normal; //Character / Line index / Effects bitpacked number
 attribute vec4 in_Colour;
 attribute vec2 in_TextureCoord;
 
@@ -43,12 +43,12 @@ uniform float u_aDataFields[MAX_DATA_FIELDS];
 // Functions
 // Scroll all the way down to see the main() function for the vertex shader
 
-//Bitwise unpacking of binary effect flags
-//The flag bits are stored in the Z-channel of the Normal attribute
-void unpackFlags(float flagValue, inout float array[MAX_FLAGS])
+//Bitwise unpacking of effect flags
+//The effect bits are stored in the Z-channel of the Normal attribute
+void unpackFlags(float flagValue, inout float array[MAX_EFFECTS])
 {
-    float check = pow(2.0, float(MAX_FLAGS)-1.0);
-    for(int i = MAX_FLAGS-1; i >= 0; i--)
+    float check = pow(2.0, float(MAX_EFFECTS)-1.0);
+    for(int i = MAX_EFFECTS-1; i >= 0; i--)
     {
         if (flagValue >= check)
         {
@@ -163,8 +163,8 @@ void main()
     float rainbowWeight  = u_aDataFields[5];
     float rainbowSpeed   = u_aDataFields[6];
     
-    //Unpack the flag value into an array, then into variables for readability
-    float flagArray[MAX_FLAGS]; unpackFlags(in_Normal.z, flagArray);
+    //Unpack the effect flag bits into an array, then into variables for readability
+    float flagArray[MAX_EFFECTS]; unpackFlags(in_Normal.z, flagArray);
     float spriteFlag  = flagArray[0];
     float waveFlag    = flagArray[1];
     float shakeFlag   = flagArray[2];
