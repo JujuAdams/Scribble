@@ -1,28 +1,28 @@
 {
-    "id": "b9c3b946-515e-4f7f-8f0e-687f9b63de18",
+    "id": "c89f20fb-624a-43b6-b592-2f386b80432b",
     "modelName": "GMObject",
     "mvc": "1.0",
-    "name": "obj_example_basic",
+    "name": "obj_example__no_comments",
     "eventList": [
         {
-            "id": "66d4556d-39f1-4d5d-9548-94855e11b184",
+            "id": "b0887f76-79c1-4e4a-a088-c39cb67855ac",
             "modelName": "GMEvent",
             "mvc": "1.0",
             "IsDnD": false,
             "collisionObjectId": "00000000-0000-0000-0000-000000000000",
             "enumb": 0,
             "eventtype": 8,
-            "m_owner": "b9c3b946-515e-4f7f-8f0e-687f9b63de18"
+            "m_owner": "c89f20fb-624a-43b6-b592-2f386b80432b"
         },
         {
-            "id": "f325c3d3-aacc-45e2-b41c-875718662d4e",
+            "id": "235f8b00-5b73-4868-aecd-89aeedf053ca",
             "modelName": "GMEvent",
             "mvc": "1.0",
             "IsDnD": false,
             "collisionObjectId": "00000000-0000-0000-0000-000000000000",
             "enumb": 0,
             "eventtype": 0,
-            "m_owner": "b9c3b946-515e-4f7f-8f0e-687f9b63de18"
+            "m_owner": "c89f20fb-624a-43b6-b592-2f386b80432b"
         }
     ],
     "maskSpriteId": "00000000-0000-0000-0000-000000000000",
