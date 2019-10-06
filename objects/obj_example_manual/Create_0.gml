@@ -32,7 +32,7 @@ scribble_draw_set_box_align(fa_center, fa_middle);
 
 //Now parse the string to make some Scribble data
 //We're using a cache group called "example cache group" to indicate we want to manage this memory ourselves
-scribble_draw_set_cache_group("example cache group", false, false);
+scribble_draw_set_cache_group("example cache group", false, true);
 element = scribble_draw(0, 0, _demo_string);
 scribble_autotype_set(element, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0.3, 0, true);
 
