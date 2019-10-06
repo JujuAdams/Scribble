@@ -6,9 +6,7 @@
 
 Vertex buffer-based text engine. Faster and more comprehensive than GameMaker native rendering. Shader-based processing allows for efficient and flexible dynamic effects without lots of expensive CPU-side draw_text() calls.
 
-[Find out what's changed since version 4.x.x](https://github.com/JujuAdams/scribble/blob/dev/changes.md)
-
-[A "lite" version is also available](https://github.com/JujuAdams/scribble/tree/lite)
+[Find out what's changed since version 4.x.x](https://github.com/JujuAdams/scribble/blob/dev/changes.md). [A "lite" version is also available](https://github.com/JujuAdams/scribble/tree/lite).
 
 With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, and Rob van Saaze for testing.
 
