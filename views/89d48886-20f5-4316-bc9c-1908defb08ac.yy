@@ -4,10 +4,10 @@
     "mvc": "1.1",
     "name": "89d48886-20f5-4316-bc9c-1908defb08ac",
     "children": [
-        "79bdef1e-caad-4a90-86ce-7360d93b86a8",
-        "47aa0985-548f-4cc2-811c-ba3eb16ebdd8",
-        "84f6b7ba-9a5a-4882-8ab1-0f577bbb590f",
-        "918cd2cf-ffdb-4136-96c7-12dcc93e1c71"
+        "8b719297-79d2-452e-a819-2bc38ead33df",
+        "dd1eb3eb-ccda-480f-8d25-1b232369a0ae",
+        "2e79c554-b901-490f-a57a-be4c4da6f693",
+        "690b2cf6-b7e8-4af4-8ec5-887589a01974"
     ],
     "filterType": "GMIncludedFile",
     "folderName": "Fonts",

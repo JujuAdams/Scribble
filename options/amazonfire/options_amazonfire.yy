@@ -17,7 +17,6 @@
     "option_amazonfire_interpolate_pixels": false,
     "option_amazonfire_lint": false,
     "option_amazonfire_minimum_sdk": "9",
-    "option_amazonfire_moga_support": false,
     "option_amazonfire_orient_landscape": true,
     "option_amazonfire_orient_landscape_flipped": true,
     "option_amazonfire_orient_portrait": true,
