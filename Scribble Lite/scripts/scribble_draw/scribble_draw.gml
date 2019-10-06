@@ -1025,21 +1025,18 @@ if (global.scribble_state_allow_draw)
         switch(_in_tw_method)
         {
             case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-                var _typewriter_count      = _scribble_array[__SCRIBBLE.CHARACTERS];
-                var _typewriter_smoothness = max(0, _in_tw_smoothness/_typewriter_count);
-                var _typewriter_t          = clamp(_in_tw_position/_typewriter_count, 0, 1 + _typewriter_smoothness);
+                var _typewriter_smoothness = max(0, _in_tw_smoothness);
+                var _typewriter_t          = clamp(_in_tw_position, 0, _scribble_array[__SCRIBBLE.CHARACTERS] + _typewriter_smoothness);
             break;
             
             case SCRIBBLE_TYPEWRITER_PER_LINE:
-                var _typewriter_count      = _scribble_array[__SCRIBBLE.LINES];
-                var _typewriter_smoothness = max(0, _in_tw_smoothness/_typewriter_count);
-                var _typewriter_t          = clamp(_in_tw_position/_typewriter_count, 0, 1 + _typewriter_smoothness);
+                var _typewriter_smoothness = max(0, _in_tw_smoothness);
+                var _typewriter_t          = clamp(_in_tw_position, 0, _scribble_array[__SCRIBBLE.LINES] + _typewriter_smoothness);
             break;
             
             default:
-                var _typewriter_count      = 1;
-                var _typewriter_t          = 1;
                 var _typewriter_smoothness = 0;
+                var _typewriter_t          = 1;
             break;
         }
         
@@ -1049,9 +1046,8 @@ if (global.scribble_state_allow_draw)
         shader_set_uniform_f(global.__scribble_uniform_time         , _animation_time);
         
         shader_set_uniform_f(global.__scribble_uniform_tw_method    , global.scribble_state_tw_fade_in? global.scribble_state_tw_method : -global.scribble_state_tw_method);
-        shader_set_uniform_f(global.__scribble_uniform_tw_t         , _typewriter_t);
         shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
-        shader_set_uniform_f(global.__scribble_uniform_tw_count     , _typewriter_count);
+        shader_set_uniform_f(global.__scribble_uniform_tw_t         , _typewriter_t);
         
         shader_set_uniform_f(global.__scribble_uniform_colour_blend , colour_get_red(  global.scribble_state_colour)/255,
                                                                       colour_get_green(global.scribble_state_colour)/255,

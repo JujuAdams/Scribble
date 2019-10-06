@@ -32,9 +32,8 @@ uniform vec4  u_vColourBlend;
 uniform float u_fTime;
 
 uniform float u_fTypewriterMethod;
-uniform float u_fTypewriterT;
 uniform float u_fTypewriterSmoothness;
-uniform float u_fTypewriterCount;
+uniform float u_fTypewriterT;
 
 uniform float u_aDataFields[MAX_DATA_FIELDS];
 
@@ -120,12 +119,13 @@ vec3 hsv2rgb(vec3 c)
     return c.z * mix(K.xxx, clamp(P - K.xxx, 0.0, 1.0), c.y);
 }
 
-//Colour cycling
+//Colour cycling for the rainbow effect
 vec4 rainbow(float weight, float speed, vec4 colour)
 {
     return vec4(mix(colour.rgb, hsv2rgb(vec3(in_Normal.x + speed*u_fTime, 1.0, 1.0)), weight), colour.a);
 }
 
+//Fade effect for typewriter etc.
 float fade(float time, float smoothness, float limit)
 {
     float multiplier = 1.0;
@@ -133,11 +133,11 @@ float fade(float time, float smoothness, float limit)
     if (smoothness > 0.0)
     {
         float adjustedTime = time*(1.0 + smoothness);
-        multiplier = clamp((adjustedTime - param)/smoothness, 0.0, 1.0);
+        multiplier = clamp((adjustedTime - limit)/smoothness, 0.0, 1.0);
     }
     else
     {
-        multiplier = 1.0 - step(time, param);
+        multiplier = 1.0 - step(time, limit);
     }
         
     if (u_fTypewriterMethod >= 0.0) multiplier = 1.0 - multiplier;
@@ -183,8 +183,9 @@ void main()
     //Only apply the fade if we're given a mathod
     if (u_fTypewriterMethod != 0.0)
     {
-        //Figure out
-        float limit = ((abs(u_fTypewriterMethod) == 1.0)? in_Normal.x : in_Normal.y)/u_fTypewriterCount;
+        //Choose our limit based on what method's being used
+        //Normal.X stores the character index, Normal.Y stores the line index
+        float limit = (abs(u_fTypewriterMethod) == 1.0)? in_Normal.x : in_Normal.y;
         v_vColour.a *= fade(u_fTypewriterT, u_fTypewriterSmoothness, limit);
     }
     

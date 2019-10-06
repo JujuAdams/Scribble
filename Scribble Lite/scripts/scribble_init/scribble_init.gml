@@ -316,9 +316,8 @@ global.__scribble_vertex_format = vertex_format_end(); //36 bytes per vertex, 10
 global.__scribble_uniform_time          = shader_get_uniform(shScribble, "u_fTime"                );
 global.__scribble_uniform_colour_blend  = shader_get_uniform(shScribble, "u_vColourBlend"         );
 global.__scribble_uniform_tw_method     = shader_get_uniform(shScribble, "u_fTypewriterMethod"    );
-global.__scribble_uniform_tw_t          = shader_get_uniform(shScribble, "u_fTypewriterT"         );
 global.__scribble_uniform_tw_smoothness = shader_get_uniform(shScribble, "u_fTypewriterSmoothness");
-global.__scribble_uniform_tw_count      = shader_get_uniform(shScribble, "u_fTypewriterCount"     );
+global.__scribble_uniform_tw_t          = shader_get_uniform(shScribble, "u_fTypewriterT"         );
 global.__scribble_uniform_data_fields   = shader_get_uniform(shScribble, "u_aDataFields"          );
 
 //Hex converter array
