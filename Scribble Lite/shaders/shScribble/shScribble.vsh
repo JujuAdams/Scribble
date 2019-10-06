@@ -140,7 +140,7 @@ float fade(float time, float smoothness, float limit)
         multiplier = 1.0 - step(time, limit);
     }
         
-    if (u_fTypewriterMethod >= 0.0) multiplier = 1.0 - multiplier;
+    if (u_fTypewriterMethod < 0.0) multiplier = 1.0 - multiplier;
     
     return multiplier;
 }

@@ -142,7 +142,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.VERTEX_BUFFER_LIST ] = _vertex_buffer_list;
     
         _scribble_array[@ __SCRIBBLE.__SECTION4         ] = "-- Autotype --";
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_DIRECTION ] = 0;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN   ] = -1;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED     ] = 0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION  ] = 0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD    ] = SCRIBBLE_TYPEWRITER_NONE;
@@ -1009,43 +1009,51 @@ if (global.scribble_state_allow_draw)
     var _count = ds_list_size(_vbuff_list);
     if (_count > 0)
     {
-        var _in_tw_method = _scribble_array[__SCRIBBLE.AUTOTYPE_METHOD];
-        if (_in_tw_method == SCRIBBLE_TYPEWRITER_NONE)
+        var _typewriter_method = _scribble_array[__SCRIBBLE.AUTOTYPE_METHOD];
+        if (_typewriter_method == SCRIBBLE_TYPEWRITER_NONE)
         {
-                _in_tw_method     = global.scribble_state_tw_method;
-            var _in_tw_position   = global.scribble_state_tw_position;
-            var _in_tw_smoothness = global.scribble_state_tw_smoothness;
+                _typewriter_method     = global.scribble_state_tw_method;
+            var _typewriter_smoothness = global.scribble_state_tw_smoothness;
+            var _typewriter_position   = global.scribble_state_tw_position;
+            var _typewriter_fade_in    = global.scribble_state_tw_fade_in;
         }
         else
         {
-            var _in_tw_position   = _scribble_array[__SCRIBBLE.AUTOTYPE_POSITION  ];
-            var _in_tw_smoothness = _scribble_array[__SCRIBBLE.AUTOTYPE_SMOOTHNESS];
+            var _typewriter_smoothness = _scribble_array[__SCRIBBLE.AUTOTYPE_SMOOTHNESS];
+            var _typewriter_position   = _scribble_array[__SCRIBBLE.AUTOTYPE_POSITION  ];
+            var _typewriter_fade_in    = _scribble_array[__SCRIBBLE.AUTOTYPE_FADE_IN   ];
         }
         
-        switch(_in_tw_method)
+        //Figure out the limit and smoothness values
+        if (_typewriter_method == SCRIBBLE_TYPEWRITER_NONE)
         {
-            case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
-                var _typewriter_smoothness = max(0, _in_tw_smoothness);
-                var _typewriter_t          = clamp(_in_tw_position, 0, _scribble_array[__SCRIBBLE.CHARACTERS] + _typewriter_smoothness);
-            break;
-            
-            case SCRIBBLE_TYPEWRITER_PER_LINE:
-                var _typewriter_smoothness = max(0, _in_tw_smoothness);
-                var _typewriter_t          = clamp(_in_tw_position, 0, _scribble_array[__SCRIBBLE.LINES] + _typewriter_smoothness);
-            break;
-            
-            default:
-                var _typewriter_smoothness = 0;
-                var _typewriter_t          = 1;
-            break;
+            var _typewriter_smoothness = 0;
+            var _typewriter_t          = 1;
         }
+        else
+        {
+            switch(_typewriter_method)
+            {
+                case SCRIBBLE_TYPEWRITER_PER_CHARACTER: var _typewriter_count = _scribble_array[__SCRIBBLE.CHARACTERS]; break;
+                case SCRIBBLE_TYPEWRITER_PER_LINE:      var _typewriter_count = _scribble_array[__SCRIBBLE.LINES     ]; break;
+            }
+            
+            var _typewriter_t = clamp(_typewriter_position, 0, _typewriter_count + _typewriter_smoothness);
+            
+            //Advance the autotype position
+            _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION] = clamp(_typewriter_position + _scribble_array[__SCRIBBLE.AUTOTYPE_SPEED], 0, _typewriter_count);
+        }
+        
+        //Use a negative typewriter method to communicate a fade-out state to the shader
+        //It's a bit hacky but it reduces the uniform count for the shader
+        if (!_typewriter_fade_in) _typewriter_method = -_typewriter_method;
         
         
         
         shader_set(shScribble);
         shader_set_uniform_f(global.__scribble_uniform_time         , _animation_time);
         
-        shader_set_uniform_f(global.__scribble_uniform_tw_method    , global.scribble_state_tw_fade_in? global.scribble_state_tw_method : -global.scribble_state_tw_method);
+        shader_set_uniform_f(global.__scribble_uniform_tw_method    , _typewriter_method);
         shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
         shader_set_uniform_f(global.__scribble_uniform_tw_t         , _typewriter_t);
         

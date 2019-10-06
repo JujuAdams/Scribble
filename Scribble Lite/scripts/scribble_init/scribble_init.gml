@@ -169,7 +169,7 @@ enum __SCRIBBLE
     VERTEX_BUFFER_LIST,  //20
     
     __SECTION4,          //21
-    AUTOTYPE_DIRECTION,  //22
+    AUTOTYPE_FADE_IN,    //22
     AUTOTYPE_SPEED,      //23
     AUTOTYPE_POSITION,   //24
     AUTOTYPE_METHOD,     //25
