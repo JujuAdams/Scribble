@@ -1,5 +1,4 @@
-/// Defines an effect name, allowing for behaviours to be set per-character when calling scribble_draw()
-/// 
+/// Defines an effect name, allowing for behaviours to be set in scribble_draw() and passed to a shader
 /// 
 /// @param name    Effect name, as a string
 /// @param index   Integer effect index, from 1 to SCRIBBLE_MAX_MAX_EFFECTS-1 inclusive
