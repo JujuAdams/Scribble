@@ -2,7 +2,7 @@
     "id": "ed7bf3dd-c437-4d69-a9e3-133bbf5000f5",
     "modelName": "GMFont",
     "mvc": "1.1",
-    "name": "fChineseTest",
+    "name": "fnt_chinese",
     "AntiAlias": 1,
     "TTFName": "",
     "ascenderOffset": 0,

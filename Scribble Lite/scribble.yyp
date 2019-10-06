@@ -71,18 +71,10 @@
             }
         },
         {
-            "Key": "199669e2-c336-4638-9e37-7aca552d8885",
-            "Value": {
-                "id": "841b6172-4d7d-4371-9093-456aa3ffacd5",
-                "resourcePath": "datafiles_yy\\green coin.png.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
             "Key": "1cadf0e8-8394-480c-8ce1-0cce13ec62dc",
             "Value": {
                 "id": "bb522334-ff54-458e-ae82-93d8210f76ba",
-                "resourcePath": "shaders\\shScribble\\shScribble.yy",
+                "resourcePath": "shaders\\shd_scribble\\shd_scribble.yy",
                 "resourceType": "GMShader"
             }
         },
@@ -98,7 +90,7 @@
             "Key": "28357be7-a526-40ce-81df-e99d6ab481e8",
             "Value": {
                 "id": "4b509518-0a25-444b-baef-7a0f18eced10",
-                "resourcePath": "fonts\\fTestC\\fTestC.yy",
+                "resourcePath": "fonts\\fnt_test_2\\fnt_test_2.yy",
                 "resourceType": "GMFont"
             }
         },
@@ -106,7 +98,7 @@
             "Key": "2e79c554-b901-490f-a57a-be4c4da6f693",
             "Value": {
                 "id": "5702490c-799e-4d02-b0cd-ff90d84ade35",
-                "resourcePath": "datafiles_yy\\Fonts\\fTestC.yy.yy",
+                "resourcePath": "datafiles_yy\\Fonts\\fnt_test_2.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -146,7 +138,7 @@
             "Key": "3dee5873-260c-4a48-90d8-0c51f65b6951",
             "Value": {
                 "id": "63127bdc-96de-49e7-8e55-36517dbc9aff",
-                "resourcePath": "sprites\\sSpriteFont\\sSpriteFont.yy",
+                "resourcePath": "sprites\\spr_sprite_font\\spr_sprite_font.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -202,7 +194,7 @@
             "Key": "5eaf24bb-b8b7-4ad1-9bd5-85bee32619bd",
             "Value": {
                 "id": "0b6de6c8-b860-4e7d-bc92-0086faffed30",
-                "resourcePath": "sounds\\sndCrank\\sndCrank.yy",
+                "resourcePath": "sounds\\snd_crank\\snd_crank.yy",
                 "resourceType": "GMSound"
             }
         },
@@ -394,7 +386,7 @@
             "Key": "8b719297-79d2-452e-a819-2bc38ead33df",
             "Value": {
                 "id": "134cb2e9-0909-4d71-bcca-93b17102dd6c",
-                "resourcePath": "datafiles_yy\\Fonts\\fTestA.yy.yy",
+                "resourcePath": "datafiles_yy\\Fonts\\fnt_test_0.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -458,7 +450,7 @@
             "Key": "9f02de9f-6de9-4db1-9411-e6ea08c02285",
             "Value": {
                 "id": "369e47e3-1852-4bbb-a1d4-3807b156925d",
-                "resourcePath": "sprites\\sCoin\\sCoin.yy",
+                "resourcePath": "sprites\\spr_coin\\spr_coin.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -482,7 +474,7 @@
             "Key": "a6e779ad-19c7-4834-9c11-dc71a106cd12",
             "Value": {
                 "id": "da6553cb-7da1-44bd-9487-96fce1bbc45e",
-                "resourcePath": "sounds\\sndSwitch\\sndSwitch.yy",
+                "resourcePath": "sounds\\snd_switch\\snd_switch.yy",
                 "resourceType": "GMSound"
             }
         },
@@ -578,7 +570,7 @@
             "Key": "c2d60cf9-ffb4-42bd-a0c7-c7cf77ca5452",
             "Value": {
                 "id": "56f40119-8e95-4e4d-8b63-97f5328b5535",
-                "resourcePath": "datafiles_yy\\Fonts\\CJK\\fChineseTest.yy.yy",
+                "resourcePath": "datafiles_yy\\Fonts\\CJK\\fnt_chinese.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -642,7 +634,7 @@
             "Key": "dd1eb3eb-ccda-480f-8d25-1b232369a0ae",
             "Value": {
                 "id": "c3de2246-e589-4090-a56b-3d1faef33d9b",
-                "resourcePath": "datafiles_yy\\Fonts\\fTestB.yy.yy",
+                "resourcePath": "datafiles_yy\\Fonts\\fnt_test_1.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -658,7 +650,7 @@
             "Key": "e346a946-97e3-4051-96c1-3b6c92346baf",
             "Value": {
                 "id": "a28346b5-8063-4be2-ba61-0588ab782fcc",
-                "resourcePath": "fonts\\fTestA\\fTestA.yy",
+                "resourcePath": "fonts\\fnt_test_0\\fnt_test_0.yy",
                 "resourceType": "GMFont"
             }
         },
@@ -682,7 +674,7 @@
             "Key": "e9480819-6da8-4390-8deb-cc0446f16851",
             "Value": {
                 "id": "0c003888-265a-487d-b610-0ef0feee2dd4",
-                "resourcePath": "fonts\\fTestB\\fTestB.yy",
+                "resourcePath": "fonts\\fnt_test_1\\fnt_test_1.yy",
                 "resourceType": "GMFont"
             }
         },
@@ -690,7 +682,7 @@
             "Key": "ed7bf3dd-c437-4d69-a9e3-133bbf5000f5",
             "Value": {
                 "id": "878bde36-1ef6-4b6a-b250-f2e513c33b20",
-                "resourcePath": "fonts\\fChineseTest\\fChineseTest.yy",
+                "resourcePath": "fonts\\fnt_chinese\\fnt_chinese.yy",
                 "resourceType": "GMFont"
             }
         },

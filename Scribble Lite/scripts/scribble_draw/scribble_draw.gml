@@ -1133,7 +1133,7 @@ if (global.scribble_state_allow_draw)
         if (!_typewriter_fade_in) _typewriter_method = -_typewriter_method;
         
         //Set the shader and its uniforms
-        shader_set(shScribble);
+        shader_set(shd_scribble);
         shader_set_uniform_f(global.__scribble_uniform_time         , _animation_time);
         
         shader_set_uniform_f(global.__scribble_uniform_tw_method    , _typewriter_method);

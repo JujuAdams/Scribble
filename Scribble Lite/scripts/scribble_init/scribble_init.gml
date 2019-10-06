@@ -14,7 +14,7 @@
 /// 3) Define custom colours analogues for GM's native colour constants
 /// 4) Define names for default effects - wave, shake, rainbow
 /// 5) Creates a vertex format
-/// 6) Cache uniform indexes for the shScribble shader
+/// 6) Cache uniform indexes for the shd_scribble shader
 /// 7) Build a lookup table for decoding hexcode colours in scribble_draw()
 /// 8) Automatically scans Included Files for fonts (if enabled)
 /// 
@@ -192,11 +192,11 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_EXPECTED_GLYPHS      100
 #macro __SCRIBBLE_EXPECTED_FRAME_TIME  (0.95*game_get_speed(gamespeed_microseconds)/1000) //Uses to prevent the autotype from advancing if a draw call is made multiple times a frame to the same text element
 
-///__SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shScribble
+///__SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shd_scribble
 #macro __SCRIBBLE_MAX_DATA_FIELDS  7
 
-//These are tied to values in shScribble
-//If you need to change these for some reason, you'll need to change shScribble too
+//These are tied to values in shd_scribble
+//If you need to change these for some reason, you'll need to change shd_scribble too
 #macro SCRIBBLE_TYPEWRITER_NONE           0  //No fade
 #macro SCRIBBLE_TYPEWRITER_PER_CHARACTER  1  //Fade each character individually
 #macro SCRIBBLE_TYPEWRITER_PER_LINE       2  //Fade each line of text as a group
@@ -253,7 +253,7 @@ if (!is_string(_default_font))
 }
 else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_default_font) != asset_sprite) && (_default_font != "")) //Check if the default font even exists!
 {
-    show_error("Scribble:\nTThe default font \"" + _default_font + "\" could not be found in the project.\n ", true);
+    show_error("Scribble:\nThe default font \"" + _default_font + "\" could not be found in the project.\n ", true);
     _default_font = "";
 }
 
@@ -316,12 +316,12 @@ vertex_format_add_texcoord();    // 8 bytes
 global.__scribble_vertex_format = vertex_format_end(); //36 bytes per vertex, 108 bytes per tri, 216 bytes per glyph
 
 //Cache uniform indexes
-global.__scribble_uniform_time          = shader_get_uniform(shScribble, "u_fTime"                );
-global.__scribble_uniform_colour_blend  = shader_get_uniform(shScribble, "u_vColourBlend"         );
-global.__scribble_uniform_tw_method     = shader_get_uniform(shScribble, "u_fTypewriterMethod"    );
-global.__scribble_uniform_tw_smoothness = shader_get_uniform(shScribble, "u_fTypewriterSmoothness");
-global.__scribble_uniform_tw_t          = shader_get_uniform(shScribble, "u_fTypewriterT"         );
-global.__scribble_uniform_data_fields   = shader_get_uniform(shScribble, "u_aDataFields"          );
+global.__scribble_uniform_time          = shader_get_uniform(shd_scribble, "u_fTime"                );
+global.__scribble_uniform_colour_blend  = shader_get_uniform(shd_scribble, "u_vColourBlend"         );
+global.__scribble_uniform_tw_method     = shader_get_uniform(shd_scribble, "u_fTypewriterMethod"    );
+global.__scribble_uniform_tw_smoothness = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness");
+global.__scribble_uniform_tw_t          = shader_get_uniform(shd_scribble, "u_fTypewriterT"         );
+global.__scribble_uniform_data_fields   = shader_get_uniform(shd_scribble, "u_aDataFields"          );
 
 //Hex converter array
 var _min = ord("0");

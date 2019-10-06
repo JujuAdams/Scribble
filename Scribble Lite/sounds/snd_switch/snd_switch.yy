@@ -1,8 +1,8 @@
 {
-    "id": "5eaf24bb-b8b7-4ad1-9bd5-85bee32619bd",
+    "id": "a6e779ad-19c7-4834-9c11-dc71a106cd12",
     "modelName": "GMSound",
     "mvc": "1.0",
-    "name": "sndCrank",
+    "name": "snd_switch",
     "audioGroupGuid": "7b2c4976-1e09-44e5-8256-c527145e03bb",
     "bitDepth": 1,
     "bitRate": 128,
