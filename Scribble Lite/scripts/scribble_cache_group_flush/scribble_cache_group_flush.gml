@@ -9,6 +9,7 @@
 /// Scribble uses cache groups to help manage memory. Scribble text that has been added to a cache group will be automatically destroyed if...
 /// 1) scribble_flush() has been called targetting the text's cache group
 /// 2) or the text has not been drawn for a period of time (SCRIBBLE_CACHE_TIMEOUT milliseconds).
+/// 
 /// By default, all Scribble data is put into the same cache group: SCRIBBLE_DEFAULT_CACHE_GROUP. You can specify a different cache group
 /// to manage memory more easily (e.g. one cache group for dialogue, another for an inventory screen). Setting SCRIBBLE_CACHE_TIMEOUT to 0
 /// halts all time-based memory management; instead, you'll need to manually call scribble_flush(), targetting the relevant cache group(s).

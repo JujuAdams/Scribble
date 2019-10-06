@@ -2,7 +2,7 @@
     "id": "66869739-b0df-4075-8fc0-6ef5b09d0d07",
     "modelName": "GMObject",
     "mvc": "1.0",
-    "name": "oExampleTypewriter",
+    "name": "oExampleAutotype",
     "eventList": [
         {
             "id": "2ab8c031-90ad-4ba0-9048-e3faa8885068",
