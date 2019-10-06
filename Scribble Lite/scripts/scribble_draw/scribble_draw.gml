@@ -1064,40 +1064,42 @@ if (global.scribble_state_allow_draw)
                 
                     //Always start scanning at the next event
                     ++_event;
-                    if (_event >= _event_count) exit;
-                    var _event_char = _events_char_array[_event];
-                
-                    //Now iterate from our current character position to the next character position
-                    var _break = false;
-                    var _scan = _scan_a;
-                    repeat(_scan_b - _scan_a)
+                    if (_event < _event_count)
                     {
-                        while ((_event < _event_count) && (_event_char == _scan))
+                        var _event_char = _events_char_array[_event];
+                        
+                        //Now iterate from our current character position to the next character position
+                        var _break = false;
+                        var _scan = _scan_a;
+                        repeat(_scan_b - _scan_a)
                         {
-                            var _script = global.__scribble_autotype_events[? _events_name_array[_event]];
-                            if (_script != undefined)
+                            while ((_event < _event_count) && (_event_char == _scan))
                             {
-                                _scribble_array[@ __SCRIBBLE.EVENT_PREVIOUS] = _event;
-                                script_execute(_script, _scribble_array, _events_data_array[_event], _scan);
+                                var _script = global.__scribble_autotype_events[? _events_name_array[_event]];
+                                if (_script != undefined)
+                                {
+                                    _scribble_array[@ __SCRIBBLE.EVENT_PREVIOUS] = _event;
+                                    script_execute(_script, _scribble_array, _events_data_array[_event], _scan);
+                                }
+                                
+                                if (_scribble_array[__SCRIBBLE.AUTOTYPE_SPEED] <= 0.0)
+                                {
+                                    _break = true;
+                                    break;
+                                }
+                                
+                                ++_event;
+                                if (_event < _event_count) _event_char = _events_char_array[_event];
                             }
-                        
-                            if (_scribble_array[__SCRIBBLE.AUTOTYPE_SPEED] <= 0.0)
-                            {
-                                _break = true;
-                                break;
-                            }
-                        
-                            ++_event;
-                            if (_event < _event_count) _event_char = _events_char_array[_event];
+                            
+                            if (_break) break;
+                            ++_scan;
                         }
-                    
-                        if (_break) break;
-                        ++_scan;
+                        
+                        if (_break && (_typewriter_method == SCRIBBLE_TYPEWRITER_PER_CHARACTER)) _typewriter_position = _scan + 1;
+                        
+                        _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = _scan;
                     }
-                
-                    if (_break && (_typewriter_method == SCRIBBLE_TYPEWRITER_PER_CHARACTER)) _typewriter_position = _scan + 1;
-                
-                    _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = _scan;
                 }
             }
             
