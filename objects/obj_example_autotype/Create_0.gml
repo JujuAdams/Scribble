@@ -16,7 +16,7 @@ scribble_autotype_add_event("test event", example_event);
 
 
 //Define a demo string for use in the Draw event
-var _demo_string  = "[rainbow]abcdef[] ABCDEF[testEvent]##";
+var _demo_string  = "[rainbow]abcdef[] ABCDEF[test event]##";
     _demo_string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][spr_coin,0][spr_coin,1][spr_coin,2][spr_coin,3][shake][rainbow]!?[]\n";
     _demo_string += "[fa_centre][spr_coin][spr_coin][spr_coin][spr_coin][test event]\n";
     _demo_string += "[spr_sprite_font]the quick brown fox [wave]jumps[/wave] over the lazy dog";
