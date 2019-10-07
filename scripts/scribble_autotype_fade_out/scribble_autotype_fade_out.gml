@@ -26,10 +26,8 @@ if ((_method != SCRIBBLE_TYPEWRITER_NONE)
     _method = SCRIBBLE_TYPEWRITER_NONE;
 }
 
-//If we're changing our fade in state, set our position to 0
-if (_scribble_array[__SCRIBBLE.AUTOTYPE_FADE_IN]) _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION] = 0;
-
 //Update the remaining autotype state values
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION  ] = 0;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD    ] = _method;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED     ] = _speed;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS] = _smoothness;
