@@ -1,6 +1,6 @@
 
 {
-    "name": "rm_example_manual",
+    "name": "rm_example_precache",
     "id": "fab0fef8-eab5-4e5b-bccd-f5ed6f43db50",
     "creationCodeFile": "",
     "inheritCode": false,
