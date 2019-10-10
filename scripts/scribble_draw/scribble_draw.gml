@@ -571,7 +571,8 @@ if (!is_array(_draw_string))
                                                 }
                                                 else
                                                 {
-                                                    if ((string_length(_command_name) <= 7) && (string_copy(_command_name, 1, 1) == "$"))
+                                                    var _first_char = string_copy(_command_name, 1, 1);
+                                                    if ((string_length(_command_name) <= 7) && ((_first_char == "$") || (_first_char == "#")))
                                                     {
                                                         #region Hex colour decoding
                                                         
