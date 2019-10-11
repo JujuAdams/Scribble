@@ -1041,7 +1041,7 @@ if (global.scribble_state_allow_draw)
             var _typewriter_smoothness = _scribble_array[__SCRIBBLE.AUTOTYPE_SMOOTHNESS];
             var _typewriter_position   = _scribble_array[__SCRIBBLE.AUTOTYPE_POSITION  ];
             var _typewriter_fade_in    = _scribble_array[__SCRIBBLE.AUTOTYPE_FADE_IN   ];
-            var _typewriter_speed      = _scribble_array[__SCRIBBLE.AUTOTYPE_SPEED     ];
+            var _typewriter_speed      = _scribble_array[__SCRIBBLE.AUTOTYPE_SPEED     ]*SCRIBBLE_STEP_SIZE;
             
             #region Scan for autotype events
         
@@ -1092,6 +1092,8 @@ if (global.scribble_state_allow_draw)
                                 
                                 if (_scribble_array[__SCRIBBLE.AUTOTYPE_SPEED] <= 0.0)
                                 {
+                                    _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED] = 0;
+                                    _typewriter_speed = 0;
                                     _break = true;
                                     break;
                                 }
@@ -1104,7 +1106,7 @@ if (global.scribble_state_allow_draw)
                             ++_scan;
                         }
                         
-                        if (_break && (_typewriter_method == SCRIBBLE_TYPEWRITER_PER_CHARACTER)) _typewriter_position = _scan + 1;
+                        if (_break && (_typewriter_method == SCRIBBLE_TYPEWRITER_PER_CHARACTER)) _typewriter_position = _scan;
                         
                         _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = _scan;
                     }
@@ -1134,7 +1136,7 @@ if (global.scribble_state_allow_draw)
             if (_increment_timers)
             {
                 //...then advance the autotype position
-                _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION] = clamp(_typewriter_position + _typewriter_speed*SCRIBBLE_STEP_SIZE, 0, _typewriter_count);
+                _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION] = clamp(_typewriter_position + _typewriter_speed, 0, _typewriter_count);
             }
         }
         
