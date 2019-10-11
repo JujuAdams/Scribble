@@ -1,5 +1,5 @@
 //text = scribble_create(_string, -1, 450, "c_xanadu", "fnt_test_1", fa_center);
-scribble_draw_set_fade(true, 0.3, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 3);
+scribble_draw_set_fade(true, 1, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 0);
 scribble_draw_set_box_align(fa_center, fa_middle);
 var _scribble = scribble_draw(x, y, demo_string);
 

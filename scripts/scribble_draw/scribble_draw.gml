@@ -1034,6 +1034,7 @@ if (global.scribble_state_allow_draw)
             var _typewriter_smoothness = global.scribble_state_tw_smoothness;
             var _typewriter_position   = global.scribble_state_tw_position;
             var _typewriter_fade_in    = global.scribble_state_tw_fade_in;
+            var _typewriter_speed      = 0;
         }
         else
         {
