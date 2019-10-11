@@ -418,12 +418,18 @@ if (!is_array(_draw_string))
                                                 #region Write sprites
                                                 
                                                 var _sprite_index  = asset_get_index(_command_name);
-                                                var _sprite_x      = _text_x + sprite_get_xoffset(_sprite_index);
-                                                var _sprite_y      = _text_y + sprite_get_yoffset(_sprite_index);
+                                                var _sprite_x      = _text_x;
+                                                var _sprite_y      = _text_y;
                                                 var _sprite_width  = _text_scale*sprite_get_width(_sprite_index);
                                                 var _sprite_height = _text_scale*sprite_get_height(_sprite_index);
                                                 var _sprite_number = sprite_get_number(_sprite_index);
                                                 
+                                                if (SCRIBBLE_ADD_SPRITE_ORIGINS)
+                                                {
+                                                    _sprite_x -= sprite_get_xoffset(_sprite_index);
+                                                    _sprite_y -= sprite_get_yoffset(_sprite_index);
+                                                }
+                                                 
                                                 _char_width  = _sprite_width;
                                                 _line_height = max(_line_height, _sprite_height);
                                                 
