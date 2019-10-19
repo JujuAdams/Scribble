@@ -673,7 +673,7 @@ if (!is_array(_draw_string))
                     ++_v;
                 }
             }
-            else if (_character_code < 32)//If this character code is below a space then ignore it
+            else if (_character_code < 32) //If this character code is below a space then ignore it
             {
                 continue;
             }
@@ -735,7 +735,7 @@ if (!is_array(_draw_string))
                 }
             
                 //Update WORD_START_TELL
-                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
+                //_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
             
                 #endregion
             
@@ -790,8 +790,10 @@ if (!is_array(_draw_string))
     
             #region Handle new line creation
     
-            if (_force_newline || ((_char_width + _text_x > _max_width) && (_max_width >= 0)))
+            if (_force_newline || ((_char_width + _text_x > _max_width) && (_max_width >= 0) && (_character_code > 32)))
             {
+                var _line_offset_x = -_text_x;
+                
                 var _v = 0;
                 repeat(ds_list_size(_vertex_buffer_list))
                 {
@@ -812,11 +814,16 @@ if (!is_array(_draw_string))
                 
                         if (_tell_a < _tell_b)
                         {
-                            //Retroactively move the last word to a new line
+                            //Find the buffer position of the start of the previous word
                             var _tell = _tell_a + __SCRIBBLE_VERTEX.X;
+                            
+                            //We want to offset to the left by the x-position of the start of the word
+                            _line_offset_x = -buffer_peek(_buffer, _tell, buffer_f32);
+                            
+                            //Retroactively move the last word to a new line
                             repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                             {
-                                buffer_poke(_buffer, _tell, buffer_f32, buffer_peek(_buffer, _tell, buffer_f32) - _text_x);
+                                buffer_poke(_buffer, _tell, buffer_f32, buffer_peek(_buffer, _tell, buffer_f32) + _line_offset_x);
                         
                                 _tell += __SCRIBBLE_VERTEX.Y - __SCRIBBLE_VERTEX.X;
                                 buffer_poke(_buffer, _tell, buffer_f32, buffer_peek(_buffer, _tell, buffer_f32) + _line_height);
@@ -851,10 +858,10 @@ if (!is_array(_draw_string))
                 ds_list_add(_line_list, _line_array);
         
                 //Reset state
-                _text_x      = 0;
-                _text_y      = _text_y + _line_height;
-                _line_width  = 0;
-                _line_height = _line_min_height;
+                _text_x      += _line_offset_x;
+                _text_y       = _text_y + _line_height;
+                _line_width   = 0;
+                _line_height  = _line_min_height;
         
                 _force_newline = false;
             }
