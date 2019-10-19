@@ -20,10 +20,10 @@ global.scribble_state_tw_position   = argument1;
 global.scribble_state_tw_method     = argument2;
 global.scribble_state_tw_smoothness = argument3;
 
-if ((global.scribble_state_tw_method != SCRIBBLE_TYPEWRITER_NONE)
-&&  (global.scribble_state_tw_method != SCRIBBLE_TYPEWRITER_PER_CHARACTER)
-&&  (global.scribble_state_tw_method != SCRIBBLE_TYPEWRITER_PER_LINE))
+if ((global.scribble_state_tw_method != SCRIBBLE_FADE_NONE)
+&&  (global.scribble_state_tw_method != SCRIBBLE_FADE_PER_CHARACTER)
+&&  (global.scribble_state_tw_method != SCRIBBLE_FADE_PER_LINE))
 {
-    show_error("Scribble:\nMethod not recognised.\nPlease use SCRIBBLE_TYPEWRITER_NONE, SCRIBBLE_TYPEWRITER_PER_CHARACTER, or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false);
-    global.scribble_state_tw_method = SCRIBBLE_TYPEWRITER_NONE;
+    show_error("Scribble:\nMethod not recognised.\nPlease use SCRIBBLE_FADE_NONE, SCRIBBLE_FADE_PER_CHARACTER, or SCRIBBLE_FADE_PER_LINE.\n ", false);
+    global.scribble_state_tw_method = SCRIBBLE_FADE_NONE;
 }
