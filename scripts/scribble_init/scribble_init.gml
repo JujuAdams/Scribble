@@ -19,8 +19,8 @@
 /// 8) Automatically scans Included Files for fonts (if enabled)
 /// 
 /// 
-/// Scribble v5.0.0
-/// 2019/10/06
+/// Scribble v5.1.0
+/// 2019/10/19
 /// @jujuadams
 /// With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
 /// 
@@ -28,8 +28,8 @@
 
 #region Internal Macro Definitions
 
-#macro __SCRIBBLE_VERSION  "5.0.0"
-#macro __SCRIBBLE_DATE     "2019/10/06"
+#macro __SCRIBBLE_VERSION  "5.1.0"
+#macro __SCRIBBLE_DATE     "2019/10/19"
 #macro __SCRIBBLE_DEBUG    false
 
 enum SCRIBBLE_BOX
@@ -128,6 +128,7 @@ enum SCRIBBLE_STATE
     MAX_WIDTH,
     MIN_HEIGHT,
     MAX_HEIGHT,
+    CHARACTER_WRAP,
     HALIGN,
     VALIGN,
     TYPEWRITER_FADE_IN,
@@ -197,9 +198,12 @@ enum __SCRIBBLE
 
 //These are tied to values in shd_scribble
 //If you need to change these for some reason, you'll need to change shd_scribble too
-#macro SCRIBBLE_TYPEWRITER_NONE           0  //No fade
-#macro SCRIBBLE_TYPEWRITER_PER_CHARACTER  1  //Fade each character individually
-#macro SCRIBBLE_TYPEWRITER_PER_LINE       2  //Fade each line of text as a group
+#macro SCRIBBLE_AUTOTYPE_NONE           0  //No fade
+#macro SCRIBBLE_AUTOTYPE_PER_CHARACTER  1  //Fade each character individually
+#macro SCRIBBLE_AUTOTYPE_PER_LINE       2  //Fade each line of text as a group
+#macro SCRIBBLE_FADE_NONE               SCRIBBLE_AUTOTYPE_NONE
+#macro SCRIBBLE_FADE_PER_CHARACTER      SCRIBBLE_AUTOTYPE_PER_CHARACTER
+#macro SCRIBBLE_FADE_PER_LINE           SCRIBBLE_AUTOTYPE_PER_LINE
 
 #endregion
 
