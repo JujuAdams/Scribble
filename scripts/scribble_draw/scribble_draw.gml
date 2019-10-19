@@ -735,7 +735,7 @@ if (!is_array(_draw_string))
                 }
             
                 //Update WORD_START_TELL
-                //_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
+                if (global.scribble_state_character_wrap) _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
             
                 #endregion
             

@@ -14,6 +14,7 @@ global.scribble_state_min_width       = argument0[SCRIBBLE_STATE.MIN_WIDTH      
 global.scribble_state_max_width       = argument0[SCRIBBLE_STATE.MAX_WIDTH            ];
 global.scribble_state_min_height      = argument0[SCRIBBLE_STATE.MIN_HEIGHT           ];
 global.scribble_state_max_height      = argument0[SCRIBBLE_STATE.MAX_HEIGHT           ];
+global.scribble_state_character_wrap  = argument0[SCRIBBLE_STATE.CHARACTER_WRAP       ];
 global.scribble_state_box_halign      = argument0[SCRIBBLE_STATE.HALIGN               ];
 global.scribble_state_box_valign      = argument0[SCRIBBLE_STATE.VALIGN               ];
 global.scribble_state_tw_fade_in      = argument0[SCRIBBLE_STATE.TYPEWRITER_FADE_IN   ];

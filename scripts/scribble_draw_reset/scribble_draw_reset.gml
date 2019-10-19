@@ -10,6 +10,7 @@ global.scribble_state_min_width       = undefined;
 global.scribble_state_max_width       = SCRIBBLE_DEFAULT_MAX_WIDTH;
 global.scribble_state_min_height      = undefined;
 global.scribble_state_max_height      = undefined;
+global.scribble_state_character_wrap  = false;
 global.scribble_state_box_halign      = SCRIBBLE_DEFAULT_BOX_HALIGN;
 global.scribble_state_box_valign      = SCRIBBLE_DEFAULT_BOX_VALIGN;
 global.scribble_state_tw_fade_in      = true;
