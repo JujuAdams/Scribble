@@ -1,6 +1,6 @@
-<h1 align="center">Scribble 5.0.0 Lite</h1>
+<h1 align="center">Scribble 5.1.0 Lite</h1>
 
-<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.0.0.Lite">Download .yymp here</a></p>
+<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.1.0.Lite">Download .yymp here</a></p>
 
 ### @jujuadams
 
@@ -20,7 +20,7 @@ GameMaker Studio 2.2.3 allows you to import assets, including scripts and shader
 
 **How do I set up Scribble Lite?**
 
-Scribble Lite is made from 14 scripts and a shader. There are 10 optional scripts that unlock more advanced functionality and these can be found on the [master Scribble branch](https://github.com/JujuAdams/scribble).
+Scribble Lite is made from 15 scripts and a shader. There are 10 optional scripts that unlock more advanced functionality and these can be found on the [master Scribble branch](https://github.com/JujuAdams/scribble).
 
 Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
 
