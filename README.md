@@ -1,6 +1,6 @@
-<h1 align="center">Scribble 5.0.4</h1>
+<h1 align="center">Scribble 5.1.0</h1>
 
-<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.0.0">Download .yymp here</a></p>
+<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.1.0">Download .yymp here</a></p>
 
 ### @jujuadams
 
@@ -20,7 +20,7 @@ GameMaker Studio 2.2.3 allows you to import assets, including scripts and shader
 
 **How do I set up Scribble?**
 
-Scribble is made from 14 mandatory scripts and a shader. There are 10 optional scripts that unlock more advanced functionality, though they're not needed for basic use. The ["Lite" version](https://github.com/JujuAdams/scribble/tree/lite)() skips out the optional scripts which handle automatic typewriter effects, events, and various nuts-and-bolts options that are useful but not essential.
+Scribble is made from 15 mandatory scripts and a shader. There are 10 optional scripts that unlock more advanced functionality, though they're not needed for basic use. The ["Lite" version](https://github.com/JujuAdams/scribble/tree/lite)() skips out the optional scripts which handle automatic typewriter effects, events, and various nuts-and-bolts options that are useful but not essential.
 
 Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
 
