@@ -198,12 +198,12 @@ enum __SCRIBBLE
 
 //These are tied to values in shd_scribble
 //If you need to change these for some reason, you'll need to change shd_scribble too
-#macro SCRIBBLE_FADE_NONE               0  //No fade
-#macro SCRIBBLE_FADE_PER_CHARACTER      1  //Fade each character individually
-#macro SCRIBBLE_FADE_PER_LINE           2  //Fade each line of text as a group
 #macro SCRIBBLE_AUTOTYPE_NONE           0  //No fade
 #macro SCRIBBLE_AUTOTYPE_PER_CHARACTER  1  //Fade each character individually
 #macro SCRIBBLE_AUTOTYPE_PER_LINE       2  //Fade each line of text as a group
+#macro SCRIBBLE_FADE_NONE               SCRIBBLE_AUTOTYPE_NONE
+#macro SCRIBBLE_FADE_PER_CHARACTER      SCRIBBLE_AUTOTYPE_PER_CHARACTER
+#macro SCRIBBLE_FADE_PER_LINE           SCRIBBLE_AUTOTYPE_PER_LINE
 
 #endregion
 
