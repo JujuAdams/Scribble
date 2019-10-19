@@ -29,7 +29,7 @@ demo_string += "##[fnt_test_2][c_black]TESTING";
 //We're using a cache group called "example cache group" to indicate we want to manage this memory ourselves
 scribble_draw_set_cache_group("example cache group", false, true);
 element = scribble_draw(0, 0, demo_string);
-scribble_autotype_fade_in(element, SCRIBBLE_TYPEWRITER_PER_CHARACTER, 2, 0);
+scribble_autotype_fade_in(element, SCRIBBLE_AUTOTYPE_PER_CHARACTER, 2, 0);
 
 //Don't forget to reset the state otherwise all subsequent Scribble text elements will inherit these settings
 scribble_draw_reset();

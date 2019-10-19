@@ -18,12 +18,12 @@ if (!is_array(_scribble_array)
     exit;
 }
 
-if ((_method != SCRIBBLE_TYPEWRITER_NONE)
-&&  (_method != SCRIBBLE_TYPEWRITER_PER_CHARACTER)
-&&  (_method != SCRIBBLE_TYPEWRITER_PER_LINE))
+if ((_method != SCRIBBLE_AUTOTYPE_NONE)
+&&  (_method != SCRIBBLE_AUTOTYPE_PER_CHARACTER)
+&&  (_method != SCRIBBLE_AUTOTYPE_PER_LINE))
 {
-    show_error("Scribble:\nMethod not recognised.\nPlease use SCRIBBLE_TYPEWRITER_NONE, SCRIBBLE_TYPEWRITER_PER_CHARACTER, or SCRIBBLE_TYPEWRITER_PER_LINE.\n ", false);
-    _method = SCRIBBLE_TYPEWRITER_NONE;
+    show_error("Scribble:\nMethod not recognised.\nPlease use SCRIBBLE_AUTOTYPE_NONE, SCRIBBLE_AUTOTYPE_PER_CHARACTER, or SCRIBBLE_AUTOTYPE_PER_LINE.\n ", false);
+    _method = SCRIBBLE_AUTOTYPE_NONE;
 }
 
 //Update the remaining autotype state values

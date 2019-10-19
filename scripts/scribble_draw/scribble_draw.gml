@@ -144,7 +144,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN   ] = -1;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED     ] = 0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION  ] = 0;
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD    ] = SCRIBBLE_TYPEWRITER_NONE;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD    ] = SCRIBBLE_AUTOTYPE_NONE;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS] = 0;
     
         _scribble_array[@ __SCRIBBLE.__SECTION5         ] = "-- Events --";
@@ -1034,7 +1034,7 @@ if (global.scribble_state_allow_draw)
     if (_count > 0)
     {
         var _typewriter_method = _scribble_array[__SCRIBBLE.AUTOTYPE_METHOD];
-        if (_typewriter_method == SCRIBBLE_TYPEWRITER_NONE)
+        if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE)
         {
             //If the text element's internal autotype method hasn't been set then use the global draw set state value
                 _typewriter_method     = global.scribble_state_tw_method;
@@ -1057,11 +1057,11 @@ if (global.scribble_state_allow_draw)
                 //Find the last character we need to scan
                 switch(_typewriter_method)
                 {
-                    case SCRIBBLE_TYPEWRITER_PER_CHARACTER:
+                    case SCRIBBLE_AUTOTYPE_PER_CHARACTER:
                         var _scan_b = ceil(_typewriter_position + _typewriter_speed);
                     break;
                 
-                    case SCRIBBLE_TYPEWRITER_PER_LINE:
+                    case SCRIBBLE_AUTOTYPE_PER_LINE:
                         var _list   = _scribble_array[__SCRIBBLE.LINE_LIST];
                         var _line   = _list[| min(ceil(_typewriter_position + _typewriter_speed), _scribble_array[__SCRIBBLE.LINES]-1)];
                         var _scan_b = _line[__SCRIBBLE_LINE.LAST_CHAR];
@@ -1113,7 +1113,7 @@ if (global.scribble_state_allow_draw)
                             ++_scan;
                         }
                         
-                        if (_break && (_typewriter_method == SCRIBBLE_TYPEWRITER_PER_CHARACTER)) _typewriter_position = _scan;
+                        if (_break && (_typewriter_method == SCRIBBLE_AUTOTYPE_PER_CHARACTER)) _typewriter_position = _scan;
                         
                         _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = _scan;
                     }
@@ -1124,7 +1124,7 @@ if (global.scribble_state_allow_draw)
         }
         
         //Figure out the limit and smoothness values
-        if (_typewriter_method == SCRIBBLE_TYPEWRITER_NONE)
+        if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE)
         {
             var _typewriter_smoothness = 0;
             var _typewriter_t          = 1;
@@ -1133,8 +1133,8 @@ if (global.scribble_state_allow_draw)
         {
             switch(_typewriter_method)
             {
-                case SCRIBBLE_TYPEWRITER_PER_CHARACTER: var _typewriter_count = _scribble_array[__SCRIBBLE.CHARACTERS]; break;
-                case SCRIBBLE_TYPEWRITER_PER_LINE:      var _typewriter_count = _scribble_array[__SCRIBBLE.LINES     ]; break;
+                case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _scribble_array[__SCRIBBLE.CHARACTERS]; break;
+                case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _scribble_array[__SCRIBBLE.LINES     ]; break;
             }
             
             var _typewriter_t = clamp(_typewriter_position, 0, _typewriter_count + _typewriter_smoothness);
