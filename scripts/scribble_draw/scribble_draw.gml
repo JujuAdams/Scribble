@@ -1201,22 +1201,22 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
         //Scan through the cache to see if any text elements have elapsed
         global.__scribble_cache_test_index = (global.__scribble_cache_test_index + 1) mod _size;
         var _cache_string = global.__scribble_global_cache_list[| global.__scribble_cache_test_index];
-        var _scribble_array = global.__scribble_global_cache_map[? _cache_string];
+        var _cache_array = global.__scribble_global_cache_map[? _cache_string];
         
-        if (!is_array(_scribble_array)
-        || (array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
-        || (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
-        || _scribble_array[__SCRIBBLE.FREED])
+        if (!is_array(_cache_array)
+        || (array_length_1d(_cache_array) != __SCRIBBLE.__SIZE)
+        || (_cache_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
+        || _cache_array[__SCRIBBLE.FREED])
         {
             if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: \"" + _cache_string + "\" exists in cache but doesn't exist elsewhere");
             ds_list_delete(global.__scribble_global_cache_list, global.__scribble_cache_test_index);
         }
-        else if (_scribble_array[__SCRIBBLE.TIME] + SCRIBBLE_CACHE_TIMEOUT < current_time)
+        else if (_cache_array[__SCRIBBLE.TIME] + SCRIBBLE_CACHE_TIMEOUT < current_time)
         {
             if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Removing \"" + _cache_string + "\" from cache");
             
             //Free data (basically a duplicate of scribble_flush)
-            var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
+            var _vbuff_list = _cache_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
             var _count = ds_list_size(_vbuff_list);
             for(var _i = 0; _i < _count; _i++)
             {
@@ -1225,17 +1225,17 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
                 vertex_delete_buffer(_vbuff);
             }
             
-            ds_list_destroy(_scribble_array[@ __SCRIBBLE.LINE_LIST]);
+            ds_list_destroy(_cache_array[@ __SCRIBBLE.LINE_LIST]);
             ds_list_destroy(_vbuff_list);
             
-            _scribble_array[@ __SCRIBBLE.FREED] = true;
+            _cache_array[@ __SCRIBBLE.FREED] = true;
             
             //Remove reference from cache
             ds_map_delete(global.__scribble_global_cache_map,_cache_string);
             ds_list_delete(global.__scribble_global_cache_list, global.__scribble_cache_test_index);
             
             //Remove global reference
-            ds_map_delete(global.scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX]);
+            ds_map_delete(global.scribble_alive, _cache_array[__SCRIBBLE.GLOBAL_INDEX]);
         }
     }
 }
