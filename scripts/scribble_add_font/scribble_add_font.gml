@@ -116,6 +116,7 @@ if (!ds_map_exists(_json, "glyphs"))
 //If either of the checks have failed, delete the data array and abort
 if (_fail)
 {
+    if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Failure string is \"" + string(_json_string) + "\"");
     ds_map_delete(global.__scribble_font_data, _font);
     exit;
 }
