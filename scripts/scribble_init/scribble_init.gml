@@ -19,8 +19,8 @@
 /// 8) Automatically scans Included Files for fonts (if enabled)
 /// 
 /// 
-/// Scribble v5.1.1
-/// 2019/10/19
+/// Scribble v5.1.2
+/// 2019/12/15
 /// @jujuadams
 /// With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
 /// 
@@ -28,8 +28,8 @@
 
 #region Internal Macro Definitions
 
-#macro __SCRIBBLE_VERSION  "5.1.1"
-#macro __SCRIBBLE_DATE     "2019/11/10"
+#macro __SCRIBBLE_VERSION  "5.1.2"
+#macro __SCRIBBLE_DATE     "2019/12/15"
 #macro __SCRIBBLE_DEBUG    false
 
 enum SCRIBBLE_BOX
