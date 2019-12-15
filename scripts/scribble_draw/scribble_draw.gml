@@ -794,16 +794,6 @@ if (!is_array(_draw_string))
     
             #region Handle new line creation
             
-            if (_character_code == ord("b"))
-            {
-                show_debug_message("b");
-            }
-            
-            if (_character_code == ord("c"))
-            {
-                show_debug_message("c");
-            }
-            
             if (_force_newline
             || ((_char_width + _text_x > _max_width) && (_max_width >= 0) && (_character_code > 32)))
             {
