@@ -97,6 +97,8 @@ enum __SCRIBBLE_VERTEX_BUFFER
     CHAR_START_TELL,
     WORD_START_TELL,
     LINE_START_LIST,
+    TEXEL_WIDTH,
+    TEXEL_HEIGHT,
     __SIZE
 }
 
@@ -331,6 +333,7 @@ global.__scribble_uniform_tw_method     = shader_get_uniform(shd_scribble, "u_fT
 global.__scribble_uniform_tw_smoothness = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness");
 global.__scribble_uniform_tw_t          = shader_get_uniform(shd_scribble, "u_fTypewriterT"         );
 global.__scribble_uniform_data_fields   = shader_get_uniform(shd_scribble, "u_aDataFields"          );
+global.__scribble_uniform_texel         = shader_get_uniform(shd_scribble, "u_fTexel"               );
 
 //Hex converter array
 var _min = ord("0");
