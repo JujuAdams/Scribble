@@ -639,6 +639,14 @@
             }
         },
         {
+            "Key": "d49d7f7e-1ca7-477f-8908-f0295fcfe5e3",
+            "Value": {
+                "id": "ef295564-3fd1-44d9-a5e7-b7d17e6a35b9",
+                "resourcePath": "sprites\\spr_large_coin\\spr_large_coin.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "d934110d-0067-4412-8563-3af79a256c25",
             "Value": {
                 "id": "ef2260f5-d637-48b3-b89f-046a6ca04c6e",
