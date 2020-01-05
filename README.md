@@ -1,6 +1,6 @@
-<h1 align="center">Scribble 5.1.3</h1>
+<h1 align="center">Scribble 5.2.0</h1>
 
-<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.1.3">Download .yymp here</a></p>
+<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.2.0">Download .yymp here</a></p>
 
 ### @jujuadams
 
