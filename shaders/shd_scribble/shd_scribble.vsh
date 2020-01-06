@@ -54,6 +54,13 @@ uniform float u_aDataFields[MAX_DATA_FIELDS];
 // Functions
 // Scroll all the way down to see the main() function for the vertex shader
 
+//*That* randomisation function.
+//I haven't found a better method yet, and this is sufficient for our purposes
+float rand(vec2 co)
+{
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
 //Bitwise unpacking of effect flags
 //The effect bits are stored in the Z-channel of the Normal attribute
 void unpackFlags(float flagValue, inout float array[MAX_EFFECTS])
@@ -90,9 +97,9 @@ vec2 scale(vec2 position, vec2 centre, float scale)
 }
 
 //Oscillate the character
-float wave(float characterIndex, float amplitude, float frequency, float speed)
+vec2 wave(vec2 position, float characterIndex, float amplitude, float frequency, float speed)
 {
-    return amplitude*sin(frequency*characterIndex + speed*u_fTime);
+    return vec2(position.x, position.y + amplitude*sin(frequency*characterIndex + speed*u_fTime));
 }
 
 //Wobble the character by rotating around its central point
@@ -108,17 +115,10 @@ vec2 pulse(vec2 position, vec2 centre, float characterIndex, float scale_, float
     return scale(position, centre, adjustedScale);
 }
 
-//*That* randomisation function.
-//I haven't found a better method yet, and this is sufficient for our purposes
-float rand(vec2 co)
-{
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
-
 //Shake the character along the x/y axes
 //We use integer time steps so that at low speeds characters don't jump around too much
 //Lots of magic numbers in here to try to get a nice-looking shake
-vec2 shake(float characterIndex, float magnitude, float speed)
+vec2 shake(vec2 position, float characterIndex, float magnitude, float speed)
 {
     float time = speed*u_fTime + 0.5;
     float floorTime = floor(time);
@@ -128,7 +128,7 @@ vec2 shake(float characterIndex, float magnitude, float speed)
     vec2 delta = vec2(rand(vec2(149.0*characterIndex + 13.0*floorTime, 727.0*characterIndex - 331.0*floorTime)),
                       rand(vec2(501.0*characterIndex - 19.0*floorTime, 701.0*characterIndex + 317.0*floorTime)));
     
-    return magnitude*merge*(2.0*delta-1.0);
+    return position + magnitude*merge*(2.0*delta-1.0);
 }
 
 //Use RGBA 
@@ -221,14 +221,13 @@ void main()
     
     //Use the input vertex position from the vertex attributes. Use our Z uniform because the z-component is used for other data
     vec2 centre = in_Position.xy;
-    vec2 delta = in_Normal.xy;
-    vec4 pos = vec4(centre + delta, u_fZ, 1.0);
+    vec2 pos = centre + in_Normal.xy; //The actual position of this vertex is the central point plus the delta
     
     //Vertex animation
-    pos.xy  = wobble(pos.xy, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
-    pos.xy  = pulse(pos.xy, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
-    pos.y  += wave(characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
-    pos.xy += shake(characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
+    pos.xy = wobble(pos.xy, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
+    pos.xy = pulse( pos.xy, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
+    pos.xy = wave(  pos.xy, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
+    pos.xy = shake( pos.xy, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
     
     //Colour
     v_vColour  = handleSprites(spriteFlag, in_Colour); //Use RGBA information to filter out sprites
@@ -246,5 +245,5 @@ void main()
     //Texture
     v_vTexcoord = in_TextureCoord;
     
-    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*pos;
+    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(pos, u_fZ, 1.0);
 }
