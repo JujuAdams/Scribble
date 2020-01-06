@@ -104,16 +104,16 @@ enum __SCRIBBLE_VERTEX_BUFFER
 
 enum __SCRIBBLE_VERTEX
 {
-    X      =  0,
-    Y      =  4,
-    Z      =  8,
-    NX     = 12,
-    NY     = 16,
-    NZ     = 20,
-    C      = 24,
-    U      = 28,
-    V      = 32,
-    __SIZE = 36
+    CENTRE_X       =  0,
+    CENTRE_Y       =  4,
+    PACKED_INDEXES =  8,
+    DELTA_X        = 12,
+    DELTA_Y        = 16,
+    EFFECT_FLAGS   = 20,
+    COLOUR         = 24,
+    U              = 28,
+    V              = 32,
+    __SIZE         = 36
 }
 
 enum SCRIBBLE_STATE

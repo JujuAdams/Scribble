@@ -847,7 +847,7 @@ if (!is_array(_draw_string))
                         {
                             //We want to offset to the left by the x-position of the start of the word
                             //Note the negative sign!
-                            _line_offset_x = -(buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.NX, buffer_f32));
+                            _line_offset_x = -(buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32));
                             
                             //If the start of the word is at 0 then we know that entire word is longer than the textbox max width
                             //We fall back to use the character start position for this vertex buffer instead
@@ -857,7 +857,7 @@ if (!is_array(_draw_string))
                                 
                                 //We want to offset to the left by the x-position of the start of the word
                                 //Note the negative sign!
-                                _line_offset_x = -(buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.NX, buffer_f32));
+                                _line_offset_x = -(buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32));
                                 
                                 //Set our word start tell position to be the same as the character start tell
                                 //This allows us to handle single words that exceed the maximum textbox width multiple times (!)
@@ -877,9 +877,12 @@ if (!is_array(_draw_string))
                                 var _tell = _tell_a;
                                 repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                                 {
-                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.Z , buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Z , buffer_f32) + 1             );
-                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NX, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.NX, buffer_f32) + _line_offset_x);
-                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32) + _line_height  );
+                                    //Increment the line index by 1
+                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) + 1             );
+                                    
+                                    //Adjust glyph centre position
+                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X      , buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X      , buffer_f32) + _line_offset_x);
+                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y      , buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y      , buffer_f32) + _line_height  );
                                     _tell += __SCRIBBLE_VERTEX.__SIZE;
                                 }
                             }
@@ -969,7 +972,7 @@ if (!is_array(_draw_string))
                     if (_line_halign == fa_right ) _offset =  _text_x_max - _line_width;
                     if (_line_halign == fa_center) _offset = (_text_x_max - _line_width) div 2;
                     
-                    var _tell = _tell_a + __SCRIBBLE_VERTEX.NX;
+                    var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
                     repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                     {
                         buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
@@ -978,7 +981,7 @@ if (!is_array(_draw_string))
                 }
                 
                 var _offset = _line_height div 2;
-                var _tell = _tell_a + __SCRIBBLE_VERTEX.NY;
+                var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
                 repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                 {
                     buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
