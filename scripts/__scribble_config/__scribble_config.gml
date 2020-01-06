@@ -2,10 +2,10 @@
 
 
 
-#macro SCRIBBLE_HASH_NEWLINE        true  //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's newline behaviour
-#macro SCRIBBLE_COLOURISE_SPRITES   true  //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
-#macro SCRIBBLE_VERBOSE             true  //Enables verbose console output to aid with debugging
-#macro SCRIBBLE_ADD_SPRITE_ORIGINS  false //Whether to use sprite origins. Setting this to <false> will vertically centre sprites on the line of text
+#macro SCRIBBLE_HASH_NEWLINE        true   //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's newline behaviour
+#macro SCRIBBLE_COLOURISE_SPRITES   true   //Whether to apply the text colour to non-animated sprites (animated sprites are always blended white)
+#macro SCRIBBLE_VERBOSE             true   //Enables verbose console output to aid with debugging
+#macro SCRIBBLE_ADD_SPRITE_ORIGINS  false  //Whether to use sprite origins. Setting this to <false> will vertically centre sprites on the line of text
 
 #region Default parameters
 
@@ -38,7 +38,6 @@
 #region Advanced stuff
 
 #macro SCRIBBLE_STEP_SIZE                  (delta_time/game_get_speed(gamespeed_microseconds)) //The animation step size. The default command here uses delta_time ensures that animations are smooth at all framerates
-#macro SCRIBBLE_FORCE_NO_SPRITE_ANIMATION  false //Forces all sprite animations off. This can be useful for testing rendering without the Scribble shader set
 #macro SCRIBBLE_SLANT_AMOUNT               0.24  //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_Z                          0     //The z-value for vertexes
 
@@ -55,8 +54,9 @@
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE  300  //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
-//SCRIBBLE_MAX_EFFECTS or SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shd_scribble
-#macro SCRIBBLE_MAX_EFFECTS      4 //The maximum number of unique effects. Effects are set as booleans, and are sent into shd_scribble as a bitpacked number
-#macro SCRIBBLE_MAX_DATA_FIELDS  7 //The maximum number of data fields. "Data fields" are misc
+//These constants must match the corresponding values in shader shd_scribble
+#macro SCRIBBLE_MAX_EFFECTS      6     //The maximum number of unique effects. Effects are set as booleans, and are sent into shd_scribble as a bitpacked number
+#macro SCRIBBLE_MAX_DATA_FIELDS  7     //The maximum number of data fields. "Data fields" are misc
+#macro SCRIBBLE_MAX_LINES        1000  //Maximum number of lines in a textbox
 
 #endregion

@@ -432,7 +432,8 @@ if (!is_array(_draw_string))
                                                     var _sprite_x = _text_x;
                                                     var _sprite_y = _text_y - (_sprite_height div 2);
                                                 }
-                                                 
+                                                
+                                                var _packed_indexes = _meta_characters*SCRIBBLE_MAX_LINES + _meta_lines;
                                                 _char_width  = _sprite_width;
                                                 _line_height = max(_line_height, _sprite_height);
                                                 
@@ -465,7 +466,7 @@ if (!is_array(_draw_string))
                                                 }
                                                 
                                                 var _colour = SCRIBBLE_COLOURISE_SPRITES? _text_colour : c_white;
-                                                if ((_image_speed <= 0) || SCRIBBLE_FORCE_NO_SPRITE_ANIMATION)
+                                                if (_image_speed <= 0)
                                                 {
                                                     _image_speed = 0;
                                                     _sprite_number = 1;
@@ -551,13 +552,20 @@ if (!is_array(_draw_string))
                                                     var _quad_r = _quad_l   + _uvs[6]*_sprite_width;
                                                     var _quad_b = _quad_t   + _uvs[7]*_sprite_height;
                                                     
-                                                    //                                         X                                                 Y                                                  Z                                                       character %                                                line %                                               flags                                                  colour                                                 U                                                V
-                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_l); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
-                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_l); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
-                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_r); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
-                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_r); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
-                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_r); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
-                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_l); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
+                                                    var _quad_cx = 0.5*(_quad_l + _quad_r);
+                                                    var _quad_cy = 0.5*(_quad_t + _quad_b);
+                                                    _quad_l -= _quad_cx;
+                                                    _quad_t -= _quad_cy;
+                                                    _quad_r -= _quad_cx;
+                                                    _quad_b -= _quad_cy;
+                                                    
+                                                    //                                      Delta X                                           Delta Y                                         Character/Line Index                                           Centre X                                           Centre Y                                                 Flags                                                      Colour                                                 U                                                V
+                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_l); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
+                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_l); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
+                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_r); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
+                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_r); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
+                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_r); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
+                                                    buffer_write(_glyph_buffer, buffer_f32, _quad_l); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
                                                     
                                                     ++_image;
                                                     if (_image_speed > 0) ++_colour;
@@ -768,23 +776,31 @@ if (!is_array(_draw_string))
                     var _quad_t = _text_y + _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - (_font_line_height div 2);
                     var _quad_r = _quad_l + _glyph_array[SCRIBBLE_GLYPH.WIDTH   ]*_text_scale;
                     var _quad_b = _quad_t + _glyph_array[SCRIBBLE_GLYPH.HEIGHT  ]*_text_scale;
-            
+                    
+                    var _quad_cx = 0.5*(_quad_l + _quad_r);
+                    var _quad_cy = 0.5*(_quad_t + _quad_b);
+                    _quad_l -= _quad_cx;
+                    _quad_t -= _quad_cy;
+                    _quad_r -= _quad_cx;
+                    _quad_b -= _quad_cy;
+                    
+                    var _packed_indexes = _meta_characters*SCRIBBLE_MAX_LINES + _meta_lines;
                     var _colour = $FF000000 | _text_colour;
                     var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_quad_b - _quad_t);
             
-                    var _quad_u0  = _glyph_array[SCRIBBLE_GLYPH.U0];
-                    var _quad_v0  = _glyph_array[SCRIBBLE_GLYPH.V0];
-                    var _quad_u1  = _glyph_array[SCRIBBLE_GLYPH.U1];
-                    var _quad_v1  = _glyph_array[SCRIBBLE_GLYPH.V1];
+                    var _quad_u0 = _glyph_array[SCRIBBLE_GLYPH.U0];
+                    var _quad_v0 = _glyph_array[SCRIBBLE_GLYPH.V0];
+                    var _quad_u1 = _glyph_array[SCRIBBLE_GLYPH.U1];
+                    var _quad_v1 = _glyph_array[SCRIBBLE_GLYPH.V1];
                     
-                    //                                                X                                                        Y                                                  Z                                                      character %                                                line %                                                   flags                                                      colour                                                  U                                                  V
-                    buffer_write(_glyph_buffer, buffer_f32, _quad_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
-                    buffer_write(_glyph_buffer, buffer_f32, _quad_l              ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
-                    buffer_write(_glyph_buffer, buffer_f32, _quad_r              ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
-                    buffer_write(_glyph_buffer, buffer_f32, _quad_r              ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
-                    buffer_write(_glyph_buffer, buffer_f32, _quad_r+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
-                    buffer_write(_glyph_buffer, buffer_f32, _quad_l+_slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, SCRIBBLE_Z);    buffer_write(_glyph_buffer, buffer_f32, _meta_characters); buffer_write(_glyph_buffer, buffer_f32, _meta_lines); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
-                
+                    //                                               Delta X                                                  Delta Y                                         Character/Line Index                                           Centre X                                           Centre Y                                                 Flags                                                      Colour                                                  U                                                  V
+                    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
+                    buffer_write(_glyph_buffer, buffer_f32, _quad_l                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
+                    buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
+                    buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
+                    buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
+                    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
+                    
                     ++_meta_characters;
                     _char_width = _glyph_array[SCRIBBLE_GLYPH.SEPARATION]*_text_scale;
                 }
@@ -827,11 +843,9 @@ if (!is_array(_draw_string))
                         //If we've added anything to this buffer
                         if (_tell_a < _tell_b)
                         {
-                            //Find the buffer position of the start of the previous word
-                            var _tell = _tell_a + __SCRIBBLE_VERTEX.X;
-                            
                             //We want to offset to the left by the x-position of the start of the word
-                            _line_offset_x = -buffer_peek(_buffer, _tell, buffer_f32);
+                            //Note the negative sign!
+                            _line_offset_x = -(buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.NX, buffer_f32));
                             
                             //If the start of the word is at 0 then we know that entire word is longer than the textbox max width
                             //We fall back to use the character start position for this vertex buffer instead
@@ -839,11 +853,9 @@ if (!is_array(_draw_string))
                             {
                                 var _tell_a = _data[__SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL];
                                 
-                                //Find the buffer position of the start of the previous word
-                                var _tell = _tell_a + __SCRIBBLE_VERTEX.X;
-                                
                                 //We want to offset to the left by the x-position of the start of the word
-                                _line_offset_x = -buffer_peek(_buffer, _tell, buffer_f32);
+                                //Note the negative sign!
+                                _line_offset_x = -(buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.NX, buffer_f32));
                                 
                                 //Set our word start tell position to be the same as the character start tell
                                 //This allows us to handle single words that exceed the maximum textbox width multiple times (!)
@@ -860,17 +872,13 @@ if (!is_array(_draw_string))
                             if (_line_offset_x < 0)
                             {
                                 //Retroactively move the last word to a new line
+                                var _tell = _tell_a;
                                 repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                                 {
-                                    buffer_poke(_buffer, _tell, buffer_f32, buffer_peek(_buffer, _tell, buffer_f32) + _line_offset_x);
-                                    
-                                    _tell += __SCRIBBLE_VERTEX.Y - __SCRIBBLE_VERTEX.X;
-                                    buffer_poke(_buffer, _tell, buffer_f32, buffer_peek(_buffer, _tell, buffer_f32) + _line_height);
-                                    
-                                    _tell += __SCRIBBLE_VERTEX.NY - __SCRIBBLE_VERTEX.Y;
-                                    buffer_poke(_buffer, _tell, buffer_f32, _meta_lines+1);
-                                    
-                                    _tell += __SCRIBBLE_VERTEX.X + __SCRIBBLE_VERTEX.__SIZE - __SCRIBBLE_VERTEX.NY;
+                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.Z , buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Z , buffer_f32) + 1             );
+                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NX, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.NX, buffer_f32) + _line_offset_x);
+                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.NY, buffer_f32) + _line_height  );
+                                    _tell += __SCRIBBLE_VERTEX.__SIZE;
                                 }
                             }
                         }
@@ -959,7 +967,7 @@ if (!is_array(_draw_string))
                     if (_line_halign == fa_right ) _offset =  _text_x_max - _line_width;
                     if (_line_halign == fa_center) _offset = (_text_x_max - _line_width) div 2;
                     
-                    var _tell = _tell_a + __SCRIBBLE_VERTEX.X;
+                    var _tell = _tell_a + __SCRIBBLE_VERTEX.NX;
                     repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                     {
                         buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
@@ -968,7 +976,7 @@ if (!is_array(_draw_string))
                 }
                 
                 var _offset = _line_height div 2;
-                var _tell = _tell_a + __SCRIBBLE_VERTEX.Y;
+                var _tell = _tell_a + __SCRIBBLE_VERTEX.NY;
                 repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                 {
                     buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
@@ -1202,6 +1210,7 @@ if (global.scribble_state_allow_draw)
         //Set the shader and its uniforms
         shader_set(shd_scribble);
         shader_set_uniform_f(global.__scribble_uniform_time         , _animation_time);
+        shader_set_uniform_f(global.__scribble_uniform_z            , SCRIBBLE_Z);
         
         shader_set_uniform_f(global.__scribble_uniform_tw_method    , _typewriter_method);
         shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);

@@ -1,9 +1,11 @@
-const int MAX_EFFECTS = 4;
+const int MAX_EFFECTS = 6;
 //By default, the effect indexes are:
 //0 = is an animated sprite
 //1 = wave
 //2 = shake
 //3 = rainbow
+//4 = wobble
+//5 = swell
 
 const int MAX_DATA_FIELDS = 7;
 //By default, the data fields are:
@@ -14,14 +16,16 @@ const int MAX_DATA_FIELDS = 7;
 //4 = shake speed
 //5 = rainbow weight
 
+const float MAX_LINES = 1000.0; //Change SCRIBBLE_MAX_LINES in __scribble_config() if you change this value!
+
 
 
 //--------------------------------------------------------------------------------------------------------
 // Attributes, Varyings, and Uniforms
 
 
-attribute vec3 in_Position;
-attribute vec3 in_Normal; //Character / Line index / Effects bitpacked number
+attribute vec3 in_Position; //Delta X, Delta Y, Packed character & line index
+attribute vec3 in_Normal;   //Centre X, Centre Y, Effects bitpacked number
 attribute vec4 in_Colour;
 attribute vec2 in_TextureCoord;
 
@@ -30,6 +34,7 @@ varying vec4 v_vColour;
 
 uniform vec4  u_vColourBlend;
 uniform float u_fTime;
+uniform float u_fZ;
 
 uniform float u_fTypewriterMethod;
 uniform float u_fTypewriterSmoothness;
@@ -64,9 +69,24 @@ void unpackFlags(float flagValue, inout float array[MAX_EFFECTS])
 }
 
 //Oscillate the character
-float wave(float amplitude, float frequency, float speed)
+float wave(float characterIndex, float amplitude, float frequency, float speed)
 {
-    return amplitude*sin(frequency*in_Normal.x + speed*u_fTime);
+    return amplitude*sin(frequency*characterIndex + speed*u_fTime);
+}
+
+//Rotate the character
+vec2 rotate(vec2 position, vec2 centre, float angle)
+{
+    vec2 delta = position.xy - centre;
+    float _sin = sin(0.00872664625*angle);
+    float _cos = cos(0.00872664625*angle);
+    return centre + vec2(delta.x*_cos - delta.y*_sin, delta.x*_sin + delta.y*_cos);
+}
+
+//Scale the character
+vec2 scale(vec2 position, vec2 centre, float scale)
+{
+    return centre + scale*(position - centre);
 }
 
 //*That* randomisation function.
@@ -79,15 +99,15 @@ float rand(vec2 co)
 //Shake the character along the x/y axes
 //We use integer time steps so that at low speeds characters don't jump around too much
 //Lots of magic numbers in here to try to get a nice-looking shake
-vec2 shake(float magnitude, float speed)
+vec2 shake(float characterIndex, float magnitude, float speed)
 {
     float time = speed*u_fTime + 0.5;
     float floorTime = floor(time);
     float merge = 1.0 - abs(2.0*(time - floorTime) - 1.0);
     
     //Use some misc prime numbers to try to get a varied-looking shake
-    vec2 delta = vec2(rand(vec2(149.0*in_Normal.x + 13.0*floorTime, 727.0*in_Normal.x - 331.0*floorTime)),
-                      rand(vec2(501.0*in_Normal.x - 19.0*floorTime, 701.0*in_Normal.x + 317.0*floorTime)));
+    vec2 delta = vec2(rand(vec2(149.0*characterIndex + 13.0*floorTime, 727.0*characterIndex - 331.0*floorTime)),
+                      rand(vec2(501.0*characterIndex - 19.0*floorTime, 701.0*characterIndex + 317.0*floorTime)));
     
     return magnitude*merge*(2.0*delta-1.0);
 }
@@ -120,9 +140,9 @@ vec3 hsv2rgb(vec3 c)
 }
 
 //Colour cycling for the rainbow effect
-vec4 rainbow(float weight, float speed, vec4 colour)
+vec4 rainbow(float characterIndex, float weight, float speed, vec4 colour)
 {
-    return vec4(mix(colour.rgb, hsv2rgb(vec3(in_Normal.x + speed*u_fTime, 1.0, 1.0)), weight), colour.a);
+    return vec4(mix(colour.rgb, hsv2rgb(vec3(characterIndex + speed*u_fTime, 1.0, 1.0)), weight), colour.a);
 }
 
 //Fade effect for typewriter etc.
@@ -153,6 +173,10 @@ float fade(float time, float smoothness, float limit)
 
 void main()
 {
+    //Unpack character/line index
+    float characterIndex = floor(in_Position.z / MAX_LINES);
+    float lineIndex      = in_Position.z - characterIndex*MAX_LINES;
+    
     //Unpack data fields into variables
     //This isn't strictly necessary but it makes the shader easier to read
     float waveAmplitude  = u_aDataFields[0];
@@ -170,22 +194,26 @@ void main()
     float shakeFlag   = flagArray[2];
     float rainbowFlag = flagArray[3];
     
+    //Use the input vertex position from the vertex attributes. Use our Z uniform because the z-component is used for other data
+    vec2 centre = in_Normal.xy;
+    vec4 pos = vec4(in_Position.xy + centre, u_fZ, 1.0);
+    
     //Vertex animation
-    vec4 pos = vec4(in_Position.xyz, 1.0); //Use the input vertex position via attributes
-    pos.y  += wave(waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
-    pos.xy += shake(shakeFlag*shakeMagnitude, shakeSpeed); //Apply the shake effect
+    pos.xy  = scale(pos.xy, centre, 1.0);
+    pos.xy  = rotate(pos.xy, centre, 0.0);
+    pos.y  += wave(characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
+    pos.xy += shake(characterIndex, shakeFlag*shakeMagnitude, shakeSpeed); //Apply the shake effect
     
     //Colour
     v_vColour  = handleSprites(spriteFlag, in_Colour); //Use RGBA information to filter out sprites
-    v_vColour  = rainbow(rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
+    v_vColour  = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
     
-    //Only apply the fade if we're given a mathod
+    //Apply fade (if we're given a method)
     if (u_fTypewriterMethod != 0.0)
     {
-        //Choose our limit based on what method's being used
-        //Normal.X stores the character index, Normal.Y stores the line index
-        float limit = (abs(u_fTypewriterMethod) == 1.0)? in_Normal.x : in_Normal.y;
+        //Choose our limit based on what method's being used: if the method value == 1.0 then we're using character indexes, otherwise we use line indexes
+        float limit = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
         v_vColour.a *= fade(u_fTypewriterT, u_fTypewriterSmoothness, limit);
     }
     

@@ -314,9 +314,13 @@ global.__scribble_colours[? "c_yellow" ] = c_yellow;
 global.__scribble_effects[?       "wave"    ] = 1;
 global.__scribble_effects[?       "shake"   ] = 2;
 global.__scribble_effects[?       "rainbow" ] = 3;
+global.__scribble_effects[?       "wobble"  ] = 4;
+global.__scribble_effects[?       "swell"   ] = 5;
 global.__scribble_effects_slash[? "/wave"   ] = 1;
 global.__scribble_effects_slash[? "/shake"  ] = 2;
 global.__scribble_effects_slash[? "/rainbow"] = 3;
+global.__scribble_effects_slash[? "/wobble" ] = 4;
+global.__scribble_effects_slash[? "/swell"  ] = 5;
 
 //Create a vertex format for our text
 vertex_format_begin();
@@ -334,6 +338,7 @@ global.__scribble_uniform_tw_smoothness = shader_get_uniform(shd_scribble, "u_fT
 global.__scribble_uniform_tw_t          = shader_get_uniform(shd_scribble, "u_fTypewriterT"         );
 global.__scribble_uniform_data_fields   = shader_get_uniform(shd_scribble, "u_aDataFields"          );
 global.__scribble_uniform_texel         = shader_get_uniform(shd_scribble, "u_fTexel"               );
+global.__scribble_uniform_z             = shader_get_uniform(shd_scribble, "u_fZ"                   );
 
 //Hex converter array
 var _min = ord("0");
