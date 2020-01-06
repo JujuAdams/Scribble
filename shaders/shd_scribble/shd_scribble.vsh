@@ -24,10 +24,10 @@ const float MAX_LINES = 1000.0; //Change SCRIBBLE_MAX_LINES in __scribble_config
 // Attributes, Varyings, and Uniforms
 
 
-attribute vec3 in_Position; //Delta X, Delta Y, Packed character & line index
-attribute vec3 in_Normal;   //Centre X, Centre Y, Effects bitpacked number
-attribute vec4 in_Colour;
-attribute vec2 in_TextureCoord;
+attribute vec3 in_Position;     //{Centre X, Centre Y, Packed character & line index}
+attribute vec3 in_Normal;       //{Delta X, Delta Y, Bitpacked effect flags}
+attribute vec4 in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
+attribute vec2 in_TextureCoord; //UVs
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
@@ -41,6 +41,7 @@ uniform float u_fTypewriterSmoothness;
 uniform float u_fTypewriterT;
 
 uniform float u_aDataFields[MAX_DATA_FIELDS];
+//uniform vec2 u_vTexel; //Used in the fragment shader
 
 
 
@@ -195,8 +196,9 @@ void main()
     float rainbowFlag = flagArray[3];
     
     //Use the input vertex position from the vertex attributes. Use our Z uniform because the z-component is used for other data
-    vec2 centre = in_Normal.xy;
-    vec4 pos = vec4(in_Position.xy + centre, u_fZ, 1.0);
+    vec2 centre = in_Position.xy;
+    vec2 delta = in_Normal.xy;
+    vec4 pos = vec4(centre + delta, u_fZ, 1.0);
     
     //Vertex animation
     pos.xy  = scale(pos.xy, centre, 1.0);
