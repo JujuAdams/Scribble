@@ -8,7 +8,7 @@ Vertex buffer-based text engine. Faster and more comprehensive than GameMaker na
 
 [Find out what's changed](https://github.com/JujuAdams/scribble/blob/dev/changes.md) since version 4.x.x. [A "lite" version is also available](https://github.com/JujuAdams/scribble/tree/lite).
 
-With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, and Rob van Saaze for testing.
+With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, and soVes for testing.
 
 &nbsp;
 
