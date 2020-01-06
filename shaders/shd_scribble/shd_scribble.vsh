@@ -5,16 +5,21 @@ const int MAX_EFFECTS = 6;
 //2 = shake
 //3 = rainbow
 //4 = wobble
-//5 = swell
+//5 = pulse
 
-const int MAX_DATA_FIELDS = 7;
+const int MAX_DATA_FIELDS = 11;
 //By default, the data fields are:
-//0 = wave size
-//1 = wave frequency
-//2 = wave speed
-//3 = shake size
-//4 = shake speed
-//5 = rainbow weight
+// 0 = wave amplitude
+// 1 = wave frequency
+// 2 = wave speed
+// 3 = shake amplitude
+// 4 = shake speed
+// 5 = rainbow weight
+// 6 = rainbow speed
+// 7 = wobble angle
+// 8 = wobble frequency
+// 9 = pulse scale
+//10 = pulse speed
 
 const float MAX_LINES = 1000.0; //Change SCRIBBLE_MAX_LINES in __scribble_config() if you change this value!
 
@@ -69,12 +74,6 @@ void unpackFlags(float flagValue, inout float array[MAX_EFFECTS])
     }
 }
 
-//Oscillate the character
-float wave(float characterIndex, float amplitude, float frequency, float speed)
-{
-    return amplitude*sin(frequency*characterIndex + speed*u_fTime);
-}
-
 //Rotate the character
 vec2 rotate(vec2 position, vec2 centre, float angle)
 {
@@ -88,6 +87,25 @@ vec2 rotate(vec2 position, vec2 centre, float angle)
 vec2 scale(vec2 position, vec2 centre, float scale)
 {
     return centre + scale*(position - centre);
+}
+
+//Oscillate the character
+float wave(float characterIndex, float amplitude, float frequency, float speed)
+{
+    return amplitude*sin(frequency*characterIndex + speed*u_fTime);
+}
+
+//Wobble the character by rotating around its central point
+vec2 wobble(vec2 position, vec2 centre, float angle, float frequency)
+{
+    return rotate(position, centre, angle*sin(frequency*u_fTime));
+}
+
+//Pulse the character by scaling it up and down
+vec2 pulse(vec2 position, vec2 centre, float characterIndex, float scale_, float frequency)
+{
+    float adjustedScale = 1.0 + scale_*(0.5 + 0.5*sin(frequency*(250.0*characterIndex + u_fTime)));
+    return scale(position, centre, adjustedScale);
 }
 
 //*That* randomisation function.
@@ -180,13 +198,17 @@ void main()
     
     //Unpack data fields into variables
     //This isn't strictly necessary but it makes the shader easier to read
-    float waveAmplitude  = u_aDataFields[0];
-    float waveFrequency  = u_aDataFields[1];
-    float waveSpeed      = u_aDataFields[2];
-    float shakeMagnitude = u_aDataFields[3];
-    float shakeSpeed     = u_aDataFields[4];
-    float rainbowWeight  = u_aDataFields[5];
-    float rainbowSpeed   = u_aDataFields[6];
+    float waveAmplitude   = u_aDataFields[ 0];
+    float waveFrequency   = u_aDataFields[ 1];
+    float waveSpeed       = u_aDataFields[ 2];
+    float shakeAmplitude  = u_aDataFields[ 3];
+    float shakeSpeed      = u_aDataFields[ 4];
+    float rainbowWeight   = u_aDataFields[ 5];
+    float rainbowSpeed    = u_aDataFields[ 6];
+    float wobbleAngle     = u_aDataFields[ 7];
+    float wobbleFrequency = u_aDataFields[ 8];
+    float pulseScale      = u_aDataFields[ 9];
+    float pulseSpeed      = u_aDataFields[10];
     
     //Unpack the effect flag bits into an array, then into variables for readability
     float flagArray[MAX_EFFECTS]; unpackFlags(in_Normal.z, flagArray);
@@ -194,6 +216,8 @@ void main()
     float waveFlag    = flagArray[1];
     float shakeFlag   = flagArray[2];
     float rainbowFlag = flagArray[3];
+    float wobbleFlag  = flagArray[4];
+    float pulseFlag   = flagArray[5];
     
     //Use the input vertex position from the vertex attributes. Use our Z uniform because the z-component is used for other data
     vec2 centre = in_Position.xy;
@@ -201,10 +225,10 @@ void main()
     vec4 pos = vec4(centre + delta, u_fZ, 1.0);
     
     //Vertex animation
-    pos.xy  = scale(pos.xy, centre, 1.0);
-    pos.xy  = rotate(pos.xy, centre, 0.0);
+    pos.xy  = wobble(pos.xy, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
+    pos.xy  = pulse(pos.xy, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
     pos.y  += wave(characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
-    pos.xy += shake(characterIndex, shakeFlag*shakeMagnitude, shakeSpeed); //Apply the shake effect
+    pos.xy += shake(characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
     
     //Colour
     v_vColour  = handleSprites(spriteFlag, in_Colour); //Use RGBA information to filter out sprites

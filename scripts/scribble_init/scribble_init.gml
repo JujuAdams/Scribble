@@ -196,9 +196,6 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_EXPECTED_GLYPHS      100
 #macro __SCRIBBLE_EXPECTED_FRAME_TIME  (0.95*game_get_speed(gamespeed_microseconds)/1000) //Uses to prevent the autotype from advancing if a draw call is made multiple times a frame to the same text element
 
-///__SCRIBBLE_MAX_DATA_FIELDS must match the corresponding values in shader shd_scribble
-#macro __SCRIBBLE_MAX_DATA_FIELDS  7
-
 //These are tied to values in shd_scribble
 //If you need to change these for some reason, you'll need to change shd_scribble too
 #macro SCRIBBLE_AUTOTYPE_NONE           0  //No fade
@@ -268,8 +265,8 @@ else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_defau
 global.__scribble_font_directory    = _font_directory;
 global.__scribble_font_data         = ds_map_create();  //Stores a data array for each font defined inside Scribble
 global.__scribble_colours           = ds_map_create();  //Stores colour definitions, including custom colours
-global.__scribble_effects             = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_effects_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_effects           = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_effects_slash     = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_autotype_events   = ds_map_create();
 global.scribble_alive               = ds_map_create();  //ds_map of all alive text elements
 global.__scribble_global_count      = 0;
@@ -281,8 +278,8 @@ global.__scribble_cache_group_map   = ds_map_create();
 ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP, global.__scribble_global_cache_list);
 
 //Declare state variables
-global.__scribble_default_anim_array = [4, 50, 0.2,   4, 0.4,   0.5, 0.01];
-global.scribble_state_anim_array = array_create(__SCRIBBLE_MAX_DATA_FIELDS);
+global.__scribble_default_anim_array = [4, 50, 0.2,   4, 0.4,   0.5, 0.01,   40, 0.15,   0.4, 0.1];
+global.scribble_state_anim_array = array_create(SCRIBBLE_MAX_DATA_FIELDS);
 scribble_draw_reset();
 
 //Duplicate GM's native colour constants in string form for access in scribble_draw()
@@ -315,12 +312,12 @@ global.__scribble_effects[?       "wave"    ] = 1;
 global.__scribble_effects[?       "shake"   ] = 2;
 global.__scribble_effects[?       "rainbow" ] = 3;
 global.__scribble_effects[?       "wobble"  ] = 4;
-global.__scribble_effects[?       "swell"   ] = 5;
+global.__scribble_effects[?       "pulse"   ] = 5;
 global.__scribble_effects_slash[? "/wave"   ] = 1;
 global.__scribble_effects_slash[? "/shake"  ] = 2;
 global.__scribble_effects_slash[? "/rainbow"] = 3;
 global.__scribble_effects_slash[? "/wobble" ] = 4;
-global.__scribble_effects_slash[? "/swell"  ] = 5;
+global.__scribble_effects_slash[? "/pulse"  ] = 5;
 
 //Create a vertex format for our text
 vertex_format_begin();

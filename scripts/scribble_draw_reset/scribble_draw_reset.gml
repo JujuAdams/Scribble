@@ -20,4 +20,4 @@ global.scribble_state_tw_method       = SCRIBBLE_AUTOTYPE_NONE;
 global.scribble_state_cache_group     = SCRIBBLE_DEFAULT_CACHE_GROUP;
 global.scribble_state_allow_draw      = true;
 global.scribble_state_freeze          = false;
-array_copy(global.scribble_state_anim_array, 0, global.__scribble_default_anim_array, 0, __SCRIBBLE_MAX_DATA_FIELDS);
+array_copy(global.scribble_state_anim_array, 0, global.__scribble_default_anim_array, 0, SCRIBBLE_MAX_DATA_FIELDS);
