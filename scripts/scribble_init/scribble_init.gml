@@ -190,7 +190,7 @@ enum __SCRIBBLE
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
-#macro __SCRIBBLE_ON_OPENGL            !__SCRIBBLE_ON_DIRECTX
+#macro __SCRIBBLE_ON_OPENGL            (!__SCRIBBLE_ON_DIRECTX)
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
 #macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
 #macro __SCRIBBLE_EXPECTED_GLYPHS      100
@@ -368,47 +368,54 @@ global.__scribble_hex_array[@ ord("f") - _min ] = 15; //ascii 102 = array 54
 
 if (_auto_scan)
 {
-    var _root_directory_size = string_length(global.__scribble_font_directory);
-    
-    var _directory_list = ds_list_create();
-    ds_list_add(_directory_list, _font_directory);
-    while(!ds_list_empty(_directory_list))
+    if (os_browser != browser_not_a_browser)
     {
-        var _directory = _directory_list[| 0];
-        ds_list_delete(_directory_list, 0);
-        
-        var _file = file_find_first(_directory + "*.*", fa_readonly | fa_hidden | fa_directory);
-        while(_file != "")
-        {
-            if (directory_exists(_directory + _file))
-            {
-                ds_list_add(_directory_list, _font_directory + _file + "\\");
-            }
-            
-            _file = file_find_next();
-        }
-        file_find_close();
-        
-        var _file = file_find_first(_directory + "*.*", 0);
-        while(_file != "")
-        {
-            if (filename_ext(_file) == ".yy")
-            {
-                var _font = filename_change_ext(_file, "");
-
-                if (asset_get_type(_font) != asset_font)
-                {
-                    show_debug_message("Scribble: WARNING! Autoscan found \"" + _file + "\", but \"" + _font + "\" was not found in the project");
-                }
-                else
-                {
-                    scribble_add_font(_font, string_delete(_directory + _file, 1, _root_directory_size));
-                    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Autoscan added \"" + _font + "\" as a standard font (via " + string(_directory + _file) + ")");
-                }
-            }
-            _file = file_find_next();
-        }
-        file_find_close();
+        show_error("Scribble:\nFont autoscan is not supported on this platform.\nPlease manually add fonts using scribble_add_font() ", false);
     }
-    ds_list_destroy(_directory_list);
+    else
+    {
+        var _root_directory_size = string_length(global.__scribble_font_directory);
+        
+        var _directory_list = ds_list_create();
+        ds_list_add(_directory_list, _font_directory);
+        while(!ds_list_empty(_directory_list))
+        {
+            var _directory = _directory_list[| 0];
+            ds_list_delete(_directory_list, 0);
+            
+            var _file = file_find_first(_directory + "*.*", fa_readonly | fa_hidden | fa_directory);
+            while(_file != "")
+            {
+                if (directory_exists(_directory + _file))
+                {
+                    ds_list_add(_directory_list, _font_directory + _file + "\\");
+                }
+                
+                _file = file_find_next();
+            }
+            file_find_close();
+            
+            var _file = file_find_first(_directory + "*.*", 0);
+            while(_file != "")
+            {
+                if (filename_ext(_file) == ".yy")
+                {
+                    var _font = filename_change_ext(_file, "");
+                    
+                    if (asset_get_type(_font) != asset_font)
+                    {
+                        show_debug_message("Scribble: WARNING! Autoscan found \"" + _file + "\", but \"" + _font + "\" was not found in the project");
+                    }
+                    else
+                    {
+                        scribble_add_font(_font, string_delete(_directory + _file, 1, _root_directory_size));
+                        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Autoscan added \"" + _font + "\" as a standard font (via " + string(_directory + _file) + ")");
+                    }
+                }
+                _file = file_find_next();
+            }
+            file_find_close();
+        }
+        ds_list_destroy(_directory_list);
+    }
 }
