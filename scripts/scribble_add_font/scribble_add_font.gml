@@ -84,14 +84,13 @@ _data[@ __SCRIBBLE_FONT.TEXTURE] = _texture;
 if (SCRIBBLE_VERBOSE)
 {
     show_debug_message("Scribble:   \"" + _font +"\""
+                     + ", asset = " + string(_asset)
                      + ", texture = " + string(_texture)
                      + ", size = " + string(_texture_w) + " x " + string(_texture_h)
                      + ", texel = " + string_format(_texture_tw, 1, 10) + " x " + string_format(_texture_th, 1, 10)
                      + ", uvs = " + string_format(_texture_uvs[0], 1, 10) + "," + string_format(_texture_uvs[1], 1, 10)
                      + " -> " + string_format(_texture_uvs[2], 1, 10) + "," + string_format(_texture_uvs[3], 1, 10));
 }
-
-
 
 var _json_buffer = buffer_load(_path);
 var _json_string = buffer_read(_json_buffer, buffer_text);

@@ -192,6 +192,7 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
 #macro __SCRIBBLE_ON_OPENGL            (!__SCRIBBLE_ON_DIRECTX)
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
+#macro __SCRIBBLE_ON_WEB               (os_browser != browser_not_a_browser)
 #macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
 #macro __SCRIBBLE_EXPECTED_GLYPHS      100
 #macro __SCRIBBLE_EXPECTED_FRAME_TIME  (0.95*game_get_speed(gamespeed_microseconds)/1000) //Uses to prevent the autotype from advancing if a draw call is made multiple times a frame to the same text element
@@ -228,17 +229,28 @@ if (__SCRIBBLE_ON_MOBILE)
         exit;
     }
 }
-else
+else if (__SCRIBBLE_ON_WEB)
+{
+    if (_font_directory != "")
+    {
+        show_debug_message("Scribble: Using folders inside Included Files might not work properly on HTML5. If you're having trouble, try using an empty string for the font directory and place fonts in the root of Included Files.");
+    }
+}
+
+if (_font_directory != "")
 {
     //Fix the font directory name if it's weird
     var _char = string_char_at(_font_directory, string_length(_font_directory));
     if (_char != "\\") && (_char != "/") _font_directory += "\\";
 }
 
-//Check if the directory exists
-if ( !directory_exists(_font_directory) )
+if (!__SCRIBBLE_ON_WEB)
 {
-    show_debug_message("Scribble: WARNING! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
+    //Check if the directory exists
+    if (!directory_exists(_font_directory))
+    {
+        show_debug_message("Scribble: WARNING! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
+    }
 }
 
 //Check if the default font parameter is the correct datatype
@@ -368,7 +380,7 @@ global.__scribble_hex_array[@ ord("f") - _min ] = 15; //ascii 102 = array 54
 
 if (_auto_scan)
 {
-    if (os_browser != browser_not_a_browser)
+    if (__SCRIBBLE_ON_MOBILE || __SCRIBBLE_ON_WEB)
     {
         show_error("Scribble:\nFont autoscan is not supported on this platform.\nPlease manually add fonts using scribble_add_font() ", false);
     }
