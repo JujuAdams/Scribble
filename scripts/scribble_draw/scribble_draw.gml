@@ -80,7 +80,7 @@ if (!is_array(_draw_string))
         if (_glyph_array == undefined)
         {
             show_error("Scribble:\nThe space character is missing from font definition for \"" + _def_font + "\"\n ", true);
-            exit;
+            return undefined;
         }
     
         var _def_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH]; //Find the default font's space width
