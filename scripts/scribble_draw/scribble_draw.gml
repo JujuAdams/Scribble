@@ -32,9 +32,9 @@
 
 
 
-var _draw_x      = argument[0];
-var _draw_y      = argument[1];
-var _draw_string = argument[2];
+var _draw_x      = argument0;
+var _draw_y      = argument1;
+var _draw_string = argument2;
 
 
 
@@ -65,10 +65,10 @@ if (!is_array(_draw_string))
         //Check if the default font even exists
         if (!ds_map_exists(global.__scribble_font_data, _def_font))
         {
-            show_error("Scribble:\n\"" + string(_def_font) + "\" not recognised as a font\n ", false);
-            var _def_font = global.__scribble_default_font;
+            show_error("Scribble:\nDefault font \"" + string(_def_font) + "\" not recognised\n ", false);
+            exit;
         }
-    
+        
         var _font_data         = global.__scribble_font_data[? _def_font];
         var _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
         var _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
