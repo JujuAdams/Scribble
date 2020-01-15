@@ -75,8 +75,9 @@ Here is an example of the code required to initialise a spritefont in Scribble:
 //  The font directory is set as the root of the sandbox
 //  The default font is set as "fnt_score"
 //  Automatic scanning for fonts ("autoscan") is turned off
-scribble_init_begin("", “fnt_score”, false);
+scribble_init("", “fnt_score”, false);
 
 //Add the spritefont called "fnt_score" to Scribble
-scribble_add_spritefont("fnt_score");`
+//This function works the same as GM's native font_add_sprite_ext() (but is always proportional)
+scribble_add_spritefont("fnt_score", "abcdefghijklmnopqrstuvwxyz", 0);
 ```
