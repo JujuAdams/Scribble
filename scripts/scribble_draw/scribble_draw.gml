@@ -82,12 +82,11 @@ if (!is_array(_draw_string))
             show_error("Scribble:\nThe space character is missing from font definition for \"" + _def_font + "\"\n ", true);
             return undefined;
         }
-    
-        var _def_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH]; //Find the default font's space width
+        
         if (_line_min_height < 0) _line_min_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT]; //Find the default line minimum height if not specified
-    
+        
         var _font_line_height = _line_min_height;
-        var _font_space_width = _def_space_width;
+        var _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH];
     
         //Try to use a custom colour if the "startingColour" parameter is a string
         if (is_string(_def_colour))
@@ -257,23 +256,40 @@ if (!is_array(_draw_string))
                     {
                         #region Reset formatting
                         case "":
-                            _text_font        = _def_font;
-                            _text_colour      = _def_colour;
-                            _text_effect_flags       = 0;
-                            _text_scale       = 1;
-                            _text_slant       = false;
-                    
-                            _font_line_height = _line_min_height;
-                            _font_space_width = _def_space_width;
-                    
+                            _text_font         = _def_font;
+                            _text_colour       = _def_colour;
+                            _text_effect_flags = 0;
+                            _text_scale        = 1;
+                            _text_slant        = false;
+                            
+                            _font_data         = global.__scribble_font_data[? _text_font];
+                            _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
+                            _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
+                            _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
+                            _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
+                            _font_texture      = _font_data[__SCRIBBLE_FONT.TEXTURE     ];
+                            
+                            var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
+                            _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
+                            _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
+                            
                             continue; //Skip the rest of the parser step
                         break;
                 
                         case "/font":
                         case "/f":
-                            _text_font        = _def_font;
-                            _font_line_height = _line_min_height;
-                            _font_space_width = _def_space_width;
+                            _text_font = _def_font;
+                            
+                            _font_data         = global.__scribble_font_data[? _text_font];
+                            _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
+                            _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
+                            _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
+                            _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
+                            _font_texture      = _font_data[__SCRIBBLE_FONT.TEXTURE     ];
+                            
+                            var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
+                            _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
+                            _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
                     
                             continue; //Skip the rest of the parser step
                         break;
