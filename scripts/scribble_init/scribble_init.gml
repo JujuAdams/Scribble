@@ -32,15 +32,6 @@
 #macro __SCRIBBLE_DATE     "2020/01/15"
 #macro __SCRIBBLE_DEBUG    false
 
-enum SCRIBBLE_BOX
-{
-    TL_X, TL_Y, //Top left corner
-    TR_X, TR_Y, //Top right corner
-    BL_X, BL_Y, //Bottom left corner
-    BR_X, BR_Y, //Bottom right corner
-    __SIZE
-}
-
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
 enum SCRIBBLE_GLYPH
 {
@@ -205,6 +196,8 @@ enum __SCRIBBLE
 #macro SCRIBBLE_FADE_NONE               SCRIBBLE_AUTOTYPE_NONE
 #macro SCRIBBLE_FADE_PER_CHARACTER      SCRIBBLE_AUTOTYPE_PER_CHARACTER
 #macro SCRIBBLE_FADE_PER_LINE           SCRIBBLE_AUTOTYPE_PER_LINE
+
+#macro scribble_add_colour  scribble_add_color
 
 #endregion
 

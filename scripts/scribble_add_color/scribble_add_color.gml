@@ -1,21 +1,51 @@
-/// Adds a custom color for use as an in-line color definition for scribble_draw().
+/// Adds a custom colour for use as an in-line colour definition for scribble_draw().
 /// 
 /// 
-/// @param name                    String name of the color
-/// @param color                   The color itself as a 24-bit integer
-/// @param [colorIsGameMakerBGR]   Whether the color is in GameMaker's propriatery 24-bit BGR color format. Defaults to <false>.
+/// @param name                     String name of the colour
+/// @param colour                   The colour itself as a 24-bit integer
+/// @param [colourIsGameMakerBGR]   Whether the colour is in GameMaker's propriatery 24-bit BGR colour format. Defaults to <false>.
 /// 
 /// All optional arguments accept <undefined> to indicate that the default value should be used.
 
-if (argument_count == 2)
+var _name   = argument[0];
+var _colour = argument[1];
+var _native = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+
+if ( !variable_global_exists("__scribble_global_count") )
 {
-    return scribble_add_colour(argument[0], argument[1]);
+    show_error("Scribble:\nscribble_add_color() should be called after initialising Scribble.\n ", false);
+    exit;
 }
-else if (argument_count == 3)
+
+if ( !is_string(_name) )
 {
-    return scribble_add_colour(argument[0], argument[1], argument[2]);
+    show_error("Scribble:\nCustom colour names should be strings.\n ", false);
+    exit;
 }
-else
+
+if ( !is_real(_colour) )
 {
-    return undefined;
+    show_error("Scribble:\nCustom colours should be specificed as 24-bit integers.\n ", false);
+    exit;
 }
+
+if (!_native)
+{
+    _colour = make_colour_rgb(colour_get_blue(_colour), colour_get_green(_colour), colour_get_red(_colour));
+}
+
+if ( ds_map_exists(global.__scribble_effects, _name) )
+{
+    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as an effect" );
+    exit;
+}
+
+var _old_colour = global.__scribble_colours[? _name ];
+if ( is_real(_old_colour) )
+{
+    show_debug_message("Scribble: WARNING! Overwriting colour \"" + _name + "\" (" + string(colour_get_red(_old_colour)) + "," + string(colour_get_green(_old_colour)) + "," + string(colour_get_blue(_old_colour)) + ", u32=" + string(_old_colour) + ")");
+}
+
+global.__scribble_colours[? _name ] = _colour;
+
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added colour \"" + _name + "\" as " + string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)) + ", u32=" + string(_colour));
