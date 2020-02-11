@@ -171,8 +171,7 @@ float fade(float time, float smoothness, float limit)
     
     if (smoothness > 0.0)
     {
-        float adjustedTime = time*(1.0 + smoothness);
-        multiplier = clamp((adjustedTime - limit)/smoothness, 0.0, 1.0);
+        multiplier = clamp((time - limit)/smoothness, 0.0, 1.0);
     }
     else
     {

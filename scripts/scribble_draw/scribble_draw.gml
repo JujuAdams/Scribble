@@ -1233,6 +1233,7 @@ if (global.scribble_state_allow_draw)
             }
             
             var _typewriter_t = clamp(_typewriter_position, 0, _typewriter_count + _typewriter_smoothness);
+            _typewriter_t *= 1 + _typewriter_smoothness/_typewriter_count; //Correct for smoothness
             
             //If it's been around-about a frame since we called this scripts...
             if (_increment_timers)
