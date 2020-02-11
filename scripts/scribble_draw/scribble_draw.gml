@@ -114,44 +114,47 @@ if (!is_array(_draw_string))
         var _events_data_array     = array_create(0);  //Stores each event's parameters
         var _texture_to_buffer_map = ds_map_create();
     
-        _scribble_array[@ __SCRIBBLE.__SECTION0         ] = "-- Parameters --";
-        _scribble_array[@ __SCRIBBLE.VERSION            ] = __SCRIBBLE_VERSION;
-        _scribble_array[@ __SCRIBBLE.STRING             ] = _draw_string;
-        _scribble_array[@ __SCRIBBLE.DEFAULT_FONT       ] = _def_font;
-        _scribble_array[@ __SCRIBBLE.DEFAULT_COLOUR     ] = _def_colour;
-        _scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN     ] = _def_halign;
-        _scribble_array[@ __SCRIBBLE.WIDTH_LIMIT        ] = _max_width;
-        _scribble_array[@ __SCRIBBLE.LINE_HEIGHT        ] = _line_min_height;
+        _scribble_array[@ __SCRIBBLE.__SECTION0            ] = "-- Parameters --";
+        _scribble_array[@ __SCRIBBLE.VERSION               ] = __SCRIBBLE_VERSION;
+        _scribble_array[@ __SCRIBBLE.STRING                ] = _draw_string;
+        _scribble_array[@ __SCRIBBLE.DEFAULT_FONT          ] = _def_font;
+        _scribble_array[@ __SCRIBBLE.DEFAULT_COLOUR        ] = _def_colour;
+        _scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN        ] = _def_halign;
+        _scribble_array[@ __SCRIBBLE.WIDTH_LIMIT           ] = _max_width;
+        _scribble_array[@ __SCRIBBLE.LINE_HEIGHT           ] = _line_min_height;
     
-        _scribble_array[@ __SCRIBBLE.__SECTION1         ] = "-- Statistics --";
-        _scribble_array[@ __SCRIBBLE.WIDTH              ] = 0;
-        _scribble_array[@ __SCRIBBLE.HEIGHT             ] = 0;
-        _scribble_array[@ __SCRIBBLE.CHARACTERS         ] = 0;
-        _scribble_array[@ __SCRIBBLE.LINES              ] = 0;
-        _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX       ] = global.__scribble_global_count+1;
+        _scribble_array[@ __SCRIBBLE.__SECTION1            ] = "-- Statistics --";
+        _scribble_array[@ __SCRIBBLE.WIDTH                 ] = 0;
+        _scribble_array[@ __SCRIBBLE.HEIGHT                ] = 0;
+        _scribble_array[@ __SCRIBBLE.CHARACTERS            ] = 0;
+        _scribble_array[@ __SCRIBBLE.LINES                 ] = 0;
+        _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX          ] = global.__scribble_global_count+1;
     
-        _scribble_array[@ __SCRIBBLE.__SECTION2         ] = "-- State --";
-        _scribble_array[@ __SCRIBBLE.ANIMATION_TIME     ] = 0;
-        _scribble_array[@ __SCRIBBLE.TIME               ] = current_time;
-        _scribble_array[@ __SCRIBBLE.FREED              ] = false;
+        _scribble_array[@ __SCRIBBLE.__SECTION2            ] = "-- State --";
+        _scribble_array[@ __SCRIBBLE.ANIMATION_TIME        ] = 0;
+        _scribble_array[@ __SCRIBBLE.TIME                  ] = current_time;
+        _scribble_array[@ __SCRIBBLE.FREED                 ] = false;
+        _scribble_array[@ __SCRIBBLE.SOUND_FINISH_TIME     ] = current_time;
     
-        _scribble_array[@ __SCRIBBLE.__SECTION3         ] = "-- Lists --";
-        _scribble_array[@ __SCRIBBLE.LINE_LIST          ] = _line_list;
-        _scribble_array[@ __SCRIBBLE.VERTEX_BUFFER_LIST ] = _vertex_buffer_list;
+        _scribble_array[@ __SCRIBBLE.__SECTION3            ] = "-- Lists --";
+        _scribble_array[@ __SCRIBBLE.LINE_LIST             ] = _line_list;
+        _scribble_array[@ __SCRIBBLE.VERTEX_BUFFER_LIST    ] = _vertex_buffer_list;
     
-        _scribble_array[@ __SCRIBBLE.__SECTION4         ] = "-- Autotype --";
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN   ] = -1;
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED     ] = 0;
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION  ] = 0;
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD    ] = SCRIBBLE_AUTOTYPE_NONE;
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS] = 0;
+        _scribble_array[@ __SCRIBBLE.__SECTION4            ] = "-- Autotype --";
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = -1;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] = 0;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION     ] = 0;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD       ] = SCRIBBLE_AUTOTYPE_NONE;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] = 0;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_ARRAY  ] = -1;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_OVERLAP] = 0;
     
-        _scribble_array[@ __SCRIBBLE.__SECTION5         ] = "-- Events --";
-        _scribble_array[@ __SCRIBBLE.EVENT_PREVIOUS     ] = -1;
-        _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = -1;
-        _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY   ] = _events_char_array; //Stores each event's triggering cha
-        _scribble_array[@ __SCRIBBLE.EVENT_NAME_ARRAY   ] = _events_name_array; //Stores each event's name
-        _scribble_array[@ __SCRIBBLE.EVENT_DATA_ARRAY   ] = _events_data_array; //Stores each event's parameters
+        _scribble_array[@ __SCRIBBLE.__SECTION5            ] = "-- Events --";
+        _scribble_array[@ __SCRIBBLE.EVENT_PREVIOUS        ] = -1;
+        _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS   ] = -1;
+        _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY      ] = _events_char_array; //Stores each event's triggering cha
+        _scribble_array[@ __SCRIBBLE.EVENT_NAME_ARRAY      ] = _events_name_array; //Stores each event's name
+        _scribble_array[@ __SCRIBBLE.EVENT_DATA_ARRAY      ] = _events_data_array; //Stores each event's parameters
     
         #endregion
         
@@ -1147,6 +1150,18 @@ if (global.scribble_state_allow_draw)
                 var _scan_a = _scribble_array[__SCRIBBLE.EVENT_CHAR_PREVIOUS];
                 if (_scan_b > _scan_a)
                 {
+                    //Play a sound effect as the text is revealed
+                    var _sound_array = _scribble_array[__SCRIBBLE.AUTOTYPE_SOUND_ARRAY];
+                    if (is_array(_sound_array) && (array_length_1d(_sound_array) > 0))
+                    {
+                        if (current_time >= _scribble_array[__SCRIBBLE.SOUND_FINISH_TIME]) 
+                        {
+                            var _sound = _sound_array[irandom(array_length_1d(_sound_array)-1)];
+                            audio_play_sound(_sound, 0, false);
+                            _scribble_array[@ __SCRIBBLE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _scribble_array[__SCRIBBLE.AUTOTYPE_SOUND_OVERLAP];
+                        }
+                    }
+                    
                     var _event             = _scribble_array[__SCRIBBLE.EVENT_PREVIOUS  ];
                     var _events_char_array = _scribble_array[__SCRIBBLE.EVENT_CHAR_ARRAY];
                     var _events_name_array = _scribble_array[__SCRIBBLE.EVENT_NAME_ARRAY];
@@ -1192,6 +1207,10 @@ if (global.scribble_state_allow_draw)
                         if (_break && (_typewriter_method == SCRIBBLE_AUTOTYPE_PER_CHARACTER)) _typewriter_position = _scan;
                         
                         _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = _scan;
+                    }
+                    else
+                    {
+                        _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS] = _scan_b;
                     }
                 }
             }

@@ -138,46 +138,49 @@ enum SCRIBBLE_STATE
 
 enum __SCRIBBLE
 {
-    __SECTION0,          // 0
-    VERSION,             // 1
-    STRING,              // 2
-    DEFAULT_FONT,        // 3
-    DEFAULT_COLOUR,      // 4
-    DEFAULT_HALIGN,      // 5
-    WIDTH_LIMIT,         // 6
-    LINE_HEIGHT,         // 7
+    __SECTION0,             // 0
+    VERSION,                // 1
+    STRING,                 // 2
+    DEFAULT_FONT,           // 3
+    DEFAULT_COLOUR,         // 4
+    DEFAULT_HALIGN,         // 5
+    WIDTH_LIMIT,            // 6
+    LINE_HEIGHT,            // 7
     
-    __SECTION1,          // 8
-    WIDTH,               // 9
-    HEIGHT,              //10
-    CHARACTERS,          //11
-    LINES,               //12
-    GLOBAL_INDEX,        //13
+    __SECTION1,             // 8
+    WIDTH,                  // 9
+    HEIGHT,                 //10
+    CHARACTERS,             //11
+    LINES,                  //12
+    GLOBAL_INDEX,           //13
     
-    __SECTION2,          //14
-    ANIMATION_TIME,      //15
-    TIME,                //16
-    FREED,               //17
+    __SECTION2,             //14
+    ANIMATION_TIME,         //15
+    TIME,                   //16
+    FREED,                  //17
+    SOUND_FINISH_TIME,      //18
     
-    __SECTION3,          //18
-    LINE_LIST,           //19
-    VERTEX_BUFFER_LIST,  //20
+    __SECTION3,             //19
+    LINE_LIST,              //20
+    VERTEX_BUFFER_LIST,     //21
     
-    __SECTION4,          //21
-    AUTOTYPE_FADE_IN,    //22
-    AUTOTYPE_SPEED,      //23
-    AUTOTYPE_POSITION,   //24
-    AUTOTYPE_METHOD,     //25
-    AUTOTYPE_SMOOTHNESS, //26
+    __SECTION4,             //22
+    AUTOTYPE_FADE_IN,       //23
+    AUTOTYPE_SPEED,         //24
+    AUTOTYPE_POSITION,      //25
+    AUTOTYPE_METHOD,        //26
+    AUTOTYPE_SMOOTHNESS,    //27
+    AUTOTYPE_SOUND_ARRAY,   //28
+    AUTOTYPE_SOUND_OVERLAP, //29
     
-    __SECTION5,          //27
-    EVENT_PREVIOUS,      //28
-    EVENT_CHAR_PREVIOUS, //29
-    EVENT_CHAR_ARRAY,    //30
-    EVENT_NAME_ARRAY,    //31
-    EVENT_DATA_ARRAY,    //32
+    __SECTION5,             //30
+    EVENT_PREVIOUS,         //31
+    EVENT_CHAR_PREVIOUS,    //32
+    EVENT_CHAR_ARRAY,       //33
+    EVENT_NAME_ARRAY,       //34
+    EVENT_DATA_ARRAY,       //35
     
-    __SIZE               //33
+    __SIZE                  //36
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
