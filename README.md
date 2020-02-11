@@ -1,6 +1,6 @@
-<h1 align="center">Scribble 5.3.2</h1>
+<h1 align="center">Scribble 5.3.3</h1>
 
-<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.3.2">Download .yymp here</a></p>
+<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.3.3">Download .yymp here</a></p>
 
 ### @jujuadams
 
@@ -8,7 +8,7 @@ Vertex buffer-based text engine. Faster and more comprehensive than GameMaker's 
 
 [Find out what's changed](https://github.com/JujuAdams/scribble/blob/dev/changes.md) since version 4.x.x. [A "lite" version is also available](https://github.com/JujuAdams/scribble/tree/lite).
 
-With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, and soVes for testing.
+With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_ for testing.
 
 &nbsp;
 
