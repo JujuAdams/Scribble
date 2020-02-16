@@ -29,6 +29,8 @@
 /// [wave]    [/wave]                   Set/unset text to wave up and down
 /// [shake]   [/shake]                  Set/unset text to shake
 /// [rainbow] [/rainbow]                Set/unset text to cycle through rainbow colours
+/// [wobble]  [/wobble]                 Set/unset text to wobble by rotating back and forth
+/// [pulse]   [/pulse]                  Set/unset text to shrink and grow rhythmically
 
 
 
