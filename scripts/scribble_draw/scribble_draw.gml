@@ -108,8 +108,7 @@ if (!is_array(_draw_string))
         #region Create the text element (an array)
     
         var _scribble_array        = array_create(__SCRIBBLE.__SIZE); //The text element array
-        var _lines_array           = [];                              //Stores each line of text
-        var _vertex_buffers_array  = [];                              //Stores all the vertex buffers needed to render the text and sprites
+        var _pages_array           = [];                              //Stores each page of text
         var _events_char_array     = [];                              //Stores each event's triggering character
         var _events_name_array     = [];                              //Stores each event's name
         var _events_data_array     = [];                              //Stores each event's parameters
@@ -139,12 +138,11 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.FREED                 ] = false;
         _scribble_array[@ __SCRIBBLE.SOUND_FINISH_TIME     ] = current_time;
     
-        _scribble_array[@ __SCRIBBLE.__SECTION3            ] = "-- Lists --";
-        _scribble_array[@ __SCRIBBLE.LINES_ARRAY           ] = _lines_array;
-        _scribble_array[@ __SCRIBBLE.VERTEX_BUFFERS_ARRAY  ] = _vertex_buffers_array;
+        _scribble_array[@ __SCRIBBLE.__SECTION3            ] = "-- Pages --";
+        _scribble_array[@ __SCRIBBLE.PAGE                  ] =  0;
+        _scribble_array[@ __SCRIBBLE.PAGES_ARRAY           ] = _pages_array;
     
         _scribble_array[@ __SCRIBBLE.__SECTION4            ] = "-- Autotype --";
-        _scribble_array[@ __SCRIBBLE.PAGE                  ] =  0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = -1;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] =  0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION     ] =  0;
@@ -152,13 +150,24 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] =  0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_ARRAY  ] = -1;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_OVERLAP] =  0;
-    
+        
+        //TODO - Move events into pages
         _scribble_array[@ __SCRIBBLE.__SECTION5            ] = "-- Events --";
         _scribble_array[@ __SCRIBBLE.EVENT_PREVIOUS        ] = -1;
         _scribble_array[@ __SCRIBBLE.EVENT_CHAR_PREVIOUS   ] = -1;
-        _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY      ] = _events_char_array; //Stores each event's triggering cha
+        _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY      ] = _events_char_array; //Stores each event's triggering character
         _scribble_array[@ __SCRIBBLE.EVENT_NAME_ARRAY      ] = _events_name_array; //Stores each event's name
         _scribble_array[@ __SCRIBBLE.EVENT_DATA_ARRAY      ] = _events_data_array; //Stores each event's parameters
+        
+        var _page_lines_array  = []; //Stores each line of text (per page)
+        var _page_vbuffs_array = []; //Stores all the vertex buffers needed to render the text and sprites (per page)
+        
+        var _page_array = array_create(__SCRIBBLE.PAGES_ARRAY);
+        _page_array[@ __SCRIBBLE_PAGE.LINES               ] = 0;
+        _page_array[@ __SCRIBBLE_PAGE.CHARACTERS          ] = 0;
+        _page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _page_lines_array;
+        _page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY] = _page_vbuffs_array;
+        _pages_array[@ array_length_1d(_pages_array)] = _page_array;
         
         #endregion
         
@@ -196,14 +205,14 @@ if (!is_array(_draw_string))
 
         var _parameters_list = ds_list_create();
 
-        var _text_x      = 0;
-        var _text_y      = 0;
-        var _text_font   = _def_font;
-        var _text_colour = _def_colour;
-        var _text_halign = _def_halign;
-        var _text_effect_flags  = 0;
-        var _text_scale  = 1;
-        var _text_slant  = false;
+        var _text_x            = 0;
+        var _text_y            = 0;
+        var _text_font         = _def_font;
+        var _text_colour       = _def_colour;
+        var _text_halign       = _def_halign;
+        var _text_effect_flags = 0;
+        var _text_scale        = 1;
+        var _text_slant        = false;
 
         var _line_width  = 0;
         var _line_height = _line_min_height;
@@ -213,14 +222,16 @@ if (!is_array(_draw_string))
         _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
         _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
         _line_array[@ __SCRIBBLE_LINE.HALIGN   ] = _def_halign;
-        _lines_array[@ array_length_1d(_lines_array)] = _line_array;
+        _page_lines_array[@ array_length_1d(_page_lines_array)] = _line_array;
 
         #endregion
 
-        var _meta_characters = 0;
-        var _meta_lines      = 0;
-        var _text_x_max      = 0;
-        var _text_y_max      = 0;
+        var _meta_page_characters    = 0;
+        var _meta_page_lines         = 0;
+        var _meta_element_characters = 0;
+        var _meta_element_lines      = 0;
+        var _text_x_max              = 0;
+        var _text_y_max              = 0;
 
         var _command_tag_start      = -1;
         var _command_tag_parameters = 0;
@@ -378,7 +389,7 @@ if (!is_array(_draw_string))
                                 }
                                 
                                 var _count = array_length_1d(_events_char_array);
-                                _events_char_array[@ _count] = _meta_characters;
+                                _events_char_array[@ _count] = _meta_page_characters;
                                 _events_name_array[@ _count] = _command_name;
                                 _events_data_array[@ _count] = _data;
                                 
@@ -456,7 +467,7 @@ if (!is_array(_draw_string))
                                                     var _sprite_y = _text_y - (_sprite_height div 2);
                                                 }
                                                 
-                                                var _packed_indexes = _meta_characters*SCRIBBLE_MAX_LINES + _meta_lines;
+                                                var _packed_indexes = _meta_page_characters*SCRIBBLE_MAX_LINES + _meta_page_lines;
                                                 _char_width  = _sprite_width;
                                                 _line_height = max(_line_height, _sprite_height);
                                                 
@@ -534,7 +545,7 @@ if (!is_array(_draw_string))
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _line_break_list;
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _sprite_texture);
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_sprite_texture);
-                                                        _vertex_buffers_array[@ array_length_1d(_vertex_buffers_array)] = _vbuff_data;
+                                                        _page_vbuffs_array[@ array_length_1d(_page_vbuffs_array)] = _vbuff_data;
                                                         
                                                         _texture_to_buffer_map[? _sprite_texture] = _vbuff_data;
                                                     }
@@ -547,7 +558,7 @@ if (!is_array(_draw_string))
                                                     
                                                     //Fill link break list
                                                     var _tell = buffer_tell(_buffer);
-                                                    repeat(array_length_1d(_lines_array) - ds_list_size(_line_break_list)) ds_list_add(_line_break_list, _tell);
+                                                    repeat(array_length_1d(_page_lines_array) - ds_list_size(_line_break_list)) ds_list_add(_line_break_list, _tell);
                                                     
                                                     ++_image;
                                                 }
@@ -599,7 +610,8 @@ if (!is_array(_draw_string))
                                                 #endregion
                                                 
                                                 _text_effect_flags = ~((~_text_effect_flags) | 1); //Reset animated sprite effect flag specifically
-                                                ++_meta_characters;
+                                                ++_meta_page_characters;
+                                                ++_meta_element_characters;
                                                 
                                                 #endregion
                                             }
@@ -706,9 +718,9 @@ if (!is_array(_draw_string))
         
                 //Iterate over all the vertex buffers we've been using and reset the word start position
                 var _v = 0;
-                repeat(array_length_1d(_vertex_buffers_array))
+                repeat(array_length_1d(_page_vbuffs_array))
                 {
-                    var _data = _vertex_buffers_array[_v];
+                    var _data = _page_vbuffs_array[_v];
                     _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER]);
                     ++_v;
                 }
@@ -763,7 +775,7 @@ if (!is_array(_draw_string))
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _line_break_list;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _font_texture);
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_font_texture);
-                        _vertex_buffers_array[@ array_length_1d(_vertex_buffers_array)] = _vbuff_data;
+                        _page_vbuffs_array[@ array_length_1d(_page_vbuffs_array)] = _vbuff_data;
                     
                         _texture_to_buffer_map[? _font_texture] = _vbuff_data;
                     }
@@ -774,7 +786,7 @@ if (!is_array(_draw_string))
             
                     //Fill link break list
                     var _tell = buffer_tell(_glyph_buffer);
-                    repeat(array_length_1d(_lines_array) - ds_list_size(_line_break_list)) ds_list_add(_line_break_list, _tell);
+                    repeat(array_length_1d(_page_lines_array) - ds_list_size(_line_break_list)) ds_list_add(_line_break_list, _tell);
                 }
             
                 //Update CHAR_START_TELL, and WORD_START_TELL if needed
@@ -809,7 +821,7 @@ if (!is_array(_draw_string))
                     _quad_r -= _quad_cx;
                     _quad_b -= _quad_cy;
                     
-                    var _packed_indexes = _meta_characters*SCRIBBLE_MAX_LINES + _meta_lines;
+                    var _packed_indexes = _meta_page_characters*SCRIBBLE_MAX_LINES + _meta_page_lines;
                     var _colour = $FF000000 | _text_colour;
                     var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_quad_b - _quad_t);
             
@@ -826,7 +838,8 @@ if (!is_array(_draw_string))
                     buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
                     buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
                     
-                    ++_meta_characters;
+                    ++_meta_page_characters;
+                    ++_meta_element_characters;
                     _char_width = _glyph_array[SCRIBBLE_GLYPH.SEPARATION]*_text_scale;
                 }
                 else
@@ -848,9 +861,9 @@ if (!is_array(_draw_string))
                 var _line_offset_x = -_text_x;
                 
                 var _v = 0;
-                repeat(array_length_1d(_vertex_buffers_array))
+                repeat(array_length_1d(_page_vbuffs_array))
                 {
-                    var _data = _vertex_buffers_array[_v];
+                    var _data = _page_vbuffs_array[_v];
             
                     var _line_break_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
                     var _buffer          = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
@@ -914,21 +927,22 @@ if (!is_array(_draw_string))
                     ++_v;
                 }
                 
-                ++_meta_lines;
+                ++_meta_page_lines;
+                ++_meta_element_lines;
                 _text_x_max = max(_text_x_max, _line_width);
                 
                 //Update the last line
-                _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_characters-1;
+                _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_page_characters-1;
                 _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
                 _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
                 
                 //Create a new line
                 var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
-                _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_characters;
+                _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_page_characters;
                 _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = 0;
                 _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_min_height;
                 _line_array[@ __SCRIBBLE_LINE.HALIGN   ] = _text_halign;
-                _lines_array[@ array_length_1d(_lines_array)] = _line_array;
+                _page_lines_array[@ array_length_1d(_page_lines_array)] = _line_array;
                 
                 //Reset state
                 _text_x      += _line_offset_x;
@@ -945,17 +959,21 @@ if (!is_array(_draw_string))
             _line_width = max(_line_width, _text_x);
         }
 
-        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_characters;
+        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_page_characters;
         _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
         _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
 
-        ++_meta_lines;
+        ++_meta_page_lines;
+        ++_meta_element_lines;
         _text_x_max = max(_text_x_max, _line_width);
         _text_y_max = _text_y + _line_height;
 
-        //Fill out metadata
-        _scribble_array[@ __SCRIBBLE.LINES     ] = _meta_lines;
-        _scribble_array[@ __SCRIBBLE.CHARACTERS] = _meta_characters;
+        //Update metadata
+        _page_array[@ __SCRIBBLE_PAGE.LINES     ] = _meta_page_lines;
+        _page_array[@ __SCRIBBLE_PAGE.CHARACTERS] = _meta_page_characters;
+        
+        _scribble_array[@ __SCRIBBLE.LINES     ] = _meta_element_lines;
+        _scribble_array[@ __SCRIBBLE.CHARACTERS] = _meta_element_characters;
         _scribble_array[@ __SCRIBBLE.WIDTH     ] = _text_x_max;
         _scribble_array[@ __SCRIBBLE.HEIGHT    ] = _text_y_max;
 
@@ -966,9 +984,9 @@ if (!is_array(_draw_string))
         #region Move glyphs around on a line to finalise alignment
 
         var _v = 0;
-        repeat(array_length_1d(_vertex_buffers_array))
+        repeat(array_length_1d(_page_vbuffs_array))
         {
-            var _data = _vertex_buffers_array[_v];
+            var _data = _page_vbuffs_array[_v];
     
             var _line_break_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
             var _buffer          = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
@@ -979,7 +997,7 @@ if (!is_array(_draw_string))
             var _l = 0;
             repeat(ds_list_size(_line_break_list)-1)
             {
-                var _line_data   = _lines_array[_l];
+                var _line_data   = _page_lines_array[_l];
                 var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
                 var _line_height = _line_data[__SCRIBBLE_LINE.HEIGHT];
                 
@@ -1067,6 +1085,9 @@ if (global.scribble_state_allow_draw)
 {
     #region Draw this text element
     
+    var _pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
+    var _page_array = _pages_array[_scribble_array[__SCRIBBLE.PAGE]];
+    
     //Figure out the left/top offset
     switch(global.scribble_state_box_halign)
     {
@@ -1112,8 +1133,8 @@ if (global.scribble_state_allow_draw)
     _matrix = matrix_multiply(_matrix, _old_matrix);
     matrix_set(matrix_world, _matrix);
     
-    var _vertex_buffers_array = _scribble_array[__SCRIBBLE.VERTEX_BUFFERS_ARRAY];
-    var _count = array_length_1d(_vertex_buffers_array);
+    var _page_vbuffs_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
+    var _count = array_length_1d(_page_vbuffs_array);
     if (_count > 0)
     {
         var _typewriter_method = _scribble_array[__SCRIBBLE.AUTOTYPE_METHOD];
@@ -1145,9 +1166,9 @@ if (global.scribble_state_allow_draw)
                     break;
                 
                     case SCRIBBLE_AUTOTYPE_PER_LINE:
-                        var _lines_array = _scribble_array[__SCRIBBLE.LINES_ARRAY];
-                        var _line        = _lines_array[min(ceil(_typewriter_position + _typewriter_speed), _scribble_array[__SCRIBBLE.LINES]-1)];
-                        var _scan_b      = _line[__SCRIBBLE_LINE.LAST_CHAR];
+                        var _page_lines_array = _page_array[__SCRIBBLE_PAGE.LINES_ARRAY];
+                        var _line   = _page_lines_array[min(ceil(_typewriter_position + _typewriter_speed), _page_array[__SCRIBBLE_PAGE.LINES]-1)];
+                        var _scan_b = _line[__SCRIBBLE_LINE.LAST_CHAR];
                     break;
                 }
             
@@ -1166,6 +1187,7 @@ if (global.scribble_state_allow_draw)
                         }
                     }
                     
+                    //TODO - Move events into pages
                     var _event             = _scribble_array[__SCRIBBLE.EVENT_PREVIOUS  ];
                     var _events_char_array = _scribble_array[__SCRIBBLE.EVENT_CHAR_ARRAY];
                     var _events_name_array = _scribble_array[__SCRIBBLE.EVENT_NAME_ARRAY];
@@ -1232,8 +1254,8 @@ if (global.scribble_state_allow_draw)
         {
             switch(_typewriter_method)
             {
-                case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _scribble_array[__SCRIBBLE.CHARACTERS]; break;
-                case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _scribble_array[__SCRIBBLE.LINES     ]; break;
+                case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.CHARACTERS]; break;
+                case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES     ]; break;
             }
             
             var _typewriter_t = clamp(_typewriter_position, 0, _typewriter_count + _typewriter_smoothness);
@@ -1271,7 +1293,7 @@ if (global.scribble_state_allow_draw)
         var _i = 0;
         repeat(_count)
         {
-            var _vbuff_data = _vertex_buffers_array[_i];
+            var _vbuff_data = _page_vbuffs_array[_i];
             shader_set_uniform_f(global.__scribble_uniform_texel, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH], _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT]);
             vertex_submit(_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
             ++_i;
@@ -1317,15 +1339,21 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
         {
             if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Removing \"" + _cache_string + "\" from cache");
             
-            //Free data (basically a duplicate of scribble_flush)
-            var _vertex_buffers_array = _cache_array[__SCRIBBLE.VERTEX_BUFFERS_ARRAY];
-            var _i = 0;
-            repeat(array_length_1d(_vertex_buffers_array))
+            var _pages_array = _cache_array[__SCRIBBLE.PAGES_ARRAY];
+            var _p = 0;
+            repeat(array_length_1d(_pages_array))
             {
-                var _vbuff_data = _vertex_buffers_array[_i];
-                var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
-                vertex_delete_buffer(_vbuff);
-                ++_i;
+                var _page_array = _pages_array[_p];
+                var _vertex_buffers_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
+                var _v = 0;
+                repeat(array_length_1d(_vertex_buffers_array))
+                {
+                    var _vbuff_data = _vertex_buffers_array[_v];
+                    var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
+                    vertex_delete_buffer(_vbuff);
+                    ++_v;
+                }
+                ++_p;
             }
             
             _cache_array[@ __SCRIBBLE.FREED] = true;

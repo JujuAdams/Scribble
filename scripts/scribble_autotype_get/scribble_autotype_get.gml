@@ -30,10 +30,13 @@ if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE) return -1;
 var _typewriter_fade_in = _scribble_array[__SCRIBBLE.AUTOTYPE_FADE_IN];
 if (_scribble_array[__SCRIBBLE.AUTOTYPE_FADE_IN] < 0) return -2;
 
+var _pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
+var _page_array  = _pages_array[_scribble_array[__SCRIBBLE.PAGE]];
+
 switch(_typewriter_method)
 {
-    case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _scribble_array[__SCRIBBLE.CHARACTERS]; break;
-    case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _scribble_array[__SCRIBBLE.LINES     ]; break;
+    case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.CHARACTERS]; break;
+    case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES     ]; break;
 }
 
 //Normalise the parameter from 0 -> 1 using the total counter

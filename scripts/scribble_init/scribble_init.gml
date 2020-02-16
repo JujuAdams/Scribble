@@ -67,8 +67,17 @@ enum __SCRIBBLE_FONT
 
 enum __SCRIBBLE_FONT_TYPE
 {
-    FONT,
-    SPRITE
+    FONT,  //0
+    SPRITE //1
+}
+
+enum __SCRIBBLE_PAGE
+{
+    LINES,
+    CHARACTERS,
+    LINES_ARRAY,
+    VERTEX_BUFFERS_ARRAY,
+    __SIZE
 }
 
 enum __SCRIBBLE_LINE
@@ -161,27 +170,27 @@ enum __SCRIBBLE
     SOUND_FINISH_TIME,      //20
     
     __SECTION3,             //21
-    LINES_ARRAY,            //22
-    VERTEX_BUFFERS_ARRAY,   //23
+    PAGE,                   //24
+    PAGES_ARRAY,            //22
     
-    __SECTION4,             //24
-    PAGE,                   //25
-    AUTOTYPE_FADE_IN,       //26
-    AUTOTYPE_SPEED,         //27
-    AUTOTYPE_POSITION,      //28
-    AUTOTYPE_METHOD,        //29
-    AUTOTYPE_SMOOTHNESS,    //30
-    AUTOTYPE_SOUND_ARRAY,   //31
-    AUTOTYPE_SOUND_OVERLAP, //32
+    __SECTION4,             //23
+    AUTOTYPE_FADE_IN,       //25
+    AUTOTYPE_SPEED,         //26
+    AUTOTYPE_POSITION,      //27
+    AUTOTYPE_METHOD,        //28
+    AUTOTYPE_SMOOTHNESS,    //29
+    AUTOTYPE_SOUND_ARRAY,   //30
+    AUTOTYPE_SOUND_OVERLAP, //31
     
-    __SECTION5,             //33
-    EVENT_PREVIOUS,         //34
-    EVENT_CHAR_PREVIOUS,    //35
-    EVENT_CHAR_ARRAY,       //36
-    EVENT_NAME_ARRAY,       //37
-    EVENT_DATA_ARRAY,       //38
+    //TODO - Move events into pages
+    __SECTION5,             //32
+    EVENT_PREVIOUS,         //33
+    EVENT_CHAR_PREVIOUS,    //34
+    EVENT_CHAR_ARRAY,       //35
+    EVENT_NAME_ARRAY,       //36
+    EVENT_DATA_ARRAY,       //37
     
-    __SIZE                  //39
+    __SIZE                  //38
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
