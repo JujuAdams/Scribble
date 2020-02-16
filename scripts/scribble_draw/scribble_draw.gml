@@ -109,7 +109,7 @@ if (!is_array(_draw_string))
     
         var _scribble_array        = array_create(__SCRIBBLE.__SIZE); //The text element array
         var _lines_array           = [];                              //Stores each line of text
-        var _vertex_buffer_list    = ds_list_create();                //Stores all the vertex buffers needed to render the text and sprites
+        var _vertex_buffers_array  = [];                              //Stores all the vertex buffers needed to render the text and sprites
         var _events_char_array     = [];                              //Stores each event's triggering character
         var _events_name_array     = [];                              //Stores each event's name
         var _events_data_array     = [];                              //Stores each event's parameters
@@ -141,17 +141,17 @@ if (!is_array(_draw_string))
     
         _scribble_array[@ __SCRIBBLE.__SECTION3            ] = "-- Lists --";
         _scribble_array[@ __SCRIBBLE.LINES_ARRAY           ] = _lines_array;
-        _scribble_array[@ __SCRIBBLE.VERTEX_BUFFER_LIST    ] = _vertex_buffer_list;
+        _scribble_array[@ __SCRIBBLE.VERTEX_BUFFERS_ARRAY  ] = _vertex_buffers_array;
     
         _scribble_array[@ __SCRIBBLE.__SECTION4            ] = "-- Autotype --";
-        _scribble_array[@ __SCRIBBLE.PAGE                  ] = 0;
+        _scribble_array[@ __SCRIBBLE.PAGE                  ] =  0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = -1;
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] = 0;
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION     ] = 0;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] =  0;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION     ] =  0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD       ] = SCRIBBLE_AUTOTYPE_NONE;
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] = 0;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] =  0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_ARRAY  ] = -1;
-        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_OVERLAP] = 0;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_OVERLAP] =  0;
     
         _scribble_array[@ __SCRIBBLE.__SECTION5            ] = "-- Events --";
         _scribble_array[@ __SCRIBBLE.EVENT_PREVIOUS        ] = -1;
@@ -534,7 +534,7 @@ if (!is_array(_draw_string))
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _line_break_list;
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _sprite_texture);
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_sprite_texture);
-                                                        ds_list_add(_vertex_buffer_list, _vbuff_data);
+                                                        _vertex_buffers_array[@ array_length_1d(_vertex_buffers_array)] = _vbuff_data;
                                                         
                                                         _texture_to_buffer_map[? _sprite_texture] = _vbuff_data;
                                                     }
@@ -706,9 +706,9 @@ if (!is_array(_draw_string))
         
                 //Iterate over all the vertex buffers we've been using and reset the word start position
                 var _v = 0;
-                repeat(ds_list_size(_vertex_buffer_list))
+                repeat(array_length_1d(_vertex_buffers_array))
                 {
-                    var _data = _vertex_buffer_list[| _v];
+                    var _data = _vertex_buffers_array[_v];
                     _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER]);
                     ++_v;
                 }
@@ -763,7 +763,7 @@ if (!is_array(_draw_string))
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _line_break_list;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _font_texture);
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_font_texture);
-                        ds_list_add(_vertex_buffer_list, _vbuff_data);
+                        _vertex_buffers_array[@ array_length_1d(_vertex_buffers_array)] = _vbuff_data;
                     
                         _texture_to_buffer_map[? _font_texture] = _vbuff_data;
                     }
@@ -848,9 +848,9 @@ if (!is_array(_draw_string))
                 var _line_offset_x = -_text_x;
                 
                 var _v = 0;
-                repeat(ds_list_size(_vertex_buffer_list))
+                repeat(array_length_1d(_vertex_buffers_array))
                 {
-                    var _data = _vertex_buffer_list[| _v];
+                    var _data = _vertex_buffers_array[_v];
             
                     var _line_break_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
                     var _buffer          = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
@@ -966,9 +966,9 @@ if (!is_array(_draw_string))
         #region Move glyphs around on a line to finalise alignment
 
         var _v = 0;
-        repeat(ds_list_size(_vertex_buffer_list))
+        repeat(array_length_1d(_vertex_buffers_array))
         {
-            var _data = _vertex_buffer_list[| _v];
+            var _data = _vertex_buffers_array[_v];
     
             var _line_break_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
             var _buffer          = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
@@ -1112,8 +1112,8 @@ if (global.scribble_state_allow_draw)
     _matrix = matrix_multiply(_matrix, _old_matrix);
     matrix_set(matrix_world, _matrix);
     
-    var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
-    var _count = ds_list_size(_vbuff_list);
+    var _vertex_buffers_array = _scribble_array[__SCRIBBLE.VERTEX_BUFFERS_ARRAY];
+    var _count = array_length_1d(_vertex_buffers_array);
     if (_count > 0)
     {
         var _typewriter_method = _scribble_array[__SCRIBBLE.AUTOTYPE_METHOD];
@@ -1271,7 +1271,7 @@ if (global.scribble_state_allow_draw)
         var _i = 0;
         repeat(_count)
         {
-            var _vbuff_data = _vbuff_list[| _i];
+            var _vbuff_data = _vertex_buffers_array[_i];
             shader_set_uniform_f(global.__scribble_uniform_texel, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH], _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT]);
             vertex_submit(_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
             ++_i;
@@ -1318,16 +1318,15 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
             if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Removing \"" + _cache_string + "\" from cache");
             
             //Free data (basically a duplicate of scribble_flush)
-            var _vbuff_list = _cache_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
-            var _count = ds_list_size(_vbuff_list);
-            for(var _i = 0; _i < _count; _i++)
+            var _vertex_buffers_array = _cache_array[__SCRIBBLE.VERTEX_BUFFERS_ARRAY];
+            var _i = 0;
+            repeat(array_length_1d(_vertex_buffers_array))
             {
-                var _vbuff_data = _vbuff_list[| _i];
+                var _vbuff_data = _vertex_buffers_array[_i];
                 var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
                 vertex_delete_buffer(_vbuff);
+                ++_i;
             }
-            
-            ds_list_destroy(_vbuff_list);
             
             _cache_array[@ __SCRIBBLE.FREED] = true;
             

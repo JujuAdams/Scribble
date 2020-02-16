@@ -162,7 +162,7 @@ enum __SCRIBBLE
     
     __SECTION3,             //21
     LINES_ARRAY,            //22
-    VERTEX_BUFFER_LIST,     //23
+    VERTEX_BUFFERS_ARRAY,   //23
     
     __SECTION4,             //24
     PAGE,                   //25
