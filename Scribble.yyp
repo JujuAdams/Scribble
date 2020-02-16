@@ -47,6 +47,14 @@
             }
         },
         {
+            "Key": "04acbfcf-ee17-4ded-b194-17bb72864ff0",
+            "Value": {
+                "id": "ca6c936c-b344-4af6-b6a4-9d859b39daaf",
+                "resourcePath": "scripts\\scribble_page_get\\scribble_page_get.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "0983f652-6ae8-4dd0-b1df-11881acb290e",
             "Value": {
                 "id": "a9052d48-7523-437f-a0e1-597cc264b99d",
@@ -287,6 +295,14 @@
             }
         },
         {
+            "Key": "6e8352fc-78a8-490a-a4ab-9dacbaeb79f5",
+            "Value": {
+                "id": "76fa070b-8e2e-40b2-8d13-e714ed7540fb",
+                "resourcePath": "scripts\\scribble_page_set\\scribble_page_set.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "70d306e8-47c9-45bd-95c7-4f4fafd7f3d1",
             "Value": {
                 "id": "09405ba8-50e1-466c-b6fb-68c27255aad2",
@@ -380,6 +396,14 @@
                 "id": "1000ee7c-5cb0-4763-856a-097dc7f0d2d3",
                 "resourcePath": "scripts\\scribble_get_glyph_property\\scribble_get_glyph_property.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "85d381bf-3af3-491c-b197-63da24f6696b",
+            "Value": {
+                "id": "b71ff74b-680e-45a9-9d65-f6baf2da84d4",
+                "resourcePath": "views\\85d381bf-3af3-491c-b197-63da24f6696b.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -579,6 +603,14 @@
             "Value": {
                 "id": "2e20934c-0e47-46b9-9000-26e7f26780fa",
                 "resourcePath": "scripts\\scribble_draw_set_blend\\scribble_draw_set_blend.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "b7157de4-28d8-476e-b907-27576e4c9261",
+            "Value": {
+                "id": "aeb78a3e-1af2-4972-8be0-a37003b58052",
+                "resourcePath": "scripts\\scribble_page_get_count\\scribble_page_get_count.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -835,6 +867,9 @@
         "c1f9a882-5c95-4baa-9aa2-288643547505",
         "853cc3dc-bb29-429c-b828-a68514d4f06e",
         "00322d5b-d6eb-4d4e-b389-bb26da697b1d",
+        "6e8352fc-78a8-490a-a4ab-9dacbaeb79f5",
+        "04acbfcf-ee17-4ded-b194-17bb72864ff0",
+        "b7157de4-28d8-476e-b907-27576e4c9261",
         "7f249531-321e-43d7-92bc-258842287e9d",
         "16333f16-885e-4b0b-98e8-9726a0f9c0b0",
         "acb5d2b0-8c3c-42de-b368-9e1978761cce"

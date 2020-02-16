@@ -41,7 +41,7 @@ var _draw_string = argument2;
 if (!is_array(_draw_string))
 {
     //Check the cache
-    var _cache_string = string(_draw_string) + ":" + string(global.scribble_state_line_min_height) + ":" + string(global.scribble_state_max_width);
+    var _cache_string = string(_draw_string) + ":" + string(global.scribble_state_line_min_height) + ":" + string(global.scribble_state_max_width) + ":" + string(global.scribble_state_max_height);
     if (ds_map_exists(global.__scribble_global_cache_map, _cache_string))
     {
         //Grab the text element from the cache
@@ -57,6 +57,7 @@ if (!is_array(_draw_string))
         #region Process input parameters
     
         var _max_width       = is_real(global.scribble_state_max_width)? global.scribble_state_max_width : SCRIBBLE_DEFAULT_MAX_WIDTH;
+        var _max_height      = is_real(global.scribble_state_max_height)? global.scribble_state_max_height : SCRIBBLE_DEFAULT_MAX_HEIGHT;
         var _line_min_height = is_real(global.scribble_state_line_min_height)? global.scribble_state_line_min_height : SCRIBBLE_DEFAULT_LINE_MIN_HEIGHT;
         var _def_colour      = SCRIBBLE_DEFAULT_TEXT_COLOUR;
         var _def_font        = global.__scribble_default_font;
@@ -121,6 +122,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.DEFAULT_COLOUR        ] = _def_colour;
         _scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN        ] = _def_halign;
         _scribble_array[@ __SCRIBBLE.WIDTH_LIMIT           ] = _max_width;
+        _scribble_array[@ __SCRIBBLE.HEIGHT_LIMIT          ] = _max_height;
         _scribble_array[@ __SCRIBBLE.LINE_HEIGHT           ] = _line_min_height;
     
         _scribble_array[@ __SCRIBBLE.__SECTION1            ] = "-- Statistics --";
@@ -128,6 +130,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.HEIGHT                ] = 0;
         _scribble_array[@ __SCRIBBLE.CHARACTERS            ] = 0;
         _scribble_array[@ __SCRIBBLE.LINES                 ] = 0;
+        _scribble_array[@ __SCRIBBLE.PAGES                 ] = 0;
         _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX          ] = global.__scribble_global_count+1;
     
         _scribble_array[@ __SCRIBBLE.__SECTION2            ] = "-- State --";
@@ -141,6 +144,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.VERTEX_BUFFER_LIST    ] = _vertex_buffer_list;
     
         _scribble_array[@ __SCRIBBLE.__SECTION4            ] = "-- Autotype --";
+        _scribble_array[@ __SCRIBBLE.PAGE                  ] = 0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = -1;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] = 0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION     ] = 0;
@@ -155,7 +159,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.EVENT_CHAR_ARRAY      ] = _events_char_array; //Stores each event's triggering cha
         _scribble_array[@ __SCRIBBLE.EVENT_NAME_ARRAY      ] = _events_name_array; //Stores each event's name
         _scribble_array[@ __SCRIBBLE.EVENT_DATA_ARRAY      ] = _events_data_array; //Stores each event's parameters
-    
+        
         #endregion
         
         

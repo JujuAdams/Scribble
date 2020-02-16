@@ -118,17 +118,15 @@ enum SCRIBBLE_STATE
     COLOUR,
     ALPHA,
     LINE_MIN_HEIGHT,
-    MIN_WIDTH,
     MAX_WIDTH,
-    MIN_HEIGHT,
     MAX_HEIGHT,
     CHARACTER_WRAP,
     HALIGN,
     VALIGN,
-    TYPEWRITER_FADE_IN,
-    TYPEWRITER_POSITION,
-    TYPEWRITER_SMOOTHNESS,
-    TYPEWRITER_METHOD,
+    AUTOTYPE_FADE_IN,
+    AUTOTYPE_POSITION,
+    AUTOTYPE_SMOOTHNESS,
+    AUTOTYPE_METHOD,
     ANIMATION_ARRAY,
     CACHE_GROUP,
     ALLOW_DRAW,
@@ -145,42 +143,45 @@ enum __SCRIBBLE
     DEFAULT_COLOUR,         // 4
     DEFAULT_HALIGN,         // 5
     WIDTH_LIMIT,            // 6
-    LINE_HEIGHT,            // 7
+    HEIGHT_LIMIT,           // 7
+    LINE_HEIGHT,            // 8
     
-    __SECTION1,             // 8
-    WIDTH,                  // 9
-    HEIGHT,                 //10
-    CHARACTERS,             //11
-    LINES,                  //12
-    GLOBAL_INDEX,           //13
+    __SECTION1,             // 9
+    WIDTH,                  //10
+    HEIGHT,                 //11
+    CHARACTERS,             //12
+    LINES,                  //13
+    PAGES,                  //14
+    GLOBAL_INDEX,           //15
     
-    __SECTION2,             //14
-    ANIMATION_TIME,         //15
-    TIME,                   //16
-    FREED,                  //17
-    SOUND_FINISH_TIME,      //18
+    __SECTION2,             //16
+    ANIMATION_TIME,         //17
+    TIME,                   //18
+    FREED,                  //19
+    SOUND_FINISH_TIME,      //20
     
-    __SECTION3,             //19
-    LINE_LIST,              //20
-    VERTEX_BUFFER_LIST,     //21
+    __SECTION3,             //21
+    LINE_LIST,              //22
+    VERTEX_BUFFER_LIST,     //23
     
-    __SECTION4,             //22
-    AUTOTYPE_FADE_IN,       //23
-    AUTOTYPE_SPEED,         //24
-    AUTOTYPE_POSITION,      //25
-    AUTOTYPE_METHOD,        //26
-    AUTOTYPE_SMOOTHNESS,    //27
-    AUTOTYPE_SOUND_ARRAY,   //28
-    AUTOTYPE_SOUND_OVERLAP, //29
+    __SECTION4,             //24
+    PAGE,                   //25
+    AUTOTYPE_FADE_IN,       //26
+    AUTOTYPE_SPEED,         //27
+    AUTOTYPE_POSITION,      //28
+    AUTOTYPE_METHOD,        //29
+    AUTOTYPE_SMOOTHNESS,    //30
+    AUTOTYPE_SOUND_ARRAY,   //31
+    AUTOTYPE_SOUND_OVERLAP, //32
     
-    __SECTION5,             //30
-    EVENT_PREVIOUS,         //31
-    EVENT_CHAR_PREVIOUS,    //32
-    EVENT_CHAR_ARRAY,       //33
-    EVENT_NAME_ARRAY,       //34
-    EVENT_DATA_ARRAY,       //35
+    __SECTION5,             //33
+    EVENT_PREVIOUS,         //34
+    EVENT_CHAR_PREVIOUS,    //35
+    EVENT_CHAR_ARRAY,       //36
+    EVENT_NAME_ARRAY,       //37
+    EVENT_DATA_ARRAY,       //38
     
-    __SIZE                  //36
+    __SIZE                  //39
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
