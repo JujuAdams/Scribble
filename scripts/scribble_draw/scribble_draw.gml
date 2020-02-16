@@ -108,11 +108,11 @@ if (!is_array(_draw_string))
         #region Create the text element (an array)
     
         var _scribble_array        = array_create(__SCRIBBLE.__SIZE); //The text element array
-        var _line_list             = ds_list_create(); //Stores each line of text
-        var _vertex_buffer_list    = ds_list_create(); //Stores all the vertex buffers needed to render the text and sprites
-        var _events_char_array     = array_create(0);  //Stores each event's triggering character
-        var _events_name_array     = array_create(0);  //Stores each event's name
-        var _events_data_array     = array_create(0);  //Stores each event's parameters
+        var _lines_array           = [];                              //Stores each line of text
+        var _vertex_buffer_list    = ds_list_create();                //Stores all the vertex buffers needed to render the text and sprites
+        var _events_char_array     = [];                              //Stores each event's triggering character
+        var _events_name_array     = [];                              //Stores each event's name
+        var _events_data_array     = [];                              //Stores each event's parameters
         var _texture_to_buffer_map = ds_map_create();
     
         _scribble_array[@ __SCRIBBLE.__SECTION0            ] = "-- Parameters --";
@@ -140,7 +140,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.SOUND_FINISH_TIME     ] = current_time;
     
         _scribble_array[@ __SCRIBBLE.__SECTION3            ] = "-- Lists --";
-        _scribble_array[@ __SCRIBBLE.LINE_LIST             ] = _line_list;
+        _scribble_array[@ __SCRIBBLE.LINES_ARRAY           ] = _lines_array;
         _scribble_array[@ __SCRIBBLE.VERTEX_BUFFER_LIST    ] = _vertex_buffer_list;
     
         _scribble_array[@ __SCRIBBLE.__SECTION4            ] = "-- Autotype --";
@@ -213,7 +213,7 @@ if (!is_array(_draw_string))
         _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
         _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
         _line_array[@ __SCRIBBLE_LINE.HALIGN   ] = _def_halign;
-        ds_list_add(_line_list, _line_array);
+        _lines_array[@ array_length_1d(_lines_array)] = _line_array;
 
         #endregion
 
@@ -547,7 +547,7 @@ if (!is_array(_draw_string))
                                                     
                                                     //Fill link break list
                                                     var _tell = buffer_tell(_buffer);
-                                                    repeat(ds_list_size(_line_list) - ds_list_size(_line_break_list)) ds_list_add(_line_break_list, _tell);
+                                                    repeat(array_length_1d(_lines_array) - ds_list_size(_line_break_list)) ds_list_add(_line_break_list, _tell);
                                                     
                                                     ++_image;
                                                 }
@@ -774,7 +774,7 @@ if (!is_array(_draw_string))
             
                     //Fill link break list
                     var _tell = buffer_tell(_glyph_buffer);
-                    repeat(ds_list_size(_line_list) - ds_list_size(_line_break_list)) ds_list_add(_line_break_list, _tell);
+                    repeat(array_length_1d(_lines_array) - ds_list_size(_line_break_list)) ds_list_add(_line_break_list, _tell);
                 }
             
                 //Update CHAR_START_TELL, and WORD_START_TELL if needed
@@ -928,7 +928,7 @@ if (!is_array(_draw_string))
                 _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = 0;
                 _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_min_height;
                 _line_array[@ __SCRIBBLE_LINE.HALIGN   ] = _text_halign;
-                ds_list_add(_line_list, _line_array);
+                _lines_array[@ array_length_1d(_lines_array)] = _line_array;
                 
                 //Reset state
                 _text_x      += _line_offset_x;
@@ -979,7 +979,7 @@ if (!is_array(_draw_string))
             var _l = 0;
             repeat(ds_list_size(_line_break_list)-1)
             {
-                var _line_data = _line_list[| _l];
+                var _line_data   = _lines_array[_l];
                 var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
                 var _line_height = _line_data[__SCRIBBLE_LINE.HEIGHT];
                 
@@ -1145,9 +1145,9 @@ if (global.scribble_state_allow_draw)
                     break;
                 
                     case SCRIBBLE_AUTOTYPE_PER_LINE:
-                        var _list   = _scribble_array[__SCRIBBLE.LINE_LIST];
-                        var _line   = _list[| min(ceil(_typewriter_position + _typewriter_speed), _scribble_array[__SCRIBBLE.LINES]-1)];
-                        var _scan_b = _line[__SCRIBBLE_LINE.LAST_CHAR];
+                        var _lines_array = _scribble_array[__SCRIBBLE.LINES_ARRAY];
+                        var _line        = _lines_array[min(ceil(_typewriter_position + _typewriter_speed), _scribble_array[__SCRIBBLE.LINES]-1)];
+                        var _scan_b      = _line[__SCRIBBLE_LINE.LAST_CHAR];
                     break;
                 }
             
@@ -1327,7 +1327,6 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
                 vertex_delete_buffer(_vbuff);
             }
             
-            ds_list_destroy(_cache_array[@ __SCRIBBLE.LINE_LIST]);
             ds_list_destroy(_vbuff_list);
             
             _cache_array[@ __SCRIBBLE.FREED] = true;

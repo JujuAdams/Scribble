@@ -48,8 +48,7 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
                 var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
                 vertex_delete_buffer(_vbuff);
             }
-        
-            ds_list_destroy(_scribble_array[@ __SCRIBBLE.LINE_LIST]);
+            
             ds_list_destroy(_vbuff_list);
         
             _scribble_array[@ __SCRIBBLE.FREED] = true;

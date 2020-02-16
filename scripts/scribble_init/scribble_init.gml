@@ -161,7 +161,7 @@ enum __SCRIBBLE
     SOUND_FINISH_TIME,      //20
     
     __SECTION3,             //21
-    LINE_LIST,              //22
+    LINES_ARRAY,            //22
     VERTEX_BUFFER_LIST,     //23
     
     __SECTION4,             //24
