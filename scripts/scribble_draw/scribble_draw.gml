@@ -794,7 +794,7 @@ if (!is_array(_draw_string))
                 if (_glyph_array != undefined)
                 {
                     var _quad_l = _text_x + _glyph_array[SCRIBBLE_GLYPH.X_OFFSET]*_text_scale;
-                    var _quad_t = _text_y + _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - (_font_line_height div 2);
+                    var _quad_t = _text_y + _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2);
                     var _quad_r = _quad_l + _glyph_array[SCRIBBLE_GLYPH.WIDTH   ]*_text_scale;
                     var _quad_b = _quad_t + _glyph_array[SCRIBBLE_GLYPH.HEIGHT  ]*_text_scale;
                     
