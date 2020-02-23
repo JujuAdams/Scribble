@@ -14,13 +14,14 @@ if (!is_array(_scribble_array)
 || (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
 || _scribble_array[__SCRIBBLE.FREED])
 {
-    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Array passed to scribble_autotype_set() is not a valid Scribble text element.");
+    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Array passed to scribble_autotype_fade_in() is not a valid Scribble text element.");
     exit;
 }
 
 if ((_method != SCRIBBLE_AUTOTYPE_NONE)
 &&  (_method != SCRIBBLE_AUTOTYPE_PER_CHARACTER)
-&&  (_method != SCRIBBLE_AUTOTYPE_PER_LINE))
+&&  (_method != SCRIBBLE_AUTOTYPE_PER_LINE)
+&&  (_method != undefined))
 {
     show_error("Scribble:\nMethod not recognised.\nPlease use SCRIBBLE_AUTOTYPE_NONE, SCRIBBLE_AUTOTYPE_PER_CHARACTER, or SCRIBBLE_AUTOTYPE_PER_LINE.\n ", false);
     _method = SCRIBBLE_AUTOTYPE_NONE;
@@ -28,7 +29,7 @@ if ((_method != SCRIBBLE_AUTOTYPE_NONE)
 
 //Update the remaining autotype state values
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION  ] = 0;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD    ] = _method;
+if (_method != undefined) _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD] = _method;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED     ] = _speed;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS] = _smoothness;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN   ] = true;
