@@ -264,6 +264,7 @@ if (!is_array(_draw_string))
         var _force_newline          = false;
         var _force_newpage          = false;
         var _char_width             = 0;
+        var _add_character          = true;
 
         //Write the string into a buffer for faster reading
         var _buffer_size = string_byte_length(_draw_string)+1;
@@ -277,6 +278,7 @@ if (!is_array(_draw_string))
         {
             var _character_code = buffer_read(_string_buffer, buffer_u8);
             if (_character_code == 0) break;
+            _add_character = true;
             
             _read_string += chr(_character_code);
             
@@ -284,6 +286,8 @@ if (!is_array(_draw_string))
             {
                 if (_character_code == SCRIBBLE_COMMAND_TAG_CLOSE) //If we've hit a command tag close character (usually ])
                 {
+                    _add_character = false;
+                    
                     //Increment the parameter count and place a null byte for string reading
                     ++_command_tag_parameters;
                     buffer_poke(_string_buffer, buffer_tell(_string_buffer)-1, buffer_u8, 0);
@@ -753,6 +757,10 @@ if (!is_array(_draw_string))
                     buffer_poke(_string_buffer, buffer_tell(_string_buffer)-1, buffer_u8, 0);
                     continue;
                 }
+                else if ((_character_code == SCRIBBLE_COMMAND_TAG_OPEN) && (buffer_tell(_string_buffer) - _command_tag_start == 1))
+                {
+                    _command_tag_start = -1;
+                }
                 else
                 {
                     //If we're in a command tag and we've not read a close character or an argument delimiter, skip everything else
@@ -775,6 +783,8 @@ if (!is_array(_draw_string))
                 _char_width    = 0;
                 _line_width    = max(_line_width, _text_x);
                 _line_height   = max(_line_height, _font_line_height*_text_scale);
+                
+                _add_character = false;
             }
             else if (_character_code == 32) //If we've hit a space
             {
@@ -791,12 +801,15 @@ if (!is_array(_draw_string))
                     _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER]);
                     ++_v;
                 }
+                
+                _add_character = false;
             }
             else if (_character_code < 32) //If this character code is below a space then ignore it
             {
                 continue;
             }
-            else//If this character is literally any other character at all
+            
+            if (_add_character) //If this character is literally any other character at all
             {
                 #region Decode UTF8
         
