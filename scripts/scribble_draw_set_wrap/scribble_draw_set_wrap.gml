@@ -3,7 +3,7 @@
 /// 
 /// @param minLineHeight    The minimum line height for each line of text. Use a negative number (the default) for the height of a space character of the default font
 /// @param maxLineWidth     The maximum line width for each line of text. Use a negative number (the default) for no limit
-/// @param maxLineHeight    The maximum line height for the whole textbox. Use a negative number (the default) for no limit
+/// @param [maxLineHeight]  The maximum height for the whole textbox. Use a negative number (the default) for no limit
 /// @param [characterWrap]  Whether to wrap text per character (rather than per word). Defaults to <false>. This is useful for very tight textboxes and some East Asian languages
 /// 
 /// 
