@@ -155,7 +155,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.__SECTION3            ] = "-- Pages --";
         _scribble_array[@ __SCRIBBLE.PAGE                  ] =  0;
         _scribble_array[@ __SCRIBBLE.PAGES_ARRAY           ] = _element_pages_array;
-    
+        
         _scribble_array[@ __SCRIBBLE.__SECTION4            ] = "-- Autotype --";
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = -1;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] =  0;
@@ -748,8 +748,9 @@ if (!is_array(_draw_string))
                     || ((_character_code == 13) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer)+1, buffer_u8) != 10)))
             {
                 _force_newline = true;
-                _char_width = 0;
-                _line_height = max(_line_height, _font_line_height*_text_scale);
+                _char_width    = 0;
+                _line_width    = max(_line_width, _text_x);
+                _line_height   = max(_line_height, _font_line_height*_text_scale);
             }
             else if (_character_code == 32) //If we've hit a space
             {
@@ -1136,6 +1137,8 @@ if (!is_array(_draw_string))
             
             _text_x += _char_width;
         }
+        
+        _line_width = max(_line_width, _text_x);
 
         _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_page_characters;
         _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
