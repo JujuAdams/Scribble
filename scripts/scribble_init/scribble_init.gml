@@ -83,10 +83,11 @@ enum __SCRIBBLE_PAGE
 enum __SCRIBBLE_LINE
 {
     LAST_CHAR, //0
-    WIDTH,     //1
-    HEIGHT,    //2
-    HALIGN,    //3
-    __SIZE     //4
+    Y,         //1
+    WIDTH,     //2
+    HEIGHT,    //3
+    HALIGN,    //4
+    __SIZE     //5
 }
 
 enum __SCRIBBLE_VERTEX_BUFFER
