@@ -14,5 +14,5 @@
 
 global.scribble_state_line_min_height = argument[0];
 global.scribble_state_max_width       = argument[1];
-global.scribble_state_max_height      = argument[2];
+global.scribble_state_max_height      = (argument_count > 2)? argument[2] : -1;
 global.scribble_state_character_wrap  = (argument_count > 3)? argument[3] : false;
