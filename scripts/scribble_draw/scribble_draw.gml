@@ -193,7 +193,7 @@ if (!is_array(_draw_string))
         var _parameters_list = ds_list_create();
 
         var _text_x      = 0;
-        var _text_y      = 0;
+        var _line_y      = 0;
         var _text_font   = _def_font;
         var _text_colour = _def_colour;
         var _text_halign = _def_halign;
@@ -206,6 +206,7 @@ if (!is_array(_draw_string))
 
         var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
         _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = 1;
+        _line_array[@ __SCRIBBLE_LINE.Y        ] = 0;
         _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
         _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
         _line_array[@ __SCRIBBLE_LINE.HALIGN   ] = _def_halign;
@@ -444,12 +445,12 @@ if (!is_array(_draw_string))
                                                 if (SCRIBBLE_ADD_SPRITE_ORIGINS)
                                                 {
                                                     var _sprite_x = _text_x - _text_scale*sprite_get_xoffset(_sprite_index) + (_sprite_width div 2);
-                                                    var _sprite_y = _text_y - _text_scale*sprite_get_yoffset(_sprite_index);
+                                                    var _sprite_y = -_text_scale*sprite_get_yoffset(_sprite_index);
                                                 }
                                                 else
                                                 {
                                                     var _sprite_x = _text_x;
-                                                    var _sprite_y = _text_y - (_sprite_height div 2);
+                                                    var _sprite_y = -(_sprite_height div 2);
                                                 }
                                                 
                                                 var _packed_indexes = _meta_characters*SCRIBBLE_MAX_LINES + _meta_lines;
@@ -794,7 +795,7 @@ if (!is_array(_draw_string))
                 if (_glyph_array != undefined)
                 {
                     var _quad_l = _text_x + _glyph_array[SCRIBBLE_GLYPH.X_OFFSET]*_text_scale;
-                    var _quad_t = _text_y + _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2);
+                    var _quad_t =           _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2);
                     var _quad_r = _quad_l + _glyph_array[SCRIBBLE_GLYPH.WIDTH   ]*_text_scale;
                     var _quad_b = _quad_t + _glyph_array[SCRIBBLE_GLYPH.HEIGHT  ]*_text_scale;
                     
@@ -915,22 +916,25 @@ if (!is_array(_draw_string))
                 
                 //Update the last line
                 _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_characters-1;
+                _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
                 _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
                 _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
+                
+                //Reset state
+                _text_x      += _line_offset_x;
+                _line_y      += _line_height;
+                _line_width   = 0;
+                _line_height  = _line_min_height;
                 
                 //Create a new line
                 var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
                 _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_characters;
+                _line_array[@ __SCRIBBLE_LINE.Y        ] = 0;
                 _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = 0;
                 _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_min_height;
                 _line_array[@ __SCRIBBLE_LINE.HALIGN   ] = _text_halign;
                 ds_list_add(_line_list, _line_array);
                 
-                //Reset state
-                _text_x      += _line_offset_x;
-                _text_y       = _text_y + _line_height;
-                _line_width   = 0;
-                _line_height  = _line_min_height;
                 
                 _force_newline = false;
             }
@@ -940,16 +944,18 @@ if (!is_array(_draw_string))
             _text_x += _char_width;
             _line_width = max(_line_width, _text_x);
         }
-
-        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_characters;
+                
+        //Update the last line
+        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_characters-1;
+        _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
         _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
         _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
-
+        
+        //Fill out metadata
         ++_meta_lines;
         _text_x_max = max(_text_x_max, _line_width);
-        _text_y_max = _text_y + _line_height;
-
-        //Fill out metadata
+        _text_y_max = _line_y + _line_height;
+        
         _scribble_array[@ __SCRIBBLE.LINES     ] = _meta_lines;
         _scribble_array[@ __SCRIBBLE.CHARACTERS] = _meta_characters;
         _scribble_array[@ __SCRIBBLE.WIDTH     ] = _text_x_max;
@@ -976,33 +982,39 @@ if (!is_array(_draw_string))
             repeat(ds_list_size(_line_break_list)-1)
             {
                 var _line_data = _line_list[| _l];
+                var _line_y      = _line_data[__SCRIBBLE_LINE.Y     ];
                 var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
                 var _line_height = _line_data[__SCRIBBLE_LINE.HEIGHT];
                 
                 var _tell_a = _line_break_list[| _l  ];
                 var _tell_b = _line_break_list[| _l+1];
-        
+                
+                //Horizontal alignment
+                //We default to fa_left so this is only excuted if we need it
                 if (_line_halign != fa_left)
                 {
-                    var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
-                    
                     var _offset = 0;
-                    if (_line_halign == fa_right ) _offset =  _text_x_max - _line_width;
-                    if (_line_halign == fa_center) _offset = (_text_x_max - _line_width) div 2;
+                    if (_line_halign == fa_right ) _offset =  _text_x_max - _line_data[__SCRIBBLE_LINE.WIDTH];
+                    if (_line_halign == fa_center) _offset = (_text_x_max - _line_data[__SCRIBBLE_LINE.WIDTH]) div 2;
                     
-                    var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
-                    repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
+                    if (_offset != 0)
                     {
-                        buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
-                        _tell += __SCRIBBLE_VERTEX.__SIZE;
+                        var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
+                        repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
+                        {
+                            buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
+                            _tell += __SCRIBBLE_VERTEX.__SIZE;
+                        }
                     }
                 }
                 
-                var _offset = _line_height div 2;
+                //Finalise line y-positions
+                //We do this here because we don't know the final height of the line
+                //TODO - Cache the expected y-position of lines and only move lines around if we've changed the height of the line
                 var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
                 repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                 {
-                    buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
+                    buffer_poke(_buffer, _tell, buffer_f32, _line_y + buffer_peek(_buffer, _tell, buffer_f32));
                     _tell += __SCRIBBLE_VERTEX.__SIZE;
                 }
                 
