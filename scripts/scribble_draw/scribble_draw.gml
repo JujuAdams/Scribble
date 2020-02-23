@@ -398,18 +398,42 @@ if (!is_array(_draw_string))
                 
                         case "fa_left":
                             _text_halign = fa_left;
-                            if (_text_x > 0) _force_newline = true else continue; //Skip the rest of the parser step
+                            if (_text_x > 0)
+                            {
+                                _force_newline = true;
+                            }
+                            else
+                            {
+                                _line_array[@ __SCRIBBLE_LINE.HALIGN] = fa_left;
+                                continue; //Skip the rest of the parser step
+                            }
                         break;
                 
                         case "fa_right":
                             _text_halign = fa_right;
-                            if (_text_x > 0) _force_newline = true else continue; //Skip the rest of the parser step
+                            if (_text_x > 0)
+                            {
+                                _force_newline = true;
+                            }
+                            else
+                            {
+                                _line_array[@ __SCRIBBLE_LINE.HALIGN] = fa_right;
+                                continue; //Skip the rest of the parser step
+                            }
                         break;
                 
                         case "fa_center":
                         case "fa_centre":
                             _text_halign = fa_center;
-                            if (_text_x > 0) _force_newline = true else continue; //Skip the rest of the parser step
+                            if (_text_x > 0)
+                            {
+                                _force_newline = true;
+                            }
+                            else
+                            {
+                                _line_array[@ __SCRIBBLE_LINE.HALIGN] = fa_center;
+                                continue; //Skip the rest of the parser step
+                            }
                         break;
                         #endregion
                 
