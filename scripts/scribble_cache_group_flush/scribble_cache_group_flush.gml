@@ -40,11 +40,11 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
         {
             ds_map_delete(global.scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX]);
             
-            var _pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
+            var _element_pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
             var _p = 0;
-            repeat(array_length_1d(_pages_array))
+            repeat(array_length_1d(_element_pages_array))
             {
-                var _page_array = _pages_array[_p];
+                var _page_array = _element_pages_array[_p];
                 var _vertex_buffers_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
                 var _v = 0;
                 repeat(array_length_1d(_vertex_buffers_array))
