@@ -1013,8 +1013,6 @@ if (!is_array(_draw_string))
             if (_force_newpage
             || ((_line_height + _line_y > _max_height) && (_max_height >= 0)))
             {
-                _element_height = max(_element_height, _line_y + _line_height);
-                
                 //Update the metadata of the previous page
                 _page_array[@ __SCRIBBLE_PAGE.LINES     ] = _meta_page_lines;
                 _page_array[@ __SCRIBBLE_PAGE.CHARACTERS] = _meta_page_characters;
@@ -1122,6 +1120,7 @@ if (!is_array(_draw_string))
                 _page_vbuffs_array = _new_page_vbuffs_array;
                 
                 //Reset some state variables
+                _element_height        = max(_element_height, _line_y);
                 _meta_page_characters  =  0;
                 _meta_page_lines       =  0;
                 _line_y                =  0;
