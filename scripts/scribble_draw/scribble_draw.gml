@@ -119,8 +119,8 @@ if (!is_array(_draw_string))
         var _meta_element_characters = 0;
         var _meta_element_lines      = 0;
         var _meta_element_pages      = 0;
-        var _element_x_max           = 0;
-        var _element_y_max           = 0;
+        var _element_width           = 0;
+        var _element_height          = 0;
     
         var _scribble_array    = array_create(__SCRIBBLE.__SIZE); //The text element array
         var _element_pages_array = [];                              //Stores each page of text
@@ -489,6 +489,8 @@ if (!is_array(_draw_string))
                                             {
                                                 #region Write sprites
                                                 
+                                                _line_width = max(_line_width, _text_x);
+                                                
                                                 var _sprite_index  = asset_get_index(_command_name);
                                                 var _sprite_width  = _text_scale*sprite_get_width(_sprite_index);
                                                 var _sprite_height = _text_scale*sprite_get_height(_sprite_index);
@@ -753,8 +755,9 @@ if (!is_array(_draw_string))
             {
                 //Grab this characer's width/height
                 _char_width  = _font_space_width*_text_scale;
+                _line_width  = max(_line_width, _text_x);
                 _line_height = max(_line_height, _font_line_height*_text_scale);
-        
+                
                 //Iterate over all the vertex buffers we've been using and reset the word start position
                 var _v = 0;
                 repeat(array_length_1d(_page_vbuffs_array))
@@ -831,7 +834,11 @@ if (!is_array(_draw_string))
             
                 //Update CHAR_START_TELL, and WORD_START_TELL if needed
                 _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = buffer_tell(_glyph_buffer);
-                if (global.scribble_state_character_wrap) _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
+                if (global.scribble_state_character_wrap)
+                {
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
+                    _line_width = max(_line_width, _text_x);
+                }
             
                 #endregion
             
@@ -940,6 +947,7 @@ if (!is_array(_draw_string))
                                 //Set our word start tell position to be the same as the character start tell
                                 //This allows us to handle single words that exceed the maximum textbox width multiple times (!)
                                 _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_a;
+                                _line_width = max(_line_width, _text_x);
                             }
                             else
                             {
@@ -970,7 +978,7 @@ if (!is_array(_draw_string))
                 
                 ++_meta_element_lines;
                 ++_meta_page_lines;
-                _element_x_max = max(_element_x_max, _line_width);
+                _element_width = max(_element_width, _line_width);
                 
                 //Update the last line
                 _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_page_characters-1;
@@ -1005,7 +1013,7 @@ if (!is_array(_draw_string))
             if (_force_newpage
             || ((_line_height + _line_y > _max_height) && (_max_height >= 0)))
             {
-                _element_y_max = max(_element_y_max, _line_y + _line_height);
+                _element_height = max(_element_height, _line_y + _line_height);
                 
                 //Update the metadata of the previous page
                 _page_array[@ __SCRIBBLE_PAGE.LINES     ] = _meta_page_lines;
@@ -1128,7 +1136,6 @@ if (!is_array(_draw_string))
             
             
             _text_x += _char_width;
-            _line_width = max(_line_width, _text_x);
         }
 
         _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_page_characters;
@@ -1138,8 +1145,8 @@ if (!is_array(_draw_string))
 
         ++_meta_page_lines;
         ++_meta_element_lines;
-        _element_x_max = max(_element_x_max, _line_width);
-        _element_y_max = max(_element_y_max, _line_y + _line_height);
+        _element_width  = max(_element_width , _line_width);
+        _element_height = max(_element_height, _line_y + _line_height);
 
         //Update metadata
         _page_array[@ __SCRIBBLE_PAGE.LINES     ] = _meta_page_lines;
@@ -1148,8 +1155,8 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.LINES     ] = _meta_element_lines;
         _scribble_array[@ __SCRIBBLE.CHARACTERS] = _meta_element_characters;
         _scribble_array[@ __SCRIBBLE.PAGES     ] = _meta_element_pages;
-        _scribble_array[@ __SCRIBBLE.WIDTH     ] = _element_x_max;
-        _scribble_array[@ __SCRIBBLE.HEIGHT    ] = _element_y_max;
+        _scribble_array[@ __SCRIBBLE.WIDTH     ] = _element_width;
+        _scribble_array[@ __SCRIBBLE.HEIGHT    ] = _element_height;
 
         #endregion
         
@@ -1194,8 +1201,8 @@ if (!is_array(_draw_string))
                         var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
                         
                         var _offset = 0;
-                        if (_line_halign == fa_right ) _offset =  _element_x_max - _line_width;
-                        if (_line_halign == fa_center) _offset = (_element_x_max - _line_width) div 2;
+                        if (_line_halign == fa_right ) _offset =  _element_width - _line_width;
+                        if (_line_halign == fa_center) _offset = (_element_width - _line_width) div 2;
                         
                         var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
                         repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
