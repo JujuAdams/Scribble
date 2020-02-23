@@ -21,9 +21,9 @@ if (!is_array(_scribble_array)
     exit;
 }
 
-//Return an error code if the method is NONE
+//Early out if the method is NONE
 var _typewriter_method = _scribble_array[__SCRIBBLE.AUTOTYPE_METHOD];
-if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE) return -1;
+if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE) return 1;
 
 //Return an error code if the fade in state has not been set
 //(The fade in state is initialised as -1)
