@@ -31,7 +31,7 @@ var _typewriter_fade_in = _scribble_array[__SCRIBBLE.AUTOTYPE_FADE_IN];
 if (_scribble_array[__SCRIBBLE.AUTOTYPE_FADE_IN] < 0) return -2;
 
 var _element_pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
-var _page_array  = _element_pages_array[_scribble_array[__SCRIBBLE.PAGE]];
+var _page_array = _element_pages_array[_scribble_array[__SCRIBBLE.AUTOTYPE_PAGE]];
 
 switch(_typewriter_method)
 {

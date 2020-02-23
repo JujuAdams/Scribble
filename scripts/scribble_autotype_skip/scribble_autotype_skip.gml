@@ -13,7 +13,7 @@ if (!is_array(_scribble_array)
 }
 
 var _element_pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
-var _page_array = _element_pages_array[_scribble_array[__SCRIBBLE.PAGE]];
+var _page_array = _element_pages_array[_scribble_array[__SCRIBBLE.AUTOTYPE_PAGE]];
 
 var _max = 1;
 switch(_scribble_array[__SCRIBBLE.AUTOTYPE_METHOD])

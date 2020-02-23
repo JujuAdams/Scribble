@@ -5,6 +5,6 @@ var _scribble_array = argument0;
 var _page           = argument1;
 
 _page = clamp(_page, 0, _scribble_array[__SCRIBBLE.PAGES]-1);
-_scribble_array[@ __SCRIBBLE.PAGE] = _page;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_PAGE] = _page;
 
 return _page;
