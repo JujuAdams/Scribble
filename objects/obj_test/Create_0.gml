@@ -2,10 +2,10 @@ scribble_init("Fonts", "fnt_test_0", true);
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 scribble_add_spritefont("spr_sprite_font", _mapstring, 0, 11);
 
-scribble_add_colour("c_coquelicot", $ff3800);
-scribble_add_colour("c_smaragdine", $50c875);
-scribble_add_colour("c_xanadu"    , $738678);
-scribble_add_colour("c_amaranth"  , $e52b50);
+scribble_add_color("c_coquelicot", $ff3800);
+scribble_add_color("c_smaragdine", $50c875);
+scribble_add_color("c_xanadu"    , $738678);
+scribble_add_color("c_amaranth"  , $e52b50);
 
 scribble_autotype_add_event("pause", example_pause);
 
