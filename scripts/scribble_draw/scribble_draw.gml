@@ -118,6 +118,7 @@ if (!is_array(_draw_string))
         
         var _meta_element_characters = 0;
         var _meta_element_lines      = 0;
+        var _meta_element_pages      = 0;
         var _element_x_max           = 0;
         var _element_y_max           = 0;
     
@@ -217,7 +218,7 @@ if (!is_array(_draw_string))
         _page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY] = _page_vbuffs_array;
         
         _element_pages_array[@ array_length_1d(_element_pages_array)] = _page_array;
-        _scribble_array[@ __SCRIBBLE.PAGES]++;
+        ++_meta_element_pages;
         
         #endregion
         
@@ -570,7 +571,7 @@ if (!is_array(_draw_string))
                                                     var _vbuff_data = _texture_to_buffer_map[? _sprite_texture];
                                                     if (_vbuff_data == undefined)
                                                     {
-                                                        var _line_start_tell_list = ds_list_create();
+                                                        var _vbuff_line_start_list = ds_list_create();
                                                         var _buffer = buffer_create(__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
                                                         
                                                         _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
@@ -579,7 +580,7 @@ if (!is_array(_draw_string))
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _sprite_texture;
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = 0;
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
-                                                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _line_start_tell_list;
+                                                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _vbuff_line_start_list;
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _sprite_texture);
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_sprite_texture);
                                                         _page_vbuffs_array[@ array_length_1d(_page_vbuffs_array)] = _vbuff_data;
@@ -591,11 +592,12 @@ if (!is_array(_draw_string))
                                                         var _buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = buffer_tell(_buffer);
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_buffer);
+                                                        _vbuff_line_start_list = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
                                                     }
                                                     
                                                     //Fill link break list
                                                     var _tell = buffer_tell(_buffer);
-                                                    repeat(array_length_1d(_page_lines_array) - ds_list_size(_line_start_tell_list)) ds_list_add(_line_start_tell_list, _tell);
+                                                    repeat(array_length_1d(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
                                                     
                                                     ++_image;
                                                 }
@@ -800,30 +802,31 @@ if (!is_array(_draw_string))
                     var _vbuff_data = _texture_to_buffer_map[? _font_texture];
                     if (_vbuff_data == undefined)
                     {
-                        var _line_start_tell_list = ds_list_create();
+                        var _vbuff_line_start_list = ds_list_create();
                         var _glyph_buffer = buffer_create(__SCRIBBLE_EXPECTED_GLYPHS*__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
-                
+                        
                         _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _glyph_buffer;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _font_texture;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = 0;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
-                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _line_start_tell_list;
+                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _vbuff_line_start_list;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _font_texture);
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_font_texture);
                         _page_vbuffs_array[@ array_length_1d(_page_vbuffs_array)] = _vbuff_data;
-                    
+                        
                         _texture_to_buffer_map[? _font_texture] = _vbuff_data;
                     }
                     else
                     {
                         var _glyph_buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
+                        _vbuff_line_start_list = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
                     }
             
                     //Fill link break list
                     var _tell = buffer_tell(_glyph_buffer);
-                    repeat(array_length_1d(_page_lines_array) - ds_list_size(_line_start_tell_list)) ds_list_add(_line_start_tell_list, _tell);
+                    repeat(array_length_1d(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
                 }
             
                 //Update CHAR_START_TELL, and WORD_START_TELL if needed
@@ -904,18 +907,18 @@ if (!is_array(_draw_string))
                 {
                     var _data = _page_vbuffs_array[_v];
                     
-                    var _line_start_tell_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
-                    var _buffer               = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
+                    var _vbuff_line_start_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
+                    var _buffer                = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
                     
                     if (_force_newline)
                     {
-                        ds_list_add(_line_start_tell_list, buffer_tell(_buffer));
+                        ds_list_add(_vbuff_line_start_list, buffer_tell(_buffer));
                     }
                     else
                     {
                         var _tell_a = _data[__SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL];
                         var _tell_b = buffer_tell(_buffer);
-                        ds_list_add(_line_start_tell_list, _tell_a);
+                        ds_list_add(_vbuff_line_start_list, _tell_a);
                         
                         //If we've added anything to this buffer
                         if (_tell_a < _tell_b)
@@ -1008,6 +1011,9 @@ if (!is_array(_draw_string))
                 _page_array[@ __SCRIBBLE_PAGE.LINES     ] = _meta_page_lines;
                 _page_array[@ __SCRIBBLE_PAGE.CHARACTERS] = _meta_page_characters;
                 
+                //Wipe the texture -> vertex buffer map
+                ds_map_clear(_texture_to_buffer_map);
+                
                 //Create a new page
                 var _new_page_array = array_create(__SCRIBBLE_PAGE.__SIZE);
                 var _new_page_lines_array  = []; //Stores each line of text (per page)
@@ -1019,14 +1025,16 @@ if (!is_array(_draw_string))
                 _new_page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY] = _new_page_vbuffs_array;
                 
                 _element_pages_array[@ array_length_1d(_element_pages_array)] = _new_page_array;
-                _scribble_array[@ __SCRIBBLE.PAGES]++;
+                ++_meta_element_pages;
                 
                 if (_force_newpage)
                 {
+                    //Reset state
                     _text_x      = 0;
                     _line_width  = 0;
                     _line_height = _line_min_height;
                     
+                    //Create a brand new line to target
                     _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
                     _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = 1;
                     _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
@@ -1036,9 +1044,65 @@ if (!is_array(_draw_string))
                 else
                 {
                     //Steal the last line from the previous page
-                    //TODO - Update characters and steal vertex buffer data
                     _page_array[@ __SCRIBBLE_PAGE.LINES]--;
-                    _page_lines_array[array_length_1d(_page_lines_array)-1] = undefined;
+                    _page_lines_array[@ array_length_1d(_page_lines_array)-1] = undefined;
+                    
+                    //Iterate over every vertex buffer on the previous page and steal vertices where we need to
+                    var _v = 0;
+                    repeat(array_length_1d(_page_vbuffs_array))
+                    {
+                        var _vbuff_data = _page_vbuffs_array[_v];
+                        
+                        var _buffer                = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
+                        var _vbuff_line_start_list = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
+                        var _line_tell_prev        = _vbuff_line_start_list[| _meta_page_lines];
+                        var _line_tell             = buffer_tell(_buffer);
+                        
+                        if (_line_tell_prev < _line_tell) //If we've added anything to this buffer on the previous line
+                        {
+                            var _bytes = _line_tell - _line_tell_prev;
+                            
+                            //Make a new vertex buffer for the new page
+                            var _new_vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
+                            _new_page_vbuffs_array[@ array_length_1d(_new_page_vbuffs_array)] = _new_vbuff_data;
+                            _texture_to_buffer_map[? _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE]] = _new_vbuff_data;
+                            
+                            //Create new data structures
+                            var _new_buffer = buffer_create(max(_bytes, __SCRIBBLE_EXPECTED_GLYPHS*__SCRIBBLE_GLYPH_BYTE_SIZE), buffer_grow, 1);
+                            var _new_vbuff_line_start_list = ds_list_create();
+                            ds_list_add(_new_vbuff_line_start_list, 0);
+                            
+                            //Fill in vertex buffer data
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _new_buffer;
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ];
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] - _line_tell_prev;
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] - _line_tell_prev;
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _new_vbuff_line_start_list;
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ];
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ];
+                            
+                            //Copy the relevant vertices of the old buffer to the new buffer
+                            buffer_copy(_buffer, _line_tell_prev, _bytes, _new_buffer, 0);
+                            buffer_seek(_new_buffer, buffer_seek_start, _bytes);
+                            
+                            //Resize the old buffer to clip off the vertices we've stolen
+                            buffer_resize(_buffer, _line_tell_prev);
+                            buffer_seek(_buffer, buffer_seek_start, _line_tell_prev); //Resizing a buffer resets its tell
+                            ds_list_delete(_vbuff_line_start_list, ds_list_size(_vbuff_line_start_list)-1);
+                            
+                            //Go through every vertex and set its line index to 0
+                            var _tell = __SCRIBBLE_VERTEX.PACKED_INDEXES;
+                            repeat(_bytes / __SCRIBBLE_VERTEX.__SIZE)
+                            {
+                                buffer_poke(_new_buffer, _tell, buffer_f32,
+                                            SCRIBBLE_MAX_LINES*(buffer_peek(_buffer, _tell, buffer_f32) div SCRIBBLE_MAX_LINES));
+                                _tell += __SCRIBBLE_VERTEX.__SIZE;
+                            }
+                        }
+                        
+                        ++_v;
+                    }
                 }
                 
                 //Add the line array to this page
@@ -1050,13 +1114,11 @@ if (!is_array(_draw_string))
                 _page_vbuffs_array = _new_page_vbuffs_array;
                 
                 //Reset some state variables
-                _meta_page_characters =  0;
-                _meta_page_lines      =  1;
-                _line_y               =  0;
-                _previous_texture     = -1;
-                
-                //Wipe the texture -> vertex buffer map
-                ds_map_clear(_texture_to_buffer_map);
+                _meta_page_characters  =  0;
+                _meta_page_lines       =  0;
+                _line_y                =  0;
+                _previous_texture      = -1;
+                _vbuff_line_start_list = -1;
                 
                 _force_newpage = false;
             }
@@ -1085,6 +1147,7 @@ if (!is_array(_draw_string))
         
         _scribble_array[@ __SCRIBBLE.LINES     ] = _meta_element_lines;
         _scribble_array[@ __SCRIBBLE.CHARACTERS] = _meta_element_characters;
+        _scribble_array[@ __SCRIBBLE.PAGES     ] = _meta_element_pages;
         _scribble_array[@ __SCRIBBLE.WIDTH     ] = _element_x_max;
         _scribble_array[@ __SCRIBBLE.HEIGHT    ] = _element_y_max;
 
@@ -1099,6 +1162,7 @@ if (!is_array(_draw_string))
         repeat(array_length_1d(_element_pages_array))
         {
             var _page_array = _element_pages_array[_p];
+            _page_lines_array  = _page_array[__SCRIBBLE_PAGE.LINES_ARRAY         ];
             _page_vbuffs_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
             
             //Iterate over every vertex buffer for that page
@@ -1107,23 +1171,23 @@ if (!is_array(_draw_string))
             {
                 var _data = _page_vbuffs_array[_v];
                 
-                var _line_start_tell_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
-                var _buffer               = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
+                var _vbuff_line_start_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
+                var _buffer                = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
                 
                 var _buffer_tell = buffer_tell(_buffer);
-                ds_list_add(_line_start_tell_list, _buffer_tell);
+                ds_list_add(_vbuff_line_start_list, _buffer_tell);
                 
                 //Iterate over every line on the page
                 var _l = 0;
-                repeat(ds_list_size(_line_start_tell_list)-1)
+                repeat(ds_list_size(_vbuff_line_start_list)-1)
                 {
                     var _line_data   = _page_lines_array[_l];
                     var _line_y      = _line_data[__SCRIBBLE_LINE.Y     ];
                     var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
                     var _line_height = _line_data[__SCRIBBLE_LINE.HEIGHT];
                     
-                    var _tell_a = _line_start_tell_list[| _l  ];
-                    var _tell_b = _line_start_tell_list[| _l+1];
+                    var _tell_a = _vbuff_line_start_list[| _l  ];
+                    var _tell_b = _vbuff_line_start_list[| _l+1];
                     
                     if (_line_halign != fa_left)
                     {
@@ -1141,8 +1205,6 @@ if (!is_array(_draw_string))
                         }
                     }
                     
-                    show_debug_message("Adjusting line " + string(_l) + ", page " + string(_p) + " to " + string(_line_y));
-                    
                     var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
                     repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                     {
@@ -1155,7 +1217,7 @@ if (!is_array(_draw_string))
                 
                 //Wipe buffer start positions
                 _data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = undefined;
-                ds_list_destroy(_line_start_tell_list);
+                ds_list_destroy(_vbuff_line_start_list);
                 
                 //Create vertex buffer
                 var _vertex_buffer = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _buffer_tell / __SCRIBBLE_VERTEX.__SIZE);
