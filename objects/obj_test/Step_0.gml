@@ -11,6 +11,7 @@ if (keyboard_check_pressed(vk_space))
     }
     else
     {
+        //Loop back round to the first page
         scribble_page_set(element, 0);
         scribble_autotype_fade_in(element, SCRIBBLE_AUTOTYPE_PER_CHARACTER, 1, 10);
     }
