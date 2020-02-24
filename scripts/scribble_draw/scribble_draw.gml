@@ -271,14 +271,11 @@ if (!is_array(_draw_string))
         buffer_seek(_string_buffer, buffer_seek_start, 0);
 
         //Iterate over the entire string...
-        var _read_string = "";
         repeat(_buffer_size)
         {
             var _character_code = buffer_read(_string_buffer, buffer_u8);
             if (_character_code == 0) break;
             _add_character = true;
-            
-            _read_string += chr(_character_code);
             
             if (_command_tag_start >= 0) //If we're in a command tag
             {
