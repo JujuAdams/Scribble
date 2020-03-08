@@ -1426,7 +1426,6 @@ if (global.scribble_state_allow_draw)
                         }
                     }
                     
-                    //TODO - Move events into pages
                     var _event             = _page_array[__SCRIBBLE_PAGE.EVENT_PREVIOUS  ];
                     var _events_char_array = _page_array[__SCRIBBLE_PAGE.EVENT_CHAR_ARRAY];
                     var _events_name_array = _page_array[__SCRIBBLE_PAGE.EVENT_NAME_ARRAY];

@@ -34,3 +34,10 @@ if (_method != undefined) _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD] = _metho
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED     ] = _speed;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS] = _smoothness;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN   ] = true;
+
+//Reset this page's previous event position too
+var _pages_array = _scribble_array[@ __SCRIBBLE.PAGES_ARRAY];
+var _page_array = _pages_array[_scribble_array[__SCRIBBLE.AUTOTYPE_PAGE]];
+
+_page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS     ] = -1;
+_page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS] = -1;
