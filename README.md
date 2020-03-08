@@ -8,6 +8,8 @@
 
 With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_ for testing.
 
+&nbsp;
+
   - [Find out about Scribble's features](https://github.com/JujuAdams/scribble/wiki/Features)
 
   - [Get set up quickly](https://github.com/JujuAdams/scribble/wiki/Setting-Up)
