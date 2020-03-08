@@ -31,7 +31,7 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
     var _i = 0;
     repeat(ds_list_size(_list))
     {
-        var _scribble_array = global.__scribble_global_cache_map[? _list[| _i]];
+        var _scribble_array = _list[| _i];
         
         if (is_array(_scribble_array)
         && (array_length_1d(_scribble_array) == __SCRIBBLE.__SIZE)
@@ -44,6 +44,7 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
             //Remove global reference
             ds_map_delete(global.scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX]);
             
+            //Destroy vertex buffers
             var _element_pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
             var _p = 0;
             repeat(array_length_1d(_element_pages_array))
