@@ -31,26 +31,36 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
     var _i = 0;
     repeat(ds_list_size(_list))
     {
-        var _scribble_array = global.__scribble_global_cache_map[? _list[| _i]];
+        var _scribble_array = _list[| _i];
         
         if (is_array(_scribble_array)
         && (array_length_1d(_scribble_array) == __SCRIBBLE.__SIZE)
         && (_scribble_array[__SCRIBBLE.VERSION] == __SCRIBBLE_VERSION)
-        && _scribble_array[__SCRIBBLE.FREED])
+        && !_scribble_array[__SCRIBBLE.FREED])
         {
+            //Remove reference from cache
+            ds_map_delete(global.__scribble_global_cache_map,_scribble_array[__SCRIBBLE.CACHE_STRING]);
+            
+            //Remove global reference
             ds_map_delete(global.scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX]);
-        
-            var _vbuff_list = _scribble_array[__SCRIBBLE.VERTEX_BUFFER_LIST];
-            var _count = ds_list_size(_vbuff_list);
-            for(var _i = 0; _i < _count; _i++)
+            
+            //Destroy vertex buffers
+            var _element_pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
+            var _p = 0;
+            repeat(array_length_1d(_element_pages_array))
             {
-                var _vbuff_data = _vbuff_list[| _i];
-                var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
-                vertex_delete_buffer(_vbuff);
+                var _page_array = _element_pages_array[_p];
+                var _vertex_buffers_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
+                var _v = 0;
+                repeat(array_length_1d(_vertex_buffers_array))
+                {
+                    var _vbuff_data = _vertex_buffers_array[_v];
+                    var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
+                    vertex_delete_buffer(_vbuff);
+                    ++_v;
+                }
+                ++_p;
             }
-        
-            ds_list_destroy(_scribble_array[@ __SCRIBBLE.LINE_LIST]);
-            ds_list_destroy(_vbuff_list);
         
             _scribble_array[@ __SCRIBBLE.FREED] = true;
         }

@@ -21,6 +21,7 @@
 //Text wrapping
 #macro SCRIBBLE_DEFAULT_LINE_MIN_HEIGHT  -1    //The default minimum height of each line of text. Set to a negative value to use the height of a space character of the default font.
 #macro SCRIBBLE_DEFAULT_MAX_WIDTH        -1    //The default maximum horizontal size of the textbox. Set to a negative value for no limit.
+#macro SCRIBBLE_DEFAULT_MAX_HEIGHT       -1    //The default maximum vertical size of the textbox. Set to a negative value for no limit.
 
 //Transform
 #macro SCRIBBLE_DEFAULT_XSCALE  1              //The default x-scale of the textbox.
