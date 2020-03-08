@@ -156,6 +156,7 @@ enum __SCRIBBLE
     __SECTION0,             // 0
     VERSION,                // 1
     STRING,                 // 2
+    CACHE_STRING,           // 3
     DEFAULT_FONT,           // 3
     DEFAULT_COLOUR,         // 4
     DEFAULT_HALIGN,         // 5

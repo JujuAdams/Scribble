@@ -128,6 +128,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.__SECTION0            ] = "-- Parameters --";
         _scribble_array[@ __SCRIBBLE.VERSION               ] = __SCRIBBLE_VERSION;
         _scribble_array[@ __SCRIBBLE.STRING                ] = _draw_string;
+        _scribble_array[@ __SCRIBBLE.CACHE_STRING          ] = _cache_string;
         _scribble_array[@ __SCRIBBLE.DEFAULT_FONT          ] = _def_font;
         _scribble_array[@ __SCRIBBLE.DEFAULT_COLOUR        ] = _def_colour;
         _scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN        ] = _def_halign;
@@ -174,9 +175,10 @@ if (!is_array(_draw_string))
         if (__SCRIBBLE_DEBUG) show_debug_message(global.scribble_state_allow_draw? ("Scribble: Caching \"" + _cache_string + "\"") : ("Scribble: Pre-caching \"" + _cache_string + "\""));
         
         //Add this text element to the global cache lookup
-        if (global.scribble_state_cache_group == SCRIBBLE_DEFAULT_CACHE_GROUP) global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
+        global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
         
         //Find this cache group's list
+        //If we're using the default cache group, this list is the same as global.__scribble_global_cache_list
         var _list = global.__scribble_cache_group_map[? global.scribble_state_cache_group];
         if (_list == undefined)
         {
@@ -1596,7 +1598,7 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
             _cache_array[@ __SCRIBBLE.FREED] = true;
             
             //Remove reference from cache
-            ds_map_delete(global.__scribble_global_cache_map,_cache_string);
+            ds_map_delete(global.__scribble_global_cache_map, _cache_string);
             ds_list_delete(global.__scribble_global_cache_list, global.__scribble_cache_test_index);
             
             //Remove global reference

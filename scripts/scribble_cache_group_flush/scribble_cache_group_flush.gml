@@ -38,6 +38,10 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
         && (_scribble_array[__SCRIBBLE.VERSION] == __SCRIBBLE_VERSION)
         && !_scribble_array[__SCRIBBLE.FREED])
         {
+            //Remove reference from cache
+            ds_map_delete(global.__scribble_global_cache_map,_scribble_array[__SCRIBBLE.CACHE_STRING]);
+            
+            //Remove global reference
             ds_map_delete(global.scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX]);
             
             var _element_pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
