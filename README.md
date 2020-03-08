@@ -13,3 +13,5 @@ With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVe
   - [Get set up quickly](https://github.com/JujuAdams/scribble/wiki/Setting-Up)
 
   - [Read up on Scribble's GML functions](https://github.com/JujuAdams/scribble/wiki/GML-Functions)
+  
+  Scribble will always be permissively licensed.
