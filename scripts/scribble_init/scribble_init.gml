@@ -19,16 +19,16 @@
 /// 8) Automatically scans Included Files for fonts (if enabled)
 /// 
 /// 
-/// Scribble v5.4.2.pre
+/// Scribble v5.4.3
 /// 2020-03-08
 /// @jujuadams
-/// With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
+/// With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_
 /// 
 /// For use with GMS2.2.2 and later
 
 #region Internal Macro Definitions
 
-#macro __SCRIBBLE_VERSION  "5.4.2.pre"
+#macro __SCRIBBLE_VERSION  "5.4.3"
 #macro __SCRIBBLE_DATE     "2020-03-08"
 #macro __SCRIBBLE_DEBUG    false
 

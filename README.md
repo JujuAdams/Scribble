@@ -1,12 +1,12 @@
-<h1 align="center">Scribble 5.4.2.pre</h1>
+<h1 align="center">Scribble 5.4.3</h1>
 
-<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.4.2.pre">Download .yymp here</a></p>
+<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.4.3">Download .yymp here</a></p>
 
 ### @jujuadams
 
 Vertex buffer-based text engine. Faster and more comprehensive than GameMaker's native rendering. Shader-based processing allows for efficient and flexible dynamic effects without lots of expensive CPU-side draw_text() calls.
 
-[Find out what's changed](https://github.com/JujuAdams/scribble/blob/dev/changes.md) since version 4.x.x. [A "lite" version is also available](https://github.com/JujuAdams/scribble/tree/lite).
+[Find out what's changed](https://github.com/JujuAdams/scribble/blob/dev/changes.md) since version 4.x.x.
 
 With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_ for testing.
 
@@ -20,7 +20,7 @@ GameMaker Studio 2.2.3 allows you to import assets, including scripts and shader
 
 **How do I set up Scribble?**
 
-Scribble is made from 15 mandatory scripts and a shader. There are 10 optional scripts that unlock more advanced functionality, though they're not needed for basic use. The ["Lite" version](https://github.com/JujuAdams/scribble/tree/lite)() skips out the optional scripts which handle automatic typewriter effects, events, and various nuts-and-bolts options that are useful but not essential.
+Scribble is made from 15 mandatory scripts and a shader. There are 17 extra scripts that unlock more advanced functionality, though they're not needed for basic use. The ["Lite" version](https://github.com/JujuAdams/scribble/tree/lite)() skips out the optional scripts which handle automatic typewriter effects, events, and various nuts-and-bolts options that are useful but not essential.
 
 Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
 
