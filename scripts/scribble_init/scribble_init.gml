@@ -19,8 +19,8 @@
 /// 8) Automatically scans Included Files for fonts (if enabled)
 /// 
 /// 
-/// Scribble v5.4.1.pre
-/// 2020-02-23
+/// Scribble v5.4.2.pre
+/// 2020-03-08
 /// @jujuadams
 /// With thanks to glitchroy, Mark Turner, Rob van Saaze, DragoniteSpam, and sp202
 /// 
@@ -28,8 +28,8 @@
 
 #region Internal Macro Definitions
 
-#macro __SCRIBBLE_VERSION  "5.4.1.pre"
-#macro __SCRIBBLE_DATE     "2020-02-24"
+#macro __SCRIBBLE_VERSION  "5.4.2.pre"
+#macro __SCRIBBLE_DATE     "2020-03-08"
 #macro __SCRIBBLE_DEBUG    false
 
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
