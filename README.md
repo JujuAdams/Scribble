@@ -4,6 +4,8 @@
 
 ### @jujuadams
 
+A modern text renderer for GameMaker Studio 2, focusing on performance without sacrificing dynamic animated effects.
+
 With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_ for testing.
 
 [Find out what's changed](https://github.com/JujuAdams/scribble/blob/dev/changes.md) since version 4.x.x.
