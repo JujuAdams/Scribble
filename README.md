@@ -1,8 +1,9 @@
 <h1 align="center">Scribble 5.4.3</h1>
 
 <p align="center">A modern text renderer for GameMaker Studio 2</p>
-
 <h3 align="center">@jujuadams</h3>
+
+&nbsp;
 
 <p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/5.4.3">Download the .yymp here</a></p>
 
