@@ -36,7 +36,7 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
         if (is_array(_scribble_array)
         && (array_length_1d(_scribble_array) == __SCRIBBLE.__SIZE)
         && (_scribble_array[__SCRIBBLE.VERSION] == __SCRIBBLE_VERSION)
-        && _scribble_array[__SCRIBBLE.FREED])
+        && !_scribble_array[__SCRIBBLE.FREED])
         {
             ds_map_delete(global.scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX]);
             
