@@ -6,7 +6,7 @@
 
 &nbsp;
 
-|![About & Support](https://raw.githubusercontent.com/wiki/JujuAdams/scribble/images/aboutsupport.png)|![Features](https://raw.githubusercontent.com/wiki/JujuAdams/scribble/images/features.png)|![Setting Up](https://raw.githubusercontent.com/wiki/JujuAdams/scribble/images/settingup.png)|![GML Functions](https://raw.githubusercontent.com/wiki/JujuAdams/scribble/images/functions.png)|
+|[![About & Support](https://raw.githubusercontent.com/wiki/JujuAdams/scribble/images/aboutsupport.png)](https://github.com/JujuAdams/scribble/wiki/About-&-Support)|![Features](https://raw.githubusercontent.com/wiki/JujuAdams/scribble/images/features.png)|![Setting Up](https://raw.githubusercontent.com/wiki/JujuAdams/scribble/images/settingup.png)|![GML Functions](https://raw.githubusercontent.com/wiki/JujuAdams/scribble/images/functions.png)|
 |----------------------|----------------------|----------------------|----------------------|
 |<p align="center">[About & Support](https://github.com/JujuAdams/scribble/wiki/About-&-Support)</p>|<p align="center">[Features](https://github.com/JujuAdams/scribble/wiki/Features)</p>|<p align="center">[Setting Up](https://github.com/JujuAdams/scribble/wiki/Setting-Up)</p>|<p align="center">[GML Functions](https://github.com/JujuAdams/scribble/wiki/GML-Functions)</p>|
 |Who made Scribble and how to get help| Synopsis of Scribble's features | Basic setup guide for new users | Every Scribble function and how to use them in common situations |
