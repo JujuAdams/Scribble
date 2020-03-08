@@ -8,10 +8,8 @@ A modern text renderer for GameMaker Studio 2, focusing on performance without s
 
 With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_ for testing.
 
-[Find out about Scribble's features](https://github.com/JujuAdams/scribble/wiki/Features)
+  - [Find out about Scribble's features](https://github.com/JujuAdams/scribble/wiki/Features)
 
-[Get set up quickly](https://github.com/JujuAdams/scribble/wiki/Setting-Up)
+  - [Get set up quickly](https://github.com/JujuAdams/scribble/wiki/Setting-Up)
 
-[Read up on Scribble's GML functions](https://github.com/JujuAdams/scribble/wiki/GML-Functions)
-
-[Find out what's changed](https://github.com/JujuAdams/scribble/blob/dev/changes.md) since version 4.x.x.
+  - [Read up on Scribble's GML functions](https://github.com/JujuAdams/scribble/wiki/GML-Functions)
