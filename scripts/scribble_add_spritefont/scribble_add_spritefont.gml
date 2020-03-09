@@ -50,6 +50,30 @@ if (asset_get_type(_font) != asset_sprite)
     return undefined;
 }
 
+
+
+show_debug_message("Scribble: Reminder - Set your spritefonts' collision type to \"Precise Per Frame (Slow)\". This helps Scribble determine how big each character is");
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Processing spritefont \"" + _font + "\"");
+        
+//Strip out a map of of glyphs
+var _sprite = asset_get_index(_font);
+var _sprite_length = sprite_get_number(_sprite);
+var _length = string_length(_mapstring);
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   \"" + _font + "\" has " + string(_length) + " characters");
+
+if (_length > _sprite_length)
+{
+    show_error("Scribble:\nmapString for \"" + _font + "\" has more characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")\nPlease ensure you have one image in your sprite for every character\n ", true);
+    return undefined;
+}
+else if (_length < _sprite_length)
+{
+    show_debug_message("Scribble:   Warning! mapString for \"" + _font + "\" has fewer characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")");
+}
+
+
+
+
 var _data = array_create(__SCRIBBLE_FONT.__SIZE);
 _data[@ __SCRIBBLE_FONT.NAME        ] = _font;
 _data[@ __SCRIBBLE_FONT.PATH        ] = undefined;
@@ -58,30 +82,22 @@ _data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
 _data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
 _data[@ __SCRIBBLE_FONT.GLYPH_MIN   ] = 32;
 _data[@ __SCRIBBLE_FONT.GLYPH_MAX   ] = 32;
-_data[@ __SCRIBBLE_FONT.TEXTURE     ] = undefined;
+_data[@ __SCRIBBLE_FONT.TEXTURE     ] = sprite_get_texture(_sprite, 0);
 _data[@ __SCRIBBLE_FONT.SPACE_WIDTH ] = _space_width;
 _data[@ __SCRIBBLE_FONT.MAPSTRING   ] = _mapstring;
 _data[@ __SCRIBBLE_FONT.SEPARATION  ] = _separation;
 global.__scribble_font_data[? _font ] = _data;
-
-
-        
-if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Processing spritefont \"" + _font + "\"");
-
-var _sprite = asset_get_index(_font);
-_data[@ __SCRIBBLE_FONT.TEXTURE] = sprite_get_texture(_sprite, 0);
 
 if (sprite_get_bbox_left(  _sprite) == 0)
 || (sprite_get_bbox_top(   _sprite) == 0)
 || (sprite_get_bbox_right( _sprite) == sprite_get_width(_sprite)-1)
 || (sprite_get_bbox_bottom(_sprite) == sprite_get_height(_sprite)-1)
 {
-    show_debug_message("Scribble:   WARNING! \"" + _font + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed");
+    show_debug_message("Scribble:   Warning! \"" + _font + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed");
 }
         
-var _sprite_string  = _data[__SCRIBBLE_FONT.MAPSTRING  ];
-var _shift_constant = _data[__SCRIBBLE_FONT.SEPARATION ];
-var _space_width    = _data[__SCRIBBLE_FONT.SPACE_WIDTH];
+var _sprite_string  = _mapstring;
+var _shift_constant = _separation;
         
 var _font_glyphs_map = ds_map_create();
 _data[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _font_glyphs_map;
@@ -95,15 +111,12 @@ sprite_index = _sprite;
 mask_index   = _sprite;
 x            = -sprite_get_xoffset(_sprite);
 y            = -sprite_get_yoffset(_sprite);
-        
-//Strip out a map of of glyphs
-var _length = string_length(_sprite_string);
-if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   \"" + _font + "\" has " + string(_length) + " characters");
+
 for(var _i = 0; _i < _length; _i++)
 {
     var _char = string_char_at(_sprite_string, _i+1);
     if ( ds_map_exists(_font_glyphs_map, ord(_char))) continue;
-    if (_char == " ") show_debug_message("Scribble:   WARNING! It is strongly recommended that you do *not* use a space character in your sprite font in GMS2.2.1 and above due to IDE bugs. Use scribble_font_char_set_*() to define a space character");
+    if (_char == " ") show_debug_message("Scribble:   Warning! It is strongly recommended that you don't use a space character in your spritefont in GMS2.2.1 and above due to weird GameMaker behaviour");
             
     image_index = _i;
     var _uvs = sprite_get_uvs(_sprite, image_index);
@@ -126,7 +139,7 @@ for(var _i = 0; _i < _length; _i++)
             
     if ((_left == _right) && (_top == _bottom))
     {
-        show_debug_message("Scribble:   WARNING! Character " + string(ord(_char)) + "(" + _char + ") for sprite font \"" + _font + "\" is empty");
+        show_debug_message("Scribble:   Warning! Character " + string(ord(_char)) + "(" + _char + ") for spritefont \"" + _font + "\" is empty");
                 
         _array[@ SCRIBBLE_GLYPH.WIDTH     ] = 1;
         _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = sprite_get_height(_sprite);

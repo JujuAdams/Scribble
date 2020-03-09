@@ -423,7 +423,7 @@ if (_auto_scan)
                     
                     if (asset_get_type(_font) != asset_font)
                     {
-                        show_debug_message("Scribble: WARNING! Autoscan found \"" + _file + "\", but \"" + _font + "\" was not found in the project");
+                        show_debug_message("Scribble: Warning! Autoscan found \"" + _file + "\", but \"" + _font + "\" was not found in the project as a font asset");
                     }
                     else
                     {

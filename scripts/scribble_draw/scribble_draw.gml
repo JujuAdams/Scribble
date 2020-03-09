@@ -733,7 +733,7 @@ if (!is_array(_draw_string))
                                                         var _command_string = string(_command_name);
                                                         var _j = 1;
                                                         repeat(_command_tag_parameters-1) _command_string += "," + string(_parameters_list[| _j++]);
-                                                        show_debug_message("Scribble: WARNING! Unrecognised command tag [" + _command_string + "]" );
+                                                        show_debug_message("Scribble: Warning! Unrecognised command tag [" + _command_string + "]" );
                                                         
                                                         continue; //Skip the rest of the parser step
                                                     }
