@@ -112,15 +112,18 @@ mask_index   = _sprite;
 x            = -sprite_get_xoffset(_sprite);
 y            = -sprite_get_yoffset(_sprite);
 
+//Strip out a map of of glyphs
+var _potential_separate_texture_page = 0;
 for(var _i = 0; _i < _length; _i++)
 {
     var _char = string_char_at(_sprite_string, _i+1);
-    if ( ds_map_exists(_font_glyphs_map, ord(_char))) continue;
-    if (_char == " ") show_debug_message("Scribble:   Warning! It is strongly recommended that you don't use a space character in your spritefont in GMS2.2.1 and above due to weird GameMaker behaviour");
+    if (ds_map_exists(_font_glyphs_map, ord(_char))) continue;
+    if (_char == " ") show_debug_message("Scribble:   WARNING! It is strongly recommended that you do *not* use a space character in your sprite font in GMS2.2.1 and above due to IDE bugs. Use scribble_font_char_set_*() to define a space character");
             
     image_index = _i;
     var _uvs = sprite_get_uvs(_sprite, image_index);
-            
+    if ((_uvs[4] == 0.0) && (_uvs[5] == 0.0) && (_uvs[6] == 1.0) && (_uvs[7] == 1.0)) ++_potential_separate_texture_page;
+    
     //Perform line sweeping to get accurate glyph data
     var _left   = bbox_left-1;
     var _top    = bbox_top-1;
@@ -202,5 +205,10 @@ sprite_index = _old_sprite;
 mask_index   = _old_mask;
 x            = _old_x;
 y            = _old_y;
+
+if (_potential_separate_texture_page > 0.5*_length)
+{
+    show_error("Scribble:\nSpritefont \"" + string(_font) + "\" appears to be set to Separate Texture Page\nPlease untick Separate Texture Page for this sprite\n ", true);
+}
 
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added \"" + _font + "\" as a spritefont");
