@@ -1546,12 +1546,12 @@ if (global.scribble_state_allow_draw)
     matrix_set(matrix_world, _old_matrix);
     
     #endregion
+    
+    
+    
+    //Update when this text element was last drawn
+    _scribble_array[@ __SCRIBBLE.TIME] = current_time;
 }
-
-
-
-//Update when this text element was last drawn
-_scribble_array[@ __SCRIBBLE.TIME] = current_time;
 
 
 
