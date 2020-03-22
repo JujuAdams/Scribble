@@ -226,8 +226,9 @@ if (!is_array(_draw_string))
         
         #region Add the first line to the page
         
-        var _line_width  = 0;
-        var _line_height = _line_min_height;
+        var _line_has_space = false;
+        var _line_width     = 0;
+        var _line_height    = _line_min_height;
         
         var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
         _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = 1;
@@ -787,9 +788,10 @@ if (!is_array(_draw_string))
             else if (_character_code == 32) //If we've hit a space
             {
                 //Grab this characer's width/height
-                _char_width  = _font_space_width*_text_scale;
-                _line_width  = max(_line_width, _text_x);
-                _line_height = max(_line_height, _font_line_height*_text_scale);
+                _char_width     = _font_space_width*_text_scale;
+                _line_has_space = true;
+                _line_width     = max(_line_width, _text_x);
+                _line_height    = max(_line_height, _font_line_height*_text_scale);
                 
                 //Iterate over all the vertex buffers we've been using and reset the word start position
                 var _v = 0;
@@ -959,27 +961,27 @@ if (!is_array(_draw_string))
                     }
                     else
                     {
-                        var _tell_a = _data[__SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL];
+                        //If the line has no space character on it then we know that entire word is longer than the textbox max width
+                        //We fall back to use the character start position for this vertex buffer instead
+                        if (_line_has_space)
+                        {
+                            var _tell_a = _data[__SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL];
+                        }
+                        else
+                        {
+                            var _tell_a = _data[__SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL];
+                        }
+                        
                         var _tell_b = buffer_tell(_buffer);
                         ds_list_add(_vbuff_line_start_list, _tell_a);
                         
                         //If we've added anything to this buffer
                         if (_tell_a < _tell_b)
                         {
-                            //We want to offset to the left by the x-position of the start of the word
-                            //Note the negative sign!
-                            _line_offset_x = -(buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32));
-                            
-                            //If the start of the word is at 0 then we know that entire word is longer than the textbox max width
+                            //If the line has no space character on it then we know that entire word is longer than the textbox max width
                             //We fall back to use the character start position for this vertex buffer instead
-                            if (_line_offset_x >= 0)
+                            if (!_line_has_space)
                             {
-                                var _tell_a = _data[__SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL];
-                                
-                                //We want to offset to the left by the x-position of the start of the word
-                                //Note the negative sign!
-                                _line_offset_x = -(buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32));
-                                
                                 //Set our word start tell position to be the same as the character start tell
                                 //This allows us to handle single words that exceed the maximum textbox width multiple times (!)
                                 _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_a;
@@ -987,12 +989,13 @@ if (!is_array(_draw_string))
                             }
                             else
                             {
-                                //If our word didn't start at x=0 then 
-                                //Set our word/character start position to be the current tell for this buffer
+                                //If our line didn't have a space then set our word/character start position to be the current tell for this buffer
                                 _data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = _tell_b;
                                 _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_b;
                             }
                             
+                            //Note the negative sign!
+                            _line_offset_x = -(buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32));
                             if (_line_offset_x < 0)
                             {
                                 //Retroactively move the last word to a new line
@@ -1023,10 +1026,11 @@ if (!is_array(_draw_string))
                 _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
                 
                 //Reset state
-                _text_x      += _line_offset_x;
-                _line_y      += _line_height;
-                _line_width   = 0;
-                _line_height  = _line_min_height;
+                _text_x        += _line_offset_x;
+                _line_y        += _line_height;
+                _line_has_space = false;
+                _line_width     = 0;
+                _line_height    = _line_min_height;
                 
                 //Create a new line
                 var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
