@@ -1421,7 +1421,8 @@ if (global.scribble_state_allow_draw)
                     {
                         if (current_time >= _scribble_array[__SCRIBBLE.SOUND_FINISH_TIME]) 
                         {
-                            var _sound = _sound_array[irandom(array_length_1d(_sound_array)-1)];
+                            global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
+                            var _sound = _sound_array[floor(array_length_1d(_sound_array) * global.__scribble_lcg / 2147483648)];
                             audio_play_sound(_sound, 0, false);
                             _scribble_array[@ __SCRIBBLE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _scribble_array[__SCRIBBLE.AUTOTYPE_SOUND_OVERLAP];
                         }

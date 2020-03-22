@@ -281,6 +281,7 @@ else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_defau
 }
 
 //Declare global variables
+global.__scribble_lcg               = date_current_datetime()*100;
 global.__scribble_font_directory    = _font_directory;
 global.__scribble_font_data         = ds_map_create();  //Stores a data array for each font defined inside Scribble
 global.__scribble_colours           = ds_map_create();  //Stores colour definitions, including custom colours
