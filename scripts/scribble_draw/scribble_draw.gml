@@ -1238,35 +1238,38 @@ if (!is_array(_draw_string))
                 var _l = 0;
                 repeat(ds_list_size(_vbuff_line_start_list)-1)
                 {
-                    var _line_data   = _page_lines_array[_l];
-                    var _line_y      = _line_data[__SCRIBBLE_LINE.Y     ];
-                    var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
-                    var _line_height = _line_data[__SCRIBBLE_LINE.HEIGHT];
-                    
-                    var _tell_a = _vbuff_line_start_list[| _l  ];
-                    var _tell_b = _vbuff_line_start_list[| _l+1];
-                    
-                    if (_line_halign != fa_left)
+                    var _line_data = _page_lines_array[_l];
+                    if (is_array(_line_data)) //Someimtes the array can contain <undefined> if a line is moved from one page to another
                     {
-                        var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
+                        var _line_y      = _line_data[__SCRIBBLE_LINE.Y     ];
+                        var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
+                        var _line_height = _line_data[__SCRIBBLE_LINE.HEIGHT];
                         
-                        var _offset = 0;
-                        if (_line_halign == fa_right ) _offset =  _element_width - _line_width;
-                        if (_line_halign == fa_center) _offset = (_element_width - _line_width) div 2;
+                        var _tell_a = _vbuff_line_start_list[| _l  ];
+                        var _tell_b = _vbuff_line_start_list[| _l+1];
                         
-                        var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
+                        if (_line_halign != fa_left)
+                        {
+                            var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
+                            
+                            var _offset = 0;
+                            if (_line_halign == fa_right ) _offset =  _element_width - _line_width;
+                            if (_line_halign == fa_center) _offset = (_element_width - _line_width) div 2;
+                            
+                            var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
+                            repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
+                            {
+                                buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
+                                _tell += __SCRIBBLE_VERTEX.__SIZE;
+                            }
+                        }
+                        
+                        var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
                         repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                         {
-                            buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
+                            buffer_poke(_buffer, _tell, buffer_f32, _line_y + buffer_peek(_buffer, _tell, buffer_f32));
                             _tell += __SCRIBBLE_VERTEX.__SIZE;
                         }
-                    }
-                    
-                    var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
-                    repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
-                    {
-                        buffer_poke(_buffer, _tell, buffer_f32, _line_y + buffer_peek(_buffer, _tell, buffer_f32));
-                        _tell += __SCRIBBLE_VERTEX.__SIZE;
                     }
                     
                     ++_l;
