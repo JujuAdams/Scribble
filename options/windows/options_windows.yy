@@ -31,7 +31,7 @@
     "option_windows_texture_page": "2048x2048",
     "option_windows_use_splash": false,
     "option_windows_version": {
-        "build": 4,
+        "build": 5,
         "major": 5,
         "minor": 4,
         "revision": 0
