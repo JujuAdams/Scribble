@@ -1248,6 +1248,7 @@ if (!is_array(_draw_string))
                         var _tell_a = _vbuff_line_start_list[| _l  ];
                         var _tell_b = _vbuff_line_start_list[| _l+1];
                         
+                        //If we're not left-aligned then we need to do some work!
                         if (_line_halign != fa_left)
                         {
                             var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
@@ -1256,18 +1257,26 @@ if (!is_array(_draw_string))
                             if (_line_halign == fa_right ) _offset =  _element_width - _line_width;
                             if (_line_halign == fa_center) _offset = (_element_width - _line_width) div 2;
                             
+                            //We want to write to the CENTRE_X property of every vertex for horizontal alignment
                             var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
                             repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                             {
+                                //Poke the new value by adding the offset to the old value
                                 buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
+                                
+                                //Now jump ahead to the next vertex. This means we're always writing to CENTRE_X!
                                 _tell += __SCRIBBLE_VERTEX.__SIZE;
                             }
                         }
                         
+                        //Now let's do vertical alignment by writing to CENTRE_Y
                         var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
                         repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                         {
+                            //Poke the new value by adding the offset to the old value
                             buffer_poke(_buffer, _tell, buffer_f32, _line_y + buffer_peek(_buffer, _tell, buffer_f32));
+                                
+                            //Now jump ahead to the next vertex. This means we're always writing to CENTRE_Y!
                             _tell += __SCRIBBLE_VERTEX.__SIZE;
                         }
                     }
