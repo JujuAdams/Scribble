@@ -109,8 +109,8 @@ var _old_mask   = mask_index;
 
 sprite_index = _sprite;
 mask_index   = _sprite;
-x            = -sprite_get_xoffset(_sprite);
-y            = -sprite_get_yoffset(_sprite);
+x            = sprite_get_xoffset(_sprite);
+y            = sprite_get_yoffset(_sprite);
 
 //Strip out a map of of glyphs
 var _potential_separate_texture_page = 0;
@@ -162,7 +162,7 @@ for(var _i = 0; _i < _length; _i++)
         _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _glyph_width;
         _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _glyph_height;
         _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _left - bbox_left;
-        _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _top-1;
+        _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _top;
         _array[@ SCRIBBLE_GLYPH.SEPARATION] = _glyph_width + _shift_constant;
         _array[@ SCRIBBLE_GLYPH.U0        ] = _uvs[0];
         _array[@ SCRIBBLE_GLYPH.V0        ] = _uvs[1];
