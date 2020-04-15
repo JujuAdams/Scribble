@@ -215,10 +215,10 @@ enum __SCRIBBLE
 
 #endregion
 
-if (SCRIBBLE_WARNING_REINITIALIZE && variable_global_exists("__scribble_global_count"))
+if (variable_global_exists("__scribble_global_count"))
 {
-    show_error("Scribble:\nscribble_init() should not be called twice!\n(Set SCRIBBLE_WARNING_REINITIALIZE to <false> to hide this warning)\n ", false);
-    exit;
+    if (SCRIBBLE_WARNING_REINITIALIZE) show_error("Scribble:\nscribble_init() should not be called twice!\n(Set SCRIBBLE_WARNING_REINITIALIZE to <false> to hide this warning)\n ", false);
+    return false;
 }
 
 show_debug_message("Scribble: Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
@@ -439,3 +439,5 @@ if (_auto_scan)
         ds_list_destroy(_directory_list);
     }
 }
+
+return true;
