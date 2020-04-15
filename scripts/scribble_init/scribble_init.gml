@@ -215,9 +215,9 @@ enum __SCRIBBLE
 
 #endregion
 
-if ( variable_global_exists("__scribble_global_count") )
+if (SCRIBBLE_WARNING_REINITIALIZE && variable_global_exists("__scribble_global_count"))
 {
-    show_error("Scribble:\nscribble_init() should not be called twice!\n ", false);
+    show_error("Scribble:\nscribble_init() should not be called twice!\n(Set SCRIBBLE_WARNING_REINITIALIZE to <false> to hide this warning)\n ", false);
     exit;
 }
 
