@@ -649,8 +649,8 @@ if (!is_array(_draw_string))
                                                     
                                                     //Find the UVs and position of the sprite quad
                                                     var _uvs = sprite_get_uvs(_sprite_index, _image);
-                                                    var _quad_l = _sprite_x + _uvs[4];
-                                                    var _quad_t = _sprite_y + _uvs[5];
+                                                    var _quad_l = _sprite_x + _uvs[4]*_text_scale;
+                                                    var _quad_t = _sprite_y + _uvs[5]*_text_scale;
                                                     var _quad_r = _quad_l   + _uvs[6]*_sprite_width;
                                                     var _quad_b = _quad_t   + _uvs[7]*_sprite_height;
                                                     
