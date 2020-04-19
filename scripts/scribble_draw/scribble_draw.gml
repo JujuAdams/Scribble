@@ -1419,6 +1419,7 @@ if (global.scribble_state_allow_draw)
                 {
                     case SCRIBBLE_AUTOTYPE_PER_CHARACTER:
                         var _scan_b = ceil(_typewriter_position + _typewriter_speed);
+                        _scan_b = min(_scan_b, _page_array[__SCRIBBLE_PAGE.CHARACTERS]);
                     break;
                 
                     case SCRIBBLE_AUTOTYPE_PER_LINE:
