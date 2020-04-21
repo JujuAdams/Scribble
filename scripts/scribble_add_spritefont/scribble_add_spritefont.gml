@@ -118,8 +118,8 @@ for(var _i = 0; _i < _length; _i++)
 {
     var _char = string_char_at(_sprite_string, _i+1);
     if (ds_map_exists(_font_glyphs_map, ord(_char))) continue;
-    if (_char == " ") show_debug_message("Scribble:   WARNING! It is strongly recommended that you do *not* use a space character in your sprite font in GMS2.2.1 and above due to IDE bugs. Use scribble_font_char_set_*() to define a space character");
-            
+    if ((_char == " ") && (_space_width == undefined)) show_debug_message("Scribble:   WARNING! It is recommended that you do *not* use a space character in your spritefont. Please override the space character width by using the optional [spaceWidth] argument of scribble_add_spritefont()");
+    
     image_index = _i;
     var _uvs = sprite_get_uvs(_sprite, image_index);
     if ((_uvs[4] == 0.0) && (_uvs[5] == 0.0) && (_uvs[6] == 1.0) && (_uvs[7] == 1.0)) ++_potential_separate_texture_page;
