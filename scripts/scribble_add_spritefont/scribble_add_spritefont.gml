@@ -1,9 +1,10 @@
 /// Adds a spritefont for use with Scribble.
 ///
-/// @param fontName       String name of the spritefont to add.
-/// @param mapString      String from which sprite sub-image order is taken. (Same behaviour as GameMaker's native font_add_sprite_ext())
-/// @param separation     The space to leave between each letter. (Same behaviour as GameMaker's native font_add_sprite_ext())
-/// @param [spaceWidth]   Pixel width of the space character. Defaults to emulating GameMaker's behaviour.
+/// @param fontName      String name of the spritefont to add.
+/// @param mapString     String from which sprite sub-image order is taken. (Same behaviour as GameMaker's native font_add_sprite_ext())
+/// @param separation    The space to leave between each letter. (Same behaviour as GameMaker's native font_add_sprite_ext())
+/// @param [spaceWidth]  Pixel width of the space character. Defaults to emulating GameMaker's behaviour
+/// @param [monospace]   Forces the width of every glyph to this value
 ///
 /// Scribble's spritefonts emulate GameMaker's native behaviour. Spritefonts otherwise behave indentically to normal fonts within Scribble.
 /// All Scribble spritefonts are proportional as per GameMaker's font_add_sprite_ext() function.
@@ -18,6 +19,7 @@ var _font        = argument[0];
 var _mapstring   = argument[1];
 var _separation  = argument[2];
 var _space_width = (argument_count > 3)? argument[3] : undefined;
+var _monospace   = (argument_count > 4)? argument[4] : undefined;
 
 if (ds_map_exists(global.__scribble_font_data, _font))
 {
@@ -96,8 +98,9 @@ if (sprite_get_bbox_left(  _sprite) == 0)
     show_debug_message("Scribble:   Warning! \"" + _font + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed");
 }
         
-var _sprite_string  = _mapstring;
-var _shift_constant = _separation;
+var _sprite_string   = _mapstring;
+var _shift_constant  = _separation;
+var _monospace_width = _monospace? sprite_get_width(_sprite) : undefined;
         
 var _font_glyphs_map = ds_map_create();
 _data[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _font_glyphs_map;
@@ -125,10 +128,10 @@ for(var _i = 0; _i < _length; _i++)
     if ((_uvs[4] == 0.0) && (_uvs[5] == 0.0) && (_uvs[6] == 1.0) && (_uvs[7] == 1.0)) ++_potential_separate_texture_page;
     
     //Perform line sweeping to get accurate glyph data
-    var _left   = bbox_left-1;
-    var _top    = bbox_top-1;
-    var _right  = bbox_right+1;
-    var _bottom = bbox_bottom+1;
+    var _left   = bbox_left-2;
+    var _top    = bbox_top-2;
+    var _right  = bbox_right+2;
+    var _bottom = bbox_bottom+2;
             
     while (!collision_line(      _left, bbox_top-1,        _left, bbox_bottom+1, id, true, false) && (_left < _right )) ++_left;
     while (!collision_line(bbox_left-1,       _top, bbox_right+1,          _top, id, true, false) && (_top  < _bottom)) ++_top;
@@ -159,11 +162,12 @@ for(var _i = 0; _i < _length; _i++)
     {
         var _glyph_width  = 1 + _right - _left;
         var _glyph_height = 1 + _bottom - _top;
+        
         _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _glyph_width;
         _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _glyph_height;
-        _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT? 0 : (_left - bbox_left);
+        _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = (_monospace? _left : (SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT? 0 : (_left - bbox_left)));
         _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _top;
-        _array[@ SCRIBBLE_GLYPH.SEPARATION] = _glyph_width + _shift_constant;
+        _array[@ SCRIBBLE_GLYPH.SEPARATION] = (_monospace? _monospace_width : _glyph_width) + _shift_constant;
         _array[@ SCRIBBLE_GLYPH.U0        ] = _uvs[0];
         _array[@ SCRIBBLE_GLYPH.V0        ] = _uvs[1];
         _array[@ SCRIBBLE_GLYPH.U1        ] = _uvs[2];
@@ -175,7 +179,7 @@ for(var _i = 0; _i < _length; _i++)
         
 if (!ds_map_exists(_font_glyphs_map, 32))
 {
-    var _glyph_width  = sprite_get_width(_sprite);
+    var _glyph_width  = _monospace? sprite_get_width(_sprite) : (1 + bbox_right - bbox_left);
     var _glyph_height = sprite_get_height(_sprite);
             
     //Build an array to store this glyph's properties
