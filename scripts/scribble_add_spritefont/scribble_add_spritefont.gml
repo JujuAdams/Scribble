@@ -1,13 +1,12 @@
 /// Adds a spritefont for use with Scribble.
 ///
-/// @param fontName      String name of the spritefont to add.
-/// @param mapString     String from which sprite sub-image order is taken. (Same behaviour as GameMaker's native font_add_sprite_ext())
-/// @param separation    The space to leave between each letter. (Same behaviour as GameMaker's native font_add_sprite_ext())
-/// @param [spaceWidth]  Pixel width of the space character. Defaults to emulating GameMaker's behaviour
-/// @param [monospace]   Forces the width of every glyph to this value
+/// @param fontName        String name of the spritefont to add.
+/// @param mapString       String from which sprite sub-image order is taken. (Same behaviour as GameMaker's native font_add_sprite_ext())
+/// @param separation      The space to leave between each letter. (Same behaviour as GameMaker's native font_add_sprite_ext())
+/// @param [spaceWidth]    Pixel width of the space character. Defaults to emulating GameMaker's behaviour
+/// @param [proportional]  Allows characters to have variable widths depending on their size. Defaults to <true>. Set to <false> to make every character's width identical
 ///
 /// Scribble's spritefonts emulate GameMaker's native behaviour. Spritefonts otherwise behave indentically to normal fonts within Scribble.
-/// All Scribble spritefonts are proportional as per GameMaker's font_add_sprite_ext() function.
 
 if (!variable_global_exists("__scribble_global_count"))
 {
@@ -15,11 +14,11 @@ if (!variable_global_exists("__scribble_global_count"))
     exit;
 }
 
-var _font        = argument[0];
-var _mapstring   = argument[1];
-var _separation  = argument[2];
-var _space_width = (argument_count > 3)? argument[3] : undefined;
-var _monospace   = (argument_count > 4)? argument[4] : undefined;
+var _font         = argument[0];
+var _mapstring    = argument[1];
+var _separation   = argument[2];
+var _space_width  = (argument_count > 3)? argument[3] : undefined;
+var _proportional = (argument_count > 4)? argument[4] : undefined;
 
 if (ds_map_exists(global.__scribble_font_data, _font))
 {
@@ -100,7 +99,7 @@ if (sprite_get_bbox_left(  _sprite) == 0)
         
 var _sprite_string   = _mapstring;
 var _shift_constant  = _separation;
-var _monospace_width = _monospace? sprite_get_width(_sprite) : undefined;
+var _monospace_width = (!_proportional)? sprite_get_width(_sprite) : undefined;
         
 var _font_glyphs_map = ds_map_create();
 _data[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _font_glyphs_map;
@@ -165,9 +164,9 @@ for(var _i = 0; _i < _length; _i++)
         
         _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _glyph_width;
         _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _glyph_height;
-        _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = (_monospace? _left : (SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT? 0 : (_left - bbox_left)));
+        _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = ((!_proportional)? _left : (SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT? 0 : (_left - bbox_left)));
         _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _top;
-        _array[@ SCRIBBLE_GLYPH.SEPARATION] = (_monospace? _monospace_width : _glyph_width) + _shift_constant;
+        _array[@ SCRIBBLE_GLYPH.SEPARATION] = ((!_proportional)? _monospace_width : _glyph_width) + _shift_constant;
         _array[@ SCRIBBLE_GLYPH.U0        ] = _uvs[0];
         _array[@ SCRIBBLE_GLYPH.V0        ] = _uvs[1];
         _array[@ SCRIBBLE_GLYPH.U1        ] = _uvs[2];
@@ -179,7 +178,7 @@ for(var _i = 0; _i < _length; _i++)
         
 if (!ds_map_exists(_font_glyphs_map, 32))
 {
-    var _glyph_width  = _monospace? sprite_get_width(_sprite) : (1 + bbox_right - bbox_left);
+    var _glyph_width  = (!_proportional)? sprite_get_width(_sprite) : (1 + bbox_right - bbox_left);
     var _glyph_height = sprite_get_height(_sprite);
             
     //Build an array to store this glyph's properties
