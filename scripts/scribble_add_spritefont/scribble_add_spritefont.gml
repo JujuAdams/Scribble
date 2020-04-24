@@ -18,7 +18,7 @@ var _font         = argument[0];
 var _mapstring    = argument[1];
 var _separation   = argument[2];
 var _space_width  = (argument_count > 3)? argument[3] : undefined;
-var _proportional = (argument_count > 4)? argument[4] : undefined;
+var _proportional = (argument_count > 4)? argument[4] : true;
 
 if (ds_map_exists(global.__scribble_font_data, _font))
 {
