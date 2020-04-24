@@ -607,6 +607,7 @@ if (!is_array(_draw_string))
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _sprite_texture;
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = 0;
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
+                                                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = 0;
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _vbuff_line_start_list;
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _sprite_texture);
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_sprite_texture);
@@ -619,6 +620,7 @@ if (!is_array(_draw_string))
                                                         var _buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = buffer_tell(_buffer);
                                                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_buffer);
+                                                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = 0;
                                                         _vbuff_line_start_list = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
                                                     }
                                                     
@@ -797,6 +799,7 @@ if (!is_array(_draw_string))
                 {
                     var _data = _page_vbuffs_array[_v];
                     _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER]);
+                    _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
                     ++_v;
                 }
                 
@@ -850,6 +853,7 @@ if (!is_array(_draw_string))
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _font_texture;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = 0;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
+                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _vbuff_line_start_list;
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _font_texture);
                         _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_font_texture);
@@ -873,6 +877,7 @@ if (!is_array(_draw_string))
                 if (global.scribble_state_character_wrap)
                 {
                     _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
                     _line_width = max(_line_width, _text_x);
                 }
             
@@ -892,10 +897,13 @@ if (!is_array(_draw_string))
             
                 if (_glyph_array != undefined)
                 {
-                    var _quad_l = _text_x + _glyph_array[SCRIBBLE_GLYPH.X_OFFSET]*_text_scale;
-                    var _quad_t =           _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2);
-                    var _quad_r = _quad_l + _glyph_array[SCRIBBLE_GLYPH.WIDTH   ]*_text_scale;
-                    var _quad_b = _quad_t + _glyph_array[SCRIBBLE_GLYPH.HEIGHT  ]*_text_scale;
+                    var _quad_l = _glyph_array[SCRIBBLE_GLYPH.X_OFFSET]*_text_scale;
+                    if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] == undefined) _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = _quad_l;
+                    
+                        _quad_l += _text_x;
+                    var _quad_t  =           _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2);
+                    var _quad_r  = _quad_l + _glyph_array[SCRIBBLE_GLYPH.WIDTH   ]*_text_scale;
+                    var _quad_b  = _quad_t + _glyph_array[SCRIBBLE_GLYPH.HEIGHT  ]*_text_scale;
                     
                     var _quad_cx = 0.5*(_quad_l + _quad_r);
                     var _quad_cy = 0.5*(_quad_t + _quad_b);
@@ -993,7 +1001,10 @@ if (!is_array(_draw_string))
                             }
                             
                             //Note the negative sign!
-                            _line_offset_x = -(buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32));
+                            var _word_x_offset = _data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET];
+                            if (_word_x_offset == undefined) _word_x_offset = 0;
+                            
+                            _line_offset_x = _word_x_offset - (buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32));
                             if (_line_offset_x < 0)
                             {
                                 //Retroactively move the last word to a new line
@@ -1007,6 +1018,8 @@ if (!is_array(_draw_string))
                                     _tell += __SCRIBBLE_VERTEX.__SIZE;
                                 }
                             }
+                            
+                            _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = undefined;
                         }
                     }
                     
@@ -1128,12 +1141,13 @@ if (!is_array(_draw_string))
                             //Fill in vertex buffer data
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _new_buffer;
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
-                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ];
-                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] - _line_tell_prev;
-                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] - _line_tell_prev;
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE        ];
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] - _line_tell_prev;
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] - _line_tell_prev;
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ];
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _new_vbuff_line_start_list;
-                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ];
-                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ];
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ];
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ];
                             
                             //Copy the relevant vertices of the old buffer to the new buffer
                             buffer_copy(_buffer, _line_tell_prev, _bytes, _new_buffer, 0);
@@ -1296,6 +1310,7 @@ if (!is_array(_draw_string))
                 //Wipe CHAR_START_TELL and WORD_START_TELL
                 _data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = undefined;
                 _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = undefined;
+                _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
                 
                 ++_v;
             }
