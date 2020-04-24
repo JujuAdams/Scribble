@@ -162,11 +162,20 @@ for(var _i = 0; _i < _length; _i++)
         var _glyph_width  = 1 + _right - _left;
         var _glyph_height = 1 + _bottom - _top;
         
+        var _x_offset   = SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT? 0 : (_left - bbox_left);
+        var _separation = _glyph_width + _shift_constant;
+        
+        if (!_proportional)
+        {
+            _x_offset   = _left;
+            _separation = _monospace_width + _shift_constant;
+        }
+        
         _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _glyph_width;
         _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _glyph_height;
-        _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = ((!_proportional)? _left : (SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT? 0 : (_left - bbox_left)));
+        _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _x_offset;
         _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _top;
-        _array[@ SCRIBBLE_GLYPH.SEPARATION] = ((!_proportional)? _monospace_width : _glyph_width) + _shift_constant;
+        _array[@ SCRIBBLE_GLYPH.SEPARATION] = _separation;
         _array[@ SCRIBBLE_GLYPH.U0        ] = _uvs[0];
         _array[@ SCRIBBLE_GLYPH.V0        ] = _uvs[1];
         _array[@ SCRIBBLE_GLYPH.U1        ] = _uvs[2];
@@ -180,6 +189,8 @@ if (!ds_map_exists(_font_glyphs_map, 32))
 {
     var _glyph_width  = (!_proportional)? sprite_get_width(_sprite) : (1 + bbox_right - bbox_left);
     var _glyph_height = sprite_get_height(_sprite);
+    
+    if (_space_width == undefined) _glyph_width += _shift_constant;
             
     //Build an array to store this glyph's properties
     var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
