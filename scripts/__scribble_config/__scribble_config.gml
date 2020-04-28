@@ -7,10 +7,9 @@
 #macro SCRIBBLE_VERBOSE                       false  //Enables verbose console output to aid with debugging
 #macro SCRIBBLE_ADD_SPRITE_ORIGINS            false  //Whether to use sprite origins. Setting this to <false> will vertically centre sprites on the line of text
 #macro SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT  false  //Set to <true> to emulate GameMaker's native behaviour
+#macro SCRIBBLE_DEFAULT_DELAY_DURATION        450    //Default duration of the [delay] command, in milliseconds
 
 #region Default parameters
-
-#macro SCRIBBLE_DEFAULT_DELAY_DURATION  450    //Milliseconds
 
 //Starting format
 #macro SCRIBBLE_DEFAULT_TEXT_COLOUR   c_white  //The default (vertex) colour of text.
