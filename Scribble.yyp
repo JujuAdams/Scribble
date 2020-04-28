@@ -103,6 +103,14 @@
             }
         },
         {
+            "Key": "21e1fca2-32ef-46d3-9938-44552cc93b4e",
+            "Value": {
+                "id": "156b8738-870e-4dc1-b292-95c2b93ff05f",
+                "resourcePath": "scripts\\scribble_autotype_set_pause\\scribble_autotype_set_pause.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "24adc709-497e-43cb-9834-a1a8664cbe74",
             "Value": {
                 "id": "0babcdaa-b16d-42f2-9171-0763d79900b7",
@@ -527,6 +535,14 @@
             }
         },
         {
+            "Key": "9e5c6a6a-9f28-4a6b-a2a3-9507eb25164a",
+            "Value": {
+                "id": "a0882e8e-3454-498b-b185-615d8facd6af",
+                "resourcePath": "scripts\\scribble_autotype_is_paused\\scribble_autotype_is_paused.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "9f02de9f-6de9-4db1-9411-e6ea08c02285",
             "Value": {
                 "id": "369e47e3-1852-4bbb-a1d4-3807b156925d",
@@ -587,14 +603,6 @@
             "Value": {
                 "id": "e43fdae5-ac16-404d-9452-581bad2e7949",
                 "resourcePath": "scripts\\__scribble_config\\__scribble_config.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "acb5d2b0-8c3c-42de-b368-9e1978761cce",
-            "Value": {
-                "id": "3d0a3b39-cc92-43b2-878b-b6b9392c78e3",
-                "resourcePath": "scripts\\example_pause\\example_pause.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -884,6 +892,8 @@
         "8419d4f0-d03e-4d98-8b9d-93e9ec832104",
         "24adc709-497e-43cb-9834-a1a8664cbe74",
         "498aa41e-7fb7-49e3-b663-74ba62e7a8e6",
+        "21e1fca2-32ef-46d3-9938-44552cc93b4e",
+        "9e5c6a6a-9f28-4a6b-a2a3-9507eb25164a",
         "a3d9edc7-bc39-46f3-b8c2-98bcc058ea2c",
         "6e8352fc-78a8-490a-a4ab-9dacbaeb79f5",
         "04acbfcf-ee17-4ded-b194-17bb72864ff0",
@@ -897,8 +907,7 @@
         "853cc3dc-bb29-429c-b828-a68514d4f06e",
         "00322d5b-d6eb-4d4e-b389-bb26da697b1d",
         "7f249531-321e-43d7-92bc-258842287e9d",
-        "16333f16-885e-4b0b-98e8-9726a0f9c0b0",
-        "acb5d2b0-8c3c-42de-b368-9e1978761cce"
+        "16333f16-885e-4b0b-98e8-9726a0f9c0b0"
     ],
     "tutorial": ""
 }

@@ -83,7 +83,8 @@ enum __SCRIBBLE_PAGE
     EVENT_CHAR_PREVIOUS,  //5
     EVENT_CHAR_ARRAY,     //6
     EVENT_NAME_ARRAY,     //7
-    EVENT_DATA_ARRAY,     //8
+    EVENT_VISITED_ARRAY,  //8
+    EVENT_DATA_ARRAY,     //9
     
     __SIZE
 }
@@ -192,8 +193,11 @@ enum __SCRIBBLE
     AUTOTYPE_SMOOTHNESS,    //29
     AUTOTYPE_SOUND_ARRAY,   //30
     AUTOTYPE_SOUND_OVERLAP, //31
+    AUTOTYPE_PAUSED,        //32
+    AUTOTYPE_DELAY_PAUSED,  //33
+    AUTOTYPE_DELAY_END,     //34
     
-    __SIZE                  //32
+    __SIZE                  //35
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
@@ -327,6 +331,9 @@ global.__scribble_colours[? "c_silver" ] = c_silver;
 global.__scribble_colours[? "c_teal"   ] = c_teal;
 global.__scribble_colours[? "c_white"  ] = c_white;
 global.__scribble_colours[? "c_yellow" ] = c_yellow;
+
+global.__scribble_autotype_events[? "pause"] = undefined;
+global.__scribble_autotype_events[? "delay"] = undefined;
 
 //Add bindings for default effect names
 //Effect index 0 is reversed for sprites

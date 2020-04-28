@@ -10,6 +10,8 @@
 
 #region Default parameters
 
+#macro SCRIBBLE_DEFAULT_DELAY_DURATION  450    //Milliseconds
+
 //Starting format
 #macro SCRIBBLE_DEFAULT_TEXT_COLOUR   c_white  //The default (vertex) colour of text.
 #macro SCRIBBLE_DEFAULT_HALIGN        fa_left

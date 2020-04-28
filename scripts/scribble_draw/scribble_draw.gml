@@ -160,6 +160,9 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] =  0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_ARRAY  ] = -1;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_OVERLAP] =  0;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_PAUSED       ] =  false;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_PAUSED ] =  false;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_END    ] =  -1;
         
         #endregion
         
@@ -198,11 +201,12 @@ if (!is_array(_draw_string))
         var _meta_page_lines      = 0;
         
         var _page_array        = array_create(__SCRIBBLE_PAGE.__SIZE);
-        var _page_lines_array  = []; //Stores each line of text (per page)
-        var _page_vbuffs_array = []; //Stores all the vertex buffers needed to render the text and sprites (per page)
-        var _events_char_array = []; //Stores each event's triggering character
-        var _events_name_array = []; //Stores each event's name
-        var _events_data_array = []; //Stores each event's parameters
+        var _page_lines_array     = []; //Stores each line of text (per page)
+        var _page_vbuffs_array    = []; //Stores all the vertex buffers needed to render the text and sprites (per page)
+        var _events_char_array    = []; //Stores each event's triggering character
+        var _events_name_array    = []; //Stores each event's name
+        var _events_visited_array = []; //Stores whether we've visited an event
+        var _events_data_array    = []; //Stores each event's parameters
         
         _page_array[@ __SCRIBBLE_PAGE.LINES               ] = 0;
         _page_array[@ __SCRIBBLE_PAGE.CHARACTERS          ] = 0;
@@ -211,9 +215,10 @@ if (!is_array(_draw_string))
         
         _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS      ] = -1;
         _page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS ] = -1;
-        _page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_ARRAY    ] = _events_char_array; //Stores each event's triggering character
-        _page_array[@ __SCRIBBLE_PAGE.EVENT_NAME_ARRAY    ] = _events_name_array; //Stores each event's name
-        _page_array[@ __SCRIBBLE_PAGE.EVENT_DATA_ARRAY    ] = _events_data_array; //Stores each event's parameters
+        _page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_ARRAY    ] = _events_char_array;    //Stores each event's triggering character
+        _page_array[@ __SCRIBBLE_PAGE.EVENT_NAME_ARRAY    ] = _events_name_array;    //Stores each event's name
+        _page_array[@ __SCRIBBLE_PAGE.EVENT_VISITED_ARRAY ] = _events_visited_array; //Stores whether we've visited an event
+        _page_array[@ __SCRIBBLE_PAGE.EVENT_DATA_ARRAY    ] = _events_data_array;    //Stores each event's parameters
         
         _element_pages_array[@ array_length_1d(_element_pages_array)] = _page_array;
         ++_meta_element_pages;
@@ -452,9 +457,10 @@ if (!is_array(_draw_string))
                                 }
                                 
                                 var _count = array_length_1d(_events_char_array);
-                                _events_char_array[@ _count] = _meta_page_characters;
-                                _events_name_array[@ _count] = _command_name;
-                                _events_data_array[@ _count] = _data;
+                                _events_char_array[@    _count] = _meta_page_characters;
+                                _events_name_array[@    _count] = _command_name;
+                                _events_visited_array[@ _count] = false;
+                                _events_data_array[@    _count] = _data;
                                 
                                 continue; //Skip the rest of the parser step
                                 
@@ -1077,6 +1083,7 @@ if (!is_array(_draw_string))
                 var _new_page_vbuffs_array = []; //Stores all the vertex buffers needed to render the text and sprites (per page)
                 var _events_char_array     = []; //Stores each event's triggering character
                 var _events_name_array     = []; //Stores each event's name
+                var _events_visited_array  = []; //Stores whether we've visited an event
                 var _events_data_array     = []; //Stores each event's parameters
                 
                 _new_page_array[@ __SCRIBBLE_PAGE.LINES               ] = 1;
@@ -1088,6 +1095,7 @@ if (!is_array(_draw_string))
                 _new_page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS ] = -1;
                 _new_page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_ARRAY    ] = _events_char_array; //Stores each event's triggering character
                 _new_page_array[@ __SCRIBBLE_PAGE.EVENT_NAME_ARRAY    ] = _events_name_array; //Stores each event's name
+                _new_page_array[@ __SCRIBBLE_PAGE.EVENT_VISITED_ARRAY ] = _events_visited_array; //Stores whether we've visited an event
                 _new_page_array[@ __SCRIBBLE_PAGE.EVENT_DATA_ARRAY    ] = _events_data_array; //Stores each event's parameters
                 
                 _element_pages_array[@ array_length_1d(_element_pages_array)] = _new_page_array;
@@ -1421,7 +1429,28 @@ if (global.scribble_state_allow_draw)
             var _typewriter_smoothness = _scribble_array[__SCRIBBLE.AUTOTYPE_SMOOTHNESS];
             var _typewriter_position   = _scribble_array[__SCRIBBLE.AUTOTYPE_POSITION  ];
             var _typewriter_fade_in    = _scribble_array[__SCRIBBLE.AUTOTYPE_FADE_IN   ];
-            var _typewriter_speed      = _scribble_array[__SCRIBBLE.AUTOTYPE_SPEED     ]*SCRIBBLE_STEP_SIZE;
+            
+            //Handle pausing
+            if (_scribble_array[__SCRIBBLE.AUTOTYPE_PAUSED])
+            {
+                var _typewriter_speed = 0;
+            }
+            else if (_scribble_array[__SCRIBBLE.AUTOTYPE_DELAY_PAUSED])
+            {
+                if (current_time > _scribble_array[__SCRIBBLE.AUTOTYPE_DELAY_END])
+                {
+                    _scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_PAUSED] = false;
+                    var _typewriter_speed = _scribble_array[__SCRIBBLE.AUTOTYPE_SPEED]*SCRIBBLE_STEP_SIZE;
+                }
+                else
+                {
+                    var _typewriter_speed = 0;
+                }
+            }
+            else
+            {
+                var _typewriter_speed = _scribble_array[__SCRIBBLE.AUTOTYPE_SPEED]*SCRIBBLE_STEP_SIZE;
+            }
             
             #region Scan for autotype events
         
@@ -1458,11 +1487,12 @@ if (global.scribble_state_allow_draw)
                         }
                     }
                     
-                    var _event             = _page_array[__SCRIBBLE_PAGE.EVENT_PREVIOUS  ];
-                    var _events_char_array = _page_array[__SCRIBBLE_PAGE.EVENT_CHAR_ARRAY];
-                    var _events_name_array = _page_array[__SCRIBBLE_PAGE.EVENT_NAME_ARRAY];
-                    var _events_data_array = _page_array[__SCRIBBLE_PAGE.EVENT_DATA_ARRAY];
-                    var _event_count       = array_length_1d(_events_char_array);
+                    var _event                = _page_array[__SCRIBBLE_PAGE.EVENT_PREVIOUS     ];
+                    var _events_char_array    = _page_array[__SCRIBBLE_PAGE.EVENT_CHAR_ARRAY   ];
+                    var _events_name_array    = _page_array[__SCRIBBLE_PAGE.EVENT_NAME_ARRAY   ];
+                    var _events_visited_array = _page_array[__SCRIBBLE_PAGE.EVENT_VISITED_ARRAY];
+                    var _events_data_array    = _page_array[__SCRIBBLE_PAGE.EVENT_DATA_ARRAY   ];
+                    var _event_count          = array_length_1d(_events_char_array);
                 
                     //Always start scanning at the next event
                     ++_event;
@@ -1477,19 +1507,54 @@ if (global.scribble_state_allow_draw)
                         {
                             while ((_event < _event_count) && (_event_char == _scan))
                             {
-                                var _script = global.__scribble_autotype_events[? _events_name_array[_event]];
-                                if (_script != undefined)
-                                {
-                                    _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS] = _event;
-                                    script_execute(_script, _scribble_array, _events_data_array[_event], _scan);
-                                }
+                                var _event_name       = _events_name_array[_event];
+                                var _event_data_array = _events_data_array[_event];
                                 
-                                if (_scribble_array[__SCRIBBLE.AUTOTYPE_SPEED] <= 0.0)
+                                if (!_events_visited_array[_event])
                                 {
-                                    _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED] = 0;
-                                    _typewriter_speed = 0;
-                                    _break = true;
-                                    break;
+                                    _events_visited_array[@ _event] = true;
+                                    
+                                    //Process pause and delay events
+                                    if (_event_name == "pause")
+                                    {
+                                        _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS] = _event;
+                                        _scribble_array[@ __SCRIBBLE.AUTOTYPE_PAUSED] = true;
+                                    }
+                                    else
+                                    if (_event_name == "delay")
+                                    {
+                                        _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS] = _event;
+                                        
+                                        if (array_length_1d(_event_data_array) >= 1)
+                                        {
+                                            var _duration = real(_event_data_array[0]);
+                                        }
+                                        else
+                                        {
+                                            var _duration = SCRIBBLE_DEFAULT_DELAY_DURATION;
+                                        }
+                                        
+                                        _scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_PAUSED] = true;
+                                        _scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_END   ] = current_time + _duration;
+                                    }
+                                    else
+                                    {
+                                        //Otherwise try to find a custom event
+                                        var _script = global.__scribble_autotype_events[? _event_name];
+                                        if (_script != undefined)
+                                        {
+                                            _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS] = _event;
+                                            script_execute(_script, _scribble_array, _event_data_array, _scan);
+                                        }
+                                    }
+                                    
+                                    if (_scribble_array[__SCRIBBLE.AUTOTYPE_PAUSED]
+                                    ||  _scribble_array[__SCRIBBLE.AUTOTYPE_DELAY_PAUSED])
+                                    {
+                                        _typewriter_speed = _scan - _scan_a;
+                                        _break = true;
+                                        break;
+                                    }
                                 }
                                 
                                 ++_event;

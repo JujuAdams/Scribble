@@ -1,8 +1,8 @@
 {
-    "id": "acb5d2b0-8c3c-42de-b368-9e1978761cce",
+    "id": "21e1fca2-32ef-46d3-9938-44552cc93b4e",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "example_pause",
+    "name": "scribble_autotype_set_pause",
     "IsCompatibility": false,
     "IsDnD": false
 }

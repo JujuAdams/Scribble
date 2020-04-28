@@ -41,3 +41,7 @@ var _page_array = _pages_array[_scribble_array[__SCRIBBLE.AUTOTYPE_PAGE]];
 
 _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS     ] = -1;
 _page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS] = -1;
+
+//Clear out our event visited array
+var _event_visited_array = _page_array[__SCRIBBLE_PAGE.EVENT_VISITED_ARRAY];
+_page_array[@ __SCRIBBLE_PAGE.EVENT_VISITED_ARRAY] = array_create(array_length_1d(_event_visited_array), false);
