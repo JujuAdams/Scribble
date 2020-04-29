@@ -23,6 +23,7 @@ switch(_scribble_array[__SCRIBBLE.AUTOTYPE_METHOD])
     case SCRIBBLE_AUTOTYPE_PER_LINE:      var _max = _page_array[__SCRIBBLE_PAGE.LINES     ]; break;
 }
 
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_POSITION] = _max + _scribble_array[__SCRIBBLE.AUTOTYPE_SMOOTHNESS];
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_TAIL_POSITION] = _max;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_HEAD_POSITION] = _max;
 
 return _max;
