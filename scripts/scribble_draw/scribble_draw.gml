@@ -141,6 +141,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.LINES                 ] = 0;
         _scribble_array[@ __SCRIBBLE.PAGES                 ] = 0;
         _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX          ] = global.__scribble_global_count+1;
+        _scribble_array[@ __SCRIBBLE.GLYPH_LTRB_ARRAY      ] = undefined;
     
         _scribble_array[@ __SCRIBBLE.__SECTION2            ] = "-- State --";
         _scribble_array[@ __SCRIBBLE.ANIMATION_TIME        ] = 0;
@@ -1308,25 +1309,144 @@ if (!is_array(_draw_string))
                 _data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = undefined;
                 ds_list_destroy(_vbuff_line_start_list);
                 
-                //Create vertex buffer
-                var _vertex_buffer = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _buffer_tell / __SCRIBBLE_VERTEX.__SIZE);
-                if (global.scribble_state_freeze) vertex_freeze(_vertex_buffer);
-                _data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = _vertex_buffer;
-                _data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER       ] = undefined;
-                buffer_delete(_buffer);
-                
                 //Wipe CHAR_START_TELL and WORD_START_TELL
                 _data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = undefined;
                 _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = undefined;
                 _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
+                
+                //Create vertex buffer
+                var _vertex_buffer = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _buffer_tell / __SCRIBBLE_VERTEX.__SIZE);
+                if (global.scribble_state_freeze) vertex_freeze(_vertex_buffer);
+                _data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = _vertex_buffer;
+                
+                if (!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
+                {
+                    //Delete the actual buffer
+                    _data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER] = undefined;
+                    buffer_delete(_buffer);
+                }
                 
                 ++_v;
             }
             
             ++_p;
         }
-
+        
         #endregion
+        
+        
+        
+        if (SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
+        {
+            #region Generate glyph LTRB array if requested
+            
+            var _glyph_ltrb_array  = array_create(_meta_element_characters, undefined);
+            var _glyph_multi_array = array_create(_meta_element_characters, undefined);
+            
+            //Iterate over every page
+            var _p = 0;
+            repeat(array_length_1d(_element_pages_array))
+            {
+                var _page_array = _element_pages_array[_p];
+                
+                //Iterate over every vertex buffer for that page
+                var _v = 0;
+                repeat(array_length_1d(_page_vbuffs_array))
+                {
+                    //Grab the vertex buffer
+                    var _data = _page_vbuffs_array[_v];
+                    var _buffer = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
+                    
+                    //Start at the start...
+                    var _tell = 0;
+                    repeat(buffer_get_size(_buffer) div __SCRIBBLE_GLYPH_BYTE_SIZE)
+                    {
+                        //Get which character we're reading
+                        var _char = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) div SCRIBBLE_MAX_LINES;
+                        
+                        //Read the top-left corner
+                        var _l = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32);
+                        var _t = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_Y, buffer_f32);
+                        
+                        //Read out the bottom-right corner
+                        _tell += __SCRIBBLE_VERTEX.__SIZE;
+                        var _r = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32);
+                        var _b = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_Y, buffer_f32);
+                        
+                        //Move to the next quad
+                        _tell += __SCRIBBLE_GLYPH_BYTE_SIZE - __SCRIBBLE_VERTEX.__SIZE;
+                        
+                        //Ignore null data in the vertex buffer
+                        if ((_char != 0) || (_l != 0) || (_t != 0) || (_r != 0) || (_b != 0))
+                        {
+                            //Find out if an LTRB definition exists for this character already
+                            var _old_ltrb = _glyph_ltrb_array[_char];
+                            if (!is_array(_old_ltrb))
+                            {
+                                //If we don't have any pre-existing data, use the current glyph's LTRB
+                                _glyph_ltrb_array[@ _char] = [_l, _t, _r, _b];
+                            }
+                            else
+                            {
+                                //If we found some previous data, we need to add info to the multi array to figure out later
+                                var _multi_array = _glyph_multi_array[_char];
+                                if (_multi_array == undefined)
+                                {
+                                    //Create a new child array if needed
+                                    var _multi_array = [_old_ltrb]; //Insert the original LTRB into the multi array too!
+                                    _glyph_multi_array[@ _char] = _multi_array;
+                                }
+                                
+                                //Add ourselves to the multi array
+                                _multi_array[@ array_length_1d(_multi_array)] = [_l, _t, _r, _b];
+                            }
+                        }
+                    }
+                    
+                    //Delete the actual buffer
+                    _data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER] = undefined;
+                    buffer_delete(_buffer);
+                    
+                    ++_v;
+                }
+                
+                ++_p;
+            }
+            
+            //Run through the multi array and figure out what the actual glyph limits are
+            var _char = 0;
+            repeat(_meta_element_characters)
+            {
+                var _multi_array = _glyph_multi_array[_char];
+                if (is_array(_multi_array))
+                {
+                    var _l = 0;
+                    var _t = 0;
+                    var _r = 0;
+                    var _b = 0;
+                    
+                    //Form the final LTRB from the min/max of each found quad
+                    var _i = 0;
+                    repeat(array_length_1d(_multi_array))
+                    {
+                        var _ltrb = _multi_array[_i];
+                        _l = min(_l, _ltrb[0]);
+                        _t = min(_t, _ltrb[1]);
+                        _r = max(_r, _ltrb[2]);
+                        _b = max(_b, _ltrb[3]);
+                        
+                        ++_i;
+                    }
+                    
+                    _glyph_ltrb_array[@ _char] = [_l, _t, _r, _b];
+                }
+            }
+            
+            _glyph_ltrb_array[@ array_length_1d(_glyph_ltrb_array)] = _glyph_ltrb_array[array_length_1d(_glyph_ltrb_array)-1];
+            _scribble_array[@ __SCRIBBLE.GLYPH_LTRB_ARRAY] = _glyph_ltrb_array;
+            
+            #endregion
+        }
         
         
         

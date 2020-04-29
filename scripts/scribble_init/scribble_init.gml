@@ -174,30 +174,31 @@ enum __SCRIBBLE
     LINES,                  //13
     PAGES,                  //14
     GLOBAL_INDEX,           //15
+    GLYPH_LTRB_ARRAY,       //16
     
-    __SECTION2,             //16
-    ANIMATION_TIME,         //17
-    TIME,                   //18
-    FREED,                  //19
-    SOUND_FINISH_TIME,      //20
+    __SECTION2,             //17
+    ANIMATION_TIME,         //18
+    TIME,                   //19
+    FREED,                  //20
+    SOUND_FINISH_TIME,      //21
     
-    __SECTION3,             //21
-    PAGES_ARRAY,            //22
+    __SECTION3,             //22
+    PAGES_ARRAY,            //23
     
-    __SECTION4,             //23
-    AUTOTYPE_PAGE,          //24
-    AUTOTYPE_FADE_IN,       //25
-    AUTOTYPE_SPEED,         //26
-    AUTOTYPE_POSITION,      //27
-    AUTOTYPE_METHOD,        //28
-    AUTOTYPE_SMOOTHNESS,    //29
-    AUTOTYPE_SOUND_ARRAY,   //30
-    AUTOTYPE_SOUND_OVERLAP, //31
-    AUTOTYPE_PAUSED,        //32
-    AUTOTYPE_DELAY_PAUSED,  //33
-    AUTOTYPE_DELAY_END,     //34
+    __SECTION4,             //24
+    AUTOTYPE_PAGE,          //25
+    AUTOTYPE_FADE_IN,       //26
+    AUTOTYPE_SPEED,         //27
+    AUTOTYPE_POSITION,      //28
+    AUTOTYPE_METHOD,        //29
+    AUTOTYPE_SMOOTHNESS,    //30
+    AUTOTYPE_SOUND_ARRAY,   //31
+    AUTOTYPE_SOUND_OVERLAP, //32
+    AUTOTYPE_PAUSED,        //33
+    AUTOTYPE_DELAY_PAUSED,  //34
+    AUTOTYPE_DELAY_END,     //35
     
-    __SIZE                  //35
+    __SIZE                  //36
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
