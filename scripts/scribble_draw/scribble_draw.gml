@@ -1343,8 +1343,7 @@ if (!is_array(_draw_string))
         {
             #region Generate glyph LTRB array if requested
             
-            var _glyph_ltrb_array  = array_create(_meta_element_characters, undefined);
-            var _glyph_multi_array = array_create(_meta_element_characters, undefined);
+            var _glyph_ltrb_array = array_create(_meta_element_characters, undefined);
             
             //Iterate over every page
             var _p = 0;
@@ -1366,8 +1365,6 @@ if (!is_array(_draw_string))
                     {
                         //Get which character we're reading
                         var _packed_indexes = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32);
-                        var _char = _packed_indexes div SCRIBBLE_MAX_LINES;
-                        var _line = _packed_indexes - SCRIBBLE_MAX_LINES*_char;
                         
                         //Read the top-left corner
                         var _l = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32);
@@ -1384,6 +1381,10 @@ if (!is_array(_draw_string))
                         //Ignore null data in the vertex buffer
                         if ((_packed_indexes != 0) || (_l != 0) || (_t != 0) || (_r != 0) || (_b != 0))
                         {
+                            //Unpack the character and line indexes
+                            var _char = _packed_indexes div SCRIBBLE_MAX_LINES;
+                            var _line = _packed_indexes - SCRIBBLE_MAX_LINES*_char;
+                            
                             //Find out if an LTRB definition exists for this character already
                             var _old_ltrb = _glyph_ltrb_array[_char];
                             if (!is_array(_old_ltrb))
@@ -1394,16 +1395,11 @@ if (!is_array(_draw_string))
                             else
                             {
                                 //If we found some previous data, we need to add info to the multi array to figure out later
-                                var _multi_array = _glyph_multi_array[_char];
-                                if (_multi_array == undefined)
-                                {
-                                    //Create a new child array if needed
-                                    var _multi_array = [_old_ltrb]; //Insert the original LTRB into the multi array too!
-                                    _glyph_multi_array[@ _char] = _multi_array;
-                                }
-                                
-                                //Add ourselves to the multi array
-                                _multi_array[@ array_length_1d(_multi_array)] = [_l, _t, _r, _b, _line];
+                                _glyph_ltrb_array[@ _char] = [min(_old_ltrb[0], _l   ),
+                                                              min(_old_ltrb[1], _t   ),
+                                                              max(_old_ltrb[2], _r   ),
+                                                              max(_old_ltrb[3], _b   ),
+                                                              max(_old_ltrb[4], _line)];
                             }
                         }
                     }
@@ -1416,37 +1412,6 @@ if (!is_array(_draw_string))
                 }
                 
                 ++_p;
-            }
-            
-            //Run through the multi array and figure out what the actual glyph limits are
-            var _char = 0;
-            repeat(_meta_element_characters)
-            {
-                var _multi_array = _glyph_multi_array[_char];
-                if (is_array(_multi_array))
-                {
-                    var _l    = 0;
-                    var _t    = 0;
-                    var _r    = 0;
-                    var _b    = 0;
-                    var _line = 0;
-                    
-                    //Form the final LTRB from the min/max of each found quad
-                    var _i = 0;
-                    repeat(array_length_1d(_multi_array))
-                    {
-                        var _ltrb = _multi_array[_i];
-                        _l    = min(_l   , _ltrb[0]);
-                        _t    = min(_t   , _ltrb[1]);
-                        _r    = max(_r   , _ltrb[2]);
-                        _b    = max(_b   , _ltrb[3]);
-                        _line = max(_line, _ltrb[4]);
-                        
-                        ++_i;
-                    }
-                    
-                    _glyph_ltrb_array[@ _char] = [_l, _t, _r, _b, _line];
-                }
             }
             
             _glyph_ltrb_array[@ array_length_1d(_glyph_ltrb_array)] = _glyph_ltrb_array[array_length_1d(_glyph_ltrb_array)-1];
