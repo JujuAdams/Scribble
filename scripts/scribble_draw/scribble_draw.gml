@@ -155,6 +155,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.__SECTION4            ] = "-- Autotype --";
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_PAGE         ] =  0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = -1;
+        _scribble_array[@ __SCRIBBLE.AUTOTYPE_SKIP         ] =  false;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] =  0;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_TAIL_MOVING  ] =  false;
         _scribble_array[@ __SCRIBBLE.AUTOTYPE_TAIL_POSITION] =  0;
@@ -1629,6 +1630,7 @@ if (global.scribble_state_allow_draw)
                         //Now iterate from our current character position to the next character position
                         var _break = false;
                         var _scan = _scan_a;
+                        var _skipping = _scribble_array[__SCRIBBLE.AUTOTYPE_SKIP];
                         repeat(_scan_b - _scan_a)
                         {
                             while ((_event < _event_count) && (_event_char == _scan))
@@ -1641,13 +1643,12 @@ if (global.scribble_state_allow_draw)
                                     _events_visited_array[@ _event] = true;
                                     
                                     //Process pause and delay events
-                                    if (_event_name == "pause")
+                                    if ((_event_name == "pause") && !_skipping)
                                     {
                                         _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS] = _event;
                                         _scribble_array[@ __SCRIBBLE.AUTOTYPE_PAUSED] = true;
                                     }
-                                    else
-                                    if (_event_name == "delay")
+                                    else if ((_event_name == "delay") && !_skipping)
                                     {
                                         _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS] = _event;
                                         

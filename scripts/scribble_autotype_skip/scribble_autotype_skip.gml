@@ -25,5 +25,6 @@ switch(_scribble_array[__SCRIBBLE.AUTOTYPE_METHOD])
 
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_TAIL_POSITION] = _max;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_HEAD_POSITION] = _max;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_SKIP         ] = true;
 
 return _max;

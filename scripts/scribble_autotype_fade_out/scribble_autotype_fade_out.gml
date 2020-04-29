@@ -34,3 +34,4 @@ _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD       ] = _method;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] = _speed;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] = _smoothness;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = false;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_SKIP         ] = false;

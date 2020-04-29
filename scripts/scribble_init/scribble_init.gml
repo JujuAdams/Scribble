@@ -189,18 +189,19 @@ enum __SCRIBBLE
     AUTOTYPE_PAGE,          //25
     AUTOTYPE_FADE_IN,       //26
     AUTOTYPE_SPEED,         //27
-    AUTOTYPE_TAIL_MOVING,   //28
-    AUTOTYPE_TAIL_POSITION, //29
-    AUTOTYPE_HEAD_POSITION, //30
-    AUTOTYPE_METHOD,        //31
-    AUTOTYPE_SMOOTHNESS,    //32
-    AUTOTYPE_SOUND_ARRAY,   //33
-    AUTOTYPE_SOUND_OVERLAP, //34
-    AUTOTYPE_PAUSED,        //35
-    AUTOTYPE_DELAY_PAUSED,  //36
-    AUTOTYPE_DELAY_END,     //37
+    AUTOTYPE_SKIP,          //28
+    AUTOTYPE_TAIL_MOVING,   //29
+    AUTOTYPE_TAIL_POSITION, //30
+    AUTOTYPE_HEAD_POSITION, //31
+    AUTOTYPE_METHOD,        //32
+    AUTOTYPE_SMOOTHNESS,    //33
+    AUTOTYPE_SOUND_ARRAY,   //34
+    AUTOTYPE_SOUND_OVERLAP, //35
+    AUTOTYPE_PAUSED,        //36
+    AUTOTYPE_DELAY_PAUSED,  //37
+    AUTOTYPE_DELAY_END,     //38
     
-    __SIZE                  //38
+    __SIZE                  //39
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
