@@ -167,8 +167,19 @@ vec4 rainbow(float characterIndex, float weight, float speed, vec4 colour)
 //Fade effect for typewriter etc.
 float fade(float tailPos, float headPos, float index)
 {
-    float multiplier = min(max((index - tailPos) / (headPos - tailPos), 0.0), 1.0);  
+    float multiplier = 0.0;
+    
+    if (tailPos == headPos)
+    {
+        multiplier = step(headPos, index);
+    }
+    else
+    {
+        multiplier = min(max((index - tailPos) / (headPos - tailPos), 0.0), 1.0);
+    }
+    
     if (u_fTypewriterMethod > 0.0) multiplier = 1.0 - multiplier;
+    
     return multiplier;
 }
 
