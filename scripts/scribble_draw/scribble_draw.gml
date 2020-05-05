@@ -1661,7 +1661,7 @@ if (global.scribble_state_allow_draw)
                             ++_scan;
                         }
                         
-                        if (_break && (_typewriter_method == SCRIBBLE_AUTOTYPE_PER_CHARACTER)) _typewriter_position = _scan;
+                        if (_break && (_typewriter_method == SCRIBBLE_AUTOTYPE_PER_CHARACTER)) _typewriter_head_pos = _scan;
                         
                         _page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS] = _scan;
                     }
@@ -1676,12 +1676,7 @@ if (global.scribble_state_allow_draw)
         }
         
         //Figure out the limit and smoothness values
-        if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE)
-        {
-            var _typewriter_smoothness = 0;
-            var _typewriter_t          = 1;
-        }
-        else
+        if (_typewriter_method != SCRIBBLE_AUTOTYPE_NONE)
         {
             switch(_typewriter_method)
             {
