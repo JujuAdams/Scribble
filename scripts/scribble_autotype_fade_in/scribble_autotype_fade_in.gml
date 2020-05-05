@@ -29,7 +29,7 @@ if ((_method != SCRIBBLE_AUTOTYPE_NONE)
 }
 
 //Update the remaining autotype state values
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_TAIL_POSITION] = 0;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_TAIL_POSITION] = -_smoothness;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_HEAD_POSITION] = 0;
 if (_method != undefined) _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD] = _method;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED     ] = _speed;
