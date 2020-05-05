@@ -29,8 +29,8 @@
 
 #region Internal Macro Definitions
 
-#macro __SCRIBBLE_VERSION  "5.4.6"
-#macro __SCRIBBLE_DATE     "2020-04-23"
+#macro __SCRIBBLE_VERSION  "5.5.0"
+#macro __SCRIBBLE_DATE     "2020-05-05"
 #macro __SCRIBBLE_DEBUG    false
 
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
