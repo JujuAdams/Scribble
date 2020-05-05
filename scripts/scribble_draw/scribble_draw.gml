@@ -1080,6 +1080,7 @@ if (!is_array(_draw_string))
                 //Update the metadata of the previous page
                 _page_array[@ __SCRIBBLE_PAGE.LINES     ] = _meta_page_lines;
                 _page_array[@ __SCRIBBLE_PAGE.CHARACTERS] = _meta_page_characters;
+                var _max_indexes = 0;
                 
                 //Wipe the texture -> vertex buffer map
                 ds_map_clear(_texture_to_buffer_map);
@@ -1177,8 +1178,11 @@ if (!is_array(_draw_string))
                             var _tell = __SCRIBBLE_VERTEX.PACKED_INDEXES;
                             repeat(_bytes / __SCRIBBLE_VERTEX.__SIZE)
                             {
-                                buffer_poke(_new_buffer, _tell, buffer_f32,
-                                            SCRIBBLE_MAX_LINES*(buffer_peek(_buffer, _tell, buffer_f32) div SCRIBBLE_MAX_LINES));
+                                var _packed_indexes = buffer_peek(_buffer, _tell, buffer_f32);
+                                var _char = _packed_indexes div SCRIBBLE_MAX_LINES;
+                                _max_indexes = max(_max_indexes, _char);
+                                
+                                buffer_poke(_new_buffer, _tell, buffer_f32, SCRIBBLE_MAX_LINES*_char);
                                 _tell += __SCRIBBLE_VERTEX.__SIZE;
                             }
                         }
@@ -1197,7 +1201,7 @@ if (!is_array(_draw_string))
                 
                 //Reset some state variables
                 _element_height        = max(_element_height, _line_y);
-                _meta_page_characters  =  0;
+                _meta_page_characters  = _max_indexes;
                 _meta_page_lines       =  0;
                 _line_y                =  0;
                 _previous_texture      = -1;
