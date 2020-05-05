@@ -39,7 +39,6 @@ varying vec4 v_vColour;
 
 uniform vec4  u_vColourBlend;
 uniform float u_fTime;
-uniform float u_fZ;
 
 uniform float u_fTypewriterMethod;
 uniform float u_fTypewriterTailPos;
@@ -244,5 +243,5 @@ void main()
     //Texture
     v_vTexcoord = in_TextureCoord;
     
-    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(pos, u_fZ, 1.0);
+    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(pos, 0.0, 1.0);
 }
