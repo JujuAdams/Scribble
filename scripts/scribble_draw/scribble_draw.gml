@@ -1362,54 +1362,57 @@ if (!is_array(_draw_string))
                     var _data = _page_vbuffs_array[_v];
                     var _buffer = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
                     
-                    //Start at the start...
-                    var _tell = 0;
-                    repeat(buffer_get_size(_buffer) div __SCRIBBLE_GLYPH_BYTE_SIZE)
+                    if (_buffer != undefined)
                     {
-                        //Get which character we're reading
-                        var _packed_indexes = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32);
-                        
-                        //Read the top-left corner
-                        var _l = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32);
-                        var _t = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_Y, buffer_f32);
-                        
-                        //Read out the bottom-right corner
-                        _tell += __SCRIBBLE_VERTEX.__SIZE;
-                        var _r = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32);
-                        var _b = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_Y, buffer_f32);
-                        
-                        //Move to the next quad
-                        _tell += __SCRIBBLE_GLYPH_BYTE_SIZE - __SCRIBBLE_VERTEX.__SIZE;
-                        
-                        //Ignore null data in the vertex buffer
-                        if ((_packed_indexes != 0) || (_l != 0) || (_t != 0) || (_r != 0) || (_b != 0))
+                        //Start at the start...
+                        var _tell = 0;
+                        repeat(buffer_get_size(_buffer) div __SCRIBBLE_GLYPH_BYTE_SIZE)
                         {
-                            //Unpack the character and line indexes
-                            var _char = _packed_indexes div SCRIBBLE_MAX_LINES;
-                            var _line = _packed_indexes - SCRIBBLE_MAX_LINES*_char;
+                            //Get which character we're reading
+                            var _packed_indexes = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32);
                             
-                            //Find out if an LTRB definition exists for this character already
-                            var _old_ltrb = _glyph_ltrb_array[_char];
-                            if (!is_array(_old_ltrb))
+                            //Read the top-left corner
+                            var _l = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32);
+                            var _t = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_Y, buffer_f32);
+                            
+                            //Read out the bottom-right corner
+                            _tell += __SCRIBBLE_VERTEX.__SIZE;
+                            var _r = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32);
+                            var _b = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_Y, buffer_f32);
+                            
+                            //Move to the next quad
+                            _tell += __SCRIBBLE_GLYPH_BYTE_SIZE - __SCRIBBLE_VERTEX.__SIZE;
+                            
+                            //Ignore null data in the vertex buffer
+                            if ((_packed_indexes != 0) || (_l != 0) || (_t != 0) || (_r != 0) || (_b != 0))
                             {
-                                //If we don't have any pre-existing data, use the current glyph's LTRB
-                                _glyph_ltrb_array[@ _char] = [_l, _t, _r, _b, _line];
-                            }
-                            else
-                            {
-                                //If we found some previous data, we need to add info to the multi array to figure out later
-                                _glyph_ltrb_array[@ _char] = [min(_old_ltrb[0], _l   ),
-                                                              min(_old_ltrb[1], _t   ),
-                                                              max(_old_ltrb[2], _r   ),
-                                                              max(_old_ltrb[3], _b   ),
-                                                              max(_old_ltrb[4], _line)];
+                                //Unpack the character and line indexes
+                                var _char = _packed_indexes div SCRIBBLE_MAX_LINES;
+                                var _line = _packed_indexes - SCRIBBLE_MAX_LINES*_char;
+                                
+                                //Find out if an LTRB definition exists for this character already
+                                var _old_ltrb = _glyph_ltrb_array[_char];
+                                if (!is_array(_old_ltrb))
+                                {
+                                    //If we don't have any pre-existing data, use the current glyph's LTRB
+                                    _glyph_ltrb_array[@ _char] = [_l, _t, _r, _b, _line];
+                                }
+                                else
+                                {
+                                    //If we found some previous data, we need to add info to the multi array to figure out later
+                                    _glyph_ltrb_array[@ _char] = [min(_old_ltrb[0], _l   ),
+                                                                  min(_old_ltrb[1], _t   ),
+                                                                  max(_old_ltrb[2], _r   ),
+                                                                  max(_old_ltrb[3], _b   ),
+                                                                  max(_old_ltrb[4], _line)];
+                                }
                             }
                         }
+                        
+                        //Delete the actual buffer
+                        _data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER] = undefined;
+                        buffer_delete(_buffer);
                     }
-                    
-                    //Delete the actual buffer
-                    _data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER] = undefined;
-                    buffer_delete(_buffer);
                     
                     ++_v;
                 }
