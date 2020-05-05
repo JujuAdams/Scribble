@@ -813,6 +813,9 @@ if (!is_array(_draw_string))
                     ++_v;
                 }
                 
+                ++_meta_page_characters;
+                ++_meta_element_characters;
+                
                 _add_character = false;
             }
             else if (_character_code < 32) //If this character code is below a space then ignore it
@@ -1428,7 +1431,7 @@ if (!is_array(_draw_string))
         
         
         
-        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_draw() create took " + string((get_timer() - _timer_total)/1000) + "ms");
+        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_draw() create took " + string((get_timer() - _timer_total)/1000) + "ms for " + string(_scribble_array[__SCRIBBLE.CHARACTERS]) + " characters");
     }
 }
 else
