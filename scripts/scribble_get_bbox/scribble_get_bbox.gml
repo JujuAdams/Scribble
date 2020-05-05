@@ -14,7 +14,7 @@
 
 enum SCRIBBLE_BBOX
 {
-    L, T, R, B,
+    L, T, R, B, W, H,
     __SIZE
 }
 
@@ -27,7 +27,12 @@ var _margin_r       = ((argument_count > 5) && (argument[5] != undefined))? argu
 var _margin_b       = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 0;
 
 var _quad = scribble_get_quad(_scribble_array, _x, _y, _margin_l, _margin_t, _margin_r, _margin_b);
-return [min(_quad[SCRIBBLE_QUAD.X0], _quad[SCRIBBLE_QUAD.X1], _quad[SCRIBBLE_QUAD.X2], _quad[SCRIBBLE_QUAD.X3]),
-        min(_quad[SCRIBBLE_QUAD.Y0], _quad[SCRIBBLE_QUAD.Y1], _quad[SCRIBBLE_QUAD.Y2], _quad[SCRIBBLE_QUAD.Y3]),
-        max(_quad[SCRIBBLE_QUAD.X0], _quad[SCRIBBLE_QUAD.X1], _quad[SCRIBBLE_QUAD.X2], _quad[SCRIBBLE_QUAD.X3]),
-        max(_quad[SCRIBBLE_QUAD.Y0], _quad[SCRIBBLE_QUAD.Y1], _quad[SCRIBBLE_QUAD.Y2], _quad[SCRIBBLE_QUAD.Y3])];
+
+var _l = min(_quad[SCRIBBLE_QUAD.X0], _quad[SCRIBBLE_QUAD.X1], _quad[SCRIBBLE_QUAD.X2], _quad[SCRIBBLE_QUAD.X3])
+var _t = min(_quad[SCRIBBLE_QUAD.Y0], _quad[SCRIBBLE_QUAD.Y1], _quad[SCRIBBLE_QUAD.Y2], _quad[SCRIBBLE_QUAD.Y3])
+var _r = max(_quad[SCRIBBLE_QUAD.X0], _quad[SCRIBBLE_QUAD.X1], _quad[SCRIBBLE_QUAD.X2], _quad[SCRIBBLE_QUAD.X3])
+var _b = max(_quad[SCRIBBLE_QUAD.Y0], _quad[SCRIBBLE_QUAD.Y1], _quad[SCRIBBLE_QUAD.Y2], _quad[SCRIBBLE_QUAD.Y3])
+var _w = 1 + _r - _l;
+var _h = 1 + _b - _t;
+
+return [_l, _t, _r, _b, _w, _h];
