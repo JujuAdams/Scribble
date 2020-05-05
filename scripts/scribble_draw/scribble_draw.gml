@@ -847,7 +847,7 @@ if (!is_array(_draw_string))
                 }
         
                 #endregion
-        
+                
                 #region Swap texture and buffer if needed
             
                 if (_font_texture != _previous_texture)
@@ -895,7 +895,7 @@ if (!is_array(_draw_string))
                 }
             
                 #endregion
-            
+                
                 #region Add glyph
             
                 if (_font_glyphs_array == undefined)
@@ -952,7 +952,7 @@ if (!is_array(_draw_string))
                 }
         
                 #endregion
-            
+                
                 //Choose the height of a space for the character's height
                 _line_height = max(_line_height, _font_line_height*_text_scale);
             }
@@ -1214,17 +1214,17 @@ if (!is_array(_draw_string))
         }
         
         _line_width = max(_line_width, _text_x);
-
+        
         _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_page_characters;
         _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
         _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
         _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
-
+        
         ++_meta_page_lines;
         ++_meta_element_lines;
         _element_width  = max(_element_width , _line_width);
         _element_height = max(_element_height, _line_y + _line_height);
-
+        
         //Update metadata
         _page_array[@ __SCRIBBLE_PAGE.LINES     ] = _meta_page_lines;
         _page_array[@ __SCRIBBLE_PAGE.CHARACTERS] = _meta_page_characters;
@@ -1234,7 +1234,7 @@ if (!is_array(_draw_string))
         _scribble_array[@ __SCRIBBLE.PAGES     ] = _meta_element_pages;
         _scribble_array[@ __SCRIBBLE.WIDTH     ] = _element_width;
         _scribble_array[@ __SCRIBBLE.HEIGHT    ] = _element_height;
-
+        
         #endregion
         
         
@@ -1353,6 +1353,7 @@ if (!is_array(_draw_string))
             repeat(array_length_1d(_element_pages_array))
             {
                 var _page_array = _element_pages_array[_p];
+                _page_vbuffs_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
                 
                 //Iterate over every vertex buffer for that page
                 var _v = 0;
@@ -1404,7 +1405,8 @@ if (!is_array(_draw_string))
                                                                   min(_old_ltrb[1], _t   ),
                                                                   max(_old_ltrb[2], _r   ),
                                                                   max(_old_ltrb[3], _b   ),
-                                                                  max(_old_ltrb[4], _line)];
+                                                                  max(_old_ltrb[4], _line),
+                                                                  _p];
                                 }
                             }
                         }

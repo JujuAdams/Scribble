@@ -45,7 +45,7 @@
 #macro SCRIBBLE_STEP_SIZE                 (delta_time/game_get_speed(gamespeed_microseconds)) //The animation step size. The default command here uses delta_time ensures that animations are smooth at all framerates
 #macro SCRIBBLE_SLANT_AMOUNT              0.24  //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_Z                         0     //The z-value for vertexes
-#macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   false //Outputs an array of glyph LTRB bounding boxes
+#macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   true  //Outputs an array of glyph LTRB bounding boxes
                                       
 #macro SCRIBBLE_DEFAULT_CACHE_GROUP   0     //The name of the default cache group. Real value and strings accepted.
 #macro SCRIBBLE_CACHE_TIMEOUT         15000 //How long to wait (in milliseconds) before the cache automatically destroys a text element. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_cache_group_flush() instead)
