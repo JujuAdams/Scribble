@@ -74,6 +74,8 @@ else if (_length < _sprite_length)
 
 
 
+var _sprite_width  = sprite_get_width( _sprite);
+var _sprite_height = sprite_get_height(_sprite);
 
 var _data = array_create(__SCRIBBLE_FONT.__SIZE);
 _data[@ __SCRIBBLE_FONT.NAME        ] = _font;
@@ -91,8 +93,8 @@ global.__scribble_font_data[? _font ] = _data;
 
 if (sprite_get_bbox_left(  _sprite) == 0)
 || (sprite_get_bbox_top(   _sprite) == 0)
-|| (sprite_get_bbox_right( _sprite) == sprite_get_width(_sprite)-1)
-|| (sprite_get_bbox_bottom(_sprite) == sprite_get_height(_sprite)-1)
+|| (sprite_get_bbox_right( _sprite) == _sprite_width-1)
+|| (sprite_get_bbox_bottom(_sprite) == _sprite_height-1)
 {
     show_debug_message("Scribble:   Warning! \"" + _font + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed");
 }
@@ -147,7 +149,7 @@ for(var _i = 0; _i < _length; _i++)
         show_debug_message("Scribble:   Warning! Character " + string(ord(_char)) + "(" + _char + ") for spritefont \"" + _font + "\" is empty");
                 
         _array[@ SCRIBBLE_GLYPH.WIDTH     ] = 1;
-        _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = sprite_get_height(_sprite);
+        _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
         _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = 0;
         _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
         _array[@ SCRIBBLE_GLYPH.SEPARATION] = 1 + _shift_constant;
@@ -185,11 +187,15 @@ for(var _i = 0; _i < _length; _i++)
     }
 }
         
-if (!ds_map_exists(_font_glyphs_map, 32))
+if (ds_map_exists(_font_glyphs_map, 32))
 {
-    var _glyph_width  = (!_proportional)? sprite_get_width(_sprite) : (1 + bbox_right - bbox_left);
-    var _glyph_height = sprite_get_height(_sprite);
-    
+    //Set the space character's height just in case the user has decided to use a space in the mapstring
+    var _array = _font_glyphs_map[? 32];
+    _array[@ SCRIBBLE_GLYPH.HEIGHT] = _sprite_height;
+}
+else
+{
+    var _glyph_width  = (!_proportional)? _sprite_width : (1 + bbox_right - bbox_left);
     if (_space_width == undefined) _glyph_width += _shift_constant;
             
     //Build an array to store this glyph's properties
@@ -197,7 +203,7 @@ if (!ds_map_exists(_font_glyphs_map, 32))
     _array[@ SCRIBBLE_GLYPH.CHARACTER ] = " ";
     _array[@ SCRIBBLE_GLYPH.INDEX     ] = 32;
     _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _glyph_width;
-    _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _glyph_height;
+    _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
     _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = 0;
     _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
     _array[@ SCRIBBLE_GLYPH.SEPARATION] = _glyph_width + _shift_constant;
