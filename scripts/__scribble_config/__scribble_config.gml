@@ -40,7 +40,8 @@
 
 #region Advanced stuff
 
-#macro SCRIBBLE_WARNING_REINITIALIZE  false  //Controls whether an error is thrown when calling scribble_init() twice
+#macro SCRIBBLE_WARNING_REINITIALIZE  true  //Controls whether an error is thrown when calling scribble_init() twice
+#macro SCRIBBLE_WARNING_TEXTURE_PAGE  true  //Turns the Separate Texture Page warning for spritefonts on/off
 
 #macro SCRIBBLE_STEP_SIZE                 (delta_time/game_get_speed(gamespeed_microseconds)) //The animation step size. The default command here uses delta_time ensures that animations are smooth at all framerates
 #macro SCRIBBLE_SLANT_AMOUNT              0.24  //The x-axis displacement when using the [slant] tag

@@ -126,7 +126,7 @@ for(var _i = 0; _i < _length; _i++)
     
     image_index = _i;
     var _uvs = sprite_get_uvs(_sprite, image_index);
-    if ((_uvs[4] == 0.0) && (_uvs[5] == 0.0) && (_uvs[6] == 1.0) && (_uvs[7] == 1.0)) ++_potential_separate_texture_page;
+    if ((_uvs[0] == 0.0) && (_uvs[1] == 0.0) && (_uvs[4] == 0.0) && (_uvs[5] == 0.0) && (_uvs[6] == 1.0) && (_uvs[7] == 1.0)) ++_potential_separate_texture_page;
     
     //Perform line sweeping to get accurate glyph data
     var _left   = bbox_left-2;
@@ -226,9 +226,9 @@ mask_index   = _old_mask;
 x            = _old_x;
 y            = _old_y;
 
-if (_potential_separate_texture_page > 0.5*_length)
+if (SCRIBBLE_WARNING_TEXTURE_PAGE && (_potential_separate_texture_page > 0.5*_length))
 {
-    show_error("Scribble:\nSpritefont \"" + string(_font) + "\" appears to be set to Separate Texture Page\nPlease untick Separate Texture Page for this sprite\n ", true);
+    show_error("Scribble:\nSpritefont \"" + string(_font) + "\" appears to be set to Separate Texture Page\nPlease untick Separate Texture Page for this sprite\n \n(Set SCRIBBLE_WARNING_TEXTURE_PAGE to <false> to turn off this warning)\n ", true);
 }
 
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added \"" + _font + "\" as a spritefont");
