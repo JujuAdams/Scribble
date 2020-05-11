@@ -1,16 +1,31 @@
-/// Gets the position of each corner of the textbox for a text element.
+/// Gets the position of each corner of the textbox for a text element
 /// 
+/// Returns: An 8-element array containing the positions of each corner of the text element's box (use the SCRIBBLE_QUAD enum to get each coordinate pair).
+/// @param string/textElement   The text to get the bounding box for. Alternatively, you can pass a text element into this argument from a previous call to scribble_draw().
+/// @param x                    x-position in the room to draw at
+/// @param y                    y-position in the room to draw at
+/// @param [leftMargin]         Extra space on the left-hand side of the textbox. Positive values create more space. Defaults to 0
+/// @param [topMargin]          Extra space on the top of the textbox. Positive values create more space. Defaults to 0
+/// @param [rightMargin]        Extra space on the right-hand side of the textbox. Positive values create more space. Defaults to 0
+/// @param [bottomMargin]       Extra space on the bottom of the textbox. Positive values create more space. Defaults to 0
 /// 
-/// Returns: an 8-element array containing the positions of each corner of the text element's box (use the SCRIBBLE_QUAD enum to get each coordinate pair).
-/// @param string(orElement)   The text to get the bounding box for. Alternatively, you can pass a text element into this argument from a previous call to scribble_draw().
-/// @param x                   The x position in the room to draw at. Defaults to 0
-/// @param y                   The y position in the room to draw at. Defaults to 0
-/// @param [leftMargin]        The additional space to add to the left-hand side of the box. Positive values create more space. Defaults to 0
-/// @param [topMargin]         The additional space to add to the top of the box. Positive values create more space. Defaults to 0
-/// @param [rightMargin]       The additional space to add to the right-hand side of the box. Positive values create more space. Defaults to 0
-/// @param [bottomMargin]      The additional space to add to the bottom of the box. Positive values create more space. Defaults to 0
+/// The padding arguments can be given the value undefined to indicate that the default value should be used.
 /// 
-/// All optional arguments accept <undefined> to indicate that the default value should be used.
+/// The array returned by scribble_get_quad() has 8 elements organised into 4 pairs of values. Taken together, these 4 coordinate pairs give the exact position of each
+/// corner of the textbox, even after it has been rotated/scaled etc.
+/// 
+/// The SCRIBBLE_QUAD enum exists to help unpack the array that scribble_get_quad() returns:
+/// 
+/// enum SCRIBBLE_QUAD
+/// {
+///     X0, Y0, //Top left corner
+///     X1, Y1, //Top right corner
+///     X2, Y2, //Bottom left corner
+///     X3, Y3, //Bottom right corner
+///     __SIZE
+/// }
+/// 
+/// Thus the pair { array[SCRIBBLE_QUAD.X2], array[SCRIBBLE_QUAD.Y2] } gives the bottom-left corner of the textbox.
 
 enum SCRIBBLE_QUAD
 {

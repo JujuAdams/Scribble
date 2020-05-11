@@ -1,11 +1,8 @@
-/// Adds a custom colour for use as an in-line colour definition for scribble_draw().
-/// 
+/// Adds a custom colour for use as an in-line colour definition for scribble_draw()
 /// 
 /// @param name                     String name of the colour
 /// @param colour                   The colour itself as a 24-bit integer
 /// @param [colourIsGameMakerBGR]   Whether the colour is in GameMaker's propriatery 24-bit BGR colour format. Defaults to <false>.
-/// 
-/// All optional arguments accept <undefined> to indicate that the default value should be used.
 
 var _name   = argument[0];
 var _colour = argument[1];

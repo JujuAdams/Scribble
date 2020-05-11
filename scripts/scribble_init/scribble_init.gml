@@ -1,27 +1,13 @@
-/// Prepares Scribble for use.
-/// This script should be called before any other Scribble script.
-/// 
+/// Prepares Scribble for use. This script should be called before any other Scribble scripts
 /// 
 /// Returns: Whether initialisation was successful
-/// @param fontDirectory    The directory to look in (relative to game_save_id) for font .yy files.
-/// @param defaultFont      The name of the default Scribble font to use, as a string.
-/// @param autoScan         Whether or not to automatically find normal font .yy files in the font directory.
-///                         N.B. This only works for normal fonts, and on desktop platforms.
+/// @param fontDirectory    The directory to look in (relative to game_save_id) for font .yy files
+/// @param defaultFont      The name of the default Scribble font to use, as a string
+/// @param autoScan         Whether or not to automatically find font .yy files in the font directory
+///                         N.B. This only works for normal fonts
 /// 
-/// 
-/// This script achieves the following things:
-/// 1) Define the default font directory to pull font .yy files from
-/// 2) Create global text elements to store data and state
-/// 3) Define custom colours analogues for GM's native colour constants
-/// 4) Define names for default effects - wave, shake, rainbow
-/// 5) Creates a vertex format
-/// 6) Cache uniform indexes for the shd_scribble shader
-/// 7) Build a lookup table for decoding hexcode colours in scribble_draw()
-/// 8) Automatically scans Included Files for fonts (if enabled)
-/// 
-/// 
-/// Scribble v5.4.6
-/// 2020-04-23
+/// Scribble v5.5.0
+/// 2020-05-11
 /// @jujuadams
 /// With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_
 /// 

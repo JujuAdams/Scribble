@@ -2,10 +2,10 @@
 /// 
 /// 
 /// Returns: A Scribble text element (which is really a complex array)
-/// @param x                   The x position in the room to draw at.
-/// @param y                   The y position in the room to draw at.
-/// @param string(orElement)   The text to be drawn. See below for formatting help.
-///                            Alternatively, you can pass a text element into this argument from a previous call to scribble_draw() e.g. for pre-caching.
+/// @param x                    The x position in the room to draw at.
+/// @param y                    The y position in the room to draw at.
+/// @param string/textElement   The text to be drawn. See below for formatting help.
+///                             Alternatively, you can pass a text element into this argument from a previous call to scribble_draw() e.g. for pre-caching.
 /// 
 /// 
 /// Formatting commands:

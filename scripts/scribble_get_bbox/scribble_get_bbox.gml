@@ -1,16 +1,17 @@
-/// Gets the position of the bounding box for a text element.
+/// Gets the position of the axis-aligned bounding box for a text element
 /// 
+/// Returns: 6-element array containing the positions of the bounding box for a text element
+/// @param string/textElement   The text to get the bounding box for. Alternatively, you can pass a text element into this argument from a previous call to scribble_draw().
+/// @param x                    x-position in the room to draw at
+/// @param y                    y-position in the room to draw at
+/// @param [leftMargin]         Extra space on the left-hand side of the textbox. Positive values create more space. Defaults to 0
+/// @param [topMargin]          Extra space on the top of the textbox. Positive values create more space. Defaults to 0
+/// @param [rightMargin]        Extra space on the right-hand side of the textbox. Positive values create more space. Defaults to 0
+/// @param [bottomMargin]       Extra space on the bottom of the textbox. Positive values create more space. Defaults to 0
 /// 
-/// Returns: a 4-element array containing the positions of the bounding box for a text element
-/// @param string(orElement)   The text to get the bounding box for. Alternatively, you can pass a text element into this argument from a previous call to scribble_draw().
-/// @param x                   The x position in the room to draw at. Defaults to 0
-/// @param y                   The y position in the room to draw at. Defaults to 0
-/// @param [leftMargin]        The additional space to add to the left-hand side of the box. Positive values create more space. Defaults to 0
-/// @param [topMargin]         The additional space to add to the top of the box. Positive values create more space. Defaults to 0
-/// @param [rightMargin]       The additional space to add to the right-hand side of the box. Positive values create more space. Defaults to 0
-/// @param [bottomMargin]      The additional space to add to the bottom of the box. Positive values create more space. Defaults to 0
+/// The padding arguments can be given the value undefined to indicate that the default value should be used.
 /// 
-/// All optional arguments accept <undefined> to indicate that the default value should be used.
+/// The array returned by scribble_get_bbox() has 6 elements as defined by the enum SCRIBBLE_BBOX.
 
 enum SCRIBBLE_BBOX
 {

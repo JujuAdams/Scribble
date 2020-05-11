@@ -1,4 +1,4 @@
-/// @param string(orElement)
+/// @param string/textElement
 
 var _scribble_array = argument0;
 

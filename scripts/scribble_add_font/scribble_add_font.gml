@@ -1,12 +1,20 @@
-/// Adds a normal font for use with Scribble.
+/// Adds a normal font for use with Scribble
 ///
-/// @param fontName   String name of the font to add.
-/// @param [path]     File path for the font's .yy file, including the .yy extension, relative to the font directory defined by scribble_init().
-///                   If not specified, Scribble will look in the root of the font directory.
+/// @param fontName   Name of the font to add, as a string
+/// @param [path]     File path for the font's .yy file, including the .yy extension, relative to the font directory defined by scribble_init()
+///                   If not specified, Scribble will look in the root of the font directory
 ///
-/// Scribble requires all standard fonts to have their .yy file added as an included file
-/// This means every time you modify a font you also need to update the included .yy file
-/// (Including .yy files isn't necessary for spritefonts)
+/// Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
+/// 
+///  1. Add a normal GameMaker font resource through the IDE
+///  2. Add the font's .yy file as an Included File (found in the font's folder in the project directory)
+///  3. Call scribble_add_font() targeting the font
+/// 
+/// Scribble needs to access information that GameMaker generates. All this information is contained in a single .yy file in the font's folder
+/// on disk inside the project directory. This file can sometimes be frustrating to locate, but fortunately there's a shortcut we can take.
+/// In the IDE, Navigate to the font resource you wish to add and right click on it. From the drop-down menu, select "Show In Explorer". A
+/// window will open showing various files for the font resource. You can drag-and-drop the .yy file into the GameMaker IDE to add it as an
+/// Included File.
 
 if (!variable_global_exists("__scribble_global_count"))
 {
