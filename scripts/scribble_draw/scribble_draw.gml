@@ -1,16 +1,16 @@
 /// Draws text using Scribble's formatting.
 /// 
-/// 
 /// Returns: A Scribble text element (which is really a complex array)
-/// @param x                    The x position in the room to draw at.
-/// @param y                    The y position in the room to draw at.
-/// @param string/textElement   The text to be drawn. See below for formatting help.
-///                             Alternatively, you can pass a text element into this argument from a previous call to scribble_draw() e.g. for pre-caching.
-/// 
+/// @param x                    x-position in the room to draw at.
+/// @param y                    y-position in the room to draw at.
+/// @param string/textElement   Either a string to be drawn, or a previously created text element
 /// 
 /// Formatting commands:
 /// []                                  Reset formatting to defaults
 /// [/page]                             Page break
+/// [delay]                             Pause the autotype for a fixed amount of time at the tag's position. Only supported when using autotype. DUration is defined by SCRIBBLE_DEFAULT_DELAY_DURATION
+/// [delay,<time>]                      Pause the autotype for a fixed amount of time at the tag's position. Only supported when using autotype
+/// [pause]                             Pause the autotype at the tag's position. Call scribble_autotype_is_paused() to unpause the autotyper. User scribble_autotype_is_paused() to return if the autotyper is paused
 /// [<name of colour>]                  Set colour
 /// [#<hex code>]                       Set colour via a hexcode, using the industry standard 24-bit RGB format (#RRGGBB)
 /// [/colour] [/c]                      Reset colour to the default
@@ -26,7 +26,7 @@
 /// [<event name>,<arg0>,<arg1>...]     Execute a script bound to an event name,previously defined using scribble_add_event(), with the specified arguments
 /// [<effect name>] [/<effect name>]    Set/unset an effect
 /// 
-/// Scribble has the following formatting effects by default:
+/// Scribble has the following animated effects by default:
 /// [wave]    [/wave]                   Set/unset text to wave up and down
 /// [shake]   [/shake]                  Set/unset text to shake
 /// [rainbow] [/rainbow]                Set/unset text to cycle through rainbow colours

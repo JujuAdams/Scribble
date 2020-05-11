@@ -1,5 +1,5 @@
-/// @param textElement
-/// @param state
+/// @param textElement   Text element to target. This element must have been created previously by scribble_draw()
+/// @param state         Value to set for the pause state, true or false
 
 var _scribble_array = argument0;
 var _state          = argument1;
