@@ -1,4 +1,5 @@
-/// @param string/textElement
+/// Returns: Total number of pages for the text element
+/// @param string/textElement  Text element to target. This element must have been created previously by scribble_draw()
 
 var _scribble_array = argument0;
 

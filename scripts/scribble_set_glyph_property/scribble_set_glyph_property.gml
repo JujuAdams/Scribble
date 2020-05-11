@@ -1,23 +1,20 @@
 /// Modifies a particular value for a character in a font previously added to Scribble.
 /// 
-/// 
 /// Returns: The new value of the property that was modified.
-/// @param fontName     The font name (as a string) of the font to modify.
-/// @param character    The character (as a string) to modify.
-/// @param property     The property to modify. See below for more details.
-/// @param value        The value to set.
-/// @param [relative]   Whether to add the new value to the existing value, or to overwrite the existing value. Defaults to <false>, overwriting the existing value. Skip this argument or use <undefined> to use the default value.
-/// 
+/// @param fontName     The target font, as a string
+/// @param character    Target character, as a string
+/// @param property     Property to return, see below
+/// @param value        The value to set
+/// @param [relative]   Whether to add the new value to the existing value, or to overwrite the existing value. Defaults to false, overwriting the existing value
 /// 
 /// Fonts can often be tricky to render correctly, and this script allows you to change certain properties.
 /// Properties can be adjusted at any time, but existing/cached Scribble text will not be updated to match new properties.
-/// Tip! Use scribble_set_glyph(<font>, <character>, <property>, 0, true) to get the current value of a glyph's property.
-/// 
 /// 
 /// Three properties are available for modification:
 /// SCRIBBLE_GLYPH_X_OFFSET:   The relative x-offset to draw the glyph
 /// SCRIBBLE_GLYPH_Y_OFFSET:   The relative y-offset to draw the glyph
-/// SCRIBBLE_GLYPH_SEPARATION: The distance in the x-axis that this character is separated from the next
+/// SCRIBBLE_GLYPH_SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
+///                            left edge of the next glyph. This can be a negative value!
 
 var _font      = argument[0];
 var _character = argument[1];

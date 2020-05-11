@@ -1,10 +1,6 @@
 /// Frees up memory used by Scribble, targetting either a cache group or a specific text element.
 /// 
-/// This script is only meant to be called directly by advanced users. Please read the documentation carefully!
-/// 
-/// 
-/// @param cacheGroup  The target memory to free. See below.
-/// 
+/// @param cacheGroup   Cache group to flush
 /// 
 /// Scribble uses cache groups to help manage memory. Scribble text that has been added to a cache group will be automatically destroyed if...
 /// 1) scribble_flush() has been called targetting the text's cache group

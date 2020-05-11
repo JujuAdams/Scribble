@@ -1,13 +1,14 @@
 /// Returns: The text element's autotype state (see below)
-/// @param textElement   A text element returned by scribble_draw()
+/// @param textElement   Text element to target. This element must have been created previously by scribble_draw()
 /// 
 /// The autotype state is a real value as follows:
-///     state < 0   Autotype not set
-///     state = 0   Not yet faded in, invisible
-/// 0 < state < 1   Fading in
-///     state = 1   Fully visible
-/// 1 < state < 2   Fading out
-///     state = 2   Fully faded out, invisible
+///     state = 0   No text is visible
+/// 0 < state < 1   Text is fading in. This value is the proportion of text that is visible e.g. 0.4 is 40% visibility
+///     state = 1   Text is fully visible and the fade in animation has finished
+/// 1 < state < 2   Text is fading out. 2 minus this value is the proportion of text that is visible e.g. 1.6 is 40% visibility
+///     state = 2   No text is visible and the fade out animation has finished
+/// 
+/// If no autotype animation has been started, this function will return 1.
 
 var _scribble_array = argument0;
 

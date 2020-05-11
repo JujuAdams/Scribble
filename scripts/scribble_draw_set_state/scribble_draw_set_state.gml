@@ -1,8 +1,8 @@
-/// @param stateArray   The array of data that will be copied into Scribble's internal draw state.
+/// @param stateArray   Array of data that will be copied into Scribble's internal draw state
 /// 
-/// 
-/// Updates Scribble's current draw state from an array. Any value that is <undefined> will use the default value instead.
-/// This can be used in combination with scribble_get_state() to create template draw states.
+/// Updates Scribble's current draw state from an array. Any value that is undefined will
+/// use the default value instead as defined in __scribble_config(). This function is intended
+/// to be used in combination with scribble_draw_get_state().
 
 global.scribble_state_xscale          = argument0[SCRIBBLE_STATE.XSCALE             ];
 global.scribble_state_yscale          = argument0[SCRIBBLE_STATE.YSCALE             ];

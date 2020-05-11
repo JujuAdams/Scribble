@@ -1,4 +1,8 @@
-/// @param textElement
+/// @param textElement   Text element to target. This element must have been created previously by scribble_draw()
+/// 
+/// This function will skip the fade in or fade out animation that has been started by scribble_autotype_fade_in() or scribble_autotype_fade_out().
+/// 
+/// If text was fading in, all remaining events will be executed.
 
 var _scribble_array = argument0;
 
