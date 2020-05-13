@@ -147,19 +147,19 @@ for(var _i = 0; _i < _length; _i++)
     var _right  = bbox_right+2;
     var _bottom = bbox_bottom+2;
             
-    while (!collision_line(      _left, bbox_top-1,        _left, bbox_bottom+1, id, true, false) && (_left < _right )) ++_left;
-    while (!collision_line(bbox_left-1,       _top, bbox_right+1,          _top, id, true, false) && (_top  < _bottom)) ++_top;
-    while (!collision_line(     _right, bbox_top-1,       _right, bbox_bottom+1, id, true, false) && (_right  > _left)) --_right;
-    while (!collision_line(bbox_left-1,    _bottom, bbox_right+1,       _bottom, id, true, false) && (_bottom > _top )) --_bottom;
+    while (!collision_line(      _left, bbox_top-1,        _left, bbox_bottom+1, id, true, false) && (_left <= _right )) ++_left;
+    while (!collision_line(bbox_left-1,       _top, bbox_right+1,          _top, id, true, false) && (_top  <= _bottom)) ++_top;
+    while (!collision_line(     _right, bbox_top-1,       _right, bbox_bottom+1, id, true, false) && (_right  >= _left)) --_right;
+    while (!collision_line(bbox_left-1,    _bottom, bbox_right+1,       _bottom, id, true, false) && (_bottom >= _top )) --_bottom;
             
     //Build an array to store this glyph's properties
     var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
     _array[@ SCRIBBLE_GLYPH.CHARACTER] = _char;
     _array[@ SCRIBBLE_GLYPH.INDEX    ] = ord(_char);
             
-    if ((_left == _right) && (_top == _bottom))
+    if ((_left > _right) && (_top > _bottom))
     {
-        show_debug_message("Scribble:   Warning! Character " + string(ord(_char)) + "(" + _char + ") for spritefont \"" + _font + "\" is empty");
+        show_debug_message("Scribble:   Warning! Character " + string(ord(_char)) + " (" + _char + ") for spritefont \"" + _font + "\" is empty");
                 
         _array[@ SCRIBBLE_GLYPH.WIDTH     ] = 1;
         _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
