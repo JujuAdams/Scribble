@@ -55,6 +55,16 @@ var _def_colour      = SCRIBBLE_DEFAULT_TEXT_COLOUR;
 var _def_font        = global.__scribble_default_font;
 var _def_halign      = SCRIBBLE_DEFAULT_HALIGN;
 
+if (SCRIBBLE_OLD_FONT_HALIGN)
+{
+    switch(_def_halign)
+    {
+        case fa_left:   _def_halign = __SCRIBBLE_PUSH_LEFT;   break;
+        case fa_center: _def_halign = __SCRIBBLE_PUSH_CENTRE; break;
+        case fa_right:  _def_halign = __SCRIBBLE_PUSH_RIGHT;  break;
+    }
+}
+
 //Check if the default font even exists
 if (!ds_map_exists(global.__scribble_font_data, _def_font))
 {
@@ -101,7 +111,6 @@ if (is_string(_def_colour))
 var _meta_element_characters = 0;
 var _meta_element_lines      = 0;
 var _meta_element_pages      = 0;
-var _element_width           = 0;
 var _element_height          = 0;
 
 var _scribble_array      = array_create(__SCRIBBLE.__SIZE); //The text element array
@@ -120,6 +129,8 @@ _scribble_array[@ __SCRIBBLE.LINE_HEIGHT           ] = _line_min_height;
 
 _scribble_array[@ __SCRIBBLE.__SECTION1            ] = "-- Statistics --";
 _scribble_array[@ __SCRIBBLE.WIDTH                 ] = 0;
+_scribble_array[@ __SCRIBBLE.MIN_X                 ] = 0;
+_scribble_array[@ __SCRIBBLE.MAX_X                 ] = 0;
 _scribble_array[@ __SCRIBBLE.HEIGHT                ] = 0;
 _scribble_array[@ __SCRIBBLE.CHARACTERS            ] = 0;
 _scribble_array[@ __SCRIBBLE.LINES                 ] = 0;
@@ -290,7 +301,8 @@ repeat(_buffer_size)
             _command_tag_start = -1;
         
             #region Command tag handling
-                    
+            
+            var _new_halign = undefined;
             _command_name = _parameters_list[| 0];
             switch(_command_name)
             {
@@ -391,87 +403,29 @@ repeat(_buffer_size)
                 #region Font Alignment
                 
                 case "fa_left":
-                case "push_left":
-                    _text_halign = fa_left;
-                    if (_text_x > 0)
-                    {
-                        _force_newline = true;
-                        _char_width    = 0;
-                        _line_width    = max(_line_width, _text_x);
-                        _line_height   = max(_line_height, _font_line_height*_text_scale);
-                    }
-                    else
-                    {
-                        _line_array[@ __SCRIBBLE_LINE.HALIGN] = fa_left;
-                        continue; //Skip the rest of the parser step
-                    }
+                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_PUSH_LEFT : fa_left;
                 break;
                 
                 case "fa_center":
                 case "fa_centre":
-                    _text_halign = fa_center;
-                    if (_text_x > 0)
-                    {
-                        _force_newline = true;
-                        _char_width    = 0;
-                        _line_width    = max(_line_width, _text_x);
-                        _line_height   = max(_line_height, _font_line_height*_text_scale);
-                    }
-                    else
-                    {
-                        _line_array[@ __SCRIBBLE_LINE.HALIGN] = fa_center;
-                        continue; //Skip the rest of the parser step
-                    }
+                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_PUSH_CENTRE : fa_center;
                 break;
                 
                 case "fa_right":
-                    _text_halign = fa_right;
-                    if (_text_x > 0)
-                    {
-                        _force_newline = true;
-                        _char_width    = 0;
-                        _line_width    = max(_line_width, _text_x);
-                        _line_height   = max(_line_height, _font_line_height*_text_scale);
-                    }
-                    else
-                    {
-                        _line_array[@ __SCRIBBLE_LINE.HALIGN] = fa_right;
-                        continue; //Skip the rest of the parser step
-                    }
+                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_PUSH_RIGHT : fa_right;
+                break;
+                
+                case "push_left":
+                    _new_halign = __SCRIBBLE_PUSH_LEFT;
                 break;
                 
                 case "push_center":
                 case "push_centre":
-                case "push_middle":
-                    _text_halign = __SCRIBBLE_PUSH_CENTRE;
-                    if (_text_x > 0)
-                    {
-                        _force_newline = true;
-                        _char_width    = 0;
-                        _line_width    = max(_line_width, _text_x);
-                        _line_height   = max(_line_height, _font_line_height*_text_scale);
-                    }
-                    else
-                    {
-                        _line_array[@ __SCRIBBLE_LINE.HALIGN] = __SCRIBBLE_PUSH_CENTRE;
-                        continue; //Skip the rest of the parser step
-                    }
+                    _new_halign = __SCRIBBLE_PUSH_CENTRE;
                 break;
                 
                 case "push_right":
-                    _text_halign = __SCRIBBLE_PUSH_RIGHT;
-                    if (_text_x > 0)
-                    {
-                        _force_newline = true;
-                        _char_width    = 0;
-                        _line_width    = max(_line_width, _text_x);
-                        _line_height   = max(_line_height, _font_line_height*_text_scale);
-                    }
-                    else
-                    {
-                        _line_array[@ __SCRIBBLE_LINE.HALIGN] = __SCRIBBLE_PUSH_RIGHT;
-                        continue; //Skip the rest of the parser step
-                    }
+                    _new_halign = __SCRIBBLE_PUSH_RIGHT;
                 break;
                 #endregion
                 
@@ -784,6 +738,24 @@ repeat(_buffer_size)
                     }
                 break;
             }
+            
+            if (_new_halign != undefined)
+            {
+                _text_halign = _new_halign;
+                
+                if (_text_x > 0)
+                {
+                    _force_newline = true;
+                    _char_width    = 0;
+                    _line_width    = max(_line_width, _text_x);
+                    _line_height   = max(_line_height, _font_line_height*_text_scale);
+                }
+                else
+                {
+                    _line_array[@ __SCRIBBLE_LINE.HALIGN] = _new_halign;
+                    continue; //Skip the rest of the parser step
+                }
+            }
         
             #endregion
         }
@@ -1069,8 +1041,7 @@ repeat(_buffer_size)
                 
         ++_meta_element_lines;
         ++_meta_page_lines;
-        _element_width = max(_element_width, _line_width);
-                
+        
         //Update the last line
         _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_page_characters-1;
         _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
@@ -1234,38 +1205,113 @@ repeat(_buffer_size)
         _line_y                =  0;
         _previous_texture      = -1;
         _vbuff_line_start_list = -1;
-                
+        
         _force_newpage = false;
     }
-            
+    
     #endregion
-            
-            
-            
+    
+    
+    
     _text_x += _char_width;
 }
-        
+
 _line_width = max(_line_width, _text_x);
-        
+
 _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_page_characters;
 _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
 _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
 _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
-        
+
 ++_meta_page_lines;
 ++_meta_element_lines;
-_element_width  = max(_element_width , _line_width);
 _element_height = max(_element_height, _line_y + _line_height);
-        
+
 //Update metadata
 _page_array[@ __SCRIBBLE_PAGE.LINES     ] = _meta_page_lines;
 _page_array[@ __SCRIBBLE_PAGE.CHARACTERS] = _meta_page_characters;
-        
+
 _scribble_array[@ __SCRIBBLE.LINES     ] = _meta_element_lines;
 _scribble_array[@ __SCRIBBLE.CHARACTERS] = _meta_element_characters;
 _scribble_array[@ __SCRIBBLE.PAGES     ] = _meta_element_pages;
-_scribble_array[@ __SCRIBBLE.WIDTH     ] = _element_width;
 _scribble_array[@ __SCRIBBLE.HEIGHT    ] = _element_height;
+
+#endregion
+
+
+
+#region Find the actual width of the text element
+
+//Iterate over every page
+var _element_min_x  = 0;
+var _element_max_x  = 0;
+var _push_max_width = 0;
+
+var _p = 0;
+repeat(array_length_1d(_element_pages_array))
+{
+    var _page_array = _element_pages_array[_p];
+    _page_lines_array = _page_array[__SCRIBBLE_PAGE.LINES_ARRAY];
+    
+    //Iterate over every line on the page
+    var _l = 0;
+    repeat(array_length_1d(_page_lines_array))
+    {
+        var _line_data = _page_lines_array[_l];
+        if (is_array(_line_data)) //Someimtes the array can contain <undefined> if a line is moved from one page to another
+        {
+            var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
+            switch(_line_data[__SCRIBBLE_LINE.HALIGN])
+            {
+                case fa_left:
+                    _element_max_x = max(_element_max_x, _line_width);
+                break;
+                
+                case fa_center:
+                    _element_min_x = min(_element_min_x, -(_line_width div 2));
+                    _element_max_x = max(_element_max_x,   _line_width div 2 );
+                break;
+                
+                case fa_right:
+                    _element_min_x = min(_element_min_x, -_line_width);
+                break;
+                
+                case __SCRIBBLE_PUSH_LEFT:
+                case __SCRIBBLE_PUSH_CENTRE:
+                case __SCRIBBLE_PUSH_RIGHT:
+                    _push_max_width = max(_push_max_width, _line_width);
+                break;
+            }
+        }
+        
+        ++_l;
+    }
+    
+    ++_p;
+}
+
+var _fixed_width = _element_max_x - _element_min_x;
+if (_push_max_width > _fixed_width)
+{
+    var _delta = _push_max_width - _fixed_width;
+    if (_element_min_x >= 0)
+    {
+        _element_max_x += _delta;
+    }
+    else if (_element_max_x <= 0)
+    {
+        _element_min_x -= _delta;
+    }
+    else
+    {
+        _element_min_x -= _delta div 2;
+        _element_max_x += _delta div 2;
+    }
+}
+
+_scribble_array[@ __SCRIBBLE.MIN_X] = _element_min_x;
+_scribble_array[@ __SCRIBBLE.MAX_X] = _element_max_x;
+_scribble_array[@ __SCRIBBLE.WIDTH] = _element_max_x - _element_min_x;
         
 #endregion
 
@@ -1292,7 +1338,7 @@ repeat(array_length_1d(_element_pages_array))
                 
         var _buffer_tell = buffer_tell(_buffer);
         ds_list_add(_vbuff_line_start_list, _buffer_tell);
-                
+        
         //Iterate over every line on the page
         var _l = 0;
         repeat(ds_list_size(_vbuff_line_start_list)-1)
@@ -1303,35 +1349,36 @@ repeat(array_length_1d(_element_pages_array))
                 var _line_y      = _line_data[__SCRIBBLE_LINE.Y     ];
                 var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
                 var _line_height = _line_data[__SCRIBBLE_LINE.HEIGHT];
-                        
+                
                 var _tell_a = _vbuff_line_start_list[| _l  ];
                 var _tell_b = _vbuff_line_start_list[| _l+1];
-                        
+                
                 //If we're not left-aligned then we need to do some work!
                 if (_line_halign != fa_left)
                 {
                     var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
-                            
-                    var _offset = 0;
                     
+                    var _offset = 0;
                     switch(_line_halign)
                     {
                         case fa_center:
                             _offset = -(_line_width div 2);
-                            if (SCRIBBLE_OLD_FONT_HALIGN) _offset += _element_width div 2;
                         break;
                         
                         case fa_right:
                             _offset = -_line_width;
-                            if (SCRIBBLE_OLD_FONT_HALIGN) _offset += _element_width;
+                        break;
+                        
+                        case __SCRIBBLE_PUSH_LEFT:
+                            _offset = _element_min_x;
                         break;
                         
                         case __SCRIBBLE_PUSH_CENTRE:
-                            _offset = (_element_width - _line_width) div 2;
+                            _offset = ((_element_min_x + _element_max_x) div 2) - (_line_width div 2);
                         break;
                         
                         case __SCRIBBLE_PUSH_RIGHT:
-                            _offset =  _element_width - _line_width;
+                            _offset = _element_max_x - _line_width;
                         break;
                     }
                             

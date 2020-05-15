@@ -1,19 +1,9 @@
-/// Sets Scribble's fade in/out state. This is a manual alternative to using the "autotype" feature.
-/// N.B. Using this script will not trigger autotype events.
-/// 
-/// 
-/// @param fadeIn       Whether to fade in or out (boolean).
-/// @param position     The position of the fade effect. See below for more details.
-/// @param method       The fade method to use. See below for more details.
-/// @param smoothness   The smoothness of the fade effect. A value of "0" disables smooth fading.
-/// 
-/// 
-/// Scribble supports two fade effects:
-/// SCRIBBLE_TYPEWRITER_PER_CHARACTER: Fade each character individually. <position> is measured in "number of drawn characters"
-/// SCRIBBLE_TYPEWRITER_PER_LINE:      Fade each line of text as a group. <position> is measured in "number of lines of text"
-/// 
-/// This script "sets state". All text drawn with scribble_draw() will use these settings until they're overwritten,
-/// either by calling this script again or by calling scribble_draw_reset() / scribble_draw_set_state().
+#macro SCRIBBLE_WARNING_DRAW_SET_FADE_DEPRECATED  true
+if (SCRIBBLE_WARNING_DRAW_SET_FADE_DEPRECATED)
+{
+    show_error("Scribble:\nscribble_draw_set_fade() will be deprecated in v6.0.0\nPlease convert your code to use the autotype functions\n \n(Set SCRIBBLE_WARNING_DRAW_SET_FADE_DEPRECATED to <false> to hide this warning)\n ", true);
+    exit;
+}
 
 global.scribble_state_tw_fade_in    = argument0;
 global.scribble_state_tw_position   = argument1;

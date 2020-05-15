@@ -63,21 +63,19 @@ if (!is_array(_scribble_array)
     }
 }
 
+var _box_l = _scribble_array[__SCRIBBLE.MIN_X];
+var _box_r = _scribble_array[__SCRIBBLE.MAX_X];
+
 switch(global.scribble_state_box_halign)
 {
-    case fa_left:
-        var _box_l = 0;
-        var _box_r = _scribble_array[__SCRIBBLE.WIDTH];
-    break;
-    
     case fa_center:
-        var _box_l = -_scribble_array[__SCRIBBLE.WIDTH] div 2;
-        var _box_r = -_box_l;
+        _box_l -= _scribble_array[__SCRIBBLE.WIDTH] div 2;
+        _box_r -= _scribble_array[__SCRIBBLE.WIDTH] div 2;
     break;
     
     case fa_right:
-        var _box_l = -_scribble_array[__SCRIBBLE.WIDTH];
-        var _box_r = 0;
+        _box_l -= _scribble_array[__SCRIBBLE.WIDTH];
+        _box_r -= _scribble_array[__SCRIBBLE.WIDTH];
     break;
 }
 

@@ -1,10 +1,9 @@
-/// Sets Scribble's box alignment state
-/// 
-/// @param boxHAlign   Horizontal alignment of the text element relative to the text element's origin. Accepts fa_left, fa_right, and fa_center
-/// @param boxVAlign   Vertical alignment of the text element relative to the text element's origin. Accepts fa_top, fa_bottom, and fa_middle
-/// 
-/// This script sets Scribble's draw state. All text drawn with scribble_draw() will use these settings until they're overwritten, either by
-/// calling this script again or by calling scribble_draw_reset() or scribble_draw_set_state().
+#macro SCRIBBLE_WARNING_DRAW_SET_BOX_ALIGN_DEPRECATED  true
+if (SCRIBBLE_WARNING_DRAW_SET_BOX_ALIGN_DEPRECATED)
+{
+    show_error("Scribble:\nscribble_draw_set_box_align() will be deprecated in v6.0.0\nPlease convert your code to use the equivalent box_halign and box_valign functions\n \n(Set SCRIBBLE_WARNING_DRAW_SET_BOX_ALIGN_DEPRECATED to <false> to hide this warning)\n ", true);
+    exit;
+}
 
 global.scribble_state_box_halign = argument0;
 global.scribble_state_box_valign = argument1;

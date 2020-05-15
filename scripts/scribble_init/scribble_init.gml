@@ -152,39 +152,41 @@ enum __SCRIBBLE
     
     __SECTION1,             // 9
     WIDTH,                  //10
-    HEIGHT,                 //11
-    CHARACTERS,             //12
-    LINES,                  //13
-    PAGES,                  //14
-    GLOBAL_INDEX,           //15
-    GLYPH_LTRB_ARRAY,       //16
+    MIN_X,                  //11
+    MAX_X,                  //12
+    HEIGHT,                 //13
+    CHARACTERS,             //14
+    LINES,                  //15
+    PAGES,                  //16
+    GLOBAL_INDEX,           //17
+    GLYPH_LTRB_ARRAY,       //18
     
-    __SECTION2,             //17
-    ANIMATION_TIME,         //18
-    TIME,                   //19
-    FREED,                  //20
-    SOUND_FINISH_TIME,      //21
+    __SECTION2,             //19
+    ANIMATION_TIME,         //20
+    TIME,                   //21
+    FREED,                  //22
+    SOUND_FINISH_TIME,      //23
     
-    __SECTION3,             //22
-    PAGES_ARRAY,            //23
+    __SECTION3,             //24
+    PAGES_ARRAY,            //25
     
-    __SECTION4,             //24
-    AUTOTYPE_PAGE,          //25
-    AUTOTYPE_FADE_IN,       //26
-    AUTOTYPE_SPEED,         //27
-    AUTOTYPE_SKIP,          //28
-    AUTOTYPE_TAIL_MOVING,   //29
-    AUTOTYPE_TAIL_POSITION, //30
-    AUTOTYPE_HEAD_POSITION, //31
-    AUTOTYPE_METHOD,        //32
-    AUTOTYPE_SMOOTHNESS,    //33
-    AUTOTYPE_SOUND_ARRAY,   //34
-    AUTOTYPE_SOUND_OVERLAP, //35
-    AUTOTYPE_PAUSED,        //36
-    AUTOTYPE_DELAY_PAUSED,  //37
-    AUTOTYPE_DELAY_END,     //38
+    __SECTION4,             //26
+    AUTOTYPE_PAGE,          //27
+    AUTOTYPE_FADE_IN,       //28
+    AUTOTYPE_SPEED,         //29
+    AUTOTYPE_SKIP,          //30
+    AUTOTYPE_TAIL_MOVING,   //31
+    AUTOTYPE_TAIL_POSITION, //32
+    AUTOTYPE_HEAD_POSITION, //33
+    AUTOTYPE_METHOD,        //34
+    AUTOTYPE_SMOOTHNESS,    //35
+    AUTOTYPE_SOUND_ARRAY,   //36
+    AUTOTYPE_SOUND_OVERLAP, //37
+    AUTOTYPE_PAUSED,        //38
+    AUTOTYPE_DELAY_PAUSED,  //39
+    AUTOTYPE_DELAY_END,     //40
     
-    __SIZE                  //39
+    __SIZE                  //41
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
@@ -194,8 +196,9 @@ enum __SCRIBBLE
 #macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
 #macro __SCRIBBLE_EXPECTED_GLYPHS      100
 #macro __SCRIBBLE_EXPECTED_FRAME_TIME  (0.95*game_get_speed(gamespeed_microseconds)/1000) //Uses to prevent the autotype from advancing if a draw call is made multiple times a frame to the same text element
-#macro __SCRIBBLE_PUSH_CENTRE       3
-#macro __SCRIBBLE_PUSH_RIGHT        4
+#macro __SCRIBBLE_PUSH_LEFT            3
+#macro __SCRIBBLE_PUSH_CENTRE          4
+#macro __SCRIBBLE_PUSH_RIGHT           5
 
 //These are tied to values in shd_scribble
 //If you need to change these for some reason, you'll need to change shd_scribble too

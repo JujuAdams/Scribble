@@ -1,4 +1,5 @@
-scribble_draw_set_box_align(fa_center, fa_middle);
+scribble_draw_set_box_halign(fa_center);
+scribble_draw_set_box_valign(fa_middle);
 scribble_draw(x, y, element);
 
 var _bbox = scribble_get_bbox(element,   x, y,   5, 5,   5, 5);
