@@ -5,13 +5,9 @@
 /// @param [cacheGroup]   Cache group that stores the Scribble data. If this argument is <undefined>, the default cache group will be used instead
 /// @param [freeze]       Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster
 
-
-
 var _draw_string = argument[0];
 var _cache_group = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_CACHE_GROUP;
 var _freeze      = (argument_count > 2)? argument[2] : false;
-
-
 
 //If the input string is an array (secret behaviour that Scribble uses!) then run some checking code
 if (is_array(_draw_string))
@@ -31,8 +27,6 @@ if (is_array(_draw_string))
     return _draw_string;
 }
 
-
-
 //Check if the string already exists in the cache
 var _cache_string = string(_draw_string) + ":" + string(global.scribble_state_line_min_height) + ":" + string(global.scribble_state_max_width) + ":" + string(global.scribble_state_max_height);
 if (ds_map_exists(global.__scribble_global_cache_map, _cache_string))
@@ -40,8 +34,6 @@ if (ds_map_exists(global.__scribble_global_cache_map, _cache_string))
     //Grab the text element from the cache
     return global.__scribble_global_cache_map[? _cache_string];
 }
-
-
 
 //Cache a new text element if we don't have a relevant one for this string
 
@@ -55,38 +47,38 @@ var _texture_to_buffer_map = ds_map_create();
 
 
 #region Process input parameters
-    
+
 var _max_width       = is_real(global.scribble_state_max_width)? global.scribble_state_max_width : SCRIBBLE_DEFAULT_MAX_WIDTH;
 var _max_height      = is_real(global.scribble_state_max_height)? global.scribble_state_max_height : SCRIBBLE_DEFAULT_MAX_HEIGHT;
 var _line_min_height = max(0, is_real(global.scribble_state_line_min_height)? global.scribble_state_line_min_height : SCRIBBLE_DEFAULT_LINE_MIN_HEIGHT);
 var _def_colour      = SCRIBBLE_DEFAULT_TEXT_COLOUR;
 var _def_font        = global.__scribble_default_font;
 var _def_halign      = SCRIBBLE_DEFAULT_HALIGN;
-    
+
 //Check if the default font even exists
 if (!ds_map_exists(global.__scribble_font_data, _def_font))
 {
     show_error("Scribble:\nDefault font \"" + string(_def_font) + "\" not recognised\n ", false);
     exit;
 }
-        
+
 var _font_data         = global.__scribble_font_data[? _def_font];
 var _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
 var _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
 var _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
 var _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
 var _font_texture      = _font_data[__SCRIBBLE_FONT.TEXTURE     ];
-    
+
 var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
 if (_glyph_array == undefined)
 {
     show_error("Scribble:\nThe space character is missing from font definition for \"" + _def_font + "\"\n ", true);
     return undefined;
 }
-        
+
 var _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
 var _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH];
-    
+
 //Try to use a custom colour if the "startingColour" parameter is a string
 if (is_string(_def_colour))
 {
@@ -96,24 +88,25 @@ if (is_string(_def_colour))
         show_error("Scribble:\nThe starting colour (\"" + _def_colour + "\") has not been added as a custom colour. Defaulting to c_white.\n ", false);
         _value = c_white;
     }
+    
     _def_colour = _value;
 }
-    
+
 #endregion
 
 
 
 #region Create the base text element
-        
+
 var _meta_element_characters = 0;
 var _meta_element_lines      = 0;
 var _meta_element_pages      = 0;
 var _element_width           = 0;
 var _element_height          = 0;
-    
+
 var _scribble_array      = array_create(__SCRIBBLE.__SIZE); //The text element array
 var _element_pages_array = [];                              //Stores each page of text
-    
+
 _scribble_array[@ __SCRIBBLE.__SECTION0            ] = "-- Parameters --";
 _scribble_array[@ __SCRIBBLE.VERSION               ] = __SCRIBBLE_VERSION;
 _scribble_array[@ __SCRIBBLE.STRING                ] = _draw_string;
@@ -124,7 +117,7 @@ _scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN        ] = _def_halign;
 _scribble_array[@ __SCRIBBLE.WIDTH_LIMIT           ] = _max_width;
 _scribble_array[@ __SCRIBBLE.HEIGHT_LIMIT          ] = _max_height;
 _scribble_array[@ __SCRIBBLE.LINE_HEIGHT           ] = _line_min_height;
-    
+
 _scribble_array[@ __SCRIBBLE.__SECTION1            ] = "-- Statistics --";
 _scribble_array[@ __SCRIBBLE.WIDTH                 ] = 0;
 _scribble_array[@ __SCRIBBLE.HEIGHT                ] = 0;
@@ -133,16 +126,16 @@ _scribble_array[@ __SCRIBBLE.LINES                 ] = 0;
 _scribble_array[@ __SCRIBBLE.PAGES                 ] = 0;
 _scribble_array[@ __SCRIBBLE.GLOBAL_INDEX          ] = global.__scribble_global_count+1;
 _scribble_array[@ __SCRIBBLE.GLYPH_LTRB_ARRAY      ] = undefined;
-    
+
 _scribble_array[@ __SCRIBBLE.__SECTION2            ] = "-- State --";
 _scribble_array[@ __SCRIBBLE.ANIMATION_TIME        ] = 0;
 _scribble_array[@ __SCRIBBLE.TIME                  ] = current_time;
 _scribble_array[@ __SCRIBBLE.FREED                 ] = false;
 _scribble_array[@ __SCRIBBLE.SOUND_FINISH_TIME     ] = current_time;
-    
+
 _scribble_array[@ __SCRIBBLE.__SECTION3            ] = "-- Pages --";
 _scribble_array[@ __SCRIBBLE.PAGES_ARRAY           ] = _element_pages_array;
-        
+
 _scribble_array[@ __SCRIBBLE.__SECTION4            ] = "-- Autotype --";
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_PAGE         ] =  0;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = -1;
@@ -158,21 +151,21 @@ _scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_OVERLAP] =  0;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_PAUSED       ] =  false;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_PAUSED ] =  false;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_END    ] =  -1;
-        
+
 #endregion
 
 
 
 #region Register the text element in a cache group
-        
+
 global.__scribble_global_count++;
 global.scribble_alive[? global.__scribble_global_count] = _scribble_array;
-        
+
 if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
-        
+
 //Add this text element to the global cache lookup
 global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
-        
+
 //Find this cache group's list
 //If we're using the default cache group, this list is the same as global.__scribble_global_cache_list
 var _list = global.__scribble_cache_group_map[? _cache_group];
@@ -182,10 +175,10 @@ if (_list == undefined)
     _list = ds_list_create();
     ds_map_add_list(global.__scribble_cache_group_map, _cache_group, _list);
 }
-        
+
 //Add this string to the cache group's list
 ds_list_add(_list, _cache_string);
-        
+
 #endregion
 
 
@@ -398,27 +391,18 @@ repeat(_buffer_size)
                 #region Font Alignment
                 
                 case "fa_left":
+                case "push_left":
                     _text_halign = fa_left;
                     if (_text_x > 0)
                     {
                         _force_newline = true;
+                        _char_width    = 0;
+                        _line_width    = max(_line_width, _text_x);
+                        _line_height   = max(_line_height, _font_line_height*_text_scale);
                     }
                     else
                     {
                         _line_array[@ __SCRIBBLE_LINE.HALIGN] = fa_left;
-                        continue; //Skip the rest of the parser step
-                    }
-                break;
-                
-                case "fa_right":
-                    _text_halign = fa_right;
-                    if (_text_x > 0)
-                    {
-                        _force_newline = true;
-                    }
-                    else
-                    {
-                        _line_array[@ __SCRIBBLE_LINE.HALIGN] = fa_right;
                         continue; //Skip the rest of the parser step
                     }
                 break;
@@ -429,10 +413,63 @@ repeat(_buffer_size)
                     if (_text_x > 0)
                     {
                         _force_newline = true;
+                        _char_width    = 0;
+                        _line_width    = max(_line_width, _text_x);
+                        _line_height   = max(_line_height, _font_line_height*_text_scale);
                     }
                     else
                     {
                         _line_array[@ __SCRIBBLE_LINE.HALIGN] = fa_center;
+                        continue; //Skip the rest of the parser step
+                    }
+                break;
+                
+                case "fa_right":
+                    _text_halign = fa_right;
+                    if (_text_x > 0)
+                    {
+                        _force_newline = true;
+                        _char_width    = 0;
+                        _line_width    = max(_line_width, _text_x);
+                        _line_height   = max(_line_height, _font_line_height*_text_scale);
+                    }
+                    else
+                    {
+                        _line_array[@ __SCRIBBLE_LINE.HALIGN] = fa_right;
+                        continue; //Skip the rest of the parser step
+                    }
+                break;
+                
+                case "push_center":
+                case "push_centre":
+                case "push_middle":
+                    _text_halign = __SCRIBBLE_PUSH_CENTRE;
+                    if (_text_x > 0)
+                    {
+                        _force_newline = true;
+                        _char_width    = 0;
+                        _line_width    = max(_line_width, _text_x);
+                        _line_height   = max(_line_height, _font_line_height*_text_scale);
+                    }
+                    else
+                    {
+                        _line_array[@ __SCRIBBLE_LINE.HALIGN] = __SCRIBBLE_PUSH_CENTRE;
+                        continue; //Skip the rest of the parser step
+                    }
+                break;
+                
+                case "push_right":
+                    _text_halign = __SCRIBBLE_PUSH_RIGHT;
+                    if (_text_x > 0)
+                    {
+                        _force_newline = true;
+                        _char_width    = 0;
+                        _line_width    = max(_line_width, _text_x);
+                        _line_height   = max(_line_height, _font_line_height*_text_scale);
+                    }
+                    else
+                    {
+                        _line_array[@ __SCRIBBLE_LINE.HALIGN] = __SCRIBBLE_PUSH_RIGHT;
                         continue; //Skip the rest of the parser step
                     }
                 break;
@@ -1276,8 +1313,27 @@ repeat(array_length_1d(_element_pages_array))
                     var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
                             
                     var _offset = 0;
-                    if (_line_halign == fa_right ) _offset =  _element_width - _line_width;
-                    if (_line_halign == fa_center) _offset = (_element_width - _line_width) div 2;
+                    
+                    switch(_line_halign)
+                    {
+                        case fa_center:
+                            _offset = -(_line_width div 2);
+                            if (SCRIBBLE_OLD_FONT_HALIGN) _offset += _element_width div 2;
+                        break;
+                        
+                        case fa_right:
+                            _offset = -_line_width;
+                            if (SCRIBBLE_OLD_FONT_HALIGN) _offset += _element_width;
+                        break;
+                        
+                        case __SCRIBBLE_PUSH_CENTRE:
+                            _offset = (_element_width - _line_width) div 2;
+                        break;
+                        
+                        case __SCRIBBLE_PUSH_RIGHT:
+                            _offset =  _element_width - _line_width;
+                        break;
+                    }
                             
                     //We want to write to the CENTRE_X property of every vertex for horizontal alignment
                     var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
@@ -1397,11 +1453,11 @@ if (SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
                         {
                             //If we found some previous data, we need to add info to the multi array to figure out later
                             _glyph_ltrb_array[@ _char] = [min(_old_ltrb[0], _l   ),
-                                                            min(_old_ltrb[1], _t   ),
-                                                            max(_old_ltrb[2], _r   ),
-                                                            max(_old_ltrb[3], _b   ),
-                                                            max(_old_ltrb[4], _line),
-                                                            _p];
+                                                          min(_old_ltrb[1], _t   ),
+                                                          max(_old_ltrb[2], _r   ),
+                                                          max(_old_ltrb[3], _b   ),
+                                                          max(_old_ltrb[4], _line),
+                                                          _p];
                         }
                     }
                 }
