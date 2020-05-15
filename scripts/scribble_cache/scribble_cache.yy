@@ -1,8 +1,8 @@
 {
-    "id": "69d1d72f-5451-469e-a947-62f1a426ec6b",
+    "id": "a67d72d8-deea-402c-a061-ad454210f71b",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "scribble_draw_set_cache_group",
+    "name": "scribble_cache",
     "IsCompatibility": false,
     "IsDnD": false
 }

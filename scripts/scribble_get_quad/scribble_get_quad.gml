@@ -59,10 +59,7 @@ if (!is_array(_scribble_array)
     }
     else
     {
-        var _old_allow_draw = global.scribble_state_allow_draw;
-        global.scribble_state_allow_draw = false;
-        _scribble_array = scribble_draw(0, 0, _string);
-        global.scribble_state_allow_draw = _old_allow_draw;
+        _scribble_array = scribble_cache(_string);
     }
 }
 
