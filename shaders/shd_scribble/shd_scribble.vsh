@@ -1,4 +1,4 @@
-const int MAX_EFFECTS = 6;
+const int MAX_EFFECTS = 7;
 //By default, the effect indexes are:
 //0 = is an animated sprite
 //1 = wave
@@ -6,8 +6,9 @@ const int MAX_EFFECTS = 6;
 //3 = rainbow
 //4 = wobble
 //5 = pulse
+//6 = wheel
 
-const int MAX_DATA_FIELDS = 11;
+const int MAX_DATA_FIELDS = 14;
 //By default, the data fields are:
 // 0 = wave amplitude
 // 1 = wave frequency
@@ -20,6 +21,9 @@ const int MAX_DATA_FIELDS = 11;
 // 8 = wobble frequency
 // 9 = pulse scale
 //10 = pulse speed
+//11 = wheel amplitude
+//12 = wheel frequency
+//13 = wheel speed
 
 const float MAX_LINES = 1000.0; //Change SCRIBBLE_MAX_LINES in __scribble_config() if you change this value!
 
@@ -99,6 +103,13 @@ vec2 scale(vec2 position, vec2 centre, float scale)
 vec2 wave(vec2 position, float characterIndex, float amplitude, float frequency, float speed)
 {
     return vec2(position.x, position.y + amplitude*sin(frequency*characterIndex + speed*u_fTime));
+}
+
+//Wheel the character around
+vec2 wheel(vec2 position, float characterIndex, float amplitude, float frequency, float speed)
+{
+    float time = frequency*characterIndex + speed*u_fTime;
+    return position.xy + amplitude*vec2(cos(time), -sin(time));
 }
 
 //Wobble the character by rotating around its central point
@@ -207,6 +218,9 @@ void main()
     float wobbleFrequency = u_aDataFields[ 8];
     float pulseScale      = u_aDataFields[ 9];
     float pulseSpeed      = u_aDataFields[10];
+    float wheelAmplitude  = u_aDataFields[11];
+    float wheelFrequency  = u_aDataFields[12];
+    float wheelSpeed      = u_aDataFields[13];
     
     //Unpack the effect flag bits into an array, then into variables for readability
     float flagArray[MAX_EFFECTS]; unpackFlags(in_Normal.z, flagArray);
@@ -216,6 +230,7 @@ void main()
     float rainbowFlag = flagArray[3];
     float wobbleFlag  = flagArray[4];
     float pulseFlag   = flagArray[5];
+    float wheelFlag   = flagArray[6];
     
     //Use the input vertex position from the vertex attributes. Use our Z uniform because the z-component is used for other data
     vec2 centre = in_Position.xy;
@@ -225,6 +240,7 @@ void main()
     pos.xy = wobble(pos.xy, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
     pos.xy = pulse( pos.xy, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
     pos.xy = wave(  pos.xy, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
+    pos.xy = wheel( pos.xy, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
     pos.xy = shake( pos.xy, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
     
     //Colour
