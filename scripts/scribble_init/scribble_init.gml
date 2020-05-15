@@ -294,7 +294,7 @@ global.__scribble_cache_group_map   = ds_map_create();
 ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP, global.__scribble_global_cache_list);
 
 //Declare state variables
-global.__scribble_default_anim_array = [4, 50, 0.2,   4, 0.4,   0.5, 0.01,   40, 0.15,   0.4, 0.1];
+global.__scribble_default_anim_array = [4, 50, 0.2,   4, 0.4,   0.5, 0.01,   40, 0.15,   0.4, 0.1,   1, 0.5, 0.2];
 global.scribble_state_anim_array = array_create(SCRIBBLE_MAX_DATA_FIELDS);
 scribble_draw_reset();
 
@@ -332,11 +332,13 @@ global.__scribble_effects[?       "shake"   ] = 2;
 global.__scribble_effects[?       "rainbow" ] = 3;
 global.__scribble_effects[?       "wobble"  ] = 4;
 global.__scribble_effects[?       "pulse"   ] = 5;
+global.__scribble_effects[?       "wheel"   ] = 6;
 global.__scribble_effects_slash[? "/wave"   ] = 1;
 global.__scribble_effects_slash[? "/shake"  ] = 2;
 global.__scribble_effects_slash[? "/rainbow"] = 3;
 global.__scribble_effects_slash[? "/wobble" ] = 4;
 global.__scribble_effects_slash[? "/pulse"  ] = 5;
+global.__scribble_effects_slash[? "/wheel"  ] = 6;
 
 //Create a vertex format for our text
 vertex_format_begin();

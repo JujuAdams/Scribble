@@ -61,8 +61,8 @@
 #macro SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
 //These constants must match the corresponding values in shader shd_scribble
-#macro SCRIBBLE_MAX_EFFECTS      6     //The maximum number of unique effects. Effects are set as booleans, and are sent into shd_scribble as a bitpacked number
-#macro SCRIBBLE_MAX_DATA_FIELDS  11    //The maximum number of data fields. "Data fields" are misc
+#macro SCRIBBLE_MAX_EFFECTS      7     //The maximum number of unique effects. Effects are set as booleans, and are sent into shd_scribble as a bitpacked number
+#macro SCRIBBLE_MAX_DATA_FIELDS  14    //The maximum number of data fields. "Data fields" are misc
 #macro SCRIBBLE_MAX_LINES        1000  //Maximum number of lines in a textbox
 
 #endregion
