@@ -427,6 +427,7 @@ repeat(_buffer_size)
                 case "push_right":
                     _new_halign = __SCRIBBLE_PUSH_RIGHT;
                 break;
+                
                 #endregion
                 
                 default:
@@ -739,7 +740,7 @@ repeat(_buffer_size)
                 break;
             }
             
-            if (_new_halign != undefined)
+            if ((_new_halign != undefined) && (_new_halign != _text_halign))
             {
                 _text_halign = _new_halign;
                 
@@ -1312,7 +1313,7 @@ if (_push_max_width > _fixed_width)
 _scribble_array[@ __SCRIBBLE.MIN_X] = _element_min_x;
 _scribble_array[@ __SCRIBBLE.MAX_X] = _element_max_x;
 _scribble_array[@ __SCRIBBLE.WIDTH] = _element_max_x - _element_min_x;
-        
+
 #endregion
 
 
@@ -1353,56 +1354,62 @@ repeat(array_length_1d(_element_pages_array))
                 var _tell_a = _vbuff_line_start_list[| _l  ];
                 var _tell_b = _vbuff_line_start_list[| _l+1];
                 
-                //If we're not left-aligned then we need to do some work!
-                if (_line_halign != fa_left)
+                if (_tell_b - _tell_a > 0)
                 {
-                    var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
-                    
-                    var _offset = 0;
-                    switch(_line_halign)
+                    //If we're not left-aligned then we need to do some work!
+                    if (_line_halign != fa_left)
                     {
-                        case fa_center:
-                            _offset = -(_line_width div 2);
-                        break;
+                        var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
                         
-                        case fa_right:
-                            _offset = -_line_width;
-                        break;
-                        
-                        case __SCRIBBLE_PUSH_LEFT:
-                            _offset = _element_min_x;
-                        break;
-                        
-                        case __SCRIBBLE_PUSH_CENTRE:
-                            _offset = ((_element_min_x + _element_max_x) div 2) - (_line_width div 2);
-                        break;
-                        
-                        case __SCRIBBLE_PUSH_RIGHT:
-                            _offset = _element_max_x - _line_width;
-                        break;
-                    }
+                        var _offset = 0;
+                        switch(_line_halign)
+                        {
+                            case fa_center:
+                                _offset = -(_line_width div 2);
+                            break;
                             
-                    //We want to write to the CENTRE_X property of every vertex for horizontal alignment
-                    var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
+                            case fa_right:
+                                _offset = -_line_width;
+                            break;
+                            
+                            case __SCRIBBLE_PUSH_LEFT:
+                                _offset = _element_min_x;
+                            break;
+                            
+                            case __SCRIBBLE_PUSH_CENTRE:
+                                _offset = ((_element_min_x + _element_max_x) div 2) - (_line_width div 2);
+                            break;
+                            
+                            case __SCRIBBLE_PUSH_RIGHT:
+                                _offset = _element_max_x - _line_width;
+                            break;
+                        }
+                        
+                        if (_offset != 0)
+                        {
+                            //We want to write to the CENTRE_X property of every vertex for horizontal alignment
+                            var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
+                            repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
+                            {
+                                //Poke the new value by adding the offset to the old value
+                                buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
+                                
+                                //Now jump ahead to the next vertex. This means we're always writing to CENTRE_X!
+                                _tell += __SCRIBBLE_VERTEX.__SIZE;
+                            }
+                        }
+                    }
+                    
+                    //Now let's do vertical alignment by writing to CENTRE_Y
+                    var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
                     repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                     {
                         //Poke the new value by adding the offset to the old value
-                        buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
-                                
-                        //Now jump ahead to the next vertex. This means we're always writing to CENTRE_X!
+                        buffer_poke(_buffer, _tell, buffer_f32, _line_y + buffer_peek(_buffer, _tell, buffer_f32));
+                        
+                        //Now jump ahead to the next vertex. This means we're always writing to CENTRE_Y!
                         _tell += __SCRIBBLE_VERTEX.__SIZE;
                     }
-                }
-                        
-                //Now let's do vertical alignment by writing to CENTRE_Y
-                var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
-                repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
-                {
-                    //Poke the new value by adding the offset to the old value
-                    buffer_poke(_buffer, _tell, buffer_f32, _line_y + buffer_peek(_buffer, _tell, buffer_f32));
-                                
-                    //Now jump ahead to the next vertex. This means we're always writing to CENTRE_Y!
-                    _tell += __SCRIBBLE_VERTEX.__SIZE;
                 }
             }
                     
