@@ -14,7 +14,7 @@
         "a3d9edc7-bc39-46f3-b8c2-98bcc058ea2c"
     ],
     "filterType": "GMScript",
-    "folderName": "Auto Typewriter",
+    "folderName": "Autotype",
     "isDefaultView": false,
     "localisedFolderName": ""
 }
