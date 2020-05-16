@@ -279,20 +279,22 @@ else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_defau
 }
 
 //Declare global variables
-global.__scribble_lcg               = date_current_datetime()*100;
-global.__scribble_font_directory    = _font_directory;
-global.__scribble_font_data         = ds_map_create();  //Stores a data array for each font defined inside Scribble
-global.__scribble_colours           = ds_map_create();  //Stores colour definitions, including custom colours
-global.__scribble_effects           = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_effects_slash     = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_autotype_events   = ds_map_create();
-global.scribble_alive               = ds_map_create();  //ds_map of all alive text elements
-global.__scribble_global_count      = 0;
-global.__scribble_default_font      = _default_font;
-global.__scribble_global_cache_map  = ds_map_create();
-global.__scribble_global_cache_list = ds_list_create();
-global.__scribble_cache_test_index  = 0;
-global.__scribble_cache_group_map   = ds_map_create();
+global.__scribble_lcg                  = date_current_datetime()*100;
+global.__scribble_font_directory       = _font_directory;
+global.__scribble_font_data            = ds_map_create();  //Stores a data array for each font defined inside Scribble
+global.__scribble_colours              = ds_map_create();  //Stores colour definitions, including custom colours
+global.__scribble_effects              = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_effects_slash        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_autotype_events      = ds_map_create();
+global.scribble_alive                  = ds_map_create();  //ds_map of all alive text elements
+global.__scribble_global_count         = 0;
+global.__scribble_default_font         = _default_font;
+global.__scribble_global_cache_map     = ds_map_create();
+global.__scribble_global_cache_list    = ds_list_create();
+global.__scribble_cache_test_index     = 0;
+global.__scribble_cache_group_map      = ds_map_create();
+global.__scribble_sprite_whitelist     = false;
+global.__scribble_sprite_whitelist_map = ds_map_create();
 ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP, global.__scribble_global_cache_list);
 
 //Declare state variables
