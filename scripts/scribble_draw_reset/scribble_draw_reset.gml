@@ -1,16 +1,16 @@
-/// Resets Scribble's draw state to use pass-through values, inheriting defaults set in __scribble_config().
+/// Resets Scribble's draw state
 
-global.scribble_state_xscale          = SCRIBBLE_DEFAULT_XSCALE;
-global.scribble_state_yscale          = SCRIBBLE_DEFAULT_YSCALE;
-global.scribble_state_angle           = SCRIBBLE_DEFAULT_ANGLE;
-global.scribble_state_colour          = SCRIBBLE_DEFAULT_BLEND_COLOUR;
-global.scribble_state_alpha           = SCRIBBLE_DEFAULT_BLEND_ALPHA;
-global.scribble_state_line_min_height = SCRIBBLE_DEFAULT_LINE_MIN_HEIGHT;
-global.scribble_state_max_width       = SCRIBBLE_DEFAULT_MAX_WIDTH;
-global.scribble_state_max_height      = SCRIBBLE_DEFAULT_MAX_HEIGHT;
+global.scribble_state_xscale          = 1;       //x-scale of the textbox
+global.scribble_state_yscale          = 1;       //y-scale of the textbox
+global.scribble_state_angle           = 0;       //Rotation of the textbox
+global.scribble_state_colour          = c_white;
+global.scribble_state_alpha           = 1.0;
+global.scribble_state_line_min_height = -1;      //Minimum height of each line of text. Set to a negative value to use the height of a space character of the default font.
+global.scribble_state_max_width       = -1;      //Maximum horizontal size of the textbox. Set to a negative value for no limit.
+global.scribble_state_max_height      = -1;      //Maximum vertical size of the textbox. Set to a negative value for no limit.
 global.scribble_state_character_wrap  = false;
-global.scribble_state_box_halign      = SCRIBBLE_DEFAULT_BOX_HALIGN;
-global.scribble_state_box_valign      = SCRIBBLE_DEFAULT_BOX_VALIGN;
+global.scribble_state_box_halign      = fa_left; //fa_left places the left-hand side of the box at the draw coordinate when using scribble_draw().
+global.scribble_state_box_valign      = fa_top;  //fa_top places the top of the box at the draw coordinate when using scribble_draw().
 
 scribble_draw_set_animation(SCRIBBLE_ANIM.WAVE_SIZE     ,  4   );
 scribble_draw_set_animation(SCRIBBLE_ANIM.WAVE_FREQ     , 50   );
