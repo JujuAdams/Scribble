@@ -48,9 +48,9 @@ var _texture_to_buffer_map = ds_map_create();
 
 #region Process input parameters
 
-var _max_width       = is_real(global.scribble_state_max_width)? global.scribble_state_max_width : SCRIBBLE_DEFAULT_MAX_WIDTH;
-var _max_height      = is_real(global.scribble_state_max_height)? global.scribble_state_max_height : SCRIBBLE_DEFAULT_MAX_HEIGHT;
-var _line_min_height = max(0, is_real(global.scribble_state_line_min_height)? global.scribble_state_line_min_height : SCRIBBLE_DEFAULT_LINE_MIN_HEIGHT);
+var _max_width       = global.scribble_state_max_width;
+var _max_height      = global.scribble_state_max_height;
+var _line_min_height = max(0, global.scribble_state_line_min_height);
 var _def_colour      = SCRIBBLE_DEFAULT_TEXT_COLOUR;
 var _def_font        = global.__scribble_default_font;
 var _def_halign      = SCRIBBLE_DEFAULT_HALIGN;
