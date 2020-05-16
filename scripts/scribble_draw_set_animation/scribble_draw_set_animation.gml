@@ -1,5 +1,8 @@
 /// Sets the various properties of Scribble's dynamic rendering
 /// 
+/// @param animProperty  Integer index for the target animation property (see enum SCRIBBLE_ANIM)
+/// @param value         Value to set the property to
+/// 
 /// [ 0]   waveSize         Maximum pixel offset of the [wave] effect                                                                                
 /// [ 1]   waveFrequency    Frequency of the [wave] effect. Larger values will create more horizontally frequent "humps" in the text                 
 /// [ 2]   waveSpeed        Speed of the [wave] effect                                                                           
