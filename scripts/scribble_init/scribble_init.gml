@@ -392,56 +392,17 @@ global.__scribble_hex_array[@ ord("f") - _min ] = 15; //ascii 102 = array 54
 
 if (_auto_scan)
 {
-    if (__SCRIBBLE_ON_MOBILE || __SCRIBBLE_ON_WEB)
-    {
-        show_error("Scribble:\nFont autoscan is not supported on this platform.\nPlease manually add fonts using scribble_add_font() ", false);
-    }
-    else
-    {
-        var _root_directory_size = string_length(global.__scribble_font_directory);
-        
-        var _directory_list = ds_list_create();
-        ds_list_add(_directory_list, _font_directory);
-        while(!ds_list_empty(_directory_list))
-        {
-            var _directory = _directory_list[| 0];
-            ds_list_delete(_directory_list, 0);
-            
-            var _file = file_find_first(_directory + "*.*", fa_readonly | fa_hidden | fa_directory);
-            while(_file != "")
-            {
-                if (directory_exists(_directory + _file))
-                {
-                    ds_list_add(_directory_list, _font_directory + _file + "\\");
-                }
-                
-                _file = file_find_next();
-            }
-            file_find_close();
-            
-            var _file = file_find_first(_directory + "*.*", 0);
-            while(_file != "")
-            {
-                if (filename_ext(_file) == ".yy")
-                {
-                    var _font = filename_change_ext(_file, "");
-                    
-                    if (asset_get_type(_font) != asset_font)
-                    {
-                        show_debug_message("Scribble: Warning! Autoscan found \"" + _file + "\", but \"" + _font + "\" was not found in the project as a font asset");
-                    }
-                    else
-                    {
-                        scribble_add_font(_font, string_delete(_directory + _file, 1, _root_directory_size));
-                        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Autoscan added \"" + _font + "\" as a standard font (via " + string(_directory + _file) + ")");
-                    }
-                }
-                _file = file_find_next();
-            }
-            file_find_close();
-        }
-        ds_list_destroy(_directory_list);
-    }
+    global.__scribble_autoscanning = true;
+    
+	var _i = 0;
+	repeat(999)
+	{
+	    if (!font_exists(_i)) break;
+        scribble_add_font(font_get_name(_i));
+	    ++_i;
+	}
+    
+    global.__scribble_autoscanning = false;
 }
 
 return true;

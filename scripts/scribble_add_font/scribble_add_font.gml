@@ -1,8 +1,9 @@
 /// Adds a normal font for use with Scribble
 ///
 /// @param fontName   Name of the font to add, as a string
-/// @param [path]     File path for the font's .yy file, including the .yy extension, relative to the font directory defined by scribble_init()
+/// @param [yyPath]   File path for the font's .yy file, including the .yy extension, relative to the font directory defined by scribble_init()
 ///                   If not specified, Scribble will look in the root of the font directory
+/// @param [texture]  Texture
 ///
 /// Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
 /// 
@@ -22,8 +23,10 @@ if (!variable_global_exists("__scribble_global_count"))
     return undefined;
 }
 
-var _font = argument[0];
-var _path = global.__scribble_font_directory + ((argument_count > 1)? argument[1] : (_font + ".yy"));
+var _font    = argument[0];
+var _path    = (argument_count > 1)? argument[1] : (_font + ".yy");
+var _texture = (argument_count > 2)? argument[2] : undefined;
+_path = global.__scribble_font_directory + _path;
 
 if (ds_map_exists(global.__scribble_font_data, _font))
 {
@@ -80,9 +83,58 @@ global.__scribble_font_data[? _font ] = _data;
 
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Processing font \"" + _font + "\"");
 
-var _asset       = asset_get_index(_font);
-var _texture     = font_get_texture(_asset);
-var _texture_uvs = font_get_uvs(_asset);
+if (_texture == undefined)
+{
+	if (!is_string(_font))
+	{
+	    show_error("Scribble:\n<character> argument is the wrong datatype (" + typeof(_font) + "), expected a string\n ", false);
+	    return undefined;
+	}
+    
+	if (asset_get_type(_font) == asset_sprite)
+	{
+	    show_error("Scribble:\nAsset \"" + _font + "\" is a sprite\n \nPlease use scribble_font_add_spritefont() instead\n ", false);
+	    return undefined;
+	}
+    
+	if (asset_get_type(_font) != asset_font)
+	{
+	    show_error("Scribble:\nSCRIBBLE_ERROR_ASSET_DOES_NOT_EXIST\n \nCould not find font asset \"" + _font + "\" in the project\n ", false);
+	    return undefined;
+	}
+        
+	if (!file_exists(_path))
+	{
+	    if (global.__scribble_autoscanning)
+	    {
+	        if (SCRIBBLE_WARNING_AUTOSCAN_YY_NOT_FOUND)
+	        {
+	            show_error("Scribble:\nCould not find \"" + _path + "\" in Included Files\nSet SCRIBBLE_WARNING_AUTOSCAN_MISSING_YY to <false> to ignore this warning\n ", false);
+	            return undefined;
+	        }
+	        else
+	        {
+	            show_debug_message("Scribble: Warning! Could not find \"" + _path + "\" in Included Files");
+	        }
+                
+	        return undefined;
+	    }
+	    else
+	    {
+	        show_error("Scribble:\n\nCould not find \"" + _path + "\" in Included Files\n ", false);
+	        return undefined;
+	    }
+	}
+        
+	var _asset       = asset_get_index(_font);
+	var _texture     = font_get_texture(_asset);
+	var _texture_uvs = font_get_uvs(_asset);
+}
+else
+{
+	var _texture_uvs = texture_get_uvs(_texture);
+}
+
 var _texture_tw  = texture_get_texel_width(_texture);
 var _texture_th  = texture_get_texel_height(_texture);
 var _texture_w   = (_texture_uvs[2] - _texture_uvs[0])/_texture_tw; //texture_get_width(_texture);

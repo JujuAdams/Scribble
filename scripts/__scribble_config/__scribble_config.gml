@@ -40,8 +40,9 @@
 
 #region Advanced stuff
 
-#macro SCRIBBLE_WARNING_REINITIALIZE  true  //Controls whether an error is thrown when calling scribble_init() twice
-#macro SCRIBBLE_WARNING_TEXTURE_PAGE  true  //Turns the Separate Texture Page warning for spritefonts on/off
+#macro SCRIBBLE_WARNING_REINITIALIZE           true  //Controls whether an error is thrown when calling scribble_init() twice
+#macro SCRIBBLE_WARNING_TEXTURE_PAGE           true  //Turns the Separate Texture Page warning for spritefonts on/off
+#macro SCRIBBLE_WARNING_AUTOSCAN_YY_NOT_FOUND  true
 
 #macro SCRIBBLE_OLD_FONT_HALIGN           true
 #macro SCRIBBLE_STEP_SIZE                 (delta_time/game_get_speed(gamespeed_microseconds)) //The animation step size. The default command here uses delta_time ensures that animations are smooth at all framerates
