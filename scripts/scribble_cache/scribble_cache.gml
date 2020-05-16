@@ -77,8 +77,8 @@ var _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
 var _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
 var _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
 var _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-var _font_texture      = _font_data[__SCRIBBLE_FONT.TEXTURE     ];
 
+var _glyph_texture = undefined;
 var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
 if (_glyph_array == undefined)
 {
@@ -254,7 +254,6 @@ var _text_halign       = _def_halign;
 var _text_effect_flags = 0;
 var _text_scale        = 1;
 var _text_slant        = false;
-var _previous_texture  = -1;
         
 #endregion
 
@@ -319,7 +318,6 @@ repeat(_buffer_size)
                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
                     _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                    _font_texture      = _font_data[__SCRIBBLE_FONT.TEXTURE     ];
                             
                     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                     _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -337,7 +335,6 @@ repeat(_buffer_size)
                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
                     _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                    _font_texture      = _font_data[__SCRIBBLE_FONT.TEXTURE     ];
                             
                     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                     _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -491,7 +488,6 @@ repeat(_buffer_size)
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
                                     _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                                    _font_texture      = _font_data[__SCRIBBLE_FONT.TEXTURE     ];
                                             
                                     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                     _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -639,9 +635,9 @@ repeat(_buffer_size)
                                             {
                                                 //Swap texture and buffer if needed
                                                 var _sprite_texture = sprite_get_texture(_sprite_index, _image);
-                                                if (_sprite_texture != _previous_texture)
+                                                if (_sprite_texture != _glyph_texture)
                                                 {
-                                                    _previous_texture = _sprite_texture;
+                                                    _glyph_texture = _sprite_texture;
                                                     var _vbuff_data = _texture_to_buffer_map[? _sprite_texture];
                                                     var _glyph_buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
                                                 }
@@ -679,9 +675,9 @@ repeat(_buffer_size)
                                             _text_effect_flags = ~((~_text_effect_flags) | 1); //Reset animated sprite effect flag specifically
                                             ++_meta_page_characters;
                                             ++_meta_element_characters;
-                                            
-                                            #endregion
                                         }
+                                        
+                                        #endregion
                                     }
                                     else
                                     {
@@ -856,55 +852,7 @@ repeat(_buffer_size)
         
         #endregion
         
-        #region Swap texture and buffer if needed
-            
-        if (_font_texture != _previous_texture)
-        {
-            _previous_texture = _font_texture;
-                
-            var _vbuff_data = _texture_to_buffer_map[? _font_texture];
-            if (_vbuff_data == undefined)
-            {
-                var _vbuff_line_start_list = ds_list_create();
-                var _glyph_buffer = buffer_create(__SCRIBBLE_EXPECTED_GLYPHS*__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
-                        
-                _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
-                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _glyph_buffer;
-                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
-                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _font_texture;
-                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = 0;
-                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
-                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
-                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _vbuff_line_start_list;
-                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _font_texture);
-                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_font_texture);
-                _page_vbuffs_array[@ array_length_1d(_page_vbuffs_array)] = _vbuff_data;
-                        
-                _texture_to_buffer_map[? _font_texture] = _vbuff_data;
-            }
-            else
-            {
-                var _glyph_buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
-                _vbuff_line_start_list = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
-            }
-            
-            //Fill link break list
-            var _tell = buffer_tell(_glyph_buffer);
-            repeat(array_length_1d(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
-        }
-            
-        //Update CHAR_START_TELL, and WORD_START_TELL if needed
-        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = buffer_tell(_glyph_buffer);
-        if (global.scribble_state_character_wrap)
-        {
-            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
-            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
-            _line_width = max(_line_width, _text_x);
-        }
-            
-        #endregion
-        
-        #region Add glyph
+        #region Find glyph data
         
 	    if (_font_glyphs_array == undefined)
 	    {
@@ -931,12 +879,64 @@ repeat(_buffer_size)
 	        }
 	    }
         
+        #endregion
+        
         if (_glyph_array == undefined)
         {
            if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_cache() couldn't find glyph data for character code " + string(_character_code) + " (" + chr(_character_code) + ") in font \"" + string(_text_font) + "\"");
         }
         else
         {
+            #region Swap texture and buffer if needed
+        
+    	    if (_glyph_array[SCRIBBLE_GLYPH.TEXTURE] != _glyph_texture)
+    	    {
+    	        _glyph_texture = _glyph_array[SCRIBBLE_GLYPH.TEXTURE];
+                
+                var _vbuff_data = _texture_to_buffer_map[? _glyph_texture];
+                if (_vbuff_data == undefined)
+                {
+                    var _vbuff_line_start_list = ds_list_create();
+                    var _glyph_buffer = buffer_create(__SCRIBBLE_EXPECTED_GLYPHS*__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
+                        
+                    _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _glyph_buffer;
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _glyph_texture;
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = 0;
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _vbuff_line_start_list;
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _glyph_texture);
+                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_glyph_texture);
+                    _page_vbuffs_array[@ array_length_1d(_page_vbuffs_array)] = _vbuff_data;
+                        
+                    _texture_to_buffer_map[? _glyph_texture] = _vbuff_data;
+                }
+                else
+                {
+                    var _glyph_buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
+                    _vbuff_line_start_list = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
+                }
+            
+                //Fill link break list
+                var _tell = buffer_tell(_glyph_buffer);
+                repeat(array_length_1d(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
+            }
+            
+            //Update CHAR_START_TELL, and WORD_START_TELL if needed
+            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = buffer_tell(_glyph_buffer);
+            if (global.scribble_state_character_wrap)
+            {
+                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
+                _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
+                _line_width = max(_line_width, _text_x);
+            }
+            
+            #endregion
+            
+            #region Add glyph to buffer
+            
             var _quad_l = _glyph_array[SCRIBBLE_GLYPH.X_OFFSET]*_text_scale;
             if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] == undefined) _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = _quad_l;
             
@@ -969,12 +969,12 @@ repeat(_buffer_size)
             buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
             buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
             
+            #endregion
+            
             ++_meta_page_characters;
             ++_meta_element_characters;
             _char_width = _glyph_array[SCRIBBLE_GLYPH.SEPARATION]*_text_scale;
         }
-        
-        #endregion
         
         //Choose the height of a space for the character's height
         _line_height = max(_line_height, _font_line_height*_text_scale);
@@ -1226,7 +1226,7 @@ repeat(_buffer_size)
         _meta_page_characters  = _max_indexes;
         _meta_page_lines       =  0;
         _line_y                =  0;
-        _previous_texture      = -1;
+        _glyph_texture         = -1;
         _vbuff_line_start_list = -1;
         
         _force_newpage = false;

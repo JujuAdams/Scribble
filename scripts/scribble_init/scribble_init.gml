@@ -29,11 +29,12 @@ enum SCRIBBLE_GLYPH
     X_OFFSET,   // 4
     Y_OFFSET,   // 5
     SEPARATION, // 6
-    U0,         // 7
-    V0,         // 8
-    U1,         // 9
-    V1,         //10
-    __SIZE      //11
+    TEXTURE,    // 7
+    U0,         // 8
+    V0,         // 9
+    U1,         //10
+    V1,         //11
+    __SIZE      //12
 }
 
 enum __SCRIBBLE_FONT
@@ -45,7 +46,6 @@ enum __SCRIBBLE_FONT
     GLYPHS_ARRAY, // 4
     GLYPH_MIN,    // 5
     GLYPH_MAX,    // 6
-    TEXTURE,      // 7
     SPACE_WIDTH,  // 8
     MAPSTRING,    // 9
     SEPARATION,   //10
@@ -54,8 +54,9 @@ enum __SCRIBBLE_FONT
 
 enum __SCRIBBLE_FONT_TYPE
 {
-    FONT,  //0
-    SPRITE //1
+    FONT,    //0
+    SPRITE,  //1
+    RUNTIME, //2
 }
 
 enum __SCRIBBLE_PAGE
@@ -351,6 +352,12 @@ vertex_format_add_normal();      //12 bytes       //X = character index, Y = lin
 vertex_format_add_colour();      // 4 bytes
 vertex_format_add_texcoord();    // 8 bytes
 global.__scribble_vertex_format = vertex_format_end(); //36 bytes per vertex, 108 bytes per tri, 216 bytes per glyph
+
+vertex_format_begin();
+vertex_format_add_position(); //12 bytes
+vertex_format_add_color();    // 4 bytes
+vertex_format_add_texcoord(); // 8 bytes
+global.__scribble_passthrough_vertex_format = vertex_format_end();
 
 //Cache uniform indexes
 global.__scribble_uniform_time          = shader_get_uniform(shd_scribble, "u_fTime"             );

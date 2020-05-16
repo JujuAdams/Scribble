@@ -51,7 +51,7 @@
 #macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   false //Outputs an array of glyph LTRB bounding boxes
                                       
 #macro SCRIBBLE_DEFAULT_CACHE_GROUP   0     //The name of the default cache group. Real value and strings accepted.
-#macro SCRIBBLE_CACHE_TIMEOUT         15000 //How long to wait (in milliseconds) before the cache automatically destroys a text element. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_cache_group_flush() instead)
+#macro SCRIBBLE_CACHE_TIMEOUT         15000 //How long to wait (in milliseconds) before the cache automatically destroys a text element. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_flush() instead)
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN      ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE     ord("]") //Character used to close a command tag. First 127 ASCII chars only
