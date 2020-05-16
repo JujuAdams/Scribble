@@ -295,14 +295,6 @@
             }
         },
         {
-            "Key": "690b2cf6-b7e8-4af4-8ec5-887589a01974",
-            "Value": {
-                "id": "c2755d9d-90b4-4720-b083-ddf39e87ce75",
-                "resourcePath": "views\\690b2cf6-b7e8-4af4-8ec5-887589a01974.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
             "Key": "6e50d4a6-cc45-413c-bd8b-e5c75c9e9ab8",
             "Value": {
                 "id": "d1722b6e-1dfd-45fd-a5d8-d67a022aff78",
@@ -698,7 +690,7 @@
             "Key": "c2d60cf9-ffb4-42bd-a0c7-c7cf77ca5452",
             "Value": {
                 "id": "56f40119-8e95-4e4d-8b63-97f5328b5535",
-                "resourcePath": "datafiles_yy\\Fonts\\CJK\\fnt_chinese.yy.yy",
+                "resourcePath": "datafiles_yy\\Fonts\\fnt_chinese.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },

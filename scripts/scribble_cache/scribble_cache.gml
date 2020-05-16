@@ -905,34 +905,53 @@ repeat(_buffer_size)
         #endregion
         
         #region Add glyph
-            
-        if (_font_glyphs_array == undefined)
+        
+	    if (_font_glyphs_array == undefined)
+	    {
+	        var _glyph_array = _font_glyphs_map[? _character_code];
+		    if (_glyph_array == undefined) _glyph_array = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];
+	    }
+	    else
+	    {
+		    if ((_character_code < _font_glyphs_min) || (_character_code > _font_glyphs_max))
+	        {
+	            _character_code = ord(SCRIBBLE_MISSING_CHARACTER);
+	            if ((_character_code < _font_glyphs_min) || (_character_code > _font_glyphs_max))
+	            {
+	                _glyph_array = undefined;
+	            }
+	            else
+	            {
+		            var _glyph_array = _font_glyphs_array[_character_code - _font_glyphs_min];
+	            }
+	        }
+	        else
+	        {
+		        var _glyph_array = _font_glyphs_array[_character_code - _font_glyphs_min];
+	        }
+	    }
+        
+        if (_glyph_array == undefined)
         {
-            var _glyph_array = _font_glyphs_map[? _character_code];
+           if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_cache() couldn't find glyph data for character code " + string(_character_code) + " (" + chr(_character_code) + ") in font \"" + string(_text_font) + "\"");
         }
         else
         {
-            if ((_character_code < _font_glyphs_min) || (_character_code > _font_glyphs_max)) continue;
-            var _glyph_array = _font_glyphs_array[_character_code - _font_glyphs_min];
-        }
-            
-        if (_glyph_array != undefined)
-        {
             var _quad_l = _glyph_array[SCRIBBLE_GLYPH.X_OFFSET]*_text_scale;
             if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] == undefined) _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = _quad_l;
-                    
+            
                 _quad_l += _text_x;
             var _quad_t  =           _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2); //TODO - Cache scaled font line height
             var _quad_r  = _quad_l + _glyph_array[SCRIBBLE_GLYPH.WIDTH   ]*_text_scale;
             var _quad_b  = _quad_t + _glyph_array[SCRIBBLE_GLYPH.HEIGHT  ]*_text_scale;
-                    
+            
             var _quad_cx = 0.5*(_quad_l + _quad_r);
             var _quad_cy = 0.5*(_quad_t + _quad_b);
             _quad_l -= _quad_cx;
             _quad_t -= _quad_cy;
             _quad_r -= _quad_cx;
             _quad_b -= _quad_cy;
-                    
+            
             var _packed_indexes = _meta_page_characters*SCRIBBLE_MAX_LINES + _meta_page_lines;
             var _colour = $FF000000 | _text_colour;
             var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_quad_b - _quad_t);
@@ -941,7 +960,7 @@ repeat(_buffer_size)
             var _quad_v0 = _glyph_array[SCRIBBLE_GLYPH.V0];
             var _quad_u1 = _glyph_array[SCRIBBLE_GLYPH.U1];
             var _quad_v1 = _glyph_array[SCRIBBLE_GLYPH.V1];
-                    
+            
             //                                      Centre X                                           Centre Y                                         Character/Line Index                                                     Delta X                                                 Delta Y                                                 Flags                                                      Colour                                                  U                                                  V
             buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
             buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
@@ -949,14 +968,10 @@ repeat(_buffer_size)
             buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
             buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
             buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
-                    
+            
             ++_meta_page_characters;
             ++_meta_element_characters;
             _char_width = _glyph_array[SCRIBBLE_GLYPH.SEPARATION]*_text_scale;
-        }
-        else
-        {
-            if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_draw() couldn't find glyph data for character code " + string(_character_code) + " (" + chr(_character_code) + ") in font \"" + string(_text_font) + "\"");
         }
         
         #endregion

@@ -8,7 +8,7 @@
     "exportAction": 0,
     "exportDir": "",
     "fileName": "fnt_chinese.yy",
-    "filePath": "datafiles\\Fonts\\CJK",
+    "filePath": "datafiles\\Fonts",
     "freeData": false,
     "origName": "",
     "overwrite": false,
