@@ -24,7 +24,6 @@
 #macro SCRIBBLE_WARNING_TEXTURE_PAGE           true  //Turns the Separate Texture Page warning for spritefonts on/off
 #macro SCRIBBLE_WARNING_AUTOSCAN_YY_NOT_FOUND  true
 
-#macro SCRIBBLE_OLD_FONT_HALIGN           false
 #macro SCRIBBLE_STEP_SIZE                 (delta_time/game_get_speed(gamespeed_microseconds)) //The animation step size. The default command here uses delta_time ensures that animations are smooth at all framerates
 #macro SCRIBBLE_SLANT_AMOUNT              0.24  //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   false //Outputs an array of glyph LTRB bounding boxes

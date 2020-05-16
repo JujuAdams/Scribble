@@ -55,16 +55,6 @@ var _def_colour      = SCRIBBLE_DEFAULT_TEXT_COLOUR;
 var _def_font        = global.__scribble_default_font;
 var _def_halign      = SCRIBBLE_DEFAULT_HALIGN;
 
-if (SCRIBBLE_OLD_FONT_HALIGN)
-{
-    switch(_def_halign)
-    {
-        case fa_left:   _def_halign = __SCRIBBLE_JUSTIFY_LEFT;   break;
-        case fa_center: _def_halign = __SCRIBBLE_JUSTIFY_CENTRE; break;
-        case fa_right:  _def_halign = __SCRIBBLE_JUSTIFY_RIGHT;  break;
-    }
-}
-
 //Check if the default font even exists
 if (!ds_map_exists(global.__scribble_font_data, _def_font))
 {
@@ -400,16 +390,16 @@ repeat(_buffer_size)
                 #region Font Alignment
                 
                 case "fa_left":
-                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_JUSTIFY_LEFT : fa_left;
+                    _new_halign = fa_left;
                 break;
                 
                 case "fa_center":
                 case "fa_centre":
-                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_JUSTIFY_CENTRE : fa_center;
+                    _new_halign = fa_center;
                 break;
                 
                 case "fa_right":
-                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_JUSTIFY_RIGHT : fa_right;
+                    _new_halign = fa_right;
                 break;
                 
                 case "js_left":
