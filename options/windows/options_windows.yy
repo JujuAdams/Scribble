@@ -32,8 +32,8 @@
     "option_windows_use_splash": false,
     "option_windows_version": {
         "build": 0,
-        "major": 5,
-        "minor": 5,
+        "major": 6,
+        "minor": 0,
         "revision": 0
     },
     "option_windows_vsync": false
