@@ -59,9 +59,9 @@ if (SCRIBBLE_OLD_FONT_HALIGN)
 {
     switch(_def_halign)
     {
-        case fa_left:   _def_halign = __SCRIBBLE_PUSH_LEFT;   break;
-        case fa_center: _def_halign = __SCRIBBLE_PUSH_CENTRE; break;
-        case fa_right:  _def_halign = __SCRIBBLE_PUSH_RIGHT;  break;
+        case fa_left:   _def_halign = __SCRIBBLE_JUSTIFY_LEFT;   break;
+        case fa_center: _def_halign = __SCRIBBLE_JUSTIFY_CENTRE; break;
+        case fa_right:  _def_halign = __SCRIBBLE_JUSTIFY_RIGHT;  break;
     }
 }
 
@@ -400,29 +400,29 @@ repeat(_buffer_size)
                 #region Font Alignment
                 
                 case "fa_left":
-                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_PUSH_LEFT : fa_left;
+                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_JUSTIFY_LEFT : fa_left;
                 break;
                 
                 case "fa_center":
                 case "fa_centre":
-                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_PUSH_CENTRE : fa_center;
+                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_JUSTIFY_CENTRE : fa_center;
                 break;
                 
                 case "fa_right":
-                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_PUSH_RIGHT : fa_right;
+                    _new_halign = SCRIBBLE_OLD_FONT_HALIGN? __SCRIBBLE_JUSTIFY_RIGHT : fa_right;
                 break;
                 
-                case "push_left":
-                    _new_halign = __SCRIBBLE_PUSH_LEFT;
+                case "js_left":
+                    _new_halign = __SCRIBBLE_JUSTIFY_LEFT;
                 break;
                 
-                case "push_center":
-                case "push_centre":
-                    _new_halign = __SCRIBBLE_PUSH_CENTRE;
+                case "js_center":
+                case "js_centre":
+                    _new_halign = __SCRIBBLE_JUSTIFY_CENTRE;
                 break;
                 
-                case "push_right":
-                    _new_halign = __SCRIBBLE_PUSH_RIGHT;
+                case "js_right":
+                    _new_halign = __SCRIBBLE_JUSTIFY_RIGHT;
                 break;
                 
                 #endregion
@@ -1266,9 +1266,9 @@ _scribble_array[@ SCRIBBLE.HEIGHT    ] = _element_height;
 #region Find the actual width of the text element
 
 //Iterate over every page
-var _element_min_x  = 0;
-var _element_max_x  = 0;
-var _push_max_width = 0;
+var _element_min_x     = 0;
+var _element_max_x     = 0;
+var _justify_max_width = 0;
 
 var _p = 0;
 repeat(array_length_1d(_element_pages_array))
@@ -1299,10 +1299,10 @@ repeat(array_length_1d(_element_pages_array))
                     _element_min_x = min(_element_min_x, -_line_width);
                 break;
                 
-                case __SCRIBBLE_PUSH_LEFT:
-                case __SCRIBBLE_PUSH_CENTRE:
-                case __SCRIBBLE_PUSH_RIGHT:
-                    _push_max_width = max(_push_max_width, _line_width);
+                case __SCRIBBLE_JUSTIFY_LEFT:
+                case __SCRIBBLE_JUSTIFY_CENTRE:
+                case __SCRIBBLE_JUSTIFY_RIGHT:
+                    _justify_max_width = max(_justify_max_width, _line_width);
                 break;
             }
         }
@@ -1314,9 +1314,9 @@ repeat(array_length_1d(_element_pages_array))
 }
 
 var _fixed_width = _element_max_x - _element_min_x;
-if (_push_max_width > _fixed_width)
+if (_justify_max_width > _fixed_width)
 {
-    var _delta = _push_max_width - _fixed_width;
+    var _delta = _justify_max_width - _fixed_width;
     if (_element_min_x >= 0)
     {
         _element_max_x += _delta;
@@ -1394,15 +1394,15 @@ repeat(array_length_1d(_element_pages_array))
                                 _offset = -_line_width;
                             break;
                             
-                            case __SCRIBBLE_PUSH_LEFT:
+                            case __SCRIBBLE_JUSTIFY_LEFT:
                                 _offset = _element_min_x;
                             break;
                             
-                            case __SCRIBBLE_PUSH_CENTRE:
+                            case __SCRIBBLE_JUSTIFY_CENTRE:
                                 _offset = ((_element_min_x + _element_max_x) div 2) - (_line_width div 2);
                             break;
                             
-                            case __SCRIBBLE_PUSH_RIGHT:
+                            case __SCRIBBLE_JUSTIFY_RIGHT:
                                 _offset = _element_max_x - _line_width;
                             break;
                         }

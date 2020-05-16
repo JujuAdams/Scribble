@@ -6,8 +6,8 @@
 /// @param autoScan         Whether or not to automatically find font .yy files in the font directory
 ///                         N.B. This only works for normal fonts
 /// 
-/// Scribble v5.5.0
-/// 2020-05-11
+/// Scribble v6.0.0
+/// 2020-05-16
 /// @jujuadams
 /// With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_
 /// 
@@ -15,8 +15,8 @@
 
 #region Internal Macro Definitions
 
-#macro __SCRIBBLE_VERSION  "5.5.0"
-#macro __SCRIBBLE_DATE     "2020-05-05"
+#macro __SCRIBBLE_VERSION  "6.0.0"
+#macro __SCRIBBLE_DATE     "2020-05-16"
 #macro __SCRIBBLE_DEBUG    false
 
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
@@ -190,9 +190,9 @@ enum SCRIBBLE
 #macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
 #macro __SCRIBBLE_EXPECTED_GLYPHS      100
 #macro __SCRIBBLE_EXPECTED_FRAME_TIME  (0.95*game_get_speed(gamespeed_microseconds)/1000) //Uses to prevent the autotype from advancing if a draw call is made multiple times a frame to the same text element
-#macro __SCRIBBLE_PUSH_LEFT            3
-#macro __SCRIBBLE_PUSH_CENTRE          4
-#macro __SCRIBBLE_PUSH_RIGHT           5
+#macro __SCRIBBLE_JUSTIFY_LEFT         3
+#macro __SCRIBBLE_JUSTIFY_CENTRE       4
+#macro __SCRIBBLE_JUSTIFY_RIGHT        5
 
 //These are tied to values in shd_scribble
 //If you need to change these for some reason, you'll need to change shd_scribble too
