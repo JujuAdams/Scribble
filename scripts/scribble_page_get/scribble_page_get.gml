@@ -3,4 +3,4 @@
 /// 
 /// This function is intended for use with scribble_page_set().
 
-return argument0[__SCRIBBLE.AUTOTYPE_PAGE];
+return argument0[SCRIBBLE.AUTOTYPE_PAGE];

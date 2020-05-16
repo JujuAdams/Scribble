@@ -14,26 +14,26 @@ var _scribble_array = argument0;
 
 //Check if this array is a relevant text element
 if (!is_array(_scribble_array)
-|| (array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
-|| (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
+|| (array_length_1d(_scribble_array) != SCRIBBLE.__SIZE)
+|| (_scribble_array[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
 {
     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Array passed to scribble_autotype_get() is not a valid Scribble text element.");
     exit;
 }
 
-if (_scribble_array[__SCRIBBLE.FREED]) return 0;
+if (_scribble_array[SCRIBBLE.FREED]) return 0;
 
 //Early out if the method is NONE
-var _typewriter_method = _scribble_array[__SCRIBBLE.AUTOTYPE_METHOD];
+var _typewriter_method = _scribble_array[SCRIBBLE.AUTOTYPE_METHOD];
 if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE) return 1;
 
 //Return an error code if the fade in state has not been set
 //(The fade in state is initialised as -1)
-var _typewriter_fade_in = _scribble_array[__SCRIBBLE.AUTOTYPE_FADE_IN];
-if (_scribble_array[__SCRIBBLE.AUTOTYPE_FADE_IN] < 0) return -2;
+var _typewriter_fade_in = _scribble_array[SCRIBBLE.AUTOTYPE_FADE_IN];
+if (_scribble_array[SCRIBBLE.AUTOTYPE_FADE_IN] < 0) return -2;
 
-var _element_pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
-var _page_array = _element_pages_array[_scribble_array[__SCRIBBLE.AUTOTYPE_PAGE]];
+var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];
+var _page_array = _element_pages_array[_scribble_array[SCRIBBLE.AUTOTYPE_PAGE]];
 
 switch(_typewriter_method)
 {
@@ -42,7 +42,7 @@ switch(_typewriter_method)
 }
 
 //Normalise the parameter from 0 -> 1 using the total counter
-var _typewriter_t = clamp(_scribble_array[__SCRIBBLE.AUTOTYPE_HEAD_POSITION]/_typewriter_count, 0, 1);
+var _typewriter_t = clamp(_scribble_array[SCRIBBLE.AUTOTYPE_HEAD_POSITION]/_typewriter_count, 0, 1);
 
 //Add one if we're fading out
 return _typewriter_fade_in? _typewriter_t : (_typewriter_t+1);

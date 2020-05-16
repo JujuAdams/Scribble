@@ -18,5 +18,5 @@ var _overlap = argument2;
 
 if (!is_array(_sound)) _sound = [_sound];
 
-_element[@ __SCRIBBLE.AUTOTYPE_SOUND_ARRAY  ] = _sound;
-_element[@ __SCRIBBLE.AUTOTYPE_SOUND_OVERLAP] = _overlap;
+_element[@ SCRIBBLE.AUTOTYPE_SOUND_ARRAY  ] = _sound;
+_element[@ SCRIBBLE.AUTOTYPE_SOUND_OVERLAP] = _overlap;

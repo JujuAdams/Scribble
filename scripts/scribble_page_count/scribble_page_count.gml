@@ -4,9 +4,9 @@
 var _scribble_array = argument0;
 
 if (!is_array(_scribble_array)
-|| (array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
-|| (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
-|| _scribble_array[__SCRIBBLE.FREED])
+|| (array_length_1d(_scribble_array) != SCRIBBLE.__SIZE)
+|| (_scribble_array[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
+|| _scribble_array[SCRIBBLE.FREED])
 {
     var _string = string(_scribble_array);
     
@@ -22,4 +22,4 @@ if (!is_array(_scribble_array)
     }
 }
 
-return _scribble_array[__SCRIBBLE.PAGES];
+return _scribble_array[SCRIBBLE.PAGES];

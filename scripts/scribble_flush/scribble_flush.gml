@@ -30,18 +30,18 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
         var _scribble_array = _list[| _i];
         
         if (is_array(_scribble_array)
-        && (array_length_1d(_scribble_array) == __SCRIBBLE.__SIZE)
-        && (_scribble_array[__SCRIBBLE.VERSION] == __SCRIBBLE_VERSION)
-        && !_scribble_array[__SCRIBBLE.FREED])
+        && (array_length_1d(_scribble_array) == SCRIBBLE.__SIZE)
+        && (_scribble_array[SCRIBBLE.VERSION] == __SCRIBBLE_VERSION)
+        && !_scribble_array[SCRIBBLE.FREED])
         {
             //Remove reference from cache
-            ds_map_delete(global.__scribble_global_cache_map,_scribble_array[__SCRIBBLE.CACHE_STRING]);
+            ds_map_delete(global.__scribble_global_cache_map,_scribble_array[SCRIBBLE.CACHE_STRING]);
             
             //Remove global reference
-            ds_map_delete(global.scribble_alive, _scribble_array[__SCRIBBLE.GLOBAL_INDEX]);
+            ds_map_delete(global.scribble_alive, _scribble_array[SCRIBBLE.GLOBAL_INDEX]);
             
             //Destroy vertex buffers
-            var _element_pages_array = _scribble_array[__SCRIBBLE.PAGES_ARRAY];
+            var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];
             var _p = 0;
             repeat(array_length_1d(_element_pages_array))
             {
@@ -58,7 +58,7 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
                 ++_p;
             }
         
-            _scribble_array[@ __SCRIBBLE.FREED] = true;
+            _scribble_array[@ SCRIBBLE.FREED] = true;
         }
         
         ++_i;

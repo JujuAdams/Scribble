@@ -138,7 +138,7 @@ enum SCRIBBLE_STATE
     __SIZE
 }
 
-enum __SCRIBBLE
+enum SCRIBBLE
 {
     __SECTION0,             // 0
     VERSION,                // 1

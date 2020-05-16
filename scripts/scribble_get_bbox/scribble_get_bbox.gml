@@ -41,19 +41,19 @@ if (is_string(_x) || is_array(_x))
 _scribble_array = scribble_cache(_scribble_array);
 if (_scribble_array == undefined) return array_create(SCRIBBLE_BBOX.__SIZE, 0);
 
-var _box_l = _scribble_array[__SCRIBBLE.MIN_X];
-var _box_r = _scribble_array[__SCRIBBLE.MAX_X];
+var _box_l = _scribble_array[SCRIBBLE.MIN_X];
+var _box_r = _scribble_array[SCRIBBLE.MAX_X];
 
 switch(global.scribble_state_box_halign)
 {
     case fa_center:
-        _box_l -= _scribble_array[__SCRIBBLE.WIDTH] div 2;
-        _box_r -= _scribble_array[__SCRIBBLE.WIDTH] div 2;
+        _box_l -= _scribble_array[SCRIBBLE.WIDTH] div 2;
+        _box_r -= _scribble_array[SCRIBBLE.WIDTH] div 2;
     break;
     
     case fa_right:
-        _box_l -= _scribble_array[__SCRIBBLE.WIDTH];
-        _box_r -= _scribble_array[__SCRIBBLE.WIDTH];
+        _box_l -= _scribble_array[SCRIBBLE.WIDTH];
+        _box_r -= _scribble_array[SCRIBBLE.WIDTH];
     break;
 }
 
@@ -61,16 +61,16 @@ switch(global.scribble_state_box_valign)
 {
     case fa_top:
         var _box_t = 0;
-        var _box_b = _scribble_array[__SCRIBBLE.HEIGHT];
+        var _box_b = _scribble_array[SCRIBBLE.HEIGHT];
     break;
     
     case fa_middle:
-        var _box_t = -_scribble_array[__SCRIBBLE.HEIGHT] div 2;
+        var _box_t = -_scribble_array[SCRIBBLE.HEIGHT] div 2;
         var _box_b = -_box_t;
     break;
     
     case fa_bottom:
-        var _box_t = -_scribble_array[__SCRIBBLE.HEIGHT];
+        var _box_t = -_scribble_array[SCRIBBLE.HEIGHT];
         var _box_b = 0;
     break;
 }

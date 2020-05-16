@@ -20,14 +20,14 @@ var _smoothness     = argument3;
 
 //Check if this array is a relevant text element
 if (!is_array(_scribble_array)
-|| (array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
-|| (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
+|| (array_length_1d(_scribble_array) != SCRIBBLE.__SIZE)
+|| (_scribble_array[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
 {
     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Array passed to scribble_autotype_fade_out() is not a valid Scribble text element.");
     exit;
 }
 
-if (_scribble_array[__SCRIBBLE.FREED]) exit;
+if (_scribble_array[SCRIBBLE.FREED]) exit;
 
 if ((_method != SCRIBBLE_AUTOTYPE_NONE)
 &&  (_method != SCRIBBLE_AUTOTYPE_PER_CHARACTER)
@@ -38,10 +38,10 @@ if ((_method != SCRIBBLE_AUTOTYPE_NONE)
 }
 
 //Update the remaining autotype state values
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_TAIL_POSITION] = -_smoothness;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_HEAD_POSITION] = 0;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD       ] = _method;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] = _speed;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] = _smoothness;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = false;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SKIP         ] = false;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_TAIL_POSITION] = -_smoothness;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_HEAD_POSITION] = 0;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_METHOD       ] = _method;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_SPEED        ] = _speed;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] = _smoothness;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_FADE_IN      ] = false;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_SKIP         ] = false;

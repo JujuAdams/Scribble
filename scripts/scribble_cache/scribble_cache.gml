@@ -12,13 +12,13 @@ var _freeze      = (argument_count > 2)? argument[2] : false;
 //If the input string is an array (secret behaviour that Scribble uses!) then run some checking code
 if (is_array(_draw_string))
 {
-    if ((array_length_1d(_draw_string) != __SCRIBBLE.__SIZE)
-     || (_draw_string[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
+    if ((array_length_1d(_draw_string) != SCRIBBLE.__SIZE)
+     || (_draw_string[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
     {
         show_error("Scribble:\nArray is not a valid Scribble text element\n ", false);
         return undefined;
     }
-    else if (_draw_string[__SCRIBBLE.FREED])
+    else if (_draw_string[SCRIBBLE.FREED])
     {
         //This text element has had its memory freed already, ignore it
         return undefined;
@@ -113,55 +113,55 @@ var _meta_element_lines      = 0;
 var _meta_element_pages      = 0;
 var _element_height          = 0;
 
-var _scribble_array      = array_create(__SCRIBBLE.__SIZE); //The text element array
+var _scribble_array      = array_create(SCRIBBLE.__SIZE); //The text element array
 var _element_pages_array = [];                              //Stores each page of text
 
-_scribble_array[@ __SCRIBBLE.__SECTION0            ] = "-- Parameters --";
-_scribble_array[@ __SCRIBBLE.VERSION               ] = __SCRIBBLE_VERSION;
-_scribble_array[@ __SCRIBBLE.STRING                ] = _draw_string;
-_scribble_array[@ __SCRIBBLE.CACHE_STRING          ] = _cache_string;
-_scribble_array[@ __SCRIBBLE.DEFAULT_FONT          ] = _def_font;
-_scribble_array[@ __SCRIBBLE.DEFAULT_COLOUR        ] = _def_colour;
-_scribble_array[@ __SCRIBBLE.DEFAULT_HALIGN        ] = _def_halign;
-_scribble_array[@ __SCRIBBLE.WIDTH_LIMIT           ] = _max_width;
-_scribble_array[@ __SCRIBBLE.HEIGHT_LIMIT          ] = _max_height;
-_scribble_array[@ __SCRIBBLE.LINE_HEIGHT           ] = _line_min_height;
+_scribble_array[@ SCRIBBLE.__SECTION0            ] = "-- Parameters --";
+_scribble_array[@ SCRIBBLE.VERSION               ] = __SCRIBBLE_VERSION;
+_scribble_array[@ SCRIBBLE.STRING                ] = _draw_string;
+_scribble_array[@ SCRIBBLE.CACHE_STRING          ] = _cache_string;
+_scribble_array[@ SCRIBBLE.DEFAULT_FONT          ] = _def_font;
+_scribble_array[@ SCRIBBLE.DEFAULT_COLOUR        ] = _def_colour;
+_scribble_array[@ SCRIBBLE.DEFAULT_HALIGN        ] = _def_halign;
+_scribble_array[@ SCRIBBLE.WIDTH_LIMIT           ] = _max_width;
+_scribble_array[@ SCRIBBLE.HEIGHT_LIMIT          ] = _max_height;
+_scribble_array[@ SCRIBBLE.LINE_HEIGHT           ] = _line_min_height;
 
-_scribble_array[@ __SCRIBBLE.__SECTION1            ] = "-- Statistics --";
-_scribble_array[@ __SCRIBBLE.WIDTH                 ] = 0;
-_scribble_array[@ __SCRIBBLE.MIN_X                 ] = 0;
-_scribble_array[@ __SCRIBBLE.MAX_X                 ] = 0;
-_scribble_array[@ __SCRIBBLE.HEIGHT                ] = 0;
-_scribble_array[@ __SCRIBBLE.CHARACTERS            ] = 0;
-_scribble_array[@ __SCRIBBLE.LINES                 ] = 0;
-_scribble_array[@ __SCRIBBLE.PAGES                 ] = 0;
-_scribble_array[@ __SCRIBBLE.GLOBAL_INDEX          ] = global.__scribble_global_count+1;
-_scribble_array[@ __SCRIBBLE.GLYPH_LTRB_ARRAY      ] = undefined;
+_scribble_array[@ SCRIBBLE.__SECTION1            ] = "-- Statistics --";
+_scribble_array[@ SCRIBBLE.WIDTH                 ] = 0;
+_scribble_array[@ SCRIBBLE.MIN_X                 ] = 0;
+_scribble_array[@ SCRIBBLE.MAX_X                 ] = 0;
+_scribble_array[@ SCRIBBLE.HEIGHT                ] = 0;
+_scribble_array[@ SCRIBBLE.CHARACTERS            ] = 0;
+_scribble_array[@ SCRIBBLE.LINES                 ] = 0;
+_scribble_array[@ SCRIBBLE.PAGES                 ] = 0;
+_scribble_array[@ SCRIBBLE.GLOBAL_INDEX          ] = global.__scribble_global_count+1;
+_scribble_array[@ SCRIBBLE.GLYPH_LTRB_ARRAY      ] = undefined;
 
-_scribble_array[@ __SCRIBBLE.__SECTION2            ] = "-- State --";
-_scribble_array[@ __SCRIBBLE.ANIMATION_TIME        ] = 0;
-_scribble_array[@ __SCRIBBLE.TIME                  ] = current_time;
-_scribble_array[@ __SCRIBBLE.FREED                 ] = false;
-_scribble_array[@ __SCRIBBLE.SOUND_FINISH_TIME     ] = current_time;
+_scribble_array[@ SCRIBBLE.__SECTION2            ] = "-- State --";
+_scribble_array[@ SCRIBBLE.ANIMATION_TIME        ] = 0;
+_scribble_array[@ SCRIBBLE.TIME                  ] = current_time;
+_scribble_array[@ SCRIBBLE.FREED                 ] = false;
+_scribble_array[@ SCRIBBLE.SOUND_FINISH_TIME     ] = current_time;
 
-_scribble_array[@ __SCRIBBLE.__SECTION3            ] = "-- Pages --";
-_scribble_array[@ __SCRIBBLE.PAGES_ARRAY           ] = _element_pages_array;
+_scribble_array[@ SCRIBBLE.__SECTION3            ] = "-- Pages --";
+_scribble_array[@ SCRIBBLE.PAGES_ARRAY           ] = _element_pages_array;
 
-_scribble_array[@ __SCRIBBLE.__SECTION4            ] = "-- Autotype --";
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_PAGE         ] =  0;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = -1;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SKIP         ] =  false;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] =  0;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_TAIL_MOVING  ] =  false;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_TAIL_POSITION] =  0;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_HEAD_POSITION] =  0;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD       ] = SCRIBBLE_AUTOTYPE_NONE;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] =  0;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_ARRAY  ] = -1;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SOUND_OVERLAP] =  0;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_PAUSED       ] =  false;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_PAUSED ] =  false;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_END    ] =  -1;
+_scribble_array[@ SCRIBBLE.__SECTION4            ] = "-- Autotype --";
+_scribble_array[@ SCRIBBLE.AUTOTYPE_PAGE         ] =  0;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_FADE_IN      ] = -1;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_SKIP         ] =  false;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_SPEED        ] =  0;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_TAIL_MOVING  ] =  false;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_TAIL_POSITION] =  0;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_HEAD_POSITION] =  0;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_METHOD       ] = SCRIBBLE_AUTOTYPE_NONE;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] =  0;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_SOUND_ARRAY  ] = -1;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_SOUND_OVERLAP] =  0;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_PAUSED       ] =  false;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_DELAY_PAUSED ] =  false;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_DELAY_END    ] =  -1;
 
 #endregion
 
@@ -1254,10 +1254,10 @@ _element_height = max(_element_height, _line_y + _line_height);
 _page_array[@ __SCRIBBLE_PAGE.LINES     ] = _meta_page_lines;
 _page_array[@ __SCRIBBLE_PAGE.CHARACTERS] = _meta_page_characters;
 
-_scribble_array[@ __SCRIBBLE.LINES     ] = _meta_element_lines;
-_scribble_array[@ __SCRIBBLE.CHARACTERS] = _meta_element_characters;
-_scribble_array[@ __SCRIBBLE.PAGES     ] = _meta_element_pages;
-_scribble_array[@ __SCRIBBLE.HEIGHT    ] = _element_height;
+_scribble_array[@ SCRIBBLE.LINES     ] = _meta_element_lines;
+_scribble_array[@ SCRIBBLE.CHARACTERS] = _meta_element_characters;
+_scribble_array[@ SCRIBBLE.PAGES     ] = _meta_element_pages;
+_scribble_array[@ SCRIBBLE.HEIGHT    ] = _element_height;
 
 #endregion
 
@@ -1332,9 +1332,9 @@ if (_push_max_width > _fixed_width)
     }
 }
 
-_scribble_array[@ __SCRIBBLE.MIN_X] = _element_min_x;
-_scribble_array[@ __SCRIBBLE.MAX_X] = _element_max_x;
-_scribble_array[@ __SCRIBBLE.WIDTH] = _element_max_x - _element_min_x;
+_scribble_array[@ SCRIBBLE.MIN_X] = _element_min_x;
+_scribble_array[@ SCRIBBLE.MAX_X] = _element_max_x;
+_scribble_array[@ SCRIBBLE.WIDTH] = _element_max_x - _element_min_x;
 
 #endregion
 
@@ -1550,7 +1550,7 @@ if (SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
     }
             
     _glyph_ltrb_array[@ array_length_1d(_glyph_ltrb_array)] = _glyph_ltrb_array[array_length_1d(_glyph_ltrb_array)-1];
-    _scribble_array[@ __SCRIBBLE.GLYPH_LTRB_ARRAY] = _glyph_ltrb_array;
+    _scribble_array[@ SCRIBBLE.GLYPH_LTRB_ARRAY] = _glyph_ltrb_array;
             
     #endregion
 }
@@ -1563,6 +1563,6 @@ ds_list_destroy(_parameters_list);
 
 
 
-if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_cache() create took " + string((get_timer() - _timer_total)/1000) + "ms for " + string(_scribble_array[__SCRIBBLE.CHARACTERS]) + " characters");
+if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_cache() create took " + string((get_timer() - _timer_total)/1000) + "ms for " + string(_scribble_array[SCRIBBLE.CHARACTERS]) + " characters");
 
 return _scribble_array;
