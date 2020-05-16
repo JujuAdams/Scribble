@@ -133,54 +133,56 @@ enum SCRIBBLE_STATE
 
 enum SCRIBBLE
 {
-    __SECTION0,             // 0
-    VERSION,                // 1
-    STRING,                 // 2
-    CACHE_STRING,           // 3
-    DEFAULT_FONT,           // 3
-    DEFAULT_COLOUR,         // 4
-    DEFAULT_HALIGN,         // 5
-    WIDTH_LIMIT,            // 6
-    HEIGHT_LIMIT,           // 7
-    LINE_HEIGHT,            // 8
+    __SECTION0,               // 0
+    VERSION,                  // 1
+    STRING,                   // 2
+    CACHE_STRING,             // 3
+    DEFAULT_FONT,             // 3
+    DEFAULT_COLOUR,           // 4
+    DEFAULT_HALIGN,           // 5
+    WIDTH_LIMIT,              // 6
+    HEIGHT_LIMIT,             // 7
+    LINE_HEIGHT,              // 8
     
-    __SECTION1,             // 9
-    WIDTH,                  //10
-    MIN_X,                  //11
-    MAX_X,                  //12
-    HEIGHT,                 //13
-    CHARACTERS,             //14
-    LINES,                  //15
-    PAGES,                  //16
-    GLOBAL_INDEX,           //17
-    GLYPH_LTRB_ARRAY,       //18
+    __SECTION1,               // 9
+    WIDTH,                    //10
+    MIN_X,                    //11
+    MAX_X,                    //12
+    HEIGHT,                   //13
+    CHARACTERS,               //14
+    LINES,                    //15
+    PAGES,                    //16
+    GLOBAL_INDEX,             //17
+    GLYPH_LTRB_ARRAY,         //18
     
-    __SECTION2,             //19
-    ANIMATION_TIME,         //20
-    TIME,                   //21
-    FREED,                  //22
-    SOUND_FINISH_TIME,      //23
+    __SECTION2,               //19
+    ANIMATION_TIME,           //20
+    TIME,                     //21
+    FREED,                    //22
+    SOUND_FINISH_TIME,        //23
     
-    __SECTION3,             //24
-    PAGES_ARRAY,            //25
+    __SECTION3,               //24
+    PAGES_ARRAY,              //25
     
-    __SECTION4,             //26
-    AUTOTYPE_PAGE,          //27
-    AUTOTYPE_FADE_IN,       //28
-    AUTOTYPE_SPEED,         //29
-    AUTOTYPE_SKIP,          //30
-    AUTOTYPE_TAIL_MOVING,   //31
-    AUTOTYPE_TAIL_POSITION, //32
-    AUTOTYPE_HEAD_POSITION, //33
-    AUTOTYPE_METHOD,        //34
-    AUTOTYPE_SMOOTHNESS,    //35
-    AUTOTYPE_SOUND_ARRAY,   //36
-    AUTOTYPE_SOUND_OVERLAP, //37
-    AUTOTYPE_PAUSED,        //38
-    AUTOTYPE_DELAY_PAUSED,  //39
-    AUTOTYPE_DELAY_END,     //40
+    __SECTION4,               //26
+    AUTOTYPE_PAGE,            //27
+    AUTOTYPE_FADE_IN,         //28
+    AUTOTYPE_SPEED,           //29
+    AUTOTYPE_SKIP,            //30
+    AUTOTYPE_TAIL_MOVING,     //31
+    AUTOTYPE_TAIL_POSITION,   //32
+    AUTOTYPE_HEAD_POSITION,   //33
+    AUTOTYPE_METHOD,          //34
+    AUTOTYPE_SMOOTHNESS,      //35
+    AUTOTYPE_SOUND_ARRAY,     //36
+    AUTOTYPE_SOUND_OVERLAP,   //37
+    AUTOTYPE_SOUND_MIN_PITCH, //38
+    AUTOTYPE_SOUND_MAX_PITCH, //39
+    AUTOTYPE_PAUSED,          //40
+    AUTOTYPE_DELAY_PAUSED,    //41
+    AUTOTYPE_DELAY_END,       //42
     
-    __SIZE                  //41
+    __SIZE                    //43
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
