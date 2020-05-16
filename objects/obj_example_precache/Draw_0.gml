@@ -1,5 +1,4 @@
-scribble_draw_set_box_halign(fa_center);
-scribble_draw_set_box_valign(fa_middle);
+scribble_draw_set_box_align(fa_center, fa_middle);
 
 //Draw our manually created Scribble data
 scribble_draw(x, y, element);

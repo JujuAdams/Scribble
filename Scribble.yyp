@@ -119,14 +119,6 @@
             }
         },
         {
-            "Key": "22a83b51-f31f-40d2-b985-cf57f166453a",
-            "Value": {
-                "id": "3013c95e-c9fc-47af-aced-278ebc249900",
-                "resourcePath": "scripts\\scribble_draw_set_box_valign\\scribble_draw_set_box_valign.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
             "Key": "24adc709-497e-43cb-9834-a1a8664cbe74",
             "Value": {
                 "id": "0babcdaa-b16d-42f2-9171-0763d79900b7",
@@ -212,14 +204,6 @@
                 "id": "63127bdc-96de-49e7-8e55-36517dbc9aff",
                 "resourcePath": "sprites\\spr_sprite_font\\spr_sprite_font.yy",
                 "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "46ab8686-925f-467d-a3e4-dd3697c6cbd1",
-            "Value": {
-                "id": "32d7c91d-ba6b-44fe-834a-0a599becdf56",
-                "resourcePath": "scripts\\scribble_draw_set_box_halign\\scribble_draw_set_box_halign.yy",
-                "resourceType": "GMScript"
             }
         },
         {
@@ -905,8 +889,7 @@
         "0a93a84f-87c9-4473-adf8-f92fd1d1e19f",
         "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
         "a67d72d8-deea-402c-a061-ad454210f71b",
-        "46ab8686-925f-467d-a3e4-dd3697c6cbd1",
-        "22a83b51-f31f-40d2-b985-cf57f166453a",
+        "012872b0-286a-4358-9987-d9cfc8c54fe0",
         "b3138e5a-27ac-4e57-8f6e-b0d1b84faaf7",
         "681d7f36-7b03-4067-a58f-b23b795b2f31",
         "b43cf62b-c64f-4436-a8eb-906fd543d4cc",
@@ -933,7 +916,6 @@
         "c0f4f4ff-e121-4ce8-9b05-658e8d16b19f",
         "310354d2-1828-48d9-a82e-9dbd97d9c117",
         "8a72a3a7-a40c-4764-a65f-e44a5bd5746c",
-        "012872b0-286a-4358-9987-d9cfc8c54fe0",
         "5b5d2964-6179-4fe2-8b4c-f1e7d030639e",
         "bf269b8e-eb65-4528-b05e-d89efb7d6c87",
         "b8b935fa-7d6c-4bbd-8adf-7a1ed48b3e07",
