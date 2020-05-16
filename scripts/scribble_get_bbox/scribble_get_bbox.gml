@@ -1,9 +1,9 @@
 /// Gets the position of the axis-aligned and oriented bounding box for a text element
 /// 
 /// Returns: 14-element array containing the positions of the bounding box for a text element
-/// @param string/textElement   The text to get the bounding box for. Alternatively, you can pass a text element into this script
 /// @param x                    x-position in the room to draw at
 /// @param y                    y-position in the room to draw at
+/// @param string/textElement   The text to get the bounding box for. Alternatively, you can pass a text element into this script
 /// @param [leftMargin]         Extra space on the left-hand side of the textbox. Positive values create more space. Defaults to 0
 /// @param [topMargin]          Extra space on the top of the textbox. Positive values create more space. Defaults to 0
 /// @param [rightMargin]        Extra space on the right-hand side of the textbox. Positive values create more space. Defaults to 0
@@ -24,13 +24,19 @@ enum SCRIBBLE_BBOX
     __SIZE
 }
 
-var _scribble_array = argument[0];
-var _x              = argument[1];
-var _y              = argument[2];
+var _x              = argument[0];
+var _y              = argument[1];
+var _scribble_array = argument[2];
 var _margin_l       = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
 var _margin_t       = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
 var _margin_r       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
 var _margin_b       = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 0;
+
+if (is_string(_x) || is_array(_x))
+{
+    show_error("Scribble:\nThe argument order for scribble_get_bbox() has changed\nPlease review your code\n ", false);
+    exit;
+}
 
 _scribble_array = scribble_cache(_scribble_array);
 if (_scribble_array == undefined) return array_create(SCRIBBLE_BBOX.__SIZE, 0);
