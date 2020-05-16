@@ -8,7 +8,7 @@ const int MAX_EFFECTS = 7;
 //5 = pulse
 //6 = wheel
 
-const int MAX_DATA_FIELDS = 14;
+const int MAX_ANIM_FIELDS = 14;
 //By default, the data fields are:
 // 0 = wave amplitude
 // 1 = wave frequency
@@ -48,7 +48,7 @@ uniform float u_fTypewriterMethod;
 uniform float u_fTypewriterTailPos;
 uniform float u_fTypewriterHeadPos;
 
-uniform float u_aDataFields[MAX_DATA_FIELDS];
+uniform float u_aDataFields[MAX_ANIM_FIELDS];
 //uniform vec2 u_vTexel; //Used in the fragment shader
 
 

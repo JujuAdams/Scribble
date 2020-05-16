@@ -11,4 +11,4 @@ global.scribble_state_max_height      = SCRIBBLE_DEFAULT_MAX_HEIGHT;
 global.scribble_state_character_wrap  = false;
 global.scribble_state_box_halign      = SCRIBBLE_DEFAULT_BOX_HALIGN;
 global.scribble_state_box_valign      = SCRIBBLE_DEFAULT_BOX_VALIGN;
-array_copy(global.scribble_state_anim_array, 0, global.__scribble_default_anim_array, 0, SCRIBBLE_MAX_DATA_FIELDS);
+array_copy(global.scribble_state_anim_array, 0, global.__scribble_default_anim_array, 0, SCRIBBLE_ANIM.__SIZE);

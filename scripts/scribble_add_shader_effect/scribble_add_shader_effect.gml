@@ -8,25 +8,25 @@ var _index = argument1;
 
 if (!variable_global_exists("__scribble_global_count"))
 {
-    show_error("Scribble:\nscribble_add_effect() should be called after initialising Scribble.\n ", false);
+    show_error("Scribble:\nscribble_add_effect() should be called after initialising Scribble\n ", false);
     exit;
 }
 
 if (!is_string(_name))
 {
-    show_error("Scribble:\nCustom effect names should be strings.\n ", false);
+    show_error("Scribble:\nCustom effect names should be strings\n ", false);
     exit;
 }
 
-if (!is_real(_index) || (_index != floor(_index)) || (_index < 1) || (_index > (SCRIBBLE_MAX_EFFECTS-1)))
+if (!is_real(_index) || (_index != floor(_index)) || (_index < 1))
 {
-    show_error("Scribble:\nCustom effect indexes should be an integer from 1 to " + string(SCRIBBLE_MAX_EFFECTS-1) + " (inclusive).\nTo increase the maximum number of flags, see __scribble_config()\n(Index was \"" + string(_index) + "\")\n ", false);
+    show_error("Scribble:\nCustom effect indexes should be an integer greater than 0 to const MAX_EFFECTS (in shd_scribble)\n(Index was \"" + string(_index) + "\")\n ", false);
     exit;
 }
 
 if (ds_map_exists(global.__scribble_colours, _name))
 {
-    show_debug_message("Scribble: WARNING! Effect name \"" + _name + "\" has already been defined as a colour");
+    show_debug_message("Scribble: WARNING! Effect name \"" + _name + "\" has already been defined as a color");
     exit;
 }
 
