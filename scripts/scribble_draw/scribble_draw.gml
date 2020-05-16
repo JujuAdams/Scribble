@@ -101,20 +101,15 @@ if (_count > 0)
     var _typewriter_method = _scribble_array[SCRIBBLE.AUTOTYPE_METHOD];
     if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE)
     {
-        //If the text element's internal autotype method hasn't been set then use the global draw set state value
-            _typewriter_method     = global.scribble_state_tw_method;
-        var _typewriter_smoothness = global.scribble_state_tw_smoothness;
-        var _typewriter_head_pos   = global.scribble_state_tw_position;
-        var _typewriter_tail_pos   = _typewriter_head_pos - _typewriter_smoothness;
-        var _typewriter_fade_in    = global.scribble_state_tw_fade_in;
-        var _typewriter_speed      = 0;
+        var _typewriter_head_pos = 1;
+        var _typewriter_tail_pos = 1;
     }
     else
     {
-        var _typewriter_smoothness  = _scribble_array[SCRIBBLE.AUTOTYPE_SMOOTHNESS   ];
-        var _typewriter_tail_pos    = _scribble_array[SCRIBBLE.AUTOTYPE_TAIL_POSITION];
-        var _typewriter_head_pos    = _scribble_array[SCRIBBLE.AUTOTYPE_HEAD_POSITION];
-        var _typewriter_fade_in     = _scribble_array[SCRIBBLE.AUTOTYPE_FADE_IN      ];
+        var _typewriter_smoothness = _scribble_array[SCRIBBLE.AUTOTYPE_SMOOTHNESS   ];
+        var _typewriter_tail_pos   = _scribble_array[SCRIBBLE.AUTOTYPE_TAIL_POSITION];
+        var _typewriter_head_pos   = _scribble_array[SCRIBBLE.AUTOTYPE_HEAD_POSITION];
+        var _typewriter_fade_in    = _scribble_array[SCRIBBLE.AUTOTYPE_FADE_IN      ];
             
         //Handle pausing
         if (_scribble_array[SCRIBBLE.AUTOTYPE_PAUSED])
@@ -298,11 +293,11 @@ if (_count > 0)
             _scribble_array[@ SCRIBBLE.AUTOTYPE_TAIL_POSITION] = _typewriter_tail_pos;
             _scribble_array[@ SCRIBBLE.AUTOTYPE_HEAD_POSITION] = _typewriter_head_pos;
         }
-    }
         
-    //Use a negative typewriter method to communicate a fade-out state to the shader
-    //It's a bit hacky but it reduces the uniform count for the shader
-    if (!_typewriter_fade_in) _typewriter_method = -_typewriter_method;
+        //Use a negative typewriter method to communicate a fade-out state to the shader
+        //It's a bit hacky but it reduces the uniform count for the shader
+        if (!_typewriter_fade_in) _typewriter_method = -_typewriter_method;
+    }
         
     //Set the shader and its uniforms
     shader_set(shd_scribble);
