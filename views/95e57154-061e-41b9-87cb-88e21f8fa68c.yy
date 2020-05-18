@@ -11,8 +11,7 @@
         "498aa41e-7fb7-49e3-b663-74ba62e7a8e6",
         "f16a19e0-6ae9-4775-afcc-5b0f7a6cf9bc",
         "21e1fca2-32ef-46d3-9938-44552cc93b4e",
-        "9e5c6a6a-9f28-4a6b-a2a3-9507eb25164a",
-        "a3d9edc7-bc39-46f3-b8c2-98bcc058ea2c"
+        "9e5c6a6a-9f28-4a6b-a2a3-9507eb25164a"
     ],
     "filterType": "GMScript",
     "folderName": "Autotype",

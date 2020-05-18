@@ -105,6 +105,7 @@ var _element_height          = 0;
 
 var _scribble_array      = array_create(SCRIBBLE.__SIZE); //The text element array
 var _element_pages_array = [];                              //Stores each page of text
+var _character_array     = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
 
 _scribble_array[@ SCRIBBLE.__SECTION0              ] = "-- Parameters --";
 _scribble_array[@ SCRIBBLE.VERSION                 ] = __SCRIBBLE_VERSION;
@@ -127,6 +128,7 @@ _scribble_array[@ SCRIBBLE.LINES                   ] = 0;
 _scribble_array[@ SCRIBBLE.PAGES                   ] = 0;
 _scribble_array[@ SCRIBBLE.GLOBAL_INDEX            ] = global.__scribble_global_count+1;
 _scribble_array[@ SCRIBBLE.GLYPH_LTRB_ARRAY        ] = undefined;
+_scribble_array[@ SCRIBBLE.CHARACTER_ARRAY         ] = _character_array;
 
 _scribble_array[@ SCRIBBLE.__SECTION2              ] = "-- State --";
 _scribble_array[@ SCRIBBLE.ANIMATION_TIME          ] = 0;
@@ -666,6 +668,8 @@ repeat(_buffer_size)
                                             #endregion
                                             
                                             _text_effect_flags = ~((~_text_effect_flags) | 1); //Reset animated sprite effect flag specifically
+                                            
+                                            if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _command_name;
                                             ++_meta_page_characters;
                                             ++_meta_element_characters;
                                         }
@@ -809,7 +813,8 @@ repeat(_buffer_size)
             _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
             ++_v;
         }
-                
+        
+        if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _character_code;     
         ++_meta_page_characters;
         ++_meta_element_characters;
                 
@@ -964,8 +969,10 @@ repeat(_buffer_size)
             
             #endregion
             
+            if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _character_code;
             ++_meta_page_characters;
             ++_meta_element_characters;
+            
             _char_width = _glyph_array[SCRIBBLE_GLYPH.SEPARATION]*_text_scale;
         }
         

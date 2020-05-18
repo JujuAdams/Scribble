@@ -154,6 +154,7 @@ enum SCRIBBLE
     PAGES,                    //16
     GLOBAL_INDEX,             //17
     GLYPH_LTRB_ARRAY,         //18
+    CHARACTER_ARRAY,          //19
     
     __SECTION2,               //19
     ANIMATION_TIME,           //20
