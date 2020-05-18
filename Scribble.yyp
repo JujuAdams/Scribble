@@ -562,7 +562,7 @@
             "Key": "a3d9edc7-bc39-46f3-b8c2-98bcc058ea2c",
             "Value": {
                 "id": "c1766d6f-0fc9-4c16-b2de-15c816138185",
-                "resourcePath": "scripts\\scribble_autotype_add_event\\scribble_autotype_add_event.yy",
+                "resourcePath": "scripts\\scribble_add_autotype_event\\scribble_add_autotype_event.yy",
                 "resourceType": "GMScript"
             }
         },
