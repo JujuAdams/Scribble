@@ -176,13 +176,14 @@ enum SCRIBBLE
     AUTOTYPE_SMOOTHNESS,      //35
     AUTOTYPE_SOUND_ARRAY,     //36
     AUTOTYPE_SOUND_OVERLAP,   //37
-    AUTOTYPE_SOUND_MIN_PITCH, //38
-    AUTOTYPE_SOUND_MAX_PITCH, //39
-    AUTOTYPE_PAUSED,          //40
-    AUTOTYPE_DELAY_PAUSED,    //41
-    AUTOTYPE_DELAY_END,       //42
+    AUTOTYPE_SOUND_PER_CHAR,  //38
+    AUTOTYPE_SOUND_MIN_PITCH, //39
+    AUTOTYPE_SOUND_MAX_PITCH, //40
+    AUTOTYPE_PAUSED,          //41
+    AUTOTYPE_DELAY_PAUSED,    //42
+    AUTOTYPE_DELAY_END,       //43
     
-    __SIZE                    //43
+    __SIZE                    //44
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))

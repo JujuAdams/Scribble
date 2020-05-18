@@ -159,7 +159,17 @@ if (_count > 0)
                 var _sound_array = _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_ARRAY];
                 if (is_array(_sound_array) && (array_length_1d(_sound_array) > 0))
                 {
-                    if (current_time >= _scribble_array[SCRIBBLE.SOUND_FINISH_TIME]) 
+                    var _play_sound = false;
+                    if (_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_PER_CHAR])
+                    {
+                        _play_sound = true;
+                    }
+                    else if (current_time >= _scribble_array[SCRIBBLE.SOUND_FINISH_TIME]) 
+                    {
+                        _play_sound = true;
+                    }
+                    
+                    if (_play_sound)
                     {
                         global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
                         var _rand = global.__scribble_lcg / 2147483648;
@@ -169,7 +179,7 @@ if (_count > 0)
                         
                         global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
                         var _rand = global.__scribble_lcg / 2147483648;
-	                    audio_sound_pitch(_inst, lerp(_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MIN_PITCH], _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MAX_PITCH], _rand));
+        	            audio_sound_pitch(_inst, lerp(_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MIN_PITCH], _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MAX_PITCH], _rand));
                         
                         _scribble_array[@ SCRIBBLE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_OVERLAP];
                     }
