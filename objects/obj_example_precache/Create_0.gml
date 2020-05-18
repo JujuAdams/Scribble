@@ -15,7 +15,7 @@ if (scribble_init("Fonts", "fnt_test_0", true))
     scribble_set_glyph_property("spr_sprite_font", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
     scribble_set_glyph_property("spr_sprite_font", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);
     
-    scribble_autotype_add_event("sound", example_event_sound);
+    scribble_add_autotype_event("sound", example_event_sound);
 }
 
 

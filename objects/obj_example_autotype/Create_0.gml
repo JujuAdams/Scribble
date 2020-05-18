@@ -11,7 +11,7 @@ if (scribble_init("Fonts", "fnt_test_0", true))
     scribble_add_color("c_xanadu"    , $738678);
     scribble_add_color("c_amaranth"  , $e52b50);
     
-    scribble_autotype_add_event("test event", example_event);
+    scribble_add_autotype_event("test event", example_event);
 }
 
 
