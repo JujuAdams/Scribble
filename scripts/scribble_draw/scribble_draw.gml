@@ -155,36 +155,6 @@ if (_count > 0)
             var _scan_a = _page_array[__SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS];
             if (_scan_b > _scan_a)
             {
-                //Play a sound effect as the text is revealed
-                var _sound_array = _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_ARRAY];
-                if (is_array(_sound_array) && (array_length_1d(_sound_array) > 0))
-                {
-                    var _play_sound = false;
-                    if (_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_PER_CHAR])
-                    {
-                        _play_sound = true;
-                    }
-                    else if (current_time >= _scribble_array[SCRIBBLE.SOUND_FINISH_TIME]) 
-                    {
-                        _play_sound = true;
-                    }
-                    
-                    if (_play_sound)
-                    {
-                        global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
-                        var _rand = global.__scribble_lcg / 2147483648;
-                        var _sound = _sound_array[floor(_rand*array_length_1d(_sound_array))];
-                        
-                        var _inst = audio_play_sound(_sound, 0, false);
-                        
-                        global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
-                        var _rand = global.__scribble_lcg / 2147483648;
-        	            audio_sound_pitch(_inst, lerp(_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MIN_PITCH], _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MAX_PITCH], _rand));
-                        
-                        _scribble_array[@ SCRIBBLE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_OVERLAP];
-                    }
-                }
-                    
                 var _event                = _page_array[__SCRIBBLE_PAGE.EVENT_PREVIOUS     ];
                 var _events_char_array    = _page_array[__SCRIBBLE_PAGE.EVENT_CHAR_ARRAY   ];
                 var _events_name_array    = _page_array[__SCRIBBLE_PAGE.EVENT_NAME_ARRAY   ];
@@ -275,6 +245,42 @@ if (_count > 0)
         }
             
         #endregion
+        
+        if ((_typewriter_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
+        {
+            #region Play a sound effect as the text is revealed
+            
+            var _sound_array = _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_ARRAY];
+            if (is_array(_sound_array) && (array_length_1d(_sound_array) > 0))
+            {
+                var _play_sound = false;
+                if (_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_PER_CHAR])
+                {
+                    _play_sound = true;
+                }
+                else if (current_time >= _scribble_array[SCRIBBLE.SOUND_FINISH_TIME]) 
+                {
+                    _play_sound = true;
+                }
+                
+                if (_play_sound)
+                {
+                    global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
+                    var _rand = global.__scribble_lcg / 2147483648;
+                    var _sound = _sound_array[floor(_rand*array_length_1d(_sound_array))];
+                    
+                    var _inst = audio_play_sound(_sound, 0, false);
+                    
+                    global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
+                    var _rand = global.__scribble_lcg / 2147483648;
+            	    audio_sound_pitch(_inst, lerp(_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MIN_PITCH], _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MAX_PITCH], _rand));
+                    
+                    _scribble_array[@ SCRIBBLE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_OVERLAP];
+                }
+            }
+            
+            #endregion
+        }
     }
         
     //Figure out the limit and smoothness values
@@ -286,7 +292,7 @@ if (_count > 0)
             case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES     ]; break;
         }
             
-        //If it's been around-about a frame since we called this scripts...
+        //If it's been around-about a frame since we called this script...
         if (_increment_timers)
         {
             _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
