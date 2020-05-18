@@ -157,6 +157,7 @@ _scribble_array[@ SCRIBBLE.AUTOTYPE_SOUND_MAX_PITCH] =  1.0;
 _scribble_array[@ SCRIBBLE.AUTOTYPE_PAUSED         ] =  false;
 _scribble_array[@ SCRIBBLE.AUTOTYPE_DELAY_PAUSED   ] =  false;
 _scribble_array[@ SCRIBBLE.AUTOTYPE_DELAY_END      ] = -1;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_FUNCTION       ] = undefined;
 
 #endregion
 

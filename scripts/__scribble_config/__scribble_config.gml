@@ -14,7 +14,7 @@
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED    0.1      //The default animation speed for sprites inserted into text
 #macro SCRIBBLE_DEFAULT_DELAY_DURATION  450      //Default duration of the [delay] command, in milliseconds
 
-//In 6.0.0, the other default parameters have moved to scribble_draw_reset()
+//In 6.0.1, the other default parameters have moved to scribble_draw_reset()
 
 #endregion
 

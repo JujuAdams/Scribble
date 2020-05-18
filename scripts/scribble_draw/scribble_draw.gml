@@ -323,6 +323,9 @@ if (_count > 0)
         }
         
         #endregion
+        
+        var _callback = _scribble_array[SCRIBBLE.AUTOTYPE_FUNCTION];
+        if ((_callback != undefined) && script_exists(_callback)) script_execute(_callback, _scribble_array, _scribble_array[SCRIBBLE.AUTOTYPE_TAIL_POSITION]);
     }
     
     //Set the shader and its uniforms

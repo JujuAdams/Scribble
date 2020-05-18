@@ -90,7 +90,7 @@
             "Key": "0c17f313-39fe-4202-bb41-6f3911074c7f",
             "Value": {
                 "id": "698e7b31-7c50-4606-97f1-40bcf82ee5fb",
-                "resourcePath": "sounds\\snd_vowel_0\\snd_vowel_0.yy",
+                "resourcePath": "sounds\\snd_vowel_4\\snd_vowel_4.yy",
                 "resourceType": "GMSound"
             }
         },
@@ -146,7 +146,7 @@
             "Key": "2deed9a9-4025-4f17-be17-5be6c089470b",
             "Value": {
                 "id": "0ea54ecf-7833-4d3a-b9fe-6abb442e5e21",
-                "resourcePath": "sounds\\snd_vowel_2\\snd_vowel_2.yy",
+                "resourcePath": "sounds\\snd_vowel_3\\snd_vowel_3.yy",
                 "resourceType": "GMSound"
             }
         },
@@ -331,6 +331,14 @@
             "Value": {
                 "id": "4c990981-3742-44f0-9749-f5a58ddb3ae2",
                 "resourcePath": "scripts\\scribble_page_on_last\\scribble_page_on_last.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "75555384-7db7-4904-89d6-33a402f4113b",
+            "Value": {
+                "id": "a92f69d3-448e-4a24-bde9-3fb26a360813",
+                "resourcePath": "scripts\\example_autotype_callback\\example_autotype_callback.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -823,6 +831,14 @@
             }
         },
         {
+            "Key": "eadbe561-839c-47aa-a272-8aa3524b4f66",
+            "Value": {
+                "id": "3a11d3fa-0df3-43c6-8012-08599b69203e",
+                "resourcePath": "scripts\\scribble_autotype_function\\scribble_autotype_function.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "ed7bf3dd-c437-4d69-a9e3-133bbf5000f5",
             "Value": {
                 "id": "878bde36-1ef6-4b6a-b250-f2e513c33b20",
@@ -850,7 +866,7 @@
             "Key": "f5d97ad5-0224-4e9e-bfc2-fe1cf66e9484",
             "Value": {
                 "id": "d2537a4c-43b8-40be-8b73-36a222592d91",
-                "resourcePath": "sounds\\snd_vowel_3\\snd_vowel_3.yy",
+                "resourcePath": "sounds\\snd_vowel_0\\snd_vowel_0.yy",
                 "resourceType": "GMSound"
             }
         },
@@ -882,7 +898,7 @@
             "Key": "fd298b0a-00eb-4c24-b49e-e18cef4cb652",
             "Value": {
                 "id": "c87da2e3-aa99-44bb-8b16-8b83facd7f55",
-                "resourcePath": "sounds\\snd_vowel_4\\snd_vowel_4.yy",
+                "resourcePath": "sounds\\snd_vowel_2\\snd_vowel_2.yy",
                 "resourceType": "GMSound"
             }
         }
@@ -914,6 +930,7 @@
         "f16a19e0-6ae9-4775-afcc-5b0f7a6cf9bc",
         "21e1fca2-32ef-46d3-9938-44552cc93b4e",
         "9e5c6a6a-9f28-4a6b-a2a3-9507eb25164a",
+        "eadbe561-839c-47aa-a272-8aa3524b4f66",
         "6e8352fc-78a8-490a-a4ab-9dacbaeb79f5",
         "04acbfcf-ee17-4ded-b194-17bb72864ff0",
         "b7157de4-28d8-476e-b907-27576e4c9261",
@@ -929,7 +946,8 @@
         "bf269b8e-eb65-4528-b05e-d89efb7d6c87",
         "b8b935fa-7d6c-4bbd-8adf-7a1ed48b3e07",
         "7f249531-321e-43d7-92bc-258842287e9d",
-        "16333f16-885e-4b0b-98e8-9726a0f9c0b0"
+        "16333f16-885e-4b0b-98e8-9726a0f9c0b0",
+        "75555384-7db7-4904-89d6-33a402f4113b"
     ],
     "tutorial": ""
 }

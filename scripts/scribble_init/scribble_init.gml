@@ -183,8 +183,9 @@ enum SCRIBBLE
     AUTOTYPE_PAUSED,          //41
     AUTOTYPE_DELAY_PAUSED,    //42
     AUTOTYPE_DELAY_END,       //43
+    AUTOTYPE_FUNCTION,        //44
     
-    __SIZE                    //44
+    __SIZE                    //45
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
