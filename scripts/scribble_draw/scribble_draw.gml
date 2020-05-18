@@ -245,45 +245,10 @@ if (_count > 0)
         }
             
         #endregion
-        
-        if ((_typewriter_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
-        {
-            #region Play a sound effect as the text is revealed
-            
-            var _sound_array = _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_ARRAY];
-            if (is_array(_sound_array) && (array_length_1d(_sound_array) > 0))
-            {
-                var _play_sound = false;
-                if (_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_PER_CHAR])
-                {
-                    _play_sound = true;
-                }
-                else if (current_time >= _scribble_array[SCRIBBLE.SOUND_FINISH_TIME]) 
-                {
-                    _play_sound = true;
-                }
-                
-                if (_play_sound)
-                {
-                    global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
-                    var _rand = global.__scribble_lcg / 2147483648;
-                    var _sound = _sound_array[floor(_rand*array_length_1d(_sound_array))];
-                    
-                    var _inst = audio_play_sound(_sound, 0, false);
-                    
-                    global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
-                    var _rand = global.__scribble_lcg / 2147483648;
-            	    audio_sound_pitch(_inst, lerp(_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MIN_PITCH], _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MAX_PITCH], _rand));
-                    
-                    _scribble_array[@ SCRIBBLE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_OVERLAP];
-                }
-            }
-            
-            #endregion
-        }
     }
         
-    //Figure out the limit and smoothness values
+    #region Move the typewriter head/tail
+    
     if (_typewriter_method != SCRIBBLE_AUTOTYPE_NONE)
     {
         switch(_typewriter_method)
@@ -321,7 +286,45 @@ if (_count > 0)
         //It's a bit hacky but it reduces the uniform count for the shader
         if (!_typewriter_fade_in) _typewriter_method = -_typewriter_method;
     }
+    
+    #endregion
         
+    if ((_typewriter_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
+    {
+        #region Play a sound effect as the text is revealed
+        
+        var _sound_array = _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_ARRAY];
+        if (is_array(_sound_array) && (array_length_1d(_sound_array) > 0))
+        {
+            var _play_sound = false;
+            if (_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_PER_CHAR])
+            {
+                _play_sound = true;
+            }
+            else if (current_time >= _scribble_array[SCRIBBLE.SOUND_FINISH_TIME]) 
+            {
+                _play_sound = true;
+            }
+            
+            if (_play_sound)
+            {
+                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
+                var _rand = global.__scribble_lcg / 2147483648;
+                var _sound = _sound_array[floor(_rand*array_length_1d(_sound_array))];
+                
+                var _inst = audio_play_sound(_sound, 0, false);
+                
+                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
+                var _rand = global.__scribble_lcg / 2147483648;
+            	audio_sound_pitch(_inst, lerp(_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MIN_PITCH], _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MAX_PITCH], _rand));
+                
+                _scribble_array[@ SCRIBBLE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_OVERLAP];
+            }
+        }
+        
+        #endregion
+    }
+    
     //Set the shader and its uniforms
     shader_set(shd_scribble);
     shader_set_uniform_f(global.__scribble_uniform_time        , _animation_time);
