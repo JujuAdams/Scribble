@@ -28,7 +28,7 @@ if (is_array(_draw_string))
 }
 
 //Check if the string already exists in the cache
-var _cache_string = string(_draw_string) + ":" + string(global.scribble_state_line_min_height) + ":" + string(global.scribble_state_max_width) + ":" + string(global.scribble_state_max_height);
+var _cache_string = string(_draw_string) + global.__scribble_cache_string;
 if (ds_map_exists(global.__scribble_global_cache_map, _cache_string))
 {
     //Grab the text element from the cache
@@ -51,9 +51,9 @@ var _texture_to_buffer_map = ds_map_create();
 var _max_width       = global.scribble_state_max_width;
 var _max_height      = global.scribble_state_max_height;
 var _line_min_height = max(0, global.scribble_state_line_min_height);
-var _def_colour      = SCRIBBLE_DEFAULT_TEXT_COLOUR;
-var _def_font        = global.__scribble_default_font;
-var _def_halign      = SCRIBBLE_DEFAULT_HALIGN;
+var _def_colour      = global.scribble_state_default_color;
+var _def_font        = global.scribble_state_default_font;
+var _def_halign      = global.scribble_state_default_halign;
 
 //Check if the default font even exists
 if (!ds_map_exists(global.__scribble_font_data, _def_font))
