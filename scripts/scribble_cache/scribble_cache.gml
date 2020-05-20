@@ -55,6 +55,18 @@ var _def_colour      = global.scribble_state_default_color;
 var _def_font        = global.scribble_state_default_font;
 var _def_halign      = global.scribble_state_default_halign;
 
+if (SCRIBBLE_FIXED_LINE_HEIGHT)
+{
+    if (_line_min_height <= 0)
+    {
+        show_error("Scribble:\nLine height should be greater than 0 when SCRIBBLE_FIXED_LINE_HEIGHT is set to <true>\n ", false);
+    }
+    else
+    {
+        var _half_fixed_height = _line_min_height div 2;
+    }
+}
+
 //Check if the default font even exists
 if (!ds_map_exists(global.__scribble_font_data, _def_font))
 {
@@ -77,7 +89,7 @@ if (_glyph_array == undefined)
 }
 
 var _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-var _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH];
+var _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
 
 //Try to use a custom colour if the "startingColour" parameter is a string
 if (is_string(_def_colour))
@@ -243,6 +255,7 @@ _page_lines_array[@ array_length_1d(_page_lines_array)] = _line_array;
 #region Set the initial parser state
         
 var _text_x            = 0;
+var _text_y            = SCRIBBLE_FIXED_LINE_HEIGHT? _half_fixed_height : 0; //Use a y-offset if we've got a fixed line height
 var _line_y            = 0;
 var _text_font         = _def_font;
 var _text_colour       = _def_colour;
@@ -258,12 +271,12 @@ var _text_slant        = false;
 #region Parse the string
         
 var _command_tag_start      = -1;
-var _command_tag_parameters = 0;
+var _command_tag_parameters =  0;
 var _command_name           = "";
-var _force_newline          = false;
-var _force_newpage          = false;
-var _char_width             = 0;
-var _add_character          = true;
+var _force_newline          =  false;
+var _force_newpage          =  false;
+var _char_width             =  0;
+var _add_character          =  true;
 
 //Write the string into a buffer for faster reading
 var _buffer_size = string_byte_length(_draw_string)+1;
@@ -515,21 +528,21 @@ repeat(_buffer_size)
                                             if (SCRIBBLE_ADD_SPRITE_ORIGINS)
                                             {
                                                 var _sprite_x = _text_x - _text_scale*sprite_get_xoffset(_sprite_index) + (_sprite_width div 2);
-                                                var _sprite_y = -_text_scale*sprite_get_yoffset(_sprite_index);
+                                                var _sprite_y = _text_y - _text_scale*sprite_get_yoffset(_sprite_index);
                                             }
                                             else
                                             {
                                                 var _sprite_x = _text_x;
-                                                var _sprite_y = -(_sprite_height div 2);
+                                                var _sprite_y = _text_y - (_sprite_height div 2);
                                             }
                                             
                                             var _packed_indexes = _meta_page_characters*SCRIBBLE_MAX_LINES + _meta_page_lines;
                                             _char_width  = _sprite_width;
-                                            _line_height = max(_line_height, _sprite_height);
+                                            if (!SCRIBBLE_FIXED_LINE_HEIGHT) _line_height = max(_line_height, _sprite_height); //Change our line height if it's not fixed
                                             
                                             if (_sprite_number >= 256)
                                             {
-                                                show_debug_message("Scribble: Sprites cannot have more than 256 frames (" + string(_command_name) + ")");
+                                                show_debug_message("Scribble: In-line sprites cannot have more than 256 frames (" + string(_command_name) + ")");
                                                 _sprite_number = 256;
                                             }
                                             
@@ -750,7 +763,7 @@ repeat(_buffer_size)
                     _force_newline = true;
                     _char_width    = 0;
                     _line_width    = max(_line_width, _text_x);
-                    _line_height   = max(_line_height, _font_line_height*_text_scale);
+                    if (!SCRIBBLE_FIXED_LINE_HEIGHT) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                 }
                 else
                 {
@@ -793,7 +806,7 @@ repeat(_buffer_size)
         _force_newline = true;
         _char_width    = 0;
         _line_width    = max(_line_width, _text_x);
-        _line_height   = max(_line_height, _font_line_height*_text_scale);
+        if (!SCRIBBLE_FIXED_LINE_HEIGHT) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                 
         _add_character = false;
     }
@@ -803,7 +816,7 @@ repeat(_buffer_size)
         _char_width     = _font_space_width*_text_scale;
         _line_has_space = true;
         _line_width     = max(_line_width, _text_x);
-        _line_height    = max(_line_height, _font_line_height*_text_scale);
+        if (!SCRIBBLE_FIXED_LINE_HEIGHT) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                 
         //Iterate over all the vertex buffers we've been using and reset the word start position
         var _v = 0;
@@ -940,7 +953,7 @@ repeat(_buffer_size)
             if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] == undefined) _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = _quad_l;
             
                 _quad_l += _text_x;
-            var _quad_t  =           _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2); //TODO - Cache scaled font line height
+            var _quad_t  = _text_y + _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2); //TODO - Cache scaled font line height
             var _quad_r  = _quad_l + _glyph_array[SCRIBBLE_GLYPH.WIDTH   ]*_text_scale;
             var _quad_b  = _quad_t + _glyph_array[SCRIBBLE_GLYPH.HEIGHT  ]*_text_scale;
             
@@ -978,7 +991,7 @@ repeat(_buffer_size)
         }
         
         //Choose the height of a space for the character's height
-        _line_height = max(_line_height, _font_line_height*_text_scale);
+        if (!SCRIBBLE_FIXED_LINE_HEIGHT) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
     }
     
     
@@ -1049,9 +1062,17 @@ repeat(_buffer_size)
                         repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                         {
                             //Increment the line index by 1
-                            buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) + 1             );
+                            buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) + 1);
+                            
                             //Adjust glyph centre position
-                            buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X      , buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X      , buffer_f32) + _line_offset_x);
+                            buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + _line_offset_x);
+                            
+                             //If we're using a fixed line height, ensure that the glyph y-position is updated too
+                            if (SCRIBBLE_FIXED_LINE_HEIGHT)
+                            {
+                                buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + _line_height);
+                            }
+                            
                             _tell += __SCRIBBLE_VERTEX.__SIZE;
                         }
                     }
@@ -1071,13 +1092,14 @@ repeat(_buffer_size)
         _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
         _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
         _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
-                
+        
         //Reset state
         _text_x        += _line_offset_x;
         _line_y        += _line_height;
         _line_has_space = false;
         _line_width     = 0;
         _line_height    = _line_min_height;
+        if (SCRIBBLE_FIXED_LINE_HEIGHT) _text_y += _line_height;
                 
         //Create a new line
         var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
@@ -1196,16 +1218,22 @@ repeat(_buffer_size)
                     buffer_resize(_buffer, _line_tell_prev);
                     buffer_seek(_buffer, buffer_seek_start, _line_tell_prev); //Resizing a buffer resets its tell
                     ds_list_delete(_vbuff_line_start_list, ds_list_size(_vbuff_line_start_list)-1);
-                            
-                    //Go through every vertex and set its line index to 0
-                    var _tell = __SCRIBBLE_VERTEX.PACKED_INDEXES;
+                    
+                    var _tell = 0;
                     repeat(_bytes / __SCRIBBLE_VERTEX.__SIZE)
                     {
+                        //Go through every vertex and set its line index to 0
                         var _packed_indexes = buffer_peek(_buffer, _tell, buffer_f32);
                         var _char = _packed_indexes div SCRIBBLE_MAX_LINES;
                         _max_indexes = max(_max_indexes, _char);
-                                
-                        buffer_poke(_new_buffer, _tell, buffer_f32, SCRIBBLE_MAX_LINES*_char);
+                        buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32, SCRIBBLE_MAX_LINES*_char);
+                        
+                        //If we're using a fixed line height, reset this glyph's y-position
+                        if (SCRIBBLE_FIXED_LINE_HEIGHT)
+                        {
+                            buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32, _half_fixed_height);
+                        }
+                        
                         _tell += __SCRIBBLE_VERTEX.__SIZE;
                     }
                 }
@@ -1229,6 +1257,8 @@ repeat(_buffer_size)
         _line_y                =  0;
         _glyph_texture         = -1;
         _vbuff_line_start_list = -1;
+        
+        if (SCRIBBLE_FIXED_LINE_HEIGHT) _text_y = _half_fixed_height;
         
         _force_newpage = false;
     }
@@ -1370,15 +1400,13 @@ repeat(array_length_1d(_element_pages_array))
             var _line_data = _page_lines_array[_l];
             if (is_array(_line_data)) //Someimtes the array can contain <undefined> if a line is moved from one page to another
             {
-                var _line_y      = _line_data[__SCRIBBLE_LINE.Y     ];
-                var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
-                var _line_height = _line_data[__SCRIBBLE_LINE.HEIGHT];
-                
                 var _tell_a = _vbuff_line_start_list[| _l  ];
                 var _tell_b = _vbuff_line_start_list[| _l+1];
                 
                 if (_tell_b - _tell_a > 0)
                 {
+                    var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
+                    
                     //If we're not left-aligned then we need to do some work!
                     if (_line_halign != fa_left)
                     {
@@ -1423,15 +1451,20 @@ repeat(array_length_1d(_element_pages_array))
                         }
                     }
                     
-                    //Now let's do vertical alignment by writing to CENTRE_Y
-                    var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
-                    repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
+                    //Only update glyph y-positions if we're not using fixed line heights
+                    if (!SCRIBBLE_FIXED_LINE_HEIGHT)
                     {
-                        //Poke the new value by adding the offset to the old value
-                        buffer_poke(_buffer, _tell, buffer_f32, _line_y + buffer_peek(_buffer, _tell, buffer_f32));
-                        
-                        //Now jump ahead to the next vertex. This means we're always writing to CENTRE_Y!
-                        _tell += __SCRIBBLE_VERTEX.__SIZE;
+                        //Now let's do vertical alignment by writing to CENTRE_Y
+                        var _line_y = _line_data[__SCRIBBLE_LINE.Y];
+                        var _tell   = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
+                        repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
+                        {
+                            //Poke the new value by adding the offset to the old value
+                            buffer_poke(_buffer, _tell, buffer_f32, _line_y + buffer_peek(_buffer, _tell, buffer_f32));
+                            
+                            //Now jump ahead to the next vertex. This means we're always writing to CENTRE_Y!
+                            _tell += __SCRIBBLE_VERTEX.__SIZE;
+                        }
                     }
                 }
             }
