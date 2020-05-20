@@ -5,18 +5,13 @@
 /// @param defaultFont      The name of the default Scribble font to use, as a string
 /// @param autoScan         Whether or not to automatically find font .yy files in the font directory
 ///                         N.B. This only works for normal fonts
-/// 
-/// Scribble v6.0.1
-/// 2020-05-18
-/// @jujuadams
-/// With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_
-/// 
-/// For use with GMS2.2.2 and later
 
 #region Internal Macro Definitions
 
-#macro __SCRIBBLE_VERSION  "6.0.1"
-#macro __SCRIBBLE_DATE     "2020-05-18"
+// @jujuadams
+// With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_
+#macro __SCRIBBLE_VERSION  "6.0.2"
+#macro __SCRIBBLE_DATE     "2020-05-20"
 #macro __SCRIBBLE_DEBUG    false
 
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
