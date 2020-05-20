@@ -101,6 +101,7 @@ if (_count > 0)
     var _typewriter_method = _scribble_array[SCRIBBLE.AUTOTYPE_METHOD];
     if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE)
     {
+        var _typewriter_speed    = 0;
         var _typewriter_head_pos = 1;
         var _typewriter_tail_pos = 1;
     }
