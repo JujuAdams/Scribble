@@ -24,9 +24,9 @@ if (_old_state && !_state)
     var _typewriter_window       = _scribble_array[__SCRIBBLE.AUTOTYPE_WINDOW      ];
     var _typewriter_window_array = _scribble_array[__SCRIBBLE.AUTOTYPE_WINDOW_ARRAY];
     
-    var _old_head_pos = _typewriter_window_array[@ 2*_typewriter_window];
-    _typewriter_window = (_typewriter_window + 1) mod __SCRIBBLE_WINDOW_COUNT;
+    var _old_head_pos = _typewriter_window_array[@ _typewriter_window];
+    _typewriter_window = (_typewriter_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
     _scribble_array[@ __SCRIBBLE.AUTOTYPE_WINDOW] = _typewriter_window;
-    _typewriter_window_array[@ 2*_typewriter_window  ] = _old_head_pos;
-    _typewriter_window_array[@ 2*_typewriter_window+1] = _old_head_pos - _typewriter_smoothness;
+    _typewriter_window_array[@ _typewriter_window  ] = _old_head_pos;
+    _typewriter_window_array[@ _typewriter_window+1] = _old_head_pos - _typewriter_smoothness;
 }

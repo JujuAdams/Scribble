@@ -1633,11 +1633,11 @@ if (global.scribble_state_allow_draw)
                     _scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_PAUSED] = false;
                     var _typewriter_speed = _typewriter_adjusted_speed;
                     
-                    var _old_head_pos = _typewriter_window_array[@ 2*_typewriter_window];
-                    _typewriter_window = (_typewriter_window + 1) mod __SCRIBBLE_WINDOW_COUNT;
+                    var _old_head_pos = _typewriter_window_array[@ _typewriter_window];
+                    _typewriter_window = (_typewriter_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
                     _scribble_array[@ __SCRIBBLE.AUTOTYPE_WINDOW] = _typewriter_window;
-                    _typewriter_window_array[@ 2*_typewriter_window  ] = _old_head_pos;
-                    _typewriter_window_array[@ 2*_typewriter_window+1] = _old_head_pos - _typewriter_smoothness;
+                    _typewriter_window_array[@ _typewriter_window  ] = _old_head_pos;
+                    _typewriter_window_array[@ _typewriter_window+1] = _old_head_pos - _typewriter_smoothness;
                 }
                 else
                 {
@@ -1653,7 +1653,7 @@ if (global.scribble_state_allow_draw)
         
             if ((_typewriter_fade_in >= 0) && (_typewriter_speed > 0))
             {
-                var _typewriter_head_pos = _typewriter_window_array[2*_typewriter_window];
+                var _typewriter_head_pos = _typewriter_window_array[_typewriter_window];
                 
                 //Find the last character we need to scan
                 switch(_typewriter_method)
@@ -1781,7 +1781,7 @@ if (global.scribble_state_allow_draw)
                 }
                 
                 _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
-                _typewriter_window_array[@ 2*_typewriter_window] = _typewriter_head_pos;
+                _typewriter_window_array[@ _typewriter_window] = _typewriter_head_pos;
             }
             
             #endregion
