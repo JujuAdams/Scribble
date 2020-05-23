@@ -90,7 +90,7 @@
             "Key": "0b7de2e4-423b-4049-ae3c-cefbec9a47a6",
             "Value": {
                 "id": "0a9c9b23-67ff-4be7-8f91-667415a8955a",
-                "resourcePath": "scripts\\scribble_draw_reset\\scribble_draw_reset.yy",
+                "resourcePath": "scripts\\scribble_reset\\scribble_reset.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -195,6 +195,14 @@
             "Value": {
                 "id": "036b628d-887d-47c3-819d-de2bba6e9a10",
                 "resourcePath": "scripts\\scribble_bake_shader\\scribble_bake_shader.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "33d5be74-110c-452d-869e-77397af81567",
+            "Value": {
+                "id": "69917b17-473e-4bef-9350-3a61649ddf0c",
+                "resourcePath": "scripts\\scribble_draw_reset\\scribble_draw_reset.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -1035,6 +1043,7 @@
         "d4f123cb-3fed-42ea-9048-76ab3df83d49",
         "27964133-4335-466d-a8a1-f499a93399bb",
         "464aca78-7490-433e-8b56-973f0a847094",
+        "33d5be74-110c-452d-869e-77397af81567",
         "7f249531-321e-43d7-92bc-258842287e9d",
         "16333f16-885e-4b0b-98e8-9726a0f9c0b0",
         "75555384-7db7-4904-89d6-33a402f4113b"

@@ -15,7 +15,8 @@
         "04580ef1-3ded-4d10-bf20-ef0e199d873b",
         "d4f123cb-3fed-42ea-9048-76ab3df83d49",
         "27964133-4335-466d-a8a1-f499a93399bb",
-        "464aca78-7490-433e-8b56-973f0a847094"
+        "464aca78-7490-433e-8b56-973f0a847094",
+        "33d5be74-110c-452d-869e-77397af81567"
     ],
     "filterType": "GMScript",
     "folderName": "(Deprecated)",

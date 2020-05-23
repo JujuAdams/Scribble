@@ -31,4 +31,4 @@ var _demo_string  = "[sound,snd_crank][rainbow][pulse]abcdef[] ABCDEF##";
 element = scribble_cache(_demo_string, "example cache group");
 
 //Don't forget to reset the state otherwise all subsequent Scribble text elements will inherit these settings
-scribble_draw_reset();
+scribble_reset();

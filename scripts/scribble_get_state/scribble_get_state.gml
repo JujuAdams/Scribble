@@ -1,5 +1,5 @@
 /// Returns: Array that contains the current Scribble draw state
-/// This function is intended to be used in combination with scribble_draw_set_state().
+/// This function is intended to be used in combination with scribble_set_state()
 
 var _array = array_create(SCRIBBLE_STATE.__SIZE);
 _array[@ SCRIBBLE_STATE.DEFAULT_FONT   ] = global.scribble_state_default_font;

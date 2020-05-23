@@ -4,7 +4,7 @@
 /// @param max               Maximum line height for each line of text. Use a negative number (the default) for no limit
 /// 
 /// This script sets Scribble's draw state. All text drawn with scribble_draw() will use these settings until they're overwritten, either by
-/// calling this script again or by calling scribble_draw_reset() or scribble_draw_set_state().
+/// calling this script again or by calling scribble_reset() or scribble_set_state().
 
 var _min = argument0;
 var _max = argument1;

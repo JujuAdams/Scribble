@@ -21,7 +21,7 @@
 /// Find out more about what animation effects are available on the wiki: https://github.com/JujuAdams/scribble/wiki/(5.5.0)-Text-Formatting
 /// 
 /// This script "sets state". All text drawn with scribble_draw() will use these settings until they're overwritten,
-/// either by calling this script again or by calling scribble_draw_reset() / scribble_draw_set_state().
+/// either by calling this script again or by calling scribble_reset() or scribble_set_state().
 
 enum SCRIBBLE_ANIM
 {

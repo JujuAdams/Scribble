@@ -7,7 +7,7 @@
 /// This operates in a very similar way to GameMaker's native draw_text_ext() function ("sep" is minLineHeight and "w" is maxLineWidth).
 /// 
 /// This script sets Scribble's draw state. All text drawn with scribble_draw() will use these settings until they're overwritten, either by
-/// calling this script again or by calling scribble_draw_reset() or scribble_draw_set_state().
+/// calling this script again or by calling scribble_reset() or scribble_set_state().
 
 var _max_width      = argument[0];
 var _max_height     = argument[1];

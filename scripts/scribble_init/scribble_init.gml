@@ -293,7 +293,7 @@ ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP,
 
 //Declare state variables
 global.scribble_state_anim_array = array_create(SCRIBBLE_ANIM.__SIZE);
-scribble_draw_reset();
+scribble_reset();
 
 //Duplicate GM's native colour constants in string form for access in scribble_draw()
 global.__scribble_colours[? "c_aqua"   ] = c_aqua;
