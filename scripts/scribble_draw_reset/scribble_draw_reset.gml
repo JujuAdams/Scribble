@@ -9,6 +9,7 @@ global.scribble_state_angle           = 0;       //Rotation of the textbox
 global.scribble_state_colour          = c_white;
 global.scribble_state_alpha           = 1.0;
 global.scribble_state_line_min_height = -1;      //Minimum height of each line of text. Set to a negative value to use the height of a space character of the default font.
+global.scribble_state_line_max_height = -1;      //Maximum line height for each line of text. Use a negative number (the default) for no limit
 global.scribble_state_max_width       = -1;      //Maximum horizontal size of the textbox. Set to a negative value for no limit.
 global.scribble_state_max_height      = -1;      //Maximum vertical size of the textbox. Set to a negative value for no limit.
 global.scribble_state_character_wrap  = false;
@@ -34,6 +35,7 @@ global.__scribble_cache_string = string(global.scribble_state_default_font   ) +
                                  string(global.scribble_state_default_color  ) + ":" +
                                  string(global.scribble_state_default_halign ) + ":" +
                                  string(global.scribble_state_line_min_height) + ":" +
+                                 string(global.scribble_state_line_max_height) + ":" +
                                  string(global.scribble_state_max_width      ) + ":" +
                                  string(global.scribble_state_max_height     ) + ":" +
                                  string(global.scribble_state_character_wrap );

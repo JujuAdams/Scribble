@@ -6,7 +6,6 @@
 #macro SCRIBBLE_ADD_SPRITE_ORIGINS            false  //Whether to use sprite origins. Setting this to <false> will vertically centre sprites on the line of text
 #macro SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT  false  //Set to <true> to emulate GameMaker's native behaviour
 #macro SCRIBBLE_MISSING_CHARACTER             "?"    //Used when a character is missing from a font
-#macro SCRIBBLE_FIXED_LINE_HEIGHT             false  //Set to <true> for a little speed boost when caching text! This prevents Scribble from changing line heights to accomodate differently sized fonts/sprites
 #macro SCRIBBLE_BGR_COLOR_HEX_CODES           false  //Set to <true> to use GameMaker's #BBGGRR format for in-line hex code colors. <false> uses the industry standard #RRGGBB format
 
 #region Default parameters
@@ -23,6 +22,7 @@
 #macro SCRIBBLE_WARNING_REINITIALIZE           true  //Controls whether an error is thrown when calling scribble_init() twice
 #macro SCRIBBLE_WARNING_TEXTURE_PAGE           true  //Turns the Separate Texture Page warning for spritefonts on/off
 #macro SCRIBBLE_WARNING_AUTOSCAN_YY_NOT_FOUND  true
+#macro SCRIBBLE_WARNING_DRAW_SET_DEPRECATED    true
 
 #macro SCRIBBLE_STEP_SIZE                 (delta_time/game_get_speed(gamespeed_microseconds)) //The animation step size. The default command here uses delta_time ensures that animations are smooth at all framerates
 #macro SCRIBBLE_SLANT_AMOUNT              0.24  //The x-axis displacement when using the [slant] tag

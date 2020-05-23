@@ -1,8 +1,8 @@
 {
-    "id": "a72ca48d-5d4e-4301-823f-ae99d288f7d0",
+    "id": "012872b0-286a-4358-9987-d9cfc8c54fe0",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "scribble_draw_set_wrap",
+    "name": "scribble_set_box_align",
     "IsCompatibility": false,
     "IsDnD": false
 }

@@ -48,21 +48,20 @@ var _texture_to_buffer_map = ds_map_create();
 
 #region Process input parameters
 
-var _max_width       = global.scribble_state_max_width;
-var _max_height      = global.scribble_state_max_height;
-var _line_min_height = max(0, global.scribble_state_line_min_height);
-var _def_colour      = global.scribble_state_default_color;
-var _def_font        = global.scribble_state_default_font;
-var _def_halign      = global.scribble_state_default_halign;
+var _max_width         = global.scribble_state_max_width;
+var _max_height        = global.scribble_state_max_height;
+var _line_min_height   = max(0, global.scribble_state_line_min_height);
+var _line_max_height   = global.scribble_state_line_max_height;
+var _line_fixed_height = false;
+var _def_colour        = global.scribble_state_default_color;
+var _def_font          = global.scribble_state_default_font;
+var _def_halign        = global.scribble_state_default_halign;
 
-if (SCRIBBLE_FIXED_LINE_HEIGHT)
+if ((_line_max_height >= 0) && (_line_max_height <= _line_min_height))
 {
-    if (_line_min_height <= 0)
+    if (_line_min_height >= 0)
     {
-        show_error("Scribble:\nLine height should be greater than 0 when SCRIBBLE_FIXED_LINE_HEIGHT is set to <true>\n ", false);
-    }
-    else
-    {
+        _line_fixed_height = true;
         var _half_fixed_height = _line_min_height div 2;
     }
 }
@@ -255,7 +254,7 @@ _page_lines_array[@ array_length_1d(_page_lines_array)] = _line_array;
 #region Set the initial parser state
         
 var _text_x            = 0;
-var _text_y            = SCRIBBLE_FIXED_LINE_HEIGHT? _half_fixed_height : 0; //Use a y-offset if we've got a fixed line height
+var _text_y            = _line_fixed_height? _half_fixed_height : 0; //Use a y-offset if we've got a fixed line height
 var _line_y            = 0;
 var _text_font         = _def_font;
 var _text_colour       = _def_colour;
@@ -538,7 +537,7 @@ repeat(_buffer_size)
                                             
                                             var _packed_indexes = _meta_page_characters*SCRIBBLE_MAX_LINES + _meta_page_lines;
                                             _char_width  = _sprite_width;
-                                            if (!SCRIBBLE_FIXED_LINE_HEIGHT) _line_height = max(_line_height, _sprite_height); //Change our line height if it's not fixed
+                                            if (!_line_fixed_height) _line_height = max(_line_height, _sprite_height); //Change our line height if it's not fixed
                                             
                                             if (_sprite_number >= 256)
                                             {
@@ -770,7 +769,7 @@ repeat(_buffer_size)
                     _force_newline = true;
                     _char_width    = 0;
                     _line_width    = max(_line_width, _text_x);
-                    if (!SCRIBBLE_FIXED_LINE_HEIGHT) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+                    if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                 }
                 else
                 {
@@ -813,7 +812,7 @@ repeat(_buffer_size)
         _force_newline = true;
         _char_width    = 0;
         _line_width    = max(_line_width, _text_x);
-        if (!SCRIBBLE_FIXED_LINE_HEIGHT) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+        if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                 
         _add_character = false;
     }
@@ -823,7 +822,7 @@ repeat(_buffer_size)
         _char_width     = _font_space_width*_text_scale;
         _line_has_space = true;
         _line_width     = max(_line_width, _text_x);
-        if (!SCRIBBLE_FIXED_LINE_HEIGHT) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+        if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                 
         //Iterate over all the vertex buffers we've been using and reset the word start position
         var _v = 0;
@@ -998,7 +997,7 @@ repeat(_buffer_size)
         }
         
         //Choose the height of a space for the character's height
-        if (!SCRIBBLE_FIXED_LINE_HEIGHT) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+        if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
     }
     
     
@@ -1075,7 +1074,7 @@ repeat(_buffer_size)
                             buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + _line_offset_x);
                             
                              //If we're using a fixed line height, ensure that the glyph y-position is updated too
-                            if (SCRIBBLE_FIXED_LINE_HEIGHT)
+                            if (_line_fixed_height)
                             {
                                 buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + _line_height);
                             }
@@ -1106,7 +1105,7 @@ repeat(_buffer_size)
         _line_has_space = false;
         _line_width     = 0;
         _line_height    = _line_min_height;
-        if (SCRIBBLE_FIXED_LINE_HEIGHT) _text_y += _line_height;
+        if (_line_fixed_height) _text_y += _line_height;
                 
         //Create a new line
         var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
@@ -1236,7 +1235,7 @@ repeat(_buffer_size)
                         buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32, SCRIBBLE_MAX_LINES*_char);
                         
                         //If we're using a fixed line height, reset this glyph's y-position
-                        if (SCRIBBLE_FIXED_LINE_HEIGHT)
+                        if (_line_fixed_height)
                         {
                             buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32, _half_fixed_height);
                         }
@@ -1265,7 +1264,7 @@ repeat(_buffer_size)
         _glyph_texture         = -1;
         _vbuff_line_start_list = -1;
         
-        if (SCRIBBLE_FIXED_LINE_HEIGHT) _text_y = _half_fixed_height;
+        if (_line_fixed_height) _text_y = _half_fixed_height;
         
         _force_newpage = false;
     }
@@ -1459,7 +1458,7 @@ repeat(array_length_1d(_element_pages_array))
                     }
                     
                     //Only update glyph y-positions if we're not using fixed line heights
-                    if (!SCRIBBLE_FIXED_LINE_HEIGHT)
+                    if (!_line_fixed_height)
                     {
                         //Now let's do vertical alignment by writing to CENTRE_Y
                         var _line_y = _line_data[__SCRIBBLE_LINE.Y];
