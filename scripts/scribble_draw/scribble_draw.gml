@@ -1632,6 +1632,12 @@ if (global.scribble_state_allow_draw)
                 {
                     _scribble_array[@ __SCRIBBLE.AUTOTYPE_DELAY_PAUSED] = false;
                     var _typewriter_speed = _typewriter_adjusted_speed;
+                    
+                    var _old_head_pos = _typewriter_window_array[@ 2*_typewriter_window];
+                    _typewriter_window = (_typewriter_window + 1) mod __SCRIBBLE_WINDOW_COUNT;
+                    _scribble_array[@ __SCRIBBLE.AUTOTYPE_WINDOW] = _typewriter_window;
+                    _typewriter_window_array[@ 2*_typewriter_window  ] = _old_head_pos;
+                    _typewriter_window_array[@ 2*_typewriter_window+1] = _old_head_pos - _typewriter_smoothness;
                 }
                 else
                 {
@@ -1775,10 +1781,7 @@ if (global.scribble_state_allow_draw)
                 }
                 
                 _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
-                
                 _typewriter_window_array[@ 2*_typewriter_window] = _typewriter_head_pos;
-                
-                var _glyph_array = _scribble_array[__SCRIBBLE.GLYPH_ARRAY];
             }
             
             #endregion
@@ -1790,17 +1793,18 @@ if (global.scribble_state_allow_draw)
             //If it's been around-about a frame since we called this scripts...
             //if (_increment_timers)
             {
-                var _i = 1;
+                var _i = 0;
                 repeat(__SCRIBBLE_WINDOW_COUNT)
                 {
-                    _typewriter_window_array[@ _i] = min(_typewriter_window_array[_i] + _typewriter_adjusted_speed, _typewriter_window_array[_i-1]);
+                    _typewriter_window_array[@ _i+1] = min(_typewriter_window_array[_i+1] + _typewriter_adjusted_speed, _typewriter_window_array[_i]);
                     _i += 2;
                 }
             }
             
+            var _glyph_array = _scribble_array[__SCRIBBLE.GLYPH_ARRAY];
             var _index = _typewriter_window_array[@ 2*_typewriter_window];
-            show_debug_message(string_format(_index, 4, 3) + " " + chr(_glyph_array[_index]));
-            //show_debug_message(_typewriter_window_array);
+            //show_debug_message(string_format(_index, 4, 3) + " " + chr(_glyph_array[_index]));
+            show_debug_message(_typewriter_window_array);
         }
         
         if (!_typewriter_fade_in) _typewriter_method = -_typewriter_method;

@@ -1,6 +1,11 @@
 if (keyboard_check_pressed(vk_space))
 {
-    if (scribble_autotype_get(element) < 1)
+    if (scribble_autotype_is_paused(element))
+    {
+        //If we're paused, unpause!
+        scribble_autotype_set_pause(element, false);
+    }
+    else if (scribble_autotype_get(element) < 1)
     {
         //If we haven't finised yet, skip to the end of this page
         scribble_autotype_skip(element);
