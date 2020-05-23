@@ -729,8 +729,15 @@ repeat(_buffer_size)
                                                 var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
                                                         
                                                 var _blue = _lsf + (_hsf << 4);
-                                                        
-                                                _text_colour = make_colour_rgb(_red, _green, _blue);
+                                                
+                                                if (SCRIBBLE_BGR_COLOR_HEX_CODES)
+                                                {
+                                                    _text_colour = make_colour_rgb(_blue, _green, _red);
+                                                }
+                                                else
+                                                {
+                                                    _text_colour = make_colour_rgb(_red, _green, _blue);
+                                                }
                                                         
                                                 continue; //Skip the rest of the parser step
                                                         
