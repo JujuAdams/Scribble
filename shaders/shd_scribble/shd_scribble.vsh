@@ -180,7 +180,7 @@ vec4 rainbow(float characterIndex, float weight, float speed, vec4 colour)
 float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index)
 {
     float result = 0.0;
-    float f      = 0.0;
+    float f      = 1.0;
     float head   = 0.0;
     float tail   = 0.0;
     
@@ -192,12 +192,13 @@ float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index)
         if (u_fTypewriterSmoothness > 0.0)
         {
             f = 1.0 - min(max((index - tail) / smoothness, 0.0), 1.0);
-            if (index > head) f = 0.0;
         }
         else
         {
-            f = step(index, head);
+            f = 1.0;
         }
+        
+        f *= step(index, head);
         
         result = max(f, result);
     }

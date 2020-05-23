@@ -1800,11 +1800,6 @@ if (global.scribble_state_allow_draw)
                     _i += 2;
                 }
             }
-            
-            var _glyph_array = _scribble_array[__SCRIBBLE.GLYPH_ARRAY];
-            var _index = _typewriter_window_array[@ 2*_typewriter_window];
-            //show_debug_message(string_format(_index, 4, 3) + " " + chr(_glyph_array[_index]));
-            show_debug_message(_typewriter_window_array);
         }
         
         if (!_typewriter_fade_in) _typewriter_method = -_typewriter_method;
