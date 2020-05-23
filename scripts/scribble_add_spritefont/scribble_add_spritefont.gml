@@ -66,7 +66,6 @@ if (asset_get_type(_font) != asset_sprite)
 
 
 
-show_debug_message("Scribble: Reminder - Set your spritefonts' collision type to \"Precise Per Frame (Slow)\". This helps Scribble determine how big each character is");
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Processing spritefont \"" + _font + "\"");
         
 //Strip out a map of of glyphs

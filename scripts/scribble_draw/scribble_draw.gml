@@ -1068,18 +1068,15 @@ if (!is_array(_draw_string))
                 _line_width     = 0;
                 _line_height    = _line_min_height;
                 
-                if (!_force_newpage)
-                {
-                    //Create a new line
-                    var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
-                    _line_array[@ __SCRIBBLE_LINE.START_CHAR] = _force_newline? _meta_element_characters : (_word_start_char+1);
-                    _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _meta_element_characters;
-                    _line_array[@ __SCRIBBLE_LINE.Y         ] = _line_y;
-                    _line_array[@ __SCRIBBLE_LINE.WIDTH     ] = 0;
-                    _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_min_height;
-                    _line_array[@ __SCRIBBLE_LINE.HALIGN    ] = _text_halign;
-                    _page_lines_array[@ array_length_1d(_page_lines_array)] = _line_array; //Add this line to the page
-                }
+                //Create a new line
+                var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
+                _line_array[@ __SCRIBBLE_LINE.START_CHAR] = _force_newline? _meta_element_characters : (_word_start_char+1);
+                _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _meta_element_characters;
+                _line_array[@ __SCRIBBLE_LINE.Y         ] = _line_y;
+                _line_array[@ __SCRIBBLE_LINE.WIDTH     ] = 0;
+                _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_min_height;
+                _line_array[@ __SCRIBBLE_LINE.HALIGN    ] = _text_halign;
+                _page_lines_array[@ array_length_1d(_page_lines_array)] = _line_array; //Add this line to the page
                 
                 _force_newline = false;
             }
@@ -1120,37 +1117,23 @@ if (!is_array(_draw_string))
                 _element_pages_array[@ array_length_1d(_element_pages_array)] = _new_page_array;
                 ++_meta_element_pages;
                 
+                //Steal the last line from the previous page
+                _page_array[@ __SCRIBBLE_PAGE.LINES] = _meta_page_lines - 1;
+                _page_lines_array[@ array_length_1d(_page_lines_array)-1] = undefined;
+                
+                //Figure out last/start chars for pages
+                _page_array[@ __SCRIBBLE_PAGE.LAST_CHAR] = _line_array[@ __SCRIBBLE_LINE.START_CHAR] - 1;
+                _new_page_array[@ __SCRIBBLE_PAGE.START_CHAR] = _line_array[__SCRIBBLE_LINE.START_CHAR];
+                
                 if (_force_newpage)
                 {
-                    //Update the metadata of the previous page
-                    _page_array[@ __SCRIBBLE_PAGE.LINES    ] = _meta_page_lines;
-                    _page_array[@ __SCRIBBLE_PAGE.LAST_CHAR] = _meta_element_characters - 1;
-                    
-                    _new_page_array[@ __SCRIBBLE_PAGE.START_CHAR] = _meta_element_characters;
-                    
                     //Reset state
                     _text_x      = 0;
                     _line_width  = 0;
                     _line_height = _line_min_height;
-                    
-                    //Create a brand new line to target
-                    _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
-                    _line_array[@ __SCRIBBLE_LINE.START_CHAR] = _meta_element_characters;
-                    _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _meta_element_characters;
-                    _line_array[@ __SCRIBBLE_LINE.WIDTH     ] = _line_width;
-                    _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_height;
-                    _line_array[@ __SCRIBBLE_LINE.HALIGN    ] = _text_halign;
                 }
                 else
                 {
-                    //Update the metadata of the previous page
-                    _page_array[@ __SCRIBBLE_PAGE.LINES    ] = _meta_page_lines - 1; //Steal the last line from the previous page
-                    _page_array[@ __SCRIBBLE_PAGE.LAST_CHAR] = _word_start_char - 1;
-                    
-                    _new_page_array[@ __SCRIBBLE_PAGE.START_CHAR] = _line_array[__SCRIBBLE_LINE.START_CHAR];
-                    
-                    _page_lines_array[@ array_length_1d(_page_lines_array)-1] = undefined;
-                    
                     //Iterate over every vertex buffer on the previous page and steal vertices where we need to
                     var _v = 0;
                     repeat(array_length_1d(_page_vbuffs_array))
@@ -1237,9 +1220,15 @@ if (!is_array(_draw_string))
             _text_x += _char_width;
         }
         
+        #endregion
+        
+        
+        
+        #region Finalise the data structure
+        
         _line_width = max(_line_width, _text_x);
         
-        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_element_characters;
+        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_element_characters - 1;
         _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
         _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
         _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
@@ -1250,7 +1239,8 @@ if (!is_array(_draw_string))
         _element_height = max(_element_height, _line_y + _line_height);
         
         //Update metadata
-        _page_array[@ __SCRIBBLE_PAGE.LINES] = _meta_page_lines;
+        _page_array[@ __SCRIBBLE_PAGE.LINES    ] = _meta_page_lines;
+        _page_array[@ __SCRIBBLE_PAGE.LAST_CHAR] = _meta_element_characters - 1;
         
         _scribble_array[@ __SCRIBBLE.LINES     ] = _meta_element_lines;
         _scribble_array[@ __SCRIBBLE.CHARACTERS] = _meta_element_characters;
@@ -1261,12 +1251,40 @@ if (!is_array(_draw_string))
         #endregion
         
         
+        
+        #region Debug
+        /*
         //Iterate over every page
         var _p = 0;
         repeat(array_length_1d(_element_pages_array))
         {
             var _page_array = _element_pages_array[_p];
             _page_lines_array  = _page_array[__SCRIBBLE_PAGE.LINES_ARRAY];
+            
+            var _page_start = _page_array[__SCRIBBLE_PAGE.START_CHAR];
+            var _page_end   = _page_array[__SCRIBBLE_PAGE.LAST_CHAR ];
+            
+            var _string = "";
+            var _c = _page_start;
+            repeat(1 + _page_end - _page_start)
+            {
+                if (_c < array_length_1d(_glyph_character_array))
+                {
+                    var _value = _glyph_character_array[_c];
+                    if (is_string(_value))
+                    {
+                        _string += "[" + _value + "]";
+                    }
+                    else
+                    {
+                        _string += chr(_value);
+                    }
+                }
+                
+                ++_c;
+            }
+            
+            show_debug_message("Page " + string(_p) + ": " + string(_page_start) + " -> " + string(_page_end) + " = <" + string(_string) + ">");
             
             //Iterate over every line on the page
             var _l = 0;
@@ -1276,12 +1294,12 @@ if (!is_array(_draw_string))
                 
                 if (is_array(_line_array))
                 {
-                    var _start = _line_array[__SCRIBBLE_LINE.START_CHAR];
-                    var _end   = _line_array[__SCRIBBLE_LINE.LAST_CHAR ];
+                    var _line_start = _line_array[__SCRIBBLE_LINE.START_CHAR];
+                    var _line_end   = _line_array[__SCRIBBLE_LINE.LAST_CHAR ];
                     
                     var _string = "";
-                    var _c = _start;
-                    repeat(1 + _end - _start)
+                    var _c = _line_start;
+                    repeat(1 + _line_end - _line_start)
                     {
                         if (_c < array_length_1d(_glyph_character_array))
                         {
@@ -1299,15 +1317,18 @@ if (!is_array(_draw_string))
                         ++_c;
                     }
                     
-                    show_debug_message(string(_start) + " -> " + string(_end) + " = <" + string(_string) + ">");
+                    show_debug_message(string(_line_start) + " -> " + string(_line_end) + " = <" + string(_string) + ">");
                 }
                 
                 ++_l;
             }
             
-            show_debug_message("EOP");
             ++_p;
         }
+        //*/
+        #endregion
+        
+        
         
         #region Move glyphs around on a line to finalise alignment
         
@@ -1759,6 +1780,8 @@ if (global.scribble_state_allow_draw)
                 _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
                 
                 _typewriter_window_array[@ 2*_typewriter_window] = _typewriter_head_pos;
+                
+                var _glyph_array = _scribble_array[__SCRIBBLE.GLYPH_ARRAY];
             }
             
             #endregion
@@ -1778,18 +1801,18 @@ if (global.scribble_state_allow_draw)
                 }
             }
             
-            show_debug_message(_typewriter_window_array);
+            var _index = _typewriter_window_array[@ 2*_typewriter_window];
+            show_debug_message(string_format(_index, 4, 3) + " " + chr(_glyph_array[_index]));
+            //show_debug_message(_typewriter_window_array);
         }
         
-        //Use a negative typewriter method to communicate a fade-out state to the shader
-        //It's a bit hacky but it reduces the uniform count for the shader
         if (!_typewriter_fade_in) _typewriter_method = -_typewriter_method;
         
         //Set the shader and its uniforms
         shader_set(shd_scribble);
         shader_set_uniform_f(global.__scribble_uniform_time, _animation_time);
         
-        shader_set_uniform_f(global.__scribble_uniform_tw_method, _typewriter_method);
+        shader_set_uniform_f(global.__scribble_uniform_tw_method, _typewriter_fade_in? _typewriter_method : -_typewriter_method);
         shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
         shader_set_uniform_f_array(global.__scribble_uniform_tw_window_array, _typewriter_window_array);
         

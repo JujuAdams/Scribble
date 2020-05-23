@@ -43,7 +43,7 @@ var _page_array = _pages_array[_scribble_array[__SCRIBBLE.AUTOTYPE_PAGE]];
 
 //Update the remaining autotype state values
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_WINDOW      ] = 0;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_WINDOW_ARRAY] = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_array[__SCRIBBLE_PAGE.START_CHAR]);
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_WINDOW_ARRAY] = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_array[__SCRIBBLE_PAGE.START_CHAR] - 1);
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD      ] = _method;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED       ] = _speed;
 _scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS  ] = _smoothness;

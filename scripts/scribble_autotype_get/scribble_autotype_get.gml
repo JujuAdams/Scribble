@@ -51,7 +51,7 @@ switch(_typewriter_method)
 //Normalise the parameter from 0 -> 1 using the total counter
 var _window       = _scribble_array[__SCRIBBLE.AUTOTYPE_WINDOW      ];
 var _window_array = _scribble_array[__SCRIBBLE.AUTOTYPE_WINDOW_ARRAY];
-var _typewriter_t = clamp((_window_array[2*_window] - _min) / (1 + _max - _min), 0, 1);
+var _typewriter_t = clamp((_window_array[2*_window] - _min) / (_max - _min), 0, 1);
 
 //Add one if we're fading out
 return _typewriter_fade_in? _typewriter_t : (_typewriter_t+1);
