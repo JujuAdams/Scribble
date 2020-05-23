@@ -27,6 +27,7 @@ const int MAX_DATA_FIELDS = 14;
 
 const float MAX_LINES = 1000.0; //Change SCRIBBLE_MAX_LINES in __scribble_config() if you change this value!
 
+const int WINDOW_COUNT = 4;
 
 
 //--------------------------------------------------------------------------------------------------------
@@ -45,7 +46,8 @@ uniform vec4  u_vColourBlend;
 uniform float u_fTime;
 
 uniform float u_fTypewriterMethod;
-uniform float u_fTypewriterTailPos;
+uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT];
+uniform float u_fTypewriterSmoothness;
 uniform float u_fTypewriterHeadPos;
 
 uniform float u_aDataFields[MAX_DATA_FIELDS];
@@ -175,22 +177,31 @@ vec4 rainbow(float characterIndex, float weight, float speed, vec4 colour)
 }
 
 //Fade effect for typewriter etc.
-float fade(float tailPos, float headPos, float index)
+float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index)
 {
-    float multiplier = 0.0;
+    float result = 0.0;
+    float f      = 0.0;
+    float head   = 0.0;
+    float tail   = 0.0;
     
-    if (tailPos == headPos)
+    for(int i = 0; i < 2*WINDOW_COUNT; i += 2)
     {
-        multiplier = step(headPos, index);
-    }
-    else
-    {
-        multiplier = min(max((index - tailPos) / (headPos - tailPos), 0.0), 1.0);
+        head = windowArray[i  ];
+        tail = windowArray[i+1];
+        
+        if (u_fTypewriterSmoothness > 0.0)
+        {
+            f = 1.0 - min(max((index - tail) / smoothness, 0.0), 1.0);
+        }
+        else
+        {
+            f = step(index, head);
+        }
+        
+        result = max(f, result);
     }
     
-    if (u_fTypewriterMethod > 0.0) multiplier = 1.0 - multiplier;
-    
-    return multiplier;
+    return result;
 }
 
 
@@ -253,7 +264,7 @@ void main()
     {
         //Choose our index based on what method's being used: if the method value == 1.0 then we're using character indexes, otherwise we use line indexes
         float index = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
-        v_vColour.a *= fade(u_fTypewriterTailPos, u_fTypewriterHeadPos, index);
+        v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index);
     }
     
     //Texture

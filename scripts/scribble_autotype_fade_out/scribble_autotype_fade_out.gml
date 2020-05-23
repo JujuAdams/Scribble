@@ -37,11 +37,15 @@ if ((_method != SCRIBBLE_AUTOTYPE_NONE)
     _method = SCRIBBLE_AUTOTYPE_NONE;
 }
 
+//Reset this page's previous event position too
+var _pages_array = _scribble_array[@ __SCRIBBLE.PAGES_ARRAY];
+var _page_array = _pages_array[_scribble_array[__SCRIBBLE.AUTOTYPE_PAGE]];
+
 //Update the remaining autotype state values
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_TAIL_POSITION] = -_smoothness;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_HEAD_POSITION] = 0;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD       ] = _method;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED        ] = _speed;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS   ] = _smoothness;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN      ] = false;
-_scribble_array[@ __SCRIBBLE.AUTOTYPE_SKIP         ] = false;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_WINDOW      ] = 0;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_WINDOW_ARRAY] = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_array[__SCRIBBLE_PAGE.START_CHAR]);
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_METHOD      ] = _method;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_SPEED       ] = _speed;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_SMOOTHNESS  ] = _smoothness;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_FADE_IN     ] = false;
+_scribble_array[@ __SCRIBBLE.AUTOTYPE_SKIP        ] = false;

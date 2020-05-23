@@ -37,12 +37,21 @@ var _page_array = _element_pages_array[_scribble_array[__SCRIBBLE.AUTOTYPE_PAGE]
 
 switch(_typewriter_method)
 {
-    case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.CHARACTERS]; break;
-    case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES     ]; break;
+    case SCRIBBLE_AUTOTYPE_PER_CHARACTER:
+        var _min = _page_array[__SCRIBBLE_PAGE.START_CHAR];
+        var _max = _page_array[__SCRIBBLE_PAGE.LAST_CHAR ];
+    break;
+    
+    case SCRIBBLE_AUTOTYPE_PER_LINE:
+        var _min = 0;
+        var _max = _page_array[__SCRIBBLE_PAGE.LINES];
+    break;
 }
 
 //Normalise the parameter from 0 -> 1 using the total counter
-var _typewriter_t = clamp(_scribble_array[__SCRIBBLE.AUTOTYPE_HEAD_POSITION]/_typewriter_count, 0, 1);
+var _window       = _scribble_array[__SCRIBBLE.AUTOTYPE_WINDOW      ];
+var _window_array = _scribble_array[__SCRIBBLE.AUTOTYPE_WINDOW_ARRAY];
+var _typewriter_t = clamp((_window_array[2*_window] - _min) / (1 + _max - _min), 0, 1);
 
 //Add one if we're fading out
 return _typewriter_fade_in? _typewriter_t : (_typewriter_t+1);
