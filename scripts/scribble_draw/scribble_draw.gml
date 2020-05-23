@@ -1183,10 +1183,7 @@ if (!is_array(_draw_string))
                             var _tell = __SCRIBBLE_VERTEX.PACKED_INDEXES;
                             repeat(_bytes / __SCRIBBLE_VERTEX.__SIZE)
                             {
-                                var _packed_indexes = buffer_peek(_buffer, _tell, buffer_f32);
-                                var _char = _packed_indexes div SCRIBBLE_MAX_LINES;
-                                
-                                buffer_poke(_new_buffer, _tell, buffer_f32, SCRIBBLE_MAX_LINES*_char);
+                                buffer_poke(_new_buffer, _tell, buffer_f32, SCRIBBLE_MAX_LINES*(buffer_peek(_new_buffer, _tell, buffer_f32) div SCRIBBLE_MAX_LINES));
                                 _tell += __SCRIBBLE_VERTEX.__SIZE;
                             }
                         }

@@ -34,7 +34,7 @@ scribble_draw_set_cache_group("example cache group", false, true);
 scribble_draw_set_wrap(-1, 450, 100, false);
 element = scribble_draw(0, 0, demo_string);
 scribble_page_set(element, 0);
-scribble_autotype_fade_in(element, SCRIBBLE_AUTOTYPE_PER_CHARACTER, 1, 0);
+scribble_autotype_fade_in(element, SCRIBBLE_AUTOTYPE_PER_CHARACTER, 1, 10);
 
 //Don't forget to reset the state otherwise all subsequent Scribble text elements will inherit these settings
 scribble_draw_reset();
