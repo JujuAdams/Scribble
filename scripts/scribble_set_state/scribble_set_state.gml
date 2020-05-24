@@ -12,6 +12,7 @@ global.scribble_state_angle           = argument0[SCRIBBLE_STATE.ANGLE          
 global.scribble_state_colour          = argument0[SCRIBBLE_STATE.COLOUR         ];
 global.scribble_state_alpha           = argument0[SCRIBBLE_STATE.ALPHA          ];
 global.scribble_state_line_min_height = argument0[SCRIBBLE_STATE.LINE_MIN_HEIGHT];
+global.scribble_state_line_max_height = argument0[SCRIBBLE_STATE.LINE_MAX_HEIGHT];
 global.scribble_state_max_width       = argument0[SCRIBBLE_STATE.MAX_WIDTH      ];
 global.scribble_state_max_height      = argument0[SCRIBBLE_STATE.MAX_HEIGHT     ];
 global.scribble_state_character_wrap  = argument0[SCRIBBLE_STATE.CHARACTER_WRAP ];

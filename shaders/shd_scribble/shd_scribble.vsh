@@ -95,10 +95,22 @@ vec2 rotate(vec2 position, vec2 centre, float angle)
     return centre + vec2(delta.x*_cos - delta.y*_sin, delta.x*_sin + delta.y*_cos);
 }
 
-//Scale the character
+//Scale the character equally on both x and y axes
 vec2 scale(vec2 position, vec2 centre, float scale)
 {
     return centre + scale*(position - centre);
+}
+
+//Scale the character on the x-axis
+float xscale(vec2 position, vec2 centre, float scale)
+{
+    return centre.x + scale*(position.x - centre.x);
+}
+
+//Scale the character on the y-axis
+float yscale(vec2 position, vec2 centre, float scale)
+{
+    return centre.y + scale*(position.y - centre.y);
 }
 
 //Oscillate the character
@@ -266,9 +278,7 @@ void main()
     {
         //Choose our index based on what method's being used: if the method value == 1.0 then we're using character indexes, otherwise we use line indexes
         float index = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
-        float f = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index);
-        v_vColour.a *= f;
-        pos = scale(pos, centre, f);
+        v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index);
     }
     
     //Texture

@@ -1,8 +1,10 @@
 /// @param element
 /// @param callbackFunction
+/// @param [occuranceName]
 
-var _scribble_array = argument0;
-var _function       = argument1;
+var _scribble_array = argument[0];
+var _function       = argument[1];
+var _occurance_name = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : global.__scribble_default_occurance_name;
 
 //Check if this array is a relevant text element
 if (!is_array(_scribble_array)
@@ -15,4 +17,8 @@ if (!is_array(_scribble_array)
 
 if (_scribble_array[SCRIBBLE.FREED]) return false;
 
-_scribble_array[@ SCRIBBLE.AUTOTYPE_FUNCTION] = _function;
+//Find our occurance data
+var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
+var _occurance_array = _occurance_map[? _occurance_name];
+
+_occurance_array[@ __SCRIBBLE_OCCURANCE.FUNCTION] = _function;

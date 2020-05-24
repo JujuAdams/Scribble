@@ -42,63 +42,36 @@ var _draw_string = argument2;
 var _scribble_array = scribble_cache(_draw_string);
 if (_scribble_array == undefined) return undefined;
 
-#region Draw this text element
-    
+//Find our occurance data
+var _occurances_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
+var _occurance_array = _occurances_map[? global.scribble_state_occurance];
+
+//Find our page data
 var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];
-var _page_array = _element_pages_array[_scribble_array[SCRIBBLE.AUTOTYPE_PAGE]];
-    
-//Figure out the left/top offset
-switch(global.scribble_state_box_halign)
-{
-    case fa_center: var _left = -_scribble_array[SCRIBBLE.WIDTH] div 2; break;
-    case fa_right:  var _left = -_scribble_array[SCRIBBLE.WIDTH];       break;
-    default:        var _left = 0;                                      break;
-}
-    
-switch(global.scribble_state_box_valign)
-{
-    case fa_middle: var _top = -_scribble_array[SCRIBBLE.HEIGHT] div 2; break;
-    case fa_bottom: var _top = -_scribble_array[SCRIBBLE.HEIGHT];       break;
-    default:        var _top = 0;                                       break;
-}
+var _page_array = _element_pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAGE]];
     
 //Handle the animation timer
-var _increment_timers = ((current_time - _scribble_array[SCRIBBLE.TIME]) > __SCRIBBLE_EXPECTED_FRAME_TIME);
-var _animation_time   = _scribble_array[SCRIBBLE.ANIMATION_TIME];
+var _increment_timers = ((current_time - _occurance_array[__SCRIBBLE_OCCURANCE.DRAWN_TIME]) > __SCRIBBLE_EXPECTED_FRAME_TIME);
+var _animation_time   = _occurance_array[__SCRIBBLE_OCCURANCE.ANIMATION_TIME];
     
 if (_increment_timers)
 {
     _animation_time += SCRIBBLE_STEP_SIZE;
-    _scribble_array[@ SCRIBBLE.ANIMATION_TIME] = _animation_time;
+    _occurance_array[@ __SCRIBBLE_OCCURANCE.ANIMATION_TIME] = _animation_time;
 }
-    
-//Build a matrix to transform the text...
-if ((global.scribble_state_xscale == 1)
-&&  (global.scribble_state_yscale == 1)
-&&  (global.scribble_state_angle  == 0))
-{
-    var _matrix = matrix_build(_left + _draw_x, _top + _draw_y, 0,   0,0,0,   1,1,1);
-}
-else
-{
-    var _matrix = matrix_build(_left, _top, 0,   0,0,0,   1,1,1);
-        _matrix = matrix_multiply(_matrix, matrix_build(_draw_x, _draw_y, 0,
-                                                        0, 0, global.scribble_state_angle,
-                                                        global.scribble_state_xscale, global.scribble_state_yscale, 1));
-}
-    
-//...aaaand set the matrix
-var _old_matrix = matrix_get(matrix_world);
-_matrix = matrix_multiply(_matrix, _old_matrix);
-matrix_set(matrix_world, _matrix);
-    
+
+//Update when this text element was last drawn
+_scribble_array[@  SCRIBBLE.DRAWN_TIME] = current_time;
+_occurance_array[@ SCRIBBLE.DRAWN_TIME] = current_time;
+
+//Grab our vertex buffers for this page
 var _page_vbuffs_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
 var _count = array_length_1d(_page_vbuffs_array);
 if (_count > 0)
 {
-    var _typewriter_adjusted_speed = _scribble_array[SCRIBBLE.AUTOTYPE_SPEED]*SCRIBBLE_STEP_SIZE;
-        
-    var _typewriter_method = _scribble_array[SCRIBBLE.AUTOTYPE_METHOD];
+    #region Advance the autotyper, execute events, play sounds etc.
+    
+    var _typewriter_method = _occurance_array[__SCRIBBLE_OCCURANCE.METHOD];
     if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE)
     {
         var _typewriter_method       = 0;
@@ -109,28 +82,29 @@ if (_count > 0)
     }
     else
     {
-        var _typewriter_smoothness   = _scribble_array[SCRIBBLE.AUTOTYPE_SMOOTHNESS  ];
-        var _typewriter_window       = _scribble_array[SCRIBBLE.AUTOTYPE_WINDOW      ];
-        var _typewriter_window_array = _scribble_array[SCRIBBLE.AUTOTYPE_WINDOW_ARRAY];
-        var _typewriter_fade_in      = _scribble_array[SCRIBBLE.AUTOTYPE_FADE_IN     ];
+        var _typewriter_smoothness     = _occurance_array[__SCRIBBLE_OCCURANCE.SMOOTHNESS  ];
+        var _typewriter_window         = _occurance_array[__SCRIBBLE_OCCURANCE.WINDOW      ];
+        var _typewriter_window_array   = _occurance_array[__SCRIBBLE_OCCURANCE.WINDOW_ARRAY];
+        var _typewriter_fade_in        = _occurance_array[__SCRIBBLE_OCCURANCE.FADE_IN     ];
+        var _typewriter_adjusted_speed = _occurance_array[__SCRIBBLE_OCCURANCE.SPEED       ]*SCRIBBLE_STEP_SIZE;
             
         //Handle pausing
-        if (_scribble_array[SCRIBBLE.AUTOTYPE_PAUSED])
+        if (_occurance_array[__SCRIBBLE_OCCURANCE.PAUSED])
         {
             var _typewriter_speed = 0;
         }
-        else if (_scribble_array[SCRIBBLE.AUTOTYPE_DELAY_PAUSED])
+        else if (_occurance_array[__SCRIBBLE_OCCURANCE.DELAY_PAUSED])
         {
-            if (current_time > _scribble_array[SCRIBBLE.AUTOTYPE_DELAY_END])
+            if (current_time > _occurance_array[__SCRIBBLE_OCCURANCE.DELAY_END])
             {
                 //We've waited long enough, start showing more text
-                _scribble_array[@ SCRIBBLE.AUTOTYPE_DELAY_PAUSED] = false;
+                _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_PAUSED] = false;
                 var _typewriter_speed = _typewriter_adjusted_speed;
                 
                 //Increment the window index
                 var _old_head_pos = _typewriter_window_array[@ _typewriter_window];
                 _typewriter_window = (_typewriter_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
-                _scribble_array[@ SCRIBBLE.AUTOTYPE_WINDOW] = _typewriter_window;
+                _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW] = _typewriter_window;
                 _typewriter_window_array[@ _typewriter_window  ] = _old_head_pos;
                 _typewriter_window_array[@ _typewriter_window+1] = _old_head_pos - _typewriter_smoothness;
             }
@@ -184,7 +158,7 @@ if (_count > 0)
                     //Now iterate from our current character position to the next character position
                     var _break = false;
                     var _scan = _scan_a;
-                    var _skipping = _scribble_array[SCRIBBLE.AUTOTYPE_SKIP];
+                    var _skipping = _occurance_array[__SCRIBBLE_OCCURANCE.SKIP];
                     repeat(_scan_b - _scan_a)
                     {
                         while ((_event < _event_count) && (_event_char == _scan))
@@ -200,7 +174,7 @@ if (_count > 0)
                                 if ((_event_name == "pause") && !_skipping)
                                 {
                                     _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS] = _event;
-                                    _scribble_array[@ SCRIBBLE.AUTOTYPE_PAUSED] = true;
+                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.PAUSED] = true;
                                 }
                                 else if ((_event_name == "delay") && !_skipping)
                                 {
@@ -215,8 +189,8 @@ if (_count > 0)
                                         var _duration = SCRIBBLE_DEFAULT_DELAY_DURATION;
                                     }
                                         
-                                    _scribble_array[@ SCRIBBLE.AUTOTYPE_DELAY_PAUSED] = true;
-                                    _scribble_array[@ SCRIBBLE.AUTOTYPE_DELAY_END   ] = current_time + _duration;
+                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_PAUSED] = true;
+                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_END   ] = current_time + _duration;
                                 }
                                 else
                                 {
@@ -229,8 +203,8 @@ if (_count > 0)
                                     }
                                 }
                                     
-                                if (_scribble_array[SCRIBBLE.AUTOTYPE_PAUSED]
-                                ||  _scribble_array[SCRIBBLE.AUTOTYPE_DELAY_PAUSED])
+                                if (_occurance_array[__SCRIBBLE_OCCURANCE.PAUSED]
+                                ||  _occurance_array[__SCRIBBLE_OCCURANCE.DELAY_PAUSED])
                                 {
                                     _typewriter_speed = _scan - _scan_a;
                                     _break = true;
@@ -293,15 +267,15 @@ if (_count > 0)
     {
         #region Play a sound effect as the text is revealed
         
-        var _sound_array = _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_ARRAY];
+        var _sound_array = _occurance_array[__SCRIBBLE_OCCURANCE.SOUND_ARRAY];
         if (is_array(_sound_array) && (array_length_1d(_sound_array) > 0))
         {
             var _play_sound = false;
-            if (_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_PER_CHAR])
+            if (_occurance_array[__SCRIBBLE_OCCURANCE.SOUND_PER_CHAR])
             {
                 _play_sound = true;
             }
-            else if (current_time >= _scribble_array[SCRIBBLE.SOUND_FINISH_TIME]) 
+            else if (current_time >= _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_FINISH_TIME]) 
             {
                 _play_sound = true;
             }
@@ -316,17 +290,56 @@ if (_count > 0)
                 
                 global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
                 var _rand = global.__scribble_lcg / 2147483648;
-            	audio_sound_pitch(_inst, lerp(_scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MIN_PITCH], _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_MAX_PITCH], _rand));
+            	audio_sound_pitch(_inst, lerp(_occurance_array[__SCRIBBLE_OCCURANCE.SOUND_MIN_PITCH], _occurance_array[__SCRIBBLE_OCCURANCE.SOUND_MAX_PITCH], _rand));
                 
-                _scribble_array[@ SCRIBBLE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _scribble_array[SCRIBBLE.AUTOTYPE_SOUND_OVERLAP];
+                _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _occurance_array[__SCRIBBLE_OCCURANCE.SOUND_OVERLAP];
             }
         }
         
         #endregion
         
-        var _callback = _scribble_array[SCRIBBLE.AUTOTYPE_FUNCTION];
+        var _callback = _occurance_array[__SCRIBBLE_OCCURANCE.FUNCTION];
         if ((_callback != undefined) && script_exists(_callback)) script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window]);
     }
+    
+    #endregion
+    
+    #region Do the drawing!
+    
+    //Figure out the left/top offset
+    switch(global.scribble_state_box_halign)
+    {
+        case fa_center: var _left = -_scribble_array[SCRIBBLE.WIDTH] div 2; break;
+        case fa_right:  var _left = -_scribble_array[SCRIBBLE.WIDTH];       break;
+        default:        var _left = 0;                                      break;
+    }
+    
+    switch(global.scribble_state_box_valign)
+    {
+        case fa_middle: var _top = -_scribble_array[SCRIBBLE.HEIGHT] div 2; break;
+        case fa_bottom: var _top = -_scribble_array[SCRIBBLE.HEIGHT];       break;
+        default:        var _top = 0;                                       break;
+    }
+    
+    //Build a matrix to transform the text...
+    if ((global.scribble_state_xscale == 1)
+    &&  (global.scribble_state_yscale == 1)
+    &&  (global.scribble_state_angle  == 0))
+    {
+        var _matrix = matrix_build(_left + _draw_x, _top + _draw_y, 0,   0,0,0,   1,1,1);
+    }
+    else
+    {
+        var _matrix = matrix_build(_left, _top, 0,   0,0,0,   1,1,1);
+            _matrix = matrix_multiply(_matrix, matrix_build(_draw_x, _draw_y, 0,
+                                                            0, 0, global.scribble_state_angle,
+                                                            global.scribble_state_xscale, global.scribble_state_yscale, 1));
+    }
+    
+    //...aaaand set the matrix
+    var _old_matrix = matrix_get(matrix_world);
+    _matrix = matrix_multiply(_matrix, _old_matrix);
+    matrix_set(matrix_world, _matrix);
     
     //Set the shader and its uniforms
     shader_set(shd_scribble);
@@ -354,15 +367,14 @@ if (_count > 0)
     }
     
     shader_reset();
+    
+    //Make sure we reset the world matrix
+    matrix_set(matrix_world, _old_matrix);
+    
+    #endregion
 }
-    
-//Make sure we reset the world matrix
-matrix_set(matrix_world, _old_matrix);
-    
-#endregion
 
-//Update when this text element was last drawn
-_scribble_array[@ SCRIBBLE.TIME] = current_time;
+
 
 #region Check to see if we need to free some memory from the global cache list
 
@@ -384,7 +396,7 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
             if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: \"" + _cache_string + "\" exists in cache but doesn't exist elsewhere");
             ds_list_delete(global.__scribble_global_cache_list, global.__scribble_cache_test_index);
         }
-        else if (_cache_array[SCRIBBLE.TIME] + SCRIBBLE_CACHE_TIMEOUT < current_time)
+        else if (_cache_array[SCRIBBLE.DRAWN_TIME] + SCRIBBLE_CACHE_TIMEOUT < current_time)
         {
             if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Removing \"" + _cache_string + "\" from cache");
             
@@ -405,6 +417,7 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
                 ++_p;
             }
             
+            ds_map_destroy(_cache_array[SCRIBBLE.OCCURANCES_MAP]);
             _cache_array[@ SCRIBBLE.FREED] = true;
             
             //Remove reference from cache
@@ -415,5 +428,7 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
 }
 
 #endregion
+
+
 
 return _scribble_array;

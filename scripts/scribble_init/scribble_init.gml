@@ -113,6 +113,36 @@ enum __SCRIBBLE_VERTEX
     __SIZE         = 36
 }
 
+enum __SCRIBBLE_OCCURANCE
+{
+    PAGE,              // 0
+    FADE_IN,           // 1
+    SPEED,             // 2
+    SKIP,              // 3
+    WINDOW,            // 4
+    WINDOW_ARRAY,      // 5
+    METHOD,            // 6
+    SMOOTHNESS,        // 7
+    
+    SOUND_ARRAY,       // 8
+    SOUND_OVERLAP,     // 9
+    SOUND_PER_CHAR,    //10
+    SOUND_MIN_PITCH,   //11
+    SOUND_MAX_PITCH,   //12
+    
+    PAUSED,            //13
+    DELAY_PAUSED,      //14
+    DELAY_END,         //15
+    
+    FUNCTION,          //16
+    
+    SOUND_FINISH_TIME, //17
+    DRAWN_TIME,        //18
+    ANIMATION_TIME,    //19
+    
+    __SIZE             //20
+}
+
 enum SCRIBBLE_STATE
 {
     DEFAULT_FONT,
@@ -124,6 +154,7 @@ enum SCRIBBLE_STATE
     COLOUR,
     ALPHA,
     LINE_MIN_HEIGHT,
+    LINE_MAX_HEIGHT,
     MAX_WIDTH,
     MAX_HEIGHT,
     CHARACTER_WRAP,
@@ -158,34 +189,14 @@ enum SCRIBBLE
     CHARACTER_ARRAY,          //18
     
     __SECTION2,               //19
-    ANIMATION_TIME,           //20
-    TIME,                     //21
+    DRAWN_TIME,               //21
     FREED,                    //22
-    SOUND_FINISH_TIME,        //23
+    OCCURANCES_MAP,           //23
     
     __SECTION3,               //24
     PAGES_ARRAY,              //25
     
-    __SECTION4,               //26
-    AUTOTYPE_PAGE,            //27
-    AUTOTYPE_FADE_IN,         //28
-    AUTOTYPE_SPEED,           //29
-    AUTOTYPE_SKIP,            //30
-    AUTOTYPE_WINDOW,          //31
-    AUTOTYPE_WINDOW_ARRAY,    //32
-    AUTOTYPE_METHOD,          //33
-    AUTOTYPE_SMOOTHNESS,      //34
-    AUTOTYPE_SOUND_ARRAY,     //35
-    AUTOTYPE_SOUND_OVERLAP,   //36
-    AUTOTYPE_SOUND_PER_CHAR,  //37
-    AUTOTYPE_SOUND_MIN_PITCH, //38
-    AUTOTYPE_SOUND_MAX_PITCH, //39
-    AUTOTYPE_PAUSED,          //40
-    AUTOTYPE_DELAY_PAUSED,    //41
-    AUTOTYPE_DELAY_END,       //42
-    AUTOTYPE_FUNCTION,        //43
-    
-    __SIZE                    //44
+    __SIZE                    //26
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
@@ -299,6 +310,7 @@ ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP,
 //Declare state variables
 global.scribble_state_anim_array = array_create(SCRIBBLE_ANIM.__SIZE);
 scribble_reset();
+global.__scribble_default_occurance_name = global.scribble_state_occurance;
 
 //Duplicate GM's native colour constants in string form for access in scribble_draw()
 global.__scribble_colours[? "c_aqua"   ] = c_aqua;

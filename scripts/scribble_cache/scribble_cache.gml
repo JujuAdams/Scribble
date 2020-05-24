@@ -1,9 +1,9 @@
 /// Caches a text element given a string using Scribble's formatting
 /// 
 /// Returns: A Scribble text element (which is really a complex array)
-/// @param string         Either a string to be drawn
-/// @param [cacheGroup]   Cache group that stores the Scribble data. If this argument is <undefined>, the default cache group will be used instead
-/// @param [freeze]       Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster
+/// @param string           Either a string to be drawn
+/// @param [cacheGroup]     Cache group that stores the Scribble data. If this argument is <undefined>, the default cache group will be used instead
+/// @param [freeze]         Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster
 
 var _draw_string = argument[0];
 var _cache_group = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_CACHE_GROUP;
@@ -117,56 +117,67 @@ var _element_height          = 0;
 var _scribble_array      = array_create(SCRIBBLE.__SIZE); //The text element array
 var _element_pages_array = [];                              //Stores each page of text
 var _character_array     = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
+var _occurances_map      = ds_map_create();
 
-_scribble_array[@ SCRIBBLE.__SECTION0              ] = "-- Parameters --";
-_scribble_array[@ SCRIBBLE.VERSION                 ] = __SCRIBBLE_VERSION;
-_scribble_array[@ SCRIBBLE.STRING                  ] = _draw_string;
-_scribble_array[@ SCRIBBLE.CACHE_STRING            ] = _cache_string;
-_scribble_array[@ SCRIBBLE.DEFAULT_FONT            ] = _def_font;
-_scribble_array[@ SCRIBBLE.DEFAULT_COLOUR          ] = _def_colour;
-_scribble_array[@ SCRIBBLE.DEFAULT_HALIGN          ] = _def_halign;
-_scribble_array[@ SCRIBBLE.WIDTH_LIMIT             ] = _max_width;
-_scribble_array[@ SCRIBBLE.HEIGHT_LIMIT            ] = _max_height;
-_scribble_array[@ SCRIBBLE.LINE_HEIGHT             ] = _line_min_height;
+_scribble_array[@ SCRIBBLE.__SECTION0       ] = "-- Parameters --";
+_scribble_array[@ SCRIBBLE.VERSION          ] = __SCRIBBLE_VERSION;
+_scribble_array[@ SCRIBBLE.STRING           ] = _draw_string;
+_scribble_array[@ SCRIBBLE.CACHE_STRING     ] = _cache_string;
+_scribble_array[@ SCRIBBLE.DEFAULT_FONT     ] = _def_font;
+_scribble_array[@ SCRIBBLE.DEFAULT_COLOUR   ] = _def_colour;
+_scribble_array[@ SCRIBBLE.DEFAULT_HALIGN   ] = _def_halign;
+_scribble_array[@ SCRIBBLE.WIDTH_LIMIT      ] = _max_width;
+_scribble_array[@ SCRIBBLE.HEIGHT_LIMIT     ] = _max_height;
+_scribble_array[@ SCRIBBLE.LINE_HEIGHT      ] = _line_min_height;
 
-_scribble_array[@ SCRIBBLE.__SECTION1              ] = "-- Statistics --";
-_scribble_array[@ SCRIBBLE.WIDTH                   ] = 0;
-_scribble_array[@ SCRIBBLE.MIN_X                   ] = 0;
-_scribble_array[@ SCRIBBLE.MAX_X                   ] = 0;
-_scribble_array[@ SCRIBBLE.HEIGHT                  ] = 0;
-_scribble_array[@ SCRIBBLE.CHARACTERS              ] = 0;
-_scribble_array[@ SCRIBBLE.LINES                   ] = 0;
-_scribble_array[@ SCRIBBLE.PAGES                   ] = 0;
-_scribble_array[@ SCRIBBLE.GLYPH_LTRB_ARRAY        ] = undefined;
-_scribble_array[@ SCRIBBLE.CHARACTER_ARRAY         ] = _character_array;
+_scribble_array[@ SCRIBBLE.__SECTION1       ] = "-- Statistics --";
+_scribble_array[@ SCRIBBLE.WIDTH            ] = 0;
+_scribble_array[@ SCRIBBLE.MIN_X            ] = 0;
+_scribble_array[@ SCRIBBLE.MAX_X            ] = 0;
+_scribble_array[@ SCRIBBLE.HEIGHT           ] = 0;
+_scribble_array[@ SCRIBBLE.CHARACTERS       ] = 0;
+_scribble_array[@ SCRIBBLE.LINES            ] = 0;
+_scribble_array[@ SCRIBBLE.PAGES            ] = 0;
+_scribble_array[@ SCRIBBLE.GLYPH_LTRB_ARRAY ] = undefined;
+_scribble_array[@ SCRIBBLE.CHARACTER_ARRAY  ] = _character_array;
 
-_scribble_array[@ SCRIBBLE.__SECTION2              ] = "-- State --";
-_scribble_array[@ SCRIBBLE.ANIMATION_TIME          ] = 0;
-_scribble_array[@ SCRIBBLE.TIME                    ] = current_time;
-_scribble_array[@ SCRIBBLE.FREED                   ] = false;
-_scribble_array[@ SCRIBBLE.SOUND_FINISH_TIME       ] = current_time;
+_scribble_array[@ SCRIBBLE.__SECTION2       ] = "-- State --";
+_scribble_array[@ SCRIBBLE.DRAWN_TIME       ] = current_time;
+_scribble_array[@ SCRIBBLE.FREED            ] = false;
+_scribble_array[@ SCRIBBLE.OCCURANCES_MAP   ] = _occurances_map;
 
-_scribble_array[@ SCRIBBLE.__SECTION3              ] = "-- Pages --";
-_scribble_array[@ SCRIBBLE.PAGES_ARRAY             ] = _element_pages_array;
+_scribble_array[@ SCRIBBLE.__SECTION3       ] = "-- Pages --";
+_scribble_array[@ SCRIBBLE.PAGES_ARRAY      ] = _element_pages_array;
 
-_scribble_array[@ SCRIBBLE.__SECTION4              ] = "-- Autotype --";
-_scribble_array[@ SCRIBBLE.AUTOTYPE_PAGE           ] =  0;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_FADE_IN        ] = -1;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SKIP           ] =  false;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SPEED          ] =  0;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_WINDOW         ] =  0;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_WINDOW_ARRAY   ] =  array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
-_scribble_array[@ SCRIBBLE.AUTOTYPE_METHOD         ] =  SCRIBBLE_AUTOTYPE_NONE;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SMOOTHNESS     ] =  0;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SOUND_ARRAY    ] = -1;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SOUND_OVERLAP  ] =  0;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SOUND_PER_CHAR ] =  false;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SOUND_MIN_PITCH] =  1.0;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SOUND_MAX_PITCH] =  1.0;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_PAUSED         ] =  false;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_DELAY_PAUSED   ] =  false;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_DELAY_END      ] = -1;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_FUNCTION       ] =  undefined;
+#endregion
+
+
+
+#region Create a default occurance array
+
+var _occurance_array = array_create(__SCRIBBLE_OCCURANCE.__SIZE);
+_occurances_map[? global.scribble_state_occurance] = _occurance_array;
+
+_occurance_array[@ __SCRIBBLE_OCCURANCE.PAGE             ] =  0;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.FADE_IN          ] = -1;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.SKIP             ] =  false;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.SPEED            ] =  0;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW           ] =  0;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW_ARRAY     ] =  array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
+_occurance_array[@ __SCRIBBLE_OCCURANCE.METHOD           ] =  SCRIBBLE_AUTOTYPE_NONE;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.SMOOTHNESS       ] =  0;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_ARRAY      ] = -1;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_OVERLAP    ] =  0;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_PER_CHAR   ] =  false;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MIN_PITCH  ] =  1.0;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MAX_PITCH  ] =  1.0;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.PAUSED           ] =  false;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_PAUSED     ] =  false;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_END        ] = -1;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.FUNCTION         ] =  undefined;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_FINISH_TIME] =  current_time;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.DRAWN_TIME       ] =  current_time;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.ANIMATION_TIME   ] =  current_time;
 
 #endregion
 

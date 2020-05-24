@@ -1,5 +1,6 @@
 /// Resets Scribble's draw state
 
+global.scribble_state_occurance       = "default";
 global.scribble_state_default_font    = global.__scribble_default_font;
 global.scribble_state_default_color   = c_white;
 global.scribble_state_default_halign  = fa_left;
