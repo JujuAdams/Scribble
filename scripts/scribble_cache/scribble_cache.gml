@@ -1,13 +1,13 @@
 /// Caches a text element given a string using Scribble's formatting
 /// 
 /// Returns: A Scribble text element (which is really a complex array)
-/// @param string           Either a string to be drawn
-/// @param [cacheGroup]     Cache group that stores the Scribble data. If this argument is <undefined>, the default cache group will be used instead
-/// @param [freeze]         Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster
+/// @param string             Either a string to be drawn
+/// @param [garbageCollect]   
+/// @param [freeze]           Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster
 
-var _draw_string = argument[0];
-var _cache_group = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_CACHE_GROUP;
-var _freeze      = (argument_count > 2)? argument[2] : false;
+var _draw_string     = argument[0];
+var _garbage_collect = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : true;
+var _freeze          = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
 
 //If the input string is an array (secret behaviour that Scribble uses!) then run some checking code
 if (is_array(_draw_string))
@@ -25,6 +25,13 @@ if (is_array(_draw_string))
     }
     
     return _draw_string;
+}
+
+//Check for deprecated usage
+if (is_string(_garbage_collect))
+{
+    show_error("Scribble:\nCache groups have been deprecated\n ", true);
+    exit;
 }
 
 //Check if the string already exists in the cache
@@ -129,6 +136,7 @@ _scribble_array[@ SCRIBBLE.DEFAULT_HALIGN   ] = _def_halign;
 _scribble_array[@ SCRIBBLE.WIDTH_LIMIT      ] = _max_width;
 _scribble_array[@ SCRIBBLE.HEIGHT_LIMIT     ] = _max_height;
 _scribble_array[@ SCRIBBLE.LINE_HEIGHT      ] = _line_min_height;
+_scribble_array[@ SCRIBBLE.GARBAGE_COLLECT  ] = _garbage_collect;
 
 _scribble_array[@ SCRIBBLE.__SECTION1       ] = "-- Statistics --";
 _scribble_array[@ SCRIBBLE.WIDTH            ] = 0;
@@ -189,19 +197,7 @@ if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string 
 
 //Add this text element to the global cache lookup
 global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
-
-//Find this cache group's list
-//If we're using the default cache group, this list is the same as global.__scribble_global_cache_list
-var _list = global.__scribble_cache_group_map[? _cache_group];
-if (_list == undefined)
-{
-    //Create a new list if one doesn't already exist
-    _list = ds_list_create();
-    ds_map_add_list(global.__scribble_cache_group_map, _cache_group, _list);
-}
-
-//Add this string to the cache group's list
-ds_list_add(_list, _cache_string);
+ds_list_add(global.__scribble_global_cache_list, _scribble_array);
 
 #endregion
 

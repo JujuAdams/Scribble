@@ -176,19 +176,20 @@ enum SCRIBBLE
     WIDTH_LIMIT,              // 6
     HEIGHT_LIMIT,             // 7
     LINE_HEIGHT,              // 8
+    GARBAGE_COLLECT,          // 9
     
-    __SECTION1,               // 9
-    WIDTH,                    //10
-    MIN_X,                    //11
-    MAX_X,                    //12
-    HEIGHT,                   //13
-    CHARACTERS,               //14
-    LINES,                    //15
-    PAGES,                    //16
-    GLYPH_LTRB_ARRAY,         //17
-    CHARACTER_ARRAY,          //18
+    __SECTION1,               //10
+    WIDTH,                    //11
+    MIN_X,                    //12
+    MAX_X,                    //13
+    HEIGHT,                   //14
+    CHARACTERS,               //15
+    LINES,                    //16
+    PAGES,                    //17
+    GLYPH_LTRB_ARRAY,         //18
+    CHARACTER_ARRAY,          //19
     
-    __SECTION2,               //19
+    __SECTION2,               //20
     DRAWN_TIME,               //21
     FREED,                    //22
     OCCURANCES_MAP,           //23
@@ -300,12 +301,10 @@ global.__scribble_default_font         = _default_font;
 global.__scribble_global_cache_map     = ds_map_create();
 global.__scribble_global_cache_list    = ds_list_create();
 global.__scribble_cache_test_index     = 0;
-global.__scribble_cache_group_map      = ds_map_create();
 global.__scribble_sprite_whitelist     = false;
 global.__scribble_sprite_whitelist_map = ds_map_create();
 global.__scribble_buffer               = buffer_create(1024, buffer_grow, 1);
 global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
-ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP, global.__scribble_global_cache_list);
 
 //Declare state variables
 global.scribble_state_anim_array = array_create(SCRIBBLE_ANIM.__SIZE);

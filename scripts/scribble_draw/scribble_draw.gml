@@ -388,41 +388,13 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
         var _cache_string = global.__scribble_global_cache_list[| global.__scribble_cache_test_index];
         var _cache_array = global.__scribble_global_cache_map[? _cache_string];
         
-        if (!is_array(_cache_array)
-        || (array_length_1d(_cache_array) != SCRIBBLE.__SIZE)
-        || (_cache_array[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
-        || _cache_array[SCRIBBLE.FREED])
+        if (!is_array(_cache_array) || _cache_array[SCRIBBLE.FREED])
         {
             if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: \"" + _cache_string + "\" exists in cache but doesn't exist elsewhere");
-            ds_list_delete(global.__scribble_global_cache_list, global.__scribble_cache_test_index);
         }
-        else if (_cache_array[SCRIBBLE.DRAWN_TIME] + SCRIBBLE_CACHE_TIMEOUT < current_time)
+        else if (_cache_array[SCRIBBLE.GARBAGE_COLLECT] && (_cache_array[SCRIBBLE.DRAWN_TIME] + SCRIBBLE_CACHE_TIMEOUT < current_time))
         {
-            if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Removing \"" + _cache_string + "\" from cache");
-            
-            var _element_pages_array = _cache_array[SCRIBBLE.PAGES_ARRAY];
-            var _p = 0;
-            repeat(array_length_1d(_element_pages_array))
-            {
-                var _page_array = _element_pages_array[_p];
-                var _vertex_buffers_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
-                var _v = 0;
-                repeat(array_length_1d(_vertex_buffers_array))
-                {
-                    var _vbuff_data = _vertex_buffers_array[_v];
-                    var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
-                    vertex_delete_buffer(_vbuff);
-                    ++_v;
-                }
-                ++_p;
-            }
-            
-            ds_map_destroy(_cache_array[SCRIBBLE.OCCURANCES_MAP]);
-            _cache_array[@ SCRIBBLE.FREED] = true;
-            
-            //Remove reference from cache
-            ds_map_delete(global.__scribble_global_cache_map, _cache_string);
-            ds_list_delete(global.__scribble_global_cache_list, global.__scribble_cache_test_index);
+            scribble_flush(_cache_array);
         }
     }
 }
