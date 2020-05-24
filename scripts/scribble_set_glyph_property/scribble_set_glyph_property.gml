@@ -10,10 +10,10 @@
 /// Fonts can often be tricky to render correctly, and this script allows you to change certain properties.
 /// Properties can be adjusted at any time, but existing/cached Scribble text will not be updated to match new properties.
 /// 
-/// Three properties are available for modification:
-/// SCRIBBLE_GLYPH_X_OFFSET:   The relative x-offset to draw the glyph
-/// SCRIBBLE_GLYPH_Y_OFFSET:   The relative y-offset to draw the glyph
-/// SCRIBBLE_GLYPH_SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
+/// Three properties are suggested for modification:
+/// SCRIBBLE_GLYPH.X_OFFSET:   The relative x-offset to draw the glyph
+/// SCRIBBLE_GLYPH.Y_OFFSET:   The relative y-offset to draw the glyph
+/// SCRIBBLE_GLYPH.SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
 ///                            left edge of the next glyph. This can be a negative value!
 
 var _font      = argument[0];

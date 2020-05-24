@@ -57,28 +57,30 @@ enum __SCRIBBLE_FONT_TYPE
 enum __SCRIBBLE_PAGE
 {
     LINES,                //0
-    CHARACTERS,           //1
-    LINES_ARRAY,          //2
-    VERTEX_BUFFERS_ARRAY, //3
+    START_CHAR,           //1
+    LAST_CHAR,            //2
+    LINES_ARRAY,          //3
+    VERTEX_BUFFERS_ARRAY, //4
     
-    EVENT_PREVIOUS,       //4
-    EVENT_CHAR_PREVIOUS,  //5
-    EVENT_CHAR_ARRAY,     //6
-    EVENT_NAME_ARRAY,     //7
-    EVENT_VISITED_ARRAY,  //8
-    EVENT_DATA_ARRAY,     //9
+    EVENT_PREVIOUS,       //5
+    EVENT_CHAR_PREVIOUS,  //6
+    EVENT_CHAR_ARRAY,     //7
+    EVENT_NAME_ARRAY,     //8
+    EVENT_VISITED_ARRAY,  //9
+    EVENT_DATA_ARRAY,     //10
     
     __SIZE
 }
 
 enum __SCRIBBLE_LINE
 {
-    LAST_CHAR, //0
-    Y,         //1
-    WIDTH,     //2
-    HEIGHT,    //3
-    HALIGN,    //4
-    __SIZE     //5
+    START_CHAR, //0
+    LAST_CHAR,  //1
+    Y,          //2
+    WIDTH,      //3
+    HEIGHT,     //4
+    HALIGN,     //5
+    __SIZE      //6
 }
 
 enum __SCRIBBLE_VERTEX_BUFFER
@@ -168,22 +170,21 @@ enum SCRIBBLE
     AUTOTYPE_FADE_IN,         //28
     AUTOTYPE_SPEED,           //29
     AUTOTYPE_SKIP,            //30
-    AUTOTYPE_TAIL_MOVING,     //31
-    AUTOTYPE_TAIL_POSITION,   //32
-    AUTOTYPE_HEAD_POSITION,   //33
-    AUTOTYPE_METHOD,          //34
-    AUTOTYPE_SMOOTHNESS,      //35
-    AUTOTYPE_SOUND_ARRAY,     //36
-    AUTOTYPE_SOUND_OVERLAP,   //37
-    AUTOTYPE_SOUND_PER_CHAR,  //38
-    AUTOTYPE_SOUND_MIN_PITCH, //39
-    AUTOTYPE_SOUND_MAX_PITCH, //40
-    AUTOTYPE_PAUSED,          //41
-    AUTOTYPE_DELAY_PAUSED,    //42
-    AUTOTYPE_DELAY_END,       //43
-    AUTOTYPE_FUNCTION,        //44
+    AUTOTYPE_WINDOW,          //31
+    AUTOTYPE_WINDOW_ARRAY,    //32
+    AUTOTYPE_METHOD,          //33
+    AUTOTYPE_SMOOTHNESS,      //34
+    AUTOTYPE_SOUND_ARRAY,     //35
+    AUTOTYPE_SOUND_OVERLAP,   //36
+    AUTOTYPE_SOUND_PER_CHAR,  //37
+    AUTOTYPE_SOUND_MIN_PITCH, //38
+    AUTOTYPE_SOUND_MAX_PITCH, //39
+    AUTOTYPE_PAUSED,          //40
+    AUTOTYPE_DELAY_PAUSED,    //41
+    AUTOTYPE_DELAY_END,       //42
+    AUTOTYPE_FUNCTION,        //43
     
-    __SIZE                    //45
+    __SIZE                    //44
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
@@ -196,6 +197,7 @@ enum SCRIBBLE
 #macro __SCRIBBLE_JUSTIFY_LEFT         3
 #macro __SCRIBBLE_JUSTIFY_CENTRE       4
 #macro __SCRIBBLE_JUSTIFY_RIGHT        5
+#macro __SCRIBBLE_WINDOW_COUNT         4
 
 //These are tied to values in shd_scribble
 //If you need to change these for some reason, you'll need to change shd_scribble too
@@ -289,6 +291,7 @@ global.__scribble_cache_test_index     = 0;
 global.__scribble_cache_group_map      = ds_map_create();
 global.__scribble_sprite_whitelist     = false;
 global.__scribble_sprite_whitelist_map = ds_map_create();
+global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
 ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP, global.__scribble_global_cache_list);
 
 //Declare state variables
@@ -352,13 +355,13 @@ vertex_format_add_texcoord(); // 8 bytes
 global.__scribble_passthrough_vertex_format = vertex_format_end();
 
 //Cache uniform indexes
-global.__scribble_uniform_time          = shader_get_uniform(shd_scribble, "u_fTime"             );
-global.__scribble_uniform_colour_blend  = shader_get_uniform(shd_scribble, "u_vColourBlend"      );
-global.__scribble_uniform_tw_method     = shader_get_uniform(shd_scribble, "u_fTypewriterMethod" );
-global.__scribble_uniform_tw_tail_pos   = shader_get_uniform(shd_scribble, "u_fTypewriterTailPos");
-global.__scribble_uniform_tw_head_pos   = shader_get_uniform(shd_scribble, "u_fTypewriterHeadPos");
-global.__scribble_uniform_data_fields   = shader_get_uniform(shd_scribble, "u_aDataFields"       );
-global.__scribble_uniform_texel         = shader_get_uniform(shd_scribble, "u_fTexel"            );
+global.__scribble_uniform_time            = shader_get_uniform(shd_scribble, "u_fTime"                 );
+global.__scribble_uniform_colour_blend    = shader_get_uniform(shd_scribble, "u_vColourBlend"          );
+global.__scribble_uniform_tw_method       = shader_get_uniform(shd_scribble, "u_fTypewriterMethod"     );
+global.__scribble_uniform_tw_window_array = shader_get_uniform(shd_scribble, "u_fTypewriterWindowArray");
+global.__scribble_uniform_tw_smoothness   = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness" );
+global.__scribble_uniform_data_fields     = shader_get_uniform(shd_scribble, "u_aDataFields"           );
+global.__scribble_uniform_texel           = shader_get_uniform(shd_scribble, "u_fTexel"                );
 
 //Hex converter array
 var _min = ord("0");

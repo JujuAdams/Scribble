@@ -12,4 +12,6 @@ var _page           = argument1;
 _page = clamp(_page, 0, _scribble_array[SCRIBBLE.PAGES]-1);
 _scribble_array[@ SCRIBBLE.AUTOTYPE_PAGE] = _page;
 
+scribble_autotype_fade_in(_scribble_array, undefined, undefined, undefined);
+
 return _page;

@@ -15,4 +15,19 @@ if (!is_array(_scribble_array)
 
 if (_scribble_array[SCRIBBLE.FREED]) return false;
 
+var _old_state = _scribble_array[SCRIBBLE.AUTOTYPE_PAUSED];
 _scribble_array[@ SCRIBBLE.AUTOTYPE_PAUSED] = _state;
+
+if (_old_state && !_state)
+{
+    var _typewriter_smoothness   = _scribble_array[SCRIBBLE.AUTOTYPE_SMOOTHNESS  ];
+    var _typewriter_window       = _scribble_array[SCRIBBLE.AUTOTYPE_WINDOW      ];
+    var _typewriter_window_array = _scribble_array[SCRIBBLE.AUTOTYPE_WINDOW_ARRAY];
+    
+    //Increment the window index
+    var _old_head_pos = _typewriter_window_array[@ _typewriter_window];
+    _typewriter_window = (_typewriter_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
+    _scribble_array[@ SCRIBBLE.AUTOTYPE_WINDOW] = _typewriter_window;
+    _typewriter_window_array[@ _typewriter_window  ] = _old_head_pos;
+    _typewriter_window_array[@ _typewriter_window+1] = _old_head_pos - _typewriter_smoothness;
+}

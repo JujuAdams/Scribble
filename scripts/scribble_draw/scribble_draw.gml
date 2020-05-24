@@ -52,14 +52,14 @@ switch(global.scribble_state_box_halign)
 {
     case fa_center: var _left = -_scribble_array[SCRIBBLE.WIDTH] div 2; break;
     case fa_right:  var _left = -_scribble_array[SCRIBBLE.WIDTH];       break;
-    default:        var _left = 0;                                        break;
+    default:        var _left = 0;                                      break;
 }
     
 switch(global.scribble_state_box_valign)
 {
     case fa_middle: var _top = -_scribble_array[SCRIBBLE.HEIGHT] div 2; break;
     case fa_bottom: var _top = -_scribble_array[SCRIBBLE.HEIGHT];       break;
-    default:        var _top = 0;                                         break;
+    default:        var _top = 0;                                       break;
 }
     
 //Handle the animation timer
@@ -101,16 +101,18 @@ if (_count > 0)
     var _typewriter_method = _scribble_array[SCRIBBLE.AUTOTYPE_METHOD];
     if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE)
     {
-        var _typewriter_speed    = 0;
-        var _typewriter_head_pos = 1;
-        var _typewriter_tail_pos = 1;
+        var _typewriter_method       = 0;
+        var _typewriter_smoothness   = 0;
+        var _typewriter_window_array = global.__scribble_window_array_null;
+        var _typewriter_fade_in      = 0;
+        var _typewriter_speed        = 0;
     }
     else
     {
-        var _typewriter_smoothness = _scribble_array[SCRIBBLE.AUTOTYPE_SMOOTHNESS   ];
-        var _typewriter_tail_pos   = _scribble_array[SCRIBBLE.AUTOTYPE_TAIL_POSITION];
-        var _typewriter_head_pos   = _scribble_array[SCRIBBLE.AUTOTYPE_HEAD_POSITION];
-        var _typewriter_fade_in    = _scribble_array[SCRIBBLE.AUTOTYPE_FADE_IN      ];
+        var _typewriter_smoothness   = _scribble_array[SCRIBBLE.AUTOTYPE_SMOOTHNESS  ];
+        var _typewriter_window       = _scribble_array[SCRIBBLE.AUTOTYPE_WINDOW      ];
+        var _typewriter_window_array = _scribble_array[SCRIBBLE.AUTOTYPE_WINDOW_ARRAY];
+        var _typewriter_fade_in      = _scribble_array[SCRIBBLE.AUTOTYPE_FADE_IN     ];
             
         //Handle pausing
         if (_scribble_array[SCRIBBLE.AUTOTYPE_PAUSED])
@@ -121,8 +123,16 @@ if (_count > 0)
         {
             if (current_time > _scribble_array[SCRIBBLE.AUTOTYPE_DELAY_END])
             {
+                //We've waited long enough, start showing more text
                 _scribble_array[@ SCRIBBLE.AUTOTYPE_DELAY_PAUSED] = false;
                 var _typewriter_speed = _typewriter_adjusted_speed;
+                
+                //Increment the window index
+                var _old_head_pos = _typewriter_window_array[@ _typewriter_window];
+                _typewriter_window = (_typewriter_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
+                _scribble_array[@ SCRIBBLE.AUTOTYPE_WINDOW] = _typewriter_window;
+                _typewriter_window_array[@ _typewriter_window  ] = _old_head_pos;
+                _typewriter_window_array[@ _typewriter_window+1] = _old_head_pos - _typewriter_smoothness;
             }
             else
             {
@@ -138,12 +148,14 @@ if (_count > 0)
         
         if ((_typewriter_fade_in >= 0) && (_typewriter_speed > 0))
         {
+            var _typewriter_head_pos = _typewriter_window_array[_typewriter_window];
+            
             //Find the last character we need to scan
             switch(_typewriter_method)
             {
                 case SCRIBBLE_AUTOTYPE_PER_CHARACTER:
                     var _scan_b = ceil(_typewriter_head_pos + _typewriter_speed);
-                    _scan_b = min(_scan_b, _page_array[__SCRIBBLE_PAGE.CHARACTERS]);
+                    _scan_b = min(_scan_b, _page_array[__SCRIBBLE_PAGE.LAST_CHAR]);
                 break;
                 
                 case SCRIBBLE_AUTOTYPE_PER_LINE:
@@ -243,53 +255,42 @@ if (_count > 0)
                     _page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS] = _scan_b;
                 }
             }
+            
+            switch(_typewriter_method)
+            {
+                case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LAST_CHAR]; break;
+                case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES    ]; break;
+            }
+            
+            _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
+            _typewriter_window_array[@ _typewriter_window] = _typewriter_head_pos;
         }
             
         #endregion
     }
-        
+    
     #region Move the typewriter head/tail
     
     if (_typewriter_method != SCRIBBLE_AUTOTYPE_NONE)
     {
-        switch(_typewriter_method)
+        //Figure out the limit and smoothness values
+        if (_typewriter_method != SCRIBBLE_AUTOTYPE_NONE)
         {
-            case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.CHARACTERS]; break;
-            case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES     ]; break;
-        }
-            
-        //If it's been around-about a frame since we called this script...
-        if (_increment_timers)
-        {
-            _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
-                
-            if (_scribble_array[SCRIBBLE.AUTOTYPE_TAIL_MOVING] || (_typewriter_speed == 0))
+            //If it's been around-about a frame since we called this scripts...
+            //if (_increment_timers)
             {
-                _typewriter_tail_pos += _typewriter_adjusted_speed;
-                    
-                if (_typewriter_tail_pos >= _typewriter_head_pos)
+                var _i = 0;
+                repeat(__SCRIBBLE_WINDOW_COUNT)
                 {
-                    _typewriter_tail_pos = _typewriter_head_pos;
-                    _scribble_array[@ SCRIBBLE.AUTOTYPE_TAIL_MOVING] = false;
+                    _typewriter_window_array[@ _i+1] = min(_typewriter_window_array[_i+1] + _typewriter_adjusted_speed, _typewriter_window_array[_i]);
+                    _i += 2;
                 }
             }
-            else if (_typewriter_tail_pos < _typewriter_head_pos - _typewriter_smoothness)
-            {
-                _scribble_array[@ SCRIBBLE.AUTOTYPE_TAIL_MOVING] = true;
-                _typewriter_tail_pos = max(_typewriter_tail_pos, _typewriter_head_pos - _typewriter_smoothness);
-            }
-                
-            _scribble_array[@ SCRIBBLE.AUTOTYPE_TAIL_POSITION] = _typewriter_tail_pos;
-            _scribble_array[@ SCRIBBLE.AUTOTYPE_HEAD_POSITION] = _typewriter_head_pos;
         }
-        
-        //Use a negative typewriter method to communicate a fade-out state to the shader
-        //It's a bit hacky but it reduces the uniform count for the shader
-        if (!_typewriter_fade_in) _typewriter_method = -_typewriter_method;
     }
     
     #endregion
-        
+    
     if ((_typewriter_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
     {
         #region Play a sound effect as the text is revealed
@@ -326,24 +327,24 @@ if (_count > 0)
         #endregion
         
         var _callback = _scribble_array[SCRIBBLE.AUTOTYPE_FUNCTION];
-        if ((_callback != undefined) && script_exists(_callback)) script_execute(_callback, _scribble_array, _scribble_array[SCRIBBLE.AUTOTYPE_TAIL_POSITION]);
+        if ((_callback != undefined) && script_exists(_callback)) script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window]);
     }
     
     //Set the shader and its uniforms
     shader_set(shd_scribble);
-    shader_set_uniform_f(global.__scribble_uniform_time        , _animation_time);
-        
-    shader_set_uniform_f(global.__scribble_uniform_tw_method   , _typewriter_method);
-    shader_set_uniform_f(global.__scribble_uniform_tw_tail_pos , _typewriter_tail_pos);
-    shader_set_uniform_f(global.__scribble_uniform_tw_head_pos , _typewriter_head_pos);
-        
+    shader_set_uniform_f(global.__scribble_uniform_time, _animation_time);
+    
+    shader_set_uniform_f(global.__scribble_uniform_tw_method, _typewriter_fade_in? _typewriter_method : -_typewriter_method);
+    shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
+    shader_set_uniform_f_array(global.__scribble_uniform_tw_window_array, _typewriter_window_array);
+    
     shader_set_uniform_f(global.__scribble_uniform_colour_blend, colour_get_red(  global.scribble_state_colour)/255,
-                                                                    colour_get_green(global.scribble_state_colour)/255,
-                                                                    colour_get_blue( global.scribble_state_colour)/255,
-                                                                    global.scribble_state_alpha);
+                                                                 colour_get_green(global.scribble_state_colour)/255,
+                                                                 colour_get_blue( global.scribble_state_colour)/255,
+                                                                 global.scribble_state_alpha);
         
     shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
-        
+    
     //Now iterate over the text element's vertex buffers and submit them
     var _i = 0;
     repeat(_count)
@@ -353,7 +354,7 @@ if (_count > 0)
         vertex_submit(_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
         ++_i;
     }
-        
+    
     shader_reset();
 }
     

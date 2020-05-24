@@ -40,14 +40,7 @@ if ((_method != SCRIBBLE_AUTOTYPE_NONE)
     _method = SCRIBBLE_AUTOTYPE_NONE;
 }
 
-//Update the remaining autotype state values
-_scribble_array[@ SCRIBBLE.AUTOTYPE_TAIL_POSITION] = -_smoothness;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_HEAD_POSITION] = 0;
-if (_method != undefined) _scribble_array[@ SCRIBBLE.AUTOTYPE_METHOD] = _method;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SPEED     ] = _speed;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SMOOTHNESS] = _smoothness;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_FADE_IN   ] = true;
-_scribble_array[@ SCRIBBLE.AUTOTYPE_SKIP      ] = false;
+if (_smoothness == undefined) _smoothness = _scribble_array[SCRIBBLE.AUTOTYPE_SMOOTHNESS];
 
 //Reset this page's previous event position too
 var _pages_array = _scribble_array[@ SCRIBBLE.PAGES_ARRAY];
@@ -59,3 +52,15 @@ _page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS] = -1;
 //Clear out our event visited array
 var _event_visited_array = _page_array[__SCRIBBLE_PAGE.EVENT_VISITED_ARRAY];
 _page_array[@ __SCRIBBLE_PAGE.EVENT_VISITED_ARRAY] = array_create(array_length_1d(_event_visited_array), false);
+
+//Update the remaining autotype state values
+var _window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_array[__SCRIBBLE_PAGE.START_CHAR] - 1 - _smoothness);
+_window_array[@ 0] += _smoothness;
+
+_scribble_array[@ SCRIBBLE.AUTOTYPE_WINDOW      ] = 0;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_WINDOW_ARRAY] = _window_array;
+if (_method != undefined) _scribble_array[@ SCRIBBLE.AUTOTYPE_METHOD] = _method;
+if (_speed  != undefined) _scribble_array[@ SCRIBBLE.AUTOTYPE_SPEED ] = _speed;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_SMOOTHNESS] = _smoothness;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_FADE_IN   ] = true;
+_scribble_array[@ SCRIBBLE.AUTOTYPE_SKIP      ] = false;
