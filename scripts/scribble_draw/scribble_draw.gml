@@ -63,8 +63,8 @@ if (_increment_timers)
 }
 
 //Update when this text element was last drawn
-_scribble_array[@  SCRIBBLE.DRAWN_TIME] = current_time;
-_occurance_array[@ SCRIBBLE.DRAWN_TIME] = current_time;
+_scribble_array[@ SCRIBBLE.DRAWN_TIME] = current_time;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.DRAWN_TIME] = current_time;
 
 //Grab our vertex buffers for this page
 var _page_vbuffs_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
@@ -141,15 +141,16 @@ if (_count > 0)
                 break;
             }
             
-            var _scan_a = _page_array[__SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS];
+            var _scan_a = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS];
             if (_scan_b > _scan_a)
             {
-                var _event                = _page_array[__SCRIBBLE_PAGE.EVENT_PREVIOUS     ];
-                var _events_char_array    = _page_array[__SCRIBBLE_PAGE.EVENT_CHAR_ARRAY   ];
-                var _events_name_array    = _page_array[__SCRIBBLE_PAGE.EVENT_NAME_ARRAY   ];
-                var _events_visited_array = _page_array[__SCRIBBLE_PAGE.EVENT_VISITED_ARRAY];
-                var _events_data_array    = _page_array[__SCRIBBLE_PAGE.EVENT_DATA_ARRAY   ];
-                var _event_count          = array_length_1d(_events_char_array);
+                var _events_char_array = _scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY];
+                var _events_name_array = _scribble_array[SCRIBBLE.EVENT_NAME_ARRAY];
+                var _events_data_array = _scribble_array[SCRIBBLE.EVENT_DATA_ARRAY];
+                var _event_count       = array_length_1d(_events_char_array);
+                
+                var _event                = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ];
+                var _events_visited_array = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY];
                 
                 //Always start scanning at the next event
                 ++_event;
@@ -167,7 +168,7 @@ if (_count > 0)
                         {
                             var _event_name       = _events_name_array[_event];
                             var _event_data_array = _events_data_array[_event];
-                                
+                            
                             if (!_events_visited_array[_event])
                             {
                                 _events_visited_array[@ _event] = true;
@@ -175,12 +176,12 @@ if (_count > 0)
                                 //Process pause and delay events
                                 if ((_event_name == "pause") && !_skipping)
                                 {
-                                    _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS] = _event;
-                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.PAUSED] = true;
+                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS] = _event;
+                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.PAUSED        ] = true;
                                 }
                                 else if ((_event_name == "delay") && !_skipping)
                                 {
-                                    _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS] = _event;
+                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS] = _event;
                                         
                                     if (array_length_1d(_event_data_array) >= 1)
                                     {
@@ -200,7 +201,7 @@ if (_count > 0)
                                     var _script = global.__scribble_autotype_events[? _event_name];
                                     if (_script != undefined)
                                     {
-                                        _page_array[@ __SCRIBBLE_PAGE.EVENT_PREVIOUS] = _event;
+                                        _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS] = _event;
                                         script_execute(_script, _scribble_array, _event_data_array, _scan);
                                     }
                                 }
@@ -222,11 +223,11 @@ if (_count > 0)
                         ++_scan;
                     }
                         
-                    _page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS] = _scan;
+                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = _scan;
                 }
                 else
                 {
-                    _page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS] = _scan_b;
+                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = _scan_b;
                 }
             }
             

@@ -58,19 +58,11 @@ enum __SCRIBBLE_FONT_TYPE
 
 enum __SCRIBBLE_PAGE
 {
-    LINES,                //0
-    START_CHAR,           //1
-    LAST_CHAR,            //2
-    LINES_ARRAY,          //3
-    VERTEX_BUFFERS_ARRAY, //4
-    
-    EVENT_PREVIOUS,       //5
-    EVENT_CHAR_PREVIOUS,  //6
-    EVENT_CHAR_ARRAY,     //7
-    EVENT_NAME_ARRAY,     //8
-    EVENT_VISITED_ARRAY,  //9
-    EVENT_DATA_ARRAY,     //10
-    
+    LINES,                // 0
+    START_CHAR,           // 1
+    LAST_CHAR,            // 2
+    LINES_ARRAY,          // 3
+    VERTEX_BUFFERS_ARRAY, // 4
     __SIZE
 }
 
@@ -115,32 +107,36 @@ enum __SCRIBBLE_VERTEX
 
 enum __SCRIBBLE_OCCURANCE
 {
-    PAGE,              // 0
-    FADE_IN,           // 1
-    SPEED,             // 2
-    SKIP,              // 3
-    WINDOW,            // 4
-    WINDOW_ARRAY,      // 5
-    METHOD,            // 6
-    SMOOTHNESS,        // 7
+    PAGE,                // 0
+    FADE_IN,             // 1
+    SPEED,               // 2
+    SKIP,                // 3
+    WINDOW,              // 4
+    WINDOW_ARRAY,        // 5
+    METHOD,              // 6
+    SMOOTHNESS,          // 7
     
-    SOUND_ARRAY,       // 8
-    SOUND_OVERLAP,     // 9
-    SOUND_PER_CHAR,    //10
-    SOUND_MIN_PITCH,   //11
-    SOUND_MAX_PITCH,   //12
+    SOUND_ARRAY,         // 8
+    SOUND_OVERLAP,       // 9
+    SOUND_PER_CHAR,      //10
+    SOUND_MIN_PITCH,     //11
+    SOUND_MAX_PITCH,     //12
     
-    PAUSED,            //13
-    DELAY_PAUSED,      //14
-    DELAY_END,         //15
+    PAUSED,              //13
+    DELAY_PAUSED,        //14
+    DELAY_END,           //15
     
-    FUNCTION,          //16
+    FUNCTION,            //16
     
-    SOUND_FINISH_TIME, //17
-    DRAWN_TIME,        //18
-    ANIMATION_TIME,    //19
+    SOUND_FINISH_TIME,   //17
+    DRAWN_TIME,          //18
+    ANIMATION_TIME,      //19
     
-    __SIZE             //20
+    EVENT_PREVIOUS,      //20
+    EVENT_CHAR_PREVIOUS, //21
+    EVENT_VISITED_ARRAY, //22
+    
+    __SIZE               //23
 }
 
 enum SCRIBBLE_STATE
@@ -166,38 +162,41 @@ enum SCRIBBLE_STATE
 
 enum SCRIBBLE
 {
-    __SECTION0,               // 0
-    VERSION,                  // 1
-    STRING,                   // 2
-    CACHE_STRING,             // 3
-    DEFAULT_FONT,             // 3
-    DEFAULT_COLOUR,           // 4
-    DEFAULT_HALIGN,           // 5
-    WIDTH_LIMIT,              // 6
-    HEIGHT_LIMIT,             // 7
-    LINE_HEIGHT,              // 8
-    GARBAGE_COLLECT,          // 9
+    __SECTION0,       // 0
+    VERSION,          // 1
+    STRING,           // 2
+    CACHE_STRING,     // 3
+    DEFAULT_FONT,     // 3
+    DEFAULT_COLOUR,   // 4
+    DEFAULT_HALIGN,   // 5
+    WIDTH_LIMIT,      // 6
+    HEIGHT_LIMIT,     // 7
+    LINE_HEIGHT,      // 8
+    GARBAGE_COLLECT,  // 9
     
-    __SECTION1,               //10
-    WIDTH,                    //11
-    MIN_X,                    //12
-    MAX_X,                    //13
-    HEIGHT,                   //14
-    CHARACTERS,               //15
-    LINES,                    //16
-    PAGES,                    //17
-    GLYPH_LTRB_ARRAY,         //18
-    CHARACTER_ARRAY,          //19
+    __SECTION1,       //10
+    WIDTH,            //11
+    MIN_X,            //12
+    MAX_X,            //13
+    HEIGHT,           //14
+    CHARACTERS,       //15
+    LINES,            //16
+    PAGES,            //17
+    GLYPH_LTRB_ARRAY, //18
+    CHARACTER_ARRAY,  //19
     
-    __SECTION2,               //20
-    DRAWN_TIME,               //21
-    FREED,                    //22
-    OCCURANCES_MAP,           //23
+    __SECTION2,       //20
+    DRAWN_TIME,       //21
+    FREED,            //22
+    OCCURANCES_MAP,   //23
     
-    __SECTION3,               //24
-    PAGES_ARRAY,              //25
+    __SECTION3,       //24
+    PAGES_ARRAY,      //25
+    EVENT_CHAR_ARRAY, //26
+    EVENT_NAME_ARRAY, //27
+    EVENT_DATA_ARRAY, //28
     
-    __SIZE                    //26
+    __SIZE            //29
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
