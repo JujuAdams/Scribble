@@ -20,7 +20,7 @@ var _sound          = argument[1];
 var _overlap        = argument[2];
 var _min_pitch      = argument[3];
 var _max_pitch      = argument[4];
-var _occurance_name = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : global.__scribble_default_occurance_name;
+var _occurance_name = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
 if (!is_array(_sound)) _sound = [_sound];
 

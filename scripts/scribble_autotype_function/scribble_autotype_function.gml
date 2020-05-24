@@ -4,7 +4,7 @@
 
 var _scribble_array = argument[0];
 var _function       = argument[1];
-var _occurance_name = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : global.__scribble_default_occurance_name;
+var _occurance_name = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
 //Check if this array is a relevant text element
 if (!is_array(_scribble_array)

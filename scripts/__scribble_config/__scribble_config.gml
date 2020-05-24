@@ -28,6 +28,7 @@
 #macro SCRIBBLE_SLANT_AMOUNT              0.24  //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   false //Outputs an array of glyph LTRB bounding boxes
 #macro SCRIBBLE_CREATE_CHARACTER_ARRAY    false //Outputs an array of character codes
+#macro SCRIBBLE_DEFAULT_OCCURANCE_NAME    "default"
 
 #macro SCRIBBLE_CACHE_TIMEOUT         15000 //How long to wait (in milliseconds) before the cache automatically destroys a text element. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_flush() instead)
 

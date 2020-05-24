@@ -309,7 +309,6 @@ global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT,
 //Declare state variables
 global.scribble_state_anim_array = array_create(SCRIBBLE_ANIM.__SIZE);
 scribble_reset();
-global.__scribble_default_occurance_name = global.scribble_state_occurance;
 
 //Duplicate GM's native colour constants in string form for access in scribble_draw()
 global.__scribble_colours[? "c_aqua"   ] = c_aqua;

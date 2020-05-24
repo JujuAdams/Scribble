@@ -20,7 +20,7 @@ var _scribble_array = argument[0];
 var _method         = argument[1];
 var _speed          = argument[2];
 var _smoothness     = argument[3];
-var _occurance_name = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : global.__scribble_default_occurance_name;
+var _occurance_name = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
 //Check if this array is a relevant text element
 if (!is_array(_scribble_array)

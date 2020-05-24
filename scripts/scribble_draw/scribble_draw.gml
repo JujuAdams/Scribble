@@ -4,6 +4,7 @@
 /// @param x                    x-position in the room to draw at.
 /// @param y                    y-position in the room to draw at.
 /// @param string/textElement   Either a string to be drawn, or a previously created text element
+/// @param [occuranceName]
 /// 
 /// Formatting commands:
 /// []                                  Reset formatting to defaults
@@ -34,17 +35,18 @@
 /// [pulse]   [/pulse]                  Set/unset text to shrink and grow rhythmically
 /// [wheel]   [/wheel]                  Set/unset text to circulate around their origin
 
-var _draw_x      = argument0;
-var _draw_y      = argument1;
-var _draw_string = argument2;
+var _draw_x         = argument[0];
+var _draw_y         = argument[1];
+var _draw_string    = argument[2];
+var _occurance_name = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
 //Check the cache
-var _scribble_array = scribble_cache(_draw_string);
+var _scribble_array = scribble_cache(_draw_string, _occurance_name);
 if (_scribble_array == undefined) return undefined;
 
 //Find our occurance data
 var _occurances_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
-var _occurance_array = _occurances_map[? global.scribble_state_occurance];
+var _occurance_array = _occurances_map[? _occurance_name];
 
 //Find our page data
 var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];

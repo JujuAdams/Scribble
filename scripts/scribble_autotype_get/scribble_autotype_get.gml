@@ -12,7 +12,7 @@
 /// If no autotype animation has been started, this function will return 1.
 
 var _scribble_array = argument[0];
-var _occurance_name = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : global.__scribble_default_occurance_name;
+var _occurance_name = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
 //Check if this array is a relevant text element
 if (!is_array(_scribble_array)

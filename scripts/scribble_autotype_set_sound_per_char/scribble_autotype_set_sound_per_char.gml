@@ -12,7 +12,7 @@ var _scribble_array = argument[0];
 var _sound          = argument[1];
 var _min_pitch      = argument[2];
 var _max_pitch      = argument[3];
-var _occurance_name = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : global.__scribble_default_occurance_name;
+var _occurance_name = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
 if (!is_array(_sound)) _sound = [_sound];
 

@@ -5,7 +5,7 @@
 /// This function is intended for use with scribble_page_set().
 
 var _scribble_array = argument[0];
-var _occurance_name = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : global.__scribble_default_occurance_name;
+var _occurance_name = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
 //Find our occurance data
 var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
