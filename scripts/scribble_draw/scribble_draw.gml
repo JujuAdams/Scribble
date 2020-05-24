@@ -246,8 +246,6 @@ if (_count > 0)
                         ++_scan;
                     }
                         
-                    if (_break && (_typewriter_method == SCRIBBLE_AUTOTYPE_PER_CHARACTER)) _typewriter_head_pos = _scan;
-                        
                     _page_array[@ __SCRIBBLE_PAGE.EVENT_CHAR_PREVIOUS] = _scan;
                 }
                 else
