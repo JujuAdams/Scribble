@@ -275,13 +275,13 @@ var _char_width             =  0;
 var _add_character          =  true;
 
 //Write the string into a buffer for faster reading
-var _buffer_size = string_byte_length(_draw_string)+1;
-var _string_buffer = buffer_create(_buffer_size, buffer_fixed, 1);
+var _string_buffer = global.__scribble_buffer;
+buffer_seek(_string_buffer, buffer_seek_start, 0);
 buffer_write(_string_buffer, buffer_string, _draw_string);
 buffer_seek(_string_buffer, buffer_seek_start, 0);
 
 //Iterate over the entire string...
-repeat(_buffer_size)
+repeat(string_byte_length(_draw_string) + 1)
 {
     var _character_code = buffer_read(_string_buffer, buffer_u8);
     if (_character_code == 0) break;
@@ -1592,7 +1592,6 @@ if (SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
 
 
 ds_map_destroy(_texture_to_buffer_map);
-buffer_delete(_string_buffer);
 ds_list_destroy(_parameters_list);
 
 

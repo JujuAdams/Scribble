@@ -212,7 +212,7 @@ enum SCRIBBLE
 
 
 
-if (variable_global_exists("__scribble_global_count"))
+if (variable_global_exists("__scribble_lcg"))
 {
     if (SCRIBBLE_WARNING_REINITIALIZE) show_error("Scribble:\nscribble_init() should not be called twice!\n(Set SCRIBBLE_WARNING_REINITIALIZE to <false> to hide this warning)\n ", false);
     return false;
@@ -292,6 +292,7 @@ global.__scribble_cache_test_index     = 0;
 global.__scribble_cache_group_map      = ds_map_create();
 global.__scribble_sprite_whitelist     = false;
 global.__scribble_sprite_whitelist_map = ds_map_create();
+global.__scribble_buffer               = buffer_create(1024, buffer_grow, 1);
 global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
 ds_map_add_list(global.__scribble_cache_group_map, SCRIBBLE_DEFAULT_CACHE_GROUP, global.__scribble_global_cache_list);
 

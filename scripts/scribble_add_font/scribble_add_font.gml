@@ -17,7 +17,7 @@
 /// window will open showing various files for the font resource. You can drag-and-drop the .yy file into the GameMaker IDE to add it as an
 /// Included File.
 
-if (!variable_global_exists("__scribble_global_count"))
+if (!variable_global_exists("__scribble_lcg"))
 {
     show_error("Scribble:\nscribble_add_font() should be called after scribble_init()\n ", true);
     return undefined;
