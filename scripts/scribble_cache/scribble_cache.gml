@@ -1096,7 +1096,10 @@ repeat(_buffer_size)
                     
             ++_v;
         }
-                
+        
+        //Limit the height of the line
+        if (_line_max_height >= 0) _line_height = min(_line_height, _line_max_height);
+        
         ++_meta_element_lines;
         ++_meta_page_lines;
         
