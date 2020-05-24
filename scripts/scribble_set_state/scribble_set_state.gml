@@ -19,8 +19,10 @@ global.scribble_state_character_wrap  = argument0[SCRIBBLE_STATE.CHARACTER_WRAP 
 global.scribble_state_box_halign      = argument0[SCRIBBLE_STATE.BOX_HALIGN     ];
 global.scribble_state_box_valign      = argument0[SCRIBBLE_STATE.BOX_VALIGN     ];
 
-//TODO - Array copy?
-global.scribble_state_anim_array = argument0[SCRIBBLE_STATE.ANIMATION_ARRAY];
+var _array = argument0[SCRIBBLE_STATE.ANIMATION_ARRAY];
+var _new_array = array_create(SCRIBBLE_ANIM.__SIZE);
+array_copy(_new_array, 0, _array, 0, SCRIBBLE_ANIM.__SIZE);
+global.scribble_state_anim_array = _new_array;
 
 global.__scribble_cache_string = string(global.scribble_state_default_font   ) + ":" +
                                  string(global.scribble_state_default_color  ) + ":" +
