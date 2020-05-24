@@ -410,9 +410,6 @@ if (SCRIBBLE_CACHE_TIMEOUT > 0)
             //Remove reference from cache
             ds_map_delete(global.__scribble_global_cache_map, _cache_string);
             ds_list_delete(global.__scribble_global_cache_list, global.__scribble_cache_test_index);
-            
-            //Remove global reference
-            ds_map_delete(global.scribble_alive, _cache_array[SCRIBBLE.GLOBAL_INDEX]);
         }
     }
 }

@@ -14,8 +14,6 @@
 /// the "cacheGroup" argument to <undefined>, Scribble will skip adding the data to the cache. However, this means that the data you create
 /// *will not be automatically destroyed*. To free memory you will have to call scribble_flush() manually, using the Scribble text  array as
 /// the argument.
-/// 
-/// To track how much Scribble data exists at any one time, call ds_map_size(global.scribble_alive).
 
 var _target = argument0;
 
@@ -36,9 +34,6 @@ if (ds_map_exists(global.__scribble_cache_group_map, _target))
         {
             //Remove reference from cache
             ds_map_delete(global.__scribble_global_cache_map,_scribble_array[SCRIBBLE.CACHE_STRING]);
-            
-            //Remove global reference
-            ds_map_delete(global.scribble_alive, _scribble_array[SCRIBBLE.GLOBAL_INDEX]);
             
             //Destroy vertex buffers
             var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];

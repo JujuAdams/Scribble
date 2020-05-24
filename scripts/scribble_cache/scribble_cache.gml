@@ -137,7 +137,6 @@ _scribble_array[@ SCRIBBLE.HEIGHT                  ] = 0;
 _scribble_array[@ SCRIBBLE.CHARACTERS              ] = 0;
 _scribble_array[@ SCRIBBLE.LINES                   ] = 0;
 _scribble_array[@ SCRIBBLE.PAGES                   ] = 0;
-_scribble_array[@ SCRIBBLE.GLOBAL_INDEX            ] = global.__scribble_global_count+1;
 _scribble_array[@ SCRIBBLE.GLYPH_LTRB_ARRAY        ] = undefined;
 _scribble_array[@ SCRIBBLE.CHARACTER_ARRAY         ] = _character_array;
 
@@ -174,9 +173,6 @@ _scribble_array[@ SCRIBBLE.AUTOTYPE_FUNCTION       ] =  undefined;
 
 
 #region Register the text element in a cache group
-
-global.__scribble_global_count++;
-global.scribble_alive[? global.__scribble_global_count] = _scribble_array;
 
 if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
 

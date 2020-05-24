@@ -6,6 +6,8 @@
 /// @param autoScan         Whether or not to automatically find font .yy files in the font directory
 ///                         N.B. This only works for normal fonts
 
+
+
 #region Internal Macro Definitions
 
 // @jujuadams
@@ -152,9 +154,8 @@ enum SCRIBBLE
     CHARACTERS,               //14
     LINES,                    //15
     PAGES,                    //16
-    GLOBAL_INDEX,             //17
-    GLYPH_LTRB_ARRAY,         //18
-    CHARACTER_ARRAY,          //19
+    GLYPH_LTRB_ARRAY,         //17
+    CHARACTER_ARRAY,          //18
     
     __SECTION2,               //19
     ANIMATION_TIME,           //20
@@ -208,6 +209,8 @@ enum SCRIBBLE
 #macro scribble_add_colour  scribble_add_color
 
 #endregion
+
+
 
 if (variable_global_exists("__scribble_global_count"))
 {
@@ -282,8 +285,6 @@ global.__scribble_colours              = ds_map_create();  //Stores colour defin
 global.__scribble_effects              = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_effects_slash        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_autotype_events      = ds_map_create();
-global.scribble_alive                  = ds_map_create();  //ds_map of all alive text elements
-global.__scribble_global_count         = 0;
 global.__scribble_default_font         = _default_font;
 global.__scribble_global_cache_map     = ds_map_create();
 global.__scribble_global_cache_list    = ds_list_create();
