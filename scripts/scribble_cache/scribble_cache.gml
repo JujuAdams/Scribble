@@ -703,7 +703,7 @@ else
                                                         var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
                                                         
                                                         var _blue = _lsf + (_hsf << 4);
-                                                
+                                                        
                                                         if (SCRIBBLE_BGR_COLOR_HEX_CODES)
                                                         {
                                                             _text_colour = make_colour_rgb(_blue, _green, _red);
@@ -719,12 +719,49 @@ else
                                                     }
                                                     else
                                                     {
-                                                        var _command_string = string(_command_name);
-                                                        var _j = 1;
-                                                        repeat(_command_tag_parameters-1) _command_string += "," + string(_parameters_list[| _j++]);
-                                                        show_debug_message("Scribble: Warning! Unrecognised command tag [" + _command_string + "]" );
+                                                        var _second_char = string_copy(_command_name, 2, 1);
+                                                        if (((_first_char  == "d") || (_first_char  == "D"))
+                                                        &&  ((_second_char == "$") || (_second_char == "#")))
+                                                        {
+                                                            #region Decimal colour decoding
+                                                            
+                                                            //Check if this number is a real
+                                                            var _is_real = true;
+                                                            var _c = 3;
+                                                            repeat(string_length(_command_name) - 2)
+                                                            {
+                                                                var _ord = ord(string_char_at(_command_name, _c));
+                                                                if ((_ord < 48) || (_ord > 57))
+                                                                {
+                                                                    _is_real = false;
+                                                                    break;
+                                                                }
+                                                                
+                                                                ++_c;
+                                                            }
+                                                            
+                                                            if (_is_real)
+                                                            {
+                                                                _text_colour = real(string_delete(_command_name, 1, 2));
+                                                            }
+                                                            else
+                                                            {
+                                                                show_debug_message("Scribble: Warning! Could not decode [" + _command_name + "], ensure it is a positive integer" );
+                                                            }
+                                                            
+                                                            continue; //Skip the rest of the parser step
+                                                            
+                                                            #endregion
+                                                        }
+                                                        else
+                                                        {
+                                                            var _command_string = string(_command_name);
+                                                            var _j = 1;
+                                                            repeat(_command_tag_parameters-1) _command_string += "," + string(_parameters_list[| _j++]);
+                                                            show_debug_message("Scribble: Warning! Unrecognised command tag [" + _command_string + "]" );
                                                         
-                                                        continue; //Skip the rest of the parser step
+                                                            continue; //Skip the rest of the parser step
+                                                        }
                                                     }
                                                 }
                                             }

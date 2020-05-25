@@ -1,4 +1,4 @@
-var _demo_string  = "[rainbow][pulse]abcdef[] ABCDEF##";
+var _demo_string  = "[rainbow][pulse]abcdef[] [d$16711680]ABCDEF##";
     _demo_string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][spr_coin,0][spr_coin,1][spr_coin,2][spr_coin,3][shake][rainbow]!?[]\n";
     _demo_string += "[js_centre][spr_coin][spr_coin][spr_coin][spr_large_coin][fa_left]\n";
     _demo_string += "[fa_left][outline_font]the quick brown fox [wave]jumps[/wave] over the [wheel]lazy[/wheel] dog";
