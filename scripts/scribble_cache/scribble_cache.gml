@@ -61,13 +61,39 @@ else
 
         var _max_width         = global.scribble_state_max_width;
         var _max_height        = global.scribble_state_max_height;
-        var _line_min_height   = max(0, global.scribble_state_line_min_height);
+        var _line_min_height   = global.scribble_state_line_min_height;
         var _line_max_height   = global.scribble_state_line_max_height;
         var _line_fixed_height = false;
         var _def_colour        = global.scribble_state_default_color;
         var _def_font          = global.scribble_state_default_font;
         var _def_halign        = global.scribble_state_default_halign;
-
+        
+        //Check if the default font even exists
+        if (!ds_map_exists(global.__scribble_font_data, _def_font))
+        {
+            show_error("Scribble:\nDefault font \"" + string(_def_font) + "\" not recognised\n ", false);
+            exit;
+        }
+        
+        var _font_data         = global.__scribble_font_data[? _def_font];
+        var _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
+        var _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
+        var _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
+        var _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
+        
+        var _glyph_texture = undefined;
+        var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
+        if (_glyph_array == undefined)
+        {
+            show_error("Scribble:\nThe space character is missing from font definition for \"" + _def_font + "\"\n ", true);
+            return undefined;
+        }
+        
+        var _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
+        var _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
+        
+        if (_line_min_height < 0) _line_min_height = _font_line_height;
+        
         if ((_line_max_height >= 0) && (_line_max_height <= _line_min_height))
         {
             if (_line_min_height >= 0)
@@ -76,31 +102,7 @@ else
                 var _half_fixed_height = _line_min_height div 2;
             }
         }
-
-        //Check if the default font even exists
-        if (!ds_map_exists(global.__scribble_font_data, _def_font))
-        {
-            show_error("Scribble:\nDefault font \"" + string(_def_font) + "\" not recognised\n ", false);
-            exit;
-        }
-
-        var _font_data         = global.__scribble_font_data[? _def_font];
-        var _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
-        var _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
-        var _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
-        var _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-
-        var _glyph_texture = undefined;
-        var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
-        if (_glyph_array == undefined)
-        {
-            show_error("Scribble:\nThe space character is missing from font definition for \"" + _def_font + "\"\n ", true);
-            return undefined;
-        }
-
-        var _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-        var _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
-
+        
         //Try to use a custom colour if the "startingColour" parameter is a string
         if (is_string(_def_colour))
         {
@@ -110,10 +112,10 @@ else
                 show_error("Scribble:\nThe starting colour (\"" + _def_colour + "\") has not been added as a custom colour. Defaulting to c_white.\n ", false);
                 _value = c_white;
             }
-    
+            
             _def_colour = _value;
         }
-
+        
         #endregion
 
 
@@ -1276,6 +1278,7 @@ else
         }
 
         _line_width = max(_line_width, _text_x);
+        if (_line_max_height >= 0) _line_height = min(_line_height, _line_max_height);
 
         _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_element_characters - 1;
         _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
