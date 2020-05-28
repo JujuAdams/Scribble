@@ -1167,9 +1167,6 @@ else
                 var _new_page_array        = array_create(__SCRIBBLE_PAGE.__SIZE);
                 var _new_page_lines_array  = []; //Stores each line of text (per page)
                 var _new_page_vbuffs_array = []; //Stores all the vertex buffers needed to render the text and sprites (per page)
-                var _events_char_array     = []; //Stores each event's triggering character
-                var _events_name_array     = []; //Stores each event's name
-                var _events_data_array     = []; //Stores each event's parameters
         
                 _new_page_array[@ __SCRIBBLE_PAGE.LINES               ] = 1;
                 _new_page_array[@ __SCRIBBLE_PAGE.START_CHAR          ] = _meta_element_characters; //We'll update this later to a more accurate value
