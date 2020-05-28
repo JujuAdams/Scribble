@@ -12,9 +12,9 @@ var _max = argument1;
 global.scribble_state_line_min_height = _min;
 global.scribble_state_line_max_height = _max;
 
-global.__scribble_cache_string = string(global.scribble_state_default_font   ) + ":" +
-                                 string(global.scribble_state_default_color  ) + ":" +
-                                 string(global.scribble_state_default_halign ) + ":" +
+global.__scribble_cache_string = string(global.scribble_state_starting_font  ) + ":" +
+                                 string(global.scribble_state_starting_color ) + ":" +
+                                 string(global.scribble_state_starting_halign) + ":" +
                                  string(global.scribble_state_line_min_height) + ":" +
                                  string(global.scribble_state_line_max_height) + ":" +
                                  string(global.scribble_state_max_width      ) + ":" +

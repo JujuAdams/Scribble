@@ -5,9 +5,9 @@ var _new_array = array_create(SCRIBBLE_ANIM.__SIZE);
 array_copy(_new_array, 0, global.scribble_state_anim_array, 0, SCRIBBLE_ANIM.__SIZE);
 
 var _array = array_create(SCRIBBLE_STATE.__SIZE);
-_array[@ SCRIBBLE_STATE.DEFAULT_FONT   ] = global.scribble_state_default_font;
-_array[@ SCRIBBLE_STATE.DEFAULT_COLOR  ] = global.scribble_state_default_color;
-_array[@ SCRIBBLE_STATE.DEFAULT_HALIGN ] = global.scribble_state_default_halign;
+_array[@ SCRIBBLE_STATE.STARTING_FONT  ] = global.scribble_state_starting_font;
+_array[@ SCRIBBLE_STATE.STARTING_COLOR ] = global.scribble_state_starting_color;
+_array[@ SCRIBBLE_STATE.STARTING_HALIGN] = global.scribble_state_starting_halign;
 _array[@ SCRIBBLE_STATE.XSCALE         ] = global.scribble_state_xscale;
 _array[@ SCRIBBLE_STATE.YSCALE         ] = global.scribble_state_yscale;
 _array[@ SCRIBBLE_STATE.ANGLE          ] = global.scribble_state_angle;

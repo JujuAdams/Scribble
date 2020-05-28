@@ -64,9 +64,9 @@ else
         var _line_min_height   = global.scribble_state_line_min_height;
         var _line_max_height   = global.scribble_state_line_max_height;
         var _line_fixed_height = false;
-        var _def_colour        = global.scribble_state_default_color;
-        var _def_font          = global.scribble_state_default_font;
-        var _def_halign        = global.scribble_state_default_halign;
+        var _def_colour        = global.scribble_state_starting_color;
+        var _def_font          = global.scribble_state_starting_font;
+        var _def_halign        = global.scribble_state_starting_halign;
         
         //Check if the default font even exists
         if (!ds_map_exists(global.__scribble_font_data, _def_font))

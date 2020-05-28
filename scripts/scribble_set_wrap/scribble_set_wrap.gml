@@ -17,9 +17,9 @@ global.scribble_state_max_width      = _max_width;
 global.scribble_state_max_height     = _max_height;
 global.scribble_state_character_wrap = _character_wrap;
 
-global.__scribble_cache_string = string(global.scribble_state_default_font   ) + ":" +
-                                 string(global.scribble_state_default_color  ) + ":" +
-                                 string(global.scribble_state_default_halign ) + ":" +
+global.__scribble_cache_string = string(global.scribble_state_starting_font  ) + ":" +
+                                 string(global.scribble_state_starting_color ) + ":" +
+                                 string(global.scribble_state_starting_halign) + ":" +
                                  string(global.scribble_state_line_min_height) + ":" +
                                  string(global.scribble_state_line_max_height) + ":" +
                                  string(global.scribble_state_max_width      ) + ":" +

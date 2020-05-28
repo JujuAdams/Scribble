@@ -138,7 +138,7 @@
             "Key": "26393753-6ea7-48ff-96b6-f6b61d18b115",
             "Value": {
                 "id": "0460cd53-5911-4c75-94d2-5dfd33f01101",
-                "resourcePath": "scripts\\scribble_set_defaults\\scribble_set_defaults.yy",
+                "resourcePath": "scripts\\scribble_set_starting_format\\scribble_set_starting_format.yy",
                 "resourceType": "GMScript"
             }
         },
