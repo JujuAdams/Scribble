@@ -841,7 +841,7 @@ else
                 if (global.__scribble_character_delay)
                 {
                     var _delay = global.__scribble_character_delay_map[? _character_code];
-                    if (_delay != undefined)
+                    if ((_delay != undefined) && (_delay > 0))
                     {
                         var _count = array_length_1d(_events_char_array);
                         _events_char_array[@ _count] = _meta_element_characters;
@@ -869,7 +869,7 @@ else
                     _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
                     ++_v;
                 }
-        
+                
                 //Record the first character in this word
                 _word_start_char = _meta_element_characters;
         
@@ -878,8 +878,8 @@ else
                 
                 if (global.__scribble_character_delay)
                 {
-                    var _delay = global.__scribble_character_delay_map[? 32];
-                    if (_delay != undefined)
+                    var _delay = global.__scribble_character_delay_map[? _character_code];
+                    if ((_delay != undefined) && (_delay > 0))
                     {
                         var _count = array_length_1d(_events_char_array);
                         _events_char_array[@ _count] = _meta_element_characters;
@@ -1054,7 +1054,7 @@ else
                 if (global.__scribble_character_delay)
                 {
                     var _delay = global.__scribble_character_delay_map[? _character_code];
-                    if (_delay != undefined)
+                    if ((_delay != undefined) && (_delay > 0))
                     {
                         var _count = array_length_1d(_events_char_array);
                         _events_char_array[@ _count] = _meta_element_characters;

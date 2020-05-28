@@ -12,7 +12,7 @@
 
 // @jujuadams
 // With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_
-#macro __SCRIBBLE_VERSION  "6.0.4a"
+#macro __SCRIBBLE_VERSION  "6.0.4b"
 #macro __SCRIBBLE_DATE     "2020-05-28"
 #macro __SCRIBBLE_DEBUG    false
 
