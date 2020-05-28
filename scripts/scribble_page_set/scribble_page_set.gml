@@ -1,6 +1,6 @@
 /// @param textElement       Text element to target. This element must have been created previously by scribble_draw()
 /// @param page              Page to display, starting at 0 for the first page
-/// @param [occuranceName]
+/// @param [occuranceName]   Unique identifier to differentiate particular occurances of a string within the game
 /// 
 /// This function is intended for use with scribble_page_get().
 /// 

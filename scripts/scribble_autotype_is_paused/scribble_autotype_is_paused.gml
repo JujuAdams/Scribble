@@ -1,5 +1,5 @@
-/// @param textElement
-/// @param [occuranceName]
+/// @param textElement       Text element to target. This element must have been created previously by scribble_draw()
+/// @param [occuranceName]   Unique identifier to differentiate particular occurances of a string within the game
 
 var _scribble_array = argument[0];
 var _occurance_name = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;

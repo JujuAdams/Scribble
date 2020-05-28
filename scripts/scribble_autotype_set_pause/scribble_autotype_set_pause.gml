@@ -1,6 +1,6 @@
 /// @param textElement       Text element to target. This element must have been created previously by scribble_draw()
 /// @param state             Value to set for the pause state, true or false
-/// @param [occuranceName]
+/// @param [occuranceName]   Unique identifier to differentiate particular occurances of a string within the game
 
 var _scribble_array = argument[0];
 var _state          = argument[1];

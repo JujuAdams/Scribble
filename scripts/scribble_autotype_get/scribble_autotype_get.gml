@@ -1,6 +1,6 @@
 /// Returns: The text element's autotype state (see below)
 /// @param textElement       Text element to target. This element must have been created previously by scribble_draw()
-/// @param [occuranceName]
+/// @param [occuranceName]   Unique identifier to differentiate particular occurances of a string within the game
 /// 
 /// The autotype state is a real value as follows:
 ///     state = 0   No text is visible

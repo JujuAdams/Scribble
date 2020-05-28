@@ -2,7 +2,7 @@
 /// @param method            Typewriter method to use to fade in, either per-character or per-line. See below
 /// @param speed             Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above
 /// @param smoothness        How much text fades in. Higher numbers will allow more text to be visible as it fades in
-/// @param [occuranceName]
+/// @param [occuranceName]   Unique identifier to differentiate particular occurances of a string within the game
 /// 
 /// The method argument allows you to choose between two behaviours to fade in text. Most retro-styled games will likely want to use
 /// SCRIBBLE_AUTOTYPE_PER_CHARACTER:  this method will draw characters one by one like a typewriter. Modern text-heavy narrative games

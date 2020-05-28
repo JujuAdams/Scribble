@@ -1,10 +1,10 @@
-/// Frees up memory used by Scribble, targetting either a cache group or a specific text element.
+/// Frees up memory used by Scribble, targetting either all text elements, or a specific text element
 /// 
-/// @param [textElement]
+/// @param [textElement]   Which text element to target. Defaults to <all>, which will clear the memory for all text elements
 
 var _scribble_array = (argument_count > 0)? argument[0] : all;
 
-if (_scribble_array == all)
+if ((_scribble_array == all) || (_scribble_array == "all"))
 {
     if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Clearing entire cache");
     repeat(ds_list_size(global.__scribble_global_cache_list)) scribble_flush(global.__scribble_global_cache_list[| 0]);

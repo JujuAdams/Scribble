@@ -1,10 +1,10 @@
 /// Caches a text element given a string using Scribble's formatting
 /// 
 /// Returns: A Scribble text element (which is really a complex array)
-/// @param string             Either a string to be drawn
-/// @param [occuranceName]
-/// @param [garbageCollect]   
-/// @param [freeze]           Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster
+/// @param string             The string to be drawn
+/// @param [occuranceName]    Unique identifier to differentiate particular occurances of a string within the game
+/// @param [garbageCollect]   When set to <false>, Scribble will *not* automatically clean up this data and you will need to use scribble_flush() instead. Defaults to <true>
+/// @param [freeze]           Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster. Defaults to <false>
 
 var _draw_string     = argument[0];
 var _occurance_name  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;

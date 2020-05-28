@@ -1,6 +1,6 @@
-/// @param element
-/// @param callbackFunction
-/// @param [occuranceName]
+/// @param textElement        Text element to target
+/// @param callbackFunction   Function to execute whenever a character is revealed
+/// @param [occuranceName]    Unique identifier to differentiate particular occurances of a string within the game
 
 var _scribble_array = argument[0];
 var _function       = argument[1];

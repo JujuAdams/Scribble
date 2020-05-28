@@ -1,8 +1,8 @@
 /// @param textElement       Text element to target. This element must have been created previously by scribble_draw()
 /// @param soundArray        Array of sound assets that can be used for playback
-/// @param minPitch
-/// @param maxPitch
-/// @param [occuranceName]
+/// @param minPitch          Minimum pitch that a sound asset can be played at. See audio_sound_pitch()
+/// @param maxPitch          Maximum pitch that a sound asset can be played at. See audio_sound_pitch()
+/// @param [occuranceName]   Unique identifier to differentiate particular occurances of a string within the game
 /// 
 /// It's quite common in games with typewriter-style text animations to have a "mumble" or "gibberish" sound effect
 /// that plays whilst text is being revealed. This function allows you to define an array of sound effects that will

@@ -4,7 +4,7 @@
 /// @param x                    x-position in the room to draw at.
 /// @param y                    y-position in the room to draw at.
 /// @param string/textElement   Either a string to be drawn, or a previously created text element
-/// @param [occuranceName]
+/// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
 /// 
 /// Formatting commands:
 /// []                                  Reset formatting to defaults
