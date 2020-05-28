@@ -385,35 +385,42 @@ else
                         #endregion
                 
                         #region Font Alignment
-                
+                        
                         case "fa_left":
                             _new_halign = fa_left;
                         break;
-                
+                        
                         case "fa_center":
                         case "fa_centre":
                             _new_halign = fa_center;
                         break;
-                
+                        
                         case "fa_right":
                             _new_halign = fa_right;
                         break;
-                
+                        
                         case "js_left":
-                            _new_halign = __SCRIBBLE_JUSTIFY_LEFT;
-                        break;
-                
                         case "js_center":
                         case "js_centre":
-                            _new_halign = __SCRIBBLE_JUSTIFY_CENTRE;
-                        break;
-                
                         case "js_right":
-                            _new_halign = __SCRIBBLE_JUSTIFY_RIGHT;
+                            show_error("Scribble:\n[js_*] tags have been deprecated. Please use [pin_*]\n ", false);
                         break;
-                
+                        
+                        case "pin_left":
+                            _new_halign = __SCRIBBLE_PIN_LEFT;
+                        break;
+                        
+                        case "pin_center":
+                        case "pin_centre":
+                            _new_halign = __SCRIBBLE_PIN_CENTRE;
+                        break;
+                        
+                        case "pin_right":
+                            _new_halign = __SCRIBBLE_PIN_RIGHT;
+                        break;
+                        
                         #endregion
-                
+                        
                         default:
                             if (ds_map_exists(global.__scribble_autotype_events, _command_name))
                             {
@@ -1341,9 +1348,9 @@ else
                             _element_min_x = min(_element_min_x, -_line_width);
                         break;
                 
-                        case __SCRIBBLE_JUSTIFY_LEFT:
-                        case __SCRIBBLE_JUSTIFY_CENTRE:
-                        case __SCRIBBLE_JUSTIFY_RIGHT:
+                        case __SCRIBBLE_PIN_LEFT:
+                        case __SCRIBBLE_PIN_CENTRE:
+                        case __SCRIBBLE_PIN_RIGHT:
                             _justify_max_width = max(_justify_max_width, _line_width);
                         break;
                     }
@@ -1434,15 +1441,15 @@ else
                                         _offset = -_line_width;
                                     break;
                             
-                                    case __SCRIBBLE_JUSTIFY_LEFT:
+                                    case __SCRIBBLE_PIN_LEFT:
                                         _offset = _element_min_x;
                                     break;
                             
-                                    case __SCRIBBLE_JUSTIFY_CENTRE:
+                                    case __SCRIBBLE_PIN_CENTRE:
                                         _offset = ((_element_min_x + _element_max_x) div 2) - (_line_width div 2);
                                     break;
                             
-                                    case __SCRIBBLE_JUSTIFY_RIGHT:
+                                    case __SCRIBBLE_PIN_RIGHT:
                                         _offset = _element_max_x - _line_width;
                                     break;
                                 }

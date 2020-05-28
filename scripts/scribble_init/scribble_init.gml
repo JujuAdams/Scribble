@@ -206,9 +206,9 @@ enum SCRIBBLE
 #macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
 #macro __SCRIBBLE_EXPECTED_GLYPHS      100
 #macro __SCRIBBLE_EXPECTED_FRAME_TIME  (0.95*game_get_speed(gamespeed_microseconds)/1000) //Uses to prevent the autotype from advancing if a draw call is made multiple times a frame to the same text element
-#macro __SCRIBBLE_JUSTIFY_LEFT         3
-#macro __SCRIBBLE_JUSTIFY_CENTRE       4
-#macro __SCRIBBLE_JUSTIFY_RIGHT        5
+#macro __SCRIBBLE_PIN_LEFT             3
+#macro __SCRIBBLE_PIN_CENTRE           4
+#macro __SCRIBBLE_PIN_RIGHT            5
 #macro __SCRIBBLE_WINDOW_COUNT         4
 
 //These are tied to values in shd_scribble
