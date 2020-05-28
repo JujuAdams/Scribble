@@ -3,7 +3,7 @@
 /// @param fontName   Name of the font to add, as a string
 /// @param [yyPath]   File path for the font's .yy file, including the .yy extension, relative to the font directory defined by scribble_init()
 ///                   If not specified, Scribble will look in the root of the font directory
-/// @param [texture]  Texture
+/// @param [texture]  Texture to use for this font e.g. returned by sprite_get_texture()
 ///
 /// Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
 /// 
@@ -113,7 +113,7 @@ if (_texture == undefined)
 	        }
 	        else
 	        {
-	            show_debug_message("Scribble: Warning! Could not find \"" + _path + "\" in Included Files");
+	            show_debug_message("Scribble: WARNING! Could not find \"" + _path + "\" in Included Files");
 	        }
                 
 	        return undefined;

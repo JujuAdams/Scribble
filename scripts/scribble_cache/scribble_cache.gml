@@ -1,10 +1,12 @@
 /// Caches a text element given a string using Scribble's formatting
 /// 
-/// Returns: A Scribble text element (which is really a complex array)
+/// Returns: Scribble text element (which is really a complex array)
 /// @param string             The string to be drawn
 /// @param [occuranceName]    Unique identifier to differentiate particular occurances of a string within the game
 /// @param [garbageCollect]   When set to <false>, Scribble will *not* automatically clean up this data and you will need to use scribble_flush() instead. Defaults to <true>
 /// @param [freeze]           Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster. Defaults to <false>
+///
+/// Please see scribble_draw() for inline formatting commands
 
 var _draw_string     = argument[0];
 var _occurance_name  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
@@ -326,8 +328,9 @@ else
                     
                             continue; //Skip the rest of the parser step
                         break;
-                
+                        
                         case "/colour":
+                        case "/color":
                         case "/c":
                             _text_colour = _def_colour;
                     
@@ -748,7 +751,7 @@ else
                                                             }
                                                             else
                                                             {
-                                                                show_debug_message("Scribble: Warning! Could not decode [" + _command_name + "], ensure it is a positive integer" );
+                                                                show_debug_message("Scribble: WARNING! Could not decode [" + _command_name + "], ensure it is a positive integer" );
                                                             }
                                                             
                                                             continue; //Skip the rest of the parser step
@@ -760,7 +763,7 @@ else
                                                             var _command_string = string(_command_name);
                                                             var _j = 1;
                                                             repeat(_command_tag_parameters-1) _command_string += "," + string(_parameters_list[| _j++]);
-                                                            show_debug_message("Scribble: Warning! Unrecognised command tag [" + _command_string + "]" );
+                                                            show_debug_message("Scribble: WARNING! Unrecognised command tag [" + _command_string + "]" );
                                                         
                                                             continue; //Skip the rest of the parser step
                                                         }

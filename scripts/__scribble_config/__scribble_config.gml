@@ -13,14 +13,15 @@
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED    0.1      //The default animation speed for sprites inserted into text
 #macro SCRIBBLE_DEFAULT_DELAY_DURATION  450      //Default duration of the [delay] command, in milliseconds
 
-//In 6.0.1, the other default parameters have moved to scribble_reset()
+//In 6.x.x, the other default text parameters have moved to scribble_reset()
 
 #endregion
 
 #region Advanced stuff
 
-#macro SCRIBBLE_WARNING_REINITIALIZE           true  //Controls whether an error is thrown when calling scribble_init() twice
-#macro SCRIBBLE_WARNING_TEXTURE_PAGE           true  //Turns the Separate Texture Page warning for spritefonts on/off
+//Various warning messages. Please do not turn these off unless you have to!
+#macro SCRIBBLE_WARNING_REINITIALIZE           true
+#macro SCRIBBLE_WARNING_TEXTURE_PAGE           true
 #macro SCRIBBLE_WARNING_AUTOSCAN_YY_NOT_FOUND  true
 #macro SCRIBBLE_WARNING_DRAW_SET_DEPRECATED    true
 
@@ -28,7 +29,7 @@
 #macro SCRIBBLE_SLANT_AMOUNT              0.24  //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   false //Outputs an array of glyph LTRB bounding boxes
 #macro SCRIBBLE_CREATE_CHARACTER_ARRAY    false //Outputs an array of character codes
-#macro SCRIBBLE_DEFAULT_OCCURANCE_NAME    "default"
+#macro SCRIBBLE_DEFAULT_OCCURANCE_NAME    "default" //Default value to use for autotyper occurances
 
 #macro SCRIBBLE_CACHE_TIMEOUT         15000 //How long to wait (in milliseconds) before the cache automatically destroys a text element. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_flush() instead)
 

@@ -1,5 +1,5 @@
-/// @param spriteIndex
-/// @param [spriteIndex...]
+/// @param spriteIndex        Sprite index to whitelist
+/// @param [spriteIndex...]   Any additional sprite indexes to whitelist
 
 var _i = 0;
 repeat(argument_count)

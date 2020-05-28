@@ -81,7 +81,7 @@ if (_length > _sprite_length)
 }
 else if (_length < _sprite_length)
 {
-    show_debug_message("Scribble:   Warning! mapString for \"" + _font + "\" has fewer characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")");
+    show_debug_message("Scribble:   WARNING! mapString for \"" + _font + "\" has fewer characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")");
 }
 
 
@@ -109,7 +109,7 @@ if (sprite_get_bbox_left(  _sprite) == 0)
 || (sprite_get_bbox_right( _sprite) == _sprite_width-1)
 || (sprite_get_bbox_bottom(_sprite) == _sprite_height-1)
 {
-    show_debug_message("Scribble:   Warning! \"" + _font + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed");
+    show_debug_message("Scribble:   WARNING! \"" + _font + "\" may be rendered incorrectly due to the bounding box overlapping the edge of the sprite. Please add at least a 1px border around your spritefont sprite. Please also update the bounding box if needed");
 }
         
 var _sprite_string   = _mapstring;
@@ -159,7 +159,7 @@ for(var _i = 0; _i < _length; _i++)
             
     if ((_left > _right) && (_top > _bottom))
     {
-        show_debug_message("Scribble:   Warning! Character " + string(ord(_char)) + " (" + _char + ") for spritefont \"" + _font + "\" is empty");
+        show_debug_message("Scribble:   WARNING! Character " + string(ord(_char)) + " (" + _char + ") for spritefont \"" + _font + "\" is empty");
                 
         _array[@ SCRIBBLE_GLYPH.WIDTH     ] = 1;
         _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;

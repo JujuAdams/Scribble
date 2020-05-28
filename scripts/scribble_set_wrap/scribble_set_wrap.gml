@@ -11,11 +11,11 @@
 
 var _max_width      = argument[0];
 var _max_height     = argument[1];
-var _character_wrap = (argument_count > 2)? argument[2] : false;
+var _character_wrap = (argument_count > 2)? argument[2] : undefined;
 
-global.scribble_state_max_width      = _max_width;
-global.scribble_state_max_height     = _max_height;
-global.scribble_state_character_wrap = _character_wrap;
+global.scribble_state_max_width  = _max_width;
+global.scribble_state_max_height = _max_height;
+if ((_character_wrap != undefined) && (_character_wrap >= 0)) global.scribble_state_character_wrap = _character_wrap;
 
 global.__scribble_cache_string = string(global.scribble_state_starting_font  ) + ":" +
                                  string(global.scribble_state_starting_color ) + ":" +

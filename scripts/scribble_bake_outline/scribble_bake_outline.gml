@@ -1,9 +1,11 @@
-/// @param sourceFontName
-/// @param newFontName
-/// @param thickness
-/// @param samples
-/// @param color
-/// @param smooth
+/// Creates a new font with an outline based on a given source font
+///
+/// @param sourceFontName   Name, as a string, of the font to use as a basis for the effect
+/// @param newFontName      Name of the new font to create, as a strintg
+/// @param thickness        Number of layer to use to generate the border. A value of 2 will give a 2px border
+/// @param samples          Number of samples to use for the border per layer
+/// @param color            Colour of the border
+/// @param smooth           Whether or not to interpolate the border. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
 
 var _source_font_name = argument0;
 var _new_font_name    = argument1;

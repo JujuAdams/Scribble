@@ -12,9 +12,10 @@
 /// [delay]                             Pause the autotype for a fixed amount of time at the tag's position. Only supported when using autotype. DUration is defined by SCRIBBLE_DEFAULT_DELAY_DURATION
 /// [delay,<time>]                      Pause the autotype for a fixed amount of time at the tag's position. Only supported when using autotype
 /// [pause]                             Pause the autotype at the tag's position. Call scribble_autotype_is_paused() to unpause the autotyper. User scribble_autotype_is_paused() to return if the autotyper is paused
-/// [<name of colour>]                  Set colour
+/// [<name of colour>]                  Set colour to one previously defined via scribble_add_color()
 /// [#<hex code>]                       Set colour via a hexcode, using the industry standard 24-bit RGB format (#RRGGBB)
-/// [/colour] [/c]                      Reset colour to the default
+/// [d#<decimal>]                       Set colour via a decimal integer, using GameMaker proprietary BGR format
+/// [/colour] [/color] [/c]             Reset colour to the default
 /// [<name of font>] [/font] [/f]       Set font / Reset font
 /// [<name of sprite>]                  Insert an animated sprite starting on image 0 and animating using SCRIBBLE_DEFAULT_SPRITE_SPEED
 /// [<name of sprite>,<image>]          Insert a static sprite using the specified image index

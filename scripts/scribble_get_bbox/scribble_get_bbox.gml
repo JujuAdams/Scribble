@@ -1,8 +1,8 @@
 /// Gets the position of the axis-aligned and oriented bounding box for a text element
 /// 
 /// Returns: 14-element array containing the positions of the bounding box for a text element
-/// @param x                    x-position in the room to draw at
-/// @param y                    y-position in the room to draw at
+/// @param x                    x-position in the room that the text is being drawn at
+/// @param y                    y-position in the room that the text is being drawn at
 /// @param string/textElement   The text to get the bounding box for. Alternatively, you can pass a text element into this script
 /// @param [leftMargin]         Extra space on the left-hand side of the textbox. Positive values create more space. Defaults to 0
 /// @param [topMargin]          Extra space on the top of the textbox. Positive values create more space. Defaults to 0
@@ -11,7 +11,7 @@
 /// 
 /// The padding arguments can be given the value undefined to indicate that the default value should be used.
 /// 
-/// The array returned by scribble_get_bbox() has 6 elements as defined by the enum SCRIBBLE_BBOX.
+/// The array returned by scribble_get_bbox() has 14 elements as defined by the enum SCRIBBLE_BBOX.
 
 enum SCRIBBLE_BBOX
 {
@@ -85,10 +85,10 @@ if ((global.scribble_state_xscale == 1)
     var _r = _x + _box_r + _margin_r;
     var _b = _y + _box_b + _margin_b;
     
-    var _x0 = _l; var _y0 = _t;
-    var _x1 = _r; var _y1 = _t;
-    var _x2 = _l; var _y2 = _b;
-    var _x3 = _r; var _y3 = _b;
+    var _x0 = _l;   var _y0 = _t;
+    var _x1 = _r;   var _y1 = _t;
+    var _x2 = _l;   var _y2 = _b;
+    var _x3 = _r;   var _y3 = _b;
 }
 else
 {
