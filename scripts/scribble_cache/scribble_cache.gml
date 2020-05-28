@@ -838,6 +838,18 @@ else
                 _line_width    = max(_line_width, _text_x);
                 if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                 
+                if (global.__scribble_character_delay)
+                {
+                    var _delay = global.__scribble_character_delay_map[? _character_code];
+                    if (_delay != undefined)
+                    {
+                        var _count = array_length_1d(_events_char_array);
+                        _events_char_array[@ _count] = _meta_element_characters;
+                        _events_name_array[@ _count] = "delay";
+                        _events_data_array[@ _count] = [_delay];
+                    }
+                }
+                
                 _add_character = false;
             }
             else if (_character_code == 32) //If we've hit a space
@@ -863,6 +875,18 @@ else
         
                 if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _character_code;
                 ++_meta_element_characters;
+                
+                if (global.__scribble_character_delay)
+                {
+                    var _delay = global.__scribble_character_delay_map[? 32];
+                    if (_delay != undefined)
+                    {
+                        var _count = array_length_1d(_events_char_array);
+                        _events_char_array[@ _count] = _meta_element_characters;
+                        _events_name_array[@ _count] = "delay";
+                        _events_data_array[@ _count] = [_delay];
+                    }
+                }
                 
                 _add_character = false;
             }
@@ -1026,6 +1050,18 @@ else
         
                 //Choose the height of a space for the character's height
                 if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+                
+                if (global.__scribble_character_delay)
+                {
+                    var _delay = global.__scribble_character_delay_map[? _character_code];
+                    if (_delay != undefined)
+                    {
+                        var _count = array_length_1d(_events_char_array);
+                        _events_char_array[@ _count] = _meta_element_characters;
+                        _events_name_array[@ _count] = "delay";
+                        _events_data_array[@ _count] = [_delay];
+                    }
+                }
             }
     
     
