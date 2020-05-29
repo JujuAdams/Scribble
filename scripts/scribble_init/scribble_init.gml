@@ -166,37 +166,32 @@ enum SCRIBBLE
     VERSION,          // 1
     STRING,           // 2
     CACHE_STRING,     // 3
-    DEFAULT_FONT,     // 3
-    DEFAULT_COLOUR,   // 4
-    DEFAULT_HALIGN,   // 5
-    WIDTH_LIMIT,      // 6
-    HEIGHT_LIMIT,     // 7
-    LINE_HEIGHT,      // 8
-    GARBAGE_COLLECT,  // 9
+    DRAW_STATE,       // 4
+    GARBAGE_COLLECT,  // 5
     
-    __SECTION1,       //10
-    WIDTH,            //11
-    MIN_X,            //12
-    MAX_X,            //13
-    HEIGHT,           //14
-    CHARACTERS,       //15
-    LINES,            //16
-    PAGES,            //17
-    GLYPH_LTRB_ARRAY, //18
-    CHARACTER_ARRAY,  //19
+    __SECTION1,       // 6
+    WIDTH,            // 7
+    MIN_X,            // 8
+    MAX_X,            // 9
+    HEIGHT,           //10
+    CHARACTERS,       //11
+    LINES,            //12
+    PAGES,            //13
+    GLYPH_LTRB_ARRAY, //14
+    CHARACTER_ARRAY,  //15
     
-    __SECTION2,       //20
-    DRAWN_TIME,       //21
-    FREED,            //22
-    OCCURANCES_MAP,   //23
+    __SECTION2,       //16
+    DRAWN_TIME,       //17
+    FREED,            //18
+    OCCURANCES_MAP,   //19
     
-    __SECTION3,       //24
-    PAGES_ARRAY,      //25
-    EVENT_CHAR_ARRAY, //26
-    EVENT_NAME_ARRAY, //27
-    EVENT_DATA_ARRAY, //28
-    
-    __SIZE            //29
+    __SECTION3,       //20
+    PAGES_ARRAY,      //21
+    EVENT_CHAR_ARRAY, //22
+    EVENT_NAME_ARRAY, //23
+    EVENT_DATA_ARRAY, //24
+   
+    __SIZE            //25
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))

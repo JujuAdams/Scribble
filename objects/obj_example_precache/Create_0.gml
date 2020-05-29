@@ -28,7 +28,7 @@ var _demo_string  = "[sound,snd_crank][rainbow][pulse]abcdef[] ABCDEF##";
 
 //Now parse the string to make some Scribble data
 //We're using a cache group called "example cache group" to indicate we want to manage this memory ourselves
-element = scribble_cache(_demo_string, "example cache group");
+element = scribble_cache(_demo_string);
 
 //Don't forget to reset the state otherwise all subsequent Scribble text elements will inherit these settings
 scribble_reset();

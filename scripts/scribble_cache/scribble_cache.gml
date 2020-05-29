@@ -20,28 +20,44 @@ if (is_string(_garbage_collect))
     exit;
 }
 
+var _build   = true;
+var _rebuild = false;
+
 //If the input string is an array (secret behaviour that Scribble uses!) then run some checking code
 if (is_array(_draw_string))
 {
-    if ((array_length_1d(_draw_string) != SCRIBBLE.__SIZE)
-     || (_draw_string[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
+    var _scribble_array = _draw_string;
+    
+    if ((array_length_1d(_scribble_array) != SCRIBBLE.__SIZE)
+    || (_scribble_array[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
     {
         show_error("Scribble:\nArray is not a valid Scribble text element\n ", false);
         return undefined;
     }
-    else if (_draw_string[SCRIBBLE.FREED])
+    else if (_scribble_array[SCRIBBLE.FREED])
     {
-        //This text element has had its memory freed already, ignore it
-        return undefined;
+        //This text element has had its memory freed already, rebuild it
+        _rebuild = true;
+        
+        var _old_draw_state = scribble_get_state(true);
+        scribble_set_state(_scribble_array[SCRIBBLE.DRAW_STATE]);
+        _draw_string = _scribble_array[SCRIBBLE.STRING];
+        _garbage_collect = true; //Always garbage collect rebuilt
+        
+        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Rebuilding text element for \"" + string(_draw_string) + "\"");
     }
-    
-    var _scribble_array = _draw_string;
+    else
+    {
+        _build = false;
+        _events_char_array = _scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY];
+    }
 }
-else 
+
+if (_build)
 {
     //Check if the string already exists in the cache
     var _cache_string = string(_draw_string) + global.__scribble_cache_string;
-    if (ds_map_exists(global.__scribble_global_cache_map, _cache_string))
+    if (ds_map_exists(global.__scribble_global_cache_map, _cache_string) && !_rebuild)
     {
         //Grab the text element from the cache
         var _scribble_array = global.__scribble_global_cache_map[? _cache_string];
@@ -128,28 +144,25 @@ else
         var _meta_element_lines      = 0;
         var _meta_element_pages      = 0;
         var _element_height          = 0;
-        
-        var _scribble_array      = array_create(SCRIBBLE.__SIZE); //The text element array
-        var _element_pages_array = [];                              //Stores each page of text
+    
+        //Create a new array if we're no rebuilding, otherwise reuse the old one
+        if (!_rebuild) var _scribble_array = array_create(SCRIBBLE.__SIZE);
+    
+        var _element_pages_array = []; //Stores each page of text
         var _character_array     = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
         var _occurances_map      = ds_map_create();
         
         var _events_char_array = []; //Stores each event's triggering character
         var _events_name_array = []; //Stores each event's name
         var _events_data_array = []; //Stores each event's parameters
-        
+    
         _scribble_array[@ SCRIBBLE.__SECTION0      ] = "-- Parameters --";
         _scribble_array[@ SCRIBBLE.VERSION         ] = __SCRIBBLE_VERSION;
         _scribble_array[@ SCRIBBLE.STRING          ] = _draw_string;
         _scribble_array[@ SCRIBBLE.CACHE_STRING    ] = _cache_string;
-        _scribble_array[@ SCRIBBLE.DEFAULT_FONT    ] = _def_font;
-        _scribble_array[@ SCRIBBLE.DEFAULT_COLOUR  ] = _def_colour;
-        _scribble_array[@ SCRIBBLE.DEFAULT_HALIGN  ] = _def_halign;
-        _scribble_array[@ SCRIBBLE.WIDTH_LIMIT     ] = _max_width;
-        _scribble_array[@ SCRIBBLE.HEIGHT_LIMIT    ] = _max_height;
-        _scribble_array[@ SCRIBBLE.LINE_HEIGHT     ] = _line_min_height;
+        _scribble_array[@ SCRIBBLE.DRAW_STATE      ] = scribble_get_state(true);
         _scribble_array[@ SCRIBBLE.GARBAGE_COLLECT ] = _garbage_collect;
-        
+    
         _scribble_array[@ SCRIBBLE.__SECTION1      ] = "-- Statistics --";
         _scribble_array[@ SCRIBBLE.WIDTH           ] = 0;
         _scribble_array[@ SCRIBBLE.MIN_X           ] = 0;
@@ -1688,6 +1701,13 @@ if (!ds_map_exists(_occurance_map, _occurance_name))
 }
 
 #endregion
+
+
+
+if (_rebuild)
+{
+    scribble_set_state(_old_draw_state);
+}
 
 
 

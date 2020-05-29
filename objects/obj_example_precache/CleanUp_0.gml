@@ -1,1 +1,1 @@
-scribble_flush("example cache group");
+scribble_flush(element);

@@ -20,9 +20,12 @@ global.scribble_state_box_halign      = argument0[SCRIBBLE_STATE.BOX_HALIGN     
 global.scribble_state_box_valign      = argument0[SCRIBBLE_STATE.BOX_VALIGN     ];
 
 var _array = argument0[SCRIBBLE_STATE.ANIMATION_ARRAY];
-var _new_array = array_create(SCRIBBLE_ANIM.__SIZE);
-array_copy(_new_array, 0, _array, 0, SCRIBBLE_ANIM.__SIZE);
-global.scribble_state_anim_array = _new_array;
+if (is_array(_array))
+{
+    var _new_array = array_create(SCRIBBLE_ANIM.__SIZE);
+    array_copy(_new_array, 0, _array, 0, SCRIBBLE_ANIM.__SIZE);
+    global.scribble_state_anim_array = _new_array;
+}
 
 global.__scribble_cache_string = string(global.scribble_state_starting_font  ) + ":" +
                                  string(global.scribble_state_starting_color ) + ":" +
