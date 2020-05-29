@@ -1,5 +1,5 @@
-/// @param textElement       Text element to target. This element must have been created previously by scribble_draw()
-/// @param [occuranceName]   Unique identifier to differentiate particular occurances of a string within the game
+/// @param string/textElement   Text element to target. This element must have been created previously by scribble_draw()
+/// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
 /// 
 /// This function will skip the fade in or fade out animation that has been started by scribble_autotype_fade_in() or scribble_autotype_fade_out().
 /// 
@@ -8,16 +8,8 @@
 var _scribble_array = argument[0];
 var _occurance_name = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
-//Check if this array is a relevant text element
-if (!is_array(_scribble_array)
-|| (array_length_1d(_scribble_array) != SCRIBBLE.__SIZE)
-|| (_scribble_array[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
-{
-    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Array passed to scribble_autotype_skip() is not a valid Scribble text element.");
-    exit;
-}
-
-if (_scribble_array[SCRIBBLE.FREED]) exit;
+var _scribble_array = scribble_cache(_scribble_array, _occurance_name);
+if (_scribble_array == undefined) return undefined;
 
 //Find our occurance data
 var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];

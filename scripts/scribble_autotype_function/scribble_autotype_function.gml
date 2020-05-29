@@ -6,16 +6,8 @@ var _scribble_array = argument[0];
 var _function       = argument[1];
 var _occurance_name = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
-//Check if this array is a relevant text element
-if (!is_array(_scribble_array)
-|| (array_length_1d(_scribble_array) != SCRIBBLE.__SIZE)
-|| (_scribble_array[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
-{
-    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Array passed to scribble_autotype_set_pause() is not a valid Scribble text element");
-    return false;
-}
-
-if (_scribble_array[SCRIBBLE.FREED]) return false;
+var _scribble_array = scribble_cache(_scribble_array, _occurance_name);
+if (_scribble_array == undefined) return undefined;
 
 //Find our occurance data
 var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];

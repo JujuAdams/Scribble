@@ -1,8 +1,8 @@
-/// @param textElement       Text element to target. This element must have been created previously by scribble_draw()
-/// @param method            Typewriter method to use to fade in, either per-character or per-line. See below
-/// @param speed             Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above
-/// @param smoothness        How much text fades in. Higher numbers will allow more text to be visible as it fades in
-/// @param [occuranceName]   Unique identifier to differentiate particular occurances of a string within the game
+/// @param string/textElement   Text element to target. This element must have been created previously by scribble_draw()
+/// @param method               Typewriter method to use to fade in, either per-character or per-line. See below
+/// @param speed                Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above
+/// @param smoothness           How much text fades in. Higher numbers will allow more text to be visible as it fades in
+/// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
 /// 
 /// The method argument allows you to choose between two behaviours to fade in text. Most retro-styled games will likely want to use
 /// SCRIBBLE_AUTOTYPE_PER_CHARACTER:  this method will draw characters one by one like a typewriter. Modern text-heavy narrative games
@@ -22,16 +22,8 @@ var _speed          = argument[2];
 var _smoothness     = argument[3];
 var _occurance_name = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
-//Check if this array is a relevant text element
-if (!is_array(_scribble_array)
-|| (array_length_1d(_scribble_array) != SCRIBBLE.__SIZE)
-|| (_scribble_array[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
-{
-    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Array passed to scribble_autotype_fade_in() is not a valid Scribble text element.");
-    exit;
-}
-
-if (_scribble_array[SCRIBBLE.FREED]) exit;
+var _scribble_array = scribble_cache(_scribble_array, _occurance_name);
+if (_scribble_array == undefined) return undefined;
 
 if ((_method != SCRIBBLE_AUTOTYPE_NONE)
 &&  (_method != SCRIBBLE_AUTOTYPE_PER_CHARACTER)

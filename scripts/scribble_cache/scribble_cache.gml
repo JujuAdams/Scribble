@@ -13,13 +13,6 @@ var _occurance_name  = ((argument_count > 1) && (argument[1] != undefined))? arg
 var _garbage_collect = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : true;
 var _freeze          = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : false;
 
-//Check for deprecated usage
-if (is_string(_garbage_collect))
-{
-    show_error("Scribble:\nCache groups have been deprecated\n ", true);
-    exit;
-}
-
 var _build   = true;
 var _rebuild = false;
 
