@@ -369,7 +369,6 @@ global.__scribble_uniform_tw_method       = shader_get_uniform(shd_scribble, "u_
 global.__scribble_uniform_tw_window_array = shader_get_uniform(shd_scribble, "u_fTypewriterWindowArray");
 global.__scribble_uniform_tw_smoothness   = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness" );
 global.__scribble_uniform_data_fields     = shader_get_uniform(shd_scribble, "u_aDataFields"           );
-global.__scribble_uniform_texel           = shader_get_uniform(shd_scribble, "u_fTexel"                );
 
 //Hex converter array
 var _min = ord("0");

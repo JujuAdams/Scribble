@@ -45,13 +45,10 @@ varying vec4 v_vColour;
 
 uniform vec4  u_vColourBlend;
 uniform float u_fTime;
-
 uniform float u_fTypewriterMethod;
 uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT];
 uniform float u_fTypewriterSmoothness;
-
 uniform float u_aDataFields[MAX_ANIM_FIELDS];
-//uniform vec2 u_vTexel; //Used in the fragment shader
 
 
 
