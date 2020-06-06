@@ -1684,7 +1684,7 @@ if (global.scribble_state_allow_draw)
                 {
                     case SCRIBBLE_AUTOTYPE_PER_CHARACTER:
                         var _scan_b = ceil(_typewriter_head_pos + _typewriter_speed);
-                        _scan_b = min(_scan_b, _page_array[__SCRIBBLE_PAGE.LAST_CHAR]);
+                        _scan_b = min(_scan_b, _page_array[__SCRIBBLE_PAGE.LAST_CHAR] + 2);
                     break;
                 
                     case SCRIBBLE_AUTOTYPE_PER_LINE:
@@ -1800,8 +1800,8 @@ if (global.scribble_state_allow_draw)
                 
                 switch(_typewriter_method)
                 {
-                    case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LAST_CHAR]; break;
-                    case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES    ]; break;
+                    case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LAST_CHAR] + 2; break;
+                    case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES    ] + 1; break;
                 }
                 
                 _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
