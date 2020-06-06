@@ -46,8 +46,7 @@ var _margin_b       = ((argument_count > 6) && (argument[6] != undefined))? argu
 
 if (!is_array(_scribble_array)
 || (array_length_1d(_scribble_array) != __SCRIBBLE.__SIZE)
-|| (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION)
-|| _scribble_array[__SCRIBBLE.FREED])
+|| (_scribble_array[__SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
 {
     var _string = string(_scribble_array);
     

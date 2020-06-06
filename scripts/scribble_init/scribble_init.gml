@@ -148,12 +148,7 @@ enum __SCRIBBLE
     VERSION,                 // 1
     STRING,                  // 2
     CACHE_STRING,            // 3
-    DEFAULT_FONT,            // 3
-    DEFAULT_COLOUR,          // 4
-    DEFAULT_HALIGN,          // 5
-    WIDTH_LIMIT,             // 6
-    HEIGHT_LIMIT,            // 7
-    LINE_HEIGHT,             // 8
+    GLOBAL_DRAW_STATE,       // 4
                              
     __SECTION1,              // 9
     WIDTH,                   //10
