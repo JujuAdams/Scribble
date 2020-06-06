@@ -212,6 +212,14 @@ enum SCRIBBLE
 #macro SCRIBBLE_AUTOTYPE_PER_CHARACTER  1  //Fade each character individually
 #macro SCRIBBLE_AUTOTYPE_PER_LINE       2  //Fade each line of text as a group
 
+//Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
+//However, some font definitons may have disjointed character indexes (e.g. Chinese). Scribble will detect these fonts and use a ds_map instead for glyph data lookup
+#macro __SCRIBBLE_SEQUENTIAL_GLYPH_TRY        true
+#macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE  300  //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
+#macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
+
+#macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. Thise constant must match the corresponding values in shd_scribble
+
 #macro scribble_add_colour  scribble_add_color
 
 #endregion

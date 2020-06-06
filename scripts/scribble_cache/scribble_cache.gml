@@ -526,7 +526,7 @@ if (_build)
                                                         var _sprite_y = _text_y - (_sprite_height div 2);
                                                     }
                                             
-                                                    var _packed_indexes = _meta_element_characters*SCRIBBLE_MAX_LINES + _meta_page_lines;
+                                                    var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
                                                     _char_width  = _sprite_width;
                                                     if (!_line_fixed_height) _line_height = max(_line_height, _sprite_height); //Change our line height if it's not fixed
                                             
@@ -558,7 +558,7 @@ if (_build)
                                                         break;
                                                     }
                                                 
-                                                    var _colour = SCRIBBLE_COLOURISE_SPRITES? _text_colour : c_white;
+                                                    var _colour = SCRIBBLE_COLORIZE_SPRITES? _text_colour : c_white;
                                                     if (_image_speed <= 0)
                                                     {
                                                         _image_speed = 0;
@@ -1029,7 +1029,7 @@ if (_build)
                     _quad_r -= _quad_cx;
                     _quad_b -= _quad_cy;
             
-                    var _packed_indexes = _meta_element_characters*SCRIBBLE_MAX_LINES + _meta_page_lines;
+                    var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
                     var _colour = $FF000000 | _text_colour;
                     var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_quad_b - _quad_t);
             
@@ -1286,7 +1286,7 @@ if (_build)
                             {
                                 //Go through every vertex and set its line index to 0
                                 buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32,
-                                            SCRIBBLE_MAX_LINES*(buffer_peek(_new_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) div SCRIBBLE_MAX_LINES));
+                                            __SCRIBBLE_MAX_LINES*(buffer_peek(_new_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) div __SCRIBBLE_MAX_LINES));
                         
                                 //If we're using a fixed line height, reset this glyph's y-position
                                 if (_line_fixed_height) buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32, _half_fixed_height);
@@ -1606,8 +1606,8 @@ if (_build)
                             if ((_packed_indexes != 0) || (_l != 0) || (_t != 0) || (_r != 0) || (_b != 0))
                             {
                                 //Unpack the character and line indexes
-                                var _char = _packed_indexes div SCRIBBLE_MAX_LINES;
-                                var _line = _packed_indexes - SCRIBBLE_MAX_LINES*_char;
+                                var _char = _packed_indexes div __SCRIBBLE_MAX_LINES;
+                                var _line = _packed_indexes - __SCRIBBLE_MAX_LINES*_char;
                                 
                                 //Find out if an LTRB definition exists for this character already
                                 var _old_ltrb = _glyph_ltrb_array[_char];

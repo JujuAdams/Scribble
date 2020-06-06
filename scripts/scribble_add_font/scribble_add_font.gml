@@ -187,7 +187,7 @@ if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   \"" + _font + "\" has " + 
 
 var _ds_map_fallback = true;
 
-if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
+if (__SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
 {
     #region Sequential glyph index
     
@@ -219,9 +219,9 @@ if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
     var _glyph_count = 1 + _glyph_max - _glyph_min;
     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Glyphs start at " + string(_glyph_min) + " and end at " + string(_glyph_max) + ". Range is " + string(_glyph_count-1));
     
-    if ((_glyph_count-1) > SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE)
+    if ((_glyph_count-1) > __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE)
     {
-        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Glyph range exceeds maximum (" + string(SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE) + ")!");
+        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Glyph range exceeds maximum (" + string(__SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE) + ")!");
     }
     else
     {
@@ -232,9 +232,9 @@ if (SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
         
         if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   There are " + string(_holes) + " holes, " + string(_fraction*100) + "%");
         
-        if (_fraction > SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES)
+        if (_fraction > __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES)
         {
-            if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Hole proportion exceeds maximum (" + string(SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES*100) + "%)!");
+            if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Hole proportion exceeds maximum (" + string(__SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES*100) + "%)!");
         }
         else
         {
