@@ -1,6 +1,6 @@
 /// Returns: Array that contains the current Scribble draw state
 ///
-/// @param [ignoreAnimation]
+/// @param [ignoreAnimation]   Set to <true> to not include animation state data in the returned array
 ///
 /// This function is intended to be used in combination with scribble_set_state()
 

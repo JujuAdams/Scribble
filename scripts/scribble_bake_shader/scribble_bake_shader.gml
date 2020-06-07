@@ -1,7 +1,7 @@
 /// Creates a new font with an outline based on a given source font
 ///
 /// @param sourceFontName    Name, as a string, of the font to use as a basis for the effect
-/// @param newFontName       Name of the new font to create, as a strintg
+/// @param newFontName       Name of the new font to create, as a string
 /// @param shader            Shader to use
 /// @param emptyBorderSize   Border around the outside of every output glyph, in pixels. A value of 2 is typical
 /// @param leftPad           Padding around the outside of every *input* glyph. Positive values give more space. e.g. For a shader that adds a border of 2px around the entire glyph, *all* padding arguments should be set to <2>
