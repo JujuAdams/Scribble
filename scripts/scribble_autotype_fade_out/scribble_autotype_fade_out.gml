@@ -35,7 +35,7 @@ var _occurance_array = _occurance_map[? _occurance_name];
 
 var _pages_array = _scribble_array[@ SCRIBBLE.PAGES_ARRAY];
 var _page_array = _pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAGE]];
-var _window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_array[__SCRIBBLE_PAGE.START_CHAR] - 1 - _smoothness);
+var _window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_array[__SCRIBBLE_PAGE.START_CHAR] - _smoothness);
 _window_array[@ 0] += _smoothness;
 
 //Update the remaining autotype state values

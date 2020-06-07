@@ -300,7 +300,7 @@ if (_count > 0)
         #endregion
         
         var _callback = _occurance_array[__SCRIBBLE_OCCURANCE.FUNCTION];
-        if ((_callback != undefined) && script_exists(_callback)) script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window]);
+        if ((_callback != undefined) && script_exists(_callback)) script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window] - 1);
     }
     
     #endregion

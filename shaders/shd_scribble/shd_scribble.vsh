@@ -275,7 +275,7 @@ void main()
     {
         //Choose our index based on what method's being used: if the method value == 1.0 then we're using character indexes, otherwise we use line indexes
         float index = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
-        v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index);
+        v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0);
     }
     
     //Texture

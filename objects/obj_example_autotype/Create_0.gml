@@ -22,7 +22,7 @@ var _demo_string  = "[rainbow][pulse]abcdef[] ABCDEF[test event]##";
     _demo_string += "[pin_centre][spr_coin][spr_coin][spr_coin][spr_large_coin][test event]\n";
     _demo_string += "[pin_left][spr_sprite_font]the quick[delay] brown[delay] fox[delay] [wave]jumps[/wave] over the lazy dog\n";
     _demo_string += "Press any key to continue[pause]\n";
-    _demo_string += "[fnt_test_0][pin_right]THE [fnt_test_1][#ff4499][shake]QUICK[fnt_test_0] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fnt_test_1][wobble]DOG[/wobble].";
+    _demo_string += "[fnt_test_0][pin_right]THE [fnt_test_1][#ff4499][shake]QUICK[fnt_test_0] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fnt_test_1][wobble]DOG[/wobble].[test event]";
 
 element = scribble_cache(_demo_string);
 scribble_autotype_fade_in(element, 0.5, 10, false);
