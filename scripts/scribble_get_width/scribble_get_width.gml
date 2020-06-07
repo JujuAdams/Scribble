@@ -1,4 +1,4 @@
-/// Returns: The width of the text element's bounding box
+/// Returns: The width of the text element's bounding box, ignoring rotation and scaling
 /// @param string/textElement   The text to get the bounding box for. Alternatively, you can pass a text element into this script
 
 var _scribble_array = argument0;
