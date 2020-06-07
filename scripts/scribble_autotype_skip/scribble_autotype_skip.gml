@@ -20,8 +20,8 @@ var _page_array = _element_pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAG
 
 switch(_occurance_array[__SCRIBBLE_OCCURANCE.METHOD])
 {
-    case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _max = _page_array[__SCRIBBLE_PAGE.LAST_CHAR]; break;
-    case SCRIBBLE_AUTOTYPE_PER_LINE:      var _max = _page_array[__SCRIBBLE_PAGE.LINES    ]; break;
+    case 1: var _max = _page_array[__SCRIBBLE_PAGE.LAST_CHAR]; break; //Per character
+    case 2: var _max = _page_array[__SCRIBBLE_PAGE.LINES    ]; break; //Per line
 }
 
 _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW      ] = 0;

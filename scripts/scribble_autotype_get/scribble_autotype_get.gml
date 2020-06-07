@@ -23,7 +23,7 @@ var _occurance_array = _occurance_map[? _occurance_name];
 
 //Early out if the method is NONE
 var _typewriter_method = _occurance_array[__SCRIBBLE_OCCURANCE.METHOD];
-if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE) return 1;
+if (_typewriter_method == 0) return 1; //No fade in/out set
 
 //Return an error code if the fade in state has not been set
 //(The fade in state is initialised as -1)
@@ -35,12 +35,12 @@ var _page_array = _element_pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAG
 
 switch(_typewriter_method)
 {
-    case SCRIBBLE_AUTOTYPE_PER_CHARACTER:
+    case 1: //Per character
         var _min = _page_array[__SCRIBBLE_PAGE.START_CHAR];
         var _max = _page_array[__SCRIBBLE_PAGE.LAST_CHAR ];
     break;
     
-    case SCRIBBLE_AUTOTYPE_PER_LINE:
+    case 2: //Per line
         var _min = 0;
         var _max = _page_array[__SCRIBBLE_PAGE.LINES];
     break;

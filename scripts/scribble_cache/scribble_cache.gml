@@ -1672,7 +1672,7 @@ if (!ds_map_exists(_occurance_map, _occurance_name))
     _occurance_array[@ __SCRIBBLE_OCCURANCE.SPEED              ] =  0;
     _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW             ] =  0;
     _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW_ARRAY       ] =  array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
-    _occurance_array[@ __SCRIBBLE_OCCURANCE.METHOD             ] =  SCRIBBLE_AUTOTYPE_NONE;
+    _occurance_array[@ __SCRIBBLE_OCCURANCE.METHOD             ] =  0; //No fade in/out set
     _occurance_array[@ __SCRIBBLE_OCCURANCE.SMOOTHNESS         ] =  0;
     _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_ARRAY        ] = -1;
     _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_OVERLAP      ] =  0;

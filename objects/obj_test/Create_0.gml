@@ -35,4 +35,4 @@ element = scribble_cache(demo_string);
 scribble_reset(); //Don't forget to reset the state otherwise all subsequent Scribble text elements will inherit these settings
 
 scribble_page_set(element, 0);
-scribble_autotype_fade_in(element, SCRIBBLE_AUTOTYPE_PER_CHARACTER, 1, 10);
+scribble_autotype_fade_in(element, 1, 10, false);

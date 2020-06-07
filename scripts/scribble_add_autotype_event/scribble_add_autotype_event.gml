@@ -26,7 +26,7 @@
 /// Here's an example. Let's say we run this code in the Create event of an object:
 ///    scribble_autotype_add_event("rumble", callbackRumble);
 ///    element = scribble_draw("Here's some[rumble,0.2] rumble!);
-///    scribble_autotype_fade_in(element, 0.5);
+///    scribble_autotype_fade_in(element, 0.5, 0, false);
 /// 
 /// And then in the Draw event we run:
 ///    scribble_draw(x, y, element);

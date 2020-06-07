@@ -206,11 +206,10 @@ enum SCRIBBLE
 #macro __SCRIBBLE_PIN_RIGHT            5
 #macro __SCRIBBLE_WINDOW_COUNT         4
 
-//These are tied to values in shd_scribble
-//If you need to change these for some reason, you'll need to change shd_scribble too
-#macro SCRIBBLE_AUTOTYPE_NONE           0  //No fade
-#macro SCRIBBLE_AUTOTYPE_PER_CHARACTER  1  //Fade each character individually
-#macro SCRIBBLE_AUTOTYPE_PER_LINE       2  //Fade each line of text as a group
+//Deprecated
+#macro SCRIBBLE_AUTOTYPE_NONE           undefined
+#macro SCRIBBLE_AUTOTYPE_PER_CHARACTER  undefined
+#macro SCRIBBLE_AUTOTYPE_PER_LINE       undefined
 
 //Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
 //However, some font definitons may have disjointed character indexes (e.g. Chinese). Scribble will detect these fonts and use a ds_map instead for glyph data lookup

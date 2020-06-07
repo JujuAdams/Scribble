@@ -21,6 +21,12 @@ var _occurance_array = _occurance_map[? _occurance_name];
 _page = clamp(_page, 0, _scribble_array[SCRIBBLE.PAGES]-1);
 _occurance_array[@ __SCRIBBLE_OCCURANCE.PAGE] = _page;
 
-scribble_autotype_fade_in(_scribble_array, undefined, undefined, undefined);
+if (_occurance_array[__SCRIBBLE_OCCURANCE.METHOD] != 0)
+{
+    scribble_autotype_fade_in(_scribble_array,
+                              _occurance_array[__SCRIBBLE_OCCURANCE.SPEED     ],
+                              _occurance_array[__SCRIBBLE_OCCURANCE.SMOOTHNESS],
+                              _occurance_array[__SCRIBBLE_OCCURANCE.METHOD    ] == 2);
+}
 
 return _page;

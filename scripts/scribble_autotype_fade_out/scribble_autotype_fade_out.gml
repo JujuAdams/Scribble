@@ -1,7 +1,7 @@
-/// @param string/textElement   Text element to target. This element must have been created previously by scribble_draw()
-/// @param method               Typewriter method to use to fade out, either per-character or per-line. See below
-/// @param speed                Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above
-/// @param smoothness           How much text fades in. Higher numbers will allow more text to be visible as it fades in
+/// @param string/textElement   Text element to target. This element must have been created previously by scribble_draw() or scribble_cache()
+/// @param speed                Amount of text to fade out per tick (1 tick is usually 1 frame). This is character or lines depending on the <perLine> argument
+/// @param smoothness           How much text fades out. Higher numbers will allow more text to be visible as it fades out
+/// @param perLine              Set to <true> to fade out one line at a time, otherwise text will fade out per-character
 /// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
 /// 
 /// The method argument allows you to choose between two behaviours to fade out text. Most retro-styled games will likely want to use
@@ -15,21 +15,19 @@
 /// Events will not be executed as text fades out.
 
 var _scribble_array = argument[0];
-var _method         = argument[1];
-var _speed          = argument[2];
-var _smoothness     = argument[3];
+var _speed          = argument[1];
+var _smoothness     = argument[2];
+var _per_line       = argument[3];
 var _occurance_name = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
+
+if (_speed == undefined)
+{
+    show_error("Scribble:\nscribble_autotype_fade_out() has had its arguments changed. Please review your code\n ", false);
+    exit;
+}
 
 var _scribble_array = scribble_cache(_scribble_array, _occurance_name);
 if (_scribble_array == undefined) return undefined;
-
-if ((_method != SCRIBBLE_AUTOTYPE_NONE)
-&&  (_method != SCRIBBLE_AUTOTYPE_PER_CHARACTER)
-&&  (_method != SCRIBBLE_AUTOTYPE_PER_LINE))
-{
-    show_error("Scribble:\nMethod not recognised.\nPlease use SCRIBBLE_AUTOTYPE_NONE, SCRIBBLE_AUTOTYPE_PER_CHARACTER, or SCRIBBLE_AUTOTYPE_PER_LINE.\n ", false);
-    _method = SCRIBBLE_AUTOTYPE_NONE;
-}
 
 //Find our occurance data
 var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
@@ -43,7 +41,7 @@ _window_array[@ 0] += _smoothness;
 //Update the remaining autotype state values
 _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW      ] = 0;
 _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW_ARRAY] = _window_array;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.METHOD      ] = _method;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.METHOD      ] = _per_line? 2 : 1;
 _occurance_array[@ __SCRIBBLE_OCCURANCE.SPEED       ] = _speed;
 _occurance_array[@ __SCRIBBLE_OCCURANCE.SMOOTHNESS  ] = _smoothness;
 _occurance_array[@ __SCRIBBLE_OCCURANCE.FADE_IN     ] = false;

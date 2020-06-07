@@ -75,7 +75,7 @@ if (_count > 0)
     #region Advance the autotyper, execute events, play sounds etc.
     
     var _typewriter_method = _occurance_array[__SCRIBBLE_OCCURANCE.METHOD];
-    if (_typewriter_method == SCRIBBLE_AUTOTYPE_NONE)
+    if (_typewriter_method == 0) //No fade in/out set
     {
         var _typewriter_method       = 0;
         var _typewriter_smoothness   = 0;
@@ -130,12 +130,12 @@ if (_count > 0)
             //Find the last character we need to scan
             switch(_typewriter_method)
             {
-                case SCRIBBLE_AUTOTYPE_PER_CHARACTER:
+                case 1: //Per character
                     var _scan_b = ceil(_typewriter_head_pos + _typewriter_speed);
                     _scan_b = min(_scan_b, _page_array[__SCRIBBLE_PAGE.LAST_CHAR] + 2);
                 break;
                 
-                case SCRIBBLE_AUTOTYPE_PER_LINE:
+                case 2: //Per line
                     var _page_lines_array = _page_array[__SCRIBBLE_PAGE.LINES_ARRAY];
                     var _line   = _page_lines_array[min(ceil(_typewriter_head_pos + _typewriter_speed), _page_array[__SCRIBBLE_PAGE.LINES]-1)];
                     var _scan_b = _line[__SCRIBBLE_LINE.LAST_CHAR];
@@ -234,8 +234,8 @@ if (_count > 0)
             
             switch(_typewriter_method)
             {
-                case SCRIBBLE_AUTOTYPE_PER_CHARACTER: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LAST_CHAR] + 2; break;
-                case SCRIBBLE_AUTOTYPE_PER_LINE:      var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES    ]; break;
+                case 1: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LAST_CHAR] + 2; break; //Per character
+                case 2: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES    ];     break; //Per line
             }
             
             _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
@@ -247,20 +247,17 @@ if (_count > 0)
     
     #region Move the typewriter head/tail
     
-    if (_typewriter_method != SCRIBBLE_AUTOTYPE_NONE)
+    if (_typewriter_method != 0) //Either per line or per character fade set
     {
         //Figure out the limit and smoothness values
-        if (_typewriter_method != SCRIBBLE_AUTOTYPE_NONE)
+        //If it's been around-about a frame since we called this scripts...
+        //if (_increment_timers)
         {
-            //If it's been around-about a frame since we called this scripts...
-            //if (_increment_timers)
+            var _i = 0;
+            repeat(__SCRIBBLE_WINDOW_COUNT)
             {
-                var _i = 0;
-                repeat(__SCRIBBLE_WINDOW_COUNT)
-                {
-                    _typewriter_window_array[@ _i+1] = min(_typewriter_window_array[_i+1] + _typewriter_adjusted_speed, _typewriter_window_array[_i]);
-                    _i += 2;
-                }
+                _typewriter_window_array[@ _i+1] = min(_typewriter_window_array[_i+1] + _typewriter_adjusted_speed, _typewriter_window_array[_i]);
+                _i += 2;
             }
         }
     }
