@@ -2,31 +2,24 @@
 
 #macro SCRIBBLE_HASH_NEWLINE                  true   //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's newline behaviour
 #macro SCRIBBLE_COLORIZE_SPRITES              true   //Whether to apply the text color to non-animated sprites (animated sprites are always blended white)
-#macro SCRIBBLE_VERBOSE                       false  //Enables verbose console output to aid with debugging
 #macro SCRIBBLE_ADD_SPRITE_ORIGINS            false  //Whether to use sprite origins. Setting this to <false> will vertically centre sprites on the line of text
 #macro SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT  false  //Set to <true> to emulate GameMaker's native behaviour
 #macro SCRIBBLE_MISSING_CHARACTER             "?"    //Used when a character is missing from a font
 #macro SCRIBBLE_BGR_COLOR_HEX_CODES           false  //Set to <true> to use GameMaker's #BBGGRR format for in-line hex code colors. <false> uses the industry standard #RRGGBB format
-
-#region Default parameters
-
-#macro SCRIBBLE_DEFAULT_SPRITE_SPEED    0.1      //The default animation speed for sprites inserted into text
-#macro SCRIBBLE_DEFAULT_DELAY_DURATION  450      //Default duration of the [delay] command, in milliseconds
-
-//In 6.x.x, the other default text parameters have moved to scribble_reset()
-
-#endregion
+#macro SCRIBBLE_DEFAULT_SPRITE_SPEED          0.1    //The default animation speed for sprites inserted into text
+#macro SCRIBBLE_DEFAULT_DELAY_DURATION        450    //Default duration of the [delay] command, in milliseconds
 
 
 
-#region Advanced stuff
+#region Advanced Features
 
-#macro SCRIBBLE_STEP_SIZE                 (delta_time/game_get_speed(gamespeed_microseconds)) //The animation step size. The default command here uses delta_time ensures that animations are smooth at all framerates
-#macro SCRIBBLE_SLANT_AMOUNT              0.24  //The x-axis displacement when using the [slant] tag
-#macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   false //Outputs an array of glyph LTRB bounding boxes
-#macro SCRIBBLE_CREATE_CHARACTER_ARRAY    false //Outputs an array of character codes
+#macro SCRIBBLE_STEP_SIZE                 1         //The animation step size. The default command here uses delta_time ensures that animations are smooth at all framerates
+#macro SCRIBBLE_SLANT_AMOUNT              0.24      //The x-axis displacement when using the [slant] tag
+#macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   false     //Outputs an array of glyph LTRB bounding boxes
+#macro SCRIBBLE_CREATE_CHARACTER_ARRAY    false     //Outputs an array of character codes
 #macro SCRIBBLE_DEFAULT_OCCURANCE_NAME    "default" //Default value to use for autotyper occurances
-#macro SCRIBBLE_CACHE_TIMEOUT             15000 //How long to wait (in milliseconds) before the cache automatically destroys a text element. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_flush() instead)
+#macro SCRIBBLE_CACHE_TIMEOUT             15000     //How long to wait (in milliseconds) before the cache automatically destroys a text element. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_flush() instead)
+#macro SCRIBBLE_VERBOSE                   false     //Enables verbose console output to aid with debugging
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
