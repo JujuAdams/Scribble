@@ -4,10 +4,6 @@
 /// @param perLine              Set to <true> to fade in one line at a time, otherwise text will fade in per-character
 /// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
 /// 
-/// The method argument allows you to choose between two behaviours to fade in text. Most retro-styled games will likely want to use
-/// SCRIBBLE_AUTOTYPE_PER_CHARACTER:  this method will draw characters one by one like a typewriter. Modern text-heavy narrative games
-/// may want to use SCRIBBLE_AUTOTYPE_PER_LINE instead.
-/// 
 /// How the text is revealed can be customised further by modifying the smoothness argument. A high value will cause text to be smoothly
 /// faded in whereas a smoothness of 0 will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily
 /// combined with the smoothness value to animate text as it fades in.
