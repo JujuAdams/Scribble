@@ -25,7 +25,7 @@ const int MAX_ANIM_FIELDS = 14;
 //12 = wheel frequency
 //13 = wheel speed
 
-const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in __scribble_config() if you change this value!
+const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
 
 const int WINDOW_COUNT = 4;
 

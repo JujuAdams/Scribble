@@ -698,7 +698,7 @@
             "Key": "acb26a39-8033-4289-87d0-228ed7921bc8",
             "Value": {
                 "id": "e43fdae5-ac16-404d-9452-581bad2e7949",
-                "resourcePath": "scripts\\__scribble_config\\__scribble_config.yy",
+                "resourcePath": "scripts\\__scribble_macros\\__scribble_macros.yy",
                 "resourceType": "GMScript"
             }
         },
