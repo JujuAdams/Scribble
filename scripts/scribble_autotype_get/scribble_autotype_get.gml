@@ -37,7 +37,7 @@ switch(_typewriter_method)
 {
     case 1: //Per character
         var _min = _page_array[__SCRIBBLE_PAGE.START_CHAR];
-        var _max = _page_array[__SCRIBBLE_PAGE.LAST_CHAR ];
+        var _max = _page_array[__SCRIBBLE_PAGE.LAST_CHAR ] + 2;
     break;
     
     case 2: //Per line
