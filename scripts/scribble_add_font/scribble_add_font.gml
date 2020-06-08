@@ -98,7 +98,7 @@ if (_texture == undefined)
     
 	if (asset_get_type(_font) != asset_font)
 	{
-	    show_error("Scribble:\nSCRIBBLE_ERROR_ASSET_DOES_NOT_EXIST\n \nCould not find font asset \"" + _font + "\" in the project\n ", false);
+	    show_error("Scribble:\nCould not find font asset \"" + _font + "\" in the project\n ", false);
 	    return undefined;
 	}
         
@@ -178,9 +178,39 @@ if (_fail)
     exit;
 }
 
+if (ds_map_exists(_json, "mvc"))
+{
+    //Version 2.2.5 and before
+    var _yy_glyphs_list = _json[? "glyphs"];
+}
+else
+{
+    //Version 2.3.0
+    //We rebuild the new 2.3.0 JSON structure to match 2.2.5 for the sake of keeping things simple
+    var _yy_glyphs_map = _json[? "glyphs"];
+    ds_map_delete(_json, "glyphs");
+    
+    var _yy_glyphs_list = ds_list_create();
+    ds_map_add_list(_json, "glyphs", _yy_glyphs_list);
+    
+    var _key = ds_map_find_first(_yy_glyphs_map);
+    repeat(ds_map_size(_yy_glyphs_map))
+    {
+        var _new_map = ds_map_create();
+        ds_list_add(_yy_glyphs_list, _new_map);
+        ds_list_mark_as_map(_yy_glyphs_list, ds_list_size(_yy_glyphs_list)-1);
+        
+        _new_map[? "Key"] = real(_key);
+        ds_map_add_map(_new_map, "Value", _yy_glyphs_map[? _key]);
+        _yy_glyphs_map[? _key] = undefined;
+        
+        _key = ds_map_find_next(_yy_glyphs_map, _key);
+    }
+    
+    ds_map_destroy(_yy_glyphs_map);
+}
 
-var _yy_glyph_list = _json[? "glyphs" ];
-var _size = ds_list_size(_yy_glyph_list);
+var _size = ds_list_size(_yy_glyphs_list);
 if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   \"" + _font + "\" has " + string(_size) + " characters");
 
 
@@ -195,7 +225,7 @@ if (__SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
     
     var _glyph_map = ds_map_create();
     
-    var _yy_glyph_map = _yy_glyph_list[| 0];
+    var _yy_glyph_map = _yy_glyphs_list[| 0];
         _yy_glyph_map = _yy_glyph_map[? "Value"];
     
     var _glyph_min = _yy_glyph_map[? "character"];
@@ -204,7 +234,7 @@ if (__SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
      
     for(var _i = 1; _i < _size; _i++)
     {
-        var _yy_glyph_map = _yy_glyph_list[| _i];
+        var _yy_glyph_map = _yy_glyphs_list[| _i];
             _yy_glyph_map = _yy_glyph_map[? "Value"];
         var _index = _yy_glyph_map[? "character"];
         
@@ -246,7 +276,7 @@ if (__SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
             
             for(var _i = 0; _i < _size; _i++)
             {
-                var _yy_glyph_map = _yy_glyph_list[| _i];
+                var _yy_glyph_map = _yy_glyphs_list[| _i];
                     _yy_glyph_map = _yy_glyph_map[? "Value"];
                 
                 var _index = _yy_glyph_map[? "character"];
@@ -292,7 +322,7 @@ if (_ds_map_fallback)
     
     for(var _i = 0; _i < _size; _i++)
     {
-        var _yy_glyph_map = _yy_glyph_list[| _i];
+        var _yy_glyph_map = _yy_glyphs_list[| _i];
             _yy_glyph_map = _yy_glyph_map[? "Value"];
         
         var _index = _yy_glyph_map[? "character"];
