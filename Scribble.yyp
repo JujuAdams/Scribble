@@ -122,8 +122,8 @@
     {"folderPath":"folders/Scribble/Autotype.yy","order":9,"resourceVersion":"1.0","name":"Autotype","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Scribble/Pages.yy","order":10,"resourceVersion":"1.0","name":"Pages","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Scribble/Advanced Things For Serious People.yy","order":11,"resourceVersion":"1.0","name":"Advanced Things For Serious People","tags":[],"resourceType":"GMFolder",},
-    {"folderPath":"folders/Scribble/(Deprecated).yy","order":12,"resourceVersion":"1.0","name":"(Deprecated)","tags":[],"resourceType":"GMFolder",},
-    {"folderPath":"folders/Scribble/Shaders.yy","order":13,"resourceVersion":"1.0","name":"Shaders","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scribble/(Deprecated).yy","order":13,"resourceVersion":"1.0","name":"(Deprecated)","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scribble/Shaders.yy","order":12,"resourceVersion":"1.0","name":"Shaders","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Examples/Fonts.yy","order":11,"resourceVersion":"1.0","name":"Fonts","tags":[],"resourceType":"GMFolder",},
   ],
   "AudioGroups": [

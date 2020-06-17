@@ -20,8 +20,9 @@
 /// 
 /// Unlike standard fonts, spritefonts do not need to have any files added as Included Files. Similarly, spritefonts will not be added by using the autoScan feature
 /// of scribble_init(). Each spritefont must be added manually by calling scribble_add_spritefont().
-function scribble_add_spritefont() {
 
+function scribble_add_spritefont()
+{
 	if (!variable_global_exists("__scribble_lcg"))
 	{
 	    show_error("Scribble:\nscribble_add_spritefont() should be called after scribble_init()\n ", true);
@@ -249,6 +250,4 @@ function scribble_add_spritefont() {
 	}
 
 	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added \"" + _font + "\" as a spritefont");
-
-
 }

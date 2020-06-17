@@ -16,8 +16,9 @@
 /// In the IDE, Navigate to the font resource you wish to add and right click on it. From the drop-down menu, select "Show In Explorer". A
 /// window will open showing various files for the font resource. You can drag-and-drop the .yy file into the GameMaker IDE to add it as an
 /// Included File.
-function scribble_add_font() {
 
+function scribble_add_font()
+{
 	if (!variable_global_exists("__scribble_lcg"))
 	{
 	    show_error("Scribble:\nscribble_add_font() should be called after scribble_init()\n ", true);
@@ -220,7 +221,7 @@ function scribble_add_font() {
 
 	if (__SCRIBBLE_SEQUENTIAL_GLYPH_TRY)
 	{
-    #region Sequential glyph index
+        #region Sequential glyph index
     
 	    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Trying sequential glyph index...");
     
@@ -311,7 +312,7 @@ function scribble_add_font() {
 	        }
 	    }
     
-    #endregion
+        #endregion
 	}
 
 	if (_ds_map_fallback)
@@ -359,6 +360,4 @@ function scribble_add_font() {
 	ds_map_destroy(_json);
 
 	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added \"" + _font + "\" as a standard font");
-
-
 }

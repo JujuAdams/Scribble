@@ -7,8 +7,9 @@
 /// @param [freeze]           Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster. Defaults to <false>
 ///
 /// Please see scribble_draw() for inline formatting commands
-function scribble_cache() {
 
+function scribble_cache()
+{
 	var _draw_string     = argument[0];
 	var _occurance_name  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 	var _garbage_collect = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : true;
@@ -22,7 +23,7 @@ function scribble_cache() {
 	{
 	    var _scribble_array = _draw_string;
     
-	    if ((array_length_1d(_scribble_array) != SCRIBBLE.__SIZE)
+	    if ((array_length(_scribble_array) != SCRIBBLE.__SIZE)
 	    || (_scribble_array[SCRIBBLE.VERSION] != __SCRIBBLE_VERSION))
 	    {
 	        show_error("Scribble:\nArray is not a valid Scribble text element\n ", false);
@@ -69,7 +70,7 @@ function scribble_cache() {
 
 
 
-        #region Process input parameters
+            #region Process input parameters
 
 	        var _max_width         = global.scribble_state_max_width;
 	        var _max_height        = global.scribble_state_max_height;
@@ -128,11 +129,11 @@ function scribble_cache() {
 	            _def_colour = _value;
 	        }
         
-        #endregion
+            #endregion
 
 
 
-        #region Create the base text element
+            #region Create the base text element
         
 	        var _meta_element_characters = 0;
 	        var _meta_element_lines      = 0;
@@ -179,11 +180,11 @@ function scribble_cache() {
 	        _scribble_array[@ SCRIBBLE.EVENT_NAME_ARRAY] = _events_name_array; //Stores each event's name
 	        _scribble_array[@ SCRIBBLE.EVENT_DATA_ARRAY] = _events_data_array; //Stores each event's parameters
         
-        #endregion
+            #endregion
     
     
     
-        #region Register the text element in a cache group
+            #region Register the text element in a cache group
 
 	        if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
 
@@ -191,11 +192,11 @@ function scribble_cache() {
 	        global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
 	        ds_list_add(global.__scribble_global_cache_list, _scribble_array);
 
-        #endregion
+            #endregion
 
 
 
-        #region Add the first page to the text element
+            #region Add the first page to the text element
         
 	        var _meta_page_lines = 0;
 	        var _word_start_char = 0;
@@ -210,14 +211,14 @@ function scribble_cache() {
 	        _page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _page_lines_array;
 	        _page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY] = _page_vbuffs_array;
         
-	        _element_pages_array[@ array_length_1d(_element_pages_array)] = _page_array;
+	        _element_pages_array[@ array_length(_element_pages_array)] = _page_array;
 	        ++_meta_element_pages;
         
-        #endregion
+            #endregion
 
 
 
-        #region Add the first line to the page
+            #region Add the first line to the page
         
 	        var _line_has_space = false;
 	        var _line_width     = 0;
@@ -230,13 +231,13 @@ function scribble_cache() {
 	        _line_array[@ __SCRIBBLE_LINE.WIDTH     ] = _line_width;
 	        _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_height;
 	        _line_array[@ __SCRIBBLE_LINE.HALIGN    ] = _def_halign;
-	        _page_lines_array[@ array_length_1d(_page_lines_array)] = _line_array;
+	        _page_lines_array[@ array_length(_page_lines_array)] = _line_array;
         
-        #endregion
+            #endregion
 
 
 
-        #region Set the initial parser state
+            #region Set the initial parser state
         
 	        var _text_x            = 0;
 	        var _text_y            = _line_fixed_height? _half_fixed_height : 0; //Use a y-offset if we've got a fixed line height
@@ -248,11 +249,11 @@ function scribble_cache() {
 	        var _text_scale        = 1;
 	        var _text_slant        = false;
         
-        #endregion
+            #endregion
 
 
 
-        #region Parse the string
+            #region Parse the string
         
 	        var _command_tag_start      = -1;
 	        var _command_tag_parameters =  0;
@@ -292,13 +293,13 @@ function scribble_cache() {
 	                    //Reset command tag state
 	                    _command_tag_start = -1;
         
-                    #region Command tag handling
+                        #region Command tag handling
             
 	                    var _new_halign = undefined;
 	                    _command_name = _parameters_list[| 0];
 	                    switch(_command_name)
 	                    {
-                        #region Reset formatting
+                            #region Reset formatting
 	                        case "":
 	                            _text_font         = _def_font;
 	                            _text_colour       = _def_colour;
@@ -356,9 +357,9 @@ function scribble_cache() {
                     
 	                            continue; //Skip the rest of the parser step
 	                        break;
-                        #endregion
+                            #endregion
                         
-                        #region Page break
+                            #region Page break
                         
 	                        case "/page":
 	                            _force_newline = true;
@@ -366,9 +367,9 @@ function scribble_cache() {
 	                            _force_newpage = true;
 	                        break;
                         
-                        #endregion
+                            #endregion
                         
-                        #region Scale
+                            #region Scale
 	                        case "scale":
 	                            if (_command_tag_parameters <= 1)
 	                            {
@@ -381,17 +382,17 @@ function scribble_cache() {
                     
 	                            continue; //Skip the rest of the parser step
 	                        break;
-                        #endregion
+                            #endregion
                 
-                        #region Slant (italics emulation)
+                            #region Slant (italics emulation)
 	                        case "slant":
 	                            _text_slant = true;
                     
 	                            continue; //Skip the rest of the parser step
 	                        break;
-                        #endregion
+                            #endregion
                 
-                        #region Font Alignment
+                            #region Font Alignment
                         
 	                        case "fa_left":
 	                            _new_halign = fa_left;
@@ -426,12 +427,12 @@ function scribble_cache() {
 	                            _new_halign = __SCRIBBLE_PIN_RIGHT;
 	                        break;
                         
-                        #endregion
+                            #endregion
                         
 	                        default:
 	                            if (ds_map_exists(global.__scribble_autotype_events, _command_name))
 	                            {
-                                #region Events
+                                    #region Events
                                 
 	                                var _data = array_create(_command_tag_parameters-1);
 	                                var _j = 1;
@@ -441,45 +442,45 @@ function scribble_cache() {
 	                                    ++_j;
 	                                }
                                 
-	                                var _count = array_length_1d(_events_char_array);
+	                                var _count = array_length(_events_char_array);
 	                                _events_char_array[@ _count] = _meta_element_characters;
 	                                _events_name_array[@ _count] = _command_name;
 	                                _events_data_array[@ _count] = _data;
                                 
 	                                continue; //Skip the rest of the parser step
                                 
-                                #endregion
+                                    #endregion
 	                            }
 	                            else
 	                            {
 	                                if (ds_map_exists(global.__scribble_effects, _command_name))
 	                                {
-                                    #region Set effect
+                                        #region Set effect
                                     
 	                                    _text_effect_flags = _text_effect_flags | (1 << global.__scribble_effects[? _command_name]);
                                     
 	                                    continue; //Skip the rest of the parser step
                                     
-                                    #endregion
+                                        #endregion
 	                                }
 	                                else
 	                                {
 	                                    //Check if this is a effect name, but with a forward slash at the front
 	                                    if (ds_map_exists(global.__scribble_effects_slash, _command_name))
 	                                    {
-                                        #region Unset effect
+                                            #region Unset effect
                                         
 	                                        _text_effect_flags = ~((~_text_effect_flags) | (1 << global.__scribble_effects_slash[? _command_name]));
                                         
 	                                        continue; //Skip the rest of the parser step
                                         
-                                        #endregion
+                                            #endregion
 	                                    }
 	                                    else
 	                                    {
 	                                        if (ds_map_exists(global.__scribble_font_data, _command_name))
 	                                        {
-                                            #region Change font
+                                                #region Change font
                                             
 	                                            _text_font = _command_name;
                                             
@@ -495,13 +496,13 @@ function scribble_cache() {
                                             
 	                                            continue; //Skip the rest of the parser step
                                             
-                                            #endregion
+                                                #endregion
 	                                        }
 	                                        else
 	                                        {
 	                                            if (asset_get_type(_command_name) == asset_sprite)
 	                                            {
-                                                #region Write sprites
+                                                    #region Write sprites
                                                 
 	                                                _line_width = max(_line_width, _text_x);
                                         
@@ -537,7 +538,7 @@ function scribble_cache() {
 	                                                        _sprite_number = 256;
 	                                                    }
                                             
-                                                    #region Figure out what images to add to the buffer
+                                                        #region Figure out what images to add to the buffer
                                                 
 	                                                    var _image_index = 0;
 	                                                    var _image_speed = 0;
@@ -581,9 +582,9 @@ function scribble_cache() {
 	                                                        _image_index = 0;
 	                                                    }
                                                 
-                                                    #endregion
+                                                        #endregion
                                             
-                                                    #region Pre-create vertex buffer arrays for images for this sprite and update WORD_START_TELL at the same time
+                                                        #region Pre-create vertex buffer arrays for images for this sprite and update WORD_START_TELL at the same time
                                                 
 	                                                    var _image = _image_index;
 	                                                    repeat(_sprite_number)
@@ -606,7 +607,7 @@ function scribble_cache() {
 	                                                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _vbuff_line_start_list;
 	                                                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _sprite_texture);
 	                                                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_sprite_texture);
-	                                                            _page_vbuffs_array[@ array_length_1d(_page_vbuffs_array)] = _vbuff_data;
+	                                                            _page_vbuffs_array[@ array_length(_page_vbuffs_array)] = _vbuff_data;
                                                         
 	                                                            _texture_to_buffer_map[? _sprite_texture] = _vbuff_data;
 	                                                        }
@@ -621,14 +622,14 @@ function scribble_cache() {
                                                 
 	                                                        //Fill link break list
 	                                                        var _tell = buffer_tell(_buffer);
-	                                                        repeat(array_length_1d(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
+	                                                        repeat(array_length(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
                                                     
 	                                                        ++_image;
 	                                                    }
                                                 
-                                                    #endregion
+                                                        #endregion
                                             
-                                                    #region Add sprite to buffers
+                                                        #region Add sprite to buffers
                                                 
 	                                                    var _image = _image_index;
 	                                                    repeat(_sprite_number)
@@ -670,7 +671,7 @@ function scribble_cache() {
 	                                                        if (_image_speed > 0) _colour++;
 	                                                    }
                                                 
-                                                    #endregion
+                                                        #endregion
                                             
 	                                                    //Record the first character in this word
 	                                                    _word_start_char = _meta_element_characters;
@@ -681,26 +682,26 @@ function scribble_cache() {
 	                                                    ++_meta_element_characters;
 	                                                }
                                         
-                                                #endregion
+                                                    #endregion
 	                                            }
 	                                            else
 	                                            {
 	                                                if (ds_map_exists(global.__scribble_colours, _command_name))
 	                                                {
-                                                    #region Set a pre-defined colour
+                                                        #region Set a pre-defined colour
                                                     
 	                                                    _text_colour = global.__scribble_colours[? _command_name];
                                                     
 	                                                    continue; //Skip the rest of the parser step
                                                     
-                                                    #endregion
+                                                        #endregion
 	                                                }
 	                                                else
 	                                                {
 	                                                    var _first_char = string_copy(_command_name, 1, 1);
 	                                                    if ((string_length(_command_name) <= 7) && ((_first_char == "$") || (_first_char == "#")))
 	                                                    {
-                                                        #region Hex colour decoding
+                                                            #region Hex colour decoding
                                                         
 	                                                        var _ord = ord(string_char_at(_command_name, 3));
 	                                                        var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
@@ -734,7 +735,7 @@ function scribble_cache() {
                                                         
 	                                                        continue; //Skip the rest of the parser step
                                                         
-                                                        #endregion
+                                                            #endregion
 	                                                    }
 	                                                    else
 	                                                    {
@@ -742,7 +743,7 @@ function scribble_cache() {
 	                                                        if (((_first_char  == "d") || (_first_char  == "D"))
 	                                                        &&  ((_second_char == "$") || (_second_char == "#")))
 	                                                        {
-                                                            #region Decimal colour decoding
+                                                                #region Decimal colour decoding
                                                             
 	                                                            //Check if this number is a real
 	                                                            var _is_real = true;
@@ -770,7 +771,7 @@ function scribble_cache() {
                                                             
 	                                                            continue; //Skip the rest of the parser step
                                                             
-                                                            #endregion
+                                                                #endregion
 	                                                        }
 	                                                        else
 	                                                        {
@@ -809,7 +810,7 @@ function scribble_cache() {
 	                        }
 	                    }
         
-                    #endregion
+                        #endregion
 	                }
 	                else if (_character_code == SCRIBBLE_COMMAND_TAG_ARGUMENT) //If we've hit a command tag argument delimiter character (usually ,)
 	                {
@@ -850,7 +851,7 @@ function scribble_cache() {
 	                    var _delay = global.__scribble_character_delay_map[? _character_code];
 	                    if ((_delay != undefined) && (_delay > 0))
 	                    {
-	                        var _count = array_length_1d(_events_char_array);
+	                        var _count = array_length(_events_char_array);
 	                        _events_char_array[@ _count] = _meta_element_characters;
 	                        _events_name_array[@ _count] = "delay";
 	                        _events_data_array[@ _count] = [_delay];
@@ -869,7 +870,7 @@ function scribble_cache() {
                 
 	                //Iterate over all the vertex buffers we've been using and reset the word start position
 	                var _v = 0;
-	                repeat(array_length_1d(_page_vbuffs_array))
+	                repeat(array_length(_page_vbuffs_array))
 	                {
 	                    var _data = _page_vbuffs_array[_v];
 	                    _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER]);
@@ -888,7 +889,7 @@ function scribble_cache() {
 	                    var _delay = global.__scribble_character_delay_map[? _character_code];
 	                    if ((_delay != undefined) && (_delay > 0))
 	                    {
-	                        var _count = array_length_1d(_events_char_array);
+	                        var _count = array_length(_events_char_array);
 	                        _events_char_array[@ _count] = _meta_element_characters;
 	                        _events_name_array[@ _count] = "delay";
 	                        _events_data_array[@ _count] = [_delay];
@@ -904,7 +905,7 @@ function scribble_cache() {
     
 	            if (_add_character) //If this character is literally any other character at all
 	            {
-                #region Decode UTF8
+                    #region Decode UTF8
         
 	                if ((_character_code & $E0) == $C0) //two-byte
 	                {
@@ -925,9 +926,9 @@ function scribble_cache() {
 	                    _character_code +=  buffer_read(_string_buffer, buffer_u8) & $3F;
 	                }
         
-                #endregion
+                    #endregion
         
-                #region Find glyph data
+                    #region Find glyph data
         
 	        	    if (_font_glyphs_array == undefined)
 	        	    {
@@ -954,7 +955,7 @@ function scribble_cache() {
 	        	        }
 	        	    }
         
-                #endregion
+                    #endregion
         
 	                if (_glyph_array == undefined)
 	                {
@@ -962,7 +963,7 @@ function scribble_cache() {
 	                }
 	                else
 	                {
-                    #region Swap texture and buffer if needed
+                        #region Swap texture and buffer if needed
         
 	            	    if (_glyph_array[SCRIBBLE_GLYPH.TEXTURE] != _glyph_texture)
 	            	    {
@@ -984,7 +985,7 @@ function scribble_cache() {
 	                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _vbuff_line_start_list;
 	                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _glyph_texture);
 	                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_glyph_texture);
-	                            _page_vbuffs_array[@ array_length_1d(_page_vbuffs_array)] = _vbuff_data;
+	                            _page_vbuffs_array[@ array_length(_page_vbuffs_array)] = _vbuff_data;
                         
 	                            _texture_to_buffer_map[? _glyph_texture] = _vbuff_data;
 	                        }
@@ -996,7 +997,7 @@ function scribble_cache() {
             
 	                        //Fill link break list
 	                        var _tell = buffer_tell(_glyph_buffer);
-	                        repeat(array_length_1d(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
+	                        repeat(array_length(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
 	                    }
             
 	                    //Update CHAR_START_TELL, and WORD_START_TELL if needed
@@ -1011,9 +1012,9 @@ function scribble_cache() {
 	                        _word_start_char = _meta_element_characters;
 	                    }
             
-                    #endregion
+                        #endregion
             
-                    #region Add glyph to buffer
+                        #region Add glyph to buffer
             
 	                    var _quad_l = _glyph_array[SCRIBBLE_GLYPH.X_OFFSET]*_text_scale;
 	                    if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] == undefined) _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = _quad_l;
@@ -1047,7 +1048,7 @@ function scribble_cache() {
 	                    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
 	                    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
             
-                    #endregion
+                        #endregion
             
 	                    if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _character_code;
 	                    ++_meta_element_characters;
@@ -1063,7 +1064,7 @@ function scribble_cache() {
 	                    var _delay = global.__scribble_character_delay_map[? _character_code];
 	                    if ((_delay != undefined) && (_delay > 0))
 	                    {
-	                        var _count = array_length_1d(_events_char_array);
+	                        var _count = array_length(_events_char_array);
 	                        _events_char_array[@ _count] = _meta_element_characters;
 	                        _events_name_array[@ _count] = "delay";
 	                        _events_data_array[@ _count] = [_delay];
@@ -1073,7 +1074,7 @@ function scribble_cache() {
     
     
     
-            #region Handle new line creation
+                #region Handle new line creation
             
 	            if (_force_newline
 	            || ((_char_width + _text_x > _max_width) && (_max_width >= 0) && (_character_code > 32)))
@@ -1081,7 +1082,7 @@ function scribble_cache() {
 	                var _line_offset_x = -_text_x;
                 
 	                var _v = 0;
-	                repeat(array_length_1d(_page_vbuffs_array))
+	                repeat(array_length(_page_vbuffs_array))
 	                {
 	                    var _data = _page_vbuffs_array[_v];
                     
@@ -1189,16 +1190,16 @@ function scribble_cache() {
 	                _line_array[@ __SCRIBBLE_LINE.WIDTH     ] = 0;
 	                _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_height;
 	                _line_array[@ __SCRIBBLE_LINE.HALIGN    ] = _text_halign;
-	                _page_lines_array[@ array_length_1d(_page_lines_array)] = _line_array; //Add this line to the page
+	                _page_lines_array[@ array_length(_page_lines_array)] = _line_array; //Add this line to the page
                 
 	                _force_newline = false;
 	            }
     
-            #endregion
+                #endregion
     
     
     
-            #region Handle new page creation
+                #region Handle new page creation
             
 	            if (_force_newpage
 	            || ((_line_height + _line_y > _max_height) && (_max_height >= 0)))
@@ -1217,12 +1218,12 @@ function scribble_cache() {
 	                _new_page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _new_page_lines_array;
 	                _new_page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY] = _new_page_vbuffs_array;
         
-	                _element_pages_array[@ array_length_1d(_element_pages_array)] = _new_page_array;
+	                _element_pages_array[@ array_length(_element_pages_array)] = _new_page_array;
 	                ++_meta_element_pages;
         
 	                //Steal the last line from the previous page
 	                _page_array[@ __SCRIBBLE_PAGE.LINES] = _meta_page_lines - 1;
-	                _page_lines_array[@ array_length_1d(_page_lines_array)-1] = undefined;
+	                _page_lines_array[@ array_length(_page_lines_array)-1] = undefined;
         
 	                //Figure out last/start chars for pages
 	                _page_array[@ __SCRIBBLE_PAGE.LAST_CHAR] = _line_array[@ __SCRIBBLE_LINE.START_CHAR] - 1;
@@ -1239,7 +1240,7 @@ function scribble_cache() {
 	                {
 	                    //Iterate over every vertex buffer on the previous page and steal vertices where we need to
 	                    var _v = 0;
-	                    repeat(array_length_1d(_page_vbuffs_array))
+	                    repeat(array_length(_page_vbuffs_array))
 	                    {
 	                        var _vbuff_data = _page_vbuffs_array[_v];
                         
@@ -1254,7 +1255,7 @@ function scribble_cache() {
                             
 	                            //Make a new vertex buffer for the new page
 	                            var _new_vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
-	                            _new_page_vbuffs_array[@ array_length_1d(_new_page_vbuffs_array)] = _new_vbuff_data;
+	                            _new_page_vbuffs_array[@ array_length(_new_page_vbuffs_array)] = _new_vbuff_data;
 	                            _texture_to_buffer_map[? _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE]] = _new_vbuff_data;
                             
 	                            //Create new data structures
@@ -1301,7 +1302,7 @@ function scribble_cache() {
 	                }
                 
 	                //Add the line array to this page
-	                _new_page_lines_array[@ array_length_1d(_new_page_lines_array)] = _line_array;
+	                _new_page_lines_array[@ array_length(_new_page_lines_array)] = _line_array;
                 
 	                //Transfer new page variables into current page variables
 	                _page_array        = _new_page_array;
@@ -1320,7 +1321,7 @@ function scribble_cache() {
 	                _force_newpage = false;
 	            }
     
-            #endregion
+                #endregion
     
     
     
@@ -1348,11 +1349,11 @@ function scribble_cache() {
 	        _scribble_array[@ SCRIBBLE.PAGES     ] = _meta_element_pages;
 	        _scribble_array[@ SCRIBBLE.HEIGHT    ] = _element_height;
 
-        #endregion
+            #endregion
 
 
 
-        #region Find the actual width of the text element
+            #region Find the actual width of the text element
 
 	        //Iterate over every page
 	        var _element_min_x     = 0;
@@ -1360,14 +1361,14 @@ function scribble_cache() {
 	        var _justify_max_width = 0;
 
 	        var _p = 0;
-	        repeat(array_length_1d(_element_pages_array))
+	        repeat(array_length(_element_pages_array))
 	        {
 	            var _page_array = _element_pages_array[_p];
 	            _page_lines_array = _page_array[__SCRIBBLE_PAGE.LINES_ARRAY];
     
 	            //Iterate over every line on the page
 	            var _l = 0;
-	            repeat(array_length_1d(_page_lines_array))
+	            repeat(array_length(_page_lines_array))
 	            {
 	                var _line_data = _page_lines_array[_l];
 	                if (is_array(_line_data)) //Someimtes the array can contain <undefined> if a line is moved from one page to another
@@ -1425,15 +1426,15 @@ function scribble_cache() {
 	        _scribble_array[@ SCRIBBLE.MAX_X] = _element_max_x;
 	        _scribble_array[@ SCRIBBLE.WIDTH] = _element_max_x - _element_min_x;
 
-        #endregion
+            #endregion
 
 
 
-        #region Move glyphs around on a line to finalise alignment
+            #region Move glyphs around on a line to finalise alignment
         
 	        //Iterate over every page
 	        var _p = 0;
-	        repeat(array_length_1d(_element_pages_array))
+	        repeat(array_length(_element_pages_array))
 	        {
 	            var _page_array = _element_pages_array[_p];
 	            _page_lines_array  = _page_array[__SCRIBBLE_PAGE.LINES_ARRAY         ];
@@ -1441,7 +1442,7 @@ function scribble_cache() {
             
 	            //Iterate over every vertex buffer for that page
 	            var _v = 0;
-	            repeat(array_length_1d(_page_vbuffs_array))
+	            repeat(array_length(_page_vbuffs_array))
 	            {
 	                var _data = _page_vbuffs_array[_v];
                 
@@ -1557,26 +1558,26 @@ function scribble_cache() {
 	            ++_p;
 	        }
         
-        #endregion
+            #endregion
 
 
 
 	        if (SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
 	        {
-            #region Generate glyph LTRB array if requested
+                #region Generate glyph LTRB array if requested
             
 	            var _glyph_ltrb_array = array_create(_meta_element_characters, undefined);
             
 	            //Iterate over every page
 	            var _p = 0;
-	            repeat(array_length_1d(_element_pages_array))
+	            repeat(array_length(_element_pages_array))
 	            {
 	                var _page_array = _element_pages_array[_p];
 	                _page_vbuffs_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
                 
 	                //Iterate over every vertex buffer for that page
 	                var _v = 0;
-	                repeat(array_length_1d(_page_vbuffs_array))
+	                repeat(array_length(_page_vbuffs_array))
 	                {
 	                    //Grab the vertex buffer
 	                    var _data = _page_vbuffs_array[_v];
@@ -1641,10 +1642,10 @@ function scribble_cache() {
 	                ++_p;
 	            }
             
-	            _glyph_ltrb_array[@ array_length_1d(_glyph_ltrb_array)] = _glyph_ltrb_array[array_length_1d(_glyph_ltrb_array)-1];
+	            _glyph_ltrb_array[@ array_length(_glyph_ltrb_array)] = _glyph_ltrb_array[array_length(_glyph_ltrb_array)-1];
 	            _scribble_array[@ SCRIBBLE.GLYPH_LTRB_ARRAY] = _glyph_ltrb_array;
             
-            #endregion
+                #endregion
 	        }
 
 
@@ -1660,7 +1661,7 @@ function scribble_cache() {
 
 
 
-#region Create an occurance array if necessary
+    #region Create an occurance array if necessary
 
 	var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
 	if (!ds_map_exists(_occurance_map, _occurance_name))
@@ -1689,12 +1690,12 @@ function scribble_cache() {
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.ANIMATION_TIME     ] =  current_time;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ] = -1;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = -1;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY] = array_create(array_length_1d(_events_char_array), false);
+	    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY] = array_create(array_length(_events_char_array), false);
     
 	    _occurance_map[? _occurance_name] = _occurance_array;
 	}
 
-#endregion
+    #endregion
 
 
 
@@ -1706,6 +1707,4 @@ function scribble_cache() {
 
 
 	return _scribble_array;
-
-
 }

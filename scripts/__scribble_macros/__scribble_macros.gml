@@ -1,5 +1,4 @@
 /// Scribble's macros, used to customise and control behaviour throughout the library
-function __scribble_macros() {
 
 #macro SCRIBBLE_HASH_NEWLINE                  true   //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's newline behaviour
 #macro SCRIBBLE_COLORIZE_SPRITES              true   //Whether to apply the text color to non-animated sprites (animated sprites are always blended white)
@@ -30,7 +29,7 @@ function __scribble_macros() {
 
 
 
-#region Warnings
+    #region Warnings
 
 	//Various warning messages. Please do not turn these off unless you have to!
 #macro SCRIBBLE_WARNING_REINITIALIZE           true
@@ -38,7 +37,4 @@ function __scribble_macros() {
 #macro SCRIBBLE_WARNING_AUTOSCAN_YY_NOT_FOUND  true
 #macro SCRIBBLE_WARNING_DRAW_SET_DEPRECATED    true
 
-#endregion
-
-
-}
+    #endregion

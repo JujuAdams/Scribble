@@ -62,7 +62,7 @@ function scribble_bake_shader() {
 	//Build a priority queue, wide assets first
 	var _priority_queue = ds_priority_create();
 	var _i = 0;
-	repeat(array_length_1d(_src_glyphs_array))
+	repeat(array_length(_src_glyphs_array))
 	{
 		var _glyph_array = _src_glyphs_array[_i];
 		if (_glyph_array != undefined)
@@ -216,7 +216,7 @@ function scribble_bake_shader() {
 		vertex_begin(_vbuff, global.__scribble_passthrough_vertex_format);
     
 		var _i = 0;
-		repeat(array_length_1d(_surface_glyphs))
+		repeat(array_length(_surface_glyphs))
 		{
 		    var _glyph_position = _surface_glyphs[_i];
 		    var _index = _glyph_position[4];
@@ -293,7 +293,7 @@ function scribble_bake_shader() {
 		var _sprite_v1 = _sprite_uvs[3];
     
 		var _new_font_array = array_create(__SCRIBBLE_FONT.__SIZE);
-		array_copy(_new_font_array, 0, _src_font_array, 0, array_length_1d(_src_font_array));
+		array_copy(_new_font_array, 0, _src_font_array, 0, array_length(_src_font_array));
 		_new_font_array[@ __SCRIBBLE_FONT.NAME        ] = _new_font_name;
 		_new_font_array[@ __SCRIBBLE_FONT.TYPE        ] = __SCRIBBLE_FONT_TYPE.RUNTIME;
 		_new_font_array[@ __SCRIBBLE_FONT.PATH        ] = undefined;
@@ -325,7 +325,7 @@ function scribble_bake_shader() {
     
 		//Copy across glyph data from the source, but using new UVs and dimensions
 		var _i = 0;
-		repeat(array_length_1d(_surface_glyphs))
+		repeat(array_length(_surface_glyphs))
 		{
 		    var _glyph_position = _surface_glyphs[_i];
         

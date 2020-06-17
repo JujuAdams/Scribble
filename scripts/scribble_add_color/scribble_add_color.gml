@@ -3,8 +3,9 @@
 /// @param name                    String name of the colour
 /// @param color                   The colour itself as a 24-bit integer
 /// @param [colorIsGameMakerBGR]   Whether the colour is in GameMaker's propriatery 24-bit BGR colour format. Defaults to <false>.
-function scribble_add_color() {
 
+function scribble_add_color()
+{
 	var _name   = argument[0];
 	var _colour = argument[1];
 	var _native = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
@@ -47,6 +48,4 @@ function scribble_add_color() {
 	global.__scribble_colours[? _name ] = _colour;
 
 	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added colour \"" + _name + "\" as " + string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)) + ", u32=" + string(_colour));
-
-
 }

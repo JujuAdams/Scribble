@@ -12,8 +12,9 @@
 /// The padding arguments can be given the value undefined to indicate that the default value should be used.
 /// 
 /// The array returned by scribble_get_bbox() has 14 elements as defined by the enum SCRIBBLE_BBOX.
-function scribble_get_bbox() {
 
+function scribble_get_bbox()
+{
 	enum SCRIBBLE_BBOX
 	{
 	    L, T, R, B,
@@ -123,6 +124,4 @@ function scribble_get_bbox() {
 	        _x1, _y1,
 	        _x2, _y2,
 	        _x3, _y3 ];
-
-
 }

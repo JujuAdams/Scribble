@@ -6,23 +6,18 @@
 /// @param samples          Number of samples to use for the border per layer
 /// @param color            Colour of the border
 /// @param smooth           Whether or not to interpolate the border. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
-function scribble_bake_outline(argument0, argument1, argument2, argument3, argument4, argument5) {
 
-	var _source_font_name = argument0;
-	var _new_font_name    = argument1;
-	var _outline_size     = argument2;
-	var _outline_samples  = argument3;
-	var _outline_color    = argument4;
-	var _smooth           = argument5;
-
+function scribble_bake_outline(_source_font_name, _new_font_name, _outline_size, _outline_samples, _outline_color, _smooth)
+{
 	if (is_string(_outline_color))
 	{
-	    _outline_color = global.__scribble_colours[? _outline_color];
+	    var _found = global.__scribble_colours[? _outline_color];
 	    if (_outline_color == undefined)
 	    {
-	        show_error("Scribble:\nColour \"" + string(argument4) + "\" not recognised\n ", false);
+	        show_error("Scribble:\nColour \"" + string(_outline_color) + "\" not recognised\n ", false);
 	        exit;
 	    }
+        _outline_color = _found;
 	}
 
 	//Set our shader uniforms before use
@@ -38,7 +33,4 @@ function scribble_bake_outline(argument0, argument1, argument2, argument3, argum
 	scribble_bake_shader(_source_font_name, _new_font_name, shd_scribble_bake_outline,
 		                 2, _outline_size, _outline_size, _outline_size, _outline_size,
 		                 _outline_size, _smooth);
-
-
-
 }

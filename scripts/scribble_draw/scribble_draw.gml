@@ -35,8 +35,9 @@
 /// [wobble]  [/wobble]                 Set/unset text to wobble by rotating back and forth
 /// [pulse]   [/pulse]                  Set/unset text to shrink and grow rhythmically
 /// [wheel]   [/wheel]                  Set/unset text to circulate around their origin
-function scribble_draw() {
 
+function scribble_draw()
+{
 	var _draw_x         = argument[0];
 	var _draw_y         = argument[1];
 	var _draw_string    = argument[2];
@@ -70,10 +71,10 @@ function scribble_draw() {
 
 	//Grab our vertex buffers for this page
 	var _page_vbuffs_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
-	var _count = array_length_1d(_page_vbuffs_array);
+	var _count = array_length(_page_vbuffs_array);
 	if (_count > 0)
 	{
-    #region Advance the autotyper, execute events, play sounds etc.
+            #region Advance the autotyper, execute events, play sounds etc.
     
 	    var _typewriter_method = _occurance_array[__SCRIBBLE_OCCURANCE.METHOD];
 	    if (_typewriter_method == 0) //No fade in/out set
@@ -122,7 +123,7 @@ function scribble_draw() {
 	            var _typewriter_speed = _typewriter_adjusted_speed;
 	        }
             
-        #region Scan for autotype events
+                #region Scan for autotype events
         
 	        if ((_typewriter_fade_in >= 0) && (_typewriter_speed > 0))
 	        {
@@ -149,7 +150,7 @@ function scribble_draw() {
 	                var _events_char_array = _scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY];
 	                var _events_name_array = _scribble_array[SCRIBBLE.EVENT_NAME_ARRAY];
 	                var _events_data_array = _scribble_array[SCRIBBLE.EVENT_DATA_ARRAY];
-	                var _event_count       = array_length_1d(_events_char_array);
+	                var _event_count       = array_length(_events_char_array);
                 
 	                var _event                = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ];
 	                var _events_visited_array = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY];
@@ -185,7 +186,7 @@ function scribble_draw() {
 	                                {
 	                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS] = _event;
                                         
-	                                    if (array_length_1d(_event_data_array) >= 1)
+	                                    if (array_length(_event_data_array) >= 1)
 	                                    {
 	                                        var _duration = real(_event_data_array[0]);
 	                                    }
@@ -243,10 +244,10 @@ function scribble_draw() {
 	            _typewriter_window_array[@ _typewriter_window] = _typewriter_head_pos;
 	        }
             
-        #endregion
+                #endregion
 	    }
     
-    #region Move the typewriter head/tail
+            #region Move the typewriter head/tail
     
 	    if (_typewriter_method != 0) //Either per line or per character fade set
 	    {
@@ -263,14 +264,14 @@ function scribble_draw() {
 	        }
 	    }
     
-    #endregion
+            #endregion
     
 	    if ((_typewriter_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
 	    {
-        #region Play a sound effect as the text is revealed
+                #region Play a sound effect as the text is revealed
         
 	        var _sound_array = _occurance_array[__SCRIBBLE_OCCURANCE.SOUND_ARRAY];
-	        if (is_array(_sound_array) && (array_length_1d(_sound_array) > 0))
+	        if (is_array(_sound_array) && (array_length(_sound_array) > 0))
 	        {
 	            var _play_sound = false;
 	            if (_occurance_array[__SCRIBBLE_OCCURANCE.SOUND_PER_CHAR])
@@ -286,7 +287,7 @@ function scribble_draw() {
 	            {
 	                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
 	                var _rand = global.__scribble_lcg / 2147483648;
-	                var _sound = _sound_array[floor(_rand*array_length_1d(_sound_array))];
+	                var _sound = _sound_array[floor(_rand*array_length(_sound_array))];
                 
 	                var _inst = audio_play_sound(_sound, 0, false);
                 
@@ -298,17 +299,17 @@ function scribble_draw() {
 	            }
 	        }
         
-        #endregion
+                #endregion
         
 	        var _callback = _occurance_array[__SCRIBBLE_OCCURANCE.FUNCTION];
 	        if ((_callback != undefined) && script_exists(_callback)) script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window] - 1);
 	    }
     
-    #endregion
+            #endregion
     
     
     
-    #region Do the drawing!
+            #region Do the drawing!
     
 	    //Figure out the left/top offset
 	    switch(global.scribble_state_box_halign)
@@ -374,12 +375,12 @@ function scribble_draw() {
 	    //Make sure we reset the world matrix
 	    matrix_set(matrix_world, _old_matrix);
     
-    #endregion
+            #endregion
 	}
 
 
 
-#region Check to see if we need to free some memory from the global cache list
+        #region Check to see if we need to free some memory from the global cache list
 
 	if (SCRIBBLE_CACHE_TIMEOUT > 0)
 	{
@@ -406,11 +407,9 @@ function scribble_draw() {
 	    }
 	}
 
-#endregion
+        #endregion
 
 
 
 	return _scribble_array;
-
-
 }

@@ -17,12 +17,12 @@ function scribble_flush() {
 	    //Destroy vertex buffers
 	    var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];
 	    var _p = 0;
-	    repeat(array_length_1d(_element_pages_array))
+	    repeat(array_length(_element_pages_array))
 	    {
 	        var _page_array = _element_pages_array[_p];
 	        var _vertex_buffers_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
 	        var _v = 0;
-	        repeat(array_length_1d(_vertex_buffers_array))
+	        repeat(array_length(_vertex_buffers_array))
 	        {
 	            var _vbuff_data = _vertex_buffers_array[_v];
 	            var _vbuff = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
