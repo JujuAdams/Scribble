@@ -10,8 +10,9 @@
 ///     state = 2   No text is visible and the fade out animation has finished
 /// 
 /// If no autotype animation has been started, this function will return 1.
-function scribble_autotype_get() {
 
+function scribble_autotype_get()
+{
 	var _scribble_array = argument[0];
 	var _occurance_name = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
@@ -54,6 +55,4 @@ function scribble_autotype_get() {
 
 	//Add one if we're fading out
 	return _typewriter_fade_in? _typewriter_t : (_typewriter_t+1);
-
-
 }

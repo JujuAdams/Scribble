@@ -34,13 +34,4 @@ function scribble_reset()
     scribble_set_animation(SCRIBBLE_ANIM.WHEEL_SIZE    ,  1   );
     scribble_set_animation(SCRIBBLE_ANIM.WHEEL_FREQ    ,  0.5 );
     scribble_set_animation(SCRIBBLE_ANIM.WHEEL_SPEED   ,  0.2 );
-    
-    global.__scribble_cache_string = string(global.scribble_state_starting_font  ) + ":" +
-    	                             string(global.scribble_state_starting_color ) + ":" +
-    	                             string(global.scribble_state_starting_halign) + ":" +
-    	                             string(global.scribble_state_line_min_height) + ":" +
-    	                             string(global.scribble_state_line_max_height) + ":" +
-    	                             string(global.scribble_state_max_width      ) + ":" +
-    	                             string(global.scribble_state_max_height     ) + ":" +
-    	                             string(global.scribble_state_character_wrap );
 }

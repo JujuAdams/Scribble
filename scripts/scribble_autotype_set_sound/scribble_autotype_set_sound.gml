@@ -14,8 +14,9 @@
 /// sound effects will be played with a little bit of overlap which improves the effect considerably. A value around
 /// 30ms usually sounds ok. The overlap argument can be set to a value less than 0 if you'd like more space between
 /// sound effects.
-function scribble_autotype_set_sound() {
 
+function scribble_autotype_set_sound()
+{
 	var _scribble_array = argument[0];
 	var _sound          = argument[1];
 	var _overlap        = argument[2];
@@ -36,6 +37,4 @@ function scribble_autotype_set_sound() {
 	_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_OVERLAP  ] = _overlap;
 	_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MIN_PITCH] = _min_pitch;
 	_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MAX_PITCH] = _max_pitch;
-
-
 }

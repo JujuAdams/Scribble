@@ -51,7 +51,16 @@ function scribble_cache()
 	if (_build)
 	{
 	    //Check if the string already exists in the cache
-	    var _cache_string = string(_draw_string) + global.__scribble_cache_string;
+    	var _cache_string = string(_draw_string) +
+                            string(global.scribble_state_starting_font  ) + ":" +
+    	                    string(global.scribble_state_starting_color ) + ":" +
+    	                    string(global.scribble_state_starting_halign) + ":" +
+    	                    string(global.scribble_state_line_min_height) + ":" +
+    	                    string(global.scribble_state_line_max_height) + ":" +
+    	                    string(global.scribble_state_max_width      ) + ":" +
+    	                    string(global.scribble_state_max_height     ) + ":" +
+    	                    string(global.scribble_state_character_wrap );
+        
 	    if (ds_map_exists(global.__scribble_global_cache_map, _cache_string) && !_rebuild)
 	    {
 	        //Grab the text element from the cache

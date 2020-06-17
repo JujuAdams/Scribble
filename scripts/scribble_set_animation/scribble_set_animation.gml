@@ -22,8 +22,9 @@
 /// 
 /// This script "sets state". All text drawn with scribble_draw() will use these settings until they're overwritten,
 /// either by calling this script again or by calling scribble_reset() or scribble_set_state().
-function scribble_set_animation(argument0, argument1) {
 
+function scribble_set_animation()
+{
 	enum SCRIBBLE_ANIM
 	{
 	    WAVE_SIZE,      // 0
@@ -44,6 +45,4 @@ function scribble_set_animation(argument0, argument1) {
 	}
 
 	global.scribble_state_anim_array[@ argument0] = argument1;
-
-
 }

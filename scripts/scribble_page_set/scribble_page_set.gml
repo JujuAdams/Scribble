@@ -6,8 +6,9 @@
 /// 
 /// Please note that changing the page will reset any autotype animations i.e. those started by
 /// scribble_autotype_fade_in() and scribble_autotype_fade_out().
-function scribble_page_set() {
 
+function scribble_page_set()
+{
 	var _scribble_array = argument[0];
 	var _page           = argument[1];
 	var _occurance_name = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
@@ -31,6 +32,4 @@ function scribble_page_set() {
 	}
 
 	return _page;
-
-
 }

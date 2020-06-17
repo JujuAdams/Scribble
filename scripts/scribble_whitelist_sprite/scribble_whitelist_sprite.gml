@@ -1,7 +1,8 @@
 /// @param spriteIndex        Sprite index to whitelist
 /// @param [spriteIndex...]   Any additional sprite indexes to whitelist
-function scribble_whitelist_sprite() {
 
+function scribble_whitelist_sprite()
+{
 	var _i = 0;
 	repeat(argument_count)
 	{
@@ -20,6 +21,4 @@ function scribble_whitelist_sprite() {
 	}
 
 	global.__scribble_sprite_whitelist = true;
-
-
 }

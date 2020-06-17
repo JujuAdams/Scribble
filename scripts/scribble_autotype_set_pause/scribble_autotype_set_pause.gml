@@ -1,8 +1,9 @@
 /// @param string/textElement   Text element to target. This element must have been created previously by scribble_draw()
 /// @param state                Value to set for the pause state, true or false
 /// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
-function scribble_autotype_set_pause() {
 
+function scribble_autotype_set_pause()
+{
 	var _scribble_array = argument[0];
 	var _state          = argument[1];
 	var _occurance_name = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
@@ -29,6 +30,4 @@ function scribble_autotype_set_pause() {
 	}
 
 	_occurance_array[@ __SCRIBBLE_OCCURANCE.PAUSED] = _state;
-
-
 }

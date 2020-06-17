@@ -15,8 +15,9 @@
 /// SCRIBBLE_GLYPH.Y_OFFSET:   The relative y-offset to draw the glyph
 /// SCRIBBLE_GLYPH.SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
 ///                            left edge of the next glyph. This can be a negative value!
-function scribble_set_glyph_property() {
 
+function scribble_set_glyph_property()
+{
 	var _font      = argument[0];
 	var _character = argument[1];
 	var _property  = argument[2];
@@ -58,6 +59,4 @@ function scribble_set_glyph_property() {
 	var _new_value = _relative? (_glyph_data[_property] + _value) : _value;
 	_glyph_data[@ _property] = _new_value;
 	return _new_value;
-
-
 }

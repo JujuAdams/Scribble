@@ -2,11 +2,9 @@
 /// 
 /// @param name    Effect name, as a string
 /// @param index   Integer effect index, from 1 to SCRIBBLE_MAX_MAX_EFFECTS-1 inclusive
-function scribble_add_shader_effect(argument0, argument1) {
 
-	var _name  = argument0;
-	var _index = argument1;
-
+function scribble_add_shader_effect(_name, _index)
+{
 	if (!variable_global_exists("__scribble_lcg"))
 	{
 	    show_error("Scribble:\nscribble_add_effect() should be called after initialising Scribble\n ", false);
@@ -54,6 +52,4 @@ function scribble_add_shader_effect(argument0, argument1) {
 	global.__scribble_effects_slash[? _name ] = _index;
 
 	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added effect name \"" + _name + "\" as index " + string(_index));
-
-
 }

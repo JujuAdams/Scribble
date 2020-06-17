@@ -47,11 +47,9 @@
 /// Here, callbackRumble() will fetch the parameter from the array and use it to vibrate the player's
 /// gamepad. Given that the formatting tag was [rumble,0.2], the function gamepad_set_vibration() will be
 /// given 0.2 as its input value.
-function scribble_add_autotype_event(argument0, argument1) {
 
-	var _name   = argument0;
-	var _script = argument1;
-
+function scribble_add_autotype_event(_name, _script)
+{
 	if (!variable_global_exists("__scribble_lcg"))
 	{
 	    show_error("Scribble:\nscribble_add_event() should be called after initialising Scribble.\n ", false);
@@ -101,6 +99,4 @@ function scribble_add_autotype_event(argument0, argument1) {
 
 	global.__scribble_autotype_events[? _name] = _script;
 	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Tying event [" + _name + "] to script " + script_get_name(_script) + "()");
-
-
 }

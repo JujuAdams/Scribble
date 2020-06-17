@@ -1,8 +1,9 @@
 /// Frees up memory used by Scribble, targetting either all text elements, or a specific text element
 /// 
 /// @param [textElement]   Which text element to target. Defaults to <all>, which will clear the memory for all text elements
-function scribble_flush() {
 
+function scribble_flush()
+{
 	var _scribble_array = (argument_count > 0)? argument[0] : all;
 
 	if ((_scribble_array == all) || (_scribble_array == "all"))
@@ -45,6 +46,4 @@ function scribble_flush() {
 	    //Set as freed
 	    _scribble_array[@ SCRIBBLE.FREED] = true;
 	}
-
-
 }

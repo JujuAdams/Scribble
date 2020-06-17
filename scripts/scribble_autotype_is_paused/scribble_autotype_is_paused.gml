@@ -1,7 +1,8 @@
 /// @param string/textElement   Text element to target. This element must have been created previously by scribble_draw()
 /// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
-function scribble_autotype_is_paused() {
 
+function scribble_autotype_is_paused()
+{
 	var _scribble_array = argument[0];
 	var _occurance_name = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
@@ -13,6 +14,4 @@ function scribble_autotype_is_paused() {
 	var _occurance_array = _occurance_map[? _occurance_name];
 
 	return _occurance_array[__SCRIBBLE_OCCURANCE.PAUSED];
-
-
 }

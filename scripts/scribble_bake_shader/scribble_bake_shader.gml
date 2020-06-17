@@ -11,8 +11,9 @@
 /// @param separationDelta   Change in every glyph's SCRIBBLE_GLYPH.SEPARATION value. For a shader that adds a border of 2px around the entire glyph, this value should be 4px
 /// @param smooth            Set to <true> to turn on linear interpolation
 /// @param [surfaceSize]     Size of the surface to use. Defaults to 2048x2048
-function scribble_bake_shader() {
 
+function scribble_bake_shader()
+{
 	var _source_font_name = argument[0];
 	var _new_font_name    = argument[1];
 	var _shader           = argument[2];
@@ -382,6 +383,4 @@ function scribble_bake_shader() {
     
 		global.__scribble_font_data[? _new_font_name] = _new_font_array;
 	}
-
-
 }

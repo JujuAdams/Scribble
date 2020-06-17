@@ -3,10 +3,10 @@
 /// @param [ignoreAnimation]   Set to <true> to not include animation state data in the returned array
 ///
 /// This function is intended to be used in combination with scribble_set_state()
-function scribble_get_state() {
 
+function scribble_get_state()
+{
 	var _ignore_animation = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : false;
-
 
 	var _array = array_create(SCRIBBLE_STATE.__SIZE);
 	_array[@ SCRIBBLE_STATE.STARTING_FONT  ] = global.scribble_state_starting_font;
@@ -37,6 +37,4 @@ function scribble_get_state() {
 	}
 
 	return _array;
-
-
 }
