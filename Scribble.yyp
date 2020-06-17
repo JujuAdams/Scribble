@@ -791,6 +791,14 @@
             }
         },
         {
+            "Key": "c1ca6600-d2f3-4255-aa4d-2c246e3e5649",
+            "Value": {
+                "id": "5c55bd00-51a3-419c-8b11-789b0958fffd",
+                "resourcePath": "objects\\obj_stress_test\\obj_stress_test.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "c1f9a882-5c95-4baa-9aa2-288643547505",
             "Value": {
                 "id": "7a6002bd-ab6b-4396-b3bd-b3eb90e76cc3",
