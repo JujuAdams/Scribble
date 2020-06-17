@@ -1,8 +1,12 @@
 {
-    "id": "375e7330-6e30-4902-8a42-dbc8ad380c16",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_add_font",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Initialisation",
+    "path": "folders/Scripts/Scribble/Initialisation.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_add_font",
+  "tags": [],
+  "resourceType": "GMScript",
 }

@@ -1,1087 +1,148 @@
 {
-    "id": "f80915f5-85cc-47ff-bd21-f708e703dca2",
-    "modelName": "GMProject",
-    "mvc": "1.0",
-    "IsDnDProject": false,
-    "configs": [
-        
-    ],
-    "option_ecma": false,
-    "parentProject": {
-        "id": "a7fcecc5-314b-4674-b0fa-9a7b89510a8f",
-        "modelName": "GMProjectParent",
-        "mvc": "1.0",
-        "alteredResources": [
-            {
-                "Key": "ed6a955d-5826-4f98-a450-10b414266c27",
-                "Value": {
-                    "configDeltas": [
-                        "inherited"
-                    ],
-                    "id": "565b9855-d914-48c4-b9dc-82e10dc164d2",
-                    "resourcePath": "options\\main\\options_main.yy",
-                    "resourceType": "GMMainOptions"
-                }
-            }
-        ],
-        "hiddenResources": [
-            
-        ],
-        "projectPath": "${base_project}"
-    },
-    "resources": [
-        {
-            "Key": "00322d5b-d6eb-4d4e-b389-bb26da697b1d",
-            "Value": {
-                "id": "88a93d91-e63b-4cd1-876c-baa7e1e01260",
-                "resourcePath": "scripts\\scribble_add_shader_effect\\scribble_add_shader_effect.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "012872b0-286a-4358-9987-d9cfc8c54fe0",
-            "Value": {
-                "id": "81977824-718b-4802-8b2d-99b3a6027904",
-                "resourcePath": "scripts\\scribble_set_box_align\\scribble_set_box_align.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "013729a3-ac01-4ec9-ae9f-defcd9f03fd6",
-            "Value": {
-                "id": "bfdaeba9-26bf-4ba0-8ab3-659245b28409",
-                "resourcePath": "views\\013729a3-ac01-4ec9-ae9f-defcd9f03fd6.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "04580ef1-3ded-4d10-bf20-ef0e199d873b",
-            "Value": {
-                "id": "5425de01-1031-4c7a-af52-bcfe701da74a",
-                "resourcePath": "scripts\\scribble_draw_set_blend\\scribble_draw_set_blend.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "04acbfcf-ee17-4ded-b194-17bb72864ff0",
-            "Value": {
-                "id": "ca6c936c-b344-4af6-b6a4-9d859b39daaf",
-                "resourcePath": "scripts\\scribble_page_get\\scribble_page_get.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "0983f652-6ae8-4dd0-b1df-11881acb290e",
-            "Value": {
-                "id": "a9052d48-7523-437f-a0e1-597cc264b99d",
-                "resourcePath": "views\\0983f652-6ae8-4dd0-b1df-11881acb290e.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "0a93a84f-87c9-4473-adf8-f92fd1d1e19f",
-            "Value": {
-                "id": "787165ad-1896-42d5-86d1-f7809fbab184",
-                "resourcePath": "scripts\\scribble_draw\\scribble_draw.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "0b7de2e4-423b-4049-ae3c-cefbec9a47a6",
-            "Value": {
-                "id": "0a9c9b23-67ff-4be7-8f91-667415a8955a",
-                "resourcePath": "scripts\\scribble_reset\\scribble_reset.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "0c17f313-39fe-4202-bb41-6f3911074c7f",
-            "Value": {
-                "id": "698e7b31-7c50-4606-97f1-40bcf82ee5fb",
-                "resourcePath": "sounds\\snd_vowel_4\\snd_vowel_4.yy",
-                "resourceType": "GMSound"
-            }
-        },
-        {
-            "Key": "16333f16-885e-4b0b-98e8-9726a0f9c0b0",
-            "Value": {
-                "id": "81a8eb01-5d70-40a0-9a17-20b2193afe01",
-                "resourcePath": "scripts\\example_event_sound\\example_event_sound.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "1cadf0e8-8394-480c-8ce1-0cce13ec62dc",
-            "Value": {
-                "id": "bb522334-ff54-458e-ae82-93d8210f76ba",
-                "resourcePath": "shaders\\shd_scribble\\shd_scribble.yy",
-                "resourceType": "GMShader"
-            }
-        },
-        {
-            "Key": "21e1fca2-32ef-46d3-9938-44552cc93b4e",
-            "Value": {
-                "id": "156b8738-870e-4dc1-b292-95c2b93ff05f",
-                "resourcePath": "scripts\\scribble_autotype_set_pause\\scribble_autotype_set_pause.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "24adc709-497e-43cb-9834-a1a8664cbe74",
-            "Value": {
-                "id": "0babcdaa-b16d-42f2-9171-0763d79900b7",
-                "resourcePath": "scripts\\scribble_autotype_get\\scribble_autotype_get.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "26393753-6ea7-48ff-96b6-f6b61d18b115",
-            "Value": {
-                "id": "0460cd53-5911-4c75-94d2-5dfd33f01101",
-                "resourcePath": "scripts\\scribble_set_starting_format\\scribble_set_starting_format.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "27964133-4335-466d-a8a1-f499a93399bb",
-            "Value": {
-                "id": "8d04795d-c9ae-4d83-86ab-e2350edaf86f",
-                "resourcePath": "scripts\\scribble_draw_get_state\\scribble_draw_get_state.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "28357be7-a526-40ce-81df-e99d6ab481e8",
-            "Value": {
-                "id": "4b509518-0a25-444b-baef-7a0f18eced10",
-                "resourcePath": "fonts\\fnt_test_2\\fnt_test_2.yy",
-                "resourceType": "GMFont"
-            }
-        },
-        {
-            "Key": "2d0079a4-4bb9-40c7-8224-a9c7694d3aed",
-            "Value": {
-                "id": "1f663ce2-1b57-4337-9cc0-9d954764fff2",
-                "resourcePath": "scripts\\scribble_bake_outline\\scribble_bake_outline.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "2deed9a9-4025-4f17-be17-5be6c089470b",
-            "Value": {
-                "id": "0ea54ecf-7833-4d3a-b9fe-6abb442e5e21",
-                "resourcePath": "sounds\\snd_vowel_3\\snd_vowel_3.yy",
-                "resourceType": "GMSound"
-            }
-        },
-        {
-            "Key": "2e79c554-b901-490f-a57a-be4c4da6f693",
-            "Value": {
-                "id": "5702490c-799e-4d02-b0cd-ff90d84ade35",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_test_2.yy.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
-            "Key": "30f807be-9715-47e0-9bdc-4ae616ef5406",
-            "Value": {
-                "id": "e6c3410b-73e6-44fd-8aca-47df5aa2ed2d",
-                "resourcePath": "scripts\\scribble_set_line_height\\scribble_set_line_height.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "310354d2-1828-48d9-a82e-9dbd97d9c117",
-            "Value": {
-                "id": "036b628d-887d-47c3-819d-de2bba6e9a10",
-                "resourcePath": "scripts\\scribble_bake_shader\\scribble_bake_shader.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "33d5be74-110c-452d-869e-77397af81567",
-            "Value": {
-                "id": "69917b17-473e-4bef-9350-3a61649ddf0c",
-                "resourcePath": "scripts\\scribble_draw_reset\\scribble_draw_reset.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "375e7330-6e30-4902-8a42-dbc8ad380c16",
-            "Value": {
-                "id": "d2db0b9c-9c8c-442b-91a8-ae470fa06d7f",
-                "resourcePath": "scripts\\scribble_add_font\\scribble_add_font.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "3a479606-3abc-4c0a-ba65-b8a104c61c52",
-            "Value": {
-                "id": "2cdd511b-4766-4599-9ac5-8e48dcf7e855",
-                "resourcePath": "views\\3a479606-3abc-4c0a-ba65-b8a104c61c52.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "3a5af38c-757d-41ae-98c0-5d4b09e14e6a",
-            "Value": {
-                "id": "5d25c3e7-4b7f-44e6-af1f-4c2ddba141c0",
-                "resourcePath": "options\\switch\\options_switch.yy",
-                "resourceType": "GMSwitchOptions"
-            }
-        },
-        {
-            "Key": "3a5af38c-757d-44ae-98c0-5d4b09e14e6a",
-            "Value": {
-                "id": "d27a44bd-3ab8-4668-8171-f48658784bf6",
-                "resourcePath": "options\\ps4\\options_ps4.yy",
-                "resourceType": "GMPS4Options"
-            }
-        },
-        {
-            "Key": "3dee5873-260c-4a48-90d8-0c51f65b6951",
-            "Value": {
-                "id": "63127bdc-96de-49e7-8e55-36517dbc9aff",
-                "resourcePath": "sprites\\spr_sprite_font\\spr_sprite_font.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "464aca78-7490-433e-8b56-973f0a847094",
-            "Value": {
-                "id": "9b20e2e8-566e-442f-ac64-8ac461958baf",
-                "resourcePath": "scripts\\scribble_draw_set_state\\scribble_draw_set_state.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "498aa41e-7fb7-49e3-b663-74ba62e7a8e6",
-            "Value": {
-                "id": "cc2420ed-f1fb-4e79-b1cf-8d664e6c88c2",
-                "resourcePath": "scripts\\scribble_autotype_set_sound\\scribble_autotype_set_sound.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "503cf607-27a8-45bf-a70c-c4f6011d4644",
-            "Value": {
-                "id": "2e664e4e-8780-406d-a7c5-9db63c8ff808",
-                "resourcePath": "views\\503cf607-27a8-45bf-a70c-c4f6011d4644.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
-            "Value": {
-                "id": "25075526-07ba-4752-aaae-a42f0252fbfa",
-                "resourcePath": "scripts\\scribble_get_bbox\\scribble_get_bbox.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "54cfa3e3-3ed0-43fb-a8e7-1c52d546977f",
-            "Value": {
-                "id": "5c79b7b1-9ff5-421a-a23e-64f93ae78775",
-                "resourcePath": "scripts\\scribble_draw_set_box_align\\scribble_draw_set_box_align.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "59086829-c42b-46bc-b263-7ed41965b63c",
-            "Value": {
-                "id": "386ab7b3-a4d9-4261-8c67-b530f98bd06e",
-                "resourcePath": "scripts\\scribble_autotype_fade_in\\scribble_autotype_fade_in.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "5a238f60-cd46-454f-b3b0-5ba216b628e5",
-            "Value": {
-                "id": "e85068f1-0e28-4808-a55f-e3078d82b072",
-                "resourcePath": "scripts\\scribble_draw_set_defaults\\scribble_draw_set_defaults.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "5b5d2964-6179-4fe2-8b4c-f1e7d030639e",
-            "Value": {
-                "id": "930ec631-0628-4385-a881-6f784dbb5f2a",
-                "resourcePath": "scripts\\scribble_draw_set_cache_group\\scribble_draw_set_cache_group.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "5e2cb488-cdd5-4ba4-93e2-f4d9e32e6984",
-            "Value": {
-                "id": "53cdc66b-1e97-4511-9693-9f1baeefaa8f",
-                "resourcePath": "views\\5e2cb488-cdd5-4ba4-93e2-f4d9e32e6984.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "5eaf24bb-b8b7-4ad1-9bd5-85bee32619bd",
-            "Value": {
-                "id": "0b6de6c8-b860-4e7d-bc92-0086faffed30",
-                "resourcePath": "sounds\\snd_crank\\snd_crank.yy",
-                "resourceType": "GMSound"
-            }
-        },
-        {
-            "Key": "5f87550b-7fb8-44c6-b07e-5cd3c4197c31",
-            "Value": {
-                "id": "244a3f26-f5b6-460d-8319-1a09772016e4",
-                "resourcePath": "views\\5f87550b-7fb8-44c6-b07e-5cd3c4197c31.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "6646aeb5-5c20-419d-af6d-8d625871911d",
-            "Value": {
-                "id": "58e7c4df-2f79-465e-b21a-779fe8051eb4",
-                "resourcePath": "scripts\\scribble_get_state\\scribble_get_state.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "66869739-b0df-4075-8fc0-6ef5b09d0d07",
-            "Value": {
-                "id": "acf4049d-9888-4a83-91fb-4a5216716487",
-                "resourcePath": "objects\\obj_example_autotype\\obj_example_autotype.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "681d7f36-7b03-4067-a58f-b23b795b2f31",
-            "Value": {
-                "id": "0bc40395-0459-43c2-a725-cffd406161e6",
-                "resourcePath": "scripts\\scribble_set_transform\\scribble_set_transform.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "6e50d4a6-cc45-413c-bd8b-e5c75c9e9ab8",
-            "Value": {
-                "id": "d1722b6e-1dfd-45fd-a5d8-d67a022aff78",
-                "resourcePath": "objects\\obj_test\\obj_test.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "6e8352fc-78a8-490a-a4ab-9dacbaeb79f5",
-            "Value": {
-                "id": "76fa070b-8e2e-40b2-8d13-e714ed7540fb",
-                "resourcePath": "scripts\\scribble_page_set\\scribble_page_set.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "6fc70169-1a4f-492f-9aac-225010d6bb52",
-            "Value": {
-                "id": "083e125c-cd32-411f-8058-47a354b81a88",
-                "resourcePath": "scripts\\scribble_get_height\\scribble_get_height.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "70d306e8-47c9-45bd-95c7-4f4fafd7f3d1",
-            "Value": {
-                "id": "09405ba8-50e1-466c-b6fb-68c27255aad2",
-                "resourcePath": "objects\\obj_example_precache\\obj_example_precache.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "73d76eff-c580-4c7f-8a7a-50753795d711",
-            "Value": {
-                "id": "559e402a-c64c-4409-9612-507c72f5be72",
-                "resourcePath": "views\\73d76eff-c580-4c7f-8a7a-50753795d711.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "74d4828d-df60-4163-9a0f-713e1e653208",
-            "Value": {
-                "id": "4c990981-3742-44f0-9749-f5a58ddb3ae2",
-                "resourcePath": "scripts\\scribble_page_on_last\\scribble_page_on_last.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "75555384-7db7-4904-89d6-33a402f4113b",
-            "Value": {
-                "id": "a92f69d3-448e-4a24-bde9-3fb26a360813",
-                "resourcePath": "scripts\\example_autotype_callback\\example_autotype_callback.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "75ac291e-7061-4bcb-8e8a-3b3545332d41",
-            "Value": {
-                "id": "1185de35-caa5-43a2-88ff-c70beddd982e",
-                "resourcePath": "options\\html5\\options_html5.yy",
-                "resourceType": "GMHtml5Options"
-            }
-        },
-        {
-            "Key": "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
-            "Value": {
-                "id": "3a4b0f89-2fa4-4413-8cc7-ab92eb0d137b",
-                "resourcePath": "scripts\\scribble_add_spritefont\\scribble_add_spritefont.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
-            "Value": {
-                "id": "f8fc30c6-4365-48e5-95b1-2fc22dc18ee8",
-                "resourcePath": "scripts\\scribble_flush\\scribble_flush.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "7cc1c844-6661-4798-8779-b14f34abb3db",
-            "Value": {
-                "id": "a9b1c282-0932-4f8a-b025-c7a1abf8ee5d",
-                "resourcePath": "scripts\\scribble_draw_set_transform\\scribble_draw_set_transform.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "7e093a2a-e51c-4a1e-9a53-f9080d38730b",
-            "Value": {
-                "id": "1439cfbd-9724-4b91-a4b2-06abb2487f60",
-                "resourcePath": "options\\windowsuap\\options_windowsuap.yy",
-                "resourceType": "GMWindowsUAPOptions"
-            }
-        },
-        {
-            "Key": "7f249531-321e-43d7-92bc-258842287e9d",
-            "Value": {
-                "id": "ca3d646d-ee3b-4c30-b6cc-e0f146211f0a",
-                "resourcePath": "scripts\\example_event\\example_event.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "80b9a056-1eaa-4078-9983-38b06e74f2f1",
-            "Value": {
-                "id": "c63929a4-d2ae-4ae4-b0b9-a6ef9213bc89",
-                "resourcePath": "sounds\\snd_vowel_1\\snd_vowel_1.yy",
-                "resourceType": "GMSound"
-            }
-        },
-        {
-            "Key": "823dc2a8-f6cf-4000-92c7-4263a047466c",
-            "Value": {
-                "id": "2761d17c-3b8f-4b19-89c6-79e0dd589cd2",
-                "resourcePath": "views\\823dc2a8-f6cf-4000-92c7-4263a047466c.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "8419d4f0-d03e-4d98-8b9d-93e9ec832104",
-            "Value": {
-                "id": "de2a6485-db78-477b-a060-eb3f9a09b010",
-                "resourcePath": "scripts\\scribble_autotype_skip\\scribble_autotype_skip.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "8427047f-9ef8-4c77-89f3-9c20623d07b6",
-            "Value": {
-                "id": "7bba32a6-49dc-4bc9-92e3-c33d7186dafe",
-                "resourcePath": "options\\ios\\options_ios.yy",
-                "resourceType": "GMiOSOptions"
-            }
-        },
-        {
-            "Key": "84f15521-954c-4d2d-9709-5b2d9ca231f1",
-            "Value": {
-                "id": "6d90fb91-fe64-4260-ab7e-1528569c3379",
-                "resourcePath": "views\\84f15521-954c-4d2d-9709-5b2d9ca231f1.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "853cc3dc-bb29-429c-b828-a68514d4f06e",
-            "Value": {
-                "id": "1000ee7c-5cb0-4763-856a-097dc7f0d2d3",
-                "resourcePath": "scripts\\scribble_get_glyph_property\\scribble_get_glyph_property.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "85d381bf-3af3-491c-b197-63da24f6696b",
-            "Value": {
-                "id": "b71ff74b-680e-45a9-9d65-f6baf2da84d4",
-                "resourcePath": "views\\85d381bf-3af3-491c-b197-63da24f6696b.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "88f27f62-071a-4441-b908-675e356b8173",
-            "Value": {
-                "id": "6ad505ba-250e-4d86-89a2-df5f35cbfc62",
-                "resourcePath": "scripts\\scribble_set_state\\scribble_set_state.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "89d48886-20f5-4316-bc9c-1908defb08ac",
-            "Value": {
-                "id": "279a42e3-5696-4b2a-8c4d-a217be86dd49",
-                "resourcePath": "views\\89d48886-20f5-4316-bc9c-1908defb08ac.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "89e8adda-438e-48f9-ab78-0e8b396b3850",
-            "Value": {
-                "id": "337c9a61-8476-4832-8ae3-a501a4acc257",
-                "resourcePath": "scripts\\scribble_init\\scribble_init.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "8a72a3a7-a40c-4764-a65f-e44a5bd5746c",
-            "Value": {
-                "id": "65d3b51a-4945-409b-b5c4-3c69855466e4",
-                "resourcePath": "scripts\\scribble_draw_set_fade\\scribble_draw_set_fade.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "8af41d37-ecf9-419b-baf8-12de7445f9cf",
-            "Value": {
-                "id": "b2af99e0-571a-490f-8aa9-c58f64a0712c",
-                "resourcePath": "views\\8af41d37-ecf9-419b-baf8-12de7445f9cf.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "8b719297-79d2-452e-a819-2bc38ead33df",
-            "Value": {
-                "id": "134cb2e9-0909-4d71-bcca-93b17102dd6c",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_test_0.yy.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
-            "Key": "93566aad-c3b3-48a9-8fa7-9c5ee19f74ac",
-            "Value": {
-                "id": "1cee5268-8b35-41a3-890f-d73bbcbe5ce0",
-                "resourcePath": "options\\tvos\\options_tvos.yy",
-                "resourceType": "GMtvOSOptions"
-            }
-        },
-        {
-            "Key": "946479bd-e52d-41cb-994f-9184d806b8b5",
-            "Value": {
-                "id": "42472f94-8ec7-488a-bdeb-1e502bc60846",
-                "resourcePath": "views\\946479bd-e52d-41cb-994f-9184d806b8b5.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "94a2d6ab-abc6-4785-9bd3-09b66392e1e8",
-            "Value": {
-                "id": "10ee3d30-c448-4b2a-9c06-f1d9b6eaad06",
-                "resourcePath": "rooms\\rm_test\\rm_test.yy",
-                "resourceType": "GMRoom"
-            }
-        },
-        {
-            "Key": "95e57154-061e-41b9-87cb-88e21f8fa68c",
-            "Value": {
-                "id": "b9d5ad28-f42a-4822-af14-799362f6c053",
-                "resourcePath": "views\\95e57154-061e-41b9-87cb-88e21f8fa68c.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "9a14b894-4693-4a4a-a152-7ede094c183a",
-            "Value": {
-                "id": "81c9abcf-8081-4d51-a544-be7cac5bf2de",
-                "resourcePath": "views\\9a14b894-4693-4a4a-a152-7ede094c183a.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "9d531882-0dcf-4be8-8225-d8370e77e70b",
-            "Value": {
-                "id": "76f13f6c-af69-407b-968e-976b748409e2",
-                "resourcePath": "rooms\\rm_example_autotype\\rm_example_autotype.yy",
-                "resourceType": "GMRoom"
-            }
-        },
-        {
-            "Key": "9e5c6a6a-9f28-4a6b-a2a3-9507eb25164a",
-            "Value": {
-                "id": "a0882e8e-3454-498b-b185-615d8facd6af",
-                "resourcePath": "scripts\\scribble_autotype_is_paused\\scribble_autotype_is_paused.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "9f02de9f-6de9-4db1-9411-e6ea08c02285",
-            "Value": {
-                "id": "369e47e3-1852-4bbb-a1d4-3807b156925d",
-                "resourcePath": "sprites\\spr_coin\\spr_coin.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "a0398c62-0284-4051-9243-0bfb6d974d6e",
-            "Value": {
-                "id": "01b67722-286a-4963-a3f4-10fbdf9b1b25",
-                "resourcePath": "scripts\\scribble_add_autotype_character_delay\\scribble_add_autotype_character_delay.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "a128950b-5063-4876-b4a6-b99dbd2ea6d1",
-            "Value": {
-                "id": "4cac3a81-fd9d-4338-9deb-fbfc2f10a361",
-                "resourcePath": "options\\amazonfire\\options_amazonfire.yy",
-                "resourceType": "GMAmazonFireOptions"
-            }
-        },
-        {
-            "Key": "a3d9edc7-bc39-46f3-b8c2-98bcc058ea2c",
-            "Value": {
-                "id": "c1766d6f-0fc9-4c16-b2de-15c816138185",
-                "resourcePath": "scripts\\scribble_add_autotype_event\\scribble_add_autotype_event.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "a67d72d8-deea-402c-a061-ad454210f71b",
-            "Value": {
-                "id": "48ae3c35-f3c1-47bf-b42f-b7cc6ccfc2a2",
-                "resourcePath": "scripts\\scribble_cache\\scribble_cache.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "a6e779ad-19c7-4834-9c11-dc71a106cd12",
-            "Value": {
-                "id": "da6553cb-7da1-44bd-9487-96fce1bbc45e",
-                "resourcePath": "sounds\\snd_switch\\snd_switch.yy",
-                "resourceType": "GMSound"
-            }
-        },
-        {
-            "Key": "a72ca48d-5d4e-4301-823f-ae99d288f7d0",
-            "Value": {
-                "id": "e60ec6e1-e4ad-47da-bb1c-466610d5fb14",
-                "resourcePath": "scripts\\scribble_draw_set_wrap\\scribble_draw_set_wrap.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "a9188620-a624-4a5a-83ae-a1b53faf038b",
-            "Value": {
-                "id": "90c740c6-2b0d-4907-a395-8f3afe4fa4ad",
-                "resourcePath": "options\\linux\\options_linux.yy",
-                "resourceType": "GMLinuxOptions"
-            }
-        },
-        {
-            "Key": "a9c1c006-82cc-4168-94cf-cda9593ef14e",
-            "Value": {
-                "id": "b7f2f356-4008-4e35-bc1c-b9f950d1d9c3",
-                "resourcePath": "views\\a9c1c006-82cc-4168-94cf-cda9593ef14e.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "acb26a39-8033-4289-87d0-228ed7921bc8",
-            "Value": {
-                "id": "e43fdae5-ac16-404d-9452-581bad2e7949",
-                "resourcePath": "scripts\\__scribble_macros\\__scribble_macros.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "ae42e802-853a-4ff8-8180-67ddd92fe272",
-            "Value": {
-                "id": "6e2619e6-b60a-4578-a9c4-b3486a0bec4e",
-                "resourcePath": "shaders\\shd_scribble_bake_outline\\shd_scribble_bake_outline.yy",
-                "resourceType": "GMShader"
-            }
-        },
-        {
-            "Key": "b1d302c2-0fa0-4efb-8e77-0aa33c500be6",
-            "Value": {
-                "id": "c82b71e2-a66c-43a9-a7c4-597472cf21f2",
-                "resourcePath": "views\\b1d302c2-0fa0-4efb-8e77-0aa33c500be6.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "b3138e5a-27ac-4e57-8f6e-b0d1b84faaf7",
-            "Value": {
-                "id": "a9dd737e-5c58-4586-b79f-53e9cdc98a1b",
-                "resourcePath": "scripts\\scribble_set_wrap\\scribble_set_wrap.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "b43cf62b-c64f-4436-a8eb-906fd543d4cc",
-            "Value": {
-                "id": "2e20934c-0e47-46b9-9000-26e7f26780fa",
-                "resourcePath": "scripts\\scribble_set_blend\\scribble_set_blend.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "b7157de4-28d8-476e-b907-27576e4c9261",
-            "Value": {
-                "id": "aeb78a3e-1af2-4972-8be0-a37003b58052",
-                "resourcePath": "scripts\\scribble_page_count\\scribble_page_count.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "b8b935fa-7d6c-4bbd-8adf-7a1ed48b3e07",
-            "Value": {
-                "id": "a5880b61-3d3c-43f0-b4dc-374794561f9a",
-                "resourcePath": "scripts\\scribble_cache_group_flush\\scribble_cache_group_flush.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "b9c3b946-515e-4f7f-8f0e-687f9b63de18",
-            "Value": {
-                "id": "982e0d65-2342-4a68-97d1-58f63d4e81b8",
-                "resourcePath": "objects\\obj_example_basic\\obj_example_basic.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "bcd14081-de72-4eef-8094-64efd4aac382",
-            "Value": {
-                "id": "e855c536-ffc5-4e67-ae6c-e8a00de968f7",
-                "resourcePath": "views\\bcd14081-de72-4eef-8094-64efd4aac382.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "beea2a2b-8233-44bc-9d9d-0dfc652a6bd0",
-            "Value": {
-                "id": "bfd74fc7-ba89-4fb5-bc42-9ff048acc96f",
-                "resourcePath": "scripts\\scribble_autotype_fade_out\\scribble_autotype_fade_out.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "bf269b8e-eb65-4528-b05e-d89efb7d6c87",
-            "Value": {
-                "id": "7ac89817-4711-4f7c-b94d-8f624cbbb968",
-                "resourcePath": "scripts\\scribble_get_quad\\scribble_get_quad.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "c0f4f4ff-e121-4ce8-9b05-658e8d16b19f",
-            "Value": {
-                "id": "4d2ab9f6-d541-4e9a-ac9b-0b4a0d6b303a",
-                "resourcePath": "scripts\\scribble_whitelist_sprite\\scribble_whitelist_sprite.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "c1ca6600-d2f3-4255-aa4d-2c246e3e5649",
-            "Value": {
-                "id": "5c55bd00-51a3-419c-8b11-789b0958fffd",
-                "resourcePath": "objects\\obj_stress_test\\obj_stress_test.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "c1f9a882-5c95-4baa-9aa2-288643547505",
-            "Value": {
-                "id": "7a6002bd-ab6b-4396-b3bd-b3eb90e76cc3",
-                "resourcePath": "scripts\\scribble_set_glyph_property\\scribble_set_glyph_property.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "c2d60cf9-ffb4-42bd-a0c7-c7cf77ca5452",
-            "Value": {
-                "id": "56f40119-8e95-4e4d-8b63-97f5328b5535",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_chinese.yy.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
-            "Key": "c459431b-207e-415b-b3a7-92d0d49053d1",
-            "Value": {
-                "id": "63678702-206e-457b-8663-7692fe299513",
-                "resourcePath": "views\\c459431b-207e-415b-b3a7-92d0d49053d1.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "cc98d028-7bdd-4680-85f3-c87a7baa481e",
-            "Value": {
-                "id": "a4a671e8-7a67-41ec-aeac-662bfabcc64b",
-                "resourcePath": "options\\windows\\options_windows.yy",
-                "resourceType": "GMWindowsOptions"
-            }
-        },
-        {
-            "Key": "d0797c70-f098-4e2c-912e-f1225887182b",
-            "Value": {
-                "id": "83ca097b-094c-4d2f-8646-18bd6bb5d165",
-                "resourcePath": "views\\d0797c70-f098-4e2c-912e-f1225887182b.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "d31795bd-3e13-4c6b-bec6-ccf6cfdf0bce",
-            "Value": {
-                "id": "897c9eeb-3a61-4efe-bf6f-c17ad23d001f",
-                "resourcePath": "views\\d31795bd-3e13-4c6b-bec6-ccf6cfdf0bce.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "d49d7f7e-1ca7-477f-8908-f0295fcfe5e3",
-            "Value": {
-                "id": "ef295564-3fd1-44d9-a5e7-b7d17e6a35b9",
-                "resourcePath": "sprites\\spr_large_coin\\spr_large_coin.yy",
-                "resourceType": "GMSprite"
-            }
-        },
-        {
-            "Key": "d4f123cb-3fed-42ea-9048-76ab3df83d49",
-            "Value": {
-                "id": "c3daa66e-9a11-47c9-9b3a-a20621db3771",
-                "resourcePath": "scripts\\scribble_draw_set_animation\\scribble_draw_set_animation.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "d7c40260-1214-4cac-a53d-c515deed80a9",
-            "Value": {
-                "id": "c114369b-8704-4a95-8afd-408c580f6fde",
-                "resourcePath": "views\\d7c40260-1214-4cac-a53d-c515deed80a9.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "d934110d-0067-4412-8563-3af79a256c25",
-            "Value": {
-                "id": "ef2260f5-d637-48b3-b89f-046a6ca04c6e",
-                "resourcePath": "scripts\\scribble_add_color\\scribble_add_color.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "dab40804-067d-4898-b5fd-736906e548cf",
-            "Value": {
-                "id": "e871500f-99e9-4b0d-8eb4-c76c17b9d120",
-                "resourcePath": "views\\dab40804-067d-4898-b5fd-736906e548cf.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "dbcf1cbf-cbd0-40fa-9a88-c5c9e80976c1",
-            "Value": {
-                "id": "097da67d-0eba-44a0-8a35-8659d042920e",
-                "resourcePath": "rooms\\rm_example_basic\\rm_example_basic.yy",
-                "resourceType": "GMRoom"
-            }
-        },
-        {
-            "Key": "dd1eb3eb-ccda-480f-8d25-1b232369a0ae",
-            "Value": {
-                "id": "c3de2246-e589-4090-a56b-3d1faef33d9b",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_test_1.yy.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
-            "Key": "df3afc9f-820f-420b-b9b5-ed2c2222c392",
-            "Value": {
-                "id": "4e6bbd92-0545-493c-bfc4-2cd9d9d3b297",
-                "resourcePath": "views\\df3afc9f-820f-420b-b9b5-ed2c2222c392.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "df83e583-17e2-4f78-a7bc-3a26efda88cb",
-            "Value": {
-                "id": "6e9e0335-3e81-4642-96bb-7f650de0d077",
-                "resourcePath": "scripts\\scribble_get_width\\scribble_get_width.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "e346a946-97e3-4051-96c1-3b6c92346baf",
-            "Value": {
-                "id": "a28346b5-8063-4be2-ba61-0588ab782fcc",
-                "resourcePath": "fonts\\fnt_test_0\\fnt_test_0.yy",
-                "resourceType": "GMFont"
-            }
-        },
-        {
-            "Key": "e42bf5cc-3f46-4d67-a6d0-a4885a11ac3f",
-            "Value": {
-                "id": "d2eb849c-77fa-4177-82b4-59dfadb486eb",
-                "resourcePath": "options\\android\\options_android.yy",
-                "resourceType": "GMAndroidOptions"
-            }
-        },
-        {
-            "Key": "e89348c7-a709-4b5b-9074-c8965f362fb4",
-            "Value": {
-                "id": "11d6e5ed-f5dd-4074-8d0d-160e30680cd1",
-                "resourcePath": "scripts\\scribble_set_animation\\scribble_set_animation.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "e9480819-6da8-4390-8deb-cc0446f16851",
-            "Value": {
-                "id": "0c003888-265a-487d-b610-0ef0feee2dd4",
-                "resourcePath": "fonts\\fnt_test_1\\fnt_test_1.yy",
-                "resourceType": "GMFont"
-            }
-        },
-        {
-            "Key": "eadbe561-839c-47aa-a272-8aa3524b4f66",
-            "Value": {
-                "id": "3a11d3fa-0df3-43c6-8012-08599b69203e",
-                "resourcePath": "scripts\\scribble_autotype_function\\scribble_autotype_function.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "ed7bf3dd-c437-4d69-a9e3-133bbf5000f5",
-            "Value": {
-                "id": "878bde36-1ef6-4b6a-b250-f2e513c33b20",
-                "resourcePath": "fonts\\fnt_chinese\\fnt_chinese.yy",
-                "resourceType": "GMFont"
-            }
-        },
-        {
-            "Key": "f16a19e0-6ae9-4775-afcc-5b0f7a6cf9bc",
-            "Value": {
-                "id": "01f80fa2-b4f8-466b-80ec-eeade815f5a3",
-                "resourcePath": "scripts\\scribble_autotype_set_sound_per_char\\scribble_autotype_set_sound_per_char.yy",
-                "resourceType": "GMScript"
-            }
-        },
-        {
-            "Key": "f418569b-3bdd-4706-a0e4-364317f54032",
-            "Value": {
-                "id": "f0cb9727-2298-4848-9f10-5fabdd8d25b9",
-                "resourcePath": "options\\mac\\options_mac.yy",
-                "resourceType": "GMMacOptions"
-            }
-        },
-        {
-            "Key": "f5d97ad5-0224-4e9e-bfc2-fe1cf66e9484",
-            "Value": {
-                "id": "d2537a4c-43b8-40be-8b73-36a222592d91",
-                "resourcePath": "sounds\\snd_vowel_0\\snd_vowel_0.yy",
-                "resourceType": "GMSound"
-            }
-        },
-        {
-            "Key": "f85efd3d-bcec-4ec0-8226-da808afda79d",
-            "Value": {
-                "id": "e77aba0a-8650-4de9-9fc0-878f059f9370",
-                "resourcePath": "options\\xboxone\\options_xboxone.yy",
-                "resourceType": "GMXBoxOneOptions"
-            }
-        },
-        {
-            "Key": "f86819ac-c627-4fd4-95a4-0e87a325a6ff",
-            "Value": {
-                "id": "b13bb939-d2c8-4d06-b135-734b3f3ac81a",
-                "resourcePath": "views\\f86819ac-c627-4fd4-95a4-0e87a325a6ff.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
-            "Key": "fab0fef8-eab5-4e5b-bccd-f5ed6f43db50",
-            "Value": {
-                "id": "7b15668b-51af-4f1a-b2b3-d87d420c610f",
-                "resourcePath": "rooms\\rm_example_precache\\rm_example_precache.yy",
-                "resourceType": "GMRoom"
-            }
-        },
-        {
-            "Key": "fd298b0a-00eb-4c24-b49e-e18cef4cb652",
-            "Value": {
-                "id": "c87da2e3-aa99-44bb-8b16-8b83facd7f55",
-                "resourcePath": "sounds\\snd_vowel_2\\snd_vowel_2.yy",
-                "resourceType": "GMSound"
-            }
-        }
-    ],
-    "script_order": [
-        "acb26a39-8033-4289-87d0-228ed7921bc8",
-        "0b7de2e4-423b-4049-ae3c-cefbec9a47a6",
-        "89e8adda-438e-48f9-ab78-0e8b396b3850",
-        "375e7330-6e30-4902-8a42-dbc8ad380c16",
-        "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
-        "d934110d-0067-4412-8563-3af79a256c25",
-        "2d0079a4-4bb9-40c7-8224-a9c7694d3aed",
-        "0a93a84f-87c9-4473-adf8-f92fd1d1e19f",
-        "5044992f-3fea-47aa-a11b-2b6d850ac7ee",
-        "df83e583-17e2-4f78-a7bc-3a26efda88cb",
-        "6fc70169-1a4f-492f-9aac-225010d6bb52",
-        "a67d72d8-deea-402c-a061-ad454210f71b",
-        "26393753-6ea7-48ff-96b6-f6b61d18b115",
-        "012872b0-286a-4358-9987-d9cfc8c54fe0",
-        "b3138e5a-27ac-4e57-8f6e-b0d1b84faaf7",
-        "30f807be-9715-47e0-9bdc-4ae616ef5406",
-        "681d7f36-7b03-4067-a58f-b23b795b2f31",
-        "b43cf62b-c64f-4436-a8eb-906fd543d4cc",
-        "e89348c7-a709-4b5b-9074-c8965f362fb4",
-        "6646aeb5-5c20-419d-af6d-8d625871911d",
-        "88f27f62-071a-4441-b908-675e356b8173",
-        "59086829-c42b-46bc-b263-7ed41965b63c",
-        "beea2a2b-8233-44bc-9d9d-0dfc652a6bd0",
-        "8419d4f0-d03e-4d98-8b9d-93e9ec832104",
-        "24adc709-497e-43cb-9834-a1a8664cbe74",
-        "498aa41e-7fb7-49e3-b663-74ba62e7a8e6",
-        "f16a19e0-6ae9-4775-afcc-5b0f7a6cf9bc",
-        "21e1fca2-32ef-46d3-9938-44552cc93b4e",
-        "9e5c6a6a-9f28-4a6b-a2a3-9507eb25164a",
-        "a3d9edc7-bc39-46f3-b8c2-98bcc058ea2c",
-        "6e8352fc-78a8-490a-a4ab-9dacbaeb79f5",
-        "04acbfcf-ee17-4ded-b194-17bb72864ff0",
-        "b7157de4-28d8-476e-b907-27576e4c9261",
-        "74d4828d-df60-4163-9a0f-713e1e653208",
-        "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
-        "c1f9a882-5c95-4baa-9aa2-288643547505",
-        "853cc3dc-bb29-429c-b828-a68514d4f06e",
-        "00322d5b-d6eb-4d4e-b389-bb26da697b1d",
-        "c0f4f4ff-e121-4ce8-9b05-658e8d16b19f",
-        "310354d2-1828-48d9-a82e-9dbd97d9c117",
-        "eadbe561-839c-47aa-a272-8aa3524b4f66",
-        "a0398c62-0284-4051-9243-0bfb6d974d6e",
-        "8a72a3a7-a40c-4764-a65f-e44a5bd5746c",
-        "5b5d2964-6179-4fe2-8b4c-f1e7d030639e",
-        "bf269b8e-eb65-4528-b05e-d89efb7d6c87",
-        "b8b935fa-7d6c-4bbd-8adf-7a1ed48b3e07",
-        "5a238f60-cd46-454f-b3b0-5ba216b628e5",
-        "54cfa3e3-3ed0-43fb-a8e7-1c52d546977f",
-        "a72ca48d-5d4e-4301-823f-ae99d288f7d0",
-        "7cc1c844-6661-4798-8779-b14f34abb3db",
-        "04580ef1-3ded-4d10-bf20-ef0e199d873b",
-        "d4f123cb-3fed-42ea-9048-76ab3df83d49",
-        "27964133-4335-466d-a8a1-f499a93399bb",
-        "464aca78-7490-433e-8b56-973f0a847094",
-        "33d5be74-110c-452d-869e-77397af81567",
-        "7f249531-321e-43d7-92bc-258842287e9d",
-        "16333f16-885e-4b0b-98e8-9726a0f9c0b0",
-        "75555384-7db7-4904-89d6-33a402f4113b"
-    ],
-    "tutorial": ""
+  "resources": [
+    {"id":{"name":"spr_sprite_font","path":"sprites/spr_sprite_font/spr_sprite_font.yy",},"order":0,},
+    {"id":{"name":"spr_coin","path":"sprites/spr_coin/spr_coin.yy",},"order":1,},
+    {"id":{"name":"spr_large_coin","path":"sprites/spr_large_coin/spr_large_coin.yy",},"order":2,},
+    {"id":{"name":"snd_crank","path":"sounds/snd_crank/snd_crank.yy",},"order":0,},
+    {"id":{"name":"snd_switch","path":"sounds/snd_switch/snd_switch.yy",},"order":1,},
+    {"id":{"name":"snd_vowel_0","path":"sounds/snd_vowel_0/snd_vowel_0.yy",},"order":2,},
+    {"id":{"name":"snd_vowel_1","path":"sounds/snd_vowel_1/snd_vowel_1.yy",},"order":3,},
+    {"id":{"name":"snd_vowel_2","path":"sounds/snd_vowel_2/snd_vowel_2.yy",},"order":4,},
+    {"id":{"name":"snd_vowel_3","path":"sounds/snd_vowel_3/snd_vowel_3.yy",},"order":5,},
+    {"id":{"name":"snd_vowel_4","path":"sounds/snd_vowel_4/snd_vowel_4.yy",},"order":6,},
+    {"id":{"name":"__scribble_macros","path":"scripts/__scribble_macros/__scribble_macros.yy",},"order":0,},
+    {"id":{"name":"scribble_reset","path":"scripts/scribble_reset/scribble_reset.yy",},"order":1,},
+    {"id":{"name":"scribble_init","path":"scripts/scribble_init/scribble_init.yy",},"order":0,},
+    {"id":{"name":"scribble_add_font","path":"scripts/scribble_add_font/scribble_add_font.yy",},"order":1,},
+    {"id":{"name":"scribble_add_spritefont","path":"scripts/scribble_add_spritefont/scribble_add_spritefont.yy",},"order":2,},
+    {"id":{"name":"scribble_add_color","path":"scripts/scribble_add_color/scribble_add_color.yy",},"order":3,},
+    {"id":{"name":"scribble_bake_outline","path":"scripts/scribble_bake_outline/scribble_bake_outline.yy",},"order":4,},
+    {"id":{"name":"scribble_draw","path":"scripts/scribble_draw/scribble_draw.yy",},"order":3,},
+    {"id":{"name":"scribble_get_bbox","path":"scripts/scribble_get_bbox/scribble_get_bbox.yy",},"order":4,},
+    {"id":{"name":"scribble_get_width","path":"scripts/scribble_get_width/scribble_get_width.yy",},"order":5,},
+    {"id":{"name":"scribble_get_height","path":"scripts/scribble_get_height/scribble_get_height.yy",},"order":6,},
+    {"id":{"name":"scribble_cache","path":"scripts/scribble_cache/scribble_cache.yy",},"order":7,},
+    {"id":{"name":"scribble_set_starting_format","path":"scripts/scribble_set_starting_format/scribble_set_starting_format.yy",},"order":0,},
+    {"id":{"name":"scribble_set_box_align","path":"scripts/scribble_set_box_align/scribble_set_box_align.yy",},"order":1,},
+    {"id":{"name":"scribble_set_wrap","path":"scripts/scribble_set_wrap/scribble_set_wrap.yy",},"order":2,},
+    {"id":{"name":"scribble_set_line_height","path":"scripts/scribble_set_line_height/scribble_set_line_height.yy",},"order":3,},
+    {"id":{"name":"scribble_set_transform","path":"scripts/scribble_set_transform/scribble_set_transform.yy",},"order":4,},
+    {"id":{"name":"scribble_set_blend","path":"scripts/scribble_set_blend/scribble_set_blend.yy",},"order":5,},
+    {"id":{"name":"scribble_set_animation","path":"scripts/scribble_set_animation/scribble_set_animation.yy",},"order":6,},
+    {"id":{"name":"scribble_get_state","path":"scripts/scribble_get_state/scribble_get_state.yy",},"order":7,},
+    {"id":{"name":"scribble_set_state","path":"scripts/scribble_set_state/scribble_set_state.yy",},"order":8,},
+    {"id":{"name":"scribble_autotype_fade_in","path":"scripts/scribble_autotype_fade_in/scribble_autotype_fade_in.yy",},"order":0,},
+    {"id":{"name":"scribble_autotype_fade_out","path":"scripts/scribble_autotype_fade_out/scribble_autotype_fade_out.yy",},"order":1,},
+    {"id":{"name":"scribble_autotype_skip","path":"scripts/scribble_autotype_skip/scribble_autotype_skip.yy",},"order":2,},
+    {"id":{"name":"scribble_autotype_get","path":"scripts/scribble_autotype_get/scribble_autotype_get.yy",},"order":3,},
+    {"id":{"name":"scribble_autotype_set_sound","path":"scripts/scribble_autotype_set_sound/scribble_autotype_set_sound.yy",},"order":4,},
+    {"id":{"name":"scribble_autotype_set_sound_per_char","path":"scripts/scribble_autotype_set_sound_per_char/scribble_autotype_set_sound_per_char.yy",},"order":5,},
+    {"id":{"name":"scribble_autotype_set_pause","path":"scripts/scribble_autotype_set_pause/scribble_autotype_set_pause.yy",},"order":6,},
+    {"id":{"name":"scribble_autotype_is_paused","path":"scripts/scribble_autotype_is_paused/scribble_autotype_is_paused.yy",},"order":7,},
+    {"id":{"name":"scribble_add_autotype_event","path":"scripts/scribble_add_autotype_event/scribble_add_autotype_event.yy",},"order":8,},
+    {"id":{"name":"scribble_page_set","path":"scripts/scribble_page_set/scribble_page_set.yy",},"order":0,},
+    {"id":{"name":"scribble_page_get","path":"scripts/scribble_page_get/scribble_page_get.yy",},"order":1,},
+    {"id":{"name":"scribble_page_count","path":"scripts/scribble_page_count/scribble_page_count.yy",},"order":2,},
+    {"id":{"name":"scribble_page_on_last","path":"scripts/scribble_page_on_last/scribble_page_on_last.yy",},"order":3,},
+    {"id":{"name":"scribble_flush","path":"scripts/scribble_flush/scribble_flush.yy",},"order":0,},
+    {"id":{"name":"scribble_set_glyph_property","path":"scripts/scribble_set_glyph_property/scribble_set_glyph_property.yy",},"order":1,},
+    {"id":{"name":"scribble_get_glyph_property","path":"scripts/scribble_get_glyph_property/scribble_get_glyph_property.yy",},"order":2,},
+    {"id":{"name":"scribble_add_shader_effect","path":"scripts/scribble_add_shader_effect/scribble_add_shader_effect.yy",},"order":3,},
+    {"id":{"name":"scribble_whitelist_sprite","path":"scripts/scribble_whitelist_sprite/scribble_whitelist_sprite.yy",},"order":4,},
+    {"id":{"name":"scribble_bake_shader","path":"scripts/scribble_bake_shader/scribble_bake_shader.yy",},"order":5,},
+    {"id":{"name":"scribble_autotype_function","path":"scripts/scribble_autotype_function/scribble_autotype_function.yy",},"order":6,},
+    {"id":{"name":"scribble_add_autotype_character_delay","path":"scripts/scribble_add_autotype_character_delay/scribble_add_autotype_character_delay.yy",},"order":7,},
+    {"id":{"name":"scribble_draw_set_fade","path":"scripts/scribble_draw_set_fade/scribble_draw_set_fade.yy",},"order":0,},
+    {"id":{"name":"scribble_draw_set_cache_group","path":"scripts/scribble_draw_set_cache_group/scribble_draw_set_cache_group.yy",},"order":1,},
+    {"id":{"name":"scribble_get_quad","path":"scripts/scribble_get_quad/scribble_get_quad.yy",},"order":2,},
+    {"id":{"name":"scribble_cache_group_flush","path":"scripts/scribble_cache_group_flush/scribble_cache_group_flush.yy",},"order":3,},
+    {"id":{"name":"scribble_draw_set_defaults","path":"scripts/scribble_draw_set_defaults/scribble_draw_set_defaults.yy",},"order":4,},
+    {"id":{"name":"scribble_draw_set_box_align","path":"scripts/scribble_draw_set_box_align/scribble_draw_set_box_align.yy",},"order":5,},
+    {"id":{"name":"scribble_draw_set_wrap","path":"scripts/scribble_draw_set_wrap/scribble_draw_set_wrap.yy",},"order":6,},
+    {"id":{"name":"scribble_draw_set_transform","path":"scripts/scribble_draw_set_transform/scribble_draw_set_transform.yy",},"order":7,},
+    {"id":{"name":"scribble_draw_set_blend","path":"scripts/scribble_draw_set_blend/scribble_draw_set_blend.yy",},"order":8,},
+    {"id":{"name":"scribble_draw_set_animation","path":"scripts/scribble_draw_set_animation/scribble_draw_set_animation.yy",},"order":9,},
+    {"id":{"name":"scribble_draw_get_state","path":"scripts/scribble_draw_get_state/scribble_draw_get_state.yy",},"order":10,},
+    {"id":{"name":"scribble_draw_set_state","path":"scripts/scribble_draw_set_state/scribble_draw_set_state.yy",},"order":11,},
+    {"id":{"name":"scribble_draw_reset","path":"scripts/scribble_draw_reset/scribble_draw_reset.yy",},"order":12,},
+    {"id":{"name":"example_event","path":"scripts/example_event/example_event.yy",},"order":12,},
+    {"id":{"name":"example_event_sound","path":"scripts/example_event_sound/example_event_sound.yy",},"order":13,},
+    {"id":{"name":"example_autotype_callback","path":"scripts/example_autotype_callback/example_autotype_callback.yy",},"order":14,},
+    {"id":{"name":"shd_scribble","path":"shaders/shd_scribble/shd_scribble.yy",},"order":0,},
+    {"id":{"name":"shd_scribble_bake_outline","path":"shaders/shd_scribble_bake_outline/shd_scribble_bake_outline.yy",},"order":1,},
+    {"id":{"name":"fnt_test_0","path":"fonts/fnt_test_0/fnt_test_0.yy",},"order":0,},
+    {"id":{"name":"fnt_test_1","path":"fonts/fnt_test_1/fnt_test_1.yy",},"order":1,},
+    {"id":{"name":"fnt_test_2","path":"fonts/fnt_test_2/fnt_test_2.yy",},"order":2,},
+    {"id":{"name":"fnt_chinese","path":"fonts/fnt_chinese/fnt_chinese.yy",},"order":3,},
+    {"id":{"name":"obj_example_basic","path":"objects/obj_example_basic/obj_example_basic.yy",},"order":0,},
+    {"id":{"name":"obj_example_autotype","path":"objects/obj_example_autotype/obj_example_autotype.yy",},"order":1,},
+    {"id":{"name":"obj_example_precache","path":"objects/obj_example_precache/obj_example_precache.yy",},"order":2,},
+    {"id":{"name":"obj_stress_test","path":"objects/obj_stress_test/obj_stress_test.yy",},"order":3,},
+    {"id":{"name":"obj_test","path":"objects/obj_test/obj_test.yy",},"order":4,},
+    {"id":{"name":"rm_example_basic","path":"rooms/rm_example_basic/rm_example_basic.yy",},"order":5,},
+    {"id":{"name":"rm_example_autotype","path":"rooms/rm_example_autotype/rm_example_autotype.yy",},"order":6,},
+    {"id":{"name":"rm_example_precache","path":"rooms/rm_example_precache/rm_example_precache.yy",},"order":7,},
+    {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},"order":8,},
+  ],
+  "Options": [
+    {"name":"Switch","path":"options/switch/options_switch.yy",},
+    {"name":"PlayStation 4","path":"options/ps4/options_ps4.yy",},
+    {"name":"HTML5","path":"options/html5/options_html5.yy",},
+    {"name":"Windows UWP","path":"options/windowsuap/options_windowsuap.yy",},
+    {"name":"tvOS","path":"options/tvos/options_tvos.yy",},
+    {"name":"iOS","path":"options/ios/options_ios.yy",},
+    {"name":"Amazon Fire","path":"options/amazonfire/options_amazonfire.yy",},
+    {"name":"Linux","path":"options/linux/options_linux.yy",},
+    {"name":"Windows","path":"options/windows/options_windows.yy",},
+    {"name":"Xbox One","path":"options/xboxone/options_xboxone.yy",},
+    {"name":"Android","path":"options/android/options_android.yy",},
+    {"name":"macOS","path":"options/mac/options_mac.yy",},
+    {"name":"Main","path":"options/main/options_main.yy",},
+  ],
+  "isDnDProject": false,
+  "isEcma": false,
+  "tutorialPath": "",
+  "configs": {
+    "name": "Default",
+    "children": [],
+  },
+  "RoomOrder": [
+    {"name":"rm_example_basic","path":"rooms/rm_example_basic/rm_example_basic.yy",},
+    {"name":"rm_example_autotype","path":"rooms/rm_example_autotype/rm_example_autotype.yy",},
+    {"name":"rm_example_precache","path":"rooms/rm_example_precache/rm_example_precache.yy",},
+    {"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},
+  ],
+  "Folders": [
+    {"folderPath":"folders/Examples/Sprites.yy","order":9,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Examples/Sounds.yy","order":10,"resourceVersion":"1.0","name":"Sounds","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Examples.yy","order":3,"resourceVersion":"1.0","name":"Examples","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scribble.yy","order":0,"resourceVersion":"1.0","name":"Scribble","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scripts/Scribble/Initialisation.yy","order":2,"resourceVersion":"1.0","name":"Initialisation","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scripts/Scribble/Drawing Options.yy","order":8,"resourceVersion":"1.0","name":"Drawing Options","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scripts/Scribble/Autotype.yy","order":9,"resourceVersion":"1.0","name":"Autotype","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scripts/Scribble/Pages.yy","order":10,"resourceVersion":"1.0","name":"Pages","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scripts/Scribble/Advanced Things For Serious People.yy","order":11,"resourceVersion":"1.0","name":"Advanced Things For Serious People","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scripts/Scribble/(Deprecated).yy","order":12,"resourceVersion":"1.0","name":"(Deprecated)","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Scribble/Shaders.yy","order":13,"resourceVersion":"1.0","name":"Shaders","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Examples/Fonts.yy","order":11,"resourceVersion":"1.0","name":"Fonts","tags":[],"resourceType":"GMFolder",},
+  ],
+  "AudioGroups": [
+    {"targets":461609314234257646,"resourceVersion":"1.0","name":"audiogroup_default","resourceType":"GMAudioGroup",},
+  ],
+  "TextureGroups": [
+    {"isScaled":false,"autocrop":true,"border":2,"mipsToGenerate":0,"targets":461609314234257646,"resourceVersion":"1.0","name":"Default","resourceType":"GMTextureGroup",},
+  ],
+  "IncludedFiles": [
+    {"CopyToMask":-1,"filePath":"datafiles\\Fonts","resourceVersion":"1.0","name":"fnt_test_0.yy","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles\\Fonts","resourceVersion":"1.0","name":"fnt_test_1.yy","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles\\Fonts","resourceVersion":"1.0","name":"fnt_test_2.yy","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles\\Fonts","resourceVersion":"1.0","name":"fnt_chinese.yy","resourceType":"GMIncludedFile",},
+  ],
+  "MetaData": {
+    "IDEVersion": "23.1.1.157",
+  },
+  "resourceVersion": "1.3",
+  "name": "scribble",
+  "tags": [],
+  "resourceType": "GMProject",
 }

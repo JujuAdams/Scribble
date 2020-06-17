@@ -1,8 +1,12 @@
 {
-    "id": "853cc3dc-bb29-429c-b828-a68514d4f06e",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_get_glyph_property",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Advanced Things For Serious People",
+    "path": "folders/Scripts/Scribble/Advanced Things For Serious People.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_get_glyph_property",
+  "tags": [],
+  "resourceType": "GMScript",
 }

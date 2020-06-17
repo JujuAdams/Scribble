@@ -1,8 +1,12 @@
 {
-    "id": "a72ca48d-5d4e-4301-823f-ae99d288f7d0",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_draw_set_wrap",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "(Deprecated)",
+    "path": "folders/Scripts/Scribble/(Deprecated).yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_draw_set_wrap",
+  "tags": [],
+  "resourceType": "GMScript",
 }

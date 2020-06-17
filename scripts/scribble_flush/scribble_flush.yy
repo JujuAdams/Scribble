@@ -1,8 +1,12 @@
 {
-    "id": "7c1d8641-a93c-4e1e-8530-37a429b86f1f",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_flush",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Advanced Things For Serious People",
+    "path": "folders/Scripts/Scribble/Advanced Things For Serious People.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_flush",
+  "tags": [],
+  "resourceType": "GMScript",
 }

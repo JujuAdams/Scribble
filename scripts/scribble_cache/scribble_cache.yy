@@ -1,8 +1,12 @@
 {
-    "id": "a67d72d8-deea-402c-a061-ad454210f71b",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_cache",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Scribble",
+    "path": "folders/Scribble.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_cache",
+  "tags": [],
+  "resourceType": "GMScript",
 }

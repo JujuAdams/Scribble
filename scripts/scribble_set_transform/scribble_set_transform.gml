@@ -9,7 +9,11 @@
 /// 
 /// This script sets Scribble's draw state. All text drawn with scribble_draw() will use these settings until
 /// they're overwritten, either by calling this script again or by calling scribble_reset() or scribble_set_state().
+function scribble_set_transform(argument0, argument1, argument2) {
 
-global.scribble_state_xscale = argument0;
-global.scribble_state_yscale = argument1;
-global.scribble_state_angle  = argument2;
+	global.scribble_state_xscale = argument0;
+	global.scribble_state_yscale = argument1;
+	global.scribble_state_angle  = argument2;
+
+
+}

@@ -1,8 +1,12 @@
 {
-    "id": "00322d5b-d6eb-4d4e-b389-bb26da697b1d",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_add_shader_effect",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Advanced Things For Serious People",
+    "path": "folders/Scripts/Scribble/Advanced Things For Serious People.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_add_shader_effect",
+  "tags": [],
+  "resourceType": "GMScript",
 }

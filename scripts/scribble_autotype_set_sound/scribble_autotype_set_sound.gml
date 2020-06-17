@@ -14,24 +14,28 @@
 /// sound effects will be played with a little bit of overlap which improves the effect considerably. A value around
 /// 30ms usually sounds ok. The overlap argument can be set to a value less than 0 if you'd like more space between
 /// sound effects.
+function scribble_autotype_set_sound() {
 
-var _scribble_array = argument[0];
-var _sound          = argument[1];
-var _overlap        = argument[2];
-var _min_pitch      = argument[3];
-var _max_pitch      = argument[4];
-var _occurance_name = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
+	var _scribble_array = argument[0];
+	var _sound          = argument[1];
+	var _overlap        = argument[2];
+	var _min_pitch      = argument[3];
+	var _max_pitch      = argument[4];
+	var _occurance_name = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
-var _scribble_array = scribble_cache(_scribble_array, _occurance_name);
-if (_scribble_array == undefined) return undefined;
+	var _scribble_array = scribble_cache(_scribble_array, _occurance_name);
+	if (_scribble_array == undefined) return undefined;
 
-if (!is_array(_sound)) _sound = [_sound];
+	if (!is_array(_sound)) _sound = [_sound];
 
-//Find our occurance data
-var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
-var _occurance_array = _occurance_map[? _occurance_name];
+	//Find our occurance data
+	var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
+	var _occurance_array = _occurance_map[? _occurance_name];
 
-_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_ARRAY    ] = _sound;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_OVERLAP  ] = _overlap;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MIN_PITCH] = _min_pitch;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MAX_PITCH] = _max_pitch;
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_ARRAY    ] = _sound;
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_OVERLAP  ] = _overlap;
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MIN_PITCH] = _min_pitch;
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MAX_PITCH] = _max_pitch;
+
+
+}
