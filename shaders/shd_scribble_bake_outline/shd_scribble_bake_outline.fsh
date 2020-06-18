@@ -1,3 +1,5 @@
+//   @jujuadams   v6.0.5   2020-06-07
+
 const float PI = 3.14159265359;
 
 varying vec2 v_vTexcoord;

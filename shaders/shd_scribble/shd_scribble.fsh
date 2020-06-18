@@ -1,3 +1,5 @@
+//   @jujuadams   v6.0.5   2020-06-07
+
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 

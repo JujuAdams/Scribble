@@ -1,3 +1,5 @@
+//   @jujuadams   v6.0.5   2020-06-07
+
 const int MAX_EFFECTS = 7;
 //By default, the effect indexes are:
 //0 = is an animated sprite
