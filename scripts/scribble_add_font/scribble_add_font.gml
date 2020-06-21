@@ -8,7 +8,8 @@
 /// Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
 /// 
 ///  1. Add a normal GameMaker font resource through the IDE
-///  2. Add the font's .yy file as an Included File (found in the font's folder in the project directory)
+///  2. Click the Regenerate button in font dialogue inside the GameMaker IDE, then add the font's .yy file as an Included File (found in
+///     the font's folder in the project directory)
 ///  3. Call scribble_add_font() targeting the font
 /// 
 /// Scribble needs to access information that GameMaker generates. All this information is contained in a single .yy file in the font's folder
