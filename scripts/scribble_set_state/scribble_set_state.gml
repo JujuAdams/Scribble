@@ -18,6 +18,7 @@ global.scribble_state_max_height      = argument0[SCRIBBLE_STATE.MAX_HEIGHT     
 global.scribble_state_character_wrap  = argument0[SCRIBBLE_STATE.CHARACTER_WRAP ];
 global.scribble_state_box_halign      = argument0[SCRIBBLE_STATE.BOX_HALIGN     ];
 global.scribble_state_box_valign      = argument0[SCRIBBLE_STATE.BOX_VALIGN     ];
+global.scribble_state_box_align_page  = argument0[SCRIBBLE_STATE.BOX_ALIGN_PAGE ];
 
 var _array = argument0[SCRIBBLE_STATE.ANIMATION_ARRAY];
 if (is_array(_array))

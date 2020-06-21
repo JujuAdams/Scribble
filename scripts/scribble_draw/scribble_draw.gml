@@ -314,19 +314,30 @@ if (_count > 0)
     
     #region Do the drawing!
     
+    if (global.scribble_state_box_align_page)
+    {
+        var _box_w = _page_array[__SCRIBBLE_PAGE.WIDTH ];
+        var _box_h = _page_array[__SCRIBBLE_PAGE.HEIGHT];
+    }
+    else
+    {
+        var _box_w = _scribble_array[SCRIBBLE.WIDTH ];
+        var _box_h = _scribble_array[SCRIBBLE.HEIGHT];
+    }
+    
     //Figure out the left/top offset
     switch(global.scribble_state_box_halign)
     {
-        case fa_center: var _left = -_scribble_array[SCRIBBLE.WIDTH] div 2; break;
-        case fa_right:  var _left = -_scribble_array[SCRIBBLE.WIDTH];       break;
-        default:        var _left = 0;                                      break;
+        case fa_center: var _left = -(_box_w div 2); break;
+        case fa_right:  var _left = -_box_w;         break;
+        default:        var _left = 0;               break;
     }
     
     switch(global.scribble_state_box_valign)
     {
-        case fa_middle: var _top = -_scribble_array[SCRIBBLE.HEIGHT] div 2; break;
-        case fa_bottom: var _top = -_scribble_array[SCRIBBLE.HEIGHT];       break;
-        default:        var _top = 0;                                       break;
+        case fa_middle: var _top = -(_box_h div 2); break;
+        case fa_bottom: var _top = -_box_h;         break;
+        default:        var _top = 0;               break;
     }
     
     //Build a matrix to transform the text...

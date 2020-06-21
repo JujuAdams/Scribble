@@ -8,8 +8,10 @@
 /// @param [topMargin]          Extra space on the top of the textbox. Positive values create more space. Defaults to 0
 /// @param [rightMargin]        Extra space on the right-hand side of the textbox. Positive values create more space. Defaults to 0
 /// @param [bottomMargin]       Extra space on the bottom of the textbox. Positive values create more space. Defaults to 0
+/// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
 /// 
-/// The padding arguments can be given the value undefined to indicate that the default value should be used.
+/// To use the size of the current page rather than the size of the overall text element, please see scribble_set_box_align(),
+/// specifically the [usePageSize] argument.
 /// 
 /// The array returned by scribble_get_bbox() has 14 elements as defined by the enum SCRIBBLE_BBOX.
 
@@ -31,6 +33,7 @@ var _margin_l       = ((argument_count > 3) && (argument[3] != undefined))? argu
 var _margin_t       = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
 var _margin_r       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
 var _margin_b       = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 0;
+var _occurance_name = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
 
 if (is_string(_x) || is_array(_x))
 {
@@ -41,19 +44,40 @@ if (is_string(_x) || is_array(_x))
 _scribble_array = scribble_cache(_scribble_array);
 if (_scribble_array == undefined) return array_create(SCRIBBLE_BBOX.__SIZE, 0);
 
-var _box_l = _scribble_array[SCRIBBLE.MIN_X];
-var _box_r = _scribble_array[SCRIBBLE.MAX_X];
+if (global.scribble_state_box_align_page)
+{
+    //Find our occurance data
+    var _occurances_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
+    var _occurance_array = _occurances_map[? _occurance_name];
+    
+    //Find our page data
+    var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];
+    var _page_array = _element_pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAGE]];
+    
+    //Pull out our actual dimensions
+    var _box_l = _page_array[__SCRIBBLE_PAGE.MIN_X ];
+    var _box_r = _page_array[__SCRIBBLE_PAGE.MAX_X ];
+    var _box_w = _page_array[__SCRIBBLE_PAGE.WIDTH ];
+    var _box_h = _page_array[__SCRIBBLE_PAGE.HEIGHT];
+}
+else
+{
+    var _box_l = _scribble_array[SCRIBBLE.MIN_X ];
+    var _box_r = _scribble_array[SCRIBBLE.MAX_X ];
+    var _box_w = _scribble_array[SCRIBBLE.WIDTH ];
+    var _box_h = _scribble_array[SCRIBBLE.HEIGHT];
+}
 
 switch(global.scribble_state_box_halign)
 {
     case fa_center:
-        _box_l -= _scribble_array[SCRIBBLE.WIDTH] div 2;
-        _box_r -= _scribble_array[SCRIBBLE.WIDTH] div 2;
+        _box_l -= _box_w div 2;
+        _box_r -= _box_w div 2;
     break;
     
     case fa_right:
-        _box_l -= _scribble_array[SCRIBBLE.WIDTH];
-        _box_r -= _scribble_array[SCRIBBLE.WIDTH];
+        _box_l -= _box_w;
+        _box_r -= _box_w;
     break;
 }
 
@@ -61,16 +85,16 @@ switch(global.scribble_state_box_valign)
 {
     case fa_top:
         var _box_t = 0;
-        var _box_b = _scribble_array[SCRIBBLE.HEIGHT];
+        var _box_b = _box_h;
     break;
     
     case fa_middle:
-        var _box_t = -_scribble_array[SCRIBBLE.HEIGHT] div 2;
+        var _box_t = -(_box_h div 2);
         var _box_b = -_box_t;
     break;
     
     case fa_bottom:
-        var _box_t = -_scribble_array[SCRIBBLE.HEIGHT];
+        var _box_t = -_box_h;
         var _box_b = 0;
     break;
 }

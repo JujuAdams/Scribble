@@ -23,6 +23,7 @@ _array[@ SCRIBBLE_STATE.MAX_HEIGHT     ] = global.scribble_state_max_height;
 _array[@ SCRIBBLE_STATE.CHARACTER_WRAP ] = global.scribble_state_character_wrap;
 _array[@ SCRIBBLE_STATE.BOX_HALIGN     ] = global.scribble_state_box_halign;
 _array[@ SCRIBBLE_STATE.BOX_VALIGN     ] = global.scribble_state_box_valign;
+_array[@ SCRIBBLE_STATE.BOX_ALIGN_PAGE ] = global.scribble_state_box_align_page;
 
 if (!_ignore_animation)
 {
