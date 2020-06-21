@@ -107,10 +107,10 @@
     "children": [],
   },
   "RoomOrder": [
+    {"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},
     {"name":"rm_example_basic","path":"rooms/rm_example_basic/rm_example_basic.yy",},
     {"name":"rm_example_autotype","path":"rooms/rm_example_autotype/rm_example_autotype.yy",},
     {"name":"rm_example_precache","path":"rooms/rm_example_precache/rm_example_precache.yy",},
-    {"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},
   ],
   "Folders": [
     {"folderPath":"folders/Examples/Sprites.yy","order":9,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},
@@ -136,7 +136,7 @@
     {"CopyToMask":-1,"filePath":"datafiles\\Fonts","resourceVersion":"1.0","name":"fnt_test_0.yy","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles\\Fonts","resourceVersion":"1.0","name":"fnt_test_1.yy","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles\\Fonts","resourceVersion":"1.0","name":"fnt_test_2.yy","resourceType":"GMIncludedFile",},
-    {"CopyToMask":-1,"filePath":"datafiles\\Fonts","resourceVersion":"1.0","name":"fnt_chinese.yy","resourceType":"GMIncludedFile",},
+    {"CopyToMask":153720560310812910,"filePath":"datafiles\\Fonts","resourceVersion":"1.0","name":"fnt_chinese.yy","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
     "IDEVersion": "23.1.1.157",

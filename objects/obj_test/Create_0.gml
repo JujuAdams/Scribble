@@ -31,6 +31,7 @@ demo_string = "Contrary to popular belief, Lorem Ipsum is not simply random text
 //Now parse the string to make some Scribble data
 //We're using a cache group called "example cache group" to indicate we want to manage this memory ourselves
 scribble_set_wrap(450, 100, false);
+scribble_add_autotype_character_delay(",", 500);
 element = scribble_cache(demo_string);
 scribble_reset(); //Don't forget to reset the state otherwise all subsequent Scribble text elements will inherit these settings
 

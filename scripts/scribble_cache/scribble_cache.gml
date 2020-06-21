@@ -219,6 +219,7 @@ function scribble_cache()
 	        _page_array[@ __SCRIBBLE_PAGE.LAST_CHAR           ] = 0;
 	        _page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _page_lines_array;
 	        _page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY] = _page_vbuffs_array;
+            _page_array[@ __SCRIBBLE_PAGE.START_EVENT         ] = 0;
         
 	        _element_pages_array[@ array_length(_element_pages_array)] = _page_array;
 	        ++_meta_element_pages;
@@ -1226,6 +1227,7 @@ function scribble_cache()
 	                _new_page_array[@ __SCRIBBLE_PAGE.LAST_CHAR           ] = _meta_element_characters;
 	                _new_page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _new_page_lines_array;
 	                _new_page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY] = _new_page_vbuffs_array;
+                    _new_page_array[@ __SCRIBBLE_PAGE.START_EVENT         ] = array_length(_events_name_array);
         
 	                _element_pages_array[@ array_length(_element_pages_array)] = _new_page_array;
 	                ++_meta_element_pages;
