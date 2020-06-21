@@ -90,7 +90,13 @@ if (_count > 0)
         var _typewriter_window_array   = _occurance_array[__SCRIBBLE_OCCURANCE.WINDOW_ARRAY];
         var _typewriter_fade_in        = _occurance_array[__SCRIBBLE_OCCURANCE.FADE_IN     ];
         var _typewriter_adjusted_speed = _occurance_array[__SCRIBBLE_OCCURANCE.SPEED       ]*SCRIBBLE_STEP_SIZE;
-            
+        var _skipping                  = _occurance_array[__SCRIBBLE_OCCURANCE.SKIP        ];
+        
+        if (_skipping)
+        {
+            //_typewriter_adjusted_speed = 99999999;
+        }
+        
         //Handle pausing
         if (_occurance_array[__SCRIBBLE_OCCURANCE.PAUSED])
         {
@@ -162,7 +168,6 @@ if (_count > 0)
                     //Now iterate from our current character position to the next character position
                     var _break = false;
                     var _scan = _scan_a;
-                    var _skipping = _occurance_array[__SCRIBBLE_OCCURANCE.SKIP];
                     repeat(_scan_b - _scan_a)
                     {
                         while ((_event < _event_count) && (_event_char == _scan))
@@ -173,28 +178,29 @@ if (_count > 0)
                             if (!_events_visited_array[_event])
                             {
                                 _events_visited_array[@ _event] = true;
+                                _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS] = _event;
                                     
                                 //Process pause and delay events
-                                if ((_event_name == "pause") && !_skipping)
+                                if (_event_name == "pause")
                                 {
-                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS] = _event;
-                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.PAUSED        ] = true;
+                                    if (!_skipping) _occurance_array[@ __SCRIBBLE_OCCURANCE.PAUSED] = true;
                                 }
-                                else if ((_event_name == "delay") && !_skipping)
+                                else if (_event_name == "delay")
                                 {
-                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS] = _event;
-                                        
-                                    if (array_length_1d(_event_data_array) >= 1)
+                                    if (!_skipping)
                                     {
-                                        var _duration = real(_event_data_array[0]);
-                                    }
-                                    else
-                                    {
-                                        var _duration = SCRIBBLE_DEFAULT_DELAY_DURATION;
-                                    }
+                                        if (array_length_1d(_event_data_array) >= 1)
+                                        {
+                                            var _duration = real(_event_data_array[0]);
+                                        }
+                                        else
+                                        {
+                                            var _duration = SCRIBBLE_DEFAULT_DELAY_DURATION;
+                                        }
                                         
-                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_PAUSED] = true;
-                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_END   ] = current_time + _duration;
+                                        _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_PAUSED] = true;
+                                        _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_END   ] = current_time + _duration;
+                                    }
                                 }
                                 else
                                 {
@@ -202,7 +208,6 @@ if (_count > 0)
                                     var _script = global.__scribble_autotype_events[? _event_name];
                                     if (_script != undefined)
                                     {
-                                        _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS] = _event;
                                         script_execute(_script, _scribble_array, _event_data_array, _scan);
                                     }
                                 }

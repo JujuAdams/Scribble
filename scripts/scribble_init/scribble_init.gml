@@ -63,6 +63,7 @@ enum __SCRIBBLE_PAGE
     LAST_CHAR,            // 2
     LINES_ARRAY,          // 3
     VERTEX_BUFFERS_ARRAY, // 4
+    START_EVENT,          // 5
     __SIZE
 }
 

@@ -37,6 +37,7 @@ var _page_array = _pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAGE]];
 var _window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_array[__SCRIBBLE_PAGE.START_CHAR] - _smoothness);
 _window_array[@ 0] += _smoothness;
 
+//Clear the typewriter behaviour
 _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW      ] =  0;
 _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW_ARRAY] =  _window_array;
 _occurance_array[@ __SCRIBBLE_OCCURANCE.METHOD      ] =  _per_line? 2 : 1;
@@ -44,3 +45,10 @@ _occurance_array[@ __SCRIBBLE_OCCURANCE.SPEED       ] =  _speed;
 _occurance_array[@ __SCRIBBLE_OCCURANCE.SMOOTHNESS  ] =  _smoothness;
 _occurance_array[@ __SCRIBBLE_OCCURANCE.FADE_IN     ] =  true;
 _occurance_array[@ __SCRIBBLE_OCCURANCE.SKIP        ] =  false;
+
+//Clear events tracking
+_occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ] = _page_array[__SCRIBBLE_PAGE.START_EVENT] - 1;
+_occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = _page_array[__SCRIBBLE_PAGE.START_CHAR ] - 1;
+//Clear out the visited array too
+var _visited_array = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY];
+_occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY] = array_create(array_length_1d(_visited_array), false);
