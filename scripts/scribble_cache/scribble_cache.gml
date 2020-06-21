@@ -220,6 +220,10 @@ function scribble_cache()
 	        _page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _page_lines_array;
 	        _page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY] = _page_vbuffs_array;
             _page_array[@ __SCRIBBLE_PAGE.START_EVENT         ] = 0;
+            _page_array[@ __SCRIBBLE_PAGE.MIN_X               ] = 0;
+            _page_array[@ __SCRIBBLE_PAGE.MAX_X               ] = 0;
+            _page_array[@ __SCRIBBLE_PAGE.WIDTH               ] = 0;
+            _page_array[@ __SCRIBBLE_PAGE.HEIGHT              ] = 0;
         
 	        _element_pages_array[@ array_length(_element_pages_array)] = _page_array;
 	        ++_meta_element_pages;
@@ -1183,7 +1187,10 @@ function scribble_cache()
 	                _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
 	                _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
 	                _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
-        
+                    
+                    //Update the page's height
+                    _page_array[@ __SCRIBBLE_PAGE.HEIGHT] = _line_y + _line_height;
+                    
 	                //Reset state
 	                _text_x        += _line_offset_x;
 	                _line_y        += _line_height;
@@ -1228,6 +1235,11 @@ function scribble_cache()
 	                _new_page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _new_page_lines_array;
 	                _new_page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY] = _new_page_vbuffs_array;
                     _new_page_array[@ __SCRIBBLE_PAGE.START_EVENT         ] = array_length(_events_name_array);
+                    _new_page_array[@ __SCRIBBLE_PAGE.HEIGHT              ] = _line_height;
+                    _new_page_array[@ __SCRIBBLE_PAGE.MIN_X               ] = 0;
+                    _new_page_array[@ __SCRIBBLE_PAGE.MAX_X               ] = 0;
+                    _new_page_array[@ __SCRIBBLE_PAGE.WIDTH               ] = 0;
+                    _new_page_array[@ __SCRIBBLE_PAGE.HEIGHT              ] = 0;
         
 	                _element_pages_array[@ array_length(_element_pages_array)] = _new_page_array;
 	                ++_meta_element_pages;
@@ -1242,6 +1254,9 @@ function scribble_cache()
         
 	                if (_force_newpage)
 	                {
+                        //Update the previous page's height
+                        _page_array[@ __SCRIBBLE_PAGE.HEIGHT] = _line_y + _line_height;
+                        
 	                    //Reset state
 	                    _text_x      = 0;
 	                    _line_width  = 0;
@@ -1354,6 +1369,7 @@ function scribble_cache()
 	        //Update metadata
 	        _page_array[@ __SCRIBBLE_PAGE.LINES    ] = _meta_page_lines;
 	        _page_array[@ __SCRIBBLE_PAGE.LAST_CHAR] = _meta_element_characters - 1;
+            _page_array[@ __SCRIBBLE_PAGE.HEIGHT   ] = _line_y + _line_height;
 
 	        _scribble_array[@ SCRIBBLE.LINES     ] = _meta_element_lines;
 	        _scribble_array[@ SCRIBBLE.CHARACTERS] = _meta_element_characters;
@@ -1367,16 +1383,20 @@ function scribble_cache()
             #region Find the actual width of the text element
 
 	        //Iterate over every page
-	        var _element_min_x     = 0;
-	        var _element_max_x     = 0;
-	        var _justify_max_width = 0;
+            var _element_min_x             = 0;
+            var _element_max_x             = 0;
+            var _element_justify_max_width = 0;
 
 	        var _p = 0;
 	        repeat(array_length(_element_pages_array))
 	        {
 	            var _page_array = _element_pages_array[_p];
 	            _page_lines_array = _page_array[__SCRIBBLE_PAGE.LINES_ARRAY];
-    
+                
+                var _page_min_x             = 0;
+                var _page_max_x             = 0;
+                var _page_justify_max_width = 0;
+                
 	            //Iterate over every line on the page
 	            var _l = 0;
 	            repeat(array_length(_page_lines_array))
@@ -1389,35 +1409,63 @@ function scribble_cache()
 	                    {
 	                        case fa_left:
 	                            _element_max_x = max(_element_max_x, _line_width);
+                                _page_max_x    = max(_page_max_x   , _line_width);
 	                        break;
                 
 	                        case fa_center:
 	                            _element_min_x = min(_element_min_x, -(_line_width div 2));
 	                            _element_max_x = max(_element_max_x,   _line_width div 2 );
+                                _page_min_x    = min(_page_min_x   , -(_line_width div 2));
+                                _page_max_x    = max(_page_max_x   ,   _line_width div 2 );
 	                        break;
                 
 	                        case fa_right:
 	                            _element_min_x = min(_element_min_x, -_line_width);
+                                _page_min_x    = min(_page_min_x   , -_line_width);
 	                        break;
                 
 	                        case __SCRIBBLE_PIN_LEFT:
 	                        case __SCRIBBLE_PIN_CENTRE:
 	                        case __SCRIBBLE_PIN_RIGHT:
-	                            _justify_max_width = max(_justify_max_width, _line_width);
+                                _element_justify_max_width = max(_element_justify_max_width, _line_width);
+                                _page_justify_max_width    = max(_page_justify_max_width   , _line_width);
 	                        break;
 	                    }
 	                }
         
 	                ++_l;
 	            }
+                
+                var _fixed_width = _page_max_x - _page_min_x;
+                if (_page_justify_max_width > _fixed_width)
+                {
+                    var _delta = _page_justify_max_width - _fixed_width;
+                    if (_page_min_x >= 0)
+                    {
+                        _page_max_x += _delta;
+                    }
+                    else if (_page_max_x <= 0)
+                    {
+                        _page_min_x -= _delta;
+                    }
+                    else
+                    {
+                        _page_min_x -= _delta div 2;
+                        _page_max_x += _delta div 2;
+                    }
+                }
+                
+                _page_array[@ __SCRIBBLE_PAGE.MIN_X] = _page_min_x;
+                _page_array[@ __SCRIBBLE_PAGE.MAX_X] = _page_max_x;
+                _page_array[@ __SCRIBBLE_PAGE.WIDTH] = _page_max_x - _page_min_x;
     
 	            ++_p;
 	        }
 
 	        var _fixed_width = _element_max_x - _element_min_x;
-	        if (_justify_max_width > _fixed_width)
+            if (_element_justify_max_width > _fixed_width)
 	        {
-	            var _delta = _justify_max_width - _fixed_width;
+                var _delta = _element_justify_max_width - _fixed_width;
 	            if (_element_min_x >= 0)
 	            {
 	                _element_max_x += _delta;
@@ -1679,6 +1727,7 @@ function scribble_cache()
 	{
 	    var _occurance_array = array_create(__SCRIBBLE_OCCURANCE.__SIZE);
     
+        _occurance_array[@ __SCRIBBLE_OCCURANCE.__SECTION0         ] = "Tracking";
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.PAGE               ] =  0;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.FADE_IN            ] = -1;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SKIP               ] =  false;
@@ -1687,11 +1736,15 @@ function scribble_cache()
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW_ARRAY       ] =  array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.METHOD             ] =  0; //No fade in/out set
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SMOOTHNESS         ] =  0;
+        
+        _occurance_array[@ __SCRIBBLE_OCCURANCE.__SECTION1         ] = "Sounds";
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_ARRAY        ] = -1;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_OVERLAP      ] =  0;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_PER_CHAR     ] =  false;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MIN_PITCH    ] =  1.0;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MAX_PITCH    ] =  1.0;
+        
+        _occurance_array[@ __SCRIBBLE_OCCURANCE.__SECTION2         ] = "Playback";
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.PAUSED             ] =  false;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_PAUSED       ] =  false;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_END          ] = -1;
@@ -1699,6 +1752,8 @@ function scribble_cache()
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_FINISH_TIME  ] =  current_time;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.DRAWN_TIME         ] =  current_time;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.ANIMATION_TIME     ] =  current_time;
+        
+        _occurance_array[@ __SCRIBBLE_OCCURANCE.__SECTION3         ] = "Events";
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ] = -1;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = -1;
 	    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY] = array_create(array_length(_events_char_array), false);

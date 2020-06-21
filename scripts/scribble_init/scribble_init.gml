@@ -64,6 +64,10 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	    LINES_ARRAY,          // 3
 	    VERTEX_BUFFERS_ARRAY, // 4
         START_EVENT,          // 5
+        MAX_X,                // 6
+        MIN_X,                // 7
+        WIDTH,                // 8
+        HEIGHT,               // 9
 	    __SIZE
 	}
     
@@ -108,36 +112,38 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
     
 	enum __SCRIBBLE_OCCURANCE
 	{
-	    PAGE,                // 0
-	    FADE_IN,             // 1
-	    SPEED,               // 2
-	    SKIP,                // 3
-	    WINDOW,              // 4
-	    WINDOW_ARRAY,        // 5
-	    METHOD,              // 6
-	    SMOOTHNESS,          // 7
+        __SECTION0,          // 0
+        PAGE,                // 1
+        FADE_IN,             // 2
+        SPEED,               // 3
+        SKIP,                // 4
+        WINDOW,              // 5
+        WINDOW_ARRAY,        // 6
+        METHOD,              // 7
+        SMOOTHNESS,          // 8
         
-	    SOUND_ARRAY,         // 8
-	    SOUND_OVERLAP,       // 9
-	    SOUND_PER_CHAR,      //10
-	    SOUND_MIN_PITCH,     //11
-	    SOUND_MAX_PITCH,     //12
+        __SECTION1,          // 9
+        SOUND_ARRAY,         //10
+        SOUND_OVERLAP,       //11
+        SOUND_PER_CHAR,      //12
+        SOUND_MIN_PITCH,     //13
+        SOUND_MAX_PITCH,     //14
         
-	    PAUSED,              //13
-	    DELAY_PAUSED,        //14
-	    DELAY_END,           //15
+        __SECTION2,
+        PAUSED,              //15
+        DELAY_PAUSED,        //16
+        DELAY_END,           //17
+        FUNCTION,            //18
+        SOUND_FINISH_TIME,   //19
+        DRAWN_TIME,          //10
+        ANIMATION_TIME,      //20
         
-	    FUNCTION,            //16
+        __SECTION3,
+        EVENT_PREVIOUS,      //21
+        EVENT_CHAR_PREVIOUS, //22
+        EVENT_VISITED_ARRAY, //23
         
-	    SOUND_FINISH_TIME,   //17
-	    DRAWN_TIME,          //18
-	    ANIMATION_TIME,      //19
-        
-	    EVENT_PREVIOUS,      //20
-	    EVENT_CHAR_PREVIOUS, //21
-	    EVENT_VISITED_ARRAY, //22
-        
-	    __SIZE               //23
+	    __SIZE               //24
 	}
     
 	enum SCRIBBLE_STATE
@@ -157,6 +163,7 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	    CHARACTER_WRAP,
 	    BOX_HALIGN,
 	    BOX_VALIGN,
+        BOX_ALIGN_PAGE,
 	    ANIMATION_ARRAY,
 	    __SIZE
 	}

@@ -74,7 +74,7 @@ function scribble_draw()
 	var _count = array_length(_page_vbuffs_array);
 	if (_count > 0)
 	{
-            #region Advance the autotyper, execute events, play sounds etc.
+        #region Advance the autotyper, execute events, play sounds etc.
     
 	    var _typewriter_method = _occurance_array[__SCRIBBLE_OCCURANCE.METHOD];
 	    if (_typewriter_method == 0) //No fade in/out set
@@ -124,7 +124,7 @@ function scribble_draw()
 	            var _typewriter_speed = _typewriter_adjusted_speed;
 	        }
             
-                #region Scan for autotype events
+            #region Scan for autotype events
         
 	        if ((_typewriter_fade_in >= 0) && (_typewriter_speed > 0))
 	        {
@@ -247,10 +247,10 @@ function scribble_draw()
 	            _typewriter_window_array[@ _typewriter_window] = _typewriter_head_pos;
 	        }
             
-                #endregion
+            #endregion
 	    }
     
-            #region Move the typewriter head/tail
+        #region Move the typewriter head/tail
     
 	    if (_typewriter_method != 0) //Either per line or per character fade set
 	    {
@@ -267,11 +267,11 @@ function scribble_draw()
 	        }
 	    }
     
-            #endregion
+        #endregion
     
 	    if ((_typewriter_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
 	    {
-                #region Play a sound effect as the text is revealed
+            #region Play a sound effect as the text is revealed
         
 	        var _sound_array = _occurance_array[__SCRIBBLE_OCCURANCE.SOUND_ARRAY];
 	        if (is_array(_sound_array) && (array_length(_sound_array) > 0))
@@ -302,31 +302,41 @@ function scribble_draw()
 	            }
 	        }
         
-                #endregion
+            #endregion
         
 	        var _callback = _occurance_array[__SCRIBBLE_OCCURANCE.FUNCTION];
 	        if ((_callback != undefined) && script_exists(_callback)) script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window] - 1);
 	    }
     
-            #endregion
+        #endregion
     
     
     
-            #region Do the drawing!
+        #region Do the drawing!
     
-	    //Figure out the left/top offset
+        if (global.scribble_state_box_align_page)
+        {
+            var _box_w = _page_array[__SCRIBBLE_PAGE.WIDTH ];
+            var _box_h = _page_array[__SCRIBBLE_PAGE.HEIGHT];
+        }
+        else
+        {
+            var _box_w = _scribble_array[SCRIBBLE.WIDTH ];
+            var _box_h = _scribble_array[SCRIBBLE.HEIGHT];
+        }
+        
 	    switch(global.scribble_state_box_halign)
 	    {
-	        case fa_center: var _left = -_scribble_array[SCRIBBLE.WIDTH] div 2; break;
-	        case fa_right:  var _left = -_scribble_array[SCRIBBLE.WIDTH];       break;
-	        default:        var _left = 0;                                      break;
+            case fa_center: var _left = -(_box_w div 2); break;
+            case fa_right:  var _left = -_box_w;         break;
+            default:        var _left = 0;               break;
 	    }
     
 	    switch(global.scribble_state_box_valign)
 	    {
-	        case fa_middle: var _top = -_scribble_array[SCRIBBLE.HEIGHT] div 2; break;
-	        case fa_bottom: var _top = -_scribble_array[SCRIBBLE.HEIGHT];       break;
-	        default:        var _top = 0;                                       break;
+            case fa_middle: var _top = -(_box_h div 2); break;
+            case fa_bottom: var _top = -_box_h;         break;
+            default:        var _top = 0;               break;
 	    }
     
 	    //Build a matrix to transform the text...
