@@ -1,4 +1,4 @@
-//   @jujuadams   v6.0.6   2020-06-20
+//   @jujuadams   v6.0.6b   2020-06-23
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
