@@ -22,6 +22,7 @@ switch(_occurance_array[__SCRIBBLE_OCCURANCE.METHOD])
 {
     case 1: var _max = _page_array[__SCRIBBLE_PAGE.LAST_CHAR] + 2; break; //Per character
     case 2: var _max = _page_array[__SCRIBBLE_PAGE.LINES    ];     break; //Per line
+    default: exit;
 }
 
 _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW      ] = 0;
