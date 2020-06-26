@@ -362,7 +362,7 @@
             "Key": "6e50d4a6-cc45-413c-bd8b-e5c75c9e9ab8",
             "Value": {
                 "id": "d1722b6e-1dfd-45fd-a5d8-d67a022aff78",
-                "resourcePath": "objects\\obj_test\\obj_test.yy",
+                "resourcePath": "objects\\obj_pages_test\\obj_pages_test.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -900,6 +900,14 @@
                 "id": "c3de2246-e589-4090-a56b-3d1faef33d9b",
                 "resourcePath": "datafiles_yy\\Fonts\\fnt_test_1.yy.yy",
                 "resourceType": "GMIncludedFile"
+            }
+        },
+        {
+            "Key": "deff0038-d64f-4e48-906a-3fae940cb2d8",
+            "Value": {
+                "id": "02c912ab-14f8-481f-842d-aa9f933e7d30",
+                "resourcePath": "objects\\obj_nbsp_test\\obj_nbsp_test.yy",
+                "resourceType": "GMObject"
             }
         },
         {
