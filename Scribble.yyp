@@ -247,6 +247,14 @@
             }
         },
         {
+            "Key": "4623e565-3c0d-42a1-ba82-fb6bc9d22073",
+            "Value": {
+                "id": "ee8d304a-3cf5-4301-be3d-abc74288d643",
+                "resourcePath": "datafiles_yy\\Fonts\\fnt_large.yy.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "464aca78-7490-433e-8b56-973f0a847094",
             "Value": {
                 "id": "9b20e2e8-566e-442f-ac64-8ac461958baf",
@@ -362,7 +370,7 @@
             "Key": "6e50d4a6-cc45-413c-bd8b-e5c75c9e9ab8",
             "Value": {
                 "id": "d1722b6e-1dfd-45fd-a5d8-d67a022aff78",
-                "resourcePath": "objects\\obj_test\\obj_test.yy",
+                "resourcePath": "objects\\obj_pages_test\\obj_pages_test.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -396,6 +404,14 @@
                 "id": "559e402a-c64c-4409-9612-507c72f5be72",
                 "resourcePath": "views\\73d76eff-c580-4c7f-8a7a-50753795d711.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "741ea268-c34c-410b-86c2-41f42ccbdaa3",
+            "Value": {
+                "id": "56f90655-06aa-43be-8fec-b76866f823f3",
+                "resourcePath": "fonts\\fnt_large\\fnt_large.yy",
+                "resourceType": "GMFont"
             }
         },
         {
@@ -903,6 +919,14 @@
             }
         },
         {
+            "Key": "deff0038-d64f-4e48-906a-3fae940cb2d8",
+            "Value": {
+                "id": "02c912ab-14f8-481f-842d-aa9f933e7d30",
+                "resourcePath": "objects\\obj_nbsp_test\\obj_nbsp_test.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "df3afc9f-820f-420b-b9b5-ed2c2222c392",
             "Value": {
                 "id": "4e6bbd92-0545-493c-bfc4-2cd9d9d3b297",
@@ -1012,6 +1036,14 @@
                 "id": "7b15668b-51af-4f1a-b2b3-d87d420c610f",
                 "resourcePath": "rooms\\rm_example_precache\\rm_example_precache.yy",
                 "resourceType": "GMRoom"
+            }
+        },
+        {
+            "Key": "fc4d3d70-13fe-41d2-89bc-e393584c2d8a",
+            "Value": {
+                "id": "f8becd18-dc5c-4300-8694-e7d76125dd67",
+                "resourcePath": "objects\\obj_scaling_test\\obj_scaling_test.yy",
+                "resourceType": "GMObject"
             }
         },
         {

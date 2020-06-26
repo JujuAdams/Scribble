@@ -103,15 +103,12 @@ if (_build)
         var _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
         var _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
         
-        if (_line_min_height < 0) _line_min_height = _font_line_height;
+        if (_line_min_height < 0) _line_min_height = 0;
         
         if ((_line_max_height >= 0) && (_line_max_height <= _line_min_height))
         {
-            if (_line_min_height >= 0)
-            {
-                _line_fixed_height = true;
-                var _half_fixed_height = _line_min_height div 2;
-            }
+            _line_fixed_height = true;
+            var _half_fixed_height = _line_min_height div 2;
         }
         
         //Try to use a custom colour if the "startingColour" parameter is a string
@@ -432,6 +429,40 @@ if (_build)
                         
                         #endregion
                         
+                        #region Non-breaking space emulation
+                        
+                        case "nbsp":
+                        case "&nbsp":
+                        case "nbsp;":
+                        case "&nbsp;":
+                            //Emulate a space character
+                            _character_code = 32;
+                            
+                            //Grab this characer's width/height
+                            _char_width = _font_space_width*_text_scale;
+                            _line_width = max(_line_width, _text_x);
+                            if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+                            
+                            if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _character_code;
+                            ++_meta_element_characters;
+                            
+                            if (global.__scribble_character_delay)
+                            {
+                                var _delay = global.__scribble_character_delay_map[? _character_code];
+                                if ((_delay != undefined) && (_delay > 0))
+                                {
+                                    var _count = array_length_1d(_events_char_array);
+                                    _events_char_array[@ _count] = _meta_element_characters;
+                                    _events_name_array[@ _count] = "delay";
+                                    _events_data_array[@ _count] = [_delay];
+                                }
+                            }
+                            
+                            _add_character = false;
+                        break;
+                        
+                        #endregion
+                        
                         default:
                             if (ds_map_exists(global.__scribble_autotype_events, _command_name))
                             {
@@ -508,7 +539,7 @@ if (_build)
                                                 #region Write sprites
                                                 
                                                 _line_width = max(_line_width, _text_x);
-                                        
+                                                
         	                                    var _sprite_index  = asset_get_index(_command_name);
         	                                    if (global.__scribble_sprite_whitelist && !ds_map_exists(global.__scribble_sprite_whitelist_map, _sprite_index))
         	                                    {
@@ -883,7 +914,7 @@ if (_build)
                 
                 //Record the first character in this word
                 _word_start_char = _meta_element_characters;
-        
+                
                 if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _character_code;
                 ++_meta_element_characters;
                 
