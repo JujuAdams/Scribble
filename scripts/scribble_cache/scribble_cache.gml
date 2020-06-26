@@ -114,15 +114,12 @@ function scribble_cache()
 	        var _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
 	        var _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
         
-	        if (_line_min_height < 0) _line_min_height = _font_line_height;
+	        if (_line_min_height < 0) _line_min_height = 0;
         
 	        if ((_line_max_height >= 0) && (_line_max_height <= _line_min_height))
 	        {
-	            if (_line_min_height >= 0)
-	            {
-	                _line_fixed_height = true;
-	                var _half_fixed_height = _line_min_height div 2;
-	            }
+	            _line_fixed_height = true;
+	            var _half_fixed_height = _line_min_height div 2;
 	        }
         
 	        //Try to use a custom colour if the "startingColour" parameter is a string
