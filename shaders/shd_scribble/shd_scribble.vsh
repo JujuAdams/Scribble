@@ -1,4 +1,4 @@
-//   @jujuadams   v6.0.6b   2020-06-20
+//   @jujuadams   v6.0.7   2020-06-26
 
 const int MAX_EFFECTS = 7;
 //By default, the effect indexes are:
