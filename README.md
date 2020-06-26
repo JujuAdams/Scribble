@@ -1,8 +1,8 @@
-<h1 align="center">Scribble 6.0.6</h1>
+<h1 align="center">Scribble 6.0.7</h1>
 
 <p align="center">A modern text renderer for GameMaker Studio 2 by <b>@jujuadams</b></p>
 
-<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/6.0.6">Download the .yymp here</a></p>
+<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/6.0.7">Download the .yymp here</a></p>
 
 &nbsp;
 
