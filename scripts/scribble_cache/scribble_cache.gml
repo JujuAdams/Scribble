@@ -312,6 +312,7 @@ function scribble_cache()
 	                    {
                             #region Reset formatting
 	                        case "":
+	                        case "/":
 	                            _text_font         = _def_font;
 	                            _text_colour       = _def_colour;
 	                            _text_effect_flags = 0;

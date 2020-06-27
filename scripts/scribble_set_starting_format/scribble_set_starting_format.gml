@@ -1,6 +1,6 @@
 /// Sets the starting text format for Scribble
 /// 
-/// @param fontName     Name of the starting font, as a string. This is the font that is set when [] or [/font] is used in a string
+/// @param fontName     Name of the starting font, as a string. This is the font that is set when [/] or [/font] is used in a string
 /// @param fontColor    Starting colour
 /// @param textHAlign   Starting horizontal alignment of text
 /// 

@@ -4,7 +4,7 @@
 
 function scribble_reset()
 {
-    global.scribble_state_starting_font   = global.__scribble_default_font; //Name of the starting font for every text element. Name must be a string. This is the font that is set when [] or [/font] is used in a string
+    global.scribble_state_starting_font   = global.__scribble_default_font; //Name of the starting font for every text element. Name must be a string. This is the font that is set when [/] or [/font] is used in a string
     global.scribble_state_starting_color  = c_white;                        //Starting colour for every text element
     global.scribble_state_starting_halign = fa_left;                        //Starting horizontal alignment for every text element
     global.scribble_state_xscale          = 1;                              //x-scale of the textbox

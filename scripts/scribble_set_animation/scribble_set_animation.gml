@@ -23,7 +23,7 @@
 /// This script "sets state". All text drawn with scribble_draw() will use these settings until they're overwritten,
 /// either by calling this script again or by calling scribble_reset() or scribble_set_state().
 
-function scribble_set_animation()
+function scribble_set_animation(_property, _value)
 {
 	enum SCRIBBLE_ANIM
 	{
@@ -44,5 +44,5 @@ function scribble_set_animation()
 	    __SIZE,         //14
 	}
 
-	global.scribble_state_anim_array[@ argument0] = argument1;
+	global.scribble_state_anim_array[@ _property] = _value;
 }

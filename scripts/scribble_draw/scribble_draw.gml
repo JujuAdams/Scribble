@@ -7,7 +7,7 @@
 /// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
 /// 
 /// Formatting commands:
-/// []                                  Reset formatting to defaults
+/// [/]                                 Reset formatting to the starting format, as set by scribble_set_starting_format(). For legacy reasons, [] is also accepted
 /// [/page]                             Page break
 /// [delay]                             Pause the autotype for a fixed amount of time at the tag's position. Only supported when using autotype. DUration is defined by SCRIBBLE_DEFAULT_DELAY_DURATION
 /// [delay,<time>]                      Pause the autotype for a fixed amount of time at the tag's position. Only supported when using autotype

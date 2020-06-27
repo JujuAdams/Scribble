@@ -17,8 +17,8 @@ if (scribble_init("Fonts", "fnt_test_0", true))
 
 
 //Define a demo string for use in the Draw event
-var _demo_string  = "[rainbow][pulse]abcdef[] ABCDEF[test event]##";
-    _demo_string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][spr_coin,0][spr_coin,1][spr_coin,2][spr_coin,3][shake][rainbow]!?[]\n";
+var _demo_string  = "[rainbow][pulse]abcdef[/] ABCDEF[test event]##";
+    _demo_string += "[wave][c_orange]0123456789[/] .,<>\"'&[c_white][spr_coin,0][spr_coin,1][spr_coin,2][spr_coin,3][shake][rainbow]!?[/]\n";
     _demo_string += "[pin_centre][spr_coin][spr_coin][spr_coin][spr_large_coin][test event]\n";
     _demo_string += "[pin_left][spr_sprite_font]the quick[delay] brown[delay] fox[delay] [wave]jumps[/wave] over the lazy dog\n";
     _demo_string += "Press any key to continue[pause]\n";
