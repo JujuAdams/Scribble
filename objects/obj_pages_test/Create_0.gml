@@ -18,9 +18,9 @@ test_string = "The Quick Brown Fox Jumps Over The Lazy Dog!";
 spritefont = font_add_sprite_ext(spr_sprite_font, _mapstring, true, 0);
 
 //demo_string  = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-//demo_string += "[rainbow][pulse]TEST[] [slant]AaBbCcDdEeFf[/slant]##";
+//demo_string += "[rainbow][pulse]TEST[/] [slant]AaBbCcDdEeFf[/slant]##";
 //demo_string += "a b c d e f g h i j k l m n o p q r s t u v w x y z\n\n";
-//demo_string += "[wave][c_orange]0123456789[] .,<>\"'&[c_white][spr_coin,0][spr_coin,1][spr_coin,2][spr_coin,3][][shake][rainbow]!?[]\n";
+//demo_string += "[wave][c_orange]0123456789[/] .,<>\"'&[c_white][spr_coin,0][spr_coin,1][spr_coin,2][spr_coin,3][/][shake][rainbow]!?[/]\n";
 //demo_string += "[spr_coin][spr_coin,1,0.1][spr_coin,2,0.1][spr_large_coin,3,0.1]    \n";
 //demo_string += "[spr_sprite_font]the quick brown fox [wave]jumps[/wave] over the lazy dog";
 //demo_string += "[fnt_test_0][fa_right]THE [fnt_test_1][#ff4499][shake]QUICK[fnt_test_0] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] [/shake]THE LAZY [fnt_test_1][wobble]DOG[/wobble].";
