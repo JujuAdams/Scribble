@@ -807,6 +807,14 @@
             }
         },
         {
+            "Key": "c12cc634-2eb4-4bda-8995-15da4a61661b",
+            "Value": {
+                "id": "82543a15-c34f-46f4-b604-5f62d7a6544b",
+                "resourcePath": "objects\\obj_test_cycle\\obj_test_cycle.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "c1ca6600-d2f3-4255-aa4d-2c246e3e5649",
             "Value": {
                 "id": "5c55bd00-51a3-419c-8b11-789b0958fffd",

@@ -1,6 +1,6 @@
 //   @jujuadams   v6.0.7b   2020-06-27
 
-const int MAX_EFFECTS = 7;
+const int MAX_EFFECTS = 8;
 //By default, the effect indexes are:
 //0 = is an animated sprite
 //1 = wave
@@ -9,8 +9,9 @@ const int MAX_EFFECTS = 7;
 //4 = wobble
 //5 = pulse
 //6 = wheel
+//7 = cycle
 
-const int MAX_ANIM_FIELDS = 14;
+const int MAX_ANIM_FIELDS = 18;
 //By default, the data fields are:
 // 0 = wave amplitude
 // 1 = wave frequency
@@ -26,10 +27,23 @@ const int MAX_ANIM_FIELDS = 14;
 //11 = wheel amplitude
 //12 = wheel frequency
 //13 = wheel speed
+//14 = cycle weight
+//15 = cycle speed
+//16 = cycle hues (A, B, C)
+//17 = cycle hues (D, E, F)
 
 const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
 
 const int WINDOW_COUNT = 4;
+
+//YIQ colourspace conversion matrices, used for [cycle] effect
+const mat3 rgb2yiq = mat3(0.299000,  0.5870000,  0.114000,
+                          0.595716, -0.2744530, -0.321263,
+                          0.211456, -0.5225910,  0.311135);
+
+const mat3 yiq2rgb = mat3(1.000000,  0.9563000,  0.621000,
+                          1.000000, -0.2721000, -0.647400,
+                          1.000000, -1.1070000,  1.704600);
 
 
 
@@ -45,12 +59,12 @@ attribute vec2 in_TextureCoord; //UVs
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
-uniform vec4  u_vColourBlend;
-uniform float u_fTime;
-uniform float u_fTypewriterMethod;
-uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT];
-uniform float u_fTypewriterSmoothness;
-uniform float u_aDataFields[MAX_ANIM_FIELDS];
+uniform vec4  u_vColourBlend;                           //4
+uniform float u_fTime;                                  //1
+uniform float u_fTypewriterMethod;                      //1
+uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
+uniform float u_fTypewriterSmoothness;                  //1
+uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
 
 
 
@@ -186,6 +200,28 @@ vec4 rainbow(float characterIndex, float weight, float speed, vec4 colour)
 {
     return vec4(mix(colour.rgb, hsv2rgb(vec3(characterIndex + speed*u_fTime, 1.0, 1.0)), weight), colour.a);
 }
+                           
+//Colour cycling through a defined palette
+vec4 cycle(float characterIndex, float weight, float speed, float huesABC, float huesDEF, vec4 colour)
+{
+    float hueArray[7];
+        
+    hueArray[2] = floor(huesABC / 65536.0);
+    hueArray[1] = floor((huesABC - 65536.0*hueArray[2]) / 256.0);
+    hueArray[0] = huesABC - 65536.0*hueArray[2] - 256.0*hueArray[1];
+    hueArray[6] = hueArray[0];
+    
+    hueArray[5] = floor(huesDEF / 65536.0);
+    hueArray[4] = floor((huesDEF - 65536.0*hueArray[5]) / 256.0);
+    hueArray[3] = huesDEF - 65536.0*hueArray[5] - 256.0*hueArray[4];
+    
+    float h = abs(mod(speed*u_fTime - characterIndex/10.0, 6.0));
+    vec3 rgbA = hsv2rgb(vec3(hueArray[int(h)  ]/255.0, 1.0, 1.0));
+    vec3 rgbB = hsv2rgb(vec3(hueArray[int(h)+1]/255.0, 1.0, 1.0));
+    
+    //Interpolate between the two hues using YIQ colourspace
+    return vec4(mix(colour.rgb, mix(rgbA, rgbB, fract(h)), weight), colour.a);
+}
 
 //Fade effect for typewriter etc.
 float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index)
@@ -245,6 +281,10 @@ void main()
     float wheelAmplitude  = u_aDataFields[11];
     float wheelFrequency  = u_aDataFields[12];
     float wheelSpeed      = u_aDataFields[13];
+    float cycleWeight     = u_aDataFields[14];
+    float cycleSpeed      = u_aDataFields[15];
+    float cycleHuesABC    = u_aDataFields[16];
+    float cycleHuesDEF    = u_aDataFields[17];
     
     //Unpack the effect flag bits into an array, then into variables for readability
     float flagArray[MAX_EFFECTS]; unpackFlags(in_Normal.z, flagArray);
@@ -255,6 +295,7 @@ void main()
     float wobbleFlag  = flagArray[4];
     float pulseFlag   = flagArray[5];
     float wheelFlag   = flagArray[6];
+    float cycleFlag   = flagArray[7];
     
     //Use the input vertex position from the vertex attributes. Use our Z uniform because the z-component is used for other data
     vec2 centre = in_Position.xy;
@@ -270,6 +311,7 @@ void main()
     //Colour
     v_vColour  = handleSprites(spriteFlag, in_Colour); //Use RGBA information to filter out sprites
     v_vColour  = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
+    v_vColour  = cycle(characterIndex, cycleFlag*cycleWeight, cycleSpeed, cycleHuesABC, cycleHuesDEF, v_vColour); //Cycle colours through the defined palette
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
     
     //Apply fade (if we're given a method)

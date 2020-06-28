@@ -39,7 +39,11 @@ enum SCRIBBLE_ANIM
     WHEEL_SIZE,     //11
     WHEEL_FREQ,     //12
     WHEEL_SPEED,    //13
-    __SIZE,         //14
+    CYCLE_WEIGHT,   //14
+    CYCLE_SPEED,    //15
+    CYCLE_HUES_ABC, //16
+    CYCLE_HUES_DEF, //17
+    __SIZE,         //18
 }
 
 global.scribble_state_anim_array[@ argument0] = argument1;

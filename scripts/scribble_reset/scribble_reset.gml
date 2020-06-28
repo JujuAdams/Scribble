@@ -33,6 +33,10 @@ scribble_set_animation(SCRIBBLE_ANIM.PULSE_SPEED   ,  0.1 );
 scribble_set_animation(SCRIBBLE_ANIM.WHEEL_SIZE    ,  1   );
 scribble_set_animation(SCRIBBLE_ANIM.WHEEL_FREQ    ,  0.5 );
 scribble_set_animation(SCRIBBLE_ANIM.WHEEL_SPEED   ,  0.2 );
+scribble_set_animation(SCRIBBLE_ANIM.CYCLE_WEIGHT  ,  0.6 );
+scribble_set_animation(SCRIBBLE_ANIM.CYCLE_SPEED   ,  0.03);
+scribble_set_animation(SCRIBBLE_ANIM.CYCLE_HUES_ABC,  ( 20 << 16) | ( 40 << 8) | (  0));
+scribble_set_animation(SCRIBBLE_ANIM.CYCLE_HUES_DEF,  (  0 << 16) | ( 20 << 8) | ( 20));
 
 global.__scribble_cache_string = string(global.scribble_state_starting_font  ) + ":" +
                                  string(global.scribble_state_starting_color ) + ":" +

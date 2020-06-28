@@ -35,6 +35,7 @@
 /// [wobble]  [/wobble]                 Set/unset text to wobble by rotating back and forth
 /// [pulse]   [/pulse]                  Set/unset text to shrink and grow rhythmically
 /// [wheel]   [/wheel]                  Set/unset text to circulate around their origin
+/// [cycle]   [/cycle]                  
 
 var _draw_x         = argument[0];
 var _draw_y         = argument[1];

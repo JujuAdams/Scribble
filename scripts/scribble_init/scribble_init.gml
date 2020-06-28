@@ -356,12 +356,14 @@ global.__scribble_effects[?       "rainbow" ] = 3;
 global.__scribble_effects[?       "wobble"  ] = 4;
 global.__scribble_effects[?       "pulse"   ] = 5;
 global.__scribble_effects[?       "wheel"   ] = 6;
+global.__scribble_effects[?       "cycle"   ] = 7;
 global.__scribble_effects_slash[? "/wave"   ] = 1;
 global.__scribble_effects_slash[? "/shake"  ] = 2;
 global.__scribble_effects_slash[? "/rainbow"] = 3;
 global.__scribble_effects_slash[? "/wobble" ] = 4;
 global.__scribble_effects_slash[? "/pulse"  ] = 5;
 global.__scribble_effects_slash[? "/wheel"  ] = 6;
+global.__scribble_effects_slash[? "/cycle"  ] = 7;
 
 //Create a vertex format for our text
 vertex_format_begin();
