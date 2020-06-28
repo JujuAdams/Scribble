@@ -370,7 +370,7 @@
             "Key": "6e50d4a6-cc45-413c-bd8b-e5c75c9e9ab8",
             "Value": {
                 "id": "d1722b6e-1dfd-45fd-a5d8-d67a022aff78",
-                "resourcePath": "objects\\obj_pages_test\\obj_pages_test.yy",
+                "resourcePath": "objects\\obj_test_pages\\obj_test_pages.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -818,7 +818,7 @@
             "Key": "c1ca6600-d2f3-4255-aa4d-2c246e3e5649",
             "Value": {
                 "id": "5c55bd00-51a3-419c-8b11-789b0958fffd",
-                "resourcePath": "objects\\obj_stress_test\\obj_stress_test.yy",
+                "resourcePath": "objects\\obj_test_stress\\obj_test_stress.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -930,7 +930,7 @@
             "Key": "deff0038-d64f-4e48-906a-3fae940cb2d8",
             "Value": {
                 "id": "02c912ab-14f8-481f-842d-aa9f933e7d30",
-                "resourcePath": "objects\\obj_nbsp_test\\obj_nbsp_test.yy",
+                "resourcePath": "objects\\obj_test_nbsp\\obj_test_nbsp.yy",
                 "resourceType": "GMObject"
             }
         },
@@ -1050,7 +1050,7 @@
             "Key": "fc4d3d70-13fe-41d2-89bc-e393584c2d8a",
             "Value": {
                 "id": "f8becd18-dc5c-4300-8694-e7d76125dd67",
-                "resourcePath": "objects\\obj_scaling_test\\obj_scaling_test.yy",
+                "resourcePath": "objects\\obj_test_scaling\\obj_test_scaling.yy",
                 "resourceType": "GMObject"
             }
         },
