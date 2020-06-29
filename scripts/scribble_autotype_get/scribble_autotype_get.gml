@@ -39,7 +39,10 @@ function scribble_autotype_get()
 	{
 	    case 1: //Per character
 	        var _min = _page_array[__SCRIBBLE_PAGE.START_CHAR];
-	        var _max = _page_array[__SCRIBBLE_PAGE.LAST_CHAR ] + 2;
+	        var _max = _page_array[__SCRIBBLE_PAGE.LAST_CHAR ];
+            
+            if (_max <= _min) return 1.0;
+            _max += 2; //Bit of a hack
 	    break;
     
 	    case 2: //Per line
