@@ -447,20 +447,17 @@ function scribble_cache()
                             case "&nbsp":
                             case "nbsp;":
                             case "&nbsp;":
-                                //Emulate a space character
-                                _character_code = 32;
-                                
                                 //Grab this characer's width/height
                                 _char_width = _font_space_width*_text_scale;
                                 _line_width = max(_line_width, _text_x);
                                 if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                                 
-                                if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _character_code;
+                                if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = 32; //Space
                                 ++_meta_element_characters;
                                 
                                 if (global.__scribble_character_delay)
                                 {
-                                    var _delay = global.__scribble_character_delay_map[? _character_code];
+                                    var _delay = global.__scribble_character_delay_map[? 32]; //Use delay for a space
                                     if ((_delay != undefined) && (_delay > 0))
                                     {
                                         var _count = array_length(_events_char_array);
@@ -660,16 +657,25 @@ function scribble_cache()
 	                                                        else
 	                                                        {
 	                                                            var _buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
-	                                                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = buffer_tell(_buffer);
-	                                                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_buffer);
-	                                                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = 0;
 	                                                            _vbuff_line_start_list = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
 	                                                        }
                                                 
-	                                                        //Fill link break list
+	                                                        //Fill line break list
 	                                                        var _tell = buffer_tell(_buffer);
 	                                                        repeat(array_length(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
-                                                    
+                                                            
+                                    	                    //Update CHAR_START_TELL, and WORD_START_TELL if needed
+                                    	                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = buffer_tell(_buffer);
+                                    	                    if (global.scribble_state_character_wrap)
+                                    	                    {
+                                    	                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_buffer);
+                                    	                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
+                                    	                        _line_width = max(_line_width, _text_x);
+                                                                
+                                    	                        //Record the first character in this word
+                                    	                        _word_start_char = _meta_element_characters;
+                                    	                    }
+                                                            
 	                                                        ++_image;
 	                                                    }
                                                 
@@ -704,7 +710,7 @@ function scribble_cache()
 	                                                        _quad_t -= _quad_cy;
 	                                                        _quad_r -= _quad_cx;
 	                                                        _quad_b -= _quad_cy;
-                                                    
+                                                            
 	                                                        //                                      Centre X                                           Centre Y                                         Character/Line Index                                                     Delta X                                                 Delta Y                                                 Flags                                                      Colour                                                 U                                                V
 	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
 	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
@@ -712,16 +718,13 @@ function scribble_cache()
 	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
 	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
 	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
-                                                    
+                                                            
 	                                                        ++_image;
 	                                                        if (_image_speed > 0) _colour++;
 	                                                    }
                                                 
                                                         #endregion
-                                            
-	                                                    //Record the first character in this word
-	                                                    _word_start_char = _meta_element_characters;
-                                            
+                                                        
 	                                                    _text_effect_flags = ~((~_text_effect_flags) | 1); //Reset animated sprite effect flag specifically
                                             
 	                                                    if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _command_name;
@@ -1041,11 +1044,11 @@ function scribble_cache()
 	                            _vbuff_line_start_list = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
 	                        }
             
-	                        //Fill link break list
+	                        //Fill line break list
 	                        var _tell = buffer_tell(_glyph_buffer);
 	                        repeat(array_length(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
 	                    }
-            
+                        
 	                    //Update CHAR_START_TELL, and WORD_START_TELL if needed
 	                    _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = buffer_tell(_glyph_buffer);
 	                    if (global.scribble_state_character_wrap)
@@ -1053,7 +1056,7 @@ function scribble_cache()
 	                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = buffer_tell(_glyph_buffer);
 	                        _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
 	                        _line_width = max(_line_width, _text_x);
-                
+                            
 	                        //Record the first character in this word
 	                        _word_start_char = _meta_element_characters;
 	                    }
@@ -1126,15 +1129,44 @@ function scribble_cache()
 	            || ((_char_width + _text_x > _max_width) && (_max_width >= 0) && (_character_code > 32)))
 	            {
 	                var _line_offset_x = -_text_x;
-                
+                    
+                    if (!_force_newline)
+                    {
+    	                var _v = 0;
+    	                repeat(array_length(_page_vbuffs_array))
+    	                {
+    	                    var _data = _page_vbuffs_array[_v];
+                            
+    	                    //If the line has no space character on it then we know that entire word is longer than the textbox max width
+    	                    //We fall back to use the character start position for this vertex buffer instead
+    	                    if (_line_has_space)
+    	                    {
+    	                        var _tell = _data[__SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL];
+    	                    }
+    	                    else
+    	                    {
+    	                        var _tell = _data[__SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL];
+    	                    }
+                            
+    	                    //If we've added anything to this buffer
+    	                    var _buffer = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
+    	                    if (_tell < buffer_tell(_buffer))
+    	                    {
+	                            _line_offset_x = max(_line_offset_x, -(buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32)));
+                            }
+                            
+                            ++_v;
+                        }
+                    }
+                    
 	                var _v = 0;
 	                repeat(array_length(_page_vbuffs_array))
 	                {
 	                    var _data = _page_vbuffs_array[_v];
-                    
+                        
 	                    var _vbuff_line_start_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
 	                    var _buffer                = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
-                    
+                        
 	                    if (_force_newline)
 	                    {
 	                        ds_list_add(_vbuff_line_start_list, buffer_tell(_buffer));
@@ -1151,16 +1183,16 @@ function scribble_cache()
 	                        {
 	                            var _tell_a = _data[__SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL];
 	                        }
-                        
+                            
 	                        var _tell_b = buffer_tell(_buffer);
 	                        ds_list_add(_vbuff_line_start_list, _tell_a);
-                        
+                            
 	                        //If we've added anything to this buffer
 	                        if (_tell_a < _tell_b)
 	                        {
 	                            //If the line has no space character on it then we know that entire word is longer than the textbox max width
 	                            //We fall back to use the character start position for this vertex buffer instead
-	                            if (!_line_has_space)
+	                            if (_line_has_space)
 	                            {
 	                                //Set our word start tell position to be the same as the character start tell
 	                                //This allows us to handle single words that exceed the maximum textbox width multiple times (!)
@@ -1173,13 +1205,13 @@ function scribble_cache()
 	                                _data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = _tell_b;
 	                                _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_b;
 	                            }
-                            
+                                
 	                            //Note the negative sign!
-	                            var _word_x_offset = _data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET];
-	                            if (_word_x_offset == undefined) _word_x_offset = 0;
-                            
-	                            _line_offset_x = _word_x_offset - (buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell_a + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32));
-	                            if (_line_offset_x < 0)
+	                            var _offset_x = _data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET];
+	                            if (_offset_x == undefined) _offset_x = 0;
+                                _offset_x += _line_offset_x;
+                                
+	                            if (_offset_x < 0)
 	                            {
 	                                //Retroactively move the last word to a new line
 	                                var _tell = _tell_a;
@@ -1187,20 +1219,20 @@ function scribble_cache()
 	                                {
 	                                    //Increment the line index by 1
 	                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) + 1);
-                            
+                                        
 	                                    //Adjust glyph centre position
-	                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + _line_offset_x);
-                            
+	                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + _offset_x);
+                                        
 	                                     //If we're using a fixed line height, ensure that the glyph y-position is updated too
 	                                    if (_line_fixed_height)
 	                                    {
 	                                        buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + _line_height);
 	                                    }
-                            
+                                        
 	                                    _tell += __SCRIBBLE_VERTEX.__SIZE;
 	                                }
 	                            }
-                            
+                                
 	                            _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = undefined;
 	                        }
 	                    }
