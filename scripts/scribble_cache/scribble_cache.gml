@@ -1522,7 +1522,21 @@ function scribble_cache()
 
 
             #region Move glyphs around on a line to finalise alignment
-        
+            
+            //Find the min/max x-bounds for the textbox
+            if (_max_width < 0)
+            {
+                //If no max width has been set, use the element's calculated size
+                var _pin_min_x = _element_min_x;
+                var _pin_max_x = _element_max_x;
+            }
+            else
+            {
+                //Otherwise use a fixed range
+                var _pin_min_x = 0;
+                var _pin_max_x = _max_width;
+            }
+            
 	        //Iterate over every page
 	        var _p = 0;
 	        repeat(array_length(_element_pages_array))
@@ -1574,15 +1588,15 @@ function scribble_cache()
 	                                    break;
                             
 	                                    case __SCRIBBLE_PIN_LEFT:
-	                                        _offset = _element_min_x;
+	                                        _offset = _pin_min_x;
 	                                    break;
                             
 	                                    case __SCRIBBLE_PIN_CENTRE:
-	                                        _offset = ((_element_min_x + _element_max_x) div 2) - (_line_width div 2);
+	                                        _offset = ((_pin_min_x + _pin_max_x) div 2) - (_line_width div 2);
 	                                    break;
                             
 	                                    case __SCRIBBLE_PIN_RIGHT:
-	                                        _offset = _element_max_x - _line_width;
+	                                        _offset = _pin_max_x - _line_width;
 	                                    break;
 	                                }
                         
