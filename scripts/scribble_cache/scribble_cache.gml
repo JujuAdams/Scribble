@@ -248,6 +248,8 @@ if (_build)
         var _text_effect_flags = 0;
         var _text_scale        = 1;
         var _text_slant        = false;
+        var _text_cycle        = false;
+        var _text_cycle_colour = 0x00000000;
         
         #endregion
 
@@ -457,6 +459,31 @@ if (_build)
                             }
                             
                             _add_character = false;
+                        break;
+                        
+                        #endregion
+                        
+                        #region Cycle
+                        
+                        case "cycle":
+                            var _cycle_r = (_command_tag_parameters > 1)? max(1, real(_parameters_list[| 1])) : 0;
+                            var _cycle_g = (_command_tag_parameters > 2)? max(1, real(_parameters_list[| 2])) : 0;
+                            var _cycle_b = (_command_tag_parameters > 3)? max(1, real(_parameters_list[| 3])) : 0;
+                            var _cycle_a = (_command_tag_parameters > 4)? max(1, real(_parameters_list[| 4])) : 0;
+                            
+                            _text_cycle = true;
+                            _text_cycle_colour = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
+                            
+                            _text_effect_flags = _text_effect_flags | (1 << global.__scribble_effects[? _command_name]);
+                            
+                            continue;
+                        break;
+                        
+                        case "/cycle":
+                            _text_cycle = false;
+                            _text_effect_flags = ~((~_text_effect_flags) | (1 << global.__scribble_effects_slash[? _command_name]));
+                            
+                            continue;
                         break;
                         
                         #endregion
@@ -1070,9 +1097,17 @@ if (_build)
                     _quad_b -= _quad_cy;
             
                     var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
-                    var _colour = $FF000000 | _text_colour;
                     var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_quad_b - _quad_t);
-            
+                    
+                    if (_text_cycle)
+                    {
+                        var _colour = _text_cycle_colour;
+                    }
+                    else
+                    {
+                        var _colour = $FF000000 | _text_colour;
+                    }
+                    
                     var _quad_u0 = _glyph_array[SCRIBBLE_GLYPH.U0];
                     var _quad_v0 = _glyph_array[SCRIBBLE_GLYPH.V0];
                     var _quad_u1 = _glyph_array[SCRIBBLE_GLYPH.U1];
