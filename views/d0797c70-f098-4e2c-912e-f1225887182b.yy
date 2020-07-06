@@ -11,7 +11,8 @@
         "c0f4f4ff-e121-4ce8-9b05-658e8d16b19f",
         "310354d2-1828-48d9-a82e-9dbd97d9c117",
         "eadbe561-839c-47aa-a272-8aa3524b4f66",
-        "a0398c62-0284-4051-9243-0bfb6d974d6e"
+        "a0398c62-0284-4051-9243-0bfb6d974d6e",
+        "a820c2b9-d795-4e8a-b5f6-64ccc6ab8400"
     ],
     "filterType": "GMScript",
     "folderName": "Advanced Things For Serious People",

@@ -359,6 +359,14 @@
             }
         },
         {
+            "Key": "6096194b-89a0-40fd-aa96-451e7233b62a",
+            "Value": {
+                "id": "f01f0133-e2ac-4642-bf8c-3bd977d8af03",
+                "resourcePath": "views\\6096194b-89a0-40fd-aa96-451e7233b62a.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "6546167a-9e1d-43df-9868-624f3f59ad6e",
             "Value": {
                 "id": "150d9b08-6604-493f-b821-c7844a995484",
@@ -607,6 +615,14 @@
             }
         },
         {
+            "Key": "8ee72380-5c30-4d77-9904-b3f4ea89261b",
+            "Value": {
+                "id": "b5f671aa-8b2f-474a-85fb-d6ae59bf4572",
+                "resourcePath": "datafiles_yy\\Fonts\\fnt_style_invalid.yy.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "93566aad-c3b3-48a9-8fa7-9c5ee19f74ac",
             "Value": {
                 "id": "1cee5268-8b35-41a3-890f-d73bbcbe5ce0",
@@ -636,6 +652,14 @@
                 "id": "b9d5ad28-f42a-4822-af14-799362f6c053",
                 "resourcePath": "views\\95e57154-061e-41b9-87cb-88e21f8fa68c.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "977b75d1-2f58-4f47-956b-6a720645d852",
+            "Value": {
+                "id": "ae90b48c-be44-4d75-b5e4-86d052348ef8",
+                "resourcePath": "objects\\obj_test_combine\\obj_test_combine.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -731,6 +755,14 @@
             "Value": {
                 "id": "e60ec6e1-e4ad-47da-bb1c-466610d5fb14",
                 "resourcePath": "scripts\\scribble_draw_set_wrap\\scribble_draw_set_wrap.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "a820c2b9-d795-4e8a-b5f6-64ccc6ab8400",
+            "Value": {
+                "id": "ea8bf9fc-2e5c-4839-9132-76eb4b521426",
+                "resourcePath": "scripts\\scribble_combine_fonts\\scribble_combine_fonts.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -1023,14 +1055,6 @@
             }
         },
         {
-            "Key": "e00d248f-9e3e-4753-991f-60ad7949d28b",
-            "Value": {
-                "id": "72ada79d-dcb9-4dac-970c-7f967555b603",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_style_invalid.yy.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
             "Key": "e346a946-97e3-4051-96c1-3b6c92346baf",
             "Value": {
                 "id": "a28346b5-8063-4be2-ba61-0588ab782fcc",
@@ -1194,6 +1218,7 @@
         "310354d2-1828-48d9-a82e-9dbd97d9c117",
         "eadbe561-839c-47aa-a272-8aa3524b4f66",
         "a0398c62-0284-4051-9243-0bfb6d974d6e",
+        "a820c2b9-d795-4e8a-b5f6-64ccc6ab8400",
         "8a72a3a7-a40c-4764-a65f-e44a5bd5746c",
         "5b5d2964-6179-4fe2-8b4c-f1e7d030639e",
         "bf269b8e-eb65-4528-b05e-d89efb7d6c87",
