@@ -69,6 +69,7 @@ if (!file_exists(_path))
 var _data = array_create(__SCRIBBLE_FONT.__SIZE);
 _data[@ __SCRIBBLE_FONT.NAME        ] = _font;
 _data[@ __SCRIBBLE_FONT.PATH        ] = _path;
+_data[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
 _data[@ __SCRIBBLE_FONT.TYPE        ] = __SCRIBBLE_FONT_TYPE.FONT;
 _data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
 _data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
@@ -179,6 +180,28 @@ if (_fail)
     exit;
 }
 
+//Add this font to a font family
+var _family_name = _json[? "fontName"] + "." + string(_json[? "size"]);
+_data[@ __SCRIBBLE_FONT.FAMILY_NAME] = _family_name;
+
+var _family_map = global.__scribble_font_family_map[? _family_name];
+if (_family_map == undefined)
+{
+    _family_map = ds_map_create();
+    ds_map_add_map(global.__scribble_font_family_map, _family_name, _family_map);
+}
+
+var _style_name = _json[? "styleName"];
+if (ds_map_exists(_family_map, _style_name))
+{
+    show_debug_message("Scribble: Style \"" + string(_style_name) + "\" already exists for font family \"" + string(_family_name) + "\"");
+}
+else
+{
+    _family_map[? _style_name] = _font;
+}
+
+//Now parse the JSON for glyph data!
 if (ds_map_exists(_json, "mvc"))
 {
     //Version 2.2.5 and before
