@@ -2,7 +2,8 @@
 
 <p align="center">A modern text renderer for GameMaker Studio 2 by <b>@jujuadams</b></p>
 
-<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/6.0.7">Download the .yymp here</a></p>
+<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/6.0.7">Download the .yymp</a></p>
+<p align="center">Chat about Scribble on the <a href="https://discord.gg/8krYCqr">Discord server</a></p>
 
 &nbsp;
 
