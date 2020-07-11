@@ -10,19 +10,19 @@ function scribble_add_color()
 	var _colour = argument[1];
 	var _native = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
 
-	if ( !variable_global_exists("__scribble_lcg") )
+	if (!variable_global_exists("__scribble_lcg"))
 	{
 	    show_error("Scribble:\nscribble_add_color() should be called after initialising Scribble.\n ", false);
 	    exit;
 	}
 
-	if ( !is_string(_name) )
+	if (!is_string(_name))
 	{
 	    show_error("Scribble:\nCustom colour names should be strings.\n ", false);
 	    exit;
 	}
 
-	if ( !is_real(_colour) )
+	if (!is_real(_colour))
 	{
 	    show_error("Scribble:\nCustom colours should be specificed as 24-bit integers.\n ", false);
 	    exit;
@@ -33,14 +33,14 @@ function scribble_add_color()
 	    _colour = make_colour_rgb(colour_get_blue(_colour), colour_get_green(_colour), colour_get_red(_colour));
 	}
 
-	if ( ds_map_exists(global.__scribble_effects, _name) )
+	if (ds_map_exists(global.__scribble_effects, _name))
 	{
 	    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as an effect" );
 	    exit;
 	}
 
-	var _old_colour = global.__scribble_colours[? _name ];
-	if ( is_real(_old_colour) )
+	var _old_colour = global.__scribble_colours[? _name];
+	if (is_real(_old_colour))
 	{
 	    show_debug_message("Scribble: WARNING! Overwriting colour \"" + _name + "\" (" + string(colour_get_red(_old_colour)) + "," + string(colour_get_green(_old_colour)) + "," + string(colour_get_blue(_old_colour)) + ", u32=" + string(_old_colour) + ")");
 	}
