@@ -42,7 +42,7 @@ const int WINDOW_COUNT = 4;
 
 
 attribute vec3 in_Position;     //{X, Y, Packed character & line index}
-attribute vec3 in_Normal;       //{Centre dX, Centre dY, Bitpacked effect flags}
+attribute vec3 in_Normal;       //{Packed centre dXdY, Sprite data, Bitpacked effect flags}
 attribute vec4 in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
 attribute vec2 in_TextureCoord; //UVs
 
@@ -158,23 +158,14 @@ vec2 shake(vec2 position, float characterIndex, float magnitude, float speed)
     return position + magnitude*merge*(2.0*delta-1.0);
 }
 
-//Use RGBA 
-vec4 handleSprites(float isSprite, vec4 colour)
+float filterSprite(float spriteData)
 {
-    if (isSprite == 1.0)
-    {
-        float myImage    = colour.r*255.0;       //First byte is the index of this sprite
-        float imageMax   = 1.0 + colour.g*255.0; //Second byte is the maximum number of images in the sprite
-        float imageSpeed = colour.b;             //Third byte is half of the image speed
-        float imageStart = colour.a*255.0;       //Fourth byte is the image offset
-        
-        float displayImage = floor(mod(imageSpeed*u_fTime + imageStart, imageMax));
-        return vec4((abs(myImage-displayImage) < 1.0/255.0)? 1.0 : 0.0);
-    }
-    else
-    {
-        return colour;
-    }
+    float imageSpeed = floor(spriteData / 4096.0);
+    float imageMax   = floor((spriteData - 4096.0*imageSpeed) / 64.0);
+    float image      = spriteData - (4096.0*imageSpeed + 64.0*imageMax);
+    
+    float displayImage = floor(mod(imageSpeed*u_fTime/1024.0, imageMax));
+    return ((abs(image-displayImage) < 1.0/255.0)? 1.0 : 0.0);
 }
 
 //HSV->RGB conversion function
@@ -299,9 +290,9 @@ void main()
     pos.xy = shake( pos, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
     
     //Colour
-    v_vColour  = handleSprites(spriteFlag, in_Colour); //Use RGBA information to filter out sprites
-    if ((spriteFlag < 0.5) && (cycleFlag > 0.5)) v_vColour = cycle(characterIndex, cycleSpeed, cycleSaturation, cycleValue, v_vColour); //Cycle colours through the defined palette
-    v_vColour  = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
+    v_vColour = in_Colour;
+    if (cycleFlag > 0.5) v_vColour = cycle(characterIndex, cycleSpeed, cycleSaturation, cycleValue, v_vColour); //Cycle colours through the defined palette
+    v_vColour = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
     
     //Apply fade (if we're given a method)
@@ -311,6 +302,8 @@ void main()
         float index = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
         v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0);
     }
+    
+    if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use RGBA information to filter out sprites
     
     //Texture
     v_vTexcoord = in_TextureCoord;

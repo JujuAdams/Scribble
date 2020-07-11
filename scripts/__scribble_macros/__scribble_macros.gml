@@ -1,7 +1,6 @@
 /// Scribble's macros, used to customise and control behaviour throughout the library
 
 #macro SCRIBBLE_HASH_NEWLINE                  true   //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's newline behaviour
-#macro SCRIBBLE_COLORIZE_SPRITES              true   //Whether to apply the text color to non-animated sprites (animated sprites are always blended white)
 #macro SCRIBBLE_ADD_SPRITE_ORIGINS            false  //Whether to use sprite origins. Setting this to <false> will vertically centre sprites on the line of text
 #macro SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT  false  //Set to <true> to emulate GameMaker's native behaviour
 #macro SCRIBBLE_MISSING_CHARACTER             "?"    //Used when a character is missing from a font
