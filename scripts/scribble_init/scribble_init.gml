@@ -38,11 +38,12 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	{
 	    NAME,         // 0
 	    PATH,         // 1
-	    TYPE,         // 2
-	    GLYPHS_MAP,   // 3
-	    GLYPHS_ARRAY, // 4
-	    GLYPH_MIN,    // 5
-	    GLYPH_MAX,    // 6
+        FAMILY_NAME,  // 2
+	    TYPE,         // 3
+	    GLYPHS_MAP,   // 4
+	    GLYPHS_ARRAY, // 5
+	    GLYPH_MIN,    // 6
+	    GLYPH_MAX,    // 7
 	    SPACE_WIDTH,  // 8
 	    MAPSTRING,    // 9
 	    SEPARATION,   //10
@@ -310,6 +311,7 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
 	global.__scribble_character_delay      = false;
 	global.__scribble_character_delay_map  = ds_map_create();
+    global.__scribble_font_family_map      = ds_map_create();
     
 	//Declare state variables
 	global.scribble_state_anim_array = array_create(SCRIBBLE_ANIM.__SIZE);

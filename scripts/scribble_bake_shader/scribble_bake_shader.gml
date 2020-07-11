@@ -298,6 +298,7 @@ function scribble_bake_shader()
 		_new_font_array[@ __SCRIBBLE_FONT.NAME        ] = _new_font_name;
 		_new_font_array[@ __SCRIBBLE_FONT.TYPE        ] = __SCRIBBLE_FONT_TYPE.RUNTIME;
 		_new_font_array[@ __SCRIBBLE_FONT.PATH        ] = undefined;
+		_new_font_array[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
 		_new_font_array[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
 		_new_font_array[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
     
