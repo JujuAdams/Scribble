@@ -27,21 +27,24 @@ function scribble_set_animation(_property, _value)
 {
 	enum SCRIBBLE_ANIM
 	{
-	    WAVE_SIZE,      // 0
-	    WAVE_FREQ,      // 1
-	    WAVE_SPEED,     // 2
-	    SHAKE_SIZE,     // 3
-	    SHAKE_SPEED,    // 4
-	    RAINBOW_WEIGHT, // 5
-	    RAINBOW_SPEED,  // 6
-	    WOBBLE_ANGLE,   // 7
-	    WOBBLE_FREQ,    // 8
-	    PULSE_SCALE,    // 9
-	    PULSE_SPEED,    //10
-	    WHEEL_SIZE,     //11
-	    WHEEL_FREQ,     //12
-	    WHEEL_SPEED,    //13
-	    __SIZE,         //14
+        WAVE_SIZE,        // 0
+        WAVE_FREQ,        // 1
+        WAVE_SPEED,       // 2
+        SHAKE_SIZE,       // 3
+        SHAKE_SPEED,      // 4
+        RAINBOW_WEIGHT,   // 5
+        RAINBOW_SPEED,    // 6
+        WOBBLE_ANGLE,     // 7
+        WOBBLE_FREQ,      // 8
+        PULSE_SCALE,      // 9
+        PULSE_SPEED,      //10
+        WHEEL_SIZE,       //11
+        WHEEL_FREQ,       //12
+        WHEEL_SPEED,      //13
+        CYCLE_SPEED,      //14
+        CYCLE_SATURATION, //15
+        CYCLE_VALUE,      //16
+        __SIZE,           //17
 	}
 
 	global.scribble_state_anim_array[@ _property] = _value;

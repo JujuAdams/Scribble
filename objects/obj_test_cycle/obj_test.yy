@@ -26,8 +26,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Examples/Test Cases.yy",
+    "name": "Examples",
+    "path": "folders/Examples.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test",

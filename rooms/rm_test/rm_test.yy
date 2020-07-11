@@ -46,8 +46,8 @@
     "PhysicsWorldPixToMetres": 0.1,
   },
   "parent": {
-    "name": "Examples",
-    "path": "folders/Examples.yy",
+    "name": "Test Cases",
+    "path": "folders/Examples/Test Cases.yy",
   },
   "resourceVersion": "1.0",
   "name": "rm_test",

@@ -259,6 +259,8 @@ function scribble_cache()
 	        var _text_effect_flags = 0;
 	        var _text_scale        = 1;
 	        var _text_slant        = false;
+            var _text_cycle        = false;
+            var _text_cycle_colour = 0x00000000;
         
             #endregion
 
@@ -468,6 +470,31 @@ function scribble_cache()
                                 }
                                 
                                 _add_character = false;
+                            break;
+                            
+                            #endregion
+                            
+                            #region Cycle
+                            
+                            case "cycle":
+                                var _cycle_r = (_command_tag_parameters > 1)? max(1, real(_parameters_list[| 1])) : 0;
+                                var _cycle_g = (_command_tag_parameters > 2)? max(1, real(_parameters_list[| 2])) : 0;
+                                var _cycle_b = (_command_tag_parameters > 3)? max(1, real(_parameters_list[| 3])) : 0;
+                                var _cycle_a = (_command_tag_parameters > 4)? max(1, real(_parameters_list[| 4])) : 0;
+                                
+                                _text_cycle = true;
+                                _text_cycle_colour = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
+                                
+                                _text_effect_flags = _text_effect_flags | (1 << global.__scribble_effects[? _command_name]);
+                                
+                                continue;
+                            break;
+                            
+                            case "/cycle":
+                                _text_cycle = false;
+                                _text_effect_flags = ~((~_text_effect_flags) | (1 << global.__scribble_effects_slash[? _command_name]));
+                            
+                                continue;
                             break;
                             
                             #endregion

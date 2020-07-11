@@ -21,18 +21,21 @@ function scribble_reset()
     global.scribble_state_box_valign      = fa_top;                         //fa_top places the top of the box at the draw coordinate when using scribble_draw().
     global.scribble_state_box_align_page  = false;                          //Whether to use text element sizes (false) or page sizes (true)
     
-    scribble_set_animation(SCRIBBLE_ANIM.WAVE_SIZE     ,  4   );
-    scribble_set_animation(SCRIBBLE_ANIM.WAVE_FREQ     , 50   );
-    scribble_set_animation(SCRIBBLE_ANIM.WAVE_SPEED    ,  0.2 );
-    scribble_set_animation(SCRIBBLE_ANIM.SHAKE_SIZE    ,  4   );
-    scribble_set_animation(SCRIBBLE_ANIM.SHAKE_SPEED   ,  0.4 );
-    scribble_set_animation(SCRIBBLE_ANIM.RAINBOW_WEIGHT,  0.5 );
-    scribble_set_animation(SCRIBBLE_ANIM.RAINBOW_SPEED ,  0.01);
-    scribble_set_animation(SCRIBBLE_ANIM.WOBBLE_ANGLE  , 40   );
-    scribble_set_animation(SCRIBBLE_ANIM.WOBBLE_FREQ   ,  0.15);
-    scribble_set_animation(SCRIBBLE_ANIM.PULSE_SCALE   ,  0.4 );
-    scribble_set_animation(SCRIBBLE_ANIM.PULSE_SPEED   ,  0.1 );
-    scribble_set_animation(SCRIBBLE_ANIM.WHEEL_SIZE    ,  1   );
-    scribble_set_animation(SCRIBBLE_ANIM.WHEEL_FREQ    ,  0.5 );
-    scribble_set_animation(SCRIBBLE_ANIM.WHEEL_SPEED   ,  0.2 );
+    scribble_set_animation(SCRIBBLE_ANIM.WAVE_SIZE       ,  4   );
+    scribble_set_animation(SCRIBBLE_ANIM.WAVE_FREQ       , 50   );
+    scribble_set_animation(SCRIBBLE_ANIM.WAVE_SPEED      ,  0.2 );
+    scribble_set_animation(SCRIBBLE_ANIM.SHAKE_SIZE      ,  4   );
+    scribble_set_animation(SCRIBBLE_ANIM.SHAKE_SPEED     ,  0.4 );
+    scribble_set_animation(SCRIBBLE_ANIM.RAINBOW_WEIGHT  ,  0.5 );
+    scribble_set_animation(SCRIBBLE_ANIM.RAINBOW_SPEED   ,  0.01);
+    scribble_set_animation(SCRIBBLE_ANIM.WOBBLE_ANGLE    , 40   );
+    scribble_set_animation(SCRIBBLE_ANIM.WOBBLE_FREQ     ,  0.15);
+    scribble_set_animation(SCRIBBLE_ANIM.PULSE_SCALE     ,  0.4 );
+    scribble_set_animation(SCRIBBLE_ANIM.PULSE_SPEED     ,  0.1 );
+    scribble_set_animation(SCRIBBLE_ANIM.WHEEL_SIZE      ,  1   );
+    scribble_set_animation(SCRIBBLE_ANIM.WHEEL_FREQ      ,  0.5 );
+    scribble_set_animation(SCRIBBLE_ANIM.WHEEL_SPEED     ,  0.2 );
+    scribble_set_animation(SCRIBBLE_ANIM.CYCLE_SPEED     ,  0.3 );
+    scribble_set_animation(SCRIBBLE_ANIM.CYCLE_SATURATION,  255 );
+    scribble_set_animation(SCRIBBLE_ANIM.CYCLE_VALUE     ,  255 );
 }

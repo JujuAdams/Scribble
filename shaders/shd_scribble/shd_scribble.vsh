@@ -10,7 +10,7 @@ const int MAX_EFFECTS = 7;
 //5 = pulse
 //6 = wheel
 
-const int MAX_ANIM_FIELDS = 14;
+const int MAX_ANIM_FIELDS = 17;
 //By default, the data fields are:
 // 0 = wave amplitude
 // 1 = wave frequency
@@ -26,6 +26,9 @@ const int MAX_ANIM_FIELDS = 14;
 //11 = wheel amplitude
 //12 = wheel frequency
 //13 = wheel speed
+//14 = cycle speed
+//15 = cycle saturation
+//16 = cycle value
 
 const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
 
@@ -186,6 +189,24 @@ vec4 rainbow(float characterIndex, float weight, float speed, vec4 colour)
 {
     return vec4(mix(colour.rgb, hsv2rgb(vec3(characterIndex + speed*u_fTime, 1.0, 1.0)), weight), colour.a);
 }
+                           
+//Colour cycling through a defined palette
+vec4 cycle(float characterIndex, float speed, float saturation, float value, vec4 colour)
+{
+    float max_h = 4.0; //Default to a 4-colour cycle
+    
+    //Special cases for 0- and 1-colour cycles
+    if (colour.r < 0.003) return colour;
+    if (colour.g < 0.003) return vec4(hsv2rgb(vec3(colour.r, saturation/255.0, value/255.0)), 1.0);
+    if (colour.a < 0.003) max_h = 3.0; //3-colour cycle
+    if (colour.b < 0.003) max_h = 2.0; //2-colour cycle
+    
+    float h = abs(mod((speed*u_fTime - characterIndex)/10.0, max_h));
+    vec3 rgbA = hsv2rgb(vec3(colour[int(h)], saturation/255.0, value/255.0));
+    vec3 rgbB = hsv2rgb(vec3(colour[int(mod(h + 1.0, max_h))], saturation/255.0, value/255.0));
+    
+    return vec4(mix(rgbA, rgbB, fract(h)), 1.0);
+}
 
 //Fade effect for typewriter etc.
 float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index)
@@ -245,6 +266,9 @@ void main()
     float wheelAmplitude  = u_aDataFields[11];
     float wheelFrequency  = u_aDataFields[12];
     float wheelSpeed      = u_aDataFields[13];
+    float cycleSpeed      = u_aDataFields[14];
+    float cycleSaturation = u_aDataFields[15];
+    float cycleValue      = u_aDataFields[16];
     
     //Unpack the effect flag bits into an array, then into variables for readability
     float flagArray[MAX_EFFECTS]; unpackFlags(in_Normal.z, flagArray);
@@ -269,6 +293,7 @@ void main()
     
     //Colour
     v_vColour  = handleSprites(spriteFlag, in_Colour); //Use RGBA information to filter out sprites
+    if ((spriteFlag < 0.5) && (cycleFlag > 0.5)) v_vColour = cycle(characterIndex, cycleSpeed, cycleSaturation, cycleValue, v_vColour); //Cycle colours through the defined palette
     v_vColour  = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
     
