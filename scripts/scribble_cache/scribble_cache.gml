@@ -42,7 +42,6 @@ if (is_array(_draw_string))
     else
     {
         _build = false;
-        _events_char_array = _scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY];
     }
 }
 
@@ -2013,7 +2012,7 @@ if (!ds_map_exists(_occurance_map, _occurance_name))
     _occurance_array[@ __SCRIBBLE_OCCURANCE.__SECTION3         ] = "Events";
     _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ] = -1;
     _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = -1;
-    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY] = array_create(array_length_1d(_events_char_array), false);
+    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY] = array_create(array_length_1d(_scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY]), false);
     
     _occurance_map[? _occurance_name] = _occurance_array;
 }
