@@ -288,7 +288,7 @@ void main()
     //Unpack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
     vec2 centre;
     centre.y = floor(in_Normal.x/2000.0);
-    centre.x = centre.x - centre.y*2000.0;
+    centre.x = in_Normal.x - centre.y*2000.0;
     centre = pos + (centre - 1000.0)/10.0;
     
     //Vertex animation
