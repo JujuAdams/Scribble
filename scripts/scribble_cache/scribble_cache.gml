@@ -635,7 +635,7 @@ function scribble_cache()
 	                                                    {
 	                                                        _image_speed = 0;
 	                                                        _sprite_number = 1;
-	                                                        _colour = $FF000000 | _colour;
+	                                                        _colour = _text_cycle? _text_cycle_colour : ($FF000000 | _colour);
 	                                                    }
 	                                                    else
 	                                                    {
@@ -1108,7 +1108,7 @@ function scribble_cache()
 	                    _quad_b -= _quad_cy;
             
 	                    var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
-	                    var _colour = $FF000000 | _text_colour;
+                        var _colour = _text_cycle? _text_cycle_colour : ($FF000000 | _text_colour);
 	                    var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_quad_b - _quad_t);
             
 	                    var _quad_u0 = _glyph_array[SCRIBBLE_GLYPH.U0];

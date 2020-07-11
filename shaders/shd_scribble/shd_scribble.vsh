@@ -1,6 +1,6 @@
 //   @jujuadams   v6.0.7e   2020-06-29
 
-const int MAX_EFFECTS = 7;
+const int MAX_EFFECTS = 8;
 //By default, the effect indexes are:
 //0 = is an animated sprite
 //1 = wave
@@ -9,6 +9,7 @@ const int MAX_EFFECTS = 7;
 //4 = wobble
 //5 = pulse
 //6 = wheel
+//7 = cycle
 
 const int MAX_ANIM_FIELDS = 17;
 //By default, the data fields are:
@@ -279,6 +280,7 @@ void main()
     float wobbleFlag  = flagArray[4];
     float pulseFlag   = flagArray[5];
     float wheelFlag   = flagArray[6];
+    float cycleFlag   = flagArray[7];
     
     //Use the input vertex position from the vertex attributes. Use our Z uniform because the z-component is used for other data
     vec2 centre = in_Position.xy;
