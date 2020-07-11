@@ -1,4 +1,4 @@
-//   @jujuadams   v6.0.7e   2020-06-29
+//   @jujuadams   v6.0.8   2020-07-11
 
 const float PI = 3.14159265359;
 
