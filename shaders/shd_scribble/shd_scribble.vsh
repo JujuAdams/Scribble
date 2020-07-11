@@ -41,20 +41,20 @@ const int WINDOW_COUNT = 4;
 // Attributes, Varyings, and Uniforms
 
 
-attribute vec3 in_Position;     //{Centre X, Centre Y, Packed character & line index}
-attribute vec3 in_Normal;       //{Delta X, Delta Y, Bitpacked effect flags}
+attribute vec3 in_Position;     //{X, Y, Packed character & line index}
+attribute vec3 in_Normal;       //{Packed centre dXdY, Sprite data, Bitpacked effect flags}
 attribute vec4 in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
 attribute vec2 in_TextureCoord; //UVs
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
-uniform vec4  u_vColourBlend;
-uniform float u_fTime;
-uniform float u_fTypewriterMethod;
-uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT];
-uniform float u_fTypewriterSmoothness;
-uniform float u_aDataFields[MAX_ANIM_FIELDS];
+uniform vec4  u_vColourBlend;                           //4
+uniform float u_fTime;                                  //1
+uniform float u_fTypewriterMethod;                      //1
+uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
+uniform float u_fTypewriterSmoothness;                  //1
+uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
 
 
 
@@ -158,23 +158,14 @@ vec2 shake(vec2 position, float characterIndex, float magnitude, float speed)
     return position + magnitude*merge*(2.0*delta-1.0);
 }
 
-//Use RGBA 
-vec4 handleSprites(float isSprite, vec4 colour)
+float filterSprite(float spriteData)
 {
-    if (isSprite == 1.0)
-    {
-        float myImage    = colour.r*255.0;       //First byte is the index of this sprite
-        float imageMax   = 1.0 + colour.g*255.0; //Second byte is the maximum number of images in the sprite
-        float imageSpeed = colour.b;             //Third byte is half of the image speed
-        float imageStart = colour.a*255.0;       //Fourth byte is the image offset
-        
-        float displayImage = floor(mod(imageSpeed*u_fTime + imageStart, imageMax));
-        return vec4((abs(myImage-displayImage) < 1.0/255.0)? 1.0 : 0.0);
-    }
-    else
-    {
-        return colour;
-    }
+    float imageSpeed = floor(spriteData / 4096.0);
+    float imageMax   = floor((spriteData - 4096.0*imageSpeed) / 64.0);
+    float image      = spriteData - (4096.0*imageSpeed + 64.0*imageMax);
+    
+    float displayImage = floor(mod(imageSpeed*u_fTime/1024.0, imageMax));
+    return ((abs(image-displayImage) < 1.0/255.0)? 1.0 : 0.0);
 }
 
 //HSV->RGB conversion function
@@ -210,7 +201,7 @@ vec4 cycle(float characterIndex, float speed, float saturation, float value, vec
 }
 
 //Fade effect for typewriter etc.
-float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index)
+float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index, bool invert)
 {
     float result = 0.0;
     float f      = 1.0;
@@ -235,6 +226,8 @@ float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index)
         
         result = max(f, result);
     }
+    
+    if (invert) result = 1.0 - result;
     
     return result;
 }
@@ -282,21 +275,26 @@ void main()
     float wheelFlag   = flagArray[6];
     float cycleFlag   = flagArray[7];
     
-    //Use the input vertex position from the vertex attributes. Use our Z uniform because the z-component is used for other data
-    vec2 centre = in_Position.xy;
-    vec2 pos = centre + in_Normal.xy; //The actual position of this vertex is the central point plus the delta
+    //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
+    vec2 pos = in_Position.xy;
+    
+    //Unpack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
+    vec2 centre;
+    centre.y = floor(in_Normal.x/2000.0);
+    centre.x = in_Normal.x - centre.y*2000.0;
+    centre = pos + (centre - 1000.0)/10.0;
     
     //Vertex animation
-    pos.xy = wobble(pos.xy, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
-    pos.xy = pulse( pos.xy, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
-    pos.xy = wave(  pos.xy, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
-    pos.xy = wheel( pos.xy, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
-    pos.xy = shake( pos.xy, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
+    pos.xy = wobble(pos, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
+    pos.xy = pulse( pos, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
+    pos.xy = wave(  pos, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
+    pos.xy = wheel( pos, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
+    pos.xy = shake( pos, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
     
     //Colour
-    v_vColour  = handleSprites(spriteFlag, in_Colour); //Use RGBA information to filter out sprites
-    if ((spriteFlag < 0.5) && (cycleFlag > 0.5)) v_vColour = cycle(characterIndex, cycleSpeed, cycleSaturation, cycleValue, v_vColour); //Cycle colours through the defined palette
-    v_vColour  = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
+    v_vColour = in_Colour;
+    if (cycleFlag > 0.5) v_vColour = cycle(characterIndex, cycleSpeed, cycleSaturation, cycleValue, v_vColour); //Cycle colours through the defined palette
+    v_vColour = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
     
     //Apply fade (if we're given a method)
@@ -304,8 +302,10 @@ void main()
     {
         //Choose our index based on what method's being used: if the method value == 1.0 then we're using character indexes, otherwise we use line indexes
         float index = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
-        v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0);
+        v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0, (u_fTypewriterMethod < 0.0));
     }
+    
+    if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use RGBA information to filter out sprites
     
     //Texture
     v_vTexcoord = in_TextureCoord;

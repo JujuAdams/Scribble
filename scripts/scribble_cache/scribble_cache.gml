@@ -727,9 +727,9 @@ function scribble_cache()
 	                                            if (asset_get_type(_command_name) == asset_sprite)
 	                                            {
                                                     #region Write sprites
-                                                
+                                                    
 	                                                _line_width = max(_line_width, _text_x);
-                                        
+                                                    
 	        	                                    var _sprite_index  = asset_get_index(_command_name);
 	        	                                    if (global.__scribble_sprite_whitelist && !ds_map_exists(global.__scribble_sprite_whitelist_map, _sprite_index))
 	        	                                    {
@@ -740,7 +740,7 @@ function scribble_cache()
 	                                                    var _sprite_width  = _text_scale*sprite_get_width(_sprite_index);
 	                                                    var _sprite_height = _text_scale*sprite_get_height(_sprite_index);
 	                                                    var _sprite_number = sprite_get_number(_sprite_index);
-                                            
+                                                        
 	                                                    if (SCRIBBLE_ADD_SPRITE_ORIGINS)
 	                                                    {
 	                                                        var _sprite_x = _text_x - _text_scale*sprite_get_xoffset(_sprite_index) + (_sprite_width div 2);
@@ -751,19 +751,19 @@ function scribble_cache()
 	                                                        var _sprite_x = _text_x;
 	                                                        var _sprite_y = _text_y - (_sprite_height div 2);
 	                                                    }
-                                            
+                                                        
 	                                                    var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
 	                                                    _char_width  = _sprite_width;
 	                                                    if (!_line_fixed_height) _line_height = max(_line_height, _sprite_height); //Change our line height if it's not fixed
-                                            
-	                                                    if (_sprite_number >= 256)
-	                                                    {
-	                                                        show_debug_message("Scribble: In-line sprites cannot have more than 256 frames (" + string(_command_name) + ")");
-	                                                        _sprite_number = 256;
-	                                                    }
-                                            
+                                                        
+                                                        if (_sprite_number >= 64)
+                                                        {
+                                                            show_debug_message("Scribble: In-line sprites cannot have more than 64 frames (" + string(_command_name) + ")");
+                                                            _sprite_number = 64;
+                                                        }
+                                                        
                                                         #region Figure out what images to add to the buffer
-                                                
+                                                        
 	                                                    var _image_index = 0;
 	                                                    var _image_speed = 0;
 	                                                    switch(_command_tag_parameters)
@@ -772,45 +772,42 @@ function scribble_cache()
 	                                                            _image_index = 0;
 	                                                            _image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
 	                                                        break;
-                                                    
+                                                            
 	                                                        case 2:
 	                                                            _image_index = real(_parameters_list[| 1]);
 	                                                            _image_speed = 0;
 	                                                        break;
-                                                    
+                                                            
 	                                                        default:
 	                                                            _image_index = real(_parameters_list[| 1]);
 	                                                            _image_speed = real(_parameters_list[| 2]);
 	                                                        break;
 	                                                    }
-                                                
-	                                                    var _colour = SCRIBBLE_COLORIZE_SPRITES? _text_colour : c_white;
+                                                        
+                                                        if (_image_speed >= 4)
+                                                        {
+                                                            show_debug_message("Scribble: Image speed cannot be more than 4.0 (" + string(_image_speed) + ")");
+                                                            _image_speed = 4;
+                                                        }
+                                                        
+                                                        var _colour = _text_cycle? _text_cycle_colour : ($FF000000 | _text_colour);
+                                                        
 	                                                    if (_image_speed <= 0)
 	                                                    {
 	                                                        _image_speed = 0;
 	                                                        _sprite_number = 1;
-	                                                        _colour = _text_cycle? _text_cycle_colour : ($FF000000 | _colour);
 	                                                    }
 	                                                    else
 	                                                    {
 	                                                        //Set the "is sprite" effect flag only if we're animating the sprite
 	                                                        _text_effect_flags = _text_effect_flags | 1;
-                                                    
-	                                                        //Encode image, sprite length, and image speed into the colour channels
-	                                                        _colour = make_colour_rgb(0, _sprite_number-1, _image_speed*255);
-                                                    
-	                                                        //Encode the starting image into the alpha channel
-	                                                        _colour = (_image_index << 24) | _colour;
-                                                    
-	                                                        //Make sure we store all frames from the sprite
-	                                                        _image_index = 0;
 	                                                    }
                                                 
                                                         #endregion
                                             
                                                         #region Pre-create vertex buffer arrays for images for this sprite and update WORD_START_TELL at the same time
                                                 
-	                                                    var _image = _image_index;
+	                                                    var _image = (_image_speed <= 0)? _image_index : 0;
 	                                                    repeat(_sprite_number)
 	                                                    {
 	                                                        var _sprite_texture = sprite_get_texture(_sprite_index, _image);
@@ -857,7 +854,7 @@ function scribble_cache()
                                     	                        _word_start_char = _meta_element_characters;
                                     	                    }
                                                             
-	                                                        ++_image;
+	                                                        _image++;
 	                                                    }
                                                 
                                                         #endregion
@@ -865,6 +862,7 @@ function scribble_cache()
                                                         #region Add sprite to buffers
                                                 
 	                                                    var _image = _image_index;
+                                                        var _image_count = 0;
 	                                                    repeat(_sprite_number)
 	                                                    {
 	                                                        //Swap texture and buffer if needed
@@ -875,43 +873,54 @@ function scribble_cache()
 	                                                            var _vbuff_data = _texture_to_buffer_map[? _sprite_texture];
 	                                                            var _glyph_buffer = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
 	                                                        }
-                                                    
+                                                            
 	                                                        //Find the UVs and position of the sprite quad
 	                                                        var _uvs = sprite_get_uvs(_sprite_index, _image);
 	                                                        var _quad_l = _sprite_x + _uvs[4]*_text_scale;
 	                                                        var _quad_t = _sprite_y + _uvs[5]*_text_scale;
 	                                                        var _quad_r = _quad_l   + _uvs[6]*_sprite_width;
 	                                                        var _quad_b = _quad_t   + _uvs[7]*_sprite_height;
-                                                    
+                                                            
 	                                                        var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_quad_b - _quad_t);
-                                                    
+                                                            var _sprite_data = 4096*floor(1024*_image_speed) + 64*_sprite_number + _image_count;
+                                                            
 	                                                        var _quad_cx = 0.5*(_quad_l + _quad_r);
 	                                                        var _quad_cy = 0.5*(_quad_t + _quad_b);
-	                                                        _quad_l -= _quad_cx;
-	                                                        _quad_t -= _quad_cy;
-	                                                        _quad_r -= _quad_cx;
-	                                                        _quad_b -= _quad_cy;
                                                             
-	                                                        //                                      Centre X                                           Centre Y                                         Character/Line Index                                                     Delta X                                                 Delta Y                                                 Flags                                                      Colour                                                 U                                                V
-	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
-	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
-	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
-	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
-	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
-	                                                        buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
+                                                            var _delta_l  = _quad_cx - _quad_l;
+                                                            var _delta_t  = _quad_cy - _quad_t;
+                                                            var _delta_r  = _quad_cx - _quad_r;
+                                                            var _delta_b  = _quad_cy - _quad_b;
+                                                            var _delta_ls = _delta_l - _slant_offset;
+                                                            var _delta_rs = _delta_r - _slant_offset;
                                                             
-	                                                        ++_image;
-	                                                        if (_image_speed > 0) _colour++;
+                                                            //Pack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
+                                                            //This must match what's in shd_scribble!
+                                                            var _packed_delta_lb  = floor(10*_delta_l ) + 2000*floor(10*_delta_b);
+                                                            var _packed_delta_rb  = floor(10*_delta_r ) + 2000*floor(10*_delta_b);
+                                                            var _packed_delta_lst = floor(10*_delta_ls) + 2000*floor(10*_delta_t);
+                                                            var _packed_delta_rst = floor(10*_delta_rs) + 2000*floor(10*_delta_t);
+                                                            
+                                                            //                                                X                                                          Y                                            Character/Line Index                                               Centre dXdY                                              Sprite Data                                                 Flags                                                      Colour                                                 U                                                V
+                                                            buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_lst); buffer_write(_glyph_buffer, buffer_f32, _sprite_data); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
+                                                            buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_rb ); buffer_write(_glyph_buffer, buffer_f32, _sprite_data); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
+                                                            buffer_write(_glyph_buffer, buffer_f32, _quad_l                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_lb ); buffer_write(_glyph_buffer, buffer_f32, _sprite_data); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
+                                                            buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_rb ); buffer_write(_glyph_buffer, buffer_f32, _sprite_data); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[3]);
+                                                            buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_lst); buffer_write(_glyph_buffer, buffer_f32, _sprite_data); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
+                                                            buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_rst); buffer_write(_glyph_buffer, buffer_f32, _sprite_data); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
+                                                            
+                                                            _image = (_image + 1) mod _sprite_number;
+                                                            _image_count++;
 	                                                    }
                                                 
                                                         #endregion
                                                         
 	                                                    _text_effect_flags = ~((~_text_effect_flags) | 1); //Reset animated sprite effect flag specifically
-                                            
+                                                        
 	                                                    if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _command_name;
 	                                                    ++_meta_element_characters;
 	                                                }
-                                        
+                                                    
                                                     #endregion
 	                                            }
 	                                            else
@@ -919,11 +928,11 @@ function scribble_cache()
 	                                                if (ds_map_exists(global.__scribble_colours, _command_name))
 	                                                {
                                                         #region Set a pre-defined colour
-                                                    
+                                                        
 	                                                    _text_colour = global.__scribble_colours[? _command_name];
-                                                    
+                                                        
 	                                                    continue; //Skip the rest of the parser step
-                                                    
+                                                        
                                                         #endregion
 	                                                }
 	                                                else
@@ -1253,36 +1262,55 @@ function scribble_cache()
 	                    var _quad_t  = _text_y + _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2); //TODO - Cache scaled font line height
 	                    var _quad_r  = _quad_l + _glyph_array[SCRIBBLE_GLYPH.WIDTH   ]*_text_scale;
 	                    var _quad_b  = _quad_t + _glyph_array[SCRIBBLE_GLYPH.HEIGHT  ]*_text_scale;
-            
-	                    var _quad_cx = 0.5*(_quad_l + _quad_r);
-	                    var _quad_cy = 0.5*(_quad_t + _quad_b);
-	                    _quad_l -= _quad_cx;
-	                    _quad_t -= _quad_cy;
-	                    _quad_r -= _quad_cx;
-	                    _quad_b -= _quad_cy;
-            
-	                    var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
-                        var _colour = _text_cycle? _text_cycle_colour : ($FF000000 | _text_colour);
-	                    var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_quad_b - _quad_t);
-            
-	                    var _quad_u0 = _glyph_array[SCRIBBLE_GLYPH.U0];
-	                    var _quad_v0 = _glyph_array[SCRIBBLE_GLYPH.V0];
-	                    var _quad_u1 = _glyph_array[SCRIBBLE_GLYPH.U1];
-	                    var _quad_v1 = _glyph_array[SCRIBBLE_GLYPH.V1];
-            
-	                    //                                      Centre X                                           Centre Y                                         Character/Line Index                                                     Delta X                                                 Delta Y                                                 Flags                                                      Colour                                                  U                                                  V
-	                    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
-	                    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
-	                    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
-	                    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
-	                    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
-	                    buffer_write(_glyph_buffer, buffer_f32, _quad_cx); buffer_write(_glyph_buffer, buffer_f32, _quad_cy); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
-            
+                        
+                        var _quad_cx = 0.5*(_quad_l + _quad_r);
+                        var _quad_cy = 0.5*(_quad_t + _quad_b);
+                        
+                        var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_quad_b - _quad_t);
+                        
+                        var _delta_l  = _quad_cx - _quad_l;
+                        var _delta_t  = _quad_cy - _quad_t;
+                        var _delta_r  = _quad_cx - _quad_r;
+                        var _delta_b  = _quad_cy - _quad_b;
+                        var _delta_ls = _delta_l - _slant_offset;
+                        var _delta_rs = _delta_r - _slant_offset;
+                        
+                        //Pack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
+                        //This must match what's in shd_scribble!
+                        var _packed_delta_lb  = floor(1000 + 10*_delta_l ) + 2000*floor(1000 + 10*_delta_b);
+                        var _packed_delta_rb  = floor(1000 + 10*_delta_r ) + 2000*floor(1000 + 10*_delta_b);
+                        var _packed_delta_lst = floor(1000 + 10*_delta_ls) + 2000*floor(1000 + 10*_delta_t);
+                        var _packed_delta_rst = floor(1000 + 10*_delta_rs) + 2000*floor(1000 + 10*_delta_t);
+                        
+                        var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
+                        
+                        if (_text_cycle)
+                        {
+                            var _colour = _text_cycle_colour;
+                        }
+                        else
+                        {
+                            var _colour = $FF000000 | _text_colour;
+                        }
+                        
+                        var _quad_u0 = _glyph_array[SCRIBBLE_GLYPH.U0];
+                        var _quad_v0 = _glyph_array[SCRIBBLE_GLYPH.V0];
+                        var _quad_u1 = _glyph_array[SCRIBBLE_GLYPH.U1];
+                        var _quad_v1 = _glyph_array[SCRIBBLE_GLYPH.V1];
+                        
+                        //                                                X                                                           Y                                           Character/Line Index                                              Centre dXdY                                  Sprite Data (unusued for text)                                Flags                                                      Colour                                                  U                                                  V
+                        buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_lst); buffer_write(_glyph_buffer, buffer_f32, 0); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
+                        buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_rb ); buffer_write(_glyph_buffer, buffer_f32, 0); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
+                        buffer_write(_glyph_buffer, buffer_f32, _quad_l                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_lb ); buffer_write(_glyph_buffer, buffer_f32, 0); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
+                        buffer_write(_glyph_buffer, buffer_f32, _quad_r                ); buffer_write(_glyph_buffer, buffer_f32, _quad_b); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_rb ); buffer_write(_glyph_buffer, buffer_f32, 0); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v1);
+                        buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_lst); buffer_write(_glyph_buffer, buffer_f32, 0); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u0); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
+                        buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_rst); buffer_write(_glyph_buffer, buffer_f32, 0); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
+                        
                         #endregion
-            
+                        
 	                    if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _character_code;
 	                    ++_meta_element_characters;
-            
+                        
 	                    _char_width = _glyph_array[SCRIBBLE_GLYPH.SEPARATION]*_text_scale;
 	                }
         
@@ -1333,7 +1361,7 @@ function scribble_cache()
     	                    var _buffer = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
     	                    if (_tell < buffer_tell(_buffer))
     	                    {
-	                            _line_offset_x = max(_line_offset_x, -(buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32)));
+                                _line_offset_x = max(_line_offset_x, -buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32));
                             }
                             
                             ++_v;
@@ -1401,13 +1429,13 @@ function scribble_cache()
 	                                    //Increment the line index by 1
 	                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) + 1);
                                         
-	                                    //Adjust glyph centre position
-	                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + _offset_x);
+	                                    //Adjust glyph position
+                                        buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32) + _offset_x);
                                         
 	                                     //If we're using a fixed line height, ensure that the glyph y-position is updated too
 	                                    if (_line_fixed_height)
 	                                    {
-	                                        buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + _line_height);
+	                                        buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32) + _line_height);
 	                                    }
                                         
 	                                    _tell += __SCRIBBLE_VERTEX.__SIZE;
@@ -1562,7 +1590,7 @@ function scribble_cache()
 	                                            __SCRIBBLE_MAX_LINES*(buffer_peek(_new_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) div __SCRIBBLE_MAX_LINES));
                         
 	                                //If we're using a fixed line height, reset this glyph's y-position
-	                                if (_line_fixed_height) buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32, _half_fixed_height);
+	                                if (_line_fixed_height) buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32, _half_fixed_height);
                         
 	                                _tell += __SCRIBBLE_VERTEX.__SIZE;
 	                            }
@@ -1816,7 +1844,7 @@ function scribble_cache()
 	                                if (_offset != 0)
 	                                {
 	                                    //We want to write to the CENTRE_X property of every vertex for horizontal alignment
-	                                    var _tell = _tell_a + __SCRIBBLE_VERTEX.CENTRE_X;
+	                                    var _tell = _tell_a + __SCRIBBLE_VERTEX.X;
 	                                    repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
 	                                    {
 	                                        //Poke the new value by adding the offset to the old value
@@ -1833,7 +1861,7 @@ function scribble_cache()
 	                            {
 	                                //Now let's do vertical alignment by writing to CENTRE_Y
 	                                var _line_y = _line_data[__SCRIBBLE_LINE.Y];
-	                                var _tell   = _tell_a + __SCRIBBLE_VERTEX.CENTRE_Y;
+	                                var _tell   = _tell_a + __SCRIBBLE_VERTEX.Y;
 	                                repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
 	                                {
 	                                    //Poke the new value by adding the offset to the old value
@@ -1911,13 +1939,13 @@ function scribble_cache()
 	                            var _packed_indexes = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32);
                             
 	                            //Read the top-left corner
-	                            var _l = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32);
-	                            var _t = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_Y, buffer_f32);
+                                var _l = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32);
+                                var _t = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32);
                             
 	                            //Read out the bottom-right corner
 	                            _tell += __SCRIBBLE_VERTEX.__SIZE;
-	                            var _r = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_X, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_X, buffer_f32);
-	                            var _b = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.CENTRE_Y, buffer_f32) + buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.DELTA_Y, buffer_f32);
+                                var _r = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32);
+                                var _b = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32);
                             
 	                            //Move to the next quad
 	                            _tell += __SCRIBBLE_GLYPH_BYTE_SIZE - __SCRIBBLE_VERTEX.__SIZE;
