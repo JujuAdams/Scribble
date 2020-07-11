@@ -502,6 +502,9 @@ function scribble_cache()
                             #region Style shorthands
                             
                             case "r":
+                            case "/b":
+                            case "/i":
+                            case "/bi":
                                 //Get the required font from the font family
                                 var _family_name = _font_data[__SCRIBBLE_FONT.FAMILY_NAME];
                                 if (_family_name == undefined)
