@@ -41,8 +41,8 @@ const int WINDOW_COUNT = 4;
 // Attributes, Varyings, and Uniforms
 
 
-attribute vec3 in_Position;     //{Centre X, Centre Y, Packed character & line index}
-attribute vec3 in_Normal;       //{Delta X, Delta Y, Bitpacked effect flags}
+attribute vec3 in_Position;     //{X, Y, Packed character & line index}
+attribute vec3 in_Normal;       //{Centre dX, Centre dY, Bitpacked effect flags}
 attribute vec4 in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
 attribute vec2 in_TextureCoord; //UVs
 
@@ -283,15 +283,15 @@ void main()
     float cycleFlag   = flagArray[7];
     
     //Use the input vertex position from the vertex attributes. Use our Z uniform because the z-component is used for other data
-    vec2 centre = in_Position.xy;
-    vec2 pos = centre + in_Normal.xy; //The actual position of this vertex is the central point plus the delta
+    vec2 pos = in_Position.xy;
+    vec2 centre = pos + in_Normal.xy;
     
     //Vertex animation
-    pos.xy = wobble(pos.xy, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
-    pos.xy = pulse( pos.xy, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
-    pos.xy = wave(  pos.xy, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
-    pos.xy = wheel( pos.xy, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
-    pos.xy = shake( pos.xy, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
+    pos.xy = wobble(pos, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
+    pos.xy = pulse( pos, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
+    pos.xy = wave(  pos, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
+    pos.xy = wheel( pos, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
+    pos.xy = shake( pos, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
     
     //Colour
     v_vColour  = handleSprites(spriteFlag, in_Colour); //Use RGBA information to filter out sprites

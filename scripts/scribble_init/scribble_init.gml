@@ -99,11 +99,11 @@ enum __SCRIBBLE_VERTEX_BUFFER
 
 enum __SCRIBBLE_VERTEX
 {
-    CENTRE_X       =  0,
-    CENTRE_Y       =  4,
+    X              =  0,
+    Y              =  4,
     PACKED_INDEXES =  8,
-    DELTA_X        = 12,
-    DELTA_Y        = 16,
+    CENTRE_DX      = 12,
+    CENTRE_DY      = 16,
     EFFECT_FLAGS   = 20,
     COLOUR         = 24,
     U              = 28,
