@@ -851,6 +851,7 @@ if (_build)
                                                     #region Add sprite to buffers
                                                     
                                                     var _image = _image_index;
+                                                    var _image_count = 0;
                                                     repeat(_sprite_number)
                                                     {
                                                         //Swap texture and buffer if needed
@@ -870,7 +871,7 @@ if (_build)
                                                         var _quad_b = _quad_t   + _uvs[7]*_sprite_height;
                                                         
                                                         var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_text_scale*_text_slant*(_quad_b - _quad_t);
-                                                        var _sprite_data = 4096*floor(1024*_image_speed) + 64*_sprite_number + _image;
+                                                        var _sprite_data = 4096*floor(1024*_image_speed) + 64*_sprite_number + _image_count;
                                                         
                                                         var _quad_cx = 0.5*(_quad_l + _quad_r);
                                                         var _quad_cy = 0.5*(_quad_t + _quad_b);
@@ -898,6 +899,7 @@ if (_build)
                                                         buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_rst); buffer_write(_glyph_buffer, buffer_f32, _sprite_data); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[2]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
                                                         
                                                         _image = (_image + 1) mod _sprite_number;
+                                                        _image_count++;
                                                     }
                                                     
                                                     #endregion
