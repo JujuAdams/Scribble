@@ -201,7 +201,7 @@ vec4 cycle(float characterIndex, float speed, float saturation, float value, vec
 }
 
 //Fade effect for typewriter etc.
-float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index)
+float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index, bool invert)
 {
     float result = 0.0;
     float f      = 1.0;
@@ -226,6 +226,8 @@ float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index)
         
         result = max(f, result);
     }
+    
+    if (invert) result = 1.0 - result;
     
     return result;
 }
@@ -300,7 +302,7 @@ void main()
     {
         //Choose our index based on what method's being used: if the method value == 1.0 then we're using character indexes, otherwise we use line indexes
         float index = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
-        v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0);
+        v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0, (u_fTypewriterMethod < 0.0));
     }
     
     if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use RGBA information to filter out sprites
