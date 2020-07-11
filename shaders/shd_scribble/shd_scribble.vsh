@@ -282,9 +282,14 @@ void main()
     float wheelFlag   = flagArray[6];
     float cycleFlag   = flagArray[7];
     
-    //Use the input vertex position from the vertex attributes. Use our Z uniform because the z-component is used for other data
+    //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
     vec2 pos = in_Position.xy;
-    vec2 centre = pos + in_Normal.xy;
+    
+    //Unpack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
+    vec2 centre;
+    centre.y = floor(in_Normal.x/2000.0);
+    centre.x = centre.x - centre.y*2000.0;
+    centre = pos + (centre - 1000.0)/10.0;
     
     //Vertex animation
     pos.xy = wobble(pos, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
