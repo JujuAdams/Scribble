@@ -135,6 +135,14 @@
             }
         },
         {
+            "Key": "1fa6dab1-b12c-452b-aee0-f9ca330b7b36",
+            "Value": {
+                "id": "dc61f02d-ea98-425d-adf9-a29fe0f1156f",
+                "resourcePath": "sprites\\spr_white_coin\\spr_white_coin.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "21e1fca2-32ef-46d3-9938-44552cc93b4e",
             "Value": {
                 "id": "156b8738-870e-4dc1-b292-95c2b93ff05f",
