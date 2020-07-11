@@ -1,4 +1,5 @@
-<h1 align="center">Scribble 6.0.7</h1>
+<p align="center"><img src="https://raw.githubusercontent.com/JujuAdams/scribble/master/LOGO.png" style="display:block; margin:auto; width:300px"></p>
+<h1 align="center">6.0.7</h1>
 
 <p align="center">A modern text renderer for GameMaker Studio 2 by <b>@jujuadams</b></p>
 
