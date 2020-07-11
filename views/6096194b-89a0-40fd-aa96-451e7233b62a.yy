@@ -9,8 +9,10 @@
         "deff0038-d64f-4e48-906a-3fae940cb2d8",
         "fc4d3d70-13fe-41d2-89bc-e393584c2d8a",
         "c12cc634-2eb4-4bda-8995-15da4a61661b",
+        "2e61ac2b-9958-47b3-9ac3-61093275aa07",
         "0468d537-83df-41bc-8ce0-08d69b6db1cf",
-        "977b75d1-2f58-4f47-956b-6a720645d852"
+        "977b75d1-2f58-4f47-956b-6a720645d852",
+        "5590a779-f85c-4a53-b85f-3efd0de9f03f"
     ],
     "filterType": "GMObject",
     "folderName": "Tests",
