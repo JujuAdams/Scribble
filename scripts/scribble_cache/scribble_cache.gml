@@ -1723,11 +1723,11 @@ if (_build)
                 _element_max_x += _delta div 2;
             }
         }
-
+        
         _scribble_array[@ SCRIBBLE.MIN_X] = _element_min_x;
         _scribble_array[@ SCRIBBLE.MAX_X] = _element_max_x;
         _scribble_array[@ SCRIBBLE.WIDTH] = _element_max_x - _element_min_x;
-
+        
         #endregion
 
 
