@@ -790,7 +790,17 @@ function scribble_cache()
                                                             _image_speed = 4;
                                                         }
                                                         
-                                                        var _colour = _text_cycle? _text_cycle_colour : ($FF000000 | _text_colour);
+                                                        if (SCRIBBLE_COLORIZE_SPRITES)
+                                                        {
+                                                            var _colour = _text_cycle? _text_cycle_colour : ($FF000000 | _text_colour);
+                                                            var _reset_cycle = false;
+                                                        }
+                                                        else
+                                                        {
+                                                            var _colour = $FFFFFFFF;
+                                                            var _reset_cycle = ((_text_effect_flags & (1 << global.__scribble_effects[? "cycle"])) > 0);
+                                                            _text_effect_flags = ~((~_text_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
+                                                        }
                                                         
 	                                                    if (_image_speed <= 0)
 	                                                    {
@@ -916,6 +926,7 @@ function scribble_cache()
                                                         #endregion
                                                         
 	                                                    _text_effect_flags = ~((~_text_effect_flags) | 1); //Reset animated sprite effect flag specifically
+                                                        if (_reset_cycle) _text_effect_flags |= (1 << global.__scribble_effects[? "cycle"]);
                                                         
 	                                                    if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _command_name;
 	                                                    ++_meta_element_characters;
