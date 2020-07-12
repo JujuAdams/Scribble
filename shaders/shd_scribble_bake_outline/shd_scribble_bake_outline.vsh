@@ -1,4 +1,4 @@
-//   @jujuadams   v6.0.8   2020-07-11
+//   @jujuadams   v6.0.8b   2020-07-12
 
 attribute vec3 in_Position;
 attribute vec4 in_Colour;
