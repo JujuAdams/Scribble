@@ -34,9 +34,9 @@
 /// The object will draw the text Here's some rumble!, slowly revealling the text character by character.
 /// When the e of the word some is displayed, Scribble will automatically call the script callbackRumble().
 /// 
-///    /// @description callbackRumble(element, parameterArray)
-///    /// @param element
-///    /// @param parameterArray
+///    /// description callbackRumble(element, parameterArray)
+///    /// param element
+///    /// param parameterArray
 ///    
 ///    var _element = argument0; //Not used but good practice to label it
 ///    var _parameter_array = argument1;
