@@ -119,6 +119,14 @@
             }
         },
         {
+            "Key": "12f5f114-761b-4b38-b3b1-bc1469ae95ea",
+            "Value": {
+                "id": "e6e1d2fe-7ddc-4551-8d16-f79bc4ba08b4",
+                "resourcePath": "datafiles_yy\\Fonts\\fnt_dialogue_2.yy.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "16333f16-885e-4b0b-98e8-9726a0f9c0b0",
             "Value": {
                 "id": "81a8eb01-5d70-40a0-9a17-20b2193afe01",
@@ -279,6 +287,14 @@
             }
         },
         {
+            "Key": "44300623-0dc7-4455-878b-fc07ee1b9a33",
+            "Value": {
+                "id": "7f58b5f9-a7da-4d7a-86b2-bc1fcb45bbef",
+                "resourcePath": "rooms\\rm_example_dialogue\\rm_example_dialogue.yy",
+                "resourceType": "GMRoom"
+            }
+        },
+        {
             "Key": "4623e565-3c0d-42a1-ba82-fb6bc9d22073",
             "Value": {
                 "id": "ee8d304a-3cf5-4301-be3d-abc74288d643",
@@ -295,11 +311,27 @@
             }
         },
         {
+            "Key": "49645d62-d811-4033-accd-2e936bb9ed66",
+            "Value": {
+                "id": "468a7a4a-51fc-49ad-85d2-95e765882ed9",
+                "resourcePath": "objects\\obj_example_dialogue\\obj_example_dialogue.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "498aa41e-7fb7-49e3-b663-74ba62e7a8e6",
             "Value": {
                 "id": "cc2420ed-f1fb-4e79-b1cf-8d664e6c88c2",
                 "resourcePath": "scripts\\scribble_autotype_set_sound\\scribble_autotype_set_sound.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "4ddf6f28-90cb-432c-8c70-f0275d81b410",
+            "Value": {
+                "id": "0def6838-8284-4c53-8e61-badee9adcb90",
+                "resourcePath": "fonts\\fnt_dialogue_2\\fnt_dialogue_2.yy",
+                "resourceType": "GMFont"
             }
         },
         {
@@ -460,6 +492,14 @@
                 "id": "083e125c-cd32-411f-8058-47a354b81a88",
                 "resourcePath": "scripts\\scribble_get_height\\scribble_get_height.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "6fcc1234-3b1b-4f4b-a5ce-5aaff866812e",
+            "Value": {
+                "id": "a44a0918-bfce-4deb-b926-085e45e9d794",
+                "resourcePath": "datafiles_yy\\Fonts\\fnt_style_invalid.yy.yy",
+                "resourceType": "GMIncludedFile"
             }
         },
         {
@@ -655,14 +695,6 @@
             }
         },
         {
-            "Key": "8ee72380-5c30-4d77-9904-b3f4ea89261b",
-            "Value": {
-                "id": "b5f671aa-8b2f-474a-85fb-d6ae59bf4572",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_style_invalid.yy.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
             "Key": "93566aad-c3b3-48a9-8fa7-9c5ee19f74ac",
             "Value": {
                 "id": "1cee5268-8b35-41a3-890f-d73bbcbe5ce0",
@@ -695,6 +727,14 @@
             }
         },
         {
+            "Key": "96303d1e-c5de-4815-9ac8-5655591fe388",
+            "Value": {
+                "id": "867090ff-a1dd-4e8c-9d5c-b87cc46e456b",
+                "resourcePath": "scripts\\example_dialogue_set_portrait\\example_dialogue_set_portrait.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "977b75d1-2f58-4f47-956b-6a720645d852",
             "Value": {
                 "id": "ae90b48c-be44-4d75-b5e4-86d052348ef8",
@@ -708,6 +748,14 @@
                 "id": "81c9abcf-8081-4d51-a544-be7cac5bf2de",
                 "resourcePath": "views\\9a14b894-4693-4a4a-a152-7ede094c183a.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "9cc5e176-8f61-42b8-932e-fef826c5860d",
+            "Value": {
+                "id": "afcf7370-4398-4168-99b3-3b49696d3e39",
+                "resourcePath": "scripts\\example_dialogue_set_name\\example_dialogue_set_name.yy",
+                "resourceType": "GMScript"
             }
         },
         {
@@ -876,6 +924,14 @@
                 "id": "09d8fe21-21af-46e7-aaa1-90c9a386db22",
                 "resourcePath": "fonts\\fnt_style_invalid\\fnt_style_invalid.yy",
                 "resourceType": "GMFont"
+            }
+        },
+        {
+            "Key": "b6197db3-904a-4b85-be82-b87c638d153a",
+            "Value": {
+                "id": "9ec16b05-6b77-49dd-b7b4-7a3ae7b6c5c5",
+                "resourcePath": "sprites\\spr_portrait\\spr_portrait.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1199,6 +1255,14 @@
             }
         },
         {
+            "Key": "fbf216b1-54fa-415c-82e4-0c876e7f9a8f",
+            "Value": {
+                "id": "34df34b9-aa9b-4aaf-8f46-f87a98f0e6f2",
+                "resourcePath": "sprites\\spr_portrait_2\\spr_portrait_2.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "fc4d3d70-13fe-41d2-89bc-e393584c2d8a",
             "Value": {
                 "id": "f8becd18-dc5c-4300-8694-e7d76125dd67",
@@ -1275,7 +1339,9 @@
         "33d5be74-110c-452d-869e-77397af81567",
         "7f249531-321e-43d7-92bc-258842287e9d",
         "16333f16-885e-4b0b-98e8-9726a0f9c0b0",
-        "75555384-7db7-4904-89d6-33a402f4113b"
+        "75555384-7db7-4904-89d6-33a402f4113b",
+        "96303d1e-c5de-4815-9ac8-5655591fe388",
+        "9cc5e176-8f61-42b8-932e-fef826c5860d"
     ],
     "tutorial": ""
 }
