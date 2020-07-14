@@ -44,7 +44,7 @@ if (is_array(_draw_string))
         _build = false;
     }
 }
-else if SCRIBBLE_AUTOMATIC_CHARIOT_RETURN
+else if (SCRIBBLE_AUTOMATIC_CHARIOT_RETURN)
 {
 	_draw_string = string_replace_all(_draw_string, "\\n", "\n");
 }

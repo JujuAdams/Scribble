@@ -10,6 +10,8 @@
 #macro SCRIBBLE_DEFAULT_DELAY_DURATION        450    //Default duration of the [delay] command, in milliseconds
 #macro SCRIBBLE_AUTOMATIC_CHARIOT_RETURN      true   //Automatically replace \\n in strings with \n
 
+
+
 #region Advanced Features
 
 #macro SCRIBBLE_STEP_SIZE                 1         //The animation step size. The default command here uses delta_time ensures that animations are smooth at all framerates
