@@ -1,7 +1,7 @@
 /// Prepares Scribble for use. This script should be called before any other Scribble scripts
 /// 
 /// Returns: Whether initialisation was successful
-/// @param fontDirectory    The directory to look in (relative to game_save_id) for font .yy files
+/// @param fontDirectory    The directory to look in for font .yy files, relative to the root folder that Included Files are stored in
 /// @param defaultFont      The name of the default Scribble font to use, as a string
 /// @param autoScan         Whether or not to automatically find font .yy files in the font directory
 ///                         N.B. This only works for normal fonts
