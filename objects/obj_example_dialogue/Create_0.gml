@@ -13,7 +13,7 @@ textbox_portrait           = -1;
 textbox_name               = undefined;
 textbox_conversation_index = 0;
 
-textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave][rainbow]Scribble " + __SCRIBBLE_VERSION + "![/rainbow][/wave]\n\n\n[slant]Please press space to advance the conversation[/slant]",
+textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave][rainbow][jitter]Scribble " + __SCRIBBLE_VERSION + "![/rainbow][/wave]\n\n\n[slant]Please press space to advance the conversation[/slant]",
                         "This example will show you how to make a simple dialogue system.[delay] This won't be an exhaustive demo but it should show you enough to get excited about what you can achieve with [rainbow]Scribble[/rainbow].",
                         "Let's try changing this font to something more gamey\n[spr_sprite_font][delay].[delay].[delay].[delay]\nMuch better![delay] [rainbow]Scribble[/rainbow] lets you change font in the middle of a string using simple tags.[delay] In this case, we switched to a spritefont (which work the same way as GM's font_add_ext, more or less)",
                         "Switching colours is easy too. Check this out:\n[delay][c_red]Richard [c_orange]Of [c_yellow]York [c_lime]Gave [c_blue]Battle [c_fuchsia]In [c_purple]Vain[/][delay]\n\nThis is all done using in-line tags!\n[spr_sprite_font]it's super easy c:",

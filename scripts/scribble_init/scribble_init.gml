@@ -3,7 +3,7 @@
 /// Returns: Whether initialisation was successful
 /// @param fontDirectory    The directory to look in for font .yy files, relative to the root folder that Included Files are stored in
 /// @param defaultFont      The name of the default Scribble font to use, as a string
-/// @param autoScan         Whether or not to automatically find font .yy files in the font directory
+/// @param autoscan         Whether or not to automatically find font .yy files in the font directory
 ///                         N.B. This only works for normal fonts
 
 
@@ -359,6 +359,7 @@ global.__scribble_effects[?       "wobble"  ] = 4;
 global.__scribble_effects[?       "pulse"   ] = 5;
 global.__scribble_effects[?       "wheel"   ] = 6;
 global.__scribble_effects[?       "cycle"   ] = 7;
+global.__scribble_effects[?       "jitter" ] = 8;
 global.__scribble_effects_slash[? "/wave"   ] = 1;
 global.__scribble_effects_slash[? "/shake"  ] = 2;
 global.__scribble_effects_slash[? "/rainbow"] = 3;
@@ -366,6 +367,7 @@ global.__scribble_effects_slash[? "/wobble" ] = 4;
 global.__scribble_effects_slash[? "/pulse"  ] = 5;
 global.__scribble_effects_slash[? "/wheel"  ] = 6;
 global.__scribble_effects_slash[? "/cycle"  ] = 7;
+global.__scribble_effects_slash[? "/jitter" ] = 8;
 
 //Create a vertex format for our text
 vertex_format_begin();
