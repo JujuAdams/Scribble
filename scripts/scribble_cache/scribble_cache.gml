@@ -287,7 +287,16 @@ function scribble_cache()
 	            var _character_code = buffer_read(_string_buffer, buffer_u8);
 	            if (_character_code == 0) break;
 	            _add_character = true;
-            
+                
+                if (SCRIBBLE_FIX_ESCAPED_NEWLINES)
+                {
+                    if ((_character_code == 92) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) == 110)) //Backslash followed by "n"
+                    {
+                        buffer_seek(_string_buffer, buffer_seek_relative, 1);
+                        _character_code = 10;
+                    }
+                }
+                
 	            if (_command_tag_start >= 0) //If we're in a command tag
 	            {
 	                if (_character_code == SCRIBBLE_COMMAND_TAG_CLOSE) //If we've hit a command tag close character (usually ])
