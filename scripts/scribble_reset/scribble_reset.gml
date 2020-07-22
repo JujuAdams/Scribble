@@ -24,7 +24,7 @@ function scribble_reset()
     scribble_set_animation(SCRIBBLE_ANIM.WAVE_SIZE       ,  4   );
     scribble_set_animation(SCRIBBLE_ANIM.WAVE_FREQ       , 50   );
     scribble_set_animation(SCRIBBLE_ANIM.WAVE_SPEED      ,  0.2 );
-    scribble_set_animation(SCRIBBLE_ANIM.SHAKE_SIZE      ,  4   );
+    scribble_set_animation(SCRIBBLE_ANIM.SHAKE_SIZE      ,  2   );
     scribble_set_animation(SCRIBBLE_ANIM.SHAKE_SPEED     ,  0.4 );
     scribble_set_animation(SCRIBBLE_ANIM.RAINBOW_WEIGHT  ,  0.5 );
     scribble_set_animation(SCRIBBLE_ANIM.RAINBOW_SPEED   ,  0.01);
