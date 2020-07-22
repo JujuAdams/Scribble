@@ -1,6 +1,6 @@
 //   @jujuadams   v6.0.8b   2020-07-12
 
-const int MAX_EFFECTS = 8;
+const int MAX_EFFECTS = 9;
 //By default, the effect indexes are:
 //0 = is an animated sprite
 //1 = wave
@@ -10,8 +10,9 @@ const int MAX_EFFECTS = 8;
 //5 = pulse
 //6 = wheel
 //7 = cycle
+//8 = jitter
 
-const int MAX_ANIM_FIELDS = 17;
+const int MAX_ANIM_FIELDS = 20;
 //By default, the data fields are:
 // 0 = wave amplitude
 // 1 = wave frequency
@@ -30,6 +31,9 @@ const int MAX_ANIM_FIELDS = 17;
 //14 = cycle speed
 //15 = cycle saturation
 //16 = cycle value
+//17 = jitter minimum scale
+//18 = jitter maximum scale
+//19 = jitter speed
 
 const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
 
@@ -155,7 +159,18 @@ vec2 shake(vec2 position, float characterIndex, float magnitude, float speed)
     vec2 delta = vec2(rand(vec2(149.0*characterIndex + 13.0*floorTime, 727.0*characterIndex - 331.0*floorTime)),
                       rand(vec2(501.0*characterIndex - 19.0*floorTime, 701.0*characterIndex + 317.0*floorTime)));
     
-    return position + magnitude*merge*(2.0*delta-1.0);
+    return position + magnitude*merge*(2.0*delta - 1.0);
+}
+
+//Jitter the character scale, using a similar method to above
+vec2 jitter(vec2 position, vec2 centre, float characterIndex, float mini, float maxi, float speed)
+{
+    float floorTime = floor(speed*u_fTime + 0.5);
+    
+    //Use some misc prime numbers to try to get a varied-looking jitter
+    float delta = rand(vec2(149.0*characterIndex + 13.0*floorTime, 727.0*characterIndex - 331.0*floorTime));
+    
+    return scale(position, centre, mix(mini, maxi, delta));
 }
 
 float filterSprite(float spriteData)
@@ -263,6 +278,9 @@ void main()
     float cycleSpeed      = u_aDataFields[14];
     float cycleSaturation = u_aDataFields[15];
     float cycleValue      = u_aDataFields[16];
+    float jitterMinimum   = u_aDataFields[17];
+    float jitterMaximum   = u_aDataFields[18];
+    float jitterSpeed     = u_aDataFields[19];
     
     //Unpack the effect flag bits into an array, then into variables for readability
     float flagArray[MAX_EFFECTS]; unpackFlags(in_Normal.z, flagArray);
@@ -274,6 +292,7 @@ void main()
     float pulseFlag   = flagArray[5];
     float wheelFlag   = flagArray[6];
     float cycleFlag   = flagArray[7];
+    float jitterFlag  = flagArray[8];
     
     //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
     vec2 pos = in_Position.xy;
@@ -290,6 +309,7 @@ void main()
     pos.xy = wave(  pos, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
     pos.xy = wheel( pos, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
     pos.xy = shake( pos, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
+    if (jitterFlag > 0.5) pos.xy = jitter(pos, centre, characterIndex, jitterMinimum, jitterMaximum, jitterSpeed); //Apply the jitter effect
     
     //Colour
     v_vColour = in_Colour;

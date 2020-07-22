@@ -38,4 +38,7 @@ function scribble_reset()
     scribble_set_animation(SCRIBBLE_ANIM.CYCLE_SPEED     ,  0.3 );
     scribble_set_animation(SCRIBBLE_ANIM.CYCLE_SATURATION,  255 );
     scribble_set_animation(SCRIBBLE_ANIM.CYCLE_VALUE     ,  255 );
+    scribble_set_animation(SCRIBBLE_ANIM.JITTER_MINIMUM  ,  0.8 );
+    scribble_set_animation(SCRIBBLE_ANIM.JITTER_MAXIMUM  ,  1.2 );
+    scribble_set_animation(SCRIBBLE_ANIM.JITTER_SPEED    ,  0.4 );
 }
