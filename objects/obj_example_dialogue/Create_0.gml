@@ -13,13 +13,13 @@ textbox_portrait           = -1;
 textbox_name               = undefined;
 textbox_conversation_index = 0;
 
-textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave][rainbow][jitter]Scribble " + __SCRIBBLE_VERSION + "![/rainbow][/wave]\\n\\n\\n[slant]Please press space to advance the conversation[/slant]",
+textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave][rainbow]Scribble " + __SCRIBBLE_VERSION + "![/rainbow][/wave]\n\n\n[slant]Please press space to advance the conversation[/slant]",
                         "This example will show you how to make a simple dialogue system.[delay] This won't be an exhaustive demo but it should show you enough to get excited about what you can achieve with [rainbow]Scribble[/rainbow].",
                         "Let's try changing this font to something more gamey\n[spr_sprite_font][delay].[delay].[delay].[delay]\nMuch better![delay] [rainbow]Scribble[/rainbow] lets you change font in the middle of a string using simple tags.[delay] In this case, we switched to a spritefont (which work the same way as GM's font_add_ext, more or less)",
                         "Switching colours is easy too. Check this out:\n[delay][c_red]Richard [c_orange]Of [c_yellow]York [c_lime]Gave [c_blue]Battle [c_fuchsia]In [c_purple]Vain[/][delay]\n\nThis is all done using in-line tags!\n[spr_sprite_font]it's super easy c:",
                         "You might have noticed that we can [delay,200]d[delay,200]e[delay,200]l[delay,200]a[delay,200]y[delay,200] text as it appears. We can also pause and wait for user input... [pause]...whenever we want as well.",
                         "Here're some in-line sprites: [spr_coin][spr_large_coin][spr_coin]. Sprites can be thrown in [spr_coin,0] wherever [spr_coin,1] you [spr_coin,2] like [spr_coin,3]. There's no performance penalty to using them!",
-                        "Here's a quick demonstration of some animated effects:\n\n[wave]waaaaaaave![/wave]   [shake]oh no i'm scared =c[/shake]   [wobble]Jiggle jelly on a plate[/wobble]   [rainbow]All the colours of the rainbow[/rainbow]   [pulse]PULSE[/pulse]   [wheel]You spin me right round baby[/wheel]   [cycle,60,70,80,70]Colour cycling[/cycle]",
+                        "Here's a quick demonstration of some animated effects:\n\n[wave]waaaaaaave![/wave]   [shake]oh no i'm scared =c[/shake]   [wobble]Jiggle jelly on a plate[/wobble]   [rainbow]All the colours of the rainbow[/rainbow]   [pulse]PULSE[/pulse]   [wheel]You spin me right round baby[/wheel]   [cycle,60,70,80,70]Colour cycling[/cycle] [jitter]nEeD cOFfeE[/jitter]",
                         "These can of course be combined together:\n\n[fnt_style][wave][wheel][cycle,100,110,150,200]wooo[b]ooooo[bi]ooooo[i]oooo[r]oooow[/]",
                         "But that's enough about formatting, what about events?[delay] Events can be used for a ton of different things, but here we use them to change portrait sprite and portrait name.",
                         "[portrait,spr_portrait_2][name,You][fnt_dialogue_2]Oh! Am I talking now?",
