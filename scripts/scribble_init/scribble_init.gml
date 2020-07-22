@@ -267,7 +267,7 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	if (!__SCRIBBLE_ON_WEB)
 	{
 	    //Check if the directory exists
-	    if (!directory_exists(_font_directory))
+	    if ((_font_directory != "") && !directory_exists(_font_directory))
 	    {
 	        show_debug_message("Scribble: WARNING! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
 	    }
