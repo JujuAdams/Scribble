@@ -269,7 +269,7 @@ else
     
 	shader_set(_shader);
 	shader_set_uniform_f(shader_get_uniform(_shader, "u_vTexel"), texture_get_texel_width(_texture), texture_get_texel_height(_texture));
-	draw_surface(0, 0, _surface_0);
+	draw_surface(_surface_0, 0, 0);
 	shader_reset();
     
 	gpu_set_tex_filter(_old_filter);
@@ -279,6 +279,7 @@ else
 	//Make a sprite from the effect surface to make the texture stick
 	var _sprite = sprite_create_from_surface(_surface_1, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
 	surface_free(_surface_0);
+	surface_free(_surface_1);
 	vertex_delete_buffer(_vbuff);
     
     
