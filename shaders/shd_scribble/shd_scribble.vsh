@@ -156,8 +156,8 @@ vec2 shake(vec2 position, float characterIndex, float magnitude, float speed)
     float merge = 1.0 - abs(2.0*(time - floorTime) - 1.0);
     
     //Use some misc prime numbers to try to get a varied-looking shake
-    vec2 delta = vec2(rand(vec2(149.0*characterIndex + 13.0*floorTime, 727.0*characterIndex - 331.0*floorTime)),
-                      rand(vec2(501.0*characterIndex - 19.0*floorTime, 701.0*characterIndex + 317.0*floorTime)));
+    vec2 delta = vec2(rand(vec2(characterIndex/149.0 + floorTime/13.0, characterIndex/727.0 - floorTime/331.0)),
+                      rand(vec2(characterIndex/501.0 - floorTime/19.0, characterIndex/701.0 + floorTime/317.0)));
     
     return position + magnitude*merge*(2.0*delta - 1.0);
 }
@@ -168,7 +168,7 @@ vec2 jitter(vec2 position, vec2 centre, float characterIndex, float mini, float 
     float floorTime = floor(speed*u_fTime + 0.5);
     
     //Use some misc prime numbers to try to get a varied-looking jitter
-    float delta = rand(vec2(149.0*characterIndex + 13.0*floorTime, 727.0*characterIndex - 331.0*floorTime));
+    float delta = rand(vec2(characterIndex/149.0 + floorTime/13.0, characterIndex/727.0 - floorTime/331.0));
     
     return scale(position, centre, mix(mini, maxi, delta));
 }
@@ -318,7 +318,7 @@ void main()
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
     
     //Apply fade (if we're given a method)
-    if (u_fTypewriterMethod != 0.0)
+    if (abs(u_fTypewriterMethod) > 0.5)
     {
         //Choose our index based on what method's being used: if the method value == 1.0 then we're using character indexes, otherwise we use line indexes
         float index = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
