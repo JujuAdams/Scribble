@@ -206,6 +206,7 @@ function scribble_cache()
         
 	        var _meta_page_lines = 0;
 	        var _word_start_char = 0;
+            var _word_height     = 0;
         
 	        var _page_array        = array_create(__SCRIBBLE_PAGE.__SIZE);
 	        var _page_lines_array  = []; //Stores each line of text (per page)
@@ -472,6 +473,7 @@ function scribble_cache()
                                 _char_width = _font_space_width*_text_scale;
                                 _line_width = max(_line_width, _text_x);
                                 if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+                                _word_height = max(_word_height, _font_line_height*_text_scale); //Update the word height
                                 
                                 if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = 32; //Space
                                 ++_meta_element_characters;
@@ -775,6 +777,7 @@ function scribble_cache()
 	                                                    var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
 	                                                    _char_width  = _sprite_width;
 	                                                    if (!_line_fixed_height) _line_height = max(_line_height, _sprite_height); //Change our line height if it's not fixed
+                                                        _word_height = max(_word_height, _sprite_height); //Update the word height
                                                         
                                                         if (_sprite_number >= 64)
                                                         {
@@ -1073,6 +1076,7 @@ function scribble_cache()
 	                            _char_width    = 0;
 	                            _line_width    = max(_line_width, _text_x);
 	                            if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+                                //Note that forcing a newline will reset the word height to 0
 	                        }
 	                        else
 	                        {
@@ -1131,6 +1135,7 @@ function scribble_cache()
 	                _char_width    = 0;
 	                _line_width    = max(_line_width, _text_x);
 	                if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+                    //Note that forcing a newline will reset the word height to 0
                 
 	                if (global.__scribble_character_delay)
 	                {
@@ -1153,6 +1158,7 @@ function scribble_cache()
 	                _line_has_space = true;
 	                _line_width     = max(_line_width, _text_x);
 	                if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+                    _word_height = 0; //Reset the word height since we hit a space
                 
 	                //Iterate over all the vertex buffers we've been using and reset the word start position
 	                var _v = 0;
@@ -1363,6 +1369,7 @@ function scribble_cache()
         
 	                //Choose the height of a space for the character's height
 	                if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+                    _word_height = max(_word_height, _font_line_height*_text_scale); //Update the word height
                 
 	                if (global.__scribble_character_delay)
 	                {
@@ -1386,6 +1393,9 @@ function scribble_cache()
 	            {
 	                var _line_offset_x = -_text_x;
                     
+                    //If we're forcing a newline then we want to reset the word height too
+                    if (_force_newline) _word_height = 0;
+                    
                     if (!_force_newline)
                     {
     	                var _v = 0;
@@ -1404,7 +1414,7 @@ function scribble_cache()
     	                        var _tell = _data[__SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL];
     	                    }
                             
-    	                    //If we've added anything to this buffer
+    	                    //If we've added anything to this buffer then we need to figure out how far we need to offset it on the x-axis
     	                    var _buffer = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER];
     	                    if (_tell < buffer_tell(_buffer))
     	                    {
@@ -1516,7 +1526,7 @@ function scribble_cache()
 	                _line_y        += _line_height;
 	                _line_has_space = false;
 	                _line_width     = 0;
-	                _line_height    = _line_min_height;
+	                _line_height    = max(_line_min_height, _word_height);
 	                if (_line_fixed_height) _text_y += _line_height;
                 
 	                //Create a new line
