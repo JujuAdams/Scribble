@@ -325,20 +325,28 @@ function scribble_draw()
             var _box_h = _scribble_array[SCRIBBLE.HEIGHT];
         }
         
-	    switch(global.scribble_state_box_halign)
-	    {
-            case fa_center: var _left = -(_box_w div 2); break;
-            case fa_right:  var _left = -_box_w;         break;
-            default:        var _left = 0;               break;
-	    }
-    
-	    switch(global.scribble_state_box_valign)
-	    {
-            case fa_middle: var _top = -(_box_h div 2); break;
-            case fa_bottom: var _top = -_box_h;         break;
-            default:        var _top = 0;               break;
-	    }
-    
+        var _left = 0;
+        var _top  = 0;
+        
+        //Figure out the left/top offset
+        switch(global.scribble_state_box_halign)
+        {
+            case fa_center: _left -= _box_w div 2; break;
+            case fa_right:  _left -= _box_w;       break;
+        }
+        
+        switch(global.scribble_state_box_valign)
+        {
+            case fa_middle: _top -= _box_h div 2; break;
+            case fa_bottom: _top -= _box_h;       break;
+        }
+        
+        switch(_scribble_array[SCRIBBLE.VALIGN])
+        {
+            case fa_middle: _top -= _box_h div 2; break;
+            case fa_bottom: _top -= _box_h;       break;
+        }
+        
 	    //Build a matrix to transform the text...
 	    if ((global.scribble_state_xscale == 1)
 	    &&  (global.scribble_state_yscale == 1)

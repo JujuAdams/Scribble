@@ -168,6 +168,7 @@ function scribble_cache()
 	        _scribble_array[@ SCRIBBLE.MIN_X           ] = 0;
 	        _scribble_array[@ SCRIBBLE.MAX_X           ] = 0;
 	        _scribble_array[@ SCRIBBLE.HEIGHT          ] = 0;
+            _scribble_array[@ SCRIBBLE.VALIGN          ] = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
 	        _scribble_array[@ SCRIBBLE.CHARACTERS      ] = 0;
 	        _scribble_array[@ SCRIBBLE.LINES           ] = 0;
 	        _scribble_array[@ SCRIBBLE.PAGES           ] = 0;
@@ -260,7 +261,10 @@ function scribble_cache()
 	        var _text_slant        = false;
             var _text_cycle        = false;
             var _text_cycle_colour = 0x00000000;
-        
+            
+            var _new_halign = undefined;
+            var _new_valign = undefined;
+            
             #endregion
 
 
@@ -302,21 +306,20 @@ function scribble_cache()
 	                if (_character_code == SCRIBBLE_COMMAND_TAG_CLOSE) //If we've hit a command tag close character (usually ])
 	                {
 	                    _add_character = false;
-                    
+                        
 	                    //Increment the parameter count and place a null byte for string reading
 	                    ++_command_tag_parameters;
 	                    buffer_poke(_string_buffer, buffer_tell(_string_buffer)-1, buffer_u8, 0);
-            
+                        
 	                    //Jump back to the start of the command tag and read out strings for the command parameters
 	                    buffer_seek(_string_buffer, buffer_seek_start, _command_tag_start);
 	                    repeat(_command_tag_parameters) ds_list_add(_parameters_list, buffer_read(_string_buffer, buffer_string));
-            
+                        
 	                    //Reset command tag state
 	                    _command_tag_start = -1;
-        
+                        
                         #region Command tag handling
-            
-	                    var _new_halign = undefined;
+                        
 	                    _command_name = _parameters_list[| 0];
 	                    switch(_command_name)
 	                    {
@@ -328,69 +331,66 @@ function scribble_cache()
 	                            _text_effect_flags = 0;
 	                            _text_scale        = 1;
 	                            _text_slant        = false;
-                            
+                                
 	                            _font_data         = global.__scribble_font_data[? _text_font];
 	                            _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
 	                            _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
 	                            _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
 	                            _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                            
+                                
 	                            var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
 	                            _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
 	                            _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-                            
+                                
 	                            continue; //Skip the rest of the parser step
 	                        break;
-                
+                            
 	                        case "/font":
 	                        case "/f":
 	                            _text_font = _def_font;
-                            
+                                
 	                            _font_data         = global.__scribble_font_data[? _text_font];
 	                            _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
 	                            _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
 	                            _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
 	                            _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                            
+                                
 	                            var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
 	                            _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
 	                            _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-                    
+                                
 	                            continue; //Skip the rest of the parser step
 	                        break;
-                        
+                            
 	                        case "/colour":
 	                        case "/color":
 	                        case "/c":
 	                            _text_colour = _def_colour;
-                    
 	                            continue; //Skip the rest of the parser step
 	                        break;
                 
 	                        case "/scale":
 	                        case "/s":
 	                            _text_scale = 1;
-                    
 	                            continue; //Skip the rest of the parser step
 	                        break;
                 
 	                        case "/slant":
 	                            _text_slant = false;
-                    
 	                            continue; //Skip the rest of the parser step
 	                        break;
                             #endregion
-                        
+                            
                             #region Page break
-                        
+                            
 	                        case "/page":
 	                            _force_newline = true;
 	                            _char_width = 0;
 	                            _force_newpage = true;
 	                        break;
-                        
+                            
                             #endregion
-                        
+                            
                             #region Scale
 	                        case "scale":
 	                            if (_command_tag_parameters <= 1)
@@ -405,50 +405,61 @@ function scribble_cache()
 	                            continue; //Skip the rest of the parser step
 	                        break;
                             #endregion
-                
+                            
                             #region Slant (italics emulation)
 	                        case "slant":
 	                            _text_slant = true;
-                    
 	                            continue; //Skip the rest of the parser step
 	                        break;
                             #endregion
-                
+                            
                             #region Font Alignment
-                        
+                            
 	                        case "fa_left":
 	                            _new_halign = fa_left;
 	                        break;
-                        
+                            
 	                        case "fa_center":
 	                        case "fa_centre":
 	                            _new_halign = fa_center;
 	                        break;
-                        
+                            
 	                        case "fa_right":
 	                            _new_halign = fa_right;
 	                        break;
-                        
+                            
+                            case "fa_top":
+                                _new_valign = fa_top;
+                            break;
+                            
+                            case "fa_middle":
+                                _new_valign = fa_middle;
+                            break;
+                            
+                            case "fa_bottom":
+                                _new_valign = fa_bottom;
+                            break;
+                            
 	                        case "js_left":
 	                        case "js_center":
 	                        case "js_centre":
 	                        case "js_right":
 	                            show_error("Scribble:\n[js_*] tags have been deprecated. Please use [pin_*]\n ", false);
 	                        break;
-                        
+                            
 	                        case "pin_left":
 	                            _new_halign = __SCRIBBLE_PIN_LEFT;
 	                        break;
-                        
+                            
 	                        case "pin_center":
 	                        case "pin_centre":
 	                            _new_halign = __SCRIBBLE_PIN_CENTRE;
 	                        break;
-                        
+                            
 	                        case "pin_right":
 	                            _new_halign = __SCRIBBLE_PIN_RIGHT;
 	                        break;
-                        
+                            
                             #endregion
                             
                             #region Non-breaking space emulation
@@ -1050,11 +1061,12 @@ function scribble_cache()
 	                            }
 	                        break;
 	                    }
-            
+                        
 	                    if ((_new_halign != undefined) && (_new_halign != _text_halign))
 	                    {
 	                        _text_halign = _new_halign;
-                
+                            _new_halign = undefined;
+                            
 	                        if (_text_x > 0)
 	                        {
 	                            _force_newline = true;
@@ -1064,11 +1076,26 @@ function scribble_cache()
 	                        }
 	                        else
 	                        {
-	                            _line_array[@ __SCRIBBLE_LINE.HALIGN] = _new_halign;
+	                            _line_array[@ __SCRIBBLE_LINE.HALIGN] = _text_halign;
 	                            continue; //Skip the rest of the parser step
 	                        }
 	                    }
-        
+                        
+                        //Handle vertical alignment changes
+                        if (_new_valign != undefined)
+                        {
+                            if (_scribble_array[@ SCRIBBLE.VALIGN] == undefined)
+                            {
+                                _scribble_array[@ SCRIBBLE.VALIGN] = _new_valign;
+                            }
+                            else if (_scribble_array[@ SCRIBBLE.VALIGN] != _new_valign)
+                            {
+                                show_error("Scribble:\nIn-line vertical alignment cannot be changed more than once in a string\n ", false);
+                            }
+                            
+                            _new_valign = undefined;
+                        }
+                        
                         #endregion
 	                }
 	                else if (_character_code == SCRIBBLE_COMMAND_TAG_ARGUMENT) //If we've hit a command tag argument delimiter character (usually ,)
@@ -1634,41 +1661,42 @@ function scribble_cache()
 	                _line_y                =  0;
 	                _glyph_texture         = -1;
 	                _vbuff_line_start_list = -1;
-        
+                    
 	                if (_line_fixed_height) _text_y = _half_fixed_height;
-        
+                    
 	                _force_newpage = false;
 	            }
-    
+                
                 #endregion
-    
-    
-    
+                
+                
+                
 	            _text_x += _char_width;
 	        }
-
+            
 	        _line_width = max(_line_width, _text_x);
 	        if (_line_max_height >= 0) _line_height = min(_line_height, _line_max_height);
-
+            
 	        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_element_characters - 1;
 	        _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
 	        _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
 	        _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
-
+            
 	        ++_meta_page_lines;
 	        ++_meta_element_lines;
 	        _element_height = max(_element_height, _line_y + _line_height);
-
+            
 	        //Update metadata
 	        _page_array[@ __SCRIBBLE_PAGE.LINES    ] = _meta_page_lines;
 	        _page_array[@ __SCRIBBLE_PAGE.LAST_CHAR] = _meta_element_characters - 1;
             _page_array[@ __SCRIBBLE_PAGE.HEIGHT   ] = _line_y + _line_height;
-
+            
 	        _scribble_array[@ SCRIBBLE.LINES     ] = _meta_element_lines;
 	        _scribble_array[@ SCRIBBLE.CHARACTERS] = _meta_element_characters;
 	        _scribble_array[@ SCRIBBLE.PAGES     ] = _meta_element_pages;
 	        _scribble_array[@ SCRIBBLE.HEIGHT    ] = _element_height;
-
+            if (_scribble_array[SCRIBBLE.VALIGN] == undefined) _scribble_array[@ SCRIBBLE.VALIGN] = fa_top;
+            
             #endregion
 
 
