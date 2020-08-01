@@ -6,13 +6,19 @@
 function scribble_combine_fonts()
 {
     var _new_font_name = argument[0];
-
+    
+    if (!is_string(_new_font_name))
+    {
+        show_error("Scribble:\nFonts should be specified using their name as a string.\n(Input was an invalid datatype)\n ", false);
+        exit;
+    }
+    
     if (ds_map_exists(global.__scribble_font_data, _new_font_name))
     {
         show_error("Scribble:\nNew font name \"" + string(_new_font_name) + "\" already exists as a font\n ", true);
         exit;
     }
-
+    
     //We always use a glyph map so we don't need to pre-parse the fonts
     var _glyph_map = ds_map_create();
 
@@ -41,13 +47,19 @@ function scribble_combine_fonts()
     repeat(argument_count - 1)
     {
         var _source_font_name = argument[_f];
-    
+        
+        if (!is_string(_source_font_name))
+        {
+            show_error("Scribble:\nFonts should be specified using their name as a string.\n(Input was an invalid datatype)\n ", false);
+            exit;
+        }
+        
         if (!ds_map_exists(global.__scribble_font_data, _source_font_name))
         {
             show_error("Scribble:\nFont \"" + string(_source_font_name) + "\" doesn't exist. Ensure input fonts exist before combining them together\n ", true);
             exit;
         }
-    
+        
         var _src_font_array = global.__scribble_font_data[? _source_font_name];
     
         var _font_min = 0;

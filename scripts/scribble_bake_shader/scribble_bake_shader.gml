@@ -25,7 +25,19 @@ function scribble_bake_shader()
 	var _separation       = argument[8];
 	var _smooth           = argument[9];
 	var _texture_size     = (argument_count > 10)? argument[10] : 2048;
-
+    
+    if (!is_string(_source_font_name))
+    {
+        show_error("Scribble:\nFonts should be specified using their name as a string.\n(Input was an invalid datatype)\n ", false);
+        exit;
+    }
+    
+    if (!is_string(_new_font_name))
+    {
+        show_error("Scribble:\nFonts should be specified using their name as a string.\n(Input was an invalid datatype)\n ", false);
+        exit;
+    }
+    
 	if (_source_font_name == _new_font_name)
 	{
 		show_error("Scribble:\nSource font and new font cannot share the same name\n ", false);

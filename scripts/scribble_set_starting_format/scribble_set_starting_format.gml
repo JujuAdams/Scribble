@@ -13,6 +13,10 @@ function scribble_set_starting_format(_name, _colour, _halign)
     {
         global.scribble_state_starting_font = _name;
     }
+    else if (!is_undefined(_name))
+    {
+        show_error("Scribble:\nFonts should be specified using their name as a string\nUse <undefined> to not set a new font\n ", false);
+    }
     
     if (_colour != undefined)
     {

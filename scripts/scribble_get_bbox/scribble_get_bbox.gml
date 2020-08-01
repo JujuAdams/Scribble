@@ -118,6 +118,7 @@ function scribble_get_bbox()
 	}
 	else
 	{
+        //TODO - Make this faster with custom code
 	    var _matrix = matrix_build(_x, _y, 0, 
 	                               0, 0, global.scribble_state_angle,
 	                               global.scribble_state_xscale, global.scribble_state_yscale, 1);
