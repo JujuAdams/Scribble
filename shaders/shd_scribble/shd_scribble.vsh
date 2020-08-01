@@ -1,4 +1,5 @@
 //   @jujuadams   v6.0.9   2020-07-22
+precision float highp;
 
 const int MAX_EFFECTS = 9;
 //By default, the effect indexes are:
