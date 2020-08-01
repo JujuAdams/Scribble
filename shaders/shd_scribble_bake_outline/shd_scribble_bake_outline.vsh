@@ -1,5 +1,5 @@
 //   @jujuadams   v6.0.9   2020-07-22
-precision float highp;
+precision highp float;
 
 attribute vec3 in_Position;
 attribute vec4 in_Colour;
