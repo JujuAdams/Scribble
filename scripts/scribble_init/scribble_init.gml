@@ -183,24 +183,25 @@ enum SCRIBBLE
     MIN_X,            // 8
     MAX_X,            // 9
     HEIGHT,           //10
-    CHARACTERS,       //11
-    LINES,            //12
-    PAGES,            //13
-    GLYPH_LTRB_ARRAY, //14
-    CHARACTER_ARRAY,  //15
+    VALIGN,           //11
+    CHARACTERS,       //12
+    LINES,            //13
+    PAGES,            //14
+    GLYPH_LTRB_ARRAY, //15
+    CHARACTER_ARRAY,  //16
     
-    __SECTION2,       //16
-    DRAWN_TIME,       //17
-    FREED,            //18
-    OCCURANCES_MAP,   //19
+    __SECTION2,       //17
+    DRAWN_TIME,       //18
+    FREED,            //19
+    OCCURANCES_MAP,   //20
     
-    __SECTION3,       //20
-    PAGES_ARRAY,      //21
-    EVENT_CHAR_ARRAY, //22
-    EVENT_NAME_ARRAY, //23
-    EVENT_DATA_ARRAY, //24
+    __SECTION3,       //21
+    PAGES_ARRAY,      //22
+    EVENT_CHAR_ARRAY, //23
+    EVENT_NAME_ARRAY, //24
+    EVENT_DATA_ARRAY, //25
    
-    __SIZE            //25
+    __SIZE            //26
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))

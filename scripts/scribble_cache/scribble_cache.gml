@@ -157,6 +157,7 @@ if (_build)
         _scribble_array[@ SCRIBBLE.MIN_X           ] = 0;
         _scribble_array[@ SCRIBBLE.MAX_X           ] = 0;
         _scribble_array[@ SCRIBBLE.HEIGHT          ] = 0;
+        _scribble_array[@ SCRIBBLE.VALIGN          ] = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
         _scribble_array[@ SCRIBBLE.CHARACTERS      ] = 0;
         _scribble_array[@ SCRIBBLE.LINES           ] = 0;
         _scribble_array[@ SCRIBBLE.PAGES           ] = 0;
@@ -250,6 +251,9 @@ if (_build)
         var _text_cycle        = false;
         var _text_cycle_colour = 0x00000000;
         
+        var _new_halign = undefined;
+        var _new_valign = undefined;
+        
         #endregion
 
 
@@ -304,8 +308,7 @@ if (_build)
                     _command_tag_start = -1;
         
                     #region Command tag handling
-            
-                    var _new_halign = undefined;
+                    
                     _command_name = _parameters_list[| 0];
                     switch(_command_name)
                     {
@@ -416,6 +419,18 @@ if (_build)
                         
                         case "fa_right":
                             _new_halign = fa_right;
+                        break;
+                        
+                        case "fa_top":
+                            _new_valign = fa_top;
+                        break;
+                        
+                        case "fa_middle":
+                            _new_valign = fa_middle;
+                        break;
+                        
+                        case "fa_bottom":
+                            _new_valign = fa_bottom;
                         break;
                         
                         case "js_left":
@@ -1039,12 +1054,14 @@ if (_build)
                             }
                         break;
                     }
-            
+                    
+                    //Handle horizontal alignment changes
                     if ((_new_halign != undefined) && (_new_halign != _text_halign))
                     {
                         _text_halign = _new_halign;
-                
-                        if (_text_x > 0)
+                        _new_halign = undefined;
+                        
+                        if (_text_x > 0) //Force a newline if we've written anything on this line
                         {
                             _force_newline = true;
                             _char_width    = 0;
@@ -1053,9 +1070,24 @@ if (_build)
                         }
                         else
                         {
-                            _line_array[@ __SCRIBBLE_LINE.HALIGN] = _new_halign;
+                            _line_array[@ __SCRIBBLE_LINE.HALIGN] = _text_halign;
                             continue; //Skip the rest of the parser step
                         }
+                    }
+                    
+                    //Handle vertical alignment changes
+                    if (_new_valign != undefined)
+                    {
+                        if (_scribble_array[@ SCRIBBLE.VALIGN] == undefined)
+                        {
+                            _scribble_array[@ SCRIBBLE.VALIGN] = _new_valign;
+                        }
+                        else if (_scribble_array[@ SCRIBBLE.VALIGN] != _new_valign)
+                        {
+                            show_error("Scribble:\nIn-line vertical alignment cannot be changed more than once in a string\n ", false);
+                        }
+                        
+                        _new_valign = undefined;
                     }
         
                     #endregion
@@ -1657,7 +1689,8 @@ if (_build)
         _scribble_array[@ SCRIBBLE.CHARACTERS] = _meta_element_characters;
         _scribble_array[@ SCRIBBLE.PAGES     ] = _meta_element_pages;
         _scribble_array[@ SCRIBBLE.HEIGHT    ] = _element_height;
-
+        if (_scribble_array[SCRIBBLE.VALIGN] == undefined) _scribble_array[@ SCRIBBLE.VALIGN] = fa_top;
+        
         #endregion
 
 
