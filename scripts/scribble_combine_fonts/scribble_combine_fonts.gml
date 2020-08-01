@@ -5,6 +5,12 @@
 
 var _new_font_name = argument[0];
 
+if (!is_string(_new_font_name))
+{
+    show_error("Scribble:\nFonts should be specified using their name as a string.\n(Input was an invalid datatype)\n ", false);
+    exit;
+}
+
 if (ds_map_exists(global.__scribble_font_data, _new_font_name))
 {
     show_error("Scribble:\nNew font name \"" + string(_new_font_name) + "\" already exists as a font\n ", true);
@@ -39,6 +45,12 @@ var _f = 1;
 repeat(argument_count - 1)
 {
     var _source_font_name = argument[_f];
+    
+    if (!is_string(_source_font_name))
+    {
+        show_error("Scribble:\nFonts should be specified using their name as a string.\n(Input was an invalid datatype)\n ", false);
+        exit;
+    }
     
     if (!ds_map_exists(global.__scribble_font_data, _source_font_name))
     {

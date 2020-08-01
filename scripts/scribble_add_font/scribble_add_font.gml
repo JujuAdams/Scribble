@@ -37,7 +37,7 @@ if (ds_map_exists(global.__scribble_font_data, _font))
 
 if (!is_string(_font))
 {
-    if (is_real(_font))
+    if (is_real(_font) && (asset_get_type(font_get_name(_font)) == asset_font))
     {
         show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input was \"" + string(_font) + "\", which might be font \"" + font_get_name(_font) + "\")\n ", false);
     }
