@@ -293,11 +293,6 @@ if (!is_string(_default_font))
     
     _default_font = "";
 }
-else if ((asset_get_type(_default_font) != asset_font) && (asset_get_type(_default_font) != asset_sprite) && (_default_font != "")) //Check if the default font even exists!
-{
-    show_error("Scribble:\nThe default font \"" + _default_font + "\" could not be found in the project.\n ", true);
-    _default_font = "";
-}
 
 //Declare global variables
 global.__scribble_lcg                  = date_current_datetime()*100;
