@@ -88,7 +88,7 @@ function scribble_combine_fonts()
         {
         	var _src_glyphs_array = _src_font_array[__SCRIBBLE_FONT.GLYPHS_ARRAY];
             var _c = 0;
-            repeat(array_length_1d(_src_glyphs_array))
+            repeat(array_length(_src_glyphs_array))
             {
                 var _glyph_data = _src_glyphs_array[_c];
             
@@ -145,7 +145,7 @@ function scribble_combine_fonts()
     
         //Add this font's glyph data to the combined font
         var _c = 0;
-        repeat(array_length_1d(_src_glyphs_array))
+        repeat(array_length(_src_glyphs_array))
         {
             var _src_array = _src_glyphs_array[_c];
         
