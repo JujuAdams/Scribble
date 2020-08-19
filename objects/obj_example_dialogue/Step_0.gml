@@ -12,7 +12,7 @@ if (keyboard_check_pressed(vk_space))
             //Increment our conversation index for the next piece of text
             textbox_conversation_index++;
             
-            if (textbox_conversation_index >= array_length_1d(textbox_conversation))
+            if (textbox_conversation_index >= array_length(textbox_conversation))
             {
                 textbox_conversation_index = 0;
             }

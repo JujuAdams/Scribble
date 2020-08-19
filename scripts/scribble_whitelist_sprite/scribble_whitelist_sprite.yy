@@ -1,8 +1,12 @@
 {
-    "id": "c0f4f4ff-e121-4ce8-9b05-658e8d16b19f",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_whitelist_sprite",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Advanced Things For Serious People",
+    "path": "folders/Scribble/Advanced Things For Serious People.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_whitelist_sprite",
+  "tags": [],
+  "resourceType": "GMScript",
 }

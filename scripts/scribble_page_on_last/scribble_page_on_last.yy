@@ -1,8 +1,12 @@
 {
-    "id": "74d4828d-df60-4163-9a0f-713e1e653208",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_page_on_last",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Pages",
+    "path": "folders/Scribble/Pages.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_page_on_last",
+  "tags": [],
+  "resourceType": "GMScript",
 }

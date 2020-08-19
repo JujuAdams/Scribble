@@ -1,8 +1,12 @@
 {
-    "id": "464aca78-7490-433e-8b56-973f0a847094",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_draw_set_state",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "(Deprecated)",
+    "path": "folders/Scribble/(Deprecated).yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_draw_set_state",
+  "tags": [],
+  "resourceType": "GMScript",
 }

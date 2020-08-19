@@ -1,8 +1,12 @@
 {
-    "id": "eadbe561-839c-47aa-a272-8aa3524b4f66",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_autotype_function",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Advanced Things For Serious People",
+    "path": "folders/Scribble/Advanced Things For Serious People.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_autotype_function",
+  "tags": [],
+  "resourceType": "GMScript",
 }

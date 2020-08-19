@@ -30,12 +30,12 @@
 
 
 
-#region Warnings
+    #region Warnings
 
-//Various warning messages. Please do not turn these off unless you have to!
+	//Various warning messages. Please do not turn these off unless you have to!
 #macro SCRIBBLE_WARNING_REINITIALIZE           true
 #macro SCRIBBLE_WARNING_TEXTURE_PAGE           true
 #macro SCRIBBLE_WARNING_AUTOSCAN_YY_NOT_FOUND  true
 #macro SCRIBBLE_WARNING_DRAW_SET_DEPRECATED    true
 
-#endregion
+    #endregion
