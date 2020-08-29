@@ -27,16 +27,15 @@ function scribble_add_font()
 	}
 
 	var _font    = argument[0];
-	var _path    = (argument_count > 1)? argument[1] : (_font + ".yy");
+	var _path    = (argument_count > 1)? argument[1] : undefined;
 	var _texture = (argument_count > 2)? argument[2] : undefined;
-	_path = global.__scribble_font_directory + _path;
-
+    
 	if (ds_map_exists(global.__scribble_font_data, _font))
 	{
 	    show_error("Scribble:\nFont \"" + _font + "\" has already been defined\n ", false);
 	    return undefined;
 	}
-
+    
 	if (!is_string(_font))
 	{
 	    if (is_real(_font) && (asset_get_type(font_get_name(_font)) == asset_font))
@@ -49,19 +48,22 @@ function scribble_add_font()
 	    }
 	    exit;
 	}
-
+    
 	if (asset_get_type(_font) == asset_sprite)
 	{
 	    show_error("Scribble:\nTo add a spritefont, please use scribble_add_spritefont()\n ", false);
 	    return scribble_add_spritefont(_font);
 	}
-
+    
 	if (asset_get_type(_font) != asset_font)
 	{
 	    show_error("Scribble:\nFont \"" + _font + "\" not found in the project.\nScribble font \"" + string(_font) + "\" will not be available.\n ", false);
 	    return undefined;
 	}
-
+    
+    if (_path == undefined) _path = _font + ".yy";
+	_path = global.__scribble_font_directory + _path;
+    
 	if (!file_exists(_path))
 	{
 	    show_error("Scribble:\nCould not find \"" + _path + "\" in Included Files. Please add this file to your project.\nScribble font \"" + string(_font) + "\" will not be available.\n ", false);
