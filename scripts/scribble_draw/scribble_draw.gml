@@ -205,10 +205,14 @@ function scribble_draw()
 	                                else
 	                                {
 	                                    //Otherwise try to find a custom event
-	                                    var _script = global.__scribble_autotype_events[? _event_name];
-	                                    if (_script != undefined)
+	                                    var _function = global.__scribble_autotype_events[? _event_name];
+                                        if (is_method(_function))
+                                        {
+                                            _function(_scribble_array, _event_data_array, _scan);
+                                        }
+                                        else if (is_real(_function) && script_exists(_function))
 	                                    {
-	                                        script_execute(_script, _scribble_array, _event_data_array, _scan);
+	                                        script_execute(_function, _scribble_array, _event_data_array, _scan);
 	                                    }
 	                                }
                                     
@@ -305,7 +309,15 @@ function scribble_draw()
             #endregion
         
 	        var _callback = _occurance_array[__SCRIBBLE_OCCURANCE.FUNCTION];
-	        if ((_callback != undefined) && script_exists(_callback)) script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window] - 1);
+            
+            if (is_method(_callback))
+            {
+                _callback(_scribble_array, _typewriter_window_array[_typewriter_window] - 1);
+            }
+            else if (is_real(_callback) && script_exists(_callback))
+	        {
+	            script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window] - 1);
+	        }
 	    }
     
         #endregion
