@@ -29,7 +29,6 @@ function scribble_add_font()
 	var _font    = argument[0];
 	var _path    = (argument_count > 1)? argument[1] : undefined;
 	var _texture = (argument_count > 2)? argument[2] : undefined;
-	_path = global.__scribble_font_directory + _path;
     
 	if (ds_map_exists(global.__scribble_font_data, _font))
 	{
@@ -63,6 +62,7 @@ function scribble_add_font()
 	}
     
     if (_path == undefined) _path = _font + ".yy";
+	_path = global.__scribble_font_directory + _path;
     
 	if (!file_exists(_path))
 	{
