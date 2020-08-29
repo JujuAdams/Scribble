@@ -402,9 +402,23 @@ function scribble_cache()
 	                            {
 	                                var _text_scale = real(_parameters_list[| 1]);
 	                            }
-                    
+                                
 	                            continue; //Skip the rest of the parser step
 	                        break;
+                            
+	                        case "scaleStack":
+	                            if (_command_tag_parameters <= 1)
+	                            {
+	                                show_error("Scribble:\nNot enough parameters for scaleStack tag!", false);
+	                            }
+	                            else
+	                            {
+	                                _text_scale *= real(_parameters_list[| 1]);
+	                            }
+                                
+	                            continue; //Skip the rest of the parser step
+	                        break;
+                            
                             #endregion
                             
                             #region Slant (italics emulation)
