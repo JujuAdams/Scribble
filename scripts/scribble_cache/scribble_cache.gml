@@ -147,9 +147,9 @@ function scribble_cache()
 	        var _element_height          = 0;
             
             //Make a copy of the bezier array
-            var _bezier_array = array_create(8);
-            array_copy(_bezier_array, 0, global.scribble_state_bezier_array, 0, 8);
-            var _bezier_do = ((_bezier_array[0] != _bezier_array[6]) || (_bezier_array[1] != _bezier_array[7]));
+            var _bezier_array = array_create(6);
+            array_copy(_bezier_array, 0, global.scribble_state_bezier_array, 0, 6);
+            var _bezier_do = ((_bezier_array[0] != _bezier_array[4]) || (_bezier_array[1] != _bezier_array[5]));
             
 	        //Create a new array if we're no rebuilding, otherwise reuse the old one
 	        if (!_rebuild) var _scribble_array = array_create(SCRIBBLE.__SIZE);
@@ -1845,20 +1845,18 @@ function scribble_cache()
             
             if (_bezier_do)
             {
-                var _bx1 = _bezier_array[0];
-                var _by1 = _bezier_array[1];
-                var _bx2 = _bezier_array[2];
-                var _by2 = _bezier_array[3];
-                var _bx3 = _bezier_array[4];
-                var _by3 = _bezier_array[5];
-                var _bx4 = _bezier_array[6];
-                var _by4 = _bezier_array[7];
+                var _bx2 = _bezier_array[0];
+                var _by2 = _bezier_array[1];
+                var _bx3 = _bezier_array[2];
+                var _by3 = _bezier_array[3];
+                var _bx4 = _bezier_array[4];
+                var _by4 = _bezier_array[5];
                 
                 var _bezier_lengths = array_create(SCRIBBLE_BEZIER_ACCURACY, 0.0);
                 var _x1 = undefined;
                 var _y1 = undefined;
-                var _x2 = _bx1;
-                var _y2 = _by1;
+                var _x2 = 0;
+                var _y2 = 0;
                 
                 var _dist = 0;
                 
@@ -1871,8 +1869,8 @@ function scribble_cache()
                     
                     _x1 = _x2;
                     _y1 = _y2;
-                    _x2 = _inv_t*_inv_t*_inv_t*_bx1 + 3.0*_inv_t*_inv_t*_t*_bx2 + 3.0*_inv_t*_t*_t*_bx3 + _t*_t*_t*_bx4;
-                    _y2 = _inv_t*_inv_t*_inv_t*_by1 + 3.0*_inv_t*_inv_t*_t*_by2 + 3.0*_inv_t*_t*_t*_by3 + _t*_t*_t*_by4;
+                    _x2 = 3.0*_inv_t*_inv_t*_t*_bx2 + 3.0*_inv_t*_t*_t*_bx3 + _t*_t*_t*_bx4;
+                    _y2 = 3.0*_inv_t*_inv_t*_t*_by2 + 3.0*_inv_t*_t*_t*_by3 + _t*_t*_t*_by4;
                     
                     var _dx = _x2 - _x1;
                     var _dy = _y2 - _y1;

@@ -60,7 +60,7 @@ uniform float u_fTypewriterMethod;                      //1
 uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
 uniform float u_fTypewriterSmoothness;                  //1
 uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
-uniform vec2  u_aBezier[4];                             //8
+uniform vec2  u_aBezier[3];                             //6
 
 
 
@@ -249,11 +249,11 @@ float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index, boo
     return result;
 }
 
-vec4 bezier(float t, vec2 p0, vec2 p1, vec2 p2, vec2 p3)
+vec4 bezier(float t, vec2 p1, vec2 p2, vec2 p3)
 {
     float inv_t = 1.0 - t;
-    return vec4(inv_t*inv_t*inv_t*p0 + 3.0*inv_t*inv_t*t*p1 + 3.0*inv_t*t*t*p2 + t*t*t*p3,
-                3.0*inv_t*inv_t*(p1 - p0) + 6.0*inv_t*t*(p2 - p1) + 3.0*t*t*(p3 - p2));
+    return vec4(3.0*inv_t*inv_t*t*p1 + 3.0*inv_t*t*t*p2 + t*t*t*p3,
+                3.0*inv_t*inv_t*p1 + 6.0*inv_t*t*(p2 - p1) + 3.0*t*t*(p3 - p2));
 }
 
 
@@ -315,9 +315,9 @@ void main()
     vec2 centre;
     
     //If we have a valid Bezier curve, apply it
-    if (u_aBezier[0] != u_aBezier[3])
+    if (u_aBezier[2] != 0.0)
     {
-        vec4 bezierData = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2], u_aBezier[3]);
+        vec4 bezierData = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         centre = bezierData.xy;
         pos = rotate(centre - centreDelta, centre, atan(bezierData.w, bezierData.z)/0.00872664625);
     }

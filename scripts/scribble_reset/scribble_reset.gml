@@ -20,7 +20,8 @@ function scribble_reset()
     global.scribble_state_box_halign      = fa_left;                        //fa_left places the left-hand side of the box at the draw coordinate when using scribble_draw().
     global.scribble_state_box_valign      = fa_top;                         //fa_top places the top of the box at the draw coordinate when using scribble_draw().
     global.scribble_state_box_align_page  = false;                          //Whether to use text element sizes (false) or page sizes (true)
-    global.scribble_state_bezier_array    = array_create(8, 0.0);
+    
+    scribble_set_bezier();
     
     scribble_set_animation(SCRIBBLE_ANIM.WAVE_SIZE       ,  4   );
     scribble_set_animation(SCRIBBLE_ANIM.WAVE_FREQ       , 50   );
