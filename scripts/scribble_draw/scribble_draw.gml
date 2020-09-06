@@ -393,6 +393,7 @@ function scribble_draw()
 	                                                                 global.scribble_state_alpha);
         
 	    shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
+        shader_set_uniform_f_array(global.__scribble_uniform_bezier_array, _scribble_array[SCRIBBLE.BEZIER_ARRAY]);
     
 	    //Now iterate over the text element's vertex buffers and submit them
 	    var _i = 0;

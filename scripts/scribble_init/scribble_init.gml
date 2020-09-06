@@ -176,7 +176,8 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	    STRING,           // 2
 	    CACHE_STRING,     // 3
 	    DRAW_STATE,       // 4
-	    GARBAGE_COLLECT,  // 5
+        BEZIER_ARRAY,     // 5
+	    GARBAGE_COLLECT,  // 6
         
 	    __SECTION1,       // 6
 	    WIDTH,            // 7
@@ -385,6 +386,7 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	global.__scribble_uniform_tw_window_array = shader_get_uniform(shd_scribble, "u_fTypewriterWindowArray");
 	global.__scribble_uniform_tw_smoothness   = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness" );
 	global.__scribble_uniform_data_fields     = shader_get_uniform(shd_scribble, "u_aDataFields"           );
+    global.__scribble_uniform_bezier_array    = shader_get_uniform(shd_scribble, "u_aBezier"               );
     
 	//Hex converter array
 	var _min = ord("0");

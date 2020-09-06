@@ -26,16 +26,18 @@
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT      ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
+#macro SCRIBBLE_BEZIER_ACCURACY  25
+
 #endregion
 
 
 
-    #region Warnings
+#region Warnings
 
-	//Various warning messages. Please do not turn these off unless you have to!
+//Various warning messages. Please do not turn these off unless you have to!
 #macro SCRIBBLE_WARNING_REINITIALIZE           true
 #macro SCRIBBLE_WARNING_TEXTURE_PAGE           true
 #macro SCRIBBLE_WARNING_AUTOSCAN_YY_NOT_FOUND  true
 #macro SCRIBBLE_WARNING_DRAW_SET_DEPRECATED    true
 
-    #endregion
+#endregion
