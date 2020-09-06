@@ -2011,7 +2011,7 @@ function scribble_cache()
                         
                         var _bezier_index = 0;
                         var _bezier_d0    = 0;
-                        var _bezier_d1    = undefined;
+                        var _bezier_d1    = _bezier_lengths[1];
                             
 	                    //Start at the start...
 	                    var _tell = 0;
@@ -2027,17 +2027,28 @@ function scribble_cache()
                                 var _cx = 0.5*(_l + _r);
                                     
                                 //Iterate forwards until we find a bezier segment we can fit into
-                                _bezier_d1 = _bezier_lengths[_bezier_index+1];
-                                while ((_cx > _bezier_d1) && (_bezier_index < SCRIBBLE_BEZIER_ACCURACY-1))
+                                while (true)
                                 {
+                                    if (_cx <= _bezier_d1)
+                                    {
+                                        //Parameterise this glyph
+                                        var _t = _bezier_inc*((_cx - _bezier_d0)/ (_bezier_d1 - _bezier_d0) + _bezier_index);
+                                        break;
+                                    }
+                                    
                                     _bezier_index++;
+                                    
+                                    if (_bezier_index >= SCRIBBLE_BEZIER_ACCURACY-1)
+                                    {
+                                        //We've hit the end of the Bezier curve, force all the remaining glyphs to stack up at the end of the line
+                                        var _t = 1.0;
+                                        break;
+                                    }
+                                    
                                     _bezier_d0 = _bezier_d1;
                                     _bezier_d1 = _bezier_lengths[_bezier_index+1];
                                 }
-                                    
-                                //Parameterise this glyph
-                                var _t = _bezier_inc*((_cx - _bezier_d0)/ (_bezier_d1 - _bezier_d0) + _bezier_index);
-                                    
+                                
                                 //Write the parameter to each triangle for this quad
                                 repeat(6)
                                 {
