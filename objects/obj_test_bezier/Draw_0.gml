@@ -1,35 +1,31 @@
+draw_set_alpha(0.2);
+
+draw_circle(x0, y0, 4, false);
+draw_circle(x1, y1, 4, false);
+draw_circle(x2, y2, 4, false);
+draw_circle(x3, y3, 4, false);
+
+draw_line(x0, y0, x1, y1);
+draw_line(x1, y1, x2, y2);
+draw_line(x2, y2, x3, y3);
+
 draw_primitive_begin(pr_linestrip);
 
+var _count = 20;
 var _t = 0;
-var _inv_t = 1;
-repeat(21)
+repeat(_count)
 {
-    var _delta = _t / _inv_t;
-    var _coeff = _inv_t*_inv_t*_inv_t;
-    
-    var _x = 0; 
-    var _y = 0;
-    
-    _x += _coeff*x0;
-    _y += _coeff*y0;
-    _coeff *= _delta;
-    _x += 3*_coeff*x1;
-    _y += 3*_coeff*y1;
-    _coeff *= _delta;
-    _x += 3*_coeff*x2;
-    _y += 3*_coeff*y2;
-    _coeff *= _delta;
-    _x += _coeff*x3;
-    _y += _coeff*y3;
-    
-    draw_vertex(_x, _y);
-    
-    _t += 0.05;
-    _inv_t -= 0.05;
+    var _inv_t = 1 - _t;
+    draw_vertex(_inv_t*_inv_t*_inv_t*x0 + 3.0*_inv_t*_inv_t*_t*x1 + 3.0*_inv_t*_t*_t*x2 + _t*_t*_t*x3,
+                _inv_t*_inv_t*_inv_t*y0 + 3.0*_inv_t*_inv_t*_t*y1 + 3.0*_inv_t*_t*_t*y2 + _t*_t*_t*y3);
+    _t += 1/(_count-1);
 }
 
 draw_primitive_end();
 
-//scribble_set_bezier(x1-x0, y1-y0, x2-x0, y2-y0, x3-x0, y3-y0);
-scribble_draw(x0, y0, "woooow [wobble][spr_large_coin] Bezier curves in Scribble");
+draw_set_alpha(1.0);
+
+scribble_set_wrap(-1, 500);
+scribble_set_bezier(x0, y0, x1, y1, x2, y2, x3, y3);
+scribble_draw(x0, y0, "[pin_center][fa_middle]woooow Bezier curves in Scribble");
 scribble_reset();

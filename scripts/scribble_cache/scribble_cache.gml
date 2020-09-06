@@ -136,20 +136,68 @@ function scribble_cache()
 	        }
         
             #endregion
-
-
-
+            
+            
+            
+            #region Build Bezier curve segment lengths
+            
+            //Make a copy of the Bezier array
+            var _bezier_array = array_create(6);
+            array_copy(_bezier_array, 0, global.scribble_state_bezier_array, 0, 6);
+            var _bezier_do = ((_bezier_array[0] != _bezier_array[4]) || (_bezier_array[1] != _bezier_array[5]));
+            
+            if (_bezier_do)
+            {
+                var _bx2 = _bezier_array[0];
+                var _by2 = _bezier_array[1];
+                var _bx3 = _bezier_array[2];
+                var _by3 = _bezier_array[3];
+                var _bx4 = _bezier_array[4];
+                var _by4 = _bezier_array[5];
+                
+                var _bezier_lengths = array_create(SCRIBBLE_BEZIER_ACCURACY, 0.0);
+                var _x1 = undefined;
+                var _y1 = undefined;
+                var _x2 = 0;
+                var _y2 = 0;
+                
+                var _dist = 0;
+                
+                var _bezier_inc = 1 / (SCRIBBLE_BEZIER_ACCURACY-1);
+                var _t = _bezier_inc;
+                var _i = 1;
+                repeat(SCRIBBLE_BEZIER_ACCURACY-1)
+                {
+                    var _inv_t = 1 - _t;
+                    
+                    _x1 = _x2;
+                    _y1 = _y2;
+                    _x2 = 3.0*_inv_t*_inv_t*_t*_bx2 + 3.0*_inv_t*_t*_t*_bx3 + _t*_t*_t*_bx4;
+                    _y2 = 3.0*_inv_t*_inv_t*_t*_by2 + 3.0*_inv_t*_t*_t*_by3 + _t*_t*_t*_by4;
+                    
+                    var _dx = _x2 - _x1;
+                    var _dy = _y2 - _y1;
+                    _dist += sqrt(_dx*_dx + _dy*_dy);
+                    _bezier_lengths[@ _i] = _dist;
+                    
+                    _t += _bezier_inc;
+                    ++_i;
+                }
+                
+                if (_max_width >= 0) show_debug_message("Scribble: Warning! Maximum width set by scribble_set_wrap() (" + string(_max_width) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
+                _max_width = _dist;
+            }
+                
+            #endregion
+            
+            
+            
             #region Create the base text element
             
 	        var _meta_element_characters = 0;
 	        var _meta_element_lines      = 0;
 	        var _meta_element_pages      = 0;
 	        var _element_height          = 0;
-            
-            //Make a copy of the bezier array
-            var _bezier_array = array_create(6);
-            array_copy(_bezier_array, 0, global.scribble_state_bezier_array, 0, 6);
-            var _bezier_do = ((_bezier_array[0] != _bezier_array[4]) || (_bezier_array[1] != _bezier_array[5]));
             
 	        //Create a new array if we're no rebuilding, otherwise reuse the old one
 	        if (!_rebuild) var _scribble_array = array_create(SCRIBBLE.__SIZE);
@@ -1841,51 +1889,6 @@ function scribble_cache()
             
             
             
-            #region Build Bezier curve segment lengths
-            
-            if (_bezier_do)
-            {
-                var _bx2 = _bezier_array[0];
-                var _by2 = _bezier_array[1];
-                var _bx3 = _bezier_array[2];
-                var _by3 = _bezier_array[3];
-                var _bx4 = _bezier_array[4];
-                var _by4 = _bezier_array[5];
-                
-                var _bezier_lengths = array_create(SCRIBBLE_BEZIER_ACCURACY, 0.0);
-                var _x1 = undefined;
-                var _y1 = undefined;
-                var _x2 = 0;
-                var _y2 = 0;
-                
-                var _dist = 0;
-                
-                var _bezier_inc = 1 / (SCRIBBLE_BEZIER_ACCURACY-1);
-                var _t = _bezier_inc;
-                var _i = 1;
-                repeat(SCRIBBLE_BEZIER_ACCURACY-1)
-                {
-                    var _inv_t = 1 - _t;
-                    
-                    _x1 = _x2;
-                    _y1 = _y2;
-                    _x2 = 3.0*_inv_t*_inv_t*_t*_bx2 + 3.0*_inv_t*_t*_t*_bx3 + _t*_t*_t*_bx4;
-                    _y2 = 3.0*_inv_t*_inv_t*_t*_by2 + 3.0*_inv_t*_t*_t*_by3 + _t*_t*_t*_by4;
-                    
-                    var _dx = _x2 - _x1;
-                    var _dy = _y2 - _y1;
-                    _dist += sqrt(_dx*_dx + _dy*_dy);
-                    _bezier_lengths[@ _i] = _dist;
-                    
-                    _t += _bezier_inc;
-                    ++_i;
-                }
-            }
-                
-            #endregion
-            
-            
-            
             #region Final glyph transforms - horizontal alignment and Bezier curves
             
             //Find the min/max x-bounds for the textbox
@@ -2017,16 +2020,22 @@ function scribble_cache()
 	                    var _tell = 0;
 	                    repeat(buffer_get_size(_buffer) div __SCRIBBLE_GLYPH_BYTE_SIZE)
 	                    {
-                            var _l = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32); //Top-left corner
-                            var _r = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X + __SCRIBBLE_VERTEX.__SIZE, buffer_f32); //Bottom-right corner
+                            //Top-left corner
+                            var _l = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32);
+                            var _t = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32);
+                            
+                            //Bottom-right corner
+                            var _r = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X + __SCRIBBLE_VERTEX.__SIZE, buffer_f32);
+                            var _b = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Y + __SCRIBBLE_VERTEX.__SIZE, buffer_f32);
                                 
 	                        //Ignore null data in the vertex buffer
 	                        if ((_l != 0) || (_r != 0))
 	                        {
                                 //Find the middle
                                 var _cx = 0.5*(_l + _r);
+                                var _cy = 0.5*(_t + _b);
                                     
-                                //Iterate forwards until we find a bezier segment we can fit into
+                                //Iterate forwards until we find a Bezier segment we can fit into
                                 while (true)
                                 {
                                     if (_cx <= _bezier_d1)
@@ -2053,6 +2062,7 @@ function scribble_cache()
                                 repeat(6)
                                 {
                                     buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32, _t);
+                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32, _cy);
                                     _tell += __SCRIBBLE_VERTEX.__SIZE;
                                 }
 	                        }

@@ -21,12 +21,11 @@
 #macro SCRIBBLE_DEFAULT_OCCURANCE_NAME    "default" //Default value to use for autotyper occurances
 #macro SCRIBBLE_CACHE_TIMEOUT             15000     //How long to wait (in milliseconds) before the cache automatically destroys a text element. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_flush() instead)
 #macro SCRIBBLE_VERBOSE                   false     //Enables verbose console output to aid with debugging
+#macro SCRIBBLE_BEZIER_ACCURACY           20        //Controls how accurate;y text fits Bezier curves. Higher is better
 
-#macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_ARGUMENT      ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
-
-#macro SCRIBBLE_BEZIER_ACCURACY  25
+#macro SCRIBBLE_COMMAND_TAG_OPEN      ord("[") //Character used to open a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_CLOSE     ord("]") //Character used to close a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_ARGUMENT  ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
 #endregion
 

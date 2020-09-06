@@ -320,6 +320,7 @@ void main()
         vec4 bezierData = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         centre = bezierData.xy;
         pos = rotate(centre - centreDelta, centre, atan(bezierData.w, bezierData.z)/0.00872664625);
+        pos.y += in_Position.y;
     }
     else
     {
