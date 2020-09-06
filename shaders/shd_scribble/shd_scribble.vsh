@@ -95,13 +95,16 @@ void unpackFlags(float flagValue, inout float array[MAX_EFFECTS])
     }
 }
 
+//Rotate by vector
+vec2 rotate_by_vector(vec2 position, vec2 centre, vec2 vector)
+{
+    return centre + (position - centre)*mat2(vector, -vector.y, vector.x);
+}
+
 //Rotate the character
 vec2 rotate(vec2 position, vec2 centre, float angle)
 {
-    vec2 delta = position.xy - centre;
-    float _sin = sin(0.00872664625*angle);
-    float _cos = cos(0.00872664625*angle);
-    return centre + vec2(delta.x*_cos - delta.y*_sin, delta.x*_sin + delta.y*_cos);
+    return rotate_by_vector(position, centre, vec2(cos(0.00872664625*angle), -sin(0.00872664625*angle)));
 }
 
 //Scale the character equally on both x and y axes
@@ -319,8 +322,8 @@ void main()
     {
         vec4 bezierData = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         centre = bezierData.xy;
-        pos = rotate(centre - centreDelta, centre, atan(bezierData.w, bezierData.z)/0.00872664625);
-        pos.y += in_Position.y;
+        pos = rotate_by_vector(centre - centreDelta, centre, normalize(vec2(bezierData.z, -bezierData.w)));
+        pos.y += in_Position.y*normalize(vec2(bezierData.z, -bezierData.w));
     }
     else
     {

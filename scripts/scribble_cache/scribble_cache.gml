@@ -2061,7 +2061,7 @@ function scribble_cache()
                                 //Write the parameter to each triangle for this quad
                                 repeat(6)
                                 {
-                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32, _t);
+                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32, _t );
                                     buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32, _cy);
                                     _tell += __SCRIBBLE_VERTEX.__SIZE;
                                 }
