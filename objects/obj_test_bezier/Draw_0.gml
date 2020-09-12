@@ -26,5 +26,5 @@ draw_primitive_end();
 draw_set_alpha(1.0);
 
 scribble_set_bezier(x0, y0, x1, y1, x2, y2, x3, y3);
-scribble_draw(x0, y0, "[pin_center][fa_middle]woooow Bezier curves\nin Scribble");
+scribble_draw(x0, y0, "[pin_center][fa_middle]woooow Bezier curves in Scribble");
 scribble_reset();
