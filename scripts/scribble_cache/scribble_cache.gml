@@ -1532,13 +1532,15 @@ function scribble_cache()
 	                                //Set our word start tell position to be the same as the character start tell
 	                                //This allows us to handle single words that exceed the maximum textbox width multiple times (!)
 	                                _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_a;
-	                                _line_width = max(_line_width, _text_x);
 	                            }
 	                            else
 	                            {
 	                                //If our line didn't have a space then set our word/character start position to be the current tell for this buffer
 	                                _data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = _tell_b;
 	                                _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_b;
+                                    
+                                    //Update the width of the line based on the right-most edge of the last character
+                                    _line_width = max(_line_width, buffer_peek(_buffer, _tell_b - __SCRIBBLE_GLYPH_BYTE_SIZE + __SCRIBBLE_VERTEX.X, buffer_f32));
 	                            }
                                 
 	                            //Note the negative sign!
@@ -1574,13 +1576,13 @@ function scribble_cache()
                     
 	                    ++_v;
 	                }
-        
+                    
 	                //Limit the height of the line
 	                if (_line_max_height >= 0) _line_height = min(_line_height, _line_max_height);
-        
+                    
 	                ++_meta_element_lines;
 	                ++_meta_page_lines;
-        
+                    
 	                //Update the last line
 	                _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _force_newline? (_meta_element_characters-1) : _word_start_char;
 	                _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
@@ -1597,7 +1599,7 @@ function scribble_cache()
 	                _line_width     = 0;
 	                _line_height    = max(_line_min_height, _word_height);
 	                if (_line_fixed_height) _text_y += _line_height;
-                
+                    
 	                //Create a new line
 	                var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
 	                _line_array[@ __SCRIBBLE_LINE.START_CHAR] = _force_newline? _meta_element_characters : (_word_start_char+1);
@@ -1607,14 +1609,14 @@ function scribble_cache()
 	                _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_height;
 	                _line_array[@ __SCRIBBLE_LINE.HALIGN    ] = _text_halign;
 	                _page_lines_array[@ array_length(_page_lines_array)] = _line_array; //Add this line to the page
-                
+                    
 	                _force_newline = false;
 	            }
-    
+                
                 #endregion
-    
-    
-    
+                
+                
+                
                 #region Handle new page creation
             
 	            if (_force_newpage
