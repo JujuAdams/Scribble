@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Scribble",
-    "path": "Scribble.yyp",
+    "path": "folders/Scribble.yy",
   },
   "resourceVersion": "1.0",
   "name": "__scribble_macros",
