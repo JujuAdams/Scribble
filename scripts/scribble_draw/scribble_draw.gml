@@ -75,7 +75,7 @@ function scribble_draw()
 	if (_count > 0)
 	{
         #region Advance the autotyper, execute events, play sounds etc.
-    
+        
 	    var _typewriter_method = _occurance_array[__SCRIBBLE_OCCURANCE.METHOD];
 	    if (_typewriter_method == 0) //No fade in/out set
 	    {
@@ -106,7 +106,7 @@ function scribble_draw()
 	                //We've waited long enough, start showing more text
 	                _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_PAUSED] = false;
 	                var _typewriter_speed = _typewriter_adjusted_speed;
-                
+                    
 	                //Increment the window index
 	                var _old_head_pos = _typewriter_window_array[@ _typewriter_window];
 	                _typewriter_window = (_typewriter_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
@@ -125,11 +125,11 @@ function scribble_draw()
 	        }
             
             #region Scan for autotype events
-        
+            
 	        if ((_typewriter_fade_in >= 0) && (_typewriter_speed > 0))
 	        {
 	            var _typewriter_head_pos = _typewriter_window_array[_typewriter_window];
-            
+                
 	            //Find the last character we need to scan
 	            switch(_typewriter_method)
 	            {
@@ -137,25 +137,26 @@ function scribble_draw()
 	                    var _scan_b = ceil(_typewriter_head_pos + _typewriter_speed);
 	                    _scan_b = min(_scan_b, _page_array[__SCRIBBLE_PAGE.LAST_CHAR] + 2);
 	                break;
-                
+                    
 	                case 2: //Per line
 	                    var _page_lines_array = _page_array[__SCRIBBLE_PAGE.LINES_ARRAY];
 	                    var _line   = _page_lines_array[min(ceil(_typewriter_head_pos + _typewriter_speed), _page_array[__SCRIBBLE_PAGE.LINES]-1)];
 	                    var _scan_b = _line[__SCRIBBLE_LINE.LAST_CHAR];
 	                break;
 	            }
-            
+                
 	            var _scan_a = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS];
+                var _scan = _scan_a;
 	            if (_scan_b > _scan_a)
 	            {
 	                var _events_char_array = _scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY];
 	                var _events_name_array = _scribble_array[SCRIBBLE.EVENT_NAME_ARRAY];
 	                var _events_data_array = _scribble_array[SCRIBBLE.EVENT_DATA_ARRAY];
 	                var _event_count       = array_length(_events_char_array);
-                
+                    
 	                var _event                = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ];
 	                var _events_visited_array = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY];
-                
+                    
 	                //Always start scanning at the next event
 	                ++_event;
 	                if (_event < _event_count)
@@ -164,14 +165,13 @@ function scribble_draw()
                         
 	                    //Now iterate from our current character position to the next character position
 	                    var _break = false;
-	                    var _scan = _scan_a;
 	                    repeat(_scan_b - _scan_a)
 	                    {
 	                        while ((_event < _event_count) && (_event_char == _scan))
 	                        {
 	                            var _event_name       = _events_name_array[_event];
 	                            var _event_data_array = _events_data_array[_event];
-                            
+                                
 	                            if (!_events_visited_array[_event])
 	                            {
 	                                _events_visited_array[@ _event] = true;
@@ -219,7 +219,7 @@ function scribble_draw()
 	                                if (_occurance_array[__SCRIBBLE_OCCURANCE.PAUSED]
 	                                ||  _occurance_array[__SCRIBBLE_OCCURANCE.DELAY_PAUSED])
 	                                {
-	                                    _typewriter_speed = _scan - _scan_a;
+	                                    _typewriter_speed = _scan - _typewriter_head_pos;
 	                                    _break = true;
 	                                    break;
 	                                }
@@ -240,22 +240,22 @@ function scribble_draw()
 	                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = _scan_b;
 	                }
 	            }
-            
+                
 	            switch(_typewriter_method)
 	            {
 	                case 1: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LAST_CHAR] + 2; break; //Per character
 	                case 2: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES    ];     break; //Per line
 	            }
-            
+                
 	            _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
 	            _typewriter_window_array[@ _typewriter_window] = _typewriter_head_pos;
 	        }
             
             #endregion
 	    }
-    
+        
         #region Move the typewriter head/tail
-    
+        
 	    if (_typewriter_method != 0) //Either per line or per character fade set
 	    {
 	        //Figure out the limit and smoothness values
@@ -270,13 +270,13 @@ function scribble_draw()
 	            }
 	        }
 	    }
-    
+        
         #endregion
-    
+        
 	    if ((_typewriter_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
 	    {
             #region Play a sound effect as the text is revealed
-        
+            
 	        var _sound_array = _occurance_array[__SCRIBBLE_OCCURANCE.SOUND_ARRAY];
 	        if (is_array(_sound_array) && (array_length(_sound_array) > 0))
 	        {
@@ -289,7 +289,7 @@ function scribble_draw()
 	            {
 	                _play_sound = true;
 	            }
-            
+                
 	            if (_play_sound)
 	            {
 	                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
@@ -305,9 +305,9 @@ function scribble_draw()
 	                _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _occurance_array[__SCRIBBLE_OCCURANCE.SOUND_OVERLAP];
 	            }
 	        }
-        
+            
             #endregion
-        
+            
 	        var _callback = _occurance_array[__SCRIBBLE_OCCURANCE.FUNCTION];
             
             if (is_method(_callback))
@@ -319,13 +319,13 @@ function scribble_draw()
 	            script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window] - 1);
 	        }
 	    }
-    
+        
         #endregion
-    
-    
-    
+        
+        
+        
         #region Do the drawing!
-    
+        
         if (global.scribble_state_box_align_page)
         {
             var _box_w = _page_array[__SCRIBBLE_PAGE.WIDTH ];
@@ -373,20 +373,20 @@ function scribble_draw()
 	                                                            0, 0, global.scribble_state_angle,
 	                                                            global.scribble_state_xscale, global.scribble_state_yscale, 1));
 	    }
-    
+        
 	    //...aaaand set the matrix
 	    var _old_matrix = matrix_get(matrix_world);
 	    _matrix = matrix_multiply(_matrix, _old_matrix);
 	    matrix_set(matrix_world, _matrix);
-    
+        
 	    //Set the shader and its uniforms
 	    shader_set(shd_scribble);
 	    shader_set_uniform_f(global.__scribble_uniform_time, _animation_time);
-    
+        
 	    shader_set_uniform_f(global.__scribble_uniform_tw_method, _typewriter_fade_in? _typewriter_method : -_typewriter_method);
 	    shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
 	    shader_set_uniform_f_array(global.__scribble_uniform_tw_window_array, _typewriter_window_array);
-    
+        
 	    shader_set_uniform_f(global.__scribble_uniform_colour_blend, colour_get_red(  global.scribble_state_colour)/255,
 	                                                                 colour_get_green(global.scribble_state_colour)/255,
 	                                                                 colour_get_blue( global.scribble_state_colour)/255,
@@ -394,7 +394,7 @@ function scribble_draw()
         
 	    shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
         shader_set_uniform_f_array(global.__scribble_uniform_bezier_array, _scribble_array[SCRIBBLE.BEZIER_ARRAY]);
-    
+        
 	    //Now iterate over the text element's vertex buffers and submit them
 	    var _i = 0;
 	    repeat(_count)
@@ -403,19 +403,19 @@ function scribble_draw()
 	        vertex_submit(_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
 	        ++_i;
 	    }
-    
+        
 	    shader_reset();
-    
+        
 	    //Make sure we reset the world matrix
 	    matrix_set(matrix_world, _old_matrix);
-    
-            #endregion
+        
+        #endregion
 	}
-
-
-
-        #region Check to see if we need to free some memory from the global cache list
-
+    
+    
+    
+    #region Check to see if we need to free some memory from the global cache list
+    
 	if (SCRIBBLE_CACHE_TIMEOUT > 0)
 	{
 	    //Scan through the cache to see if any text elements have elapsed - though cap out at max 100 iterations
@@ -423,10 +423,10 @@ function scribble_draw()
 	    {
 	        var _size = ds_list_size(global.__scribble_global_cache_list);
 	        if (_size <= 0) break;
-        
+            
 	        //Move backwards through the cache list so we are always trying to check the oldest stuff
 	        global.__scribble_cache_test_index = (global.__scribble_cache_test_index - 1 + _size) mod _size;
-        
+            
 	        //Only flush if we want to garbage collect this text element and it hasn't been drawn for a while
 	        var _cache_array = global.__scribble_global_cache_list[| global.__scribble_cache_test_index]
 	        if (_cache_array[SCRIBBLE.GARBAGE_COLLECT] && (_cache_array[SCRIBBLE.DRAWN_TIME] + SCRIBBLE_CACHE_TIMEOUT < current_time))
@@ -440,10 +440,10 @@ function scribble_draw()
 	        }
 	    }
 	}
-
-        #endregion
-
-
-
+    
+    #endregion
+    
+    
+    
 	return _scribble_array;
 }
