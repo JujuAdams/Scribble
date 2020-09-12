@@ -252,11 +252,16 @@ float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index, boo
     return result;
 }
 
-vec4 bezier(float t, vec2 p1, vec2 p2, vec2 p3)
+vec2 bezier(float t, vec2 p1, vec2 p2, vec2 p3)
 {
     float inv_t = 1.0 - t;
-    return vec4(3.0*inv_t*inv_t*t*p1 + 3.0*inv_t*t*t*p2 + t*t*t*p3,
-                3.0*inv_t*inv_t*p1 + 6.0*inv_t*t*(p2 - p1) + 3.0*t*t*(p3 - p2));
+    return 3.0*inv_t*inv_t*t*p1 + 3.0*inv_t*t*t*p2 + t*t*t*p3;
+}
+
+vec2 bezierDerivative(float t, vec2 p1, vec2 p2, vec2 p3)
+{
+    float inv_t = 1.0 - t;
+    return 3.0*inv_t*inv_t*p1 + 6.0*inv_t*t*(p2 - p1) + 3.0*t*t*(p3 - p2);
 }
 
 
@@ -320,10 +325,14 @@ void main()
     //If we have a valid Bezier curve, apply it
     if (u_aBezier[2] != 0.0)
     {
-        vec4 bezierData = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        centre = bezierData.xy;
-        pos = rotate_by_vector(centre - centreDelta, centre, normalize(vec2(bezierData.z, -bezierData.w)));
-        pos.y += in_Position.y*normalize(vec2(bezierData.z, -bezierData.w));
+        centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+        
+        vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+        orientation = normalize(vec2(orientation.x, -orientation.y));
+        pos = rotate_by_vector(centre - centreDelta, centre, orientation);
+        
+        vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
+        pos += in_Position.y*perpendicular;
     }
     else
     {
