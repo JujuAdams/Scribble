@@ -2017,6 +2017,10 @@ function scribble_cache()
                         var _bezier_index = 0;
                         var _bezier_d0    = 0;
                         var _bezier_d1    = _bezier_lengths[1];
+                        
+                        var _cx = 0;
+                        var _cy = 0;
+                        var _old_cx = 0;
                             
 	                    //Start at the start...
 	                    var _tell = 0;
@@ -2036,6 +2040,15 @@ function scribble_cache()
                                 //Find the middle
                                 var _cx = 0.5*(_l + _r);
                                 var _cy = 0.5*(_t + _b);
+                                
+                                if (_cx < _old_cx)
+                                {
+                                    _bezier_index = 0;
+                                    _bezier_d0 = 0;
+                                    _bezier_d1 = _bezier_lengths[1];
+                                }
+                                
+                                _old_cx = _cx;
                                     
                                 //Iterate forwards until we find a Bezier segment we can fit into
                                 while (true)
