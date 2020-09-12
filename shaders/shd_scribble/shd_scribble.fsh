@@ -1,4 +1,4 @@
-//   @jujuadams   v6.0.9   2020-07-22
+//   @jujuadams   v6.0.13   2020-09-12
 precision highp float;
 
 varying vec2 v_vTexcoord;
