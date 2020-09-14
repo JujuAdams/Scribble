@@ -58,7 +58,8 @@ function scribble_cache()
     	                    string(global.scribble_state_line_max_height) + ":" +
     	                    string(global.scribble_state_max_width      ) + ":" +
     	                    string(global.scribble_state_max_height     ) + ":" +
-    	                    string(global.scribble_state_character_wrap );
+    	                    string(global.scribble_state_character_wrap ) + ":" +
+                            string(global.scribble_state_bezier_array   );
         
 	    if (ds_map_exists(global.__scribble_global_cache_map, _cache_string) && !_rebuild)
 	    {
@@ -135,16 +136,69 @@ function scribble_cache()
 	        }
         
             #endregion
-
-
-
+            
+            
+            
+            #region Build Bezier curve segment lengths
+            
+            //Make a copy of the Bezier array
+            var _bezier_array = array_create(6);
+            array_copy(_bezier_array, 0, global.scribble_state_bezier_array, 0, 6);
+            var _bezier_do = ((_bezier_array[0] != _bezier_array[4]) || (_bezier_array[1] != _bezier_array[5]));
+            
+            if (_bezier_do)
+            {
+                var _bx2 = _bezier_array[0];
+                var _by2 = _bezier_array[1];
+                var _bx3 = _bezier_array[2];
+                var _by3 = _bezier_array[3];
+                var _bx4 = _bezier_array[4];
+                var _by4 = _bezier_array[5];
+                
+                var _bezier_lengths = array_create(SCRIBBLE_BEZIER_ACCURACY, 0.0);
+                var _x1 = undefined;
+                var _y1 = undefined;
+                var _x2 = 0;
+                var _y2 = 0;
+                
+                var _dist = 0;
+                
+                var _bezier_inc = 1 / (SCRIBBLE_BEZIER_ACCURACY-1);
+                var _t = _bezier_inc;
+                var _i = 1;
+                repeat(SCRIBBLE_BEZIER_ACCURACY-1)
+                {
+                    var _inv_t = 1 - _t;
+                    
+                    _x1 = _x2;
+                    _y1 = _y2;
+                    _x2 = 3.0*_inv_t*_inv_t*_t*_bx2 + 3.0*_inv_t*_t*_t*_bx3 + _t*_t*_t*_bx4;
+                    _y2 = 3.0*_inv_t*_inv_t*_t*_by2 + 3.0*_inv_t*_t*_t*_by3 + _t*_t*_t*_by4;
+                    
+                    var _dx = _x2 - _x1;
+                    var _dy = _y2 - _y1;
+                    _dist += sqrt(_dx*_dx + _dy*_dy);
+                    _bezier_lengths[@ _i] = _dist;
+                    
+                    _t += _bezier_inc;
+                    ++_i;
+                }
+                
+                if (_max_width >= 0) show_debug_message("Scribble: Warning! Maximum width set by scribble_set_wrap() (" + string(_max_width) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
+                _max_width = _dist;
+            }
+                
+            #endregion
+            
+            
+            
             #region Create the base text element
-        
+            
 	        var _meta_element_characters = 0;
 	        var _meta_element_lines      = 0;
 	        var _meta_element_pages      = 0;
 	        var _element_height          = 0;
-    
+            
 	        //Create a new array if we're no rebuilding, otherwise reuse the old one
 	        if (!_rebuild) var _scribble_array = array_create(SCRIBBLE.__SIZE);
     
@@ -161,6 +215,7 @@ function scribble_cache()
 	        _scribble_array[@ SCRIBBLE.STRING          ] = _draw_string;
 	        _scribble_array[@ SCRIBBLE.CACHE_STRING    ] = _cache_string;
 	        _scribble_array[@ SCRIBBLE.DRAW_STATE      ] = scribble_get_state(true);
+	        _scribble_array[@ SCRIBBLE.BEZIER_ARRAY    ] = _bezier_array;
 	        _scribble_array[@ SCRIBBLE.GARBAGE_COLLECT ] = _garbage_collect;
     
 	        _scribble_array[@ SCRIBBLE.__SECTION1      ] = "-- Statistics --";
@@ -402,9 +457,23 @@ function scribble_cache()
 	                            {
 	                                var _text_scale = real(_parameters_list[| 1]);
 	                            }
-                    
+                                
 	                            continue; //Skip the rest of the parser step
 	                        break;
+                            
+	                        case "scaleStack":
+	                            if (_command_tag_parameters <= 1)
+	                            {
+	                                show_error("Scribble:\nNot enough parameters for scaleStack tag!", false);
+	                            }
+	                            else
+	                            {
+	                                _text_scale *= real(_parameters_list[| 1]);
+	                            }
+                                
+	                            continue; //Skip the rest of the parser step
+	                        break;
+                            
                             #endregion
                             
                             #region Slant (italics emulation)
@@ -816,11 +885,18 @@ function scribble_cache()
                                                         if (SCRIBBLE_COLORIZE_SPRITES)
                                                         {
                                                             var _colour = _text_cycle? _text_cycle_colour : ($FF000000 | _text_colour);
+                                                            var _reset_rainbow = false;
                                                             var _reset_cycle = false;
                                                         }
                                                         else
                                                         {
                                                             var _colour = $FFFFFFFF;
+                                                            
+                                                            //Switch off rainbow
+                                                            var _reset_rainbow = ((_text_effect_flags & (1 << global.__scribble_effects[? "rainbow"])) > 0);
+                                                            _text_effect_flags = ~((~_text_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
+                                                            
+                                                            //Switch off colour cycling
                                                             var _reset_cycle = ((_text_effect_flags & (1 << global.__scribble_effects[? "cycle"])) > 0);
                                                             _text_effect_flags = ~((~_text_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
                                                         }
@@ -929,10 +1005,10 @@ function scribble_cache()
                                                             
                                                             //Pack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
                                                             //This must match what's in shd_scribble!
-                                                            var _packed_delta_lb  = floor(10*_delta_l ) + 2000*floor(10*_delta_b);
-                                                            var _packed_delta_rb  = floor(10*_delta_r ) + 2000*floor(10*_delta_b);
-                                                            var _packed_delta_lst = floor(10*_delta_ls) + 2000*floor(10*_delta_t);
-                                                            var _packed_delta_rst = floor(10*_delta_rs) + 2000*floor(10*_delta_t);
+                                                            var _packed_delta_lb  = floor(1000 + 10*_delta_l ) + 2000*floor(1000 + 10*_delta_b);
+                                                            var _packed_delta_rb  = floor(1000 + 10*_delta_r ) + 2000*floor(1000 + 10*_delta_b);
+                                                            var _packed_delta_lst = floor(1000 + 10*_delta_ls) + 2000*floor(1000 + 10*_delta_t);
+                                                            var _packed_delta_rst = floor(1000 + 10*_delta_rs) + 2000*floor(1000 + 10*_delta_t);
                                                             
                                                             //                                                X                                                          Y                                            Character/Line Index                                               Centre dXdY                                              Sprite Data                                                 Flags                                                      Colour                                                 U                                                V
                                                             buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_lst); buffer_write(_glyph_buffer, buffer_f32, _sprite_data); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
@@ -949,7 +1025,8 @@ function scribble_cache()
                                                         #endregion
                                                         
 	                                                    _text_effect_flags = ~((~_text_effect_flags) | 1); //Reset animated sprite effect flag specifically
-                                                        if (_reset_cycle) _text_effect_flags |= (1 << global.__scribble_effects[? "cycle"]);
+                                                        if (_reset_rainbow) _text_effect_flags |= (1 << global.__scribble_effects[? "rainbow"]);
+                                                        if (_reset_cycle  ) _text_effect_flags |= (1 << global.__scribble_effects[? "cycle"  ]);
                                                         
 	                                                    if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _command_name;
 	                                                    ++_meta_element_characters;
@@ -1463,13 +1540,15 @@ function scribble_cache()
 	                                //Set our word start tell position to be the same as the character start tell
 	                                //This allows us to handle single words that exceed the maximum textbox width multiple times (!)
 	                                _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_a;
-	                                _line_width = max(_line_width, _text_x);
 	                            }
 	                            else
 	                            {
 	                                //If our line didn't have a space then set our word/character start position to be the current tell for this buffer
 	                                _data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = _tell_b;
 	                                _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_b;
+                                    
+                                    //Update the width of the line based on the right-most edge of the last character
+                                    _line_width = max(_line_width, buffer_peek(_buffer, _tell_b - __SCRIBBLE_GLYPH_BYTE_SIZE + __SCRIBBLE_VERTEX.X, buffer_f32));
 	                            }
                                 
 	                            //Note the negative sign!
@@ -1505,13 +1584,13 @@ function scribble_cache()
                     
 	                    ++_v;
 	                }
-        
+                    
 	                //Limit the height of the line
 	                if (_line_max_height >= 0) _line_height = min(_line_height, _line_max_height);
-        
+                    
 	                ++_meta_element_lines;
 	                ++_meta_page_lines;
-        
+                    
 	                //Update the last line
 	                _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _force_newline? (_meta_element_characters-1) : _word_start_char;
 	                _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
@@ -1528,7 +1607,7 @@ function scribble_cache()
 	                _line_width     = 0;
 	                _line_height    = max(_line_min_height, _word_height);
 	                if (_line_fixed_height) _text_y += _line_height;
-                
+                    
 	                //Create a new line
 	                var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
 	                _line_array[@ __SCRIBBLE_LINE.START_CHAR] = _force_newline? _meta_element_characters : (_word_start_char+1);
@@ -1538,14 +1617,14 @@ function scribble_cache()
 	                _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_height;
 	                _line_array[@ __SCRIBBLE_LINE.HALIGN    ] = _text_halign;
 	                _page_lines_array[@ array_length(_page_lines_array)] = _line_array; //Add this line to the page
-                
+                    
 	                _force_newline = false;
 	            }
-    
+                
                 #endregion
-    
-    
-    
+                
+                
+                
                 #region Handle new page creation
             
 	            if (_force_newpage
@@ -1817,10 +1896,10 @@ function scribble_cache()
 	        _scribble_array[@ SCRIBBLE.WIDTH] = _element_max_x - _element_min_x;
 
             #endregion
-
-
-
-            #region Move glyphs around on a line to finalise alignment
+            
+            
+            
+            #region Final glyph transforms - horizontal alignment and Bezier curves
             
             //Find the min/max x-bounds for the textbox
             if (_max_width < 0)
@@ -1849,13 +1928,15 @@ function scribble_cache()
 	            repeat(array_length(_page_vbuffs_array))
 	            {
 	                var _data = _page_vbuffs_array[_v];
-                
+                    
 	                var _vbuff_line_start_list = _data[__SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST];
 	                var _buffer                = _data[__SCRIBBLE_VERTEX_BUFFER.BUFFER         ];
-                
+                    
+                    #region Move glyphs around on a line to finalise alignment
+                    
 	                var _buffer_tell = buffer_tell(_buffer);
 	                ds_list_add(_vbuff_line_start_list, _buffer_tell);
-        
+                    
 	                //Iterate over every line on the page
 	                var _l = 0;
 	                repeat(ds_list_size(_vbuff_line_start_list)-1)
@@ -1865,40 +1946,40 @@ function scribble_cache()
 	                    {
 	                        var _tell_a = _vbuff_line_start_list[| _l  ];
 	                        var _tell_b = _vbuff_line_start_list[| _l+1];
-                
+                            
 	                        if (_tell_b - _tell_a > 0)
 	                        {
 	                            var _line_halign = _line_data[__SCRIBBLE_LINE.HALIGN];
-                    
+                                
 	                            //If we're not left-aligned then we need to do some work!
 	                            if (_line_halign != fa_left)
 	                            {
 	                                var _line_width = _line_data[__SCRIBBLE_LINE.WIDTH];
-                        
+                                    
 	                                var _offset = 0;
 	                                switch(_line_halign)
 	                                {
 	                                    case fa_center:
 	                                        _offset = -(_line_width div 2);
 	                                    break;
-                            
+                                        
 	                                    case fa_right:
 	                                        _offset = -_line_width;
 	                                    break;
-                            
+                                        
 	                                    case __SCRIBBLE_PIN_LEFT:
 	                                        _offset = _pin_min_x;
 	                                    break;
-                            
+                                        
 	                                    case __SCRIBBLE_PIN_CENTRE:
 	                                        _offset = ((_pin_min_x + _pin_max_x) div 2) - (_line_width div 2);
 	                                    break;
-                            
+                                        
 	                                    case __SCRIBBLE_PIN_RIGHT:
 	                                        _offset = _pin_max_x - _line_width;
 	                                    break;
 	                                }
-                        
+                                    
 	                                if (_offset != 0)
 	                                {
 	                                    //We want to write to the CENTRE_X property of every vertex for horizontal alignment
@@ -1907,13 +1988,13 @@ function scribble_cache()
 	                                    {
 	                                        //Poke the new value by adding the offset to the old value
 	                                        buffer_poke(_buffer, _tell, buffer_f32, _offset + buffer_peek(_buffer, _tell, buffer_f32));
-                                
+                                            
 	                                        //Now jump ahead to the next vertex. This means we're always writing to CENTRE_X!
 	                                        _tell += __SCRIBBLE_VERTEX.__SIZE;
 	                                    }
 	                                }
 	                            }
-                    
+                                
 	                            //Only update glyph y-positions if we're not using fixed line heights
 	                            if (!_line_fixed_height)
 	                            {
@@ -1924,17 +2005,102 @@ function scribble_cache()
 	                                {
 	                                    //Poke the new value by adding the offset to the old value
 	                                    buffer_poke(_buffer, _tell, buffer_f32, _line_y + buffer_peek(_buffer, _tell, buffer_f32));
-                            
+                                        
 	                                    //Now jump ahead to the next vertex. This means we're always writing to CENTRE_Y!
 	                                    _tell += __SCRIBBLE_VERTEX.__SIZE;
 	                                }
 	                            }
 	                        }
 	                    }
-                    
+                        
 	                    ++_l;
 	                }
-                
+                    
+                    #endregion
+                    
+	                if (_bezier_do && (_buffer != undefined))
+	                {
+                        #region Apply Bezier curve
+                        
+                        var _bezier_index = 0;
+                        var _bezier_d0    = 0;
+                        var _bezier_d1    = _bezier_lengths[1];
+                        
+                        var _cx = 0;
+                        var _cy = 0;
+                        var _old_cx = 0;
+                            
+	                    //Start at the start...
+	                    var _tell = 0;
+	                    repeat(buffer_get_size(_buffer) div __SCRIBBLE_GLYPH_BYTE_SIZE)
+	                    {
+                            //Top-left corner
+                            var _l = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32);
+                            var _t = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32);
+                            
+                            //Bottom-right corner
+                            var _r = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X + __SCRIBBLE_VERTEX.__SIZE, buffer_f32);
+                            var _b = buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.Y + __SCRIBBLE_VERTEX.__SIZE, buffer_f32);
+                                
+	                        //Ignore null data in the vertex buffer
+	                        if ((_l != 0) || (_r != 0))
+	                        {
+                                //Find the middle
+                                var _cx = 0.5*(_l + _r);
+                                var _cy = 0.5*(_t + _b);
+                                
+                                if (_cx < _old_cx)
+                                {
+                                    _bezier_index = 0;
+                                    _bezier_d0 = 0;
+                                    _bezier_d1 = _bezier_lengths[1];
+                                }
+                                
+                                _old_cx = _cx;
+                                    
+                                //Iterate forwards until we find a Bezier segment we can fit into
+                                while (true)
+                                {
+                                    if (_cx <= _bezier_d1)
+                                    {
+                                        //Parameterise this glyph
+                                        var _t = _bezier_inc*((_cx - _bezier_d0)/ (_bezier_d1 - _bezier_d0) + _bezier_index);
+                                        break;
+                                    }
+                                    
+                                    _bezier_index++;
+                                    
+                                    if (_bezier_index >= SCRIBBLE_BEZIER_ACCURACY-1)
+                                    {
+                                        //We've hit the end of the Bezier curve, force all the remaining glyphs to stack up at the end of the line
+                                        var _t = 1.0;
+                                        break;
+                                    }
+                                    
+                                    _bezier_d0 = _bezier_d1;
+                                    _bezier_d1 = _bezier_lengths[_bezier_index+1];
+                                }
+                                
+                                //Write the parameter to each triangle for this quad
+                                repeat(6)
+                                {
+                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32, _t );
+                                    buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32, _cy);
+                                    _tell += __SCRIBBLE_VERTEX.__SIZE;
+                                }
+	                        }
+                            else
+                            {
+    	                        //Move to the next quad
+    	                        _tell += __SCRIBBLE_GLYPH_BYTE_SIZE;
+                            }
+	                    }
+                        
+                        #endregion
+                    }
+                    
+                    #region Clean up memory and build the vertex buffer
+                    
 	                //Wipe buffer start positions
 	                _data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = undefined;
 	                ds_list_destroy(_vbuff_line_start_list);
@@ -1948,14 +2114,16 @@ function scribble_cache()
 	                var _vertex_buffer = vertex_create_buffer_from_buffer_ext(_buffer, global.__scribble_vertex_format, 0, _buffer_tell / __SCRIBBLE_VERTEX.__SIZE);
 	                if (_freeze) vertex_freeze(_vertex_buffer);
 	                _data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = _vertex_buffer;
-                
-	                if (!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
+                    
+	                //Delete the glyph buffer
+	                if (!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY || _bezier_do)
 	                {
-	                    //Delete the actual buffer
 	                    _data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER] = undefined;
 	                    buffer_delete(_buffer);
 	                }
-                
+                    
+                    #endregion
+                    
 	                ++_v;
 	            }
             
@@ -1963,22 +2131,24 @@ function scribble_cache()
 	        }
         
             #endregion
-
-
-
+            
+            
+            
 	        if (SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
 	        {
+                if (_bezier_do) show_error("Scribble:\nSCRIBBLE_CREATE_GLYPH_LTRB_ARRAY is not compatible with Bezier curves\n ", true);
+                
                 #region Generate glyph LTRB array if requested
             
 	            var _glyph_ltrb_array = array_create(_meta_element_characters, undefined);
-            
+                
 	            //Iterate over every page
 	            var _p = 0;
 	            repeat(array_length(_element_pages_array))
 	            {
 	                var _page_array = _element_pages_array[_p];
 	                _page_vbuffs_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
-                
+                    
 	                //Iterate over every vertex buffer for that page
 	                var _v = 0;
 	                repeat(array_length(_page_vbuffs_array))

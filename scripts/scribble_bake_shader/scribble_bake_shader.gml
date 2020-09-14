@@ -287,7 +287,7 @@ function scribble_bake_shader()
     
 		shader_set(_shader);
 		shader_set_uniform_f(shader_get_uniform(_shader, "u_vTexel"), texture_get_texel_width(_texture), texture_get_texel_height(_texture));
-		draw_surface(0, 0, _surface_0);
+		draw_surface(_surface_0, 0, 0);
 		shader_reset();
     
 		gpu_set_tex_filter(_old_filter);
