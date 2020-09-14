@@ -80,8 +80,8 @@ repeat(_size)
     
     var _u0 = _x*_texture_tw;
     var _v0 = _y*_texture_th;
-    var _u1 = _u0 + (_w-1)*_texture_tw;
-    var _v1 = _v0 + (_h-1)*_texture_th;
+    var _u1 = _u0 + _w*_texture_tw;
+    var _v1 = _v0 + _h*_texture_th;
     
     var _array = array_create(SCRIBBLE_GLYPH.__SIZE, undefined);
     _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _char;

@@ -15,8 +15,8 @@
         "ada53973-f74d-41d7-865d-679a7c992e49",
         "6fcc1234-3b1b-4f4b-a5ce-5aaff866812e",
         "12f5f114-761b-4b38-b3b1-bc1469ae95ea",
-        "5098c737-17aa-4176-85e1-735159b4bf07",
-        "02648921-103c-45bf-a61c-f9f5f30f71c9"
+        "8ec8fa99-90e6-4fd3-9097-c32312937a72",
+        "d001d23f-040a-421b-9f30-0ace8e58dfd5"
     ],
     "filterType": "GMIncludedFile",
     "folderName": "Fonts",
