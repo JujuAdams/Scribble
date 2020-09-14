@@ -38,16 +38,17 @@ enum __SCRIBBLE_FONT
 {
     NAME,         // 0
     PATH,         // 1
-    TYPE,         // 2
-    FAMILY_NAME,  // 3
-    GLYPHS_MAP,   // 4
-    GLYPHS_ARRAY, // 5
-    GLYPH_MIN,    // 6
-    GLYPH_MAX,    // 7
-    SPACE_WIDTH,  // 8
-    MAPSTRING,    // 9
-    SEPARATION,   //10
-    __SIZE        //11
+    SPRITE,       // 2
+    TYPE,         // 3
+    FAMILY_NAME,  // 4
+    GLYPHS_MAP,   // 5
+    GLYPHS_ARRAY, // 6
+    GLYPH_MIN,    // 7
+    GLYPH_MAX,    // 8
+    SPACE_WIDTH,  // 9
+    MAPSTRING,    //10
+    SEPARATION,   //11
+    __SIZE        //12
 }
 
 enum __SCRIBBLE_FONT_TYPE
@@ -55,6 +56,7 @@ enum __SCRIBBLE_FONT_TYPE
     FONT,    //0
     SPRITE,  //1
     RUNTIME, //2
+    MSDF,    //3
 }
 
 enum __SCRIBBLE_PAGE

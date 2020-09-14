@@ -13,7 +13,8 @@
         "61d7277a-5e24-4b4c-9f1a-393248336663",
         "0468d537-83df-41bc-8ce0-08d69b6db1cf",
         "977b75d1-2f58-4f47-956b-6a720645d852",
-        "5590a779-f85c-4a53-b85f-3efd0de9f03f"
+        "5590a779-f85c-4a53-b85f-3efd0de9f03f",
+        "0207e10f-35b0-429d-9c31-9fdd8cd8234f"
     ],
     "filterType": "GMObject",
     "folderName": "Tests",

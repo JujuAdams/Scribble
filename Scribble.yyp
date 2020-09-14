@@ -55,6 +55,22 @@
             }
         },
         {
+            "Key": "0207e10f-35b0-429d-9c31-9fdd8cd8234f",
+            "Value": {
+                "id": "23614061-edb9-41db-b88e-984150b855b3",
+                "resourcePath": "objects\\obj_test_msdf\\obj_test_msdf.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "02648921-103c-45bf-a61c-f9f5f30f71c9",
+            "Value": {
+                "id": "559de04b-3e68-4ae7-ba88-25dc016ce377",
+                "resourcePath": "datafiles_yy\\Fonts\\msdf.png.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "04580ef1-3ded-4d10-bf20-ef0e199d873b",
             "Value": {
                 "id": "5425de01-1031-4c7a-af52-bcfe701da74a",
@@ -135,10 +151,18 @@
             }
         },
         {
+            "Key": "1b0ce826-86fc-4980-950a-c50b23a27125",
+            "Value": {
+                "id": "e00d98ff-9fd4-4a63-ad40-5d3658dedf8c",
+                "resourcePath": "shaders\\shd_scribble\\shd_scribble.yy",
+                "resourceType": "GMShader"
+            }
+        },
+        {
             "Key": "1cadf0e8-8394-480c-8ce1-0cce13ec62dc",
             "Value": {
                 "id": "bb522334-ff54-458e-ae82-93d8210f76ba",
-                "resourcePath": "shaders\\shd_scribble\\shd_scribble.yy",
+                "resourcePath": "shaders\\shd_scribble_msdf\\shd_scribble_msdf.yy",
                 "resourceType": "GMShader"
             }
         },
@@ -348,6 +372,14 @@
                 "id": "25075526-07ba-4752-aaae-a42f0252fbfa",
                 "resourcePath": "scripts\\scribble_get_bbox\\scribble_get_bbox.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "5098c737-17aa-4176-85e1-735159b4bf07",
+            "Value": {
+                "id": "e55066c2-f51e-4e7f-abf3-4316e450ea24",
+                "resourcePath": "datafiles_yy\\Fonts\\msdf.json.yy",
+                "resourceType": "GMIncludedFile"
             }
         },
         {
@@ -1127,6 +1159,14 @@
             }
         },
         {
+            "Key": "dd22830d-38fc-4ad0-b791-2877fc3f3cdf",
+            "Value": {
+                "id": "734585ce-b2fa-4a5d-b78c-0dcfa79b8b19",
+                "resourcePath": "scripts\\scribble_add_msdf_font\\scribble_add_msdf_font.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "deff0038-d64f-4e48-906a-3fae940cb2d8",
             "Value": {
                 "id": "02c912ab-14f8-481f-842d-aa9f933e7d30",
@@ -1285,6 +1325,7 @@
         "89e8adda-438e-48f9-ab78-0e8b396b3850",
         "375e7330-6e30-4902-8a42-dbc8ad380c16",
         "78e35bbe-fd42-485e-9818-8c5f23d7c5b9",
+        "dd22830d-38fc-4ad0-b791-2877fc3f3cdf",
         "d934110d-0067-4412-8563-3af79a256c25",
         "2d0079a4-4bb9-40c7-8224-a9c7694d3aed",
         "0a93a84f-87c9-4473-adf8-f92fd1d1e19f",

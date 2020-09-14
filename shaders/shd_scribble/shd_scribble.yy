@@ -1,5 +1,5 @@
 {
-    "id": "1cadf0e8-8394-480c-8ce1-0cce13ec62dc",
+    "id": "1b0ce826-86fc-4980-950a-c50b23a27125",
     "modelName": "GMShader",
     "mvc": "1.0",
     "name": "shd_scribble",

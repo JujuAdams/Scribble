@@ -3,6 +3,7 @@
     "modelName": "GMtvOSOptions",
     "mvc": "1.0",
     "name": "tvOS",
+    "option_tvos_apple_sign_in": false,
     "option_tvos_bundle_name": "com.company.game",
     "option_tvos_display_cursor": false,
     "option_tvos_display_name": "Made in GameMaker Studio 2",

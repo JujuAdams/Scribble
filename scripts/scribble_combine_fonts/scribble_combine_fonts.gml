@@ -23,6 +23,7 @@ var _glyph_map = ds_map_create();
 var _font_data = array_create(__SCRIBBLE_FONT.__SIZE);
 _font_data[@ __SCRIBBLE_FONT.NAME        ] = _new_font_name;
 _font_data[@ __SCRIBBLE_FONT.PATH        ] = undefined;
+_font_data[@ __SCRIBBLE_FONT.SPRITE      ] = undefined;
 _font_data[@ __SCRIBBLE_FONT.TYPE        ] = __SCRIBBLE_FONT_TYPE.RUNTIME;
 _font_data[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
 _font_data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = _glyph_map;

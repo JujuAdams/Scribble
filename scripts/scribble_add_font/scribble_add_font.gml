@@ -69,6 +69,7 @@ if (!file_exists(_path))
 var _data = array_create(__SCRIBBLE_FONT.__SIZE);
 _data[@ __SCRIBBLE_FONT.NAME        ] = _font;
 _data[@ __SCRIBBLE_FONT.PATH        ] = _path;
+_data[@ __SCRIBBLE_FONT.SPRITE      ] = undefined;
 _data[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
 _data[@ __SCRIBBLE_FONT.TYPE        ] = __SCRIBBLE_FONT_TYPE.FONT;
 _data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
