@@ -86,6 +86,7 @@ if (_build)
         }
         
         var _font_data         = global.__scribble_font_data[? _def_font];
+        var _font_type         = _font_data[__SCRIBBLE_FONT.TYPE        ];
         var _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
         var _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
         var _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
@@ -323,6 +324,7 @@ if (_build)
                             _text_slant        = false;
                             
                             _font_data         = global.__scribble_font_data[? _text_font];
+                            _font_type         = _font_data[__SCRIBBLE_FONT.TYPE        ];
                             _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                             _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                             _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
@@ -340,6 +342,7 @@ if (_build)
                             _text_font = _def_font;
                             
                             _font_data         = global.__scribble_font_data[? _text_font];
+                            _font_type         = _font_data[__SCRIBBLE_FONT.TYPE        ];
                             _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                             _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                             _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
@@ -541,6 +544,7 @@ if (_build)
                                     _text_font = _new_font;
                                     
                                     _font_data         = global.__scribble_font_data[? _new_font];
+                                    _font_type         = _font_data[__SCRIBBLE_FONT.TYPE        ];
                                     _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
@@ -578,6 +582,7 @@ if (_build)
                                     _text_font = _new_font;
                                     
                                     _font_data         = global.__scribble_font_data[? _new_font];
+                                    _font_type         = _font_data[__SCRIBBLE_FONT.TYPE        ];
                                     _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
@@ -615,6 +620,7 @@ if (_build)
                                     _text_font = _new_font;
                                     
                                     _font_data         = global.__scribble_font_data[? _new_font];
+                                    _font_type         = _font_data[__SCRIBBLE_FONT.TYPE        ];
                                     _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
@@ -652,6 +658,7 @@ if (_build)
                                     _text_font = _new_font;
                                     
                                     _font_data         = global.__scribble_font_data[? _new_font];
+                                    _font_type         = _font_data[__SCRIBBLE_FONT.TYPE        ];
                                     _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
@@ -724,6 +731,7 @@ if (_build)
                                             _text_font = _command_name;
                                             
                                             _font_data         = global.__scribble_font_data[? _command_name];
+                                            _font_type         = _font_data[__SCRIBBLE_FONT.TYPE        ];
                                             _font_glyphs_map   = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP  ];
                                             _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                             _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
@@ -848,6 +856,7 @@ if (_build)
                                                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _buffer;
                                                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
                                                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _sprite_texture;
+                                                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.SHADER         ] = shd_scribble;
                                                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = 0;
                                                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
                                                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = 0;
@@ -1260,11 +1269,12 @@ if (_build)
                         {
                             var _vbuff_line_start_list = ds_list_create();
                             var _glyph_buffer = buffer_create(__SCRIBBLE_EXPECTED_GLYPHS*__SCRIBBLE_GLYPH_BYTE_SIZE, buffer_grow, 1);
-                        
+                            
                             _vbuff_data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _glyph_buffer;
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _glyph_texture;
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.SHADER         ] = (_font_type == __SCRIBBLE_FONT_TYPE.MSDF)? shd_scribble_msdf : shd_scribble;
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = 0;
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = 0;
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = undefined;
@@ -1619,6 +1629,7 @@ if (_build)
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _new_buffer;
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE        ];
+                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.SHADER         ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.SHADER         ];
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] - _line_tell_prev;
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] - _line_tell_prev;
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET  ];

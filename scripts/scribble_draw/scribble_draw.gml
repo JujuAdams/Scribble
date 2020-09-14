@@ -369,31 +369,62 @@ if (_count > 0)
     _matrix = matrix_multiply(_matrix, _old_matrix);
     matrix_set(matrix_world, _matrix);
     
-    //Set the shader and its uniforms
-    shader_set(shd_scribble);
-    shader_set_uniform_f(global.__scribble_uniform_time, _animation_time);
-    
-    shader_set_uniform_f(global.__scribble_uniform_tw_method, _typewriter_fade_in? _typewriter_method : -_typewriter_method);
-    shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
-    shader_set_uniform_f_array(global.__scribble_uniform_tw_window_array, _typewriter_window_array);
-    
-    shader_set_uniform_f(global.__scribble_uniform_colour_blend, colour_get_red(  global.scribble_state_colour)/255,
-                                                                 colour_get_green(global.scribble_state_colour)/255,
-                                                                 colour_get_blue( global.scribble_state_colour)/255,
-                                                                 global.scribble_state_alpha);
-        
-    shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
-    
     //Now iterate over the text element's vertex buffers and submit them
+    var _shader = undefined;
     var _i = 0;
     repeat(_count)
     {
         var _vbuff_data = _page_vbuffs_array[_i];
+        
+        if (_shader != _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.SHADER])
+        {
+            _shader = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.SHADER];
+            
+            if (_shader == shd_scribble)
+            {
+                shader_set(shd_scribble);
+                shader_set_uniform_f(global.__scribble_uniform_time, _animation_time);
+                
+                shader_set_uniform_f(global.__scribble_uniform_tw_method, _typewriter_fade_in? _typewriter_method : -_typewriter_method);
+                shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
+                shader_set_uniform_f_array(global.__scribble_uniform_tw_window_array, _typewriter_window_array);
+                
+                shader_set_uniform_f(global.__scribble_uniform_colour_blend, colour_get_red(  global.scribble_state_colour)/255,
+                                                                             colour_get_green(global.scribble_state_colour)/255,
+                                                                             colour_get_blue( global.scribble_state_colour)/255,
+                                                                             global.scribble_state_alpha);
+                    
+                shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
+            }
+            else if (_shader == shd_scribble_msdf)
+            {
+                shader_set(shd_scribble_msdf);
+                shader_set_uniform_f(global.__scribble_msdf_uniform_time, _animation_time);
+                
+                shader_set_uniform_f(global.__scribble_msdf_uniform_tw_method, _typewriter_fade_in? _typewriter_method : -_typewriter_method);
+                shader_set_uniform_f(global.__scribble_msdf_uniform_tw_smoothness, _typewriter_smoothness);
+                shader_set_uniform_f_array(global.__scribble_msdf_uniform_tw_window_array, _typewriter_window_array);
+                
+                shader_set_uniform_f(global.__scribble_msdf_uniform_colour_blend, colour_get_red(  global.scribble_state_colour)/255,
+                                                                                  colour_get_green(global.scribble_state_colour)/255,
+                                                                                  colour_get_blue( global.scribble_state_colour)/255,
+                                                                                  global.scribble_state_alpha);
+                
+                shader_set_uniform_f_array(global.__scribble_msdf_uniform_data_fields, global.scribble_state_anim_array);
+                shader_set_uniform_f(global.__scribble_msdf_uniform_texel, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH], _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT]);
+            }
+            else
+            {
+                _shader = undefined;
+                shader_reset();
+            }
+        }
+        
         vertex_submit(_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
         ++_i;
     }
     
-    shader_reset();
+    if (_shader != undefined) shader_reset();
     
     //Make sure we reset the world matrix
     matrix_set(matrix_world, _old_matrix);
