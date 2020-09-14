@@ -36,24 +36,54 @@ if (!ds_map_exists(global.__scribble_font_data, _font))
 
 var _font_data = global.__scribble_font_data[? _font ];
 
-var _array = _font_data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ];
-if (_array == undefined)
+if ((_character == all) || (_character == "all"))
 {
-    //If the glyph array doesn't exist for this font, use the ds_map fallback
-    var _map = _font_data[ __SCRIBBLE_FONT.GLYPHS_MAP ];
-    var _glyph_data = _map[? ord(_character) ];
+    var _array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
+    if (_array == undefined)
+    {
+        //If the glyph array doesn't exist for this font, use the ds_map fallback
+        var _map = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP];
+        
+        var _key = ds_map_find_first(_map);
+        repeat(ds_map_size(_map))
+        {
+            var _glyph_data = _map[? _key];
+            _glyph_data[@ _property] = _relative? (_glyph_data[_property] + _value) : _value;
+            _key = ds_map_find_next(_map, _key);
+        }
+    }
+    else
+    {
+        var _i = 0;
+        repeat(array_length_1d(_array))
+        {
+            var _glyph_data = _array[_i];
+            if (is_array(_glyph_data)) _glyph_data[@ _property] = _relative? (_glyph_data[_property] + _value) : _value;
+            ++_i;
+        }
+    }
 }
 else
 {
-    var _glyph_data = _array[ ord(_character) - _font_data[ __SCRIBBLE_FONT.GLYPH_MIN ] ];
+    var _array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
+    if (_array == undefined)
+    {
+        //If the glyph array doesn't exist for this font, use the ds_map fallback
+        var _map = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP];
+        var _glyph_data = _map[? ord(_character)];
+    }
+    else
+    {
+        var _glyph_data = _array[ord(_character) - _font_data[ __SCRIBBLE_FONT.GLYPH_MIN]];
+    }
+    
+    if (_glyph_data == undefined)
+    {
+        show_error("Scribble:\nCharacter \"" + _character + "\" not found for font \"" + _font + "\"", false);
+        exit;
+    }
+    
+    var _new_value = _relative? (_glyph_data[_property] + _value) : _value;
+    _glyph_data[@ _property] = _new_value;
+    return _new_value;
 }
-
-if (_glyph_data == undefined)
-{
-    show_error("Scribble:\nCharacter \"" + _character + "\" not found for font \"" + _font + "\"", false);
-    exit;
-}
-
-var _new_value = _relative? (_glyph_data[_property] + _value) : _value;
-_glyph_data[@ _property] = _new_value;
-return _new_value;
