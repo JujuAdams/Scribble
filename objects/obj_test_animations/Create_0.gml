@@ -1,1 +1,1 @@
-scribble_init("Fonts", "fnt_test_1", true);
+scribble_init("", "fnt_test_1", true);

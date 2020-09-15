@@ -8,7 +8,7 @@
     "exportAction": 0,
     "exportDir": "",
     "fileName": "fnt_style_bi.yy",
-    "filePath": "datafiles\\Fonts",
+    "filePath": "datafiles",
     "freeData": false,
     "origName": "",
     "overwrite": false,

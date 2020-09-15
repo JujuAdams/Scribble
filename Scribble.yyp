@@ -122,7 +122,7 @@
             "Key": "110875ee-913d-4905-a3f3-66648cf59e23",
             "Value": {
                 "id": "03fa633d-fa3c-4222-96c2-21a65ea58201",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_style.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_style.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -130,7 +130,7 @@
             "Key": "12f5f114-761b-4b38-b3b1-bc1469ae95ea",
             "Value": {
                 "id": "e6e1d2fe-7ddc-4551-8d16-f79bc4ba08b4",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_dialogue_2.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_dialogue_2.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -234,7 +234,7 @@
             "Key": "2e79c554-b901-490f-a57a-be4c4da6f693",
             "Value": {
                 "id": "5702490c-799e-4d02-b0cd-ff90d84ade35",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_test_2.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_test_2.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -314,7 +314,7 @@
             "Key": "45903703-1256-482e-b28c-17d92180edf3",
             "Value": {
                 "id": "f7938804-373e-43f0-bb9b-965c5a175677",
-                "resourcePath": "datafiles_yy\\Fonts\\riffic2.png.yy",
+                "resourcePath": "datafiles_yy\\riffic2.png.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -322,7 +322,7 @@
             "Key": "4623e565-3c0d-42a1-ba82-fb6bc9d22073",
             "Value": {
                 "id": "ee8d304a-3cf5-4301-be3d-abc74288d643",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_large.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_large.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -522,7 +522,7 @@
             "Key": "6fcc1234-3b1b-4f4b-a5ce-5aaff866812e",
             "Value": {
                 "id": "a44a0918-bfce-4deb-b926-085e45e9d794",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_style_invalid.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_style_invalid.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -618,7 +618,7 @@
             "Key": "80358f6c-5ca2-4dc5-8e2c-b592bc9958b4",
             "Value": {
                 "id": "6f3e59ed-27a1-4ecb-8f2a-9701a029db0f",
-                "resourcePath": "datafiles_yy\\Fonts\\riffic2.json.yy",
+                "resourcePath": "datafiles_yy\\riffic2.json.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -687,14 +687,6 @@
             }
         },
         {
-            "Key": "89d48886-20f5-4316-bc9c-1908defb08ac",
-            "Value": {
-                "id": "279a42e3-5696-4b2a-8c4d-a217be86dd49",
-                "resourcePath": "views\\89d48886-20f5-4316-bc9c-1908defb08ac.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
             "Key": "89e8adda-438e-48f9-ab78-0e8b396b3850",
             "Value": {
                 "id": "337c9a61-8476-4832-8ae3-a501a4acc257",
@@ -722,7 +714,7 @@
             "Key": "8b719297-79d2-452e-a819-2bc38ead33df",
             "Value": {
                 "id": "134cb2e9-0909-4d71-bcca-93b17102dd6c",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_test_0.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_test_0.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -730,7 +722,7 @@
             "Key": "8ec8fa99-90e6-4fd3-9097-c32312937a72",
             "Value": {
                 "id": "a2a34fc2-af1e-4ddc-b72b-ee45925c395e",
-                "resourcePath": "datafiles_yy\\Fonts\\riffic.png.yy",
+                "resourcePath": "datafiles_yy\\riffic.png.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -850,7 +842,7 @@
             "Key": "a3080560-f1a1-472e-b170-494001754338",
             "Value": {
                 "id": "ce0dc0ae-b225-4012-8fd1-a705a8eab541",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_style_b.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_style_b.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -922,7 +914,7 @@
             "Key": "ada53973-f74d-41d7-865d-679a7c992e49",
             "Value": {
                 "id": "5853fcb5-e75c-440d-9ef9-ce08c9325dea",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_style_i.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_style_i.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -1066,7 +1058,7 @@
             "Key": "c2d60cf9-ffb4-42bd-a0c7-c7cf77ca5452",
             "Value": {
                 "id": "56f40119-8e95-4e4d-8b63-97f5328b5535",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_chinese.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_chinese.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -1090,7 +1082,7 @@
             "Key": "d001d23f-040a-421b-9f30-0ace8e58dfd5",
             "Value": {
                 "id": "e3b4dac3-c09f-4042-97df-9224e855f220",
-                "resourcePath": "datafiles_yy\\Fonts\\riffic.json.yy",
+                "resourcePath": "datafiles_yy\\riffic.json.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -1170,7 +1162,7 @@
             "Key": "dd1eb3eb-ccda-480f-8d25-1b232369a0ae",
             "Value": {
                 "id": "c3de2246-e589-4090-a56b-3d1faef33d9b",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_test_1.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_test_1.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -1258,7 +1250,7 @@
             "Key": "f07dc83b-b907-4c31-a8ff-df8ad3ca4637",
             "Value": {
                 "id": "ea5fefd1-f035-4419-9725-12c17c4e4284",
-                "resourcePath": "datafiles_yy\\Fonts\\fnt_style_bi.yy.yy",
+                "resourcePath": "datafiles_yy\\fnt_style_bi.yy.yy",
                 "resourceType": "GMIncludedFile"
             }
         },

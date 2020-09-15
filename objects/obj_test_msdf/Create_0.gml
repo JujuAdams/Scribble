@@ -1,4 +1,4 @@
-scribble_init("Fonts", "fnt_test_0", true);
+scribble_init("", "fnt_test_0", true);
 scribble_add_color("yellow", make_color_rgb(255, 226, 92), true);
 
 scribble_add_msdf_font("riffic", 12);
