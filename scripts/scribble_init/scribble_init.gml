@@ -404,6 +404,7 @@ global.__scribble_msdf_uniform_shadow_colour    = shader_get_uniform(shd_scribbl
 global.__scribble_msdf_uniform_shadow_offset    = shader_get_uniform(shd_scribble_msdf, "u_vShadowOffset"         );
 global.__scribble_msdf_uniform_border_colour    = shader_get_uniform(shd_scribble_msdf, "u_vBorderColour"         );
 global.__scribble_msdf_uniform_border_thickness = shader_get_uniform(shd_scribble_msdf, "u_fBorderThickness"      );
+global.__scribble_msdf_uniform_scale            = shader_get_uniform(shd_scribble_msdf, "u_vScale"                );
 
 //Hex converter array
 var _min = ord("0");
