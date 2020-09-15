@@ -33,6 +33,7 @@ _font_data[@ __SCRIBBLE_FONT.GLYPH_MAX   ] = undefined;
 _font_data[@ __SCRIBBLE_FONT.SPACE_WIDTH ] = undefined;
 _font_data[@ __SCRIBBLE_FONT.MAPSTRING   ] = undefined;
 _font_data[@ __SCRIBBLE_FONT.SEPARATION  ] = undefined;
+_font_data[@ __SCRIBBLE_FONT.MSDF_RANGE  ] = undefined;
 global.__scribble_font_data[? _new_font_name] = _font_data;
 
 //Calculate font min/max y-values so we can apply a y-offset per font so everything is centred

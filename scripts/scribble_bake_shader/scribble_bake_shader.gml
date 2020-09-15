@@ -44,6 +44,12 @@ if (_source_font_name == _new_font_name)
 
 var _src_font_array = global.__scribble_font_data[? _source_font_name];
 
+if (_src_font_array[__SCRIBBLE_FONT.TYPE] == __SCRIBBLE_FONT_TYPE.MSDF)
+{
+	show_error("Scribble:\nSource font cannot be an MSDF font\n ", false);
+	return undefined;
+}
+
 
 
 //Unpack source glyphs into an intermediate array

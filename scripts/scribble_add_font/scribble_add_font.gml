@@ -79,6 +79,7 @@ _data[@ __SCRIBBLE_FONT.GLYPH_MAX   ] = 32;
 _data[@ __SCRIBBLE_FONT.SPACE_WIDTH ] = undefined;
 _data[@ __SCRIBBLE_FONT.MAPSTRING   ] = undefined;
 _data[@ __SCRIBBLE_FONT.SEPARATION  ] = undefined;
+_data[@ __SCRIBBLE_FONT.MSDF_RANGE  ] = undefined;
 global.__scribble_font_data[? _font ] = _data;
 
 

@@ -311,6 +311,14 @@
             }
         },
         {
+            "Key": "45903703-1256-482e-b28c-17d92180edf3",
+            "Value": {
+                "id": "f7938804-373e-43f0-bb9b-965c5a175677",
+                "resourcePath": "datafiles_yy\\Fonts\\riffic2.png.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "4623e565-3c0d-42a1-ba82-fb6bc9d22073",
             "Value": {
                 "id": "ee8d304a-3cf5-4301-be3d-abc74288d643",
@@ -604,6 +612,14 @@
                 "id": "ca3d646d-ee3b-4c30-b6cc-e0f146211f0a",
                 "resourcePath": "scripts\\example_event\\example_event.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "80358f6c-5ca2-4dc5-8e2c-b592bc9958b4",
+            "Value": {
+                "id": "6f3e59ed-27a1-4ecb-8f2a-9701a029db0f",
+                "resourcePath": "datafiles_yy\\Fonts\\riffic2.json.yy",
+                "resourceType": "GMIncludedFile"
             }
         },
         {

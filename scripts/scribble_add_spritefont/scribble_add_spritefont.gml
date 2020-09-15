@@ -102,6 +102,7 @@ _data[@ __SCRIBBLE_FONT.GLYPH_MAX   ] = 32;
 _data[@ __SCRIBBLE_FONT.SPACE_WIDTH ] = _space_width;
 _data[@ __SCRIBBLE_FONT.MAPSTRING   ] = _mapstring;
 _data[@ __SCRIBBLE_FONT.SEPARATION  ] = _separation;
+_data[@ __SCRIBBLE_FONT.MSDF_RANGE  ] = undefined;
 global.__scribble_font_data[? _font ] = _data;
 
 var _texture = sprite_get_texture(_sprite, 0);
