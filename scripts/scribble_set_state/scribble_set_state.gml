@@ -26,6 +26,7 @@ global.scribble_state_shadow_y_offset  = argument0[SCRIBBLE_STATE.MSDF_SHADOW_Y_
 global.scribble_state_border_color     = argument0[SCRIBBLE_STATE.MSDF_BORDER_COLOR    ];
 global.scribble_state_border_thickness = argument0[SCRIBBLE_STATE.MSDF_BORDER_THICKNESS];
 global.scribble_state_msdf_aa          = argument0[SCRIBBLE_STATE.MSDF_AA              ];
+global.scribble_state_force_shader     = argument0[SCRIBBLE_STATE.FORCE_SHADER         ];
 
 var _array = argument0[SCRIBBLE_STATE.ANIMATION_ARRAY];
 if (is_array(_array))

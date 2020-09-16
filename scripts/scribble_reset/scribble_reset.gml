@@ -25,6 +25,7 @@ global.scribble_state_shadow_y_offset  = 0.0;
 global.scribble_state_border_color     = c_black;
 global.scribble_state_border_thickness = 0.0;
 global.scribble_state_msdf_aa          = 1.0;
+global.scribble_state_force_shader     = undefined;
 
 scribble_set_animation(SCRIBBLE_ANIM.WAVE_SIZE       ,  4   );
 scribble_set_animation(SCRIBBLE_ANIM.WAVE_FREQ       , 50   );

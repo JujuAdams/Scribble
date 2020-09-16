@@ -31,6 +31,7 @@ _array[@ SCRIBBLE_STATE.MSDF_SHADOW_Y_OFFSET ] = global.scribble_state_shadow_y_
 _array[@ SCRIBBLE_STATE.MSDF_BORDER_COLOR    ] = global.scribble_state_border_color;
 _array[@ SCRIBBLE_STATE.MSDF_BORDER_THICKNESS] = global.scribble_state_border_thickness;
 _array[@ SCRIBBLE_STATE.MSDF_AA              ] = global.scribble_state_msdf_aa;
+_array[@ SCRIBBLE_STATE.FORCE_SHADER         ] = global.scribble_state_force_shader;
 
 if (!_ignore_animation)
 {
