@@ -2,22 +2,29 @@
 /// 
 /// You are welcome to edit this script!
 
-global.scribble_state_starting_font   = global.__scribble_default_font; //Name of the starting font for every text element. Name must be a string. This is the font that is set when [/] or [/font] is used in a string
-global.scribble_state_starting_color  = c_white;                        //Starting colour for every text element
-global.scribble_state_starting_halign = fa_left;                        //Starting horizontal alignment for every text element
-global.scribble_state_xscale          = 1;                              //x-scale of the textbox
-global.scribble_state_yscale          = 1;                              //y-scale of the textbox
-global.scribble_state_angle           = 0;                              //Rotation of the textbox
-global.scribble_state_colour          = c_white;                        //Blend colour to use for every text element
-global.scribble_state_alpha           = 1.0;                            //Blend alpha to use for every text element
-global.scribble_state_line_min_height = -1;                             //Minimum height of each line of text. Set to a negative value to use the height of a space character of the default font.
-global.scribble_state_line_max_height = -1;                             //Maximum line height for each line of text. Use a negative number (the default) for no limit
-global.scribble_state_max_width       = -1;                             //Maximum horizontal size of the textbox. Set to a negative value for no limit.
-global.scribble_state_max_height      = -1;                             //Maximum vertical size of the textbox. Set to a negative value for no limit.
-global.scribble_state_character_wrap  = false;                          //Set to <true> to allow characters to be put onto new lines by themselves
-global.scribble_state_box_halign      = fa_left;                        //fa_left places the left-hand side of the box at the draw coordinate when using scribble_draw().
-global.scribble_state_box_valign      = fa_top;                         //fa_top places the top of the box at the draw coordinate when using scribble_draw().
-global.scribble_state_box_align_page  = false;                          //Whether to use text element sizes (false) or page sizes (true)
+global.scribble_state_starting_font    = global.__scribble_default_font; //Name of the starting font for every text element. Name must be a string. This is the font that is set when [/] or [/font] is used in a string
+global.scribble_state_starting_color   = c_white;                        //Starting colour for every text element
+global.scribble_state_starting_halign  = fa_left;                        //Starting horizontal alignment for every text element
+global.scribble_state_xscale           = 1;                              //x-scale of the textbox
+global.scribble_state_yscale           = 1;                              //y-scale of the textbox
+global.scribble_state_angle            = 0;                              //Rotation of the textbox
+global.scribble_state_colour           = c_white;                        //Blend colour to use for every text element
+global.scribble_state_alpha            = 1.0;                            //Blend alpha to use for every text element
+global.scribble_state_line_min_height  = -1;                             //Minimum height of each line of text. Set to a negative value to use the height of a space character of the default font.
+global.scribble_state_line_max_height  = -1;                             //Maximum line height for each line of text. Use a negative number (the default) for no limit
+global.scribble_state_max_width        = -1;                             //Maximum horizontal size of the textbox. Set to a negative value for no limit.
+global.scribble_state_max_height       = -1;                             //Maximum vertical size of the textbox. Set to a negative value for no limit.
+global.scribble_state_character_wrap   = false;                          //Set to <true> to allow characters to be put onto new lines by themselves
+global.scribble_state_box_halign       = fa_left;                        //fa_left places the left-hand side of the box at the draw coordinate when using scribble_draw().
+global.scribble_state_box_valign       = fa_top;                         //fa_top places the top of the box at the draw coordinate when using scribble_draw().
+global.scribble_state_box_align_page   = false;                          //Whether to use text element sizes (false) or page sizes (true)
+global.scribble_state_shadow_color     = c_black;
+global.scribble_state_shadow_alpha     = 0.0;
+global.scribble_state_shadow_x_offset  = 0.0;
+global.scribble_state_shadow_y_offset  = 0.0;
+global.scribble_state_border_color     = c_black;
+global.scribble_state_border_thickness = 0.0;
+global.scribble_state_msdf_aa          = 1.0;
 
 scribble_set_animation(SCRIBBLE_ANIM.WAVE_SIZE       ,  4   );
 scribble_set_animation(SCRIBBLE_ANIM.WAVE_FREQ       , 50   );

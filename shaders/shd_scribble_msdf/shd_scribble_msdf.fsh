@@ -1,4 +1,4 @@
-//#extension GL_OES_standard_derivatives : enable
+#extension GL_OES_standard_derivatives : enable
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
@@ -9,7 +9,7 @@ uniform vec4  u_vShadowColour;
 uniform vec2  u_vShadowOffset;
 uniform vec3  u_vBorderColour;
 uniform float u_fBorderThickness;
-uniform vec2  u_vScale;
+uniform vec2  u_vPixelSize;
 
 float median(vec3 v)
 {
@@ -28,12 +28,12 @@ float MSDFAlpha(float signedDistance, float pixelSize, float outerBorder)
 
 void main()
 {
-    //TODO - Mac/iOS have issues with this right now. Figure out a way to get around that
+    ////TODO - Mac/iOS have issues with this right now. Figure out a way to get around that
     //float dx = dFdx(v_vTexcoord.x)/u_vTexel.x;
     //float dy = dFdy(v_vTexcoord.y)/u_vTexel.y;
     //float pixelSize = inversesqrt(dx*dx + dy*dy);
     
-    float pixelSize = length(u_vScale);
+    float pixelSize = length(u_vPixelSize);
     
     float distBase = MSDFSignedDistance(vec2(0.0));
     float alphaBase = MSDFAlpha(distBase, pixelSize, 0.0);

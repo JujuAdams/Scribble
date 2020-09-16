@@ -171,6 +171,13 @@ enum SCRIBBLE_STATE
     BOX_VALIGN,
     BOX_ALIGN_PAGE,
     ANIMATION_ARRAY,
+    MSDF_SHADOW_COLOR,
+    MSDF_SHADOW_ALPHA,
+    MSDF_SHADOW_X_OFFSET,
+    MSDF_SHADOW_Y_OFFSET,
+    MSDF_BORDER_COLOR,
+    MSDF_BORDER_THICKNESS,
+    MSDF_AA,
     __SIZE
 }
 
@@ -404,7 +411,7 @@ global.__scribble_msdf_uniform_shadow_colour    = shader_get_uniform(shd_scribbl
 global.__scribble_msdf_uniform_shadow_offset    = shader_get_uniform(shd_scribble_msdf, "u_vShadowOffset"         );
 global.__scribble_msdf_uniform_border_colour    = shader_get_uniform(shd_scribble_msdf, "u_vBorderColour"         );
 global.__scribble_msdf_uniform_border_thickness = shader_get_uniform(shd_scribble_msdf, "u_fBorderThickness"      );
-global.__scribble_msdf_uniform_scale            = shader_get_uniform(shd_scribble_msdf, "u_vScale"                );
+global.__scribble_msdf_uniform_pixel_size       = shader_get_uniform(shd_scribble_msdf, "u_vPixelSize"            );
 
 //Hex converter array
 var _min = ord("0");

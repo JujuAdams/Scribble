@@ -407,6 +407,14 @@
             }
         },
         {
+            "Key": "5abf4051-b47a-45b6-bf17-a380e46f2ca3",
+            "Value": {
+                "id": "fce1a3d4-30b9-40ae-83c4-f5c68e8a2ef6",
+                "resourcePath": "scripts\\scribble_set_msdf_aa\\scribble_set_msdf_aa.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "5b5d2964-6179-4fe2-8b4c-f1e7d030639e",
             "Value": {
                 "id": "930ec631-0628-4385-a881-6f784dbb5f2a",
@@ -911,6 +919,14 @@
             }
         },
         {
+            "Key": "acda8533-a07e-4bc4-84a5-c9ebb7070a15",
+            "Value": {
+                "id": "4bf0b627-a3c5-40a3-972e-5735102e9414",
+                "resourcePath": "scripts\\scribble_set_msdf_shadow\\scribble_set_msdf_shadow.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "ada53973-f74d-41d7-865d-679a7c992e49",
             "Value": {
                 "id": "5853fcb5-e75c-440d-9ef9-ce08c9325dea",
@@ -1247,6 +1263,14 @@
             }
         },
         {
+            "Key": "ee6d4eff-3c8e-49bd-91d8-97715b320d91",
+            "Value": {
+                "id": "3fde3373-c919-41cd-bdc6-2e444d0672d1",
+                "resourcePath": "scripts\\scribble_set_msdf_border\\scribble_set_msdf_border.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "f07dc83b-b907-4c31-a8ff-df8ad3ca4637",
             "Value": {
                 "id": "ea5fefd1-f035-4419-9725-12c17c4e4284",
@@ -1348,6 +1372,9 @@
         "681d7f36-7b03-4067-a58f-b23b795b2f31",
         "b43cf62b-c64f-4436-a8eb-906fd543d4cc",
         "e89348c7-a709-4b5b-9074-c8965f362fb4",
+        "acda8533-a07e-4bc4-84a5-c9ebb7070a15",
+        "ee6d4eff-3c8e-49bd-91d8-97715b320d91",
+        "5abf4051-b47a-45b6-bf17-a380e46f2ca3",
         "6646aeb5-5c20-419d-af6d-8d625871911d",
         "88f27f62-071a-4441-b908-675e356b8173",
         "59086829-c42b-46bc-b263-7ed41965b63c",
