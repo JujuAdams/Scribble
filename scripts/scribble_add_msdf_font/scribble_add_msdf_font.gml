@@ -6,8 +6,10 @@
 /// A valid branch of this tool can be found here:
 /// https://github.com/donmccurdy/msdf-bmfont-web
 ///
-/// @param fontName   String name of the font to add
-/// @param spaceWidth Width of a space character
+/// @param fontName     String name of the font to add
+/// @param sprite       Source sprite to use as the glyph texture atlas
+/// @param jsonName     Path to the JSON file that contains glyph data, relative to Scribble's root directory in Included Files
+/// @param spaceWidth   Width of a space character
 
 if (!variable_global_exists("__scribble_lcg"))
 {
@@ -16,7 +18,9 @@ if (!variable_global_exists("__scribble_lcg"))
 }
 
 var _font        = argument0;
-var _space_width = argument1;
+var _sprite      = argument1;
+var _json_name   = argument2;
+var _space_width = argument3;
 
 if (ds_map_exists(global.__scribble_font_data, _font))
 {
@@ -29,7 +33,7 @@ if (global.__scribble_default_font == "") global.__scribble_default_font = _font
 var _data = array_create(__SCRIBBLE_FONT.__SIZE);
 _data[@ __SCRIBBLE_FONT.NAME        ] = _font;
 _data[@ __SCRIBBLE_FONT.PATH        ] = undefined;
-_data[@ __SCRIBBLE_FONT.SPRITE      ] = undefined;
+_data[@ __SCRIBBLE_FONT.SPRITE      ] = _sprite;
 _data[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
 _data[@ __SCRIBBLE_FONT.TYPE        ] = __SCRIBBLE_FONT_TYPE.MSDF;
 _data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
@@ -44,14 +48,12 @@ global.__scribble_font_data[? _font] = _data;
 
 if (SCRIBBLE_VERBOSE) show_debug_message( "Scribble: Defined \"" + _font + "\" as an MSDF font" );
 
-var _sprite = sprite_add(global.__scribble_font_directory + _font + ".png", 0, false, false, 0, 0);
-_data[@ __SCRIBBLE_FONT.SPRITE] = _sprite;
+var _sprite_width  = sprite_get_width(_sprite);
+var _sprite_height = sprite_get_height(_sprite);
+var _sprite_uvs    = sprite_get_uvs(_sprite, 0);
+var _texture       = sprite_get_texture(_sprite, 0);
 
-var _texture    = sprite_get_texture(_sprite, 0);
-var _texture_tw = texture_get_texel_width( _texture);
-var _texture_th = texture_get_texel_height(_texture);
-
-var _json_buffer = buffer_load(global.__scribble_font_directory + _font + ".json");
+var _json_buffer = buffer_load(global.__scribble_font_directory + _json_name);
 var _json_string = buffer_read(_json_buffer, buffer_text);
 buffer_delete(_json_buffer);
 var _json = json_decode(_json_string);
@@ -110,10 +112,10 @@ repeat(_size)
     
     if (__SCRIBBLE_DEBUG) show_debug_message("Scribble:     Adding data for character \"" + string(_char) + "\" (" + string(_index) + ")");
     
-    var _u0 = _x*_texture_tw;
-    var _v0 = _y*_texture_th;
-    var _u1 = _u0 + _w*_texture_tw;
-    var _v1 = _v0 + _h*_texture_th;
+    var _u0 = lerp(_sprite_uvs[0], _sprite_uvs[2],       _x /_sprite_width );
+    var _v0 = lerp(_sprite_uvs[1], _sprite_uvs[3],       _y /_sprite_height);
+    var _u1 = lerp(_sprite_uvs[0], _sprite_uvs[2], (_x + _w)/_sprite_width );
+    var _v1 = lerp(_sprite_uvs[1], _sprite_uvs[3], (_y + _h)/_sprite_height);
     
     var _xoffset  = real(_json_glyph_map[? _key_prefix + "xoffset" ]);
     var _yoffset  = real(_json_glyph_map[? _key_prefix + "yoffset" ]);
