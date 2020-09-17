@@ -1386,7 +1386,10 @@ function scribble_cache()
                         #region Add glyph to buffer
             
 	                    var _quad_l = _glyph_array[SCRIBBLE_GLYPH.X_OFFSET]*_text_scale;
-	                    if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] == undefined) _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = _quad_l;
+	                    if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE && (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] == undefined))
+                        {
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = _quad_l;
+                        }
             
 	                        _quad_l += _text_x;
 	                    var _quad_t  = _text_y + _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2); //TODO - Cache scaled font line height
