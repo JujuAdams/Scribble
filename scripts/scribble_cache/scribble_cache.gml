@@ -1386,7 +1386,10 @@ function scribble_cache()
                         #region Add glyph to buffer
             
 	                    var _quad_l = _glyph_array[SCRIBBLE_GLYPH.X_OFFSET]*_text_scale;
-	                    if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] == undefined) _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = _quad_l;
+	                    if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE && (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] == undefined))
+                        {
+                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_X_OFFSET] = _quad_l;
+                        }
             
 	                        _quad_l += _text_x;
 	                    var _quad_t  = _text_y + _glyph_array[SCRIBBLE_GLYPH.Y_OFFSET]*_text_scale - ((_font_line_height*_text_scale) div 2); //TODO - Cache scaled font line height
@@ -1708,28 +1711,45 @@ function scribble_cache()
 	                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _new_vbuff_line_start_list;
 	                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ];
 	                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ];
-                            
+                                
 	                            //Copy the relevant vertices of the old buffer to the new buffer
 	                            buffer_copy(_buffer, _line_tell_prev, _bytes, _new_buffer, 0);
 	                            buffer_seek(_new_buffer, buffer_seek_start, _bytes);
-                            
+                                
 	                            //Resize the old buffer to clip off the vertices we've stolen
 	                            buffer_resize(_buffer, _line_tell_prev);
 	                            buffer_seek(_buffer, buffer_seek_start, _line_tell_prev); //Resizing a buffer resets its tell
 	                            ds_list_delete(_vbuff_line_start_list, ds_list_size(_vbuff_line_start_list)-1);
-                    
-	                            var _tell = 0;
-	                            repeat(_bytes / __SCRIBBLE_VERTEX.__SIZE)
-	                            {
-	                                //Go through every vertex and set its line index to 0
-	                                buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32,
-	                                            __SCRIBBLE_MAX_LINES*(buffer_peek(_new_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) div __SCRIBBLE_MAX_LINES));
-                        
-	                                //If we're using a fixed line height, reset this glyph's y-position
-	                                if (_line_fixed_height) buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32, _half_fixed_height);
-                        
-	                                _tell += __SCRIBBLE_VERTEX.__SIZE;
-	                            }
+                                
+	                            //If we're using a fixed line height, reset this glyph's y-position
+	                            if (!_line_fixed_height)
+                                {
+    	                            var _tell = __SCRIBBLE_VERTEX.PACKED_INDEXES;
+    	                            repeat(_bytes / __SCRIBBLE_VERTEX.__SIZE)
+    	                            {
+    	                                //Go through every vertex and set its line index to 0
+    	                                buffer_poke(_new_buffer, _tell, buffer_f32, __SCRIBBLE_MAX_LINES*(buffer_peek(_new_buffer, _tell, buffer_f32) div __SCRIBBLE_MAX_LINES));
+    	                                _tell += __SCRIBBLE_VERTEX.__SIZE;
+    	                            }
+                                }
+                                else
+                                {
+    	                            var _tell = 0;
+    	                            repeat(_bytes / __SCRIBBLE_VERTEX.__SIZE)
+    	                            {
+                                        var _packed_indexes = buffer_peek(_new_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32);
+                                        var _character = __SCRIBBLE_MAX_LINES*(_packed_indexes div __SCRIBBLE_MAX_LINES);
+                                        var _line = _packed_indexes - _character;
+                                        
+    	                                //Go through every vertex and set its line index to 0
+    	                                buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32, _character);
+                                        
+    	                                //If we're using a fixed line height, reset this glyph's y-position
+                                        buffer_poke(_new_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32, buffer_peek(_new_buffer, _tell + __SCRIBBLE_VERTEX.Y, buffer_f32) - _line*_line_height);
+                                        
+    	                                _tell += __SCRIBBLE_VERTEX.__SIZE;
+    	                            }
+                                }
 	                        }
                         
 	                        ++_v;
