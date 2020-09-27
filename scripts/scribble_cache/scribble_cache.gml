@@ -1608,7 +1608,7 @@ function scribble_cache()
 	                _line_y        += _line_height;
 	                _line_has_space = false;
 	                _line_width     = 0;
-	                _line_height    = max(_line_min_height, _word_height);
+	                _line_height    = _line_fixed_height? _line_height : max(_line_min_height, _word_height);
 	                if (_line_fixed_height) _text_y += _line_height;
                     
 	                //Create a new line
