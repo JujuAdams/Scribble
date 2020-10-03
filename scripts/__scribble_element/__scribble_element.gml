@@ -225,6 +225,12 @@ function __scribble_element(_string, _element_cache_name) constructor
         }
     }
     
+    reset = function()
+    {
+        throw "!";
+        return self;
+    }
+    
     #endregion
     
     #region Typewriter Setters
