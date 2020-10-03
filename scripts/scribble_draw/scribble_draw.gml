@@ -330,7 +330,7 @@ function scribble_draw()
         
         #region Do the drawing!
         
-        if (global.scribble_state_box_align_page)
+        if (SCRIBBLE_BOX_ALIGN_TO_PAGE)
         {
             var _box_w = _page_array[__SCRIBBLE_PAGE.WIDTH ];
             var _box_h = _page_array[__SCRIBBLE_PAGE.HEIGHT];
@@ -341,32 +341,16 @@ function scribble_draw()
             var _box_h = _scribble_array[SCRIBBLE.HEIGHT];
         }
         
-        var _left = 0;
-        var _top  = 0;
+        var _left = _element_offset_x;
+        var _top  = _element_offset_y;
         
-        //Figure out the left/top offset
-        switch(global.scribble_state_box_halign)
-        {
-            case fa_center: _left -= _box_w div 2; break;
-            case fa_right:  _left -= _box_w;       break;
-        }
-        
-        switch(global.scribble_state_box_valign)
-        {
-            case fa_middle: _top -= _box_h div 2; break;
-            case fa_bottom: _top -= _box_h;       break;
-        }
-        
-        switch(_scribble_array[SCRIBBLE.VALIGN])
-        {
-            case fa_middle: _top -= _box_h div 2; break;
-            case fa_bottom: _top -= _box_h;       break;
-        }
+        if (_element_valign == fa_middle) _top -= _model_h div 2;
+        if (_element_valign == fa_bottom) _top -= _model_h div 2;
         
 	    //Build a matrix to transform the text...
-	    if ((global.scribble_state_xscale == 1)
-	    &&  (global.scribble_state_yscale == 1)
-	    &&  (global.scribble_state_angle  == 0))
+	    if ((_element_xscale == 1)
+	    &&  (_element_yscale == 1)
+	    &&  (_element_angle  == 0))
 	    {
 	        var _matrix = matrix_build(_left + _draw_x, _top + _draw_y, 0,   0,0,0,   1,1,1);
 	    }
@@ -374,8 +358,8 @@ function scribble_draw()
 	    {
 	        var _matrix = matrix_build(_left, _top, 0,   0,0,0,   1,1,1);
 	            _matrix = matrix_multiply(_matrix, matrix_build(_draw_x, _draw_y, 0,
-	                                                            0, 0, global.scribble_state_angle,
-	                                                            global.scribble_state_xscale, global.scribble_state_yscale, 1));
+	                                                            0, 0, _element_angle,
+	                                                            _element_xscale, _element_yscale, 1));
 	    }
         
 	    //...aaaand set the matrix
@@ -391,17 +375,17 @@ function scribble_draw()
 	    shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _typewriter_smoothness);
 	    shader_set_uniform_f_array(global.__scribble_uniform_tw_window_array, _typewriter_window_array);
         
-	    shader_set_uniform_f(global.__scribble_uniform_colour_blend, colour_get_red(  global.scribble_state_colour)/255,
-	                                                                 colour_get_green(global.scribble_state_colour)/255,
-	                                                                 colour_get_blue( global.scribble_state_colour)/255,
-	                                                                 global.scribble_state_alpha);
+	    shader_set_uniform_f(global.__scribble_uniform_colour_blend, colour_get_red(  _element_colour)/255,
+	                                                                 colour_get_green(_element_colour)/255,
+	                                                                 colour_get_blue( _element_colour)/255,
+	                                                                 _element_alpha);
         
-	    shader_set_uniform_f(global.__scribble_uniform_fog, colour_get_red(  global.scribble_state_fog_colour)/255,
-	                                                        colour_get_green(global.scribble_state_fog_colour)/255,
-	                                                        colour_get_blue( global.scribble_state_fog_colour)/255,
-	                                                        global.scribble_state_fog_alpha);
+	    shader_set_uniform_f(global.__scribble_uniform_fog, colour_get_red(  _element_fog_colour)/255,
+	                                                        colour_get_green(_element_fog_colour)/255,
+	                                                        colour_get_blue( _element_fog_colour)/255,
+	                                                        _element_fog_alpha);
         
-	    shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
+	    shader_set_uniform_f_array(global.__scribble_uniform_data_fields,  _element_animation_array);
         shader_set_uniform_f_array(global.__scribble_uniform_bezier_array, _scribble_array[SCRIBBLE.BEZIER_ARRAY]);
         
 	    //Now iterate over the text element's vertex buffers and submit them

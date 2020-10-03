@@ -92,7 +92,6 @@ function scribble_add_spritefont()
     {
         if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_font) + "\"");
         global.__scribble_default_font = _font;
-        if (global.scribble_state_starting_font == undefined) global.scribble_state_starting_font = _font;
     }
 
 

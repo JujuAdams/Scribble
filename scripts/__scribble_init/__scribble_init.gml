@@ -59,10 +59,6 @@ global.__scribble_character_delay      = false;
 global.__scribble_character_delay_map  = ds_map_create();
 global.__scribble_font_family_map      = ds_map_create();
 if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
-
-//Declare state variables
-global.scribble_state_anim_array = array_create(SCRIBBLE_ANIM.__SIZE);
-scribble_reset();
     
 global.__scribble_autotype_events[? "pause"] = undefined;
 global.__scribble_autotype_events[? "delay"] = undefined;
@@ -326,6 +322,31 @@ enum SCRIBBLE
 	EVENT_DATA_ARRAY, //25
         
 	__SIZE            //26
+}
+
+enum SCRIBBLE_ANIM
+{
+    WAVE_SIZE,        // 0
+    WAVE_FREQ,        // 1
+    WAVE_SPEED,       // 2
+    SHAKE_SIZE,       // 3
+    SHAKE_SPEED,      // 4
+    RAINBOW_WEIGHT,   // 5
+    RAINBOW_SPEED,    // 6
+    WOBBLE_ANGLE,     // 7
+    WOBBLE_FREQ,      // 8
+    PULSE_SCALE,      // 9
+    PULSE_SPEED,      //10
+    WHEEL_SIZE,       //11
+    WHEEL_FREQ,       //12
+    WHEEL_SPEED,      //13
+    CYCLE_SPEED,      //14
+    CYCLE_SATURATION, //15
+    CYCLE_VALUE,      //16
+    JITTER_MINIMUM,   //17
+    JITTER_MAXIMUM,   //18
+    JITTER_SPEED,     //19
+    __SIZE,           //20
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
