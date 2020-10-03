@@ -12,6 +12,9 @@ function scribble()
 function __scribble_text_element(_string) constructor
 {
     text = _string;
+    cache_name = undefined;
+    cache = undefined;
+    freeze = false;
     
     #region Setters
     
@@ -87,8 +90,15 @@ function __scribble_text_element(_string) constructor
     
     #region Typewriter Setters
     
+    typewriter_off = function()
+    {
+        tw_do = false;
+        return undefined;
+    }
+    
     typewriter_in = function(_speed, _smoothness)
     {
+        tw_do         = true;
         tw_in         = true;
         tw_speed      = _speed;
         tw_smoothness = _smoothness;
@@ -97,6 +107,7 @@ function __scribble_text_element(_string) constructor
     
     typewriter_out = function(_speed, _smoothness)
     {
+        tw_do         = true;
         tw_in         = false;
         tw_speed      = _speed;
         tw_smoothness = _smoothness;
@@ -146,20 +157,17 @@ function __scribble_text_element(_string) constructor
     
     get_bbox = function()
     {
-        __scribble_trace("b() not implemented");
-        return undefined;
+        return __get_cache.get_bbox();
     }
     
     get_width = function()
     {
-        __scribble_trace("get_width() not implemented");
-        return undefined;
+        return __get_cache.get_width();
     }
     
     get_height = function()
     {
-        __scribble_trace("get_height() not implemented");
-        return undefined;
+        return __get_cache.get_height();
     }
     
     get_page = function()
@@ -169,8 +177,7 @@ function __scribble_text_element(_string) constructor
     
     get_pages = function()
     {
-        __scribble_trace("get_pages() not implemented");
-        return undefined;
+        return __get_cache.get_pages();
     }
     
     get_typewriter_state = function()
@@ -188,14 +195,70 @@ function __scribble_text_element(_string) constructor
     
     draw = function(_x, _y)
     {
-        
+        __get_cache().draw(_x, _y);
+        return undefined;
     }
     
     flush_now = function()
     {
+        if (is_struct(cache)) cache.flush();
+        
+        cache_name = undefined;
+        cache = undefined;
+        
         return undefined;
+    }
+    
+    cache_now = function(_freeze)
+    {
+        freeze = _freeze;
+        
+        cache_name = text + "other stuff";
+        cache = global.__scribble_cache[? cache_name];
+        if (cache == undefined) cache = new __scribble_model(self);
+        
+        return undefined;
+    }
+    
+    __get_cache = function()
+    {
+        cache_now(freeze);
+        return cache;
     }
     
     //Apply the default template
     template(scribble_default_template);
+}
+
+function __scribble_model(_text_element) constructor
+{
+    draw = function(_x, _y)
+    {
+        
+    }
+    
+    flush = function()
+    {
+        
+    }
+    
+    get_bbox = function()
+    {
+        return undefined;
+    }
+    
+    get_width = function()
+    {
+        return undefined;
+    }
+    
+    get_height = function()
+    {
+        return undefined;
+    }
+    
+    get_pages = function()
+    {
+        return undefined;
+    }
 }
