@@ -255,6 +255,8 @@ function __scribble_element(_string, _element_cache_name) constructor
     
     typewriter_sound = function(_sound_array, _overlap, _pitch_min, _pitch_max)
     {
+        if (!is_array(_sound_array)) _sound_array = [_sound_array];
+        
         tw_sound_array     = _sound_array;
         tw_sound_overlap   = _overlap;
         tw_sound_pitch_min = _pitch_min;
@@ -265,6 +267,8 @@ function __scribble_element(_string, _element_cache_name) constructor
     
     typewriter_sound_per_char = function(_sound_array, _pitch_min, _pitch_max)
     {
+        if (!is_array(_sound_array)) _sound_array = [_sound_array];
+        
         tw_sound_array     = _sound_array;
         tw_sound_pitch_min = _pitch_min;
         tw_sound_pitch_max = _pitch_max;

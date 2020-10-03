@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Autotype",
-    "path": "folders/Scribble/Autotype.yy",
+    "name": "(System)",
+    "path": "folders/Scribble/(System).yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_autotype_is_paused",
+  "name": "__scribble_page",
   "tags": [],
   "resourceType": "GMScript",
 }
