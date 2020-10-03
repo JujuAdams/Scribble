@@ -79,6 +79,7 @@
     {"id":{"name":"scribble_add_autotype_character_delay","path":"scripts/scribble_add_autotype_character_delay/scribble_add_autotype_character_delay.yy",},"order":7,},
     {"id":{"name":"scribble_draw_set_fade","path":"scripts/scribble_draw_set_fade/scribble_draw_set_fade.yy",},"order":1,},
     {"id":{"name":"example_dialogue_set_portrait","path":"scripts/example_dialogue_set_portrait/example_dialogue_set_portrait.yy",},"order":15,},
+    {"id":{"name":"obj_test_surface","path":"objects/obj_test_surface/obj_test_surface.yy",},"order":18,},
     {"id":{"name":"scribble_draw_set_cache_group","path":"scripts/scribble_draw_set_cache_group/scribble_draw_set_cache_group.yy",},"order":2,},
     {"id":{"name":"scribble_get_quad","path":"scripts/scribble_get_quad/scribble_get_quad.yy",},"order":3,},
     {"id":{"name":"scribble_cache_group_flush","path":"scripts/scribble_cache_group_flush/scribble_cache_group_flush.yy",},"order":4,},
