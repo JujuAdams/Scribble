@@ -863,7 +863,7 @@ function scribble_cache()
                                 var _delta_rs = _delta_r - _slant_offset;
                                 
                                 //Pack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
-                                //This must match what's in shd_scribble!
+                                //This must match what's in __shd_scribble!
                                 var _packed_delta_lb  = floor(1000 + 10*_delta_l ) + 2000*floor(1000 + 10*_delta_b);
                                 var _packed_delta_rb  = floor(1000 + 10*_delta_r ) + 2000*floor(1000 + 10*_delta_b);
                                 var _packed_delta_lst = floor(1000 + 10*_delta_ls) + 2000*floor(1000 + 10*_delta_t);
@@ -1142,7 +1142,7 @@ function scribble_cache()
                                                         var _delta_rs = _delta_r - _slant_offset;
                                                             
                                                         //Pack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
-                                                        //This must match what's in shd_scribble!
+                                                        //This must match what's in __shd_scribble!
                                                         var _packed_delta_lb  = floor(1000 + 10*_delta_l ) + 2000*floor(1000 + 10*_delta_b);
                                                         var _packed_delta_rb  = floor(1000 + 10*_delta_r ) + 2000*floor(1000 + 10*_delta_b);
                                                         var _packed_delta_lst = floor(1000 + 10*_delta_ls) + 2000*floor(1000 + 10*_delta_t);
@@ -1562,7 +1562,7 @@ function scribble_cache()
                         var _delta_rs = _delta_r - _slant_offset;
                         
                         //Pack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
-                        //This must match what's in shd_scribble!
+                        //This must match what's in __shd_scribble!
                         var _packed_delta_lb  = floor(1000 + 10*_delta_l ) + 2000*floor(1000 + 10*_delta_b);
                         var _packed_delta_rb  = floor(1000 + 10*_delta_r ) + 2000*floor(1000 + 10*_delta_b);
                         var _packed_delta_lst = floor(1000 + 10*_delta_ls) + 2000*floor(1000 + 10*_delta_t);

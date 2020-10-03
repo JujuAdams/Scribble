@@ -94,14 +94,14 @@ vertex_format_add_texcoord(); // 8 bytes
 global.__scribble_passthrough_vertex_format = vertex_format_end();
     
 //Cache uniform indexes
-global.__scribble_uniform_time            = shader_get_uniform(shd_scribble, "u_fTime"                 );
-global.__scribble_uniform_colour_blend    = shader_get_uniform(shd_scribble, "u_vColourBlend"          );
-global.__scribble_uniform_fog             = shader_get_uniform(shd_scribble, "u_vFog"                  );
-global.__scribble_uniform_tw_method       = shader_get_uniform(shd_scribble, "u_fTypewriterMethod"     );
-global.__scribble_uniform_tw_window_array = shader_get_uniform(shd_scribble, "u_fTypewriterWindowArray");
-global.__scribble_uniform_tw_smoothness   = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness" );
-global.__scribble_uniform_data_fields     = shader_get_uniform(shd_scribble, "u_aDataFields"           );
-global.__scribble_uniform_bezier_array    = shader_get_uniform(shd_scribble, "u_aBezier"               );
+global.__scribble_uniform_time            = shader_get_uniform(__shd_scribble, "u_fTime"                 );
+global.__scribble_uniform_colour_blend    = shader_get_uniform(__shd_scribble, "u_vColourBlend"          );
+global.__scribble_uniform_fog             = shader_get_uniform(__shd_scribble, "u_vFog"                  );
+global.__scribble_uniform_tw_method       = shader_get_uniform(__shd_scribble, "u_fTypewriterMethod"     );
+global.__scribble_uniform_tw_window_array = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray");
+global.__scribble_uniform_tw_smoothness   = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness" );
+global.__scribble_uniform_data_fields     = shader_get_uniform(__shd_scribble, "u_aDataFields"           );
+global.__scribble_uniform_bezier_array    = shader_get_uniform(__shd_scribble, "u_aBezier"               );
     
 //Hex converter array
 var _min = ord("0");
@@ -320,7 +320,7 @@ enum SCRIBBLE_ANIM
 #macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE  300  //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
-#macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. Thise constant must match the corresponding values in shd_scribble
+#macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. Thise constant must match the corresponding values in __shd_scribble
 
 global.__scribble_default_element = scribble("");
 

@@ -5,7 +5,7 @@
     "path": "folders/Scribble/(System).yy",
   },
   "resourceVersion": "1.0",
-  "name": "shd_scribble",
+  "name": "__shd_scribble",
   "tags": [],
   "resourceType": "GMShader",
 }

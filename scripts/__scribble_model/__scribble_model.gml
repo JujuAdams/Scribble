@@ -63,7 +63,7 @@ function __scribble_model(_element, _model_cache_name) constructor
         if (_element.tw_do) _tw_method = _element.tw_in? 1 : -1;
         
 	    //Set the shader and its uniforms
-	    shader_set(shd_scribble);
+	    shader_set(__shd_scribble);
 	    shader_set_uniform_f(global.__scribble_uniform_time, _element.animation_time);
         
 	    shader_set_uniform_f(global.__scribble_uniform_tw_method, _tw_method);
