@@ -59,7 +59,8 @@ function scribble_cache()
     	                    string(global.scribble_state_max_width      ) + ":" +
     	                    string(global.scribble_state_max_height     ) + ":" +
     	                    string(global.scribble_state_character_wrap ) + ":" +
-                            string(global.scribble_state_bezier_array   );
+                            string(global.scribble_state_bezier_array   ) + ":" +
+                            string(global.scribble_state_ignore_commands);
         
 	    if (ds_map_exists(global.__scribble_global_cache_map, _cache_string) && !_rebuild)
 	    {
@@ -1355,7 +1356,7 @@ function scribble_cache()
 	                    continue;
 	                }
 	            }
-	            else if (_character_code == SCRIBBLE_COMMAND_TAG_OPEN) //If we've hit a command tag argument delimiter character (usually [)
+	            else if ((_character_code == SCRIBBLE_COMMAND_TAG_OPEN) && !global.scribble_state_ignore_commands) //If we've hit a command tag argument delimiter character (usually [)
 	            {
 	                //Record the start of the command tag in the string buffer
 	                _command_tag_start = buffer_tell(_string_buffer);

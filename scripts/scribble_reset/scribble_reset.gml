@@ -22,6 +22,7 @@ function scribble_reset()
     global.scribble_state_box_align_page  = false;                          //Whether to use text element sizes (false) or page sizes (true)
     global.scribble_state_fog_colour      = c_fuchsia;                      //Fog colour
     global.scribble_state_fog_alpha       = 0.0;                            //Fog blend factor
+    global.scribble_state_ignore_commands = false;                          //Whether to ignore command tags and to write strings out literally
     
     scribble_set_bezier();
     
