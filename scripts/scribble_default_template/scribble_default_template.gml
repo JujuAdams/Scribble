@@ -1,3 +1,7 @@
+/// The default template to use when creating a new Scribble text element
+/// This is called automatically when a text element is created
+/// You can reset a text element's formatting by specifying this function as the parameter for the .template() method
+
 function scribble_default_template()
 {
     starting_format(SCRIBBLE_DEFAULT_FONT, c_white, fa_left, fa_top);

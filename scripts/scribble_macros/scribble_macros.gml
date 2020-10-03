@@ -1,4 +1,6 @@
 /// Scribble's macros, used to customise and control behaviour throughout the library
+///
+/// N.B. You never need to run this script yourself! All of these macros are handled automatically when Scribble is compiled into your project
 
 #macro SCRIBBLE_HASH_NEWLINE                  true   //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's newline behaviour
 #macro SCRIBBLE_FIX_ESCAPED_NEWLINES          false  //Replaces incorrectly escaped newline literals with an actual newline
