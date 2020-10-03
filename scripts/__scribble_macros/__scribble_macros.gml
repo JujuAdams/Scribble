@@ -9,7 +9,7 @@
 #macro SCRIBBLE_BGR_COLOR_HEX_CODES           false  //Set to <true> to use GameMaker's #BBGGRR format for in-line hex code colors. <false> uses the industry standard #RRGGBB format
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED          0.1    //The default animation speed for sprites inserted into text
 #macro SCRIBBLE_DEFAULT_DELAY_DURATION        450    //Default duration of the [delay] command, in milliseconds
-#macro SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY   ""
+#macro SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY   ""     //The directory to look in for font .yy files, relative to the root folder that Included Files are stored in
 
 
 
@@ -21,7 +21,7 @@
 #macro SCRIBBLE_CREATE_CHARACTER_ARRAY    false     //Outputs an array of character codes
 #macro SCRIBBLE_DEFAULT_OCCURANCE_NAME    "default" //Default value to use for autotyper occurances
 #macro SCRIBBLE_CACHE_TIMEOUT             15000     //How long to wait (in milliseconds) before the cache automatically destroys a text element. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_flush() instead)
-#macro SCRIBBLE_VERBOSE                   false     //Enables verbose console output to aid with debugging
+#macro SCRIBBLE_VERBOSE                   true      //Enables verbose console output to aid with debugging
 #macro SCRIBBLE_BEZIER_ACCURACY           20        //Controls how accurate;y text fits Bezier curves. Higher is better
 #macro SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE  true      //Whether to trim off empty left-hand space when moving a word to a new line
 

@@ -1,6 +1,6 @@
 //Start up Scribble and load fonts automatically from Included Files
-scribble_init("fnt_test_0");
-scribble_add_fonts_auto();
+scribble_set_default_font("fnt_test_0");
+scribble_add_all_fonts();
 
 //Add a spritefont to Scribble
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";

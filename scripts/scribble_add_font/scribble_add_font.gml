@@ -69,7 +69,18 @@ function scribble_add_font()
 	    show_error("Scribble:\nCould not find \"" + _path + "\" in Included Files. Please add this file to your project.\nScribble font \"" + string(_font) + "\" will not be available.\n ", false);
 	    return undefined;
 	}
-
+    
+    
+    
+    if (global.__scribble_default_font == undefined)
+    {
+        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Setting default font to \"" + string(_font) + "\"");
+        global.__scribble_default_font = _font;
+        if (global.scribble_state_starting_font == undefined) global.scribble_state_starting_font = _font;
+    }
+    
+    
+    
 	var _data = array_create(__SCRIBBLE_FONT.__SIZE);
 	_data[@ __SCRIBBLE_FONT.NAME        ] = _font;
 	_data[@ __SCRIBBLE_FONT.PATH        ] = _path;

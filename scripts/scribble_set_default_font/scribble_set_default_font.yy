@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Initialisation",
-    "path": "folders/Scribble/Initialisation.yy",
+    "name": "Scribble",
+    "path": "folders/Scribble.yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_init",
+  "name": "scribble_set_default_font",
   "tags": [],
   "resourceType": "GMScript",
 }

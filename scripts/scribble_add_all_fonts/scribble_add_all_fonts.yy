@@ -6,7 +6,7 @@
     "path": "folders/Scribble/Initialisation.yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_add_fonts_auto",
+  "name": "scribble_add_all_fonts",
   "tags": [],
   "resourceType": "GMScript",
 }

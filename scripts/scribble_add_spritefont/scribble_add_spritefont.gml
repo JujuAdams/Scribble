@@ -85,6 +85,15 @@ function scribble_add_spritefont()
 	{
 	    show_debug_message("Scribble:   WARNING! mapString for \"" + _font + "\" has fewer characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")");
 	}
+    
+    
+    
+    if (global.__scribble_default_font == undefined)
+    {
+        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Setting default font to \"" + string(_font) + "\"");
+        global.__scribble_default_font = _font;
+        if (global.scribble_state_starting_font == undefined) global.scribble_state_starting_font = _font;
+    }
 
 
 

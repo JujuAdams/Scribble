@@ -1,4 +1,4 @@
-function scribble_add_fonts_auto()
+function scribble_add_all_fonts()
 {
 	global.__scribble_autoscanning = true;
     
