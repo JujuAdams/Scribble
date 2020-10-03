@@ -35,3 +35,7 @@ scribble_set_wrap(textbox_width, textbox_height);
 text_element = scribble_cache(textbox_conversation[textbox_conversation_index]);
 scribble_reset();
 scribble_autotype_fade_in(text_element, 1, 0, false);
+
+text_element = scribble(textbox_conversation[textbox_conversation_index])
+              .wrap(textbox_width, textbox_height)
+              .typewriter_in(1, 0, false);

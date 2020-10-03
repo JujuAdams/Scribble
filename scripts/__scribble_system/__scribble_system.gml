@@ -389,6 +389,7 @@ enum SCRIBBLE
 #macro __SCRIBBLE_PIN_CENTRE           4
 #macro __SCRIBBLE_PIN_RIGHT            5
 #macro __SCRIBBLE_WINDOW_COUNT         4
+#macro SCRIBBLE_DEFAULT_FONT           global.__scribble_default_font
 
 //Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
 //However, some font definitons may have disjointed character indexes (e.g. Chinese). Scribble will detect these fonts and use a ds_map instead for glyph data lookup
