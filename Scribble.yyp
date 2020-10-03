@@ -80,6 +80,7 @@
     {"id":{"name":"fnt_test_2","path":"fonts/fnt_test_2/fnt_test_2.yy",},"order":2,},
     {"id":{"name":"fnt_chinese","path":"fonts/fnt_chinese/fnt_chinese.yy",},"order":3,},
     {"id":{"name":"obj_test_stress","path":"objects/obj_test_stress/obj_test_stress.yy",},"order":3,},
+    {"id":{"name":"__scribble_garbage_collect","path":"scripts/__scribble_garbage_collect/__scribble_garbage_collect.yy",},"order":3,},
     {"id":{"name":"obj_test","path":"objects/obj_test/obj_test.yy",},"order":1,},
     {"id":{"name":"spr_white_coin","path":"sprites/spr_white_coin/spr_white_coin.yy",},"order":3,},
     {"id":{"name":"obj_test_alignment","path":"objects/obj_test_alignment/obj_test_alignment.yy",},"order":7,},

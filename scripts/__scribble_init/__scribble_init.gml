@@ -370,4 +370,6 @@ enum SCRIBBLE_ANIM
 
 #macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. Thise constant must match the corresponding values in shd_scribble
 
+global.__scribble_default_element = scribble("");
+
 #endregion
