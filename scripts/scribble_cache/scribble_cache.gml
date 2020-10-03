@@ -443,6 +443,10 @@ function scribble_cache()
 	                            _force_newline = true;
 	                            _char_width = 0;
 	                            _force_newpage = true;
+                                
+	                            _line_width = max(_line_width, _text_x);
+	                            if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
+                                //Note that forcing a newline will reset the word height to 0
 	                        break;
                             
                             #endregion
