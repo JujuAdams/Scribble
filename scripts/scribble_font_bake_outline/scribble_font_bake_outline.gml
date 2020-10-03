@@ -4,7 +4,7 @@
 /// @param newFontName      Name of the new font to create, as a strintg
 /// @param thickness        Number of layers to use to generate the border. A value of 2 will give a 2px border
 /// @param samples          Number of samples to use for the border per layer
-/// @param color            Colour of the border
+/// @param colour           Colour of the border
 /// @param smooth           Whether or not to interpolate the border. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
 
 function scribble_font_bake_outline(_source_font_name, _new_font_name, _outline_size, _outline_samples, _outline_color, _smooth)
