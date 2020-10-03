@@ -81,22 +81,22 @@ function scribble_add_autotype_event(_name, _function)
     
 	if (ds_map_exists(global.__scribble_colours, _name))
 	{
-	    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as a colour");
+	    __scribble_trace("WARNING! Event name \"" + _name + "\" has already been defined as a colour");
 	    exit;
 	}
     
 	if (ds_map_exists(global.__scribble_effects, _name))
 	{
-	    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as an effect");
+	    __scribble_trace("WARNING! Event name \"" + _name + "\" has already been defined as an effect");
 	    exit;
 	}
     
 	var _old_function = global.__scribble_autotype_events[? _name];
 	if (!is_undefined(_old_function))
 	{
-	    show_debug_message("Scribble: WARNING! Overwriting event [" + _name + "] tied to \"" + (is_method(_old_function)? string(_old_function) : script_get_name(_old_function)) + "\"");
+	    __scribble_trace("WARNING! Overwriting event [" + _name + "] tied to \"" + (is_method(_old_function)? string(_old_function) : script_get_name(_old_function)) + "\"");
 	}
     
 	global.__scribble_autotype_events[? _name] = _function;
-	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Tying event [" + _name + "] to \"" + (is_method(_function)? string(_function) : script_get_name(_function)) + "\"");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Tying event [" + _name + "] to \"" + (is_method(_function)? string(_function) : script_get_name(_function)) + "\"");
 }

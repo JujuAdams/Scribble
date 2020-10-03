@@ -39,7 +39,7 @@ function scribble_cache()
 	        _draw_string = _scribble_array[SCRIBBLE.STRING];
 	        _garbage_collect = true; //Always garbage collect rebuilt
         
-	        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Rebuilding text element for \"" + string(_draw_string) + "\"");
+	        if (SCRIBBLE_VERBOSE) __scribble_trace("Rebuilding text element for \"" + string(_draw_string) + "\"");
 	    }
 	    else
 	    {
@@ -185,7 +185,7 @@ function scribble_cache()
                     ++_i;
                 }
                 
-                if (_max_width >= 0) show_debug_message("Scribble: Warning! Maximum width set by scribble_set_wrap() (" + string(_max_width) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
+                if (_max_width >= 0) __scribble_trace("Warning! Maximum width set by scribble_set_wrap() (" + string(_max_width) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
                 _max_width = _dist;
             }
                 
@@ -248,7 +248,7 @@ function scribble_cache()
     
             #region Register the text element in a cache group
 
-	        if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Caching \"" + _cache_string + "\"");
+	        if (__SCRIBBLE_DEBUG) __scribble_trace("Caching \"" + _cache_string + "\"");
 
 	        //Add this text element to the global cache lookup
 	        global.__scribble_global_cache_map[? _cache_string] = _scribble_array;
@@ -604,7 +604,7 @@ function scribble_cache()
                                 var _family_name = _font_data[__SCRIBBLE_FONT.FAMILY_NAME];
                                 if (_family_name == undefined)
                                 {
-                                    show_debug_message("Scribble: Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
+                                    __scribble_trace("Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
                                 }
                                 else
                                 {
@@ -614,7 +614,7 @@ function scribble_cache()
                                     //Check to see if this font even exists
                                     if ((_new_font == undefined) || !ds_map_exists(global.__scribble_font_data, _new_font))
                                     {
-                                        show_debug_message("Scribble: \"Regular\" style not found for font family \"" + string(_family_name) + "\"");
+                                        __scribble_trace("\"Regular\" style not found for font family \"" + string(_family_name) + "\"");
                                     }
                                     else
                                     {
@@ -641,7 +641,7 @@ function scribble_cache()
                                 var _family_name = _font_data[__SCRIBBLE_FONT.FAMILY_NAME];
                                 if (_family_name == undefined)
                                 {
-                                    show_debug_message("Scribble: Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
+                                    __scribble_trace("Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
                                 }
                                 else
                                 {
@@ -651,7 +651,7 @@ function scribble_cache()
                                     //Check to see if this font even exists
                                     if ((_new_font == undefined) || !ds_map_exists(global.__scribble_font_data, _new_font))
                                     {
-                                        show_debug_message("Scribble: \"Bold\" style not found for font family \"" + string(_family_name) + "\"");
+                                        __scribble_trace("\"Bold\" style not found for font family \"" + string(_family_name) + "\"");
                                     }
                                     else
                                     {
@@ -678,7 +678,7 @@ function scribble_cache()
                                 var _family_name = _font_data[__SCRIBBLE_FONT.FAMILY_NAME];
                                 if (_family_name == undefined)
                                 {
-                                    show_debug_message("Scribble: Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
+                                    __scribble_trace("Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
                                 }
                                 else
                                 {
@@ -688,7 +688,7 @@ function scribble_cache()
                                     //Check to see if this font even exists
                                     if ((_new_font == undefined) || !ds_map_exists(global.__scribble_font_data, _new_font))
                                     {
-                                        show_debug_message("Scribble: \"Italic\" style not found for font family \"" + string(_family_name) + "\"");
+                                        __scribble_trace("\"Italic\" style not found for font family \"" + string(_family_name) + "\"");
                                     }
                                     else
                                     {
@@ -715,7 +715,7 @@ function scribble_cache()
                                 var _family_name = _font_data[__SCRIBBLE_FONT.FAMILY_NAME];
                                 if (_family_name == undefined)
                                 {
-                                    show_debug_message("Scribble: Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
+                                    __scribble_trace("Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
                                 }
                                 else
                                 {
@@ -725,7 +725,7 @@ function scribble_cache()
                                     //Check to see if this font even exists
                                     if ((_new_font == undefined) || !ds_map_exists(global.__scribble_font_data, _new_font))
                                     {
-                                        show_debug_message("Scribble: \"Bold Italic\" style not found for font family \"" + string(_family_name) + "\"");
+                                        __scribble_trace("\"Bold Italic\" style not found for font family \"" + string(_family_name) + "\"");
                                     }
                                     else
                                     {
@@ -994,7 +994,7 @@ function scribble_cache()
                                                         
                                                         if (_sprite_number >= 64)
                                                         {
-                                                            show_debug_message("Scribble: In-line sprites cannot have more than 64 frames (" + string(_command_name) + ")");
+                                                            __scribble_trace("In-line sprites cannot have more than 64 frames (" + string(_command_name) + ")");
                                                             _sprite_number = 64;
                                                         }
                                                         
@@ -1022,7 +1022,7 @@ function scribble_cache()
                                                         
                                                         if (_image_speed >= 4)
                                                         {
-                                                            show_debug_message("Scribble: Image speed cannot be more than 4.0 (" + string(_image_speed) + ")");
+                                                            __scribble_trace("Image speed cannot be more than 4.0 (" + string(_image_speed) + ")");
                                                             _image_speed = 4;
                                                         }
                                                         
@@ -1275,7 +1275,7 @@ function scribble_cache()
     	                                                            }
     	                                                            else
     	                                                            {
-    	                                                                show_debug_message("Scribble: WARNING! Could not decode [" + _command_name + "], ensure it is a positive integer" );
+    	                                                                __scribble_trace("WARNING! Could not decode [" + _command_name + "], ensure it is a positive integer" );
     	                                                            }
                                                             
     	                                                            continue; //Skip the rest of the parser step
@@ -1287,7 +1287,7 @@ function scribble_cache()
     	                                                            var _command_string = string(_command_name);
     	                                                            var _j = 1;
     	                                                            repeat(_command_tag_parameters-1) _command_string += "," + string(_parameters_list[| _j++]);
-    	                                                            show_debug_message("Scribble: WARNING! Unrecognised command tag [" + _command_string + "]" );
+    	                                                            __scribble_trace("WARNING! Unrecognised command tag [" + _command_string + "]" );
                                                         
     	                                                            continue; //Skip the rest of the parser step
     	                                                        }
@@ -1488,7 +1488,7 @@ function scribble_cache()
         
 	                if (_glyph_array == undefined)
 	                {
-	                   if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_cache() couldn't find glyph data for character code " + string(_character_code) + " (" + chr(_character_code) + ") in font \"" + string(_text_font) + "\"");
+	                   if (SCRIBBLE_VERBOSE) __scribble_trace("scribble_cache() couldn't find glyph data for character code " + string(_character_code) + " (" + chr(_character_code) + ") in font \"" + string(_text_font) + "\"");
 	                }
 	                else
 	                {
@@ -2409,7 +2409,7 @@ function scribble_cache()
 
 
 
-	        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: scribble_cache() create took " + string((get_timer() - _timer_total)/1000) + "ms for " + string(_scribble_array[SCRIBBLE.CHARACTERS]) + " characters");
+	        if (SCRIBBLE_VERBOSE) __scribble_trace("scribble_cache() create took " + string((get_timer() - _timer_total)/1000) + "ms for " + string(_scribble_array[SCRIBBLE.CHARACTERS]) + " characters");
 	    }
 	}
 

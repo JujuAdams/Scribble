@@ -74,7 +74,7 @@ function scribble_add_font()
     
     if (global.__scribble_default_font == undefined)
     {
-        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Setting default font to \"" + string(_font) + "\"");
+        if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_font) + "\"");
         global.__scribble_default_font = _font;
         if (global.scribble_state_starting_font == undefined) global.scribble_state_starting_font = _font;
     }
@@ -97,7 +97,7 @@ function scribble_add_font()
 
 
 
-	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Processing font \"" + _font + "\"");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _font + "\"");
 
 	if (_texture == undefined)
 	{
@@ -130,7 +130,7 @@ function scribble_add_font()
 		        }
 		        else
 		        {
-		            show_debug_message("Scribble: WARNING! Could not find \"" + _path + "\" in Included Files");
+		            __scribble_trace("WARNING! Could not find \"" + _path + "\" in Included Files");
 		        }
                 
 		        return undefined;
@@ -158,7 +158,7 @@ function scribble_add_font()
 
 	if (SCRIBBLE_VERBOSE)
 	{
-	    show_debug_message("Scribble:   \"" + _font +"\""
+	    __scribble_trace("  \"" + _font +"\""
 	                     + ", asset = " + string(_asset)
 	                     + ", texture = " + string(_texture)
 	                     + ", size = " + string(_texture_w) + " x " + string(_texture_h)
@@ -190,7 +190,7 @@ function scribble_add_font()
 	//If either of the checks have failed, delete the data array and abort
 	if (_fail)
 	{
-	    if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: JSON string that failed is \"" + string(_json_string) + "\"");
+	    if (__SCRIBBLE_DEBUG) __scribble_trace("JSON string that failed is \"" + string(_json_string) + "\"");
 	    ds_map_delete(global.__scribble_font_data, _font);
 	    exit;
 	}
@@ -209,7 +209,7 @@ function scribble_add_font()
     var _style_name = _json[? "styleName"];
     if (ds_map_exists(_family_map, _style_name))
     {
-        show_debug_message("Scribble: Style \"" + string(_style_name) + "\" already exists for font family \"" + string(_family_name) + "\"");
+        __scribble_trace("Style \"" + string(_style_name) + "\" already exists for font family \"" + string(_family_name) + "\"");
     }
     else
     {
@@ -250,7 +250,7 @@ function scribble_add_font()
 	}
 
 	var _size = ds_list_size(_yy_glyphs_list);
-	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   \"" + _font + "\" has " + string(_size) + " characters");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("  \"" + _font + "\" has " + string(_size) + " characters");
 
 
 
@@ -260,7 +260,7 @@ function scribble_add_font()
 	{
         #region Sequential glyph index
     
-	    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Trying sequential glyph index...");
+	    if (SCRIBBLE_VERBOSE) __scribble_trace("  Trying sequential glyph index...");
     
 	    var _glyph_map = ds_map_create();
     
@@ -286,11 +286,11 @@ function scribble_add_font()
 	    _data[@ __SCRIBBLE_FONT.GLYPH_MAX] = _glyph_max;
     
 	    var _glyph_count = 1 + _glyph_max - _glyph_min;
-	    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Glyphs start at " + string(_glyph_min) + " and end at " + string(_glyph_max) + ". Range is " + string(_glyph_count-1));
+	    if (SCRIBBLE_VERBOSE) __scribble_trace("  Glyphs start at " + string(_glyph_min) + " and end at " + string(_glyph_max) + ". Range is " + string(_glyph_count-1));
     
 	    if ((_glyph_count-1) > __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE)
 	    {
-	        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Glyph range exceeds maximum (" + string(__SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE) + ")!");
+	        if (SCRIBBLE_VERBOSE) __scribble_trace("  Glyph range exceeds maximum (" + string(__SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE) + ")!");
 	    }
 	    else
 	    {
@@ -299,15 +299,15 @@ function scribble_add_font()
 	        ds_map_destroy(_glyph_map);
 	        var _fraction = _holes / _glyph_count;
         
-	        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   There are " + string(_holes) + " holes, " + string(_fraction*100) + "%");
+	        if (SCRIBBLE_VERBOSE) __scribble_trace("  There are " + string(_holes) + " holes, " + string(_fraction*100) + "%");
         
 	        if (_fraction > __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES)
 	        {
-	            if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Hole proportion exceeds maximum (" + string(__SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES*100) + "%)!");
+	            if (SCRIBBLE_VERBOSE) __scribble_trace("  Hole proportion exceeds maximum (" + string(__SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES*100) + "%)!");
 	        }
 	        else
 	        {
-	            if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Using an array to index glyphs");
+	            if (SCRIBBLE_VERBOSE) __scribble_trace("  Using an array to index glyphs");
 	            _ds_map_fallback = false;
             
 	            var _font_glyphs_array = array_create(_glyph_count, undefined);
@@ -354,7 +354,7 @@ function scribble_add_font()
 
 	if (_ds_map_fallback)
 	{
-	    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   Using a ds_map to index glyphs");
+	    if (SCRIBBLE_VERBOSE) __scribble_trace("  Using a ds_map to index glyphs");
     
 	    var _font_glyphs_map = ds_map_create();
 	    _data[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _font_glyphs_map;
@@ -396,5 +396,5 @@ function scribble_add_font()
 
 	ds_map_destroy(_json);
 
-	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added \"" + _font + "\" as a standard font");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"" + _font + "\" as a standard font");
 }

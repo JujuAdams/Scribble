@@ -94,7 +94,7 @@ function scribble_bake_shader()
         
 		        var _priority = _width_ext*_texture_size + _height_ext;
 		        ds_priority_add(_priority_queue, _i, _priority);
-		        //show_debug_message("Scribble: Queuing \"" + _character + "\" (" + string(_i) + ") for packing (size=" + string(_width_ext) + "x" + string(_height_ext) + ", weight=" + string(_priority) + ")");
+		        //__scribble_trace("Queuing \"" + _character + "\" (" + string(_i) + ") for packing (size=" + string(_width_ext) + "x" + string(_height_ext) + ", weight=" + string(_priority) + ")");
 		    }
 		}
     
@@ -104,7 +104,7 @@ function scribble_bake_shader()
 
 
 	//Pack glyphs on the texture page
-	//show_debug_message("Scribble: " + string(ds_priority_size(_priority_queue)) + " glyphs to pack");
+	//__scribble_trace("" + string(ds_priority_size(_priority_queue)) + " glyphs to pack");
 
 	var _surface_glyphs = [];
 	var _added_count = 0;
@@ -118,7 +118,7 @@ function scribble_bake_shader()
 		var _width_ext   = _width  + _border + _l_pad + _r_pad;
 		var _height_ext  = _height + _border + _t_pad + _b_pad;
     
-		//show_debug_message("Scribble: Packing \"" + _character + "\" (" + string(_index) + "), size=" + string(_width_ext) + "," + string(_height_ext));
+		//__scribble_trace("Packing \"" + _character + "\" (" + string(_index) + "), size=" + string(_width_ext) + "," + string(_height_ext));
     
 		if (_added_count == 0)
 		{
@@ -147,7 +147,7 @@ function scribble_bake_shader()
 		            if ((_r < _texture_size) && (_b < _texture_size))
 		            {
 		                _found = true;
-		                //show_debug_message("Scribble:    Trying to the right of \"" + string(_target_array[5]) + "\"");
+		                //__scribble_trace("   Trying to the right of \"" + string(_target_array[5]) + "\"");
                     
 		                for( var _k = 0; _k < _added_count; _k++ )
 		                {
@@ -183,7 +183,7 @@ function scribble_bake_shader()
 		            if ((_r < _texture_size) && (_b < _texture_size))
 		            {
 		                _found = true;
-		                //show_debug_message("Scribble:    Trying beneath \"" + string(_target_array[5]) + "\"");
+		                //__scribble_trace("   Trying beneath \"" + string(_target_array[5]) + "\"");
                     
 		                for(var _k = 0; _k < _added_count; _k++)
 		                {
@@ -209,7 +209,7 @@ function scribble_bake_shader()
 		if (_found)
 		{
 		    _surface_glyphs[@ _added_count] = [_l, _t, _r, _b, _index, _character];
-		    //show_debug_message("Scribble:    " + string(_l) + "," + string(_t) + " -> " + string(_r) + "," + string(_b));
+		    //__scribble_trace("   " + string(_l) + "," + string(_t) + " -> " + string(_r) + "," + string(_b));
 		    ++_added_count;
 		}
 		else

@@ -1,11 +1,191 @@
-#region Internal Macro Definitions
+var _font_directory = SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY;
     
+if (variable_global_exists("__scribble_lcg"))
+{
+	if (SCRIBBLE_WARNING_REINITIALIZE) show_error("Scribble:\nscribble_init() should not be called twice!\n(Set SCRIBBLE_WARNING_REINITIALIZE to <false> to hide this warning)\n ", false);
+	return false;
+}
+    
+__scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
+    
+if (__SCRIBBLE_ON_MOBILE)
+{
+	if (_font_directory != "")
+	{
+	    __scribble_trace("Included Files work a bit strangely on iOS and Android. Please use an empty string for the font directory and place fonts in the root of Included Files.");
+	    show_error("Scribble:\nGameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files.\n ", true);
+	    exit;
+	}
+}
+else if (__SCRIBBLE_ON_WEB)
+{
+	if (_font_directory != "")
+	{
+	    __scribble_trace("Using folders inside Included Files might not work properly on HTML5. If you're having trouble, try using an empty string for the font directory and place fonts in the root of Included Files.");
+	}
+}
+    
+if (_font_directory != "")
+{
+	//Fix the font directory name if it's weird
+	var _char = string_char_at(_font_directory, string_length(_font_directory));
+	if (_char != "\\") && (_char != "/") _font_directory += "\\";
+}
+    
+if (!__SCRIBBLE_ON_WEB)
+{
+	//Check if the directory exists
+	if ((_font_directory != "") && !directory_exists(_font_directory))
+	{
+	    __scribble_trace("WARNING! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
+	}
+}
+    
+//Declare global variables
+global.__scribble_lcg                  = date_current_datetime()*100;
+global.__scribble_font_directory       = _font_directory;
+global.__scribble_font_data            = ds_map_create();  //Stores a data array for each font defined inside Scribble
+global.__scribble_colours              = ds_map_create();  //Stores colour definitions, including custom colours
+global.__scribble_effects              = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_effects_slash        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_autotype_events      = ds_map_create();
+global.__scribble_default_font         = undefined;
+global.__scribble_global_cache_map     = ds_map_create();
+global.__scribble_global_cache_list    = ds_list_create();
+global.__scribble_cache_test_index     = 0;
+global.__scribble_sprite_whitelist     = false;
+global.__scribble_sprite_whitelist_map = ds_map_create();
+global.__scribble_buffer               = buffer_create(1024, buffer_grow, 1);
+global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
+global.__scribble_character_delay      = false;
+global.__scribble_character_delay_map  = ds_map_create();
+global.__scribble_font_family_map      = ds_map_create();
+    
+//Declare state variables
+global.scribble_state_anim_array = array_create(SCRIBBLE_ANIM.__SIZE);
+scribble_reset();
+    
+//Duplicate GM's native colour constants in string form for access in scribble_draw()
+global.__scribble_colours[? "c_aqua"   ] = c_aqua;
+global.__scribble_colours[? "c_black"  ] = c_black;
+global.__scribble_colours[? "c_blue"   ] = c_blue;
+global.__scribble_colours[? "c_dkgray" ] = c_dkgray;
+global.__scribble_colours[? "c_dkgrey" ] = c_dkgray;
+global.__scribble_colours[? "c_fuchsia"] = c_fuchsia;
+global.__scribble_colours[? "c_gray"   ] = c_gray;
+global.__scribble_colours[? "c_green"  ] = c_green;
+global.__scribble_colours[? "c_grey"   ] = c_gray;
+global.__scribble_colours[? "c_lime"   ] = c_lime;
+global.__scribble_colours[? "c_ltgray" ] = c_ltgray;
+global.__scribble_colours[? "c_ltgrey" ] = c_ltgray;
+global.__scribble_colours[? "c_maroon" ] = c_maroon;
+global.__scribble_colours[? "c_navy"   ] = c_navy;
+global.__scribble_colours[? "c_olive"  ] = c_olive;
+global.__scribble_colours[? "c_orange" ] = c_orange;
+global.__scribble_colours[? "c_purple" ] = c_purple;
+global.__scribble_colours[? "c_red"    ] = c_red;
+global.__scribble_colours[? "c_silver" ] = c_silver;
+global.__scribble_colours[? "c_teal"   ] = c_teal;
+global.__scribble_colours[? "c_white"  ] = c_white;
+global.__scribble_colours[? "c_yellow" ] = c_yellow;
+    
+global.__scribble_autotype_events[? "pause"] = undefined;
+global.__scribble_autotype_events[? "delay"] = undefined;
+    
+//Add bindings for default effect names
+//Effect index 0 is reversed for sprites
+global.__scribble_effects[?       "wave"    ] = 1;
+global.__scribble_effects[?       "shake"   ] = 2;
+global.__scribble_effects[?       "rainbow" ] = 3;
+global.__scribble_effects[?       "wobble"  ] = 4;
+global.__scribble_effects[?       "pulse"   ] = 5;
+global.__scribble_effects[?       "wheel"   ] = 6;
+global.__scribble_effects[?       "cycle"   ] = 7;
+global.__scribble_effects[?       "jitter"  ] = 8;
+global.__scribble_effects_slash[? "/wave"   ] = 1;
+global.__scribble_effects_slash[? "/shake"  ] = 2;
+global.__scribble_effects_slash[? "/rainbow"] = 3;
+global.__scribble_effects_slash[? "/wobble" ] = 4;
+global.__scribble_effects_slash[? "/pulse"  ] = 5;
+global.__scribble_effects_slash[? "/wheel"  ] = 6;
+global.__scribble_effects_slash[? "/cycle"  ] = 7;
+global.__scribble_effects_slash[? "/jitter" ] = 8;
+    
+//Create a vertex format for our text
+vertex_format_begin();
+vertex_format_add_position_3d(); //12 bytes
+vertex_format_add_normal();      //12 bytes       //X = character index, Y = line index, Z = effect flags
+vertex_format_add_colour();      // 4 bytes
+vertex_format_add_texcoord();    // 8 bytes
+global.__scribble_vertex_format = vertex_format_end(); //36 bytes per vertex, 108 bytes per tri, 216 bytes per glyph
+    
+vertex_format_begin();
+vertex_format_add_position(); //12 bytes
+vertex_format_add_color();    // 4 bytes
+vertex_format_add_texcoord(); // 8 bytes
+global.__scribble_passthrough_vertex_format = vertex_format_end();
+    
+//Cache uniform indexes
+global.__scribble_uniform_time            = shader_get_uniform(shd_scribble, "u_fTime"                 );
+global.__scribble_uniform_colour_blend    = shader_get_uniform(shd_scribble, "u_vColourBlend"          );
+global.__scribble_uniform_fog             = shader_get_uniform(shd_scribble, "u_vFog"                  );
+global.__scribble_uniform_tw_method       = shader_get_uniform(shd_scribble, "u_fTypewriterMethod"     );
+global.__scribble_uniform_tw_window_array = shader_get_uniform(shd_scribble, "u_fTypewriterWindowArray");
+global.__scribble_uniform_tw_smoothness   = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness" );
+global.__scribble_uniform_data_fields     = shader_get_uniform(shd_scribble, "u_aDataFields"           );
+global.__scribble_uniform_bezier_array    = shader_get_uniform(shd_scribble, "u_aBezier"               );
+    
+//Hex converter array
+var _min = ord("0");
+var _max = ord("f");
+global.__scribble_hex_min = _min;
+global.__scribble_hex_max = _max;
+global.__scribble_hex_array = array_create(1 + _max - _min);
+global.__scribble_hex_array[@ ord("0") - _min] =  0; //ascii  48 = array  0
+global.__scribble_hex_array[@ ord("1") - _min] =  1; //ascii  49 = array  1
+global.__scribble_hex_array[@ ord("2") - _min] =  2; //ascii  50 = array  2
+global.__scribble_hex_array[@ ord("3") - _min] =  3; //ascii  51 = array  3
+global.__scribble_hex_array[@ ord("4") - _min] =  4; //ascii  52 = array  4
+global.__scribble_hex_array[@ ord("5") - _min] =  5; //ascii  53 = array  5
+global.__scribble_hex_array[@ ord("6") - _min] =  6; //ascii  54 = array  6
+global.__scribble_hex_array[@ ord("7") - _min] =  7; //ascii  55 = array  7
+global.__scribble_hex_array[@ ord("8") - _min] =  8; //ascii  56 = array  8
+global.__scribble_hex_array[@ ord("9") - _min] =  9; //ascii  57 = array  9
+global.__scribble_hex_array[@ ord("A") - _min] = 10; //ascii  65 = array 17
+global.__scribble_hex_array[@ ord("B") - _min] = 11; //ascii  66 = array 18
+global.__scribble_hex_array[@ ord("C") - _min] = 12; //ascii  67 = array 19
+global.__scribble_hex_array[@ ord("D") - _min] = 13; //ascii  68 = array 20
+global.__scribble_hex_array[@ ord("E") - _min] = 14; //ascii  69 = array 21
+global.__scribble_hex_array[@ ord("F") - _min] = 15; //ascii  70 = array 22
+global.__scribble_hex_array[@ ord("a") - _min] = 10; //ascii  97 = array 49
+global.__scribble_hex_array[@ ord("b") - _min] = 11; //ascii  98 = array 50
+global.__scribble_hex_array[@ ord("c") - _min] = 12; //ascii  99 = array 51
+global.__scribble_hex_array[@ ord("d") - _min] = 13; //ascii 100 = array 52
+global.__scribble_hex_array[@ ord("e") - _min] = 14; //ascii 101 = array 53
+global.__scribble_hex_array[@ ord("f") - _min] = 15; //ascii 102 = array 54
+
+function __scribble_trace()
+{
+    var _string = "Scribble: ";
+    
+    var _i = 0
+    repeat(argument_count)
+    {
+        _string += string(argument[_i]);
+        ++_i;
+    }
+    
+    show_debug_message(_string);
+}
+
+#region Internal Macro Definitions
+
 // @jujuadams
 // With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_
 #macro __SCRIBBLE_VERSION  "7.0.0"
 #macro __SCRIBBLE_DATE     "2020-10-03"
 #macro __SCRIBBLE_DEBUG    false
-    
+
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
 enum SCRIBBLE_GLYPH
 {
@@ -197,7 +377,7 @@ enum SCRIBBLE
         
 	__SIZE            //26
 }
-    
+
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
 #macro __SCRIBBLE_ON_OPENGL            (!__SCRIBBLE_ON_DIRECTX)
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
@@ -209,186 +389,15 @@ enum SCRIBBLE
 #macro __SCRIBBLE_PIN_CENTRE           4
 #macro __SCRIBBLE_PIN_RIGHT            5
 #macro __SCRIBBLE_WINDOW_COUNT         4
-    
-//Deprecated
-#macro SCRIBBLE_AUTOTYPE_NONE           undefined
-#macro SCRIBBLE_AUTOTYPE_PER_CHARACTER  undefined
-#macro SCRIBBLE_AUTOTYPE_PER_LINE       undefined
-    
+
 //Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
 //However, some font definitons may have disjointed character indexes (e.g. Chinese). Scribble will detect these fonts and use a ds_map instead for glyph data lookup
 #macro __SCRIBBLE_SEQUENTIAL_GLYPH_TRY        true
 #macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE  300  //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
-    
+
 #macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. Thise constant must match the corresponding values in shd_scribble
-    
+
 #macro scribble_add_colour  scribble_add_color
-    
+
 #endregion
-    
-var _font_directory = SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY;
-    
-if (variable_global_exists("__scribble_lcg"))
-{
-	if (SCRIBBLE_WARNING_REINITIALIZE) show_error("Scribble:\nscribble_init() should not be called twice!\n(Set SCRIBBLE_WARNING_REINITIALIZE to <false> to hide this warning)\n ", false);
-	return false;
-}
-    
-show_debug_message("Scribble: Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
-    
-if (__SCRIBBLE_ON_MOBILE)
-{
-	if (_font_directory != "")
-	{
-	    show_debug_message("Scribble: Included Files work a bit strangely on iOS and Android. Please use an empty string for the font directory and place fonts in the root of Included Files.");
-	    show_error("Scribble:\nGameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files.\n ", true);
-	    exit;
-	}
-}
-else if (__SCRIBBLE_ON_WEB)
-{
-	if (_font_directory != "")
-	{
-	    show_debug_message("Scribble: Using folders inside Included Files might not work properly on HTML5. If you're having trouble, try using an empty string for the font directory and place fonts in the root of Included Files.");
-	}
-}
-    
-if (_font_directory != "")
-{
-	//Fix the font directory name if it's weird
-	var _char = string_char_at(_font_directory, string_length(_font_directory));
-	if (_char != "\\") && (_char != "/") _font_directory += "\\";
-}
-    
-if (!__SCRIBBLE_ON_WEB)
-{
-	//Check if the directory exists
-	if ((_font_directory != "") && !directory_exists(_font_directory))
-	{
-	    show_debug_message("Scribble: WARNING! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
-	}
-}
-    
-//Declare global variables
-global.__scribble_lcg                  = date_current_datetime()*100;
-global.__scribble_font_directory       = _font_directory;
-global.__scribble_font_data            = ds_map_create();  //Stores a data array for each font defined inside Scribble
-global.__scribble_colours              = ds_map_create();  //Stores colour definitions, including custom colours
-global.__scribble_effects              = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_effects_slash        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_autotype_events      = ds_map_create();
-global.__scribble_default_font         = undefined;
-global.__scribble_global_cache_map     = ds_map_create();
-global.__scribble_global_cache_list    = ds_list_create();
-global.__scribble_cache_test_index     = 0;
-global.__scribble_sprite_whitelist     = false;
-global.__scribble_sprite_whitelist_map = ds_map_create();
-global.__scribble_buffer               = buffer_create(1024, buffer_grow, 1);
-global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
-global.__scribble_character_delay      = false;
-global.__scribble_character_delay_map  = ds_map_create();
-global.__scribble_font_family_map      = ds_map_create();
-    
-//Declare state variables
-global.scribble_state_anim_array = array_create(SCRIBBLE_ANIM.__SIZE);
-scribble_reset();
-    
-//Duplicate GM's native colour constants in string form for access in scribble_draw()
-global.__scribble_colours[? "c_aqua"   ] = c_aqua;
-global.__scribble_colours[? "c_black"  ] = c_black;
-global.__scribble_colours[? "c_blue"   ] = c_blue;
-global.__scribble_colours[? "c_dkgray" ] = c_dkgray;
-global.__scribble_colours[? "c_dkgrey" ] = c_dkgray;
-global.__scribble_colours[? "c_fuchsia"] = c_fuchsia;
-global.__scribble_colours[? "c_gray"   ] = c_gray;
-global.__scribble_colours[? "c_green"  ] = c_green;
-global.__scribble_colours[? "c_grey"   ] = c_gray;
-global.__scribble_colours[? "c_lime"   ] = c_lime;
-global.__scribble_colours[? "c_ltgray" ] = c_ltgray;
-global.__scribble_colours[? "c_ltgrey" ] = c_ltgray;
-global.__scribble_colours[? "c_maroon" ] = c_maroon;
-global.__scribble_colours[? "c_navy"   ] = c_navy;
-global.__scribble_colours[? "c_olive"  ] = c_olive;
-global.__scribble_colours[? "c_orange" ] = c_orange;
-global.__scribble_colours[? "c_purple" ] = c_purple;
-global.__scribble_colours[? "c_red"    ] = c_red;
-global.__scribble_colours[? "c_silver" ] = c_silver;
-global.__scribble_colours[? "c_teal"   ] = c_teal;
-global.__scribble_colours[? "c_white"  ] = c_white;
-global.__scribble_colours[? "c_yellow" ] = c_yellow;
-    
-global.__scribble_autotype_events[? "pause"] = undefined;
-global.__scribble_autotype_events[? "delay"] = undefined;
-    
-//Add bindings for default effect names
-//Effect index 0 is reversed for sprites
-global.__scribble_effects[?       "wave"    ] = 1;
-global.__scribble_effects[?       "shake"   ] = 2;
-global.__scribble_effects[?       "rainbow" ] = 3;
-global.__scribble_effects[?       "wobble"  ] = 4;
-global.__scribble_effects[?       "pulse"   ] = 5;
-global.__scribble_effects[?       "wheel"   ] = 6;
-global.__scribble_effects[?       "cycle"   ] = 7;
-global.__scribble_effects[?       "jitter"  ] = 8;
-global.__scribble_effects_slash[? "/wave"   ] = 1;
-global.__scribble_effects_slash[? "/shake"  ] = 2;
-global.__scribble_effects_slash[? "/rainbow"] = 3;
-global.__scribble_effects_slash[? "/wobble" ] = 4;
-global.__scribble_effects_slash[? "/pulse"  ] = 5;
-global.__scribble_effects_slash[? "/wheel"  ] = 6;
-global.__scribble_effects_slash[? "/cycle"  ] = 7;
-global.__scribble_effects_slash[? "/jitter" ] = 8;
-    
-//Create a vertex format for our text
-vertex_format_begin();
-vertex_format_add_position_3d(); //12 bytes
-vertex_format_add_normal();      //12 bytes       //X = character index, Y = line index, Z = effect flags
-vertex_format_add_colour();      // 4 bytes
-vertex_format_add_texcoord();    // 8 bytes
-global.__scribble_vertex_format = vertex_format_end(); //36 bytes per vertex, 108 bytes per tri, 216 bytes per glyph
-    
-vertex_format_begin();
-vertex_format_add_position(); //12 bytes
-vertex_format_add_color();    // 4 bytes
-vertex_format_add_texcoord(); // 8 bytes
-global.__scribble_passthrough_vertex_format = vertex_format_end();
-    
-//Cache uniform indexes
-global.__scribble_uniform_time            = shader_get_uniform(shd_scribble, "u_fTime"                 );
-global.__scribble_uniform_colour_blend    = shader_get_uniform(shd_scribble, "u_vColourBlend"          );
-global.__scribble_uniform_fog             = shader_get_uniform(shd_scribble, "u_vFog"                  );
-global.__scribble_uniform_tw_method       = shader_get_uniform(shd_scribble, "u_fTypewriterMethod"     );
-global.__scribble_uniform_tw_window_array = shader_get_uniform(shd_scribble, "u_fTypewriterWindowArray");
-global.__scribble_uniform_tw_smoothness   = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness" );
-global.__scribble_uniform_data_fields     = shader_get_uniform(shd_scribble, "u_aDataFields"           );
-global.__scribble_uniform_bezier_array    = shader_get_uniform(shd_scribble, "u_aBezier"               );
-    
-//Hex converter array
-var _min = ord("0");
-var _max = ord("f");
-global.__scribble_hex_min = _min;
-global.__scribble_hex_max = _max;
-global.__scribble_hex_array = array_create(1 + _max - _min);
-global.__scribble_hex_array[@ ord("0") - _min] =  0; //ascii  48 = array  0
-global.__scribble_hex_array[@ ord("1") - _min] =  1; //ascii  49 = array  1
-global.__scribble_hex_array[@ ord("2") - _min] =  2; //ascii  50 = array  2
-global.__scribble_hex_array[@ ord("3") - _min] =  3; //ascii  51 = array  3
-global.__scribble_hex_array[@ ord("4") - _min] =  4; //ascii  52 = array  4
-global.__scribble_hex_array[@ ord("5") - _min] =  5; //ascii  53 = array  5
-global.__scribble_hex_array[@ ord("6") - _min] =  6; //ascii  54 = array  6
-global.__scribble_hex_array[@ ord("7") - _min] =  7; //ascii  55 = array  7
-global.__scribble_hex_array[@ ord("8") - _min] =  8; //ascii  56 = array  8
-global.__scribble_hex_array[@ ord("9") - _min] =  9; //ascii  57 = array  9
-global.__scribble_hex_array[@ ord("A") - _min] = 10; //ascii  65 = array 17
-global.__scribble_hex_array[@ ord("B") - _min] = 11; //ascii  66 = array 18
-global.__scribble_hex_array[@ ord("C") - _min] = 12; //ascii  67 = array 19
-global.__scribble_hex_array[@ ord("D") - _min] = 13; //ascii  68 = array 20
-global.__scribble_hex_array[@ ord("E") - _min] = 14; //ascii  69 = array 21
-global.__scribble_hex_array[@ ord("F") - _min] = 15; //ascii  70 = array 22
-global.__scribble_hex_array[@ ord("a") - _min] = 10; //ascii  97 = array 49
-global.__scribble_hex_array[@ ord("b") - _min] = 11; //ascii  98 = array 50
-global.__scribble_hex_array[@ ord("c") - _min] = 12; //ascii  99 = array 51
-global.__scribble_hex_array[@ ord("d") - _min] = 13; //ascii 100 = array 52
-global.__scribble_hex_array[@ ord("e") - _min] = 14; //ascii 101 = array 53
-global.__scribble_hex_array[@ ord("f") - _min] = 15; //ascii 102 = array 54

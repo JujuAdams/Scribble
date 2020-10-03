@@ -68,13 +68,13 @@ function scribble_add_spritefont()
 
 
 
-	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Processing spritefont \"" + _font + "\"");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Processing spritefont \"" + _font + "\"");
         
 	//Strip out a map of of glyphs
 	var _sprite = asset_get_index(_font);
 	var _sprite_length = sprite_get_number(_sprite);
 	var _length = string_length(_mapstring);
-	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble:   \"" + _font + "\" has " + string(_length) + " characters");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("  \"" + _font + "\" has " + string(_length) + " characters");
 
 	if (_length > _sprite_length)
 	{
@@ -83,14 +83,14 @@ function scribble_add_spritefont()
 	}
 	else if (_length < _sprite_length)
 	{
-	    show_debug_message("Scribble:   WARNING! mapString for \"" + _font + "\" has fewer characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")");
+	    __scribble_trace("  WARNING! mapString for \"" + _font + "\" has fewer characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")");
 	}
     
     
     
     if (global.__scribble_default_font == undefined)
     {
-        if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Setting default font to \"" + string(_font) + "\"");
+        if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_font) + "\"");
         global.__scribble_default_font = _font;
         if (global.scribble_state_starting_font == undefined) global.scribble_state_starting_font = _font;
     }
@@ -134,7 +134,7 @@ function scribble_add_spritefont()
 	{
 	    var _char = string_char_at(_sprite_string, _i+1);
 	    if (ds_map_exists(_font_glyphs_map, ord(_char))) continue;
-	    if ((_char == " ") && (_space_width == undefined)) show_debug_message("Scribble:   WARNING! It is recommended that you do *not* use a space character in your spritefont. Please override the space character width by using the optional [spaceWidth] argument of scribble_add_spritefont()");
+	    if ((_char == " ") && (_space_width == undefined)) __scribble_trace("  WARNING! It is recommended that you do *not* use a space character in your spritefont. Please override the space character width by using the optional [spaceWidth] argument of scribble_add_spritefont()");
         
 	    var _uvs = sprite_get_uvs(_sprite, _i);
 	    if ((_uvs[0] == 0.0) && (_uvs[1] == 0.0) && (_uvs[4] == 0.0) && (_uvs[5] == 0.0) && (_uvs[6] == 1.0) && (_uvs[7] == 1.0)) _potential_separate_texture_page++;
@@ -151,7 +151,7 @@ function scribble_add_spritefont()
         
 	    if ((_left > _right) && (_top > _bottom))
 	    {
-	        show_debug_message("Scribble:   WARNING! Character " + string(ord(_char)) + " (" + _char + ") for spritefont \"" + _font + "\" is empty");
+	        __scribble_trace("  WARNING! Character " + string(ord(_char)) + " (" + _char + ") for spritefont \"" + _font + "\" is empty");
                 
 	        _array[@ SCRIBBLE_GLYPH.WIDTH     ] = 1;
 	        _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
@@ -234,5 +234,5 @@ function scribble_add_spritefont()
 	    show_error("Scribble:\nSpritefont \"" + string(_font) + "\" appears to be set to Separate Texture Page\nPlease untick Separate Texture Page for this sprite\n \n(Set SCRIBBLE_WARNING_TEXTURE_PAGE to <false> to turn off this warning)\n ", true);
 	}
 
-	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added \"" + _font + "\" as a spritefont");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"" + _font + "\" as a spritefont");
 }

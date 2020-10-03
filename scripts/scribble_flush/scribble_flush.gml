@@ -8,12 +8,12 @@ function scribble_flush()
 
 	if ((_scribble_array == all) || (_scribble_array == "all"))
 	{
-	    if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Clearing entire cache");
+	    if (__SCRIBBLE_DEBUG) __scribble_trace("Clearing entire cache");
 	    repeat(ds_list_size(global.__scribble_global_cache_list)) scribble_flush(global.__scribble_global_cache_list[| 0]);
 	}
 	else
 	{
-	    if (__SCRIBBLE_DEBUG) show_debug_message("Scribble: Clearing \"" + string(_scribble_array[SCRIBBLE.CACHE_STRING]) + "\"");
+	    if (__SCRIBBLE_DEBUG) __scribble_trace("Clearing \"" + string(_scribble_array[SCRIBBLE.CACHE_STRING]) + "\"");
     
 	    //Destroy vertex buffers
 	    var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];

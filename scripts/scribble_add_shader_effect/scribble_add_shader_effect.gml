@@ -25,20 +25,20 @@ function scribble_add_shader_effect(_name, _index)
 
 	if (ds_map_exists(global.__scribble_colours, _name))
 	{
-	    show_debug_message("Scribble: WARNING! Effect name \"" + _name + "\" has already been defined as a color");
+	    __scribble_trace("WARNING! Effect name \"" + _name + "\" has already been defined as a color");
 	    exit;
 	}
 
 	if (ds_map_exists(global.__scribble_autotype_events, _name))
 	{
-	    show_debug_message("Scribble: WARNING! Effect name \"" + _name + "\" has already been defined as an event");
+	    __scribble_trace("WARNING! Effect name \"" + _name + "\" has already been defined as an event");
 	    exit;
 	}
 
 	var _old_name = global.__scribble_effects[? _index];
 	if (_old_name != undefined)
 	{
-	    show_debug_message("Scribble: WARNING! Overwriting effect index " + string(_index) + " \"" + _old_name + "\"");
+	    __scribble_trace("WARNING! Overwriting effect index " + string(_index) + " \"" + _old_name + "\"");
 	    ds_map_delete(global.__scribble_effects, _old_name);
 	    ds_map_delete(global.__scribble_effects_slash, "/" + _old_name);
 	}
@@ -51,5 +51,5 @@ function scribble_add_shader_effect(_name, _index)
 	global.__scribble_effects_slash[? _index] = _name;
 	global.__scribble_effects_slash[? _name ] = _index;
 
-	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added effect name \"" + _name + "\" as index " + string(_index));
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Added effect name \"" + _name + "\" as index " + string(_index));
 }

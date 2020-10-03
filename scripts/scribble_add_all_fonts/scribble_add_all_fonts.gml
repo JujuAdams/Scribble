@@ -14,7 +14,7 @@ function scribble_add_all_fonts()
             ||  asset_has_any_tag(_i, "scribble", asset_font)
             ||  asset_has_any_tag(_i, "SCRIBBLE", asset_font))
             {
-                if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Found a font with a \"Scribble\" tag. We'll filter fonts accordingly");
+                if (SCRIBBLE_VERBOSE) __scribble_trace("Found a font with a \"Scribble\" tag. We'll filter fonts accordingly");
                 _using_tags = true;
                 break;
             }
@@ -39,7 +39,7 @@ function scribble_add_all_fonts()
             }
             else
             {
-                show_debug_message("Scribble: Font \"" + font_get_name(_i) + "\" doesn't have a \"Scribble\" tag, ignoring it");
+                __scribble_trace("Font \"" + font_get_name(_i) + "\" doesn't have a \"Scribble\" tag, ignoring it");
             }
         }
         

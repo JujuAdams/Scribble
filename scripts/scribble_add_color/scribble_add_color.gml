@@ -35,17 +35,17 @@ function scribble_add_color()
 
 	if (ds_map_exists(global.__scribble_effects, _name))
 	{
-	    show_debug_message("Scribble: WARNING! Colour name \"" + _name + "\" has already been defined as an effect" );
+	    __scribble_trace("WARNING! Colour name \"" + _name + "\" has already been defined as an effect" );
 	    exit;
 	}
 
 	var _old_colour = global.__scribble_colours[? _name];
 	if (is_real(_old_colour))
 	{
-	    show_debug_message("Scribble: WARNING! Overwriting colour \"" + _name + "\" (" + string(colour_get_red(_old_colour)) + "," + string(colour_get_green(_old_colour)) + "," + string(colour_get_blue(_old_colour)) + ", u32=" + string(_old_colour) + ")");
+	    __scribble_trace("WARNING! Overwriting colour \"" + _name + "\" (" + string(colour_get_red(_old_colour)) + "," + string(colour_get_green(_old_colour)) + "," + string(colour_get_blue(_old_colour)) + ", u32=" + string(_old_colour) + ")");
 	}
 
 	global.__scribble_colours[? _name ] = _colour;
 
-	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Added colour \"" + _name + "\" as " + string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)) + ", u32=" + string(_colour));
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Added colour \"" + _name + "\" as " + string(colour_get_red(_colour)) + "," + string(colour_get_green(_colour)) + "," + string(colour_get_blue(_colour)) + ", u32=" + string(_colour));
 }
