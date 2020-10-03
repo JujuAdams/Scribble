@@ -84,7 +84,7 @@ function scribble_get_bbox()
 	}
     
     var _valign = global.scribble_state_box_valign;
-    if (_valign == fa_left) _valign = _scribble_array[SCRIBBLE.VALIGN];
+    if (_valign == fa_top) _valign = _scribble_array[SCRIBBLE.VALIGN];
     
 	switch(_valign)
 	{
