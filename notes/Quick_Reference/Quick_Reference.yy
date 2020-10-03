@@ -4,7 +4,7 @@
     "path": "folders/Scribble.yy",
   },
   "resourceVersion": "1.1",
-  "name": "Text_element_quick_reference",
+  "name": "Quick_Reference",
   "tags": [],
   "resourceType": "GMNotes",
 }
