@@ -202,7 +202,11 @@ function scribble_draw()
     	                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_END   ] = current_time + _duration;
                                         }
 	                                }
-	                                else
+	                                else if (_event_name == "__scribble_audio_playback__")
+                                    {
+                                        audio_play_sound(_event_data_array[0], 1, false);
+                                    }
+                                    else
 	                                {
 	                                    //Otherwise try to find a custom event
 	                                    var _function = global.__scribble_autotype_events[? _event_name];

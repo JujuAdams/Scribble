@@ -751,7 +751,7 @@ function scribble_cache()
 	                        default:
 	                            if (ds_map_exists(global.__scribble_autotype_events, _command_name))
 	                            {
-                                    #region Events
+                                    #region Custom Events
                                 
 	                                var _data = array_create(_command_tag_parameters-1);
 	                                var _j = 1;
@@ -1039,106 +1039,122 @@ function scribble_cache()
                                                     #endregion
 	                                            }
 	                                            else
-	                                            {
-	                                                if (ds_map_exists(global.__scribble_colours, _command_name))
-	                                                {
-                                                        #region Set a pre-defined colour
+                                                {
+                                                    if (asset_get_type(_command_name) == asset_sound)
+    	                                            {
+                                                        #region Audio Playback Event
                                                         
-	                                                    _text_colour = global.__scribble_colours[? _command_name];
+                    	                                var _count = array_length(_events_char_array);
+                    	                                _events_char_array[@ _count] = _meta_element_characters;
+                    	                                _events_name_array[@ _count] = "__scribble_audio_playback__";
+                    	                                _events_data_array[@ _count] = [asset_get_index(_command_name)];
                                                         
-	                                                    continue; //Skip the rest of the parser step
+                    	                                continue; //Skip the rest of the parser step
                                                         
                                                         #endregion
-	                                                }
-	                                                else
-	                                                {
-	                                                    var _first_char = string_copy(_command_name, 1, 1);
-	                                                    if ((string_length(_command_name) <= 7) && ((_first_char == "$") || (_first_char == "#")))
-	                                                    {
-                                                            #region Hex colour decoding
+    	                                            }
+                                                    else
+    	                                            {
+    	                                                if (ds_map_exists(global.__scribble_colours, _command_name))
+    	                                                {
+                                                            #region Set a pre-defined colour
                                                         
-	                                                        var _ord = ord(string_char_at(_command_name, 3));
-	                                                        var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-	                                                        var _ord = ord(string_char_at(_command_name, 2));
-	                                                        var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
+    	                                                    _text_colour = global.__scribble_colours[? _command_name];
                                                         
-	                                                        var _red = _lsf + (_hsf << 4);
-                                                        
-	                                                        var _ord = ord(string_char_at(_command_name, 5));
-	                                                        var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-	                                                        var _ord = ord(string_char_at(_command_name, 4));
-	                                                        var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                                        
-	                                                        var _green = _lsf + (_hsf << 4);
-                                                        
-	                                                        var _ord = ord(string_char_at(_command_name, 7));
-	                                                        var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-	                                                        var _ord = ord(string_char_at(_command_name, 6));
-	                                                        var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                                        
-	                                                        var _blue = _lsf + (_hsf << 4);
-                                                        
-	                                                        if (SCRIBBLE_BGR_COLOR_HEX_CODES)
-	                                                        {
-	                                                            _text_colour = make_colour_rgb(_blue, _green, _red);
-	                                                        }
-	                                                        else
-	                                                        {
-	                                                            _text_colour = make_colour_rgb(_red, _green, _blue);
-	                                                        }
-                                                        
-	                                                        continue; //Skip the rest of the parser step
+    	                                                    continue; //Skip the rest of the parser step
                                                         
                                                             #endregion
-	                                                    }
-	                                                    else
-	                                                    {
-	                                                        var _second_char = string_copy(_command_name, 2, 1);
-	                                                        if (((_first_char  == "d") || (_first_char  == "D"))
-	                                                        &&  ((_second_char == "$") || (_second_char == "#")))
-	                                                        {
-                                                                #region Decimal colour decoding
-                                                            
-	                                                            //Check if this number is a real
-	                                                            var _is_real = true;
-	                                                            var _c = 3;
-	                                                            repeat(string_length(_command_name) - 2)
-	                                                            {
-	                                                                var _ord = ord(string_char_at(_command_name, _c));
-	                                                                if ((_ord < 48) || (_ord > 57))
-	                                                                {
-	                                                                    _is_real = false;
-	                                                                    break;
-	                                                                }
-                                                                
-	                                                                ++_c;
-	                                                            }
-                                                            
-	                                                            if (_is_real)
-	                                                            {
-	                                                                _text_colour = real(string_delete(_command_name, 1, 2));
-	                                                            }
-	                                                            else
-	                                                            {
-	                                                                show_debug_message("Scribble: WARNING! Could not decode [" + _command_name + "], ensure it is a positive integer" );
-	                                                            }
-                                                            
-	                                                            continue; //Skip the rest of the parser step
-                                                            
-                                                                #endregion
-	                                                        }
-	                                                        else
-	                                                        {
-	                                                            var _command_string = string(_command_name);
-	                                                            var _j = 1;
-	                                                            repeat(_command_tag_parameters-1) _command_string += "," + string(_parameters_list[| _j++]);
-	                                                            show_debug_message("Scribble: WARNING! Unrecognised command tag [" + _command_string + "]" );
+    	                                                }
+    	                                                else
+    	                                                {
+    	                                                    var _first_char = string_copy(_command_name, 1, 1);
+    	                                                    if ((string_length(_command_name) <= 7) && ((_first_char == "$") || (_first_char == "#")))
+    	                                                    {
+                                                                #region Hex colour decoding
                                                         
-	                                                            continue; //Skip the rest of the parser step
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+    	                                                        var _ord = ord(string_char_at(_command_name, 3));
+    	                                                        var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
+    	                                                        var _ord = ord(string_char_at(_command_name, 2));
+    	                                                        var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
+                                                        
+    	                                                        var _red = _lsf + (_hsf << 4);
+                                                        
+    	                                                        var _ord = ord(string_char_at(_command_name, 5));
+    	                                                        var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
+    	                                                        var _ord = ord(string_char_at(_command_name, 4));
+    	                                                        var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
+                                                        
+    	                                                        var _green = _lsf + (_hsf << 4);
+                                                        
+    	                                                        var _ord = ord(string_char_at(_command_name, 7));
+    	                                                        var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
+    	                                                        var _ord = ord(string_char_at(_command_name, 6));
+    	                                                        var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
+                                                        
+    	                                                        var _blue = _lsf + (_hsf << 4);
+                                                        
+    	                                                        if (SCRIBBLE_BGR_COLOR_HEX_CODES)
+    	                                                        {
+    	                                                            _text_colour = make_colour_rgb(_blue, _green, _red);
+    	                                                        }
+    	                                                        else
+    	                                                        {
+    	                                                            _text_colour = make_colour_rgb(_red, _green, _blue);
+    	                                                        }
+                                                        
+    	                                                        continue; //Skip the rest of the parser step
+                                                        
+                                                                #endregion
+    	                                                    }
+    	                                                    else
+    	                                                    {
+    	                                                        var _second_char = string_copy(_command_name, 2, 1);
+    	                                                        if (((_first_char  == "d") || (_first_char  == "D"))
+    	                                                        &&  ((_second_char == "$") || (_second_char == "#")))
+    	                                                        {
+                                                                    #region Decimal colour decoding
+                                                            
+    	                                                            //Check if this number is a real
+    	                                                            var _is_real = true;
+    	                                                            var _c = 3;
+    	                                                            repeat(string_length(_command_name) - 2)
+    	                                                            {
+    	                                                                var _ord = ord(string_char_at(_command_name, _c));
+    	                                                                if ((_ord < 48) || (_ord > 57))
+    	                                                                {
+    	                                                                    _is_real = false;
+    	                                                                    break;
+    	                                                                }
+                                                                
+    	                                                                ++_c;
+    	                                                            }
+                                                            
+    	                                                            if (_is_real)
+    	                                                            {
+    	                                                                _text_colour = real(string_delete(_command_name, 1, 2));
+    	                                                            }
+    	                                                            else
+    	                                                            {
+    	                                                                show_debug_message("Scribble: WARNING! Could not decode [" + _command_name + "], ensure it is a positive integer" );
+    	                                                            }
+                                                            
+    	                                                            continue; //Skip the rest of the parser step
+                                                            
+                                                                    #endregion
+    	                                                        }
+    	                                                        else
+    	                                                        {
+    	                                                            var _command_string = string(_command_name);
+    	                                                            var _j = 1;
+    	                                                            repeat(_command_tag_parameters-1) _command_string += "," + string(_parameters_list[| _j++]);
+    	                                                            show_debug_message("Scribble: WARNING! Unrecognised command tag [" + _command_string + "]" );
+                                                        
+    	                                                            continue; //Skip the rest of the parser step
+    	                                                        }
+    	                                                    }
+    	                                                }
+    	                                            }
+                                                }
 	                                        }
 	                                    }
 	                                }
