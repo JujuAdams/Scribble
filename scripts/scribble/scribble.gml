@@ -20,6 +20,7 @@ function __scribble_element(_string, _unique_id) constructor
     
     model = undefined;
     
+    last_drawn = current_time;
     freeze = false;
     
     #region Setters
@@ -82,6 +83,8 @@ function __scribble_element(_string, _unique_id) constructor
     
     page = function(_page)
     {
+        if ((_page < 0) || (_page >= get_pages())) throw "!";
+        
         __page = _page;
         return self;
     }
@@ -163,17 +166,17 @@ function __scribble_element(_string, _unique_id) constructor
     
     get_bbox = function()
     {
-        return __get_cache.get_bbox();
+        return __get_cache().get_bbox();
     }
     
     get_width = function()
     {
-        return __get_cache.get_width();
+        return __get_cache().get_width();
     }
     
     get_height = function()
     {
-        return __get_cache.get_height();
+        return __get_cache().get_height();
     }
     
     get_page = function()
@@ -183,7 +186,7 @@ function __scribble_element(_string, _unique_id) constructor
     
     get_pages = function()
     {
-        return __get_cache.get_pages();
+        return __get_cache().get_pages();
     }
     
     get_typewriter_state = function()
@@ -235,7 +238,7 @@ function __scribble_element(_string, _unique_id) constructor
     template(scribble_default_template);
 }
 
-function __scribble_model(_text_element) constructor
+function __scribble_model(_element) constructor
 {
     draw = function(_x, _y)
     {
