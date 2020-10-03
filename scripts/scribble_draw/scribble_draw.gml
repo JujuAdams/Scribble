@@ -4,7 +4,7 @@
 /// @param x                    x-position in the room to draw at.
 /// @param y                    y-position in the room to draw at.
 /// @param string/textElement   Either a string to be drawn, or a previously created text element
-/// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
+/// @param [occurrenceName]      Unique identifier to differentiate particular occurrences of a string within the game
 /// 
 /// Formatting commands:
 /// [/]                                 Reset formatting to the starting format, as set by scribble_set_starting_format(). For legacy reasons, [] is also accepted
@@ -41,33 +41,33 @@ function scribble_draw()
 	var _draw_x         = argument[0];
 	var _draw_y         = argument[1];
 	var _draw_string    = argument[2];
-	var _occurance_name = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
+	var _occurrence_name = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : SCRIBBLE_DEFAULT_OCCURRENCE_NAME;
 
 	//Check the cache
-	var _scribble_array = scribble_cache(_draw_string, _occurance_name);
+	var _scribble_array = scribble_cache(_draw_string, _occurrence_name);
 	if (_scribble_array == undefined) return undefined;
 
-	//Find our occurance data
-	var _occurances_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
-	var _occurance_array = _occurances_map[? _occurance_name];
+	//Find our occurrence data
+	var _occurrences_map = _scribble_array[SCRIBBLE.OCCURRENCES_MAP];
+	var _occurrence_array = _occurrences_map[? _occurrence_name];
 
 	//Find our page data
 	var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];
-	var _page_array = _element_pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAGE]];
+	var _page_array = _element_pages_array[_occurrence_array[__SCRIBBLE_OCCURRENCE.PAGE]];
     
 	//Handle the animation timer
-	var _increment_timers = ((current_time - _occurance_array[__SCRIBBLE_OCCURANCE.DRAWN_TIME]) > __SCRIBBLE_EXPECTED_FRAME_TIME);
-	var _animation_time   = _occurance_array[__SCRIBBLE_OCCURANCE.ANIMATION_TIME];
+	var _increment_timers = ((current_time - _occurrence_array[__SCRIBBLE_OCCURRENCE.DRAWN_TIME]) > __SCRIBBLE_EXPECTED_FRAME_TIME);
+	var _animation_time   = _occurrence_array[__SCRIBBLE_OCCURRENCE.ANIMATION_TIME];
     
 	if (_increment_timers)
 	{
 	    _animation_time += SCRIBBLE_STEP_SIZE;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.ANIMATION_TIME] = _animation_time;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.ANIMATION_TIME] = _animation_time;
 	}
 
 	//Update when this text element was last drawn
 	_scribble_array[@ SCRIBBLE.DRAWN_TIME] = current_time;
-	_occurance_array[@ __SCRIBBLE_OCCURANCE.DRAWN_TIME] = current_time;
+	_occurrence_array[@ __SCRIBBLE_OCCURRENCE.DRAWN_TIME] = current_time;
 
 	//Grab our vertex buffers for this page
 	var _page_vbuffs_array = _page_array[__SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY];
@@ -76,7 +76,7 @@ function scribble_draw()
 	{
         #region Advance the autotyper, execute events, play sounds etc.
         
-	    var _typewriter_method = _occurance_array[__SCRIBBLE_OCCURANCE.METHOD];
+	    var _typewriter_method = _occurrence_array[__SCRIBBLE_OCCURRENCE.METHOD];
 	    if (_typewriter_method == 0) //No fade in/out set
 	    {
 	        var _typewriter_method       = 0;
@@ -87,30 +87,30 @@ function scribble_draw()
 	    }
 	    else
 	    {
-	        var _typewriter_smoothness     = _occurance_array[__SCRIBBLE_OCCURANCE.SMOOTHNESS  ];
-	        var _typewriter_window         = _occurance_array[__SCRIBBLE_OCCURANCE.WINDOW      ];
-	        var _typewriter_window_array   = _occurance_array[__SCRIBBLE_OCCURANCE.WINDOW_ARRAY];
-	        var _typewriter_fade_in        = _occurance_array[__SCRIBBLE_OCCURANCE.FADE_IN     ];
-	        var _typewriter_adjusted_speed = _occurance_array[__SCRIBBLE_OCCURANCE.SPEED       ]*SCRIBBLE_STEP_SIZE;
-            var _skipping                  = _occurance_array[__SCRIBBLE_OCCURANCE.SKIP        ];
+	        var _typewriter_smoothness     = _occurrence_array[__SCRIBBLE_OCCURRENCE.SMOOTHNESS  ];
+	        var _typewriter_window         = _occurrence_array[__SCRIBBLE_OCCURRENCE.WINDOW      ];
+	        var _typewriter_window_array   = _occurrence_array[__SCRIBBLE_OCCURRENCE.WINDOW_ARRAY];
+	        var _typewriter_fade_in        = _occurrence_array[__SCRIBBLE_OCCURRENCE.FADE_IN     ];
+	        var _typewriter_adjusted_speed = _occurrence_array[__SCRIBBLE_OCCURRENCE.SPEED       ]*SCRIBBLE_STEP_SIZE;
+            var _skipping                  = _occurrence_array[__SCRIBBLE_OCCURRENCE.SKIP        ];
             
 	        //Handle pausing
-	        if (_occurance_array[__SCRIBBLE_OCCURANCE.PAUSED])
+	        if (_occurrence_array[__SCRIBBLE_OCCURRENCE.PAUSED])
 	        {
 	            var _typewriter_speed = 0;
 	        }
-	        else if (_occurance_array[__SCRIBBLE_OCCURANCE.DELAY_PAUSED])
+	        else if (_occurrence_array[__SCRIBBLE_OCCURRENCE.DELAY_PAUSED])
 	        {
-	            if (current_time > _occurance_array[__SCRIBBLE_OCCURANCE.DELAY_END])
+	            if (current_time > _occurrence_array[__SCRIBBLE_OCCURRENCE.DELAY_END])
 	            {
 	                //We've waited long enough, start showing more text
-	                _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_PAUSED] = false;
+	                _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DELAY_PAUSED] = false;
 	                var _typewriter_speed = _typewriter_adjusted_speed;
                     
 	                //Increment the window index
 	                var _old_head_pos = _typewriter_window_array[@ _typewriter_window];
 	                _typewriter_window = (_typewriter_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
-	                _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW] = _typewriter_window;
+	                _occurrence_array[@ __SCRIBBLE_OCCURRENCE.WINDOW] = _typewriter_window;
 	                _typewriter_window_array[@ _typewriter_window  ] = _old_head_pos;
 	                _typewriter_window_array[@ _typewriter_window+1] = _old_head_pos - _typewriter_smoothness;
 	            }
@@ -145,7 +145,7 @@ function scribble_draw()
 	                break;
 	            }
                 
-	            var _scan_a = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS];
+	            var _scan_a = _occurrence_array[__SCRIBBLE_OCCURRENCE.EVENT_CHAR_PREVIOUS];
                 var _scan = _scan_a;
 	            if (_scan_b > _scan_a)
 	            {
@@ -154,8 +154,8 @@ function scribble_draw()
 	                var _events_data_array = _scribble_array[SCRIBBLE.EVENT_DATA_ARRAY];
 	                var _event_count       = array_length(_events_char_array);
                     
-	                var _event                = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ];
-	                var _events_visited_array = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY];
+	                var _event                = _occurrence_array[__SCRIBBLE_OCCURRENCE.EVENT_PREVIOUS     ];
+	                var _events_visited_array = _occurrence_array[__SCRIBBLE_OCCURRENCE.EVENT_VISITED_ARRAY];
                     
 	                //Always start scanning at the next event
 	                ++_event;
@@ -175,14 +175,14 @@ function scribble_draw()
 	                            if (!_events_visited_array[_event])
 	                            {
 	                                _events_visited_array[@ _event] = true;
-                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS] = _event;
+                                    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_PREVIOUS] = _event;
                                     
 	                                //Process pause and delay events
 	                                if (_event_name == "pause")
 	                                {
                                         if (!_skipping)
                                         {
-	                                        _occurance_array[@ __SCRIBBLE_OCCURANCE.PAUSED] = true;
+	                                        _occurrence_array[@ __SCRIBBLE_OCCURRENCE.PAUSED] = true;
                                         }
 	                                }
 	                                else if (_event_name == "delay")
@@ -198,8 +198,8 @@ function scribble_draw()
     	                                        var _duration = SCRIBBLE_DEFAULT_DELAY_DURATION;
     	                                    }
                                             
-    	                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_PAUSED] = true;
-    	                                    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_END   ] = current_time + _duration;
+    	                                    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DELAY_PAUSED] = true;
+    	                                    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DELAY_END   ] = current_time + _duration;
                                         }
 	                                }
 	                                else if (_event_name == "__scribble_audio_playback__")
@@ -220,8 +220,8 @@ function scribble_draw()
 	                                    }
 	                                }
                                     
-	                                if (_occurance_array[__SCRIBBLE_OCCURANCE.PAUSED]
-	                                ||  _occurance_array[__SCRIBBLE_OCCURANCE.DELAY_PAUSED])
+	                                if (_occurrence_array[__SCRIBBLE_OCCURRENCE.PAUSED]
+	                                ||  _occurrence_array[__SCRIBBLE_OCCURRENCE.DELAY_PAUSED])
 	                                {
 	                                    _typewriter_speed = _scan - _typewriter_head_pos;
 	                                    _break = true;
@@ -237,11 +237,11 @@ function scribble_draw()
 	                        ++_scan;
 	                    }
                         
-	                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = _scan;
+	                    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_CHAR_PREVIOUS] = _scan;
 	                }
 	                else
 	                {
-	                    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = _scan_b;
+	                    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_CHAR_PREVIOUS] = _scan_b;
 	                }
 	            }
                 
@@ -281,15 +281,15 @@ function scribble_draw()
 	    {
             #region Play a sound effect as the text is revealed
             
-	        var _sound_array = _occurance_array[__SCRIBBLE_OCCURANCE.SOUND_ARRAY];
+	        var _sound_array = _occurrence_array[__SCRIBBLE_OCCURRENCE.SOUND_ARRAY];
 	        if (is_array(_sound_array) && (array_length(_sound_array) > 0))
 	        {
 	            var _play_sound = false;
-	            if (_occurance_array[__SCRIBBLE_OCCURANCE.SOUND_PER_CHAR])
+	            if (_occurrence_array[__SCRIBBLE_OCCURRENCE.SOUND_PER_CHAR])
 	            {
 	                _play_sound = true;
 	            }
-	            else if (current_time >= _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_FINISH_TIME]) 
+	            else if (current_time >= _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_FINISH_TIME]) 
 	            {
 	                _play_sound = true;
 	            }
@@ -304,15 +304,15 @@ function scribble_draw()
                 
 	                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
 	                var _rand = global.__scribble_lcg / 2147483648;
-	            	audio_sound_pitch(_inst, lerp(_occurance_array[__SCRIBBLE_OCCURANCE.SOUND_MIN_PITCH], _occurance_array[__SCRIBBLE_OCCURANCE.SOUND_MAX_PITCH], _rand));
+	            	audio_sound_pitch(_inst, lerp(_occurrence_array[__SCRIBBLE_OCCURRENCE.SOUND_MIN_PITCH], _occurrence_array[__SCRIBBLE_OCCURRENCE.SOUND_MAX_PITCH], _rand));
                 
-	                _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _occurance_array[__SCRIBBLE_OCCURANCE.SOUND_OVERLAP];
+	                _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _occurrence_array[__SCRIBBLE_OCCURRENCE.SOUND_OVERLAP];
 	            }
 	        }
             
             #endregion
             
-	        var _callback = _occurance_array[__SCRIBBLE_OCCURANCE.FUNCTION];
+	        var _callback = _occurrence_array[__SCRIBBLE_OCCURRENCE.FUNCTION];
             
             if (is_method(_callback))
             {

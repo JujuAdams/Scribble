@@ -1,6 +1,6 @@
 /// Returns: The text element's autotype state (see below)
 /// @param string/textElement   Text element to target. This element must have been created previously by scribble_draw()
-/// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
+/// @param [occurrenceName]      Unique identifier to differentiate particular occurrences of a string within the game
 /// 
 /// The autotype state is a real value as follows:
 ///     state = 0   No text is visible
@@ -14,26 +14,26 @@
 function scribble_autotype_get()
 {
 	var _scribble_array = argument[0];
-	var _occurance_name = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
+	var _occurrence_name = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURRENCE_NAME;
 
-	var _scribble_array = scribble_cache(_scribble_array, _occurance_name);
+	var _scribble_array = scribble_cache(_scribble_array, _occurrence_name);
 	if (_scribble_array == undefined) return undefined;
 
-	//Find our occurance data
-	var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
-	var _occurance_array = _occurance_map[? _occurance_name];
+	//Find our occurrence data
+	var _occurrence_map = _scribble_array[SCRIBBLE.OCCURRENCES_MAP];
+	var _occurrence_array = _occurrence_map[? _occurrence_name];
 
 	//Early out if the method is NONE
-	var _typewriter_method = _occurance_array[__SCRIBBLE_OCCURANCE.METHOD];
+	var _typewriter_method = _occurrence_array[__SCRIBBLE_OCCURRENCE.METHOD];
 	if (_typewriter_method == 0) return 1; //No fade in/out set
 
 	//Return an error code if the fade in state has not been set
 	//(The fade in state is initialised as -1)
-	var _typewriter_fade_in = _occurance_array[__SCRIBBLE_OCCURANCE.FADE_IN];
-	if (_occurance_array[__SCRIBBLE_OCCURANCE.FADE_IN] < 0) return -2;
+	var _typewriter_fade_in = _occurrence_array[__SCRIBBLE_OCCURRENCE.FADE_IN];
+	if (_occurrence_array[__SCRIBBLE_OCCURRENCE.FADE_IN] < 0) return -2;
 
 	var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];
-	var _page_array = _element_pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAGE]];
+	var _page_array = _element_pages_array[_occurrence_array[__SCRIBBLE_OCCURRENCE.PAGE]];
 
 	switch(_typewriter_method)
 	{
@@ -52,8 +52,8 @@ function scribble_autotype_get()
 	}
 
 	//Normalise the parameter from 0 -> 1 using the total counter
-	var _window       = _occurance_array[__SCRIBBLE_OCCURANCE.WINDOW      ];
-	var _window_array = _occurance_array[__SCRIBBLE_OCCURANCE.WINDOW_ARRAY];
+	var _window       = _occurrence_array[__SCRIBBLE_OCCURRENCE.WINDOW      ];
+	var _window_array = _occurrence_array[__SCRIBBLE_OCCURRENCE.WINDOW_ARRAY];
 	var _typewriter_t = clamp((_window_array[_window] - _min) / (_max - _min), 0, 1);
 
 	//Add one if we're fading out

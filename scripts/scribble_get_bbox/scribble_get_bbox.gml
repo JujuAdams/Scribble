@@ -8,7 +8,7 @@
 /// @param [topMargin]          Extra space on the top of the textbox. Positive values create more space. Defaults to 0
 /// @param [rightMargin]        Extra space on the right-hand side of the textbox. Positive values create more space. Defaults to 0
 /// @param [bottomMargin]       Extra space on the bottom of the textbox. Positive values create more space. Defaults to 0
-/// @param [occuranceName]      Unique identifier to differentiate particular occurances of a string within the game
+/// @param [occurrenceName]      Unique identifier to differentiate particular occurrences of a string within the game
 /// 
 /// To use the size of the current page rather than the size of the overall text element, please see scribble_set_box_align(),
 /// specifically the [usePageSize] argument.
@@ -35,7 +35,7 @@ function scribble_get_bbox()
 	var _margin_t       = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
 	var _margin_r       = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
 	var _margin_b       = ((argument_count > 6) && (argument[6] != undefined))? argument[6] : 0;
-    var _occurance_name = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
+    var _occurrence_name = ((argument_count > 7) && (argument[7] != undefined))? argument[7] : SCRIBBLE_DEFAULT_OCCURRENCE_NAME;
 
 	if (is_string(_x) || is_array(_x))
 	{
@@ -48,13 +48,13 @@ function scribble_get_bbox()
     
     if (global.scribble_state_box_align_page)
     {
-        //Find our occurance data
-        var _occurances_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
-        var _occurance_array = _occurances_map[? _occurance_name];
+        //Find our occurrence data
+        var _occurrences_map = _scribble_array[SCRIBBLE.OCCURRENCES_MAP];
+        var _occurrence_array = _occurrences_map[? _occurrence_name];
         
         //Find our page data
         var _element_pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];
-        var _page_array = _element_pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAGE]];
+        var _page_array = _element_pages_array[_occurrence_array[__SCRIBBLE_OCCURRENCE.PAGE]];
         
         //Pull out our actual dimensions
         var _box_l = _page_array[__SCRIBBLE_PAGE.MIN_X ];

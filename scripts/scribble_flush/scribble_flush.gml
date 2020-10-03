@@ -35,8 +35,8 @@ function scribble_flush()
 	        ++_p;
 	    }
     
-	    //Destroy occurances as well
-	    ds_map_destroy(_scribble_array[SCRIBBLE.OCCURANCES_MAP]);
+	    //Destroy occurrences as well
+	    ds_map_destroy(_scribble_array[SCRIBBLE.OCCURRENCES_MAP]);
     
 	    //Remove reference from cache
 	    ds_map_delete(global.__scribble_global_cache_map, _scribble_array[SCRIBBLE.CACHE_STRING]);

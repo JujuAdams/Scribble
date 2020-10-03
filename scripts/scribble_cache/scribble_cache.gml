@@ -2,7 +2,7 @@
 /// 
 /// Returns: Scribble text element (which is really a complex array)
 /// @param string             The string to be drawn
-/// @param [occuranceName]    Unique identifier to differentiate particular occurances of a string within the game
+/// @param [occurrenceName]    Unique identifier to differentiate particular occurrences of a string within the game
 /// @param [garbageCollect]   When set to <false>, Scribble will *not* automatically clean up this data and you will need to use scribble_flush() instead. Defaults to <true>
 /// @param [freeze]           Whether to freeze the vertex buffers or not. Substantially increase up-front caching cost but makes drawing faster. Defaults to <false>
 ///
@@ -11,7 +11,7 @@
 function scribble_cache()
 {
 	var _draw_string     = argument[0];
-	var _occurance_name  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
+	var _occurrence_name  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : SCRIBBLE_DEFAULT_OCCURRENCE_NAME;
 	var _garbage_collect = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : true;
 	var _freeze          = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : false;
 
@@ -205,7 +205,7 @@ function scribble_cache()
     
 	        var _element_pages_array = []; //Stores each page of text
 	        var _character_array     = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
-	        var _occurances_map      = ds_map_create();
+	        var _occurrences_map      = ds_map_create();
         
 	        var _events_char_array = []; //Stores each event's triggering character
 	        var _events_name_array = []; //Stores each event's name
@@ -234,7 +234,7 @@ function scribble_cache()
 	        _scribble_array[@ SCRIBBLE.__SECTION2      ] = "-- State --";
 	        _scribble_array[@ SCRIBBLE.DRAWN_TIME      ] = current_time;
 	        _scribble_array[@ SCRIBBLE.FREED           ] = false;
-	        _scribble_array[@ SCRIBBLE.OCCURANCES_MAP  ] = _occurances_map;
+	        _scribble_array[@ SCRIBBLE.OCCURRENCES_MAP  ] = _occurrences_map;
         
 	        _scribble_array[@ SCRIBBLE.__SECTION3      ] = "-- Data --";
 	        _scribble_array[@ SCRIBBLE.PAGES_ARRAY     ] = _element_pages_array;
@@ -2409,51 +2409,55 @@ function scribble_cache()
 
 
 
-	        if (SCRIBBLE_VERBOSE) __scribble_trace("scribble_cache() create took " + string((get_timer() - _timer_total)/1000) + "ms for " + string(_scribble_array[SCRIBBLE.CHARACTERS]) + " characters");
+	        if (SCRIBBLE_VERBOSE)
+            {
+                var _elapsed = (get_timer() - _timer_total)/1000;
+                __scribble_trace("scribble_cache() took " + string(_elapsed) + "ms for " + string(_scribble_array[SCRIBBLE.CHARACTERS]) + " characters (ratio=" + string_format(_elapsed/_scribble_array[SCRIBBLE.CHARACTERS], 0, 6) + ")");
+            }
 	    }
 	}
 
 
 
-    #region Create an occurance array if necessary
+    #region Create an occurrence array if necessary
 
-	var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
-	if (!ds_map_exists(_occurance_map, _occurance_name))
+	var _occurrence_map = _scribble_array[SCRIBBLE.OCCURRENCES_MAP];
+	if (!ds_map_exists(_occurrence_map, _occurrence_name))
 	{
-	    var _occurance_array = array_create(__SCRIBBLE_OCCURANCE.__SIZE);
+	    var _occurrence_array = array_create(__SCRIBBLE_OCCURRENCE.__SIZE);
     
-        _occurance_array[@ __SCRIBBLE_OCCURANCE.__SECTION0         ] = "Tracking";
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.PAGE               ] =  0;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.FADE_IN            ] = -1;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SKIP               ] =  false;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SPEED              ] =  0;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW             ] =  0;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW_ARRAY       ] =  array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.METHOD             ] =  0; //No fade in/out set
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SMOOTHNESS         ] =  0;
+        _occurrence_array[@ __SCRIBBLE_OCCURRENCE.__SECTION0         ] = "Tracking";
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.PAGE               ] =  0;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.FADE_IN            ] = -1;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SKIP               ] =  false;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SPEED              ] =  0;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.WINDOW             ] =  0;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.WINDOW_ARRAY       ] =  array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.METHOD             ] =  0; //No fade in/out set
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SMOOTHNESS         ] =  0;
         
-        _occurance_array[@ __SCRIBBLE_OCCURANCE.__SECTION1         ] = "Sounds";
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_ARRAY        ] = -1;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_OVERLAP      ] =  0;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_PER_CHAR     ] =  false;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MIN_PITCH    ] =  1.0;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_MAX_PITCH    ] =  1.0;
+        _occurrence_array[@ __SCRIBBLE_OCCURRENCE.__SECTION1         ] = "Sounds";
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_ARRAY        ] = -1;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_OVERLAP      ] =  0;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_PER_CHAR     ] =  false;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_MIN_PITCH    ] =  1.0;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_MAX_PITCH    ] =  1.0;
         
-        _occurance_array[@ __SCRIBBLE_OCCURANCE.__SECTION2         ] = "Playback";
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.PAUSED             ] =  false;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_PAUSED       ] =  false;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.DELAY_END          ] = -1;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.FUNCTION           ] =  undefined;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.SOUND_FINISH_TIME  ] =  current_time;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.DRAWN_TIME         ] =  current_time;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.ANIMATION_TIME     ] =  current_time;
+        _occurrence_array[@ __SCRIBBLE_OCCURRENCE.__SECTION2         ] = "Playback";
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.PAUSED             ] =  false;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DELAY_PAUSED       ] =  false;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DELAY_END          ] = -1;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.FUNCTION           ] =  undefined;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_FINISH_TIME  ] =  current_time;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DRAWN_TIME         ] =  current_time;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.ANIMATION_TIME     ] =  current_time;
         
-        _occurance_array[@ __SCRIBBLE_OCCURANCE.__SECTION3         ] = "Events";
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ] = -1;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = -1;
-	    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY] = array_create(array_length(_scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY]), false);
+        _occurrence_array[@ __SCRIBBLE_OCCURRENCE.__SECTION3         ] = "Events";
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_PREVIOUS     ] = -1;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_CHAR_PREVIOUS] = -1;
+	    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_VISITED_ARRAY] = array_create(array_length(_scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY]), false);
     
-	    _occurance_map[? _occurance_name] = _occurance_array;
+	    _occurrence_map[? _occurrence_name] = _occurrence_array;
 	}
 
     #endregion

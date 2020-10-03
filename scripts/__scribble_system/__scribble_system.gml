@@ -281,7 +281,7 @@ enum __SCRIBBLE_VERTEX
 	__SIZE         = 36
 }
     
-enum __SCRIBBLE_OCCURANCE
+enum __SCRIBBLE_OCCURRENCE
 {
     __SECTION0,          // 0
     PAGE,                // 1
@@ -367,7 +367,7 @@ enum SCRIBBLE
 	__SECTION2,       //17
 	DRAWN_TIME,       //18
 	FREED,            //19
-	OCCURANCES_MAP,   //20
+	OCCURRENCES_MAP,   //20
         
 	__SECTION3,       //21
 	PAGES_ARRAY,      //22
