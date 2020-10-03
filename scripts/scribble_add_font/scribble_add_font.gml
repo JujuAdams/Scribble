@@ -20,12 +20,6 @@
 
 function scribble_add_font()
 {
-	if (!variable_global_exists("__scribble_lcg"))
-	{
-	    show_error("Scribble:\nscribble_add_font() should be called after scribble_init()\n ", true);
-	    return undefined;
-	}
-
 	var _font    = argument[0];
 	var _path    = (argument_count > 1)? argument[1] : undefined;
 	var _texture = (argument_count > 2)? argument[2] : undefined;
@@ -84,7 +78,7 @@ function scribble_add_font()
 	_data[@ __SCRIBBLE_FONT.NAME        ] = _font;
 	_data[@ __SCRIBBLE_FONT.PATH        ] = _path;
 	_data[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
-	_data[@ __SCRIBBLE_FONT.TYPE        ] = __SCRIBBLE_FONT_TYPE.FONT;
+	_data[@ __SCRIBBLE_FONT.TYPE        ] = "standard";
 	_data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
 	_data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
 	_data[@ __SCRIBBLE_FONT.GLYPH_MIN   ] = 32;

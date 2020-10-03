@@ -3,6 +3,7 @@
 
 function __scribble_model(_element, _model_cache_name) constructor
 {
+    last_drawn = current_time;
     cache_name = _model_cache_name;
     page_count = 0;
     flushed    = false;
@@ -11,6 +12,8 @@ function __scribble_model(_element, _model_cache_name) constructor
     {
         if (flushed) return undefined;
         if (_element == undefined) _element = global.__scribble_default_element;
+        
+        last_drawn = current_time;
         
         var _page_struct = page_array[_element.__page];
         if (SCRIBBLE_BOX_ALIGN_TO_PAGE)

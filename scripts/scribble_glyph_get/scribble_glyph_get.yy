@@ -6,7 +6,7 @@
     "path": "folders/Scribble/Advanced Things For Serious People.yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_get_glyph_property",
+  "name": "scribble_glyph_get",
   "tags": [],
   "resourceType": "GMScript",
 }

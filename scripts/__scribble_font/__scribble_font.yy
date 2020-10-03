@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scribble",
-    "path": "folders/Scribble.yy",
+    "name": "(System)",
+    "path": "folders/Scribble/(System).yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_draw",
+  "name": "__scribble_font",
   "tags": [],
   "resourceType": "GMScript",
 }

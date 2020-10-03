@@ -4,17 +4,17 @@
 function __scribble_element(_string, _element_cache_name) constructor
 {
     text = _string;
-    unique_id = _unique_id;
+    cache_name = _element_cache_name;
     global.__scribble_element_cache[? _element_cache_name] = self;
     
     model = undefined;
     
     last_drawn = current_time;
-    animation_time = current_time;
     freeze = false;
     
     tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     
+    animation_time  = current_time;
     animation_array = array_create(SCRIBBLE_ANIM.__SIZE, 0.0);
     animation_array[@ SCRIBBLE_ANIM.WAVE_SIZE       ] =  4;
     animation_array[@ SCRIBBLE_ANIM.WAVE_FREQ       ] = 50;
@@ -419,12 +419,17 @@ function __scribble_element(_string, _element_cache_name) constructor
     
     draw = function(_x, _y)
     {
+        var _model = __get_model();
+        
+        if (current_time - last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
+        {
+            animation_time += SCRIBBLE_STEP_SIZE;
+            if (tw_do) _model.update_typewriter();
+        }
+        
         last_drawn = current_time;
         
-        var _model = __get_model();
-        if (tw_do) _model.update_typewriter();
         _model.draw(_x, _y, self);
-        
         return undefined;
     }
     

@@ -1,11 +1,8 @@
 var _font_directory = SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY;
-    
-if (variable_global_exists("__scribble_lcg"))
-{
-	if (SCRIBBLE_WARNING_REINITIALIZE) show_error("Scribble:\nscribble_init() should not be called twice!\n(Set SCRIBBLE_WARNING_REINITIALIZE to <false> to hide this warning)\n ", false);
-	return false;
-}
-    
+
+//If we've already initialized, don't try to do it again
+if (variable_global_exists("__scribble_lcg")) return undefined;
+
 __scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
     
 if (__SCRIBBLE_ON_MOBILE)
@@ -174,45 +171,7 @@ enum SCRIBBLE_GLYPH
 	V1,         //11
 	__SIZE      //12
 }
-    
-enum __SCRIBBLE_FONT
-{
-	NAME,         // 0
-	PATH,         // 1
-    FAMILY_NAME,  // 2
-	TYPE,         // 3
-	GLYPHS_MAP,   // 4
-	GLYPHS_ARRAY, // 5
-	GLYPH_MIN,    // 6
-	GLYPH_MAX,    // 7
-	SPACE_WIDTH,  // 8
-	MAPSTRING,    // 9
-	SEPARATION,   //10
-	__SIZE        //11
-}
-    
-enum __SCRIBBLE_FONT_TYPE
-{
-	FONT,    //0
-	SPRITE,  //1
-	RUNTIME, //2
-}
-    
-enum __SCRIBBLE_PAGE
-{
-	LINES,                // 0
-	START_CHAR,           // 1
-	LAST_CHAR,            // 2
-	LINES_ARRAY,          // 3
-	VERTEX_BUFFERS_ARRAY, // 4
-    START_EVENT,          // 5
-    MAX_X,                // 6
-    MIN_X,                // 7
-    WIDTH,                // 8
-    HEIGHT,               // 9
-	__SIZE
-}
-    
+
 enum __SCRIBBLE_LINE
 {
 	START_CHAR, //0
@@ -223,21 +182,7 @@ enum __SCRIBBLE_LINE
 	HALIGN,     //5
 	__SIZE      //6
 }
-    
-enum __SCRIBBLE_VERTEX_BUFFER
-{
-	BUFFER,
-	VERTEX_BUFFER,
-	TEXTURE,
-	CHAR_START_TELL,
-	WORD_START_TELL,
-	WORD_X_OFFSET,
-	LINE_START_LIST,
-	TEXEL_WIDTH,
-	TEXEL_HEIGHT,
-	__SIZE
-}
-    
+
 enum __SCRIBBLE_VERTEX
 {
 	X              =  0,

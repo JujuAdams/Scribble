@@ -16,19 +16,13 @@
 /// SCRIBBLE_GLYPH.SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
 ///                            left edge of the next glyph. This can be a negative value!
 
-function scribble_set_glyph_property()
+function scribble_glyph_set()
 {
     var _font      = argument[0];
     var _character = argument[1];
     var _property  = argument[2];
     var _value     = argument[3];
     var _relative  = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : false;
-    
-    if (!variable_global_exists("__scribble_lcg"))
-    {
-        show_error("Scribble:\nscribble_glyph_property() should be called after initialising Scribble.\n ", false);
-        exit;
-    }
     
     if (!ds_map_exists(global.__scribble_font_data, _font))
     {

@@ -23,12 +23,6 @@
 
 function scribble_add_spritefont()
 {
-	if (!variable_global_exists("__scribble_lcg"))
-	{
-	    show_error("Scribble:\nscribble_add_spritefont() should be called after scribble_init()\n ", true);
-	    exit;
-	}
-
 	var _font         = argument[0];
 	var _mapstring    = argument[1];
 	var _separation   = argument[2];
@@ -103,7 +97,7 @@ function scribble_add_spritefont()
 	_data[@ __SCRIBBLE_FONT.NAME        ] = _font;
 	_data[@ __SCRIBBLE_FONT.PATH        ] = undefined;
 	_data[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
-	_data[@ __SCRIBBLE_FONT.TYPE        ] = __SCRIBBLE_FONT_TYPE.SPRITE;
+	_data[@ __SCRIBBLE_FONT.TYPE        ] = "sprite";
 	_data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
 	_data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
 	_data[@ __SCRIBBLE_FONT.GLYPH_MIN   ] = 32;
