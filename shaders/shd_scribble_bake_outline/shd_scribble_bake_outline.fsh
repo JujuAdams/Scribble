@@ -1,4 +1,4 @@
-//   @jujuadams   v6.0.14   2020-10-03
+//   @jujuadams   v7.0.0   2020-10-03
 precision highp float;
 
 const float PI = 3.14159265359;

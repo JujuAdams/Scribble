@@ -3,16 +3,14 @@
 /// Returns: Whether initialisation was successful
 /// @param fontDirectory    The directory to look in for font .yy files, relative to the root folder that Included Files are stored in
 /// @param defaultFont      The name of the default Scribble font to use, as a string
-/// @param autoscan         Whether or not to automatically find font .yy files in the font directory
-///                         N.B. This only works for normal fonts
 
-function scribble_init(_font_directory, _default_font, _auto_scan)
+function scribble_init(_font_directory, _default_font)
 {
     #region Internal Macro Definitions
     
 	// @jujuadams
 	// With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_
-    #macro __SCRIBBLE_VERSION  "6.0.14"
+    #macro __SCRIBBLE_VERSION  "7.0.0"
     #macro __SCRIBBLE_DATE     "2020-10-03"
     #macro __SCRIBBLE_DEBUG    false
     
@@ -420,22 +418,6 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	global.__scribble_hex_array[@ ord("d") - _min] = 13; //ascii 100 = array 52
 	global.__scribble_hex_array[@ ord("e") - _min] = 14; //ascii 101 = array 53
 	global.__scribble_hex_array[@ ord("f") - _min] = 15; //ascii 102 = array 54
-    
-	if (_auto_scan)
-	{
-	    global.__scribble_autoscanning = true;
-    
-		var _i = 0;
-		repeat(999)
-		{
-		    if (!font_exists(_i)) break;
-            var _name = font_get_name(_i);
-            if (string_copy(_name, 1, 9) != "__newfont") scribble_add_font(_name); //Don't scan fonts created at runtime (e.g. by font_add_sprite())
-		    ++_i;
-		}
-        
-	    global.__scribble_autoscanning = false;
-	}
     
 	return true;
 }

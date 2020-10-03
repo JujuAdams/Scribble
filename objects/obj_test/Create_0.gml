@@ -1,16 +1,16 @@
-if (scribble_init("Fonts", "fnt_test_0", true))
-{
-    var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
-    scribble_add_spritefont("spr_sprite_font", _mapstring, 0, 11);
-    
-    scribble_add_color("c_coquelicot", $ff3800);
-    scribble_add_color("c_smaragdine", $50c875);
-    scribble_add_color("c_xanadu"    , $738678);
-    scribble_add_color("c_amaranth"  , $e52b50);
-    
-    scribble_set_glyph_property("spr_sprite_font", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
-    scribble_set_glyph_property("spr_sprite_font", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);
-}
+scribble_init("Fonts", "fnt_test_0");
+scribble_add_fonts_auto();
+
+var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
+scribble_add_spritefont("spr_sprite_font", _mapstring, 0, 11);
+
+scribble_add_color("c_coquelicot", $ff3800);
+scribble_add_color("c_smaragdine", $50c875);
+scribble_add_color("c_xanadu"    , $738678);
+scribble_add_color("c_amaranth"  , $e52b50);
+
+scribble_set_glyph_property("spr_sprite_font", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
+scribble_set_glyph_property("spr_sprite_font", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 
 //Native GM defintions
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
