@@ -3,17 +3,23 @@
 
 function scribble()
 {
-    var _string    = argument[0];
-    var _unique_id = (argument_count > 1)? argument[1] : SCRIBBLE_DEFAULT_OCCURRENCE_NAME;
+    var _string    = string(argument[0]);
+    var _unique_id = (argument_count > 1)? string(argument[1]) : SCRIBBLE_DEFAULT_OCCURRENCE_NAME;
     
-    return new __scribble_text_element(_string);
+    var _element = global.__scribble_element_cache[? _string + ":" + _unique_id];
+    if (_element == undefined) _element = new __scribble_element(_string, _unique_id);
+    
+    return _element;
 }
 
-function __scribble_text_element(_string) constructor
+function __scribble_element(_string, _unique_id) constructor
 {
     text = _string;
-    cache_name = undefined;
-    cache = undefined;
+    unique_id = _unique_id;
+    global.__scribble_element_cache[? _string + ":" + _unique_id] = self;
+    
+    model = undefined;
+    
     freeze = false;
     
     #region Setters
@@ -195,16 +201,14 @@ function __scribble_text_element(_string) constructor
     
     draw = function(_x, _y)
     {
-        __get_cache().draw(_x, _y);
+        __get_model().draw(_x, _y);
         return undefined;
     }
     
     flush_now = function()
     {
-        if (is_struct(cache)) cache.flush();
-        
-        cache_name = undefined;
-        cache = undefined;
+        if (is_struct(model)) model.flush();
+        model = undefined;
         
         return undefined;
     }
@@ -213,17 +217,18 @@ function __scribble_text_element(_string) constructor
     {
         freeze = _freeze;
         
-        cache_name = text + "other stuff";
-        cache = global.__scribble_cache[? cache_name];
-        if (cache == undefined) cache = new __scribble_model(self);
+        var _model_cache_name = text + "other stuff";
+        
+        model = global.__scribble_model_cache[? _model_cache_name];
+        if (model == undefined) model = new __scribble_model(self);
         
         return undefined;
     }
     
-    __get_cache = function()
+    __get_model = function()
     {
         cache_now(freeze);
-        return cache;
+        return model;
     }
     
     //Apply the default template
