@@ -2,6 +2,13 @@
 /// If a text element with the same input string (and unique ID) has been cached, this function will return the cached text element
 /// You may want to execute the .reset() method on the text element to ensure its state is as you expect
 /// 
+/// N.B. Scribble text element have NO PUBLICLY ACCESSIBLE VARIABLES
+///      Do not directly read or write variables, use the setter and getter functions provided instead
+/// 
+/// Scribble text elements have the following methods. 
+///     .reset()    Resets the text element's appearance and animation state
+///     .blend()    Sets the text element's blend colour and alpha
+/// 
 /// @param string       The string to parse and, eventually, draw
 /// @param [uniqueID]   A unique identifier that can be used to distinguish this occurrence of the input string from other occurrences. Only necessary when you might be drawing the same string at the same time with different animation states
 
