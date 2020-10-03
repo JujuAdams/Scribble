@@ -12,7 +12,7 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
     
 	// @jujuadams
 	// With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_
-    #macro __SCRIBBLE_VERSION  "6.0.13f"
+    #macro __SCRIBBLE_VERSION  "6.0.14"
     #macro __SCRIBBLE_DATE     "2020-10-03"
     #macro __SCRIBBLE_DEBUG    false
     
@@ -165,6 +165,9 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	    BOX_HALIGN,
 	    BOX_VALIGN,
         BOX_ALIGN_PAGE,
+        FOG_COLOUR,
+        FOG_BLEND,
+        IGNORE_COMMAND_TAGS,
 	    ANIMATION_ARRAY,
 	    __SIZE
 	}
@@ -382,6 +385,7 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	//Cache uniform indexes
 	global.__scribble_uniform_time            = shader_get_uniform(shd_scribble, "u_fTime"                 );
 	global.__scribble_uniform_colour_blend    = shader_get_uniform(shd_scribble, "u_vColourBlend"          );
+	global.__scribble_uniform_fog             = shader_get_uniform(shd_scribble, "u_vFog"                  );
 	global.__scribble_uniform_tw_method       = shader_get_uniform(shd_scribble, "u_fTypewriterMethod"     );
 	global.__scribble_uniform_tw_window_array = shader_get_uniform(shd_scribble, "u_fTypewriterWindowArray");
 	global.__scribble_uniform_tw_smoothness   = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness" );

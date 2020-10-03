@@ -14,8 +14,6 @@ if (scribble_init("Fonts", "fnt_test_0", true))
     //Some characters need a bit of fine adjustment in code since it's not always possible to fix this in the font itself
     scribble_set_glyph_property("spr_sprite_font", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
     scribble_set_glyph_property("spr_sprite_font", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);
-    
-    scribble_add_autotype_event("sound", example_event_sound);
 }
 
 smoothed_time = 1000;

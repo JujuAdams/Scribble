@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Examples",
-    "path": "folders/Examples.yy",
+    "name": "Drawing Options",
+    "path": "folders/Scribble/Drawing Options.yy",
   },
   "resourceVersion": "1.0",
-  "name": "example_event_sound",
+  "name": "scribble_set_blend",
   "tags": [],
   "resourceType": "GMScript",
 }
