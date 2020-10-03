@@ -165,6 +165,9 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	    BOX_HALIGN,
 	    BOX_VALIGN,
         BOX_ALIGN_PAGE,
+        FOG_COLOUR,
+        FOG_BLEND,
+        IGNORE_COMMAND_TAGS,
 	    ANIMATION_ARRAY,
 	    __SIZE
 	}
