@@ -12,7 +12,7 @@
 /// @param smooth            Set to <true> to turn on linear interpolation
 /// @param [surfaceSize]     Size of the surface to use. Defaults to 2048x2048
 
-function scribble_bake_shader()
+function scribble_font_bake_shader()
 {
 	var _source_font_name = argument[0];
 	var _new_font_name    = argument[1];

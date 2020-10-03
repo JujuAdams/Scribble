@@ -6,7 +6,7 @@
     "path": "folders/Scribble/Fonts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_bake_outline",
+  "name": "scribble_font_combine",
   "tags": [],
   "resourceType": "GMScript",
 }

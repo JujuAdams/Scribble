@@ -18,7 +18,7 @@
 /// window will open showing various files for the font resource. You can drag-and-drop the .yy file into the GameMaker IDE to add it as an
 /// Included File.
 
-function scribble_add_font()
+function scribble_font_add()
 {
 	var _font    = argument[0];
 	var _path    = (argument_count > 1)? argument[1] : undefined;

@@ -2,7 +2,7 @@
 /// 
 /// @param fontName   The name of the default Scribble font to use, as a string
 
-function scribble_set_default_font(_font)
+function scribble_font_set_default(_font)
 {
 	//Check if the default font parameter is the correct datatype
 	if (!is_string(_font))

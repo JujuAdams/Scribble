@@ -3,7 +3,7 @@
 /// @param font2
 /// @param [font3]...
 
-function scribble_combine_fonts()
+function scribble_font_combine()
 {
     var _new_font_name = argument[0];
     
