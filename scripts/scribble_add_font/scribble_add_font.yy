@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Initialisation",
-    "path": "folders/Scribble/Initialisation.yy",
+    "name": "Fonts",
+    "path": "folders/Scribble/Fonts.yy",
   },
   "resourceVersion": "1.0",
   "name": "scribble_add_font",

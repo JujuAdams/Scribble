@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Fonts",
-    "path": "folders/Scribble/Fonts.yy",
+    "name": "(System)",
+    "path": "folders/Scribble/(System).yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_bake_shader",
+  "name": "__scribble_model",
   "tags": [],
   "resourceType": "GMScript",
 }
