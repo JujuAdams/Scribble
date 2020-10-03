@@ -392,6 +392,11 @@ function scribble_draw()
 	                                                                 colour_get_blue( global.scribble_state_colour)/255,
 	                                                                 global.scribble_state_alpha);
         
+	    shader_set_uniform_f(global.__scribble_uniform_fog, colour_get_red(  global.scribble_state_fog_colour)/255,
+	                                                        colour_get_green(global.scribble_state_fog_colour)/255,
+	                                                        colour_get_blue( global.scribble_state_fog_colour)/255,
+	                                                        global.scribble_state_fog_alpha);
+        
 	    shader_set_uniform_f_array(global.__scribble_uniform_data_fields, global.scribble_state_anim_array);
         shader_set_uniform_f_array(global.__scribble_uniform_bezier_array, _scribble_array[SCRIBBLE.BEZIER_ARRAY]);
         

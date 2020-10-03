@@ -382,6 +382,7 @@ function scribble_init(_font_directory, _default_font, _auto_scan)
 	//Cache uniform indexes
 	global.__scribble_uniform_time            = shader_get_uniform(shd_scribble, "u_fTime"                 );
 	global.__scribble_uniform_colour_blend    = shader_get_uniform(shd_scribble, "u_vColourBlend"          );
+	global.__scribble_uniform_fog             = shader_get_uniform(shd_scribble, "u_vFog"                  );
 	global.__scribble_uniform_tw_method       = shader_get_uniform(shd_scribble, "u_fTypewriterMethod"     );
 	global.__scribble_uniform_tw_window_array = shader_get_uniform(shd_scribble, "u_fTypewriterWindowArray");
 	global.__scribble_uniform_tw_smoothness   = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness" );
