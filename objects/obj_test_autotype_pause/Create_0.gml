@@ -1,4 +1,4 @@
-scribble_init("Fonts", "fnt_test_2");
+scribble_init("fnt_test_2");
 scribble_add_fonts_auto();
 
 element = scribble_cache("abcdefg[pause]hijklmnop");

@@ -1,4 +1,4 @@
-scribble_init("Fonts", "fnt_test_1");
+scribble_init("fnt_test_1");
 scribble_add_fonts_auto();
 
 scribble_set_starting_format("fnt_test_1", c_white, fa_center);

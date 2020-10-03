@@ -4,7 +4,7 @@
 /// @param fontDirectory    The directory to look in for font .yy files, relative to the root folder that Included Files are stored in
 /// @param defaultFont      The name of the default Scribble font to use, as a string
 
-function scribble_init(_font_directory, _default_font)
+function scribble_init(_default_font)
 {
     #region Internal Macro Definitions
     
@@ -234,6 +234,8 @@ function scribble_init(_font_directory, _default_font)
     #macro scribble_add_colour  scribble_add_color
     
     #endregion
+    
+    var _font_directory = SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY;
     
 	if (variable_global_exists("__scribble_lcg"))
 	{

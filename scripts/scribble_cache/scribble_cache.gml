@@ -94,7 +94,7 @@ function scribble_cache()
 	        //Check if the default font even exists
 	        if (!ds_map_exists(global.__scribble_font_data, _def_font))
 	        {
-	            show_error("Scribble:\nDefault font \"" + string(_def_font) + "\" not recognised\n ", false);
+	            show_error("Scribble:\nDefault font \"" + string(_def_font) + "\" not recognised\nIf you're using tags, check this font has been tagged with \"Scribble\"\n ", false);
 	            exit;
 	        }
         

@@ -1,4 +1,4 @@
-scribble_init("Fonts", "fnt_test_0");
+scribble_init("fnt_test_0");
 scribble_add_fonts_auto();
 
 scribble_add_autotype_event("portrait", example_dialogue_set_portrait);
