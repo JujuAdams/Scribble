@@ -83,7 +83,10 @@ function scribble_get_bbox()
 	    break;
 	}
     
-	switch(global.scribble_state_box_valign)
+    var _valign = global.scribble_state_box_valign;
+    if (_valign == fa_top) _valign = _scribble_array[SCRIBBLE.VALIGN];
+    
+	switch(_valign)
 	{
 	    case fa_top:
 	        var _box_t = 0;
