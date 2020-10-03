@@ -58,34 +58,11 @@ global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT,
 global.__scribble_character_delay      = false;
 global.__scribble_character_delay_map  = ds_map_create();
 global.__scribble_font_family_map      = ds_map_create();
-    
+if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
+
 //Declare state variables
 global.scribble_state_anim_array = array_create(SCRIBBLE_ANIM.__SIZE);
 scribble_reset();
-    
-//Duplicate GM's native colour constants in string form for access in scribble_draw()
-global.__scribble_colours[? "c_aqua"   ] = c_aqua;
-global.__scribble_colours[? "c_black"  ] = c_black;
-global.__scribble_colours[? "c_blue"   ] = c_blue;
-global.__scribble_colours[? "c_dkgray" ] = c_dkgray;
-global.__scribble_colours[? "c_dkgrey" ] = c_dkgray;
-global.__scribble_colours[? "c_fuchsia"] = c_fuchsia;
-global.__scribble_colours[? "c_gray"   ] = c_gray;
-global.__scribble_colours[? "c_green"  ] = c_green;
-global.__scribble_colours[? "c_grey"   ] = c_gray;
-global.__scribble_colours[? "c_lime"   ] = c_lime;
-global.__scribble_colours[? "c_ltgray" ] = c_ltgray;
-global.__scribble_colours[? "c_ltgrey" ] = c_ltgray;
-global.__scribble_colours[? "c_maroon" ] = c_maroon;
-global.__scribble_colours[? "c_navy"   ] = c_navy;
-global.__scribble_colours[? "c_olive"  ] = c_olive;
-global.__scribble_colours[? "c_orange" ] = c_orange;
-global.__scribble_colours[? "c_purple" ] = c_purple;
-global.__scribble_colours[? "c_red"    ] = c_red;
-global.__scribble_colours[? "c_silver" ] = c_silver;
-global.__scribble_colours[? "c_teal"   ] = c_teal;
-global.__scribble_colours[? "c_white"  ] = c_white;
-global.__scribble_colours[? "c_yellow" ] = c_yellow;
     
 global.__scribble_autotype_events[? "pause"] = undefined;
 global.__scribble_autotype_events[? "delay"] = undefined;
@@ -315,31 +292,6 @@ enum __SCRIBBLE_OCCURRENCE
 	__SIZE               //24
 }
     
-enum SCRIBBLE_STATE
-{
-	STARTING_FONT,
-	STARTING_COLOR,
-	STARTING_HALIGN,
-	XSCALE,
-	YSCALE,
-	ANGLE,
-	COLOUR,
-	ALPHA,
-	LINE_MIN_HEIGHT,
-	LINE_MAX_HEIGHT,
-	MAX_WIDTH,
-	MAX_HEIGHT,
-	CHARACTER_WRAP,
-	BOX_HALIGN,
-	BOX_VALIGN,
-    BOX_ALIGN_PAGE,
-    FOG_COLOUR,
-    FOG_BLEND,
-    IGNORE_COMMAND_TAGS,
-	ANIMATION_ARRAY,
-	__SIZE
-}
-    
 enum SCRIBBLE
 {
 	__SECTION0,       // 0
@@ -396,7 +348,5 @@ enum SCRIBBLE
 #macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
 #macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. Thise constant must match the corresponding values in shd_scribble
-
-#macro scribble_add_colour  scribble_add_color
 
 #endregion

@@ -1,3 +1,5 @@
+/// Tries to add all fonts in your project to Scribble
+
 function scribble_add_all_fonts()
 {
 	global.__scribble_autoscanning = true;
