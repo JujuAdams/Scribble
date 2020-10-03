@@ -1,7 +1,10 @@
 /// Creates a collection of colour names that map to 24-bit BGR colours
 /// Use scribble_rgb_to_bgr() to convert from industry standard RGB colour codes to GM's native BGR format
+///
+/// N.B. That this script is executed on boot. You never need to run this script yourself!
 
 //Create a colours map if we don't already have one
+//We have to do this in case another system function is executed before this one
 if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
 
 //Duplicate GM's native colour constants
