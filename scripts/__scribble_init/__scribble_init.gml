@@ -208,17 +208,6 @@ enum SCRIBBLE_GLYPH
 	__SIZE      //12
 }
 
-enum __SCRIBBLE_LINE
-{
-	START_CHAR, //0
-	LAST_CHAR,  //1
-	Y,          //2
-	WIDTH,      //3
-	HEIGHT,     //4
-	HALIGN,     //5
-	__SIZE      //6
-}
-
 enum __SCRIBBLE_VERTEX
 {
 	X              =  0,
