@@ -12,7 +12,7 @@ enum __SCRIBBLE_VERTEX_BUFFER
 	__SIZE
 }
 
-function __scribble_vertex_buffer(_texture, _for_glyphs) constructor
+function __scribble_class_vertex_buffer(_texture, _for_glyphs) constructor
 {
     texture      = _texture;
     texel_width  = texture_get_texel_width( texture);

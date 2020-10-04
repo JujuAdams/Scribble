@@ -90,7 +90,7 @@ function scribble_font_add_from_sprite()
     
     
     
-    var _font_data = new __scribble_font(_name, "sprite");
+    var _font_data = new __scribble_class_font(_name, "sprite");
     _font_data.space_width = _space_width;
     _font_data.mapstring   = _mapstring;
     _font_data.separation  = _separation;

@@ -1,7 +1,7 @@
 /// @param fontName
 /// @param type
 
-function __scribble_font(_name, _type) constructor
+function __scribble_class_font(_name, _type) constructor
 {
     global.__scribble_font_data[? _name] = self;
     

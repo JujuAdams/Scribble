@@ -1,7 +1,7 @@
 /// @param string
 /// @param elementCacheName
 
-function __scribble_element(_string, _element_cache_name) constructor
+function __scribble_class_element(_string, _element_cache_name) constructor
 {
     text = _string;
     cache_name = _element_cache_name;
@@ -430,7 +430,7 @@ function __scribble_element(_string, _element_cache_name) constructor
         if (current_time - last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
         {
             animation_time += SCRIBBLE_STEP_SIZE;
-            if (tw_do) _model.update_typewriter();
+            if (tw_do) _model.__update_typewriter();
         }
         
         last_drawn = current_time;
@@ -464,8 +464,8 @@ function __scribble_element(_string, _element_cache_name) constructor
                                 string(bezier_array   ) + ":" +
                                 string(__ignore_command_tags);
         
-        model = global.__scribble_model_cache[? _model_cache_name];
-        if (model == undefined) model = new __scribble_model(self, _model_cache_name);
+        model = global.__scribble_global_cache_map[? _model_cache_name];
+        if (model == undefined) model = new __scribble_class_model(self, _model_cache_name);
         
         return undefined;
     }
@@ -476,7 +476,7 @@ function __scribble_element(_string, _element_cache_name) constructor
         return model;
     }
     
-    update_typewriter = function()
+    __update_typewriter = function()
     {
 	    if (!tw_do) //No fade in/out set
 	    {

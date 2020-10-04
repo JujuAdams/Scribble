@@ -22,7 +22,7 @@ function scribble_font_combine()
     //We always use a glyph map so we don't need to pre-parse the fonts
     var _glyph_map = ds_map_create();
     
-    var _font_data = new __scribble_font(_new_font_name, "runtime");
+    var _font_data = new __scribble_class_font(_new_font_name, "runtime");
     _font_data.glyphs_map = _glyph_map;
 
     //Calculate font min/max y-values so we can apply a y-offset per font so everything is centred

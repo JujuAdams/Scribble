@@ -153,6 +153,35 @@ function scribble_rgb_to_bgr(_rgb)
     return make_colour_rgb(colour_get_blue(_rgb), colour_get_green(_rgb), colour_get_red(_rgb));
 }
 
+function __scribble_get_font_data(_name)
+{
+    var _data = global.__scribble_font_data[? _name];
+    
+    if (_data == undefined)
+	{
+	    show_error("Scribble:\nFont \"" + string(_name) + "\" not recognised\nIf you're using tags, check this font has been tagged with \"Scribble\"\n ", true);
+	}
+    
+    return _data;
+}
+
+function __scribble_process_colour(_value)
+{
+    if (is_string(_value))
+	{
+	    if (!ds_map_exists(global.__scribble_colours, _value))
+        {
+            show_error("Scribble:\nColour \"" + _value + "\" not recognised. Please add it to scribble_colours()\n ", true);
+        }
+        
+        return global.__scribble_colours[? _value];
+    }
+    else
+    {
+        return _value;
+    }
+}
+
 #region Internal Macro Definitions
 
 // @jujuadams

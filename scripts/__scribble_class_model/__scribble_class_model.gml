@@ -1,12 +1,23 @@
 /// @param element
 /// @param modelCacheName
 
-function __scribble_model(_element, _model_cache_name) constructor
+function __scribble_class_model(_element, _model_cache_name) constructor
 {
+	//Record the start time so we can get a duration later
+	if (SCRIBBLE_VERBOSE) var _timer_total = get_timer();
+    
     last_drawn = current_time;
     cache_name = _model_cache_name;
     page_count = 0;
     flushed    = false;
+    
+	if (__SCRIBBLE_DEBUG) __scribble_trace("Caching \"" + _model_cache_name + "\"");
+
+	//Add this text element to the global cache lookup
+	global.__scribble_global_cache_map[? _model_cache_name] = _scribble_array;
+	ds_list_add(global.__scribble_global_cache_list, _scribble_array);
+    
+    
     
     #region Methods
     
@@ -198,8 +209,7 @@ function __scribble_model(_element, _model_cache_name) constructor
     
     #endregion
     
-	//Record the start time so we can get a duration later
-	if (SCRIBBLE_VERBOSE) var _timer_total = get_timer();
+    
     
 	//Create a couple data structures
 	var _parameters_list       = ds_list_create();
@@ -212,18 +222,11 @@ function __scribble_model(_element, _model_cache_name) constructor
 	var _line_min_height   = _element.line_height_min;
 	var _line_max_height   = _element.line_height_max;
 	var _line_fixed_height = false;
-	var _def_colour        = _element.starting_color;
+	var _def_colour        = __scribble_process_colour(_element.starting_colour);
 	var _def_font          = _element.starting_font;
 	var _def_halign        = _element.starting_halign;
-        
-	//Check if the default font even exists
-	if (!ds_map_exists(global.__scribble_font_data, _def_font))
-	{
-	    show_error("Scribble:\nDefault font \"" + string(_def_font) + "\" not recognised\nIf you're using tags, check this font has been tagged with \"Scribble\"\n ", false);
-	    exit;
-	}
-        
-	var _font_data         = global.__scribble_font_data[? _def_font];
+       
+	var _font_data         = __scribble_get_font_data(_def_font);
 	var _font_glyphs_map   = _font_data.glyphs_map;
 	var _font_glyphs_array = _font_data.glyphs_array;
 	var _font_glyphs_min   = _font_data.glyph_min;
@@ -247,20 +250,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	    _line_fixed_height = true;
 	    var _half_fixed_height = _line_min_height div 2;
 	}
-        
-	//Try to use a custom colour if the "startingColour" parameter is a string
-	if (is_string(_def_colour))
-	{
-	    var _value = global.__scribble_colours[? _def_colour];
-	    if (_value == undefined)
-	    {
-	        show_error("Scribble:\nThe starting colour (\"" + _def_colour + "\") has not been added as a custom colour. Defaulting to c_white.\n ", false);
-	        _value = c_white;
-	    }
-            
-	    _def_colour = _value;
-	}
-        
+    
     #endregion
             
             
@@ -269,9 +259,9 @@ function __scribble_model(_element, _model_cache_name) constructor
             
     //Make a copy of the Bezier array
     var _bezier_array = array_create(6);
-    array_copy(_bezier_array, 0, global.scribble_state_bezier_array, 0, 6);
+    array_copy(_bezier_array, 0, _element.bezier_array, 0, 6);
+    
     var _bezier_do = ((_bezier_array[0] != _bezier_array[4]) || (_bezier_array[1] != _bezier_array[5]));
-            
     if (_bezier_do)
     {
         var _bx2 = _bezier_array[0];
@@ -320,10 +310,10 @@ function __scribble_model(_element, _model_cache_name) constructor
             
     #region Create the base text element
             
-	var _meta_element_characters = 0;
-	var _meta_element_lines      = 0;
-	var _meta_element_pages      = 0;
-	var _element_height          = 0;
+	var _model_characters = 0;
+	var _model_lines      = 0;
+	var _model_pages      = 0;
+	var _model_height     = 0;
             
 	//Create a new array if we're no rebuilding, otherwise reuse the old one
 	var _scribble_array = array_create(SCRIBBLE.__SIZE);
@@ -334,12 +324,6 @@ function __scribble_model(_element, _model_cache_name) constructor
 	var _events_char_array = []; //Stores each event's triggering character
 	var _events_name_array = []; //Stores each event's name
 	var _events_data_array = []; //Stores each event's parameters
-    
-	_scribble_array[@ SCRIBBLE.__SECTION0      ] = "-- Parameters --";
-	_scribble_array[@ SCRIBBLE.VERSION         ] = __SCRIBBLE_VERSION;
-	_scribble_array[@ SCRIBBLE.STRING          ] = _element.text;
-	_scribble_array[@ SCRIBBLE.CACHE_STRING    ] = _model_cache_name;
-	_scribble_array[@ SCRIBBLE.BEZIER_ARRAY    ] = _bezier_array;
     
 	_scribble_array[@ SCRIBBLE.__SECTION1      ] = "-- Statistics --";
 	_scribble_array[@ SCRIBBLE.WIDTH           ] = 0;
@@ -353,9 +337,6 @@ function __scribble_model(_element, _model_cache_name) constructor
 	_scribble_array[@ SCRIBBLE.GLYPH_LTRB_ARRAY] = undefined;
 	_scribble_array[@ SCRIBBLE.CHARACTER_ARRAY ] = _character_array;
         
-	_scribble_array[@ SCRIBBLE.__SECTION2      ] = "-- State --";
-	_scribble_array[@ SCRIBBLE.DRAWN_TIME      ] = current_time;
-        
 	_scribble_array[@ SCRIBBLE.__SECTION3      ] = "-- Data --";
 	_scribble_array[@ SCRIBBLE.PAGES_ARRAY     ] = _element_pages_array;
 	_scribble_array[@ SCRIBBLE.EVENT_CHAR_ARRAY] = _events_char_array; //Stores each event's triggering character
@@ -366,18 +347,6 @@ function __scribble_model(_element, _model_cache_name) constructor
     
     
     
-    #region Register the text element in a cache group
-
-	if (__SCRIBBLE_DEBUG) __scribble_trace("Caching \"" + _model_cache_name + "\"");
-
-	//Add this text element to the global cache lookup
-	global.__scribble_global_cache_map[? _model_cache_name] = _scribble_array;
-	ds_list_add(global.__scribble_global_cache_list, _scribble_array);
-
-    #endregion
-
-
-
     #region Add the first page to the text element
         
 	var _meta_page_lines = 0;
@@ -400,7 +369,7 @@ function __scribble_model(_element, _model_cache_name) constructor
     _page_array[@ __SCRIBBLE_PAGE.HEIGHT              ] = 0;
         
 	_element_pages_array[@ array_length(_element_pages_array)] = _page_array;
-	++_meta_element_pages;
+	++_model_pages;
         
     #endregion
 
@@ -509,7 +478,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	                    _text_scale        = 1;
 	                    _text_slant        = false;
                                 
-	                    _font_data         = global.__scribble_font_data[? _text_font];
+	                    _font_data         = __scribble_get_font_data(_text_font);
                     	_font_glyphs_map   = _font_data.glyphs_map;
                     	_font_glyphs_array = _font_data.glyphs_array;
                     	_font_glyphs_min   = _font_data.glyph_min;
@@ -526,7 +495,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	                case "/f":
 	                    _text_font = _def_font;
                                 
-	                    _font_data         = global.__scribble_font_data[? _text_font];
+	                    _font_data         = __scribble_get_font_data(_text_font);
                     	_font_glyphs_map   = _font_data.glyphs_map;
                     	_font_glyphs_array = _font_data.glyphs_array;
                     	_font_glyphs_min   = _font_data.glyph_min;
@@ -669,8 +638,8 @@ function __scribble_model(_element, _model_cache_name) constructor
                         if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                         _word_height = max(_word_height, _font_line_height*_text_scale); //Update the word height
                                 
-                        if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = 32; //Space
-                        ++_meta_element_characters;
+                        if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _model_characters] = 32; //Space
+                        ++_model_characters;
                                 
                         if (global.__scribble_character_delay)
                         {
@@ -678,7 +647,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                             if ((_delay != undefined) && (_delay > 0))
                             {
                                 var _count = array_length(_events_char_array);
-                                _events_char_array[@ _count] = _meta_element_characters;
+                                _events_char_array[@ _count] = _model_characters;
                                 _events_name_array[@ _count] = "delay";
                                 _events_data_array[@ _count] = [_delay];
                             }
@@ -741,7 +710,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                                 //If the font we found exists, set it
                                 _text_font = _new_font;
                                         
-                                _font_data         = global.__scribble_font_data[? _new_font];
+                                _font_data         = __scribble_get_font_data(_new_font);
                             	_font_glyphs_map   = _font_data.glyphs_map;
                             	_font_glyphs_array = _font_data.glyphs_array;
                             	_font_glyphs_min   = _font_data.glyph_min;
@@ -778,7 +747,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                                 //If the font we found exists, set it
                                 _text_font = _new_font;
                                         
-                                _font_data         = global.__scribble_font_data[? _new_font];
+                                _font_data         = __scribble_get_font_data(_new_font);
                             	_font_glyphs_map   = _font_data.glyphs_map;
                             	_font_glyphs_array = _font_data.glyphs_array;
                             	_font_glyphs_min   = _font_data.glyph_min;
@@ -815,7 +784,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                                 //If the font we found exists, set it
                                 _text_font = _new_font;
                                         
-                                _font_data         = global.__scribble_font_data[? _new_font];
+                                _font_data         = __scribble_get_font_data(_new_font);
                             	_font_glyphs_map   = _font_data.glyphs_map;
                             	_font_glyphs_array = _font_data.glyphs_array;
                             	_font_glyphs_min   = _font_data.glyph_min;
@@ -852,7 +821,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                                 //If the font we found exists, set it
                                 _text_font = _new_font;
                                         
-                                _font_data         = global.__scribble_font_data[? _new_font];
+                                _font_data         = __scribble_get_font_data(_new_font);
                             	_font_glyphs_map   = _font_data.glyphs_map;
                             	_font_glyphs_array = _font_data.glyphs_array;
                             	_font_glyphs_min   = _font_data.glyph_min;
@@ -882,7 +851,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	                    var _surface_x = _text_x;
 	                    var _surface_y = _text_y - (_surface_height div 2);
                                                         
-	                    var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
+	                    var _packed_indexes = _model_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
 	                    _char_width  = _surface_width;
 	                    if (!_line_fixed_height) _line_height = max(_line_height, _sprite_height); //Change our line height if it's not fixed
                         _word_height = max(_word_height, _sprite_height); //Update the word height
@@ -949,7 +918,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                             _line_width = max(_line_width, _text_x);
                                     
                             //Record the first character in this word
-                            _word_start_char = _meta_element_characters;
+                            _word_start_char = _model_characters;
                         }
                                 
                         #endregion
@@ -1002,8 +971,8 @@ function __scribble_model(_element, _model_cache_name) constructor
                         if (_reset_rainbow) _text_effect_flags |= (1 << global.__scribble_effects[? "rainbow"]);
                         if (_reset_cycle  ) _text_effect_flags |= (1 << global.__scribble_effects[? "cycle"  ]);
                                                         
-	                    if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _command_name;
-	                    ++_meta_element_characters;
+	                    if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _model_characters] = _command_name;
+	                    ++_model_characters;
                                 
                         #endregion
                     break;
@@ -1022,7 +991,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	                        }
                                 
 	                        var _count = array_length(_events_char_array);
-	                        _events_char_array[@ _count] = _meta_element_characters;
+	                        _events_char_array[@ _count] = _model_characters;
 	                        _events_name_array[@ _count] = _command_name;
 	                        _events_data_array[@ _count] = _data;
                                 
@@ -1063,7 +1032,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                                             
 	                                    _text_font = _command_name;
                                             
-	                                    _font_data         = global.__scribble_font_data[? _command_name];
+	                                    _font_data         = __scribble_get_font_data(_command_name);
                                     	_font_glyphs_map   = _font_data.glyphs_map;
                                     	_font_glyphs_array = _font_data.glyphs_array;
                                     	_font_glyphs_min   = _font_data.glyph_min;
@@ -1101,7 +1070,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	                                            var _sprite_y = _text_y - (_sprite_height div 2);
 	                                        }
                                                     
-	                                        var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
+	                                        var _packed_indexes = _model_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
 	                                        _char_width  = _sprite_width;
 	                                        if (!_line_fixed_height) _line_height = max(_line_height, _sprite_height); //Change our line height if it's not fixed
                                             _word_height = max(_word_height, _sprite_height); //Update the word height
@@ -1218,7 +1187,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                                     	            _line_width = max(_line_width, _text_x);
                                                                 
                                     	            //Record the first character in this word
-                                    	            _word_start_char = _meta_element_characters;
+                                    	            _word_start_char = _model_characters;
                                     	        }
                                                             
 	                                            _image++;
@@ -1286,8 +1255,8 @@ function __scribble_model(_element, _model_cache_name) constructor
                                             if (_reset_rainbow) _text_effect_flags |= (1 << global.__scribble_effects[? "rainbow"]);
                                             if (_reset_cycle  ) _text_effect_flags |= (1 << global.__scribble_effects[? "cycle"  ]);
                                                         
-	                                        if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _command_name;
-	                                        ++_meta_element_characters;
+	                                        if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _model_characters] = _command_name;
+	                                        ++_model_characters;
                                                     
                                             #endregion
 	                                    }
@@ -1298,7 +1267,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                                                 #region Audio Playback Event
                                                         
                     	                        var _count = array_length(_events_char_array);
-                    	                        _events_char_array[@ _count] = _meta_element_characters;
+                    	                        _events_char_array[@ _count] = _model_characters;
                     	                        _events_name_array[@ _count] = "__scribble_audio_playback__";
                     	                        _events_data_array[@ _count] = [asset_get_index(_command_name)];
                                                         
@@ -1493,7 +1462,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	            if ((_delay != undefined) && (_delay > 0))
 	            {
 	                var _count = array_length(_events_char_array);
-	                _events_char_array[@ _count] = _meta_element_characters;
+	                _events_char_array[@ _count] = _model_characters;
 	                _events_name_array[@ _count] = "delay";
 	                _events_data_array[@ _count] = [_delay];
 	            }
@@ -1521,10 +1490,10 @@ function __scribble_model(_element, _model_cache_name) constructor
 	        }
                 
 	        //Record the first character in this word
-	        _word_start_char = _meta_element_characters;
+	        _word_start_char = _model_characters;
         
-	        if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _character_code;
-	        ++_meta_element_characters;
+	        if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _model_characters] = _character_code;
+	        ++_model_characters;
                 
 	        if (global.__scribble_character_delay)
 	        {
@@ -1532,7 +1501,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	            if ((_delay != undefined) && (_delay > 0))
 	            {
 	                var _count = array_length(_events_char_array);
-	                _events_char_array[@ _count] = _meta_element_characters;
+	                _events_char_array[@ _count] = _model_characters;
 	                _events_name_array[@ _count] = "delay";
 	                _events_data_array[@ _count] = [_delay];
 	            }
@@ -1651,7 +1620,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	                _line_width = max(_line_width, _text_x);
                             
 	                //Record the first character in this word
-	                _word_start_char = _meta_element_characters;
+	                _word_start_char = _model_characters;
 	            }
             
                 #endregion
@@ -1688,7 +1657,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                 var _packed_delta_lst = floor(1000 + 10*_delta_ls) + 2000*floor(1000 + 10*_delta_t);
                 var _packed_delta_rst = floor(1000 + 10*_delta_rs) + 2000*floor(1000 + 10*_delta_t);
                         
-                var _packed_indexes = _meta_element_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
+                var _packed_indexes = _model_characters*__SCRIBBLE_MAX_LINES + _meta_page_lines;
                         
                 if (_text_cycle)
                 {
@@ -1714,8 +1683,8 @@ function __scribble_model(_element, _model_cache_name) constructor
                         
                 #endregion
                         
-	            if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _meta_element_characters] = _character_code;
-	            ++_meta_element_characters;
+	            if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ _model_characters] = _character_code;
+	            ++_model_characters;
                         
 	            _char_width = _glyph_array[SCRIBBLE_GLYPH.SEPARATION]*_text_scale;
 	        }
@@ -1730,7 +1699,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	            if ((_delay != undefined) && (_delay > 0))
 	            {
 	                var _count = array_length(_events_char_array);
-	                _events_char_array[@ _count] = _meta_element_characters;
+	                _events_char_array[@ _count] = _model_characters;
 	                _events_name_array[@ _count] = "delay";
 	                _events_data_array[@ _count] = [_delay];
 	            }
@@ -1864,11 +1833,11 @@ function __scribble_model(_element, _model_cache_name) constructor
 	        //Limit the height of the line
 	        if (_line_max_height >= 0) _line_height = min(_line_height, _line_max_height);
                     
-	        ++_meta_element_lines;
+	        ++_model_lines;
 	        ++_meta_page_lines;
                     
 	        //Update the last line
-	        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _force_newline? (_meta_element_characters-1) : _word_start_char;
+	        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _force_newline? (_model_characters-1) : _word_start_char;
 	        _line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
 	        _line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
 	        _line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
@@ -1886,8 +1855,8 @@ function __scribble_model(_element, _model_cache_name) constructor
                     
 	        //Create a new line
 	        var _line_array = array_create(__SCRIBBLE_LINE.__SIZE);
-	        _line_array[@ __SCRIBBLE_LINE.START_CHAR] = _force_newline? _meta_element_characters : (_word_start_char+1);
-	        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _meta_element_characters;
+	        _line_array[@ __SCRIBBLE_LINE.START_CHAR] = _force_newline? _model_characters : (_word_start_char+1);
+	        _line_array[@ __SCRIBBLE_LINE.LAST_CHAR ] = _model_characters;
 	        _line_array[@ __SCRIBBLE_LINE.Y         ] = _line_y;
 	        _line_array[@ __SCRIBBLE_LINE.WIDTH     ] = 0;
 	        _line_array[@ __SCRIBBLE_LINE.HEIGHT    ] = _line_height;
@@ -1915,8 +1884,8 @@ function __scribble_model(_element, _model_cache_name) constructor
 	        var _new_page_vbuffs_array = []; //Stores all the vertex buffers needed to render the text and sprites (per page)
         
 	        _new_page_array[@ __SCRIBBLE_PAGE.LINES               ] = 1;
-	        _new_page_array[@ __SCRIBBLE_PAGE.START_CHAR          ] = _meta_element_characters; //We'll update this later to a more accurate value
-	        _new_page_array[@ __SCRIBBLE_PAGE.LAST_CHAR           ] = _meta_element_characters;
+	        _new_page_array[@ __SCRIBBLE_PAGE.START_CHAR          ] = _model_characters; //We'll update this later to a more accurate value
+	        _new_page_array[@ __SCRIBBLE_PAGE.LAST_CHAR           ] = _model_characters;
 	        _new_page_array[@ __SCRIBBLE_PAGE.LINES_ARRAY         ] = _new_page_lines_array;
 	        _new_page_array[@ __SCRIBBLE_PAGE.VERTEX_BUFFERS_ARRAY] = _new_page_vbuffs_array;
             _new_page_array[@ __SCRIBBLE_PAGE.START_EVENT         ] = array_length(_events_name_array);
@@ -1927,7 +1896,7 @@ function __scribble_model(_element, _model_cache_name) constructor
             _new_page_array[@ __SCRIBBLE_PAGE.HEIGHT              ] = 0;
         
 	        _element_pages_array[@ array_length(_element_pages_array)] = _new_page_array;
-	        ++_meta_element_pages;
+	        ++_model_pages;
         
 	        //Steal the last line from the previous page
 	        _page_array[@ __SCRIBBLE_PAGE.LINES] = _meta_page_lines - 1;
@@ -2038,7 +2007,7 @@ function __scribble_model(_element, _model_cache_name) constructor
 	        _page_vbuffs_array = _new_page_vbuffs_array;
                 
 	        //Reset some state variables
-	        _element_height        = max(_element_height, _line_y);
+	        _model_height        = max(_model_height, _line_y);
 	        _meta_page_lines       =  0;
 	        _line_y                =  0;
 	        _glyph_texture         = -1;
@@ -2059,24 +2028,24 @@ function __scribble_model(_element, _model_cache_name) constructor
 	_line_width = max(_line_width, _text_x);
 	if (_line_max_height >= 0) _line_height = min(_line_height, _line_max_height);
             
-	_line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _meta_element_characters - 1;
+	_line_array[@ __SCRIBBLE_LINE.LAST_CHAR] = _model_characters - 1;
 	_line_array[@ __SCRIBBLE_LINE.Y        ] = _line_y + (_line_height div 2);
 	_line_array[@ __SCRIBBLE_LINE.WIDTH    ] = _line_width;
 	_line_array[@ __SCRIBBLE_LINE.HEIGHT   ] = _line_height;
             
 	++_meta_page_lines;
-	++_meta_element_lines;
-	_element_height = max(_element_height, _line_y + _line_height);
+	++_model_lines;
+	_model_height = max(_model_height, _line_y + _line_height);
             
 	//Update metadata
 	_page_array[@ __SCRIBBLE_PAGE.LINES    ] = _meta_page_lines;
-	_page_array[@ __SCRIBBLE_PAGE.LAST_CHAR] = _meta_element_characters - 1;
+	_page_array[@ __SCRIBBLE_PAGE.LAST_CHAR] = _model_characters - 1;
     _page_array[@ __SCRIBBLE_PAGE.HEIGHT   ] = _line_y + _line_height;
             
-	_scribble_array[@ SCRIBBLE.LINES     ] = _meta_element_lines;
-	_scribble_array[@ SCRIBBLE.CHARACTERS] = _meta_element_characters;
-	_scribble_array[@ SCRIBBLE.PAGES     ] = _meta_element_pages;
-	_scribble_array[@ SCRIBBLE.HEIGHT    ] = _element_height;
+	_scribble_array[@ SCRIBBLE.LINES     ] = _model_lines;
+	_scribble_array[@ SCRIBBLE.CHARACTERS] = _model_characters;
+	_scribble_array[@ SCRIBBLE.PAGES     ] = _model_pages;
+	_scribble_array[@ SCRIBBLE.HEIGHT    ] = _model_height;
     if (_scribble_array[SCRIBBLE.VALIGN] == undefined) _scribble_array[@ SCRIBBLE.VALIGN] = fa_top;
             
     #endregion
@@ -2433,7 +2402,7 @@ function __scribble_model(_element, _model_cache_name) constructor
                 
         #region Generate glyph LTRB array if requested
             
-	    var _glyph_ltrb_array = array_create(_meta_element_characters, undefined);
+	    var _glyph_ltrb_array = array_create(_model_characters, undefined);
                 
 	    //Iterate over every page
 	    var _p = 0;

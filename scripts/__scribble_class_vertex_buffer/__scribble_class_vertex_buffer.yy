@@ -6,7 +6,7 @@
     "path": "folders/Scribble/(System).yy",
   },
   "resourceVersion": "1.0",
-  "name": "__scribble_element",
+  "name": "__scribble_class_vertex_buffer",
   "tags": [],
   "resourceType": "GMScript",
 }

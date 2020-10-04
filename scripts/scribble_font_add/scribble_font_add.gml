@@ -73,7 +73,7 @@ function scribble_font_add()
     }
     
     
-    var _font_data = new __scribble_font(_name, "standard");
+    var _font_data = new __scribble_class_font(_name, "standard");
     
 	if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");
 

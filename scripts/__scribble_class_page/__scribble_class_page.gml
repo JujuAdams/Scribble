@@ -13,7 +13,7 @@ enum __SCRIBBLE_PAGE
 	__SIZE
 }
 
-function __scribble_page() constructor
+function __scribble_class_page() constructor
 {
     lines               = 0;
     start_char          = undefined;
