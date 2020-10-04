@@ -3,7 +3,7 @@ if (keyboard_check_pressed(vk_space))
     if (text_element.get_typewriter_paused())
     {
         //If we're paused, unpause!
-        text_element.set_typewriter_paused(false);
+        text_element.typewriter_unpause(false);
     }
     else if (text_element.get_typewriter_state() >= 1)
     {

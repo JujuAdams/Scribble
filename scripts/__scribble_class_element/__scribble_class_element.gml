@@ -346,9 +346,15 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return self;
     }
     
-    set_typewriter_paused = function(_state)
+    typewriter_pause = function()
     {
-        tw_paused = _state;
+        tw_paused = true;
+        return self;
+    }
+    
+    typewriter_unpause = function()
+    {
+        tw_paused = false;
         return self;
     }
     

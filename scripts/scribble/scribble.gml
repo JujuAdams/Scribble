@@ -8,6 +8,7 @@
 /// Scribble text elements have the following methods:
 ///     .reset()
 ///     .starting_format()
+///     .align()
 ///     .blend()
 ///     .transform()
 ///     .origin()
@@ -25,7 +26,8 @@
 ///     .typewriter_sound()
 ///     .typewriter_sound_per_char()
 ///     .typewriter_function()
-///     .set_typewriter_paused()
+///     .typewriter_pause()
+///     .typewriter_unpause()
 ///     .get_bbox()
 ///     .get_width()
 ///     .get_height()
