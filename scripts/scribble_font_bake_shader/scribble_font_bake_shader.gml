@@ -45,7 +45,7 @@ function scribble_font_bake_shader()
 	}
 
 	var _src_font_data = global.__scribble_font_data[? _source_font_name];
-    if (!is_array(_src_font_data))
+    if (!is_struct(_src_font_data))
     {
 		show_error("Scribble:\nSource font \"" + string(_source_font_name) + "\" not found\n\"" + string(_new_font_name) + "\" will not be available\n ", false);
         return undefined;

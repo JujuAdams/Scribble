@@ -1882,7 +1882,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	    repeat(array_length(_page_lines_array))
 	    {
 	        var _line_data = _page_lines_array[_l];
-	        if (is_array(_line_data)) //Someimtes the array can contain <undefined> if a line is moved from one page to another
+	        if (is_struct(_line_data)) //Someimtes the array can contain <undefined> if a line is moved from one page to another
 	        {
 	            var _line_width = _line_data.width;
 	            switch(_line_data.halign)
@@ -2012,7 +2012,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	        repeat(ds_list_size(_vbuff_line_start_list)-1)
 	        {
 	            var _line_data = _page_lines_array[_l];
-	            if (is_array(_line_data)) //Someimtes the array can contain <undefined> if a line is moved from one page to another
+	            if (is_struct(_line_data)) //Someimtes the array can contain <undefined> if a line is moved from one page to another
 	            {
 	                var _tell_a = _vbuff_line_start_list[| _l  ];
 	                var _tell_b = _vbuff_line_start_list[| _l+1];
