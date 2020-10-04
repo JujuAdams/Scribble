@@ -13,6 +13,10 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     freeze = false;
     
     tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
+    tw_do           = false;
+    tw_in           = true;
+    tw_speed        = 1;
+    tw_smoothness   = 0;
     
     animation_time  = current_time;
     animation_array = array_create(SCRIBBLE_ANIM.__SIZE, 0.0);
