@@ -30,8 +30,3 @@ textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave]
                         "[portrait,spr_portrait][name,Juju][rainbow]Scribble[/rainbow] does all the pagination for you. It's super super nice. Handling text overflow can be a real pain if you're not careful.",
                         "[portrait,spr_portrait_2][name,You][fnt_dialogue_2]Ah jeez, look at the time. I need to go.\n\nSee you soon!",
                         "[portrait,spr_portrait][name,Juju]See ya!\n\n[slant]Press space to restart the conversation[/slant]"];
-
-text_element = scribble(textbox_conversation[textbox_conversation_index])
-              .wrap(textbox_width, textbox_height)
-              .typewriter_in(1, 0, false)
-              .cache_now(true);

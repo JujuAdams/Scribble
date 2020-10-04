@@ -1,31 +1,23 @@
 if (keyboard_check_pressed(vk_space))
 {
-    if (text_element.get_typewriter_paused())
+    var _element = scribble(textbox_conversation[textbox_conversation_index]);
+    
+    if (_element.get_typewriter_paused())
     {
         //If we're paused, unpause!
-        text_element.typewriter_unpause(false);
+        _element.typewriter_unpause(false);
     }
-    else if (text_element.get_typewriter_state() >= 1)
+    else if (_element.get_typewriter_state() >= 1)
     {
-        if (text_element.get_page() >= text_element.get_pages())
+        if (_element.get_page() >= _element.get_pages())
         {
-            //Increment our conversation index for the next piece of text
-            textbox_conversation_index++;
-            
-            if (textbox_conversation_index >= array_length(textbox_conversation))
-            {
-                textbox_conversation_index = 0;
-            }
-            
-            text_element = scribble(textbox_conversation[textbox_conversation_index])
-                          .wrap(textbox_width, textbox_height)
-                          .typewriter_in(1, 0, false)
-                          .cache_now(true);
+          //Increment our conversation index for the next piece of text
+          textbox_conversation_index = (textbox_conversation_index + 1) mod array_length(textbox_conversation);
         }
         else
         {
             //Otherwise move to the next page
-            text_element.page(text_element.get_page() + 1);
+            _element.page(_element.get_page() + 1);
         }
     }
 }

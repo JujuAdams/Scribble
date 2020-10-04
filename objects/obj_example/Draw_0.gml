@@ -6,7 +6,8 @@ draw_set_colour($422D32);
 draw_rectangle(_x, _y, _x + textbox_width + 20, _y + textbox_height + 20, false);
 draw_set_colour(c_white);
 
-text_element.draw(_x + 10, _y + 10);
+var _element = scribble(textbox_conversation[textbox_conversation_index]);
+_element.wrap(textbox_width, textbox_height).typewriter_in(1, 0, false).draw(_x + 10, _y + 10);
 
 //Draw portrait
 draw_set_colour($422D32);
@@ -16,6 +17,12 @@ draw_set_colour(c_white);
 if (sprite_exists(textbox_portrait))
 {
     draw_sprite(textbox_portrait, 0, _x + textbox_width + 40, _y + 10);
+}
+
+//Draw a little icon once the text has finished displaying, or if text display is paused
+if ((_element.get_typewriter_state() >= 1) || _element.get_typewriter_paused())
+{
+    draw_sprite(spr_white_coin, 0, _x + textbox_width + 20, _y + textbox_height + 20);
 }
 
 if (textbox_name != undefined)
@@ -29,10 +36,4 @@ if (textbox_name != undefined)
     draw_set_colour(c_white);
     
     _element.draw(_x + textbox_width + 10, _y - 20);
-}
-
-//Draw a little icon once the text has finished displaying, or if text display is paused
-if ((text_element.get_typewriter_state() >= 1) || text_element.get_typewriter_paused())
-{
-    draw_sprite(spr_white_coin, 0, _x + textbox_width + 20, _y + textbox_height + 20);
 }
