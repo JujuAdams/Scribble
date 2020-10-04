@@ -33,4 +33,5 @@ textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave]
 
 text_element = scribble(textbox_conversation[textbox_conversation_index])
               .wrap(textbox_width, textbox_height)
+              .typewriter_in(1, 0, false)
               .cache_now(true);

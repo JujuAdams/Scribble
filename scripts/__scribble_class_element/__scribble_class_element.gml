@@ -12,12 +12,57 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     last_drawn = current_time;
     freeze = false;
     
+    starting_font   = SCRIBBLE_DEFAULT_FONT;
+    starting_colour = c_white;
+    starting_halign = fa_left;
+    
+    blend_colour = c_white;
+    blend_alpha  = 1.0;
+    
+    fog_colour = c_white;
+    fog_alpha  = 0.0;
+    
+    xscale = 1.0;
+    yscale = 1.0;
+    angle  = 0.0;
+    
+    origin_x = 0.0;
+    origin_y = 0.0;
+    
+    max_width      = -1;
+    max_height     = -1;
+    character_wrap = false;
+    
+    line_height_min = -1;
+    line_height_max = -1;
+    
+    __page = 0;
+    __ignore_command_tags = false;
+    
+    bezier_array = array_create(6, 0.0);
+    
+    tw_window       = 0;
     tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     tw_do           = false;
     tw_in           = true;
     tw_speed        = 1;
     tw_smoothness   = 0;
+    tw_per_line     = false;
+    tw_function     = undefined;
     tw_paused       = false;
+    tw_delay_paused = false;
+    tw_delay_end    = -1;
+    
+    tw_event_previous       = -1;
+    tw_event_char_previous  = -1;
+    tw_event_visited_struct = {};
+    
+    tw_sound_array       = undefined;
+    tw_sound_overlap     = 0;
+    tw_sound_pitch_min   = 1;
+    tw_sound_pitch_max   = 1;
+    tw_sound_per_char    = false;
+    tw_sound_finish_time = current_time;
     
     animation_time  = current_time;
     animation_array = array_create(SCRIBBLE_ANIM.__SIZE, 0.0);
@@ -41,8 +86,6 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     animation_array[@ SCRIBBLE_ANIM.JITTER_MINIMUM  ] =  0.8;
     animation_array[@ SCRIBBLE_ANIM.JITTER_MAXIMUM  ] =  1.2;
     animation_array[@ SCRIBBLE_ANIM.JITTER_SPEED    ] =  0.4;
-    
-    bezier_array = array_create(6, 0.0);
     
     #region Setters
     
@@ -121,13 +164,13 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     }
     
     /// @param maxWidth
-    /// @param maxHeight
-    /// @param characterWrap
-    wrap = function(_max_width, _max_height, _character_wrap)
+    /// @param [maxHeight]
+    /// @param [characterWrap]
+    wrap = function()
     {
-        max_width      = _max_width;
-        max_height     = _max_height;
-        character_wrap = _character_wrap;
+        max_width      = argument[0];
+        max_height     = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
+        character_wrap = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
         return self;
     }
     
@@ -243,21 +286,23 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return undefined;
     }
     
-    typewriter_in = function(_speed, _smoothness)
+    typewriter_in = function(_speed, _smoothness, _per_line)
     {
         tw_do         = true;
         tw_in         = true;
         tw_speed      = _speed;
         tw_smoothness = _smoothness;
+        tw_per_line   = _per_line;
         return self;
     }
     
-    typewriter_out = function(_speed, _smoothness)
+    typewriter_out = function(_speed, _smoothness, _per_line)
     {
         tw_do         = true;
         tw_in         = false;
         tw_speed      = _speed;
         tw_smoothness = _smoothness;
+        tw_per_line   = _per_line;
         return self;
     }
     
@@ -482,88 +527,67 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     __update_typewriter = function()
     {
-        return undefined;
-        
-        /*
-	    if (!tw_do) //No fade in/out set
+	    if (tw_do) //No fade in/out set
 	    {
-	        var _typewriter_method       = 0;
-	        var _typewriter_smoothness   = 0;
-	        var _typewriter_window_array = global.__scribble_window_array_null;
-	        var _typewriter_fade_in      = 0;
-	        var _typewriter_speed        = 0;
-	    }
-	    else
-	    {
-	        var _typewriter_smoothness     = _occurrence_array[__SCRIBBLE_OCCURRENCE.SMOOTHNESS  ];
-	        var _typewriter_window         = _occurrence_array[__SCRIBBLE_OCCURRENCE.WINDOW      ];
-	        var _typewriter_window_array   = _occurrence_array[__SCRIBBLE_OCCURRENCE.WINDOW_ARRAY];
-	        var _typewriter_fade_in        = _occurrence_array[__SCRIBBLE_OCCURRENCE.FADE_IN     ];
-	        var _typewriter_adjusted_speed = _occurrence_array[__SCRIBBLE_OCCURRENCE.SPEED       ]*SCRIBBLE_STEP_SIZE;
-            var _skipping                  = _occurrence_array[__SCRIBBLE_OCCURRENCE.SKIP        ];
+	        var _typewriter_speed = tw_speed*SCRIBBLE_STEP_SIZE;
+            var _skipping         = (tw_speed >= SCRIBBLE_SKIP_SPEED_THRESHOLD);
+            
+	        var _typewriter_head_pos = tw_window_array[tw_window];
             
 	        //Handle pausing
-	        if (_occurrence_array[__SCRIBBLE_OCCURRENCE.PAUSED])
+	        if (tw_paused)
 	        {
-	            var _typewriter_speed = 0;
+	            _typewriter_speed = 0;
 	        }
-	        else if (_occurrence_array[__SCRIBBLE_OCCURRENCE.DELAY_PAUSED])
+	        else if (tw_delay_paused)
 	        {
-	            if (current_time > _occurrence_array[__SCRIBBLE_OCCURRENCE.DELAY_END])
+	            if (current_time > tw_delay_end)
 	            {
 	                //We've waited long enough, start showing more text
-	                _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DELAY_PAUSED] = false;
-	                var _typewriter_speed = _typewriter_adjusted_speed;
+	                tw_delay_paused = false;
                     
 	                //Increment the window index
-	                var _old_head_pos = _typewriter_window_array[@ _typewriter_window];
-	                _typewriter_window = (_typewriter_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
-	                _occurrence_array[@ __SCRIBBLE_OCCURRENCE.WINDOW] = _typewriter_window;
-	                _typewriter_window_array[@ _typewriter_window  ] = _old_head_pos;
-	                _typewriter_window_array[@ _typewriter_window+1] = _old_head_pos - _typewriter_smoothness;
+	                tw_window = (tw_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
+	                tw_window_array[@ tw_window  ] = _typewriter_head_pos;
+	                tw_window_array[@ tw_window+1] = _typewriter_head_pos - tw_smoothness;
 	            }
 	            else
 	            {
-	                var _typewriter_speed = 0;
+	                _typewriter_speed = 0;
 	            }
-	        }
-	        else
-	        {
-	            var _typewriter_speed = _typewriter_adjusted_speed;
 	        }
             
             #region Scan for autotype events
             
-	        if ((_typewriter_fade_in >= 0) && (_typewriter_speed > 0))
+	        if (tw_in && (_typewriter_speed > 0))
 	        {
-	            var _typewriter_head_pos = _typewriter_window_array[_typewriter_window];
+                var _model     = __get_model();
+	            var _page_data = _model.pages_array[__page];
                 
 	            //Find the last character we need to scan
-	            switch(_typewriter_method)
-	            {
-	                case 1: //Per character
-	                    var _scan_b = ceil(_typewriter_head_pos + _typewriter_speed);
-	                    _scan_b = min(_scan_b, _page_array[__SCRIBBLE_PAGE.LAST_CHAR] + 2);
-	                break;
-                    
-	                case 2: //Per line
-	                    var _page_lines_array = _page_array[__SCRIBBLE_PAGE.LINES_ARRAY];
-	                    var _line   = _page_lines_array[min(ceil(_typewriter_head_pos + _typewriter_speed), _page_array[__SCRIBBLE_PAGE.LINES]-1)];
-	                    var _scan_b = _line[__SCRIBBLE_LINE.LAST_CHAR];
-	                break;
-	            }
+                if (tw_per_line)
+                {
+	                var _typewriter_count = _page_data.lines;
+	                var _line_data = _page_data.lines_array[min(ceil(_typewriter_head_pos + _typewriter_speed), _typewriter_count-1)];
+	                var _scan_b    = _line_data.last_char;
+                }
+                else
+                {
+	                var _typewriter_count = _page_data.last_char + 2;
+	                _scan_b = min(ceil(_typewriter_head_pos + _typewriter_speed), _typewriter_count);
+                }
                 
-	            var _scan_a = _occurrence_array[__SCRIBBLE_OCCURRENCE.EVENT_CHAR_PREVIOUS];
+	            var _scan_a = tw_event_char_previous;
                 var _scan = _scan_a;
 	            if (_scan_b > _scan_a)
 	            {
-	                var _events_char_array = _scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY];
-	                var _events_name_array = _scribble_array[SCRIBBLE.EVENT_NAME_ARRAY];
-	                var _events_data_array = _scribble_array[SCRIBBLE.EVENT_DATA_ARRAY];
+	                var _events_char_array = _model.events_char_array;
+	                var _events_name_array = _model.events_name_array;
+	                var _events_data_array = _model.events_data_array;
 	                var _event_count       = array_length(_events_char_array);
                     
-	                var _event                = _occurrence_array[__SCRIBBLE_OCCURRENCE.EVENT_PREVIOUS     ];
-	                var _events_visited_array = _occurrence_array[__SCRIBBLE_OCCURRENCE.EVENT_VISITED_ARRAY];
+	                var _event                 = tw_event_previous;
+	                var _events_visited_struct = tw_event_visited_struct;
                     
 	                //Always start scanning at the next event
 	                ++_event;
@@ -580,34 +604,23 @@ function __scribble_class_element(_string, _element_cache_name) constructor
 	                            var _event_name       = _events_name_array[_event];
 	                            var _event_data_array = _events_data_array[_event];
                                 
-	                            if (!_events_visited_array[_event])
+	                            if (!variable_struct_exists(_events_visited_struct, _event))
 	                            {
-	                                _events_visited_array[@ _event] = true;
-                                    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_PREVIOUS] = _event;
+                                    variable_struct_set(_events_visited_struct, _event, true);
+                                    tw_event_previous = _event;
                                     
 	                                //Process pause and delay events
 	                                if (_event_name == "pause")
 	                                {
-                                        if (!_skipping)
-                                        {
-	                                        _occurrence_array[@ __SCRIBBLE_OCCURRENCE.PAUSED] = true;
-                                        }
+                                        if (!_skipping) tw_paused = true;
 	                                }
 	                                else if (_event_name == "delay")
 	                                {
                                         if (!_skipping)
                                         {
-    	                                    if (array_length(_event_data_array) >= 1)
-    	                                    {
-    	                                        var _duration = real(_event_data_array[0]);
-    	                                    }
-    	                                    else
-    	                                    {
-    	                                        var _duration = SCRIBBLE_DEFAULT_DELAY_DURATION;
-    	                                    }
-                                            
-    	                                    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DELAY_PAUSED] = true;
-    	                                    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DELAY_END   ] = current_time + _duration;
+                                            var _duration = (array_length(_event_data_array) >= 1)? real(_event_data_array[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
+                                            tw_delay_paused = true;
+                                            tw_delay_end    = current_time + _duration;
                                         }
 	                                }
 	                                else if (_event_name == "__scribble_audio_playback__")
@@ -620,16 +633,15 @@ function __scribble_class_element(_string, _element_cache_name) constructor
 	                                    var _function = global.__scribble_autotype_events[? _event_name];
                                         if (is_method(_function))
                                         {
-                                            _function(_scribble_array, _event_data_array, _scan);
+                                            with(other) _function(self, _event_data_array, _scan);
                                         }
                                         else if (is_real(_function) && script_exists(_function))
 	                                    {
-	                                        script_execute(_function, _scribble_array, _event_data_array, _scan);
+                                            with(other) script_execute(_function, self, _event_data_array, _scan);
 	                                    }
 	                                }
                                     
-	                                if (_occurrence_array[__SCRIBBLE_OCCURRENCE.PAUSED]
-	                                ||  _occurrence_array[__SCRIBBLE_OCCURRENCE.DELAY_PAUSED])
+	                                if (tw_paused || tw_delay_paused)
 	                                {
 	                                    _typewriter_speed = _scan - _typewriter_head_pos;
 	                                    _break = true;
@@ -645,93 +657,73 @@ function __scribble_class_element(_string, _element_cache_name) constructor
 	                        ++_scan;
 	                    }
                         
-	                    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_CHAR_PREVIOUS] = _scan;
+	                    tw_event_char_previous = _scan;
 	                }
 	                else
 	                {
-	                    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_CHAR_PREVIOUS] = _scan_b;
+	                    tw_event_char_previous = _scan_b;
 	                }
 	            }
                 
-	            switch(_typewriter_method)
-	            {
-	                case 1: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LAST_CHAR] + 2; break; //Per character
-	                case 2: var _typewriter_count = _page_array[__SCRIBBLE_PAGE.LINES    ];     break; //Per line
-	            }
-                
 	            _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
-	            _typewriter_window_array[@ _typewriter_window] = _typewriter_head_pos;
-	        }
-            
-            #endregion
-	    }
-        
-        #region Move the typewriter head/tail
-        
-	    if (_typewriter_method != 0) //Either per line or per character fade set
-	    {
-	        //Figure out the limit and smoothness values
-	        //If it's been around-about a frame since we called this scripts...
-	        //if (_increment_timers)
-	        {
-	            var _i = 0;
-	            repeat(__SCRIBBLE_WINDOW_COUNT)
-	            {
-	                _typewriter_window_array[@ _i+1] = min(_typewriter_window_array[_i+1] + _typewriter_adjusted_speed, _typewriter_window_array[_i]);
-	                _i += 2;
-	            }
-	        }
-	    }
-        
-        #endregion
-        
-	    if ((_typewriter_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
-	    {
-            #region Play a sound effect as the text is revealed
-            
-	        var _sound_array = _occurrence_array[__SCRIBBLE_OCCURRENCE.SOUND_ARRAY];
-	        if (is_array(_sound_array) && (array_length(_sound_array) > 0))
-	        {
-	            var _play_sound = false;
-	            if (_occurrence_array[__SCRIBBLE_OCCURRENCE.SOUND_PER_CHAR])
-	            {
-	                _play_sound = true;
-	            }
-	            else if (current_time >= _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_FINISH_TIME]) 
-	            {
-	                _play_sound = true;
-	            }
-                
-	            if (_play_sound)
-	            {
-	                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
-	                var _rand = global.__scribble_lcg / 2147483648;
-	                var _sound = _sound_array[floor(_rand*array_length(_sound_array))];
-                
-	                var _inst = audio_play_sound(_sound, 0, false);
-                
-	                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
-	                var _rand = global.__scribble_lcg / 2147483648;
-	            	audio_sound_pitch(_inst, lerp(_occurrence_array[__SCRIBBLE_OCCURRENCE.SOUND_MIN_PITCH], _occurrence_array[__SCRIBBLE_OCCURRENCE.SOUND_MAX_PITCH], _rand));
-                
-	                _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_FINISH_TIME] = current_time + 1000*audio_sound_length(_sound) - _occurrence_array[__SCRIBBLE_OCCURRENCE.SOUND_OVERLAP];
-	            }
+	            tw_window_array[@ tw_window] = _typewriter_head_pos;
 	        }
             
             #endregion
             
-	        var _callback = _occurrence_array[__SCRIBBLE_OCCURRENCE.FUNCTION];
+            //Move the typewriter head/tail
+    	    var _i = 0;
+    	    repeat(__SCRIBBLE_WINDOW_COUNT)
+    	    {
+    	        tw_window_array[@ _i+1] = min(tw_window_array[_i+1] + _typewriter_speed, tw_window_array[_i]);
+    	        _i += 2;
+    	    }
             
-            if (is_method(_callback))
-            {
-                _callback(_scribble_array, _typewriter_window_array[_typewriter_window] - 1);
-            }
-            else if (is_real(_callback) && script_exists(_callback))
-	        {
-	            script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window] - 1);
-	        }
+    	    if ((_typewriter_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
+    	    {
+                #region Play a sound effect as the text is revealed
+                
+    	        var _sound_array = tw_sound_array;
+    	        if (is_array(_sound_array) && (array_length(_sound_array) > 0))
+    	        {
+    	            var _play_sound = false;
+    	            if (tw_sound_per_char)
+    	            {
+    	                _play_sound = true;
+    	            }
+    	            else if (current_time >= tw_sound_finish_time) 
+    	            {
+    	                _play_sound = true;
+    	            }
+                    
+    	            if (_play_sound)
+    	            {
+    	                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
+    	                var _rand = global.__scribble_lcg / 2147483648;
+    	                var _sound = _sound_array[floor(_rand*array_length(_sound_array))];
+                        
+    	                var _inst = audio_play_sound(_sound, 0, false);
+                        
+    	                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
+    	                var _rand = global.__scribble_lcg / 2147483648;
+    	            	audio_sound_pitch(_inst, lerp(tw_sound_pitch_min, tw_sound_pitch_max, _rand));
+                
+    	                tw_sound_finish_time = current_time + 1000*audio_sound_length(_sound) - tw_sound_overlap;
+    	            }
+    	        }
+                
+                #endregion
+                
+                if (is_method(tw_function))
+                {
+                    tw_function(self, tw_window_array[tw_window] - 1);
+                }
+                else if (is_real(tw_function) && script_exists(tw_function))
+    	        {
+    	            script_execute(tw_function, self, tw_window_array[tw_window] - 1);
+    	        }
+    	    }
 	    }
-        */
     }
     
     #endregion

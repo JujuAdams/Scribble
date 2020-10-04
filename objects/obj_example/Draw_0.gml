@@ -20,16 +20,15 @@ if (sprite_exists(textbox_portrait))
 
 if (textbox_name != undefined)
 {
-    ////Draw name tag
-    //scribble_set_box_align(fa_right, fa_bottom);
-    //var _name_box = scribble_get_bbox(_x + textbox_width + 10, _y - 20, textbox_name, 10, 10, 10, 10);
-    //
-    //draw_set_colour($422D32);
-    //draw_rectangle(_name_box[0], _name_box[1], _name_box[2], _name_box[3], false);
-    //draw_set_colour(c_white);
-    //
-    //scribble_draw(_x + textbox_width + 10, _y - 20, textbox_name);
-    //scribble_reset();
+    //Draw name tag
+    var _element = scribble(textbox_name);
+    var _name_box = _element.get_bbox(_x + textbox_width + 10, _y - 20, 10, 10, 10, 10);
+    
+    draw_set_colour($422D32);
+    draw_rectangle(_name_box[0], _name_box[1], _name_box[2], _name_box[3], false);
+    draw_set_colour(c_white);
+    
+    _element.draw(_x + textbox_width + 10, _y - 20);
 }
 
 //Draw a little icon once the text has finished displaying, or if text display is paused
