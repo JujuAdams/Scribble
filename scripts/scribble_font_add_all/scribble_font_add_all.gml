@@ -37,7 +37,7 @@ function scribble_font_add_all()
             ||  asset_has_any_tag(_i, "scribble", asset_font)
             ||  asset_has_any_tag(_i, "SCRIBBLE", asset_font))
             {
-                scribble_add_font(_name);
+                scribble_font_add(_name);
             }
             else
             {

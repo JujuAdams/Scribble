@@ -21,20 +21,9 @@ function scribble_font_combine()
     
     //We always use a glyph map so we don't need to pre-parse the fonts
     var _glyph_map = ds_map_create();
-
-    var _font_data = array_create(__SCRIBBLE_FONT.__SIZE);
-    _font_data[@ __SCRIBBLE_FONT.NAME        ] = _new_font_name;
-    _font_data[@ __SCRIBBLE_FONT.PATH        ] = undefined;
-    _font_data[@ __SCRIBBLE_FONT.TYPE        ] = "runtime";
-    _font_data[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
-    _font_data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = _glyph_map;
-    _font_data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
-    _font_data[@ __SCRIBBLE_FONT.GLYPH_MIN   ] = undefined;
-    _font_data[@ __SCRIBBLE_FONT.GLYPH_MAX   ] = undefined;
-    _font_data[@ __SCRIBBLE_FONT.SPACE_WIDTH ] = undefined;
-    _font_data[@ __SCRIBBLE_FONT.MAPSTRING   ] = undefined;
-    _font_data[@ __SCRIBBLE_FONT.SEPARATION  ] = undefined;
-    global.__scribble_font_data[? _new_font_name] = _font_data;
+    
+    var _font_data = new __scribble_font(_new_font_name, "runtime");
+    _font_data.glyphs_map = _glyph_map;
 
     //Calculate font min/max y-values so we can apply a y-offset per font so everything is centred
     var _combined_y_min = 0;
@@ -60,13 +49,13 @@ function scribble_font_combine()
             exit;
         }
         
-        var _src_font_array = global.__scribble_font_data[? _source_font_name];
+        var _src_font_data = global.__scribble_font_data[? _source_font_name];
     
         var _font_min = 0;
         var _font_max = 0;
     
         //Unpack source glyphs into an intermediate array
-        var _src_glyphs_map = _src_font_array[__SCRIBBLE_FONT.GLYPHS_MAP];
+        var _src_glyphs_map = _src_font_data.glyphs_map;
         if (_src_glyphs_map != undefined)
         {
         	var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
@@ -86,7 +75,7 @@ function scribble_font_combine()
         }
         else
         {
-        	var _src_glyphs_array = _src_font_array[__SCRIBBLE_FONT.GLYPHS_ARRAY];
+        	var _src_glyphs_array = _src_font_data.glyphs_array;
             var _c = 0;
             repeat(array_length(_src_glyphs_array))
             {
@@ -118,13 +107,13 @@ function scribble_font_combine()
     repeat(argument_count - 1)
     {
         var _source_font_name = argument[_f];
-        var _src_font_array = global.__scribble_font_data[? _source_font_name];
+        var _src_font_data = global.__scribble_font_data[? _source_font_name];
     
         //Calculate the y-offset for glyphs in this font
         var _y_offset = (_combined_y_min - _font_y_min_array[_f]) + ((_combined_y_max - _combined_y_min) - (_font_y_max_array[_f] - _font_y_min_array[_f])) div 2;
     
         //Unpack source glyphs into an intermediate array
-        var _src_glyphs_map = _src_font_array[__SCRIBBLE_FONT.GLYPHS_MAP];
+        var _src_glyphs_map = _src_font_data.glyphs_map;
         if (_src_glyphs_map != undefined)
         {
         	var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
@@ -140,7 +129,7 @@ function scribble_font_combine()
         }
         else
         {
-        	var _src_glyphs_array = _src_font_array[__SCRIBBLE_FONT.GLYPHS_ARRAY];
+        	var _src_glyphs_array = _src_font_data.glyphs_array;
         }
     
         //Add this font's glyph data to the combined font

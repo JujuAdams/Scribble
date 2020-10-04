@@ -23,23 +23,23 @@
 
 function scribble_font_add_from_sprite()
 {
-	var _font         = argument[0];
+	var _name         = argument[0];
 	var _mapstring    = argument[1];
 	var _separation   = argument[2];
 	var _space_width  = (argument_count > 3)? argument[3] : undefined;
 	var _proportional = (argument_count > 4)? argument[4] : true;
 
-	if (ds_map_exists(global.__scribble_font_data, _font))
+	if (ds_map_exists(global.__scribble_font_data, _name))
 	{
-	    show_error("Scribble:\nFont \"" + _font + "\" has already been defined\n ", false);
+	    show_error("Scribble:\nFont \"" + _name + "\" has already been defined\n ", false);
 	    return undefined;
 	}
 
-	if (!is_string(_font))
+	if (!is_string(_name))
 	{
-	    if (is_real(_font) && (asset_get_type(font_get_name(_font)) == asset_sprite))
+	    if (is_real(_name) && (asset_get_type(font_get_name(_name)) == asset_sprite))
 	    {
-	        show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input to script was \"" + string(_font) + "\", which might be sprite \"" + sprite_get_name(_font) + "\")\n ", false);
+	        show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input to script was \"" + string(_name) + "\", which might be sprite \"" + sprite_get_name(_name) + "\")\n ", false);
 	    }
 	    else
 	    {
@@ -48,65 +48,53 @@ function scribble_font_add_from_sprite()
 	    exit;
 	}
 
-	if (asset_get_type(_font) == asset_font)
+	if (asset_get_type(_name) == asset_font)
 	{
 	    show_error("Scribble:\nTo add a normal font, please use scribble_add_font()\n ", false);
-	    return scribble_add_font(_font);
+	    return scribble_font_add(_name);
 	}
 
-	if (asset_get_type(_font) != asset_sprite)
+	if (asset_get_type(_name) != asset_sprite)
 	{
-	    show_error("Scribble:\nSprite \"" + _font + "\" not found in the project\n ", false);
+	    show_error("Scribble:\nSprite \"" + _name + "\" not found in the project\n ", false);
 	    return undefined;
 	}
 
 
 
-	if (SCRIBBLE_VERBOSE) __scribble_trace("Processing spritefont \"" + _font + "\"");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Processing spritefont \"" + _name + "\"");
         
 	//Strip out a map of of glyphs
-	var _sprite = asset_get_index(_font);
+	var _sprite = asset_get_index(_name);
 	var _sprite_length = sprite_get_number(_sprite);
 	var _length = string_length(_mapstring);
-	if (SCRIBBLE_VERBOSE) __scribble_trace("  \"" + _font + "\" has " + string(_length) + " characters");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("  \"" + _name + "\" has " + string(_length) + " characters");
 
 	if (_length > _sprite_length)
 	{
-	    show_error("Scribble:\nmapString for \"" + _font + "\" has more characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")\nPlease ensure you have one image in your sprite for every character\n ", true);
+	    show_error("Scribble:\nmapString for \"" + _name + "\" has more characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")\nPlease ensure you have one image in your sprite for every character\n ", true);
 	    return undefined;
 	}
 	else if (_length < _sprite_length)
 	{
-	    __scribble_trace("  WARNING! mapString for \"" + _font + "\" has fewer characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")");
+	    __scribble_trace("  WARNING! mapString for \"" + _name + "\" has fewer characters (" + string(_length) + ") than the sprite (" + string(_sprite_length) + ")");
 	}
     
     
     
     if (global.__scribble_default_font == undefined)
     {
-        if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_font) + "\"");
-        global.__scribble_default_font = _font;
+        if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_name) + "\"");
+        global.__scribble_default_font = _name;
     }
-
-
-
-	var _sprite_width  = sprite_get_width( _sprite);
-	var _sprite_height = sprite_get_height(_sprite);
-
-	var _data = array_create(__SCRIBBLE_FONT.__SIZE);
-	_data[@ __SCRIBBLE_FONT.NAME        ] = _font;
-	_data[@ __SCRIBBLE_FONT.PATH        ] = undefined;
-	_data[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
-	_data[@ __SCRIBBLE_FONT.TYPE        ] = "sprite";
-	_data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
-	_data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
-	_data[@ __SCRIBBLE_FONT.GLYPH_MIN   ] = 32;
-	_data[@ __SCRIBBLE_FONT.GLYPH_MAX   ] = 32;
-	_data[@ __SCRIBBLE_FONT.SPACE_WIDTH ] = _space_width;
-	_data[@ __SCRIBBLE_FONT.MAPSTRING   ] = _mapstring;
-	_data[@ __SCRIBBLE_FONT.SEPARATION  ] = _separation;
-	global.__scribble_font_data[? _font ] = _data;
-
+    
+    
+    
+    var _font_data = new __scribble_font(_name, "sprite");
+    _font_data.space_width = _space_width;
+    _font_data.mapstring   = _mapstring;
+    _font_data.separation  = _separation;
+    
 	var _texture = sprite_get_texture(_sprite, 0);
     
 	var _sprite_string   = _mapstring;
@@ -114,7 +102,7 @@ function scribble_font_add_from_sprite()
 	var _monospace_width = (!_proportional)? sprite_get_width(_sprite) : undefined;
         
 	var _font_glyphs_map = ds_map_create();
-	_data[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _font_glyphs_map;
+    _font_data.glyphs_map = _font_glyphs_map;
     
     var _sprite_xoffset = sprite_get_xoffset(_sprite);
     var _sprite_yoffset = sprite_get_yoffset(_sprite);
@@ -144,7 +132,7 @@ function scribble_font_add_from_sprite()
         
 	    if ((_left > _right) && (_top > _bottom))
 	    {
-	        __scribble_trace("  WARNING! Character " + string(ord(_char)) + " (" + _char + ") for spritefont \"" + _font + "\" is empty");
+	        __scribble_trace("  WARNING! Character " + string(ord(_char)) + " (" + _char + ") for spritefont \"" + _name + "\" is empty");
                 
 	        _array[@ SCRIBBLE_GLYPH.WIDTH     ] = 1;
 	        _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
@@ -224,8 +212,8 @@ function scribble_font_add_from_sprite()
     
 	if (SCRIBBLE_WARNING_TEXTURE_PAGE && (_potential_separate_texture_page > 0.5*_length))
 	{
-	    show_error("Scribble:\nSpritefont \"" + string(_font) + "\" appears to be set to Separate Texture Page\nPlease untick Separate Texture Page for this sprite\n \n(Set SCRIBBLE_WARNING_TEXTURE_PAGE to <false> to turn off this warning)\n ", true);
+	    show_error("Scribble:\nSpritefont \"" + string(_name) + "\" appears to be set to Separate Texture Page\nPlease untick Separate Texture Page for this sprite\n \n(Set SCRIBBLE_WARNING_TEXTURE_PAGE to <false> to turn off this warning)\n ", true);
 	}
 
-	if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"" + _font + "\" as a spritefont");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"" + _name + "\" as a spritefont");
 }

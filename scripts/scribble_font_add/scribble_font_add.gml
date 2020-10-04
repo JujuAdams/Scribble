@@ -20,21 +20,21 @@
 
 function scribble_font_add()
 {
-	var _font    = argument[0];
+	var _name    = argument[0];
 	var _path    = (argument_count > 1)? argument[1] : undefined;
 	var _texture = (argument_count > 2)? argument[2] : undefined;
     
-	if (ds_map_exists(global.__scribble_font_data, _font))
+	if (ds_map_exists(global.__scribble_font_data, _name))
 	{
-	    show_error("Scribble:\nFont \"" + _font + "\" has already been defined\n ", false);
+	    show_error("Scribble:\nFont \"" + _name + "\" has already been defined\n ", false);
 	    return undefined;
 	}
     
-	if (!is_string(_font))
+	if (!is_string(_name))
 	{
-	    if (is_real(_font) && (asset_get_type(font_get_name(_font)) == asset_font))
+	    if (is_real(_name) && (asset_get_type(font_get_name(_name)) == asset_font))
 	    {
-	        show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input was \"" + string(_font) + "\", which might be font \"" + font_get_name(_font) + "\")\n ", false);
+	        show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input was \"" + string(_name) + "\", which might be font \"" + font_get_name(_name) + "\")\n ", false);
 	    }
 	    else
 	    {
@@ -43,24 +43,24 @@ function scribble_font_add()
 	    exit;
 	}
     
-	if (asset_get_type(_font) == asset_sprite)
+	if (asset_get_type(_name) == asset_sprite)
 	{
-	    show_error("Scribble:\nTo add a spritefont, please use scribble_add_spritefont()\n ", false);
-	    return scribble_add_spritefont(_font);
+	    show_error("Scribble:\nTo add a spritefont, please use scribble_font_add_from_sprite()\n ", false);
+	    return scribble_font_add_from_sprite(_name);
 	}
     
-	if (asset_get_type(_font) != asset_font)
+	if (asset_get_type(_name) != asset_font)
 	{
-	    show_error("Scribble:\nFont \"" + _font + "\" not found in the project.\nScribble font \"" + string(_font) + "\" will not be available.\n ", false);
+	    show_error("Scribble:\nFont \"" + _name + "\" not found in the project.\nScribble font \"" + string(_name) + "\" will not be available.\n ", false);
 	    return undefined;
 	}
     
-    if (_path == undefined) _path = _font + ".yy";
+    if (_path == undefined) _path = _name + ".yy";
 	_path = global.__scribble_font_directory + _path;
     
 	if (!file_exists(_path))
 	{
-	    show_error("Scribble:\nCould not find \"" + _path + "\" in Included Files. Please add this file to your project.\nScribble font \"" + string(_font) + "\" will not be available.\n ", false);
+	    show_error("Scribble:\nCould not find \"" + _path + "\" in Included Files. Please add this file to your project.\nScribble font \"" + string(_name) + "\" will not be available.\n ", false);
 	    return undefined;
 	}
     
@@ -68,47 +68,32 @@ function scribble_font_add()
     
     if (global.__scribble_default_font == undefined)
     {
-        if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_font) + "\"");
-        global.__scribble_default_font = _font;
+        if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_name) + "\"");
+        global.__scribble_default_font = _name;
     }
     
     
+    var _font_data = new __scribble_font(_name, "standard");
     
-	var _data = array_create(__SCRIBBLE_FONT.__SIZE);
-	_data[@ __SCRIBBLE_FONT.NAME        ] = _font;
-	_data[@ __SCRIBBLE_FONT.PATH        ] = _path;
-	_data[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
-	_data[@ __SCRIBBLE_FONT.TYPE        ] = "standard";
-	_data[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
-	_data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
-	_data[@ __SCRIBBLE_FONT.GLYPH_MIN   ] = 32;
-	_data[@ __SCRIBBLE_FONT.GLYPH_MAX   ] = 32;
-	_data[@ __SCRIBBLE_FONT.SPACE_WIDTH ] = undefined;
-	_data[@ __SCRIBBLE_FONT.MAPSTRING   ] = undefined;
-	_data[@ __SCRIBBLE_FONT.SEPARATION  ] = undefined;
-	global.__scribble_font_data[? _font ] = _data;
-
-
-
-	if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _font + "\"");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");
 
 	if (_texture == undefined)
 	{
-		if (!is_string(_font))
+		if (!is_string(_name))
 		{
-		    show_error("Scribble:\n<character> argument is the wrong datatype (" + typeof(_font) + "), expected a string\n ", false);
+		    show_error("Scribble:\n<character> argument is the wrong datatype (" + typeof(_name) + "), expected a string\n ", false);
 		    return undefined;
 		}
     
-		if (asset_get_type(_font) == asset_sprite)
+		if (asset_get_type(_name) == asset_sprite)
 		{
-		    show_error("Scribble:\nAsset \"" + _font + "\" is a sprite\n \nPlease use scribble_font_add_spritefont() instead\n ", false);
+		    show_error("Scribble:\nAsset \"" + _name + "\" is a sprite\n \nPlease use scribble_font_add_spritefont() instead\n ", false);
 		    return undefined;
 		}
     
-		if (asset_get_type(_font) != asset_font)
+		if (asset_get_type(_name) != asset_font)
 		{
-		    show_error("Scribble:\nCould not find font asset \"" + _font + "\" in the project\n ", false);
+		    show_error("Scribble:\nCould not find font asset \"" + _name + "\" in the project\n ", false);
 		    return undefined;
 		}
         
@@ -135,7 +120,7 @@ function scribble_font_add()
 		    }
 		}
         
-		var _asset       = asset_get_index(_font);
+		var _asset       = asset_get_index(_name);
 		var _texture     = font_get_texture(_asset);
 		var _texture_uvs = font_get_uvs(_asset);
 	}
@@ -144,14 +129,14 @@ function scribble_font_add()
 		var _texture_uvs = texture_get_uvs(_texture);
 	}
 
-	var _texture_tw  = texture_get_texel_width(_texture);
-	var _texture_th  = texture_get_texel_height(_texture);
-	var _texture_w   = (_texture_uvs[2] - _texture_uvs[0])/_texture_tw; //texture_get_width(_texture);
-	var _texture_h   = (_texture_uvs[3] - _texture_uvs[1])/_texture_th; //texture_get_height(_texture);
+	var _texture_tw = texture_get_texel_width(_texture);
+	var _texture_th = texture_get_texel_height(_texture);
+	var _texture_w  = (_texture_uvs[2] - _texture_uvs[0])/_texture_tw; //texture_get_width(_texture);
+	var _texture_h  = (_texture_uvs[3] - _texture_uvs[1])/_texture_th; //texture_get_height(_texture);
 
 	if (SCRIBBLE_VERBOSE)
 	{
-	    __scribble_trace("  \"" + _font +"\""
+	    __scribble_trace("  \"" + _name +"\""
 	                     + ", asset = " + string(_asset)
 	                     + ", texture = " + string(_texture)
 	                     + ", size = " + string(_texture_w) + " x " + string(_texture_h)
@@ -184,13 +169,13 @@ function scribble_font_add()
 	if (_fail)
 	{
 	    if (__SCRIBBLE_DEBUG) __scribble_trace("JSON string that failed is \"" + string(_json_string) + "\"");
-	    ds_map_delete(global.__scribble_font_data, _font);
+	    ds_map_delete(global.__scribble_font_data, _name);
 	    exit;
 	}
     
     //Add this font to a font family
     var _family_name = _json[? "fontName"] + "." + string(_json[? "size"]);
-    _data[@ __SCRIBBLE_FONT.FAMILY_NAME] = _family_name;
+    _font_data.family_name = _family_name;
     
     var _family_map = global.__scribble_font_family_map[? _family_name];
     if (_family_map == undefined)
@@ -206,7 +191,7 @@ function scribble_font_add()
     }
     else
     {
-        _family_map[? _style_name] = _font;
+        _family_map[? _style_name] = _name;
     }
     
     //Now parse the JSON for glyph data!
@@ -243,7 +228,7 @@ function scribble_font_add()
 	}
 
 	var _size = ds_list_size(_yy_glyphs_list);
-	if (SCRIBBLE_VERBOSE) __scribble_trace("  \"" + _font + "\" has " + string(_size) + " characters");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("  \"" + _name + "\" has " + string(_size) + " characters");
 
 
 
@@ -274,10 +259,10 @@ function scribble_font_add()
 	        _glyph_min = min(_glyph_min, _index);
 	        _glyph_max = max(_glyph_max, _index);
 	    }
-    
-	    _data[@ __SCRIBBLE_FONT.GLYPH_MIN] = _glyph_min;
-	    _data[@ __SCRIBBLE_FONT.GLYPH_MAX] = _glyph_max;
-    
+        
+        _font_data.glyph_min = _glyph_min;
+        _font_data.glyph_max = _glyph_max;
+        
 	    var _glyph_count = 1 + _glyph_max - _glyph_min;
 	    if (SCRIBBLE_VERBOSE) __scribble_trace("  Glyphs start at " + string(_glyph_min) + " and end at " + string(_glyph_max) + ". Range is " + string(_glyph_count-1));
     
@@ -304,9 +289,10 @@ function scribble_font_add()
 	            _ds_map_fallback = false;
             
 	            var _font_glyphs_array = array_create(_glyph_count, undefined);
-	            _data[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = _font_glyphs_array;
-            
-	            for(var _i = 0; _i < _size; _i++)
+                _font_data.glyphs_array = _font_glyphs_array;
+                
+                var _i = 0;
+                repeat(_size)
 	            {
 	                var _yy_glyph_map = _yy_glyphs_list[| _i];
 	                    _yy_glyph_map = _yy_glyph_map[? "Value"];
@@ -338,6 +324,8 @@ function scribble_font_add()
 	                _array[@ SCRIBBLE_GLYPH.V1        ] = _v1;
                 
 	                _font_glyphs_array[@ _index - _glyph_min] = _array;
+                    
+                    ++_i;
 	            }
 	        }
 	    }
@@ -348,27 +336,28 @@ function scribble_font_add()
 	if (_ds_map_fallback)
 	{
 	    if (SCRIBBLE_VERBOSE) __scribble_trace("  Using a ds_map to index glyphs");
-    
+        
 	    var _font_glyphs_map = ds_map_create();
-	    _data[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _font_glyphs_map;
-    
-	    for(var _i = 0; _i < _size; _i++)
+        _font_data.glyphs_map = _font_glyphs_map;
+        
+        var _i = 0;
+	    repeat(_size)
 	    {
 	        var _yy_glyph_map = _yy_glyphs_list[| _i];
 	            _yy_glyph_map = _yy_glyph_map[? "Value"];
-        
+            
 	        var _index = _yy_glyph_map[? "character"];
 	        var _char  = chr(_index);
 	        var _x     = _yy_glyph_map[? "x"];
 	        var _y     = _yy_glyph_map[? "y"];
 	        var _w     = _yy_glyph_map[? "w"];
 	        var _h     = _yy_glyph_map[? "h"];
-        
+            
 	        var _u0    = _x*_texture_tw + _texture_uvs[0];
 	        var _v0    = _y*_texture_th + _texture_uvs[1];
 	        var _u1    = _u0 + _w*_texture_tw;
 	        var _v1    = _v0 + _h*_texture_th;
-        
+            
 	        var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
 	        _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _char;
 	        _array[@ SCRIBBLE_GLYPH.INDEX     ] = _index;
@@ -382,12 +371,14 @@ function scribble_font_add()
 	        _array[@ SCRIBBLE_GLYPH.V0        ] = _v0;
 	        _array[@ SCRIBBLE_GLYPH.U1        ] = _u1;
 	        _array[@ SCRIBBLE_GLYPH.V1        ] = _v1;
-        
+            
 	        _font_glyphs_map[? ord(_char)] = _array;
+            
+            ++_i;
 	    }
 	}
 
 	ds_map_destroy(_json);
 
-	if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"" + _font + "\" as a standard font");
+	if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"" + _name + "\" as a standard font");
 }

@@ -32,13 +32,15 @@ function scribble_glyph_set()
     
     var _font_data = global.__scribble_font_data[? _font];
     
+    var _array = _font_data.glyphs_array;
+    var _map   = _font_data.glyphs_map;
+    
     if ((_character == all) || (_character == "all"))
     {
-        var _array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
         if (_array == undefined)
         {
             //If the glyph array doesn't exist for this font, use the ds_map fallback
-            var _map = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP];
+            var _map = _font_data.glyphs_map;
             
             var _key = ds_map_find_first(_map);
             repeat(ds_map_size(_map))
@@ -61,16 +63,14 @@ function scribble_glyph_set()
     }
     else
     {
-        var _array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
         if (_array == undefined)
         {
             //If the glyph array doesn't exist for this font, use the ds_map fallback
-            var _map = _font_data[__SCRIBBLE_FONT.GLYPHS_MAP];
             var _glyph_data = _map[? ord(_character)];
         }
         else
         {
-            var _glyph_data = _array[ord(_character) - _font_data[ __SCRIBBLE_FONT.GLYPH_MIN]];
+            var _glyph_data = _array[ord(_character) - _font_data.glyph_min];
         }
         
         if (_glyph_data == undefined)

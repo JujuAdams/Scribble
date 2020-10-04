@@ -44,8 +44,8 @@ function scribble_font_bake_shader()
 		return undefined;
 	}
 
-	var _src_font_array = global.__scribble_font_data[? _source_font_name];
-    if (!is_array(_src_font_array))
+	var _src_font_data = global.__scribble_font_data[? _source_font_name];
+    if (!is_array(_src_font_data))
     {
 		show_error("Scribble:\nSource font \"" + string(_source_font_name) + "\" not found\n\"" + string(_new_font_name) + "\" will not be available\n ", false);
         return undefined;
@@ -53,7 +53,7 @@ function scribble_font_bake_shader()
     
     
 	//Unpack source glyphs into an intermediate array
-	var _src_glyphs_map = _src_font_array[__SCRIBBLE_FONT.GLYPHS_MAP];
+	var _src_glyphs_map = _src_font_data.glyphs_map;
 	if (_src_glyphs_map != undefined)
 	{
 		var _uses_glyph_map = true;
@@ -71,7 +71,7 @@ function scribble_font_bake_shader()
 	else
 	{
 		var _uses_glyph_map = false;
-		var _src_glyphs_array = _src_font_array[__SCRIBBLE_FONT.GLYPHS_ARRAY];
+		var _src_glyphs_array = _src_font_data.glyphs_array;
 	}
 
 
@@ -310,20 +310,18 @@ function scribble_font_bake_shader()
 		var _sprite_u1 = _sprite_uvs[2];
 		var _sprite_v1 = _sprite_uvs[3];
     
-		var _new_font_array = array_create(__SCRIBBLE_FONT.__SIZE);
-		array_copy(_new_font_array, 0, _src_font_array, 0, array_length(_src_font_array));
-		_new_font_array[@ __SCRIBBLE_FONT.NAME        ] = _new_font_name;
-		_new_font_array[@ __SCRIBBLE_FONT.TYPE        ] = "runtime";
-		_new_font_array[@ __SCRIBBLE_FONT.PATH        ] = undefined;
-		_new_font_array[@ __SCRIBBLE_FONT.FAMILY_NAME ] = undefined;
-		_new_font_array[@ __SCRIBBLE_FONT.GLYPHS_MAP  ] = undefined;
-		_new_font_array[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = undefined;
-    
+        var _new_font_data = new __scribble_font(_new_font_name, "runtime");
+        _src_font_data.copy_to(_new_font_data);
+        _new_font_data.path         = undefined;
+        _new_font_data.family_name  = undefined;
+        _new_font_data.glyphs_array = undefined;
+        _new_font_data.glyphs_map   = undefined;
+        
 		//Initialise our glyph data structure, copying what the source font used
 		if (_uses_glyph_map)
 		{
 		    var _new_glyph_map = ds_map_create();
-		    _new_font_array[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _new_glyph_map;
+		    _new_font_data.glyphs_map = _new_glyph_map;
         
 		    var _array = array_create(SCRIBBLE_GLYPH.__SIZE);
 		    array_copy(_array, 0, _src_glyphs_map[? 32], 0, SCRIBBLE_GLYPH.__SIZE);
@@ -331,26 +329,26 @@ function scribble_font_bake_shader()
 		}
 		else
 		{
-		    var _glyph_min = _new_font_array[__SCRIBBLE_FONT.GLYPH_MIN];
-		    var _glyph_max = _new_font_array[__SCRIBBLE_FONT.GLYPH_MAX];
-        
+		    var _glyph_min = _new_font_data.glyph_min;
+		    var _glyph_max = _new_font_data.glyph_max;
+            
 		    var _new_glyph_array = array_create(1 + _glyph_max - _glyph_min, undefined);
-		    _new_font_array[@ __SCRIBBLE_FONT.GLYPHS_ARRAY] = _new_glyph_array;
-        
+            _new_font_data.glyphs_array = _new_glyph_array;
+            
 		    var _array = array_create(SCRIBBLE_GLYPH.__SIZE);
 		    array_copy(_array, 0, _src_glyphs_array[32 - _glyph_min], 0, SCRIBBLE_GLYPH.__SIZE);
 		    _new_glyph_array[@ 32 - _glyph_min] = _array;
 		}
-    
+        
 		//Copy across glyph data from the source, but using new UVs and dimensions
 		var _i = 0;
 		repeat(array_length(_surface_glyphs))
 		{
 		    var _glyph_position = _surface_glyphs[_i];
-        
+            
 		    var _index = _glyph_position[4];
 		    var _src_glyph_array = _src_glyphs_array[_index];
-        
+            
 		    if (!is_array(_src_glyph_array))
 		    {
 		        if (_uses_glyph_map)
@@ -398,7 +396,5 @@ function scribble_font_bake_shader()
         
 		    ++_i;
 		}
-    
-		global.__scribble_font_data[? _new_font_name] = _new_font_array;
 	}
 }

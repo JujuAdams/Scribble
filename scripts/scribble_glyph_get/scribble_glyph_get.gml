@@ -13,16 +13,16 @@ function scribble_glyph_get(_font, _character, _property)
 {
 	var _font_data = global.__scribble_font_data[? _font ];
 
-	var _array = _font_data[ __SCRIBBLE_FONT.GLYPHS_ARRAY ];
+	var _array = _font_data.glyphs_array;
+	var _map   = _font_data.glyphs_map;
+    
 	if (_array == undefined)
 	{
-	    //If the glyph array doesn't exist for this font, use the ds_map fallback
-	    var _map = _font_data[ __SCRIBBLE_FONT.GLYPHS_MAP ];
-	    var _glyph_data = _map[? ord(_character) ];
+	    var _glyph_data = _map[? ord(_character)];
 	}
 	else
 	{
-	    var _glyph_data = _array[ ord(_character) - _font_data[ __SCRIBBLE_FONT.GLYPH_MIN ] ];
+	    var _glyph_data = _array[ord(_character) - _font_data.glyphs_min];
 	}
 
 	if (_glyph_data == undefined)

@@ -1,31 +1,36 @@
-enum __SCRIBBLE_FONT
-{
-	NAME,         // 0
-	PATH,         // 1
-    FAMILY_NAME,  // 2
-	TYPE,         // 3
-	GLYPHS_MAP,   // 4
-	GLYPHS_ARRAY, // 5
-	GLYPH_MIN,    // 6
-	GLYPH_MAX,    // 7
-	SPACE_WIDTH,  // 8
-	MAPSTRING,    // 9
-	SEPARATION,   //10
-	__SIZE        //11
-}
+/// @param fontName
+/// @param type
 
 function __scribble_font(_name, _type) constructor
 {
+    global.__scribble_font_data[? _name] = self;
+    
     name = _name;
     type = _type; //Can be either: "standard", "sprite", "runtime", "msdf"
     
     path         = undefined;
-    family_name  = "";
+    family_name  = undefined;
     glyphs_map   = undefined;
     glyphs_array = undefined;
-    glyph_min    = undefined;
-    glyph_max    = undefined;
+    glyph_min    = 32;
+    glyph_max    = 32;
     space_width  = undefined;
-    mapstring    = "";
-    separation   = 0;
+    mapstring    = undefined;
+    separation   = undefined;
+    
+    copy_to = function(_target)
+    {
+        var _names = variable_struct_get_names(self);
+        var _i = 0;
+        repeat(array_length(_names))
+        {
+            var _name = _names[_i];
+            if ((_name != "name") && (_name != "type"))
+            {
+                variable_struct_set(_target, _name, variable_struct_get(self, _name));
+            }
+            
+            ++_i;
+        }
+    }
 }
