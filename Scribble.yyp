@@ -111,10 +111,10 @@
   "Folders": [
     {"folderPath":"folders/Examples/Sprites.yy","order":9,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Examples/Sounds.yy","order":10,"resourceVersion":"1.0","name":"Sounds","tags":[],"resourceType":"GMFolder",},
-    {"folderPath":"folders/Examples.yy","order":3,"resourceVersion":"1.0","name":"Examples","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Examples.yy","order":132,"resourceVersion":"1.0","name":"Examples","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Scribble.yy","order":0,"resourceVersion":"1.0","name":"Scribble","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Scribble/Fonts.yy","order":3,"resourceVersion":"1.0","name":"Fonts","tags":[],"resourceType":"GMFolder",},
-    {"folderPath":"folders/Scribble/Autotype.yy","order":5,"resourceVersion":"1.0","name":"Autotype","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Autotype.yy","order":133,"resourceVersion":"1.0","name":"Autotype","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Examples/Fonts.yy","order":11,"resourceVersion":"1.0","name":"Fonts","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Examples/Test Cases.yy","order":8,"resourceVersion":"1.0","name":"Test Cases","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Scribble/(System).yy","order":6,"resourceVersion":"1.0","name":"(System)","tags":[],"resourceType":"GMFolder",},

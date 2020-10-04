@@ -20,20 +20,20 @@ if (sprite_exists(textbox_portrait))
 
 if (textbox_name != undefined)
 {
-    //Draw name tag
-    scribble_set_box_align(fa_right, fa_bottom);
-    var _name_box = scribble_get_bbox(_x + textbox_width + 10, _y - 20, textbox_name, 10, 10, 10, 10);
-    
-    draw_set_colour($422D32);
-    draw_rectangle(_name_box[0], _name_box[1], _name_box[2], _name_box[3], false);
-    draw_set_colour(c_white);
-    
-    scribble_draw(_x + textbox_width + 10, _y - 20, textbox_name);
-    scribble_reset();
+    ////Draw name tag
+    //scribble_set_box_align(fa_right, fa_bottom);
+    //var _name_box = scribble_get_bbox(_x + textbox_width + 10, _y - 20, textbox_name, 10, 10, 10, 10);
+    //
+    //draw_set_colour($422D32);
+    //draw_rectangle(_name_box[0], _name_box[1], _name_box[2], _name_box[3], false);
+    //draw_set_colour(c_white);
+    //
+    //scribble_draw(_x + textbox_width + 10, _y - 20, textbox_name);
+    //scribble_reset();
 }
 
 //Draw a little icon once the text has finished displaying, or if text display is paused
-if ((scribble_autotype_get(text_element) >= 1) || scribble_autotype_is_paused(text_element))
+if ((text_element.get_typewriter_state() >= 1) || text_element.get_typewriter_paused())
 {
     draw_sprite(spr_white_coin, 0, _x + textbox_width + 20, _y + textbox_height + 20);
 }

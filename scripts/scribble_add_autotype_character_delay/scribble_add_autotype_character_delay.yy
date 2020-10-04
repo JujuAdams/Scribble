@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Autotype",
-    "path": "folders/Scribble/Autotype.yy",
+    "path": "folders/Autotype.yy",
   },
   "resourceVersion": "1.0",
   "name": "scribble_add_autotype_character_delay",

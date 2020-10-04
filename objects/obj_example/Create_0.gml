@@ -1,10 +1,10 @@
-scribble_set_default_font("fnt_test_0");
-scribble_add_all_fonts();
+scribble_font_set_default("fnt_test_0");
+scribble_font_add_all();
 
 scribble_add_autotype_event("portrait", example_dialogue_set_portrait);
 scribble_add_autotype_event("name", example_dialogue_set_name);
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
-scribble_add_spritefont("spr_sprite_font", _mapstring, 0, 3);
+scribble_font_add_from_sprite("spr_sprite_font", _mapstring, 0, 3);
 
 textbox_width              = 400;
 textbox_height             = 100;
@@ -31,11 +31,6 @@ textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave]
                         "[portrait,spr_portrait_2][name,You][fnt_dialogue_2]Ah jeez, look at the time. I need to go.\n\nSee you soon!",
                         "[portrait,spr_portrait][name,Juju]See ya!\n\n[slant]Press space to restart the conversation[/slant]"];
 
-scribble_set_wrap(textbox_width, textbox_height);
-text_element = scribble_cache(textbox_conversation[textbox_conversation_index]);
-scribble_reset();
-scribble_autotype_fade_in(text_element, 1, 0, false);
-
 text_element = scribble(textbox_conversation[textbox_conversation_index])
               .wrap(textbox_width, textbox_height)
-              .typewriter_in(1, 0, false);
+              .cache_now(true);

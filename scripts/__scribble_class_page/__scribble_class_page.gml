@@ -65,7 +65,7 @@ function __scribble_class_page() constructor
 	    repeat(array_length(vertex_buffer_array))
 	    {
 	        var vbuff_data = vertex_buffer_array[_v];
-	        vbuff_data.word_start_tell = buffer_tell(_data.buffer);
+	        vbuff_data.word_start_tell = buffer_tell(vbuff_data.buffer);
 	        vbuff_data.word_x_offset   = undefined;
 	        ++_v;
 	    }

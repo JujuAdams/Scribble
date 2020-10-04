@@ -49,6 +49,7 @@ global.__scribble_autotype_events      = ds_map_create();
 global.__scribble_default_font         = undefined;
 global.__scribble_global_cache_map     = ds_map_create();
 global.__scribble_global_cache_list    = ds_list_create();
+global.__scribble_element_cache        = ds_map_create();
 global.__scribble_cache_test_index     = 0;
 global.__scribble_buffer               = buffer_create(1024, buffer_grow, 1);
 global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);

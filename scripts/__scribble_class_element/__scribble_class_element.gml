@@ -37,8 +37,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     animation_array[@ SCRIBBLE_ANIM.JITTER_MAXIMUM  ] =  1.2;
     animation_array[@ SCRIBBLE_ANIM.JITTER_SPEED    ] =  0.4;
     
-    //Apply the default template
-    scribble_default_template();
+    bezier_array = array_create(6, 0.0);
     
     #region Setters
     
@@ -159,8 +158,6 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     /// @param page
     page = function(_page)
     {
-        if ((_page < 0) || (_page >= get_pages())) throw "!";
-        
         __page = _page;
         return self;
     }
@@ -313,7 +310,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         var _margin_r = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
         var _margin_b = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
         
-        var _model_bbox = __get_cache().get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
+        var _model_bbox = __get_model().get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
         
         switch(valign)
         {
@@ -380,24 +377,20 @@ function __scribble_class_element(_string, _element_cache_name) constructor
                  width:  _w,
                  height: _h,
                  
-                 x0: _x0,
-                 y0: _y0,
-                 x1: _x1,
-                 y1: _y1,
-                 x2: _x2,
-                 y2: _y2,
-                 x3: _x3,
-                 y3: _y3 };
+                 x0: _x0, y0: _y0,
+                 x1: _x1, y1: _y1,
+                 x2: _x2, y2: _y2,
+                 x3: _x3, y3: _y3 };
     }
     
     get_width = function()
     {
-        return __get_cache().get_width();
+        return __get_model().get_width();
     }
     
     get_height = function()
     {
-        return __get_cache().get_height();
+        return __get_model().get_height();
     }
     
     get_page = function()
@@ -407,13 +400,13 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     get_pages = function()
     {
-        return __get_cache().get_pages();
+        return __get_model().get_pages();
     }
     
     get_typewriter_state = function()
     {
         __scribble_trace("get_typewriter_state() not implemented");
-        return undefined;
+        return 1.0;
     }
     
     get_typewriter_paused = function()
@@ -423,6 +416,8 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     #endregion
     
+    #region Public Methods
+    
     draw = function(_x, _y)
     {
         var _model = __get_model();
@@ -430,13 +425,13 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         if (current_time - last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
         {
             animation_time += SCRIBBLE_STEP_SIZE;
-            if (tw_do) _model.__update_typewriter();
+            if (tw_do) __update_typewriter();
         }
         
         last_drawn = current_time;
-        
         _model.draw(_x, _y, self);
-        return undefined;
+        
+        return self;
     }
     
     flush_now = function()
@@ -444,7 +439,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         if (is_struct(model)) model.flush();
         model = undefined;
         
-        return undefined;
+        return self;
     }
     
     cache_now = function(_freeze)
@@ -453,7 +448,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         
     	var _model_cache_name = text +
                                 string(starting_font  ) + ":" +
-    	                        string(starting_color ) + ":" +
+    	                        string(starting_colour) + ":" +
     	                        string(starting_halign) + ":" +
     	                        string(starting_valign) + ":" +
     	                        string(line_height_min) + ":" +
@@ -467,8 +462,12 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         model = global.__scribble_global_cache_map[? _model_cache_name];
         if (model == undefined) model = new __scribble_class_model(self, _model_cache_name);
         
-        return undefined;
+        return self;
     }
+    
+    #endregion
+    
+    #region Private Methods
     
     __get_model = function()
     {
@@ -478,6 +477,9 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     __update_typewriter = function()
     {
+        return undefined;
+        
+        /*
 	    if (!tw_do) //No fade in/out set
 	    {
 	        var _typewriter_method       = 0;
@@ -724,5 +726,11 @@ function __scribble_class_element(_string, _element_cache_name) constructor
 	            script_execute(_callback, _scribble_array, _typewriter_window_array[_typewriter_window] - 1);
 	        }
 	    }
+        */
     }
+    
+    #endregion
+    
+    //Apply the default template
+    scribble_default_template();
 }

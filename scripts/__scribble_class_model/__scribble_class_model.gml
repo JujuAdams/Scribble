@@ -8,8 +8,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	if (__SCRIBBLE_DEBUG) __scribble_trace("Caching \"" + _model_cache_name + "\"");
     
 	//Add this text element to the global cache lookup
-	global.__scribble_global_cache_map[? _model_cache_name] = _scribble_array;
-	ds_list_add(global.__scribble_global_cache_list, _scribble_array);
+	global.__scribble_global_cache_map[? _model_cache_name] = self;
+	ds_list_add(global.__scribble_global_cache_list, self);
     
     
     
@@ -99,7 +99,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
 	    shader_set_uniform_f(global.__scribble_uniform_tw_method, _tw_method);
 	    shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _element.tw_smoothness);
-	    shader_set_uniform_f_array(global.__scribble_uniform_tw_window_array, tw_do? _element.tw_window_array : global.__scribble_window_array_null);
+	    shader_set_uniform_f_array(global.__scribble_uniform_tw_window_array, _element.tw_do? _element.tw_window_array : global.__scribble_window_array_null);
         
 	    shader_set_uniform_f(global.__scribble_uniform_colour_blend, colour_get_red(  _element.blend_colour)/255,
 	                                                                 colour_get_green(_element.blend_colour)/255,
@@ -240,6 +240,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	var _def_halign        = _element.starting_halign;
     var _character_wrap    = _element.character_wrap;
     var _freeze            = _element.freeze;
+    var _ignore_commands   = _element.__ignore_command_tags;
        
 	var _font_data         = __scribble_get_font_data(_def_font);
 	var _font_glyphs_map   = _font_data.glyphs_map;
@@ -1301,7 +1302,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	                }
 	                else
 	                {
-	                    _line_array[@ __SCRIBBLE_LINE.HALIGN] = _text_halign;
+                        _line_data.halign = _text_halign;
 	                    continue; //Skip the rest of the parser step
 	                }
 	            }
@@ -1340,7 +1341,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	            continue;
 	        }
 	    }
-	    else if ((_character_code == SCRIBBLE_COMMAND_TAG_OPEN) && !global.scribble_state_ignore_commands) //If we've hit a command tag argument delimiter character (usually [)
+	    else if ((_character_code == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignore_commands) //If we've hit a command tag argument delimiter character (usually [)
 	    {
 	        //Record the start of the command tag in the string buffer
 	        _command_tag_start = buffer_tell(_string_buffer);
@@ -1375,12 +1376,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	        if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
             _word_height = 0; //Reset the word height since we hit a space
             
-            __reset_word_start();
+            _page_data.__reset_word_start();
             
 	        //Record the first character in this word
 	        _word_start_char = characters;
         
-	        if (SCRIBBLE_CREATE_CHARACTER_ARRAY) _character_array[@ characters] = _character_code;
+	        if (SCRIBBLE_CREATE_CHARACTER_ARRAY) character_array[@ characters] = _character_code;
 	        ++characters;
                 
 	        if (global.__scribble_character_delay)
@@ -1472,10 +1473,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	            }
                 
                 //Update CHAR_START_TELL, and WORD_START_TELL if needed
-                _vbuff_data.char_start_tell = buffer_tell(_buffer);
+                _vbuff_data.char_start_tell = buffer_tell(_glyph_buffer);
                 if (_character_wrap)
                 {
-                    _vbuff_data.word_start_tell = buffer_tell(_buffer);
+                    _vbuff_data.word_start_tell = buffer_tell(_glyph_buffer);
                     _vbuff_data.word_x_offset   = undefined;
                     _line_width = max(_line_width, _text_x);
                     
