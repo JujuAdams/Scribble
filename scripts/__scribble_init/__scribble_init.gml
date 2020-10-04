@@ -183,6 +183,12 @@ function __scribble_process_colour(_value)
     }
 }
 
+function __scribble_random()
+{
+    global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
+    return global.__scribble_lcg / 2147483648;
+}
+
 #region Internal Macro Definitions
 
 // @jujuadams

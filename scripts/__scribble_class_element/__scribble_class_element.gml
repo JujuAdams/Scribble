@@ -15,6 +15,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     starting_font   = SCRIBBLE_DEFAULT_FONT;
     starting_colour = c_white;
     starting_halign = fa_left;
+    starting_valign = fa_top;
     
     blend_colour = c_white;
     blend_alpha  = 1.0;
@@ -93,7 +94,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     /// @param colour
     /// @param halign
     /// @param valign
-    starting_format = function(_font_name, _colour, _halign, _valign)
+    starting_format = function(_font_name, _colour)
     {
         if (is_string(_font_name))
         {
@@ -118,9 +119,13 @@ function __scribble_class_element(_string, _element_cache_name) constructor
             if ((_colour != undefined) && (_colour >= 0)) starting_colour = _colour;
         }
         
-        if ((_halign != undefined) && (_halign >= 0)) starting_halign = _halign;
-        if ((_valign != undefined) && (_valign >= 0)) starting_valign = _valign;
-        
+        return self;
+    }
+    
+    align = function(_halign, _valign)
+    {
+        starting_halign = _halign;
+        starting_valign = _valign;
         return self;
     }
     
@@ -360,9 +365,10 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         var _margin_r = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
         var _margin_b = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
         
-        var _model_bbox = __get_model().get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
+        var _model = __get_model();
+        var _model_bbox = _model.get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
         
-        switch(valign)
+        switch(_model.valign)
         {
         	case fa_top:
         	    var _bbox_t = 0;
@@ -698,16 +704,8 @@ function __scribble_class_element(_string, _element_cache_name) constructor
                     
     	            if (_play_sound)
     	            {
-    	                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
-    	                var _rand = global.__scribble_lcg / 2147483648;
-    	                var _sound = _sound_array[floor(_rand*array_length(_sound_array))];
-                        
-    	                var _inst = audio_play_sound(_sound, 0, false);
-                        
-    	                global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
-    	                var _rand = global.__scribble_lcg / 2147483648;
-    	            	audio_sound_pitch(_inst, lerp(tw_sound_pitch_min, tw_sound_pitch_max, _rand));
-                
+    	                var _inst = audio_play_sound(_sound_array[floor(__scribble_random()*array_length(_sound_array))], 0, false);
+    	            	audio_sound_pitch(_inst, lerp(tw_sound_pitch_min, tw_sound_pitch_max, __scribble_random()));
     	                tw_sound_finish_time = current_time + 1000*audio_sound_length(_sound) - tw_sound_overlap;
     	            }
     	        }
