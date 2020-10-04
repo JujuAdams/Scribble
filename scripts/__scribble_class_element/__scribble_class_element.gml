@@ -17,6 +17,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     tw_in           = true;
     tw_speed        = 1;
     tw_smoothness   = 0;
+    tw_paused       = false;
     
     animation_time  = current_time;
     animation_array = array_create(SCRIBBLE_ANIM.__SIZE, 0.0);
