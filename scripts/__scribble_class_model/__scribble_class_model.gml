@@ -202,8 +202,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     #endregion
     
-    
-    
     #region Private Methods
     
     __new_page = function()
@@ -271,8 +269,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     #endregion
     
-    
-    
     #region Build Bezier curve segment lengths
             
     //Make a copy of the Bezier array
@@ -324,8 +320,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                 
     #endregion
     
-    
-    
     #region Add the first page to the text element
     
 	var _word_start_char = 0;
@@ -336,8 +330,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	var _page_vbuffs_array = _page_data.vertex_buffer_array; //Stores all the vertex buffers needed to render the text and sprites (per page)
     
     #endregion
-    
-    
     
     #region Add the first line to the page
     
@@ -351,9 +343,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     _line_data.halign = _def_halign;
     
     #endregion
-
-
-
+    
     #region Set the initial parser state
         
 	var _text_x            = 0;
@@ -372,9 +362,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     var _new_valign = undefined;
             
     #endregion
-
-
-
+    
     #region Parse the string
         
 	var _command_tag_start      = -1;
@@ -1857,9 +1845,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     if (valign == undefined) valign = fa_top;
             
     #endregion
-
-
-
+    
     #region Find the actual width of the text element
 
 	//Iterate over every page
@@ -1966,9 +1952,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	width = _model_max_x - _model_min_x;
 
     #endregion
-            
-            
-            
+    
     #region Final glyph transforms - horizontal alignment and Bezier curves
             
     //Find the min/max x-bounds for the textbox
@@ -2171,9 +2155,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	}
         
     #endregion
-            
-            
-            
+           
 	if (SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
 	{
         if (_bezier_do) show_error("Scribble:\nSCRIBBLE_CREATE_GLYPH_LTRB_ARRAY is not compatible with Bezier curves\n ", true);
@@ -2258,15 +2240,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         #endregion
 	}
     
-    
-    
 	if (SCRIBBLE_VERBOSE)
     {
         var _elapsed = (get_timer() - _timer_total)/1000;
         __scribble_trace("scribble_cache() took ", _elapsed, "ms for ", characters, " characters (ratio=", string_format(_elapsed/characters, 0, 6), ")");
     }
-    
-    
     
     #region Create an occurrence array if necessary
     //

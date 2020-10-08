@@ -48,7 +48,6 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     tw_in           = true;
     tw_speed        = 1;
     tw_smoothness   = 0;
-    tw_per_line     = false;
     tw_function     = undefined;
     tw_paused       = false;
     tw_delay_paused = false;
@@ -211,6 +210,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     /// @param page
     page = function(_page)
     {
+        if (_page != __page) __refresh_typewriter_for_page();
         __page = _page;
         return self;
     }
@@ -291,23 +291,29 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return undefined;
     }
     
-    typewriter_in = function(_speed, _smoothness, _per_line)
+    typewriter_in = function(_speed, _smoothness)
     {
+        var _old_tw_in = tw_in;
+        
         tw_do         = true;
         tw_in         = true;
         tw_speed      = _speed;
         tw_smoothness = _smoothness;
-        tw_per_line   = _per_line;
+        
+        if (tw_in != _old_tw_in) __refresh_typewriter_for_page();
         return self;
     }
     
-    typewriter_out = function(_speed, _smoothness, _per_line)
+    typewriter_out = function(_speed, _smoothness)
     {
+        var _old_tw_in = tw_in;
+        
         tw_do         = true;
         tw_in         = false;
         tw_speed      = _speed;
         tw_smoothness = _smoothness;
-        tw_per_line   = _per_line;
+        
+        if (tw_in != _old_tw_in) __refresh_typewriter_for_page();
         return self;
     }
     
@@ -354,6 +360,17 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     typewriter_unpause = function()
     {
+        if (tw_paused)
+        {
+        	var _old_head_pos = tw_window_array[@ tw_window];
+            
+            //Increment the window index
+        	tw_window = (tw_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
+            
+        	tw_window_array[@ tw_window  ] = _old_head_pos;
+        	tw_window_array[@ tw_window+1] = _old_head_pos - tw_smoothness;
+        }
+        
         tw_paused = false;
         return self;
     }
@@ -467,8 +484,19 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     get_typewriter_state = function()
     {
-        __scribble_trace("get_typewriter_state() not implemented");
-        return 1.0;
+    	//Early out if the method is NONE
+    	if (!tw_do) return 1.0; //No fade in/out set
+        
+	    var _page_data = __get_model().pages_array[__page];
+        
+    	var _min = _page_data.start_char;
+    	var _max = _page_data.last_char;
+        
+        if (_max <= _min) return 1.0;
+        _max += 2; //Bit of a hack
+        
+        var _t = clamp((tw_window_array[tw_window] - _min) / (_max - _min), 0, 1);
+        return tw_in? _t : (_t + 1);
     }
     
     get_typewriter_paused = function()
@@ -531,6 +559,21 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     #region Private Methods
     
+    __refresh_typewriter_for_page = function()
+    {
+	        var _page_data = __get_model().pages_array[__page];
+            
+        	tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - tw_smoothness);
+        	tw_window_array[@ 0] += tw_smoothness;
+            
+            if (tw_in)
+            {
+                tw_event_previous       = _page_data.start_event - 1;
+                tw_event_char_previous  = _page_data.start_char - 1;
+                tw_event_visited_struct = {};
+            }
+    }
+    
     __get_model = function()
     {
         cache_now(freeze);
@@ -577,17 +620,8 @@ function __scribble_class_element(_string, _element_cache_name) constructor
 	            var _page_data = _model.pages_array[__page];
                 
 	            //Find the last character we need to scan
-                if (tw_per_line)
-                {
-	                var _typewriter_count = _page_data.lines;
-	                var _line_data = _page_data.lines_array[min(ceil(_typewriter_head_pos + _typewriter_speed), _typewriter_count-1)];
-	                var _scan_b    = _line_data.last_char;
-                }
-                else
-                {
-	                var _typewriter_count = _page_data.last_char + 2;
-	                _scan_b = min(ceil(_typewriter_head_pos + _typewriter_speed), _typewriter_count);
-                }
+	            var _typewriter_count = _page_data.last_char + 2;
+	            _scan_b = min(ceil(_typewriter_head_pos + _typewriter_speed), _typewriter_count);
                 
 	            var _scan_a = tw_event_char_previous;
                 var _scan = _scan_a;
