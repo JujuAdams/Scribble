@@ -6,12 +6,6 @@ scribble_add_autotype_event("name", example_dialogue_set_name);
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 scribble_font_add_from_sprite("spr_sprite_font", _mapstring, 0, 3);
 
-textbox_width              = 400;
-textbox_height             = 100;
-textbox_portrait           = -1;
-textbox_name               = undefined;
-textbox_conversation_index = 0;
-
 textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave][rainbow]Scribble " + __SCRIBBLE_VERSION + "![/rainbow][/wave]\n\n\n[slant]Please press space to advance the conversation[/slant]",
                         "This example will show you how to make a simple dialogue system.[delay] This won't be an exhaustive demo but it should show you enough to get excited about what you can achieve with [rainbow]Scribble[/rainbow].",
                         "Let's try changing this font to something more gamey\n[spr_sprite_font][delay].[delay].[delay].[delay]\nMuch better![delay] [rainbow]Scribble[/rainbow] lets you change font in the middle of a string using simple tags.[delay] In this case, we switched to a spritefont (which work the same way as GM's font_add_ext, more or less)",
@@ -30,3 +24,11 @@ textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave]
                         "[portrait,spr_portrait][name,Juju][rainbow]Scribble[/rainbow] does all the pagination for you. It's super super nice. Handling text overflow can be a real pain if you're not careful.",
                         "[portrait,spr_portrait_2][name,You][fnt_dialogue_2]Ah jeez, look at the time. I need to go.\n\nSee you soon!",
                         "[portrait,spr_portrait][name,Juju]See ya!\n\n[slant]Press space to restart the conversation[/slant]"];
+
+textbox_width              = 400;
+textbox_height             = 100;
+textbox_portrait           = -1;
+textbox_name               = undefined;
+textbox_conversation_index = 0;
+textbox_text               = textbox_conversation[textbox_conversation_index];
+textbox_skip               = false;

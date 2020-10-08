@@ -210,8 +210,9 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     /// @param page
     page = function(_page)
     {
-        if (_page != __page) __refresh_typewriter_for_page();
+        var _old_page = __page;
         __page = _page;
+        if (_old_page != __page) __refresh_typewriter_for_page();
         return self;
     }
     
@@ -285,35 +286,36 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     #region Typewriter Setters
     
-    typewriter_off = function()
+    typewriter_reset = function()
     {
+        if (tw_do) __refresh_typewriter_for_page();
         tw_do = false;
         return undefined;
     }
     
     typewriter_in = function(_speed, _smoothness)
     {
-        var _old_tw_in = tw_in;
+        var _refresh = !tw_do || !tw_in;
         
         tw_do         = true;
         tw_in         = true;
         tw_speed      = _speed;
         tw_smoothness = _smoothness;
         
-        if (tw_in != _old_tw_in) __refresh_typewriter_for_page();
+        if (_refresh) __refresh_typewriter_for_page();
         return self;
     }
     
     typewriter_out = function(_speed, _smoothness)
     {
-        var _old_tw_in = tw_in;
+        var _refresh = !tw_do || tw_in;
         
         tw_do         = true;
         tw_in         = false;
         tw_speed      = _speed;
         tw_smoothness = _smoothness;
         
-        if (tw_in != _old_tw_in) __refresh_typewriter_for_page();
+        if (_refresh) __refresh_typewriter_for_page();
         return self;
     }
     
@@ -561,17 +563,17 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     __refresh_typewriter_for_page = function()
     {
-	        var _page_data = __get_model().pages_array[__page];
-            
-        	tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - tw_smoothness);
-        	tw_window_array[@ 0] += tw_smoothness;
-            
-            if (tw_in)
-            {
-                tw_event_previous       = _page_data.start_event - 1;
-                tw_event_char_previous  = _page_data.start_char - 1;
-                tw_event_visited_struct = {};
-            }
+	    var _page_data = __get_model().pages_array[__page];
+        
+        tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - tw_smoothness);
+        tw_window_array[@ 0] += tw_smoothness;
+        
+        if (tw_in)
+        {
+            tw_event_previous       = _page_data.start_event - 1;
+            tw_event_char_previous  = _page_data.start_char - 1;
+            tw_event_visited_struct = {};
+        }
     }
     
     __get_model = function()

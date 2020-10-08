@@ -6,8 +6,8 @@ draw_set_colour($422D32);
 draw_rectangle(_x, _y, _x + textbox_width + 20, _y + textbox_height + 20, false);
 draw_set_colour(c_white);
 
-var _element = scribble(textbox_conversation[textbox_conversation_index]);
-_element.wrap(textbox_width, textbox_height).typewriter_in(1, 0, false).draw(_x + 10, _y + 10);
+var _element = scribble(textbox_text);
+_element.wrap(textbox_width, textbox_height).typewriter_in(textbox_skip? 9999 : 1, 0).draw(_x + 10, _y + 10);
 
 //Draw portrait
 draw_set_colour($422D32);

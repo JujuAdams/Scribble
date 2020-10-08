@@ -15,7 +15,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     last_drawn = current_time;
     cache_name = _model_cache_name;
-    page_count = 0;
     flushed    = false;
     
     characters = 0;
@@ -197,7 +196,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     get_pages = function()
     {
-        return page_count;
+        return pages;
     }
     
     #endregion
@@ -210,6 +209,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
     	pages_array[@ pages] = _page_data;
     	pages++;
+        
+        __scribble_trace("pages = ", pages);
         
         return _page_data;
     }
@@ -1736,12 +1737,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	            repeat(array_length(_page_vbuffs_array))
 	            {
 	                var _vbuff_data = _page_vbuffs_array[_v];
-                        
+                    
 	                var _buffer                = _vbuff_data.buffer;
 	                var _vbuff_line_start_list = _vbuff_data.line_start_list;
-	                var _line_tell_prev        = _vbuff_line_start_list[| _page_data.lines + 1];
+	                var _line_tell_prev        = _vbuff_line_start_list[| _page_data.lines];
 	                var _line_tell             = buffer_tell(_buffer);
-                        
+                    
 	                if (_line_tell_prev < _line_tell) //If we've added anything to this buffer on the previous line
 	                {
 	                    var _bytes = _line_tell - _line_tell_prev;

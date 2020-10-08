@@ -20,7 +20,7 @@
 ///     .fog()
 ///     .ignore_command_tags()
 ///     .bezier()
-///     .typewriter_off()
+///     .typewriter_reset()
 ///     .typewriter_in()
 ///     .typewriter_out()
 ///     .typewriter_sound()
