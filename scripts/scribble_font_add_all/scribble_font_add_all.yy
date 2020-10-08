@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Fonts",
-    "path": "folders/Scribble/Fonts.yy",
+    "name": "Font Setup",
+    "path": "folders/Scribble/Font Setup.yy",
   },
   "resourceVersion": "1.0",
   "name": "scribble_font_add_all",
