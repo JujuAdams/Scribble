@@ -2245,47 +2245,4 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         var _elapsed = (get_timer() - _timer_total)/1000;
         __scribble_trace("scribble_cache() took ", _elapsed, "ms for ", characters, " characters (ratio=", string_format(_elapsed/characters, 0, 6), ")");
     }
-    
-    #region Create an occurrence array if necessary
-    //
-	//var _occurrence_map = _scribble_array[SCRIBBLE.OCCURRENCES_MAP];
-	//if (!ds_map_exists(_occurrence_map, _occurrence_name))
-	//{
-	//    var _occurrence_array = array_create(__SCRIBBLE_OCCURRENCE.__SIZE);
-    //
-    //    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.__SECTION0         ] = "Tracking";
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.PAGE               ] =  0;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.FADE_IN            ] = -1;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SKIP               ] =  false;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SPEED              ] =  0;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.WINDOW             ] =  0;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.WINDOW_ARRAY       ] =  array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.METHOD             ] =  0; //No fade in/out set
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SMOOTHNESS         ] =  0;
-    //    
-    //    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.__SECTION1         ] = "Sounds";
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_ARRAY        ] = -1;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_OVERLAP      ] =  0;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_PER_CHAR     ] =  false;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_MIN_PITCH    ] =  1.0;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_MAX_PITCH    ] =  1.0;
-    //    
-    //    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.__SECTION2         ] = "Playback";
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.PAUSED             ] =  false;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DELAY_PAUSED       ] =  false;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DELAY_END          ] = -1;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.FUNCTION           ] =  undefined;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.SOUND_FINISH_TIME  ] =  current_time;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.DRAWN_TIME         ] =  current_time;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.ANIMATION_TIME     ] =  current_time;
-    //    
-    //    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.__SECTION3         ] = "Events";
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_PREVIOUS     ] = -1;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_CHAR_PREVIOUS] = -1;
-	//    _occurrence_array[@ __SCRIBBLE_OCCURRENCE.EVENT_VISITED_ARRAY] = array_create(array_length(_scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY]), false);
-    //
-	//    _occurrence_map[? _occurrence_name] = _occurrence_array;
-	//}
-    //
-    #endregion
 }
