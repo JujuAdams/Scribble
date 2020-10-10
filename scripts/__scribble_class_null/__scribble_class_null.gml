@@ -27,7 +27,6 @@ function __scribble_class_null() constructor
     typewriter_sound = function(_sound_array, _overlap, _pitch_min, _pitch_max) { return self; }
     typewriter_sound_per_char = function(_sound_array, _pitch_min, _pitch_max) { return self; }
     typewriter_function = function(_function) { return self; }
-    typewriter_character_delay = function(_character, _delay) { return self; }
     typewriter_pause = function() { return self; }
     typewriter_unpause = function() { return self; }
     

@@ -279,7 +279,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     reset = function()
     {
-        throw "!";
+        throw ".reset() not yet implemented";
         return self;
     }
     
@@ -346,12 +346,6 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     typewriter_function = function(_function)
     {
         tw_function = _function;
-        return self;
-    }
-    
-    typewriter_character_delay = function(_character, _delay)
-    {
-        __scribble_trace("typewriter_character_delay() not implemented");
         return self;
     }
     
