@@ -8,6 +8,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     global.__scribble_element_cache[? _element_cache_name] = self;
     
     model = undefined;
+    auto_refresh_typewriter = false;
     
     last_drawn = current_time;
     freeze = false;
@@ -286,7 +287,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     #region Typewriter Setters
     
-    typewriter_reset = function()
+    typewriter_off = function()
     {
         if (tw_do) __refresh_typewriter_for_page();
         tw_do = false;
@@ -554,6 +555,13 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         model = global.__scribble_global_cache_map[? _model_cache_name];
         if (model == undefined) model = new __scribble_class_model(self, _model_cache_name);
         
+        if (auto_refresh_typewriter)
+        {
+            auto_refresh_typewriter = false;
+            if (SCRIBBLE_VERBOSE) __scribble_trace("Auto-resetting typewriter state for \"", text, "\"");
+            __refresh_typewriter_for_page();
+        }
+        
         return self;
     }
     
@@ -678,7 +686,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
                                     else
 	                                {
 	                                    //Otherwise try to find a custom event
-	                                    var _function = global.__scribble_autotype_events[? _event_name];
+	                                    var _function = global.__scribble_typewriter_events[? _event_name];
                                         if (is_method(_function))
                                         {
                                             with(other) _function(self, _event_data_array, _scan);

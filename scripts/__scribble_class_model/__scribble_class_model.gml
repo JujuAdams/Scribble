@@ -898,7 +898,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                     break;
                             
 	                default:
-	                    if (ds_map_exists(global.__scribble_autotype_events, _command_name))
+	                    if (ds_map_exists(global.__scribble_typewriter_events, _command_name))
 	                    {
                             #region Custom Events
                                 

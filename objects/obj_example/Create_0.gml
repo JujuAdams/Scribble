@@ -1,8 +1,8 @@
 scribble_font_set_default("fnt_test_0");
 scribble_font_add_all();
 
-scribble_add_autotype_event("portrait", example_dialogue_set_portrait);
-scribble_add_autotype_event("name", example_dialogue_set_name);
+scribble_typewriter_add_event("portrait", example_dialogue_set_portrait);
+scribble_typewriter_add_event("name", example_dialogue_set_name);
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 scribble_font_add_from_sprite("spr_sprite_font", _mapstring, 0, 3);
 
@@ -30,5 +30,5 @@ textbox_height             = 100;
 textbox_portrait           = -1;
 textbox_name               = undefined;
 textbox_conversation_index = 0;
-textbox_text               = textbox_conversation[textbox_conversation_index];
 textbox_skip               = false;
+textbox_element            = SCRIBBLE_NULL;

@@ -11,7 +11,7 @@ function scribble_default_template()
     origin(0, 0);
     wrap(-1, -1, false);
     line_height(-1, -1);
-    typewriter_reset();
+    typewriter_off();
     page(0);
     fog(c_white, 0.0);
     ignore_command_tags(false);

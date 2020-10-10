@@ -39,27 +39,28 @@ if (!__SCRIBBLE_ON_WEB)
 }
     
 //Declare global variables
-global.__scribble_lcg                  = date_current_datetime()*100;
-global.__scribble_font_directory       = _font_directory;
-global.__scribble_font_data            = ds_map_create();  //Stores a data array for each font defined inside Scribble
-global.__scribble_colours              = ds_map_create();  //Stores colour definitions, including custom colours
-global.__scribble_effects              = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_effects_slash        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_autotype_events      = ds_map_create();
-global.__scribble_default_font         = undefined;
-global.__scribble_global_cache_map     = ds_map_create();
-global.__scribble_global_cache_list    = ds_list_create();
-global.__scribble_element_cache        = ds_map_create();
-global.__scribble_cache_test_index     = 0;
-global.__scribble_buffer               = buffer_create(1024, buffer_grow, 1);
-global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
-global.__scribble_character_delay      = false;
-global.__scribble_character_delay_map  = ds_map_create();
-global.__scribble_font_family_map      = ds_map_create();
+global.__scribble_lcg                 = date_current_datetime()*100;
+global.__scribble_font_directory      = _font_directory;
+global.__scribble_font_data           = ds_map_create();  //Stores a data array for each font defined inside Scribble
+global.__scribble_colours             = ds_map_create();  //Stores colour definitions, including custom colours
+global.__scribble_effects             = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_effects_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_default_font        = undefined;
+global.__scribble_global_cache_map    = ds_map_create();
+global.__scribble_global_cache_list   = ds_list_create();
+global.__scribble_element_cache       = ds_map_create();
+global.__scribble_cache_test_index    = 0;
+global.__scribble_buffer              = buffer_create(1024, buffer_grow, 1);
+global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
+global.__scribble_character_delay     = false;
+global.__scribble_character_delay_map = ds_map_create();
+global.__scribble_font_family_map     = ds_map_create();
+global.__scribble_callstack_cache     = ds_map_create();
 if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
-    
-global.__scribble_autotype_events[? "pause"] = undefined;
-global.__scribble_autotype_events[? "delay"] = undefined;
+
+if (!variable_global_exists("__scribble_typewriter_events")) global.__scribble_typewriter_events = ds_map_create();
+global.__scribble_typewriter_events[? "pause"] = undefined;
+global.__scribble_typewriter_events[? "delay"] = undefined;
     
 //Add bindings for default effect names
 //Effect index 0 is reversed for sprites
@@ -347,6 +348,8 @@ enum SCRIBBLE_ANIM
 
 #macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. Thise constant must match the corresponding values in __shd_scribble
 
+#macro SCRIBBLE_NULL  global.__scribble_null_element
 global.__scribble_default_element = scribble("");
+global.__scribble_null_element = new __scribble_class_null();
 
 #endregion

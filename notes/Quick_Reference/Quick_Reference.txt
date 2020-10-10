@@ -16,7 +16,7 @@ Scribble text elements have the following methods:
     .fog()
     .ignore_command_tags()
     .bezier()
-    .typewriter_reset()
+    .typewriter_off()
     .typewriter_in()
     .typewriter_out()
     .typewriter_skip()

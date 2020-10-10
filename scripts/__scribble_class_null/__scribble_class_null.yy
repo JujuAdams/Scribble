@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Autotype",
-    "path": "folders/Autotype.yy",
+    "name": "(System)",
+    "path": "folders/Scribble/(System).yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_add_autotype_character_delay",
+  "name": "__scribble_class_null",
   "tags": [],
   "resourceType": "GMScript",
 }

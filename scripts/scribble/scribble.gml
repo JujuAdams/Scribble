@@ -20,7 +20,7 @@
 ///     .fog()
 ///     .ignore_command_tags()
 ///     .bezier()
-///     .typewriter_reset()
+///     .typewriter_off()
 ///     .typewriter_in()
 ///     .typewriter_out()
 ///     .typewriter_sound()
@@ -50,6 +50,17 @@ function scribble()
     var _element_cache_name = _string + ":" + _unique_id;
     var _element = global.__scribble_element_cache[? _element_cache_name];
     if (_element == undefined) _element = new __scribble_class_element(_string, _element_cache_name);
+    
+    if (SCRIBBLE_AUTO_TYPEWRITER_RESET)
+    {
+        var _callstack = string(debug_get_callstack());
+        var _old_cache_name = global.__scribble_callstack_cache[? _callstack];
+        if (_old_cache_name != _element_cache_name)
+        {
+            if (_old_cache_name != undefined) _element.auto_refresh_typewriter = true;
+            global.__scribble_callstack_cache[? _callstack] = _element_cache_name;
+        }
+    }
     
     return _element;
 }

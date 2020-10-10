@@ -14,6 +14,7 @@
 #macro SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY   ""     //The directory to look in for font .yy files, relative to the root folder that Included Files are stored in
 #macro SCRIBBLE_BOX_ALIGN_TO_PAGE             false  //Whether to use text element sizes (false) or page sizes (true)
 #macro SCRIBBLE_SKIP_SPEED_THRESHOLD          999    //A typewriter speed greater than or equal to this value is considered "skipping" and won't wait for delays or pauses in text
+#macro SCRIBBLE_AUTO_TYPEWRITER_RESET         true
 
 
 

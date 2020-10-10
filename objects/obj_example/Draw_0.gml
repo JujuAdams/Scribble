@@ -1,13 +1,17 @@
 var _x = (room_width - (textbox_width + textbox_height + 50)) div 2;
 var _y = (room_height - (textbox_height + 30)) div 2;
 
-//Draw main text body
+//Draw textbox
 draw_set_colour($422D32);
 draw_rectangle(_x, _y, _x + textbox_width + 20, _y + textbox_height + 20, false);
 draw_set_colour(c_white);
 
-var _element = scribble(textbox_text);
-_element.wrap(textbox_width, textbox_height).typewriter_in(textbox_skip? 9999 : 1, 0).draw(_x + 10, _y + 10);
+//Draw main text body
+//Note that we're setting "textbox_element" here
+textbox_element = scribble(textbox_conversation[textbox_conversation_index])
+.wrap(textbox_width, textbox_height)
+.typewriter_in(textbox_skip? 9999 : 1, 0)
+.draw(_x + 10, _y + 10);
 
 //Draw portrait
 draw_set_colour($422D32);
@@ -20,7 +24,7 @@ if (sprite_exists(textbox_portrait))
 }
 
 //Draw a little icon once the text has finished displaying, or if text display is paused
-if ((_element.get_typewriter_state() >= 1) || _element.get_typewriter_paused())
+if ((textbox_element.get_typewriter_state() >= 1) || textbox_element.get_typewriter_paused())
 {
     draw_sprite(spr_white_coin, 0, _x + textbox_width + 20, _y + textbox_height + 20);
 }
