@@ -302,7 +302,7 @@ enum SCRIBBLE
 	__SIZE            //26
 }
 
-enum SCRIBBLE_ANIM
+enum __SCRIBBLE_ANIM
 {
     WAVE_SIZE,        // 0
     WAVE_FREQ,        // 1

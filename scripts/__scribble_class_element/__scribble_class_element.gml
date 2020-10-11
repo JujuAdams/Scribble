@@ -66,27 +66,17 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     tw_sound_finish_time = current_time;
     
     animation_time  = current_time;
-    animation_array = array_create(SCRIBBLE_ANIM.__SIZE, 0.0);
-    animation_array[@ SCRIBBLE_ANIM.WAVE_SIZE       ] =  4;
-    animation_array[@ SCRIBBLE_ANIM.WAVE_FREQ       ] = 50;
-    animation_array[@ SCRIBBLE_ANIM.WAVE_SPEED      ] =  0.2;
-    animation_array[@ SCRIBBLE_ANIM.SHAKE_SIZE      ] =  2;
-    animation_array[@ SCRIBBLE_ANIM.SHAKE_SPEED     ] =  0.4;
-    animation_array[@ SCRIBBLE_ANIM.RAINBOW_WEIGHT  ] =  0.5;
-    animation_array[@ SCRIBBLE_ANIM.RAINBOW_SPEED   ] =  0.01;
-    animation_array[@ SCRIBBLE_ANIM.WOBBLE_ANGLE    ] = 40;
-    animation_array[@ SCRIBBLE_ANIM.WOBBLE_FREQ     ] =  0.15;
-    animation_array[@ SCRIBBLE_ANIM.PULSE_SCALE     ] =  0.4;
-    animation_array[@ SCRIBBLE_ANIM.PULSE_SPEED     ] =  0.1;
-    animation_array[@ SCRIBBLE_ANIM.WHEEL_SIZE      ] =  1;
-    animation_array[@ SCRIBBLE_ANIM.WHEEL_FREQ      ] =  0.5;
-    animation_array[@ SCRIBBLE_ANIM.WHEEL_SPEED     ] =  0.2;
-    animation_array[@ SCRIBBLE_ANIM.CYCLE_SPEED     ] =  0.3;
-    animation_array[@ SCRIBBLE_ANIM.CYCLE_SATURATION] =  255;
-    animation_array[@ SCRIBBLE_ANIM.CYCLE_VALUE     ] =  255;
-    animation_array[@ SCRIBBLE_ANIM.JITTER_MINIMUM  ] =  0.8;
-    animation_array[@ SCRIBBLE_ANIM.JITTER_MAXIMUM  ] =  1.2;
-    animation_array[@ SCRIBBLE_ANIM.JITTER_SPEED    ] =  0.4;
+    animation_array = array_create(__SCRIBBLE_ANIM.__SIZE, 0.0);
+    
+    msdf_shadow_colour  = c_black;
+    msdf_shadow_alpha   = 0.0;
+    msdf_shadow_xoffset = 0;
+    msdf_shadow_yoffset = 0;
+    
+    msdf_border_colour    = c_black;
+    msdf_border_thickness = 0.0;
+    
+    msdf_feather_thickness = 1.0;
     
     #region Setters
     
@@ -217,14 +207,6 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return self;
     }
     
-    /// @param property
-    /// @param value
-    animation = function(_property, _value)
-    {
-        animation_array[@ _property] = _value;
-        return self;
-    }
-    
     /// @param colour
     /// @param alpha
     fog = function(_colour, _alpha)
@@ -277,12 +259,6 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         }
     }
     
-    reset = function()
-    {
-        throw ".reset() not yet implemented";
-        return self;
-    }
-    
     #endregion
     
     #region Typewriter Setters
@@ -291,7 +267,13 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     {
         if (tw_do) __refresh_typewriter_for_page();
         tw_do = false;
-        return undefined;
+        return self;
+    }
+    
+    typewriter_reset = function()
+    {
+        __refresh_typewriter_for_page();
+        return self;
     }
     
     typewriter_in = function(_speed, _smoothness)
@@ -369,6 +351,99 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         }
         
         tw_paused = false;
+        return self;
+    }
+    
+    #endregion
+    
+    #region Animation
+    
+    animation_wave = function(_size, _frequency, _speed)
+    {
+        animation_array[@ __SCRIBBLE_ANIM.WAVE_SIZE ] = _size;
+        animation_array[@ __SCRIBBLE_ANIM.WAVE_FREQ ] = _frequency;
+        animation_array[@ __SCRIBBLE_ANIM.WAVE_SPEED] = _speed;
+        return self;
+    }
+    
+    animation_shake = function(_size, _speed)
+    {
+        animation_array[@ __SCRIBBLE_ANIM.SHAKE_SIZE ] = _size;
+        animation_array[@ __SCRIBBLE_ANIM.SHAKE_SPEED] = _speed;
+        return self;
+    }
+    
+    animation_rainbow = function(_weight, _speed)
+    {
+        animation_array[@ __SCRIBBLE_ANIM.RAINBOW_WEIGHT] = _weight;
+        animation_array[@ __SCRIBBLE_ANIM.RAINBOW_SPEED ] = _speed;
+        return self;
+    }
+    
+    animation_wobble = function(_angle, _frequency)
+    {
+        animation_array[@ __SCRIBBLE_ANIM.WOBBLE_ANGLE] = _angle;
+        animation_array[@ __SCRIBBLE_ANIM.WOBBLE_FREQ ] = _frequency;
+        return self;
+    }
+    
+    animation_pulse = function(_scale, _speed)
+    {
+        animation_array[@ __SCRIBBLE_ANIM.PULSE_SCALE] = _scale;
+        animation_array[@ __SCRIBBLE_ANIM.PULSE_SPEED] = _speed;
+        return self;
+    }
+    
+    animation_wheel = function(_size, _frequency, _speed)
+    {
+        animation_array[@ __SCRIBBLE_ANIM.WHEEL_SIZE ] = _size;
+        animation_array[@ __SCRIBBLE_ANIM.WHEEL_FREQ ] = _frequency;
+        animation_array[@ __SCRIBBLE_ANIM.WHEEL_SPEED] = _speed;
+        return self;
+    }
+    
+    animation_cycle = function(_speed, _saturation, _value)
+    {
+        animation_array[@ __SCRIBBLE_ANIM.CYCLE_SPEED     ] = _speed;
+        animation_array[@ __SCRIBBLE_ANIM.CYCLE_SATURATION] = _saturation;
+        animation_array[@ __SCRIBBLE_ANIM.CYCLE_VALUE     ] = _value;
+        return self;
+    }
+    
+    animation_jitter = function(_min, _max, _speed)
+    {
+        animation_array[@ __SCRIBBLE_ANIM.JITTER_MINIMUM] = _min;
+        animation_array[@ __SCRIBBLE_ANIM.JITTER_MAXIMUM] = _max;
+        animation_array[@ __SCRIBBLE_ANIM.JITTER_SPEED  ] = _speed;
+        return self;
+    }
+    
+    #endregion
+    
+    #region MSDF
+    
+    msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset)
+    {
+        msdf_shadow_colour  = _colour;
+        msdf_shadow_alpha   = _alpha;
+        msdf_shadow_xoffset = _x_offset;
+        msdf_shadow_yoffset = _y_offset;
+        
+        return self;
+    }
+    
+    msdf_border = function(_colour, _thickness)
+    {
+        msdf_border_colour    = _colour;
+        msdf_border_thickness = _thickness;
+        
+        return self;
+    }
+    
+    msdf_feather = function(_thickness)
+    {
+        msdf_feather_thickness = 1.0;
+        
         return self;
     }
     

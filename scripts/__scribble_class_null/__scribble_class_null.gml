@@ -11,17 +11,16 @@ function __scribble_class_null() constructor
     line_height = function(_min, _max) { return self; }
     template = function(_template) { return self; }
     page = function(_page) { return self; }
-    animation = function(_property, _value) { return self; }
     fog = function(_colour, _alpha) { return self; }
     ignore_command_tags = function(_state) { return self; }
     bezier = function() { return self; }
-    reset = function() { return self; }
     
     #endregion
     
     #region Typewriter Setters
     
     typewriter_off = function() { return self; }
+    typewriter_reset = function() { return self; }
     typewriter_in = function(_speed, _smoothness) { return self; }
     typewriter_out = function(_speed, _smoothness) { return self; }
     typewriter_sound = function(_sound_array, _overlap, _pitch_min, _pitch_max) { return self; }
@@ -29,6 +28,27 @@ function __scribble_class_null() constructor
     typewriter_function = function(_function) { return self; }
     typewriter_pause = function() { return self; }
     typewriter_unpause = function() { return self; }
+    
+    #endregion
+    
+    #region Animation
+    
+    animation_wave = function(_size, _frequency, _speed) { return self; }
+    animation_shake = function(_size, _speed) { return self; }
+    animation_rainbow = function(_weight, _speed) { return self; }
+    animation_wobble = function(_angle, _frequency) { return self; }
+    animation_pulse = function(_scale, _speed) { return self; }
+    animation_wheel = function(_size, _frequency, _speed) { return self; }
+    animation_cycle = function(_speed, _saturation, _value) { return self; }
+    animation_jitter = function(_min, _max, _speed) { return self; }
+    
+    #endregion
+    
+    #region MSDF
+    
+    msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset) { return self; }
+    msdf_border = function(_colour, _thickness) { return self; }
+    msdf_feather = function(_thickness) { return self; }
     
     #endregion
     
