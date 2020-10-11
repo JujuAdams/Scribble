@@ -6,7 +6,7 @@ function example_autotype_callback(argument0, argument1) {
 	if (SCRIBBLE_CREATE_CHARACTER_ARRAY)
 	{
 	    //Find the character array for this text element
-	    var _character_array = _element[SCRIBBLE.CHARACTER_ARRAY];
+	    var _character_array = _element.character_array;
     
 	    //Read what character was displayed
 	    var _char = _character_array[_pos];

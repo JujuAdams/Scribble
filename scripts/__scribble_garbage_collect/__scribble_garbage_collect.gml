@@ -12,10 +12,10 @@ function __scribble_garbage_collect()
 	        global.__scribble_cache_test_index = (global.__scribble_cache_test_index - 1 + _size) mod _size;
             
 	        //Only flush if we want to garbage collect this text element and it hasn't been drawn for a while
-	        var _cache_array = global.__scribble_global_cache_list[| global.__scribble_cache_test_index]
-	        if (_cache_array[SCRIBBLE.GARBAGE_COLLECT] && (_cache_array[SCRIBBLE.DRAWN_TIME] + SCRIBBLE_CACHE_TIMEOUT < current_time))
+	        var _element = global.__scribble_global_cache_list[| global.__scribble_cache_test_index]
+	        if (_element.last_drawn + SCRIBBLE_CACHE_TIMEOUT < current_time)
 	        {
-	            scribble_flush(_cache_array);
+	            _element.flush_now();
 	        }
 	        else
 	        {
