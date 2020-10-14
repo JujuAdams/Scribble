@@ -1,3 +1,2 @@
-scribble_draw(x, y, "[wobble]testtest test test test");
-
-scribble_draw(x, y + 50, "[pulse]testtest test test test");
+scribble("[wobble]testtest test test test").draw(x, y);
+scribble("[pulse]testtest test test test").draw(x, y + 50);

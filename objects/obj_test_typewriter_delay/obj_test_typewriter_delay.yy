@@ -18,8 +18,8 @@
   "physicsKinematic": false,
   "physicsShapePoints": [],
   "eventList": [
-    {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"parent":{"name":"obj_test_autotype_delay","path":"objects/obj_test_autotype_delay/obj_test_autotype_delay.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
-    {"isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,"parent":{"name":"obj_test_autotype_delay","path":"objects/obj_test_autotype_delay/obj_test_autotype_delay.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"parent":{"name":"obj_test_typewriter_delay","path":"objects/obj_test_typewriter_delay/obj_test_typewriter_delay.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,"parent":{"name":"obj_test_typewriter_delay","path":"objects/obj_test_typewriter_delay/obj_test_typewriter_delay.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
   "properties": [],
   "overriddenProperties": [],
@@ -28,7 +28,7 @@
     "path": "folders/Examples/Test Cases.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_autotype_delay",
+  "name": "obj_test_typewriter_delay",
   "tags": [],
   "resourceType": "GMObject",
 }

@@ -1,5 +1,5 @@
-scribble_set_default_font("fnt_test_1");
-scribble_add_all_fonts();
+scribble_font_set_default("fnt_test_1");
+scribble_font_add_all();
 
 x0 = 200;
 y0 = 300;
