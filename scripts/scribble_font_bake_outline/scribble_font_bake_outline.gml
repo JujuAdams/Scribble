@@ -30,7 +30,7 @@ function scribble_font_bake_outline(_source_font_name, _new_font_name, _outline_
 	shader_reset();
 
 	//Run the baking operation
-	scribble_bake_shader(_source_font_name, _new_font_name, __shd_scribble_bake_outline,
-		                 2, _outline_size, _outline_size, _outline_size, _outline_size,
-		                 _outline_size, _smooth);
+	scribble_font_bake_shader(_source_font_name, _new_font_name, __shd_scribble_bake_outline,
+		                      2, _outline_size, _outline_size, _outline_size, _outline_size,
+		                      _outline_size, _smooth);
 }
