@@ -408,14 +408,14 @@ This function is perhaps best used in conjunction with the [`SCRIBBLE_CREATE_CHA
 
 ## Size Getters
 
-### `.get_bbox(x, y, [leftPad], [topPad], [rightPad], [bottomPad])`
+### `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
 
 **Returns:** Struct containing the positions of the bounding box for a text element
 
 |Name         |Datatype|Purpose                                                                                            |
 |-------------|--------|---------------------------------------------------------------------------------------------------|
-|`x`          |real    |x position in the room                                                                             |
-|`y`          |real    |y position in the room                                                                             |
+|`[x]`        |real    |x position in the room. Defaults to 0                                                              |
+|`[y]`        |real    |y position in the room. Defaults to 0                                                              |
 |`[leftPad]`  |real    |Extra space on the left-hand side of the textbox. Positive values create more space. Defaults to 0 |
 |`[topPad]`   |real    |Extra space on the top of the textbox. Positive values create more space. Defaults to 0            |
 |`[rightPad]` |real    |Extra space on the right-hand side of the textbox. Positive values create more space. Defaults to 0|

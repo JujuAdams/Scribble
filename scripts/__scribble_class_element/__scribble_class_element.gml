@@ -82,8 +82,6 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     /// @param fontName
     /// @param colour
-    /// @param halign
-    /// @param valign
     starting_format = function(_font_name, _colour)
     {
         if (is_string(_font_name))
@@ -257,6 +255,8 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         {
             show_error("Scribble:\nWrong number of arguments (" + string(argument_count) + ") provided\nExpecting 0 or 8\n ", false);
         }
+        
+        return self;
     }
     
     #endregion
@@ -358,6 +358,9 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     #region Animation
     
+    /// @param size
+    /// @param frequency
+    /// @param speed
     animation_wave = function(_size, _frequency, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.WAVE_SIZE ] = _size;
@@ -366,6 +369,8 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return self;
     }
     
+    /// @param size
+    /// @param speed
     animation_shake = function(_size, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.SHAKE_SIZE ] = _size;
@@ -373,6 +378,8 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return self;
     }
     
+    /// @param weight
+    /// @param speed
     animation_rainbow = function(_weight, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.RAINBOW_WEIGHT] = _weight;
@@ -380,6 +387,8 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return self;
     }
     
+    /// @param angle
+    /// @param frequency
     animation_wobble = function(_angle, _frequency)
     {
         animation_array[@ __SCRIBBLE_ANIM.WOBBLE_ANGLE] = _angle;
@@ -387,6 +396,8 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return self;
     }
     
+    /// @param scale
+    /// @param speed
     animation_pulse = function(_scale, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.PULSE_SCALE] = _scale;
@@ -394,6 +405,9 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return self;
     }
     
+    /// @param size
+    /// @param frequency
+    /// @param speed
     animation_wheel = function(_size, _frequency, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.WHEEL_SIZE ] = _size;
@@ -402,6 +416,9 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return self;
     }
     
+    /// @param size
+    /// @param saturation
+    /// @param value
     animation_cycle = function(_speed, _saturation, _value)
     {
         animation_array[@ __SCRIBBLE_ANIM.CYCLE_SPEED     ] = _speed;
@@ -410,6 +427,9 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         return self;
     }
     
+    /// @param minScale
+    /// @param maxScale
+    /// @param speed
     animation_jitter = function(_min, _max, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.JITTER_MINIMUM] = _min;
@@ -451,10 +471,16 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     
     #region Getters
     
+    /// @param [x]
+    /// @param [y]
+    /// @param [leftPad]
+    /// @param [topPad]
+    /// @param [rightPad]
+    /// @param [bottomPad]
     get_bbox = function()
     {
-        var _x        = argument[0];
-        var _y        = argument[1];
+        var _x        = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : 0;
+        var _y        = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
         var _margin_l = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
         var _margin_t = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
         var _margin_r = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
