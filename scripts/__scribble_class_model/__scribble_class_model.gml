@@ -822,7 +822,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                                 
 	                    var _surface_texture = surface_get_texture(_surface);
                         
-                        var _vbuff_data            = __find_vertex_buffer(_surface_texture);
+                        var _vbuff_data            = _page_data.__find_vertex_buffer(_surface_texture);
 	                    var _buffer                = _vbuff_data.buffer;
 	                    var _vbuff_line_start_list = _vbuff_data.line_start_list;
                                 
