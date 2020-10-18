@@ -28,7 +28,7 @@ function __scribble_class_page() constructor
     
     texture_to_buffer_map = ds_map_create();
     
-    __new_line = function()
+    static __new_line = function()
     {
         var _line_data = new __scribble_class_line();
         
@@ -38,7 +38,7 @@ function __scribble_class_page() constructor
         return _line_data;
     }
     
-    __new_vertex_buffer = function(_texture, _for_text)
+    static __new_vertex_buffer = function(_texture, _for_text)
     {
         var _vertex_buffer_data = new __scribble_class_vertex_buffer(_texture, _for_text)
         
@@ -47,7 +47,7 @@ function __scribble_class_page() constructor
         return _vertex_buffer_data;
     }
     
-    __find_vertex_buffer = function(_texture, _for_text)
+    static __find_vertex_buffer = function(_texture, _for_text)
     {
         var _vbuff_data = texture_to_buffer_map[? _texture];
         if (_vbuff_data == undefined)
@@ -59,7 +59,7 @@ function __scribble_class_page() constructor
         return _vbuff_data;
     }
     
-    __reset_word_start = function()
+    static __reset_word_start = function()
     {
         var _v = 0;
         repeat(array_length(vertex_buffer_array))
@@ -71,7 +71,7 @@ function __scribble_class_page() constructor
         }
     }
     
-    __clean_up = function(_destroy_buffer)
+    static __clean_up = function(_destroy_buffer)
     {
         if (texture_to_buffer_map != undefined) ds_map_destroy(texture_to_buffer_map);
         texture_to_buffer_map = undefined;
@@ -84,7 +84,7 @@ function __scribble_class_page() constructor
         }
     }
     
-    __flush = function()
+    static __flush = function()
     {
         var _i = 0;
         repeat(array_length(vertex_buffer_array))
@@ -94,7 +94,7 @@ function __scribble_class_page() constructor
         }
     }
     
-    __submit = function()
+    static __submit = function()
     {
         var _i = 0;
         repeat(array_length(vertex_buffer_array))

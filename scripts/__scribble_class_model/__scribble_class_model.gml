@@ -49,7 +49,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     #region Public Methods
     
-    draw = function(_x, _y, _element)
+    static draw = function(_x, _y, _element)
     {
         if (flushed) return undefined;
         if (_element == undefined) _element = global.__scribble_default_element;
@@ -133,7 +133,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         matrix_set(matrix_world, _old_matrix);
     }
     
-    flush = function()
+    static flush = function()
     {
         if (flushed) return undefined;
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing model \"" + string(cache_name) + "\"");
@@ -156,7 +156,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     /// @param page
-    get_bbox = function(_page)
+    static get_bbox = function(_page)
     {
         if ((_page != undefined) && (_page >= 0))
         {
@@ -180,7 +180,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     /// @page
-    get_width = function(_page)
+    static get_width = function(_page)
     {
         if ((_page != undefined) && (_page >= 0))
         {
@@ -193,7 +193,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     /// @page
-    get_height = function(_page)
+    static get_height = function(_page)
     {
         if ((_page != undefined) && (_page >= 0))
         {
@@ -205,7 +205,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         }
     }
     
-    get_pages = function()
+    static get_pages = function()
     {
         return pages;
     }
@@ -214,7 +214,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     #region Private Methods
     
-    __new_page = function()
+    static __new_page = function()
     {
         var _page_data = new __scribble_class_page();
         
@@ -224,7 +224,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         return _page_data;
     }
     
-    __new_event = function(_character, _event_name, _data)
+    static __new_event = function(_character, _event_name, _data)
     {
         var _count = array_length(events_char_array);
         events_char_array[@ _count] = _character;

@@ -18,7 +18,7 @@ function __scribble_class_font(_name, _type) constructor
     mapstring    = undefined;
     separation   = undefined;
     
-    copy_to = function(_target)
+    static copy_to = function(_target)
     {
         var _names = variable_struct_get_names(self);
         var _i = 0;

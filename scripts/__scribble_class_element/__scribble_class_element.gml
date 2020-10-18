@@ -101,7 +101,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     /// @param fontName
     /// @param colour
-    starting_format = function(_font_name, _colour)
+    static starting_format = function(_font_name, _colour)
     {
         if (is_string(_font_name))
         {
@@ -129,7 +129,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
-    align = function(_halign, _valign)
+    static align = function(_halign, _valign)
     {
         starting_halign = _halign;
         starting_valign = _valign;
@@ -138,7 +138,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     /// @param colour
     /// @param alpha
-    blend = function(_colour, _alpha)
+    static blend = function(_colour, _alpha)
     {
         if (is_string(_colour))
         {
@@ -158,7 +158,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     /// @param xScale
     /// @param yScale
     /// @param angle
-    transform = function(_xscale, _yscale, _angle)
+    static transform = function(_xscale, _yscale, _angle)
     {
         xscale = _xscale;
         yscale = _yscale;
@@ -168,7 +168,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     /// @param xOffset
     /// @param yOffset
-    origin = function(_x, _y)
+    static origin = function(_x, _y)
     {
         origin_x = _x;
         origin_y = _y;
@@ -178,7 +178,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     /// @param maxWidth
     /// @param [maxHeight]
     /// @param [characterWrap]
-    wrap = function()
+    static wrap = function()
     {
         max_width      = argument[0];
         max_height     = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
@@ -188,7 +188,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     /// @param min
     /// @param max
-    line_height = function(_min, _max)
+    static line_height = function(_min, _max)
     {
         line_height_min = _min;
         line_height_max = _max;
@@ -196,7 +196,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     }
     
     /// @param templateFunction/array
-    template = function(_template)
+    static template = function(_template)
     {
         if (is_array(_template))
         {
@@ -216,7 +216,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     }
     
     /// @param page
-    page = function(_page)
+    static page = function(_page)
     {
         var _old_page = __page;
         __page = _page;
@@ -226,7 +226,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     /// @param colour
     /// @param alpha
-    fog = function(_colour, _alpha)
+    static fog = function(_colour, _alpha)
     {
         if (is_string(_colour))
         {
@@ -244,7 +244,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     }
     
     /// @param state
-    ignore_command_tags = function(_state)
+    static ignore_command_tags = function(_state)
     {
         __ignore_command_tags = _state;
         return self;
@@ -258,7 +258,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     /// @param y3
     /// @param x4
     /// @param y4
-    bezier = function()
+    static bezier = function()
     {
         if (argument_count <= 0)
         {
@@ -282,20 +282,20 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     #region Typewriter Setters
     
-    typewriter_off = function()
+    static typewriter_off = function()
     {
         if (tw_do) __refresh_typewriter_for_page();
         tw_do = false;
         return self;
     }
     
-    typewriter_reset = function()
+    static typewriter_reset = function()
     {
         __refresh_typewriter_for_page();
         return self;
     }
     
-    typewriter_in = function(_speed, _smoothness)
+    static typewriter_in = function(_speed, _smoothness)
     {
         var _refresh = !tw_do || !tw_in;
         
@@ -308,7 +308,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
-    typewriter_out = function(_speed, _smoothness)
+    static typewriter_out = function(_speed, _smoothness)
     {
         var _refresh = !tw_do || tw_in;
         
@@ -321,7 +321,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
-    typewriter_sound = function(_sound_array, _overlap, _pitch_min, _pitch_max)
+    static typewriter_sound = function(_sound_array, _overlap, _pitch_min, _pitch_max)
     {
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
         
@@ -333,7 +333,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
-    typewriter_sound_per_char = function(_sound_array, _pitch_min, _pitch_max)
+    static typewriter_sound_per_char = function(_sound_array, _pitch_min, _pitch_max)
     {
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
         
@@ -344,19 +344,19 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
-    typewriter_function = function(_function)
+    static typewriter_function = function(_function)
     {
         tw_function = _function;
         return self;
     }
     
-    typewriter_pause = function()
+    static typewriter_pause = function()
     {
         tw_paused = true;
         return self;
     }
     
-    typewriter_unpause = function()
+    static typewriter_unpause = function()
     {
         if (tw_paused)
         {
@@ -380,7 +380,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     /// @param size
     /// @param frequency
     /// @param speed
-    animation_wave = function(_size, _frequency, _speed)
+    static animation_wave = function(_size, _frequency, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.WAVE_SIZE ] = _size;
         animation_array[@ __SCRIBBLE_ANIM.WAVE_FREQ ] = _frequency;
@@ -390,7 +390,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     /// @param size
     /// @param speed
-    animation_shake = function(_size, _speed)
+    static animation_shake = function(_size, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.SHAKE_SIZE ] = _size;
         animation_array[@ __SCRIBBLE_ANIM.SHAKE_SPEED] = _speed;
@@ -399,7 +399,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     /// @param weight
     /// @param speed
-    animation_rainbow = function(_weight, _speed)
+    static animation_rainbow = function(_weight, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.RAINBOW_WEIGHT] = _weight;
         animation_array[@ __SCRIBBLE_ANIM.RAINBOW_SPEED ] = _speed;
@@ -408,7 +408,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     /// @param angle
     /// @param frequency
-    animation_wobble = function(_angle, _frequency)
+    static animation_wobble = function(_angle, _frequency)
     {
         animation_array[@ __SCRIBBLE_ANIM.WOBBLE_ANGLE] = _angle;
         animation_array[@ __SCRIBBLE_ANIM.WOBBLE_FREQ ] = _frequency;
@@ -417,7 +417,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     /// @param scale
     /// @param speed
-    animation_pulse = function(_scale, _speed)
+    static animation_pulse = function(_scale, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.PULSE_SCALE] = _scale;
         animation_array[@ __SCRIBBLE_ANIM.PULSE_SPEED] = _speed;
@@ -427,7 +427,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     /// @param size
     /// @param frequency
     /// @param speed
-    animation_wheel = function(_size, _frequency, _speed)
+    static animation_wheel = function(_size, _frequency, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.WHEEL_SIZE ] = _size;
         animation_array[@ __SCRIBBLE_ANIM.WHEEL_FREQ ] = _frequency;
@@ -438,7 +438,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     /// @param size
     /// @param saturation
     /// @param value
-    animation_cycle = function(_speed, _saturation, _value)
+    static animation_cycle = function(_speed, _saturation, _value)
     {
         animation_array[@ __SCRIBBLE_ANIM.CYCLE_SPEED     ] = _speed;
         animation_array[@ __SCRIBBLE_ANIM.CYCLE_SATURATION] = _saturation;
@@ -449,7 +449,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     /// @param minScale
     /// @param maxScale
     /// @param speed
-    animation_jitter = function(_min, _max, _speed)
+    static animation_jitter = function(_min, _max, _speed)
     {
         animation_array[@ __SCRIBBLE_ANIM.JITTER_MINIMUM] = _min;
         animation_array[@ __SCRIBBLE_ANIM.JITTER_MAXIMUM] = _max;
@@ -461,7 +461,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     #region MSDF
     
-    msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset)
+    static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset)
     {
         msdf_shadow_colour  = _colour;
         msdf_shadow_alpha   = _alpha;
@@ -471,7 +471,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
-    msdf_border = function(_colour, _thickness)
+    static msdf_border = function(_colour, _thickness)
     {
         msdf_border_colour    = _colour;
         msdf_border_thickness = _thickness;
@@ -479,7 +479,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
-    msdf_feather = function(_thickness)
+    static msdf_feather = function(_thickness)
     {
         msdf_feather_thickness = 1.0;
         
@@ -496,7 +496,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     /// @param [topPad]
     /// @param [rightPad]
     /// @param [bottomPad]
-    get_bbox = function()
+    static get_bbox = function()
     {
         var _x        = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : 0;
         var _y        = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
@@ -579,27 +579,27 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
                  x3: _x3, y3: _y3 };
     }
     
-    get_width = function()
+    static get_width = function()
     {
         return __get_model(true).get_width();
     }
     
-    get_height = function()
+    static get_height = function()
     {
         return __get_model(true).get_height();
     }
     
-    get_page = function()
+    static get_page = function()
     {
         return __page;
     }
     
-    get_pages = function()
+    static get_pages = function()
     {
         return __get_model(true).get_pages();
     }
     
-    get_typewriter_state = function()
+    static get_typewriter_state = function()
     {
         //Early out if the method is NONE
         if (!tw_do) return 1.0; //No fade in/out set
@@ -616,7 +616,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return tw_in? _t : (_t + 1);
     }
     
-    get_typewriter_paused = function()
+    static get_typewriter_paused = function()
     {
         return tw_paused;
     }
@@ -625,7 +625,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     #region Public Methods
     
-    draw = function(_x, _y)
+    static draw = function(_x, _y)
     {
         //Get our model, and create one if needed
         var _model = __get_model(true);
@@ -648,7 +648,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
-    flush = function()
+    static flush = function()
     {
         if (flushed) return undefined;
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(cache_name) + "\"");
@@ -667,7 +667,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
-    build = function(_freeze)
+    static build = function(_freeze)
     {
         freeze = _freeze;
         
@@ -680,7 +680,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     #region Private Methods
     
-    __refresh_typewriter_for_page = function()
+    static __refresh_typewriter_for_page = function()
     {
         var _page_data = __get_model(true).pages_array[__page];
         
@@ -695,7 +695,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         }
     }
     
-    __get_model = function(_allow_create)
+    static __get_model = function(_allow_create)
     {
         if (flushed) return undefined;
         
@@ -731,7 +731,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return _model;
     }
     
-    __update_typewriter = function()
+    static __update_typewriter = function()
     {
         if (tw_do) //No fade in/out set
         {
