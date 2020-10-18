@@ -736,6 +736,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         if (tw_do) //No fade in/out set
         {
             var _typewriter_speed = tw_speed*SCRIBBLE_STEP_SIZE;
+            var _head_speed       = _typewriter_speed;
             var _skipping         = (tw_speed >= SCRIBBLE_SKIP_SPEED_THRESHOLD);
             
             var _typewriter_head_pos = tw_window_array[tw_window];
@@ -743,7 +744,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
             //Handle pausing
             if (tw_paused)
             {
-                _typewriter_speed = 0;
+                _head_speed = 0;
             }
             else if (tw_delay_paused)
             {
@@ -759,20 +760,20 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
                 }
                 else
                 {
-                    _typewriter_speed = 0;
+                    _head_speed = 0;
                 }
             }
             
             #region Scan for autotype events
             
-            if (tw_in && (_typewriter_speed > 0))
+            if (tw_in && (_head_speed > 0))
             {
                 var _model     = __get_model(true);
                 var _page_data = _model.pages_array[__page];
                 
                 //Find the last character we need to scan
                 var _typewriter_count = _page_data.last_char + 2;
-                _scan_b = min(ceil(_typewriter_head_pos + _typewriter_speed), _typewriter_count);
+                _scan_b = min(ceil(_typewriter_head_pos + _head_speed), _typewriter_count);
                 
                 var _scan_a = tw_event_char_previous;
                 var _scan = _scan_a;
@@ -840,7 +841,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
                                     
                                     if (tw_paused || tw_delay_paused)
                                     {
-                                        _typewriter_speed = _scan - _typewriter_head_pos;
+                                        _head_speed = _scan - _typewriter_head_pos;
                                         _break = true;
                                         break;
                                     }
@@ -862,7 +863,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
                     }
                 }
                 
-                _typewriter_head_pos = clamp(_typewriter_head_pos + _typewriter_speed, 0, _typewriter_count);
+                _typewriter_head_pos = clamp(_typewriter_head_pos + _head_speed, 0, _typewriter_count);
                 tw_window_array[@ tw_window] = _typewriter_head_pos;
             }
             
@@ -876,7 +877,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
                 _i += 2;
             }
             
-            if ((_typewriter_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
+            if ((_head_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
             {
                 #region Play a sound effect as the text is revealed
                 
