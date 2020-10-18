@@ -25,8 +25,9 @@
 #macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   false     //Outputs an array of glyph LTRB bounding boxes
 #macro SCRIBBLE_CREATE_CHARACTER_ARRAY    false     //Outputs an array of character codes
 #macro SCRIBBLE_DEFAULT_OCCURRENCE_NAME   "default" //Default value to use for autotyper occurrences
-#macro SCRIBBLE_CACHE_TIMEOUT             15000     //How long to wait (in milliseconds) before the cache automatically destroys a text element. Set to 0 (or less) to turn off automatic de-caching (you'll need to manually call scribble_flush() instead)
-#macro SCRIBBLE_VERBOSE                   true      //Enables verbose console output to aid with debugging
+#macro SCRIBBLE_CACHE_MODEL_TIMEOUT       15000     //How long to wait (in milliseconds) before the cache automatically cleans up unused model data
+#macro SCRIBBLE_CACHE_ELEMENT_TIMEOUT     15000     //How long to wait (in milliseconds) before the cache automatically cleans up unused element data
+#macro SCRIBBLE_VERBOSE                   false     //Enables verbose console output to aid with debugging
 #macro SCRIBBLE_BEZIER_ACCURACY           20        //Controls how accurate;y text fits Bezier curves. Higher is better
 #macro SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE  true      //Whether to trim off empty left-hand space when moving a word to a new line
 

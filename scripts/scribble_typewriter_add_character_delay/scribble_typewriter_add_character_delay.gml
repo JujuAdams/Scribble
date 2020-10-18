@@ -3,7 +3,7 @@
 
 function scribble_typewriter_add_character_delay(_character, _delay)
 {
-	if (is_string(_character)) _character = ord(_character);
-	global.__scribble_character_delay = true;
-	global.__scribble_character_delay_map[? _character] = _delay;
+    if (is_string(_character)) _character = ord(_character);
+    global.__scribble_character_delay = true;
+    global.__scribble_character_delay_map[? _character] = _delay;
 }

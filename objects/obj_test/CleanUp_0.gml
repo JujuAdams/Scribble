@@ -1,1 +1,1 @@
-element.flush_now();
+element.flush();

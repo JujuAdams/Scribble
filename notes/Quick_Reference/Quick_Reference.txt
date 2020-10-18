@@ -42,7 +42,7 @@ Methods are broken down into several categories:
     - [`.typewriter_sound_per_char()`](scribble()-Methods#typewriter_sound_per_charsoundarray-pitchmin-pitchmax)
     - [`.typewriter_function()`](scribble()-Methods#typewriter_functionfunction)
 5. [**Size Getters**](scribble()-Methods#size-getters)
-    - [`.get_bbox(x, y, [leftPad], [topPad], [rightPad], [bottomPad])`](scribble()-Methods#get_bboxx-y-leftpad-toppad-rightpad-bottompad)
+    - [`.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`](scribble()-Methods#get_bboxx-y-leftpad-toppad-rightpad-bottompad)
     - [`.get_width()`](scribble()-Methods#get_width)
     - [`.get_height()`](scribble()-Methods#get_height)
 6. [**Animation**](scribble()-Methods#size-getters)
@@ -59,8 +59,8 @@ Methods are broken down into several categories:
     - [`.msdf_border(colour, thickness)`](scribble()-Methods#msdf_bordercolour-thickness)
     - [`.msdf_feather(thickness)`](scribble()-Methods#msdf_featherthickness)
 8. [**Cache Management**](scribble()-Methods#cache-management)
-    - [`.cache_now(freeze)`](scribble()-Methods#cache_nowfreeze)
-    - [`.flush_now()`](scribble()-Methods#flush_now)
+    - [`.build(freeze)`](scribble()-Methods#buildfreeze)
+    - [`.flush()`](scribble()-Methods#flush)
 9. [**Miscellaneous**](scribble()-Methods#miscellaneous)
     - [`.template(function)`](scribble()-Methods#templatefunction)
     - [`.fog(colour, alpha)`](scribble()-Methods#fogcolour-alpha)
@@ -584,7 +584,7 @@ This function controls behaviour of the `[jitter]` effect across all uses in the
 
 ## Cache Management
 
-### `.cache_now(freeze)`
+### `.build(freeze)`
 
 **Returns**: The text element
 
@@ -594,7 +594,7 @@ This function controls behaviour of the `[jitter]` effect across all uses in the
 
 &nbsp;
 
-### `.flush_now()`
+### `.flush()`
 
 **Returns**: The text element
 

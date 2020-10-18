@@ -6,7 +6,7 @@
     "path": "folders/Scribble/(System).yy",
   },
   "resourceVersion": "1.0",
-  "name": "__scribble_class_null",
+  "name": "__scribble_class_null_element",
   "tags": [],
   "resourceType": "GMScript",
 }

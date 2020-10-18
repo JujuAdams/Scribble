@@ -13,7 +13,7 @@ function scribble()
     
     var _element_cache_name = _string + ":" + _unique_id;
     var _element = global.__scribble_element_cache[? _element_cache_name];
-    if (_element == undefined) _element = new __scribble_class_element(_string, _element_cache_name);
+    if (!is_struct(_element) || _element.flushed) _element = new __scribble_class_element(_string, _element_cache_name, false);
     
     if (SCRIBBLE_AUTO_TYPEWRITER_RESET)
     {

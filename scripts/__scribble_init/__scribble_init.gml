@@ -7,55 +7,58 @@ __scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIB
     
 if (__SCRIBBLE_ON_MOBILE)
 {
-	if (_font_directory != "")
-	{
-	    __scribble_trace("Included Files work a bit strangely on iOS and Android. Please use an empty string for the font directory and place fonts in the root of Included Files.");
-	    show_error("Scribble:\nGameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files.\n ", true);
-	    exit;
-	}
+    if (_font_directory != "")
+    {
+        __scribble_trace("Included Files work a bit strangely on iOS and Android. Please use an empty string for the font directory and place fonts in the root of Included Files.");
+        show_error("Scribble:\nGameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files.\n ", true);
+        exit;
+    }
 }
 else if (__SCRIBBLE_ON_WEB)
 {
-	if (_font_directory != "")
-	{
-	    __scribble_trace("Using folders inside Included Files might not work properly on HTML5. If you're having trouble, try using an empty string for the font directory and place fonts in the root of Included Files.");
-	}
+    if (_font_directory != "")
+    {
+        __scribble_trace("Using folders inside Included Files might not work properly on HTML5. If you're having trouble, try using an empty string for the font directory and place fonts in the root of Included Files.");
+    }
 }
     
 if (_font_directory != "")
 {
-	//Fix the font directory name if it's weird
-	var _char = string_char_at(_font_directory, string_length(_font_directory));
-	if (_char != "\\") && (_char != "/") _font_directory += "\\";
+    //Fix the font directory name if it's weird
+    var _char = string_char_at(_font_directory, string_length(_font_directory));
+    if (_char != "\\") && (_char != "/") _font_directory += "\\";
 }
     
 if (!__SCRIBBLE_ON_WEB)
 {
-	//Check if the directory exists
-	if ((_font_directory != "") && !directory_exists(_font_directory))
-	{
-	    __scribble_trace("WARNING! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
-	}
+    //Check if the directory exists
+    if ((_font_directory != "") && !directory_exists(_font_directory))
+    {
+        __scribble_trace("WARNING! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
+    }
 }
     
 //Declare global variables
 global.__scribble_lcg                 = date_current_datetime()*100;
 global.__scribble_font_directory      = _font_directory;
 global.__scribble_font_data           = ds_map_create();  //Stores a data array for each font defined inside Scribble
-global.__scribble_colours             = ds_map_create();  //Stores colour definitions, including custom colours
 global.__scribble_effects             = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_effects_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_default_font        = undefined;
-global.__scribble_global_cache_map    = ds_map_create();
-global.__scribble_global_cache_list   = ds_list_create();
-global.__scribble_element_cache       = ds_map_create();
-global.__scribble_cache_test_index    = 0;
 global.__scribble_buffer              = buffer_create(1024, buffer_grow, 1);
 global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
 global.__scribble_character_delay     = false;
 global.__scribble_character_delay_map = ds_map_create();
 global.__scribble_font_family_map     = ds_map_create();
-global.__scribble_callstack_cache     = ds_map_create();
+
+global.__scribble_model_cache              = ds_map_create();
+global.__scribble_model_cache_list         = ds_list_create();
+global.__scribble_model_cache_test_index   = 0;
+global.__scribble_element_cache            = ds_map_create();
+global.__scribble_element_cache_list       = ds_list_create();
+global.__scribble_element_cache_test_index = 0;
+global.__scribble_callstack_cache          = ds_map_create();
+
 if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
 
 if (!variable_global_exists("__scribble_typewriter_events")) global.__scribble_typewriter_events = ds_map_create();
@@ -160,9 +163,9 @@ function __scribble_get_font_data(_name)
     var _data = global.__scribble_font_data[? _name];
     
     if (_data == undefined)
-	{
-	    show_error("Scribble:\nFont \"" + string(_name) + "\" not recognised\nIf you're using tags, check this font has been tagged with \"Scribble\"\n ", true);
-	}
+    {
+        show_error("Scribble:\nFont \"" + string(_name) + "\" not recognised\nIf you're using tags, check this font has been tagged with \"Scribble\"\n ", true);
+    }
     
     return _data;
 }
@@ -170,8 +173,8 @@ function __scribble_get_font_data(_name)
 function __scribble_process_colour(_value)
 {
     if (is_string(_value))
-	{
-	    if (!ds_map_exists(global.__scribble_colours, _value))
+    {
+        if (!ds_map_exists(global.__scribble_colours, _value))
         {
             show_error("Scribble:\nColour \"" + _value + "\" not recognised. Please add it to scribble_colours()\n ", true);
         }
@@ -201,33 +204,33 @@ function __scribble_random()
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
 enum SCRIBBLE_GLYPH
 {
-	CHARACTER,  // 0
-	INDEX,      // 1
-	WIDTH,      // 2
-	HEIGHT,     // 3
-	X_OFFSET,   // 4
-	Y_OFFSET,   // 5
-	SEPARATION, // 6
-	TEXTURE,    // 7
-	U0,         // 8
-	V0,         // 9
-	U1,         //10
-	V1,         //11
-	__SIZE      //12
+    CHARACTER,  // 0
+    INDEX,      // 1
+    WIDTH,      // 2
+    HEIGHT,     // 3
+    X_OFFSET,   // 4
+    Y_OFFSET,   // 5
+    SEPARATION, // 6
+    TEXTURE,    // 7
+    U0,         // 8
+    V0,         // 9
+    U1,         //10
+    V1,         //11
+    __SIZE      //12
 }
 
 enum __SCRIBBLE_VERTEX
 {
-	X              =  0,
-	Y              =  4,
-	PACKED_INDEXES =  8,
+    X              =  0,
+    Y              =  4,
+    PACKED_INDEXES =  8,
     CENTRE_DXDY    = 12,
     SPRITE_DATA    = 16,
-	EFFECT_FLAGS   = 20,
-	COLOUR         = 24,
-	U              = 28,
-	V              = 32,
-	__SIZE         = 36
+    EFFECT_FLAGS   = 20,
+    COLOUR         = 24,
+    U              = 28,
+    V              = 32,
+    __SIZE         = 36
 }
 
 enum __SCRIBBLE_ANIM
@@ -276,8 +279,11 @@ enum __SCRIBBLE_ANIM
 
 #macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. Thise constant must match the corresponding values in __shd_scribble
 
-#macro SCRIBBLE_NULL  global.__scribble_null_element
+//TODO - Sort this out
+#macro SCRIBBLE_NULL_ELEMENT  global.__scribble_null_element
+#macro SCRIBBLE_NULL_MODEL  global.__scribble_null_model
 global.__scribble_default_element = scribble("");
-global.__scribble_null_element = new __scribble_class_null();
+global.__scribble_null_element = new __scribble_class_null_element();
+global.__scribble_null_model = undefined;
 
 #endregion

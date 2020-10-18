@@ -1,4 +1,4 @@
-function __scribble_class_null() constructor
+function __scribble_class_null_element() constructor
 {
     #region Setters
     
@@ -81,8 +81,8 @@ function __scribble_class_null() constructor
     #region Public Methods
     
     draw = function(_x, _y) { return self; }
-    flush_now = function() { return self; }
-    cache_now = function(_freeze) { return self; }
+    flush = function() { return self; }
+    build = function(_freeze) { return self; }
     
     #endregion
 }

@@ -58,24 +58,24 @@ function scribble_font_combine()
         var _src_glyphs_map = _src_font_data.glyphs_map;
         if (_src_glyphs_map != undefined)
         {
-        	var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
+            var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
         
-        	var _key = ds_map_find_first(_src_glyphs_map);
-        	repeat(ds_map_size(_src_glyphs_map))
-        	{
-        	    var _glyph_data = _src_glyphs_map[? _key];
+            var _key = ds_map_find_first(_src_glyphs_map);
+            repeat(ds_map_size(_src_glyphs_map))
+            {
+                var _glyph_data = _src_glyphs_map[? _key];
                 var _y_min = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET];
                 var _y_max = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ] + _y_min;
             
                 _font_min = min(_font_min, _y_min);
                 _font_max = max(_font_max, _y_max);
             
-        	    _key = ds_map_find_next(_src_glyphs_map, _key);
-        	}
+                _key = ds_map_find_next(_src_glyphs_map, _key);
+            }
         }
         else
         {
-        	var _src_glyphs_array = _src_font_data.glyphs_array;
+            var _src_glyphs_array = _src_font_data.glyphs_array;
             var _c = 0;
             repeat(array_length(_src_glyphs_array))
             {
@@ -116,20 +116,20 @@ function scribble_font_combine()
         var _src_glyphs_map = _src_font_data.glyphs_map;
         if (_src_glyphs_map != undefined)
         {
-        	var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
+            var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
         
-        	var _i = 0;
-        	var _key = ds_map_find_first(_src_glyphs_map);
-        	repeat(ds_map_size(_src_glyphs_map))
-        	{
-        	    _src_glyphs_array[@ _i] = _src_glyphs_map[? _key];
-        	    ++_i;
-        	    _key = ds_map_find_next(_src_glyphs_map, _key);
-        	}
+            var _i = 0;
+            var _key = ds_map_find_first(_src_glyphs_map);
+            repeat(ds_map_size(_src_glyphs_map))
+            {
+                _src_glyphs_array[@ _i] = _src_glyphs_map[? _key];
+                ++_i;
+                _key = ds_map_find_next(_src_glyphs_map, _key);
+            }
         }
         else
         {
-        	var _src_glyphs_array = _src_font_data.glyphs_array;
+            var _src_glyphs_array = _src_font_data.glyphs_array;
         }
     
         //Add this font's glyph data to the combined font

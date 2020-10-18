@@ -2,13 +2,13 @@
 
 function scribble_font_add_all()
 {
-	global.__scribble_autoscanning = true;
+    global.__scribble_autoscanning = true;
     
     var _using_tags = false;
-	var _i = 0;
-	repeat(9999)
-	{
-		if (!font_exists(_i)) break;
+    var _i = 0;
+    repeat(9999)
+    {
+        if (!font_exists(_i)) break;
         var _name = font_get_name(_i);
         if (string_copy(_name, 1, 9) != "__newfont") //Don't scan fonts created at runtime (e.g. by font_add_sprite())
         {
@@ -22,13 +22,13 @@ function scribble_font_add_all()
             }
         }
         
-		++_i;
-	}
+        ++_i;
+    }
     
-	var _i = 0;
-	repeat(9999)
-	{
-		if (!font_exists(_i)) break;
+    var _i = 0;
+    repeat(9999)
+    {
+        if (!font_exists(_i)) break;
         var _name = font_get_name(_i);
         if (string_copy(_name, 1, 9) != "__newfont") //Don't scan fonts created at runtime (e.g. by font_add_sprite())
         {
@@ -45,8 +45,8 @@ function scribble_font_add_all()
             }
         }
         
-		++_i;
-	}
+        ++_i;
+    }
     
-	global.__scribble_autoscanning = false;
+    global.__scribble_autoscanning = false;
 }

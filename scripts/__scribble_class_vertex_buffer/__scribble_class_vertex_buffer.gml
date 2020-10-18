@@ -15,24 +15,24 @@ function __scribble_class_vertex_buffer(_texture, _for_text) constructor
     __clean_up = function(_destroy_buffer)
     {
         if (line_start_list != undefined) ds_list_destroy(line_start_list);
-    	line_start_list = undefined;
+        line_start_list = undefined;
         
-    	char_start_tell = undefined;
-    	word_start_tell = undefined;
-    	word_x_offset   = undefined;
+        char_start_tell = undefined;
+        word_start_tell = undefined;
+        word_x_offset   = undefined;
         
         if (_destroy_buffer && (buffer != undefined))
         {
-	        buffer_delete(buffer);
-	        buffer = undefined;
+            buffer_delete(buffer);
+            buffer = undefined;
         }
     }
     
     __build_vertex_buffer = function(_freeze)
     {
-	    var _vertex_buffer = vertex_create_buffer_from_buffer_ext(buffer, global.__scribble_vertex_format, 0, buffer_tell(buffer) / __SCRIBBLE_VERTEX.__SIZE);
-	    if (_freeze) vertex_freeze(_vertex_buffer);
-	    vertex_buffer = _vertex_buffer;
+        var _vertex_buffer = vertex_create_buffer_from_buffer_ext(buffer, global.__scribble_vertex_format, 0, buffer_tell(buffer) / __SCRIBBLE_VERTEX.__SIZE);
+        if (_freeze) vertex_freeze(_vertex_buffer);
+        vertex_buffer = _vertex_buffer;
     }
     
     __flush = function()
@@ -43,6 +43,6 @@ function __scribble_class_vertex_buffer(_texture, _for_text) constructor
     
     __submit = function()
     {
-	    vertex_submit(vertex_buffer, pr_trianglelist, texture);
+        vertex_submit(vertex_buffer, pr_trianglelist, texture);
     }
 }
