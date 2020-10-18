@@ -1,4 +1,4 @@
-//   @jujuadams   v6.0.14   2020-10-03
+//   @jujuadams   v6.0.14a   2020-10-18
 precision highp float;
 
 const int MAX_EFFECTS = 9;
@@ -323,7 +323,7 @@ void main()
     vec2 centre;
     
     //If we have a valid Bezier curve, apply it
-    if (u_aBezier[2] != 0.0)
+    if ((u_aBezier[2].x != 0.0) || (u_aBezier[2].y != 0.0))
     {
         centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         
