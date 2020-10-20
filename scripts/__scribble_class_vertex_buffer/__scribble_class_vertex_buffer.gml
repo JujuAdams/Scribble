@@ -3,6 +3,7 @@ function __scribble_class_vertex_buffer(_texture, _for_text) constructor
     texture      = _texture;
     texel_width  = texture_get_texel_width( texture);
     texel_height = texture_get_texel_height(texture);
+    shader       = __shd_scribble;
     
     buffer = buffer_create(__SCRIBBLE_GLYPH_BYTE_SIZE*(_for_text? __SCRIBBLE_EXPECTED_GLYPHS : 1), buffer_grow, 1);
     line_start_list = ds_list_create();
@@ -11,6 +12,7 @@ function __scribble_class_vertex_buffer(_texture, _for_text) constructor
     char_start_tell = 0;
     word_start_tell = 0;
     word_x_offset   = 0;
+    msdf_range      = undefined;
     
     static __clean_up = function(_destroy_buffer)
     {

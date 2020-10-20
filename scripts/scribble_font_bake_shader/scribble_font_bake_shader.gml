@@ -51,6 +51,12 @@ function scribble_font_bake_shader()
         return undefined;
     }
     
+    if (_src_font_data.type == "msdf")
+    {
+    	show_error("Scribble:\nSource font cannot be an MSDF font\n ", false);
+    	return undefined;
+    }
+    
     
     //Unpack source glyphs into an intermediate array
     var _src_glyphs_map = _src_font_data.glyphs_map;

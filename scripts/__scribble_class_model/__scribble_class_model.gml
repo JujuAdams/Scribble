@@ -100,34 +100,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         _matrix = matrix_multiply(_matrix, _old_matrix);
         matrix_set(matrix_world, _matrix);
         
-        var _tw_method = 0;
-        if (_element.tw_do) _tw_method = _element.tw_in? 1 : -1;
-        
-        //Set the shader and its uniforms
-        shader_set(__shd_scribble);
-        shader_set_uniform_f(global.__scribble_uniform_time, _element.animation_time);
-        
-        shader_set_uniform_f(global.__scribble_uniform_tw_method, _tw_method);
-        shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _element.tw_smoothness);
-        shader_set_uniform_f_array(global.__scribble_uniform_tw_window_array, _element.tw_do? _element.tw_window_array : global.__scribble_window_array_null);
-        
-        shader_set_uniform_f(global.__scribble_uniform_colour_blend, colour_get_red(  _element.blend_colour)/255,
-                                                                     colour_get_green(_element.blend_colour)/255,
-                                                                     colour_get_blue( _element.blend_colour)/255,
-                                                                     _element.blend_alpha);
-        
-        shader_set_uniform_f(global.__scribble_uniform_fog, colour_get_red(  _element.fog_colour)/255,
-                                                            colour_get_green(_element.fog_colour)/255,
-                                                            colour_get_blue( _element.fog_colour)/255,
-                                                            _element.fog_alpha);
-        
-        shader_set_uniform_f_array(global.__scribble_uniform_data_fields,  _element.animation_array);
-        shader_set_uniform_f_array(global.__scribble_uniform_bezier_array, _element.bezier_array);
-        
         //Now iterate over the text element's vertex buffers and submit them
-        _page_data.__submit();
-        
-        shader_reset();
+        _page_data.__submit(_element);
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);
@@ -255,6 +229,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     var _font_glyphs_array = _font_data.glyphs_array;
     var _font_glyphs_min   = _font_data.glyph_min;
     var _font_glyphs_max   = _font_data.glyph_max;
+    var _font_msdf_range   = _font_data.msdf_range;
         
     var _glyph_texture = undefined;
     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
@@ -441,6 +416,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                         _font_glyphs_array = _font_data.glyphs_array;
                         _font_glyphs_min   = _font_data.glyph_min;
                         _font_glyphs_max   = _font_data.glyph_max;
+                        _font_msdf_range   = _font_data.msdf_range;
                                 
                         var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                         _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -458,6 +434,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                         _font_glyphs_array = _font_data.glyphs_array;
                         _font_glyphs_min   = _font_data.glyph_min;
                         _font_glyphs_max   = _font_data.glyph_max;
+                        _font_msdf_range   = _font_data.msdf_range;
                                 
                         var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                         _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -667,6 +644,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                                 _font_glyphs_array = _font_data.glyphs_array;
                                 _font_glyphs_min   = _font_data.glyph_min;
                                 _font_glyphs_max   = _font_data.glyph_max;
+                                _font_msdf_range   = _font_data.msdf_range;
                                         
                                 var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                 _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -704,6 +682,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                                 _font_glyphs_array = _font_data.glyphs_array;
                                 _font_glyphs_min   = _font_data.glyph_min;
                                 _font_glyphs_max   = _font_data.glyph_max;
+                                _font_msdf_range   = _font_data.msdf_range;
                                         
                                 var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                 _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -741,6 +720,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                                 _font_glyphs_array = _font_data.glyphs_array;
                                 _font_glyphs_min   = _font_data.glyph_min;
                                 _font_glyphs_max   = _font_data.glyph_max;
+                                _font_msdf_range   = _font_data.msdf_range;
                                         
                                 var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                 _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -778,6 +758,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                                 _font_glyphs_array = _font_data.glyphs_array;
                                 _font_glyphs_min   = _font_data.glyph_min;
                                 _font_glyphs_max   = _font_data.glyph_max;
+                                _font_msdf_range   = _font_data.msdf_range;
                                         
                                 var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                 _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -963,6 +944,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                                         _font_glyphs_array = _font_data.glyphs_array;
                                         _font_glyphs_min   = _font_data.glyph_min;
                                         _font_glyphs_max   = _font_data.glyph_max;
+                                        _font_msdf_range   = _font_data.msdf_range;
                                             
                                         var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                         _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -1461,7 +1443,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                 {
                     _glyph_texture = _glyph_array[SCRIBBLE_GLYPH.TEXTURE];
                     
-                    var _vbuff_data            = _page_data.__new_vertex_buffer(_glyph_texture, true);
+                    var _vbuff_data = _page_data.__find_vertex_buffer(_glyph_texture, true);
+                    _vbuff_data.msdf_range = _font_msdf_range;
+                    if (_font_msdf_range != undefined) _vbuff_data.shader = __shd_scribble_msdf;
+                    
                     var _glyph_buffer          = _vbuff_data.buffer;
                     var _vbuff_line_start_list = _vbuff_data.line_start_list;
                     
@@ -1764,9 +1749,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                         ds_list_add(_new_vbuff_line_start_list, 0);
                         
                         //Fill in vertex buffer data
+                        _new_vbuff_data.shader          = _vbuff_data.shader;
                         _new_vbuff_data.char_start_tell = _vbuff_data.char_start_tell - _line_tell_prev;
                         _new_vbuff_data.word_start_tell = _vbuff_data.word_start_tell - _line_tell_prev;
                         _new_vbuff_data.word_x_offset   = _vbuff_data.word_x_offset;
+                        _new_vbuff_data.msdf_range      = _vbuff_data.msdf_range;
                                 
                         //Copy the relevant vertices of the old buffer to the new buffer
                         buffer_copy(_buffer, _line_tell_prev, _bytes, _new_buffer, 0);

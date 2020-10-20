@@ -94,13 +94,78 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __submit = function()
+    static __submit = function(_element)
     {
+        var _tw_method = 0;
+        if (_element.tw_do) _tw_method = _element.tw_in? 1 : -1;
+        
+        var _shader = undefined;
+        
         var _i = 0;
         repeat(array_length(vertex_buffer_array))
         {
-            vertex_buffer_array[_i].__submit();
+            var _vertex_buffer = vertex_buffer_array[_i];
+            
+            if (_vertex_buffer.shader != _shader)
+            {
+                _shader = _vertex_buffer.shader;
+                
+                if (_shader == __shd_scribble)
+                {
+                    shader_set(__shd_scribble);
+                    shader_set_uniform_f(global.__scribble_uniform_time, _element.animation_time);
+                    
+                    shader_set_uniform_f(global.__scribble_uniform_tw_method, _tw_method);
+                    shader_set_uniform_f(global.__scribble_uniform_tw_smoothness, _element.tw_smoothness);
+                    shader_set_uniform_f_array(global.__scribble_uniform_tw_window_array, _element.tw_do? _element.tw_window_array : global.__scribble_window_array_null);
+                    
+                    shader_set_uniform_f(global.__scribble_uniform_colour_blend, colour_get_red(  _element.blend_colour)/255,
+                                                                                 colour_get_green(_element.blend_colour)/255,
+                                                                                 colour_get_blue( _element.blend_colour)/255,
+                                                                                 _element.blend_alpha);
+                    
+                    shader_set_uniform_f(global.__scribble_uniform_fog, colour_get_red(  _element.fog_colour)/255,
+                                                                        colour_get_green(_element.fog_colour)/255,
+                                                                        colour_get_blue( _element.fog_colour)/255,
+                                                                        _element.fog_alpha);
+                    
+                    shader_set_uniform_f_array(global.__scribble_uniform_data_fields,  _element.animation_array);
+                    shader_set_uniform_f_array(global.__scribble_uniform_bezier_array, _element.bezier_array);
+                }
+                else if (_shader == __shd_scribble_msdf)
+                {
+                    shader_set(__shd_scribble_msdf);
+                    shader_set_uniform_f(global.__scribble_msdf_uniform_time, _element.animation_time);
+                    
+                    shader_set_uniform_f(global.__scribble_msdf_uniform_tw_method, _tw_method);
+                    shader_set_uniform_f(global.__scribble_msdf_uniform_tw_smoothness, _element.tw_smoothness);
+                    shader_set_uniform_f_array(global.__scribble_msdf_uniform_tw_window_array, _element.tw_do? _element.tw_window_array : global.__scribble_window_array_null);
+                    
+                    shader_set_uniform_f(global.__scribble_msdf_uniform_colour_blend, colour_get_red(  _element.blend_colour)/255,
+                                                                                      colour_get_green(_element.blend_colour)/255,
+                                                                                      colour_get_blue( _element.blend_colour)/255,
+                                                                                      _element.blend_alpha);
+                    
+                    shader_set_uniform_f(global.__scribble_msdf_uniform_fog, colour_get_red(  _element.fog_colour)/255,
+                                                                             colour_get_green(_element.fog_colour)/255,
+                                                                             colour_get_blue( _element.fog_colour)/255,
+                                                                             _element.fog_alpha);
+                    
+                    shader_set_uniform_f_array(global.__scribble_msdf_uniform_data_fields,  _element.animation_array);
+                    shader_set_uniform_f_array(global.__scribble_msdf_uniform_bezier_array, _element.bezier_array);
+                }
+            }
+            
+            if (_shader == __shd_scribble_msdf)
+            {
+                shader_set_uniform_f(global.__scribble_msdf_uniform_texel, _vertex_buffer.texel_width, _vertex_buffer.texel_height);
+                shader_set_uniform_f(global.__scribble_msdf_uniform_range, _vertex_buffer.msdf_range);
+            }
+            
+            _vertex_buffer.__submit();
             ++_i;
         }
+        
+        shader_reset();
     }
 }

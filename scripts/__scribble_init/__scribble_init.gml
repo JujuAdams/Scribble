@@ -107,6 +107,17 @@ global.__scribble_uniform_tw_window_array = shader_get_uniform(__shd_scribble, "
 global.__scribble_uniform_tw_smoothness   = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness" );
 global.__scribble_uniform_data_fields     = shader_get_uniform(__shd_scribble, "u_aDataFields"           );
 global.__scribble_uniform_bezier_array    = shader_get_uniform(__shd_scribble, "u_aBezier"               );
+
+global.__scribble_msdf_uniform_time            = shader_get_uniform(__shd_scribble_msdf, "u_fTime"                 );
+global.__scribble_msdf_uniform_colour_blend    = shader_get_uniform(__shd_scribble_msdf, "u_vColourBlend"          );
+global.__scribble_msdf_uniform_fog             = shader_get_uniform(__shd_scribble_msdf, "u_vFog"                  );
+global.__scribble_msdf_uniform_tw_method       = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterMethod"     );
+global.__scribble_msdf_uniform_tw_window_array = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterWindowArray");
+global.__scribble_msdf_uniform_tw_smoothness   = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterSmoothness" );
+global.__scribble_msdf_uniform_data_fields     = shader_get_uniform(__shd_scribble_msdf, "u_aDataFields"           );
+global.__scribble_msdf_uniform_bezier_array    = shader_get_uniform(__shd_scribble_msdf, "u_aBezier"               );
+global.__scribble_msdf_uniform_texel           = shader_get_uniform(__shd_scribble_msdf, "u_vTexel"                );
+global.__scribble_msdf_uniform_range           = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFRange"            );
     
 //Hex converter array
 var _min = ord("0");
@@ -199,7 +210,7 @@ function __scribble_random()
 // With thanks to glitchroy, Mark Turner, DragoniteSpam, sp202, Rob van Saaze, soVes, and @stoozey_
 #macro __SCRIBBLE_VERSION  "7.0.0"
 #macro __SCRIBBLE_DATE     "2020-10-03"
-#macro __SCRIBBLE_DEBUG    false
+#macro __SCRIBBLE_DEBUG    true
 
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
 enum SCRIBBLE_GLYPH

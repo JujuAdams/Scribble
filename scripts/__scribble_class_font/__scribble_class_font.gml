@@ -17,6 +17,7 @@ function __scribble_class_font(_name, _type) constructor
     space_width  = undefined;
     mapstring    = undefined;
     separation   = undefined;
+    msdf_range   = undefined;
     
     static copy_to = function(_target)
     {
