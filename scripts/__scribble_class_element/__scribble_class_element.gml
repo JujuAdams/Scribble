@@ -529,10 +529,10 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         if ((xscale == 1) && (yscale == 1) && (angle == 0))
         {
             //Avoid using matrices if we can
-            var _l = _x + _model_bbox.left  - _margin_l;
-            var _t = _y + _bbox_t           - _margin_t;
-            var _r = _x + _model_bbox.right + _margin_r;
-            var _b = _y + _bbox_b           + _margin_b;
+            var _l = _x - origin_x + _model_bbox.left  - _margin_l;
+            var _t = _y - origin_y + _bbox_t           - _margin_t;
+            var _r = _x - origin_x + _model_bbox.right + _margin_r;
+            var _b = _y - origin_y + _bbox_b           + _margin_b;
             
             var _x0 = _l;   var _y0 = _t;
             var _x1 = _r;   var _y1 = _t;
@@ -542,9 +542,10 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         else
         {
             //TODO - Make this faster with custom code
-            var _matrix = matrix_build(_x, _y, 0, 
-                                        0, 0, angle,
-                                        xscale, yscale, 1);
+            var _matrix = matrix_build(-origin_x, -origin_y, 0,   0,0,0,   1,1,1);
+                _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
+                                                                0, 0, angle,
+                                                                xscale, yscale, 1));
             
             var _l = _model_bbox.left  - _margin_l;
             var _t = _bbox_t           - _margin_t;

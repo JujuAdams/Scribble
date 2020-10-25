@@ -83,7 +83,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         if (valign == fa_bottom) _top -= _model_h;
         
         //Build a matrix to transform the text...
-        if ((_xscale == 1) && (_yscale == 1) && (_angle  == 0))
+        if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
         {
             var _matrix = matrix_build(_left + _x, _top + _y, 0,   0,0,0,   1,1,1);
         }

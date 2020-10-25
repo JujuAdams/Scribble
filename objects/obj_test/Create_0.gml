@@ -27,4 +27,5 @@ demo_string = "Contrary to popular belief, Lorem Ipsum is not simply random text
 
 //Now parse the string to make some Scribble data
 element = scribble(demo_string).wrap(450, 100).typewriter_in(1, 10);
+element.origin(element.get_width()/2, element.get_height()/2);
 skip = false;
