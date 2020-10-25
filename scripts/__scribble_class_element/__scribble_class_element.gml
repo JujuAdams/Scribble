@@ -84,8 +84,9 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     tw_sound_per_char    = false;
     tw_sound_finish_time = current_time;
     
-    animation_time  = current_time;
-    animation_array = array_create(__SCRIBBLE_ANIM.__SIZE, 0.0);
+    animation_time         = current_time;
+    animation_tick_speed__ = 1;
+    animation_array        = array_create(__SCRIBBLE_ANIM.__SIZE, 0.0);
     
     msdf_shadow_colour  = c_black;
     msdf_shadow_alpha   = 0.0;
@@ -377,6 +378,13 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     #region Animation
     
+    /// @param tickSpeed
+    static animation_tick_speed = function(_speed)
+    {
+        animation_tick_speed__ = _speed;
+        return self;
+    }
+    
     /// @param size
     /// @param frequency
     /// @param speed
@@ -634,7 +642,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         //If enough time has elapsed since we drew this element then update our animation time
         if (current_time - last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
         {
-            animation_time += SCRIBBLE_STEP_SIZE;
+            animation_time += animation_tick_speed__*SCRIBBLE_STEP_SIZE;
             if (tw_do) __update_typewriter(); //Also update the typewriter too
         }
         

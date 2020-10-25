@@ -46,6 +46,7 @@ Methods are broken down into several categories:
     - [`.get_width()`](scribble()-Methods#get_width)
     - [`.get_height()`](scribble()-Methods#get_height)
 6. [**Animation**](scribble()-Methods#size-getters)
+    - [`.animation_tick_speed(tickSpeed)`](scribble()-Methods#animation_tick_speedtickspeed)
     - [`.animation_wave(size, frequency, speed)`](scribble()-Methods#animation_wavesize-frequency-speed)
     - [`.animation_shake(size, speed)`](scribble()-Methods#animation_shakesize-speed)
     - [`.animation_rainbow(weight, speed)`](scribble()-Methods#animation_rainbowweight-speed)
@@ -469,6 +470,18 @@ The struct returned by `.get_bbox()` contains the following member variables:
 &nbsp;
 
 ## Animation
+
+### `.animation_tick_speed(tickSpeed)`
+
+**Returns**: The text element
+
+|Name       |Datatype|Purpose                                                                                                       |
+|-----------|--------|--------------------------------------------------------------------------------------------------------------|
+|`tickSpeed`|real    |"Scaling factor" for animation ticks. A value of `2` doubles the speed, a value of `0.5` halves the speed etc.|
+
+This function controls the animation speed of all animation effects. It, however, does **not** alter the speed of the typewriter.
+
+&nbsp;
 
 ### `.animation_wave(size, frequency, speed)`
 
