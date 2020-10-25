@@ -31,4 +31,4 @@ textbox_portrait           = -1;
 textbox_name               = undefined;
 textbox_conversation_index = 0;
 textbox_skip               = false;
-textbox_element            = SCRIBBLE_NULL;
+textbox_element            = SCRIBBLE_NULL_ELEMENT;

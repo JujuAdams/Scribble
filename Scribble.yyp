@@ -54,7 +54,6 @@
     {"id":{"name":"scribble_font_bake_shader","path":"scripts/scribble_font_bake_shader/scribble_font_bake_shader.yy",},"order":4,},
     {"id":{"name":"__scribble_class_null_element","path":"scripts/__scribble_class_null_element/__scribble_class_null_element.yy",},"order":1,},
     {"id":{"name":"obj_test_typewriter_delay","path":"objects/obj_test_typewriter_delay/obj_test_typewriter_delay.yy",},"order":13,},
-    {"id":{"name":"fnt_untagged_font","path":"fonts/fnt_untagged_font/fnt_untagged_font.yy",},"order":10,},
     {"id":{"name":"obj_test_style","path":"objects/obj_test_style/obj_test_style.yy",},"order":5,},
     {"id":{"name":"scribble_typewriter_add_character_delay","path":"scripts/scribble_typewriter_add_character_delay/scribble_typewriter_add_character_delay.yy",},"order":7,},
     {"id":{"name":"example_dialogue_set_portrait","path":"scripts/example_dialogue_set_portrait/example_dialogue_set_portrait.yy",},"order":15,},
