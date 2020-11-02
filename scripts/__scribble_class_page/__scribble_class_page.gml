@@ -131,6 +131,11 @@ function __scribble_class_page() constructor
                     
                     shader_set_uniform_f_array(global.__scribble_uniform_data_fields,  _element.animation_array);
                     shader_set_uniform_f_array(global.__scribble_uniform_bezier_array, _element.bezier_array);
+                    
+                    shader_set_uniform_f(global.__scribble_u_vTypewriterStartPos,      0, 0);
+                    shader_set_uniform_f(global.__scribble_u_vTypewriterStartScale,    1.5, 1.5);
+                    shader_set_uniform_f(global.__scribble_u_fTypewriterStartRotation, -50);
+                    shader_set_uniform_f(global.__scribble_u_fTypewriterAlphaDuration, 0.2);
                 }
                 else if (_shader == __shd_scribble_msdf)
                 {
@@ -153,6 +158,11 @@ function __scribble_class_page() constructor
                     
                     shader_set_uniform_f_array(global.__scribble_msdf_uniform_data_fields,  _element.animation_array);
                     shader_set_uniform_f_array(global.__scribble_msdf_uniform_bezier_array, _element.bezier_array);
+                    
+                    shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,      0, 0);
+                    shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,    1, 1);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterStartRotation, 0);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterAlphaDuration, 0);
                 }
             }
             

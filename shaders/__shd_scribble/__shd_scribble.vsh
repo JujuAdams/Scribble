@@ -40,6 +40,8 @@ const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init()
 
 const int WINDOW_COUNT = 4;
 
+const float PI = 3.14159265359;
+
 
 
 //--------------------------------------------------------------------------------------------------------
@@ -56,11 +58,16 @@ varying vec4 v_vColour;
 
 uniform vec4  u_vColourBlend;                           //4
 uniform float u_fTime;                                  //1
+uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
+uniform vec2  u_aBezier[3];                             //6
+
 uniform float u_fTypewriterMethod;                      //1
 uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
 uniform float u_fTypewriterSmoothness;                  //1
-uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
-uniform vec2  u_aBezier[3];                             //6
+uniform vec2  u_vTypewriterStartPos;                    //2
+uniform vec2  u_vTypewriterStartScale;                  //2
+uniform float u_fTypewriterStartRotation;               //1
+uniform float u_fTypewriterAlphaDuration;               //1
 
 
 
@@ -107,22 +114,15 @@ vec2 rotate(vec2 position, vec2 centre, float angle)
     return rotate_by_vector(position, centre, vec2(cos(0.00872664625*angle), -sin(0.00872664625*angle)));
 }
 
-//Scale the character equally on both x and y axes
+//Scale the character
 vec2 scale(vec2 position, vec2 centre, float scale)
 {
     return centre + scale*(position - centre);
 }
 
-//Scale the character on the x-axis
-float xscale(vec2 position, vec2 centre, float scale)
+vec2 scale(vec2 position, vec2 centre, vec2 scale)
 {
-    return centre.x + scale*(position.x - centre.x);
-}
-
-//Scale the character on the y-axis
-float yscale(vec2 position, vec2 centre, float scale)
-{
-    return centre.y + scale*(position.y - centre.y);
+    return centre + scale*(position - centre);
 }
 
 //Oscillate the character
@@ -270,6 +270,89 @@ vec2 bezierDerivative(float t, vec2 p1, vec2 p2, vec2 p3)
 
 
 
+float easeQuad(float time)
+{
+	return time*time;
+}
+
+float easeCubic(float time)
+{
+	return time*time*time;
+}
+
+float easeQuart(float time)
+{
+	return time*time*time*time;
+}
+
+float easeQuint(float time)
+{
+	return time*time*time*time*time;
+}
+
+float easeSine(float time)
+{
+    return 1.0 - cos(0.5*(time*PI));
+}
+
+float easeExpo(float time)
+{
+    if (time == 0.0) return 0.0;
+    return pow(2.0, 10.0*time - 10.0);
+}
+
+float easeCirc(float time)
+{
+    return 1.0 - sqrt(1.0 - time*time);
+}
+
+float easeBack(float time)
+{
+    float param = 1.70158;
+	return time*time*((param + 1.0)*time - param);
+}
+
+float easeElastic(float time)
+{
+    if (time == 0.0) return 0.0;
+    if (time == 1.0) return 1.0;
+    return -pow(2.0, 10.0*time - 10.0) * sin((time*10.0 - 10.75) * (2.0*PI) / 3.0);
+}
+
+float easeBounce(float time)
+{
+	float n1 = 7.5625;
+	float d1 = 2.75;
+    
+    time = 1.0 - time;
+    
+	if (time < 1.0 / d1)
+    {
+		return 1.0 - n1*time*time;
+	}
+    else if (time < 2.0 / d1)
+    {
+        time -= 1.5/d1;
+		return 1.0 - (n1*time*time + 0.75);
+	}
+    else if (time < 2.5 / d1)
+    {
+        time -= 2.25/d1;
+		return 1.0 - (n1*time*time + 0.9375);
+	}
+    else
+    {
+        time -= 2.625/d1;
+		return 1.0 - (n1*time*time + 0.984375);
+	}
+}
+
+
+
+//--------------------------------------------------------------------------------------------------------
+
+
+
 void main()
 {
     //Unpack character/line index
@@ -339,34 +422,57 @@ void main()
         centre = pos + centreDelta;
     }
     
-    //Vertex animation
-    pos.xy = wobble(pos, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
-    pos.xy = pulse( pos, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
-    pos.xy = wave(  pos, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
-    pos.xy = wheel( pos, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
-    pos.xy = shake( pos, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
-    if (jitterFlag > 0.5) pos.xy = jitter(pos, centre, characterIndex, jitterMinimum, jitterMaximum, jitterSpeed); //Apply the jitter effect
-    
     //Colour
     v_vColour = in_Colour;
+    
     if (cycleFlag > 0.5) v_vColour = cycle(characterIndex, cycleSpeed, cycleSaturation, cycleValue, v_vColour); //Cycle colours through the defined palette
     v_vColour = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
+    if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
+    
+    //Vertex animation
+    pos.xy = wobble(pos, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
+    pos.xy = pulse( pos, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
+    if (jitterFlag > 0.5) pos.xy = jitter(pos, centre, characterIndex, jitterMinimum, jitterMaximum, jitterSpeed); //Apply the jitter effect
     
     //Apply fade (if we're given a method)
     if (abs(u_fTypewriterMethod) > 0.5)
     {
         //Choose our index based on what method's being used: if the method value == 1.0 then we're using character indexes, otherwise we use line indexes
         float index = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
-        v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0, (u_fTypewriterMethod < 0.0));
+        float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0, (u_fTypewriterMethod < 0.0));
+        
+        if (u_fTypewriterAlphaDuration == 0.0)
+        {
+            if (time <= 0.0) v_vColour.a = 0.0;
+        }
+        else
+        {
+            v_vColour.a = clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
+        }
+        
+        //float adj_time = easeElastic(time);
+        float adj_time = 1.0 - easeElastic(1.0 - time);
+        
+        pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), adj_time));
+        pos = rotate(pos, centre, mix(u_fTypewriterStartRotation, 0.0, adj_time));
+        pos.xy += mix(u_vTypewriterStartPos, vec2(0.0), adj_time);
     }
     
-    if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
+    
+    
+    //Vertex
+    pos.xy = wave( pos, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
+    pos.xy = wheel(pos, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
+    pos.xy = shake(pos, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
+    
+    
+    
+    //Final positioning
+    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(pos, 0.0, 1.0);
+    
+    
     
     //Texture
     v_vTexcoord = in_TextureCoord;
-    
-    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(pos, 0.0, 1.0);
-    
-    //v_vColour = vec4(in_Normal.y, 0.0, 0.0, 1.0);
 }

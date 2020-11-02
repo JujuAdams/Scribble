@@ -56,11 +56,16 @@ varying vec4 v_vColour;
 
 uniform vec4  u_vColourBlend;                           //4
 uniform float u_fTime;                                  //1
+uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
+uniform vec2  u_aBezier[3];                             //6
+
 uniform float u_fTypewriterMethod;                      //1
 uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
 uniform float u_fTypewriterSmoothness;                  //1
-uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
-uniform vec2  u_aBezier[3];                             //6
+uniform vec2  u_vTypewriterStartPos;                    //2
+uniform vec2  u_vTypewriterStartScale;                  //2
+uniform float u_fTypewriterStartRotation;               //1
+uniform float u_fTypewriterAlphaDuration;               //1
 
 
 

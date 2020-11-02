@@ -11,6 +11,7 @@
     {"id":{"name":"snd_switch","path":"sounds/snd_switch/snd_switch.yy",},"order":1,},
     {"id":{"name":"obj_test_sprite_colouring","path":"objects/obj_test_sprite_colouring/obj_test_sprite_colouring.yy",},"order":11,},
     {"id":{"name":"snd_vowel_0","path":"sounds/snd_vowel_0/snd_vowel_0.yy",},"order":2,},
+    {"id":{"name":"obj_test_typewriter_custom","path":"objects/obj_test_typewriter_custom/obj_test_typewriter_custom.yy",},"order":21,},
     {"id":{"name":"snd_vowel_1","path":"sounds/snd_vowel_1/snd_vowel_1.yy",},"order":3,},
     {"id":{"name":"scribble_font_add_msdf","path":"scripts/scribble_font_add_msdf/scribble_font_add_msdf.yy",},"order":3,},
     {"id":{"name":"scribble_font_set_default","path":"scripts/scribble_font_set_default/scribble_font_set_default.yy",},"order":4,},
