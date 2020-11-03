@@ -99,14 +99,14 @@ vertex_format_add_texcoord(); // 8 bytes
 global.__scribble_passthrough_vertex_format = vertex_format_end();
     
 //Cache uniform indexes
-global.__scribble_uniform_time               = shader_get_uniform(__shd_scribble, "u_fTime"                   );
-global.__scribble_uniform_colour_blend       = shader_get_uniform(__shd_scribble, "u_vColourBlend"            );
-global.__scribble_uniform_fog                = shader_get_uniform(__shd_scribble, "u_vFog"                    );
-global.__scribble_uniform_tw_method          = shader_get_uniform(__shd_scribble, "u_fTypewriterMethod"       );
-global.__scribble_uniform_tw_window_array    = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
-global.__scribble_uniform_tw_smoothness      = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"   );
-global.__scribble_uniform_data_fields        = shader_get_uniform(__shd_scribble, "u_aDataFields"             );
-global.__scribble_uniform_bezier_array       = shader_get_uniform(__shd_scribble, "u_aBezier"                 );
+global.__scribble_u_fTime                    = shader_get_uniform(__shd_scribble, "u_fTime"                   );
+global.__scribble_u_vColourBlend             = shader_get_uniform(__shd_scribble, "u_vColourBlend"            );
+global.__scribble_u_vFog                     = shader_get_uniform(__shd_scribble, "u_vFog"                    );
+global.__scribble_u_fTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_fTypewriterMethod"       );
+global.__scribble_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
+global.__scribble_u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"   );
+global.__scribble_u_aDataFields              = shader_get_uniform(__shd_scribble, "u_aDataFields"             );
+global.__scribble_u_aBezier                  = shader_get_uniform(__shd_scribble, "u_aBezier"                 );
 global.__scribble_u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"     );
 global.__scribble_u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"   );
 global.__scribble_u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation");
@@ -275,6 +275,22 @@ enum __SCRIBBLE_ANIM
     JITTER_MAXIMUM,   //18
     JITTER_SPEED,     //19
     __SIZE,           //20
+}
+
+enum SCRIBBLE_EASE
+{
+    NONE,    // 0
+    LINEAR,  // 1
+    QUAD,    // 2
+    CUBIC,   // 3
+    QUART,   // 4
+    QUINT,   // 5
+    SINE,    // 6
+    EXPO,    // 7
+    CIRC,    // 8
+    BACK,    // 9
+    ELASTIC, //10
+    BOUNCE   //11
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))

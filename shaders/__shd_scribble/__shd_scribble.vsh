@@ -436,11 +436,9 @@ void main()
     if (jitterFlag > 0.5) pos.xy = jitter(pos, centre, characterIndex, jitterMinimum, jitterMaximum, jitterSpeed); //Apply the jitter effect
     
     //Apply fade (if we're given a method)
-    if (abs(u_fTypewriterMethod) > 0.5)
+    if (abs(u_fTypewriterMethod) > 0.0)
     {
-        //Choose our index based on what method's being used: if the method value == 1.0 then we're using character indexes, otherwise we use line indexes
-        float index = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
-        float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0, (u_fTypewriterMethod < 0.0));
+        float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, characterIndex + 1.0, (u_fTypewriterMethod < 0.0));
         
         if (u_fTypewriterAlphaDuration == 0.0)
         {
@@ -451,12 +449,20 @@ void main()
             v_vColour.a = clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
         }
         
-        //float adj_time = easeElastic(time);
-        float adj_time = 1.0 - easeElastic(1.0 - time);
+             if (u_fTypewriterMethod ==  2.0) { time = 1.0 - easeQuad(   1.0 - time); }
+        else if (u_fTypewriterMethod ==  3.0) { time = 1.0 - easeCubic(  1.0 - time); }
+        else if (u_fTypewriterMethod ==  4.0) { time = 1.0 - easeQuart(  1.0 - time); }
+        else if (u_fTypewriterMethod ==  5.0) { time = 1.0 - easeQuint(  1.0 - time); }
+        else if (u_fTypewriterMethod ==  6.0) { time = 1.0 - easeSine(   1.0 - time); }
+        else if (u_fTypewriterMethod ==  7.0) { time = 1.0 - easeExpo(   1.0 - time); }
+        else if (u_fTypewriterMethod ==  8.0) { time = 1.0 - easeCirc(   1.0 - time); }
+        else if (u_fTypewriterMethod ==  9.0) { time = 1.0 - easeBack(   1.0 - time); }
+        else if (u_fTypewriterMethod == 10.0) { time = 1.0 - easeElastic(1.0 - time); }
+        else if (u_fTypewriterMethod == 11.0) { time = 1.0 - easeBounce( 1.0 - time); }
         
-        pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), adj_time));
-        pos = rotate(pos, centre, mix(u_fTypewriterStartRotation, 0.0, adj_time));
-        pos.xy += mix(u_vTypewriterStartPos, vec2(0.0), adj_time);
+        pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
+        pos = rotate(pos, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
+        pos.xy += mix(u_vTypewriterStartPos, vec2(0.0), time);
     }
     
     

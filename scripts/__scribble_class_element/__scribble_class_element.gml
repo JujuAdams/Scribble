@@ -66,8 +66,6 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     tw_do           = false;
     tw_in           = true;
-    tw_speed        = 1;
-    tw_smoothness   = 0;
     tw_function     = undefined;
     tw_paused       = false;
     tw_delay_paused = false;
@@ -84,12 +82,15 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     tw_sound_per_char    = false;
     tw_sound_finish_time = current_time;
     
+    tw_anim_speed          = 1;
+    tw_anim_smoothness     = 0;
+    tw_anim_ease_method    = SCRIBBLE_EASE.LINEAR;
     tw_anim_dx             = 0;
     tw_anim_dy             = 0;
     tw_anim_xscale         = 1;
     tw_anim_yscale         = 1;
     tw_anim_rotation       = 0;
-    tw_anim_alpha_duration = 0;
+    tw_anim_alpha_duration = 1.0;
                     
     animation_time         = current_time;
     animation_tick_speed__ = 1;
@@ -303,32 +304,40 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
+    /// @param speed
+    /// @param smoothness
     static typewriter_in = function(_speed, _smoothness)
     {
         var _refresh = !tw_do || !tw_in;
         
-        tw_do         = true;
-        tw_in         = true;
-        tw_speed      = _speed;
-        tw_smoothness = _smoothness;
+        tw_do              = true;
+        tw_in              = true;
+        tw_anim_speed      = _speed;
+        tw_anim_smoothness = _smoothness;
         
         if (_refresh) __refresh_typewriter_for_page();
         return self;
     }
     
+    /// @param speed
+    /// @param smoothness
     static typewriter_out = function(_speed, _smoothness)
     {
         var _refresh = !tw_do || tw_in;
         
-        tw_do         = true;
-        tw_in         = false;
-        tw_speed      = _speed;
-        tw_smoothness = _smoothness;
+        tw_do              = true;
+        tw_in              = false;
+        tw_anim_speed      = _speed;
+        tw_anim_smoothness = _smoothness;
         
         if (_refresh) __refresh_typewriter_for_page();
         return self;
     }
     
+    /// @param soundArray
+    /// @param overlap
+    /// @param pitchMin
+    /// @param pitchMax
     static typewriter_sound = function(_sound_array, _overlap, _pitch_min, _pitch_max)
     {
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
@@ -341,6 +350,9 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
+    /// @param soundArray
+    /// @param pitchMin
+    /// @param pitchMax
     static typewriter_sound_per_char = function(_sound_array, _pitch_min, _pitch_max)
     {
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
@@ -374,10 +386,29 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
             tw_window = (tw_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
             
             tw_window_array[@ tw_window  ] = _old_head_pos;
-            tw_window_array[@ tw_window+1] = _old_head_pos - tw_smoothness;
+            tw_window_array[@ tw_window+1] = _old_head_pos - tw_anim_smoothness;
         }
         
         tw_paused = false;
+        return self;
+    }
+    
+    /// @param easeMethod
+    /// @param dx
+    /// @param dy
+    /// @param xscale
+    /// @param yscale
+    /// @param rotation
+    /// @param alphaDuration
+    static typewriter_ease = function(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration)
+    {
+        tw_anim_ease_method    = _ease_method;
+        tw_anim_dx             = _dx;
+        tw_anim_dy             = _dy;
+        tw_anim_xscale         = _xscale;
+        tw_anim_yscale         = _yscale;
+        tw_anim_rotation       = _rotation;
+        tw_anim_alpha_duration = _alpha_duration;
         return self;
     }
     
@@ -700,8 +731,8 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     {
         var _page_data = __get_model(true).pages_array[__page];
         
-        tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - tw_smoothness);
-        tw_window_array[@ 0] += tw_smoothness;
+        tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - tw_anim_smoothness);
+        tw_window_array[@ 0] += tw_anim_smoothness;
         
         if (tw_in)
         {
@@ -751,9 +782,9 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     {
         if (tw_do) //No fade in/out set
         {
-            var _typewriter_speed = tw_speed*SCRIBBLE_STEP_SIZE;
+            var _typewriter_speed = tw_anim_speed*SCRIBBLE_STEP_SIZE;
             var _head_speed       = _typewriter_speed;
-            var _skipping         = (tw_speed >= SCRIBBLE_SKIP_SPEED_THRESHOLD);
+            var _skipping         = (tw_anim_speed >= SCRIBBLE_SKIP_SPEED_THRESHOLD);
             
             var _typewriter_head_pos = tw_window_array[tw_window];
             
@@ -772,7 +803,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
                     //Increment the window index
                     tw_window = (tw_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
                     tw_window_array[@ tw_window  ] = _typewriter_head_pos;
-                    tw_window_array[@ tw_window+1] = _typewriter_head_pos - tw_smoothness;
+                    tw_window_array[@ tw_window+1] = _typewriter_head_pos - tw_anim_smoothness;
                 }
                 else
                 {
