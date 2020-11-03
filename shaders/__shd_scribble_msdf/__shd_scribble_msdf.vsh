@@ -40,6 +40,8 @@ const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init()
 
 const int WINDOW_COUNT = 4;
 
+const float PI = 3.14159265359;
+
 
 
 //--------------------------------------------------------------------------------------------------------
@@ -275,6 +277,89 @@ vec2 bezierDerivative(float t, vec2 p1, vec2 p2, vec2 p3)
 
 
 
+float easeQuad(float time)
+{
+	return time*time;
+}
+
+float easeCubic(float time)
+{
+	return time*time*time;
+}
+
+float easeQuart(float time)
+{
+	return time*time*time*time;
+}
+
+float easeQuint(float time)
+{
+	return time*time*time*time*time;
+}
+
+float easeSine(float time)
+{
+    return 1.0 - cos(0.5*(time*PI));
+}
+
+float easeExpo(float time)
+{
+    if (time == 0.0) return 0.0;
+    return pow(2.0, 10.0*time - 10.0);
+}
+
+float easeCirc(float time)
+{
+    return 1.0 - sqrt(1.0 - time*time);
+}
+
+float easeBack(float time)
+{
+    float param = 1.70158;
+	return time*time*((param + 1.0)*time - param);
+}
+
+float easeElastic(float time)
+{
+    if (time == 0.0) return 0.0;
+    if (time == 1.0) return 1.0;
+    return -pow(2.0, 10.0*time - 10.0) * sin((time*10.0 - 10.75) * (2.0*PI) / 3.0);
+}
+
+float easeBounce(float time)
+{
+	float n1 = 7.5625;
+	float d1 = 2.75;
+    
+    time = 1.0 - time;
+    
+	if (time < 1.0 / d1)
+    {
+		return 1.0 - n1*time*time;
+	}
+    else if (time < 2.0 / d1)
+    {
+        time -= 1.5/d1;
+		return 1.0 - (n1*time*time + 0.75);
+	}
+    else if (time < 2.5 / d1)
+    {
+        time -= 2.25/d1;
+		return 1.0 - (n1*time*time + 0.9375);
+	}
+    else
+    {
+        time -= 2.625/d1;
+		return 1.0 - (n1*time*time + 0.984375);
+	}
+}
+
+
+
+//--------------------------------------------------------------------------------------------------------
+
+
+
 void main()
 {
     //Unpack character/line index
@@ -319,11 +404,15 @@ void main()
     //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
     vec2 pos = in_Position.xy;
     
+    
+    
     //Unpack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
     vec2 centreDelta;
     centreDelta.y = floor(in_Normal.x/2000.0);
     centreDelta.x = in_Normal.x - centreDelta.y*2000.0;
     centreDelta = (centreDelta - 1000.0)/10.0;
+    
+    
     
     vec2 centre;
     
@@ -344,34 +433,69 @@ void main()
         centre = pos + centreDelta;
     }
     
-    //Vertex animation
-    pos.xy = wobble(pos, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
-    pos.xy = pulse( pos, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
-    pos.xy = wave(  pos, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
-    pos.xy = wheel( pos, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
-    pos.xy = shake( pos, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
-    if (jitterFlag > 0.5) pos.xy = jitter(pos, centre, characterIndex, jitterMinimum, jitterMaximum, jitterSpeed); //Apply the jitter effect
+    
     
     //Colour
     v_vColour = in_Colour;
+    
     if (cycleFlag > 0.5) v_vColour = cycle(characterIndex, cycleSpeed, cycleSaturation, cycleValue, v_vColour); //Cycle colours through the defined palette
     v_vColour = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
+    if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
+    
+    
+    
+    //Vertex animation
+    pos.xy = wobble(pos, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
+    pos.xy = pulse( pos, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
+    if (jitterFlag > 0.5) pos.xy = jitter(pos, centre, characterIndex, jitterMinimum, jitterMaximum, jitterSpeed); //Apply the jitter effect
+    
+    
     
     //Apply fade (if we're given a method)
     if (abs(u_fTypewriterMethod) > 0.5)
     {
-        //Choose our index based on what method's being used: if the method value == 1.0 then we're using character indexes, otherwise we use line indexes
-        float index = (abs(u_fTypewriterMethod) == 1.0)? characterIndex : lineIndex;
-        v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0, (u_fTypewriterMethod < 0.0));
+        float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, characterIndex + 1.0, (u_fTypewriterMethod < 0.0));
+        
+        if (u_fTypewriterAlphaDuration == 0.0)
+        {
+            if (time <= 0.0) v_vColour.a = 0.0;
+        }
+        else
+        {
+            v_vColour.a = clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
+        }
+        
+             if (u_fTypewriterMethod ==  2.0) { time = 1.0 - easeQuad(   1.0 - time); }
+        else if (u_fTypewriterMethod ==  3.0) { time = 1.0 - easeCubic(  1.0 - time); }
+        else if (u_fTypewriterMethod ==  4.0) { time = 1.0 - easeQuart(  1.0 - time); }
+        else if (u_fTypewriterMethod ==  5.0) { time = 1.0 - easeQuint(  1.0 - time); }
+        else if (u_fTypewriterMethod ==  6.0) { time = 1.0 - easeSine(   1.0 - time); }
+        else if (u_fTypewriterMethod ==  7.0) { time = 1.0 - easeExpo(   1.0 - time); }
+        else if (u_fTypewriterMethod ==  8.0) { time = 1.0 - easeCirc(   1.0 - time); }
+        else if (u_fTypewriterMethod ==  9.0) { time = 1.0 - easeBack(   1.0 - time); }
+        else if (u_fTypewriterMethod == 10.0) { time = 1.0 - easeElastic(1.0 - time); }
+        else if (u_fTypewriterMethod == 11.0) { time = 1.0 - easeBounce( 1.0 - time); }
+        
+        pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
+        pos = rotate(pos, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
+        pos.xy += mix(u_vTypewriterStartPos, vec2(0.0), time);
     }
     
-    if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
+    
+    
+    //Vertex
+    pos.xy = wave(  pos, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
+    pos.xy = wheel( pos, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
+    pos.xy = shake( pos, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
+    
+    
+    
+    //Final positioning
+    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(pos, 0.0, 1.0);
+    
+    
     
     //Texture
     v_vTexcoord = in_TextureCoord;
-    
-    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(pos, 0.0, 1.0);
-    
-    //v_vColour = vec4(in_Normal.y, 0.0, 0.0, 1.0);
 }

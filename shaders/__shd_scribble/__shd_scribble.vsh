@@ -397,11 +397,15 @@ void main()
     //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
     vec2 pos = in_Position.xy;
     
+    
+    
     //Unpack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
     vec2 centreDelta;
     centreDelta.y = floor(in_Normal.x/2000.0);
     centreDelta.x = in_Normal.x - centreDelta.y*2000.0;
     centreDelta = (centreDelta - 1000.0)/10.0;
+    
+    
     
     vec2 centre;
     
@@ -422,6 +426,8 @@ void main()
         centre = pos + centreDelta;
     }
     
+    
+    
     //Colour
     v_vColour = in_Colour;
     
@@ -430,10 +436,14 @@ void main()
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
     if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
     
+    
+    
     //Vertex animation
     pos.xy = wobble(pos, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
     pos.xy = pulse( pos, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
     if (jitterFlag > 0.5) pos.xy = jitter(pos, centre, characterIndex, jitterMinimum, jitterMaximum, jitterSpeed); //Apply the jitter effect
+    
+    
     
     //Apply fade (if we're given a method)
     if (abs(u_fTypewriterMethod) > 0.0)
