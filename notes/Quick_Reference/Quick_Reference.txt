@@ -34,6 +34,7 @@ Methods are broken down into several categories:
     - [`.typewriter_reset()`](scribble()-Methods#typewriter_reset)
     - [`.typewriter_in()`](scribble()-Methods#typewriter_inspeed-smoothness)
     - [`.typewriter_out()`](scribble()-Methods#typewriter_outspeed-smoothness)
+    - [`.typewriter_ease()`](scribble()-Methods#typewriter_easeeasemethod-dx-dy-xscale-yscale-rotation-alphaduration)
     - [`.get_typewriter_state()`](scribble()-Methods#get_typewriter_state)
     - [`.typewriter_pause()`](scribble()-Methods#typewriter_pause)
     - [`.typewriter_unpause()`](scribble()-Methods#typewriter_unpause)
@@ -299,6 +300,22 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 The `smoothness` argument offers some customisation for how text fades out. A high value will cause text to be smoothly faded out whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades out.
 
 [Events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) will **not** be executed as text fades out.
+
+&nbsp;
+
+### `.typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`
+
+**Returns**: The text element
+
+|Name           |Datatype|Purpose                                                                                                                        |
+|---------------|--------|-------------------------------------------------------------------------------------------------------------------------------|
+|`easeMethod`   |integer |A member of the `SCRIBBLE_EASE` enum (see below)                                                                               |
+|`dx`           |real    |                                                                                                                               |
+|`dy`           |real    |                                                                                                                               |
+|`xscale`       |real    |                                                                                                                               |
+|`yscale`       |real    |                                                                                                                               |
+|`rotation`     |real    |                                                                                                                               |
+|`alphaDuration`|real    |Value from 0 to 1 (inclusive)                                                                                                  |
 
 &nbsp;
 
