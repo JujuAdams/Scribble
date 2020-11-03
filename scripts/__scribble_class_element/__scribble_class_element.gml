@@ -84,6 +84,13 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     tw_sound_per_char    = false;
     tw_sound_finish_time = current_time;
     
+    tw_anim_dx             = 0;
+    tw_anim_dy             = 0;
+    tw_anim_xscale         = 1;
+    tw_anim_yscale         = 1;
+    tw_anim_rotation       = 0;
+    tw_anim_alpha_duration = 0;
+                    
     animation_time         = current_time;
     animation_tick_speed__ = 1;
     animation_array        = array_create(__SCRIBBLE_ANIM.__SIZE, 0.0);
