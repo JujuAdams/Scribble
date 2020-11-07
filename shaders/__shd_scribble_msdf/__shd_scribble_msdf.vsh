@@ -120,6 +120,11 @@ vec2 scale(vec2 position, vec2 centre, float scale)
     return centre + scale*(position - centre);
 }
 
+vec2 scale(vec2 position, vec2 centre, vec2 scale)
+{
+    return centre + scale*(position - centre);
+}
+
 //Scale the character on the x-axis
 float xscale(vec2 position, vec2 centre, float scale)
 {
