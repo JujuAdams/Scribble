@@ -41,6 +41,7 @@ function __scribble_class_null_element() constructor
     static animation_wheel = function(_size, _frequency, _speed) { return self; }
     static animation_cycle = function(_speed, _saturation, _value) { return self; }
     static animation_jitter = function(_min, _max, _speed) { return self; }
+    static animation_blink = function(_on, _off, _offset) { return self; }
     
     #endregion
     

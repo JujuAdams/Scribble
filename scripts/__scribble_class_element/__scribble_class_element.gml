@@ -92,9 +92,13 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     tw_anim_rotation       = 0;
     tw_anim_alpha_duration = 1.0;
                     
-    animation_time         = current_time;
-    animation_tick_speed__ = 1;
-    animation_array        = array_create(__SCRIBBLE_ANIM.__SIZE, 0.0);
+    animation_time               = current_time;
+    animation_tick_speed__       = 1;
+    animation_array              = array_create(__SCRIBBLE_ANIM.__SIZE, 0.0);
+    animation_blink_on_duration  = 8;
+    animation_blink_off_duration = 8;
+    animation_blink_time_offset  = 0;
+    animation_blink_state        = true;
     
     msdf_shadow_colour  = c_black;
     msdf_shadow_alpha   = 0.0;
@@ -503,6 +507,17 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
+    /// @param onDuration
+    /// @param offDuration
+    /// @param timeOffset
+    static animation_blink = function(_on, _off, _offset)
+    {
+        animation_blink_on_duration  = _on;
+        animation_blink_off_duration = _off;
+        animation_blink_time_offset  = _offset;
+        return self;
+    }
+    
     #endregion
     
     #region MSDF
@@ -685,6 +700,9 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         }
         
         last_drawn = current_time;
+        
+        //Update the blink state
+        animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
         
         //Draw the model using ourselves as the context
         _model.draw(_x, _y, self);

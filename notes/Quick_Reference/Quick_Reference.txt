@@ -56,7 +56,7 @@ Methods are broken down into several categories:
     - [`.animation_wheel(size, frequency, speed)`](scribble()-Methods#animation_wheelsize-frequency-speed)
     - [`.animation_cycle(speed, saturation, value)`](scribble()-Methods#animation_cyclespeed-saturation-value)
     - [`.animation_jitter(minScale, maxScale, speed)`](scribble()-Methods#animation_jitterminscale-maxscale-speed)
-    - [`.animation_blink(onDuration, offDuration, startOn)`](scribble()-Methods#animation_blinkonduration-offduration-starton)
+    - [`.animation_blink(onDuration, offDuration, timeOffset)`](scribble()-Methods#animation_blinkonduration-offduration-timeoffset)
 7. [**MSDF**](scribble()-Methods#msdf)
     - [`.msdf_shadow(colour, alpha, xOffset, yOffset)`](scribble()-Methods#msdf_shadowcolour-alpha-xoffset-yoffset)
     - [`.msdf_border(colour, thickness)`](scribble()-Methods#msdf_bordercolour-thickness)
@@ -630,15 +630,15 @@ This function controls behaviour of the `[jitter]` effect across all uses in the
 
 &nbsp;
 
-### `.animation_blink(onDuration, offDuration, startOn)`
+### `.animation_blink(onDuration, offDuration, timeOffset)`
 
 **Returns**: The text element
 
-|Name         |Datatype|Purpose                                                        |
-|-------------|--------|---------------------------------------------------------------|
-|`onDuration` |real    |Number of ticks that blinking text is shown for                |
-|`offDuration`|real    |Number of ticks that blinking text is hidden for               |
-|`startOn`    |boolean |Whether the text starts visible (`true`) or invisible (`false`)|
+|Name         |Datatype|Purpose                                         |
+|-------------|--------|------------------------------------------------|
+|`onDuration` |real    |Number of ticks that blinking text is shown for |
+|`offDuration`|real    |Number of ticks that blinking text is hidden for|
+|`timeOffset` |real    |Time offset for calculating the blink state     |
 
 This function controls behaviour of the `[blink]` effect across all uses in the text element.
 

@@ -127,6 +127,7 @@ function __scribble_class_page() constructor
                     
                     shader_set_uniform_f_array(global.__scribble_u_aDataFields, _element.animation_array);
                     shader_set_uniform_f_array(global.__scribble_u_aBezier, _element.bezier_array);
+                    shader_set_uniform_f(global.__scribble_u_fBlinkState, _element.animation_blink_state);
                     
                     shader_set_uniform_f(global.__scribble_u_fTypewriterMethod,        _element.typewriter_off? 0.0 : _element.tw_anim_ease_method);
                     shader_set_uniform_f(global.__scribble_u_fTypewriterSmoothness,    _element.tw_anim_smoothness);
@@ -153,6 +154,7 @@ function __scribble_class_page() constructor
                     
                     shader_set_uniform_f_array(global.__scribble_msdf_u_aDataFields, _element.animation_array);
                     shader_set_uniform_f_array(global.__scribble_msdf_u_aBezier, _element.bezier_array);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fBlinkState, _element.animation_blink_state);
                     
                     shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterMethod,        _element.typewriter_off? 0.0 : _element.tw_anim_ease_method);
                     shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,    _element.tw_anim_smoothness);

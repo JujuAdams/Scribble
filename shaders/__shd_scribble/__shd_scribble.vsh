@@ -1,7 +1,7 @@
 //   @jujuadams   v7.0.0   2020-10-03
 precision highp float;
 
-const int MAX_EFFECTS = 9;
+const int MAX_EFFECTS = 10;
 //By default, the effect indexes are:
 //0 = is an animated sprite
 //1 = wave
@@ -12,6 +12,7 @@ const int MAX_EFFECTS = 9;
 //6 = wheel
 //7 = cycle
 //8 = jitter
+//9 = blink
 
 const int MAX_ANIM_FIELDS = 20;
 //By default, the data fields are:
@@ -60,6 +61,7 @@ uniform vec4  u_vColourBlend;                           //4
 uniform float u_fTime;                                  //1
 uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
 uniform vec2  u_aBezier[3];                             //6
+uniform float u_fBlinkState;                            //1
 
 uniform float u_fTypewriterMethod;                      //1
 uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
@@ -393,6 +395,7 @@ void main()
     float wheelFlag   = flagArray[6];
     float cycleFlag   = flagArray[7];
     float jitterFlag  = flagArray[8];
+    float blinkFlag   = flagArray[9];
     
     //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
     vec2 pos = in_Position.xy;
@@ -435,6 +438,7 @@ void main()
     v_vColour = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
     if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
+    if ((blinkFlag > 0.5) && (u_fBlinkState < 0.5)) v_vColour.a = 0.0;
     
     
     

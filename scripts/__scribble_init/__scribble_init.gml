@@ -75,6 +75,7 @@ global.__scribble_effects[?       "pulse"   ] = 5;
 global.__scribble_effects[?       "wheel"   ] = 6;
 global.__scribble_effects[?       "cycle"   ] = 7;
 global.__scribble_effects[?       "jitter"  ] = 8;
+global.__scribble_effects[?       "blink"   ] = 9;
 global.__scribble_effects_slash[? "/wave"   ] = 1;
 global.__scribble_effects_slash[? "/shake"  ] = 2;
 global.__scribble_effects_slash[? "/rainbow"] = 3;
@@ -83,6 +84,7 @@ global.__scribble_effects_slash[? "/pulse"  ] = 5;
 global.__scribble_effects_slash[? "/wheel"  ] = 6;
 global.__scribble_effects_slash[? "/cycle"  ] = 7;
 global.__scribble_effects_slash[? "/jitter" ] = 8;
+global.__scribble_effects_slash[? "/blink"  ] = 9;
     
 //Create a vertex format for our text
 vertex_format_begin();
@@ -107,6 +109,7 @@ global.__scribble_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble
 global.__scribble_u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"   );
 global.__scribble_u_aDataFields              = shader_get_uniform(__shd_scribble, "u_aDataFields"             );
 global.__scribble_u_aBezier                  = shader_get_uniform(__shd_scribble, "u_aBezier"                 );
+global.__scribble_u_fBlinkState              = shader_get_uniform(__shd_scribble, "u_fBlinkState"             );
 global.__scribble_u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"     );
 global.__scribble_u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"   );
 global.__scribble_u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation");
@@ -120,6 +123,7 @@ global.__scribble_msdf_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scr
 global.__scribble_msdf_u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterSmoothness"   );
 global.__scribble_msdf_u_aDataFields              = shader_get_uniform(__shd_scribble_msdf, "u_aDataFields"             );
 global.__scribble_msdf_u_aBezier                  = shader_get_uniform(__shd_scribble_msdf, "u_aBezier"                 );
+global.__scribble_msdf_u_fBlinkState              = shader_get_uniform(__shd_scribble_msdf, "u_fBlinkState"             );
 global.__scribble_msdf_u_vTexel                   = shader_get_uniform(__shd_scribble_msdf, "u_vTexel"                  );
 global.__scribble_msdf_u_fMSDFRange               = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFRange"              );
 global.__scribble_msdf_u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble_msdf, "u_vTypewriterStartPos"     );
