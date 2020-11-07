@@ -32,16 +32,16 @@ Methods are broken down into several categories:
 4. [**Typewriter**](scribble()-Methods#typewriter)
     - [`.typewriter_off()`](scribble()-Methods#typewriter_off)
     - [`.typewriter_reset()`](scribble()-Methods#typewriter_reset)
-    - [`.typewriter_in()`](scribble()-Methods#typewriter_inspeed-smoothness)
-    - [`.typewriter_out()`](scribble()-Methods#typewriter_outspeed-smoothness)
-    - [`.typewriter_ease()`](scribble()-Methods#typewriter_easeeasemethod-dx-dy-xscale-yscale-rotation-alphaduration)
+    - [`.typewriter_in(speed, smoothness)`](scribble()-Methods#typewriter_inspeed-smoothness)
+    - [`.typewriter_out(speed, smoothness)`](scribble()-Methods#typewriter_outspeed-smoothness)
+    - [`.typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`](scribble()-Methods#typewriter_easeeasemethod-dx-dy-xscale-yscale-rotation-alphaduration)
     - [`.get_typewriter_state()`](scribble()-Methods#get_typewriter_state)
     - [`.typewriter_pause()`](scribble()-Methods#typewriter_pause)
     - [`.typewriter_unpause()`](scribble()-Methods#typewriter_unpause)
     - [`.get_typewriter_paused()`](scribble()-Methods#get_typewriter_paused)
-    - [`.typewriter_sound()`](scribble()-Methods#typewriter_soundsoundarray-overlap-pitchmin-pitchmax)
-    - [`.typewriter_sound_per_char()`](scribble()-Methods#typewriter_sound_per_charsoundarray-pitchmin-pitchmax)
-    - [`.typewriter_function()`](scribble()-Methods#typewriter_functionfunction)
+    - [`.typewriter_sound(soundArray, overlap, pitchMin, pitchMax)`](scribble()-Methods#typewriter_soundsoundarray-overlap-pitchmin-pitchmax)
+    - [`.typewriter_sound_per_char(soundArray, pitchMin, pitchMax)`](scribble()-Methods#typewriter_sound_per_charsoundarray-pitchmin-pitchmax)
+    - [`.typewriter_function(function)`](scribble()-Methods#typewriter_functionfunction)
 5. [**Size Getters**](scribble()-Methods#size-getters)
     - [`.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`](scribble()-Methods#get_bboxx-y-leftpad-toppad-rightpad-bottompad)
     - [`.get_width()`](scribble()-Methods#get_width)
@@ -56,6 +56,7 @@ Methods are broken down into several categories:
     - [`.animation_wheel(size, frequency, speed)`](scribble()-Methods#animation_wheelsize-frequency-speed)
     - [`.animation_cycle(speed, saturation, value)`](scribble()-Methods#animation_cyclespeed-saturation-value)
     - [`.animation_jitter(minScale, maxScale, speed)`](scribble()-Methods#animation_jitterminscale-maxscale-speed)
+    - [`.animation_blink(onDuration, offDuration, startOn)`](scribble()-Methods#animation_blinkonduration-offduration-starton)
 7. [**MSDF**](scribble()-Methods#msdf)
     - [`.msdf_shadow(colour, alpha, xOffset, yOffset)`](scribble()-Methods#msdf_shadowcolour-alpha-xoffset-yoffset)
     - [`.msdf_border(colour, thickness)`](scribble()-Methods#msdf_bordercolour-thickness)
@@ -629,6 +630,20 @@ This function controls behaviour of the `[jitter]` effect across all uses in the
 
 &nbsp;
 
+### `.animation_blink(onDuration, offDuration, startOn)`
+
+**Returns**: The text element
+
+|Name         |Datatype|Purpose                                                        |
+|-------------|--------|---------------------------------------------------------------|
+|`onDuration` |real    |Number of ticks that blinking text is shown for                |
+|`offDuration`|real    |Number of ticks that blinking text is hidden for               |
+|`startOn`    |boolean |Whether the text starts visible (`true`) or invisible (`false`)|
+
+This function controls behaviour of the `[blink]` effect across all uses in the text element.
+
+&nbsp;
+
 &nbsp;
 
 &nbsp;
@@ -660,6 +675,10 @@ This function controls behaviour of the `[jitter]` effect across all uses in the
 &nbsp;
 
 ## MSDF
+
+*MSDF fonts require special considerations. Please read [the MSDF article](MSDF-Fonts) for more information.*
+
+&nbsp;
 
 ### `.msdf_shadow(colour, alpha, xoffset, yoffset)`
 
