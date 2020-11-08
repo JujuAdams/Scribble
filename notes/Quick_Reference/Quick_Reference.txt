@@ -179,6 +179,10 @@ Scribble's text wrapping operates in a very similar way to GameMaker's native [`
 |`maxHeight`      |integer |Maximum height for the whole textbox                                                                                                                 |
 |`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for very tight textboxes and some East Asian languages|
 
+Fits text to a box by wrapping and scaling, taking up as much space as possible without starting a new page. The macro `SCRIBBLE_FIT_TO_BOX_ITERATIONS` controls how many iterations to perform (higher is slower but more accurate).
+
+**N.B. This function is very slow and should be used sparingly. It is recommended you manually cache text elements that use `.fit_to_box()`.**
+
 &nbsp;
 
 ### `.line_height(min, max)` *regenerator*
