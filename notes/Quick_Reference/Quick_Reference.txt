@@ -23,6 +23,7 @@ Methods are broken down into several categories:
     - [`.transform(xscale, yscale, angle)`](scribble()-Methods#transformxscale-yscale-angle)
     - [`.origin(x, y)`](scribble()-Methods#originx-y)
     - [`.wrap(maxWidth, [maxHeight], [characterWrap])` *regenerator*](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator)
+    - [`.fit_to_box(maxWidth, maxHeight, [characterWrap])` *regenerator*](scribble()-Methods#fit_to_boxmaxwidth-maxheight-characterwrap-regenerator)
     - [`.line_height(min, max)` *regenerator*](scribble()-Methods#line_heightmin-max-regenerator)
     - [`.bezier(x1, y1, x2, y2, x3, y3, x4, y4)` *regenerator*](scribble()-Methods#bezierx1-y1-x2-y2-x3-y3-x4-y4-regenerator)
 3. [**Pages**](scribble()-Methods#pages)
@@ -165,6 +166,18 @@ The transform operates relative to the origin of the text element i.e. rotation 
 |`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for very tight textboxes and some East Asian languages|
 
 Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/draw_text_ext.html). If text exceeds the horizontal maximum width then text will be pushed onto the next line. If text exceeds the maximum height of the textbox then a new page will be created (see [`.page()`](scribble()-Methods#pagepage) and [`.get_page()`](scribble()-Methods#get_page)).
+
+&nbsp;
+
+### `.fit_to_box(maxWidth, maxHeight, [characterWrap])` *regenerator*
+
+**Returns**: The text element
+
+|Name             |Datatype|Purpose                                                                                                                                              |
+|-----------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+|`maxWidth`       |integer |Maximum width for the whole textbox                                                                                                                  |
+|`maxHeight`      |integer |Maximum height for the whole textbox                                                                                                                 |
+|`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for very tight textboxes and some East Asian languages|
 
 &nbsp;
 

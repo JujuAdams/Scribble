@@ -8,6 +8,7 @@ function __scribble_class_null_element() constructor
     static transform = function(_xscale, _yscale, _angle) { return self; }
     static origin = function(_x, _y) { return self; }
     static wrap = function() { return self; }
+    static fit_to_box = function() { return self; }
     static line_height = function(_min, _max) { return self; }
     static template = function(_template) { return self; }
     static page = function(_page) { return self; }

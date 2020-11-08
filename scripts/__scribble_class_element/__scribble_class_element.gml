@@ -50,9 +50,10 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     origin_x = 0.0;
     origin_y = 0.0;
     
-    max_width      = -1;
-    max_height     = -1;
-    character_wrap = false;
+    wrap_max_width  = -1;
+    wrap_max_height = -1;
+    wrap_per_char   = false;
+    wrap_no_pages   = false;
     
     line_height_min = -1;
     line_height_max = -1;
@@ -193,9 +194,22 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     /// @param [characterWrap]
     static wrap = function()
     {
-        max_width      = argument[0];
-        max_height     = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
-        character_wrap = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+        wrap_max_width  = argument[0];
+        wrap_max_height = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
+        wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+        wrap_no_pages   = false;
+        return self;
+    }
+    
+    /// @param maxWidth
+    /// @param maxHeight
+    /// @param [characterWrap]
+    static fit_to_box = function()
+    {
+        wrap_max_width  = argument[0];
+        wrap_max_height = argument[1];
+        wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+        wrap_no_pages   = true;
         return self;
     }
     
@@ -772,9 +786,10 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
                            string(starting_valign) + ":" +
                            string(line_height_min) + ":" +
                            string(line_height_max) + ":" +
-                           string(max_width      ) + ":" +
-                           string(max_height     ) + ":" +
-                           string(character_wrap ) + ":" +
+                           string(wrap_max_width ) + ":" +
+                           string(wrap_max_height) + ":" +
+                           string(wrap_per_char  ) + ":" +
+                           string(wrap_no_pages  ) + ":" +
                            string(bezier_array   ) + ":" +
                            string(__ignore_command_tags);
         
