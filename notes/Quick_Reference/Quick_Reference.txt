@@ -702,12 +702,12 @@ This function controls behaviour of the `[blink]` effect across all uses in the 
 
 **Returns**: The text element
 
-|Name     |Datatype|Purpose                             |
-|---------|--------|------------------------------------|
-|`colour` |integer |Standard GameMaker 24-bit BGR format|
-|`alpha`  |real    |                                    |
-|`xoffset`|real    |                                    |
-|`yoffset`|real    |                                    |
+|Name     |Datatype|Purpose                                                                    |
+|---------|--------|---------------------------------------------------------------------------|
+|`colour` |integer |The colour of the shadow, as a standard GameMaker 24-bit BGR format        |
+|`alpha`  |real    |Opacity of the shadow, `0.0` being transparent and `1.0` being fully opaque|
+|`xoffset`|real    |x-coordinate of the shadow, relative to the parent glyph                     |
+|`yoffset`|real    |y-coordinate of the shadow, relative to the parent glyph                     |
 
 &nbsp;
 
@@ -715,10 +715,10 @@ This function controls behaviour of the `[blink]` effect across all uses in the 
 
 **Returns**: The text element
 
-|Name       |Datatype|Purpose                             |
-|-----------|--------|------------------------------------|
-|`colour`   |integer |Standard GameMaker 24-bit BGR format|
-|`thickness`|real    |                                    |
+|Name       |Datatype|Purpose                                                                |
+|-----------|--------|-----------------------------------------------------------------------|
+|`colour`   |integer |Colour of the glyph's border, as a standard GameMaker 24-bit BGR format|
+|`thickness`|real    |Thickness of the border, in pixels                                     |
 
 &nbsp;
 
@@ -728,7 +728,9 @@ This function controls behaviour of the `[blink]` effect across all uses in the 
 
 |Name       |Datatype|Purpose                             |
 |-----------|--------|------------------------------------|
-|`thickness`|real    |                                    |
+|`thickness`|real    |Feather thickness, in pixels        |
+
+This feature will normally not be needed and the feather thickness will default to `1.0`.
 
 &nbsp;
 
