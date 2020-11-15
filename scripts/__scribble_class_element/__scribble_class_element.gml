@@ -360,13 +360,6 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
-    /// @param state
-    static typewriter_backwards = function(_state)
-    {
-        tw_backwards = _state;
-        return self;
-    }
-    
     /// @param soundArray
     /// @param overlap
     /// @param pitchMin
