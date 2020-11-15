@@ -34,7 +34,7 @@ Methods are broken down into several categories:
     - [`.typewriter_off()`](scribble()-Methods#typewriter_off)
     - [`.typewriter_reset()`](scribble()-Methods#typewriter_reset)
     - [`.typewriter_in(speed, smoothness)`](scribble()-Methods#typewriter_inspeed-smoothness)
-    - [`.typewriter_out(speed, smoothness)`](scribble()-Methods#typewriter_outspeed-smoothness)
+    - [`.typewriter_out(speed, smoothness, [backwards])`](scribble()-Methods#typewriter_outspeed-smoothness-backwards)
     - [`.typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`](scribble()-Methods#typewriter_easeeasemethod-dx-dy-xscale-yscale-rotation-alphaduration)
     - [`.get_typewriter_state()`](scribble()-Methods#get_typewriter_state)
     - [`.typewriter_pause()`](scribble()-Methods#typewriter_pause)
@@ -306,14 +306,15 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 
 &nbsp;
 
-### `.typewriter_out(speed, smoothness)`
+### `.typewriter_out(speed, smoothness, [backwards])`
 
 **Returns**: The text element
 
-|Name        |Datatype|Purpose                                                                                                                        |
-|------------|--------|-------------------------------------------------------------------------------------------------------------------------------|
-|`speed`     |real    |Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above|
-|`smoothness`|real    |How much text is visible during the fade. Higher numbers will allow more text to be visible as it fades out                    |
+|Name         |Datatype|Purpose                                                                                                                        |
+|-------------|--------|-------------------------------------------------------------------------------------------------------------------------------|
+|`speed`      |real    |Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above|
+|`smoothness` |real    |How much text is visible during the fade. Higher numbers will allow more text to be visible as it fades out                    |
+|`[backwards]`|boolean |Whether to animate the typewriter backwards. Defaults to `false`                                                               |
 
 The `smoothness` argument offers some customisation for how text fades out. A high value will cause text to be smoothly faded out whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades out.
 

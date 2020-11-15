@@ -37,6 +37,23 @@ const int MAX_ANIM_FIELDS = 20;
 //18 = jitter maximum scale
 //19 = jitter speed
 
+const int EASE_METHOD_COUNT = 15;
+// 0 = None
+// 1 = Linear
+// 2 = Quadratic
+// 3 = Cubic
+// 4 = Quartic
+// 5 = Quintic
+// 6 = Sine
+// 7 = Exponential
+// 8 = Circular
+// 9 = Back
+//10 = Elastic
+//11 = Bounce
+//12 = Custom 1
+//13 = Custom 2
+//14 = Custom 3
+
 const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
 
 const int WINDOW_COUNT = 4;
@@ -63,7 +80,8 @@ uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
 uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
 
-uniform float u_fTypewriterMethod;                      //1
+uniform int   u_iTypewriterMethod;                      //1
+uniform int   u_iTypewriterCharMax;                     //1
 uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
 uniform float u_fTypewriterSmoothness;                  //1
 uniform vec2  u_vTypewriterStartPos;                    //2
@@ -462,9 +480,17 @@ void main()
     
     
     //Apply fade (if we're given a method)
-    if (abs(u_fTypewriterMethod) > 0.5)
+    int easeMethod = u_iTypewriterMethod;
+    
+    bool fadeOut = (easeMethod >= EASE_METHOD_COUNT);
+    if (fadeOut) easeMethod -= EASE_METHOD_COUNT;
+    
+    if (easeMethod > 0)
     {
-        float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, characterIndex + 1.0, (u_fTypewriterMethod < 0.0));
+        float fadeIndex = characterIndex + 1.0;
+        if (u_iTypewriterCharMax > 0) fadeIndex = float(u_iTypewriterCharMax) - fadeIndex;
+        
+        float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, fadeIndex, fadeOut);
         
         if (u_fTypewriterAlphaDuration == 0.0)
         {
@@ -475,16 +501,19 @@ void main()
             v_vColour.a = clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
         }
         
-             if (u_fTypewriterMethod ==  2.0) { time = 1.0 - easeQuad(   1.0 - time); }
-        else if (u_fTypewriterMethod ==  3.0) { time = 1.0 - easeCubic(  1.0 - time); }
-        else if (u_fTypewriterMethod ==  4.0) { time = 1.0 - easeQuart(  1.0 - time); }
-        else if (u_fTypewriterMethod ==  5.0) { time = 1.0 - easeQuint(  1.0 - time); }
-        else if (u_fTypewriterMethod ==  6.0) { time = 1.0 - easeSine(   1.0 - time); }
-        else if (u_fTypewriterMethod ==  7.0) { time = 1.0 - easeExpo(   1.0 - time); }
-        else if (u_fTypewriterMethod ==  8.0) { time = 1.0 - easeCirc(   1.0 - time); }
-        else if (u_fTypewriterMethod ==  9.0) { time = 1.0 - easeBack(   1.0 - time); }
-        else if (u_fTypewriterMethod == 10.0) { time = 1.0 - easeElastic(1.0 - time); }
-        else if (u_fTypewriterMethod == 11.0) { time = 1.0 - easeBounce( 1.0 - time); }
+             if (easeMethod ==  2) { time = 1.0 - easeQuad(   1.0 - time); }
+        else if (easeMethod ==  3) { time = 1.0 - easeCubic(  1.0 - time); }
+        else if (easeMethod ==  4) { time = 1.0 - easeQuart(  1.0 - time); }
+        else if (easeMethod ==  5) { time = 1.0 - easeQuint(  1.0 - time); }
+        else if (easeMethod ==  6) { time = 1.0 - easeSine(   1.0 - time); }
+        else if (easeMethod ==  7) { time = 1.0 - easeExpo(   1.0 - time); }
+        else if (easeMethod ==  8) { time = 1.0 - easeCirc(   1.0 - time); }
+        else if (easeMethod ==  9) { time = 1.0 - easeBack(   1.0 - time); }
+        else if (easeMethod == 10) { time = 1.0 - easeElastic(1.0 - time); }
+        else if (easeMethod == 11) { time = 1.0 - easeBounce( 1.0 - time); }
+        else if (easeMethod == 12) { /*Custom ease slot 1*/ }
+        else if (easeMethod == 13) { /*Custom ease slot 2*/ }
+        else if (easeMethod == 14) { /*Custom ease slot 3*/ }
         
         pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
         pos = rotate(pos, centre, mix(-u_fTypewriterStartRotation, 0.0, time));

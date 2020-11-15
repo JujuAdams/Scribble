@@ -101,6 +101,16 @@ function __scribble_class_page() constructor
         
         var _shader = undefined;
         
+        //TODO - Calculate this somewhere else
+        var _tw_method   = 0;
+        var _tw_char_max = 0;
+        if (_element.tw_do)
+        {
+            _tw_method = _element.tw_anim_ease_method;
+            if (!_element.tw_in) _tw_method += SCRIBBLE_EASE.__SIZE;
+            if (_element.tw_backwards) _tw_char_max = 1 + last_char - start_char;
+        }
+        
         var _i = 0;
         repeat(array_length(vertex_buffer_array))
         {
@@ -129,7 +139,8 @@ function __scribble_class_page() constructor
                     shader_set_uniform_f_array(global.__scribble_u_aBezier, _element.bezier_array);
                     shader_set_uniform_f(global.__scribble_u_fBlinkState, _element.animation_blink_state);
                     
-                    shader_set_uniform_f(global.__scribble_u_fTypewriterMethod,        _element.typewriter_off? 0.0 : _element.tw_anim_ease_method);
+                    shader_set_uniform_i(global.__scribble_u_iTypewriterMethod,        _tw_method);
+                    shader_set_uniform_i(global.__scribble_u_iTypewriterCharMax,       _tw_char_max);
                     shader_set_uniform_f(global.__scribble_u_fTypewriterSmoothness,    _element.tw_anim_smoothness);
                     shader_set_uniform_f(global.__scribble_u_vTypewriterStartPos,      _element.tw_anim_dx, _element.tw_anim_dy);
                     shader_set_uniform_f(global.__scribble_u_vTypewriterStartScale,    _element.tw_anim_xscale, _element.tw_anim_yscale);
@@ -156,7 +167,8 @@ function __scribble_class_page() constructor
                     shader_set_uniform_f_array(global.__scribble_msdf_u_aBezier, _element.bezier_array);
                     shader_set_uniform_f(global.__scribble_msdf_u_fBlinkState, _element.animation_blink_state);
                     
-                    shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterMethod,        _element.typewriter_off? 0.0 : _element.tw_anim_ease_method);
+                    shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod,        _tw_method);
+                    shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterCharMax,       _tw_char_max);
                     shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,    _element.tw_anim_smoothness);
                     shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,      _element.tw_anim_dx, _element.tw_anim_dy);
                     shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,    _element.tw_anim_xscale, _element.tw_anim_yscale);
