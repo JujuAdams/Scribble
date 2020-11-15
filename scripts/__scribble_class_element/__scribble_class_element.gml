@@ -564,7 +564,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     static msdf_feather = function(_thickness)
     {
-        msdf_feather_thickness = 1.0;
+        msdf_feather_thickness = _thickness;
         
         return self;
     }

@@ -132,7 +132,11 @@ global.__scribble_msdf_u_vTypewriterStartPos      = shader_get_uniform(__shd_scr
 global.__scribble_msdf_u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble_msdf, "u_vTypewriterStartScale"   );
 global.__scribble_msdf_u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterStartRotation");
 global.__scribble_msdf_u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterAlphaDuration");
-    
+global.__scribble_msdf_u_vShadowColour            = shader_get_uniform(__shd_scribble_msdf, "u_vShadowColour"           );
+global.__scribble_msdf_u_vShadowOffset            = shader_get_uniform(__shd_scribble_msdf, "u_vShadowOffset"           );
+global.__scribble_msdf_u_vBorderColour            = shader_get_uniform(__shd_scribble_msdf, "u_vBorderColour"           );
+global.__scribble_msdf_u_fBorderThickness         = shader_get_uniform(__shd_scribble_msdf, "u_fBorderThickness"        );
+
 //Hex converter array
 var _min = ord("0");
 var _max = ord("f");

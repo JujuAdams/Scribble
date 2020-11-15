@@ -181,7 +181,20 @@ function __scribble_class_page() constructor
             if (_shader == __shd_scribble_msdf)
             {
                 shader_set_uniform_f(global.__scribble_msdf_u_vTexel, _vertex_buffer.texel_width, _vertex_buffer.texel_height);
-                shader_set_uniform_f(global.__scribble_msdf_u_fMSDFRange, _vertex_buffer.msdf_range);
+                shader_set_uniform_f(global.__scribble_msdf_u_fMSDFRange, _element.msdf_feather_thickness*_vertex_buffer.msdf_range);
+                
+                shader_set_uniform_f(global.__scribble_msdf_u_vShadowOffset, _element.msdf_shadow_xoffset, _element.msdf_shadow_yoffset);
+                
+                shader_set_uniform_f(global.__scribble_msdf_u_vShadowColour, colour_get_red(  _element.msdf_shadow_colour)/255,
+                                                                             colour_get_green(_element.msdf_shadow_colour)/255,
+                                                                             colour_get_blue( _element.msdf_shadow_colour)/255,
+                                                                             _element.msdf_shadow_alpha);
+                                                                                
+                shader_set_uniform_f(global.__scribble_msdf_u_vBorderColour, colour_get_red(  _element.msdf_border_colour)/255,
+                                                                             colour_get_green(_element.msdf_border_colour)/255,
+                                                                             colour_get_blue( _element.msdf_border_colour)/255);
+                                                                             
+                shader_set_uniform_f(global.__scribble_msdf_u_fBorderThickness, _element.msdf_border_thickness);
             }
             
             _vertex_buffer.__submit();
