@@ -225,8 +225,8 @@ function __scribble_random()
 #region Internal Macro Definitions
 
 // @jujuadams
-#macro __SCRIBBLE_VERSION  "7.0.0 alpha 1"
-#macro __SCRIBBLE_DATE     "2020-11-15"
+#macro __SCRIBBLE_VERSION  "7.0.0 alpha 2"
+#macro __SCRIBBLE_DATE     "2020-11-21"
 #macro __SCRIBBLE_DEBUG    false
 
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
