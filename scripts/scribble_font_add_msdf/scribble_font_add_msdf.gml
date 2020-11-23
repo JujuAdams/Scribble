@@ -123,8 +123,15 @@ function scribble_font_add_msdf(_font, _sprite, _json_name)
     
     //Now handle the space character
     var _array = _font_glyphs_map[? 32];
-    _array[@ SCRIBBLE_GLYPH.WIDTH ] = _array[SCRIBBLE_GLYPH.SEPARATION];
-    _array[@ SCRIBBLE_GLYPH.HEIGHT] = _json_line_height;
+    if (_array == undefined)
+    {
+        show_error("Scribble:\nSpace character not found in character string for MSDF font \"" + string(_font) + "\"\n ", true);
+    }
+    else
+    {
+        _array[@ SCRIBBLE_GLYPH.WIDTH ] = _array[SCRIBBLE_GLYPH.SEPARATION];
+        _array[@ SCRIBBLE_GLYPH.HEIGHT] = _json_line_height;
+    }
     
     ds_map_destroy(_json);
 }
