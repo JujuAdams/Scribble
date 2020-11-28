@@ -1,7 +1,7 @@
 function __scribble_garbage_collect()
 {
-    //Scan through the cache to see if any text elements have elapsed - though cap out at max 10 iterations
-    repeat(10)
+    //Scan through the cache to see if any text elements have elapsed - though cap out at max 5 iterations
+    repeat(5)
     {
         //Move backwards through the cache list so we are always trying to check the oldest stuff before looping round
         global.__scribble_element_cache_test_index--;
@@ -26,7 +26,7 @@ function __scribble_garbage_collect()
     }
     
     //Do the same for models
-    repeat(10)
+    repeat(5)
     {
         global.__scribble_model_cache_test_index--;
         

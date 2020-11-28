@@ -67,7 +67,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     tw_window_array  = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     tw_do            = false;
     tw_in            = true;
-    tw_backwards = false;
+    tw_backwards     = false;
     tw_function      = undefined;
     tw_paused        = false;
     tw_delay_paused  = false;
@@ -113,6 +113,13 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     msdf_feather_thickness = 1.0;
     
     #region Setters
+    
+    /// @param string
+    static overwrite = function(_string)
+    {
+        text = _string;
+        return self;
+    }
     
     /// @param fontName
     /// @param colour
@@ -726,8 +733,11 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         //Update the blink state
         animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
         
-        //Draw the model using ourselves as the context
-        _model.draw(_x, _y, self);
+        if (is_struct(_model))
+        {
+            //Draw the model using ourselves as the context
+            _model.draw(_x, _y, self);
+        }
         
         //Run the garbage collecter
         __scribble_garbage_collect();
@@ -786,34 +796,39 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     {
         if (flushed) return undefined;
         
-        //TODO - Optimise
-        model_cache_name = text +
-                           string(starting_font  ) + ":" +
-                           string(starting_colour) + ":" +
-                           string(starting_halign) + ":" +
-                           string(starting_valign) + ":" +
-                           string(line_height_min) + ":" +
-                           string(line_height_max) + ":" +
-                           string(wrap_max_width ) + ":" +
-                           string(wrap_max_height) + ":" +
-                           string(wrap_per_char  ) + ":" +
-                           string(wrap_no_pages  ) + ":" +
-                           string(bezier_array   ) + ":" +
-                           string(__ignore_command_tags);
+        var _model = SCRIBBLE_NULL_MODEL;
         
-        var _model = global.__scribble_model_cache[? model_cache_name];
-        
-        //Create a new model if required
-        if (_allow_create && (!is_struct(_model) || _model.flushed))
+        if (text != "")
         {
-            _model = new __scribble_class_model(self, model_cache_name);
-        }
-        
-        if (auto_refresh_typewriter && (_model != undefined))
-        {
-            auto_refresh_typewriter = false;
-            if (SCRIBBLE_VERBOSE) __scribble_trace("Auto-resetting typewriter state for \"", text, "\"");
-            __refresh_typewriter_for_page();
+            //TODO - Optimise
+            model_cache_name = text +
+                               string(starting_font  ) + ":" +
+                               string(starting_colour) + ":" +
+                               string(starting_halign) + ":" +
+                               string(starting_valign) + ":" +
+                               string(line_height_min) + ":" +
+                               string(line_height_max) + ":" +
+                               string(wrap_max_width ) + ":" +
+                               string(wrap_max_height) + ":" +
+                               string(wrap_per_char  ) + ":" +
+                               string(wrap_no_pages  ) + ":" +
+                               string(bezier_array   ) + ":" +
+                               string(__ignore_command_tags);
+            
+            _model = global.__scribble_model_cache[? model_cache_name];
+            
+            //Create a new model if required
+            if (_allow_create && (!is_struct(_model) || _model.flushed))
+            {
+                _model = new __scribble_class_model(self, model_cache_name);
+            }
+            
+            if (auto_refresh_typewriter && (_model != undefined))
+            {
+                auto_refresh_typewriter = false;
+                if (SCRIBBLE_VERBOSE) __scribble_trace("Auto-resetting typewriter state for \"", text, "\"");
+                __refresh_typewriter_for_page();
+            }
         }
         
         return _model;
@@ -829,7 +844,9 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
             
             var _typewriter_head_pos = tw_window_array[tw_window];
             
-            var _model     = __get_model(true);
+            var _model = __get_model(true);
+            if (!is_struct(_model)) return undefined;
+            
             var _page_data = _model.pages_array[__page];
             var _typewriter_count = _page_data.last_char + 2;
             

@@ -1,11 +1,13 @@
-### `scribble(string, [uniqueID])`
+### `scribble([string], [uniqueID])`
 
-**Returns:** A text element, as a struct (an instance of `__scribble_class_font`)
+**Returns:** A text element, as a struct (an instance of `__scribble_class_element`)
 
 |Name        |Datatype      |Purpose               |
 |------------|--------------|----------------------|
-|`string`    |string        |String to draw        |
+|`[string]`  |string        |String to draw        |
 |`[uniqueID]`|string or real|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_OCCURRENCE_NAME`](Functions-(Configuration)#__scribble_config_macros)|
+
+If no string is specified (i.e. the function used with arguments), this function will return a **unique** text element that contains no text data. The text in any text element, including empty ones, can be overwritten using the [`.overwrite()`](scribble()-Methods#overwritestring-regenerator) method.
 
 Scribble allows for many kinds of inline formatting tags. Please read the [Text Formatting](Text-Formatting) article for more information.
 
@@ -19,6 +21,7 @@ Methods are broken down into several categories:
     - [`.starting_format(fontName, colour)` *regenerator*](scribble()-Methods#starting_formatfontname-colour-regenerator)
     - [`.align(halign, valign)` *regenerator*](scribble()-Methods#alignhalign-valign-regenerator)
     - [`.blend(colour, alpha)`](scribble()-Methods#blendcolour-alpha)
+    - [`.overwrite(string)` *regenerator*](scribble()-Methods#overwritestring-regenerator)
 2. [**Shape, Wrapping, and Positioning**](scribble()-Methods#shape-wrapping-and-positioning)
     - [`.transform(xscale, yscale, angle)`](scribble()-Methods#transformxscale-yscale-angle)
     - [`.origin(x, y)`](scribble()-Methods#originx-y)
@@ -121,6 +124,18 @@ Methods are broken down into several categories:
 |`alpha` |real    |Alpha used when drawing text, 0 being fully transparent and 1 being fully opaque|
 
 The blend colour/alpha is applied at the end of the drawing pipeline. This is a little different to the interaction between [`draw_set_color()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/colour/draw_set_colour.html) and [`draw_text()` functions](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/). Scribble's blend colour is instead similar to [`draw_sprite_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/sprites_and_tiles/draw_sprite_ext.html)'s behaviour: The blend colour/alpha is applied multiplicatively with the source colour, in this case the source colour is whatever colour has been set using formatting tags in the input text string.
+
+&nbsp;
+
+### `.overwrite(string)` *regenerator*
+
+**Returns**: The text element
+
+|Name    |Datatype|Purpose                                     |
+|--------|--------|--------------------------------------------|
+|`string`|string  |New string to display using the text element|
+
+This function will replace the string in an existing text element whilst maintaining any animation, typewriter, or page state. This function may cause a recaching of the underlying text model so should be used sparingly.
 
 &nbsp;
 

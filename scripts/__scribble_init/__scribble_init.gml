@@ -325,12 +325,12 @@ enum SCRIBBLE_EASE
 #macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE  300  //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
-#macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. Thise constant must match the corresponding values in __shd_scribble
+#macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. This constant must match the corresponding values in __shd_scribble
 
 //TODO - Sort this out
 #macro SCRIBBLE_NULL_ELEMENT  global.__scribble_null_element
 #macro SCRIBBLE_NULL_MODEL  global.__scribble_null_model
-global.__scribble_default_element = scribble("");
+global.__scribble_default_element = scribble();
 global.__scribble_null_element = new __scribble_class_null_element();
 global.__scribble_null_model = undefined;
 

@@ -2,6 +2,7 @@ function __scribble_class_null_element() constructor
 {
     #region Setters
     
+    static overwrite = function(_string) { return self; }
     static starting_format = function(_font_name, _colour) { return self; }
     static align = function(_halign, _valign) { return self; }
     static blend = function(_colour, _alpha) { return self; }
