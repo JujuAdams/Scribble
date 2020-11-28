@@ -47,7 +47,7 @@
   },
   "parent": {
     "name": "Test Cases",
-    "path": "folders/Examples/Test Cases.yy",
+    "path": "folders/Test Cases.yy",
   },
   "resourceVersion": "1.0",
   "name": "rm_test",
