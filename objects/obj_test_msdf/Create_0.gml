@@ -1,5 +1,3 @@
-scribble_font_set_default("riffic");
+scribble_font_set_default("openhuninn");
 scribble_font_add_all();
-scribble_font_add_msdf("riffic", spr_riffic_msdf, "riffic.json");
-
-scribble_glyph_set("riffic", all, SCRIBBLE_GLYPH.SEPARATION, 4, true);
+scribble_font_add_msdf("openhuninn", spr_msdf_openhuninn, "openhuninn.json");

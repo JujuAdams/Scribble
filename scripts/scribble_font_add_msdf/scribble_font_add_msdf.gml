@@ -42,9 +42,11 @@ function scribble_font_add_msdf(_font, _sprite, _json_name)
     var _json_glyph_list = _json[? "glyphs" ];
     var _atlas_map       = _json[? "atlas"  ];
     
-    var _em_size          = _atlas_map[? "size"         ];
-    var _msdf_range       = _atlas_map[? "distanceRange"];
-    var _json_line_height = round(_em_size*_metrics_map[? "lineHeight"]);
+    var _em_size    = _atlas_map[? "size"         ];
+    var _msdf_range = _atlas_map[? "distanceRange"];
+    
+    var _json_line_height = _em_size*_metrics_map[? "lineHeight"];
+    var _ascender_height  = _em_size*_metrics_map[? "ascender"  ];
     
     _font_data.msdf_range = _msdf_range;
     
@@ -68,10 +70,10 @@ function scribble_font_add_msdf(_font, _sprite, _json_name)
         
         if (_atlas_map != undefined)
         {
-            var _tex_l = _atlas_map[? "left"  ];
-            var _tex_t = _sprite_height - _atlas_map[? "bottom"]; //This atlas format is weird
-            var _tex_r = _atlas_map[? "right" ];
-            var _tex_b = _sprite_height - _atlas_map[? "top"];
+            var _tex_l = _atlas_map[? "left"] + 1;
+            var _tex_t = _sprite_height - _atlas_map[? "top"] + 1; //This atlas format is weird
+            var _tex_r = _atlas_map[? "right"] - 1;
+            var _tex_b = _sprite_height - _atlas_map[? "bottom"] - 1;
         }
         else
         {
@@ -81,21 +83,31 @@ function scribble_font_add_msdf(_font, _sprite, _json_name)
             var _tex_b = 0;
         }
         
-        var _w = 1 + _tex_r - _tex_l;
-        var _h = 1 + _tex_b - _tex_t;
+        var _w = _tex_r - _tex_l;
+        var _h = _tex_b - _tex_t;
         
         if (_plane_map != undefined)
         {
-            var _xoffset = round(-_em_size*_plane_map[? "left"  ] - _msdf_range);
-            var _yoffset = round(_json_line_height - _em_size*_plane_map[? "bottom"] - _msdf_range); //So, so weird
+            var _xoffset  = _em_size*_plane_map[? "left"];
+            var _yoffset  = _ascender_height - _em_size*_plane_map[? "top"]; //So, so weird
+            var _xadvance = round(_em_size*_json_glyph_map[? "advance"]); //_w - _msdf_range - round(_em_size*_plane_map[? "left"]);
         }
         else
         {
-            var _xoffset = 0;
-            var _yoffset = 0;
+            var _xoffset  = 0;
+            var _yoffset  = 0;
+            var _xadvance = round(_em_size*_json_glyph_map[? "advance"]);
         }
         
-        var _xadvance = round(_em_size*_json_glyph_map[? "advance"]);
+        if (__SCRIBBLE_DEBUG)
+        {
+            __scribble_trace(_char, "    ", _w, " x ", _h, ", advance=", _xadvance, ", dy=", _yoffset, ", diff=", _w - _xadvance);
+            if (_plane_map != undefined)
+            {
+                __scribble_trace(_char, "    ", round(_em_size*(_plane_map[? "right"] - _plane_map[? "left"])));
+                __scribble_trace(_char, "    ", _xadvance);
+            }
+        }
         
         var _u0 = lerp(_sprite_uvs[0], _sprite_uvs[2], _tex_l/_sprite_width );
         var _v0 = lerp(_sprite_uvs[1], _sprite_uvs[3], _tex_t/_sprite_height);
