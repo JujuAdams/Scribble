@@ -93,7 +93,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     tw_anim_yscale         = 1;
     tw_anim_rotation       = 0;
     tw_anim_alpha_duration = 1.0;
-                    
+    
     animation_time               = current_time;
     animation_tick_speed__       = 1;
     animation_array              = array_create(__SCRIBBLE_ANIM.__SIZE, 0.0);
@@ -453,6 +453,18 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     static animation_tick_speed = function(_speed)
     {
         animation_tick_speed__ = _speed;
+        return self;
+    }
+    
+    /// @param sourceElement
+    static animation_sync = function(_source_element)
+    {
+        if (is_struct(_source_element) && (_source_element != SCRIBBLE_NULL_ELEMENT))
+        {
+            animation_time         = _source_element.animation_time;
+            animation_tick_speed__ = _source_element.animation_tick_speed__;
+        }
+        
         return self;
     }
     
@@ -823,7 +835,9 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
                 _model = new __scribble_class_model(self, model_cache_name);
             }
             
-            if (auto_refresh_typewriter && (_model != undefined))
+            if (_model == undefined) _model = SCRIBBLE_NULL_MODEL;
+            
+            if (auto_refresh_typewriter && (_model != SCRIBBLE_NULL_MODEL))
             {
                 auto_refresh_typewriter = false;
                 if (SCRIBBLE_VERBOSE) __scribble_trace("Auto-resetting typewriter state for \"", text, "\"");

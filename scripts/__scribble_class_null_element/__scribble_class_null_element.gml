@@ -35,6 +35,8 @@ function __scribble_class_null_element() constructor
     
     #region Animation
     
+    static animation_tick_speed = function(_speed) { return self; }
+    static animation_sync = function(_source_element) { return self; }
     static animation_wave = function(_size, _frequency, _speed) { return self; }
     static animation_shake = function(_size, _speed) { return self; }
     static animation_rainbow = function(_weight, _speed) { return self; }

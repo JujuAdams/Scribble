@@ -4,7 +4,7 @@
 /// @param [string]     The string to parse and, eventually, draw
 /// @param [uniqueID]   A unique identifier that can be used to distinguish this occurrence of the input string from other occurrences. Only necessary when you might be drawing the same string at the same time with different animation states
 /// 
-/// For further information, please read the Quick_Reference note
+/// For further information, please read the Reference note
 
 function scribble()
 {
