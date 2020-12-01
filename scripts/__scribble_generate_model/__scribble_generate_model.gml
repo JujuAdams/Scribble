@@ -1388,6 +1388,8 @@ function __scribble_generate_model(_element)
                 }
                 else
                 {
+                    wrapped = true;
+                    
                     //If the line has no space character on it then we know that entire word is longer than the textbox max width
                     //We fall back to use the character start position for this vertex buffer instead
                     var _tell_a = _line_has_space? _data.word_start_tell : _data.char_start_tell;

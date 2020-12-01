@@ -37,6 +37,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     max_x      = 0;
     valign     = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
     fit_scale  = 1.0;
+    wrapped    = false;
     
     pages_array      = []; //Stores each page of text
     character_array  = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
@@ -213,6 +214,19 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     static get_pages = function()
     {
         return pages;
+    }
+    
+    static get_wrapped = function()
+    {
+        return wrapped;
+    }
+    
+    /// @param page
+    static get_line_count = function(_page)
+    {
+        if ((_page == undefined) || (_page < 0)) _page = 0;
+        
+        return pages_array[_page].lines;
     }
     
     #endregion

@@ -151,6 +151,8 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         return self;
     }
     
+    /// @param halign
+    /// @param valign
     static align = function(_halign, _valign)
     {
         starting_halign = _halign;
@@ -722,6 +724,22 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     static get_typewriter_paused = function()
     {
         return tw_paused;
+    }
+    
+    static get_wrapped = function()
+    {
+        //TODO - Make null model
+        var _model = __get_model(true);
+        if (_model == SCRIBBLE_NULL_MODEL) return 0;
+        return _model.get_wrapped();
+    }
+    
+    /// @param [page]
+    static get_line_count = function()
+    {
+        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+        
+        return __get_model(true).get_line_count(_page);
     }
     
     #endregion

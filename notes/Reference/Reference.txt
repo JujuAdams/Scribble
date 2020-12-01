@@ -46,10 +46,12 @@ Methods are broken down into several categories:
     - [`.typewriter_sound(soundArray, overlap, pitchMin, pitchMax)`](scribble()-Methods#typewriter_soundsoundarray-overlap-pitchmin-pitchmax)
     - [`.typewriter_sound_per_char(soundArray, pitchMin, pitchMax)`](scribble()-Methods#typewriter_sound_per_charsoundarray-pitchmin-pitchmax)
     - [`.typewriter_function(function)`](scribble()-Methods#typewriter_functionfunction)
-5. [**Size Getters**](scribble()-Methods#size-getters)
+5. [**Getters**](scribble()-Methods#getters)
     - [`.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`](scribble()-Methods#get_bboxx-y-leftpad-toppad-rightpad-bottompad)
     - [`.get_width()`](scribble()-Methods#get_width)
     - [`.get_height()`](scribble()-Methods#get_height)
+    - [`.get_wrapped()`](scribble()-Methods#get_wrapped)
+    - [`.get_line_count([page])`](scribble()-Methods#get_line_countpage)
 6. [**Animation**](scribble()-Methods#size-getters)
     - [`.animation_tick_speed(tickSpeed)`](scribble()-Methods#animation_tick_speedtickspeed)
     - [`.animation_sync(sourceElement)`](scribble()-Methods#animation_syncsourceelement)
@@ -175,13 +177,13 @@ The transform operates relative to the origin of the text element i.e. rotation 
 
 **Returns**: The text element
 
-|Name             |Datatype|Purpose                                                                                                                                              |
-|-----------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-|`maxWidth`       |integer |Maximum width for the whole textbox. Use a negative number (the default) for no limit                                                                |
-|`[maxHeight]`    |integer |Maximum height for the whole textbox. Use a negative number (the default) for no limit                                                               |
-|`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for very tight textboxes and some East Asian languages|
+|Name             |Datatype|Purpose                                                                                                                                         |
+|-----------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------|
+|`maxWidth`       |integer |Maximum width for the whole textbox. Use a negative number (the default) for no limit                                                           |
+|`[maxHeight]`    |integer |Maximum height for the whole textbox. Use a negative number (the default) for no limit                                                          |
+|`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for tight textboxes and some East Asian languages|
 
-Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/draw_text_ext.html). If text exceeds the horizontal maximum width then text will be pushed onto the next line. If text exceeds the maximum height of the textbox then a new page will be created (see [`.page()`](scribble()-Methods#pagepage) and [`.get_page()`](scribble()-Methods#get_page)).
+Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/draw_text_ext.html). If text exceeds the horizontal maximum width then text will be pushed onto the next line. If text exceeds the maximum height of the textbox then a new page will be created (see [`.page()`](scribble()-Methods#pagepage) and [`.get_page()`](scribble()-Methods#get_page)). Very long sequences of glyphs without spaces will be split across multiple lines.
 
 &nbsp;
 
@@ -480,7 +482,7 @@ This function is perhaps best used in conjunction with the [`SCRIBBLE_CREATE_CHA
 
 &nbsp;
 
-## Size Getters
+## Getters
 
 ### `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
 
@@ -535,6 +537,28 @@ The struct returned by `.get_bbox()` contains the following member variables:
 |Name|Datatype|Purpose|
 |----|--------|-------|
 |None|        |       |
+
+&nbsp;
+
+### `.get_wrapped()`
+
+**Returns:** Boolean, whether the text has wrapped onto a new line using the [`.wrap()` feature](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Will return `true` only if the [`.wrap()` feature](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator) is used. Manual newlines (`\n`) included in the input string will not cause this function to return `true`.
+
+&nbsp;
+
+### `.get_line_count([page])`
+
+**Returns:** Integer, how many lines of text are on the given page
+
+|Name    |Datatype|Purpose                                                                                  |
+|--------|--------|-----------------------------------------------------------------------------------------|
+|`[page]`|Integer |Page to retrieve the number of lines for. Defaults to the current page that's being shown|
 
 &nbsp;
 
