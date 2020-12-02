@@ -318,10 +318,13 @@ function scribble_font_bake_shader()
     
         var _new_font_data = new __scribble_class_font(_new_font_name, "runtime");
         _src_font_data.copy_to(_new_font_data);
-        _new_font_data.path         = undefined;
-        _new_font_data.family_name  = undefined;
-        _new_font_data.glyphs_array = undefined;
-        _new_font_data.glyphs_map   = undefined;
+        _new_font_data.path              = undefined;
+        _new_font_data.glyphs_array      = undefined;
+        _new_font_data.glyphs_map        = undefined;
+        _new_font_data.style_regular     = undefined;
+        _new_font_data.style_bold        = undefined;
+        _new_font_data.style_italic      = undefined;
+        _new_font_data.style_bold_italic = undefined;
         
         //Initialise our glyph data structure, copying what the source font used
         if (_uses_glyph_map)

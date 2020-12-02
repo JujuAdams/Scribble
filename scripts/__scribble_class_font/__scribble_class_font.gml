@@ -9,7 +9,6 @@ function __scribble_class_font(_name, _type) constructor
     type = _type; //Can be either: "standard", "sprite", "runtime", "msdf"
     
     path         = undefined;
-    family_name  = undefined;
     glyphs_map   = undefined;
     glyphs_array = undefined;
     glyph_min    = 32;
@@ -18,6 +17,11 @@ function __scribble_class_font(_name, _type) constructor
     mapstring    = undefined;
     separation   = undefined;
     msdf_range   = undefined;
+    
+    style_regular     = undefined;
+    style_bold        = undefined;
+    style_italic      = undefined;
+    style_bold_italic = undefined;
     
     static copy_to = function(_target)
     {

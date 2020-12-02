@@ -49,7 +49,6 @@ global.__scribble_buffer              = buffer_create(1024, buffer_grow, 1);
 global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
 global.__scribble_character_delay     = false;
 global.__scribble_character_delay_map = ds_map_create();
-global.__scribble_font_family_map     = ds_map_create();
 
 global.__scribble_model_cache              = ds_map_create();
 global.__scribble_model_cache_list         = ds_list_create();

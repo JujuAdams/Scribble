@@ -1,4 +1,4 @@
-/// Prepares Scribble for use. This script should be called before any other Scribble scripts
+/// Sets the default font to use for Scribble text elements
 /// 
 /// @param fontName   The name of the default Scribble font to use, as a string
 

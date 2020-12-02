@@ -168,30 +168,9 @@ function scribble_font_add()
     //If either of the checks have failed, delete the data array and abort
     if (_fail)
     {
-        if (__SCRIBBLE_DEBUG) __scribble_trace("JSON string that failed is \"" + string(_json_string) + "\"");
+        if (__SCRIBBLE_DEBUG) __scribble_trace("JSON string that failed is \"", _json_string, "\"");
         ds_map_delete(global.__scribble_font_data, _name);
         exit;
-    }
-    
-    //Add this font to a font family
-    var _family_name = _json[? "fontName"] + "." + string(_json[? "size"]);
-    _font_data.family_name = _family_name;
-    
-    var _family_map = global.__scribble_font_family_map[? _family_name];
-    if (_family_map == undefined)
-    {
-        _family_map = ds_map_create();
-        ds_map_add_map(global.__scribble_font_family_map, _family_name, _family_map);
-    }
-    
-    var _style_name = _json[? "styleName"];
-    if (ds_map_exists(_family_map, _style_name))
-    {
-        __scribble_trace("Style \"" + string(_style_name) + "\" already exists for font family \"" + string(_family_name) + "\"");
-    }
-    else
-    {
-        _family_map[? _style_name] = _name;
     }
     
     //Now parse the JSON for glyph data!

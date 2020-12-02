@@ -415,75 +415,63 @@ function __scribble_generate_model(_element)
                     case "/i":
                     case "/bi":
                         //Get the required font from the font family
-                        var _family_name = _font_data.family_name;
-                        if (_family_name == undefined)
+                        
+                        var _new_font = _font_data.style_regular;
+                        if (_new_font == undefined)
                         {
-                            __scribble_trace("Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
+                            __scribble_trace("Regular style not set for font \"", _text_font, "\"");
+                        }
+                        else if (!ds_map_exists(global.__scribble_font_data, _new_font))
+                        {
+                            __scribble_trace("Font \"", _text_font, "\" not found (regular style for \"", _text_font, "\")");
                         }
                         else
                         {
-                            var _family_map = global.__scribble_font_family_map[? _family_name];
-                            var _new_font = _family_map[? "Regular"];
-                                    
-                            //Check to see if this font even exists
-                            if ((_new_font == undefined) || !ds_map_exists(global.__scribble_font_data, _new_font))
-                            {
-                                __scribble_trace("\"Regular\" style not found for font family \"" + string(_family_name) + "\"");
-                            }
-                            else
-                            {
-                                //If the font we found exists, set it
-                                _text_font = _new_font;
-                                        
-                                _font_data         = __scribble_get_font_data(_new_font);
-                                _font_glyphs_map   = _font_data.glyphs_map;
-                                _font_glyphs_array = _font_data.glyphs_array;
-                                _font_glyphs_min   = _font_data.glyph_min;
-                                _font_glyphs_max   = _font_data.glyph_max;
-                                _font_msdf_range   = _font_data.msdf_range;
-                                        
-                                var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
-                                _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
-                                _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-                            }
+                            //If the font we found exists, set it
+                            _text_font = _new_font;
+                            
+                            _font_data         = __scribble_get_font_data(_new_font);
+                            _font_glyphs_map   = _font_data.glyphs_map;
+                            _font_glyphs_array = _font_data.glyphs_array;
+                            _font_glyphs_min   = _font_data.glyph_min;
+                            _font_glyphs_max   = _font_data.glyph_max;
+                            _font_msdf_range   = _font_data.msdf_range;
+                            
+                            var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
+                            _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
+                            _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
                         }
-                                
+                          
                         continue; //Skip the rest of the parser step
                     break;
                             
                     case "b":
                         //Get the required font from the font family
-                        var _family_name = _font_data.family_name;
-                        if (_family_name == undefined)
+                        
+                        var _new_font = _font_data.style_bold;
+                        if (_new_font == undefined)
                         {
-                            __scribble_trace("Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
+                            __scribble_trace("Bold style not set for font \"", _text_font, "\"");
+                        }
+                        else if (!ds_map_exists(global.__scribble_font_data, _new_font))
+                        {
+                            __scribble_trace("Font \"", _text_font, "\" not found (bold style for \"", _text_font, "\")");
                         }
                         else
                         {
-                            var _family_map = global.__scribble_font_family_map[? _family_name];
-                            var _new_font = _family_map[? "Bold"];
-                                    
-                            //Check to see if this font even exists
-                            if ((_new_font == undefined) || !ds_map_exists(global.__scribble_font_data, _new_font))
-                            {
-                                __scribble_trace("\"Bold\" style not found for font family \"" + string(_family_name) + "\"");
-                            }
-                            else
-                            {
-                                //If the font we found exists, set it
-                                _text_font = _new_font;
-                                        
-                                _font_data         = __scribble_get_font_data(_new_font);
-                                _font_glyphs_map   = _font_data.glyphs_map;
-                                _font_glyphs_array = _font_data.glyphs_array;
-                                _font_glyphs_min   = _font_data.glyph_min;
-                                _font_glyphs_max   = _font_data.glyph_max;
-                                _font_msdf_range   = _font_data.msdf_range;
-                                        
-                                var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
-                                _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
-                                _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-                            }
+                            //If the font we found exists, set it
+                            _text_font = _new_font;
+                            
+                            _font_data         = __scribble_get_font_data(_new_font);
+                            _font_glyphs_map   = _font_data.glyphs_map;
+                            _font_glyphs_array = _font_data.glyphs_array;
+                            _font_glyphs_min   = _font_data.glyph_min;
+                            _font_glyphs_max   = _font_data.glyph_max;
+                            _font_msdf_range   = _font_data.msdf_range;
+                            
+                            var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
+                            _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
+                            _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
                         }
                                 
                         continue; //Skip the rest of the parser step
@@ -491,37 +479,31 @@ function __scribble_generate_model(_element)
                             
                     case "i":
                         //Get the required font from the font family
-                        var _family_name = _font_data.family_name;
-                        if (_family_name == undefined)
+                        
+                        var _new_font = _font_data.style_italic;
+                        if (_new_font == undefined)
                         {
-                            __scribble_trace("Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
+                            __scribble_trace("Italic style not set for font \"", _text_font, "\"");
+                        }
+                        else if (!ds_map_exists(global.__scribble_font_data, _new_font))
+                        {
+                            __scribble_trace("Font \"", _text_font, "\" not found (italic style for \"", _text_font, "\")");
                         }
                         else
                         {
-                            var _family_map = global.__scribble_font_family_map[? _family_name];
-                            var _new_font = _family_map[? "Italic"];
-                                    
-                            //Check to see if this font even exists
-                            if ((_new_font == undefined) || !ds_map_exists(global.__scribble_font_data, _new_font))
-                            {
-                                __scribble_trace("\"Italic\" style not found for font family \"" + string(_family_name) + "\"");
-                            }
-                            else
-                            {
-                                //If the font we found exists, set it
-                                _text_font = _new_font;
-                                        
-                                _font_data         = __scribble_get_font_data(_new_font);
-                                _font_glyphs_map   = _font_data.glyphs_map;
-                                _font_glyphs_array = _font_data.glyphs_array;
-                                _font_glyphs_min   = _font_data.glyph_min;
-                                _font_glyphs_max   = _font_data.glyph_max;
-                                _font_msdf_range   = _font_data.msdf_range;
-                                        
-                                var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
-                                _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
-                                _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-                            }
+                            //If the font we found exists, set it
+                            _text_font = _new_font;
+                            
+                            _font_data         = __scribble_get_font_data(_new_font);
+                            _font_glyphs_map   = _font_data.glyphs_map;
+                            _font_glyphs_array = _font_data.glyphs_array;
+                            _font_glyphs_min   = _font_data.glyph_min;
+                            _font_glyphs_max   = _font_data.glyph_max;
+                            _font_msdf_range   = _font_data.msdf_range;
+                            
+                            var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
+                            _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
+                            _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
                         }
                                 
                         continue; //Skip the rest of the parser step
@@ -529,37 +511,31 @@ function __scribble_generate_model(_element)
                             
                     case "bi":
                         //Get the required font from the font family
-                        var _family_name = _font_data.family_name;
-                        if (_family_name == undefined)
+                        
+                        var _new_font = _font_data.style_bold_italic;
+                        if (_new_font == undefined)
                         {
-                            __scribble_trace("Font family not found for font \"" + string(_text_font) + " (check it's not a spritefont or a procedurally generated font)");
+                            __scribble_trace("Bold-Italic style not set for font \"", _text_font, "\"");
+                        }
+                        else if (!ds_map_exists(global.__scribble_font_data, _new_font))
+                        {
+                            __scribble_trace("Font \"", _text_font, "\" not found (bold-italic style for \"", _text_font, "\")");
                         }
                         else
                         {
-                            var _family_map = global.__scribble_font_family_map[? _family_name];
-                            var _new_font = _family_map[? "Bold Italic"];
-                                    
-                            //Check to see if this font even exists
-                            if ((_new_font == undefined) || !ds_map_exists(global.__scribble_font_data, _new_font))
-                            {
-                                __scribble_trace("\"Bold Italic\" style not found for font family \"" + string(_family_name) + "\"");
-                            }
-                            else
-                            {
-                                //If the font we found exists, set it
-                                _text_font = _new_font;
-                                        
-                                _font_data         = __scribble_get_font_data(_new_font);
-                                _font_glyphs_map   = _font_data.glyphs_map;
-                                _font_glyphs_array = _font_data.glyphs_array;
-                                _font_glyphs_min   = _font_data.glyph_min;
-                                _font_glyphs_max   = _font_data.glyph_max;
-                                _font_msdf_range   = _font_data.msdf_range;
-                                        
-                                var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
-                                _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
-                                _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-                            }
+                            //If the font we found exists, set it
+                            _text_font = _new_font;
+                            
+                            _font_data         = __scribble_get_font_data(_new_font);
+                            _font_glyphs_map   = _font_data.glyphs_map;
+                            _font_glyphs_array = _font_data.glyphs_array;
+                            _font_glyphs_min   = _font_data.glyph_min;
+                            _font_glyphs_max   = _font_data.glyph_max;
+                            _font_msdf_range   = _font_data.msdf_range;
+                            
+                            var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
+                            _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
+                            _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
                         }
                                 
                         continue; //Skip the rest of the parser step
