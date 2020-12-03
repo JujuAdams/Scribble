@@ -486,7 +486,7 @@ void main()
         }
         else
         {
-            v_vColour.a = clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
+            v_vColour.a *= clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
         }
         
              if (easeMethod ==  2) { time = 1.0 - easeQuad(   1.0 - time); }
