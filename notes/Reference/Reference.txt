@@ -5,7 +5,7 @@
 |Name        |Datatype      |Purpose               |
 |------------|--------------|----------------------|
 |`[string]`  |string        |String to draw        |
-|`[uniqueID]`|string or real|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_OCCURRENCE_NAME`](Functions-(Configuration)#__scribble_config_macros)|
+|`[uniqueID]`|string or real|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_UNIQUE_ID`](Functions-(Configuration)#__scribble_config_macros)|
 
 If no string is specified (i.e. the function used with arguments), this function will return a **unique** text element that contains no text data. The text in any text element, including empty ones, can be overwritten using the [`.overwrite()`](scribble()-Methods#overwritestring-regenerator) method.
 
