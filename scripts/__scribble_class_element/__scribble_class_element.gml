@@ -27,7 +27,6 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     flushed = false;
     
     model_cache_name = undefined;
-    auto_refresh_typewriter = false;
     
     last_drawn = current_time;
     freeze = false;
@@ -854,13 +853,6 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
             }
             
             if (_model == undefined) _model = SCRIBBLE_NULL_MODEL;
-            
-            if (auto_refresh_typewriter && (_model != SCRIBBLE_NULL_MODEL))
-            {
-                auto_refresh_typewriter = false;
-                if (SCRIBBLE_VERBOSE) __scribble_trace("Auto-resetting typewriter state for \"", text, "\"");
-                __refresh_typewriter_for_page();
-            }
         }
         
         return _model;

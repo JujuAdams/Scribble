@@ -27,7 +27,4 @@ function scribble_flush_everything()
     ds_map_clear(global.__scribble_element_cache);
     ds_list_clear(global.__scribble_element_cache_list);
     global.__scribble_element_cache_test_index = 0;
-    
-    //Flush the callstack cache too
-    ds_map_clear(global.__scribble_callstack_cache);
 }

@@ -56,7 +56,6 @@ global.__scribble_model_cache_test_index   = 0;
 global.__scribble_element_cache            = ds_map_create();
 global.__scribble_element_cache_list       = ds_list_create();
 global.__scribble_element_cache_test_index = 0;
-global.__scribble_callstack_cache          = ds_map_create();
 
 if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
 
