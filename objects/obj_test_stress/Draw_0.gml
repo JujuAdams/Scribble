@@ -10,3 +10,4 @@ draw_text(10, 30, "elements cached = " + string(ds_list_size(global.__scribble_e
 
 smoothed_time = lerp(smoothed_time, _t, 0.01);
 draw_text(10, 50, "time taken = " + string(smoothed_time));
+draw_text(10, 70, "fps_real = " + string(fps_real));

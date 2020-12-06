@@ -1008,7 +1008,15 @@ function __scribble_generate_model(_element)
                                                             
                                                             if (_is_real)
                                                             {
-                                                                _text_colour = real(string_delete(_command_name, 1, 2));
+                                                                try
+                                                                {
+                                                                    _text_colour = real(string_delete(_command_name, 1, 2));
+                                                                }
+                                                                catch(_)
+                                                                {
+                                                                    __scribble_trace("ERROR! Colour \"", string_delete(_command_name, 1, 2), "\" not supported");
+                                                                    _text_colour = c_white;
+                                                                }
                                                             }
                                                             else
                                                             {
