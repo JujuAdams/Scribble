@@ -303,6 +303,8 @@
   },
   "resourceVersion": "1.0",
   "name": "fnt_test_0",
-  "tags": [],
+  "tags": [
+    "Scribble",
+  ],
   "resourceType": "GMFont",
 }

@@ -25,6 +25,4 @@ draw_primitive_end();
 
 draw_set_alpha(1.0);
 
-scribble_set_bezier(x0, y0, x1, y1, x2, y2, x3, y3);
-scribble_draw(x0, y0, "[pin_center]woooow Bezier curves in Scribble! they even wrap and create new lines");
-scribble_reset();
+scribble("[pin_center]woooow Bezier curves in Scribble! they even wrap and create new lines").bezier(x0, y0, x1, y1, x2, y2, x3, y3).draw(x0, y0);

@@ -905,6 +905,8 @@
   },
   "resourceVersion": "1.0",
   "name": "fnt_style_invalid",
-  "tags": [],
+  "tags": [
+    "Scribble",
+  ],
   "resourceType": "GMFont",
 }

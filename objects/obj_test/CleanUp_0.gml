@@ -1,1 +1,1 @@
-scribble_flush();
+element.flush();

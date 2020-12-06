@@ -1,5 +1,5 @@
 var _text = "[fa_middle][c_red]Hi world";
 
-var bbox = scribble_get_bbox(300, 300, _text);
-draw_rectangle(bbox[0], bbox[1], bbox[2], bbox[3], false);
-scribble_draw(300, 300, _text);
+var _bbox = scribble(_text).get_bbox(300, 300);
+draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, false);
+scribble(_text).draw(300, 300);

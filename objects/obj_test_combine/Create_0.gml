@@ -1,2 +1,3 @@
-scribble_init("Fonts", "fnt_style", true);
-scribble_combine_fonts("fnt_combined", "fnt_style_invalid", "fnt_test_0");
+scribble_font_set_default("fnt_style");
+scribble_font_add_all();
+scribble_font_combine("fnt_combined", "fnt_style_invalid", "fnt_test_0");

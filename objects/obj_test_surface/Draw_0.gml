@@ -8,4 +8,5 @@ draw_circle(_x     , 15, 16, true);
 draw_circle(_x + 32, 15, 16, true);
 surface_reset_target();
 
-scribble_draw(room_width/2, room_height/2, "[fa_center][fa_middle]Here's a sprite: [spr_large_coin,0]... Here's a surface: [surface," + string(surface) + "]");
+scribble("[fa_center][fa_middle]Here's a sprite: [spr_large_coin,0]... Here's a surface: [surface," + string(surface) + "]")
+.draw(room_width/2, room_height/2);
