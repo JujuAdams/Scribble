@@ -178,7 +178,7 @@ function __scribble_trace()
     show_debug_message(_string);
 }
 
-/// Convertes an RGB colour code (the industry standard) to GameMaker's native BGR format
+/// Converts an RGB colour code (the industry standard) to GameMaker's native BGR format
 /// @param RGB
 function scribble_rgb_to_bgr(_rgb)
 {

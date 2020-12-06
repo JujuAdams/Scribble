@@ -753,7 +753,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         //If enough time has elapsed since we drew this element then update our animation time
         if (current_time - last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
         {
-            animation_time += animation_tick_speed__*SCRIBBLE_STEP_SIZE;
+            animation_time += animation_tick_speed__*SCRIBBLE_TICK_SIZE;
             if (tw_do) __update_typewriter(); //Also update the typewriter too
         }
         
@@ -862,7 +862,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     {
         if (tw_do) //No fade in/out set
         {
-            var _typewriter_speed = tw_anim_speed*SCRIBBLE_STEP_SIZE;
+            var _typewriter_speed = tw_anim_speed*SCRIBBLE_TICK_SIZE;
             var _head_speed       = _typewriter_speed;
             var _skipping         = (tw_anim_speed >= SCRIBBLE_SKIP_SPEED_THRESHOLD);
             
