@@ -11,3 +11,8 @@ scribble_glyph_set("spr_sprite_font", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 scribble_glyph_set("spr_sprite_font", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 
 smoothed_time = 1000;
+
+toggle = true;
+test_text = "";
+
+show_debug_overlay(true);
