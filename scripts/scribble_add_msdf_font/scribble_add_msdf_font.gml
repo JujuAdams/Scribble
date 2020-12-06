@@ -75,14 +75,14 @@ repeat(_size)
     var _w     = _json_glyph_map[? "width" ];
     var _h     = _json_glyph_map[? "height"];
     var _index = ord(_char);
-    
+            
     if (__SCRIBBLE_DEBUG) show_debug_message("Scribble:     Adding data for character \"" + string(_char) + "\" (" + string(_index) + ")");
-    
-    var _u0 = _x*_texture_tw;
-    var _v0 = _y*_texture_th;
-    var _u1 = _u0 + (_w-1)*_texture_tw;
-    var _v1 = _v0 + (_h-1)*_texture_th;
-    
+            
+    var _u0    = _x*_texture_tw;
+    var _v0    = _y*_texture_th;
+    var _u1    = _u0 + _w*_texture_tw;
+    var _v1    = _v0 + _h*_texture_th;
+            
     var _array = array_create(SCRIBBLE_GLYPH.__SIZE, undefined);
     _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _char;
     _array[@ SCRIBBLE_GLYPH.INDEX     ] = _index;
@@ -101,11 +101,11 @@ repeat(_size)
     
     ++_i;
 }
-
+        
 //Now handle the space character
 var _array = _font_glyphs_map[? 32];
 _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _space_width;
 _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _json_line_height;
 _array[@ SCRIBBLE_GLYPH.SEPARATION] = _space_width;
-
+        
 ds_map_destroy(_json);

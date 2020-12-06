@@ -90,7 +90,6 @@ enum __SCRIBBLE_VERTEX_BUFFER
     BUFFER,
     VERTEX_BUFFER,
     TEXTURE,
-    SHADER,
     CHAR_START_TELL,
     WORD_START_TELL,
     WORD_X_OFFSET,
@@ -389,14 +388,6 @@ global.__scribble_uniform_tw_method       = shader_get_uniform(shd_scribble, "u_
 global.__scribble_uniform_tw_window_array = shader_get_uniform(shd_scribble, "u_fTypewriterWindowArray");
 global.__scribble_uniform_tw_smoothness   = shader_get_uniform(shd_scribble, "u_fTypewriterSmoothness" );
 global.__scribble_uniform_data_fields     = shader_get_uniform(shd_scribble, "u_aDataFields"           );
-
-global.__scribble_msdf_uniform_time            = shader_get_uniform(shd_scribble_msdf, "u_fTime"                 );
-global.__scribble_msdf_uniform_colour_blend    = shader_get_uniform(shd_scribble_msdf, "u_vColourBlend"          );
-global.__scribble_msdf_uniform_tw_method       = shader_get_uniform(shd_scribble_msdf, "u_fTypewriterMethod"     );
-global.__scribble_msdf_uniform_tw_window_array = shader_get_uniform(shd_scribble_msdf, "u_fTypewriterWindowArray");
-global.__scribble_msdf_uniform_tw_smoothness   = shader_get_uniform(shd_scribble_msdf, "u_fTypewriterSmoothness" );
-global.__scribble_msdf_uniform_data_fields     = shader_get_uniform(shd_scribble_msdf, "u_aDataFields"           );
-global.__scribble_msdf_uniform_texel           = shader_get_uniform(shd_scribble_msdf, "u_vTexel"                );
 
 //Hex converter array
 var _min = ord("0");
