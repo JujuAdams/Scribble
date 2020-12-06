@@ -413,17 +413,11 @@ if (_count > 0)
                 shader_set_uniform_f_array(global.__scribble_msdf_uniform_data_fields, global.scribble_state_anim_array);
                 shader_set_uniform_f(global.__scribble_msdf_uniform_texel, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH], _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT]);
                 shader_set_uniform_f(global.__scribble_msdf_uniform_range, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE]);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_shadow_colour, colour_get_red(  global.scribble_state_shadow_color)/255,
-                                                                                   colour_get_green(global.scribble_state_shadow_color)/255,
-                                                                                   colour_get_blue( global.scribble_state_shadow_color)/255,
-                                                                                   global.scribble_state_shadow_alpha);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_shadow_offset, global.scribble_state_shadow_x_offset, global.scribble_state_shadow_y_offset);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_border_colour, colour_get_red(  global.scribble_state_border_color)/255,
-                                                                                   colour_get_green(global.scribble_state_border_color)/255,
-                                                                                   colour_get_blue( global.scribble_state_border_color)/255);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_border_thickness, global.scribble_state_border_thickness);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_pixel_size, global.scribble_state_msdf_aa*global.scribble_state_xscale,
-                                                                                global.scribble_state_msdf_aa*global.scribble_state_yscale);
+                shader_set_uniform_f(global.__scribble_msdf_uniform_shadow_colour, 0.0, 0.0, 0.0, 1.0);
+                shader_set_uniform_f(global.__scribble_msdf_uniform_shadow_offset, 0.0, 3.5);
+                shader_set_uniform_f(global.__scribble_msdf_uniform_border_colour, 0.0, 0.0, 0.0);
+                shader_set_uniform_f(global.__scribble_msdf_uniform_border_thickness, 3.5);
+                shader_set_uniform_f(global.__scribble_msdf_uniform_scale, global.scribble_state_xscale, global.scribble_state_yscale);
             }
             else
             {

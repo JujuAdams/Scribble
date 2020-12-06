@@ -59,7 +59,7 @@ uniform float u_fTime;                                  //1
 uniform float u_fTypewriterMethod;                      //1
 uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
 uniform float u_fTypewriterSmoothness;                  //1
-uniform float u_aDataFields[MAX_ANIM_FIELDS];           //20
+uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
 
 
 
