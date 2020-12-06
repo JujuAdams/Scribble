@@ -39,7 +39,6 @@ _data[@ __SCRIBBLE_FONT.GLYPH_MAX   ] = 32;
 _data[@ __SCRIBBLE_FONT.SPACE_WIDTH ] = _space_width;
 _data[@ __SCRIBBLE_FONT.MAPSTRING   ] = undefined;
 _data[@ __SCRIBBLE_FONT.SEPARATION  ] = undefined;
-_data[@ __SCRIBBLE_FONT.MSDF_RANGE  ] = undefined;
 global.__scribble_font_data[? _font] = _data;
 
 show_debug_message( "Scribble: Defined \"" + _font + "\" as an MSDF font" );
@@ -56,41 +55,10 @@ var _json_string = buffer_read(_json_buffer, buffer_text);
 buffer_delete(_json_buffer);
 var _json = json_decode(_json_string);
 
-//Try to detect if this JSON was converted from XML
-//We presume the JSON uses no prefix, but we find a "font" object in the root, the assume we need - prefix for attributes
-//A little further down we adjust this to @ prefix if necessary
-var _key_prefix = "";
-if ((ds_map_size(_json) == 1) && ds_map_exists(_json, "font"))
-{
-    _json = _json[? "font"];
-    _key_prefix = "-";
-}
-
-//Recover the line height to be used for the height of the space character
-//At the same time, figure out if this JSON uses @ prefix for attributes
 var _json_common_map = _json[? "common"];
-var _json_line_height = real(_json_common_map[? _key_prefix + "lineHeight"]);
-if (_json_line_height == undefined)
-{
-    _key_prefix = "@";
-    _json_line_height = real(_json_common_map[? _key_prefix + "lineHeight"]);
-}
+var _json_line_height = _json_common_map[? "lineHeight"];
 
-//Grab the pixel range setting used for the MSDF
-//This eventually finds its way into the MSDF shader to accurately feather the glyph edges
-var _json_distance_field = _json[? "distanceField"];
-var _msdf_range = real(_json_distance_field[? _key_prefix + "distanceRange"]);
-_data[@ __SCRIBBLE_FONT.MSDF_RANGE] = _msdf_range;
-
-var _json_glyph_list = _json[? "chars"];
-if (ds_exists(_json_glyph_list, ds_type_map))
-{
-    if ((ds_map_size(_json_glyph_list) == 2) && ds_map_exists(_json_glyph_list, "-count") && ds_map_exists(_json_glyph_list, "char"))
-    {
-        _json_glyph_list = _json_glyph_list[? "char"];
-    }
-}
-
+var _json_glyph_list = _json[? "chars" ];
 var _size = ds_list_size( _json_glyph_list );
 show_debug_message( "Scribble: MSDF \"" + _font + "\" has " + string( _size ) + " characters" );
 
@@ -101,11 +69,11 @@ var _i = 0;
 repeat(_size)
 {
     var _json_glyph_map = _json_glyph_list[| _i ];
-    var _char  = _json_glyph_map[? _key_prefix + "char"];
-    var _x     = real(_json_glyph_map[? _key_prefix + "x"     ]);
-    var _y     = real(_json_glyph_map[? _key_prefix + "y"     ]);
-    var _w     = real(_json_glyph_map[? _key_prefix + "width" ]);
-    var _h     = real(_json_glyph_map[? _key_prefix + "height"]);
+    var _char  = _json_glyph_map[? "char"  ];
+    var _x     = _json_glyph_map[? "x"     ];
+    var _y     = _json_glyph_map[? "y"     ];
+    var _w     = _json_glyph_map[? "width" ];
+    var _h     = _json_glyph_map[? "height"];
     var _index = ord(_char);
     
     if (__SCRIBBLE_DEBUG) show_debug_message("Scribble:     Adding data for character \"" + string(_char) + "\" (" + string(_index) + ")");
@@ -115,18 +83,14 @@ repeat(_size)
     var _u1 = _u0 + _w*_texture_tw;
     var _v1 = _v0 + _h*_texture_th;
     
-    var _xoffset  = real(_json_glyph_map[? _key_prefix + "xoffset" ]);
-    var _yoffset  = real(_json_glyph_map[? _key_prefix + "yoffset" ]);
-    var _xadvance = real(_json_glyph_map[? _key_prefix + "xadvance"]);
-    
     var _array = array_create(SCRIBBLE_GLYPH.__SIZE, undefined);
     _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _char;
     _array[@ SCRIBBLE_GLYPH.INDEX     ] = _index;
     _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _w;
     _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _h;
-    _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _xoffset;
-    _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _yoffset;
-    _array[@ SCRIBBLE_GLYPH.SEPARATION] = _xadvance;
+    _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _json_glyph_map[? "xoffset" ];
+    _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _json_glyph_map[? "yoffset" ];
+    _array[@ SCRIBBLE_GLYPH.SEPARATION] = _json_glyph_map[? "xadvance"];
     _array[@ SCRIBBLE_GLYPH.TEXTURE   ] = _texture;
     _array[@ SCRIBBLE_GLYPH.U0        ] = _u0;
     _array[@ SCRIBBLE_GLYPH.V0        ] = _v0;

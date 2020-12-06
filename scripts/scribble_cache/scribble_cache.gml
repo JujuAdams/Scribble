@@ -91,7 +91,6 @@ if (_build)
         var _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
         var _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
         var _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-        var _font_msdf_range   = _font_data[__SCRIBBLE_FONT.MSDF_RANGE  ];
         
         var _glyph_texture = undefined;
         var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
@@ -330,7 +329,6 @@ if (_build)
                             _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                             _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
                             _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                            _font_msdf_range   = _font_data[__SCRIBBLE_FONT.MSDF_RANGE  ];
                             
                             var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                             _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -349,7 +347,6 @@ if (_build)
                             _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                             _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
                             _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                            _font_msdf_range   = _font_data[__SCRIBBLE_FONT.MSDF_RANGE  ];
                             
                             var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                             _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -552,8 +549,7 @@ if (_build)
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
                                     _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                                    _font_msdf_range   = _font_data[__SCRIBBLE_FONT.MSDF_RANGE  ];
-                                            
+                                    
                                     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                     _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
                                     _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
@@ -591,7 +587,6 @@ if (_build)
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
                                     _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                                    _font_msdf_range   = _font_data[__SCRIBBLE_FONT.MSDF_RANGE  ];
                                     
                                     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                     _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -630,7 +625,6 @@ if (_build)
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
                                     _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                                    _font_msdf_range   = _font_data[__SCRIBBLE_FONT.MSDF_RANGE  ];
                                     
                                     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                     _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -669,7 +663,6 @@ if (_build)
                                     _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                     _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
                                     _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                                    _font_msdf_range   = _font_data[__SCRIBBLE_FONT.MSDF_RANGE  ];
                                     
                                     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                     _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -743,7 +736,6 @@ if (_build)
                                             _font_glyphs_array = _font_data[__SCRIBBLE_FONT.GLYPHS_ARRAY];
                                             _font_glyphs_min   = _font_data[__SCRIBBLE_FONT.GLYPH_MIN   ];
                                             _font_glyphs_max   = _font_data[__SCRIBBLE_FONT.GLYPH_MAX   ];
-                                            _font_msdf_range   = _font_data[__SCRIBBLE_FONT.MSDF_RANGE  ];
                                             
                                             var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                                             _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
@@ -871,7 +863,6 @@ if (_build)
                                                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _vbuff_line_start_list;
                                                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _sprite_texture);
                                                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_sprite_texture);
-                                                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE     ] = undefined;
                                                             _page_vbuffs_array[@ array_length_1d(_page_vbuffs_array)] = _vbuff_data;
                                                             
                                                             _texture_to_buffer_map[? _sprite_texture] = _vbuff_data;
@@ -1290,7 +1281,6 @@ if (_build)
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _vbuff_line_start_list;
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = texture_get_texel_width( _glyph_texture);
                             _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = texture_get_texel_height(_glyph_texture);
-                            _vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE     ] = _font_msdf_range;
                             _page_vbuffs_array[@ array_length_1d(_page_vbuffs_array)] = _vbuff_data;
                         
                             _texture_to_buffer_map[? _glyph_texture] = _vbuff_data;
@@ -1636,7 +1626,6 @@ if (_build)
                             ds_list_add(_new_vbuff_line_start_list, 0);
                             
                             //Fill in vertex buffer data
-                            //TODO - array_copy()?
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.BUFFER         ] = _new_buffer;
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER  ] = undefined;
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE        ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE        ];
@@ -1647,7 +1636,6 @@ if (_build)
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.LINE_START_LIST] = _new_vbuff_line_start_list;
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH    ];
                             _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT   ];
-                            _new_vbuff_data[@ __SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE     ] = _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE     ];
                             
                             //Copy the relevant vertices of the old buffer to the new buffer
                             buffer_copy(_buffer, _line_tell_prev, _bytes, _new_buffer, 0);

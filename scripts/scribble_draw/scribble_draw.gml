@@ -412,11 +412,6 @@ if (_count > 0)
                 
                 shader_set_uniform_f_array(global.__scribble_msdf_uniform_data_fields, global.scribble_state_anim_array);
                 shader_set_uniform_f(global.__scribble_msdf_uniform_texel, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH], _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT]);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_range, _vbuff_data[__SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE]);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_shadow_colour, 0.0, 0.0, 0.0, 1.0);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_shadow_offset, 0.0, 7.0);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_border_colour, 0.0, 0.0, 0.0);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_border_thickness, 3.0);
             }
             else
             {
