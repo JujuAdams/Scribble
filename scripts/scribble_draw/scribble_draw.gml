@@ -150,7 +150,6 @@ if (_count > 0)
             }
             
             var _scan_a = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS];
-            var _scan = _scan_a;
             if (_scan_b > _scan_a)
             {
                 var _events_char_array = _scribble_array[SCRIBBLE.EVENT_CHAR_ARRAY];
@@ -217,7 +216,7 @@ if (_count > 0)
                                 if (_occurance_array[__SCRIBBLE_OCCURANCE.PAUSED]
                                 ||  _occurance_array[__SCRIBBLE_OCCURANCE.DELAY_PAUSED])
                                 {
-                                    _typewriter_speed = _scan - _typewriter_head_pos;
+                                    _typewriter_speed = _scan - _scan_a;
                                     _break = true;
                                     break;
                                 }
