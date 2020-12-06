@@ -1,5 +1,5 @@
 //Start up Scribble and load fonts automatically from Included Files
-if (scribble_init("", "fnt_test_0", true))
+if (scribble_init("Fonts", "fnt_test_0", true))
 {
     //Add a spritefont to Scribble
     //Scribble duplicates GameMaker's native spritefont rendering

@@ -1,4 +1,4 @@
-if (scribble_init("", "fnt_test_0", true))
+if (scribble_init("Fonts", "fnt_test_0", true))
 {
     scribble_add_autotype_event("portrait", example_dialogue_set_portrait);
     scribble_add_autotype_event("name", example_dialogue_set_name);
