@@ -125,7 +125,7 @@ repeat(_size)
     _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _w;
     _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _h;
     _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _xoffset;
-    _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _yoffset - _msdf_range;
+    _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _yoffset;
     _array[@ SCRIBBLE_GLYPH.SEPARATION] = _xadvance;
     _array[@ SCRIBBLE_GLYPH.TEXTURE   ] = _texture;
     _array[@ SCRIBBLE_GLYPH.U0        ] = _u0;
