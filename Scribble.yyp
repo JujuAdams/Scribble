@@ -63,6 +63,14 @@
             }
         },
         {
+            "Key": "02648921-103c-45bf-a61c-f9f5f30f71c9",
+            "Value": {
+                "id": "559de04b-3e68-4ae7-ba88-25dc016ce377",
+                "resourcePath": "datafiles_yy\\Fonts\\msdf.png.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "04580ef1-3ded-4d10-bf20-ef0e199d873b",
             "Value": {
                 "id": "5425de01-1031-4c7a-af52-bcfe701da74a",
@@ -364,6 +372,14 @@
                 "id": "25075526-07ba-4752-aaae-a42f0252fbfa",
                 "resourcePath": "scripts\\scribble_get_bbox\\scribble_get_bbox.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "5098c737-17aa-4176-85e1-735159b4bf07",
+            "Value": {
+                "id": "e55066c2-f51e-4e7f-abf3-4316e450ea24",
+                "resourcePath": "datafiles_yy\\Fonts\\msdf.json.yy",
+                "resourceType": "GMIncludedFile"
             }
         },
         {
@@ -707,14 +723,6 @@
             "Value": {
                 "id": "134cb2e9-0909-4d71-bcca-93b17102dd6c",
                 "resourcePath": "datafiles_yy\\Fonts\\fnt_test_0.yy.yy",
-                "resourceType": "GMIncludedFile"
-            }
-        },
-        {
-            "Key": "8ec8fa99-90e6-4fd3-9097-c32312937a72",
-            "Value": {
-                "id": "a2a34fc2-af1e-4ddc-b72b-ee45925c395e",
-                "resourcePath": "datafiles_yy\\Fonts\\riffic.png.yy",
                 "resourceType": "GMIncludedFile"
             }
         },
@@ -1068,14 +1076,6 @@
                 "id": "a4a671e8-7a67-41ec-aeac-662bfabcc64b",
                 "resourcePath": "options\\windows\\options_windows.yy",
                 "resourceType": "GMWindowsOptions"
-            }
-        },
-        {
-            "Key": "d001d23f-040a-421b-9f30-0ace8e58dfd5",
-            "Value": {
-                "id": "e3b4dac3-c09f-4042-97df-9224e855f220",
-                "resourcePath": "datafiles_yy\\Fonts\\riffic.json.yy",
-                "resourceType": "GMIncludedFile"
             }
         },
         {
