@@ -6,7 +6,6 @@
     "option_windowsuap_allow_fullscreen_switching": false,
     "option_windowsuap_certificate_location": "${base_options_dir}\\windowsuap\\keys\\WinUWPRunner_TemporaryKey.pfx",
     "option_windowsuap_certificate_publishername": "CN=Sandbox",
-    "option_windowsuap_description": null,
     "option_windowsuap_display_cursor": true,
     "option_windowsuap_display_name": "Made in GameMaker Studio 2",
     "option_windowsuap_iap_sandbox": false,

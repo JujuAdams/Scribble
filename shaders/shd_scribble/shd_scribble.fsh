@@ -1,3 +1,6 @@
+//   @jujuadams   v6.0.9   2020-07-22
+precision highp float;
+
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
