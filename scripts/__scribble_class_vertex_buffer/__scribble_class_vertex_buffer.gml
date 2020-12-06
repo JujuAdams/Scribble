@@ -41,6 +41,12 @@ function __scribble_class_vertex_buffer(_texture, _for_text) constructor
     {
         if (vertex_buffer != undefined) vertex_delete_buffer(vertex_buffer);
         vertex_buffer = undefined;
+        
+        if (buffer != undefined) buffer_delete(buffer);
+        buffer = undefined;
+        
+        if (line_start_list != undefined) ds_list_destroy(line_start_list);
+        line_start_list = undefined;
     }
     
     static __submit = function()

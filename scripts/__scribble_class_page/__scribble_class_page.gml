@@ -86,6 +86,9 @@ function __scribble_class_page() constructor
     
     static __flush = function()
     {
+        if (texture_to_buffer_map != undefined) ds_map_destroy(texture_to_buffer_map);
+        texture_to_buffer_map = undefined;
+        
         var _i = 0;
         repeat(array_length(vertex_buffer_array))
         {
