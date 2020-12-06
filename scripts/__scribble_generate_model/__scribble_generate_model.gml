@@ -1932,13 +1932,12 @@ function __scribble_generate_model(_element)
                         
                 #endregion
             }
-                    
+            
             _data.__build_vertex_buffer(_freeze);
-            _data.__clean_up(!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY || _bezier_do);
-                    
             ++_v;
         }
-            
+        
+        _page_data.__clean_up(!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY || _bezier_do);
         ++_p;
     }
         
