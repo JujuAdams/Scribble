@@ -417,7 +417,6 @@ if (_count > 0)
                 shader_set_uniform_f(global.__scribble_msdf_uniform_shadow_offset, 0.0, 3.5);
                 shader_set_uniform_f(global.__scribble_msdf_uniform_border_colour, 0.0, 0.0, 0.0);
                 shader_set_uniform_f(global.__scribble_msdf_uniform_border_thickness, 3.5);
-                shader_set_uniform_f(global.__scribble_msdf_uniform_scale, global.scribble_state_xscale, global.scribble_state_yscale);
             }
             else
             {
