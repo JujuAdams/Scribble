@@ -11,6 +11,9 @@
 /// This script sets Scribble's draw state. All text drawn with scribble_draw() will use these settings until they're overwritten, either by
 /// calling this script again or by calling scribble_reset() or scribble_set_state().
 
-if ((argument[0] != undefined) && (argument[0] >= 0)) global.scribble_state_box_halign = argument[0];
-if ((argument[1] != undefined) && (argument[1] >= 0)) global.scribble_state_box_valign = argument[1];
-if ((argument_count > 2) && (argument[2] != undefined) && (argument[2] >= 0)) global.scribble_state_box_align_page = argument[2];
+function scribble_set_box_align()
+{
+    if ((argument[0] != undefined) && (argument[0] >= 0)) global.scribble_state_box_halign = argument[0];
+    if ((argument[1] != undefined) && (argument[1] >= 0)) global.scribble_state_box_valign = argument[1];
+    if ((argument_count > 2) && (argument[2] != undefined) && (argument[2] >= 0)) global.scribble_state_box_align_page = argument[2];
+}

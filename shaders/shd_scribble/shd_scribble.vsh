@@ -1,4 +1,4 @@
-//   @jujuadams   v6.0.9   2020-07-22
+//   @jujuadams   v6.0.14a   2020-10-18
 precision highp float;
 
 const int MAX_EFFECTS = 9;
@@ -60,6 +60,7 @@ uniform float u_fTypewriterMethod;                      //1
 uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
 uniform float u_fTypewriterSmoothness;                  //1
 uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
+uniform vec2  u_aBezier[3];                             //6
 
 
 
@@ -94,13 +95,16 @@ void unpackFlags(float flagValue, inout float array[MAX_EFFECTS])
     }
 }
 
+//Rotate by vector
+vec2 rotate_by_vector(vec2 position, vec2 centre, vec2 vector)
+{
+    return centre + (position - centre)*mat2(vector, -vector.y, vector.x);
+}
+
 //Rotate the character
 vec2 rotate(vec2 position, vec2 centre, float angle)
 {
-    vec2 delta = position.xy - centre;
-    float _sin = sin(0.00872664625*angle);
-    float _cos = cos(0.00872664625*angle);
-    return centre + vec2(delta.x*_cos - delta.y*_sin, delta.x*_sin + delta.y*_cos);
+    return rotate_by_vector(position, centre, vec2(cos(0.00872664625*angle), -sin(0.00872664625*angle)));
 }
 
 //Scale the character equally on both x and y axes
@@ -248,6 +252,18 @@ float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index, boo
     return result;
 }
 
+vec2 bezier(float t, vec2 p1, vec2 p2, vec2 p3)
+{
+    float inv_t = 1.0 - t;
+    return 3.0*inv_t*inv_t*t*p1 + 3.0*inv_t*t*t*p2 + t*t*t*p3;
+}
+
+vec2 bezierDerivative(float t, vec2 p1, vec2 p2, vec2 p3)
+{
+    float inv_t = 1.0 - t;
+    return 3.0*inv_t*inv_t*p1 + 6.0*inv_t*t*(p2 - p1) + 3.0*t*t*(p3 - p2);
+}
+
 
 
 //--------------------------------------------------------------------------------------------------------
@@ -299,10 +315,29 @@ void main()
     vec2 pos = in_Position.xy;
     
     //Unpack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
+    vec2 centreDelta;
+    centreDelta.y = floor(in_Normal.x/2000.0);
+    centreDelta.x = in_Normal.x - centreDelta.y*2000.0;
+    centreDelta = (centreDelta - 1000.0)/10.0;
+    
     vec2 centre;
-    centre.y = floor(in_Normal.x/2000.0);
-    centre.x = in_Normal.x - centre.y*2000.0;
-    centre = pos + (centre - 1000.0)/10.0;
+    
+    //If we have a valid Bezier curve, apply it
+    if ((u_aBezier[2].x != 0.0) || (u_aBezier[2].y != 0.0))
+    {
+        centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+        
+        vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+        orientation = normalize(vec2(orientation.x, -orientation.y));
+        pos = rotate_by_vector(centre - centreDelta, centre, orientation);
+        
+        vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
+        pos += in_Position.y*perpendicular;
+    }
+    else
+    {
+        centre = pos + centreDelta;
+    }
     
     //Vertex animation
     pos.xy = wobble(pos, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
@@ -326,10 +361,12 @@ void main()
         v_vColour.a *= fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, index + 1.0, (u_fTypewriterMethod < 0.0));
     }
     
-    if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use RGBA information to filter out sprites
+    if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
     
     //Texture
     v_vTexcoord = in_TextureCoord;
     
     gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(pos, 0.0, 1.0);
+    
+    //v_vColour = vec4(in_Normal.y, 0.0, 0.0, 1.0);
 }

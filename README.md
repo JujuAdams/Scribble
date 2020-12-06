@@ -1,9 +1,9 @@
 <p align="center"><img src="https://raw.githubusercontent.com/JujuAdams/scribble/master/LOGO.png" style="display:block; margin:auto; width:300px"></p>
-<h1 align="center">6.0.9</h1>
+<h1 align="center">6.0.14a</h1>
 
 <p align="center">A modern text renderer for GameMaker Studio 2 by <b>@jujuadams</b></p>
 
-<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/6.0.9">Download the .yymp</a></p>
+<p align="center"><a href="https://github.com/JujuAdams/scribble/releases/tag/6.0.14">Download the .yymp</a></p>
 <p align="center">Chat about Scribble on the <a href="https://discord.gg/8krYCqr">Discord server</a></p>
 
 &nbsp;

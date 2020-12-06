@@ -2,8 +2,7 @@
 /// @param   eventData{array}
 /// @param   characterIndex
 
-var _text_element = argument0;
-var _event_data   = argument1;
-var _char_index   = argument2;
-
-textbox_name = _event_data[0];
+function example_dialogue_set_name(_text_element, _event_data, _char_index)
+{
+    textbox_name = _event_data[0];
+}

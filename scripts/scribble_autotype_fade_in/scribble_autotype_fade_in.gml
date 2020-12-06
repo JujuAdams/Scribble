@@ -12,43 +12,46 @@
 /// triggering sound effects, changing character portraits, starting movement of instances, starting weather effects, giving the player items,
 /// and so on.
 
-var _scribble_array = argument[0];
-var _speed          = argument[1];
-var _smoothness     = argument[2];
-var _per_line       = argument[3];
-var _occurance_name = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
-
-if (_speed == undefined)
+function scribble_autotype_fade_in()
 {
-    show_error("Scribble:\nscribble_autotype_fade_in() has had its arguments changed. Please review your code\n ", false);
-    exit;
+	var _scribble_array = argument[0];
+	var _speed          = argument[1];
+	var _smoothness     = argument[2];
+	var _per_line       = argument[3];
+	var _occurance_name = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : SCRIBBLE_DEFAULT_OCCURANCE_NAME;
+
+	if (_speed == undefined)
+	{
+	    show_error("Scribble:\nscribble_autotype_fade_in() has had its arguments changed. Please review your code\n ", false);
+	    exit;
+	}
+
+	var _scribble_array = scribble_cache(_scribble_array, _occurance_name);
+	if (_scribble_array == undefined) return undefined;
+
+	//Find our occurance data
+	var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
+	var _occurance_array = _occurance_map[? _occurance_name];
+
+	//Reset this page's previous event position too
+	var _pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];
+	var _page_array = _pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAGE]];
+	var _window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_array[__SCRIBBLE_PAGE.START_CHAR] - _smoothness);
+	_window_array[@ 0] += _smoothness;
+    
+    //Clear the typewriter behaviour
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW      ] =  0;
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW_ARRAY] =  _window_array;
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.METHOD      ] =  _per_line? 2 : 1;
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.SPEED       ] =  _speed;
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.SMOOTHNESS  ] =  _smoothness;
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.FADE_IN     ] =  true;
+	_occurance_array[@ __SCRIBBLE_OCCURANCE.SKIP        ] =  false;
+    
+    //Clear events tracking
+    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ] = _page_array[__SCRIBBLE_PAGE.START_EVENT] - 1;
+    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = _page_array[__SCRIBBLE_PAGE.START_CHAR ] - 1;
+    //Clear out the visited array too
+    var _visited_array = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY];
+    _occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY] = array_create(array_length(_visited_array), false);
 }
-
-var _scribble_array = scribble_cache(_scribble_array, _occurance_name);
-if (_scribble_array == undefined) return undefined;
-
-//Find our occurance data
-var _occurance_map = _scribble_array[SCRIBBLE.OCCURANCES_MAP];
-var _occurance_array = _occurance_map[? _occurance_name];
-
-//Reset this page's previous event position too
-var _pages_array = _scribble_array[SCRIBBLE.PAGES_ARRAY];
-var _page_array = _pages_array[_occurance_array[__SCRIBBLE_OCCURANCE.PAGE]];
-var _window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_array[__SCRIBBLE_PAGE.START_CHAR] - _smoothness);
-_window_array[@ 0] += _smoothness;
-
-//Clear the typewriter behaviour
-_occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW      ] =  0;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.WINDOW_ARRAY] =  _window_array;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.METHOD      ] =  _per_line? 2 : 1;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.SPEED       ] =  _speed;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.SMOOTHNESS  ] =  _smoothness;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.FADE_IN     ] =  true;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.SKIP        ] =  false;
-
-//Clear events tracking
-_occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_PREVIOUS     ] = _page_array[__SCRIBBLE_PAGE.START_EVENT] - 1;
-_occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_CHAR_PREVIOUS] = _page_array[__SCRIBBLE_PAGE.START_CHAR ] - 1;
-//Clear out the visited array too
-var _visited_array = _occurance_array[__SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY];
-_occurance_array[@ __SCRIBBLE_OCCURANCE.EVENT_VISITED_ARRAY] = array_create(array_length_1d(_visited_array), false);

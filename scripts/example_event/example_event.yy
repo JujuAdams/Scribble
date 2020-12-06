@@ -1,8 +1,12 @@
 {
-    "id": "7f249531-321e-43d7-92bc-258842287e9d",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "example_event",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Examples",
+    "path": "folders/Examples.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "example_event",
+  "tags": [],
+  "resourceType": "GMScript",
 }

@@ -1,8 +1,12 @@
 {
-    "id": "a820c2b9-d795-4e8a-b5f6-64ccc6ab8400",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scribble_combine_fonts",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Advanced Things For Serious People",
+    "path": "folders/Scribble/Advanced Things For Serious People.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scribble_combine_fonts",
+  "tags": [],
+  "resourceType": "GMScript",
 }

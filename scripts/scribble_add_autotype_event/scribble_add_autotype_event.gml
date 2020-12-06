@@ -1,7 +1,7 @@
 /// Defines an event - a script that can be executed (with parameters) by an in-line command tag
 /// 
-/// @param name     Name of the new formatting tag to add e.g. portrait adds the tag [portrait] for use
-/// @param script   Script asset to execute N.B. This is the asset index, not a string
+/// @param name              Name of the new formatting tag to add e.g. portrait adds the tag [portrait] for use
+/// @param function/method   Function or method to execute
 /// 
 /// Events are scripts that are executed during an autotype fade in animation. As each character is revealed,
 /// Scribble will check if any events are present at that position in the text and, if so, Scribble will
@@ -48,55 +48,55 @@
 /// gamepad. Given that the formatting tag was [rumble,0.2], the function gamepad_set_vibration() will be
 /// given 0.2 as its input value.
 
-var _name   = argument0;
-var _script = argument1;
-
-if (!variable_global_exists("__scribble_lcg"))
+function scribble_add_autotype_event(_name, _function)
 {
-    show_error("Scribble:\nscribble_add_event() should be called after initialising Scribble.\n ", false);
-    exit;
+	if (!variable_global_exists("__scribble_lcg"))
+	{
+	    show_error("Scribble:\nscribble_add_event() should be called after initialising Scribble.\n ", false);
+	    exit;
+	}
+    
+	if (!is_string(_name))
+	{
+	    show_error("Scribble:\nEvent names should be strings.\n(Input to script was \"" + string(_name) + "\")\n ", false);
+	    exit;
+	}
+    
+	if (!is_method(_function))
+	{
+        if (is_real(_function))
+        {
+            if (!script_exists(_function))
+            {
+        	    show_error("Scribble:\nScript with asset index " + string(_function) + " doesn't exist\n ", false);
+        	    exit;
+            }
+        }
+        else
+        {
+    	    show_error("Scribble:\nInvalid function provided\n(Input datatype was \"" + typeof(_function) + "\")\n ", false);
+    	    exit;
+        }
+	}
+    
+	if (ds_map_exists(global.__scribble_colours, _name))
+	{
+	    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as a colour");
+	    exit;
+	}
+    
+	if (ds_map_exists(global.__scribble_effects, _name))
+	{
+	    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as an effect");
+	    exit;
+	}
+    
+	var _old_function = global.__scribble_autotype_events[? _name];
+	if (!is_undefined(_old_function))
+	{
+	    show_debug_message("Scribble: WARNING! Overwriting event [" + _name + "] tied to \"" + (is_method(_old_function)? string(_old_function) : script_get_name(_old_function)) + "\"");
+	}
+    
+	global.__scribble_autotype_events[? _name] = _function;
+	if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Tying event [" + _name + "] to \"" + (is_method(_function)? string(_function) : script_get_name(_function)) + "\"");
 }
-
-if (!is_string(_name) && !is_undefined(_name))
-{
-    show_error("Scribble:\nEvent names should be strings.\n(Input to script was \"" + string(_name) + "\")\n ", false);
-    exit;
-}
-
-if (!is_real(_script))
-{
-    show_error("Scribble:\nScripts should be numerical script indices e.g. scribble_add_event(\"example\", your_script);\n(Input to script was \"" + string(_name) + "\")\n ", false);
-    exit;
-}
-
-if (!script_exists(_script))
-{
-    show_error("Scribble:\nScript (" + string(_script) + ") doesn't exist!\n ", false);
-    exit;
-}
-
-if (ds_map_exists(global.__scribble_colours, _name))
-{
-    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as a colour");
-    exit;
-}
-
-if (ds_map_exists(global.__scribble_effects, _name))
-{
-    show_debug_message("Scribble: WARNING! Event name \"" + _name + "\" has already been defined as an effect");
-    exit;
-}
-
-if (is_undefined(_name) || (_name == ""))
-{
-    _name = script_get_name(_script);
-}
-
-var _old_script = global.__scribble_autotype_events[? _name];
-if (is_real(_old_script))
-{
-    show_debug_message("Scribble: WARNING! Overwriting event [" + _name + "] tied to script " + script_get_name(_old_script) + "()");
-}
-
-global.__scribble_autotype_events[? _name] = _script;
-if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Tying event [" + _name + "] to script " + script_get_name(_script) + "()");
