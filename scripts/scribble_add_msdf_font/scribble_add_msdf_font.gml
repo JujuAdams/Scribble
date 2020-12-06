@@ -42,7 +42,7 @@ _data[@ __SCRIBBLE_FONT.SEPARATION  ] = undefined;
 _data[@ __SCRIBBLE_FONT.MSDF_RANGE  ] = undefined;
 global.__scribble_font_data[? _font] = _data;
 
-if (SCRIBBLE_VERBOSE) show_debug_message( "Scribble: Defined \"" + _font + "\" as an MSDF font" );
+show_debug_message( "Scribble: Defined \"" + _font + "\" as an MSDF font" );
 
 var _sprite = sprite_add(global.__scribble_font_directory + _font + ".png", 0, false, false, 0, 0);
 _data[@ __SCRIBBLE_FONT.SPRITE] = _sprite;
@@ -92,7 +92,7 @@ if (ds_exists(_json_glyph_list, ds_type_map))
 }
 
 var _size = ds_list_size( _json_glyph_list );
-if (SCRIBBLE_VERBOSE) show_debug_message( "Scribble: \"" + _font + "\" has " + string( _size ) + " characters" );
+show_debug_message( "Scribble: MSDF \"" + _font + "\" has " + string( _size ) + " characters" );
 
 var _font_glyphs_map = ds_map_create();
 _data[@ __SCRIBBLE_FONT.GLYPHS_MAP] = _font_glyphs_map;
