@@ -922,10 +922,10 @@ if (_build)
                                                         
                                                         //Pack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
                                                         //This must match what's in shd_scribble!
-                                                        var _packed_delta_lb  = floor(1000 + 10*_delta_l ) + 2000*floor(1000 + 10*_delta_b);
-                                                        var _packed_delta_rb  = floor(1000 + 10*_delta_r ) + 2000*floor(1000 + 10*_delta_b);
-                                                        var _packed_delta_lst = floor(1000 + 10*_delta_ls) + 2000*floor(1000 + 10*_delta_t);
-                                                        var _packed_delta_rst = floor(1000 + 10*_delta_rs) + 2000*floor(1000 + 10*_delta_t);
+                                                        var _packed_delta_lb  = floor(10*_delta_l ) + 2000*floor(10*_delta_b);
+                                                        var _packed_delta_rb  = floor(10*_delta_r ) + 2000*floor(10*_delta_b);
+                                                        var _packed_delta_lst = floor(10*_delta_ls) + 2000*floor(10*_delta_t);
+                                                        var _packed_delta_rst = floor(10*_delta_rs) + 2000*floor(10*_delta_t);
                                                         
                                                         //                                                X                                                          Y                                            Character/Line Index                                               Centre dXdY                                              Sprite Data                                                 Flags                                                      Colour                                                 U                                                V
                                                         buffer_write(_glyph_buffer, buffer_f32, _quad_l + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_lst); buffer_write(_glyph_buffer, buffer_f32, _sprite_data); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _uvs[0]); buffer_write(_glyph_buffer, buffer_f32, _uvs[1]);
@@ -1457,15 +1457,13 @@ if (_build)
                                 //Set our word start tell position to be the same as the character start tell
                                 //This allows us to handle single words that exceed the maximum textbox width multiple times (!)
                                 _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_a;
+                                _line_width = max(_line_width, _text_x);
                             }
                             else
                             {
                                 //If our line didn't have a space then set our word/character start position to be the current tell for this buffer
                                 _data[@ __SCRIBBLE_VERTEX_BUFFER.CHAR_START_TELL] = _tell_b;
                                 _data[@ __SCRIBBLE_VERTEX_BUFFER.WORD_START_TELL] = _tell_b;
-                                
-                                //Update the width of the line based on the right-most edge of the last character
-                                _line_width = max(_line_width, buffer_peek(_buffer, _tell_b - __SCRIBBLE_GLYPH_BYTE_SIZE + __SCRIBBLE_VERTEX.X, buffer_f32));
                             }
                             
                             //Note the negative sign!
