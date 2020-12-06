@@ -33,7 +33,7 @@ void main()
     //float dy = dFdy(v_vTexcoord.y)/u_vTexel.y;
     //float pixelSize = inversesqrt(dx*dx + dy*dy);
     
-    float pixelSize = length(0.5*u_vPixelSize);
+    float pixelSize = length(u_vPixelSize);
     
     float distBase = MSDFSignedDistance(vec2(0.0));
     float alphaBase = MSDFAlpha(distBase, pixelSize, 0.0);

@@ -311,6 +311,14 @@
             }
         },
         {
+            "Key": "45903703-1256-482e-b28c-17d92180edf3",
+            "Value": {
+                "id": "f7938804-373e-43f0-bb9b-965c5a175677",
+                "resourcePath": "datafiles_yy\\riffic2.png.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "4623e565-3c0d-42a1-ba82-fb6bc9d22073",
             "Value": {
                 "id": "ee8d304a-3cf5-4301-be3d-abc74288d643",
@@ -615,6 +623,14 @@
             }
         },
         {
+            "Key": "80358f6c-5ca2-4dc5-8e2c-b592bc9958b4",
+            "Value": {
+                "id": "6f3e59ed-27a1-4ecb-8f2a-9701a029db0f",
+                "resourcePath": "datafiles_yy\\riffic2.json.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "80b9a056-1eaa-4078-9983-38b06e74f2f1",
             "Value": {
                 "id": "c63929a4-d2ae-4ae4-b0b9-a6ef9213bc89",
@@ -711,6 +727,14 @@
             }
         },
         {
+            "Key": "8ec8fa99-90e6-4fd3-9097-c32312937a72",
+            "Value": {
+                "id": "a2a34fc2-af1e-4ddc-b72b-ee45925c395e",
+                "resourcePath": "datafiles_yy\\riffic.png.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "93566aad-c3b3-48a9-8fa7-9c5ee19f74ac",
             "Value": {
                 "id": "1cee5268-8b35-41a3-890f-d73bbcbe5ce0",
@@ -756,14 +780,6 @@
                 "id": "ae90b48c-be44-4d75-b5e4-86d052348ef8",
                 "resourcePath": "objects\\obj_test_combine\\obj_test_combine.yy",
                 "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "97c72804-9c80-4621-8db2-47c92b1da65f",
-            "Value": {
-                "id": "16f628b3-2d0b-453f-910b-58885e27cd5f",
-                "resourcePath": "datafiles_yy\\msdf.json.yy",
-                "resourceType": "GMIncludedFile"
             }
         },
         {
@@ -1079,6 +1095,14 @@
             }
         },
         {
+            "Key": "d001d23f-040a-421b-9f30-0ace8e58dfd5",
+            "Value": {
+                "id": "e3b4dac3-c09f-4042-97df-9224e855f220",
+                "resourcePath": "datafiles_yy\\riffic.json.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "d0797c70-f098-4e2c-912e-f1225887182b",
             "Value": {
                 "id": "83ca097b-094c-4d2f-8646-18bd6bb5d165",
@@ -1204,14 +1228,6 @@
                 "id": "d2eb849c-77fa-4177-82b4-59dfadb486eb",
                 "resourcePath": "options\\android\\options_android.yy",
                 "resourceType": "GMAndroidOptions"
-            }
-        },
-        {
-            "Key": "e4d4ba0c-095e-4757-9f13-f3c7ff5412a1",
-            "Value": {
-                "id": "a273583c-7e2a-4335-8f07-eae539dc70cf",
-                "resourcePath": "sprites\\spr_msdf_font\\spr_msdf_font.yy",
-                "resourceType": "GMSprite"
             }
         },
         {
