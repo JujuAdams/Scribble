@@ -66,7 +66,7 @@ Text element methods are broken down into several categories. There's a lot here
     - [`.get_height()`](scribble()-Methods#get_height)
     - [`.get_wrapped()`](scribble()-Methods#get_wrapped)
     - [`.get_line_count([page])`](scribble()-Methods#get_line_countpage)
-6. [**Animation**](scribble()-Methods#size-getters)
+6. [**Animation**](scribble()-Methods#animation)
     - [`.animation_tick_speed(tickSpeed)`](scribble()-Methods#animation_tick_speedtickspeed)
     - [`.animation_sync(sourceElement)`](scribble()-Methods#animation_syncsourceelement)
     - [`.animation_wave(size, frequency, speed)`](scribble()-Methods#animation_wavesize-frequency-speed)
@@ -97,6 +97,10 @@ Text element methods are broken down into several categories. There's a lot here
 &nbsp;
 
 ## Basics
+
+[Previous section](scribble()-Methods#methods)  |  [Next section](scribble()-Methods#shape-wrapping-and-positioning)
+
+&nbsp;
 
 ### `.draw(x, y)`
 
@@ -161,6 +165,10 @@ This function will replace the string in an existing text element whilst maintai
 &nbsp;
 
 ## Shape, Wrapping, and Positioning
+
+[Previous section](scribble()-Methods#basics)  |  [Next section](scribble()-Methods#pages)
+
+&nbsp;
 
 ### `.transform(xscale, yscale, angle)`
 
@@ -259,6 +267,10 @@ This function can also be executed with zero arguments (e.g. `scribble("text").b
 
 ## Pages
 
+[Previous section](scribble()-Methods#shape-wrapping-and-positioning)  |  [Next section](scribble()-Methods#typewriter)
+
+&nbsp;
+
 ### `.page(page)`
 
 **Returns**: The text element
@@ -298,6 +310,10 @@ Please note that changing the page will reset any typewriter animations i.e. tho
 &nbsp;
 
 ## Typewriter
+
+[Previous section](scribble()-Methods#pages)  |  [Next section](scribble()-Methods#getters)
+
+&nbsp;
 
 ### `.typewriter_off()`
 
@@ -498,6 +514,10 @@ This function is perhaps best used in conjunction with the [`SCRIBBLE_CREATE_CHA
 
 ## Getters
 
+[Previous section](scribble()-Methods#typewriter)  |  [Next section](scribble()-Methods#animation)
+
+&nbsp;
+
 ### `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
 
 **Returns:** Struct containing the positions of the bounding box for a text element
@@ -581,6 +601,10 @@ Will return `true` only if the [`.wrap()` feature](scribble()-Methods#wrapmaxwid
 &nbsp;
 
 ## Animation
+
+[Previous section](scribble()-Methods#getters)  |  [Next section](scribble()-Methods#msdf)
+
+&nbsp;
 
 ### `.animation_tick_speed(tickSpeed)`
 
@@ -734,33 +758,9 @@ This function controls behaviour of the `[blink]` effect across all uses in the 
 
 &nbsp;
 
-## Cache Management
-
-### `.build(freeze)`
-
-**Returns**: The text element
-
-|Name    |Datatype|Purpose|
-|--------|--------|-------|
-|`freeze`|boolean |       |
-
-&nbsp;
-
-### `.flush()`
-
-**Returns**: The text element
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
 ## MSDF
+
+[Previous section](scribble()-Methods#animation)  |  [Next section](scribble()-Methods#cache-management)
 
 *MSDF fonts require special considerations. Please read [the MSDF article](MSDF-Fonts) for more information.*
 
@@ -806,7 +806,41 @@ This feature will normally not be needed and the feather thickness will default 
 
 &nbsp;
 
+## Cache Management
+
+[Previous section](scribble()-Methods#msdf)  |  [Next section](scribble()-Methods#miscellaneous)
+
+&nbsp;
+
+### `.build(freeze)`
+
+**Returns**: The text element
+
+|Name    |Datatype|Purpose|
+|--------|--------|-------|
+|`freeze`|boolean |       |
+
+&nbsp;
+
+### `.flush()`
+
+**Returns**: The text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
 ## Miscellaneous
+
+[Previous section](scribble()-Methods#cache-management)
+
+&nbsp;
 
 ### `.template(function)`
 
