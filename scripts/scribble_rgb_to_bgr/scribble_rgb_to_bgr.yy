@@ -6,7 +6,7 @@
     "path": "folders/Scribble/Miscellaneous.yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_typewriter_add_event",
+  "name": "scribble_rgb_to_bgr",
   "tags": [],
   "resourceType": "GMScript",
 }
