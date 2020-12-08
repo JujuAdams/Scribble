@@ -1,28 +1,23 @@
 /// @param string
 /// @param elementCacheName
-/// @param manualGC
 
-function __scribble_class_element(_string, _element_cache_name, _manual_gc) constructor
+function __scribble_class_element(_string, _element_cache_name) constructor
 {
     text       = _string;
     cache_name = _element_cache_name;
-    manual_gc  = _manual_gc;
     
-    if (!manual_gc)
+    if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + cache_name + "\"");
+    
+    //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
+    if (ds_map_exists(global.__scribble_element_cache, cache_name))
     {
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + cache_name + "\"");
-        
-        //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-        if (ds_map_exists(global.__scribble_element_cache, cache_name))
-        {
-            __scribble_trace("Warning! Rebuilding element \"", cache_name, "\"");
-            global.__scribble_element_cache[? cache_name].flush();
-        }
-        
-        //Add this text element to the global cache
-        global.__scribble_element_cache[? cache_name] = self;
-        ds_list_add(global.__scribble_element_cache_list, self);
+        __scribble_trace("Warning! Rebuilding element \"", cache_name, "\"");
+        global.__scribble_element_cache[? cache_name].flush();
     }
+    
+    //Add this text element to the global cache
+    global.__scribble_element_cache[? cache_name] = self;
+    ds_list_add(global.__scribble_element_cache_list, self);
     
     flushed = false;
     
@@ -781,13 +776,10 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
         if (flushed) return undefined;
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(cache_name) + "\"");
         
-        if (!manual_gc)
-        {
-            //Remove reference from cache
-            ds_map_delete(global.__scribble_element_cache, cache_name);
-            var _index = ds_list_find_index(global.__scribble_element_cache_list, self);
-            if (_index >= 0) ds_list_delete(global.__scribble_element_cache_list, _index);
-        }
+        //Remove reference from cache
+        ds_map_delete(global.__scribble_element_cache, cache_name);
+        var _index = ds_list_find_index(global.__scribble_element_cache_list, self);
+        if (_index >= 0) ds_list_delete(global.__scribble_element_cache_list, _index);
         
         //Set as flushed
         flushed = true;
