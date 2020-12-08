@@ -13,15 +13,15 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching model \"" + cache_name + "\"");
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-    if (ds_map_exists(global.__scribble_model_cache, cache_name))
+    if (variable_struct_exists(global.__scribble_mcache_dict, cache_name))
     {
         __scribble_trace("Warning! Rebuilding model \"", cache_name, "\"");
-        global.__scribble_model_cache[? cache_name].flush();
+        global.__scribble_mcache_dict[$ cache_name].flush();
     }
     
     //Add this model to the global cache
-    global.__scribble_model_cache[? cache_name] = self;
-    ds_list_add(global.__scribble_model_cache_list, self);
+    global.__scribble_mcache_dict[$ cache_name] = self;
+    array_push(global.__scribble_mcache_array, self);
     
     
     
@@ -122,9 +122,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         reset();
         
         //Remove reference from cache
-        ds_map_delete(global.__scribble_model_cache, cache_name);
-        var _index = ds_list_find_index(global.__scribble_model_cache_list, self);
-        if (_index >= 0) ds_list_delete(global.__scribble_model_cache_list, _index);
+        variable_struct_remove(global.__scribble_mcache_dict, cache_name);
+        var _index = __scribble_array_find_index(global.__scribble_mcache_array, self);
+        if (_index >= 0) array_delete(global.__scribble_mcache_array, _index, 1);
         
         //Set as flushed
         flushed = true;

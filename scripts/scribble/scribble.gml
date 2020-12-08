@@ -17,14 +17,14 @@ function scribble()
         {
             var _element_cache_name = "anonymous " + string(floor(999999*__scribble_random()));
         }
-        until !ds_map_exists(global.__scribble_element_cache, _element_cache_name);
+        until !variable_struct_exists(global.__scribble_ecache_dict, _element_cache_name);
         
         _element = new __scribble_class_element("", _element_cache_name);
     }
     else
     {
         var _element_cache_name = _string + ":" + _unique_id;
-        var _element = global.__scribble_element_cache[? _element_cache_name];
+        var _element = global.__scribble_ecache_dict[$ _element_cache_name];
         if (!is_struct(_element) || _element.flushed) _element = new __scribble_class_element(_string, _element_cache_name);
     }
     

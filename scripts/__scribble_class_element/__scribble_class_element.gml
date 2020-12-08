@@ -9,15 +9,15 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + cache_name + "\"");
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-    if (ds_map_exists(global.__scribble_element_cache, cache_name))
+    if (variable_struct_exists(global.__scribble_ecache_dict, cache_name))
     {
         __scribble_trace("Warning! Rebuilding element \"", cache_name, "\"");
-        global.__scribble_element_cache[? cache_name].flush();
+        global.__scribble_ecache_dict[$ cache_name].flush();
     }
     
     //Add this text element to the global cache
-    global.__scribble_element_cache[? cache_name] = self;
-    ds_list_add(global.__scribble_element_cache_list, self);
+    global.__scribble_ecache_dict[$ cache_name] = self;
+    array_push(global.__scribble_ecache_array, self);
     
     flushed = false;
     
@@ -777,9 +777,9 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(cache_name) + "\"");
         
         //Remove reference from cache
-        ds_map_delete(global.__scribble_element_cache, cache_name);
-        var _index = ds_list_find_index(global.__scribble_element_cache_list, self);
-        if (_index >= 0) ds_list_delete(global.__scribble_element_cache_list, _index);
+        variable_struct_remove(global.__scribble_ecache_dict, cache_name);
+        var _index = __scribble_array_find_index(global.__scribble_ecache_array, self);
+        if (_index >= 0) array_delete(global.__scribble_ecache_array, _index, 1);
         
         //Set as flushed
         flushed = true;
@@ -838,7 +838,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
                                string(bezier_array   ) + ":" +
                                string(__ignore_command_tags);
             
-            model = global.__scribble_model_cache[? model_cache_name];
+            model = global.__scribble_mcache_dict[$ model_cache_name];
             
             //Create a new model if required
             if (_allow_create && (!is_struct(model) || model.flushed))

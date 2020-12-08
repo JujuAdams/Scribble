@@ -50,12 +50,13 @@ global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 
 global.__scribble_character_delay     = false;
 global.__scribble_character_delay_map = ds_map_create();
 
-global.__scribble_model_cache              = ds_map_create();
-global.__scribble_model_cache_list         = ds_list_create();
-global.__scribble_model_cache_test_index   = 0;
-global.__scribble_element_cache            = ds_map_create();
-global.__scribble_element_cache_list       = ds_list_create();
-global.__scribble_element_cache_test_index = 0;
+global.__scribble_mcache_dict       = {};
+global.__scribble_mcache_array      = [];
+global.__scribble_mcache_test_index = 0;
+
+global.__scribble_ecache_dict       = {};
+global.__scribble_ecache_array      = [];
+global.__scribble_ecache_test_index = 0;
 
 if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
 
@@ -215,12 +216,24 @@ function __scribble_random()
     return global.__scribble_lcg / 2147483648;
 }
 
+function __scribble_array_find_index(_array, _value)
+{
+    var _i = 0;
+    repeat(array_length(_array))
+    {
+        if (_array[_i] == _value) return _i;
+        ++_i;
+    }
+    
+    return -1;
+}
+
 #region Internal Macro Definitions
 
 // @jujuadams
 #macro __SCRIBBLE_VERSION  "7.0.1 beta 1"
 #macro __SCRIBBLE_DATE     "2020-12-06"
-#macro __SCRIBBLE_DEBUG    false
+#macro __SCRIBBLE_DEBUG    true
 
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
 enum SCRIBBLE_GLYPH
