@@ -85,6 +85,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     tw_anim_speed          = 1;
     tw_anim_smoothness     = 0;
+    tw_inline_speed        = 1;
     tw_anim_ease_method    = SCRIBBLE_EASE.LINEAR;
     tw_anim_dx             = 0;
     tw_anim_dy             = 0;
@@ -862,7 +863,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     {
         if (tw_do) //No fade in/out set
         {
-            var _typewriter_speed = tw_anim_speed*SCRIBBLE_TICK_SIZE;
+            var _typewriter_speed = tw_anim_speed*tw_inline_speed*SCRIBBLE_TICK_SIZE;
             var _head_speed       = _typewriter_speed;
             var _skipping         = (tw_anim_speed >= SCRIBBLE_SKIP_SPEED_THRESHOLD);
             
@@ -951,6 +952,17 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
                                                 tw_delay_paused = true;
                                                 tw_delay_end    = current_time + _duration;
                                             }
+                                        }
+                                        else if (_event_name == "speed")
+                                        {
+                                            if (!_skipping && (array_length(_event_data_array) >= 1))
+                                            {
+                                                tw_inline_speed = real(_event_data_array[0]);
+                                            }
+                                        }
+                                        else if (_event_name == "/speed")
+                                        {
+                                            if (!_skipping) tw_inline_speed = 1;
                                         }
                                         else if (_event_name == "__scribble_audio_playback__")
                                         {

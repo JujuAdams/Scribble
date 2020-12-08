@@ -60,8 +60,10 @@ global.__scribble_element_cache_test_index = 0;
 if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
 
 if (!variable_global_exists("__scribble_typewriter_events")) global.__scribble_typewriter_events = ds_map_create();
-global.__scribble_typewriter_events[? "pause"] = undefined;
-global.__scribble_typewriter_events[? "delay"] = undefined;
+global.__scribble_typewriter_events[? "pause" ] = undefined;
+global.__scribble_typewriter_events[? "delay" ] = undefined;
+global.__scribble_typewriter_events[? "speed" ] = undefined;
+global.__scribble_typewriter_events[? "/speed"] = undefined;
     
 //Add bindings for default effect names
 //Effect index 0 is reversed for sprites
