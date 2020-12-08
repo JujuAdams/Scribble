@@ -824,7 +824,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         else
         {
             //TODO - Optimise
-            model_cache_name = text +
+            model_cache_name = text + ":" +
                                string(starting_font  ) + ":" +
                                string(starting_colour) + ":" +
                                string(starting_halign) + ":" +
