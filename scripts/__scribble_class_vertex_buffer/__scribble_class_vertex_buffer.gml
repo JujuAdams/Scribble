@@ -16,9 +16,10 @@ function __scribble_class_vertex_buffer(_texture, _for_text) constructor
     
     static __clean_up = function(_destroy_buffer)
     {
-        char_start_tell = undefined;
-        word_start_tell = undefined;
-        word_x_offset   = undefined;
+        char_start_tell  = undefined;
+        word_start_tell  = undefined;
+        word_x_offset    = undefined;
+        line_start_array = undefined;
         
         if (_destroy_buffer && (buffer != undefined))
         {
@@ -36,11 +37,10 @@ function __scribble_class_vertex_buffer(_texture, _for_text) constructor
     
     static __flush = function()
     {
+        __clean_up(true);
+        
         if (vertex_buffer != undefined) vertex_delete_buffer(vertex_buffer);
         vertex_buffer = undefined;
-        
-        if (buffer != undefined) buffer_delete(buffer);
-        buffer = undefined;
     }
     
     static __submit = function()

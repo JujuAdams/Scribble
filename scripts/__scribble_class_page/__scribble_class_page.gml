@@ -26,7 +26,7 @@ function __scribble_class_page() constructor
     width               = 0;
     height              = 0;
     
-    texture_to_buffer_map = ds_map_create();
+    texture_to_buffer_dict = {};
     
     static __new_line = function()
     {
@@ -49,11 +49,13 @@ function __scribble_class_page() constructor
     
     static __find_vertex_buffer = function(_texture, _for_text)
     {
-        var _vbuff_data = texture_to_buffer_map[? _texture];
+        var _pointer_string = string(_texture);
+        
+        var _vbuff_data = texture_to_buffer_dict[$ _pointer_string];
         if (_vbuff_data == undefined)
         {
             var _vbuff_data = __new_vertex_buffer(_texture, _for_text);
-            texture_to_buffer_map[? _texture] = _vbuff_data;
+            texture_to_buffer_dict[$ _pointer_string] = _vbuff_data;
         }
         
         return _vbuff_data;
@@ -73,8 +75,7 @@ function __scribble_class_page() constructor
     
     static __clean_up = function(_destroy_buffer)
     {
-        if (texture_to_buffer_map != undefined) ds_map_destroy(texture_to_buffer_map);
-        texture_to_buffer_map = undefined;
+        texture_to_buffer_dict = undefined;
         
         var _i = 0;
         repeat(array_length(vertex_buffer_array))
@@ -86,8 +87,7 @@ function __scribble_class_page() constructor
     
     static __flush = function()
     {
-        if (texture_to_buffer_map != undefined) ds_map_destroy(texture_to_buffer_map);
-        texture_to_buffer_map = undefined;
+        __clean_up(true);
         
         var _i = 0;
         repeat(array_length(vertex_buffer_array))

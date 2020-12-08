@@ -22,8 +22,8 @@
 #macro SCRIBBLE_TICK_SIZE                 (delta_time / 16666) //Animation tick size per step. The default macro (delta_time / 16666) ensures that animations are smooth and consistent at all framerates
 #macro SCRIBBLE_SLANT_AMOUNT              0.25      //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_DEFAULT_UNIQUE_ID         "default" //Default value to use for text element unique IDs. This is used when no unique ID is specified
-#macro SCRIBBLE_CACHE_MODEL_TIMEOUT       15000     //How long to wait (in milliseconds) before the cache automatically cleans up unused model data
-#macro SCRIBBLE_CACHE_ELEMENT_TIMEOUT     15000     //How long to wait (in milliseconds) before the cache automatically cleans up unused element data
+#macro SCRIBBLE_CACHE_MODEL_TIMEOUT       5000      //How long to wait (in milliseconds) before the cache automatically cleans up unused model data
+#macro SCRIBBLE_CACHE_ELEMENT_TIMEOUT     5000      //How long to wait (in milliseconds) before the cache automatically cleans up unused element data
 #macro SCRIBBLE_VERBOSE                   false     //Enables verbose console output to aid with debugging
 #macro SCRIBBLE_BEZIER_ACCURACY           20        //Controls how accurately text fits Beziér curves. Higher is more accurate but slower
 #macro SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE  true      //Whether to trim off empty left-hand space when moving a word to a new line. This can cause issues with spritefonts in some situations
