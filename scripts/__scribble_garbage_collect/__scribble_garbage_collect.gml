@@ -16,7 +16,7 @@ function __scribble_garbage_collect()
             if (global.__scribble_element_cache_test_index < 0)
             {
                 global.__scribble_element_cache_test_index = 0; //Clamp to 0
-                break; //And break out of the repeat loop
+                break;
             }
         }
         

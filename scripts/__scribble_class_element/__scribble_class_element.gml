@@ -27,6 +27,7 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     flushed = false;
     
     model_cache_name = undefined;
+    model = undefined;
     
     last_drawn = current_time;
     freeze = false;
@@ -824,11 +825,11 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
     
     static __get_model = function(_allow_create)
     {
-        if (flushed) return undefined;
-        
-        var _model = SCRIBBLE_NULL_MODEL;
-        
-        if (text != "")
+        if (flushed || (text == ""))
+        {
+            model = SCRIBBLE_NULL_MODEL;
+        }
+        else
         {
             //TODO - Optimise
             model_cache_name = text +
@@ -845,18 +846,18 @@ function __scribble_class_element(_string, _element_cache_name, _manual_gc) cons
                                string(bezier_array   ) + ":" +
                                string(__ignore_command_tags);
             
-            _model = global.__scribble_model_cache[? model_cache_name];
+            model = global.__scribble_model_cache[? model_cache_name];
             
             //Create a new model if required
-            if (_allow_create && (!is_struct(_model) || _model.flushed))
+            if (_allow_create && (!is_struct(model) || model.flushed))
             {
-                _model = new __scribble_class_model(self, model_cache_name);
+                model = new __scribble_class_model(self, model_cache_name);
             }
             
-            if (_model == undefined) _model = SCRIBBLE_NULL_MODEL;
+            if (model == undefined) model = SCRIBBLE_NULL_MODEL;
         }
         
-        return _model;
+        return model;
     }
     
     static __update_typewriter = function()
