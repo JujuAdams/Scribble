@@ -584,13 +584,13 @@ function __scribble_generate_model(_element)
                                 
                         var _surface_texture = surface_get_texture(_surface);
                         
-                        var _vbuff_data            = _page_data.__find_vertex_buffer(_surface_texture);
-                        var _buffer                = _vbuff_data.buffer;
-                        var _vbuff_line_start_list = _vbuff_data.line_start_list;
+                        var _vbuff_data             = _page_data.__find_vertex_buffer(_surface_texture);
+                        var _buffer                 = _vbuff_data.buffer;
+                        var _vbuff_line_start_array = _vbuff_data.line_start_array;
                                 
                         //Fill line break list
                         var _tell = buffer_tell(_buffer);
-                        repeat(array_length(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
+                        repeat(array_length(_page_lines_array) - array_length(_vbuff_line_start_array)) array_push(_vbuff_line_start_array, _tell);
                         
                         //Update CHAR_START_TELL, and WORD_START_TELL if needed
                         _vbuff_data.char_start_tell = buffer_tell(_buffer);
@@ -828,13 +828,13 @@ function __scribble_generate_model(_element)
                                             {
                                                 var _sprite_texture = sprite_get_texture(_sprite_index, _image);
                                                 
-                                                var _vbuff_data            = _page_data.__find_vertex_buffer(_sprite_texture, false);
-                                                var _buffer                = _vbuff_data.buffer;
-                                                var _vbuff_line_start_list = _vbuff_data.line_start_list;
+                                                var _vbuff_data             = _page_data.__find_vertex_buffer(_sprite_texture, false);
+                                                var _buffer                 = _vbuff_data.buffer;
+                                                var _vbuff_line_start_array = _vbuff_data.line_start_array;
                                                 
                                                 //Fill line break list
                                                 var _tell = buffer_tell(_buffer);
-                                                repeat(array_length(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
+                                                repeat(array_length(_page_lines_array) - array_length(_vbuff_line_start_array)) array_push(_vbuff_line_start_array, _tell);
                                                 
                                                 //Update CHAR_START_TELL, and WORD_START_TELL if needed
                                                 _vbuff_data.char_start_tell = buffer_tell(_buffer);
@@ -1227,12 +1227,12 @@ function __scribble_generate_model(_element)
                     _vbuff_data.msdf_range = _font_msdf_range;
                     if (_font_msdf_range != undefined) _vbuff_data.shader = __shd_scribble_msdf;
                     
-                    var _glyph_buffer          = _vbuff_data.buffer;
-                    var _vbuff_line_start_list = _vbuff_data.line_start_list;
+                    var _glyph_buffer           = _vbuff_data.buffer;
+                    var _vbuff_line_start_array = _vbuff_data.line_start_array;
                     
                     //Fill line break list
                     var _tell = buffer_tell(_glyph_buffer);
-                    repeat(array_length(_page_lines_array) - ds_list_size(_vbuff_line_start_list)) ds_list_add(_vbuff_line_start_list, _tell);
+                    repeat(array_length(_page_lines_array) - array_length(_vbuff_line_start_array)) array_push(_vbuff_line_start_array, _tell);
                 }
                 
                 //Update CHAR_START_TELL, and WORD_START_TELL if needed
@@ -1363,12 +1363,12 @@ function __scribble_generate_model(_element)
             {
                 var _data = _page_vbuffs_array[_v];
                 
-                var _vbuff_line_start_list = _data.line_start_list;
-                var _buffer                = _data.buffer;
+                var _vbuff_line_start_array = _data.line_start_array;
+                var _buffer                 = _data.buffer;
                 
                 if (_force_newline)
                 {
-                    ds_list_add(_vbuff_line_start_list, buffer_tell(_buffer));
+                    array_push(_vbuff_line_start_array, buffer_tell(_buffer));
                 }
                 else
                 {
@@ -1379,7 +1379,7 @@ function __scribble_generate_model(_element)
                     var _tell_a = _line_has_space? _data.word_start_tell : _data.char_start_tell;
                     
                     var _tell_b = buffer_tell(_buffer);
-                    ds_list_add(_vbuff_line_start_list, _tell_a);
+                    array_push(_vbuff_line_start_array, _tell_a);
                     
                     //If we've added anything to this buffer
                     if (_tell_a < _tell_b)
@@ -1522,21 +1522,21 @@ function __scribble_generate_model(_element)
                     {
                         var _vbuff_data = _page_vbuffs_array[_v];
                         
-                        var _buffer                = _vbuff_data.buffer;
-                        var _vbuff_line_start_list = _vbuff_data.line_start_list;
-                        var _line_tell_prev        = _vbuff_line_start_list[| _page_data.lines];
-                        var _line_tell             = buffer_tell(_buffer);
+                        var _buffer                 = _vbuff_data.buffer;
+                        var _vbuff_line_start_array = _vbuff_data.line_start_array;
+                        var _line_tell_prev         = _vbuff_line_start_array[_page_data.lines];
+                        var _line_tell              = buffer_tell(_buffer);
                         
                         if (_line_tell_prev < _line_tell) //If we've added anything to this buffer on the previous line
                         {
                             var _bytes = _line_tell - _line_tell_prev;
                             
                             //Make a new vertex buffer for the new page
-                            var _new_vbuff_data            = _new_page_data.__new_vertex_buffer(_vbuff_data.texture, true);
-                            var _new_buffer                = _new_vbuff_data.buffer;
-                            var _new_vbuff_line_start_list = _new_vbuff_data.line_start_list;
+                            var _new_vbuff_data             = _new_page_data.__new_vertex_buffer(_vbuff_data.texture, true);
+                            var _new_buffer                 = _new_vbuff_data.buffer;
+                            var _new_vbuff_line_start_array = _new_vbuff_data.line_start_array;
                             
-                            ds_list_add(_new_vbuff_line_start_list, 0);
+                            array_push(_new_vbuff_line_start_array, 0);
                             
                             //Fill in vertex buffer data
                             _new_vbuff_data.shader          = _vbuff_data.shader;
@@ -1552,7 +1552,7 @@ function __scribble_generate_model(_element)
                             //Resize the old buffer to clip off the vertices we've stolen
                             buffer_resize(_buffer, _line_tell_prev);
                             buffer_seek(_buffer, buffer_seek_start, _line_tell_prev); //Resizing a buffer resets its tell
-                            ds_list_delete(_vbuff_line_start_list, ds_list_size(_vbuff_line_start_list)-1);
+                            array_pop(_vbuff_line_start_array);
                             
                             //If we're using a fixed line height, reset this glyph's y-position
                             if (!_line_fixed_height)
@@ -1598,10 +1598,10 @@ function __scribble_generate_model(_element)
                 _page_vbuffs_array = _new_page_vbuffs_array;
                 
                 //Reset some state variables
-                height                 = max(height, _line_y);
-                _line_y                =  0;
-                _glyph_texture         = -1;
-                _vbuff_line_start_list = -1;
+                height                  = max(height, _line_y);
+                _line_y                 =  0;
+                _glyph_texture          = -1;
+                _vbuff_line_start_array = -1;
                 
                 if (_line_fixed_height) _text_y = _half_fixed_height;
                 
@@ -1771,23 +1771,23 @@ function __scribble_generate_model(_element)
         {
             var _data = _page_vbuffs_array[_v];
                     
-            var _vbuff_line_start_list = _data.line_start_list;
-            var _buffer                = _data.buffer;
+            var _vbuff_line_start_array = _data.line_start_array;
+            var _buffer                 = _data.buffer;
                     
             #region Move glyphs around on a line to finalise alignment
                     
             var _buffer_tell = buffer_tell(_buffer);
-            ds_list_add(_vbuff_line_start_list, _buffer_tell);
+            array_push(_vbuff_line_start_array, _buffer_tell);
                     
             //Iterate over every line on the page
             var _l = 0;
-            repeat(ds_list_size(_vbuff_line_start_list)-1)
+            repeat(array_length(_vbuff_line_start_array)-1)
             {
                 var _line_data = _page_lines_array[_l];
                 if (is_struct(_line_data)) //Someimtes the array can contain <undefined> if a line is moved from one page to another
                 {
-                    var _tell_a = _vbuff_line_start_list[| _l  ];
-                    var _tell_b = _vbuff_line_start_list[| _l+1];
+                    var _tell_a = _vbuff_line_start_array[_l  ];
+                    var _tell_b = _vbuff_line_start_array[_l+1];
                             
                     if (_tell_b - _tell_a > 0)
                     {    
