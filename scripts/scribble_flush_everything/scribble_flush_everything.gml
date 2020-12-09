@@ -4,27 +4,32 @@
 
 function scribble_flush_everything()
 {
-    //Flush all models
-    var _i = 0;
-    repeat(array_length(global.__scribble_mcache_array))
-    {
-        global.__scribble_mcache_array[_i].flush();
-        ++_i;
-    }
-    
-    global.__scribble_mcache_dict       = {};
-    global.__scribble_mcache_array      = [];
-    global.__scribble_mcache_test_index = 0;
+    if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing everything");
     
     //Flush elements
     var _i = 0;
     repeat(array_length(global.__scribble_ecache_array))
     {
-        global.__scribble_ecache_array[_i].flush();
+        global.__scribble_ecache_array[_i].flushed = true;
         ++_i;
     }
     
-    global.__scribble_ecache_dict       = {};
-    global.__scribble_ecache_array      = [];
-    global.__scribble_ecache_test_index = 0;
+    //Destroy all vertex buffers
+    var _i = 0;
+    repeat(array_length(global.__scribble_gc_vbuff_ids))
+    {
+        vertex_delete_buffer(global.__scribble_gc_vbuff_ids[_i]);
+        ++_i;
+    }
+    
+    //Clean out the cache structures
+    ds_map_clear(global.__scribble_ecache_dict);
+    global.__scribble_ecache_array       = [];
+    global.__scribble_ecache_array_index = 0;
+    
+    ds_map_clear(global.__scribble_mcache_dict);
+    
+    global.__scribble_gc_vbuff_index = 0;
+    global.__scribble_gc_vbuff_refs  = [];
+    global.__scribble_gc_vbuff_ids   = [];
 }

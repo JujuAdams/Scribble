@@ -6,6 +6,7 @@ function __scribble_class_vertex_buffer(_texture, _for_text) constructor
     shader       = __shd_scribble;
     
     buffer = buffer_create(__SCRIBBLE_GLYPH_BYTE_SIZE*(_for_text? __SCRIBBLE_EXPECTED_GLYPHS : 1), buffer_grow, 1);
+    
     line_start_array = [];
     
     vertex_buffer   = undefined;
@@ -33,14 +34,20 @@ function __scribble_class_vertex_buffer(_texture, _for_text) constructor
         var _vertex_buffer = vertex_create_buffer_from_buffer_ext(buffer, global.__scribble_vertex_format, 0, buffer_tell(buffer) / __SCRIBBLE_VERTEX.__SIZE);
         if (_freeze) vertex_freeze(_vertex_buffer);
         vertex_buffer = _vertex_buffer;
+        
+        __scribble_gc_add_vbuff(self, _vertex_buffer);
     }
     
     static __flush = function()
     {
         __clean_up(true);
         
-        if (vertex_buffer != undefined) vertex_delete_buffer(vertex_buffer);
-        vertex_buffer = undefined;
+        if (vertex_buffer != undefined)
+        {
+            __scribble_gc_remove_vbuff(vertex_buffer);
+            vertex_delete_buffer(vertex_buffer);
+            vertex_buffer = undefined;
+        }
     }
     
     static __submit = function()

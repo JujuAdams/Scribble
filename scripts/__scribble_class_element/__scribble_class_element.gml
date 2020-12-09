@@ -9,14 +9,15 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + cache_name + "\"");
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-    if (variable_struct_exists(global.__scribble_ecache_dict, cache_name))
+    var _weak = global.__scribble_ecache_dict[? cache_name];
+    if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.flushed)
     {
         __scribble_trace("Warning! Rebuilding element \"", cache_name, "\"");
-        global.__scribble_ecache_dict[$ cache_name].flush();
+        _weak.ref.flush();
     }
     
     //Add this text element to the global cache
-    global.__scribble_ecache_dict[$ cache_name] = self;
+    global.__scribble_ecache_dict[? cache_name] = weak_ref_create(self);
     array_push(global.__scribble_ecache_array, self);
     
     flushed = false;
@@ -766,7 +767,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         }
         
         //Run the garbage collecter
-        __scribble_garbage_collect();
+        __scribble_gc_collect(false);
         
         return self;
     }
@@ -777,7 +778,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(cache_name) + "\"");
         
         //Remove reference from cache
-        variable_struct_remove(global.__scribble_ecache_dict, cache_name);
+        ds_map_delete(global.__scribble_ecache_dict, cache_name);
         var _index = __scribble_array_find_index(global.__scribble_ecache_array, self);
         if (_index >= 0) array_delete(global.__scribble_ecache_array, _index, 1);
         
@@ -838,12 +839,22 @@ function __scribble_class_element(_string, _element_cache_name) constructor
                                string(bezier_array   ) + ":" +
                                string(__ignore_command_tags);
             
-            model = global.__scribble_mcache_dict[$ model_cache_name];
-            
-            //Create a new model if required
-            if (_allow_create && (!is_struct(model) || model.flushed))
+            var _weak = global.__scribble_mcache_dict[? model_cache_name];
+            if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.flushed)
             {
-                model = new __scribble_class_model(self, model_cache_name);
+                model = _weak.ref;
+            }
+            else
+            {
+                if (_allow_create)
+                {
+                    //Create a new model if required
+                    model = new __scribble_class_model(self, model_cache_name);
+                }
+                else
+                {
+                    model = undefined;
+                }
             }
             
             if (model == undefined) model = SCRIBBLE_NULL_MODEL;
