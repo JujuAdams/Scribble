@@ -2,6 +2,19 @@
 
 function __scribble_gc_collect(_force_collect)
 {
+    #region Call gc_collect() manually every few seconds (works around a bug in GMS2.3.1)
+    
+    if (_force_collect || (global.__scribble_gc_collect_time + SCRIBBLE_CACHE_COLLECT_FREQ < current_time))
+    {
+        global.__scribble_gc_collect_time = current_time;
+        if (__SCRIBBLE_DEBUG) __scribble_trace("Calling gc_collect()");
+        gc_collect();
+    }
+    
+    #endregion
+    
+    
+    
     #region Scan through the cache to see if any text elements have elapsed
     
     var _index = global.__scribble_ecache_array_index;
@@ -29,7 +42,7 @@ function __scribble_gc_collect(_force_collect)
         var _element = _array[_index];
         if (_element.last_drawn + __SCRIBBLE_CACHE_TIMEOUT < current_time)
         {
-            if (__SCRIBBLE_DEBUG) __scribble_trace("Removing \"", _element.cache_name, "\" from cache array");
+            if (__SCRIBBLE_DEBUG) __scribble_trace("\"", _element.cache_name, "\" has timed out");
             array_delete(_array, _index, 1);
         }
     }
@@ -40,54 +53,69 @@ function __scribble_gc_collect(_force_collect)
     
     
     
-    #region Do a full GC sweep every few seconds
+    #region Check through text elements to clean anything up
     
-    if (_force_collect || (global.__scribble_gc_collect_time + SCRIBBLE_CACHE_COLLECT_FREQ < current_time))
+    var _index = global.__scribble_ecache_name_index;
+    var _list  = global.__scribble_ecache_name_list;
+    var _dict  = global.__scribble_ecache_dict;
+    repeat(__SCRIBBLE_GC_STEP_SIZE)
     {
-        global.__scribble_gc_collect_time = current_time;
-        global.__scribble_gc_just_collected = true;
-        
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Calling gc_collect()");
-        gc_collect();
-    }
-    //else if (global.__scribble_gc_just_collected && (global.__scribble_gc_collect_time + 35 < current_time))
-    {
-        global.__scribble_gc_just_collected = false;
-        
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Performing sweep");
-        
-        var _dict = global.__scribble_ecache_dict;
-        var _names = ds_map_keys_to_array(_dict);
-        var _i = 0;
-        repeat(array_length(_names))
+        _index--;
+        if (_index < 0)
         {
-            var _name = _names[_i];
-            var _weak = _dict[? _name];
-            if (!weak_ref_alive(_weak))
+            _index += ds_list_size(_list);
+            if (_index < 0)
             {
-                if (__SCRIBBLE_DEBUG) __scribble_trace("Fully removing element \"", _name, "\" from cache dict");
-                ds_map_delete(_dict, _name);
+                _index = 0;
+                break;
             }
-            
-            ++_i;
         }
         
-        var _dict = global.__scribble_mcache_dict;
-        var _names = ds_map_keys_to_array(_dict);
-        var _i = 0;
-        repeat(array_length(_names))
+        var _name = _list[| _index];
+        var _weak = _dict[? _name];
+        if ((_weak == undefined) || !weak_ref_alive(_weak))
         {
-            var _name = _names[_i];
-            var _weak = _dict[? _name];
-            if (!weak_ref_alive(_weak))
-            {
-                if (__SCRIBBLE_DEBUG) __scribble_trace("Fully removing model \"", _name, "\" from cache dict");
-                ds_map_delete(_dict, _name);
-            }
-            
-            ++_i;
+            if (__SCRIBBLE_DEBUG) __scribble_trace("Removing element \"", _name, "\" from cache");
+            ds_map_delete(_dict, _name);
+            ds_list_delete(_list, _index);
         }
     }
+    
+    global.__scribble_ecache_name_index = _index;
+    
+    #endregion
+    
+    
+    
+    #region Check through text models to clean anything up
+    
+    var _index = global.__scribble_mcache_name_index;
+    var _list  = global.__scribble_mcache_name_list;
+    var _dict  = global.__scribble_mcache_dict;
+    repeat(__SCRIBBLE_GC_STEP_SIZE)
+    {
+        _index--;
+        if (_index < 0)
+        {
+            _index += ds_list_size(_list);
+            if (_index < 0)
+            {
+                _index = 0;
+                break;
+            }
+        }
+        
+        var _name = _list[| _index];
+        var _weak = _dict[? _name];
+        if ((_weak == undefined) || !weak_ref_alive(_weak))
+        {
+            if (__SCRIBBLE_DEBUG) __scribble_trace("Removing model \"", _name, "\" from cache");
+            ds_map_delete(_dict, _name);
+            ds_list_delete(_list, _index);
+        }
+    }
+    
+    global.__scribble_mcache_name_index = _index;
     
     #endregion
     

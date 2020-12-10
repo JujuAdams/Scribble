@@ -51,12 +51,16 @@ global.__scribble_character_delay     = false;
 global.__scribble_character_delay_map = ds_map_create();
 
 global.__scribble_gc_collect_time = current_time; //FIXME - Forcing gc_collect() every few seconds as large structs aren't being GC'd properly (2020-12-09, GMS2.3.1 Stable)
-global.__scribble_gc_just_collected = false;
 
-global.__scribble_mcache_dict        = ds_map_create(); //FIXME - Using a ds_map here as structs are currently leaking memory (2020-12-09, GMS2.3.1 Stable)
+global.__scribble_mcache_dict       = ds_map_create(); //FIXME - Using a ds_map here as structs are currently leaking memory (2020-12-09, GMS2.3.1 Stable)
+global.__scribble_mcache_name_list  = ds_list_create();
+global.__scribble_mcache_name_index = 0;
+
 global.__scribble_ecache_dict        = ds_map_create();
 global.__scribble_ecache_array       = [];
 global.__scribble_ecache_array_index = 0;
+global.__scribble_ecache_name_list   = ds_list_create();
+global.__scribble_ecache_name_index  = 0;
 
 global.__scribble_gc_vbuff_index = 0;
 global.__scribble_gc_vbuff_refs  = [];
@@ -328,8 +332,8 @@ enum SCRIBBLE_EASE
 #macro __SCRIBBLE_PIN_CENTRE           4
 #macro __SCRIBBLE_PIN_RIGHT            5
 #macro __SCRIBBLE_WINDOW_COUNT         4
-#macro __SCRIBBLE_GC_STEP_SIZE         5
-#macro __SCRIBBLE_CACHE_TIMEOUT        100 //How long to wait (in milliseconds) before the text element cache automatically cleans up unused data
+#macro __SCRIBBLE_GC_STEP_SIZE         3
+#macro __SCRIBBLE_CACHE_TIMEOUT        1000 //How long to wait (in milliseconds) before the text element cache automatically cleans up unused data
 #macro SCRIBBLE_DEFAULT_FONT           global.__scribble_default_font
 
 //Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.

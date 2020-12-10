@@ -19,6 +19,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     //Add this text element to the global cache
     global.__scribble_ecache_dict[? cache_name] = weak_ref_create(self);
     array_push(global.__scribble_ecache_array, self);
+    ds_list_add(global.__scribble_ecache_name_list, cache_name);
     
     flushed = false;
     

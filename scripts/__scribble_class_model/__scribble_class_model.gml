@@ -22,6 +22,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     //Add this model to the global cache
     global.__scribble_mcache_dict[? cache_name] = weak_ref_create(self);
+    ds_list_add(global.__scribble_mcache_name_list, cache_name);
     
     last_drawn = current_time;
     flushed    = false;
