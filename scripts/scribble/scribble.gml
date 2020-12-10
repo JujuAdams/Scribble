@@ -16,19 +16,18 @@ function scribble()
     {
         do
         {
-            var _element_cache_name = "anonymous " + string(floor(999999*__scribble_random()));
+            var _unique_id = "anonymous " + string(floor(999999*__scribble_random()));
         }
-        until !ds_map_exists(global.__scribble_ecache_dict, _element_cache_name);
+        until !ds_map_exists(global.__scribble_ecache_dict, ":" + _unique_id);
         
-        _element = new __scribble_class_element("", _element_cache_name);
+        _element = new __scribble_class_element("", _unique_id);
     }
     else
     {
-        var _element_cache_name = _string + ":" + _unique_id;
-        var _weak = global.__scribble_ecache_dict[? _element_cache_name];
+        var _weak = global.__scribble_ecache_dict[? _string + ":" + _unique_id];
         if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.flushed)
         {
-            _element = new __scribble_class_element(_string, _element_cache_name);
+            _element = new __scribble_class_element(_string, _unique_id);
         }
         else
         {

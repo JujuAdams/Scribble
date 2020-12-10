@@ -1,10 +1,11 @@
 /// @param string
-/// @param elementCacheName
+/// @param uniqueID
 
-function __scribble_class_element(_string, _element_cache_name) constructor
+function __scribble_class_element(_string, _unique_id) constructor
 {
     text       = _string;
-    cache_name = _element_cache_name;
+    unique_id  = _unique_id;
+    cache_name = _string + ":" + _unique_id;
     
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + cache_name + "\"");
     
@@ -12,7 +13,7 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     var _weak = global.__scribble_ecache_dict[? cache_name];
     if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.flushed)
     {
-        __scribble_trace("Warning! Rebuilding element \"", cache_name, "\"");
+        __scribble_trace("Warning! Flushing element \"", cache_name, "\" due to cache name collision");
         _weak.ref.flush();
     }
     
@@ -113,9 +114,33 @@ function __scribble_class_element(_string, _element_cache_name) constructor
     #region Setters
     
     /// @param string
-    static overwrite = function(_string)
+    /// @param [uniqueID]
+    static overwrite = function()
     {
-        text = _string;
+        text      = argument[0];
+        unique_id = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : unique_id;
+        
+        var _new_cache_name = text + ":" + unique_id;
+        if (cache_name != _new_cache_name)
+        {
+            flush();
+            flushed = false;
+            
+            cache_name = _new_cache_name;
+            
+            var _weak = global.__scribble_ecache_dict[? cache_name];
+            if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.flushed)
+            {
+                __scribble_trace("Warning! Flushing element \"", cache_name, "\" due to cache name collision (try choosing a different unique ID)");
+                _weak.ref.flush();
+            }
+            
+            //Add this text element to the global cache
+            global.__scribble_ecache_dict[? cache_name] = weak_ref_create(self);
+            array_push(global.__scribble_ecache_array, self);
+            ds_list_add(global.__scribble_ecache_name_list, cache_name);
+        }
+        
         return self;
     }
     

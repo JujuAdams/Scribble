@@ -333,7 +333,7 @@ enum SCRIBBLE_EASE
 #macro __SCRIBBLE_PIN_RIGHT            5
 #macro __SCRIBBLE_WINDOW_COUNT         4
 #macro __SCRIBBLE_GC_STEP_SIZE         3
-#macro __SCRIBBLE_CACHE_TIMEOUT        1000 //How long to wait (in milliseconds) before the text element cache automatically cleans up unused data
+#macro __SCRIBBLE_CACHE_TIMEOUT        60 //How long to wait (in milliseconds) before the text element cache automatically cleans up unused data
 #macro SCRIBBLE_DEFAULT_FONT           global.__scribble_default_font
 
 //Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
