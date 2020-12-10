@@ -12,7 +12,7 @@ if (toggle)
 }
 else
 {
-    __scribble_gc_collect(false);
+    __scribble_gc_collect();
 }
 
 draw_text(10,  10, "models cached = " + string(ds_map_size(global.__scribble_mcache_dict)));

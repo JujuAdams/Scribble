@@ -1,10 +1,8 @@
-/// @param forceCollect
-
-function __scribble_gc_collect(_force_collect)
+function __scribble_gc_collect()
 {
     #region Call gc_collect() manually every few seconds (works around a bug in GMS2.3.1)
     
-    if (_force_collect || (global.__scribble_gc_collect_time + SCRIBBLE_CACHE_COLLECT_FREQ < current_time))
+    if ((SCRIBBLE_CACHE_COLLECT_FREQ >= 0) && (global.__scribble_gc_collect_time + SCRIBBLE_CACHE_COLLECT_FREQ < current_time))
     {
         global.__scribble_gc_collect_time = current_time;
         if (__SCRIBBLE_DEBUG) __scribble_trace("Calling gc_collect()");

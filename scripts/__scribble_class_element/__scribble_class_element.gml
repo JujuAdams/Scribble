@@ -793,7 +793,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         
         //Run the garbage collecter
-        __scribble_gc_collect(false);
+        __scribble_gc_collect();
         
         return self;
     }
