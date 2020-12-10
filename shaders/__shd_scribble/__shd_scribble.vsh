@@ -1,4 +1,4 @@
-//   @jujuadams   v7.0.1   2020-12-06
+//   @jujuadams   v7.0.1   2020-12-10
 precision highp float;
 
 const int MAX_EFFECTS = 10;
