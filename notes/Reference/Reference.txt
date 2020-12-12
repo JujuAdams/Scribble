@@ -53,6 +53,7 @@ Text element methods are broken down into several categories. There's a lot here
     - [`.typewriter_reset()`](scribble()-Methods#typewriter_reset)
     - [`.typewriter_in(speed, smoothness)`](scribble()-Methods#typewriter_inspeed-smoothness)
     - [`.typewriter_out(speed, smoothness, [backwards])`](scribble()-Methods#typewriter_outspeed-smoothness-backwards)
+    - [`.get_typewriter_pos()`](scribble()-Methods#get_typewriter_pos)
     - [`.typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`](scribble()-Methods#typewriter_easeeasemethod-dx-dy-xscale-yscale-rotation-alphaduration)
     - [`.get_typewriter_state()`](scribble()-Methods#get_typewriter_state)
     - [`.typewriter_pause()`](scribble()-Methods#typewriter_pause)
@@ -378,6 +379,18 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 The `smoothness` argument offers some customisation for how text fades out. A high value will cause text to be smoothly faded out whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades out.
 
 [Events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) will **not** be executed as text fades out.
+
+&nbsp;
+
+### `.get_typewriter_state()`
+
+**Returns:** Real value indicating how many characters have been revealed in this text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Returns 0 if the typewriter is not enabled.
 
 &nbsp;
 

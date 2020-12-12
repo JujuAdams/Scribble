@@ -754,6 +754,13 @@ function __scribble_class_element(_string, _unique_id) constructor
         return tw_paused;
     }
     
+    static get_typewriter_pos = function()
+    {
+        if (!tw_do || !tw_in) return 0.0;
+        
+        return tw_window_array[tw_window];
+    }
+    
     static get_wrapped = function()
     {
         //TODO - Make null model
