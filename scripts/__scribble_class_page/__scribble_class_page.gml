@@ -198,9 +198,19 @@ function __scribble_class_page() constructor
                                                                              colour_get_blue( _element.msdf_border_colour)/255);
                                                                              
                 shader_set_uniform_f(global.__scribble_msdf_u_fBorderThickness, _element.msdf_border_thickness);
+                
+                //Force texture filtering when using MSDF fonts
+                var _old_tex_filter = gpu_get_tex_filter();
+                gpu_set_tex_filter(true);
             }
             
             _vertex_buffer.__submit();
+            
+            if (_shader == __shd_scribble_msdf)
+            {
+                gpu_set_tex_filter(_old_tex_filter);
+            }
+            
             ++_i;
         }
         
