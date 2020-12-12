@@ -8,9 +8,9 @@ function scribble_flush_everything()
     
     //Flush elements
     var _i = 0;
-    repeat(array_length(global.__scribble_ecache_array))
+    repeat(ds_list_size(global.__scribble_ecache_list))
     {
-        global.__scribble_ecache_array[_i].flushed = true;
+        global.__scribble_ecache_list[| _i].flushed = true;
         ++_i;
     }
     
@@ -28,8 +28,8 @@ function scribble_flush_everything()
     ds_list_clear(global.__scribble_ecache_name_list);
     global.__scribble_ecache_name_index = 0;
     
-    global.__scribble_ecache_array       = [];
-    global.__scribble_ecache_array_index = 0;
+    ds_list_clear(global.__scribble_ecache_list);
+    global.__scribble_ecache_list_index = 0;
     
     ds_map_clear(global.__scribble_mcache_dict);
     ds_list_clear(global.__scribble_mcache_name_list);

@@ -19,7 +19,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     //Add this text element to the global cache
     global.__scribble_ecache_dict[? cache_name] = weak_ref_create(self);
-    array_push(global.__scribble_ecache_array, self);
+    ds_list_add(global.__scribble_ecache_list, self);
     ds_list_add(global.__scribble_ecache_name_list, cache_name);
     
     flushed = false;
@@ -137,7 +137,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             
             //Add this text element to the global cache
             global.__scribble_ecache_dict[? cache_name] = weak_ref_create(self);
-            array_push(global.__scribble_ecache_array, self);
+            ds_list_add(global.__scribble_ecache_list, self);
             ds_list_add(global.__scribble_ecache_name_list, cache_name);
         }
         
@@ -817,8 +817,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         //Remove reference from cache
         ds_map_delete(global.__scribble_ecache_dict, cache_name);
-        var _index = __scribble_array_find_index(global.__scribble_ecache_array, self);
-        if (_index >= 0) array_delete(global.__scribble_ecache_array, _index, 1);
+        var _index = ds_list_find_index(global.__scribble_ecache_list, self);
+        if (_index >= 0) ds_list_delete(global.__scribble_ecache_list, _index);
         
         //Set as flushed
         flushed = true;

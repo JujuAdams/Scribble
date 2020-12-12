@@ -16,7 +16,7 @@ else
 }
 
 draw_text(10,  10, "models cached = " + string(ds_map_size(global.__scribble_mcache_dict)));
-draw_text(10,  30, "elements cached = " + string(array_length(global.__scribble_ecache_array)) + "/" + string(ds_map_size(global.__scribble_ecache_dict)));
+draw_text(10,  30, "elements cached = " + string(ds_list_size(global.__scribble_ecache_list)) + "/" + string(ds_map_size(global.__scribble_ecache_dict)));
 draw_text(10,  50, "vertex buffers cached = " + string(array_length(global.__scribble_gc_vbuff_refs)) + "/" + string(array_length(global.__scribble_gc_vbuff_ids)));
 draw_text(10,  70, "counter = " + string(counter));
                

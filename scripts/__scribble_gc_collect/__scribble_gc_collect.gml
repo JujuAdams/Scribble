@@ -5,7 +5,6 @@ function __scribble_gc_collect()
     if ((SCRIBBLE_CACHE_COLLECT_FREQ >= 0) && (global.__scribble_gc_collect_time + SCRIBBLE_CACHE_COLLECT_FREQ < current_time))
     {
         global.__scribble_gc_collect_time = current_time;
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Calling gc_collect()");
         gc_collect();
     }
     
@@ -15,8 +14,8 @@ function __scribble_gc_collect()
     
     #region Scan through the cache to see if any text elements have elapsed
     
-    var _index = global.__scribble_ecache_array_index;
-    var _array = global.__scribble_ecache_array;
+    var _index = global.__scribble_ecache_list_index;
+    var _list = global.__scribble_ecache_list;
     repeat(__SCRIBBLE_GC_STEP_SIZE)
     {
         //Move backwards through the cache list so we are always trying to check the oldest stuff before looping round
@@ -26,7 +25,7 @@ function __scribble_gc_collect()
         if (_index < 0)
         {
             //If we do, jump to the end of the list
-            _index += array_length(_array);
+            _index += ds_list_size(_list);
             
             //If the size of the list is 0 then we'll still be negative
             if (_index < 0)
@@ -37,15 +36,15 @@ function __scribble_gc_collect()
         }
         
         //Only flush if we want to garbage collect this text element and it hasn't been drawn for a while
-        var _element = _array[_index];
+        var _element = _list[| _index];
         if (_element.last_drawn + __SCRIBBLE_CACHE_TIMEOUT < current_time)
         {
             if (__SCRIBBLE_DEBUG) __scribble_trace("\"", _element.cache_name, "\" has timed out");
-            array_delete(_array, _index, 1);
+            ds_list_delete(_list, _index);
         }
     }
     
-    global.__scribble_ecache_array_index = _index;
+    global.__scribble_ecache_list_index = _index;
     
     #endregion
     

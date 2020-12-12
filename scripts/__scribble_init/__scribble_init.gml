@@ -57,8 +57,8 @@ global.__scribble_mcache_name_list  = ds_list_create();
 global.__scribble_mcache_name_index = 0;
 
 global.__scribble_ecache_dict        = ds_map_create();
-global.__scribble_ecache_array       = [];
-global.__scribble_ecache_array_index = 0;
+global.__scribble_ecache_list        = ds_list_create();
+global.__scribble_ecache_list_index = 0;
 global.__scribble_ecache_name_list   = ds_list_create();
 global.__scribble_ecache_name_index  = 0;
 
