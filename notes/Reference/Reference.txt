@@ -47,6 +47,7 @@ Text element methods are broken down into several categories. There's a lot here
     - [`.page(page)`](scribble()-Methods#pagepage)
     - [`.get_page()`](scribble()-Methods#get_page)
     - [`.get_pages()`](scribble()-Methods#get_pages)
+    - [`.on_last_page()`](scribble()-Methods#on_last_page)
 4. [**Typewriter**](scribble()-Methods#typewriter)
     - [`.typewriter_off()`](scribble()-Methods#typewriter_off)
     - [`.typewriter_reset()`](scribble()-Methods#typewriter_reset)
@@ -298,6 +299,16 @@ Please note that changing the page will reset any typewriter animations i.e. tho
 ### `.get_pages()`
 
 **Returns:** Integer, total number of pages for the text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+&nbsp;
+
+### `.on_last_page()`
+
+**Returns:** Boolean, whether the current page is the last page for the text element
 
 |Name|Datatype|Purpose|
 |----|--------|-------|

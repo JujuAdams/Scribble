@@ -727,6 +727,11 @@ function __scribble_class_element(_string, _unique_id) constructor
         return __get_model(true).get_pages();
     }
     
+    static on_last_page = function()
+    {
+        return (get_page() >= get_pages() - 1);
+    }
+    
     static get_typewriter_state = function()
     {
         //Early out if the method is NONE
