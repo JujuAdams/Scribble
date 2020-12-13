@@ -8,9 +8,3 @@ draw_vertex_color(_bbox.x3, _bbox.y3, c_gray, 1.0);
 draw_primitive_end();
 
 element.transform(1, 1, -15).typewriter_in(skip? 9999 : 1, 0).draw(room_width div 2, room_height div 2);
-
-draw_set_font(spritefont);
-draw_text(10, 10, test_string);
-scribble("[spr_sprite_font]!" + test_string).draw(10 + string_width(test_string), 10);
-scribble("[spr_sprite_font]" + test_string).draw(10, 30);
-draw_set_font(-1);
