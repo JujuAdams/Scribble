@@ -737,8 +737,10 @@ function __scribble_class_element(_string, _unique_id) constructor
         //Early out if the method is NONE
         if (!tw_do) return 1.0; //No fade in/out set
         
-        var _page_data = __get_model(true).pages_array[__page];
+        var _pages_array = __get_model(true).get_page_array();
+        if (array_length(_pages_array) == 0) return 1.0;
         
+        var _page_data = _pages_array[__page];
         var _min = _page_data.start_char;
         var _max = _page_data.last_char;
         
@@ -763,10 +765,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static get_wrapped = function()
     {
-        //TODO - Make null model
-        var _model = __get_model(true);
-        if (_model == SCRIBBLE_NULL_MODEL) return 0;
-        return _model.get_wrapped();
+        return __get_model(true).get_wrapped();
     }
     
     /// @param [page]
@@ -803,11 +802,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         //Update the blink state
         animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
         
-        if (is_struct(_model))
-        {
-            //Draw the model using ourselves as the context
-            _model.draw(_x, _y, self);
-        }
+        //Draw the model using ourselves as the context
+        _model.draw(_x, _y, self);
         
         //Run the garbage collecter
         __scribble_gc_collect();
@@ -846,7 +842,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static __refresh_typewriter_for_page = function()
     {
-        var _page_data = __get_model(true).pages_array[__page];
+        var _pages_array = __get_model(true).get_page_array();
+        if (array_length(_pages_array) == 0) exit;
+        
+        var _page_data = _pages_array[__page];
         
         tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - tw_anim_smoothness);
         tw_window_array[@ 0] += tw_anim_smoothness;
@@ -919,7 +918,10 @@ function __scribble_class_element(_string, _unique_id) constructor
             var _model = __get_model(true);
             if (!is_struct(_model)) return undefined;
             
-            var _page_data = _model.pages_array[__page];
+            var _pages_array = __get_model(true).get_page_array();
+            if (array_length(_pages_array) == 0) return undefined;
+        
+            var _page_data = _pages_array[__page];
             var _typewriter_count = _page_data.last_char + 2;
             
             //Handle pausing

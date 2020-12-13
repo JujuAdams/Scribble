@@ -19,12 +19,13 @@ function __scribble_class_null_model() constructor
     
     static get_width = function(_page) { return 0; }
     static get_height = function(_page) { return 0; }
+    static get_page_array = function() { return []; }
     static get_pages = function() { return 0; }
     static get_wrapped = function() { return false; }
     static get_line_count = function() { return 0; }
     static get_ltrb_array = function()
     {
         if (!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY) show_error("Scribble:\nSCRIBBLE_CREATE_GLYPH_LTRB_ARRAY is not enabled\nPlease set this macro to <true> to use this function\n ", false);
-        return undefined;
+        return [];
     }
 }

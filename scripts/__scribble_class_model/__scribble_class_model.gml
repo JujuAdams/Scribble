@@ -208,6 +208,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         }
     }
     
+    static get_page_array = function()
+    {
+        return pages_array;
+    }
+    
     static get_pages = function()
     {
         return pages;
@@ -231,7 +236,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         if (!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
         {
             show_error("Scribble:\nSCRIBBLE_CREATE_GLYPH_LTRB_ARRAY is not enabled\nPlease set this macro to <true> to use this function\n ", false);
-            return undefined;
+            return [];
         }
         
         return glyph_ltrb_array;
