@@ -85,6 +85,7 @@ function __scribble_class_null_element() constructor
     static get_typewriter_pos = function() { return 0; }
     static get_wrapped = function() { return false; }
     static get_line_count = function() { return 0; }
+    static get_ltrb_array = function() { return undefined; }
     
     #endregion
     

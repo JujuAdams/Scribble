@@ -777,6 +777,11 @@ function __scribble_class_element(_string, _unique_id) constructor
         return __get_model(true).get_line_count(_page);
     }
     
+    static get_ltrb_array = function()
+    {
+        return __get_model(true).get_ltrb_array();
+    }
+    
     #endregion
     
     #region Public Methods

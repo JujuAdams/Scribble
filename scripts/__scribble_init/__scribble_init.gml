@@ -347,7 +347,7 @@ enum SCRIBBLE_EASE
 #macro SCRIBBLE_NULL_ELEMENT  global.__scribble_null_element
 #macro SCRIBBLE_NULL_MODEL    global.__scribble_null_model
 global.__scribble_null_element    = new __scribble_class_null_element();
-global.__scribble_null_model      = undefined;
+global.__scribble_null_model      = new __scribble_class_null_model();
 global.__scribble_default_element = scribble();
 
 #endregion

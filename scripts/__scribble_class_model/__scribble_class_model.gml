@@ -226,6 +226,17 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         return pages_array[_page].lines;
     }
     
+    static get_ltrb_array = function()
+    {
+        if (!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
+        {
+            show_error("Scribble:\nSCRIBBLE_CREATE_GLYPH_LTRB_ARRAY is not enabled\nPlease set this macro to <true> to use this function\n ", false);
+            return undefined;
+        }
+        
+        return glyph_ltrb_array;
+    }
+    
     #endregion
     
     #region Private Methods
