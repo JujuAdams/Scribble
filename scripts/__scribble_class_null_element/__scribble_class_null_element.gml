@@ -30,6 +30,7 @@ function __scribble_class_null_element() constructor
     static typewriter_function = function(_function) { return self; }
     static typewriter_pause = function() { return self; }
     static typewriter_unpause = function() { return self; }
+    static typewriter_ease = function(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration) { return self; }
     
     #endregion
     
@@ -78,10 +79,12 @@ function __scribble_class_null_element() constructor
     static get_height = function() { return 0;}
     static get_page = function() { return 0; }
     static get_pages = function() { return 0; }
-    static get_wrapped = function() { return false; }
-    static get_line_count = function() { return 0; }
+    static on_last_page = function() { return true; }
     static get_typewriter_state = function() { return 1.0; }
     static get_typewriter_paused = function() { return false; }
+    static get_typewriter_pos = function() { return 0; }
+    static get_wrapped = function() { return false; }
+    static get_line_count = function() { return 0; }
     
     #endregion
     
