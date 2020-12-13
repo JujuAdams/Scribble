@@ -12,7 +12,7 @@ function scribble()
     var _unique_id = (argument_count > 1)? string(argument[1]) : SCRIBBLE_DEFAULT_UNIQUE_ID;
     
     var _element = SCRIBBLE_NULL_ELEMENT;
-    if (_string == undefined)
+    if (argument_count == 0)
     {
         do
         {
