@@ -1,7 +1,7 @@
 {
   "option_windows_display_name": "Scribble",
   "option_windows_executable_name": "${project_name}",
-  "option_windows_version": "7.0.1.3",
+  "option_windows_version": "7.0.1.4",
   "option_windows_company_info": "@jujuadams",
   "option_windows_product_info": "Scribble",
   "option_windows_copyright_info": "@jujuadams (c) 2020",
