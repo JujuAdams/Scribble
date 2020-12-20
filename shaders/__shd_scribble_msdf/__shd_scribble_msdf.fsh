@@ -1,4 +1,4 @@
-//   @jujuadams   v7.0.1   2020-12-16
+//   @jujuadams   v7.0.2   2020-12-20
 precision highp float;
 
 #extension GL_OES_standard_derivatives : enable
