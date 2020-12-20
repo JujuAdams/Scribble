@@ -13,7 +13,7 @@
   "option_windows_use_splash": false,
   "option_windows_start_fullscreen": false,
   "option_windows_allow_fullscreen_switching": false,
-  "option_windows_interpolate_pixels": true,
+  "option_windows_interpolate_pixels": false,
   "option_windows_vsync": false,
   "option_windows_resize_window": false,
   "option_windows_borderless": false,

@@ -21,6 +21,6 @@ function scribble_default_template()
     animation_wobble(40, 0.15);
     animation_pulse(0.4, 0.1);
     animation_wheel(1, 0.5, 0.2);
-    animation_cycle(0.3, 255, 255);
+    animation_cycle(0.3, 180, 255);
     animation_jitter(0.8, 1.2, 0.4);
 }
