@@ -1111,7 +1111,7 @@ function __scribble_generate_model(_element)
         }
         else if ((_character_code == 10) //If we've hit a newline (\n)
                 || (SCRIBBLE_HASH_NEWLINE && (_character_code == 35)) //If we've hit a hash, and hash newlines are on
-                || ((_character_code == 13) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer)+1, buffer_u8) != 10))) //If this is a line feed but not followed by a newline... this fixes goofy Windows Notepad isses
+                || ((_character_code == 13) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) != 10))) //If this is a line feed but not followed by a newline... this fixes goofy Windows Notepad isses
         {
             _force_newline = true;
             _char_width    = 0;
