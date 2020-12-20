@@ -5,6 +5,7 @@ function __scribble_gc_collect()
     if ((SCRIBBLE_CACHE_COLLECT_FREQ >= 0) && (global.__scribble_gc_collect_time + SCRIBBLE_CACHE_COLLECT_FREQ < current_time))
     {
         global.__scribble_gc_collect_time = current_time;
+        if (__SCRIBBLE_DEBUG) __scribble_trace("Running gc_collect()");
         gc_collect();
     }
     
@@ -39,7 +40,7 @@ function __scribble_gc_collect()
         var _element = _list[| _index];
         if (_element.last_drawn + __SCRIBBLE_CACHE_TIMEOUT < current_time)
         {
-            if (__SCRIBBLE_DEBUG) __scribble_trace("\"", _element.cache_name, "\" has timed out");
+            if (__SCRIBBLE_DEBUG) __scribble_trace("\"", _element.cache_name, "\" has timed out (", current_time, " > ", _element.last_drawn, " + ", __SCRIBBLE_CACHE_TIMEOUT, ")");
             ds_list_delete(_list, _index);
         }
     }
