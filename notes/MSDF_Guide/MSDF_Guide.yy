@@ -4,7 +4,7 @@
     "path": "folders/Scribble.yy",
   },
   "resourceVersion": "1.1",
-  "name": "Reference",
+  "name": "MSDF_Guide",
   "tags": [],
   "resourceType": "GMNotes",
 }

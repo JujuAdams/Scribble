@@ -175,7 +175,7 @@ Sets the blend colour/alpha, which is applied at the end of the drawing pipeline
 |`x` |real    |x-coordinate of the origin, in model space|
 |`y` |real    |y-coordinate of the origin, in model space|
 
-Sets the origin relative to the top-left corner of the text element. You can think of this similarly to a standard sprite's origin as set in the GameMaker IDE. Using this function with [`.get_width()`]() and [`.get_height()`] will allow you to align the entire textbox as you see fit. Please note that this function may interact in unexpected ways with in-line alignment commands so some trial and error is necessary to get the effect you're looking for.
+Sets the origin relative to the top-left corner of the text element. You can think of this similarly to a standard sprite's origin as set in the GameMaker IDE. Using this function with [`.get_width()`](scribble()-Methods#get_width) and [`.get_height()`](scribble()-Methods#get_height) will allow you to align the entire textbox as you see fit. Please note that this function may interact in unexpected ways with in-line alignment commands so some trial and error is necessary to get the effect you're looking for.
 
 &nbsp;
 
