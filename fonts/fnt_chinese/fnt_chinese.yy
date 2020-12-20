@@ -2970,6 +2970,8 @@
   },
   "resourceVersion": "1.0",
   "name": "fnt_chinese",
-  "tags": [],
+  "tags": [
+    "Scribble",
+  ],
   "resourceType": "GMFont",
 }

@@ -20,12 +20,13 @@
   "eventList": [
     {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"parent":{"name":"obj_test_stress","path":"objects/obj_test_stress/obj_test_stress.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
     {"isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,"parent":{"name":"obj_test_stress","path":"objects/obj_test_stress/obj_test_stress.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":3,"collisionObjectId":null,"parent":{"name":"obj_test_stress","path":"objects/obj_test_stress/obj_test_stress.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
     "name": "Test Cases",
-    "path": "folders/Examples/Test Cases.yy",
+    "path": "folders/Test Cases.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_stress",

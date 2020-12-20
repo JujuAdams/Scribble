@@ -1,8 +1,13 @@
-var _demo_string  = "[rainbow][pulse]abcdef[/] [d$16711680]ABCDEF##";
-    _demo_string += "[wave][c_orange]0123456789[/] .,<>\"'&[c_white][spr_coin,0][spr_coin,1][spr_coin,2][spr_coin,3][shake][rainbow]!?[/]\n";
-    _demo_string += "[pin_centre][spr_coin][spr_coin][spr_coin][spr_large_coin][fa_left]\n";
-    _demo_string += "[fa_left][outline_font]the quick brown fox [wave]jumps[/wave] over the [wheel]lazy[/wheel] dog";
-    _demo_string += "[fnt_test_0][pin_right]THE [fnt_test_1][#ff4499][shake]QUICK[fnt_test_0] [$D2691E]BROWN [$FF4499]FOX [fa_left]JUMPS OVER[$FFFF00] THE [/shake]LAZY [fnt_test_1][wobble]DOG[/wobble].";
+var _string = @"[fa_center][fa_middle][fnt_test_2][rainbow][wave]Welcome to Scribble v7![/]
 
-//Draw the string
-scribble_draw(x - 150, y - 80, _demo_string);
+Scribble is a multi-effects text engine designed to be fast, easy, and fun.
+
+It supports[scale,2][spr_sprite_font] in-line font changes (and spritefonts!)[/] as well as in-line sprites[nbsp][spr_large_coin]. Scribble can do a [wheel]bunch[/wheel] of [jitter]effects[/jitter] without slowing down your game.
+
+Other examples and test cases in this project file will show you what else Scribble can do including an in-built typewriter, the events system, MSDF fonts, and more!";
+
+scribble(_string)
+.wrap(900)
+.typewriter_in(1, 60)
+.typewriter_ease(SCRIBBLE_EASE.ELASTIC, 0, -25, 1, 1, 0, 0.1)
+.draw(room_width div 2, room_height div 2);

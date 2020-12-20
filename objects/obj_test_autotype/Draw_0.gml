@@ -1,1 +1,0 @@
-scribble_draw(x, y, element);

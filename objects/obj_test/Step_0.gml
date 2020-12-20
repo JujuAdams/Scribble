@@ -1,23 +1,27 @@
 if (keyboard_check_pressed(vk_space))
 {
-    if (scribble_autotype_is_paused(element))
+    if (element.get_typewriter_paused())
     {
         //If we're paused, unpause!
-        scribble_autotype_set_pause(element, false);
+        element.typewriter_unpause(false);
     }
-    else if (scribble_autotype_get(element) < 1)
+    else if (element.get_typewriter_state() >= 1)
     {
-        //If we haven't finised yet, skip to the end of this page
-        scribble_autotype_skip(element);
-    }
-    else if (scribble_page_on_last(element))
-    {
-        //Loop back round to the first page if we've reached the end
-        scribble_page_set(element, 0);
+        skip = false;
+        
+        if (element.get_page() >= element.get_pages() - 1)
+        {
+            //Wrap back round to the first page
+            element.page(0);
+        }
+        else
+        {
+            //Otherwise move to the next page
+            element.page(element.get_page() + 1);
+        }
     }
     else
     {
-        //Otherwise move to the next page
-        scribble_page_set(element, 1 + scribble_page_get(element));
+        skip = true;
     }
 }
