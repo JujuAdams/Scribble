@@ -14,6 +14,7 @@ function __scribble_generate_model(_element)
     var _def_colour        = __scribble_process_colour(_element.starting_colour);
     var _def_font          = _element.starting_font;
     var _def_halign        = _element.starting_halign;
+    var _def_valign        = _element.starting_valign;
     var _character_wrap    = _element.wrap_per_char;
     var _freeze            = _element.freeze;
     var _ignore_commands   = _element.__ignore_command_tags;
@@ -1076,7 +1077,7 @@ function __scribble_generate_model(_element)
                     }
                     else if (valign != _new_valign)
                     {
-                        show_error("Scribble:\nIn-line vertical alignment cannot be changed more than once in a string\n ", false);
+                        show_error("Scribble:\nIn-line vertical alignment cannot be set more than once\n ", false);
                     }
                             
                     _new_valign = undefined;
@@ -1638,7 +1639,7 @@ function __scribble_generate_model(_element)
     _page_data.last_char = characters - 1;
     _page_data.height    = _line_y + _line_height;
     
-    if (valign == undefined) valign = fa_top;
+    if (valign == undefined) valign = _def_valign;
             
     #endregion
     
