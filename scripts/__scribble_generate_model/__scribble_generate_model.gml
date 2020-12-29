@@ -1402,10 +1402,18 @@ function __scribble_generate_model(_element)
                             _line_width = max(_line_width, buffer_peek(_buffer, _tell_b - __SCRIBBLE_GLYPH_BYTE_SIZE + __SCRIBBLE_VERTEX.X, buffer_f32));
                         }
                         
-                        //Note the negative sign!
-                        var _offset_x = _data.word_x_offset;
-                        if (_offset_x == undefined) _offset_x = 0;
-                        _offset_x += _line_offset_x;
+                        if (_tell_a + __SCRIBBLE_GLYPH_BYTE_SIZE == _tell_b)
+                        {
+                            //If the word wrapped on the first character, don't correct the offset position
+                            var _offset_x = _line_offset_x;
+                        }
+                        else
+                        {
+                            //Take care of the negative sign!
+                            var _offset_x = _data.word_x_offset;
+                            if (_offset_x == undefined) _offset_x = 0;
+                            _offset_x += _line_offset_x;
+                        }
                         
                         if (_offset_x < 0)
                         {
