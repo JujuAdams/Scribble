@@ -10,14 +10,14 @@ Don't worry about clearing up after yourself when you draw text - Scribble autom
 
 &nbsp;
 
-### `scribble([string], [uniqueID])`
+## `scribble([string], [uniqueID])`
 
 **Returns:** A text element that contains the string (a struct, an instance of `__scribble_class_element`)
 
 |Name        |Datatype      |Purpose               |
 |------------|--------------|----------------------|
 |`[string]`  |string        |String to draw        |
-|`[uniqueID]`|string or real|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_OCCURRENCE_NAME`](Functions-(Configuration)#__scribble_config_macros)|
+|`[uniqueID]`|string or real|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_UNIQUE_ID`](Functions-(Configuration)#__scribble_config_macros)|
 
 If no string is specified (i.e. the function used with arguments), this function will return a **unique** text element that contains no text data (even if no unique ID is given). The text in any text element, including empty ones, can be overwritten using the [`.overwrite()`](scribble()-Methods#overwritestring-regenerator) method.
 
@@ -386,18 +386,6 @@ The `smoothness` argument offers some customisation for how text fades out. A hi
 
 &nbsp;
 
-### `.get_typewriter_state()`
-
-**Returns:** Real value indicating how many characters have been revealed in this text element
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Returns `0` if the typewriter is not enabled.
-
-&nbsp;
-
 ### `.typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`
 
 **Returns**: The text element
@@ -437,7 +425,7 @@ Scribble offers the following easing functions for typewriter behaviour. These a
 
 ### `.get_typewriter_state()`
 
-**Returns:** Real value from 0 to 2 (inclusive) that represents what proportion of text is visible
+**Returns:** Real value from 0 to 2 (inclusive) that represents what proportion of text on the current page is visible
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
@@ -822,7 +810,7 @@ Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alp
 |`colour`   |integer |Colour of the glyph's border, as a standard GameMaker 24-bit BGR format|
 |`thickness`|real    |Thickness of the border, in pixels                                     |
 
-Sets the colour and thickness for a procedural MSDF border. Setting the thickness to `0` will prevent the border from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, [regenerate your MSDF fonts](MSDF-Fonts) using a largerr `pxrange`.
+Sets the colour and thickness for a procedural MSDF border. Setting the thickness to `0` will prevent the border from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, [regenerate your MSDF fonts](MSDF-Fonts) using a larger `pxrange`.
 
 &nbsp;
 
