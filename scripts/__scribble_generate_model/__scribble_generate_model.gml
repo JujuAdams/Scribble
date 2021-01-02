@@ -2,11 +2,6 @@
 
 function __scribble_generate_model(_element)
 {
-    if (variable_global_exists("__scribble_lcg"))
-    {
-        __scribble_error("Scribble has not been initialised");
-    }
-    
     #region Process input parameters
     
     var _max_width         = _element.wrap_max_width/fit_scale; //Correct wrapping box considering our fit scale
@@ -23,6 +18,11 @@ function __scribble_generate_model(_element)
     var _character_wrap    = _element.wrap_per_char;
     var _freeze            = _element.freeze;
     var _ignore_commands   = _element.__ignore_command_tags;
+    
+    if (_def_font == undefined)
+    {
+        __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
+    }
     
     var _font_data         = __scribble_get_font_data(_def_font);
     var _font_glyphs_map   = _font_data.glyphs_map;
