@@ -117,6 +117,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [uniqueID]
     static overwrite = function()
     {
+        
         text      = argument[0];
         unique_id = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : unique_id;
         
@@ -785,6 +786,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Public Methods
     
+    /// @param x
+    /// @param y
     static draw = function(_x, _y)
     {
         //Get our model, and create one if needed
@@ -827,6 +830,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+     /// @param freeze
     static build = function(_freeze)
     {
         freeze = _freeze;
