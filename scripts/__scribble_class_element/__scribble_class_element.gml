@@ -117,6 +117,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [uniqueID]
     static overwrite = function()
     {
+        
         text      = argument[0];
         unique_id = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : unique_id;
         
@@ -154,7 +155,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         else if (!is_undefined(_font_name))
         {
-            show_error("Scribble:\nFonts should be specified using their name as a string\nUse <undefined> to not set a new font\n ", false);
+            __scribble_error("Fonts should be specified using their name as a string\nUse <undefined> to not set a new font");
         }
         
         if (_colour != undefined)
@@ -164,7 +165,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 _colour = global.__scribble_colours[? _colour];
                 if (_colour == undefined)
                 {
-                    show_error("Scribble:\nColour name \"" + string(_colour) + "\" not recognised\n ", false);
+                    __scribble_error("Colour name \"", _colour, "\" not recognised");
                 }
             }
         
@@ -192,7 +193,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             _colour = global.__scribble_colours[? _colour];
             if (_colour == undefined)
             {
-                show_error("Scribble:\nColour name \"" + string(_colour) + "\" not recognised\n ", false);
+                __scribble_error("Colour name \"", _colour, "\" not recognised");
                 exit;
             }
         }
@@ -293,7 +294,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             _colour = global.__scribble_colours[? _colour];
             if (_colour == undefined)
             {
-                show_error("Scribble:\nColour name \"" + string(_colour) + "\" not recognised\n ", false);
+                __scribble_error("Colour name \"", _colour, "\" not recognised");
                 exit;
             }
         }
@@ -332,7 +333,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         else
         {
-            show_error("Scribble:\nWrong number of arguments (" + string(argument_count) + ") provided\nExpecting 0 or 8\n ", false);
+            __scribble_error("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
         }
         
         return self;
@@ -389,6 +390,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         tw_anim_smoothness = _smoothness;
         
         if (_refresh) __refresh_typewriter_for_page();
+        return self;
+    }
+    
+    static typewriter_skip = function()
+    {
+        tw_anim_speed = SCRIBBLE_SKIP_SPEED_THRESHOLD;
         return self;
     }
     
@@ -785,6 +792,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Public Methods
     
+    /// @param x
+    /// @param y
     static draw = function(_x, _y)
     {
         //Get our model, and create one if needed
@@ -827,6 +836,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+     /// @param freeze
     static build = function(_freeze)
     {
         freeze = _freeze;

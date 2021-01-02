@@ -1,0 +1,82 @@
+This is the quick reference for Scribble's methods. For the full documentation, please read the
+scribble_Methods note.
+
+Some methods are marked as "regenerator methods". Setting new, different values for a piece of text
+using a regenerator method will cause Scribble to regenerate the underlying vertex buffers. For the
+sake of performance, avoid frequently changing values for regenerator methods as this will cause
+performance problems.
+
+* More information about fluent interfaces can be found here: https://en.wikipedia.org/wiki/Fluent_interface
+
+
+
+Basics
+    .draw(x, y)
+    .starting_format(fontName, colour)  *regenerator*
+    .align(halign, valign) *regenerator*
+    .blend(colour, alpha)
+
+Shape, Wrapping, and Positioning
+    .origin(x, y)
+    .transform(xscale, yscale, angle)
+    .wrap(maxWidth, [maxHeight], [characterWrap])  *regenerator*
+    .fit_to_box(maxWidth, maxHeight, [characterWrap])  *regenerator*
+    .line_height(min, max)  *regenerator*
+    .bezier(x1, y1, x2, y2, x3, y3, x4, y4)  *regenerator*
+
+Pages
+    .page(page)
+    .get_page()
+    .get_pages()
+    .on_last_page()
+
+Typewriter
+    .typewriter_off()
+    .typewriter_reset()
+    .typewriter_in(speed, smoothness)
+    .typewriter_out(speed, smoothness, [backwards])
+    .typewriter_skip()
+    .get_typewriter_pos()
+    .typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)
+    .get_typewriter_state()
+    .typewriter_pause()
+    .typewriter_unpause()
+    .get_typewriter_paused()
+    .typewriter_sound(soundArray, overlap, pitchMin, pitchMax)
+    .typewriter_sound_per_char(soundArray, pitchMin, pitchMax)
+    .typewriter_function(function)
+
+Getters
+    .get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])
+    .get_width()
+    .get_height()
+    .get_wrapped()
+    .get_line_count([page])
+
+Animation
+    .animation_tick_speed(tickSpeed)
+    .animation_sync(sourceElement)
+    .animation_wave(size, frequency, speed)
+    .animation_shake(size, speed)
+    .animation_rainbow(weight, speed)
+    .animation_wobble(angle, frequency)
+    .animation_pulse(scale, speed)
+    .animation_wheel(size, frequency, speed)
+    .animation_cycle(speed, saturation, value)
+    .animation_jitter(minScale, maxScale, speed)
+    .animation_blink(onDuration, offDuration, timeOffset)
+
+MSDF
+    .msdf_shadow(colour, alpha, xOffset, yOffset)
+    .msdf_border(colour, thickness)
+    .msdf_feather(thickness)
+
+Cache Management
+    .build(freeze)
+    .flush()
+
+Miscellaneous
+    .template(function)
+    .overwrite(string)  *regenerator*
+    .fog(colour, alpha)
+    .ignore_command_tags(state)  *regenerator*

@@ -9,13 +9,13 @@ function scribble_font_combine()
     
     if (!is_string(_new_font_name))
     {
-        show_error("Scribble:\nFonts should be specified using their name as a string.\n(Input was an invalid datatype)\n ", false);
+        __scribble_error("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
         exit;
     }
     
     if (ds_map_exists(global.__scribble_font_data, _new_font_name))
     {
-        show_error("Scribble:\nNew font name \"" + string(_new_font_name) + "\" already exists as a font\n ", true);
+        __scribble_error("New font name \"", _new_font_name, "\" already exists as a font");
         exit;
     }
     
@@ -39,13 +39,13 @@ function scribble_font_combine()
         
         if (!is_string(_source_font_name))
         {
-            show_error("Scribble:\nFonts should be specified using their name as a string.\n(Input was an invalid datatype)\n ", false);
+            __scribble_error("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
             exit;
         }
         
         if (!ds_map_exists(global.__scribble_font_data, _source_font_name))
         {
-            show_error("Scribble:\nFont \"" + string(_source_font_name) + "\" doesn't exist. Ensure input fonts exist before combining them together\n ", true);
+            __scribble_error("Font \"", _source_font_name, "\" doesn't exist. Ensure input fonts exist before combining them together");
             exit;
         }
         

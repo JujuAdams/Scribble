@@ -26,7 +26,7 @@ function scribble_glyph_set()
     
     if (!ds_map_exists(global.__scribble_font_data, _font))
     {
-        show_error("Scribble:\nFont \"" + string(_font) + "\" not found\n ", false);
+        __scribble_error("Font \"", _font, "\" not found");
         exit;
     }
     
@@ -75,7 +75,7 @@ function scribble_glyph_set()
         
         if (_glyph_data == undefined)
         {
-            show_error("Scribble:\nCharacter \"" + _character + "\" not found for font \"" + _font + "\"", false);
+            __scribble_error("Character \"", _character, "\" not found for font \"", _font, "\"");
             exit;
         }
         

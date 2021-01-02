@@ -28,32 +28,32 @@ function scribble_font_bake_shader()
     
     if (!is_string(_source_font_name))
     {
-        show_error("Scribble:\nFonts should be specified using their name as a string.\n(Input was an invalid datatype)\n ", false);
+        __scribble_error("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
         exit;
     }
     
     if (!is_string(_new_font_name))
     {
-        show_error("Scribble:\nFonts should be specified using their name as a string.\n(Input was an invalid datatype)\n ", false);
+        __scribble_error("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
         exit;
     }
     
     if (_source_font_name == _new_font_name)
     {
-        show_error("Scribble:\nSource font and new font cannot share the same name\n ", false);
+        __scribble_error("Source font and new font cannot share the same name");
         return undefined;
     }
 
     var _src_font_data = global.__scribble_font_data[? _source_font_name];
     if (!is_struct(_src_font_data))
     {
-        show_error("Scribble:\nSource font \"" + string(_source_font_name) + "\" not found\n\"" + string(_new_font_name) + "\" will not be available\n ", false);
+        __scribble_error("Source font \"", _source_font_name, "\" not found\n\"", _new_font_name, "\" will not be available");
         return undefined;
     }
     
     if (_src_font_data.type == "msdf")
     {
-    	show_error("Scribble:\nSource font cannot be an MSDF font\n ", false);
+    	__scribble_error("Source font cannot be an MSDF font");
     	return undefined;
     }
     
@@ -230,7 +230,7 @@ function scribble_font_bake_shader()
 
     if (!_found)
     {
-        show_error("Scribble:\nNo space left on " + string(_texture_size) + "x" + string(_texture_size) + " texture page\nPlease increase the size of the texture page\n ", false);
+        __scribble_error("No space left on ", _texture_size, "x", _texture_size, " texture page\nPlease increase the size of the texture page");
     }
     else
     {

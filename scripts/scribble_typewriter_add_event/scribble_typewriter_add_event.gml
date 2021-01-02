@@ -9,7 +9,7 @@ function scribble_typewriter_add_event(_name, _function)
     
     if (!is_string(_name))
     {
-        show_error("Scribble:\nEvent names should be strings.\n(Input to script was \"" + string(_name) + "\")\n ", false);
+        __scribble_error("Event names should be strings.\n(Input to script was \"", _name, "\")");
         exit;
     }
     
@@ -19,13 +19,13 @@ function scribble_typewriter_add_event(_name, _function)
         {
             if (!script_exists(_function))
             {
-                show_error("Scribble:\nScript with asset index " + string(_function) + " doesn't exist\n ", false);
+                __scribble_error("Script with asset index ", _function, " doesn't exist\n ", false);
                 exit;
             }
         }
         else
         {
-            show_error("Scribble:\nInvalid function provided\n(Input datatype was \"" + typeof(_function) + "\")\n ", false);
+            __scribble_error("Invalid function provided\n(Input datatype was \"", typeof(_function), "\")");
             exit;
         }
     }

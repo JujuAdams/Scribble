@@ -14,7 +14,7 @@ function scribble_font_bake_outline(_source_font_name, _new_font_name, _outline_
         var _found = global.__scribble_colours[? _outline_color];
         if (_outline_color == undefined)
         {
-            show_error("Scribble:\nColour \"" + string(_outline_color) + "\" not recognised\n ", false);
+            __scribble_error("Colour \"", _outline_color, "\" not recognised");
             exit;
         }
         _outline_color = _found;
