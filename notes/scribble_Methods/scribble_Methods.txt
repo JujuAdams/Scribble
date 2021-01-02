@@ -77,6 +77,7 @@ performance problems.
     .typewriter_reset()
     .typewriter_in(speed, smoothness)
     .typewriter_out(speed, smoothness, [backwards])
+    .typewriter_skip()
     .get_typewriter_pos()
     .typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)
     .get_typewriter_state()
@@ -432,6 +433,16 @@ screen. For advanced users, custom shader code can be easily combined with the s
 animate text in unique ways as it fades out.
 
 Events will *not* be executed as text fades out.
+
+
+
+.typewriter_skip()
+
+Returns: The text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
 
 
 

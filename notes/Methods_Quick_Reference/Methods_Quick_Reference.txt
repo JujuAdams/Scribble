@@ -35,6 +35,7 @@ Typewriter
     .typewriter_reset()
     .typewriter_in(speed, smoothness)
     .typewriter_out(speed, smoothness, [backwards])
+    .typewriter_skip()
     .get_typewriter_pos()
     .typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)
     .get_typewriter_state()

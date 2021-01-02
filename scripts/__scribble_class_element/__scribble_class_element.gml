@@ -393,6 +393,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+    static typewriter_skip = function()
+    {
+        tw_anim_speed = SCRIBBLE_SKIP_SPEED_THRESHOLD;
+        return self;
+    }
+    
     /// @param soundArray
     /// @param overlap
     /// @param pitchMin

@@ -25,6 +25,7 @@ function __scribble_class_null_element() constructor
     static typewriter_reset = function() { return self; }
     static typewriter_in = function(_speed, _smoothness) { return self; }
     static typewriter_out = function(_speed, _smoothness, _backwards) { return self; }
+    static typewriter_skip = function() { return self; }
     static typewriter_sound = function(_sound_array, _overlap, _pitch_min, _pitch_max) { return self; }
     static typewriter_sound_per_char = function(_sound_array, _pitch_min, _pitch_max) { return self; }
     static typewriter_function = function(_function) { return self; }
