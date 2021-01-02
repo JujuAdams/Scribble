@@ -386,6 +386,18 @@ The `smoothness` argument offers some customisation for how text fades out. A hi
 
 &nbsp;
 
+### `.get_typewriter_pos()`
+
+**Returns**: Real, the position of the typewriter "head", corresponding to the most recent revealed glyph
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+This method will return a decimal value if the speed is a decimal value too.
+
+&nbsp;
+
 ### `.typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`
 
 **Returns**: The text element
