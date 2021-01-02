@@ -4,13 +4,12 @@ var _font_directory = SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY;
 if (variable_global_exists("__scribble_lcg")) return undefined;
 
 __scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
-    
+
 if (__SCRIBBLE_ON_MOBILE)
 {
     if (_font_directory != "")
     {
-        __scribble_trace("Included Files work a bit strangely on iOS and Android. Please use an empty string for the font directory and place fonts in the root of Included Files.");
-        show_error("Scribble:\nGameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files.\n ", true);
+        __scribble_error("GameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files");
         exit;
     }
 }
@@ -190,13 +189,28 @@ function __scribble_trace()
     show_debug_message(_string);
 }
 
+function __scribble_error()
+{
+    var _string = "";
+    
+    var _i = 0
+    repeat(argument_count)
+    {
+        _string += string(argument[_i]);
+        ++_i;
+    }
+    
+    show_debug_message("Scribble: " + string_replace_all(_string, "\n", "\n          "));
+    show_error("Scribble:\n" + _string + "\n ", true);
+}
+
 function __scribble_get_font_data(_name)
 {
     var _data = global.__scribble_font_data[? _name];
     
     if (_data == undefined)
     {
-        show_error("Scribble:\nFont \"" + string(_name) + "\" not recognised\nIf you're using tags, check this font has been tagged with \"Scribble\"\n ", true);
+        __scribble_error("Font \"", _name, "\" not recognised\nIf you're using tags, check this font has been tagged with \"Scribble\"");
     }
     
     return _data;
@@ -208,7 +222,7 @@ function __scribble_process_colour(_value)
     {
         if (!ds_map_exists(global.__scribble_colours, _value))
         {
-            show_error("Scribble:\nColour \"" + _value + "\" not recognised. Please add it to scribble_colours()\n ", true);
+            __scribble_error("Colour \"", _value, "\" not recognised. Please add it to scribble_colours()");
         }
         
         return global.__scribble_colours[? _value];

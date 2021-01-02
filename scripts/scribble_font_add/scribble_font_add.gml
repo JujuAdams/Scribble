@@ -26,7 +26,7 @@ function scribble_font_add()
     
     if (ds_map_exists(global.__scribble_font_data, _name))
     {
-        show_error("Scribble:\nFont \"" + _name + "\" has already been defined\n ", false);
+        __scribble_error("Font \"", _name, "\" has already been defined");
         return undefined;
     }
     
@@ -34,24 +34,24 @@ function scribble_font_add()
     {
         if (is_real(_name) && (asset_get_type(font_get_name(_name)) == asset_font))
         {
-            show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input was \"" + string(_name) + "\", which might be font \"" + font_get_name(_name) + "\")\n ", false);
+            __scribble_error("Fonts should be initialised using their name as a string.\n(Input was \"", _name, "\", which might be font \"", font_get_name(_name), "\")");
         }
         else
         {
-            show_error("Scribble:\nFonts should be initialised using their name as a string.\n(Input was an invalid datatype)\n ", false);
+            __scribble_error("Fonts should be initialised using their name as a string.\n(Input was an invalid datatype)");
         }
         exit;
     }
     
     if (asset_get_type(_name) == asset_sprite)
     {
-        show_error("Scribble:\nTo add a spritefont, please use scribble_font_add_from_sprite()\n ", false);
+        __scribble_error("To add a spritefont, please use scribble_font_add_from_sprite()");
         return scribble_font_add_from_sprite(_name);
     }
     
     if (asset_get_type(_name) != asset_font)
     {
-        show_error("Scribble:\nFont \"" + _name + "\" not found in the project.\nScribble font \"" + string(_name) + "\" will not be available.\n ", false);
+        __scribble_error("Font \"", _name, "\" not found in the project.\nScribble font \"", _name, "\" will not be available");
         return undefined;
     }
     
@@ -60,7 +60,7 @@ function scribble_font_add()
     
     if (!file_exists(_path))
     {
-        show_error("Scribble:\nCould not find \"" + _path + "\" in Included Files. Please add this file to your project.\nScribble font \"" + string(_name) + "\" will not be available.\n ", false);
+        __scribble_error("Could not find \"", _path, "\" in Included Files. Please add this file to your project.\nScribble font \"", _name, "\" will not be available");
         return undefined;
     }
     
@@ -81,19 +81,19 @@ function scribble_font_add()
     {
         if (!is_string(_name))
         {
-            show_error("Scribble:\n<character> argument is the wrong datatype (" + typeof(_name) + "), expected a string\n ", false);
+            __scribble_error("<character> argument is the wrong datatype (", typeof(_name), "), expected a string");
             return undefined;
         }
     
         if (asset_get_type(_name) == asset_sprite)
         {
-            show_error("Scribble:\nAsset \"" + _name + "\" is a sprite\n \nPlease use scribble_font_add_spritefont() instead\n ", false);
+            __scribble_error("Asset \"", _name, "\" is a sprite\n \nPlease use scribble_font_add_spritefont() instead");
             return undefined;
         }
     
         if (asset_get_type(_name) != asset_font)
         {
-            show_error("Scribble:\nCould not find font asset \"" + _name + "\" in the project\n ", false);
+            __scribble_error("Could not find font asset \"", _name, "\" in the project");
             return undefined;
         }
         
@@ -103,19 +103,19 @@ function scribble_font_add()
             {
                 if (SCRIBBLE_WARNING_AUTOSCAN_YY_NOT_FOUND)
                 {
-                    show_error("Scribble:\nCould not find \"" + _path + "\" in Included Files\nSet SCRIBBLE_WARNING_AUTOSCAN_MISSING_YY to <false> to ignore this warning\n ", false);
+                    __scribble_error("Could not find \"", _path, "\" in Included Files\nSet SCRIBBLE_WARNING_AUTOSCAN_MISSING_YY to <false> to ignore this warning");
                     return undefined;
                 }
                 else
                 {
-                    __scribble_trace("WARNING! Could not find \"" + _path + "\" in Included Files");
+                    __scribble_trace("WARNING! Could not find \"", _path, "\" in Included Files");
                 }
                 
                 return undefined;
             }
             else
             {
-                show_error("Scribble:\n\nCould not find \"" + _path + "\" in Included Files\n ", false);
+                __scribble_error("Could not find \"", _path, "\" in Included Files");
                 return undefined;
             }
         }
@@ -154,14 +154,14 @@ function scribble_font_add()
     //Check to see if the JSON was successfully decoded
     if (_json < 0)
     {
-        show_error("Scribble:\nFailed to decode JSON for \"" + _path + "\"\n ", false);
+        __scribble_error("Failed to decode JSON for \"", _path, "\"");
         _fail = true;
     }
 
     //Additional check to verify we have glyph data
     if (!ds_map_exists(_json, "glyphs"))
     {
-        show_error("Scribble:\nFailed to find \"glyphs\" key for \"" + _path + "\"\n ", false);
+        __scribble_error("Failed to find \"glyphs\" key for \"", _path, "\"");
         _fail = true;
     }
 

@@ -14,7 +14,7 @@ function scribble_font_add_msdf(_font, _sprite, _json_name)
 {
     if (ds_map_exists(global.__scribble_font_data, _font))
     {
-        show_error("Scribble:\nFont \"" + _font + "\" has already been defined\n ", false);
+        __scribble_error("Font \"", _font, "\" has already been defined");
         return undefined;
     }
     
@@ -137,7 +137,7 @@ function scribble_font_add_msdf(_font, _sprite, _json_name)
     var _array = _font_glyphs_map[? 32];
     if (_array == undefined)
     {
-        show_error("Scribble:\nSpace character not found in character string for MSDF font \"" + string(_font) + "\"\n ", true);
+        __scribble_error("Space character not found in character string for MSDF font \"", _font, "\"");
     }
     else
     {

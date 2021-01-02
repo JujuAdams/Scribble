@@ -2,8 +2,13 @@
 
 function __scribble_generate_model(_element)
 {
+    if (variable_global_exists("__scribble_lcg"))
+    {
+        __scribble_error("Scribble has not been initialised");
+    }
+    
     #region Process input parameters
-
+    
     var _max_width         = _element.wrap_max_width/fit_scale; //Correct wrapping box considering our fit scale
     var _max_height        = _element.wrap_max_height/fit_scale;
     var _wrap_no_pages     = _element.wrap_no_pages;
@@ -18,27 +23,27 @@ function __scribble_generate_model(_element)
     var _character_wrap    = _element.wrap_per_char;
     var _freeze            = _element.freeze;
     var _ignore_commands   = _element.__ignore_command_tags;
-       
+    
     var _font_data         = __scribble_get_font_data(_def_font);
     var _font_glyphs_map   = _font_data.glyphs_map;
     var _font_glyphs_array = _font_data.glyphs_array;
     var _font_glyphs_min   = _font_data.glyph_min;
     var _font_glyphs_max   = _font_data.glyph_max;
     var _font_msdf_range   = _font_data.msdf_range;
-        
+    
     var _glyph_texture = undefined;
     var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
     if (_glyph_array == undefined)
     {
-        show_error("Scribble:\nThe space character is missing from font definition for \"" + _def_font + "\"\n ", true);
+        __scribble_error("The space character is missing from font definition for \"", _def_font, "\"");
         return undefined;
     }
-        
+    
     var _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
     var _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
-        
+    
     if (_line_min_height < 0) _line_min_height = 0;
-        
+    
     if ((_line_max_height >= 0) && (_line_max_height <= _line_min_height))
     {
         _line_fixed_height = true;
@@ -50,7 +55,7 @@ function __scribble_generate_model(_element)
     #endregion
     
     #region Build Bezier curve segment lengths
-            
+      
     //Make a copy of the Bezier array
     var _bezier_array = array_create(6);
     array_copy(_bezier_array, 0, _element.bezier_array, 0, 6);
@@ -64,40 +69,40 @@ function __scribble_generate_model(_element)
         var _by3 = _bezier_array[3];
         var _bx4 = _bezier_array[4];
         var _by4 = _bezier_array[5];
-                
+        
         var _bezier_lengths = array_create(SCRIBBLE_BEZIER_ACCURACY, 0.0);
         var _x1 = undefined;
         var _y1 = undefined;
         var _x2 = 0;
         var _y2 = 0;
-                
+        
         var _dist = 0;
-                
+        
         var _bezier_inc = 1 / (SCRIBBLE_BEZIER_ACCURACY-1);
         var _t = _bezier_inc;
         var _i = 1;
         repeat(SCRIBBLE_BEZIER_ACCURACY-1)
         {
             var _inv_t = 1 - _t;
-                    
+            
             _x1 = _x2;
             _y1 = _y2;
             _x2 = 3.0*_inv_t*_inv_t*_t*_bx2 + 3.0*_inv_t*_t*_t*_bx3 + _t*_t*_t*_bx4;
             _y2 = 3.0*_inv_t*_inv_t*_t*_by2 + 3.0*_inv_t*_t*_t*_by3 + _t*_t*_t*_by4;
-                    
+            
             var _dx = _x2 - _x1;
             var _dy = _y2 - _y1;
             _dist += sqrt(_dx*_dx + _dy*_dy);
             _bezier_lengths[@ _i] = _dist;
-                    
+            
             _t += _bezier_inc;
             ++_i;
         }
-                
+        
         if (_max_width >= 0) __scribble_trace("Warning! Maximum width set by scribble_set_wrap() (" + string(_max_width) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
         _max_width = _dist;
     }
-                
+    
     #endregion
     
     #region Add the first page to the text element
@@ -125,7 +130,7 @@ function __scribble_generate_model(_element)
     #endregion
     
     #region Set the initial parser state
-        
+    
     var _text_x            = 0;
     var _text_y            = _line_fixed_height? _half_fixed_height : 0; //Use a y-offset if we've got a fixed line height
     var _line_y            = 0;
@@ -137,16 +142,16 @@ function __scribble_generate_model(_element)
     var _text_slant        = false;
     var _text_cycle        = false;
     var _text_cycle_colour = 0x00000000;
-            
+    
     var _new_halign = undefined;
     var _new_valign = undefined;
     
     var _wrap_failed = false;
-            
+    
     #endregion
     
     #region Parse the string
-        
+    
     var _command_tag_start      = -1;
     var _command_tag_parameters =  0;
     var _command_name           = "";
@@ -154,20 +159,20 @@ function __scribble_generate_model(_element)
     var _force_newpage          =  false;
     var _char_width             =  0;
     var _add_character          =  true;
-
+    
     //Write the string into a buffer for faster reading
     var _string_buffer = global.__scribble_buffer;
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     buffer_write(_string_buffer, buffer_string, _element.text);
     buffer_seek(_string_buffer, buffer_seek_start, 0);
-
+    
     //Iterate over the entire string...
     repeat(string_byte_length(_element.text) + 1)
     {
         var _character_code = buffer_read(_string_buffer, buffer_u8);
         if (_character_code == 0) break;
         _add_character = true;
-                
+        
         if (SCRIBBLE_FIX_ESCAPED_NEWLINES)
         {
             if ((_character_code == 92) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) == 110)) //Backslash followed by "n"
@@ -176,26 +181,26 @@ function __scribble_generate_model(_element)
                 _character_code = 10;
             }
         }
-                
+        
         if (_command_tag_start >= 0) //If we're in a command tag
         {
             if (_character_code == SCRIBBLE_COMMAND_TAG_CLOSE) //If we've hit a command tag close character (usually ])
             {
                 _add_character = false;
-                        
+                
                 //Increment the parameter count and place a null byte for string reading
                 ++_command_tag_parameters;
                 buffer_poke(_string_buffer, buffer_tell(_string_buffer)-1, buffer_u8, 0);
-                        
+                
                 //Jump back to the start of the command tag and read out strings for the command parameters
                 buffer_seek(_string_buffer, buffer_seek_start, _command_tag_start);
                 repeat(_command_tag_parameters) _parameters[@ array_length(_parameters)] = buffer_read(_string_buffer, buffer_string);
-                        
+                
                 //Reset command tag state
                 _command_tag_start = -1;
-                        
+                
                 #region Command tag handling
-                        
+                
                 _command_name = _parameters[0];
                 switch(_command_name)
                 {
@@ -207,60 +212,60 @@ function __scribble_generate_model(_element)
                         _text_effect_flags = 0;
                         _text_scale        = 1;
                         _text_slant        = false;
-                                
+                        
                         _font_data         = __scribble_get_font_data(_text_font);
                         _font_glyphs_map   = _font_data.glyphs_map;
                         _font_glyphs_array = _font_data.glyphs_array;
                         _font_glyphs_min   = _font_data.glyph_min;
                         _font_glyphs_max   = _font_data.glyph_max;
                         _font_msdf_range   = _font_data.msdf_range;
-                                
+                        
                         var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                         _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
                         _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-                                
+                        
                         continue; //Skip the rest of the parser step
                     break;
-                            
+                    
                     case "/font":
                     case "/f":
                         _text_font = _def_font;
-                                
+                        
                         _font_data         = __scribble_get_font_data(_text_font);
                         _font_glyphs_map   = _font_data.glyphs_map;
                         _font_glyphs_array = _font_data.glyphs_array;
                         _font_glyphs_min   = _font_data.glyph_min;
                         _font_glyphs_max   = _font_data.glyph_max;
                         _font_msdf_range   = _font_data.msdf_range;
-                                
+                        
                         var _glyph_array = (_font_glyphs_array == undefined)? _font_glyphs_map[? 32] : _font_glyphs_array[32 - _font_glyphs_min];
                         _font_space_width = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
                         _font_line_height = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-                                
+                        
                         continue; //Skip the rest of the parser step
                     break;
-                            
+                    
                     case "/colour":
                     case "/color":
                     case "/c":
                         _text_colour = _def_colour;
                         continue; //Skip the rest of the parser step
                     break;
-                
+                    
                     case "/scale":
                     case "/s":
                         _text_scale = 1;
                         continue; //Skip the rest of the parser step
                     break;
-                
+                    
                     case "/slant":
                         _text_slant = false;
                         continue; //Skip the rest of the parser step
                     break;
                     #endregion
-                            
+                    
                     #region Page break
-                            
+                    
                     case "/page":
                         _force_newline = true;
                         _char_width = 0;
@@ -270,56 +275,56 @@ function __scribble_generate_model(_element)
                         if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                         //Note that forcing a newline will reset the word height to 0
                     break;
-                            
+                    
                     #endregion
-                            
+                    
                     #region Scale
                     case "scale":
                         if (_command_tag_parameters <= 1)
                         {
-                            show_error("Scribble:\nNot enough parameters for scale tag!", false);
+                            __scribble_error("Not enough parameters for [scale] tag!");
                         }
                         else
                         {
                             var _text_scale = real(_parameters[1]);
                         }
-                                
+                        
                         continue; //Skip the rest of the parser step
                     break;
-                            
+                    
                     case "scaleStack":
                         if (_command_tag_parameters <= 1)
                         {
-                            show_error("Scribble:\nNot enough parameters for scaleStack tag!", false);
+                            __scribble_error("Not enough parameters for [scaleStack] tag!");
                         }
                         else
                         {
                             _text_scale *= real(_parameters[1]);
                         }
-                                
+                        
                         continue; //Skip the rest of the parser step
                     break;
-                            
+                    
                     #endregion
-                            
+                    
                     #region Slant (italics emulation)
                     case "slant":
                         _text_slant = true;
                         continue; //Skip the rest of the parser step
                     break;
                     #endregion
-                            
+                    
                     #region Font Alignment
-                            
+                    
                     case "fa_left":
                         _new_halign = fa_left;
                     break;
-                            
+                    
                     case "fa_center":
                     case "fa_centre":
                         _new_halign = fa_center;
                     break;
-                            
+                    
                     case "fa_right":
                         _new_halign = fa_right;
                     break;
@@ -340,7 +345,7 @@ function __scribble_generate_model(_element)
                     case "js_center":
                     case "js_centre":
                     case "js_right":
-                        show_error("Scribble:\n[js_*] tags have been deprecated. Please use [pin_*]\n ", false);
+                        __scribble_error("[js_*] tags have been deprecated. Please use [pin_*]");
                     break;
                             
                     case "pin_left":
@@ -1077,7 +1082,7 @@ function __scribble_generate_model(_element)
                     }
                     else if (valign != _new_valign)
                     {
-                        show_error("Scribble:\nIn-line vertical alignment cannot be set more than once\n ", false);
+                        __scribble_error("In-line vertical alignment cannot be set more than once");
                     }
                             
                     _new_valign = undefined;
@@ -1954,7 +1959,7 @@ function __scribble_generate_model(_element)
            
     if (SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
     {
-        if (_bezier_do) show_error("Scribble:\nSCRIBBLE_CREATE_GLYPH_LTRB_ARRAY is not compatible with Bezier curves\n ", true);
+        if (_bezier_do) __scribble_error("SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY is not compatible with Bézier curves");
                 
         #region Generate glyph LTRB array if requested
             

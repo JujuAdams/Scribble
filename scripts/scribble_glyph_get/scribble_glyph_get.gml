@@ -27,7 +27,7 @@ function scribble_glyph_get(_font, _character, _property)
 
     if (_glyph_data == undefined)
     {
-        show_error("Scribble:\nCharacter \"" + _character + "\" not found for font \"" + _font + "\"", false);
+        __scribble_error("Character \"", _character, "\" not found for font \"", _font, "\"");
         return undefined;
     }
 

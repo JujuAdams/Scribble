@@ -25,7 +25,7 @@ function __scribble_class_null_model() constructor
     static get_line_count = function() { return 0; }
     static get_ltrb_array = function()
     {
-        if (!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY) show_error("Scribble:\nSCRIBBLE_CREATE_GLYPH_LTRB_ARRAY is not enabled\nPlease set this macro to <true> to use this function\n ", false);
+        if (!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY) __scribble_error("SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY is not enabled\nPlease set this macro to <true> to use this function");
         return [];
     }
 }
