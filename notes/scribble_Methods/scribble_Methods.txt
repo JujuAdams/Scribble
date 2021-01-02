@@ -469,7 +469,7 @@ glyph.
 N.B. Alpha fading is always linear and is not affected by the easing method chosen.
 
 Scribble offers the following easing functions for typewriter behaviour. These are implemented
-using methods found in the widely used [easings.net](https://easings.net/) library.
+using methods found in the widely used easings.net.
 
 |SCRIBBLE_EASE members|
 |---------------------|
@@ -876,8 +876,7 @@ Returns: The text element
 
 Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alpha to 0 will
 prevent the shadow from being drawn at all. If you find that your shadow(s) are being clipped or
-cut off when using large offset values, [regenerate your MSDF fonts](MSDF-Fonts) using a larger
-pxrange.
+cut off when using large offset values, regenerate your MSDF fonts using a larger pxrange.
 
 
 
@@ -892,7 +891,7 @@ Returns: The text element
 
 Sets the colour and thickness for a procedural MSDF border. Setting the thickness to 0 will
 prevent the border from being drawn at all. If you find that your glyphs have filled (or partially
-filled) backgrounds, [regenerate your MSDF fonts](MSDF-Fonts) using a larger pxrange.
+filled) backgrounds, regenerate your MSDF fonts using a larger pxrange.
 
 
 
