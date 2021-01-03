@@ -31,7 +31,15 @@ function scribble_font_add_from_sprite()
 
     if (ds_map_exists(global.__scribble_font_data, _name))
     {
-        __scribble_error("Font \"", _name, "\" has already been defined");
+        if (SCRIBBLE_WARNING_REDEFINITION)
+        {
+            __scribble_error("Font \"", _name, "\" has already been defined\n\n(Set SCRIBBLE_WARNING_REDEFINITION to <false> to turn off this error)");
+        }
+        else
+        {
+            __scribble_trace("Warning! Font \"", _name, "\" has already been defined");
+        }
+        
         return undefined;
     }
 
