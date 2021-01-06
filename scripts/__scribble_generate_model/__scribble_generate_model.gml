@@ -1408,20 +1408,14 @@ function __scribble_generate_model(_element)
                             _line_width = max(_line_width, buffer_peek(_buffer, _tell_b - __SCRIBBLE_GLYPH_BYTE_SIZE + __SCRIBBLE_VERTEX.X, buffer_f32));
                         }
                         
-                        if (_tell_a + __SCRIBBLE_GLYPH_BYTE_SIZE == _tell_b)
-                        {
-                            //If the word wrapped on the first character, don't correct the offset position
-                            var _offset_x = _line_offset_x;
-                        }
-                        else
+                        if (_tell_a + __SCRIBBLE_GLYPH_BYTE_SIZE != _tell_b) //If the word wrapped on the first character, don't correct the offset position
                         {
                             //Take care of the negative sign!
-                            var _offset_x = _data.word_x_offset;
-                            if (_offset_x == undefined) _offset_x = 0;
-                            _offset_x += _line_offset_x;
+                            var _word_offset_x = _data.word_x_offset;
+                            _line_offset_x += (_word_offset_x == undefined)? 0: _word_offset_x;
                         }
                         
-                        if (_offset_x < 0)
+                        if (_line_offset_x < 0)
                         {
                             //Retroactively move the last word to a new line
                             var _tell = _tell_a;
@@ -1431,7 +1425,7 @@ function __scribble_generate_model(_element)
                                 buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) + 1);
                                 
                                 //Adjust glyph position
-                                buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32) + _offset_x);
+                                buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32) + _line_offset_x);
                                 
                                 //If we're using a fixed line height, ensure that the glyph y-position is updated too
                                 if (_line_fixed_height)
