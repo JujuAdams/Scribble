@@ -1845,8 +1845,11 @@ function __scribble_generate_model(_element)
                             var _tell   = _tell_a + __SCRIBBLE_VERTEX.Y;
                             repeat((_tell_b - _tell_a) / __SCRIBBLE_VERTEX.__SIZE)
                             {
+                                var _original_y = buffer_peek(_buffer, _tell, buffer_f32);
+                                if (_original_y == undefined) break; //FIXME - This is not a proper fix!
+                                
                                 //Poke the new value by adding the offset to the old value
-                                buffer_poke(_buffer, _tell, buffer_f32, _line_y + buffer_peek(_buffer, _tell, buffer_f32));
+                                buffer_poke(_buffer, _tell, buffer_f32, _line_y + _original_y);
                                         
                                 //Now jump ahead to the next vertex. This means we're always writing to CENTRE_Y!
                                 _tell += __SCRIBBLE_VERTEX.__SIZE;
