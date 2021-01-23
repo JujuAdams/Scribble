@@ -2,6 +2,9 @@
 
 function scribble_font_add_all()
 {
+    //Ensure we're initialised
+    __scribble_init();
+    
     global.__scribble_autoscanning = true;
     
     var _i = 0;
