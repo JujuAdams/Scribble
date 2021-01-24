@@ -225,6 +225,14 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 		
 		return pages_array[_page].height;
 	}
+	
+	/// @param page
+	static get_page_width = function(_page)
+	{
+		if ((_page == undefined) || (_page < 0)) _page = 0;
+		
+		return pages_array[_page].width;
+	}
     
     static get_wrapped = function()
     {
