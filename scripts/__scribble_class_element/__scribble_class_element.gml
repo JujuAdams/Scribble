@@ -733,6 +733,22 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         return __get_model(true).get_pages();
     }
+	
+	/// @param [page]
+	static get_page_height = function()
+	{
+		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+		
+		return __get_model(true).get_page_height(_page);
+	}
+	
+	/// @param [page]
+	static get_page_width = function()
+	{
+		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+		
+		return __get_model(true).get_page_width(_page);
+	}
     
     static on_last_page = function()
     {
