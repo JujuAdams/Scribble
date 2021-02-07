@@ -57,7 +57,6 @@ function scribble_font_add_msdf(_font, _sprite, _json_name)
     var _msdf_range = _atlas_map[? "distanceRange"];
     
     var _json_line_height = _em_size*_metrics_map[? "lineHeight"];
-    var _ascender_height  = _em_size*_metrics_map[? "ascender"  ];
     
     _font_data.msdf_range = _msdf_range;
     
@@ -100,7 +99,7 @@ function scribble_font_add_msdf(_font, _sprite, _json_name)
         if (_plane_map != undefined)
         {
             var _xoffset  = _em_size*_plane_map[? "left"];
-            var _yoffset  = _ascender_height - _em_size*_plane_map[? "top"]; //So, so weird
+            var _yoffset  = _em_size - _em_size*_plane_map[? "top"]; //So, so weird
             var _xadvance = round(_em_size*_json_glyph_map[? "advance"]); //_w - _msdf_range - round(_em_size*_plane_map[? "left"]);
         }
         else
