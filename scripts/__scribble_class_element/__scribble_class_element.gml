@@ -833,7 +833,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         //Run the garbage collecter
         __scribble_gc_collect();
         
-        return self;
+        return undefined;
     }
     
     static flush = function()
@@ -849,7 +849,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         //Set as flushed
         flushed = true;
         
-        return self;
+        return undefined;
     }
     
      /// @param freeze
@@ -859,7 +859,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         __get_model(true);
         
-        return self;
+        return undefined;
     }
     
     #endregion

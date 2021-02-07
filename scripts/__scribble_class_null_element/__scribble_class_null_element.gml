@@ -94,9 +94,9 @@ function __scribble_class_null_element() constructor
     
     #region Public Methods
     
-    static draw = function(_x, _y) { return self; }
-    static flush = function() { return self; }
-    static build = function(_freeze) { return self; }
+    static draw = function(_x, _y) { return undefined; }
+    static flush = function() { return undefined; }
+    static build = function(_freeze) { return undefined; }
     
     #endregion
 }
