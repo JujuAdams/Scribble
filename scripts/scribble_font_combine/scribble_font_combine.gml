@@ -25,12 +25,48 @@ function scribble_font_combine()
     var _font_data = new __scribble_class_font(_new_font_name, "runtime");
     _font_data.glyphs_map = _glyph_map;
 
+    //Go go backwards so fonts listed first take priority (character from later fonts get overwritten)
+    
+    //Collect MSDF state for the fonts
+    var _any_msdf            = false;
+    var _all_msdf            = true;
+    var _msdf_range          = undefined;
+    var _msdf_range_conflict = false;
+    var _f = 1;
+    repeat(argument_count - 1)
+    {
+        var _src_font_name = argument[_f];
+        var _src_font_data = global.__scribble_font_data[? _src_font_name];
+        
+        if ((_src_font_data.type == "msdf") || (_src_font_data.type == "runtime msdf"))
+        {
+            _any_msdf = true;
+            if ((_msdf_range != undefined) && (_msdf_range != _src_font_data.msdf_range)) _msdf_range_conflict = true;
+            _msdf_range = _src_font_data.msdf_range;
+        }
+        else
+        {
+            _all_msdf = false;
+        }
+        
+        ++_f;
+    }
+    
+    //Handle MSDF behaviour
+    if (_any_msdf)
+    {
+        if (!_all_msdf) __scribble_error("Cannot combine MSDF fonts with other types of fonts");
+        if (_msdf_range_conflict) __scribble_error("Combined MSDF fonts must have the same pxrange");
+        _font_data.type = "runtime msdf";
+        _font_data.msdf_range = _msdf_range;
+    }
+    
     //Calculate font min/max y-values so we can apply a y-offset per font so everything is centred
     var _combined_y_min = 0;
     var _combined_y_max = 0;
     var _font_y_min_array = array_create(argument_count - 1, 0);
     var _font_y_max_array = array_create(argument_count - 1, 0);
-
+    
     //Go go backwards so fonts listed first take priority (character from later fonts get overwritten)
     var _f = 1;
     repeat(argument_count - 1)
