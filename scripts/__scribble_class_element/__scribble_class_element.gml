@@ -935,6 +935,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (tw_do) //No fade in/out set
         {
+            var _scan_a = 0;
+            var _scan_b = 0;
+            
             var _typewriter_speed = tw_anim_speed*tw_inline_speed*SCRIBBLE_TICK_SIZE;
             var _head_speed       = _typewriter_speed;
             var _skipping         = (tw_anim_speed >= SCRIBBLE_SKIP_SPEED_THRESHOLD);
@@ -1101,28 +1104,34 @@ function __scribble_class_element(_string, _unique_id) constructor
                 _i += 2;
             }
             
-            if (tw_in && (_head_speed > 0) && (floor(_scan_b) > floor(_scan_a)))
+            //Execute per character code if...
+            if (tw_in                             //We're fading in
+            && (_head_speed > 0)                  //If we're going somewhere
+            && (floor(_scan_b) > floor(_scan_a))) //If a new character has been revealed
             {
                 #region Play a sound effect as the text is revealed
                 
-                var _sound_array = tw_sound_array;
-                if (is_array(_sound_array) && (array_length(_sound_array) > 0))
+                if (floor(_scan_b) < _typewriter_count) //Don't play audio if the character we've revealed is outside the limits of this page's string
                 {
-                    var _play_sound = false;
-                    if (tw_sound_per_char)
+                    var _sound_array = tw_sound_array;
+                    if (is_array(_sound_array) && (array_length(_sound_array) > 0))
                     {
-                        _play_sound = true;
-                    }
-                    else if (current_time >= tw_sound_finish_time) 
-                    {
-                        _play_sound = true;
-                    }
-                    
-                    if (_play_sound)
-                    {
-                        var _inst = audio_play_sound(_sound_array[floor(__scribble_random()*array_length(_sound_array))], 0, false);
-                        audio_sound_pitch(_inst, lerp(tw_sound_pitch_min, tw_sound_pitch_max, __scribble_random()));
-                        tw_sound_finish_time = current_time + 1000*audio_sound_length(_inst) - tw_sound_overlap;
+                        var _play_sound = false;
+                        if (tw_sound_per_char)
+                        {
+                            _play_sound = true;
+                        }
+                        else if (current_time >= tw_sound_finish_time) 
+                        {
+                            _play_sound = true;
+                        }
+                        
+                        if (_play_sound)
+                        {
+                            var _inst = audio_play_sound(_sound_array[floor(__scribble_random()*array_length(_sound_array))], 0, false);
+                            audio_sound_pitch(_inst, lerp(tw_sound_pitch_min, tw_sound_pitch_max, __scribble_random()));
+                            tw_sound_finish_time = current_time + 1000*audio_sound_length(_inst) - tw_sound_overlap;
+                        }
                     }
                 }
                 
