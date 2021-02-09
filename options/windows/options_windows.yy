@@ -1,10 +1,10 @@
 {
   "option_windows_display_name": "Scribble",
   "option_windows_executable_name": "${project_name}",
-  "option_windows_version": "7.0.3.0",
+  "option_windows_version": "7.1.0.0",
   "option_windows_company_info": "@jujuadams",
   "option_windows_product_info": "Scribble",
-  "option_windows_copyright_info": "@jujuadams (c) 2020",
+  "option_windows_copyright_info": "@jujuadams (c) 2021",
   "option_windows_description_info": "Scribble",
   "option_windows_display_cursor": true,
   "option_windows_icon": "${base_options_dir}/windows/icons/icon.ico",
