@@ -159,6 +159,7 @@ function __scribble_generate_model(_element)
     var _force_newpage          =  false;
     var _char_width             =  0;
     var _add_character          =  true;
+    var _original_char_x_offset =  undefined;
     
     //Write the string into a buffer for faster reading
     var _string_buffer = global.__scribble_buffer;
@@ -184,6 +185,8 @@ function __scribble_generate_model(_element)
         
         if (_command_tag_start >= 0) //If we're in a command tag
         {
+            #region Command tags
+            
             if (_character_code == SCRIBBLE_COMMAND_TAG_CLOSE) //If we've hit a command tag close character (usually ])
             {
                 _add_character = false;
@@ -561,6 +564,11 @@ function __scribble_generate_model(_element)
                                 
                         var _surface_x = _text_x;
                         var _surface_y = _text_y - (_surface_height div 2);
+                        
+                        if (_original_char_x_offset == undefined)
+                        {
+                            _original_char_x_offset = 0;
+                        }
                                                         
                         var _packed_indexes = characters*__SCRIBBLE_MAX_LINES + _page_data.lines; //TODO - Optimise
                         _char_width  = _surface_width;
@@ -619,6 +627,18 @@ function __scribble_generate_model(_element)
                         {
                             _glyph_texture = _surface_texture;
                             var _glyph_buffer = _vbuff_data.buffer;
+                            
+                            if (_vbuff_data.word_x_offset == undefined)
+                            {
+                                if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE)
+                                {
+                                    _vbuff_data.word_x_offset = _surface_x - _original_char_x_offset;
+                                }
+                                else
+                                {
+                                    _vbuff_data.word_x_offset = _surface_x;
+                                }
+                            }
                         }
                                 
                         //Find the UVs and position of the sprite quad
@@ -755,7 +775,12 @@ function __scribble_generate_model(_element)
                                                 var _sprite_x = _text_x;
                                                 var _sprite_y = _text_y - (_sprite_height div 2);
                                             }
-                                                    
+                                            
+                                            if (_original_char_x_offset == undefined)
+                                            {
+                                                _original_char_x_offset = 0;
+                                            }
+                                            
                                             var _packed_indexes = characters*__SCRIBBLE_MAX_LINES + _page_data.lines; //TODO - Optimise
                                             _char_width  = _sprite_width;
                                             if (!_line_fixed_height) _line_height = max(_line_height, _sprite_height); //Change our line height if it's not fixed
@@ -872,6 +897,18 @@ function __scribble_generate_model(_element)
                                                     _glyph_texture = _sprite_texture;
                                                     _vbuff_data = _page_data.__find_vertex_buffer(_sprite_texture, false);
                                                     var _glyph_buffer = _vbuff_data.buffer;
+                                                    
+                                                    if (_vbuff_data.word_x_offset == undefined)
+                                                    {
+                                                        if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE)
+                                                        {
+                                                            _vbuff_data.word_x_offset = _sprite_x - _original_char_x_offset;
+                                                        }
+                                                        else
+                                                        {
+                                                            _vbuff_data.word_x_offset = _sprite_x;
+                                                        }
+                                                    }
                                                 }
                                                             
                                                 //Find the UVs and position of the sprite quad
@@ -1106,6 +1143,8 @@ function __scribble_generate_model(_element)
                 //If we're in a command tag and we've not read a close character or an argument delimiter, skip everything else
                 continue;
             }
+            
+            #endregion
         }
         else if ((_character_code == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignore_commands) //If we've hit a command tag argument delimiter character (usually [)
         {
@@ -1119,12 +1158,14 @@ function __scribble_generate_model(_element)
                 || (SCRIBBLE_HASH_NEWLINE && (_character_code == 35)) //If we've hit a hash, and hash newlines are on
                 || ((_character_code == 13) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) != 10))) //If this is a line feed but not followed by a newline... this fixes goofy Windows Notepad isses
         {
+            #region Newlines
+            
             _force_newline = true;
             _char_width    = 0;
             _line_width    = max(_line_width, _text_x);
             if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
             //Note that forcing a newline will reset the word height to 0
-                
+            
             if (global.__scribble_character_delay)
             {
                 var _delay = global.__scribble_character_delay_map[? _character_code];
@@ -1132,9 +1173,13 @@ function __scribble_generate_model(_element)
             }
                 
             _add_character = false;
+            
+            #endregion
         }
         else if (_character_code == 32) //If we've hit a space
         {
+            #region Space
+            
             //Grab this characer's width/height
             _char_width     = _font_space_width*_text_scale;
             _line_has_space = true;
@@ -1146,7 +1191,7 @@ function __scribble_generate_model(_element)
             
             //Record the first character in this word
             _word_start_char = characters;
-        
+            
             if (SCRIBBLE_CREATE_CHARACTER_ARRAY) character_array[@ characters] = _character_code;
             ++characters;
                 
@@ -1155,14 +1200,16 @@ function __scribble_generate_model(_element)
                 var _delay = global.__scribble_character_delay_map[? _character_code];
                 if ((_delay != undefined) && (_delay > 0)) __new_event(characters, "delay", [_delay]);
             }
-                
+            
             _add_character = false;
+            
+            #endregion
         }
         else if (_character_code < 32) //If this character code is below a space then ignore it
         {
             continue;
         }
-    
+        
         if (_add_character) //If this character is literally any other character at all
         {
             #region Decode UTF8
@@ -1187,7 +1234,7 @@ function __scribble_generate_model(_element)
             }
         
             #endregion
-        
+            
             #region Find glyph data
         
             if (_font_glyphs_array == undefined)
@@ -1216,7 +1263,7 @@ function __scribble_generate_model(_element)
             }
         
             #endregion
-        
+            
             if (_glyph_array == undefined)
             {
                 if (SCRIBBLE_VERBOSE) __scribble_trace("scribble_cache() couldn't find glyph data for character code " + string(_character_code) + " (" + chr(_character_code) + ") in font \"" + string(_text_font) + "\"");
@@ -1254,13 +1301,26 @@ function __scribble_generate_model(_element)
                 }
             
                 #endregion
-            
+                
                 #region Add glyph to buffer
             
                 var _quad_l = _glyph_array[SCRIBBLE_GLYPH.X_OFFSET]*_text_scale;
-                if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE && (_vbuff_data.word_x_offset == undefined))
+                
+                if (_original_char_x_offset == undefined)
                 {
-                    _vbuff_data.word_x_offset = _quad_l;
+                    _original_char_x_offset = _quad_l;
+                }
+                
+                if (_vbuff_data.word_x_offset == undefined)
+                {
+                    if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE)
+                    {
+                        _vbuff_data.word_x_offset = _text_x + _quad_l - _original_char_x_offset;
+                    }
+                    else
+                    {
+                        _vbuff_data.word_x_offset = _text_x;
+                    }
                 }
             
                     _quad_l += _text_x;
@@ -1312,57 +1372,33 @@ function __scribble_generate_model(_element)
                 buffer_write(_glyph_buffer, buffer_f32, _quad_r + _slant_offset); buffer_write(_glyph_buffer, buffer_f32, _quad_t); buffer_write(_glyph_buffer, buffer_f32, _packed_indexes);    buffer_write(_glyph_buffer, buffer_f32, _packed_delta_rst); buffer_write(_glyph_buffer, buffer_f32, 0); buffer_write(_glyph_buffer, buffer_f32, _text_effect_flags);    buffer_write(_glyph_buffer, buffer_u32, _colour);    buffer_write(_glyph_buffer, buffer_f32, _quad_u1); buffer_write(_glyph_buffer, buffer_f32, _quad_v0);
                         
                 #endregion
-                        
+                
                 if (SCRIBBLE_CREATE_CHARACTER_ARRAY) character_array[@ characters] = _character_code;
                 ++characters;
-                        
+                
                 _char_width = _glyph_array[SCRIBBLE_GLYPH.SEPARATION]*_text_scale;
             }
-        
+            
             //Choose the height of a space for the character's height
             if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
             _word_height = max(_word_height, _font_line_height*_text_scale); //Update the word height
-                
+            
             if (global.__scribble_character_delay)
             {
                 var _delay = global.__scribble_character_delay_map[? _character_code];
                 if ((_delay != undefined) && (_delay > 0)) __new_event(characters, "delay", [_delay]);
             }
         }
-    
-    
-    
+        
+        
+        
         #region Handle new line creation
-            
+        
         if (_force_newline
         || ((_char_width + _text_x > _max_width) && (_max_width >= 0) && (_character_code > 32)))
         {
-            var _line_offset_x = -_text_x;
-            
             //If we're forcing a newline then we want to reset the word height too
             if (_force_newline) _word_height = 0;
-            
-            if (!_force_newline)
-            {
-                var _v = 0;
-                repeat(array_length(_page_vbuffs_array))
-                {
-                    var _data = _page_vbuffs_array[_v];
-                    
-                    //If the line has no space character on it then we know that entire word is longer than the textbox max width
-                    //We fall back to use the character start position for this vertex buffer instead
-                    var _tell = _line_has_space? _data.word_start_tell : _data.char_start_tell;
-                    
-                    //If we've added anything to this buffer then we need to figure out how far we need to offset it on the x-axis
-                    var _buffer = _data.buffer;
-                    if (_tell < buffer_tell(_buffer))
-                    {
-                        _line_offset_x = max(_line_offset_x, -buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32));
-                    }
-                    
-                    ++_v;
-                }
-            }
             
             var _v = 0;
             repeat(array_length(_page_vbuffs_array))
@@ -1375,6 +1411,7 @@ function __scribble_generate_model(_element)
                 if (_force_newline)
                 {
                     array_push(_vbuff_line_start_array, buffer_tell(_buffer));
+                    _line_offset_x = -_text_x;
                 }
                 else
                 {
@@ -1408,20 +1445,8 @@ function __scribble_generate_model(_element)
                             _line_width = max(_line_width, buffer_peek(_buffer, _tell_b - __SCRIBBLE_GLYPH_BYTE_SIZE + __SCRIBBLE_VERTEX.X, buffer_f32));
                         }
                         
-                        if (_tell_a + __SCRIBBLE_GLYPH_BYTE_SIZE == _tell_b)
-                        {
-                            //If the word wrapped on the first character, don't correct the offset position
-                            var _offset_x = _line_offset_x;
-                        }
-                        else
-                        {
-                            //Take care of the negative sign!
-                            var _offset_x = _data.word_x_offset;
-                            if (_offset_x == undefined) _offset_x = 0;
-                            _offset_x += _line_offset_x;
-                        }
-                        
-                        if (_offset_x < 0)
+                        var _line_offset_x = (_data.word_x_offset == undefined)? 0 : (-_data.word_x_offset);
+                        if (_line_offset_x < 0)
                         {
                             //Retroactively move the last word to a new line
                             var _tell = _tell_a;
@@ -1431,7 +1456,7 @@ function __scribble_generate_model(_element)
                                 buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.PACKED_INDEXES, buffer_f32) + 1);
                                 
                                 //Adjust glyph position
-                                buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32) + _offset_x);
+                                buffer_poke(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32, buffer_peek(_buffer, _tell + __SCRIBBLE_VERTEX.X, buffer_f32) + _line_offset_x);
                                 
                                 //If we're using a fixed line height, ensure that the glyph y-position is updated too
                                 if (_line_fixed_height)

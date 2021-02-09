@@ -12,9 +12,20 @@
 
 function scribble_font_add_msdf(_font, _sprite, _json_name)
 {
+    //Ensure we're initialised
+    __scribble_init();
+    
     if (ds_map_exists(global.__scribble_font_data, _font))
     {
-        __scribble_error("Font \"", _font, "\" has already been defined");
+        if (SCRIBBLE_WARNING_REDEFINITION)
+        {
+            __scribble_error("Font \"", _font, "\" has already been defined\n\n(Set SCRIBBLE_WARNING_REDEFINITION to <false> to turn off this error)");
+        }
+        else
+        {
+            __scribble_trace("Warning! Font \"", _font, "\" has already been defined");
+        }
+        
         return undefined;
     }
     
@@ -46,7 +57,6 @@ function scribble_font_add_msdf(_font, _sprite, _json_name)
     var _msdf_range = _atlas_map[? "distanceRange"];
     
     var _json_line_height = _em_size*_metrics_map[? "lineHeight"];
-    var _ascender_height  = _em_size*_metrics_map[? "ascender"  ];
     
     _font_data.msdf_range = _msdf_range;
     
@@ -89,7 +99,7 @@ function scribble_font_add_msdf(_font, _sprite, _json_name)
         if (_plane_map != undefined)
         {
             var _xoffset  = _em_size*_plane_map[? "left"];
-            var _yoffset  = _ascender_height - _em_size*_plane_map[? "top"]; //So, so weird
+            var _yoffset  = _em_size - _em_size*_plane_map[? "top"]; //So, so weird
             var _xadvance = round(_em_size*_json_glyph_map[? "advance"]); //_w - _msdf_range - round(_em_size*_plane_map[? "left"]);
         }
         else

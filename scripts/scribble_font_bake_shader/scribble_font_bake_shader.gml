@@ -51,7 +51,7 @@ function scribble_font_bake_shader()
         return undefined;
     }
     
-    if (_src_font_data.type == "msdf")
+    if ((_src_font_data.type == "msdf") || (_src_font_data.type == "runtime msdf"))
     {
     	__scribble_error("Source font cannot be an MSDF font");
     	return undefined;

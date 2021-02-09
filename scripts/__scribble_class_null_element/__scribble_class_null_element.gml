@@ -80,6 +80,8 @@ function __scribble_class_null_element() constructor
     static get_height = function() { return 0;}
     static get_page = function() { return 0; }
     static get_pages = function() { return 0; }
+	static get_page_height = function() { return 0; }
+	static get_page_width = function() { return 0; }
     static on_last_page = function() { return true; }
     static get_typewriter_state = function() { return 1.0; }
     static get_typewriter_paused = function() { return false; }
@@ -92,9 +94,9 @@ function __scribble_class_null_element() constructor
     
     #region Public Methods
     
-    static draw = function(_x, _y) { return self; }
-    static flush = function() { return self; }
-    static build = function(_freeze) { return self; }
+    static draw = function(_x, _y) { return undefined; }
+    static flush = function() { return undefined; }
+    static build = function(_freeze) { return undefined; }
     
     #endregion
 }
