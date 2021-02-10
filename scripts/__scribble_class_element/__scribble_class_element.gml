@@ -362,10 +362,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         var _refresh = !tw_do || !tw_in;
         
+        //Only set the typewriter speed if we're not skipping
+        if ((tw_anim_speed < SCRIBBLE_SKIP_SPEED_THRESHOLD) || _refresh) tw_anim_speed = _speed;
+        
         tw_do              = true;
         tw_in              = true;
         tw_backwards       = false;
-        tw_anim_speed      = _speed;
         tw_anim_smoothness = _smoothness;
         
         if (_refresh) __refresh_typewriter_for_page();
@@ -383,10 +385,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         var _refresh = !tw_do || tw_in;
         
+        //Only set the typewriter speed if we're not skipping
+        if ((tw_anim_speed < SCRIBBLE_SKIP_SPEED_THRESHOLD) || _refresh) tw_anim_speed = _speed;
+        
         tw_do              = true;
         tw_in              = false;
         tw_backwards       = _backwards;
-        tw_anim_speed      = _speed;
         tw_anim_smoothness = _smoothness;
         
         if (_refresh) __refresh_typewriter_for_page();
