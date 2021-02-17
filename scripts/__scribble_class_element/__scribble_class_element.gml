@@ -24,6 +24,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     flushed = false;
     
+    model_cache_name_dirty = true;
     model_cache_name = undefined;
     model = undefined;
     
@@ -151,7 +152,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (is_string(_font_name))
         {
-            starting_font = _font_name;
+            if (_font_name != starting_font)
+            {
+                model_cache_name_dirty = true;
+                starting_font = _font_name;
+            }
         }
         else if (!is_undefined(_font_name))
         {
@@ -169,7 +174,14 @@ function __scribble_class_element(_string, _unique_id) constructor
                 }
             }
         
-            if ((_colour != undefined) && (_colour >= 0)) starting_colour = _colour;
+            if ((_colour != undefined) && (_colour >= 0))
+            {
+                if (_colour != starting_colour)
+                {
+                    model_cache_name_dirty = true;
+                    starting_colour = _colour;
+                }
+            }
         }
         
         return self;
@@ -179,8 +191,18 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param valign
     static align = function(_halign, _valign)
     {
-        starting_halign = _halign;
-        starting_valign = _valign;
+        if (_halign != starting_halign)
+        {
+            model_cache_name_dirty = true;
+            starting_halign = _halign;
+        }
+        
+        if (_valign != starting_valign)
+        {
+            model_cache_name_dirty = true;
+            starting_valign = _valign;
+        }
+        
         return self;
     }
     
@@ -228,10 +250,23 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [characterWrap]
     static wrap = function()
     {
-        wrap_max_width  = argument[0];
-        wrap_max_height = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
-        wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
-        wrap_no_pages   = false;
+        var _wrap_max_width  = argument[0];
+        var _wrap_max_height = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
+        var _wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+        var _wrap_no_pages   = false;
+        
+        if ((_wrap_max_width  != wrap_max_width)
+        ||  (_wrap_max_height != wrap_max_height)
+        ||  (_wrap_per_char   != wrap_per_char)
+        ||  (_wrap_no_pages   != wrap_no_pages))
+        {
+            model_cache_name_dirty = true;
+            wrap_max_width  = _wrap_max_width;
+            wrap_max_height = _wrap_max_height;
+            wrap_per_char   = _wrap_per_char;
+            wrap_no_pages   = _wrap_no_pages;
+        }
+        
         return self;
     }
     
@@ -240,10 +275,23 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [characterWrap]
     static fit_to_box = function()
     {
-        wrap_max_width  = argument[0];
-        wrap_max_height = argument[1];
-        wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
-        wrap_no_pages   = true;
+        var _wrap_max_width  = argument[0];
+        var _wrap_max_height = argument[1];
+        var _wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+        var _wrap_no_pages   = true;
+        
+        if ((_wrap_max_width  != wrap_max_width)
+        ||  (_wrap_max_height != wrap_max_height)
+        ||  (_wrap_per_char   != wrap_per_char)
+        ||  (_wrap_no_pages   != wrap_no_pages))
+        {
+            model_cache_name_dirty = true;
+            wrap_max_width  = _wrap_max_width;
+            wrap_max_height = _wrap_max_height;
+            wrap_per_char   = _wrap_per_char;
+            wrap_no_pages   = _wrap_no_pages;
+        }
+        
         return self;
     }
     
@@ -251,8 +299,18 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param max
     static line_height = function(_min, _max)
     {
-        line_height_min = _min;
-        line_height_max = _max;
+        if (_min != line_height_min)
+        {
+            model_cache_name_dirty = true;
+            line_height_min = _min;
+        }
+        
+        if (_max != line_height_max)
+        {
+            model_cache_name_dirty = true;
+            line_height_max = _max;
+        }
+        
         return self;
     }
     
@@ -307,7 +365,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param state
     static ignore_command_tags = function(_state)
     {
-        __ignore_command_tags = _state;
+        if (__ignore_command_tags != _state)
+        {
+            model_cache_name_dirty = true;
+            __ignore_command_tags = _state;
+        }
+        
         return self;
     }
     
@@ -323,17 +386,23 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (argument_count <= 0)
         {
-            bezier_array = array_create(6, 0.0);
+            var _bezier_array = array_create(6, 0.0);
         }
         else if (argument_count == 8)
         {
-            bezier_array = [argument[2] - argument[0], argument[3] - argument[1],
-                            argument[4] - argument[0], argument[5] - argument[1],
-                            argument[6] - argument[0], argument[7] - argument[1]];
+            var _bezier_array = [argument[2] - argument[0], argument[3] - argument[1],
+                                 argument[4] - argument[0], argument[5] - argument[1],
+                                 argument[6] - argument[0], argument[7] - argument[1]];
         }
         else
         {
             __scribble_error("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
+        }
+        
+        if (!array_equals(bezier_array, _bezier_array))
+        {
+            model_cache_name_dirty = true;
+            bezier_array = _bezier_array;
         }
         
         return self;
@@ -896,20 +965,23 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         else
         {
-            //TODO - Optimise
-            model_cache_name = text + ":" +
-                               string(starting_font  ) + ":" +
-                               string(starting_colour) + ":" +
-                               string(starting_halign) + ":" +
-                               string(starting_valign) + ":" +
-                               string(line_height_min) + ":" +
-                               string(line_height_max) + ":" +
-                               string(wrap_max_width ) + ":" +
-                               string(wrap_max_height) + ":" +
-                               string(wrap_per_char  ) + ":" +
-                               string(wrap_no_pages  ) + ":" +
-                               string(bezier_array   ) + ":" +
-                               string(__ignore_command_tags);
+            if (model_cache_name_dirty)
+            {
+                model_cache_name_dirty = false;
+                model_cache_name = text + ":" +
+                                   string(starting_font  ) + ":" +
+                                   string(starting_colour) + ":" +
+                                   string(starting_halign) + ":" +
+                                   string(starting_valign) + ":" +
+                                   string(line_height_min) + ":" +
+                                   string(line_height_max) + ":" +
+                                   string(wrap_max_width ) + ":" +
+                                   string(wrap_max_height) + ":" +
+                                   string(wrap_per_char  ) + ":" +
+                                   string(wrap_no_pages  ) + ":" +
+                                   string(bezier_array   ) + ":" +
+                                   string(__ignore_command_tags);
+            }
             
             var _weak = global.__scribble_mcache_dict[? model_cache_name];
             if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.flushed)
