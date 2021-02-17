@@ -27,6 +27,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     last_drawn = current_time;
     flushed    = false;
     
+    uses_standard_font = false;
+    uses_msdf_font     = false;
+    
     characters = 0;
     lines      = 0;
     pages      = 0;

@@ -99,10 +99,51 @@ function __scribble_class_page() constructor
     
     static __submit = function(_element)
     {
+        var _shader = undefined;
+        var _i = 0;
+        repeat(array_length(vertex_buffer_array))
+        {
+            var _vertex_buffer = vertex_buffer_array[_i];
+            
+            if (_vertex_buffer.shader != _shader)
+            {
+                _shader = _vertex_buffer.shader;
+                shader_set(_shader);
+            }
+            
+            if (_shader == __shd_scribble_msdf)
+            {
+                //Force texture filtering when using MSDF fonts
+                var _old_tex_filter = gpu_get_tex_filter();
+                gpu_set_tex_filter(true);
+                
+                //Set shader uniforms unique to the MSDF shader
+                shader_set_uniform_f(global.__scribble_msdf_u_vTexel, _vertex_buffer.texel_width, _vertex_buffer.texel_height);
+                shader_set_uniform_f(global.__scribble_msdf_u_fMSDFRange, _element.msdf_feather_thickness*_vertex_buffer.msdf_range);
+                
+                _vertex_buffer.__submit();
+                
+                //Reset the texture filtering
+                gpu_set_tex_filter(_old_tex_filter);
+            }
+            else
+            {
+                //Other shaders don't need extra work
+                _vertex_buffer.__submit();
+            }
+            
+            ++_i;
+        }
+        
+        shader_reset();
+        
+        
+        exit;
+        
+        
+        
         var _tw_method = 0;
         if (_element.tw_do) _tw_method = _element.tw_in? 1 : -1;
-        
-        var _shader = undefined;
         
         //TODO - Calculate this somewhere else
         var _tw_method   = 0;
@@ -113,6 +154,7 @@ function __scribble_class_page() constructor
             if (!_element.tw_in) _tw_method += SCRIBBLE_EASE.__SIZE;
             if (_element.tw_backwards) _tw_char_max = 1 + last_char - start_char;
         }
+        
         
         var _i = 0;
         repeat(array_length(vertex_buffer_array))

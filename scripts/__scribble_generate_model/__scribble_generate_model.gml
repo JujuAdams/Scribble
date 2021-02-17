@@ -1809,7 +1809,16 @@ function __scribble_generate_model(_element)
         repeat(array_length(_page_vbuffs_array))
         {
             var _data = _page_vbuffs_array[_v];
-                    
+            
+            if (_data.shader == __shd_scribble)
+            {
+                uses_standard_font = true;
+            }
+            else if (_data.shader == __shd_scribble_msdf)
+            {
+                uses_msdf_font = true;
+            }
+            
             var _vbuff_line_start_array = _data.line_start_array;
             var _buffer                 = _data.buffer;
                     
