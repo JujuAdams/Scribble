@@ -4,6 +4,9 @@ function __scribble_class_null_model() constructor
     flushed = false;
     valign = fa_top;
     
+    uses_standard_font = false;
+    uses_msdf_font     = false;
+    
     static draw = function(_x, _y, _element) { return undefined; }
     static flush = function() { return undefined; }
     static reset = function() { return undefined; }
