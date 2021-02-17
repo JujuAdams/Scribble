@@ -49,7 +49,8 @@ global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 
 global.__scribble_character_delay     = false;
 global.__scribble_character_delay_map = ds_map_create();
 
-global.__scribble_gc_collect_time = current_time; //FIXME - Forcing gc_collect() every few seconds as large structs aren't being GC'd properly (2020-12-09, GMS2.3.1 Stable)
+global.__scribble_gc_collect_time  = current_time; //FIXME - Forcing gc_collect() every few seconds as large structs aren't being GC'd properly (2020-12-09, GMS2.3.1 Stable)
+global.__scribble_cache_check_time = current_time;
 
 global.__scribble_mcache_dict       = ds_map_create(); //FIXME - Using a ds_map here as structs are currently leaking memory (2020-12-09, GMS2.3.1 Stable)
 global.__scribble_mcache_name_list  = ds_list_create();
