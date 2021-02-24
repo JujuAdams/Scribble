@@ -1438,8 +1438,11 @@ function __scribble_generate_model(_element)
                             _data.char_start_tell = _tell_b;
                             _data.word_start_tell = _tell_b;
                             
-                            //Update the width of the line based on the right-most edge of the last character
-                            _line_width = max(_line_width, buffer_peek(_buffer, _tell_b - __SCRIBBLE_GLYPH_BYTE_SIZE + __SCRIBBLE_VERTEX.X, buffer_f32));
+                            //Set the word offset to the lefthand side of the character
+                            _word_x_offset = buffer_peek(_buffer, _tell_b - __SCRIBBLE_GLYPH_BYTE_SIZE + __SCRIBBLE_VERTEX.X, buffer_f32);
+                            
+                            //Update the width of the line too
+                            _line_width = max(_line_width, _word_x_offset);
                         }
                         
                         var _line_offset_x = (_word_x_offset == undefined)? 0 : (-_word_x_offset);
