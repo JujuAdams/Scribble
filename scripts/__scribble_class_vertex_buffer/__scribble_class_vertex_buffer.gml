@@ -12,7 +12,7 @@ function __scribble_class_vertex_buffer(_texture, _for_text) constructor
     vertex_buffer   = undefined;
     char_start_tell = 0;
     word_start_tell = 0;
-    word_x_offset   = 0;
+    word_x_offset   = undefined;
     msdf_range      = undefined;
     
     static __clean_up = function(_destroy_buffer)
