@@ -757,7 +757,7 @@ function __scribble_generate_model(_element)
                                         if (asset_get_type(_command_name) == asset_sprite)
                                         {
                                             #region Write sprites
-                                                    
+                                            
                                             _line_width = max(_line_width, _text_x);
                                                     
                                             var _sprite_index = asset_get_index(_command_name);
