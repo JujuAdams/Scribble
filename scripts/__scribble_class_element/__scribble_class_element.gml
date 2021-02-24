@@ -192,6 +192,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param valign
     static align = function(_halign, _valign)
     {
+        if (_halign == "pin_left"  ) _halign = __SCRIBBLE_PIN_LEFT;
+        if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
+        if (_halign == "pin_center") _halign = __SCRIBBLE_PIN_CENTRE;
+        if (_halign == "pin_right" ) _halign = __SCRIBBLE_PIN_RIGHT;
+        
         if (_halign != starting_halign)
         {
             model_cache_name_dirty = true;
