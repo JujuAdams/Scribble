@@ -62,15 +62,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     bezier_array = array_create(6, 0.0);
     
-    tw_window        = 0;
-    tw_window_array  = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
-    tw_do            = false;
-    tw_in            = true;
-    tw_backwards     = false;
-    tw_function      = undefined;
-    tw_paused        = false;
-    tw_delay_paused  = false;
-    tw_delay_end     = -1;
+    tw_window       = 0;
+    tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
+    tw_do           = false;
+    tw_in           = true;
+    tw_skip         = false;
+    tw_backwards    = false;
+    tw_function     = undefined;
+    tw_paused       = false;
+    tw_delay_paused = false;
+    tw_delay_end    = -1;
     
     tw_event_previous       = -1;
     tw_event_char_previous  = -1;
@@ -429,17 +430,15 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param smoothness
     static typewriter_in = function(_speed, _smoothness)
     {
-        var _refresh = !tw_do || !tw_in;
-        
-        //Only set the typewriter speed if we're not skipping
-        if ((tw_anim_speed < SCRIBBLE_SKIP_SPEED_THRESHOLD) || _refresh) tw_anim_speed = _speed;
-        
         tw_do              = true;
         tw_in              = true;
         tw_backwards       = false;
+        tw_anim_speed      = _speed;
         tw_anim_smoothness = _smoothness;
         
-        if (_refresh) __refresh_typewriter_for_page();
+        if (!tw_do || !tw_in) __refresh_typewriter_for_page();
+        if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) typewriter_skip();
+        
         return self;
     }
     
@@ -452,23 +451,21 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _smoothness = argument[1];
         var _backwards  = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
         
-        var _refresh = !tw_do || tw_in;
-        
-        //Only set the typewriter speed if we're not skipping
-        if ((tw_anim_speed < SCRIBBLE_SKIP_SPEED_THRESHOLD) || _refresh) tw_anim_speed = _speed;
-        
         tw_do              = true;
         tw_in              = false;
         tw_backwards       = _backwards;
+        tw_anim_speed      = _speed;
         tw_anim_smoothness = _smoothness;
         
-        if (_refresh) __refresh_typewriter_for_page();
+        if (!tw_do || tw_in) __refresh_typewriter_for_page();
+        if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) typewriter_skip();
+        
         return self;
     }
     
     static typewriter_skip = function()
     {
-        tw_anim_speed = SCRIBBLE_SKIP_SPEED_THRESHOLD;
+        tw_skip = true;
         return self;
     }
     
@@ -1051,6 +1048,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - tw_anim_smoothness);
         tw_window_array[@ 0] += tw_anim_smoothness;
         
+        tw_skip = false;
+        
         if (tw_in)
         {
             tw_event_previous       = _page_data.start_event - 1;
@@ -1116,9 +1115,9 @@ function __scribble_class_element(_string, _unique_id) constructor
             var _scan_a = 0;
             var _scan_b = 0;
             
-            var _typewriter_speed = tw_anim_speed*tw_inline_speed*SCRIBBLE_TICK_SIZE;
+            var _skipping         = tw_skip;
+            var _typewriter_speed = _skipping? 9999 : (tw_anim_speed*tw_inline_speed*SCRIBBLE_TICK_SIZE);
             var _head_speed       = _typewriter_speed;
-            var _skipping         = (tw_anim_speed >= SCRIBBLE_SKIP_SPEED_THRESHOLD);
             
             var _typewriter_head_pos = tw_window_array[tw_window];
             
