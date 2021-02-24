@@ -375,7 +375,6 @@ function __scribble_generate_model(_element)
                     case "&nbsp;":
                         //Grab this characer's width/height
                         _char_width = _font_space_width*_text_scale;
-                        _line_width = max(_line_width, _text_x);
                         if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                         _word_height = max(_word_height, _font_line_height*_text_scale); //Update the word height
                                 
@@ -557,9 +556,7 @@ function __scribble_generate_model(_element)
                         #region Write surfaces
                                 
                         var _surface = real(_parameters[1]);
-                                
-                        _line_width = max(_line_width, _text_x);
-                                
+                        
                         var _surface_width  = _text_scale*surface_get_width( _surface);
                         var _surface_height = _text_scale*surface_get_height(_surface);
                                 
@@ -758,9 +755,7 @@ function __scribble_generate_model(_element)
                                         if (asset_get_type(_command_name) == asset_sprite)
                                         {
                                             #region Write sprites
-                                            
-                                            _line_width = max(_line_width, _text_x);
-                                                    
+                                                 
                                             var _sprite_index = asset_get_index(_command_name);
                                             var _sprite_width  = _text_scale*sprite_get_width(_sprite_index);
                                             var _sprite_height = _text_scale*sprite_get_height(_sprite_index);
