@@ -894,6 +894,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (current_time - last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
         {
             animation_time += animation_tick_speed__*SCRIBBLE_TICK_SIZE;
+            if (SCRIBBLE_SAFELY_WRAP_TIME) animation_time = animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
             if (tw_do) __update_typewriter(); //Also update the typewriter too
         }
         
