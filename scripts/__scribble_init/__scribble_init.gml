@@ -255,7 +255,7 @@ function __scribble_array_find_index(_array, _value)
 #region Internal Macro Definitions
 
 // @jujuadams
-#macro __SCRIBBLE_VERSION  "7.1.1pre001"
+#macro __SCRIBBLE_VERSION  "7.1.1pre002"
 #macro __SCRIBBLE_DATE     "2021-02-24"
 #macro __SCRIBBLE_DEBUG    false
 
