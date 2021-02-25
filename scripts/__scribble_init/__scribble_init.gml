@@ -45,7 +45,7 @@ global.__scribble_effects             = ds_map_create();  //Bidirectional lookup
 global.__scribble_effects_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_default_font        = undefined;
 global.__scribble_buffer              = buffer_create(1024, buffer_grow, 1);
-global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0);
+//global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0); //TODO - Do we still need this?
 global.__scribble_character_delay     = false;
 global.__scribble_character_delay_map = ds_map_create();
 
