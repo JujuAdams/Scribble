@@ -1394,6 +1394,8 @@ function __scribble_generate_model(_element)
         if (_force_newline
         || ((_char_width + _text_x > _max_width) && (_max_width >= 0) && (_character_code > 32)))
         {
+            var _line_offset_x = 0;
+            
             //If we're forcing a newline then we want to reset the word height too
             if (_force_newline) _word_height = 0;
             
@@ -1445,7 +1447,7 @@ function __scribble_generate_model(_element)
                             _line_width = max(_line_width, _word_x_offset);
                         }
                         
-                        var _line_offset_x = (_word_x_offset == undefined)? 0 : (-_word_x_offset);
+                        _line_offset_x = (_word_x_offset == undefined)? 0 : (-_word_x_offset);
                         if (_line_offset_x < 0)
                         {
                             //Retroactively move the last word to a new line
