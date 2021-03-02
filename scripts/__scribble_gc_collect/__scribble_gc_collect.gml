@@ -13,11 +13,16 @@ function __scribble_gc_collect()
     
     
     
+    if (current_time - global.__scribble_cache_check_time < __SCRIBBLE_EXPECTED_FRAME_TIME) exit;
+    global.__scribble_cache_check_time = current_time;
+    
+    
+    
     #region Scan through the cache to see if any text elements have elapsed
     
     var _index = global.__scribble_ecache_list_index;
     var _list = global.__scribble_ecache_list;
-    repeat(__SCRIBBLE_GC_STEP_SIZE)
+    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(ds_list_size(_list))))) //Choose a step size that scales with the size of the cache, but doesn't get too big
     {
         //Move backwards through the cache list so we are always trying to check the oldest stuff before looping round
         _index--;
@@ -56,7 +61,7 @@ function __scribble_gc_collect()
     var _index = global.__scribble_ecache_name_index;
     var _list  = global.__scribble_ecache_name_list;
     var _dict  = global.__scribble_ecache_dict;
-    repeat(__SCRIBBLE_GC_STEP_SIZE)
+    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(ds_list_size(_list))))) //Choose a step size that scales with the size of the cache, but doesn't get too big
     {
         _index--;
         if (_index < 0)
@@ -90,7 +95,7 @@ function __scribble_gc_collect()
     var _index = global.__scribble_mcache_name_index;
     var _list  = global.__scribble_mcache_name_list;
     var _dict  = global.__scribble_mcache_dict;
-    repeat(__SCRIBBLE_GC_STEP_SIZE)
+    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(ds_list_size(_list))))) //Choose a step size that scales with the size of the cache, but doesn't get too big
     {
         _index--;
         if (_index < 0)
@@ -125,7 +130,7 @@ function __scribble_gc_collect()
     var _ref_array = global.__scribble_gc_vbuff_refs;
     var _id_array  = global.__scribble_gc_vbuff_ids;
     
-    repeat(__SCRIBBLE_GC_STEP_SIZE)
+    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(array_length(_ref_array))))) //Choose a step size that scales with the size of the cache, but doesn't get too big
     {
         _index--;
         if (_index < 0)

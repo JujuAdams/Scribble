@@ -24,6 +24,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     flushed = false;
     
+    model_cache_name_dirty = true;
     model_cache_name = undefined;
     model = undefined;
     
@@ -61,15 +62,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     bezier_array = array_create(6, 0.0);
     
-    tw_window        = 0;
-    tw_window_array  = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
-    tw_do            = false;
-    tw_in            = true;
-    tw_backwards     = false;
-    tw_function      = undefined;
-    tw_paused        = false;
-    tw_delay_paused  = false;
-    tw_delay_end     = -1;
+    tw_window       = 0;
+    tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
+    tw_do           = false;
+    tw_in           = true;
+    tw_skip         = false;
+    tw_backwards    = false;
+    tw_function     = undefined;
+    tw_paused       = false;
+    tw_delay_paused = false;
+    tw_delay_end    = -1;
     
     tw_event_previous       = -1;
     tw_event_char_previous  = -1;
@@ -117,7 +119,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [uniqueID]
     static overwrite = function()
     {
-        
         text      = argument[0];
         unique_id = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : unique_id;
         
@@ -127,6 +128,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             flush();
             flushed = false;
             
+            model_cache_name_dirty = true;
             cache_name = _new_cache_name;
             
             var _weak = global.__scribble_ecache_dict[? cache_name];
@@ -151,7 +153,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (is_string(_font_name))
         {
-            starting_font = _font_name;
+            if (_font_name != starting_font)
+            {
+                model_cache_name_dirty = true;
+                starting_font = _font_name;
+            }
         }
         else if (!is_undefined(_font_name))
         {
@@ -169,7 +175,14 @@ function __scribble_class_element(_string, _unique_id) constructor
                 }
             }
         
-            if ((_colour != undefined) && (_colour >= 0)) starting_colour = _colour;
+            if ((_colour != undefined) && (_colour >= 0))
+            {
+                if (_colour != starting_colour)
+                {
+                    model_cache_name_dirty = true;
+                    starting_colour = _colour;
+                }
+            }
         }
         
         return self;
@@ -179,8 +192,23 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param valign
     static align = function(_halign, _valign)
     {
-        starting_halign = _halign;
-        starting_valign = _valign;
+        if (_halign == "pin_left"  ) _halign = __SCRIBBLE_PIN_LEFT;
+        if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
+        if (_halign == "pin_center") _halign = __SCRIBBLE_PIN_CENTRE;
+        if (_halign == "pin_right" ) _halign = __SCRIBBLE_PIN_RIGHT;
+        
+        if (_halign != starting_halign)
+        {
+            model_cache_name_dirty = true;
+            starting_halign = _halign;
+        }
+        
+        if (_valign != starting_valign)
+        {
+            model_cache_name_dirty = true;
+            starting_valign = _valign;
+        }
+        
         return self;
     }
     
@@ -228,10 +256,23 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [characterWrap]
     static wrap = function()
     {
-        wrap_max_width  = argument[0];
-        wrap_max_height = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
-        wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
-        wrap_no_pages   = false;
+        var _wrap_max_width  = argument[0];
+        var _wrap_max_height = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
+        var _wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+        var _wrap_no_pages   = false;
+        
+        if ((_wrap_max_width  != wrap_max_width)
+        ||  (_wrap_max_height != wrap_max_height)
+        ||  (_wrap_per_char   != wrap_per_char)
+        ||  (_wrap_no_pages   != wrap_no_pages))
+        {
+            model_cache_name_dirty = true;
+            wrap_max_width  = _wrap_max_width;
+            wrap_max_height = _wrap_max_height;
+            wrap_per_char   = _wrap_per_char;
+            wrap_no_pages   = _wrap_no_pages;
+        }
+        
         return self;
     }
     
@@ -240,10 +281,23 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [characterWrap]
     static fit_to_box = function()
     {
-        wrap_max_width  = argument[0];
-        wrap_max_height = argument[1];
-        wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
-        wrap_no_pages   = true;
+        var _wrap_max_width  = argument[0];
+        var _wrap_max_height = argument[1];
+        var _wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+        var _wrap_no_pages   = true;
+        
+        if ((_wrap_max_width  != wrap_max_width)
+        ||  (_wrap_max_height != wrap_max_height)
+        ||  (_wrap_per_char   != wrap_per_char)
+        ||  (_wrap_no_pages   != wrap_no_pages))
+        {
+            model_cache_name_dirty = true;
+            wrap_max_width  = _wrap_max_width;
+            wrap_max_height = _wrap_max_height;
+            wrap_per_char   = _wrap_per_char;
+            wrap_no_pages   = _wrap_no_pages;
+        }
+        
         return self;
     }
     
@@ -251,8 +305,18 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param max
     static line_height = function(_min, _max)
     {
-        line_height_min = _min;
-        line_height_max = _max;
+        if (_min != line_height_min)
+        {
+            model_cache_name_dirty = true;
+            line_height_min = _min;
+        }
+        
+        if (_max != line_height_max)
+        {
+            model_cache_name_dirty = true;
+            line_height_max = _max;
+        }
+        
         return self;
     }
     
@@ -307,7 +371,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param state
     static ignore_command_tags = function(_state)
     {
-        __ignore_command_tags = _state;
+        if (__ignore_command_tags != _state)
+        {
+            model_cache_name_dirty = true;
+            __ignore_command_tags = _state;
+        }
+        
         return self;
     }
     
@@ -323,17 +392,23 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (argument_count <= 0)
         {
-            bezier_array = array_create(6, 0.0);
+            var _bezier_array = array_create(6, 0.0);
         }
         else if (argument_count == 8)
         {
-            bezier_array = [argument[2] - argument[0], argument[3] - argument[1],
-                            argument[4] - argument[0], argument[5] - argument[1],
-                            argument[6] - argument[0], argument[7] - argument[1]];
+            var _bezier_array = [argument[2] - argument[0], argument[3] - argument[1],
+                                 argument[4] - argument[0], argument[5] - argument[1],
+                                 argument[6] - argument[0], argument[7] - argument[1]];
         }
         else
         {
             __scribble_error("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
+        }
+        
+        if (!array_equals(bezier_array, _bezier_array))
+        {
+            model_cache_name_dirty = true;
+            bezier_array = _bezier_array;
         }
         
         return self;
@@ -360,17 +435,15 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param smoothness
     static typewriter_in = function(_speed, _smoothness)
     {
-        var _refresh = !tw_do || !tw_in;
-        
-        //Only set the typewriter speed if we're not skipping
-        if ((tw_anim_speed < SCRIBBLE_SKIP_SPEED_THRESHOLD) || _refresh) tw_anim_speed = _speed;
-        
         tw_do              = true;
         tw_in              = true;
         tw_backwards       = false;
+        tw_anim_speed      = _speed;
         tw_anim_smoothness = _smoothness;
         
-        if (_refresh) __refresh_typewriter_for_page();
+        if (!tw_do || !tw_in) __refresh_typewriter_for_page();
+        if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) typewriter_skip();
+        
         return self;
     }
     
@@ -383,23 +456,21 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _smoothness = argument[1];
         var _backwards  = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
         
-        var _refresh = !tw_do || tw_in;
-        
-        //Only set the typewriter speed if we're not skipping
-        if ((tw_anim_speed < SCRIBBLE_SKIP_SPEED_THRESHOLD) || _refresh) tw_anim_speed = _speed;
-        
         tw_do              = true;
         tw_in              = false;
         tw_backwards       = _backwards;
+        tw_anim_speed      = _speed;
         tw_anim_smoothness = _smoothness;
         
-        if (_refresh) __refresh_typewriter_for_page();
+        if (!tw_do || tw_in) __refresh_typewriter_for_page();
+        if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) typewriter_skip();
+        
         return self;
     }
     
     static typewriter_skip = function()
     {
-        tw_anim_speed = SCRIBBLE_SKIP_SPEED_THRESHOLD;
+        tw_skip = true;
         return self;
     }
     
@@ -823,6 +894,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (current_time - last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
         {
             animation_time += animation_tick_speed__*SCRIBBLE_TICK_SIZE;
+            if (SCRIBBLE_SAFELY_WRAP_TIME) animation_time = animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
             if (tw_do) __update_typewriter(); //Also update the typewriter too
         }
         
@@ -830,6 +902,108 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         //Update the blink state
         animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
+        
+        #region Prepare shaders for drawing
+        
+        if (tw_do)
+        {
+            var _tw_method = tw_anim_ease_method;
+            var _tw_char_max = 0;
+            
+            if (!tw_in) _tw_method += SCRIBBLE_EASE.__SIZE;
+            if (tw_backwards) _tw_char_max = 1 + last_char - start_char;
+        }
+        
+        if (_model.uses_standard_font)
+        {
+            shader_set(__shd_scribble);
+            shader_set_uniform_f(global.__scribble_u_fTime, animation_time);
+            
+            shader_set_uniform_f(global.__scribble_u_vColourBlend, colour_get_red(  blend_colour)/255,
+                                                                   colour_get_green(blend_colour)/255,
+                                                                   colour_get_blue( blend_colour)/255,
+                                                                   blend_alpha);
+            
+            shader_set_uniform_f(global.__scribble_u_vFog, colour_get_red(  fog_colour)/255,
+                                                           colour_get_green(fog_colour)/255,
+                                                           colour_get_blue( fog_colour)/255,
+                                                           fog_alpha);
+            
+            shader_set_uniform_f_array(global.__scribble_u_aDataFields, animation_array);
+            shader_set_uniform_f_array(global.__scribble_u_aBezier, bezier_array);
+            shader_set_uniform_f(global.__scribble_u_fBlinkState, animation_blink_state);
+            
+            if (tw_do)
+            {
+                shader_set_uniform_i(global.__scribble_u_iTypewriterMethod,            _tw_method);
+                shader_set_uniform_i(global.__scribble_u_iTypewriterCharMax,           _tw_char_max);
+                shader_set_uniform_f(global.__scribble_u_fTypewriterSmoothness,        tw_anim_smoothness);
+                shader_set_uniform_f(global.__scribble_u_vTypewriterStartPos,          tw_anim_dx, tw_anim_dy);
+                shader_set_uniform_f(global.__scribble_u_vTypewriterStartScale,        tw_anim_xscale, tw_anim_yscale);
+                shader_set_uniform_f(global.__scribble_u_fTypewriterStartRotation,     tw_anim_rotation);
+                shader_set_uniform_f(global.__scribble_u_fTypewriterAlphaDuration,     tw_anim_alpha_duration);
+                shader_set_uniform_f_array(global.__scribble_u_fTypewriterWindowArray, tw_window_array);
+            }
+            else
+            {
+                shader_set_uniform_i(global.__scribble_u_iTypewriterMethod, 0);
+            }
+            
+            shader_reset();
+        }
+        
+        if (_model.uses_msdf_font)
+        {
+            shader_set(__shd_scribble_msdf);
+            shader_set_uniform_f(global.__scribble_msdf_u_fTime, animation_time);
+                    
+            shader_set_uniform_f(global.__scribble_msdf_u_vColourBlend, colour_get_red(  blend_colour)/255,
+                                                                        colour_get_green(blend_colour)/255,
+                                                                        colour_get_blue( blend_colour)/255,
+                                                                        blend_alpha);
+                    
+            shader_set_uniform_f(global.__scribble_msdf_u_vFog, colour_get_red(  fog_colour)/255,
+                                                                colour_get_green(fog_colour)/255,
+                                                                colour_get_blue( fog_colour)/255,
+                                                                fog_alpha);
+                    
+            shader_set_uniform_f_array(global.__scribble_msdf_u_aDataFields, animation_array);
+            shader_set_uniform_f_array(global.__scribble_msdf_u_aBezier, bezier_array);
+            shader_set_uniform_f(global.__scribble_msdf_u_fBlinkState, animation_blink_state);
+                    
+            if (tw_do)
+            {
+                shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod,            _tw_method);
+                shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterCharMax,           _tw_char_max);
+                shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,        tw_anim_smoothness);
+                shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,          tw_anim_dx, tw_anim_dy);
+                shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,        tw_anim_xscale, tw_anim_yscale);
+                shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterStartRotation,     tw_anim_rotation);
+                shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterAlphaDuration,     tw_anim_alpha_duration);
+                shader_set_uniform_f_array(global.__scribble_msdf_u_fTypewriterWindowArray, tw_window_array);
+            }
+            else
+            {
+                shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod, 0);
+            }
+                
+            shader_set_uniform_f(global.__scribble_msdf_u_vShadowOffset, msdf_shadow_xoffset, msdf_shadow_yoffset);
+                
+            shader_set_uniform_f(global.__scribble_msdf_u_vShadowColour, colour_get_red(  msdf_shadow_colour)/255,
+                                                                         colour_get_green(msdf_shadow_colour)/255,
+                                                                         colour_get_blue( msdf_shadow_colour)/255,
+                                                                         msdf_shadow_alpha);
+                                                                             
+            shader_set_uniform_f(global.__scribble_msdf_u_vBorderColour, colour_get_red(  msdf_border_colour)/255,
+                                                                         colour_get_green(msdf_border_colour)/255,
+                                                                         colour_get_blue( msdf_border_colour)/255);
+                                                                             
+            shader_set_uniform_f(global.__scribble_msdf_u_fBorderThickness, msdf_border_thickness);
+            
+            shader_reset();
+        }
+        
+        #endregion
         
         //Draw the model using ourselves as the context
         _model.draw(_x, _y, self);
@@ -880,6 +1054,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - tw_anim_smoothness);
         tw_window_array[@ 0] += tw_anim_smoothness;
         
+        tw_skip = false;
+        
         if (tw_in)
         {
             tw_event_previous       = _page_data.start_event - 1;
@@ -896,20 +1072,23 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         else
         {
-            //TODO - Optimise
-            model_cache_name = text + ":" +
-                               string(starting_font  ) + ":" +
-                               string(starting_colour) + ":" +
-                               string(starting_halign) + ":" +
-                               string(starting_valign) + ":" +
-                               string(line_height_min) + ":" +
-                               string(line_height_max) + ":" +
-                               string(wrap_max_width ) + ":" +
-                               string(wrap_max_height) + ":" +
-                               string(wrap_per_char  ) + ":" +
-                               string(wrap_no_pages  ) + ":" +
-                               string(bezier_array   ) + ":" +
-                               string(__ignore_command_tags);
+            if (model_cache_name_dirty)
+            {
+                model_cache_name_dirty = false;
+                model_cache_name = text + ":" +
+                                   string(starting_font  ) + ":" +
+                                   string(starting_colour) + ":" +
+                                   string(starting_halign) + ":" +
+                                   string(starting_valign) + ":" +
+                                   string(line_height_min) + ":" +
+                                   string(line_height_max) + ":" +
+                                   string(wrap_max_width ) + ":" +
+                                   string(wrap_max_height) + ":" +
+                                   string(wrap_per_char  ) + ":" +
+                                   string(wrap_no_pages  ) + ":" +
+                                   string(bezier_array   ) + ":" +
+                                   string(__ignore_command_tags);
+            }
             
             var _weak = global.__scribble_mcache_dict[? model_cache_name];
             if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.flushed)
@@ -942,9 +1121,9 @@ function __scribble_class_element(_string, _unique_id) constructor
             var _scan_a = 0;
             var _scan_b = 0;
             
-            var _typewriter_speed = tw_anim_speed*tw_inline_speed*SCRIBBLE_TICK_SIZE;
+            var _skipping         = tw_skip;
+            var _typewriter_speed = _skipping? 9999 : (tw_anim_speed*tw_inline_speed*SCRIBBLE_TICK_SIZE);
             var _head_speed       = _typewriter_speed;
-            var _skipping         = (tw_anim_speed >= SCRIBBLE_SKIP_SPEED_THRESHOLD);
             
             var _typewriter_head_pos = tw_window_array[tw_window];
             

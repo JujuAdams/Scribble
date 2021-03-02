@@ -13,7 +13,6 @@
 #macro SCRIBBLE_DEFAULT_DELAY_DURATION        450    //Default duration of the [delay] command, in milliseconds
 #macro SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY   ""     //The directory to look in for font .yy files, relative to the root folder that Included Files are stored in
 #macro SCRIBBLE_BOX_ALIGN_TO_PAGE             false  //Whether to use text element sizes (false) or page sizes (true)
-#macro SCRIBBLE_SKIP_SPEED_THRESHOLD          99     //A typewriter speed greater than or equal to this value is considered "skipping" and won't wait for delays or pauses in text
 
 
 
@@ -26,6 +25,7 @@
 #macro SCRIBBLE_BEZIER_ACCURACY           20        //Controls how accurately text fits Beziér curves. Higher is more accurate but slower
 #macro SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE  true      //Whether to trim off empty left-hand space when moving a word to a new line. This can cause issues with spritefonts in some situations
 #macro SCRIBBLE_FIT_TO_BOX_ITERATIONS     3         //Number of iterations to fit text when using the .fit_to_box() method. Higher values are slower but more accurate
+#macro SCRIBBLE_SAFELY_WRAP_TIME          true      //Whether to wrap the internal time value. If you look at an animation for roughly 4.5 minutes then 
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
@@ -46,5 +46,15 @@
 #macro SCRIBBLE_WARNING_TEXTURE_PAGE           true
 #macro SCRIBBLE_WARNING_AUTOSCAN_YY_NOT_FOUND  true
 #macro SCRIBBLE_WARNING_REDEFINITION           true
+
+#endregion
+
+
+
+#region Deprecated
+
+//Macros in this region will be removed in the next major version update
+
+#macro SCRIBBLE_SKIP_SPEED_THRESHOLD  99  //A typewriter speed greater than or equal to this value is considered "skipping" and won't wait for delays or pauses in text
 
 #endregion

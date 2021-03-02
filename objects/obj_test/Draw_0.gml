@@ -7,4 +7,4 @@ draw_vertex_color(_bbox.x2, _bbox.y2, c_gray, 1.0);
 draw_vertex_color(_bbox.x3, _bbox.y3, c_gray, 1.0);
 draw_primitive_end();
 
-element.transform(1, 1, -15).typewriter_in(skip? 9999 : 1, 0).draw(room_width div 2, room_height div 2);
+element.transform(1, 1, -15).typewriter_in(1, 0).draw(room_width div 2, room_height div 2);

@@ -109,6 +109,7 @@ function __scribble_generate_model(_element)
     
     var _word_start_char = 0;
     var _word_height     = 0;
+    var _word_x_offset   = undefined;
     
     var _page_data         = __new_page();
     var _page_lines_array  = _page_data.lines_array;         //Stores each line of text (per page)
@@ -374,7 +375,6 @@ function __scribble_generate_model(_element)
                     case "&nbsp;":
                         //Grab this characer's width/height
                         _char_width = _font_space_width*_text_scale;
-                        _line_width = max(_line_width, _text_x);
                         if (!_line_fixed_height) _line_height = max(_line_height, _font_line_height*_text_scale); //Change our line height if it's not fixed
                         _word_height = max(_word_height, _font_line_height*_text_scale); //Update the word height
                                 
@@ -556,9 +556,7 @@ function __scribble_generate_model(_element)
                         #region Write surfaces
                                 
                         var _surface = real(_parameters[1]);
-                                
-                        _line_width = max(_line_width, _text_x);
-                                
+                        
                         var _surface_width  = _text_scale*surface_get_width( _surface);
                         var _surface_height = _text_scale*surface_get_height(_surface);
                                 
@@ -611,7 +609,7 @@ function __scribble_generate_model(_element)
                         if (_character_wrap)
                         {
                             _vbuff_data.word_start_tell = buffer_tell(_buffer);
-                            _vbuff_data.word_x_offset   = undefined;
+                            _word_x_offset = undefined;
                             _line_width = max(_line_width, _text_x);
                             
                             //Record the first character in this word
@@ -628,15 +626,15 @@ function __scribble_generate_model(_element)
                             _glyph_texture = _surface_texture;
                             var _glyph_buffer = _vbuff_data.buffer;
                             
-                            if (_vbuff_data.word_x_offset == undefined)
+                            if (_word_x_offset == undefined)
                             {
                                 if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE)
                                 {
-                                    _vbuff_data.word_x_offset = _surface_x - _original_char_x_offset;
+                                    _word_x_offset = _surface_x - _original_char_x_offset;
                                 }
                                 else
                                 {
-                                    _vbuff_data.word_x_offset = _surface_x;
+                                    _word_x_offset = _surface_x;
                                 }
                             }
                         }
@@ -757,9 +755,7 @@ function __scribble_generate_model(_element)
                                         if (asset_get_type(_command_name) == asset_sprite)
                                         {
                                             #region Write sprites
-                                                    
-                                            _line_width = max(_line_width, _text_x);
-                                                    
+                                                 
                                             var _sprite_index = asset_get_index(_command_name);
                                             var _sprite_width  = _text_scale*sprite_get_width(_sprite_index);
                                             var _sprite_height = _text_scale*sprite_get_height(_sprite_index);
@@ -872,7 +868,7 @@ function __scribble_generate_model(_element)
                                                 if (_character_wrap)
                                                 {
                                                     _vbuff_data.word_start_tell = buffer_tell(_buffer);
-                                                    _vbuff_data.word_x_offset   = undefined;
+                                                    _word_x_offset = undefined;
                                                     _line_width = max(_line_width, _text_x);
                                                     
                                                     //Record the first character in this word
@@ -898,15 +894,15 @@ function __scribble_generate_model(_element)
                                                     _vbuff_data = _page_data.__find_vertex_buffer(_sprite_texture, false);
                                                     var _glyph_buffer = _vbuff_data.buffer;
                                                     
-                                                    if (_vbuff_data.word_x_offset == undefined)
+                                                    if (_word_x_offset == undefined)
                                                     {
                                                         if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE)
                                                         {
-                                                            _vbuff_data.word_x_offset = _sprite_x - _original_char_x_offset;
+                                                            _word_x_offset = _sprite_x - _original_char_x_offset;
                                                         }
                                                         else
                                                         {
-                                                            _vbuff_data.word_x_offset = _sprite_x;
+                                                            _word_x_offset = _sprite_x;
                                                         }
                                                     }
                                                 }
@@ -1188,6 +1184,7 @@ function __scribble_generate_model(_element)
             _word_height = 0; //Reset the word height since we hit a space
             
             _page_data.__reset_word_start();
+            _word_x_offset = undefined;
             
             //Record the first character in this word
             _word_start_char = characters;
@@ -1293,7 +1290,7 @@ function __scribble_generate_model(_element)
                 if (_character_wrap)
                 {
                     _vbuff_data.word_start_tell = buffer_tell(_glyph_buffer);
-                    _vbuff_data.word_x_offset   = undefined;
+                    _word_x_offset = undefined;
                     _line_width = max(_line_width, _text_x);
                     
                     //Record the first character in this word
@@ -1311,15 +1308,15 @@ function __scribble_generate_model(_element)
                     _original_char_x_offset = _quad_l;
                 }
                 
-                if (_vbuff_data.word_x_offset == undefined)
+                if (_word_x_offset == undefined)
                 {
                     if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE)
                     {
-                        _vbuff_data.word_x_offset = _text_x + _quad_l - _original_char_x_offset;
+                        _word_x_offset = _text_x + _quad_l - _original_char_x_offset;
                     }
                     else
                     {
-                        _vbuff_data.word_x_offset = _text_x;
+                        _word_x_offset = _text_x;
                     }
                 }
             
@@ -1397,6 +1394,8 @@ function __scribble_generate_model(_element)
         if (_force_newline
         || ((_char_width + _text_x > _max_width) && (_max_width >= 0) && (_character_code > 32)))
         {
+            var _line_offset_x = 0;
+            
             //If we're forcing a newline then we want to reset the word height too
             if (_force_newline) _word_height = 0;
             
@@ -1441,11 +1440,14 @@ function __scribble_generate_model(_element)
                             _data.char_start_tell = _tell_b;
                             _data.word_start_tell = _tell_b;
                             
-                            //Update the width of the line based on the right-most edge of the last character
-                            _line_width = max(_line_width, buffer_peek(_buffer, _tell_b - __SCRIBBLE_GLYPH_BYTE_SIZE + __SCRIBBLE_VERTEX.X, buffer_f32));
+                            //Set the word offset to the lefthand side of the character
+                            _word_x_offset = buffer_peek(_buffer, _tell_b - __SCRIBBLE_GLYPH_BYTE_SIZE + __SCRIBBLE_VERTEX.X, buffer_f32);
+                            
+                            //Update the width of the line too
+                            _line_width = max(_line_width, _word_x_offset);
                         }
                         
-                        var _line_offset_x = (_data.word_x_offset == undefined)? 0 : (-_data.word_x_offset);
+                        _line_offset_x = (_word_x_offset == undefined)? 0 : (-_word_x_offset);
                         if (_line_offset_x < 0)
                         {
                             //Retroactively move the last word to a new line
@@ -1467,13 +1469,13 @@ function __scribble_generate_model(_element)
                                 _tell += __SCRIBBLE_VERTEX.__SIZE;
                             }
                         }
-                        
-                        _data.word_x_offset = undefined;
                     }
                 }
                 
                 ++_v;
             }
+            
+            _word_x_offset = undefined;
             
             //Limit the height of the line
             if (_line_max_height >= 0) _line_height = min(_line_height, _line_max_height);
@@ -1581,7 +1583,6 @@ function __scribble_generate_model(_element)
                             _new_vbuff_data.shader          = _vbuff_data.shader;
                             _new_vbuff_data.char_start_tell = _vbuff_data.char_start_tell - _line_tell_prev;
                             _new_vbuff_data.word_start_tell = _vbuff_data.word_start_tell - _line_tell_prev;
-                            _new_vbuff_data.word_x_offset   = _vbuff_data.word_x_offset;
                             _new_vbuff_data.msdf_range      = _vbuff_data.msdf_range;
                              
                             //Copy the relevant vertices of the old buffer to the new buffer
@@ -1809,7 +1810,16 @@ function __scribble_generate_model(_element)
         repeat(array_length(_page_vbuffs_array))
         {
             var _data = _page_vbuffs_array[_v];
-                    
+            
+            if (_data.shader == __shd_scribble)
+            {
+                uses_standard_font = true;
+            }
+            else if (_data.shader == __shd_scribble_msdf)
+            {
+                uses_msdf_font = true;
+            }
+            
             var _vbuff_line_start_array = _data.line_start_array;
             var _buffer                 = _data.buffer;
                     
