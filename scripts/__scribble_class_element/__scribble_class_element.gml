@@ -59,6 +59,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __page = 0;
     __ignore_command_tags = false;
+    __template = __scribble_config_default_template;
     
     bezier_array = array_create(6, 0.0);
     
@@ -320,21 +321,35 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param templateFunction/array
-    static template = function(_template)
+    /// @param templateFunction/Array
+    /// @param [executeOnlyOnChange]
+    static template = function()
     {
+        var _template  = argument[0];
+        var _on_change = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : false;
+        
         if (is_array(_template))
         {
-            var _i = 0;
-            repeat(array_length(_template))
+            if (!_on_change || !is_array(__template) || !array_equals(__template, _template))
             {
-                _template[_i]();
-                ++_i;
+                __template = _template;
+                
+                var _i = 0;
+                repeat(array_length(_template))
+                {
+                    _template[_i]();
+                    ++_i;
+                }
             }
         }
         else
         {
-            _template();
+            if (!_on_change || is_array(__template) || (__template != _template))
+            {
+                __template = _template;
+                
+                _template();
+            }
         }
         
         return self;
