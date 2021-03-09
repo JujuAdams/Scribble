@@ -1137,7 +1137,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             var _scan_b = 0;
             
             var _skipping         = tw_skip;
-            var _typewriter_speed = _skipping? 9999 : (tw_anim_speed*tw_inline_speed*SCRIBBLE_TICK_SIZE);
+            var _typewriter_speed = _skipping? 999999 : (tw_anim_speed*tw_inline_speed*SCRIBBLE_TICK_SIZE);
             var _head_speed       = _typewriter_speed;
             
             var _typewriter_head_pos = tw_window_array[tw_window];
@@ -1231,14 +1231,14 @@ function __scribble_class_element(_string, _unique_id) constructor
                                         }
                                         else if (_event_name == "speed")
                                         {
-                                            if (!_skipping && (array_length(_event_data_array) >= 1))
+                                            if (array_length(_event_data_array) >= 1)
                                             {
                                                 tw_inline_speed = real(_event_data_array[0]);
                                             }
                                         }
                                         else if (_event_name == "/speed")
                                         {
-                                            if (!_skipping) tw_inline_speed = 1;
+                                            tw_inline_speed = 1;
                                         }
                                         else if (_event_name == "__scribble_audio_playback__")
                                         {
