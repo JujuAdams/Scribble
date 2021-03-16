@@ -17,6 +17,9 @@ function __scribble_class_font(_name, _type) constructor
     mapstring    = undefined;
     separation   = undefined;
     msdf_range   = undefined;
+    xscale       = 1.0;
+    yscale       = 1.0;
+    scale_dist   = 1.0;
     
     style_regular     = undefined;
     style_bold        = undefined;

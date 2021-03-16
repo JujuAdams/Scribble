@@ -18,6 +18,10 @@ function scribble_font_scale(_font, _xscale, _yscale)
     var _array = _font_data.glyphs_array;
     var _map   = _font_data.glyphs_map;
     
+    _font_data.xscale *= _xscale;
+    _font_data.yscale *= _yscale;
+    _font_data.scale_dist = point_distance(0, 0, _font_data.xscale, _font_data.yscale);
+    
     if (_array == undefined)
     {
         //If the glyph array doesn't exist for this font, use the ds_map fallback
