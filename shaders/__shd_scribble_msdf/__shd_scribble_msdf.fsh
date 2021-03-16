@@ -3,8 +3,9 @@ precision highp float;
 
 #extension GL_OES_standard_derivatives : enable
 
-varying vec2 v_vTexcoord;
-varying vec4 v_vColour;
+varying vec2  v_vTexcoord;
+varying vec4  v_vColour;
+varying float v_fPixelScale;
 
 uniform vec2  u_vTexel;
 uniform float u_fMSDFRange;
@@ -31,25 +32,20 @@ float MSDFAlpha(float signedDistance, float pixelSize, float outerBorder)
 
 void main()
 {
-    //TODO - Mac/iOS have issues with this right now. Figure out a way to get around that
-    float dx = dFdx(v_vTexcoord.x) / u_vTexel.x;
-    float dy = dFdy(v_vTexcoord.y) / u_vTexel.y;
-    float pixelSize = inversesqrt(dx*dx + dy*dy);
-    
     float distBase = MSDFSignedDistance(vec2(0.0));
-    float alphaBase = MSDFAlpha(distBase, pixelSize, 0.0);
+    float alphaBase = MSDFAlpha(distBase, v_fPixelScale, 0.0);
     gl_FragColor = vec4(v_vColour.rgb, alphaBase);
     
     if (u_fBorderThickness > 0.0)
     {
-        float alphaBorder = MSDFAlpha(distBase, pixelSize, u_fBorderThickness);
+        float alphaBorder = MSDFAlpha(distBase, v_fPixelScale, u_fBorderThickness);
         gl_FragColor.rgb = mix(u_vBorderColour, gl_FragColor.rgb, gl_FragColor.a);
         gl_FragColor.a = max(gl_FragColor.a, alphaBorder);
     }
     
     if (length(u_vShadowOffset) > 0.0)
     {
-        float alphaShadow = u_vShadowColour.a*MSDFAlpha(MSDFSignedDistance(u_vShadowOffset/pixelSize), pixelSize, u_fBorderThickness);
+        float alphaShadow = u_vShadowColour.a*MSDFAlpha(MSDFSignedDistance(u_vShadowOffset/v_fPixelScale), v_fPixelScale, u_fBorderThickness);
         gl_FragColor.rgb = mix(u_vShadowColour.rgb, gl_FragColor.rgb, gl_FragColor.a);
         gl_FragColor.a = max(gl_FragColor.a, alphaShadow);
     }

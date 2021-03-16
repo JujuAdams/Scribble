@@ -71,8 +71,9 @@ attribute vec3 in_Normal;       //{Packed centre dXdY, Sprite data, Bitpacked ef
 attribute vec4 in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
 attribute vec2 in_TextureCoord; //UVs
 
-varying vec2 v_vTexcoord;
-varying vec4 v_vColour;
+varying vec2  v_vTexcoord;
+varying vec4  v_vColour;
+varying float v_fPixelScale;
 
 uniform vec4  u_vColourBlend;                           //4
 uniform float u_fTime;                                  //1
@@ -88,6 +89,8 @@ uniform vec2  u_vTypewriterStartPos;                    //2
 uniform vec2  u_vTypewriterStartScale;                  //2
 uniform float u_fTypewriterStartRotation;               //1
 uniform float u_fTypewriterAlphaDuration;               //1
+
+uniform vec2  u_vOutputSize;                            //2
 
 
 
@@ -387,6 +390,14 @@ float easeBounce(float time)
 
 void main()
 {
+    //Find the scaling factor for the MVP matrix
+    mat4 wvpMatrix = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION];
+    vec2 pixelScale = vec2(length(vec3(wvpMatrix[0][0], wvpMatrix[0][1], wvpMatrix[0][2])),
+                           length(vec3(wvpMatrix[1][0], wvpMatrix[1][1], wvpMatrix[1][2])));
+    pixelScale *= u_vOutputSize;
+    v_fPixelScale = 0.25*length(pixelScale);
+    
+    
     //Unpack character/line index
     float characterIndex = floor(in_Position.z / MAX_LINES);
     float lineIndex      = in_Position.z - characterIndex*MAX_LINES;

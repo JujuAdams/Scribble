@@ -146,6 +146,7 @@ global.__scribble_msdf_u_vShadowColour            = shader_get_uniform(__shd_scr
 global.__scribble_msdf_u_vShadowOffset            = shader_get_uniform(__shd_scribble_msdf, "u_vShadowOffset"           );
 global.__scribble_msdf_u_vBorderColour            = shader_get_uniform(__shd_scribble_msdf, "u_vBorderColour"           );
 global.__scribble_msdf_u_fBorderThickness         = shader_get_uniform(__shd_scribble_msdf, "u_fBorderThickness"        );
+global.__scribble_msdf_u_vOutputSize              = shader_get_uniform(__shd_scribble_msdf, "u_vOutputSize"             );
 
 //Hex converter array
 var _min = ord("0");
