@@ -1,7 +1,5 @@
-//   @jujuadams   v7.0.3   2020-01-02
+//   @jujuadams   v7.1.2   2021-03-16
 precision highp float;
-
-#extension GL_OES_standard_derivatives : enable
 
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
