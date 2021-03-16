@@ -98,11 +98,12 @@ global.__scribble_effects_slash[? "/blink"  ] = 9;
     
 //Create a vertex format for our text
 vertex_format_begin();
-vertex_format_add_position_3d(); //12 bytes
-vertex_format_add_normal();      //12 bytes       //X = character index, Y = line index, Z = effect flags
-vertex_format_add_colour();      // 4 bytes
-vertex_format_add_texcoord();    // 8 bytes
-global.__scribble_vertex_format = vertex_format_end(); //36 bytes per vertex, 108 bytes per tri, 216 bytes per glyph
+vertex_format_add_position_3d();                                  //12 bytes
+vertex_format_add_normal();                                       //12 bytes
+vertex_format_add_colour();                                       // 4 bytes
+vertex_format_add_texcoord();                                     // 8 bytes
+vertex_format_add_custom(vertex_type_float1, vertex_usage_color); // 4 bytes
+global.__scribble_vertex_format = vertex_format_end();            //40 bytes per vertex, 120 bytes per tri, 240 bytes per glyph
     
 vertex_format_begin();
 vertex_format_add_position(); //12 bytes
@@ -289,7 +290,8 @@ enum __SCRIBBLE_VERTEX
     COLOUR         = 24,
     U              = 28,
     V              = 32,
-    __SIZE         = 36
+    SCALE          = 36,
+    __SIZE         = 40
 }
 
 enum __SCRIBBLE_ANIM

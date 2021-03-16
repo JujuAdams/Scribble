@@ -66,10 +66,11 @@ const float PI = 3.14159265359;
 // Attributes, Varyings, and Uniforms
 
 
-attribute vec3 in_Position;     //{X, Y, Packed character & line index}
-attribute vec3 in_Normal;       //{Packed centre dXdY, Sprite data, Bitpacked effect flags}
-attribute vec4 in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
-attribute vec2 in_TextureCoord; //UVs
+attribute vec3  in_Position;     //{X, Y, Packed character & line index}
+attribute vec3  in_Normal;       //{Packed centre dXdY, Sprite data, Bitpacked effect flags}
+attribute vec4  in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
+attribute vec2  in_TextureCoord; //UVs
+attribute float in_Colour2;      //Scale
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;

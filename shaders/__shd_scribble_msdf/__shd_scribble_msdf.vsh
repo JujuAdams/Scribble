@@ -66,10 +66,11 @@ const float PI = 3.14159265359;
 // Attributes, Varyings, and Uniforms
 
 
-attribute vec3 in_Position;     //{X, Y, Packed character & line index}
-attribute vec3 in_Normal;       //{Packed centre dXdY, Sprite data, Bitpacked effect flags}
-attribute vec4 in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
-attribute vec2 in_TextureCoord; //UVs
+attribute vec3  in_Position;     //{X, Y, Packed character & line index}
+attribute vec3  in_Normal;       //{Packed centre dXdY, Sprite data, Bitpacked effect flags}
+attribute vec4  in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
+attribute vec2  in_TextureCoord; //UVs
+attribute float in_Colour2;      //Scale
 
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
@@ -395,7 +396,7 @@ void main()
     vec2 pixelScale = vec2(length(vec3(wvpMatrix[0][0], wvpMatrix[0][1], wvpMatrix[0][2])),
                            length(vec3(wvpMatrix[1][0], wvpMatrix[1][1], wvpMatrix[1][2])));
     pixelScale *= u_vOutputSize;
-    v_fPixelScale = 0.25*length(pixelScale);
+    v_fPixelScale = in_Colour2*0.25*length(pixelScale);
     
     
     //Unpack character/line index
