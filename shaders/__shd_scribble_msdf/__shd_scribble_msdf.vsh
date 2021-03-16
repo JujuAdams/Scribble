@@ -75,6 +75,7 @@ attribute float in_Colour2;      //Scale
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
 varying float v_fPixelScale;
+varying float v_fTextScale;
 
 uniform vec4  u_vColourBlend;                           //4
 uniform float u_fTime;                                  //1
@@ -392,11 +393,13 @@ float easeBounce(float time)
 void main()
 {
     //Find the scaling factor for the MVP matrix
+    v_fTextScale = in_Colour2;
+    
     mat4 wvpMatrix = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION];
     vec2 pixelScale = vec2(length(vec3(wvpMatrix[0][0], wvpMatrix[0][1], wvpMatrix[0][2])),
                            length(vec3(wvpMatrix[1][0], wvpMatrix[1][1], wvpMatrix[1][2])));
     pixelScale *= u_vOutputSize;
-    v_fPixelScale = in_Colour2*0.25*length(pixelScale);
+    v_fPixelScale = 0.25*v_fTextScale*length(pixelScale);
     
     
     //Unpack character/line index
