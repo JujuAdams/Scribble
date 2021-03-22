@@ -6,12 +6,14 @@ draw_set_colour($936969);
 draw_rectangle(_x, _y, _x + textbox_width + 20, _y + textbox_height + 20, false);
 draw_set_colour(c_white);
 
-//Draw main text body
+//Get the text element for our current line of text
 //Note that we're setting "textbox_element" here
 textbox_element = scribble(textbox_conversation[textbox_conversation_index])
 .wrap(textbox_width, textbox_height)
-.typewriter_in(textbox_skip? 9999 : 1, 0)
-.draw(_x + 10, _y + 10);
+.typewriter_in(textbox_skip? 9999 : 1, 0);
+
+//Draw main text body
+textbox_element.draw(_x + 10, _y + 10);
 
 //Draw portrait
 draw_set_colour($936969);
