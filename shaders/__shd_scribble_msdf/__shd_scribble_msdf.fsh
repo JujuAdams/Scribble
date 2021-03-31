@@ -51,6 +51,6 @@ void main()
         gl_FragColor.a = max(gl_FragColor.a, alphaShadow);
     }
     
-    gl_FragColor *= v_vColour.a;
+    gl_FragColor.a *= v_vColour.a;
     gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFog.rgb, u_vFog.a);
 }
