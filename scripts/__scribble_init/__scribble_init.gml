@@ -102,8 +102,8 @@ vertex_format_add_position_3d();                                  //12 bytes
 vertex_format_add_normal();                                       //12 bytes
 vertex_format_add_colour();                                       // 4 bytes
 vertex_format_add_texcoord();                                     // 8 bytes
-vertex_format_add_custom(vertex_type_float1, vertex_usage_color); // 4 bytes
-global.__scribble_vertex_format = vertex_format_end();            //40 bytes per vertex, 120 bytes per tri, 240 bytes per glyph
+vertex_format_add_custom(vertex_type_float2, vertex_usage_color); // 8 bytes
+global.__scribble_vertex_format = vertex_format_end();            //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
     
 vertex_format_begin();
 vertex_format_add_position(); //12 bytes
@@ -284,14 +284,15 @@ enum __SCRIBBLE_VERTEX
     X              =  0,
     Y              =  4,
     PACKED_INDEXES =  8,
-    CENTRE_DXDY    = 12,
+    DX             = 12,
     SPRITE_DATA    = 16,
     EFFECT_FLAGS   = 20,
     COLOUR         = 24,
     U              = 28,
     V              = 32,
     SCALE          = 36,
-    __SIZE         = 40
+    DY             = 40,
+    __SIZE         = 44
 }
 
 enum __SCRIBBLE_ANIM

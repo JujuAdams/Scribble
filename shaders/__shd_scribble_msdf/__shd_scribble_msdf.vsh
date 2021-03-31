@@ -67,10 +67,10 @@ const float PI = 3.14159265359;
 
 
 attribute vec3  in_Position;     //{X, Y, Packed character & line index}
-attribute vec3  in_Normal;       //{Packed centre dXdY, Sprite data, Bitpacked effect flags}
+attribute vec3  in_Normal;       //{dX, Sprite data, Bitpacked effect flags}
 attribute vec4  in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
 attribute vec2  in_TextureCoord; //UVs
-attribute float in_Colour2;      //Scale
+attribute vec2  in_Colour2;      //{Scale, dY}
 
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
@@ -393,7 +393,7 @@ float easeBounce(float time)
 void main()
 {
     //Find the scaling factor for the MVP matrix
-    v_fTextScale = in_Colour2;
+    v_fTextScale = in_Colour2.x;
     
     mat4 wvpMatrix = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION];
     vec2 pixelScale = vec2(length(vec3(wvpMatrix[0][0], wvpMatrix[0][1], wvpMatrix[0][2])),
@@ -447,11 +447,8 @@ void main()
     
     
     
-    //Unpack the glyph centre. This assumes our glyph is maximum 200px wide and gives us 1 decimal place
-    vec2 centreDelta;
-    centreDelta.y = floor(in_Normal.x/2000.0);
-    centreDelta.x = in_Normal.x - centreDelta.y*2000.0;
-    centreDelta = (centreDelta - 1000.0)/10.0;
+    //Unpack the glyph centre
+    vec2 centreDelta = vec2(in_Normal.x, in_Colour2.y);
     
     
     
