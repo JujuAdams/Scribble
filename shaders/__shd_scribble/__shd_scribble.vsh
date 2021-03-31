@@ -126,7 +126,9 @@ void unpackFlags(float flagValue, inout float array[MAX_EFFECTS])
 //Rotate by vector
 vec2 rotate_by_vector(vec2 position, vec2 centre, vec2 vector)
 {
-    return centre + (position - centre)*mat2(vector, -vector.y, vector.x);
+    //Normally I'd do this with a mat2() but for some reason this had issues cross-platform
+    vec2 delta = position - centre;
+    return centre + vec2(delta.x*vector.x - delta.y*vector.y, delta.x*vector.y + delta.y*vector.x);
 }
 
 //Rotate the character
@@ -434,8 +436,7 @@ void main()
         centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         
         vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        orientation = normalize(vec2(orientation.x, -orientation.y));
-        pos = rotate_by_vector(centre - centreDelta, centre, orientation);
+        pos = rotate_by_vector(centre - centreDelta, centre, normalize(orientation));
         
         vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
         pos += in_Position.y*perpendicular;
