@@ -1364,5 +1364,5 @@ function __scribble_class_element(_string, _unique_id) constructor
     #endregion
     
     //Apply the default template
-    scribble_default_template();
+    __scribble_config_default_template();
 }
