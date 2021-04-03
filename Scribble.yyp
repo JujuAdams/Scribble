@@ -100,6 +100,7 @@
     {"id":{"name":"spr_msdf_openhuninn","path":"sprites/spr_msdf_openhuninn/spr_msdf_openhuninn.yy",},"order":11,},
     {"id":{"name":"spr_white_coin","path":"sprites/spr_white_coin/spr_white_coin.yy",},"order":3,},
     {"id":{"name":"obj_test_fit_to_box","path":"objects/obj_test_fit_to_box/obj_test_fit_to_box.yy",},"order":29,},
+    {"id":{"name":"obj_test_has_character","path":"objects/obj_test_has_character/obj_test_has_character.yy",},"order":38,},
     {"id":{"name":"obj_test_alignment","path":"objects/obj_test_alignment/obj_test_alignment.yy",},"order":8,},
     {"id":{"name":"obj_test_ignore_command_tags","path":"objects/obj_test_ignore_command_tags/obj_test_ignore_command_tags.yy",},"order":26,},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},"order":0,},
