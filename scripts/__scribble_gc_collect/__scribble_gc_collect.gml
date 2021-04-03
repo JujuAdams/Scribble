@@ -20,9 +20,10 @@ function __scribble_gc_collect()
     
     #region Scan through the cache to see if any text elements have elapsed
     
-    var _index = global.__scribble_ecache_list_index;
-    var _list = global.__scribble_ecache_list;
-    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(ds_list_size(_list))))) //Choose a step size that scales with the size of the cache, but doesn't get too big
+    var _list  = global.__scribble_ecache_list;
+    var _size  = ds_list_size(_list);
+    var _index = min(global.__scribble_ecache_list_index, _size);
+    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(_size)))) //Choose a step size that scales with the size of the cache, but doesn't get too big
     {
         //Move backwards through the cache list so we are always trying to check the oldest stuff before looping round
         _index--;
