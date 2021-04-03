@@ -30,6 +30,7 @@
     {"id":{"name":"__scribble_init","path":"scripts/__scribble_init/__scribble_init.yy",},"order":0,},
     {"id":{"name":"spr_portrait_2","path":"sprites/spr_portrait_2/spr_portrait_2.yy",},"order":5,},
     {"id":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},"order":0,},
+    {"id":{"name":"scribble_font_has_character","path":"scripts/scribble_font_has_character/scribble_font_has_character.yy",},"order":7,},
     {"id":{"name":"scribble_flush_everything","path":"scripts/scribble_flush_everything/scribble_flush_everything.yy",},"order":0,},
     {"id":{"name":"scribble_font_add","path":"scripts/scribble_font_add/scribble_font_add.yy",},"order":0,},
     {"id":{"name":"scribble_font_add_from_sprite","path":"scripts/scribble_font_add_from_sprite/scribble_font_add_from_sprite.yy",},"order":2,},

@@ -1231,7 +1231,7 @@ function __scribble_generate_model(_element)
             #endregion
             
             #region Find glyph data
-        
+            
             if (_font_glyphs_array == undefined)
             {
                 var _glyph_array = _font_glyphs_map[? _character_code];
