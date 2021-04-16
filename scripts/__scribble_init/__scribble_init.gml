@@ -257,8 +257,8 @@ function __scribble_array_find_index(_array, _value)
 #region Internal Macro Definitions
 
 // @jujuadams
-#macro __SCRIBBLE_VERSION  "7.1.2pre003"
-#macro __SCRIBBLE_DATE     "2021-04-03"
+#macro __SCRIBBLE_VERSION  "7.1.2"
+#macro __SCRIBBLE_DATE     "2021-04-16"
 #macro __SCRIBBLE_DEBUG    false
 
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
