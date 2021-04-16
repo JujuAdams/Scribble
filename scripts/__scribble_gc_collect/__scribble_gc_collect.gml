@@ -1,18 +1,5 @@
 function __scribble_gc_collect()
 {
-    #region Call gc_collect() manually every few seconds (works around a bug in GMS2.3.1)
-    
-    if ((SCRIBBLE_CACHE_COLLECT_FREQ >= 0) && (global.__scribble_gc_collect_time + SCRIBBLE_CACHE_COLLECT_FREQ < current_time))
-    {
-        global.__scribble_gc_collect_time = current_time;
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Running gc_collect()");
-        gc_collect();
-    }
-    
-    #endregion
-    
-    
-    
     if (current_time - global.__scribble_cache_check_time < __SCRIBBLE_EXPECTED_FRAME_TIME) exit;
     global.__scribble_cache_check_time = current_time;
     

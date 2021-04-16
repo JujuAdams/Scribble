@@ -31,8 +31,6 @@
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT      ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
-#macro SCRIBBLE_CACHE_COLLECT_FREQ        10000    //How often to force gc_collect(). This is essential as it works around a bug in GMS2.3.1. If you'd like to run gc_collect() yourself, set this macro to less than zero
-
 #macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   false    //*DEPRECATED*   Outputs an array of glyph LTRB bounding boxes
 #macro SCRIBBLE_CREATE_CHARACTER_ARRAY    false    //*DEPRECATED*   Outputs an array of character codes
 
