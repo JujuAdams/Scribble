@@ -57,6 +57,7 @@
     {"id":{"name":"obj_test_bezier","path":"objects/obj_test_bezier/obj_test_bezier.yy",},"order":11,},
     {"id":{"name":"scribble_glyph_set","path":"scripts/scribble_glyph_set/scribble_glyph_set.yy",},"order":2,},
     {"id":{"name":"__scribble_generate_model","path":"scripts/__scribble_generate_model/__scribble_generate_model.yy",},"order":7,},
+    {"id":{"name":"obj_test_newline","path":"objects/obj_test_newline/obj_test_newline.yy",},"order":40,},
     {"id":{"name":"scribble_glyph_get","path":"scripts/scribble_glyph_get/scribble_glyph_get.yy",},"order":3,},
     {"id":{"name":"obj_test_msdf","path":"objects/obj_test_msdf/obj_test_msdf.yy",},"order":27,},
     {"id":{"name":"obj_test_overwrite","path":"objects/obj_test_overwrite/obj_test_overwrite.yy",},"order":30,},
