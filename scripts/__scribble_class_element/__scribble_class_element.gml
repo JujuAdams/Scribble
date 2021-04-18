@@ -331,7 +331,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         var _old_page = __page;
         __page = _page;
-        if (_old_page != __page) __refresh_typewriter_for_page();
+        if (_old_page != __page) __refresh_typewriter_for_page(); //TODO - Figure out how to implement this with the typist
         return self;
     }
     
@@ -429,9 +429,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     static events_get = function(_position)
     {
         var _model = __get_model(true);
-        if (!is_struct(_model)) return undefined;
+        if (!is_struct(_model)) return [];
         
-        return _model.events[$ _position];
+        var _events = _model.events[$ _position];
+        if (!is_array(_events)) return [];
+        
+        return _events;
     }
     
     #endregion
@@ -736,8 +739,13 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param x
     /// @param y
-    static draw = function(_x, _y)
+    /// @param [typist]
+    static draw = function()
     {
+        var _x      = argument[0];
+        var _y      = argument[1];
+        var _typist = (argument_count > 2)? argument[2] : undefined;
+        
         //Get our model, and create one if needed
         var _model = __get_model(true);
         
@@ -755,15 +763,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
         
         #region Prepare shaders for drawing
-        
-        if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER && __legacy_tw_do)
-        {
-            var _tw_method = __legacy_tw_anim_ease_method;
-            var _tw_char_max = 0;
-            
-            if (!__legacy_tw_in) _tw_method += SCRIBBLE_EASE.__SIZE;
-            if (__legacy_tw_backwards) _tw_char_max = 1 + last_char - start_char;
-        }
         
         if (_model.uses_standard_font)
         {
@@ -786,7 +785,18 @@ function __scribble_class_element(_string, _unique_id) constructor
             
             if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
             {
-                if (reveal != undefined)
+                if (_typist != undefined)
+                {
+                    with(_typist)
+                    {
+                        //Tick over the typist
+                        __tick(other);
+                        
+                        //Let the typist set the shader uniforms
+                        __set_shader_uniforms();
+                    }
+                }
+                else if ((__tw_reveal != undefined) && (__tw_reveal_smoothness != undefined))
                 {
                     shader_set_uniform_i(global.__scribble_u_iTypewriterMethod,            SCRIBBLE_EASE.LINEAR);
                     shader_set_uniform_i(global.__scribble_u_iTypewriterCharMax,           0);
@@ -799,13 +809,19 @@ function __scribble_class_element(_string, _unique_id) constructor
                 }
                 else
                 {
-                    shader_set_uniform_i(global.__scribble_u_iTypewriterMethod, 0);
+                    shader_set_uniform_i(global.__scribble_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
                 }
             }
             else
             {
                 if (__legacy_tw_do)
                 {
+                    var _tw_method = __legacy_tw_anim_ease_method;
+                    var _tw_char_max = 0;
+                    
+                    if (!__legacy_tw_in) _tw_method += SCRIBBLE_EASE.__SIZE;
+                    if (__legacy_tw_backwards) _tw_char_max = 1 + last_char - start_char;
+                    
                     shader_set_uniform_i(global.__scribble_u_iTypewriterMethod,            _tw_method);
                     shader_set_uniform_i(global.__scribble_u_iTypewriterCharMax,           _tw_char_max);
                     shader_set_uniform_f(global.__scribble_u_fTypewriterSmoothness,        __legacy_tw_anim_smoothness);
@@ -817,7 +833,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 }
                 else
                 {
-                    shader_set_uniform_i(global.__scribble_u_iTypewriterMethod, 0);
+                    shader_set_uniform_i(global.__scribble_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
                 }
             }
             
@@ -843,20 +859,52 @@ function __scribble_class_element(_string, _unique_id) constructor
             shader_set_uniform_f_array(global.__scribble_msdf_u_aBezier, bezier_array);
             shader_set_uniform_f(global.__scribble_msdf_u_fBlinkState, animation_blink_state);
             
-            if ((SCRIBBLE_WARNING_LEGACY_TYPEWRITER && __legacy_tw_do) || (reveal != undefined))
+            if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
             {
-                shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod,            _tw_method);
-                shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterCharMax,           _tw_char_max);
-                shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,        __legacy_tw_anim_smoothness);
-                shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,          __legacy_tw_anim_dx, __legacy_tw_anim_dy);
-                shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,        __legacy_tw_anim_xscale, __legacy_tw_anim_yscale);
-                shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterStartRotation,     __legacy_tw_anim_rotation);
-                shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterAlphaDuration,     __legacy_tw_anim_alpha_duration);
-                shader_set_uniform_f_array(global.__scribble_msdf_u_fTypewriterWindowArray, __legacy_tw_window_array);
+                if (_typist != undefined)
+                {
+                    with(_typist)
+                    {
+                        //Tick over the typist
+                        __tick(other);
+                        
+                        //Let the typist set the shader uniforms
+                        __set_msdf_shader_uniforms();
+                    }
+                }
+                else if ((__tw_reveal != undefined) && (__tw_reveal_smoothness != undefined))
+                {
+                    shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod,            SCRIBBLE_EASE.LINEAR);
+                    shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterCharMax,           0);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,        __tw_reveal_smoothness);
+                    shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,          0, 0);
+                    shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,        1, 1);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterStartRotation,     0);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterAlphaDuration,     1.0);
+                    shader_set_uniform_f_array(global.__scribble_msdf_u_fTypewriterWindowArray, __tw_window_array);
+                }
+                else
+                {
+                    shader_set_uniform_i(global.__scribble_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
+                }
             }
             else
             {
-                shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod, 0);
+                if (__legacy_tw_do)
+                {
+                    shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod,            _tw_method);
+                    shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterCharMax,           _tw_char_max);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,        __legacy_tw_anim_smoothness);
+                    shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,          __legacy_tw_anim_dx, __legacy_tw_anim_dy);
+                    shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,        __legacy_tw_anim_xscale, __legacy_tw_anim_yscale);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterStartRotation,     __legacy_tw_anim_rotation);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterAlphaDuration,     __legacy_tw_anim_alpha_duration);
+                    shader_set_uniform_f_array(global.__scribble_msdf_u_fTypewriterWindowArray, __legacy_tw_window_array);
+                }
+                else
+                {
+                    shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
+                }
             }
                 
             shader_set_uniform_f(global.__scribble_msdf_u_vShadowOffset, msdf_shadow_xoffset, msdf_shadow_yoffset);
@@ -900,18 +948,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         return undefined;
     }
     
-    static draw_typewriter = function(_x, _y, _typist)
-    {
-        //Tick over the typist
-        _typist.__tick(self);
-        
-        //Copy over the typist array
-        array_copy(__tw_window, 0, _typist.__window_array, 0, 2*__SCRIBBLE_WINDOW_COUNT);
-        
-        //Then actually draw the thing
-        return draw(_x, _y);
-    }
-    
     static flush = function()
     {
         if (flushed) return undefined;
@@ -949,16 +985,19 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         var _page_data = _pages_array[__page];
         
-        __legacy_tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - __legacy_tw_anim_smoothness);
-        __legacy_tw_window_array[@ 0] += __legacy_tw_anim_smoothness;
-        
-        __legacy_tw_skip = false;
-        
-        if (__legacy_tw_in)
+        if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
         {
-            __legacy_tw_event_previous       = _page_data.start_event - 1;
-            __legacy_tw_event_char_previous  = _page_data.start_char - 1;
-            __legacy_tw_event_visited_struct = {};
+            __legacy_tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - __legacy_tw_anim_smoothness);
+            __legacy_tw_window_array[@ 0] += __legacy_tw_anim_smoothness;
+            
+            __legacy_tw_skip = false;
+            
+            if (__legacy_tw_in)
+            {
+                __legacy_tw_event_previous       = _page_data.start_event - 1;
+                __legacy_tw_event_char_previous  = _page_data.start_char - 1;
+                __legacy_tw_event_visited_struct = {};
+            }
         }
     }
     

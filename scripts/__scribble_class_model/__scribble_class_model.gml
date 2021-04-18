@@ -303,7 +303,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                 events[$ _character] = _events_array;
             }
             
-            array_push(_events_array, new __scribble_class_event(_character, _event_name, _data));
+            var _event_struct = new __scribble_class_event(_character, _event_name, _data);
+            array_push(_events_array, _event_struct);
         }
     }
     

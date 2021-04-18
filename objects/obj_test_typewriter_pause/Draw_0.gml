@@ -1,0 +1,1 @@
+scribble("abcdefg[pause]hijklmnop").draw(x, y, typist);
