@@ -388,7 +388,7 @@ function __scribble_class_typist() constructor
             //Get page data
             //We use this to set the maximum limit for the typewriter feature
             var _pages_array = _model.get_page_array();
-            if (array_length(_pages_array) == 0) return undefined;
+            if (array_length(_pages_array) <= __last_page) return undefined;
             var _page_data = _pages_array[__last_page];
             
             __window_array[@ __window_index] = min(1 + _page_data.last_char, _head_pos + _speed);
