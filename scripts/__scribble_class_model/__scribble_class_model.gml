@@ -45,6 +45,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     character_array  = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
     glyph_ltrb_array = undefined;
     
+    events = {}; //Stores events, key is the character position
+    
     events_char_array = []; //Stores each event's triggering character
     events_name_array = []; //Stores each event's name
     events_data_array = []; //Stores each event's parameters
@@ -155,6 +157,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         pages_array      = []; //Stores each page of text
         character_array  = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
         glyph_ltrb_array = undefined;
+        
+        events = {}; //Stores events, key is the character position
         
         events_char_array = []; //Stores each event's triggering character
         events_name_array = []; //Stores each event's name
@@ -281,6 +285,15 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         events_char_array[@ _count] = _character;
         events_name_array[@ _count] = _event_name;
         events_data_array[@ _count] = _data;
+        
+        var _events_array = events[$ _character];
+        if (!is_array(_events_array))
+        {
+            _events_array = [];
+            events[$ _character] = _events_array;
+        }
+        
+        array_push(_events_array, new __scribble_class_event(_character, _event_name, _data));
     }
     
     #endregion

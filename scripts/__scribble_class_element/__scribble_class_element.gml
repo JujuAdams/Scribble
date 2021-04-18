@@ -63,6 +63,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     bezier_array = array_create(6, 0.0);
     
+    __tw_reveal = undefined;
+    __tw_reveal_smoothness = 0;
+    __tw_window = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
+    
     tw_window       = 0;
     tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     tw_do           = false;
@@ -429,9 +433,35 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+    static reveal = function(_character, _smoothness)
+    {
+        __tw_reveal = _character;
+        __tw_reveal_smoothness = _smoothness;
+        
+        return self;
+    }
+    
+    static reveal_get = function()
+    {
+        return __tw_reveal;
+    }
+    
+    static reveal_smoothness_get = function()
+    {
+        return __tw_reveal_smoothness;
+    }
+    
+    static events_get = function(_position)
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return undefined;
+        
+        return _model.events[$ _position];
+    }
+    
     #endregion
     
-    #region Typewriter Setters
+    #region (Deprecated - Typewriter Setters)
     
     static typewriter_off = function()
     {
@@ -1041,6 +1071,11 @@ function __scribble_class_element(_string, _unique_id) constructor
         __scribble_gc_collect();
         
         return undefined;
+    }
+    
+    static draw_typewriter = function(_x, _y, _typewriter)
+    {
+        
     }
     
     static flush = function()

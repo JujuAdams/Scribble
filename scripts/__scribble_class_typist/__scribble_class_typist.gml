@@ -1,5 +1,7 @@
 function __scribble_class_typist() constructor
 {
+    __last_element = undefined;
+    
     __window       = 0;
     __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     __in           = true;
@@ -88,6 +90,7 @@ function __scribble_class_typist() constructor
     static skip = function()
     {
         __skip = true;
+        
         return self;
     }
     
