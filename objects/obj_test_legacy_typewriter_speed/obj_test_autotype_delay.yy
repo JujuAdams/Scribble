@@ -18,18 +18,17 @@
   "physicsKinematic": false,
   "physicsShapePoints": [],
   "eventList": [
-    {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
-    {"isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
-    {"isDnD":false,"eventNum":0,"eventType":3,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"parent":{"name":"obj_test_autotype_delay","path":"objects/obj_test_autotype_delay/obj_test_autotype_delay.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,"parent":{"name":"obj_test_autotype_delay","path":"objects/obj_test_autotype_delay/obj_test_autotype_delay.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
     "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "path": "folders/Examples/Test Cases.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_typewriter_pause",
+  "name": "obj_test_autotype_delay",
   "tags": [],
   "resourceType": "GMObject",
 }

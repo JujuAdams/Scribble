@@ -11,7 +11,6 @@ function __scribble_config_default_template()
     origin(0, 0);
     wrap(-1, -1, false);
     line_height(-1, -1);
-    typewriter_off();
     page(0);
     fog(c_white, 0.0);
     ignore_command_tags(false);
@@ -23,4 +22,6 @@ function __scribble_config_default_template()
     animation_wheel(1, 0.5, 0.2);
     animation_cycle(0.3, 180, 255);
     animation_jitter(0.8, 1.2, 0.4);
+    
+    if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER) typewriter_off();
 }

@@ -1527,7 +1527,7 @@ function __scribble_generate_model(_element)
                 _new_page_data.lines       = 1;
                 _new_page_data.start_char  = characters; //We'll update this later to a more accurate value
                 _new_page_data.last_char   = characters;
-                _new_page_data.start_event = array_length(events_name_array);
+                _new_page_data.start_event = array_length(__legacy_events_name_array);
                 _new_page_data.height      = _line_height;
                 
                 //Steal the last line from the previous page

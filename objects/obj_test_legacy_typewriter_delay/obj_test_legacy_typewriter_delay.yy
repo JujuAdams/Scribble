@@ -24,11 +24,11 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Legacy",
+    "path": "folders/Test Cases/Legacy.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_typewriter_delay",
+  "name": "obj_test_legacy_typewriter_delay",
   "tags": [],
   "resourceType": "GMObject",
 }

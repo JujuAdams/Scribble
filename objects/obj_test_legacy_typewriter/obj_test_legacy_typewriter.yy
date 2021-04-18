@@ -25,11 +25,11 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Legacy",
+    "path": "folders/Test Cases/Legacy.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_typewriter_pos",
+  "name": "obj_test_legacy_typewriter",
   "tags": [],
   "resourceType": "GMObject",
 }

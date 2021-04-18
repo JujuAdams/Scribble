@@ -47,9 +47,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     events = {}; //Stores events, key is the character position
     
-    events_char_array = []; //Stores each event's triggering character
-    events_name_array = []; //Stores each event's name
-    events_data_array = []; //Stores each event's parameters
+    if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
+    {
+        __legacy_events_char_array = []; //Stores each event's triggering character
+        __legacy_events_name_array = []; //Stores each event's name
+        __legacy_events_data_array = []; //Stores each event's parameters
+    }
     
     
     
@@ -160,9 +163,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
         events = {}; //Stores events, key is the character position
         
-        events_char_array = []; //Stores each event's triggering character
-        events_name_array = []; //Stores each event's name
-        events_data_array = []; //Stores each event's parameters
+        if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
+        {
+            __legacy_events_char_array = []; //Stores each event's triggering character
+            __legacy_events_name_array = []; //Stores each event's name
+            __legacy_events_data_array = []; //Stores each event's parameters
+        }
     }
     
     /// @param page
@@ -281,19 +287,24 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     static __new_event = function(_character, _event_name, _data)
     {
-        var _count = array_length(events_char_array);
-        events_char_array[@ _count] = _character;
-        events_name_array[@ _count] = _event_name;
-        events_data_array[@ _count] = _data;
-        
-        var _events_array = events[$ _character];
-        if (!is_array(_events_array))
+        if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
         {
-            _events_array = [];
-            events[$ _character] = _events_array;
+            var _count = array_length(__legacy_events_char_array);
+            __legacy_events_char_array[@ _count] = _character;
+            __legacy_events_name_array[@ _count] = _event_name;
+            __legacy_events_data_array[@ _count] = _data;
         }
-        
-        array_push(_events_array, new __scribble_class_event(_character, _event_name, _data));
+        else
+        {
+            var _events_array = events[$ _character];
+            if (!is_array(_events_array))
+            {
+                _events_array = [];
+                events[$ _character] = _events_array;
+            }
+            
+            array_push(_events_array, new __scribble_class_event(_character, _event_name, _data));
+        }
     }
     
     #endregion
