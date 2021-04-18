@@ -1,3 +1,3 @@
-element.draw(x, y);
+scribble("abcdef abcdef abcdef.").draw(x, y, typist);
 
-if (element.get_typewriter_state() == 1.0) draw_circle(10, 10, 10, false);
+if (typist.get_state() == 1.0) draw_circle(10, 10, 10, false);

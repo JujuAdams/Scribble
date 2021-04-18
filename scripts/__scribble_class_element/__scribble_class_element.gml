@@ -1271,7 +1271,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #endregion
     
-    #region Legacy Typewrite Code
+    #region Legacy Typewriter Code
     
     if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
     {

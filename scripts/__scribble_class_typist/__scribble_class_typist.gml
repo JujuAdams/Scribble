@@ -10,13 +10,13 @@ function __scribble_class_typist() constructor
     __paused       = false;
     __delay_paused = false;
     __delay_end    = -1;
+    __inline_speed = 1;
+    __event_stack  = [];
     
-    __event_stack = [];
-    __scanned_zeroth = false;
-    
-    __in           = true;
-    __backwards    = false;
-    __function     = undefined;
+    __speed      = 1;
+    __smoothness = 0;
+    __in         = true;
+    __backwards  = false;
     
     __sound_array       = undefined;
     __sound_overlap     = 0;
@@ -24,18 +24,15 @@ function __scribble_class_typist() constructor
     __sound_pitch_max   = 1;
     __sound_per_char    = false;
     __sound_finish_time = current_time;
+    __function          = undefined;
     
-    __speed      = 1;
-    __smoothness = 0;
-    
-    __inline_speed        = 1;
-    __anim_ease_method    = SCRIBBLE_EASE.LINEAR;
-    __anim_dx             = 0;
-    __anim_dy             = 0;
-    __anim_xscale         = 1;
-    __anim_yscale         = 1;
-    __anim_rotation       = 0;
-    __anim_alpha_duration = 1.0;
+    __ease_method    = SCRIBBLE_EASE.LINEAR;
+    __ease_dx             = 0;
+    __ease_dy             = 0;
+    __ease_xscale         = 1;
+    __ease_yscale         = 1;
+    __ease_rotation       = 0;
+    __ease_alpha_duration = 1.0;
     
     
     
@@ -46,17 +43,13 @@ function __scribble_class_typist() constructor
         __last_page      = 0;
         __last_character = 0;
         
-        __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness);
-        __window_array[@ 0] = 0;
         __window_index = 0;
-        
+        __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
         __skip         = false;
         __paused       = false;
         __delay_paused = false;
         __delay_end    = -1;
-        
-        __event_stack = [];
-        __scanned_zeroth = false;
+        __event_stack  = [];
         
         return self;
     }
@@ -173,15 +166,37 @@ function __scribble_class_typist() constructor
     /// @param alphaDuration
     static ease = function(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration)
     {
-        __anim_ease_method    = _ease_method;
-        __anim_dx             = _dx;
-        __anim_dy             = _dy;
-        __anim_xscale         = _xscale;
-        __anim_yscale         = _yscale;
-        __anim_rotation       = _rotation;
-        __anim_alpha_duration = _alpha_duration;
+        __ease_method    = _ease_method;
+        __ease_dx             = _dx;
+        __ease_dy             = _dy;
+        __ease_xscale         = _xscale;
+        __ease_yscale         = _yscale;
+        __ease_rotation       = _rotation;
+        __ease_alpha_duration = _alpha_duration;
         
         return self;
+    }
+    
+    static associate = function(_text_element)
+    {
+        //Keep track of what element we're looking at
+        if (__last_element == undefined)
+        {
+            reset();
+            __last_element = weak_ref_create(_text_element);
+        }
+        else if (!weak_ref_alive(__last_element))
+        {
+            __scribble_trace("Warning! Typist's target text element has been garbage collected");
+            reset();
+            __last_element = weak_ref_create(_text_element);
+        }
+        else if (__last_element.ref != _text_element)
+        {
+            __scribble_trace("Warning! Using typist for different text element");
+            reset();
+            __last_element = weak_ref_create(_text_element);
+        }
     }
     
     #endregion
@@ -215,6 +230,11 @@ function __scribble_class_typist() constructor
     static get_position = function()
     {
         return __window_array[__window_index];
+    }
+    
+    static get_text_element = function()
+    {
+        return __last_element;
     }
     
     #endregion
@@ -338,23 +358,9 @@ function __scribble_class_typist() constructor
     
     static __tick = function(_target_element)
     {
-        //Keep track of what element we're looking at
-        if (__last_element == undefined)
-        {
-            reset();
-            __last_element = weak_ref_create(_target_element);
-        }
-        else if (!weak_ref_alive(__last_element))
-        {
-            __scribble_trace("Warning! Typist's target text element has been garbage collected");
-            
-            reset();
-            __last_element = weak_ref_create(_target_element);
-        }
-        else if (__last_element.ref != _target_element)
-        {
-            __scribble_trace("Using typist for new text element");
-        }
+        //Associate the typist with the target element so that we're pulling data from the correct place
+        //This saves the user from doing it themselves
+        associate(_target_element);
         
         //Calculate our speed based on our set typewriter speed, any in-line [speed] tags, and the overall tick size
         //We set inline speed in __process_event_stack()
@@ -396,12 +402,12 @@ function __scribble_class_typist() constructor
         if (!_paused)
         {
             //Find the model from the last element
-            var _model = _target_element.__get_model(true);
+            var _model = __last_element.ref.__get_model(true);
             if (!is_struct(_model)) return undefined;
             
             //Get page data
             //We use this to set the maximum limit for the typewriter feature
-            var _page = _target_element.__page;
+            var _page = __last_element.ref.__page;
             var _pages_array = _model.get_page_array();
             if (array_length(_pages_array) == 0) return undefined;
             var _page_data = _pages_array[_page];
@@ -420,7 +426,7 @@ function __scribble_class_typist() constructor
                     _play_sound = true;
                     
                     //Get an array of events for this character from the text element
-                    var _found_events = _target_element.events_get(__last_character);
+                    var _found_events = __last_element.ref.events_get(__last_character);
                     __last_character++;
                     
                     __execute_function_per_character();
@@ -437,7 +443,7 @@ function __scribble_class_typist() constructor
                         //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
                         if (!__process_event_stack())
                         {
-                            _head_pos = __last_character; //Lock our head position so we don't overstep
+                            _head_pos = __last_character - 1; //Lock our head position so we don't overstep
                             break;
                         }
                     }
@@ -462,7 +468,7 @@ function __scribble_class_typist() constructor
     
     static __set_shader_uniforms = function()
     {
-        var _tw_method = __anim_ease_method;
+        var _tw_method = __ease_method;
         if (!__in) _tw_method += SCRIBBLE_EASE.__SIZE;
         
         var _tw_char_max = 0;
@@ -472,16 +478,16 @@ function __scribble_class_typist() constructor
         shader_set_uniform_i(global.__scribble_u_iTypewriterMethod,            _tw_method);
         shader_set_uniform_i(global.__scribble_u_iTypewriterCharMax,           _tw_char_max);
         shader_set_uniform_f(global.__scribble_u_fTypewriterSmoothness,        __smoothness);
-        shader_set_uniform_f(global.__scribble_u_vTypewriterStartPos,          __anim_dx, __anim_dy);
-        shader_set_uniform_f(global.__scribble_u_vTypewriterStartScale,        __anim_xscale, __anim_yscale);
-        shader_set_uniform_f(global.__scribble_u_fTypewriterStartRotation,     __anim_rotation);
-        shader_set_uniform_f(global.__scribble_u_fTypewriterAlphaDuration,     __anim_alpha_duration);
+        shader_set_uniform_f(global.__scribble_u_vTypewriterStartPos,          __ease_dx, __ease_dy);
+        shader_set_uniform_f(global.__scribble_u_vTypewriterStartScale,        __ease_xscale, __ease_yscale);
+        shader_set_uniform_f(global.__scribble_u_fTypewriterStartRotation,     __ease_rotation);
+        shader_set_uniform_f(global.__scribble_u_fTypewriterAlphaDuration,     __ease_alpha_duration);
         shader_set_uniform_f_array(global.__scribble_u_fTypewriterWindowArray, __window_array);
     }
     
     static __set_msdf_shader_uniforms = function()
     {
-        var _tw_method = __anim_ease_method;
+        var _tw_method = __ease_method;
         if (!__in) _tw_method += SCRIBBLE_EASE.__SIZE;
         
         var _tw_char_max = 0;
@@ -491,10 +497,10 @@ function __scribble_class_typist() constructor
         shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod,            _tw_method);
         shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterCharMax,           _tw_char_max);
         shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,        __smoothness);
-        shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,          __anim_dx, __anim_dy);
-        shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,        __anim_xscale, __anim_yscale);
-        shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterStartRotation,     __anim_rotation);
-        shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterAlphaDuration,     __anim_alpha_duration);
+        shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,          __ease_dx, __ease_dy);
+        shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,        __ease_xscale, __ease_yscale);
+        shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterStartRotation,     __ease_rotation);
+        shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterAlphaDuration,     __ease_alpha_duration);
         shader_set_uniform_f_array(global.__scribble_msdf_u_fTypewriterWindowArray, __window_array);
     }
     
