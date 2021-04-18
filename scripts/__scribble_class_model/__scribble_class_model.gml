@@ -47,13 +47,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     events = {}; //Stores events, key is the character position
     
-    if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
-    {
-        __legacy_events_char_array = []; //Stores each event's triggering character
-        __legacy_events_name_array = []; //Stores each event's name
-        __legacy_events_data_array = []; //Stores each event's parameters
-    }
-    
     
     
     #region Public Methods
@@ -162,13 +155,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         glyph_ltrb_array = undefined;
         
         events = {}; //Stores events, key is the character position
-        
-        if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
-        {
-            __legacy_events_char_array = []; //Stores each event's triggering character
-            __legacy_events_name_array = []; //Stores each event's name
-            __legacy_events_data_array = []; //Stores each event's parameters
-        }
     }
     
     /// @param page
@@ -287,25 +273,15 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     static __new_event = function(_character, _event_name, _data)
     {
-        if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
+        var _events_array = events[$ _character];
+        if (!is_array(_events_array))
         {
-            var _count = array_length(__legacy_events_char_array);
-            __legacy_events_char_array[@ _count] = _character;
-            __legacy_events_name_array[@ _count] = _event_name;
-            __legacy_events_data_array[@ _count] = _data;
+            _events_array = [];
+            events[$ _character] = _events_array;
         }
-        else
-        {
-            var _events_array = events[$ _character];
-            if (!is_array(_events_array))
-            {
-                _events_array = [];
-                events[$ _character] = _events_array;
-            }
-            
-            var _event_struct = new __scribble_class_event(_character, _event_name, _data);
-            array_push(_events_array, _event_struct);
-        }
+        
+        var _event_struct = new __scribble_class_event(_character, _event_name, _data);
+        array_push(_events_array, _event_struct);
     }
     
     #endregion

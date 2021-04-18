@@ -218,8 +218,7 @@ function __scribble_class_typist() constructor
         if ((__last_element == undefined) || (__last_page == undefined) || (__last_character == undefined)) return 0.0;
         
         var _pages_array = __last_element.__get_model(true).get_page_array();
-        if (array_length(_pages_array) == 0) return 1.0;
-        
+        if (array_length(_pages_array) <= __last_page) return 1.0;
         var _page_data = _pages_array[__last_page];
         var _min = _page_data.start_char;
         var _max = _page_data.last_char + 1; //Off by one
@@ -475,15 +474,26 @@ function __scribble_class_typist() constructor
     
     static __set_shader_uniforms = function()
     {
-        var _tw_method = __ease_method;
-        if (!__in) _tw_method += SCRIBBLE_EASE.__SIZE;
+        var _method = __ease_method;
+        if (!__in) _method += SCRIBBLE_EASE.__SIZE;
         
-        var _tw_char_max = 0;
-        //TODO - Reimplement backwards typing
-        //if (__tw_backwards) _tw_char_max = 1 + last_char - start_char;
+        var _char_max = 0;
+        if (__backwards)
+        {
+            var _pages_array = __last_element.__get_model(true).get_page_array();
+            if (array_length(_pages_array) > __last_page)
+            {
+                var _page_data = _pages_array[__last_page];
+                _char_max = 1 + _page_data.last_char - _page_data.start_char;
+            }
+            else
+            {
+                __scribble_trace("Warning! Typist page (", __last_page, ") exceeds text element page count (", array_length(_pages_array), ")");
+            }
+        }
         
-        shader_set_uniform_i(global.__scribble_u_iTypewriterMethod,            _tw_method);
-        shader_set_uniform_i(global.__scribble_u_iTypewriterCharMax,           _tw_char_max);
+        shader_set_uniform_i(global.__scribble_u_iTypewriterMethod,            _method);
+        shader_set_uniform_i(global.__scribble_u_iTypewriterCharMax,           _char_max);
         shader_set_uniform_f(global.__scribble_u_fTypewriterSmoothness,        __smoothness);
         shader_set_uniform_f(global.__scribble_u_vTypewriterStartPos,          __ease_dx, __ease_dy);
         shader_set_uniform_f(global.__scribble_u_vTypewriterStartScale,        __ease_xscale, __ease_yscale);
@@ -494,15 +504,26 @@ function __scribble_class_typist() constructor
     
     static __set_msdf_shader_uniforms = function()
     {
-        var _tw_method = __ease_method;
-        if (!__in) _tw_method += SCRIBBLE_EASE.__SIZE;
+        var _method = __ease_method;
+        if (!__in) _method += SCRIBBLE_EASE.__SIZE;
         
-        var _tw_char_max = 0;
-        //TODO - Reimplement backwards typing
-        //if (__tw_backwards) _tw_char_max = 1 + last_char - start_char;
+        var _char_max = 0;
+        if (__backwards)
+        {
+            var _pages_array = __last_element.__get_model(true).get_page_array();
+            if (array_length(_pages_array) > __last_page)
+            {
+                var _page_data = _pages_array[__last_page];
+                _char_max = 1 + _page_data.last_char - _page_data.start_char;
+            }
+            else
+            {
+                __scribble_trace("Warning! Typist page (", __last_page, ") exceeds text element page count (", array_length(_pages_array), ")");
+            }
+        }
         
-        shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod,            _tw_method);
-        shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterCharMax,           _tw_char_max);
+        shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod,            _method);
+        shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterCharMax,           _char_max);
         shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,        __smoothness);
         shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,          __ease_dx, __ease_dy);
         shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,        __ease_xscale, __ease_yscale);
