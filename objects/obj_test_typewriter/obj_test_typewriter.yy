@@ -29,7 +29,7 @@
     "path": "folders/Test Cases.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_typist",
+  "name": "obj_test_typewriter",
   "tags": [],
   "resourceType": "GMObject",
 }

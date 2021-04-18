@@ -199,10 +199,9 @@ function __scribble_class_typist() constructor
         
         var _page_data = _pages_array[__last_page];
         var _min = _page_data.start_char;
-        var _max = _page_data.last_char;
+        var _max = _page_data.last_char + 1; //Off by one
         
         if (_max <= _min) return 1.0;
-        _max += 1; //Bit of a hack
         
         var _t = clamp((get_position() - _min) / (_max - _min), 0, 1);
         return __in? _t : (_t + 1);
@@ -226,25 +225,32 @@ function __scribble_class_typist() constructor
     
     static __process_event_stack = function()
     {
+        //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
+        //We return <true> if there have been no pausing behaviours called i.e. [pause] and [delay]
+        //We return <false> immediately if we do run into pausing behaviours
+        
         repeat(array_length(__event_stack))
         {
+            //Pop the first event from the stack
             var _event_struct = __event_stack[0];
             array_delete(__event_stack, 0, 1);
             
-            __scribble_trace("Found ", _event_struct);
-            
+            //Collect data from the struct
+            //This data is set in __scribble_generate_model() via the .__new_event() method on the model class
             var _event_position = _event_struct.position;
             var _event_name     = _event_struct.name;
             var _event_data     = _event_struct.data;
             
             switch(_event_name)
             {
+                //Simple pause
                 case "pause":
                     if (!__skip) __paused = true;
                     
                     return false;
                 break;
                 
+                //Time-related delay
                 case "delay":
                     if (!__skip)
                     {
@@ -256,6 +262,7 @@ function __scribble_class_typist() constructor
                     return false;
                 break;
                 
+                //In-line speed setting
                 case "speed":
                     if (array_length(_event_data) >= 1) __inline_speed = real(_event_data[0]);
                 break;
@@ -264,10 +271,12 @@ function __scribble_class_typist() constructor
                     __inline_speed = 1;
                 break;
                 
+                //Native audio playback feature
                 case "__scribble_audio_playback__": //TODO - Rename and add warning when adding a conflicting custom event
                     if (array_length(_event_data) >= 1) audio_play_sound(_event_data[0], 1, false);
                 break;
                 
+                //Porbably a current event
                 default:
                     //Otherwise try to find a custom event
                     var _function = global.__scribble_typewriter_events[? _event_name];
@@ -279,6 +288,10 @@ function __scribble_class_typist() constructor
                     {
                         with(other) script_execute(_function, self, _event_data, _event_position);
                     }
+                    else
+                    {
+                        __scribble_trace("Warning! Event [", _event_name, "] not recognised");
+                    }
                 break;
             }
         }
@@ -286,7 +299,7 @@ function __scribble_class_typist() constructor
         return true;
     }
     
-    static __play_sound_per_character = function()
+    static __play_sound = function()
     {
         var _sound_array = __sound_array;
         if (is_array(_sound_array) && (array_length(_sound_array) > 0))
@@ -325,7 +338,7 @@ function __scribble_class_typist() constructor
     
     static __tick = function(_target_element)
     {
-        //Keep track 
+        //Keep track of what element we're looking at
         if (__last_element == undefined)
         {
             reset();
@@ -374,6 +387,12 @@ function __scribble_class_typist() constructor
             }
         }
         
+        //If we've still got stuff on the event stack, pop those off
+        if (!_paused && (array_length(__event_stack) > 0))
+        {
+            if (!__process_event_stack()) _paused = true;
+        }
+        
         if (!_paused)
         {
             //Find the model from the last element
@@ -387,33 +406,21 @@ function __scribble_class_typist() constructor
             
             var _page_data = _pages_array[_page];
             
+            var _play_sound = false;
             var _remaining = min(1 + _page_data.last_char - _head_pos, _speed);
             while(_remaining > 0)
             {
-                var _next_pos = _head_pos + min(1, _remaining);
-                if (_next_pos >= __last_character + 1)
+                _head_pos += min(1, _remaining);
+                _remaining -= 1;
+                
+                if (_head_pos >= __last_character)
                 {
-                    ////Special case for scanning events right at the start of the string
-                    //if (!__scanned_zeroth && (__last_character == 0))
-                    //{
-                    //    __scanned_zeroth = true;
-                    //    
-                    //    var _found_events = _target_element.events_get(0);
-                    //    var _found_size = array_length(_found_events);
-                    //    
-                    //    if (_found_size > 0)
-                    //    {
-                    //        var _old_stack_size = array_length(__event_stack);
-                    //        array_resize(__event_stack, _old_stack_size + _found_size);
-                    //        array_copy(__event_stack, _old_stack_size, _found_events, 0, _found_size);
-                    //
-                    //        if (!__process_event_stack()) break;
-                    //    }
-                    //}
+                    _play_sound = true;
                     
-                    
-                    __last_character++;
                     var _found_events = _target_element.events_get(__last_character);
+                    __last_character++;
+                    
+                    __execute_function_per_character();
                     
                     var _found_size = array_length(_found_events);
                     if (_found_size > 0)
@@ -424,14 +431,11 @@ function __scribble_class_typist() constructor
                         
                         if (!__process_event_stack()) break;
                     }
-                    
-                    __play_sound_per_character();
-                    __execute_function_per_character();
                 }
-                
-                _head_pos = _next_pos;
-                _remaining -= 1;
             }
+            
+            //Only play sound once per frame if we're going reaaaally fast
+            if (_play_sound) __play_sound();
             
             //Set the typewriter head
             __window_array[@ __window_index] = _head_pos;

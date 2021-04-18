@@ -28,7 +28,7 @@
     "path": "folders/Test Cases.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_typewriter_simple",
+  "name": "obj_test_typewriter_manual",
   "tags": [],
   "resourceType": "GMObject",
 }
