@@ -15,7 +15,7 @@ function __scribble_class_typist() constructor
     
     __speed      = 1;
     __smoothness = 0;
-    __in         = true;
+    __in         = undefined;
     __backwards  = false;
     
     __sound_array       = undefined;
@@ -59,12 +59,14 @@ function __scribble_class_typist() constructor
     /// @param smoothness
     static in = function(_speed, _smoothness)
     {
+        var _old_in = __in;
+        
         __in         = true;
         __backwards  = false;
         __speed      = _speed;
         __smoothness = _smoothness;
         
-        if (!__in) reset();
+        if ((_old_in == undefined) || !_old_in) reset();
         
         return self;
     }
@@ -78,12 +80,14 @@ function __scribble_class_typist() constructor
         var _smoothness = argument[1];
         var _backwards  = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
         
+        var _old_in = __in;
+        
         __in         = false;
         __backwards  = _backwards;
         __speed      = _speed;
         __smoothness = _smoothness;
         
-        if (__in) reset();
+        if ((_old_in == undefined) || _old_in) reset();
         
         return self;
     }
@@ -180,7 +184,7 @@ function __scribble_class_typist() constructor
     
     static associate = function(_text_element)
     {
-        if (__last_element == undefined) //We didn't have an element defined
+        if ((__last_element == undefined) || (__last_element.ref != _text_element)) //We didn't have an element defined, or we swapped to a different element
         {
             reset();
             __last_element = weak_ref_create(_text_element);
@@ -188,12 +192,6 @@ function __scribble_class_typist() constructor
         else if (!weak_ref_alive(__last_element)) //Our associated element got GC'd for some reason and we didn't
         {
             __scribble_trace("Warning! Typist's target text element has been garbage collected");
-            reset();
-            __last_element = weak_ref_create(_text_element);
-        }
-        else if (__last_element.ref != _text_element) //Miscellaneous change. The user reaaally shouldn't swap around typists tbh
-        {
-            __scribble_trace("Warning! Using typist for different text element"); //TODO - Make this an error?
             reset();
             __last_element = weak_ref_create(_text_element);
         }
@@ -216,8 +214,9 @@ function __scribble_class_typist() constructor
     static get_state = function()
     {
         if ((__last_element == undefined) || (__last_page == undefined) || (__last_character == undefined)) return 0.0;
+        if (__in == undefined) return 1.0;
         
-        var _pages_array = __last_element.__get_model(true).get_page_array();
+        var _pages_array = __last_element.ref.__get_model(true).get_page_array();
         if (array_length(_pages_array) <= __last_page) return 1.0;
         var _page_data = _pages_array[__last_page];
         var _min = _page_data.start_char;
@@ -236,6 +235,7 @@ function __scribble_class_typist() constructor
     
     static get_position = function()
     {
+        if (__in == undefined) return 0;
         return __window_array[__window_index];
     }
     
@@ -369,6 +369,9 @@ function __scribble_class_typist() constructor
         //This saves the user from doing it themselves
         associate(_target_element);
         
+        //If __in hasn't been set yet (.in() / .out() haven't been set) then just nope out
+        if (__in == undefined) return undefined;
+        
         //Calculate our speed based on our set typewriter speed, any in-line [speed] tags, and the overall tick size
         //We set inline speed in __process_event_stack()
         var _speed = __speed*__inline_speed*SCRIBBLE_TICK_SIZE;
@@ -376,37 +379,7 @@ function __scribble_class_typist() constructor
         //Find the leading edge of our windows
         var _head_pos = __window_array[__window_index];
         
-        //Handle pausing
-        var _paused = false;
-        if (__paused)
-        {
-            _paused = true;
-        }
-        else if (__delay_paused)
-        {
-            if (current_time > __delay_end)
-            {
-                //We've waited long enough, start showing more text
-                __delay_paused = false;
-                
-                //Increment the window index
-                __window_index = (__window_index + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
-                __window_array[@ __window_index  ] = _head_pos;
-                __window_array[@ __window_index+1] = _head_pos - __smoothness;
-            }
-            else
-            {
-                _paused = true;
-            }
-        }
-        
-        //If we've still got stuff on the event stack, pop those off
-        if (!_paused && (array_length(__event_stack) > 0))
-        {
-            if (!__process_event_stack()) _paused = true;
-        }
-        
-        if (!_paused)
+        if (!__in)
         {
             //Find the model from the last element
             var _model = __last_element.ref.__get_model(true);
@@ -418,49 +391,96 @@ function __scribble_class_typist() constructor
             if (array_length(_pages_array) == 0) return undefined;
             var _page_data = _pages_array[__last_page];
             
-            var _play_sound = false;
-            var _remaining = min(1 + _page_data.last_char - _head_pos, _speed);
-            while(_remaining > 0)
+            __window_array[@ __window_index] = min(1 + _page_data.last_char, _head_pos + _speed);
+        }
+        else
+        {
+            //Handle pausing
+            var _paused = false;
+            if (__paused)
             {
-                //Scan for events one character at a time
-                _head_pos += min(1, _remaining);
-                _remaining -= 1;
-                
-                //Only scan for new events if we've moved onto a new character
-                if (_head_pos >= __last_character)
+                _paused = true;
+            }
+            else if (__delay_paused)
+            {
+                if (current_time > __delay_end)
                 {
-                    _play_sound = true;
-                    
-                    //Get an array of events for this character from the text element
-                    var _found_events = __last_element.ref.events_get(__last_character);
-                    __last_character++;
-                    
-                    __execute_function_per_character();
-                    
-                    var _found_size = array_length(_found_events);
-                    if (_found_size > 0)
-                    {
-                        //Copy our found array of events onto our stack
-                        var _old_stack_size = array_length(__event_stack);
-                        array_resize(__event_stack, _old_stack_size + _found_size);
-                        array_copy(__event_stack, _old_stack_size, _found_events, 0, _found_size);
-                        
-                        //Process the stack
-                        //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
-                        if (!__process_event_stack())
-                        {
-                            _head_pos = __last_character - 1; //Lock our head position so we don't overstep
-                            break;
-                        }
-                    }
+                    //We've waited long enough, start showing more text
+                    __delay_paused = false;
+                
+                    //Increment the window index
+                    __window_index = (__window_index + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
+                    __window_array[@ __window_index  ] = _head_pos;
+                    __window_array[@ __window_index+1] = _head_pos - __smoothness;
+                }
+                else
+                {
+                    _paused = true;
                 }
             }
             
-            //Only play sound once per frame if we're going reaaaally fast
-            if (_play_sound) __play_sound();
+            //If we've still got stuff on the event stack, pop those off
+            if (!_paused && (array_length(__event_stack) > 0))
+            {
+                if (!__process_event_stack()) _paused = true;
+            }
             
-            //Set the typewriter head
-            __window_array[@ __window_index] = _head_pos;
+            if (!_paused)
+            {
+                //Find the model from the last element
+                var _model = __last_element.ref.__get_model(true);
+                if (!is_struct(_model)) return undefined;
+                
+                //Get page data
+                //We use this to set the maximum limit for the typewriter feature
+                var _pages_array = _model.get_page_array();
+                if (array_length(_pages_array) == 0) return undefined;
+                var _page_data = _pages_array[__last_page];
+                
+                var _play_sound = false;
+                var _remaining = min(1 + _page_data.last_char - _head_pos, _speed);
+                while(_remaining > 0)
+                {
+                    //Scan for events one character at a time
+                    _head_pos += min(1, _remaining);
+                    _remaining -= 1;
+                    
+                    //Only scan for new events if we've moved onto a new character
+                    if (_head_pos >= __last_character)
+                    {
+                        _play_sound = true;
+                        
+                        //Get an array of events for this character from the text element
+                        var _found_events = __last_element.ref.events_get(__last_character);
+                        __last_character++;
+                        
+                        __execute_function_per_character();
+                        
+                        var _found_size = array_length(_found_events);
+                        if (_found_size > 0)
+                        {
+                            //Copy our found array of events onto our stack
+                            var _old_stack_size = array_length(__event_stack);
+                            array_resize(__event_stack, _old_stack_size + _found_size);
+                            array_copy(__event_stack, _old_stack_size, _found_events, 0, _found_size);
+                            
+                            //Process the stack
+                            //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
+                            if (!__process_event_stack())
+                            {
+                                _head_pos = __last_character - 1; //Lock our head position so we don't overstep
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                //Only play sound once per frame if we're going reaaaally fast
+                if (_play_sound) __play_sound();
+                
+                //Set the typewriter head
+                __window_array[@ __window_index] = _head_pos;
+            }
         }
         
         //Move the typewriter tail
@@ -474,13 +494,20 @@ function __scribble_class_typist() constructor
     
     static __set_shader_uniforms = function()
     {
+        //If __in hasn't been set yet (.in() / .out() haven't been set) then just nope out
+        if (__in == undefined)
+        {
+            shader_set_uniform_i(global.__scribble_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
+            return undefined;
+        }
+        
         var _method = __ease_method;
         if (!__in) _method += SCRIBBLE_EASE.__SIZE;
         
         var _char_max = 0;
         if (__backwards)
         {
-            var _pages_array = __last_element.__get_model(true).get_page_array();
+            var _pages_array = __last_element.ref.__get_model(true).get_page_array();
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];
@@ -504,13 +531,20 @@ function __scribble_class_typist() constructor
     
     static __set_msdf_shader_uniforms = function()
     {
+        //If __in hasn't been set yet (.in() / .out() haven't been set) then just nope out
+        if (__in == undefined)
+        {
+            shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
+            return undefined;
+        }
+        
         var _method = __ease_method;
         if (!__in) _method += SCRIBBLE_EASE.__SIZE;
         
         var _char_max = 0;
         if (__backwards)
         {
-            var _pages_array = __last_element.__get_model(true).get_page_array();
+            var _pages_array = __last_element.ref.__get_model(true).get_page_array();
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];

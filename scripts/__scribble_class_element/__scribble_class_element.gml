@@ -1055,7 +1055,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _backwards  = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
         
         __tw_legacy_typist_use = true;
-        __tw_legacy_typist.in(_speed, _smoothness, _backwards);
+        __tw_legacy_typist.out(_speed, _smoothness, _backwards);
         
         if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) __tw_legacy_typist.skip();
         
