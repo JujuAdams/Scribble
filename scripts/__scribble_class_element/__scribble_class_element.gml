@@ -63,9 +63,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     bezier_array = array_create(6, 0.0);
     
-    __tw_reveal            = undefined;
-    __tw_reveal_smoothness = undefined;
-    __tw_window_array      = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
+    __tw_reveal              = undefined;
+    __tw_reveal_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     
     if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
     {
@@ -410,17 +409,13 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    static reveal = function(_character, _smoothness)
+    static reveal = function(_character)
     {
         //Don't regenerate the array unless we really have to
-        if ((__tw_reveal != _character) || (__tw_reveal_smoothness != _smoothness))
+        if (__tw_reveal != _character)
         {
-            __tw_reveal            = _character;
-            __tw_reveal_smoothness = _smoothness;
-            
-            __tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
-            __tw_window_array[@ 0] = _character;
-            __tw_window_array[@ 1] = _smoothness;
+            __tw_reveal = _character;
+            __tw_reveal_window_array[@ 0] = _character;
         }
         
         return self;
@@ -429,11 +424,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     static reveal_get = function()
     {
         return __tw_reveal;
-    }
-    
-    static reveal_smoothness_get = function()
-    {
-        return __tw_reveal_smoothness;
     }
     
     static events_get = function(_position)
@@ -816,16 +806,16 @@ function __scribble_class_element(_string, _unique_id) constructor
                     __set_shader_uniforms();
                 }
             }
-            else if ((__tw_reveal != undefined) && (__tw_reveal_smoothness != undefined))
+            else if (__tw_reveal != undefined)
             {
                 shader_set_uniform_i(global.__scribble_u_iTypewriterMethod,            SCRIBBLE_EASE.LINEAR);
                 shader_set_uniform_i(global.__scribble_u_iTypewriterCharMax,           0);
-                shader_set_uniform_f(global.__scribble_u_fTypewriterSmoothness,        __tw_reveal_smoothness);
+                shader_set_uniform_f(global.__scribble_u_fTypewriterSmoothness,        0);
                 shader_set_uniform_f(global.__scribble_u_vTypewriterStartPos,          0, 0);
                 shader_set_uniform_f(global.__scribble_u_vTypewriterStartScale,        1, 1);
                 shader_set_uniform_f(global.__scribble_u_fTypewriterStartRotation,     0);
                 shader_set_uniform_f(global.__scribble_u_fTypewriterAlphaDuration,     1.0);
-                shader_set_uniform_f_array(global.__scribble_u_fTypewriterWindowArray, __tw_window_array);
+                shader_set_uniform_f_array(global.__scribble_u_fTypewriterWindowArray, __tw_reveal_window_array);
             }
             else
             {
@@ -865,16 +855,16 @@ function __scribble_class_element(_string, _unique_id) constructor
                     __set_msdf_shader_uniforms();
                 }
             }
-            else if ((__tw_reveal != undefined) && (__tw_reveal_smoothness != undefined))
+            else if (__tw_reveal != undefined)
             {
                 shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod,            SCRIBBLE_EASE.LINEAR);
                 shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterCharMax,           0);
-                shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,        __tw_reveal_smoothness);
+                shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,        0);
                 shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,          0, 0);
                 shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,        1, 1);
                 shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterStartRotation,     0);
                 shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterAlphaDuration,     1.0);
-                shader_set_uniform_f_array(global.__scribble_msdf_u_fTypewriterWindowArray, __tw_window_array);
+                shader_set_uniform_f_array(global.__scribble_msdf_u_fTypewriterWindowArray, __tw_reveal_window_array);
             }
             else
             {

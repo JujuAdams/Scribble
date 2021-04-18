@@ -28,7 +28,7 @@
     "path": "folders/Test Cases.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_delay_plus_sound",
+  "name": "obj_test_typewriter_delay_plus_sound",
   "tags": [],
   "resourceType": "GMObject",
 }
