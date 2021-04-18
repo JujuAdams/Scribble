@@ -31,5 +31,7 @@ textbox_height             = 100;
 textbox_portrait           = -1;
 textbox_name               = undefined;
 textbox_conversation_index = 0;
-textbox_skip               = false;
 textbox_element            = SCRIBBLE_NULL_ELEMENT;
+
+typist = scribble_typist();
+typist.in(1, 0);

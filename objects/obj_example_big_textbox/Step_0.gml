@@ -1,13 +1,13 @@
 if (keyboard_check_pressed(vk_space))
 {
-    if (textbox_element.get_typewriter_paused())
+    if (typist.get_paused())
     {
         //If we're paused, unpause!
-        textbox_element.typewriter_unpause(false);
+        typist.unpause();
     }
-    else if (textbox_element.get_typewriter_state() >= 1)
+    else if (typist.get_state() >= 1)
     {
-        textbox_skip = false;
+        typist.in(1, 0);
         
         if (textbox_element.get_page() < textbox_element.get_pages() - 1)
         {
@@ -22,6 +22,6 @@ if (keyboard_check_pressed(vk_space))
     }
     else
     {
-        textbox_skip = true;
+        typist.skip();
     }
 }
