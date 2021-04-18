@@ -65,6 +65,7 @@ function __scribble_class_typist() constructor
         __backwards  = false;
         __speed      = _speed;
         __smoothness = _smoothness;
+        __skip       = false;
         
         if ((_old_in == undefined) || !_old_in) reset();
         
@@ -86,6 +87,7 @@ function __scribble_class_typist() constructor
         __backwards  = _backwards;
         __speed      = _speed;
         __smoothness = _smoothness;
+        __skip       = false;
         
         if ((_old_in == undefined) || _old_in) reset();
         
@@ -272,9 +274,12 @@ function __scribble_class_typist() constructor
             {
                 //Simple pause
                 case "pause":
-                    if (!__skip) __paused = true;
-                    
-                    return false;
+                    if (!__skip)
+                    {
+                        __paused = true;
+                        
+                        return false;
+                    }
                 break;
                 
                 //Time-related delay
@@ -284,9 +289,9 @@ function __scribble_class_typist() constructor
                         var _duration = (array_length(_event_data) >= 1)? real(_event_data[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
                         __delay_paused = true;
                         __delay_end    = current_time + _duration;
+                        
+                        return false;
                     }
-                    
-                    return false;
                 break;
                 
                 //In-line speed setting
@@ -438,7 +443,16 @@ function __scribble_class_typist() constructor
                 var _page_data = _pages_array[__last_page];
                 
                 var _play_sound = false;
-                var _remaining = min(1 + _page_data.last_char - _head_pos, _speed);
+                
+                if (__skip)
+                {
+                    var _remaining = 1 + _page_data.last_char - _head_pos;
+                }
+                else
+                {
+                    var _remaining = min(1 + _page_data.last_char - _head_pos, _speed);
+                }
+                
                 while(_remaining > 0)
                 {
                     //Scan for events one character at a time
