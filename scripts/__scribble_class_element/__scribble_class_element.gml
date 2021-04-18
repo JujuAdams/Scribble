@@ -750,6 +750,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [typist]
     static draw = function()
     {
+        var _function_scope = other;
+        
         var _x      = argument[0];
         var _y      = argument[1];
         var _typist = (argument_count > 2)? argument[2] : undefined;
@@ -800,7 +802,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 with(_typist)
                 {
                     //Tick over the typist
-                    __tick(other);
+                    __tick(other, _function_scope);
                     
                     //Let the typist set the shader uniforms
                     __set_shader_uniforms();
@@ -849,7 +851,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 with(_typist)
                 {
                     //Tick over the typist
-                    __tick(other);
+                    __tick(other, _function_scope);
                     
                     //Let the typist set the shader uniforms
                     __set_msdf_shader_uniforms();

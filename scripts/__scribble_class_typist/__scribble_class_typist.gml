@@ -250,7 +250,7 @@ function __scribble_class_typist() constructor
     
     #region Private Methods
     
-    static __process_event_stack = function()
+    static __process_event_stack = function(_target_element, _function_scope)
     {
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
         //We return <true> if there have been no pausing behaviours called i.e. [pause] and [delay]
@@ -309,11 +309,11 @@ function __scribble_class_typist() constructor
                     var _function = global.__scribble_typewriter_events[? _event_name];
                     if (is_method(_function))
                     {
-                        with(other) _function(self, _event_data, _event_position);
+                        with(_function_scope) _function(_target_element, _event_data, _event_position);
                     }
                     else if (is_real(_function) && script_exists(_function))
                     {
-                        with(other) script_execute(_function, self, _event_data, _event_position);
+                        with(_function_scope) script_execute(_function, _target_element, _event_data, _event_position);
                     }
                     else
                     {
@@ -350,20 +350,20 @@ function __scribble_class_typist() constructor
         }
     }
     
-    static __execute_function_per_character = function()
+    static __execute_function_per_character = function(_function_scope)
     {
         //Execute function per character
         if (is_method(__function))
         {
-            __function(self, __last_character - 1);
+            __function(_function_scope, __last_character - 1);
         }
         else if (is_real(__function) && script_exists(__function))
         {
-            script_execute(__function, self, __last_character - 1);
+            script_execute(__function, _function_scope, __last_character - 1);
         }
     }
     
-    static __tick = function(_target_element)
+    static __tick = function(_target_element, _function_scope)
     {
         //Associate the typist with the target element so that we're pulling data from the correct place
         //This saves the user from doing it themselves
@@ -422,7 +422,7 @@ function __scribble_class_typist() constructor
             //If we've still got stuff on the event stack, pop those off
             if (!_paused && (array_length(__event_stack) > 0))
             {
-                if (!__process_event_stack()) _paused = true;
+                if (!__process_event_stack(_target_element, _function_scope)) _paused = true;
             }
             
             if (!_paused)
@@ -454,7 +454,7 @@ function __scribble_class_typist() constructor
                         var _found_events = __last_element.ref.events_get(__last_character);
                         __last_character++;
                         
-                        __execute_function_per_character();
+                        __execute_function_per_character(_target_element);
                         
                         var _found_size = array_length(_found_events);
                         if (_found_size > 0)
@@ -466,7 +466,7 @@ function __scribble_class_typist() constructor
                             
                             //Process the stack
                             //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
-                            if (!__process_event_stack())
+                            if (!__process_event_stack(_target_element, _function_scope))
                             {
                                 _head_pos = __last_character - 1; //Lock our head position so we don't overstep
                                 break;
