@@ -49,6 +49,7 @@ function __scribble_class_typist() constructor
         __paused       = false;
         __delay_paused = false;
         __delay_end    = -1;
+        __inline_speed = 1;
         __event_stack  = [];
         
         return self;
@@ -179,24 +180,29 @@ function __scribble_class_typist() constructor
     
     static associate = function(_text_element)
     {
-        //Keep track of what element we're looking at
-        if (__last_element == undefined)
+        if (__last_element == undefined) //We didn't have an element defined
         {
             reset();
             __last_element = weak_ref_create(_text_element);
         }
-        else if (!weak_ref_alive(__last_element))
+        else if (!weak_ref_alive(__last_element)) //Our associated element got GC'd for some reason and we didn't
         {
             __scribble_trace("Warning! Typist's target text element has been garbage collected");
             reset();
             __last_element = weak_ref_create(_text_element);
         }
-        else if (__last_element.ref != _text_element)
+        else if (__last_element.ref != _text_element) //Miscellaneous change. The user reaaally shouldn't swap around typists tbh
         {
-            __scribble_trace("Warning! Using typist for different text element");
+            __scribble_trace("Warning! Using typist for different text element"); //TODO - Make this an error?
             reset();
             __last_element = weak_ref_create(_text_element);
         }
+        else if (__last_element.ref.__page != __last_page) //Page change
+        {
+            reset();
+        }
+        
+        return self;
     }
     
     #endregion

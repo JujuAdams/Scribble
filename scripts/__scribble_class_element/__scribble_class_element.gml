@@ -67,6 +67,15 @@ function __scribble_class_element(_string, _unique_id) constructor
     __tw_reveal_smoothness = undefined;
     __tw_window_array      = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     
+    if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
+    {
+        //If we're permitting use of legacy typewriter functions, create a private typist for this specific text element
+        __tw_legacy_typist = scribble_typist();
+        __tw_legacy_typist.associate(self);
+        
+        __tw_legacy_typist_use = false;
+    }
+    
     animation_time               = current_time;
     animation_tick_speed__       = 1;
     animation_array              = array_create(__SCRIBBLE_ANIM.__SIZE, 0.0);
@@ -329,9 +338,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param page
     static page = function(_page)
     {
-        var _old_page = __page;
         __page = _page;
-        if (_old_page != __page) __refresh_typewriter_for_page(); //TODO - Figure out how to implement this with the typist
+        
         return self;
     }
     
@@ -978,29 +986,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Private Methods
     
-    static __refresh_typewriter_for_page = function()
-    {
-        var _pages_array = __get_model(true).get_page_array();
-        if (array_length(_pages_array) == 0) exit;
-        
-        var _page_data = _pages_array[__page];
-        
-        if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
-        {
-            __legacy_tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, _page_data.start_char - __legacy_tw_anim_smoothness);
-            __legacy_tw_window_array[@ 0] += __legacy_tw_anim_smoothness;
-            
-            __legacy_tw_skip = false;
-            
-            if (__legacy_tw_in)
-            {
-                __legacy_tw_event_previous       = _page_data.start_event - 1;
-                __legacy_tw_event_char_previous  = _page_data.start_char - 1;
-                __legacy_tw_event_visited_struct = {};
-            }
-        }
-    }
-    
     static __get_model = function(_allow_create)
     {
         if (flushed || (text == ""))
@@ -1273,48 +1258,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Legacy Typewriter Code
     
-    if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
-    {
-        __legacy_tw_window       = 0;
-        __legacy_tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
-        __legacy_tw_do           = false;
-        __legacy_tw_in           = true;
-        __legacy_tw_skip         = false;
-        __legacy_tw_backwards    = false;
-        __legacy_tw_function     = undefined;
-        __legacy_tw_paused       = false;
-        __legacy_tw_delay_paused = false;
-        __legacy_tw_delay_end    = -1;
-        
-        __legacy_tw_event_previous       = -1;
-        __legacy_tw_event_char_previous  = -1;
-        __legacy_tw_event_visited_struct = {};
-        
-        __legacy_tw_sound_array       = undefined;
-        __legacy_tw_sound_overlap     = 0;
-        __legacy_tw_sound_pitch_min   = 1;
-        __legacy_tw_sound_pitch_max   = 1;
-        __legacy_tw_sound_per_char    = false;
-        __legacy_tw_sound_finish_time = current_time;
-        
-        __legacy_tw_anim_speed          = 1;
-        __legacy_tw_anim_smoothness     = 0;
-        __legacy_tw_inline_speed        = 1;
-        __legacy_tw_anim_ease_method    = SCRIBBLE_EASE.LINEAR;
-        __legacy_tw_anim_dx             = 0;
-        __legacy_tw_anim_dy             = 0;
-        __legacy_tw_anim_xscale         = 1;
-        __legacy_tw_anim_yscale         = 1;
-        __legacy_tw_anim_rotation       = 0;
-        __legacy_tw_anim_alpha_duration = 1.0;
-    }
-    
     static typewriter_off = function()
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        if (__legacy_tw_do) __refresh_typewriter_for_page();
-        __legacy_tw_do = false;
+        if (__tw_legacy_typist_use) __tw_legacy_typist_use.reset();
+        __tw_legacy_typist_use = false;
         
         return self;
     }
@@ -1323,7 +1272,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        __refresh_typewriter_for_page();
+        __tw_legacy_typist_use.reset();
+        
         return self;
     }
     
@@ -1333,14 +1283,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        __legacy_tw_do              = true;
-        __legacy_tw_in              = true;
-        __legacy_tw_backwards       = false;
-        __legacy_tw_anim_speed      = _speed;
-        __legacy_tw_anim_smoothness = _smoothness;
+        __tw_legacy_typist_use = true;
+        __tw_legacy_typist.in(_speed, _smoothness);
         
-        if (!__legacy_tw_do || !__legacy_tw_in) __refresh_typewriter_for_page();
-        if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) typewriter_skip();
+        if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) __tw_legacy_typist.skip();
         
         return self;
     }
@@ -1356,14 +1302,10 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _smoothness = argument[1];
         var _backwards  = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
         
-        __legacy_tw_do              = true;
-        __legacy_tw_in              = false;
-        __legacy_tw_backwards       = _backwards;
-        __legacy_tw_anim_speed      = _speed;
-        __legacy_tw_anim_smoothness = _smoothness;
+        __tw_legacy_typist_use = true;
+        __tw_legacy_typist.in(_speed, _smoothness, _backwards);
         
-        if (!__legacy_tw_do || __legacy_tw_in) __refresh_typewriter_for_page();
-        if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) typewriter_skip();
+        if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) __tw_legacy_typist.skip();
         
         return self;
     }
@@ -1372,7 +1314,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        __legacy_tw_skip = true;
+        __tw_legacy_typist.skip();
+        
         return self;
     }
     
@@ -1384,13 +1327,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        if (!is_array(_sound_array)) _sound_array = [_sound_array];
+        __tw_legacy_typist.sound(_sound_array, _overlap, _pitch_min, _pitch_max);
         
-        __legacy_tw_sound_array     = _sound_array;
-        __legacy_tw_sound_overlap   = _overlap;
-        __legacy_tw_sound_pitch_min = _pitch_min;
-        __legacy_tw_sound_pitch_max = _pitch_max;
-        __legacy_tw_sound_per_char  = false;
         return self;
     }
     
@@ -1401,12 +1339,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        if (!is_array(_sound_array)) _sound_array = [_sound_array];
+        __tw_legacy_typist.sound_per_char(_sound_array, _pitch_min, _pitch_max);
         
-        __legacy_tw_sound_array     = _sound_array;
-        __legacy_tw_sound_pitch_min = _pitch_min;
-        __legacy_tw_sound_pitch_max = _pitch_max;
-        __legacy_tw_sound_per_char  = true;
         return self;
     }
     
@@ -1414,7 +1348,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        __legacy_tw_function = _function;
+        __tw_legacy_typist.function_per_char(_function);
+        
         return self;
     }
     
@@ -1422,7 +1357,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        __legacy_tw_paused = true;
+        __tw_legacy_typist.pause();
+        
         return self;
     }
     
@@ -1430,18 +1366,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        if (__legacy_tw_paused)
-        {
-            var _old_head_pos = __legacy_tw_window_array[@ __legacy_tw_window];
-            
-            //Increment the window index
-            __legacy_tw_window = (__legacy_tw_window + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
-            
-            __legacy_tw_window_array[@ __legacy_tw_window  ] = _old_head_pos;
-            __legacy_tw_window_array[@ __legacy_tw_window+1] = _old_head_pos - __legacy_tw_anim_smoothness;
-        }
+        __tw_legacy_typist.unpause();
         
-        __legacy_tw_paused = false;
         return self;
     }
     
@@ -1456,13 +1382,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        __legacy_tw_anim_ease_method    = _ease_method;
-        __legacy_tw_anim_dx             = _dx;
-        __legacy_tw_anim_dy             = _dy;
-        __legacy_tw_anim_xscale         = _xscale;
-        __legacy_tw_anim_yscale         = _yscale;
-        __legacy_tw_anim_rotation       = _rotation;
-        __legacy_tw_anim_alpha_duration = _alpha_duration;
+        __tw_legacy_typist.ease(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration);
+        
         return self;
     }
     
@@ -1470,37 +1391,27 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        //Early out if the method is NONE
-        if (!__legacy_tw_do) return 1.0; //No fade in/out set
+        if (!__tw_legacy_typist_use) return 1.0;
         
-        var _pages_array = __get_model(true).get_page_array();
-        if (array_length(_pages_array) == 0) return 1.0;
-        
-        var _page_data = _pages_array[__page];
-        var _min = _page_data.start_char;
-        var _max = _page_data.last_char;
-        
-        if (_max <= _min) return 1.0;
-        _max += 2; //Bit of a hack
-        
-        var _t = clamp((__legacy_tw_window_array[__legacy_tw_window] - _min) / (_max - _min), 0, 1);
-        return __legacy_tw_in? _t : (_t + 1);
+        return __tw_legacy_typist.get_state();
     }
     
     static get_typewriter_paused = function()
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        return __legacy_tw_paused;
+        if (!__tw_legacy_typist_use) return false;
+        
+        return __tw_legacy_typist.get_paused();
     }
     
     static get_typewriter_pos = function()
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        if (!__legacy_tw_do || !__legacy_tw_in) return 0.0;
+        if (!__tw_legacy_typist_use) return 0;
         
-        return __legacy_tw_window_array[__legacy_tw_window];
+        return __tw_legacy_typist.get_position();
     }
     
     #endregion
