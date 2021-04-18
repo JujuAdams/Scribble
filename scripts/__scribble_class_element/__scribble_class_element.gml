@@ -65,7 +65,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __tw_reveal = undefined;
     __tw_reveal_smoothness = 0;
-    __tw_window = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
+    __tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     
     tw_window       = 0;
     tw_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
@@ -1075,7 +1075,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static draw_typewriter = function(_x, _y, _typewriter)
     {
+        _typewriter.__tick(self);
         
+        array_copy(__tw_window, 0, _typewriter.__window_array, 0, 2*__SCRIBBLE_WINDOW_COUNT);
+        
+        return draw(_x, _y);
     }
     
     static flush = function()

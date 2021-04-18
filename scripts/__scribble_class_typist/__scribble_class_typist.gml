@@ -177,4 +177,15 @@ function __scribble_class_typist() constructor
         
         return self;
     }
+    
+    
+    
+    #region Private Methods
+    
+    static __tick = function(_target_element)
+    {
+        
+    }
+    
+    #endregion
 }
