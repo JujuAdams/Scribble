@@ -40,14 +40,14 @@ void main()
     
     if (u_fBorderThickness > 0.0)
     {
-        float alphaBorder = MSDFAlpha(distBase, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fTextScale*u_fBorderThickness) : u_fBorderThickness);
+        float alphaBorder = MSDFAlpha(distBase, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
         gl_FragColor.rgb = mix(u_vBorderColour, gl_FragColor.rgb, gl_FragColor.a);
         gl_FragColor.a = max(gl_FragColor.a, alphaBorder);
     }
     
     if (length(u_vShadowOffset) > 0.0)
     {
-        float alphaShadow = u_vShadowColour.a*MSDFAlpha(MSDFSignedDistance(u_vShadowOffset/v_fPixelScale), v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fTextScale*u_fBorderThickness) : u_fBorderThickness);
+        float alphaShadow = u_vShadowColour.a*MSDFAlpha(MSDFSignedDistance(u_vShadowOffset/v_fPixelScale), v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
         gl_FragColor.rgb = mix(u_vShadowColour.rgb, gl_FragColor.rgb, gl_FragColor.a);
         gl_FragColor.a = max(gl_FragColor.a, alphaShadow);
     }
