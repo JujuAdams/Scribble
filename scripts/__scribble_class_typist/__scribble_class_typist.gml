@@ -26,7 +26,7 @@ function __scribble_class_typist() constructor
     __sound_finish_time = current_time;
     __function          = undefined;
     
-    __ease_method    = SCRIBBLE_EASE.LINEAR;
+    __ease_method         = SCRIBBLE_EASE.LINEAR;
     __ease_dx             = 0;
     __ease_dy             = 0;
     __ease_xscale         = 1;
