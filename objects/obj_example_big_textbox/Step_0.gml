@@ -7,8 +7,6 @@ if (keyboard_check_pressed(vk_space))
     }
     else if (typist.get_state() >= 1)
     {
-        typist.in(1, 0);
-        
         if (textbox_element.get_page() < textbox_element.get_pages() - 1)
         {
             //Otherwise move to the next page
