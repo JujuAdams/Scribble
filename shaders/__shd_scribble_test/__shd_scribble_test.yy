@@ -1,12 +1,11 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
+  "type": 1,
   "parent": {
     "name": "(System - don't call these functions)",
     "path": "folders/Scribble/(System - don't call these functions).yy",
   },
   "resourceVersion": "1.0",
-  "name": "__scribble_class_vertex_buffer",
+  "name": "__shd_scribble_test",
   "tags": [],
-  "resourceType": "GMScript",
+  "resourceType": "GMShader",
 }

@@ -160,6 +160,6 @@ function __scribble_gc_remove_vbuff(_vbuff)
     {
         if (__SCRIBBLE_DEBUG) __scribble_trace("Manually removing vertex buffer ", _vbuff, " from tracking");
         array_delete(global.__scribble_gc_vbuff_refs, _index, 1);
-        array_delete(global.__scribble_gc_vbuff_ids , _index, 1);
+        array_delete(global.__scribble_gc_vbuff_ids,  _index, 1);
     }
 }

@@ -284,76 +284,24 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         array_push(_events_array, _event_struct);
     }
     
+    static __finalize_vertex_buffers = function(_freeze)
+    {
+        var _i = 0;
+        repeat(array_length(pages_array))
+        {
+            pages_array[_i].__finalize_vertex_buffers(_freeze);
+            ++_i;
+        }
+    }
+    
     #endregion
-    
-    
     
     
     
     //Generate the model
     __scribble_generate_model(_element);
     
-    //If we're using fit-to-box, test our height
-    if (_element.wrap_no_pages && (height > _element.wrap_max_height))
-    {
-        //If our first attempt is unsuccessful, start the fitting algorithm
-        
-        //Estimate a lower limit
-        var _lower_limit = _element.wrap_max_height / height;
-        var _upper_limit = 1.0;
-        
-        //Regenerate the vertex buffers using the lower limit
-        //TODO - Using the new parser, rearrange words
-        reset();
-        fit_scale = _lower_limit;
-        __scribble_generate_model(_element);
-        
-        //If the lower limit generates a model that's still too tall, brute force a lower limit
-        while(height*fit_scale > _element.wrap_max_height)
-        {
-            _upper_limit = fit_scale;
-            _lower_limit -= 0.1;
-            
-            reset();
-            fit_scale = _lower_limit;
-            __scribble_generate_model(_element);
-        }
-        
-        //Oscillate between the upper and lower limits, calculating a more and more accurate fit scale
-        repeat(SCRIBBLE_FIT_TO_BOX_ITERATIONS)
-        {
-            reset();
-            fit_scale = 0.5*(_upper_limit - _lower_limit) + _lower_limit; //Choose a scale halfway between the limits
-            __scribble_generate_model(_element);
-            
-            if (height*fit_scale > _element.wrap_max_height)
-            {
-                //If we're too big, adjust the upper limit down
-                _upper_limit = fit_scale;
-            }
-            else
-            {
-                //If we're too small, adjust the lower limit up
-                _lower_limit = fit_scale;
-            }
-        }
-        
-        //If the last iteration was too big, reset the fit scale to the lower limit (which is guaranteed to fit)
-        if (height*fit_scale > _element.wrap_max_height)
-        {
-            reset();
-            fit_scale = _lower_limit;
-            __scribble_generate_model(_element);
-        }
-        
-        //Correct our width/height values
-        //TODO - Do this in __scribble_generate_model()
-        width  *= fit_scale;
-        height *= fit_scale;
-        
-        pages_array[0].width  *= fit_scale;
-        pages_array[0].height *= fit_scale;
-    }
+    
     
     if (SCRIBBLE_VERBOSE)
     {
