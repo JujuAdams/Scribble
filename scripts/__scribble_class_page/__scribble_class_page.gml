@@ -21,10 +21,12 @@ function __scribble_class_page() constructor
             if (_font_msdf_range == undefined)
             {
                 _model_struct.uses_standard_font = true;
+                var _shader = __shd_scribble;
             }
             else
             {
                 _model_struct.uses_msdf_font = true;
+                var _shader = __shd_scribble_msdf;
             }
             
             var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version
@@ -36,7 +38,7 @@ function __scribble_class_page() constructor
             _data[@ __SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE   ] = _font_msdf_range;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH  ] = texture_get_texel_width(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT ] = texture_get_texel_height(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.SHADER       ] = (_font_msdf_range == undefined)? __shd_scribble : __shd_scribble_msdf;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.SHADER       ] = _shader;
             
             __scribble_gc_add_vbuff(self, _vbuff);
             vertex_buffer_array[@ array_length(vertex_buffer_array)] = _data;

@@ -12,8 +12,10 @@ enum __SCRIBBLE_PARSER_GLYPH
     WIDTH,
     SEPARATION,
     HEIGHT,
-    TEXTURE,
-    UVS,
+    SPRITE_INDEX,
+    IMAGE_INDEX,
+    IMAGE_SPEED,
+    SURFACE,
     STATE_COLOUR,
     STATE_EFFECT_FLAGS,
     STATE_SCALE,
@@ -45,6 +47,8 @@ enum __SCRIBBLE_PARSER_LINE
     __SIZE,
 }
 
+#macro __SCRIBBLE_PARSER_SPRITE   -1
+#macro __SCRIBBLE_PARSER_SURFACE  -2
 
 
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH_STATE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ] = _state_colour;\n
@@ -87,6 +91,36 @@ enum __SCRIBBLE_PARSER_LINE
                                         _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];\n
                                         _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = fa_left;\n
                                         _line_count++;
+
+#macro __SCRIBBLE_PARSER_READ_GLYPH_DATA   var _glyph_x            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X                 ];\n
+                                           var _glyph_y            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y                 ];\n
+                                           var _glyph_colour       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ];\n
+                                           var _glyph_effect_flags = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS];\n
+                                           var _glyph_scale        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE       ];\n
+                                           var _glyph_slant        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT       ];\n
+                                           var _glyph_cycle        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_CYCLE       ];\n
+                                           var _glyph_cycle_colour = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_CYCLE_COLOUR];
+
+#macro __SCRIBBLE_PARSER_WRITE_GLYPH  var _quad_cx = 0.5*(_quad_l + _quad_r);\n
+                                      var _quad_cy = 0.5*(_quad_t + _quad_b);\n
+                                      var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_glyph_scale*_glyph_slant*(_quad_b - _quad_t);\n
+                                      var _delta_l  = _quad_cx - _quad_l;\n
+                                      var _delta_t  = _quad_cy - _quad_t;\n
+                                      var _delta_r  = _quad_cx - _quad_r;\n
+                                      var _delta_b  = _quad_cy - _quad_b;\n
+                                      var _delta_ls = _delta_l - _slant_offset;\n
+                                      var _delta_rs = _delta_r - _slant_offset;\n
+                                      if (_glyph_texture != _last_glyph_texture)\n
+                                      {\n
+                                          _last_glyph_texture = _glyph_texture;\n
+                                          _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_DATA], true, self);\n
+                                      }\n
+                                      vertex_position_3d(_vbuff, _quad_l + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_ls, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);\n
+                                      vertex_position_3d(_vbuff, _quad_r,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\n
+                                      vertex_position_3d(_vbuff, _quad_l,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_l,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\n
+                                      vertex_position_3d(_vbuff, _quad_r,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\n
+                                      vertex_position_3d(_vbuff, _quad_l + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_ls, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);\n
+                                      vertex_position_3d(_vbuff, _quad_r + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_rs, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);
 
 
 
@@ -159,6 +193,8 @@ function __scribble_generate_model(_element)
         
         if (_tag_start != undefined)
         {
+            #region Command tag handling
+            
             if (_glyph_ord == SCRIBBLE_COMMAND_TAG_CLOSE) //If we've hit a command tag close character (usually ])
             {
                 //Increment the parameter count and place a null byte for string reading
@@ -322,8 +358,6 @@ function __scribble_generate_model(_element)
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _font_space_width;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = 0;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.TEXTURE   ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.UVS       ] = undefined;
                         __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                         ++_glyph_count;
                     break;
@@ -433,10 +467,35 @@ function __scribble_generate_model(_element)
                     break;
                             
                     #endregion
-                            
+                    
+                    #region Surface
+                    
                     case "surface":
-                        //TODO - Insert surface
+                        var _surface = real(_tag_parameters[1]);
+                        var _surface_width = _state_scale*surface_get_width(_surface);
+                        
+                        //Add this glyph to our grid
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X           ] = _glyph_x_in_word;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y           ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR        ] = "surface"; //TODO - Debug, remove
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = __SCRIBBLE_PARSER_SURFACE;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA   ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA  ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS      ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = _surface_width
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = _state_scale*surface_get_height(_surface);
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = _surface_width;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SURFACE     ] = _surface;
+                        __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
+                        ++_glyph_count;
+                            
+                        _glyph_x_in_word += _surface_width;
                     break;
+                    
+                    #endregion
                             
                     default:
                         if (ds_map_exists(global.__scribble_typewriter_events, _tag_command_name)) //Events
@@ -466,7 +525,52 @@ function __scribble_generate_model(_element)
                         }
                         else if (asset_get_type(_tag_command_name) == asset_sprite)
                         {
-                            //TODO - Insert sprite
+                            #region Sprite
+                            
+                            var _sprite_index = asset_get_index(_tag_command_name);
+                            var _sprite_width = _state_scale*sprite_get_width(_sprite_index);
+                            
+                            var _image_index = 0;
+                            var _image_speed = 0;
+                            switch(_tag_parameter_count)
+                            {
+                                case 1:
+                                    _image_index = 0;
+                                    _image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
+                                break;
+                                                            
+                                case 2:
+                                    _image_index = real(_tag_parameters[1]);
+                                    _image_speed = 0;
+                                break;
+                                                            
+                                default:
+                                    _image_index = real(_tag_parameters[1]);
+                                    _image_speed = real(_tag_parameters[2]);
+                                break;
+                            }
+                            
+                            //Add this glyph to our grid
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X           ] = _glyph_x_in_word;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y           ] = 0;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR        ] = "sprite"; //TODO - Debug, remove
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = __SCRIBBLE_PARSER_SPRITE;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA   ] = undefined;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA  ] = undefined;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS      ] = undefined;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = _sprite_width
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = _state_scale*sprite_get_height(_sprite_index);
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = _sprite_width;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX] = _sprite_index;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ] = _image_index;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ] = _image_speed;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SURFACE     ] = undefined;
+                            __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
+                            ++_glyph_count;
+                            
+                            _glyph_x_in_word += _sprite_width;
+                            
+                            #endregion
                         }
                         else if (asset_get_type(_tag_command_name) == asset_sound)
                         {
@@ -600,6 +704,8 @@ function __scribble_generate_model(_element)
                 ++_tag_parameter_count;
                 buffer_poke(_string_buffer, buffer_tell(_string_buffer)-1, buffer_u8, 0);
             }
+            
+            #endregion
         }
         else
         {
@@ -614,51 +720,83 @@ function __scribble_generate_model(_element)
                  || (SCRIBBLE_HASH_NEWLINE && (_glyph_ord == 35)) //If we've hit a hash, and hash newlines are on
                  || ((_glyph_ord == 13) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) != 10))) //If this is a line feed but not followed by a newline... this fixes goofy Windows Notepad isses
             {
-                //Add a newline glyph to our grid
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X         ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y         ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR      ] = "newline"; //TODO - Debug, remove
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 13;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = undefined;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = undefined;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS    ] = undefined;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.TEXTURE   ] = undefined;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.UVS       ] = undefined;
+                #region Add a newline glyph to our grid
+                
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X           ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y           ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR        ] = "newline"; //TODO - Debug, remove
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = 13;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA   ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA  ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS      ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = _font_line_height;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SURFACE     ] = undefined;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
                 _glyph_x_in_word = 0;
+                
+                #endregion
             }
             else if (_glyph_ord == 9)
             {
-                //TODO - Support tabs
-                _glyph_x_in_word = 0;
-            }
-            else if (_glyph_ord == 32)
-            {
-                //Add a space glyph to our grid
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X         ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y         ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR      ] = " "; //TODO - Debug: Remove
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 32;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _space_glyph_data;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS    ] = undefined;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _font_space_width;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.TEXTURE   ] = undefined;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.UVS       ] = undefined;
+                #region Add a tab glyph to our grid
+                
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X           ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y           ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR        ] = "tab"; //TODO - Debug: Remove
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = 32;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA   ] = _font_data;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA  ] = _space_glyph_data;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS      ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = SCRIBBLE_TAB_WIDTH*_font_space_width;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = _font_line_height;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SURFACE     ] = undefined;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
                 _glyph_x_in_word = 0;
+                
+                #endregion
+            }
+            else if (_glyph_ord == 32)
+            {
+                #region Add a space glyph to our grid
+                
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X           ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y           ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR        ] = " "; //TODO - Debug: Remove
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = 32;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA   ] = _font_data;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA  ] = _space_glyph_data;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS      ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = _font_space_width;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = _font_line_height;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SURFACE     ] = undefined;
+                __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
+                ++_glyph_count;
+                
+                _glyph_x_in_word = 0;
+                
+                #endregion
             }
             else if (_glyph_ord > 32) //Only write glyphs that aren't system control characters
             {
+                #region Add a standard glyph
+                
                 //TODO - Ligature transform here
                 
                 //Pull info out of the font's data structures
@@ -702,23 +840,27 @@ function __scribble_generate_model(_element)
                     var _glyph_separation = _glyph_data[SCRIBBLE_GLYPH.SEPARATION];
                     
                     //Add this glyph to our grid
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X         ] = _glyph_x_in_word;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y         ] = 0;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR      ] = chr(_glyph_ord); //TODO - Debug, remove
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = _glyph_ord;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _glyph_data;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS    ] = undefined;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _glyph_data[SCRIBBLE_GLYPH.WIDTH];
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _glyph_separation;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.TEXTURE   ] = _glyph_data[SCRIBBLE_GLYPH.TEXTURE];
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.UVS       ] = undefined;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X           ] = _glyph_x_in_word;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y           ] = 0;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR        ] = chr(_glyph_ord); //TODO - Debug, remove
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = _glyph_ord;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA   ] = _font_data;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA  ] = _glyph_data;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS      ] = undefined;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = _glyph_data[SCRIBBLE_GLYPH.WIDTH];
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = _font_line_height;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = _glyph_separation;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX] = undefined;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ] = undefined;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ] = undefined;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SURFACE     ] = undefined;
                     __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                     ++_glyph_count;
                     
                     _glyph_x_in_word += _glyph_separation;
                 }
+                
+                #endregion
             }
         }
     }
@@ -976,91 +1118,196 @@ function __scribble_generate_model(_element)
     var _last_glyph_texture = undefined;
     var _page_data          = __new_page();
     var _vbuff              = undefined;
+    var _glyph_sprite_data  = 0;
     
     var _i = 0;
     repeat(_glyph_count)
     {
-        var _glyph_texture = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.TEXTURE];
-        
-        //Skip anything that doesn't have a texture (whitespace)
-        if (_glyph_texture == undefined)
+        var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
+        if (_glyph_ord > 32)
         {
-            ++_i;
-            continue;
-        }
-        
-        var _glyph_x            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X                 ];
-        var _glyph_y            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y                 ];
-        var _glyph_data         = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA        ];
-        var _glyph_uvs          = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.UVS               ];
-        var _glyph_colour       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ];
-        var _glyph_effect_flags = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS];
-        var _glyph_scale        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE       ];
-        var _glyph_slant        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT       ];
-        var _glyph_cycle        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_CYCLE       ];
-        var _glyph_cycle_colour = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_CYCLE_COLOUR];
-        
-        if (_glyph_uvs == undefined)
-        {
+            #region Write standard glyph
+            
+            __SCRIBBLE_PARSER_READ_GLYPH_DATA;
+            
+            var _write_scale = 1.0; //_glyph_scale*_font_scale_dist; //TODO
+            
+            var _glyph_data = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA];
+            var _glyph_texture = _glyph_data[SCRIBBLE_GLYPH.TEXTURE];
             var _quad_u0 = _glyph_data[SCRIBBLE_GLYPH.U0];
             var _quad_v0 = _glyph_data[SCRIBBLE_GLYPH.V0];
             var _quad_u1 = _glyph_data[SCRIBBLE_GLYPH.U1];
             var _quad_v1 = _glyph_data[SCRIBBLE_GLYPH.V1];
+            
+            //Add glyph to buffer
+            var _quad_l = _glyph_data[SCRIBBLE_GLYPH.X_OFFSET] + _glyph_x;
+            var _quad_t = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET] + _glyph_y;
+            var _quad_r = _glyph_data[SCRIBBLE_GLYPH.WIDTH   ] + _quad_l;
+            var _quad_b = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ] + _quad_t;
+            
+            var _packed_indexes = _i*__SCRIBBLE_MAX_LINES + 1; //TODO
+            
+            if (_glyph_cycle)
+            {
+                var _colour = _glyph_cycle_colour;
+            }
+            else
+            {
+                var _colour = $FF000000 | _glyph_colour;
+            }
+            
+            __SCRIBBLE_PARSER_WRITE_GLYPH;
+            
+            #endregion
         }
-        else
+        else if (_glyph_ord == __SCRIBBLE_PARSER_SPRITE)
         {
-            var _quad_u0 = _glyph_uvs[0];
-            var _quad_v0 = _glyph_uvs[1];
-            var _quad_u1 = _glyph_uvs[2];
-            var _quad_v1 = _glyph_uvs[3];
-        }
-        
-        //Swap texture and buffer if needed
-        if (_glyph_texture != _last_glyph_texture)
-        {
-            _last_glyph_texture = _glyph_texture;
-            _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_DATA], true, self);
-        }
+            #region Write sprite
+            
+            __SCRIBBLE_PARSER_READ_GLYPH_DATA;
+            
+            var _write_scale = 1.0; //_glyph_scale*_font_scale_dist; //TODO
+                                           
+            var _sprite_index = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX];
+            var _image_index  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ];
+            var _image_speed  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ];
+            var _glyph_width  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH       ];
+            var _glyph_height = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ];
+            
+            if (SCRIBBLE_ADD_SPRITE_ORIGINS)
+            {
+                _glyph_x -= _glyph_scale*sprite_get_xoffset(_sprite_index) + (_sprite_width div 2);
+                _glyph_y -= _glyph_scale*sprite_get_yoffset(_sprite_index);
+            }
+            
+            var _sprite_number = sprite_get_number(_sprite_index);
+            if (_sprite_number >= 64)
+            {
+                __scribble_trace("In-line sprites cannot have more than 64 frames (", sprite_get_name(_sprite_index), ")");
+                _sprite_number = 64;
+            }
+            
+            if (_image_speed >= 4)
+            {
+                __scribble_trace("Image speed cannot be more than 4.0 (" + string(_image_speed) + ")");
+                _image_speed = 4;
+            }
+            
+            if (_image_speed < 4)
+            {
+                __scribble_trace("Image speed cannot be less than 0.0 (" + string(_image_speed) + ")");
+                _image_speed = 0;
+            }
+            
+            if (SCRIBBLE_COLORIZE_SPRITES)
+            {
+                if (_glyph_cycle)
+                {
+                    var _colour = _glyph_cycle_colour;
+                }
+                else
+                {
+                    var _colour = $FF000000 | _glyph_colour;
+                }
+            }
+            else
+            {
+                var _colour = $FFFFFFFF;
+                                                            
+                //Switch off rainbow
+                _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
+                                                            
+                //Switch off colour cycling
+                _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
+            }
                 
-        //Add glyph to buffer
-        var _quad_l = _glyph_data[SCRIBBLE_GLYPH.X_OFFSET] + _glyph_x;
-        var _quad_t = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET] + _glyph_y;
-        var _quad_r = _glyph_data[SCRIBBLE_GLYPH.WIDTH   ] + _quad_l;
-        var _quad_b = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ] + _quad_t;
-                        
-        var _quad_cx = 0.5*(_quad_l + _quad_r);
-        var _quad_cy = 0.5*(_quad_t + _quad_b);
-        
-        var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_glyph_scale*_glyph_slant*(_quad_b - _quad_t);
+            var _packed_indexes = _i*__SCRIBBLE_MAX_LINES + 1; //TODO
+            
+            
+            
+            var _j = _image_index;
+            var _image_count = 0;
+            repeat(_sprite_number)
+            {
+                var _glyph_texture = _glyph_data[SCRIBBLE_GLYPH.TEXTURE];
                 
-        var _delta_l  = _quad_cx - _quad_l;
-        var _delta_t  = _quad_cy - _quad_t;
-        var _delta_r  = _quad_cx - _quad_r;
-        var _delta_b  = _quad_cy - _quad_b;
-        var _delta_ls = _delta_l - _slant_offset;
-        var _delta_rs = _delta_r - _slant_offset;
-        
-        var _glyph_sprite_data = 0; //TODO
-        
-        var _write_scale = 1.0; //_glyph_scale*_font_scale_dist; //TODO
-        
-        var _packed_indexes = _i*__SCRIBBLE_MAX_LINES + 1; //TODO
-        
-        if (_glyph_cycle)
-        {
-            var _colour = _glyph_cycle_colour;
+                var _uvs = sprite_get_uvs(_sprite_index, _j);
+                var _quad_u0 = _uvs[0];
+                var _quad_v0 = _uvs[1];
+                var _quad_u1 = _uvs[2];
+                var _quad_v1 = _uvs[3];
+                
+                var _quad_l = _glyph_x + _uvs[4]*_glyph_scale;
+                var _quad_t = _glyph_y + _uvs[5]*_glyph_scale;
+                var _quad_r = _quad_l  + _uvs[6]*_glyph_width;
+                var _quad_b = _quad_t  + _uvs[7]*_glyph_height;
+                
+                var _glyph_sprite_data = 4096*floor(1024*_image_speed) + 64*_sprite_number + _image_count;
+                
+                __SCRIBBLE_PARSER_WRITE_GLYPH;
+                
+                ++_j;
+                ++_image_count;
+            }
+            
+            _glyph_sprite_data = 0; //Reset this because every other tyoe of glyph doesn't use this
+            
+            #endregion
         }
-        else
+        else if (_glyph_ord == __SCRIBBLE_PARSER_SURFACE)
         {
-            var _colour = $FF000000 | _glyph_colour;
+            #region Write surface
+            
+            __SCRIBBLE_PARSER_READ_GLYPH_DATA;
+            
+            var _write_scale = 1.0; //_glyph_scale*_font_scale_dist; //TODO
+                                           
+            var _surface      = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SURFACE];
+            var _glyph_width  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH  ];
+            var _glyph_height = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT ];
+            
+            if (SCRIBBLE_COLORIZE_SPRITES)
+            {
+                if (_glyph_cycle)
+                {
+                    var _colour = _glyph_cycle_colour;
+                }
+                else
+                {
+                    var _colour = $FF000000 | _glyph_colour;
+                }
+            }
+            else
+            {
+                var _colour = $FFFFFFFF;
+                                                            
+                //Switch off rainbow
+                _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
+                                                            
+                //Switch off colour cycling
+                _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
+            }
+                
+            var _packed_indexes = _i*__SCRIBBLE_MAX_LINES + 1; //TODO
+            
+            
+            
+            var _glyph_texture = surface_get_texture(_surface);
+            
+            var _quad_u0 = 0;
+            var _quad_v0 = 0;
+            var _quad_u1 = 1;
+            var _quad_v1 = 1;
+            
+            var _quad_l = _glyph_x;
+            var _quad_t = _glyph_y;
+            var _quad_r = _quad_l + _glyph_width;
+            var _quad_b = _quad_t + _glyph_height;
+            
+            __SCRIBBLE_PARSER_WRITE_GLYPH;
+            
+            #endregion
         }
-        
-        vertex_position_3d(_vbuff, _quad_l + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_ls, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);
-        vertex_position_3d(_vbuff, _quad_r,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);
-        vertex_position_3d(_vbuff, _quad_l,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_l,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);
-        vertex_position_3d(_vbuff, _quad_r,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);
-        vertex_position_3d(_vbuff, _quad_l + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_ls, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);
-        vertex_position_3d(_vbuff, _quad_r + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_rs, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);
         
         ++_i;
     }
