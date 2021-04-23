@@ -253,7 +253,27 @@ function __scribble_generate_model(_element)
                     #endregion
                     
                     case "/page":
-                        //TODO - Page breaks
+                        #region Add a pagebreak ("form feed") glyph to our grid
+                        
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X           ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y           ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = 12;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA   ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA  ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS      ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SURFACE     ] = undefined;
+                        __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
+                        ++_glyph_count;
+                        
+                        _glyph_x_in_word = 0;
+                        
+                        #endregion
                     break;
                     
                     #region Scale
