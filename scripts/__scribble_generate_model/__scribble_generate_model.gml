@@ -614,7 +614,22 @@ function __scribble_generate_model(_element)
                  || (SCRIBBLE_HASH_NEWLINE && (_glyph_ord == 35)) //If we've hit a hash, and hash newlines are on
                  || ((_glyph_ord == 13) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) != 10))) //If this is a line feed but not followed by a newline... this fixes goofy Windows Notepad isses
             {
-                //TODO - Newline
+                //Add a newline glyph to our grid
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X         ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y         ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR      ] = "newline"; //TODO - Debug, remove
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 13;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS    ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.TEXTURE   ] = undefined;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.UVS       ] = undefined;
+                __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
+                ++_glyph_count;
+                
                 _glyph_x_in_word = 0;
             }
             else if (_glyph_ord == 9)
@@ -744,6 +759,8 @@ function __scribble_generate_model(_element)
         var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
         if (_glyph_ord == 32)
         {
+            #region Space
+            
             _word_glyph_end = _i - 1;
             _space_width = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH];
              
@@ -844,6 +861,39 @@ function __scribble_generate_model(_element)
                 _word_glyph_start = _i + 1;
                 _word_x += _word_width + _space_width;
             }
+            
+            #endregion
+        }
+        else if (_glyph_ord == 13)
+        {
+            #region Newline
+            
+            _word_glyph_end = _i - 1;
+            
+            if (_word_glyph_end >= _word_glyph_start)
+            {
+                __SCRIBBLE_PARSER_ADD_WORD;
+            }
+            
+            //Word width is equal to the width of the last glyph plus its x-coordinate in the word
+            _word_width = _glyph_grid[# _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.X] + _glyph_grid[# _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.WIDTH];
+            
+            _line_height = ds_grid_get_max(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);
+            
+            if (_word_glyph_end >= _word_glyph_start)
+            {
+                __SCRIBBLE_PARSER_FINALIZE_LINE;
+            }
+            
+            _word_glyph_start = _i + 1;
+            
+            _line_glyph_start = _word_glyph_start;
+            _line_word_start  = _word_count;
+            
+            _word_x  = 0;
+            _word_y += _line_height;
+            
+            #endregion
         }
         
         ++_i;
@@ -943,7 +993,6 @@ function __scribble_generate_model(_element)
         var _glyph_y            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y                 ];
         var _glyph_data         = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA        ];
         var _glyph_uvs          = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.UVS               ];
-        var _glyph_width        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH             ];
         var _glyph_colour       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ];
         var _glyph_effect_flags = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS];
         var _glyph_scale        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE       ];
@@ -976,8 +1025,8 @@ function __scribble_generate_model(_element)
         //Add glyph to buffer
         var _quad_l = _glyph_data[SCRIBBLE_GLYPH.X_OFFSET] + _glyph_x;
         var _quad_t = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET] + _glyph_y;
-        var _quad_r = _glyph_width + _quad_l;
-        var _quad_b = _glyph_data[SCRIBBLE_GLYPH.HEIGHT] + _quad_t;
+        var _quad_r = _glyph_data[SCRIBBLE_GLYPH.WIDTH   ] + _quad_l;
+        var _quad_b = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ] + _quad_t;
                         
         var _quad_cx = 0.5*(_quad_l + _quad_r);
         var _quad_cy = 0.5*(_quad_t + _quad_b);
