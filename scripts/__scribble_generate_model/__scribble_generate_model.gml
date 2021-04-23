@@ -78,15 +78,15 @@ enum __SCRIBBLE_PARSER_LINE
                                    _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.Y          ] = _word_y;\n
                                    _word_count++;
 
-#macro __SCRIBBLE_PARSER_ADD_LINE  _line_word_end  = _word_count - 1;\n
-                                   _line_glyph_end = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.GLYPH_END];\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.GLYPH_START] = _line_glyph_start;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.GLYPH_END  ] = _line_glyph_end;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START ] = _line_word_start;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END   ] = _line_word_end;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = fa_left;\n
-                                   _line_count++;
+#macro __SCRIBBLE_PARSER_FINALIZE_LINE  _line_word_end  = _word_count - 1;\n
+                                        _line_glyph_end = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.GLYPH_END];\n
+                                        _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.GLYPH_START] = _line_glyph_start;\n
+                                        _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.GLYPH_END  ] = _line_glyph_end;\n
+                                        _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START ] = _line_word_start;\n
+                                        _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END   ] = _line_word_end;\n
+                                        _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];\n
+                                        _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = fa_left;\n
+                                        _line_count++;
 
 
 
@@ -106,10 +106,10 @@ function __scribble_generate_model(_element)
     
     #region Collect starting font data
     
-    var _def_font = _element.starting_font;
-    if (_def_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
+    var _starting_font = _element.starting_font;
+    if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
     
-    var _font_name = _def_font;
+    var _font_name = _starting_font;
     __SCRIBBLE_PARSER_SET_FONT;
     
     #endregion
@@ -190,14 +190,20 @@ function __scribble_generate_model(_element)
                         _state_slant        = false;
                         _state_cycle        = false;
                         
-                        _font_name = _def_font;
-                        __SCRIBBLE_PARSER_SET_FONT;
+                        if (_font_name != _starting_font)
+                        {
+                            _font_name = _starting_font;
+                            __SCRIBBLE_PARSER_SET_FONT;
+                        }
                     break;
                     
                     case "/font":
                     case "/f":
-                        _font_name = _def_font;
-                        __SCRIBBLE_PARSER_SET_FONT;
+                        if (_font_name != _starting_font)
+                        {
+                            _font_name = _starting_font;
+                            __SCRIBBLE_PARSER_SET_FONT;
+                        }
                     break;
                     
                     case "/colour":
@@ -599,6 +605,7 @@ function __scribble_generate_model(_element)
         {
             if (_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN)
             {
+                //Begin a command tag
                 _tag_start           = buffer_tell(_string_buffer);
                 _tag_parameter_count = 0;
                 _tag_parameters      = [];
@@ -610,8 +617,14 @@ function __scribble_generate_model(_element)
                 //TODO - Newline
                 _glyph_x_in_word = 0;
             }
+            else if (_glyph_ord == 9)
+            {
+                //TODO - Support tabs
+                _glyph_x_in_word = 0;
+            }
             else if (_glyph_ord == 32)
             {
+                //Add a space glyph to our grid
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X         ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y         ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR      ] = " "; //TODO - Debug: Remove
@@ -629,11 +642,7 @@ function __scribble_generate_model(_element)
                 
                 _glyph_x_in_word = 0;
             }
-            else if (_glyph_ord < 32)
-            {
-                continue;
-            }
-            else
+            else if (_glyph_ord > 32) //Only write glyphs that aren't system control characters
             {
                 //TODO - Ligature transform here
                 
@@ -677,6 +686,7 @@ function __scribble_generate_model(_element)
                 {
                     var _glyph_separation = _glyph_data[SCRIBBLE_GLYPH.SEPARATION];
                     
+                    //Add this glyph to our grid
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X         ] = _glyph_x_in_word;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y         ] = 0;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHAR      ] = chr(_glyph_ord); //TODO - Debug, remove
@@ -708,6 +718,8 @@ function __scribble_generate_model(_element)
     
     
     
+    #region Do line wrapping
+    
     var _line_count       = 0;
     var _line_glyph_start = 0;
     var _line_glyph_end   = 0;
@@ -727,9 +739,9 @@ function __scribble_generate_model(_element)
     var _i = 0;
     repeat(_glyph_count + 1) //Ensure we fully handle the last word
     {
-        //TODO - Figure out where spaces during the basic parsing step
-        var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
+        //TODO - Per-character wrapping
         
+        var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
         if (_glyph_ord == 32)
         {
             _word_glyph_end = _i - 1;
@@ -762,7 +774,7 @@ function __scribble_generate_model(_element)
                 {
                     _line_height = ds_grid_get_max(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);
                     
-                    __SCRIBBLE_PARSER_ADD_LINE;
+                    __SCRIBBLE_PARSER_FINALIZE_LINE;
                     
                     _line_glyph_start = _word_glyph_start;
                     _line_word_start  = _word_count;
@@ -802,7 +814,10 @@ function __scribble_generate_model(_element)
                         
                         _line_height = ds_grid_get_max(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);
                         
-                        __SCRIBBLE_PARSER_ADD_LINE;
+                        if (_word_count > 0)
+                        {
+                            __SCRIBBLE_PARSER_FINALIZE_LINE;
+                        }
                         
                         _line_glyph_start = _word_glyph_start;
                         _line_word_start  = _word_count;
@@ -834,7 +849,13 @@ function __scribble_generate_model(_element)
         ++_i;
     }
     
-    __SCRIBBLE_PARSER_ADD_LINE;
+    //Make sure we add a line for any words we have left on a trailing line
+    if ((_line_glyph_end >= _line_glyph_start) && (_line_word_end >= _line_word_start))
+    {
+        __SCRIBBLE_PARSER_FINALIZE_LINE;
+    }
+    
+    #endregion
     
     
     
@@ -842,12 +863,14 @@ function __scribble_generate_model(_element)
     
     
     
+    //TODO - Improve this calculation
     width  = ds_grid_get_max(_line_grid, 0, __SCRIBBLE_PARSER_LINE.WIDTH, _line_count - 1, __SCRIBBLE_PARSER_LINE.WIDTH);
     height = ds_grid_get_max(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT) + _word_y;
     
     
     
-    //Handle alignment for each line and position words
+    #region Handle alignment for each line and position words accordingly
+    
     var _i = 0;
     repeat(_line_count)
     {
@@ -876,31 +899,32 @@ function __scribble_generate_model(_element)
         ++_i;
     }
     
+    #endregion
     
     
-    //Transfer word positions to glyphs
+    
+    #region Move glyphs relative to where their parent word is located
+    
     var _i = 0;
     repeat(_word_count)
     {
-        var _word_x           = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.X          ];
-        var _word_y           = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.Y          ];
         var _word_glyph_start = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.GLYPH_START];
         var _word_glyph_end   = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.GLYPH_END  ];
         
-        ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.X, _word_x);
-        ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.Y, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.Y, _word_y);
+        ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.X, _word_grid[# _i, __SCRIBBLE_PARSER_WORD.X]);
+        ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.Y, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.Y, _word_grid[# _i, __SCRIBBLE_PARSER_WORD.Y]);
         
         ++_i;
     }
     
+    #endregion
     
     
-    //Transfer glyphs to vertex buffers
-    var _glyph_effect_flags = 0;
+    
+    #region Write glyphs to vertex buffers
+    
     var _last_glyph_texture = undefined;
     var _page_data          = __new_page();
-    var _write_scale        = 1.0;
-    var _glyph_sprite_data  = 0;
     var _vbuff              = undefined;
     
     var _i = 0;
@@ -957,8 +981,8 @@ function __scribble_generate_model(_element)
                         
         var _quad_cx = 0.5*(_quad_l + _quad_r);
         var _quad_cy = 0.5*(_quad_t + _quad_b);
-                        
-        var _slant_offset = 0;
+        
+        var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_glyph_scale*_glyph_slant*(_quad_b - _quad_t);
                 
         var _delta_l  = _quad_cx - _quad_l;
         var _delta_t  = _quad_cy - _quad_t;
@@ -966,9 +990,21 @@ function __scribble_generate_model(_element)
         var _delta_b  = _quad_cy - _quad_b;
         var _delta_ls = _delta_l - _slant_offset;
         var _delta_rs = _delta_r - _slant_offset;
-                        
-        var _packed_indexes = _i*__SCRIBBLE_MAX_LINES + 1;
-        var _colour = $FFFFFFFF;
+        
+        var _glyph_sprite_data = 0; //TODO
+        
+        var _write_scale = 1.0; //_glyph_scale*_font_scale_dist; //TODO
+        
+        var _packed_indexes = _i*__SCRIBBLE_MAX_LINES + 1; //TODO
+        
+        if (_glyph_cycle)
+        {
+            var _colour = _glyph_cycle_colour;
+        }
+        else
+        {
+            var _colour = $FF000000 | _glyph_colour;
+        }
         
         vertex_position_3d(_vbuff, _quad_l + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_ls, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);
         vertex_position_3d(_vbuff, _quad_r,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);
@@ -980,7 +1016,14 @@ function __scribble_generate_model(_element)
         ++_i;
     }
     
+    #endregion
+    
+    
+    
+    //Ensure we've ended the vertex buffers we created
     __finalize_vertex_buffers();
+    
+    
     
     return true;
 }
