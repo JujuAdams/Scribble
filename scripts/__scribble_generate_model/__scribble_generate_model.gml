@@ -285,35 +285,22 @@ function __scribble_generate_model(_element)
             
             if (_word_width > _model_max_width)
             {
-                //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_START] = _word_glyph_start;
-                //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_END  ] = _word_glyph_end;
-                //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.WIDTH      ] = _word_width;
-                //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.X          ] = _word_x;
-                //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.Y          ] = _word_y;
-                //_word_count++;
-                
-                //_line_word_end  = _word_count - 1;
-                //_line_glyph_end = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.GLYPH_END];
-                //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.GLYPH_START] = _line_glyph_start;
-                //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.GLYPH_END  ] = _line_glyph_end;
-                //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START ] = _line_word_start;
-                //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END   ] = _line_word_end;
-                //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];
-                //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = fa_left;
-                //_line_count++;
-                
                 _word_width = 0;
-                var _last_glyph_empty_space = 0;
+                var _prev_glyph_empty_space = 0;
+                var _last_glyph = _word_glyph_end;
                 
                 var _j = _word_glyph_start;
                 repeat(1 + _word_glyph_end - _word_glyph_start)
                 {
                     var _glyph_width = _glyph_grid[# _j, __SCRIBBLE_PARSER_GLYPH.WIDTH];
-                    if (_word_x + _word_width + _last_glyph_empty_space + _glyph_width > _model_max_width)
+                    if (_word_x + _word_width + _prev_glyph_empty_space + _glyph_width > _model_max_width)
                     {
                         _word_glyph_end = _j - 1;
                         
-                        __SCRIBBLE_PARSER_ADD_WORD;
+                        if (_word_glyph_end >= _word_glyph_start)
+                        {
+                            __SCRIBBLE_PARSER_ADD_WORD;
+                        }
                         
                         _word_glyph_start = _j;
                         
@@ -324,16 +311,18 @@ function __scribble_generate_model(_element)
                         _line_glyph_start = _word_glyph_start;
                         _line_word_start  = _word_count;
                         
+                        ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _last_glyph, __SCRIBBLE_PARSER_GLYPH.X, -_glyph_grid[# _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X]);
+                        
                         _word_x  = 0;
                         _word_y += _line_height;
-                        _word_width = 0;
+                        _word_width = _glyph_width;
                     }
                     else
                     {
-                        _word_width += _last_glyph_empty_space + _glyph_width;
+                        _word_width += _prev_glyph_empty_space + _glyph_width;
                     }
                     
-                    _last_glyph_empty_space = _glyph_grid[# _j, __SCRIBBLE_PARSER_GLYPH.SEPARATION] - _glyph_width;
+                    _prev_glyph_empty_space = _glyph_grid[# _j, __SCRIBBLE_PARSER_GLYPH.SEPARATION] - _glyph_width;
                     
                     ++_j;
                 }
@@ -342,7 +331,7 @@ function __scribble_generate_model(_element)
                 __SCRIBBLE_PARSER_ADD_WORD;
                 
                 _word_glyph_start = _i + 1;
-                _word_x += _space_width;
+                _word_x += _word_width + _space_width;
             }
             else
             {
