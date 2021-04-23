@@ -51,7 +51,6 @@
     {"id":{"name":"obj_test_legacy_typewriter_pos","path":"objects/obj_test_legacy_typewriter_pos/obj_test_legacy_typewriter_pos.yy",},"order":6,},
     {"id":{"name":"obj_test_legacy","path":"objects/obj_test_legacy/obj_test_legacy.yy",},"order":0,},
     {"id":{"name":"__scribble_class_page","path":"scripts/__scribble_class_page/__scribble_class_page.yy",},"order":6,},
-    {"id":{"name":"__scribble_class_line","path":"scripts/__scribble_class_line/__scribble_class_line.yy",},"order":10,},
     {"id":{"name":"obj_test_blink","path":"objects/obj_test_blink/obj_test_blink.yy",},"order":22,},
     {"id":{"name":"obj_test_bbox","path":"objects/obj_test_bbox/obj_test_bbox.yy",},"order":17,},
     {"id":{"name":"fnt_style","path":"fonts/fnt_style/fnt_style.yy",},"order":5,},
