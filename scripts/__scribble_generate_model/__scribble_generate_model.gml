@@ -1019,7 +1019,7 @@ function __scribble_generate_model(_element)
         if (_glyph_texture != _last_glyph_texture)
         {
             _last_glyph_texture = _glyph_texture;
-            _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, _font_data, true);
+            _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_DATA], true, self);
         }
                 
         //Add glyph to buffer
