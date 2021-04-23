@@ -875,7 +875,7 @@ function __scribble_generate_model(_element)
     
     
     
-    #region Do line wrapping
+    #region Handle newlines and line wrapping
     
     var _line_count       = 0;
     var _line_glyph_start = 0;
