@@ -346,6 +346,7 @@ enum SCRIBBLE_EASE
 #macro __SCRIBBLE_PIN_LEFT             3
 #macro __SCRIBBLE_PIN_CENTRE           4
 #macro __SCRIBBLE_PIN_RIGHT            5
+#macro __SCRIBBLE_JUSTIFY              6
 #macro __SCRIBBLE_WINDOW_COUNT         4
 #macro __SCRIBBLE_GC_STEP_SIZE         3
 #macro __SCRIBBLE_CACHE_TIMEOUT        120 //How long to wait (in milliseconds) before the text element cache automatically cleans up unused data
