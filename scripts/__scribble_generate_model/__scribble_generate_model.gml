@@ -819,7 +819,6 @@ function __scribble_generate_model(_element)
     var _line_glyph_end   = 0;
     var _line_word_start  = 0;
     var _line_word_end    = 0;
-    var _line_height      = 0;
     
     var _word_count       = 0;
     var _word_glyph_start = 0;
@@ -827,7 +826,6 @@ function __scribble_generate_model(_element)
     var _word_width       = 0;
     
     var _word_x       = 0;
-    var _word_y       = 0;
     var _space_width  = 0;
     var _state_halign = fa_left;
     
@@ -869,16 +867,14 @@ function __scribble_generate_model(_element)
                 
                 if (_word_x + _word_width > _model_max_width)
                 {
-                    _line_word_end  = _word_count;
+                    _line_word_end  = _word_count - 1;
                     _line_glyph_end = _glyph_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.GLYPH_END];
                     __SCRIBBLE_PARSER_ADD_LINE;
                     
-                    _line_word_start  = _word_count + 1;
+                    _line_word_start  = _word_count;
                     _line_glyph_start = _i + 1;
                     
-                    _line_height = ds_grid_get_max(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);
-                    _word_x  = 0;
-                    _word_y += _line_height;
+                    _word_x = 0;
                 }
                 
                 __SCRIBBLE_PARSER_ADD_WORD;
@@ -913,19 +909,18 @@ function __scribble_generate_model(_element)
                         
                         if (_word_count > 0)
                         {
-                            _line_word_end  = _word_count;
+                            _line_word_end  = _word_count - 1;
                             _line_glyph_end = _word_glyph_end;
                             __SCRIBBLE_PARSER_ADD_LINE;
                             
-                            _line_word_start  = _word_count + 1;
+                            _line_word_start  = _word_count;
                             _line_glyph_start = _word_glyph_start;
                         }
                         
-                        _line_height = ds_grid_get_max(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);
+                        //Adjust the x-coord-in-word position of the remaining glyphs in the word
                         ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _last_glyph, __SCRIBBLE_PARSER_GLYPH.X, -_glyph_grid[# _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X]);
                         
-                        _word_x  = 0;
-                        _word_y += _line_height;
+                        _word_x     = 0;
                         _word_width = _glyph_width;
                     }
                     else
@@ -969,9 +964,7 @@ function __scribble_generate_model(_element)
             
             _word_glyph_start = _i + 1;
             
-            _line_height = ds_grid_get_max(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);
-            _word_x  = 0;
-            _word_y += _line_height;
+            _word_x     = 0;
             _word_width = 0;
             
             #endregion
@@ -1003,9 +996,7 @@ function __scribble_generate_model(_element)
                     
                     _word_glyph_start = _i + 1;
                     
-                    _line_height = ds_grid_get_max(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);
-                    _word_x  = 0;
-                    _word_y += _line_height;
+                    _word_x     = 0;
                     _word_width = 0;
                     
                     #endregion
@@ -1036,9 +1027,7 @@ function __scribble_generate_model(_element)
     
     
     
-    //TODO - Improve this calculation
-    width  = ds_grid_get_max(_line_grid, 0, __SCRIBBLE_PARSER_LINE.WIDTH, _line_count - 1, __SCRIBBLE_PARSER_LINE.WIDTH);
-    height = ds_grid_get_max(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT) + _word_y;
+    width = ds_grid_get_max(_line_grid, 0, __SCRIBBLE_PARSER_LINE.WIDTH, _line_count - 1, __SCRIBBLE_PARSER_LINE.WIDTH);
     
     
     
@@ -1053,28 +1042,63 @@ function __scribble_generate_model(_element)
         var _alignment_width = width;
     }
     
+    var _line_y = 0;
     var _i = 0;
     repeat(_line_count)
     {
-        var _line_halign = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HALIGN];
-        if (_line_halign != fa_left)
+        var _line_word_start = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_START];
+        var _line_word_end   = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_END  ];
+        var _line_width      = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WIDTH     ];
+        var _line_height     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HEIGHT    ];
+        var _line_halign     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HALIGN    ];
+        
+        if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_i < _line_count - 1)) //Don't try to justify text on the last line
         {
-            var _line_word_start = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_START];
-            var _line_word_end   = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_END  ];
-            var _line_width      = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WIDTH     ];
-            
-            if (_line_halign == fa_center)
+            var _line_word_count = 1 + _line_word_end - _line_word_start;
+            if (_line_word_count > 1) //Prevent div-by-zero
             {
-                ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.X, _line_word_end, __SCRIBBLE_PARSER_WORD.X, -(_line_width div 2));
+                //Distribute spacing over the line, on which there are n-1 spaces
+                var _spacing_incr = (_alignment_width - _line_width) / (_line_word_count - 1);
+                var _spacing = _spacing_incr;
+                
+                var _j = _line_word_start + 1; //Skip the first word
+                repeat(_line_word_count - 1)
+                {
+                    _word_grid[# _j, __SCRIBBLE_PARSER_WORD.X] = floor(_word_grid[# _j, __SCRIBBLE_PARSER_WORD.X] + _spacing);
+                    _spacing += _spacing_incr;
+                    ++_j;
+                }
             }
-            else if (_line_halign == fa_right)
+        }
+        else if ((_line_halign != fa_left) && (_line_halign != __SCRIBBLE_PIN_LEFT)) //fa_left and pin_left do nothing
+        {
+            var _xoffset = 0;
+            switch(_line_halign)
             {
-                ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.X, _line_word_end, __SCRIBBLE_PARSER_WORD.X, -_line_width);
+                case fa_center:             _xoffset = -(_line_width div 2);                   break;
+                case fa_right:              _xoffset = -_line_width;                           break;
+                case __SCRIBBLE_PIN_CENTRE: _xoffset = (_alignment_width - _line_width) div 2; break;
+                case __SCRIBBLE_PIN_RIGHT:  _xoffset = _alignment_width - _line_width;         break;
+            }
+            
+            if (_xoffset != 0)
+            {
+                ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.X, _line_word_end, __SCRIBBLE_PARSER_WORD.X, _xoffset);
             }
         }
         
+        //Move words vertically onto the line
+        if (_line_y != 0)
+        {
+            ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.Y, _line_word_end, __SCRIBBLE_PARSER_WORD.Y, _line_y);
+        }
+        
+        _line_y += _line_height;
+        
         ++_i;
     }
+    
+    height = _line_y;
     
     #endregion
     
