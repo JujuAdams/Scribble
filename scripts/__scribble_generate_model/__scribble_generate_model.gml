@@ -1277,6 +1277,8 @@ function __scribble_generate_model(_element)
         buffer_seek(_string_buffer, buffer_seek_start, 0);
         _page_data.__text = buffer_read(_string_buffer, buffer_string);
         
+        characters += _page_data.__character_count;
+        
         ++_p;
     }
     
