@@ -12,6 +12,7 @@ function __scribble_generate_model(_element)
     var _starting_halign = _element.starting_halign;
     var _starting_valign = _element.starting_valign;
     var _character_wrap  = _element.wrap_per_char;
+    var _ignore_commands = _element.__ignore_command_tags;
     
     
     
@@ -659,7 +660,7 @@ function __scribble_generate_model(_element)
         }
         else
         {
-            if (_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN)
+            if ((_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignore_commands)
             {
                 //Begin a command tag
                 _tag_start           = buffer_tell(_string_buffer);
