@@ -686,7 +686,7 @@ function __scribble_generate_model(_element)
                 
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 32;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 9;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = _font_data;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = _space_glyph_data;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
@@ -836,7 +836,7 @@ function __scribble_generate_model(_element)
     repeat(_glyph_count + 1) //Ensure we fully handle the last word
     {
         var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
-        if ((_glyph_ord == 32) || (_glyph_ord == 13))
+        if ((_glyph_ord == 9) || (_glyph_ord == 32) || (_glyph_ord == 13))
         {
             #region Word break
             
@@ -1117,40 +1117,19 @@ function __scribble_generate_model(_element)
         var _last_glyph_texture = undefined;
         var _glyph_sprite_data  = 0;
         
+        buffer_seek(_string_buffer, buffer_seek_start, 0);
+        
         var _i = _page_data.__glyph_start;
         repeat(1 + _page_data.__glyph_end - _page_data.__glyph_start)
         {
             var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
-            if (_glyph_ord > 32)
-            {
-                #region Write standard glyph
-                
-                __SCRIBBLE_PARSER_READ_GLYPH_DATA;
-                
-                var _write_scale = 1.0; //_glyph_scale*_font_scale_dist; //TODO
-                
-                var _glyph_data = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA];
-                var _glyph_texture = _glyph_data[SCRIBBLE_GLYPH.TEXTURE];
-                var _quad_u0 = _glyph_data[SCRIBBLE_GLYPH.U0];
-                var _quad_v0 = _glyph_data[SCRIBBLE_GLYPH.V0];
-                var _quad_u1 = _glyph_data[SCRIBBLE_GLYPH.U1];
-                var _quad_v1 = _glyph_data[SCRIBBLE_GLYPH.V1];
-                
-                //Add glyph to buffer
-                var _quad_l = _glyph_data[SCRIBBLE_GLYPH.X_OFFSET] + _glyph_x;
-                var _quad_t = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET] + _glyph_y;
-                var _quad_r = _glyph_data[SCRIBBLE_GLYPH.WIDTH   ] + _quad_l;
-                var _quad_b = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ] + _quad_t;
-                
-                __SCRIBBLE_PARSER_WRITE_GLYPH;
-                
-                #endregion
-            }
-            else if (_glyph_ord == __SCRIBBLE_PARSER_SPRITE)
+            if (_glyph_ord == __SCRIBBLE_PARSER_SPRITE)
             {
                 #region Write sprite
                 
                 __SCRIBBLE_PARSER_READ_GLYPH_DATA;
+                
+                buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                 
                 var _write_scale = 1.0; //_glyph_scale*_font_scale_dist; //TODO
                                         
@@ -1222,6 +1201,8 @@ function __scribble_generate_model(_element)
                 
                 __SCRIBBLE_PARSER_READ_GLYPH_DATA;
                 
+                buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
+                
                 var _write_scale = 1.0; //_glyph_scale*_font_scale_dist; //TODO
                                        
                 var _surface      = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX];
@@ -1244,9 +1225,48 @@ function __scribble_generate_model(_element)
                 
                 #endregion
             }
+            else if (_glyph_ord == 9)
+            {
+                buffer_write(_string_buffer, buffer_u8, 9);
+            }
+            else if (_glyph_ord == 32)
+            {
+                buffer_write(_string_buffer, buffer_u8, 32);
+            }
+            else if (_glyph_ord > 32)
+            {
+                #region Write standard glyph
+                
+                __SCRIBBLE_PARSER_READ_GLYPH_DATA;
+                
+                buffer_write(_string_buffer, buffer_u8,_glyph_ord);
+                
+                var _write_scale = 1.0; //_glyph_scale*_font_scale_dist; //TODO
+                
+                var _glyph_data = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA];
+                var _glyph_texture = _glyph_data[SCRIBBLE_GLYPH.TEXTURE];
+                var _quad_u0 = _glyph_data[SCRIBBLE_GLYPH.U0];
+                var _quad_v0 = _glyph_data[SCRIBBLE_GLYPH.V0];
+                var _quad_u1 = _glyph_data[SCRIBBLE_GLYPH.U1];
+                var _quad_v1 = _glyph_data[SCRIBBLE_GLYPH.V1];
+                
+                //Add glyph to buffer
+                var _quad_l = _glyph_data[SCRIBBLE_GLYPH.X_OFFSET] + _glyph_x;
+                var _quad_t = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET] + _glyph_y;
+                var _quad_r = _glyph_data[SCRIBBLE_GLYPH.WIDTH   ] + _quad_l;
+                var _quad_b = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ] + _quad_t;
+                
+                __SCRIBBLE_PARSER_WRITE_GLYPH;
+                
+                #endregion
+            }
             
             ++_i;
         }
+        
+        buffer_write(_string_buffer, buffer_u8, 0x0);
+        buffer_seek(_string_buffer, buffer_seek_start, 0);
+        _page_data.__text = buffer_read(_string_buffer, buffer_string);
         
         ++_p;
     }
