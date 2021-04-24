@@ -2,14 +2,14 @@ enum __SCRIBBLE_PARSER_GLYPH
 {
     X,                  // 0
     Y,                  // 1
-    ORD,                // 2
+    ORD,                // 2  Can be negative, see below
     FONT_DATA,          // 3
     GLYPH_DATA,         // 4
     EVENTS,             // 5
     WIDTH,              // 6
     SEPARATION,         // 7
     HEIGHT,             // 8
-    ASSET_INDEX,        // 9
+    ASSET_INDEX,        // 9  This gets used for sprite index, surface index, and halign mode
     IMAGE_INDEX,        //10
     IMAGE_SPEED,        //11
     STATE_COLOUR,       //12
@@ -22,7 +22,7 @@ enum __SCRIBBLE_PARSER_GLYPH
 enum __SCRIBBLE_PARSER_WORD
 {
     GLYPH_START, //0
-    GLYPH_END,   //1
+    GLYPH_COUNT, //1
     WIDTH,       //2
     HEIGHT,      //3
     X,           //4
@@ -33,19 +33,21 @@ enum __SCRIBBLE_PARSER_WORD
 enum __SCRIBBLE_PARSER_LINE
 {
     WORD_START, //0
-    WORD_END,   //1
+    WORD_COUNT, //1
     WIDTH,      //2
     HEIGHT,     //3
     HALIGN,     //4
     __SIZE,     //5
 }
 
-
+//These can be used for ORD
 #macro __SCRIBBLE_PARSER_SPRITE   -1
 #macro __SCRIBBLE_PARSER_SURFACE  -2
 #macro __SCRIBBLE_PARSER_HALIGN   -3
 
 
+
+//In-line macros!
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH_STATE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ] = _state_final_colour;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS] = _state_effect_flags;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE       ] = _state_scale;\n
@@ -100,7 +102,7 @@ enum __SCRIBBLE_PARSER_LINE
                                     var _font_space_width = _space_glyph_data[SCRIBBLE_GLYPH.WIDTH ];
 
 #macro __SCRIBBLE_PARSER_ADD_WORD  _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_START] = _word_glyph_start;\n
-                                   _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_END  ] = _word_glyph_end;\n
+                                   _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_COUNT] = 1 + _word_glyph_end - _word_glyph_start;\n
                                    _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.WIDTH      ] = _word_width;\n
                                    _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.HEIGHT     ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);\n
                                    _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.X          ] = _word_x;\n
@@ -108,7 +110,7 @@ enum __SCRIBBLE_PARSER_LINE
                                    _word_count++;
 
 #macro __SCRIBBLE_PARSER_ADD_LINE  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START ] = _line_word_start;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END   ] = _line_word_end;\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_COUNT ] = 1 + _line_word_end - _line_word_start;\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT     ] = ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT);\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = _state_halign;\n

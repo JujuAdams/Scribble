@@ -38,8 +38,7 @@ function __scribble_generate_model(_element)
     
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     buffer_write(_string_buffer, buffer_string, _element_text);
-    buffer_write(_string_buffer, buffer_u32, 0x0); //Add some extra null characters to avoid errors where we're reading outside the buffer
-    buffer_write(_string_buffer, buffer_u32, 0x0); //Add some extra null characters to avoid errors where we're reading outside the buffer
+    buffer_write(_string_buffer, buffer_u64, 0x0); //Add some extra null characters to avoid errors where we're reading outside the buffer
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     
     //Resize grids if we have to
@@ -825,7 +824,7 @@ function __scribble_generate_model(_element)
         var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
         if ((_glyph_ord == 32) || (_glyph_ord == 13))
         {
-            #region Space, or another word break
+            #region Word break
             
             _word_glyph_end = _i - 1;
             _space_width = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH];
@@ -949,7 +948,7 @@ function __scribble_generate_model(_element)
         
         if (_glyph_ord == __SCRIBBLE_PARSER_HALIGN)
         {
-            _state_halign = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX];;
+            _state_halign = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX];
         }
         
         ++_i;
@@ -989,55 +988,60 @@ function __scribble_generate_model(_element)
     var _i = 0;
     repeat(_line_count)
     {
-        var _line_word_start = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_START];
-        var _line_word_end   = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_END  ];
-        var _line_width      = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WIDTH     ];
+        var _line_word_count = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_COUNT];
         var _line_height     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HEIGHT    ];
-        var _line_halign     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HALIGN    ];
         
-        if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_i < _line_count - 1)) //Don't try to justify text on the last line
+        if (_line_word_count > 0)
         {
-            var _line_word_count = 1 + _line_word_end - _line_word_start;
-            if (_line_word_count > 1) //Prevent div-by-zero
+            var _line_word_start = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_START];
+            var _line_width      = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WIDTH     ];
+            var _line_halign     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HALIGN    ];
+            
+            _line_word_end = _line_word_start + _line_word_count - 1;
+            
+            if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_i < _line_count - 1)) //Don't try to justify text on the last line
             {
-                //Distribute spacing over the line, on which there are n-1 spaces
-                var _spacing_incr = (_alignment_width - _line_width) / (_line_word_count - 1);
-                var _spacing = _spacing_incr;
-                
-                var _j = _line_word_start + 1; //Skip the first word
-                repeat(_line_word_count - 1)
+                if (_line_word_count > 1) //Prevent div-by-zero
                 {
-                    _word_grid[# _j, __SCRIBBLE_PARSER_WORD.X] = floor(_word_grid[# _j, __SCRIBBLE_PARSER_WORD.X] + _spacing);
-                    _spacing += _spacing_incr;
-                    ++_j;
+                    //Distribute spacing over the line, on which there are n-1 spaces
+                    var _spacing_incr = (_alignment_width - _line_width) / (_line_word_count - 1);
+                    var _spacing = _spacing_incr;
+                    
+                    var _j = _line_word_start + 1; //Skip the first word
+                    repeat(_line_word_count - 1)
+                    {
+                        _word_grid[# _j, __SCRIBBLE_PARSER_WORD.X] = floor(_word_grid[# _j, __SCRIBBLE_PARSER_WORD.X] + _spacing);
+                        _spacing += _spacing_incr;
+                        ++_j;
+                    }
                 }
             }
-        }
-        else if ((_line_halign != fa_left) && (_line_halign != __SCRIBBLE_PIN_LEFT)) //fa_left and pin_left do nothing
-        {
-            var _xoffset = 0;
-            switch(_line_halign)
+            else if ((_line_halign != fa_left) && (_line_halign != __SCRIBBLE_PIN_LEFT)) //fa_left and pin_left do nothing
             {
-                case fa_center:             _xoffset = -(_line_width div 2);                   break;
-                case fa_right:              _xoffset = -_line_width;                           break;
-                case __SCRIBBLE_PIN_CENTRE: _xoffset = (_alignment_width - _line_width) div 2; break;
-                case __SCRIBBLE_PIN_RIGHT:  _xoffset = _alignment_width - _line_width;         break;
+                var _xoffset = 0;
+                switch(_line_halign)
+                {
+                    case fa_center:             _xoffset = -(_line_width div 2);                   break;
+                    case fa_right:              _xoffset = -_line_width;                           break;
+                    case __SCRIBBLE_PIN_CENTRE: _xoffset = (_alignment_width - _line_width) div 2; break;
+                    case __SCRIBBLE_PIN_RIGHT:  _xoffset = _alignment_width - _line_width;         break;
+                }
+                
+                if (_xoffset != 0)
+                {
+                    ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.X, _line_word_end, __SCRIBBLE_PARSER_WORD.X, _xoffset);
+                }
             }
             
-            if (_xoffset != 0)
+            //Move words vertically onto the line
+            if (_line_y != 0)
             {
-                ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.X, _line_word_end, __SCRIBBLE_PARSER_WORD.X, _xoffset);
+                ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.Y, _line_word_end, __SCRIBBLE_PARSER_WORD.Y, _line_y);
             }
-        }
-        
-        //Move words vertically onto the line
-        if (_line_y != 0)
-        {
-            ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.Y, _line_word_end, __SCRIBBLE_PARSER_WORD.Y, _line_y);
+            
         }
         
         _line_y += _line_height;
-        
         ++_i;
     }
     
@@ -1052,11 +1056,15 @@ function __scribble_generate_model(_element)
     var _i = 0;
     repeat(_word_count)
     {
-        var _word_glyph_start = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.GLYPH_START];
-        var _word_glyph_end   = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.GLYPH_END  ];
-        
-        ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.X, _word_grid[# _i, __SCRIBBLE_PARSER_WORD.X]);
-        ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.Y, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.Y, _word_grid[# _i, __SCRIBBLE_PARSER_WORD.Y]);
+        var _word_glyph_count = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.GLYPH_COUNT];
+        if (_word_glyph_count > 0)
+        {
+            var _word_glyph_start = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.GLYPH_START];
+            var _word_glyph_end   = _word_glyph_start + _word_glyph_count - 1;
+            
+            ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.X, _word_grid[# _i, __SCRIBBLE_PARSER_WORD.X]);
+            ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.Y, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.Y, _word_grid[# _i, __SCRIBBLE_PARSER_WORD.Y]);
+        }
         
         ++_i;
     }
