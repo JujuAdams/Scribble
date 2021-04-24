@@ -1,12 +1,17 @@
 function __scribble_class_page() constructor
 {
-    vertex_buffer_array           = [];
-    texture_to_vertex_buffer_dict = {};
+    __text = "";
+    
+    __glyph_start = undefined;
+    __glyph_end   = undefined;
+    
+    __vertex_buffer_array           = [];
+    __texture_to_vertex_buffer_dict = {};
     
     static __get_vertex_buffer = function(_texture, _font_data, _for_text, _model_struct)
     {
         var _pointer_string = string(_texture);
-        var _data = texture_to_vertex_buffer_dict[$ _pointer_string];
+        var _data = __texture_to_vertex_buffer_dict[$ _pointer_string];
         if (_data == undefined)
         {
             if (_font_data == undefined)
@@ -41,8 +46,8 @@ function __scribble_class_page() constructor
             _data[@ __SCRIBBLE_VERTEX_BUFFER.SHADER       ] = _shader;
             
             __scribble_gc_add_vbuff(self, _vbuff);
-            vertex_buffer_array[@ array_length(vertex_buffer_array)] = _data;
-            texture_to_vertex_buffer_dict[$ _pointer_string] = _data;
+            __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;
+            __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;
             
             return _vbuff;
         }
@@ -55,9 +60,9 @@ function __scribble_class_page() constructor
     static __finalize_vertex_buffers = function(_freeze)
     {
         var _i = 0;
-        repeat(array_length(vertex_buffer_array))
+        repeat(array_length(__vertex_buffer_array))
         {
-            var _vbuff = vertex_buffer_array[_i][__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
+            var _vbuff = __vertex_buffer_array[_i][__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
             vertex_end(_vbuff);
             if (_freeze) vertex_freeze(_vbuff);
             
@@ -68,26 +73,26 @@ function __scribble_class_page() constructor
     static __flush = function()
     {
         var _i = 0;
-        repeat(array_length(vertex_buffer_array))
+        repeat(array_length(__vertex_buffer_array))
         {
-            var _vbuff = vertex_buffer_array[_i][__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
+            var _vbuff = __vertex_buffer_array[_i][__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER];
             vertex_delete_buffer(_vbuff);
             __scribble_gc_remove_vbuff(_vbuff);
             
             ++_i;
         }
         
-        texture_to_vertex_buffer_dict = {};
-        array_resize(vertex_buffer_array, 0);
+        __texture_to_vertex_buffer_dict = {};
+        array_resize(__vertex_buffer_array, 0);
     }
     
     static __submit = function(_element)
     {
         var _shader = undefined;
         var _i = 0;
-        repeat(array_length(vertex_buffer_array))
+        repeat(array_length(__vertex_buffer_array))
         {
-            var _data = vertex_buffer_array[_i];
+            var _data = __vertex_buffer_array[_i];
             
             if (_data[__SCRIBBLE_VERTEX_BUFFER.SHADER] != _shader)
             {
