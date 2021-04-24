@@ -2,6 +2,8 @@ function __scribble_class_page() constructor
 {
     __text = "";
     
+    __character_count = 0;
+    
     __glyph_start = undefined;
     __glyph_end   = undefined;
     

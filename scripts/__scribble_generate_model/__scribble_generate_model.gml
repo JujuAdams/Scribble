@@ -808,10 +808,11 @@ function __scribble_generate_model(_element)
     //Set our vertical alignment if it hasn't been overrided
     if (valign == undefined) valign = _starting_valign;
     
-    //Create a spoof space character so we correctly handle the last character in the string
-    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 32;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = 0;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = 0;
+    //Create a null terminator so we correctly handle the last character in the string
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
     
     #endregion
     
@@ -836,7 +837,7 @@ function __scribble_generate_model(_element)
     repeat(_glyph_count + 1) //Ensure we fully handle the last word
     {
         var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
-        if ((_glyph_ord == 9) || (_glyph_ord == 32) || (_glyph_ord == 13))
+        if ((_glyph_ord == 0) || (_glyph_ord == 9) || (_glyph_ord == 32) || (_glyph_ord == 13))
         {
             #region Word break
             
@@ -1009,6 +1010,10 @@ function __scribble_generate_model(_element)
         {
             _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
             
+            var _page_char_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
+            ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, -_page_char_start);
+            _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
+            
             _page_data = __new_page();
             _page_data.__glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_START], __SCRIBBLE_PARSER_WORD.GLYPH_START];
             
@@ -1079,6 +1084,10 @@ function __scribble_generate_model(_element)
     }
     
     _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
+    
+    var _page_char_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
+    ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, -_page_char_start);
+    _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
     
     height = _line_y;
     

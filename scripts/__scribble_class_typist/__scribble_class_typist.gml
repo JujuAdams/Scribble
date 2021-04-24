@@ -221,8 +221,8 @@ function __scribble_class_typist() constructor
         var _pages_array = __last_element.ref.__get_model(true).get_page_array();
         if (array_length(_pages_array) <= __last_page) return 1.0;
         var _page_data = _pages_array[__last_page];
-        var _min = _page_data.start_char;
-        var _max = _page_data.last_char + 1; //Off by one
+        var _min = 0;
+        var _max = _page_data.__character_count;
         
         if (_max <= _min) return 1.0;
         
@@ -396,7 +396,7 @@ function __scribble_class_typist() constructor
             if (array_length(_pages_array) <= __last_page) return undefined;
             var _page_data = _pages_array[__last_page];
             
-            __window_array[@ __window_index] = min(1 + _page_data.last_char, _head_pos + _speed);
+            __window_array[@ __window_index] = min(_page_data.__character_count, _head_pos + _speed);
         }
         else
         {
@@ -446,11 +446,11 @@ function __scribble_class_typist() constructor
                 
                 if (__skip)
                 {
-                    var _remaining = 1 + _page_data.last_char - _head_pos;
+                    var _remaining = _page_data.__character_count - _head_pos;
                 }
                 else
                 {
-                    var _remaining = min(1 + _page_data.last_char - _head_pos, _speed);
+                    var _remaining = min(_page_data.__character_count - _head_pos, _speed);
                 }
                 
                 while(_remaining > 0)
@@ -525,7 +525,7 @@ function __scribble_class_typist() constructor
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];
-                _char_max = 1 + _page_data.last_char - _page_data.start_char;
+                _char_max = _page_data.__character_count;
             }
             else
             {
@@ -562,7 +562,7 @@ function __scribble_class_typist() constructor
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];
-                _char_max = 1 + _page_data.last_char - _page_data.start_char;
+                _char_max = _page_data.__character_count;
             }
             else
             {

@@ -67,7 +67,7 @@ enum __SCRIBBLE_PARSER_LINE
                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = _state_halign;\n
                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;\n
                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;\n
-                                       _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = -1;\n
+                                       _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;\n
                                        __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;\n
                                        ++_glyph_count;
 
@@ -84,7 +84,7 @@ enum __SCRIBBLE_PARSER_LINE
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;\n
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;\n
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = -1;\n
+                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;\n
                                          __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;\n
                                          ++_glyph_count;
 
