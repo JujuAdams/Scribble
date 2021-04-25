@@ -24,11 +24,11 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Fonts",
-    "path": "folders/Test Cases/Fonts.yy",
+    "name": "Basic",
+    "path": "folders/Test Cases/Basic.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_msdf",
+  "name": "obj_test_scaling",
   "tags": [],
   "resourceType": "GMObject",
 }

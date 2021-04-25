@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Miscellaneous",
+    "path": "folders/Test Cases/Miscellaneous.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_ignore_command_tags",

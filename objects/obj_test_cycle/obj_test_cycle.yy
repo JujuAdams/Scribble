@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Animation",
+    "path": "folders/Test Cases/Animation.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_cycle",

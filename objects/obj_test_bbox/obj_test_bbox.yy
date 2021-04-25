@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Getters",
+    "path": "folders/Test Cases/Getters.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_bbox",

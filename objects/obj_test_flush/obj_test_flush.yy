@@ -25,8 +25,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Caching, Stress Testing",
+    "path": "folders/Test Cases/Caching, Stress Testing.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_flush",

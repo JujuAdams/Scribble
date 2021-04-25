@@ -25,8 +25,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Shape, Wrapping, Position",
+    "path": "folders/Test Cases/Shape, Wrapping, Position.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_fit_to_box",
