@@ -79,7 +79,7 @@ enum __SCRIBBLE_PARSER_LINE
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;\n
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;\n
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = 0;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _font_line_height;\n
+                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_font_line_height;\n
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = 0;\n
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;\n
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;\n

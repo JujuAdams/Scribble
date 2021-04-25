@@ -28,7 +28,7 @@
     "path": "folders/Test Cases/Basic.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_scaling",
+  "name": "obj_test_scale_tags",
   "tags": [],
   "resourceType": "GMObject",
 }
