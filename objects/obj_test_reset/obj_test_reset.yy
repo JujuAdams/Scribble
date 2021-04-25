@@ -24,11 +24,11 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Pages",
-    "path": "folders/Test Cases/Pages.yy",
+    "name": "Basic",
+    "path": "folders/Test Cases/Basic.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_pages",
+  "name": "obj_test_reset",
   "tags": [],
   "resourceType": "GMObject",
 }

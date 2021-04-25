@@ -76,7 +76,7 @@ enum __SCRIBBLE_PARSER_LINE
 
 #macro __SCRIBBLE_PARSER_WRITE_NEWLINE   _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = 0;\n
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 13;\n
+                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x0D;\n //ASCII line break (dec = 13)
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;\n
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;\n
                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;\n

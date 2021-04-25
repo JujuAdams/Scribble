@@ -98,6 +98,14 @@ function __scribble_generate_model(_element)
                 {
                     #region Reset formatting
                     
+                    //Resets:
+                    //    - colour
+                    //    - effect flags (inc. cycle)
+                    //    - scale
+                    //    - slant
+                    //    - font
+                    //But NOT alignment
+                    
                     case "":
                     case "/":
                         _state_colour       = _starting_colour;
@@ -142,11 +150,11 @@ function __scribble_generate_model(_element)
                     #endregion
                     
                     case "/page":
-                        #region Add a pagebreak ("form feed") glyph to our grid
+                        #region Add a pagebreak (ASCII 0x0C, "form feed") glyph to our grid
                         
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X          ] = 0;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y          ] = 0;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD        ] = 12;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD        ] = 0x0C; //ASCII form feed (dec = 12)
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA  ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS     ] = undefined;
@@ -255,7 +263,7 @@ function __scribble_generate_model(_element)
                     case "&nbsp;":
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X         ] = 0;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y         ] = 0;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 160;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 0xA0; //Non-breaking space (dec = 160)
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _space_glyph_data;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS    ] = undefined;
@@ -671,22 +679,22 @@ function __scribble_generate_model(_element)
                 _tag_parameter_count = 0;
                 _tag_parameters      = [];
             }
-            else if ((_glyph_ord == 10) //If we've hit a newline (\n)
-                 || (SCRIBBLE_HASH_NEWLINE && (_glyph_ord == 35)) //If we've hit a hash, and hash newlines are on
-                 || ((_glyph_ord == 13) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) != 10))) //If this is a line feed but not followed by a newline... this fixes goofy Windows Notepad isses
+            else if ((_glyph_ord == 0x0A) //If we've hit a newline (\n)
+                 || (SCRIBBLE_HASH_NEWLINE && (_glyph_ord == 0x23)) //If we've hit a hash, and hash newlines are on
+                 || ((_glyph_ord == 0x0D) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) != 0x0A))) //If this is a line feed but not followed by a newline... this fixes goofy Windows Notepad isses
             {
                 //Add a newline glyph to our grid
                 __SCRIBBLE_PARSER_WRITE_NEWLINE;
                 
                 _glyph_x_in_word = 0;
             }
-            else if (_glyph_ord == 9)
+            else if (_glyph_ord == 0x09) //ASCII horizontal tab (dec = 9, obviously)
             {
                 #region Add a tab glyph to our grid
                 
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 9;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x09; //ASCII horizontal tab (dec = 9, obviously)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = _font_data;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = _space_glyph_data;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
@@ -705,13 +713,13 @@ function __scribble_generate_model(_element)
                 
                 #endregion
             }
-            else if (_glyph_ord == 32)
+            else if (_glyph_ord == 0x20) //ASCII space (dec = 32)
             {
                 #region Add a space glyph to our grid
                 
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 32;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x20; //ASCII space (dec = 32)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = _font_data;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = _space_glyph_data;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
@@ -730,7 +738,7 @@ function __scribble_generate_model(_element)
                 
                 #endregion
             }
-            else if (_glyph_ord > 32) //Only write glyphs that aren't system control characters
+            else if (_glyph_ord > 0x20) //Only write glyphs that aren't system control characters
             {
                 #region Add a standard glyph
                 
@@ -809,7 +817,7 @@ function __scribble_generate_model(_element)
     if (valign == undefined) valign = _starting_valign;
     
     //Create a null terminator so we correctly handle the last character in the string
-    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x00;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
@@ -837,7 +845,11 @@ function __scribble_generate_model(_element)
     repeat(_glyph_count + 1) //Ensure we fully handle the last word
     {
         var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
-        if ((_glyph_ord == 0) || (_glyph_ord == 9) || (_glyph_ord == 32) || (_glyph_ord == 13))
+        if ((_glyph_ord == 0x00)  //Null
+        ||  (_glyph_ord == 0x09)  //Horizontal tab (dec = 9)
+        ||  (_glyph_ord == 0x0C)  //Page break ("form feed", dec = 12)
+        ||  (_glyph_ord == 0x0D)  //Line break (dec = 13)
+        ||  (_glyph_ord == 0x20)) //Space (dec = 32))
         {
             #region Word break
             
@@ -939,9 +951,39 @@ function __scribble_generate_model(_element)
             #endregion
         }
         
-        if (_glyph_ord == 13)
+        if (_glyph_ord == 0x0C)
         {
-            #region Newline
+            #region Page break
+            
+            _word_glyph_end = _i - 1;
+            
+            if (_word_glyph_end >= _word_glyph_start)
+            {
+                __SCRIBBLE_PARSER_ADD_WORD;
+            }
+            
+            _line_word_end = _word_count - 1;
+            __SCRIBBLE_PARSER_ADD_LINE;
+            _line_word_start = _word_count;
+            
+            //Add an infinitely high line (which we'll read as a page break in a later step)
+            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y         ] = 0;
+            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START] = -1;
+            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END  ] = -2;
+            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH     ] = 0;
+            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT    ] = infinity;
+            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN    ] = _state_halign;
+            _line_count++;
+            
+            _word_x     = 0;
+            _word_width = 0;
+            _word_glyph_start = _i + 1;
+            
+            #endregion
+        }
+        else if (_glyph_ord == 0x0D)
+        {
+            #region Line break
             
             _word_glyph_end = _i - 1;
             
@@ -1001,9 +1043,24 @@ function __scribble_generate_model(_element)
     var _i = 0;
     repeat(_line_count)
     {
+        var _line_height     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HEIGHT    ];
         var _line_word_start = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_START];
         var _line_word_end   = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_END  ];
-        var _line_height     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HEIGHT    ];
+        
+        if (_line_height == infinity)
+        {
+            _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
+            
+            var _page_char_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
+            ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, -_page_char_start);
+            _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
+            
+            _page_data = __new_page();
+            _page_data.__glyph_start = _word_grid[# _line_grid[# _i+1, __SCRIBBLE_PARSER_LINE.WORD_START], __SCRIBBLE_PARSER_WORD.GLYPH_START];
+            
+            _line_y = 0;
+            _line_height = 0;
+        }
         
         //Create a new page if we've run off the end of the current one
         if ((_line_y + _line_height > _model_max_height) && (_line_y > 0))
@@ -1079,20 +1136,10 @@ function __scribble_generate_model(_element)
         }
         
         //Vertically centre words
-        
-        __scribble_trace("line_height = ", _line_height);
-        __scribble_trace("Centring words ", _line_word_start, " -> ", _line_word_end, " (inclusive)");
-        
         var _j = _line_word_start;
         repeat(1 + _line_word_end - _line_word_start)
         {
-            var _word_height = _word_grid[# _j, __SCRIBBLE_PARSER_WORD.HEIGHT];
-            var _y_offset = (_line_height - _word_height) div 2;
-            
-            __scribble_trace("word height = ", _word_height, ", y offset = ", _y_offset);
-            
-            _word_grid[# _j, __SCRIBBLE_PARSER_WORD.Y] += _y_offset;
-            
+            _word_grid[# _j, __SCRIBBLE_PARSER_WORD.Y] += (_line_height - _word_grid[# _j, __SCRIBBLE_PARSER_WORD.HEIGHT]) div 2;
             ++_j;
         }
         
