@@ -401,9 +401,9 @@ function __scribble_generate_model(_element)
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = _state_scale*_surface_width
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_state_scale*surface_get_height(_surface);
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = _state_scale*_surface_width;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = _surface_width; //Already includes scaling
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*surface_get_height(_surface);
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = _surface_width; //Already includes scaling
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = _surface;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
@@ -502,9 +502,9 @@ function __scribble_generate_model(_element)
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = _state_scale*_sprite_width
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_state_scale*sprite_get_height(_sprite_index);
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = _state_scale*_sprite_width;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = _sprite_width; //Already includes scaling
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*sprite_get_height(_sprite_index);
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = _sprite_width; //Already includes scaling
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = _sprite_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = _image_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = _image_speed;
@@ -777,7 +777,7 @@ function __scribble_generate_model(_element)
                 }
                 else
                 {
-                    var _glyph_separation = _glyph_data[SCRIBBLE_GLYPH.SEPARATION];
+                    var _glyph_separation = _state_scale*_glyph_data[SCRIBBLE_GLYPH.SEPARATION];
                     
                     //Add this glyph to our grid
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = _glyph_x_in_word;
@@ -788,7 +788,7 @@ function __scribble_generate_model(_element)
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = _state_scale*_glyph_data[SCRIBBLE_GLYPH.WIDTH];
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_font_line_height;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = _state_scale*_glyph_separation;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = _glyph_separation; //Already includes scaling
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
@@ -797,7 +797,7 @@ function __scribble_generate_model(_element)
                     ++_glyph_count;
                     
                     ++_character_index;
-                    _glyph_x_in_word += _state_scale*_glyph_separation;
+                    _glyph_x_in_word += _glyph_separation; //Already includes scaling
                 }
                 
                 #endregion
@@ -1158,17 +1158,17 @@ function __scribble_generate_model(_element)
                 
                 buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                 
-                var _write_scale = _glyph_scale; //_font_scale_dist; //TODO
+                var _write_scale = _glyph_scale;
                                         
                 var _sprite_index = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX];
                 var _image_index  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX];
                 var _image_speed  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED];
-                var _glyph_width  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH      ];
-                var _glyph_height = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ];
+                var _glyph_width  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH      ]; //Already multiplied by the glyph scale
+                var _glyph_height = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ]; //Already multiplied by the glyph scale
                 
                 if (SCRIBBLE_ADD_SPRITE_ORIGINS)
                 {
-                    _glyph_x -= _glyph_scale*sprite_get_xoffset(_sprite_index) + (_sprite_width div 2);
+                    _glyph_x -= _glyph_scale*sprite_get_xoffset(_sprite_index) + (_glyph_width div 2);
                     _glyph_y -= _glyph_scale*sprite_get_yoffset(_sprite_index);
                 }
                 
@@ -1230,11 +1230,11 @@ function __scribble_generate_model(_element)
                 
                 buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                 
-                var _write_scale = _glyph_scale; //_font_scale_dist; //TODO
+                var _write_scale = _glyph_scale;
                                        
                 var _surface      = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX];
-                var _glyph_width  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH      ];
-                var _glyph_height = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ];
+                var _glyph_width  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH      ]; //Already multiplied by the glyph scale
+                var _glyph_height = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ]; //Already multiplied by the glyph scale
                 
                 var _glyph_texture = surface_get_texture(_surface);
                 
@@ -1268,7 +1268,7 @@ function __scribble_generate_model(_element)
                 
                 buffer_write(_string_buffer, buffer_u8,_glyph_ord);
                 
-                var _write_scale = _glyph_scale; //_font_scale_dist; //TODO
+                var _write_scale = _glyph_scale*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST]; //TODO - Optimise this
                 
                 var _glyph_data = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA];
                 var _glyph_texture = _glyph_data[SCRIBBLE_GLYPH.TEXTURE];
@@ -1278,8 +1278,8 @@ function __scribble_generate_model(_element)
                 var _quad_v1 = _glyph_data[SCRIBBLE_GLYPH.V1];
                 
                 //Add glyph to buffer
-                var _quad_l = _glyph_data[SCRIBBLE_GLYPH.X_OFFSET] + _glyph_x;
-                var _quad_t = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET] + _glyph_y;
+                var _quad_l = _glyph_data[SCRIBBLE_GLYPH.X_OFFSET]*_glyph_scale + _glyph_x;
+                var _quad_t = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET]*_glyph_scale + _glyph_y;
                 var _quad_r = _glyph_data[SCRIBBLE_GLYPH.WIDTH   ]*_glyph_scale + _quad_l;
                 var _quad_b = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ]*_glyph_scale + _quad_t;
                 
