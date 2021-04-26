@@ -1244,7 +1244,7 @@ function __scribble_generate_model(_element)
                 var _image_count = 0;
                 repeat(_sprite_number)
                 {
-                    var _glyph_texture = _glyph_data[SCRIBBLE_GLYPH.TEXTURE];
+                    var _glyph_texture = sprite_get_texture(_sprite_index, _j);
                     
                     var _uvs = sprite_get_uvs(_sprite_index, _j);
                     var _quad_u0 = _uvs[0];
