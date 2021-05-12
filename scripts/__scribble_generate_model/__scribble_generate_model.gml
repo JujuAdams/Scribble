@@ -456,7 +456,7 @@ function __scribble_generate_model(_element)
                                 ++_j;
                             }
                             
-                            __new_event(characters, _tag_command_name, _data);
+                            __new_event(_character_index, _tag_command_name, _data);
                         }
                         else if (ds_map_exists(global.__scribble_effects, _tag_command_name)) //Set an effect
                         {
@@ -542,7 +542,7 @@ function __scribble_generate_model(_element)
                         }
                         else if (asset_get_type(_tag_command_name) == asset_sound)
                         {
-                            //TODO - Add sound playback event
+                            __new_event(_character_index, __SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters);
                         }
                         else
                         {
