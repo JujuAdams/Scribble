@@ -1,8 +1,9 @@
 function __scribble_class_typist() constructor
 {
-    __last_element   = undefined;
-    __last_page      = 0;
-    __last_character = 0;
+    __last_element         = undefined;
+    __last_page            = 0;
+    __last_character       = 0;
+    __last_audio_character = 0;
     
     __window_index = 0;
     __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
@@ -40,8 +41,9 @@ function __scribble_class_typist() constructor
     
     static reset = function()
     {
-        __last_page      = 0;
-        __last_character = 0;
+        __last_page            = 0;
+        __last_character       = 0;
+        __last_audio_character = 0;
         
         __window_index = 0;
         __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
@@ -331,7 +333,7 @@ function __scribble_class_typist() constructor
         return true;
     }
     
-    static __play_sound = function()
+    static __play_sound = function(_head_pos)
     {
         var _sound_array = __sound_array;
         if (is_array(_sound_array) && (array_length(_sound_array) > 0))
@@ -339,7 +341,11 @@ function __scribble_class_typist() constructor
             var _play_sound = false;
             if (__sound_per_char)
             {
-                _play_sound = true;
+                //Only play audio if a new character has been revealled
+                if (floor(_head_pos) > floor(__last_audio_character))
+                {
+                    _play_sound = true;
+                }
             }
             else if (current_time >= __sound_finish_time) 
             {
@@ -348,6 +354,8 @@ function __scribble_class_typist() constructor
             
             if (_play_sound)
             {
+                __last_audio_character = _head_pos;
+                
                 var _inst = audio_play_sound(_sound_array[floor(__scribble_random()*array_length(_sound_array))], 0, false);
                 audio_sound_pitch(_inst, lerp(__sound_pitch_min, __sound_pitch_max, __scribble_random()));
                 __sound_finish_time = current_time + 1000*audio_sound_length(_inst) - __sound_overlap;
@@ -490,7 +498,7 @@ function __scribble_class_typist() constructor
                 }
                 
                 //Only play sound once per frame if we're going reaaaally fast
-                if (_play_sound) __play_sound();
+                if (_play_sound) __play_sound(_head_pos);
                 
                 //Set the typewriter head
                 __window_array[@ __window_index] = _head_pos;
