@@ -1043,7 +1043,7 @@ function __scribble_generate_model(_element)
     
     if (_model_max_width != infinity)
     {
-        var _alignment_width =_model_max_width;
+        var _alignment_width = _model_max_width;
     }
     else
     {
