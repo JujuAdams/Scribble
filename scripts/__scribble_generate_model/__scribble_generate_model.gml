@@ -650,6 +650,8 @@ function __scribble_generate_model(_element)
                     {
                         //Add a newline glyph to our grid
                         __SCRIBBLE_PARSER_WRITE_NEWLINE;
+                        
+                        _glyph_x_in_word = 0;
                     }
                     
                     __SCRIBBLE_PARSER_WRITE_HALIGN;
