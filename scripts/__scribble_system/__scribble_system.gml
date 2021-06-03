@@ -181,6 +181,20 @@ global.__scribble_hex_array[@ ord("d") - _min] = 13; //ascii 100 = array 52
 global.__scribble_hex_array[@ ord("e") - _min] = 14; //ascii 101 = array 53
 global.__scribble_hex_array[@ ord("f") - _min] = 15; //ascii 102 = array 54
 
+//Try to add all fonts in the project to Scribble
+var _i = 0;
+repeat(9999)
+{
+    if (!font_exists(_i)) break;
+    var _name = font_get_name(_i);
+    if (string_copy(_name, 1, 9) != "__newfont") //Don't scan fonts created at runtime (e.g. by font_add_sprite())
+    {
+        __scribble_font_add_auto(_i);
+    }
+    
+    ++_i;
+}
+
 function __scribble_trace()
 {
     var _string = "Scribble: ";

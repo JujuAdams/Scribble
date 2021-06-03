@@ -13,7 +13,7 @@
 function scribble_font_add_msdf(_font, _sprite, _json_name)
 {
     //Ensure we're initialised
-    __scribble_init();
+    __scribble_system();
     
     if (ds_map_exists(global.__scribble_font_data, _font))
     {

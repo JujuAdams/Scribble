@@ -30,7 +30,7 @@ function scribble_font_add_from_sprite()
     var _proportional = (argument_count > 4)? argument[4] : true;
     
     //Ensure we're initialised
-    __scribble_init();
+    __scribble_system();
 
     if (ds_map_exists(global.__scribble_font_data, _name))
     {

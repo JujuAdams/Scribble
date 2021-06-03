@@ -25,7 +25,7 @@ function scribble_font_add()
     var _texture = (argument_count > 2)? argument[2] : undefined;
     
     //Ensure we're initialised
-    __scribble_init();
+    __scribble_system();
     
     if (ds_map_exists(global.__scribble_font_data, _name))
     {
