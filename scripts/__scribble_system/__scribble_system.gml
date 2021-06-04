@@ -182,12 +182,33 @@ global.__scribble_hex_array[@ ord("e") - _min] = 14; //ascii 101 = array 53
 global.__scribble_hex_array[@ ord("f") - _min] = 15; //ascii 102 = array 54
 
 //Try to add all fonts in the project to Scribble
-var _i = 0;
+var _i = -1;
 repeat(9999)
 {
     if (!font_exists(_i)) break;
+    
+    var _skip = false;
+    
+    var _tags = asset_get_tags(_i, asset_font);
+    var _j = 0;
+    repeat(array_length(_tags))
+    {
+        if (string_lower(_tags[_j]) == "scribble skip")
+        {
+            _skip = true;
+            break;
+        }
+        
+        ++_j;
+    }
+    
     var _name = font_get_name(_i);
-    if (string_copy(_name, 1, 9) != "__newfont") //Don't scan fonts created at runtime (e.g. by font_add_sprite())
+    if (string_copy(_name, 1, 9) == "__newfont") //Don't scan fonts created at runtime (e.g. by font_add_sprite())
+    {
+        _skip = true;
+    }
+    
+    if (!_skip)
     {
         __scribble_font_add_from_project(_i);
     }

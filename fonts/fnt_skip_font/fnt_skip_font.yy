@@ -302,7 +302,9 @@
     "path": "folders/Fonts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "fnt_test_0",
-  "tags": [],
+  "name": "fnt_skip_font",
+  "tags": [
+    "scribble skip",
+  ],
   "resourceType": "GMFont",
 }

@@ -974,8 +974,6 @@
   },
   "resourceVersion": "1.0",
   "name": "fnt_style_i",
-  "tags": [
-    "Scribble",
-  ],
+  "tags": [],
   "resourceType": "GMFont",
 }

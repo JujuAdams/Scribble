@@ -25,6 +25,12 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
     var _sprite_name = _font_info.name;
     var _sprite = asset_get_index(_sprite_name);
     
+    if (global.__scribble_default_font == undefined)
+    {
+        if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_sprite_name) + "\"");
+        global.__scribble_default_font = _sprite_name;
+    }
+    
     var _sprite_width  = sprite_get_width(_sprite);
     var _sprite_height = sprite_get_height(_sprite);
     

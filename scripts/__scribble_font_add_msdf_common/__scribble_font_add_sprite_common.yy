@@ -6,7 +6,7 @@
     "path": "folders/Scribble/(System - Don't call these functions)/Scri8ble.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__scribble_font_add_sprite_ext",
+  "name": "__scribble_font_add_sprite_common",
   "tags": [],
   "resourceType": "GMScript",
 }

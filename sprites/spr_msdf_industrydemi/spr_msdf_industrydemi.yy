@@ -74,6 +74,8 @@
   },
   "resourceVersion": "1.0",
   "name": "spr_msdf_industrydemi",
-  "tags": [],
+  "tags": [
+    "scribble msdf",
+  ],
   "resourceType": "GMSprite",
 }
