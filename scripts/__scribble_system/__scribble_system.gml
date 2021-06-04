@@ -189,7 +189,7 @@ repeat(9999)
     var _name = font_get_name(_i);
     if (string_copy(_name, 1, 9) != "__newfont") //Don't scan fonts created at runtime (e.g. by font_add_sprite())
     {
-        __scribble_font_add_auto(_i);
+        __scribble_font_add_from_project(_i);
     }
     
     ++_i;

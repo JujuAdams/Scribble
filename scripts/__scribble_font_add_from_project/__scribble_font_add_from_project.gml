@@ -1,6 +1,6 @@
 /// @param font
 
-function __scribble_font_add_auto(_font)
+function __scribble_font_add_from_project(_font)
 {
     __scribble_trace("Scribble: Adding \"", font_get_name(_font), "\"");
     
