@@ -19,7 +19,7 @@ function __scribble_generate_model(_element)
     #region Collect starting font data
     
     var _starting_font = _element.starting_font;
-    if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
+    if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added a font to your project");
     
     var _font_name = _starting_font;
     __SCRIBBLE_PARSER_SET_FONT;

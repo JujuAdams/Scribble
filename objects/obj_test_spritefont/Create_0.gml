@@ -1,5 +1,4 @@
 scribble_font_set_default("spr_sprite_font");
-scribble_font_add_all();
 
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 scribble_font_add_from_sprite("spr_sprite_font", _mapstring, 0, 11);
