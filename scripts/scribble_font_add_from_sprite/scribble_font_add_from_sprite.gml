@@ -23,6 +23,8 @@
 
 function scribble_font_add_from_sprite()
 {
+    if (SCRIBBLE_WARNING_LEGACY_SPRITEFONT) __scribble_error("scribble_font_add_from_sprite() has been deprecated\nPlease use GM's native font_add_sprite_ext()\nSpace width can be customised with scribble_glyph_set() if required");
+    
     var _name         = argument[0];
     var _mapstring    = argument[1];
     var _separation   = argument[2];
