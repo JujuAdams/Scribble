@@ -31,7 +31,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
     var _sprite_uvs    = sprite_get_uvs(_sprite, 0);
     var _texture       = sprite_get_texture(_sprite, 0);
     
-    var _json_buffer = buffer_load(global.__scribble_font_directory + _sprite + ".json");
+    var _json_buffer = buffer_load(global.__scribble_font_directory + _name + ".json");
     var _json_string = buffer_read(_json_buffer, buffer_text);
     buffer_delete(_json_buffer);
     var _json = json_decode(_json_string);
@@ -48,7 +48,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
     _font_data.msdf_range = _msdf_range;
     
     var _size = ds_list_size(_json_glyph_list);
-    if (SCRIBBLE_VERBOSE) __scribble_trace("\"" + _font + "\" has " + string(_size) + " characters");
+    if (SCRIBBLE_VERBOSE) __scribble_trace("\"" + _name + "\" has " + string(_size) + " characters");
     
     var _font_glyphs_map = ds_map_create();
     _font_data.glyphs_map = _font_glyphs_map;

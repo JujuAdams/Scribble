@@ -25,7 +25,7 @@
     {"id":{"name":"spr_msdf_industrydemi","path":"sprites/spr_msdf_industrydemi/spr_msdf_industrydemi.yy",},"order":13,},
     {"id":{"name":"example_dialogue_set_name","path":"scripts/example_dialogue_set_name/example_dialogue_set_name.yy",},"order":5,},
     {"id":{"name":"spr_portrait","path":"sprites/spr_portrait/spr_portrait.yy",},"order":4,},
-    {"id":{"name":"__scribble_font_add_msdf_common","path":"scripts/__scribble_font_add_msdf_common/__scribble_font_add_msdf_common.yy",},"order":3,},
+    {"id":{"name":"__scribble_font_add_msdf_from_project","path":"scripts/__scribble_font_add_msdf_from_project/__scribble_font_add_msdf_from_project.yy",},"order":3,},
     {"id":{"name":"obj_test_typewriter_delay_plus_sound","path":"objects/obj_test_typewriter_delay_plus_sound/obj_test_typewriter_delay_plus_sound.yy",},"order":6,},
     {"id":{"name":"scribble_typewriter_add_event","path":"scripts/scribble_typewriter_add_event/scribble_typewriter_add_event.yy",},"order":1,},
     {"id":{"name":"__scribble_config_macros","path":"scripts/__scribble_config_macros/__scribble_config_macros.yy",},"order":0,},
@@ -187,8 +187,8 @@
     {"isScaled":false,"autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":-1,"resourceVersion":"1.3","name":"Default","resourceType":"GMTextureGroup",},
   ],
   "IncludedFiles": [
-    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"openhuninn.json","resourceType":"GMIncludedFile",},
-    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"Industry-Demi.json","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"spr_msdf_openhuninn.json","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"spr_msdf_industrydemi.json","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
     "IDEVersion": "23.1.1.290",
