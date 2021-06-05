@@ -16,14 +16,8 @@
 /// SCRIBBLE_GLYPH.SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
 ///                            left edge of the next glyph. This can be a negative value!
 
-function scribble_glyph_set()
+function scribble_glyph_set(_font, _character, _property, _value, _relative = false)
 {
-    var _font      = argument[0];
-    var _character = argument[1];
-    var _property  = argument[2];
-    var _value     = argument[3];
-    var _relative  = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : false;
-    
     if (!ds_map_exists(global.__scribble_font_data, _font))
     {
         __scribble_error("Font \"", _font, "\" not found");
