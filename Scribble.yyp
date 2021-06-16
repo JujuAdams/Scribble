@@ -99,7 +99,6 @@
     {"id":{"name":"obj_test_typewriter_custom","path":"objects/obj_test_typewriter_custom/obj_test_typewriter_custom.yy",},"order":5,},
     {"id":{"name":"scribble_font_rename","path":"scripts/scribble_font_rename/scribble_font_rename.yy",},"order":1,},
     {"id":{"name":"obj_test_pin_alignment","path":"objects/obj_test_pin_alignment/obj_test_pin_alignment.yy",},"order":13,},
-    {"id":{"name":"__scribble_snap_from_json","path":"scripts/__scribble_snap_from_json/__scribble_snap_from_json.yy",},"order":19,},
     {"id":{"name":"__shd_scribble_bake_outline","path":"shaders/__shd_scribble_bake_outline/__shd_scribble_bake_outline.yy",},"order":17,},
     {"id":{"name":"obj_test_sync","path":"objects/obj_test_sync/obj_test_sync.yy",},"order":3,},
     {"id":{"name":"Methods_Quick_Reference","path":"notes/Methods_Quick_Reference/Methods_Quick_Reference.yy",},"order":0,},
@@ -192,7 +191,7 @@
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"spr_msdf_industrydemi.json","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
-    "IDEVersion": "23.1.1.290",
+    "IDEVersion": "23.1.1.300",
   },
   "resourceVersion": "1.4",
   "name": "Scribble",
