@@ -8,6 +8,8 @@
 
 function scribble(_string, _unique_id = SCRIBBLE_DEFAULT_UNIQUE_ID)
 {
+    _unique_id = string(_unique_id);
+    
     var _weak = global.__scribble_ecache_dict[? _string + ":" + _unique_id];
     if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.flushed)
     {
