@@ -22,6 +22,7 @@ function __scribble_config_default_template()
     animation_wheel(1, 0.5, 0.2);
     animation_cycle(0.3, 180, 255);
     animation_jitter(0.8, 1.2, 0.4);
+    animation_blink(8, 8, 0);
     
     if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER) typewriter_off();
 }

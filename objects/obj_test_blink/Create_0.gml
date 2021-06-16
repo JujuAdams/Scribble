@@ -1,1 +1,1 @@
-scribble_font_set_default("riffic");
+scribble_font_set_default("spr_msdf_openhuninn");
