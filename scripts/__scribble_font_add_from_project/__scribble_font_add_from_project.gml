@@ -38,7 +38,6 @@ function __scribble_font_add_from_project(_font)
     
     //Get font info from the runtime
     var _font_info = font_get_info(_font);
-    _font_info = __scribble_snap_from_json(json_stringify(_font_info)); //FIXME - Workaround for a bug in GMS23.1.1.290 beta
     var _info_glyphs_dict = _font_info.glyphs;
     
     //

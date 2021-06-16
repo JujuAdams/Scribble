@@ -20,7 +20,6 @@ function __scribble_font_add_sprite_ext(_sprite, _mapstring, _proportional, _sep
 function __scribble_font_add_sprite_common(_spritefont, _proportional, _separation)
 {
     var _font_info = font_get_info(_spritefont);
-    _font_info = __scribble_snap_from_json(json_stringify(_font_info)); //FIXME - Workaround for a bug in GMS23.1.1.290 beta
     
     var _sprite_name = _font_info.name;
     var _sprite = asset_get_index(_sprite_name);
@@ -46,6 +45,7 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
     var _info_glyphs_dict = _font_info.glyphs;
     var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
     if (SCRIBBLE_VERBOSE) __scribble_trace("  \"", _sprite_name, "\" has ", array_length(_info_glyph_names), " characters");
+    
     var _i = 0;
     repeat(array_length(_info_glyph_names))
     {
