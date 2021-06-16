@@ -8,7 +8,7 @@
   "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 1,
-  "physicsGroup": 0,
+  "physicsGroup": 1,
   "physicsDensity": 0.5,
   "physicsRestitution": 0.1,
   "physicsLinearDamping": 0.1,
@@ -28,7 +28,7 @@
     "path": "folders/Test Cases/Animation.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_cycle",
+  "name": "obj_test_anim_pulse",
   "tags": [],
   "resourceType": "GMObject",
 }
