@@ -47,6 +47,8 @@ function __scribble_class_typist() constructor
         __last_character       = 0;
         __last_audio_character = 0;
         
+        __last_tick_time = -infinity;
+        
         __window_index = 0;
         __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
         __skip         = false;
@@ -385,12 +387,13 @@ function __scribble_class_typist() constructor
     
     static __tick = function(_target_element, _function_scope)
     {
-        if (current_time - __last_tick_time <= __SCRIBBLE_EXPECTED_FRAME_TIME) return undefined;
-        __last_tick_time = current_time;
-        
         //Associate the typist with the target element so that we're pulling data from the correct place
         //This saves the user from doing it themselves
         associate(_target_element);
+        
+        //Don't tick if it's been less than a frame since we were last updated
+        if (current_time - __last_tick_time < __SCRIBBLE_EXPECTED_FRAME_TIME) return undefined;
+        __last_tick_time = current_time;
         
         //If __in hasn't been set yet (.in() / .out() haven't been set) then just nope out
         if (__in == undefined) return undefined;
