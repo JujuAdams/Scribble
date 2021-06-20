@@ -178,6 +178,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
         if (_halign == "pin_center") _halign = __SCRIBBLE_PIN_CENTRE;
         if (_halign == "pin_right" ) _halign = __SCRIBBLE_PIN_RIGHT;
+        if (_halign == "justify"   ) _halign = __SCRIBBLE_JUSTIFY;
         
         if (_halign != starting_halign)
         {
@@ -208,8 +209,9 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
         }
         
-        blend_colour = _colour;
-        blend_alpha  = _alpha;
+        if (_colour != undefined) blend_colour = _colour;
+        if (_alpha  != undefined) blend_alpha  = _alpha;
+        
         return self;
     }
     
@@ -774,7 +776,14 @@ function __scribble_class_element(_string, _unique_id) constructor
         last_drawn = current_time;
         
         //Update the blink state
-        animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
+        if (animation_blink_on_duration + animation_blink_off_duration > 0)
+        {
+            animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
+        }
+        else
+        {
+            animation_blink_state = true;
+        }
         
         #region Prepare shaders for drawing
         
@@ -854,7 +863,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                     __tick(other, _function_scope);
                     
                     //Let the typist set the shader uniforms
-                    __set_msdf_shader_uniforms();
+                    __set_shader_uniforms();
                 }
             }
             else if (__tw_reveal != undefined)

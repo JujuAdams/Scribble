@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Typewriter",
+    "path": "folders/Test Cases/Typewriter.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_typewriter_speed",

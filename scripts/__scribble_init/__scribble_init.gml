@@ -45,6 +45,9 @@ global.__scribble_effects             = ds_map_create();  //Bidirectional lookup
 global.__scribble_effects_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_default_font        = undefined;
 global.__scribble_buffer              = buffer_create(1024, buffer_grow, 1);
+global.__scribble_glyph_grid          = ds_grid_create(1000, __SCRIBBLE_PARSER_GLYPH.__SIZE);
+global.__scribble_word_grid           = ds_grid_create(1000, __SCRIBBLE_PARSER_WORD.__SIZE);
+global.__scribble_line_grid           = ds_grid_create(__SCRIBBLE_MAX_LINES, __SCRIBBLE_PARSER_LINE.__SIZE);
 //global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0); //TODO - Do we still need this?
 global.__scribble_character_delay     = false;
 global.__scribble_character_delay_map = ds_map_create();
@@ -95,7 +98,7 @@ global.__scribble_effects_slash[? "/wheel"  ] = 6;
 global.__scribble_effects_slash[? "/cycle"  ] = 7;
 global.__scribble_effects_slash[? "/jitter" ] = 8;
 global.__scribble_effects_slash[? "/blink"  ] = 9;
-    
+
 //Create a vertex format for our text
 vertex_format_begin();
 vertex_format_add_position_3d();                                  //12 bytes
@@ -104,7 +107,7 @@ vertex_format_add_colour();                                       // 4 bytes
 vertex_format_add_texcoord();                                     // 8 bytes
 vertex_format_add_custom(vertex_type_float2, vertex_usage_color); // 8 bytes
 global.__scribble_vertex_format = vertex_format_end();            //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
-    
+
 vertex_format_begin();
 vertex_format_add_position(); //12 bytes
 vertex_format_add_color();    // 4 bytes
@@ -279,20 +282,15 @@ enum SCRIBBLE_GLYPH
     __SIZE      //12
 }
 
-enum __SCRIBBLE_VERTEX
+enum __SCRIBBLE_VERTEX_BUFFER
 {
-    X              =  0,
-    Y              =  4,
-    PACKED_INDEXES =  8,
-    DX             = 12,
-    SPRITE_DATA    = 16,
-    EFFECT_FLAGS   = 20,
-    COLOUR         = 24,
-    U              = 28,
-    V              = 32,
-    SCALE          = 36,
-    DY             = 40,
-    __SIZE         = 44
+    VERTEX_BUFFER, //0
+    TEXTURE,       //1
+    MSDF_RANGE,    //2
+    TEXEL_WIDTH,   //3
+    TEXEL_HEIGHT,  //4
+    SHADER,        //5
+    __SIZE         //6
 }
 
 enum __SCRIBBLE_ANIM
@@ -337,23 +335,24 @@ enum SCRIBBLE_EASE
     CUSTOM_1, //12
     CUSTOM_2, //13
     CUSTOM_3, //14
-    __SIZE
+    __SIZE    //15
 }
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
 #macro __SCRIBBLE_ON_OPENGL            (!__SCRIBBLE_ON_DIRECTX)
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
 #macro __SCRIBBLE_ON_WEB               (os_browser != browser_not_a_browser)
-#macro __SCRIBBLE_GLYPH_BYTE_SIZE      (6*__SCRIBBLE_VERTEX.__SIZE)
-#macro __SCRIBBLE_EXPECTED_GLYPHS      100
 #macro __SCRIBBLE_EXPECTED_FRAME_TIME  (0.95*game_get_speed(gamespeed_microseconds)/1000) //Uses to prevent the autotype from advancing if a draw call is made multiple times a frame to the same text element
 #macro __SCRIBBLE_PIN_LEFT             3
 #macro __SCRIBBLE_PIN_CENTRE           4
 #macro __SCRIBBLE_PIN_RIGHT            5
+#macro __SCRIBBLE_JUSTIFY              6
 #macro __SCRIBBLE_WINDOW_COUNT         4
 #macro __SCRIBBLE_GC_STEP_SIZE         3
 #macro __SCRIBBLE_CACHE_TIMEOUT        120 //How long to wait (in milliseconds) before the text element cache automatically cleans up unused data
+#macro __SCRIBBLE_AUDIO_COMMAND_TAG    "__scribble_audio_playback__"
 #macro SCRIBBLE_DEFAULT_FONT           global.__scribble_default_font
+
 
 //Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
 //However, some font definitons may have disjointed character indexes (e.g. Chinese). Scribble will detect these fonts and use a ds_map instead for glyph data lookup

@@ -26,7 +26,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Legacy",
-    "path": "folders/Test Cases/Legacy.yy",
+    "path": "folders/Test Cases/Typewriter/Legacy.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_legacy",
