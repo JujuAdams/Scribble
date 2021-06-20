@@ -776,7 +776,14 @@ function __scribble_class_element(_string, _unique_id) constructor
         last_drawn = current_time;
         
         //Update the blink state
-        animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
+        if (animation_blink_on_duration + animation_blink_off_duration > 0)
+        {
+            animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
+        }
+        else
+        {
+            animation_blink_state = true;
+        }
         
         #region Prepare shaders for drawing
         
