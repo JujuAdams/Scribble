@@ -209,8 +209,9 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
         }
         
-        blend_colour = _colour;
-        blend_alpha  = _alpha;
+        if (_colour != undefined) blend_colour = _colour;
+        if (_alpha  != undefined) blend_alpha  = _alpha;
+        
         return self;
     }
     

@@ -28,7 +28,7 @@
     "path": "folders/Test Cases/Scribble Methods.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_starting_alignment",
+  "name": "obj_test_origin",
   "tags": [],
   "resourceType": "GMObject",
 }
