@@ -4,6 +4,7 @@
     {"id":{"name":"obj_example_big_textbox","path":"objects/obj_example_big_textbox/obj_example_big_textbox.yy",},"order":3,},
     {"id":{"name":"spr_coin","path":"sprites/spr_coin/spr_coin.yy",},"order":1,},
     {"id":{"name":"obj_test_anim_wave","path":"objects/obj_test_anim_wave/obj_test_anim_wave.yy",},"order":1,},
+    {"id":{"name":"obj_test_pages_with_typist","path":"objects/obj_test_pages_with_typist/obj_test_pages_with_typist.yy",},"order":1,},
     {"id":{"name":"__scribble_class_element","path":"scripts/__scribble_class_element/__scribble_class_element.yy",},"order":4,},
     {"id":{"name":"obj_test_pages","path":"objects/obj_test_pages/obj_test_pages.yy",},"order":0,},
     {"id":{"name":"obj_test_origin","path":"objects/obj_test_origin/obj_test_origin.yy",},"order":3,},
