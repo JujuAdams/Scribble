@@ -72,10 +72,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         __tw_legacy_typist = scribble_typist();
         __tw_legacy_typist.associate(self);
         
-        __tw_legacy_typist_last_tick = -infinity;
+        __tw_legacy_typist_use = false;
     }
-    
-    __tw_legacy_typist_use = false;
     
     animation_time               = current_time;
     animation_tick_speed__       = 1;
@@ -810,26 +808,13 @@ function __scribble_class_element(_string, _unique_id) constructor
             
             if (_typist != undefined)
             {
-                if (!__tw_legacy_typist_use || (current_time - __tw_legacy_typist_last_tick > __SCRIBBLE_EXPECTED_FRAME_TIME))
+                with(_typist)
                 {
-                    __tw_legacy_typist_last_tick = current_time;
+                    //Tick over the typist
+                    __tick(other, _function_scope);
                     
-                    with(_typist)
-                    {
-                        //Tick over the typist
-                        __tick(other, _function_scope);
-                        
-                        //Let the typist set the shader uniforms
-                        __set_shader_uniforms();
-                    }
-                }
-                else
-                {
-                    with(_typist)
-                    {
-                        //Let the typist set the shader uniforms
-                        __set_shader_uniforms();
-                    }
+                    //Let the typist set the shader uniforms
+                    __set_shader_uniforms();
                 }
             }
             else if (__tw_reveal != undefined)
@@ -872,27 +857,13 @@ function __scribble_class_element(_string, _unique_id) constructor
             
             if (_typist != undefined)
             {
-                if (!__tw_legacy_typist_use || (current_time - __tw_legacy_typist_last_tick > __SCRIBBLE_EXPECTED_FRAME_TIME))
+                with(_typist)
                 {
-                    __tw_legacy_typist_last_tick = current_time;
+                    //Tick over the typist
+                    __tick(other, _function_scope);
                     
-                    with(_typist)
-                    {
-                        
-                        //Tick over the typist
-                        __tick(other, _function_scope);
-                        
-                        //Let the typist set the shader uniforms
-                        __set_shader_uniforms();
-                    }
-                }
-                else
-                {
-                    with(_typist)
-                    {
-                        //Let the typist set the shader uniforms
-                        __set_shader_uniforms();
-                    }
+                    //Let the typist set the shader uniforms
+                    __set_shader_uniforms();
                 }
             }
             else if (__tw_reveal != undefined)

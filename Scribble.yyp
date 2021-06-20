@@ -123,6 +123,7 @@
     {"id":{"name":"__scribble_class_font","path":"scripts/__scribble_class_font/__scribble_class_font.yy",},"order":3,},
     {"id":{"name":"fnt_test_2","path":"fonts/fnt_test_2/fnt_test_2.yy",},"order":3,},
     {"id":{"name":"fnt_industrydemi","path":"fonts/fnt_industrydemi/fnt_industrydemi.yy",},"order":12,},
+    {"id":{"name":"obj_test_typewriter_duplicate_draw","path":"objects/obj_test_typewriter_duplicate_draw/obj_test_typewriter_duplicate_draw.yy",},"order":2,},
     {"id":{"name":"obj_test_new_cache","path":"objects/obj_test_new_cache/obj_test_new_cache.yy",},"order":3,},
     {"id":{"name":"fnt_chinese","path":"fonts/fnt_chinese/fnt_chinese.yy",},"order":4,},
     {"id":{"name":"scribble_font_set_style_family","path":"scripts/scribble_font_set_style_family/scribble_font_set_style_family.yy",},"order":0,},
