@@ -448,15 +448,8 @@ function __scribble_generate_model(_element)
                         }
                         else if (ds_map_exists(global.__scribble_typewriter_events, _tag_command_name)) //Events
                         {
-                            var _data = array_create(_tag_parameter_count-1);
-                            var _j = 1;
-                            repeat(_tag_parameter_count-1)
-                            {
-                                _data[@ _j-1] = _tag_parameters[_j];
-                                ++_j;
-                            }
-                            
-                            __new_event(_character_index, _tag_command_name, _data);
+                            array_delete(_tag_parameters, 0, 1);
+                            __SCRIBBLE_PARSER_WRITE_EVENT;
                         }
                         else if (ds_map_exists(global.__scribble_effects, _tag_command_name)) //Set an effect
                         {
@@ -542,7 +535,8 @@ function __scribble_generate_model(_element)
                         }
                         else if (asset_get_type(_tag_command_name) == asset_sound)
                         {
-                            __new_event(_character_index, __SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters);
+                            var _tag_command_name = __SCRIBBLE_AUDIO_COMMAND_TAG;
+                            __SCRIBBLE_PARSER_WRITE_EVENT;
                         }
                         else
                         {
@@ -1161,9 +1155,11 @@ function __scribble_generate_model(_element)
     repeat(pages)
     {
         var _page_data          = pages_array[_p];
+        var _page_events_dict   = _page_data.__events;
         var _vbuff              = undefined;
         var _last_glyph_texture = undefined;
         var _glyph_sprite_data  = 0;
+        var _character_index    = 0;
         
         buffer_seek(_string_buffer, buffer_seek_start, 0);
         
@@ -1178,6 +1174,7 @@ function __scribble_generate_model(_element)
                 __SCRIBBLE_PARSER_READ_GLYPH_DATA;
                 
                 buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
+                _character_index++;
                 
                 var _write_scale = _glyph_scale;
                                         
@@ -1250,6 +1247,7 @@ function __scribble_generate_model(_element)
                 __SCRIBBLE_PARSER_READ_GLYPH_DATA;
                 
                 buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
+                _character_index++;
                 
                 var _write_scale = _glyph_scale;
                                        
@@ -1273,13 +1271,32 @@ function __scribble_generate_model(_element)
                 
                 #endregion
             }
+            else if (_glyph_ord == __SCRIBBLE_PARSER_EVENT)
+            {
+                #region Add event to page
+                
+                var _event_array = _page_events_dict[$ _character_index];
+                if (!is_array(_event_array))
+                {
+                    var _event_array = [];
+                    _page_events_dict[$ _character_index] = _event_array;
+                }
+                
+                var _event = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX];
+                _event.position = _character_index;
+                array_push(_event_array, _event);
+                
+                #endregion
+            }
             else if (_glyph_ord == 9)
             {
                 buffer_write(_string_buffer, buffer_u8, 9);
+                _character_index++;
             }
             else if (_glyph_ord == 32)
             {
                 buffer_write(_string_buffer, buffer_u8, 32);
+                _character_index++;
             }
             else if (_glyph_ord > 32)
             {
@@ -1287,7 +1304,8 @@ function __scribble_generate_model(_element)
                 
                 __SCRIBBLE_PARSER_READ_GLYPH_DATA;
                 
-                buffer_write(_string_buffer, buffer_u8,_glyph_ord);
+                __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
+                _character_index++;
                 
                 var _write_scale = _glyph_scale*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST]; //TODO - Optimise this
                 
@@ -1335,20 +1353,20 @@ function __scribble_generate_model(_element)
 
 function __scribble_buffer_read_unicode(_buffer)
 {
-    var _value = buffer_read(_buffer, buffer_u8);
+    var _value = buffer_read(_buffer, buffer_u8); //Assume 0xxxxxxx
     
-    if ((_value & $E0) == $C0) //two-byte
+    if ((_value & $E0) == $C0) //110xxxxx 10xxxxxx
     {
         _value  = (                         _value & $1F) <<  6;
         _value += (buffer_read(_buffer, buffer_u8) & $3F);
     }
-    else if ((_value & $F0) == $E0) //three-byte
+    else if ((_value & $F0) == $E0) //1110xxxx 10xxxxxx 10xxxxxx
     {
         _value  = (                         _value & $0F) << 12;
         _value += (buffer_read(_buffer, buffer_u8) & $3F) <<  6;
         _value +=  buffer_read(_buffer, buffer_u8) & $3F;
     }
-    else if ((_value & $F8) == $F0) //four-byte
+    else if ((_value & $F8) == $F0) //11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
     {
         _value  = (                         _value & $07) << 18;
         _value += (buffer_read(_buffer, buffer_u8) & $3F) << 12;
@@ -1361,20 +1379,20 @@ function __scribble_buffer_read_unicode(_buffer)
 
 function __scribble_buffer_peek_unicode(_buffer, _offset)
 {
-    var _value = buffer_peek(_buffer, _offset, buffer_u8);
+    var _value = buffer_peek(_buffer, _offset, buffer_u8); //Assume 0xxxxxxx
     
-    if ((_value & $E0) == $C0) //two-byte
+    if ((_value & $E0) == $C0) //110xxxxx 10xxxxxx
     {
         _value  = (                                    _value & $1F) <<  6;
         _value += (buffer_peek(_buffer, _offset+1, buffer_u8) & $3F);
     }
-    else if ((_value & $F0) == $E0) //three-byte
+    else if ((_value & $F0) == $E0) //1110xxxx 10xxxxxx 10xxxxxx
     {
         _value  = (                                    _value & $0F) << 12;
         _value += (buffer_peek(_buffer, _offset+1, buffer_u8) & $3F) <<  6;
         _value +=  buffer_peek(_buffer, _offset+2, buffer_u8) & $3F;
     }
-    else if ((_value & $F8) == $F0) //four-byte
+    else if ((_value & $F8) == $F0) //11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
     {
         _value  = (                                     _value & $07) << 18;
         _value += (buffer_peek(_buffer, _offset+1,  buffer_u8) & $3F) << 12;
@@ -1383,4 +1401,30 @@ function __scribble_buffer_peek_unicode(_buffer, _offset)
     }
     
     return _value;
+}
+
+function __scribble_buffer_write_unicode(_buffer, _value)
+{
+    if (_value <= 0x7F) //0xxxxxxx
+    {
+        buffer_write(_buffer, buffer_u8, _value);
+    }
+    else if (_value <= 0x07FF) //110xxxxx 10xxxxxx
+    {
+        buffer_write(_buffer, buffer_u8, 0xC0 | ( _value       & 0x1F));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >> 5) & 0x3F));
+    }
+    else if (_value <= 0xFFFF) //1110xxxx 10xxxxxx 10xxxxxx
+    {
+        buffer_write(_buffer, buffer_u8, 0xC0 | ( _value        & 0x0F));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >>  4) & 0x3F));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >> 10) & 0x3F));
+    }
+    else if (_value <= 0x10000) //11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+    {
+        buffer_write(_buffer, buffer_u8, 0xC0 | ( _value        & 0x07));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >>  3) & 0x3F));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >>  9) & 0x3F));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >> 15) & 0x3F));
+    }
 }

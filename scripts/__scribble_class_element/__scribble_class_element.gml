@@ -433,7 +433,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _model = __get_model(true);
         if (!is_struct(_model)) return [];
         
-        var _events = _model.events[$ _position];
+        var _page = _model.pages_array[__page];
+        
+        var _events = _page.__events[$ _position];
         if (!is_array(_events)) return [];
         
         return _events;

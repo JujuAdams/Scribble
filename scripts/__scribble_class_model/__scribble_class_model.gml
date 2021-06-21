@@ -45,8 +45,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     character_array  = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
     glyph_ltrb_array = undefined;
     
-    events = {}; //Stores events, key is the character position
-    
     
     
     #region Public Methods
@@ -153,8 +151,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         pages_array      = []; //Stores each page of text
         character_array  = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
         glyph_ltrb_array = undefined;
-        
-        events = {}; //Stores events, key is the character position
     }
     
     /// @param page
@@ -269,19 +265,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         pages++;
         
         return _page_data;
-    }
-    
-    static __new_event = function(_character, _event_name, _data)
-    {
-        var _events_array = events[$ _character];
-        if (!is_array(_events_array))
-        {
-            _events_array = [];
-            events[$ _character] = _events_array;
-        }
-        
-        var _event_struct = new __scribble_class_event(_character, _event_name, _data);
-        array_push(_events_array, _event_struct);
     }
     
     static __finalize_vertex_buffers = function(_freeze)
