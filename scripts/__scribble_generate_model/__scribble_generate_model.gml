@@ -551,34 +551,19 @@ function __scribble_generate_model(_element)
                             {
                                 #region Hex colour decoding
                                 
-                                var _ord = ord(string_char_at(_tag_command_name, 3));
-                                var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                var _ord = ord(string_char_at(_tag_command_name, 2));
-                                var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                
-                                var _red = _lsf + (_hsf << 4);
-                                
-                                var _ord = ord(string_char_at(_tag_command_name, 5));
-                                var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                var _ord = ord(string_char_at(_tag_command_name, 4));
-                                var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                
-                                var _green = _lsf + (_hsf << 4);
-                                
-                                var _ord = ord(string_char_at(_tag_command_name, 7));
-                                var _lsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                var _ord = ord(string_char_at(_tag_command_name, 6));
-                                var _hsf = ((_ord >= global.__scribble_hex_min) && (_ord <= global.__scribble_hex_max))? global.__scribble_hex_array[_ord - global.__scribble_hex_min] : 0;
-                                
-                                var _blue = _lsf + (_hsf << 4);
-                                
-                                if (SCRIBBLE_BGR_COLOR_HEX_CODES)
+                                try
                                 {
-                                    _state_colour = make_colour_rgb(_blue, _green, _red);
+                                    var _state_colour = real("0x" + string_delete(_tag_command_name, 1, 1));
+                                    
+                                    if (!SCRIBBLE_BGR_COLOR_HEX_CODES)
+                                    {
+                                        _state_colour = scribble_rgb_to_bgr(_state_colour);
+                                    }
                                 }
-                                else
+                                catch(_)
                                 {
-                                    _state_colour = make_colour_rgb(_red, _green, _blue);
+                                    __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a hexcode");
+                                    _state_colour = _starting_colour;
                                 }
                                 
                                 if (!_state_cycle) _state_final_colour = (0xFF000000 | _state_colour);
@@ -593,36 +578,14 @@ function __scribble_generate_model(_element)
                                 {
                                     #region Decimal colour decoding
                                     
-                                    //Check if this number is a real
-                                    var _is_real = true;
-                                    var _c = 3;
-                                    repeat(string_length(_tag_command_name) - 2)
+                                    try
                                     {
-                                        var _ord = ord(string_char_at(_tag_command_name, _c));
-                                        if ((_ord < 48) || (_ord > 57))
-                                        {
-                                            _is_real = false;
-                                            break;
-                                        }
-                                        
-                                        ++_c;
+                                        _state_colour = real(string_delete(_tag_command_name, 1, 2));
                                     }
-                                    
-                                    if (_is_real)
+                                    catch(_error)
                                     {
-                                        try
-                                        {
-                                            _state_colour = real(string_delete(_tag_command_name, 1, 2));
-                                        }
-                                        catch(_error)
-                                        {
-                                            __scribble_trace("ERROR! Colour \"", string_delete(_tag_command_name, 1, 2), "\" not supported");
-                                            _state_colour = _starting_colour;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        __scribble_trace("WARNING! Could not decode [" + _tag_command_name + "], ensure it is a positive integer" );
+                                        __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a decimal");
+                                        _state_colour = _starting_colour;
                                     }
                                     
                                     if (!_state_cycle) _state_final_colour = (0xFF000000 | _state_colour);
@@ -634,7 +597,7 @@ function __scribble_generate_model(_element)
                                     var _command_string = string(_tag_command_name);
                                     var _j = 1;
                                     repeat(_tag_parameter_count-1) _command_string += "," + string(_tag_parameters[_j++]);
-                                    __scribble_trace("WARNING! Unrecognised command tag [" + _command_string + "]" );
+                                    __scribble_trace("Warning! Unrecognised command tag [" + _command_string + "]" );
                                 }
                             }
                         }
