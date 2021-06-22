@@ -274,22 +274,25 @@ function __scribble_generate_model(_element)
                     case "&nbsp;":
                         var _glyph_separation = _state_scale*_font_space_width;
                         
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0xA0; //Non-breaking space (dec = 160)
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = _font_data;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = _space_glyph_data;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = _state_scale*_font_space_width;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_font_line_height;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = _glyph_separation;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
-                        __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
-                        ++_glyph_count;
-                        
-                        ++_character_index;
-                        _glyph_x_in_word += _glyph_separation; //Already includes scaling
+                        repeat((array_length(_tag_parameters) == 2)? real(_tag_parameters[1]) : 1)
+                        {
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0xA0; //Non-breaking space (dec = 160)
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = _font_data;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = _space_glyph_data;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = _state_scale*_font_space_width;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_font_line_height;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = _glyph_separation;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
+                            __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
+                            ++_glyph_count;
+                            
+                            ++_character_index;
+                            _glyph_x_in_word += _glyph_separation; //Already includes scaling
+                        }
                     break;
                     
                     #endregion
