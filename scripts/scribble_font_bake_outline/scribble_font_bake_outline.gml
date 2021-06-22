@@ -17,7 +17,7 @@ function scribble_font_bake_outline(_source_font_name, _new_font_name, _outline_
             __scribble_error("Colour \"", _outline_color, "\" not recognised");
             exit;
         }
-        _outline_color = _found;
+        _outline_color = _found & 0xFFFFFF;
     }
 
     //Set our shader uniforms before use

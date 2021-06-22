@@ -165,7 +165,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 if (_colour != starting_colour)
                 {
                     model_cache_name_dirty = true;
-                    starting_colour = _colour;
+                    starting_colour = _colour & 0xFFFFFF;
                 }
             }
         }
@@ -212,7 +212,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
         }
         
-        if (_colour != undefined) blend_colour = _colour;
+        if (_colour != undefined) blend_colour = _colour & 0xFFFFFF;
         if (_alpha  != undefined) blend_alpha  = _alpha;
         
         return self;
@@ -363,7 +363,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
         }
         
-        fog_colour = _colour;
+        fog_colour = _colour & 0xFFFFFF;
         fog_alpha  = _alpha;
         return self;
     }
@@ -382,7 +382,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
         }
         
-        gradient_colour = _colour;
+        gradient_colour = _colour & 0xFFFFFF;
         gradient_alpha  = _alpha;
         return self;
     }

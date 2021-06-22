@@ -218,7 +218,7 @@ function __scribble_get_font_data(_name)
     
     if (_data == undefined)
     {
-        __scribble_error("Font \"", _name, "\" not recognised\nIf you're using tags, check this font has been tagged with \"Scribble\"");
+        __scribble_error("Font \"", _name, "\" not recognised");
     }
     
     return _data;
@@ -230,10 +230,10 @@ function __scribble_process_colour(_value)
     {
         if (!ds_map_exists(global.__scribble_colours, _value))
         {
-            __scribble_error("Colour \"", _value, "\" not recognised. Please add it to scribble_colours()");
+            __scribble_error("Colour \"", _value, "\" not recognised. Please add it to __scribble_config_colours()");
         }
         
-        return global.__scribble_colours[? _value];
+        return (global.__scribble_colours[? _value] & 0xFFFFFF);
     }
     else
     {

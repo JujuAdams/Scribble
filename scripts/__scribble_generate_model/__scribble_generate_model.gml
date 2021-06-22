@@ -450,7 +450,7 @@ function __scribble_generate_model(_element)
                     default:
                         if (ds_map_exists(global.__scribble_colours, _tag_command_name)) //Set a pre-defined colour
                         {
-                            _state_colour = global.__scribble_colours[? _tag_command_name];
+                            _state_colour = global.__scribble_colours[? _tag_command_name] & 0xFFFFFF;
                             if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
                         }
                         else if (ds_map_exists(global.__scribble_typewriter_events, _tag_command_name)) //Events
