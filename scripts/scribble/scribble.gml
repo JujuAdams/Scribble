@@ -11,7 +11,6 @@ function scribble()
     var _string    = (argument_count > 0)? argument[0] : undefined;
     var _unique_id = (argument_count > 1)? string(argument[1]) : SCRIBBLE_DEFAULT_UNIQUE_ID;
     
-    var _element = SCRIBBLE_NULL_ELEMENT;
     if (argument_count == 0)
     {
         do
@@ -20,7 +19,7 @@ function scribble()
         }
         until !ds_map_exists(global.__scribble_ecache_dict, ":" + _unique_id);
         
-        _element = new __scribble_class_element("", _unique_id);
+        return new __scribble_class_element("", _unique_id);
     }
     else
     {
@@ -36,13 +35,11 @@ function scribble()
         var _weak = global.__scribble_ecache_dict[? _string + ":" + _unique_id];
         if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.flushed)
         {
-            _element = new __scribble_class_element(_string, _unique_id);
+            return new __scribble_class_element(_string, _unique_id);
         }
         else
         {
-            _element = _weak.ref;
+            return _weak.ref;
         }
     }
-    
-    return _element;
 }

@@ -1,4 +1,4 @@
-if (keyboard_check_pressed(vk_space))
+if (keyboard_check_pressed(vk_space) && scribble_is_text_element(textbox_element))
 {
     if (typist.get_paused())
     {

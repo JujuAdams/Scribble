@@ -479,7 +479,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param sourceElement
     static animation_sync = function(_source_element)
     {
-        if (is_struct(_source_element) && (_source_element != SCRIBBLE_NULL_ELEMENT))
+        if (scribble_is_text_element(_source_element))
         {
             animation_time         = _source_element.animation_time;
             animation_tick_speed__ = _source_element.animation_tick_speed__;

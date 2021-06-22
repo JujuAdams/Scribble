@@ -15,6 +15,7 @@
     {"id":{"name":"scribble_rgb_to_bgr","path":"scripts/scribble_rgb_to_bgr/scribble_rgb_to_bgr.yy",},"order":3,},
     {"id":{"name":"snd_crank","path":"sounds/snd_crank/snd_crank.yy",},"order":0,},
     {"id":{"name":"snd_switch","path":"sounds/snd_switch/snd_switch.yy",},"order":1,},
+    {"id":{"name":"scribble_is_text_element","path":"scripts/scribble_is_text_element/scribble_is_text_element.yy",},"order":4,},
     {"id":{"name":"obj_test_sprite_colouring","path":"objects/obj_test_sprite_colouring/obj_test_sprite_colouring.yy",},"order":4,},
     {"id":{"name":"obj_test_msdf_comparison","path":"objects/obj_test_msdf_comparison/obj_test_msdf_comparison.yy",},"order":6,},
     {"id":{"name":"obj_test_legacy_typewriter_custom","path":"objects/obj_test_legacy_typewriter_custom/obj_test_legacy_typewriter_custom.yy",},"order":5,},
@@ -54,7 +55,6 @@
     {"id":{"name":"__scribble_generate_model","path":"scripts/__scribble_generate_model/__scribble_generate_model.yy",},"order":9,},
     {"id":{"name":"fnt_dialogue_2","path":"fonts/fnt_dialogue_2/fnt_dialogue_2.yy",},"order":10,},
     {"id":{"name":"fnt_style_i","path":"fonts/fnt_style_i/fnt_style_i.yy",},"order":7,},
-    {"id":{"name":"__scribble_class_null_element","path":"scripts/__scribble_class_null_element/__scribble_class_null_element.yy",},"order":1,},
     {"id":{"name":"__scribble_config_default_template","path":"scripts/__scribble_config_default_template/__scribble_config_default_template.yy",},"order":2,},
     {"id":{"name":"__scribble_config_colours","path":"scripts/__scribble_config_colours/__scribble_config_colours.yy",},"order":1,},
     {"id":{"name":"__scribble_class_model","path":"scripts/__scribble_class_model/__scribble_class_model.yy",},"order":5,},
@@ -175,8 +175,8 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
+    {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
   ],
   "Folders": [
     {"folderPath":"folders/Examples/Sprites.yy","order":6,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},
