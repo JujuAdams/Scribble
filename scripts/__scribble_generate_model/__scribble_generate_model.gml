@@ -58,15 +58,19 @@ function __scribble_generate_model(_element)
     var _glyph_ord       = 0x0;
     var _glyph_x_in_word = 0;
     
-    var _state_colour       = _starting_colour;
-    var _state_alpha_255    = 0xFF;
-    var _state_final_colour = (_state_alpha_255 << 24) | _starting_colour; //Uses all four bytes
-    var _state_effect_flags = 0;
-    var _state_scale        = 1.0;
-    var _state_slant        = false;
-    var _state_cycle        = false;
-    var _state_halign       = _starting_halign;
-    var _character_index    = 0;
+    var _state_colour              = _starting_colour;
+    var _state_colour_bottom       = _starting_colour;
+    var _state_alpha_255           = 0xFF;
+    var _state_gradient_colour     = c_black;
+    var _state_gradient_alpha      = 0.0;
+    var _state_final_colour        = (_state_alpha_255 << 24) | _starting_colour; //Uses all four bytes
+    var _state_final_colour_bottom = _state_final_colour;
+    var _state_effect_flags        = 0;
+    var _state_scale               = 1.0;
+    var _state_slant               = false;
+    var _state_cycle               = false;
+    var _state_halign              = _starting_halign;
+    var _character_index           = 0;
     
     __SCRIBBLE_PARSER_WRITE_HALIGN;
     
@@ -109,13 +113,17 @@ function __scribble_generate_model(_element)
                     
                     case "":
                     case "/":
-                        _state_colour       = _starting_colour;
-                        _state_alpha_255    = 0xFF;
-                        _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
-                        _state_effect_flags = 0;
-                        _state_scale        = 1.0;
-                        _state_slant        = false;
-                        _state_cycle        = false;
+                        _state_colour              = _starting_colour;
+                        _state_colour_bottom       = _starting_colour;
+                        _state_alpha_255           = 0xFF;
+                        _state_gradient_colour     = c_black;
+                        _state_gradient_alpha      = 0.0;
+                        _state_final_colour        = (_state_alpha_255 << 24) | _state_colour;
+                        _state_final_colour_bottom = (_state_alpha_255 << 24) | _state_colour_bottom;
+                        _state_effect_flags        = 0;
+                        _state_scale               = 1.0;
+                        _state_slant               = false;
+                        _state_cycle               = false;
                         
                         if (_font_name != _starting_font)
                         {
@@ -136,14 +144,25 @@ function __scribble_generate_model(_element)
                     case "/colour":
                     case "/color":
                     case "/c":
-                        _state_colour = _starting_colour;
-                        if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
+                        _state_colour        = _starting_colour;
+                        _state_colour_bottom = merge_colour(_state_colour, _state_gradient_colour, _state_gradient_alpha);
+                        
+                        if (!_state_cycle)
+                        {
+                            _state_final_colour        = (_state_alpha_255 << 24) | _state_colour;
+                            _state_final_colour_bottom = (_state_alpha_255 << 24) | _state_colour_bottom;
+                        }
                     break;
                     
                     case "/alpha":
                     case "/a":
                         _state_alpha_255 = 0xFF;
-                        if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
+                        
+                        if (!_state_cycle)
+                        {
+                            _state_final_colour        = (_state_alpha_255 << 24) | _starting_colour;
+                            _state_final_colour_bottom = (_state_alpha_255 << 24) | _state_colour_bottom;
+                        }
                     break;
                     
                     case "/scale":
@@ -153,6 +172,12 @@ function __scribble_generate_model(_element)
                     
                     case "/slant":
                         _state_slant = false;
+                    break;
+                    
+                    case "/gradient":
+                        _state_gradient_colour     = c_black;
+                        _state_gradient_alpha      = 0.0;
+                        _state_final_colour_bottom = _state_final_colour;
                     break;
                     
                     #endregion
@@ -210,7 +235,20 @@ function __scribble_generate_model(_element)
                     
                     case "alpha":
                         _state_alpha_255 = floor(255*clamp(_tag_parameters[1], 0, 1));
-                        if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
+                        
+                        if (!_state_cycle)
+                        {
+                            _state_final_colour        = (_state_alpha_255 << 24) | _state_colour;
+                            _state_final_colour_bottom = (_state_alpha_255 << 24) | _state_colour_bottom
+                        }
+                    break;
+                    
+                    case "gradient":
+                        _state_gradient_colour = c_black;
+                        _state_gradient_alpha  =_tag_parameters[1];
+                        _state_colour_bottom   = merge_colour(_state_colour, _state_gradient_colour, _state_gradient_alpha);
+                        
+                        _state_final_colour_bottom = (_state_alpha_255 << 24) | _state_colour_bottom;
                     break;
                     
                     #region Font Alignment
@@ -302,15 +340,17 @@ function __scribble_generate_model(_element)
                         var _cycle_b = (_tag_parameter_count > 3)? max(1, real(_tag_parameters[3])) : 0;
                         var _cycle_a = (_tag_parameter_count > 4)? max(1, real(_tag_parameters[4])) : 0;
                                 
-                        _state_cycle = true;
-                        _state_final_colour = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
+                        _state_cycle               = true;
+                        _state_final_colour        = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
+                        _state_final_colour_bottom = _state_final_colour;
                                 
                         _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? _tag_command_name]);
                     break;
                             
                     case "/cycle":
-                        _state_cycle = false;
-                        _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
+                        _state_cycle               = false;
+                        _state_final_colour        = (_state_alpha_255 << 24) | _state_colour;
+                        _state_final_colour_bottom = (_state_alpha_255 << 24) | _state_colour_bottom;
                         
                         _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? _tag_command_name]));
                     break;
@@ -408,10 +448,12 @@ function __scribble_generate_model(_element)
                         
                         if (!SCRIBBLE_COLORIZE_SPRITES)
                         {
-                            var _old_colour       = _state_final_colour;
-                            var _old_effect_flags = _state_effect_flags;
+                            var _old_colour        = _state_final_colour;
+                            var _old_colour_bottom = _state_final_colour_bottom;
+                            var _old_effect_flags  = _state_effect_flags;
                             
-                            _state_final_colour = 0xFFFFFFFF;
+                            _state_final_colour        = 0xFFFFFFFF;
+                            _state_final_colour_bottom = 0xFFFFFFFF;
                             
                             //Switch off rainbow
                             _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
@@ -440,8 +482,9 @@ function __scribble_generate_model(_element)
                         
                         if (!SCRIBBLE_COLORIZE_SPRITES)
                         {
-                            _state_final_colour = _old_colour;
-                            _state_effect_flags = _old_effect_flags;
+                            _state_final_colour        = _old_colour;
+                            _state_final_colour_bottom = _old_colour_bottom;
+                            _state_effect_flags        = _old_effect_flags;
                         }
                     break;
                     
@@ -450,8 +493,14 @@ function __scribble_generate_model(_element)
                     default:
                         if (ds_map_exists(global.__scribble_colours, _tag_command_name)) //Set a pre-defined colour
                         {
-                            _state_colour = global.__scribble_colours[? _tag_command_name];
-                            if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
+                            _state_colour        = global.__scribble_colours[? _tag_command_name];
+                            _state_colour_bottom = merge_colour(_state_colour, _state_gradient_colour, _state_gradient_alpha);
+                            
+                            if (!_state_cycle)
+                            {
+                                _state_final_colour        = (_state_alpha_255 << 24) | _state_colour;
+                                _state_final_colour_bottom = (_state_alpha_255 << 24) | _state_colour_bottom;
+                            }
                         }
                         else if (ds_map_exists(global.__scribble_typewriter_events, _tag_command_name)) //Events
                         {
@@ -500,10 +549,12 @@ function __scribble_generate_model(_element)
                         
                             if (!SCRIBBLE_COLORIZE_SPRITES)
                             {
-                                var _old_colour       = _state_final_colour;
-                                var _old_effect_flags = _state_effect_flags;
+                                var _old_colour        = _state_final_colour;
+                                var _old_colour_bottom = _state_final_colour_bottom;
+                                var _old_effect_flags  = _state_effect_flags;
                                 
-                                _state_final_colour = 0xFFFFFFFF;
+                                _state_final_colour        = 0xFFFFFFFF;
+                                _state_final_colour_bottom = 0xFFFFFFFF;
                                 
                                 //Switch off rainbow
                                 _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
@@ -532,8 +583,9 @@ function __scribble_generate_model(_element)
                             
                             if (!SCRIBBLE_COLORIZE_SPRITES)
                             {
-                                _state_final_colour = _old_colour;
-                                _state_effect_flags = _old_effect_flags;
+                                _state_final_colour        = _old_colour;
+                                _state_final_colour_bottom = _old_colour_bottom;
+                                _state_effect_flags        = _old_effect_flags;
                             }
                             
                             #endregion
@@ -565,7 +617,13 @@ function __scribble_generate_model(_element)
                                     _state_colour = _starting_colour;
                                 }
                                 
-                                if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
+                                _state_colour_bottom = merge_colour(_state_colour, _state_gradient_colour, _state_gradient_alpha);
+                                
+                                if (!_state_cycle)
+                                {
+                                    _state_final_colour        = (_state_alpha_255 << 24) | _state_colour;
+                                    _state_final_colour_bottom = (_state_alpha_255 << 24) | _state_colour_bottom;
+                                }
                                 
                                 #endregion
                             }
@@ -587,7 +645,13 @@ function __scribble_generate_model(_element)
                                         _state_colour = _starting_colour;
                                     }
                                     
-                                    if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
+                                    _state_colour_bottom = merge_colour(_state_colour, _state_gradient_colour, _state_gradient_alpha);
+                                    
+                                    if (!_state_cycle)
+                                    {
+                                        _state_final_colour        = (_state_alpha_255 << 24) | _state_colour;
+                                        _state_final_colour_bottom = (_state_alpha_255 << 24) | _state_colour_bottom;
+                                    }
                                     
                                     #endregion
                                 }
