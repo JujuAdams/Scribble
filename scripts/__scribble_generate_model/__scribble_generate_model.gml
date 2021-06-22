@@ -8,7 +8,7 @@ function __scribble_generate_model(_element)
     if (_model_max_width  < 0) _model_max_width  = infinity;
     if (_model_max_height < 0) _model_max_height = infinity;
     
-    var _starting_colour = (0xFF000000 | __scribble_process_colour(_element.starting_colour)); //Uses all four bytes
+    var _starting_colour = __scribble_process_colour(_element.starting_colour);
     var _starting_halign = _element.starting_halign;
     var _starting_valign = _element.starting_valign;
     var _character_wrap  = _element.wrap_per_char;
@@ -58,8 +58,9 @@ function __scribble_generate_model(_element)
     var _glyph_ord       = 0x0;
     var _glyph_x_in_word = 0;
     
-    var _state_final_colour = _starting_colour;
     var _state_colour       = _starting_colour;
+    var _state_alpha_255    = 0xFF;
+    var _state_final_colour = (_state_alpha_255 << 24) | _starting_colour; //Uses all four bytes
     var _state_effect_flags = 0;
     var _state_scale        = 1.0;
     var _state_slant        = false;
@@ -109,7 +110,8 @@ function __scribble_generate_model(_element)
                     case "":
                     case "/":
                         _state_colour       = _starting_colour;
-                        _state_final_colour = _state_colour;
+                        _state_alpha_255    = 0xFF;
+                        _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
                         _state_effect_flags = 0;
                         _state_scale        = 1.0;
                         _state_slant        = false;
@@ -135,7 +137,13 @@ function __scribble_generate_model(_element)
                     case "/color":
                     case "/c":
                         _state_colour = _starting_colour;
-                        if (!_state_cycle) _state_final_colour = _state_colour;
+                        if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
+                    break;
+                    
+                    case "/alpha":
+                    case "/a":
+                        _state_alpha_255 = 0xFF;
+                        if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
                     break;
                     
                     case "/scale":
@@ -198,6 +206,11 @@ function __scribble_generate_model(_element)
                     
                     case "slant":
                         _state_slant = true;
+                    break;
+                    
+                    case "alpha":
+                        _state_alpha_255 = floor(255*clamp(_tag_parameters[1], 0, 1));
+                        if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
                     break;
                     
                     #region Font Alignment
@@ -297,7 +310,7 @@ function __scribble_generate_model(_element)
                             
                     case "/cycle":
                         _state_cycle = false;
-                        _state_final_colour = _state_colour;
+                        _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
                         
                         _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? _tag_command_name]));
                     break;
@@ -438,7 +451,7 @@ function __scribble_generate_model(_element)
                         if (ds_map_exists(global.__scribble_colours, _tag_command_name)) //Set a pre-defined colour
                         {
                             _state_colour = global.__scribble_colours[? _tag_command_name];
-                            if (!_state_cycle) _state_final_colour = (0xFF000000 | _state_colour);
+                            if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
                         }
                         else if (ds_map_exists(global.__scribble_typewriter_events, _tag_command_name)) //Events
                         {
@@ -552,7 +565,7 @@ function __scribble_generate_model(_element)
                                     _state_colour = _starting_colour;
                                 }
                                 
-                                if (!_state_cycle) _state_final_colour = (0xFF000000 | _state_colour);
+                                if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
                                 
                                 #endregion
                             }
@@ -574,7 +587,7 @@ function __scribble_generate_model(_element)
                                         _state_colour = _starting_colour;
                                     }
                                     
-                                    if (!_state_cycle) _state_final_colour = (0xFF000000 | _state_colour);
+                                    if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _starting_colour;
                                     
                                     #endregion
                                 }
