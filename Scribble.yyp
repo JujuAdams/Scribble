@@ -103,7 +103,6 @@
     {"id":{"name":"obj_test_anim_rainbow","path":"objects/obj_test_anim_rainbow/obj_test_anim_rainbow.yy",},"order":3,},
     {"id":{"name":"obj_test_surface","path":"objects/obj_test_surface/obj_test_surface.yy",},"order":6,},
     {"id":{"name":"obj_test_flush_multi","path":"objects/obj_test_flush_multi/obj_test_flush_multi.yy",},"order":3,},
-    {"id":{"name":"__shd_scribble_test","path":"shaders/__shd_scribble_test/__shd_scribble_test.yy",},"order":16,},
     {"id":{"name":"__scribble_class_event","path":"scripts/__scribble_class_event/__scribble_class_event.yy",},"order":10,},
     {"id":{"name":"obj_test_gradient","path":"objects/obj_test_gradient/obj_test_gradient.yy",},"order":3,},
     {"id":{"name":"scribble_font_combine","path":"scripts/scribble_font_combine/scribble_font_combine.yy",},"order":1,},
