@@ -52,16 +52,16 @@ enum __SCRIBBLE_PARSER_LINE
 
 
 //In-line macros!
-#macro __SCRIBBLE_PARSER_WRITE_GLYPH_STATE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ] = _state_final_colour;\n
+#macro __SCRIBBLE_PARSER_WRITE_GLYPH_STATE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X                 ] = _glyph_x_in_word;\n
+                                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y                 ] = 0;\n
+                                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ] = _state_final_colour;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS] = _state_effect_flags;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE       ] = _state_scale;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT       ] = _state_slant;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST   ] = _font_scale_dist;
 
 
-#macro __SCRIBBLE_PARSER_WRITE_HALIGN  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = _glyph_x_in_word;\n
-                                       _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;\n
-                                       _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = __SCRIBBLE_PARSER_HALIGN;\n
+#macro __SCRIBBLE_PARSER_WRITE_HALIGN  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = __SCRIBBLE_PARSER_HALIGN;\n
                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;\n
                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;\n
                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;\n
@@ -76,9 +76,7 @@ enum __SCRIBBLE_PARSER_LINE
                                        ++_glyph_count;
 
 
-#macro __SCRIBBLE_PARSER_WRITE_EVENT  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = _glyph_x_in_word;\n
-                                      _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;\n
-                                      _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = __SCRIBBLE_PARSER_EVENT;\n
+#macro __SCRIBBLE_PARSER_WRITE_EVENT  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = __SCRIBBLE_PARSER_EVENT;\n
                                       _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;\n
                                       _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;\n
                                       _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;\n
@@ -93,21 +91,19 @@ enum __SCRIBBLE_PARSER_LINE
                                       ++_glyph_count;
 
 
-#macro __SCRIBBLE_PARSER_WRITE_NEWLINE   _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = _glyph_x_in_word;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x0D;\n //ASCII line break (dec = 13)
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = 0;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_font_line_height;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = 0;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;\n
-                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;\n
-                                         __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;\n
-                                         ++_glyph_count;
+#macro __SCRIBBLE_PARSER_WRITE_NEWLINE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x0D;\n //ASCII line break (dec = 13)
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = 0;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_font_line_height;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = 0;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;\n
+                                        __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;\n
+                                        ++_glyph_count;
 
 
 #macro __SCRIBBLE_PARSER_SET_FONT   var _font_data         = __scribble_get_font_data(_font_name);\n

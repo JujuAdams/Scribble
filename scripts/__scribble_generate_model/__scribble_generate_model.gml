@@ -152,8 +152,6 @@ function __scribble_generate_model(_element)
                     case "/page":
                         #region Add a pagebreak (ASCII 0x0C, "form feed") glyph to our grid
                         
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X          ] = 0;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y          ] = 0;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD        ] = 0x0C; //ASCII form feed (dec = 12)
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA  ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA ] = undefined;
@@ -263,8 +261,6 @@ function __scribble_generate_model(_element)
                     case "&nbsp;":
                         var _glyph_separation = _state_scale*_font_space_width;
                         
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = 0;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0xA0; //Non-breaking space (dec = 160)
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = _font_data;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = _space_glyph_data;
@@ -412,8 +408,6 @@ function __scribble_generate_model(_element)
                         }
                         
                         //Add this glyph to our grid
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = _glyph_x_in_word;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = __SCRIBBLE_PARSER_SURFACE;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;
@@ -506,8 +500,6 @@ function __scribble_generate_model(_element)
                             }
                             
                             //Add this glyph to our grid
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = _glyph_x_in_word;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = __SCRIBBLE_PARSER_SPRITE;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;
@@ -660,8 +652,6 @@ function __scribble_generate_model(_element)
             {
                 #region Add a tab glyph to our grid
                 
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x09; //ASCII horizontal tab (dec = 9, obviously)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = _font_data;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = _space_glyph_data;
@@ -685,8 +675,6 @@ function __scribble_generate_model(_element)
             {
                 #region Add a space glyph to our grid
                 
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x20; //ASCII space (dec = 32)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = _font_data;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = _space_glyph_data;
@@ -756,8 +744,6 @@ function __scribble_generate_model(_element)
                     var _glyph_separation = _state_scale*_glyph_data[SCRIBBLE_GLYPH.SEPARATION];
                     
                     //Add this glyph to our grid
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X              ] = _glyph_x_in_word;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y              ] = 0;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = _glyph_ord;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = _font_data;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = _glyph_data;
