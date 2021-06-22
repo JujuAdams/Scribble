@@ -8,7 +8,7 @@
 
 function scribble()
 {
-    var _string    = (argument_count > 0)? string(argument[0]) : undefined;
+    var _string    = (argument_count > 0)? argument[0] : undefined;
     var _unique_id = (argument_count > 1)? string(argument[1]) : SCRIBBLE_DEFAULT_UNIQUE_ID;
     
     var _element = SCRIBBLE_NULL_ELEMENT;
@@ -24,6 +24,15 @@ function scribble()
     }
     else
     {
+        if (is_struct(_string) && (instanceof(_string) == "__scribble_class_element"))
+        {
+            __scribble_error("scribble() should not be used to access/draw text elements\nPlease instead call the .draw() method on a text element e.g. scribble(\"text\").draw(x, y);");
+        }
+        else
+        {
+            _string = string(_string);
+        }
+        
         var _weak = global.__scribble_ecache_dict[? _string + ":" + _unique_id];
         if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.flushed)
         {
