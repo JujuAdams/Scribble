@@ -87,7 +87,6 @@
     {"id":{"name":"scribble_font_bake_shader","path":"scripts/scribble_font_bake_shader/scribble_font_bake_shader.yy",},"order":6,},
     {"id":{"name":"__scribble_class_typist","path":"scripts/__scribble_class_typist/__scribble_class_typist.yy",},"order":7,},
     {"id":{"name":"obj_test_anim_blink","path":"objects/obj_test_anim_blink/obj_test_anim_blink.yy",},"order":9,},
-    {"id":{"name":"__scribble_class_null_model","path":"scripts/__scribble_class_null_model/__scribble_class_null_model.yy",},"order":2,},
     {"id":{"name":"obj_test_blink","path":"objects/obj_test_blink/obj_test_blink.yy",},"order":11,},
     {"id":{"name":"obj_test_anim_jitter","path":"objects/obj_test_anim_jitter/obj_test_anim_jitter.yy",},"order":8,},
     {"id":{"name":"obj_test_font_outline","path":"objects/obj_test_font_outline/obj_test_font_outline.yy",},"order":7,},

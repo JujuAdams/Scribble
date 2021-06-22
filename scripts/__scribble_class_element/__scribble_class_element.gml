@@ -995,7 +995,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (flushed || (text == ""))
         {
-            model = SCRIBBLE_NULL_MODEL;
+            model = global.__scribble_null_model;
         }
         else
         {
@@ -1035,7 +1035,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 }
             }
             
-            if (model == undefined) model = SCRIBBLE_NULL_MODEL;
+            if (model == undefined) model = global.__scribble_null_model;
         }
         
         return model;
