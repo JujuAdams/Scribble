@@ -14,6 +14,7 @@ function __scribble_class_null_element() constructor
     static template = function(_template) { return self; }
     static page = function(_page) { return self; }
     static fog = function(_colour, _alpha) { return self; }
+    static gradient = function(_colour, _alpha) { return self; }
     static ignore_command_tags = function(_state) { return self; }
     static bezier = function() { return self; }
     

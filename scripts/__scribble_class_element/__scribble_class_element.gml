@@ -42,6 +42,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     fog_colour = c_white;
     fog_alpha  = 0.0;
     
+    gradient_colour = c_black;
+    gradient_alpha  = 0.0;
+    
     xscale = 1.0;
     yscale = 1.0;
     angle  = 0.0;
@@ -362,6 +365,25 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         fog_colour = _colour;
         fog_alpha  = _alpha;
+        return self;
+    }
+    
+    /// @param colour
+    /// @param alpha
+    static gradient = function(_colour, _alpha)
+    {
+        if (is_string(_colour))
+        {
+            _colour = global.__scribble_colours[? _colour];
+            if (_colour == undefined)
+            {
+                __scribble_error("Colour name \"", _colour, "\" not recognised");
+                exit;
+            }
+        }
+        
+        gradient_colour = _colour;
+        gradient_alpha  = _alpha;
         return self;
     }
     
@@ -794,6 +816,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             shader_set(__shd_scribble);
             shader_set_uniform_f(global.__scribble_u_fTime, animation_time);
             
+            //TODO - Optimise
             shader_set_uniform_f(global.__scribble_u_vColourBlend, colour_get_red(  blend_colour)/255,
                                                                    colour_get_green(blend_colour)/255,
                                                                    colour_get_blue( blend_colour)/255,
@@ -803,6 +826,11 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                            colour_get_green(fog_colour)/255,
                                                            colour_get_blue( fog_colour)/255,
                                                            fog_alpha);
+            
+            shader_set_uniform_f(global.__scribble_u_vGradient, colour_get_red(  gradient_colour)/255,
+                                                                colour_get_green(gradient_colour)/255,
+                                                                colour_get_blue( gradient_colour)/255,
+                                                                gradient_alpha);
             
             shader_set_uniform_f_array(global.__scribble_u_aDataFields, animation_array);
             shader_set_uniform_f_array(global.__scribble_u_aBezier, bezier_array);
@@ -843,6 +871,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             shader_set(__shd_scribble_msdf);
             shader_set_uniform_f(global.__scribble_msdf_u_fTime, animation_time);
             
+            //TODO - Optimise
             shader_set_uniform_f(global.__scribble_msdf_u_vColourBlend, colour_get_red(  blend_colour)/255,
                                                                         colour_get_green(blend_colour)/255,
                                                                         colour_get_blue( blend_colour)/255,
@@ -852,6 +881,11 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                 colour_get_green(fog_colour)/255,
                                                                 colour_get_blue( fog_colour)/255,
                                                                 fog_alpha);
+            
+            shader_set_uniform_f(global.__scribble_msdf_u_vGradient, colour_get_red(  gradient_colour)/255,
+                                                                     colour_get_green(gradient_colour)/255,
+                                                                     colour_get_blue( gradient_colour)/255,
+                                                                     gradient_alpha);
             
             shader_set_uniform_f_array(global.__scribble_msdf_u_aDataFields, animation_array);
             shader_set_uniform_f_array(global.__scribble_msdf_u_aBezier, bezier_array);

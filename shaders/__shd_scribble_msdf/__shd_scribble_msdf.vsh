@@ -78,6 +78,7 @@ varying float v_fPixelScale;
 varying float v_fTextScale;
 
 uniform vec4  u_vColourBlend;                           //4
+uniform vec4  u_vGradient;                              //4
 uniform float u_fTime;                                  //1
 uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
 uniform vec2  u_aBezier[3];                             //6
@@ -476,6 +477,8 @@ void main()
     
     //Colour
     v_vColour = in_Colour;
+    
+    if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
     
     if (cycleFlag > 0.5) v_vColour = cycle(characterIndex, cycleSpeed, cycleSaturation, cycleValue, v_vColour); //Cycle colours through the defined palette
     v_vColour = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
