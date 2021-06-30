@@ -161,6 +161,37 @@ enum __SCRIBBLE_PARSER_LINE
                                           _last_glyph_texture = _glyph_texture;\n
                                           _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_DATA], true, self);\n
                                       }\n
+                                      if (_bezier_do)\n
+                                      {\n
+                                          if (_quad_cx < _bezier_prev_cx)\n //If we've snapped back to the LHS then reset our Bezier curve 
+                                          {\n //TODO - Do this better to respect R2L text. Maybe use a line number check?
+                                              _bezier_search_index = 0;\n
+                                              _bezier_search_d0 = 0;\n
+                                              _bezier_search_d1 = _bezier_lengths[1];\n
+                                          }\n
+                                          _bezier_prev_cx = _quad_cx;\n
+                                          while (true)\n //Iterate forwards until we find a Bezier segment we can fit into
+                                          {\n
+                                              if (_quad_cx <= _bezier_search_d1)\n //If this glyph is on this line segment...
+                                              {\n
+                                                  var _bezier_param = _bezier_param_increment*((_quad_cx - _bezier_search_d0)/ (_bezier_search_d1 - _bezier_search_d0) + _bezier_search_index);\n //...then parameterise this glyph
+                                                  break;\n
+                                              }\n
+                                              _bezier_search_index++;\n
+                                              if (_bezier_search_index >= SCRIBBLE_BEZIER_ACCURACY-1)\n
+                                              {\n
+                                                  var _bezier_param = 1.0;\n //We've hit the end of the Bezier curve, force all the remaining glyphs to stack up at the end of the line
+                                                  break;\n
+                                              }\n
+                                              _bezier_search_d0 = _bezier_search_d1;\n //Advance to the next line segment
+                                              _bezier_search_d1 = _bezier_lengths[_bezier_search_index+1];\n
+                                          }\n
+                                          _slant_offset = 0;\n
+                                          _quad_l = _bezier_param;\n
+                                          _quad_r = _bezier_param;\n
+                                          _quad_t = _quad_cy;\n
+                                          _quad_b = _quad_cy;\n
+                                      }\n
                                       vertex_position_3d(_vbuff, _quad_l + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_ls, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);\n
                                       vertex_position_3d(_vbuff, _quad_r,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\n
                                       vertex_position_3d(_vbuff, _quad_l,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_l,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\n
