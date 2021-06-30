@@ -364,7 +364,4 @@ enum SCRIBBLE_EASE
 
 #macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. This constant must match the corresponding values in __shd_scribble
 
-global.__scribble_default_element = new __scribble_class_element("", "");
-global.__scribble_null_model      = global.__scribble_default_element.__get_model();
-
 #endregion

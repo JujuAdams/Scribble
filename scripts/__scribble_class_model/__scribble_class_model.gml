@@ -52,7 +52,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     static draw = function(_x, _y, _element)
     {
         if (flushed) return undefined;
-        if (_element == undefined) _element = global.__scribble_default_element;
+        if (_element == undefined) return undefined;
         
         last_drawn = current_time;
         

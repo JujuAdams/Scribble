@@ -785,12 +785,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
         
-        return __get_model(true).get_line_count(_page);
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.get_line_count(_page);
     }
     
     static get_ltrb_array = function()
     {
-        return __get_model(true).get_ltrb_array();
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return [];
+        return _model.get_ltrb_array();
     }
     
     #endregion
@@ -817,6 +821,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         //Get our model, and create one if needed
         var _model = __get_model(true);
+        if (!is_struct(_model)) return undefined;
         
         //If enough time has elapsed since we drew this element then update our animation time
         if (current_time - last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
@@ -1050,20 +1055,15 @@ function __scribble_class_element(_string, _unique_id) constructor
             {
                 model = _weak.ref;
             }
+            else if (_allow_create)
+            {
+                //Create a new model if required
+                model = new __scribble_class_model(self, model_cache_name);
+            }
             else
             {
-                if (_allow_create)
-                {
-                    //Create a new model if required
-                    model = new __scribble_class_model(self, model_cache_name);
-                }
-                else
-                {
-                    model = undefined;
-                }
+                model = undefined;
             }
-            
-            if (model == undefined) model = global.__scribble_null_model;
         }
         
         return model;
