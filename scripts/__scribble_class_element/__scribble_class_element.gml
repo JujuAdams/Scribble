@@ -632,33 +632,13 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _margin_b = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
         
         var _model = __get_model(true);
-        var _model_bbox = _model.get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
-        
-        switch(_model.valign)
+        if (!is_struct(_model))
         {
-            case fa_top:
-                var _bbox_t = 0;
-                var _bbox_b = _model_bbox.height;
-            break;
-        
-            case fa_middle:
-                var _bbox_t = -(_model_bbox.height div 2);
-                var _bbox_b = -_bbox_t;
-            break;
-        
-            case fa_bottom:
-                var _bbox_t = -_model_bbox.height;
-                var _bbox_b = 0;
-            break;
-        }
-        
-        if ((xscale == 1) && (yscale == 1) && (angle == 0))
-        {
-            //Avoid using matrices if we can
-            var _l = _x - origin_x + _model_bbox.left  - _margin_l;
-            var _t = _y - origin_y + _bbox_t           - _margin_t;
-            var _r = _x - origin_x + _model_bbox.right + _margin_r;
-            var _b = _y - origin_y + _bbox_b           + _margin_b;
+            //No extant model, return an empty bounding box
+            var _l = _x - _margin_l;
+            var _t = _y - _margin_t;
+            var _r = _x + _margin_r;
+            var _b = _y + _margin_b;
             
             var _x0 = _l;   var _y0 = _t;
             var _x1 = _r;   var _y1 = _t;
@@ -667,26 +647,62 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         else
         {
-            //TODO - Make this faster with custom code
-            var _matrix = matrix_build(-origin_x, -origin_y, 0,   0,0,0,   1,1,1);
-                _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
-                                                                0, 0, angle,
-                                                                xscale, yscale, 1));
+            var _model_bbox = _model.get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
+        
+            switch(_model.valign)
+            {
+                case fa_top:
+                    var _bbox_t = 0;
+                    var _bbox_b = _model_bbox.height;
+                break;
+        
+                case fa_middle:
+                    var _bbox_t = -(_model_bbox.height div 2);
+                    var _bbox_b = -_bbox_t;
+                break;
+        
+                case fa_bottom:
+                    var _bbox_t = -_model_bbox.height;
+                    var _bbox_b = 0;
+                break;
+            }
+        
+            if ((xscale == 1) && (yscale == 1) && (angle == 0))
+            {
+                //Avoid using matrices if we can
+                var _l = _x - origin_x + _model_bbox.left  - _margin_l;
+                var _t = _y - origin_y + _bbox_t           - _margin_t;
+                var _r = _x - origin_x + _model_bbox.right + _margin_r;
+                var _b = _y - origin_y + _bbox_b           + _margin_b;
             
-            var _l = _model_bbox.left  - _margin_l;
-            var _t = _bbox_t           - _margin_t;
-            var _r = _model_bbox.right + _margin_r;
-            var _b = _bbox_b           + _margin_b;
+                var _x0 = _l;   var _y0 = _t;
+                var _x1 = _r;   var _y1 = _t;
+                var _x2 = _l;   var _y2 = _b;
+                var _x3 = _r;   var _y3 = _b;
+            }
+            else
+            {
+                //TODO - Make this faster with custom code
+                var _matrix = matrix_build(-origin_x, -origin_y, 0,   0,0,0,   1,1,1);
+                    _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
+                                                                    0, 0, angle,
+                                                                    xscale, yscale, 1));
             
-            var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); var _x0 = _vertex[0]; var _y0 = _vertex[1];
-            var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); var _x1 = _vertex[0]; var _y1 = _vertex[1];
-            var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); var _x2 = _vertex[0]; var _y2 = _vertex[1];
-            var _vertex = matrix_transform_vertex(_matrix, _r, _b, 0); var _x3 = _vertex[0]; var _y3 = _vertex[1];
+                var _l = _model_bbox.left  - _margin_l;
+                var _t = _bbox_t           - _margin_t;
+                var _r = _model_bbox.right + _margin_r;
+                var _b = _bbox_b           + _margin_b;
             
-            var _l = min(_x0, _x1, _x2, _x3);
-            var _t = min(_y0, _y1, _y2, _y3);
-            var _r = max(_x0, _x1, _x2, _x3);
-            var _b = max(_y0, _y1, _y2, _y3);
+                var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); var _x0 = _vertex[0]; var _y0 = _vertex[1];
+                var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); var _x1 = _vertex[0]; var _y1 = _vertex[1];
+                var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); var _x2 = _vertex[0]; var _y2 = _vertex[1];
+                var _vertex = matrix_transform_vertex(_matrix, _r, _b, 0); var _x3 = _vertex[0]; var _y3 = _vertex[1];
+            
+                var _l = min(_x0, _x1, _x2, _x3);
+                var _t = min(_y0, _y1, _y2, _y3);
+                var _r = max(_x0, _x1, _x2, _x3);
+                var _b = max(_y0, _y1, _y2, _y3);
+            }
         }
         
         var _w = 1 + _r - _l;
@@ -708,12 +724,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static get_width = function()
     {
-        return __get_model(true).get_width();
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.get_width();
     }
     
     static get_height = function()
     {
-        return __get_model(true).get_height();
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.get_height();
     }
     
     static get_page = function()
@@ -723,7 +743,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static get_pages = function()
     {
-        return __get_model(true).get_pages();
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.get_pages();
     }
 	
 	/// @param [page]
@@ -731,7 +753,9 @@ function __scribble_class_element(_string, _unique_id) constructor
 	{
 		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
 		
-		return __get_model(true).get_page_height(_page);
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+		return _model.get_page_height(_page);
 	}
 	
 	/// @param [page]
@@ -739,7 +763,9 @@ function __scribble_class_element(_string, _unique_id) constructor
 	{
 		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
 		
-		return __get_model(true).get_page_width(_page);
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+		return _model.get_page_width(_page);
 	}
     
     static on_last_page = function()
@@ -749,7 +775,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static get_wrapped = function()
     {
-        return __get_model(true).get_wrapped();
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return false;
+        return _model.get_wrapped();
     }
     
     /// @param [page]
@@ -995,7 +1023,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (flushed || (text == ""))
         {
-            model = global.__scribble_null_model;
+            model = undefined;
         }
         else
         {
