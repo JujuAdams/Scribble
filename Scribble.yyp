@@ -119,6 +119,7 @@
     {"id":{"name":"fnt_test_0","path":"fonts/fnt_test_0/fnt_test_0.yy",},"order":1,},
     {"id":{"name":"obj_test_nbsp","path":"objects/obj_test_nbsp/obj_test_nbsp.yy",},"order":9,},
     {"id":{"name":"obj_test_flush","path":"objects/obj_test_flush/obj_test_flush.yy",},"order":12,},
+    {"id":{"name":"obj_test_get_events","path":"objects/obj_test_get_events/obj_test_get_events.yy",},"order":14,},
     {"id":{"name":"fnt_test_1","path":"fonts/fnt_test_1/fnt_test_1.yy",},"order":2,},
     {"id":{"name":"obj_test_typewriter_events","path":"objects/obj_test_typewriter_events/obj_test_typewriter_events.yy",},"order":2,},
     {"id":{"name":"obj_test_scale_tags","path":"objects/obj_test_scale_tags/obj_test_scale_tags.yy",},"order":11,},

@@ -450,12 +450,15 @@ function __scribble_class_element(_string, _unique_id) constructor
         return __tw_reveal;
     }
     
-    static events_get = function(_position)
+    static events_get = function()
     {
+        var _position = argument[0];
+        var _page     = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : __page;
+        
         var _model = __get_model(true);
         if (!is_struct(_model)) return [];
         
-        var _page = _model.pages_array[__page];
+        var _page = _model.pages_array[_page];
         
         var _events = _page.__events[$ _position];
         if (!is_array(_events)) return [];
