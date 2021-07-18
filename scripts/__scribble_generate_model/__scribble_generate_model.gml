@@ -1411,7 +1411,7 @@ function __scribble_generate_model(_element)
     
     
     //Ensure we've ended the vertex buffers we created
-    __finalize_vertex_buffers();
+    __finalize_vertex_buffers(_element.freeze);
     
     
     
