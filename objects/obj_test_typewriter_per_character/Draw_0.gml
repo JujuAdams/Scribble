@@ -1,4 +1,4 @@
-var _element = scribble("abc");
+var _element = scribble("abcdefghijklmnopqrstuvwxyz012345689");
 _element.draw(10, 50, typist);
 
 draw_text(10, 10, typist.get_state());

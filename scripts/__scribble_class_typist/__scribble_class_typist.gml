@@ -504,7 +504,7 @@ function __scribble_class_typist() constructor
                         var _found_events = __last_element.ref.events_get(__last_character);
                         __last_character++;
                         
-                        __execute_function_per_character(_target_element);
+                        if (__last_character > 1) __execute_function_per_character(_target_element);
                         
                         var _found_size = array_length(_found_events);
                         if (_found_size > 0)
