@@ -14,7 +14,7 @@
   "duration": 0.666333,
   "parent": {
     "name": "Sounds",
-    "path": "folders/Examples/Sounds.yy",
+    "path": "folders/Sounds.yy",
   },
   "resourceVersion": "1.0",
   "name": "snd_crank",

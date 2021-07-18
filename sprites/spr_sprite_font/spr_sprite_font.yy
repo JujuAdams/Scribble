@@ -474,7 +474,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Fonts",
-    "path": "folders/Examples/Fonts.yy",
+    "path": "folders/Fonts.yy",
   },
   "resourceVersion": "1.0",
   "name": "spr_sprite_font",
