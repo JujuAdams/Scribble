@@ -176,6 +176,11 @@ function __scribble_class_typist() constructor
     
     #region Getters
     
+    static get_skip = function()
+    {
+        return __skip;
+    }
+    
     static get_state = function()
     {
         if ((__last_element == undefined) || (__last_page == undefined) || (__last_character == undefined)) return 0.0;
@@ -380,11 +385,11 @@ function __scribble_class_typist() constructor
         //Execute function per character
         if (is_method(__function))
         {
-            __function(_function_scope, __last_character - 1);
+            __function(_function_scope, __last_character - 1, self);
         }
         else if (is_real(__function) && script_exists(__function))
         {
-            script_execute(__function, _function_scope, __last_character - 1);
+            script_execute(__function, _function_scope, __last_character - 1, self);
         }
     }
     
