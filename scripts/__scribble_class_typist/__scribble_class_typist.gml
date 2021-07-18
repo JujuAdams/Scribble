@@ -170,29 +170,6 @@ function __scribble_class_typist() constructor
         return self;
     }
     
-    static associate = function(_text_element)
-    {
-        if ((__last_element == undefined) || (__last_element.ref != _text_element)) //We didn't have an element defined, or we swapped to a different element
-        {
-            __reset();
-            __last_element = weak_ref_create(_text_element);
-        }
-        else if (!weak_ref_alive(__last_element)) //Our associated element got GC'd for some reason and we didn't
-        {
-            __scribble_trace("Warning! Typist's target text element has been garbage collected");
-            __reset();
-            __last_element = weak_ref_create(_text_element);
-        }
-        else if (__last_element.ref.__page != __last_page) //Page change
-        {
-            __reset();
-        }
-        
-        __last_page = __last_element.ref.__page;
-        
-        return self;
-    }
-    
     #endregion
     
     
@@ -257,6 +234,29 @@ function __scribble_class_typist() constructor
         __delay_end    = -1;
         __inline_speed = 1;
         __event_stack  = [];
+        
+        return self;
+    }
+    
+    static __associate = function(_text_element)
+    {
+        if ((__last_element == undefined) || (__last_element.ref != _text_element)) //We didn't have an element defined, or we swapped to a different element
+        {
+            __reset();
+            __last_element = weak_ref_create(_text_element);
+        }
+        else if (!weak_ref_alive(__last_element)) //Our associated element got GC'd for some reason and we didn't
+        {
+            __scribble_trace("Warning! Typist's target text element has been garbage collected");
+            __reset();
+            __last_element = weak_ref_create(_text_element);
+        }
+        else if (__last_element.ref.__page != __last_page) //Page change
+        {
+            __reset();
+        }
+        
+        __last_page = __last_element.ref.__page;
         
         return self;
     }
@@ -392,7 +392,7 @@ function __scribble_class_typist() constructor
     {
         //Associate the typist with the target element so that we're pulling data from the correct place
         //This saves the user from doing it themselves
-        associate(_target_element);
+        __associate(_target_element);
         
         //Don't tick if it's been less than a frame since we were last updated
         if (current_time - __last_tick_time < __SCRIBBLE_EXPECTED_FRAME_TIME) return undefined;

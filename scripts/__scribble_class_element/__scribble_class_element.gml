@@ -73,7 +73,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         //If we're permitting use of legacy typewriter functions, create a private typist for this specific text element
         __tw_legacy_typist = scribble_typist();
-        __tw_legacy_typist.associate(self);
+        __tw_legacy_typist.__associate(self);
         
         __tw_legacy_typist_use = false;
     }
@@ -1094,7 +1094,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         
         __tw_legacy_typist = scribble_typist();
-        __tw_legacy_typist.associate(self);
+        __tw_legacy_typist.__associate(self);
         
         return self;
     }
