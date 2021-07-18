@@ -13,7 +13,7 @@ function scribble_glyph_get(_font, _character, _property)
 {
     var _font_data = global.__scribble_font_data[? _font ];
 
-    var _array = _font_data.glyphs_array;
+    var _array = _font_data.glyphs_array; 
     var _map   = _font_data.glyphs_map;
     
     if (_array == undefined)
@@ -22,7 +22,7 @@ function scribble_glyph_get(_font, _character, _property)
     }
     else
     {
-        var _glyph_data = _array[ord(_character) - _font_data.glyphs_min];
+        var _glyph_data = _array[ord(_character) - _font_data.glyph_min];
     }
 
     if (_glyph_data == undefined)
