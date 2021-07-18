@@ -194,9 +194,9 @@
     {"folderPath":"folders/Test Cases/Pages.yy","order":3,"resourceVersion":"1.0","name":"Pages","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Test Cases/Getters.yy","order":4,"resourceVersion":"1.0","name":"Getters","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Test Cases/Animation.yy","order":5,"resourceVersion":"1.0","name":"Animation","tags":[],"resourceType":"GMFolder",},
-    {"folderPath":"folders/Test Cases/Caching, Stress Testing.yy","order":7,"resourceVersion":"1.0","name":"Caching, Stress Testing","tags":[],"resourceType":"GMFolder",},
-    {"folderPath":"folders/Test Cases/Fonts.yy","order":8,"resourceVersion":"1.0","name":"Fonts","tags":[],"resourceType":"GMFolder",},
-    {"folderPath":"folders/Test Cases/Typewriter.yy","order":9,"resourceVersion":"1.0","name":"Typewriter","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Test Cases/Caching, Stress Testing.yy","order":8,"resourceVersion":"1.0","name":"Caching, Stress Testing","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Test Cases/Fonts.yy","order":9,"resourceVersion":"1.0","name":"Fonts","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Test Cases/Typewriter.yy","order":7,"resourceVersion":"1.0","name":"Typewriter","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Test Cases/Scribble Methods.yy","order":6,"resourceVersion":"1.0","name":"Scribble Methods","tags":[],"resourceType":"GMFolder",},
   ],
   "AudioGroups": [

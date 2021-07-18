@@ -1092,7 +1092,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        __tw_legacy_typist.reset();
+        
+        __tw_legacy_typist = scribble_typist();
+        __tw_legacy_typist.associate(self);
         
         return self;
     }

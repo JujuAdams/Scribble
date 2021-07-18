@@ -1,1 +1,1 @@
-scribble("[delay]here's[delay] some[delay] cute[delay] text! [spr_large_coin][pause]").draw(x, y, typist);
+scribble("here's some cute text! [spr_large_coin]").draw(x, y, typist);

@@ -41,26 +41,6 @@ function __scribble_class_typist() constructor
     
     #region Setters
     
-    static reset = function()
-    {
-        __last_page            = 0;
-        __last_character       = 0;
-        __last_audio_character = 0;
-        
-        __last_tick_time = -infinity;
-        
-        __window_index = 0;
-        __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
-        __skip         = false;
-        __paused       = false;
-        __delay_paused = false;
-        __delay_end    = -1;
-        __inline_speed = 1;
-        __event_stack  = [];
-        
-        return self;
-    }
-    
     /// @param speed
     /// @param smoothness
     static in = function(_speed, _smoothness)
@@ -73,7 +53,7 @@ function __scribble_class_typist() constructor
         __smoothness = _smoothness;
         __skip       = false;
         
-        if ((_old_in == undefined) || !_old_in) reset();
+        if ((_old_in == undefined) || !_old_in) __reset();
         
         return self;
     }
@@ -95,7 +75,7 @@ function __scribble_class_typist() constructor
         __smoothness = _smoothness;
         __skip       = false;
         
-        if ((_old_in == undefined) || _old_in) reset();
+        if ((_old_in == undefined) || _old_in) __reset();
         
         return self;
     }
@@ -194,18 +174,18 @@ function __scribble_class_typist() constructor
     {
         if ((__last_element == undefined) || (__last_element.ref != _text_element)) //We didn't have an element defined, or we swapped to a different element
         {
-            reset();
+            __reset();
             __last_element = weak_ref_create(_text_element);
         }
         else if (!weak_ref_alive(__last_element)) //Our associated element got GC'd for some reason and we didn't
         {
             __scribble_trace("Warning! Typist's target text element has been garbage collected");
-            reset();
+            __reset();
             __last_element = weak_ref_create(_text_element);
         }
         else if (__last_element.ref.__page != __last_page) //Page change
         {
-            reset();
+            __reset();
         }
         
         __last_page = __last_element.ref.__page;
@@ -260,6 +240,26 @@ function __scribble_class_typist() constructor
     
     
     #region Private Methods
+    
+    static __reset = function()
+    {
+        __last_page            = 0;
+        __last_character       = 0;
+        __last_audio_character = 0;
+        
+        __last_tick_time = -infinity;
+        
+        __window_index = 0;
+        __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
+        __skip         = false;
+        __paused       = false;
+        __delay_paused = false;
+        __delay_end    = -1;
+        __inline_speed = 1;
+        __event_stack  = [];
+        
+        return self;
+    }
     
     static __process_event_stack = function(_target_element, _function_scope)
     {
