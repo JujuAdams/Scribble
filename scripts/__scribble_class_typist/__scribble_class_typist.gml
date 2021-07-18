@@ -420,7 +420,14 @@ function __scribble_class_typist() constructor
             if (array_length(_pages_array) <= __last_page) return undefined;
             var _page_data = _pages_array[__last_page];
             
-            __window_array[@ __window_index] = min(_page_data.__character_count, _head_pos + _speed);
+            if (__skip)
+            {
+                __window_array[@ __window_index] = _page_data.__character_count;
+            }
+            else
+            {
+                __window_array[@ __window_index] = min(_page_data.__character_count, _head_pos + _speed);
+            }
         }
         else
         {
@@ -522,11 +529,23 @@ function __scribble_class_typist() constructor
         }
         
         //Move the typewriter tail
-        var _i = 0;
-        repeat(__SCRIBBLE_WINDOW_COUNT)
+        if (__skip)
         {
-            __window_array[@ _i+1] = min(__window_array[_i+1] + _speed, __window_array[_i]);
-            _i += 2;
+            var _i = 0;
+            repeat(__SCRIBBLE_WINDOW_COUNT)
+            {
+                __window_array[@ _i+1] = __window_array[_i];
+                _i += 2;
+            }
+        }
+        else
+        {
+            var _i = 0;
+            repeat(__SCRIBBLE_WINDOW_COUNT)
+            {
+                __window_array[@ _i+1] = min(__window_array[_i+1] + _speed, __window_array[_i]);
+                _i += 2;
+            }
         }
     }
     

@@ -16,5 +16,9 @@ if (keyboard_check_pressed(vk_space))
             typist.in(0.3, 10);
             typist.ease(SCRIBBLE_EASE.BOUNCE, 0, -40, 1, 1, 0, 0.1);
         }
+        else
+        {
+            typist.skip();
+        }
     }
 }
