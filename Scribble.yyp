@@ -134,6 +134,7 @@
     {"id":{"name":"obj_test_new_cache","path":"objects/obj_test_new_cache/obj_test_new_cache.yy",},"order":5,},
     {"id":{"name":"fnt_chinese","path":"fonts/fnt_chinese/fnt_chinese.yy",},"order":4,},
     {"id":{"name":"scribble_font_set_style_family","path":"scripts/scribble_font_set_style_family/scribble_font_set_style_family.yy",},"order":0,},
+    {"id":{"name":"obj_test_template","path":"objects/obj_test_template/obj_test_template.yy",},"order":15,},
     {"id":{"name":"obj_test_stress_gc","path":"objects/obj_test_stress_gc/obj_test_stress_gc.yy",},"order":0,},
     {"id":{"name":"scribble_typist","path":"scripts/scribble_typist/scribble_typist.yy",},"order":5,},
     {"id":{"name":"__scribble_gc_collect","path":"scripts/__scribble_gc_collect/__scribble_gc_collect.yy",},"order":11,},
