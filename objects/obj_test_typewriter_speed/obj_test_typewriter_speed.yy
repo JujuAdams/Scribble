@@ -24,11 +24,11 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Legacy",
-    "path": "folders/Test Cases/Legacy.yy",
+    "name": "Typewriter",
+    "path": "folders/Test Cases/Typewriter.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_legacy_typewriter_speed",
+  "name": "obj_test_typewriter_speed",
   "tags": [],
   "resourceType": "GMObject",
 }
