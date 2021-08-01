@@ -574,10 +574,10 @@ function __scribble_generate_model(_element)
                                 _state_final_colour = 0xFFFFFFFF;
                                 
                                 //Switch off rainbow
-                                _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
+                                _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
                                 
                                 //Switch off colour cycling
-                                _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
+                                _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
                             }
                             
                             //Add this glyph to our grid
