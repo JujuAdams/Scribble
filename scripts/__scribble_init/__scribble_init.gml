@@ -26,6 +26,8 @@ if (_font_directory != "")
     //Fix the font directory name if it's weird
     var _char = string_char_at(_font_directory, string_length(_font_directory));
     if (_char != "\\") && (_char != "/") _font_directory += "\\";
+    
+    __scribble_trace("Using font directory \"", _font_directory, "\"");
 }
     
 if (!__SCRIBBLE_ON_WEB)
@@ -33,7 +35,7 @@ if (!__SCRIBBLE_ON_WEB)
     //Check if the directory exists
     if ((_font_directory != "") && !directory_exists(_font_directory))
     {
-        __scribble_trace("WARNING! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
+        __scribble_trace("Warning! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
     }
 }
     
