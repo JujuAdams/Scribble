@@ -1262,8 +1262,8 @@ function __scribble_generate_model(_element)
                 
                 if (SCRIBBLE_ADD_SPRITE_ORIGINS)
                 {
-                    _glyph_x -= _glyph_scale*sprite_get_xoffset(_sprite_index) + (_glyph_width div 2);
-                    _glyph_y -= _glyph_scale*sprite_get_yoffset(_sprite_index);
+                    _glyph_x += (_glyph_width  div 2) - _glyph_scale*sprite_get_xoffset(_sprite_index);
+                    _glyph_y += (_glyph_height div 2) - _glyph_scale*sprite_get_yoffset(_sprite_index);
                 }
                 
                 var _sprite_number = sprite_get_number(_sprite_index);
