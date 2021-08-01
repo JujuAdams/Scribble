@@ -28,7 +28,7 @@
     "path": "folders/Test Cases/Configurations.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_sprite_colorization",
+  "name": "obj_test_typewriter_default_delay",
   "tags": [],
   "resourceType": "GMObject",
 }
