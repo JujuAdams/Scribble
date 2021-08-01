@@ -130,6 +130,15 @@ function __scribble_generate_model(_element)
     {
         _glyph_ord = __scribble_buffer_read_unicode(_string_buffer);
         
+        if (SCRIBBLE_FIX_ESCAPED_NEWLINES)
+        {
+            if ((_glyph_ord == 0x5C) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) == 0x6E)) //Backslash followed by "n"
+            {
+                buffer_seek(_string_buffer, buffer_seek_relative, 1);
+                _glyph_ord = 0x0A;
+            }
+        }
+        
         if (_tag_start != undefined)
         {
             #region Command tag handling
