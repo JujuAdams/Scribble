@@ -139,11 +139,27 @@ function scribble_font_add()
     {
         var _texture_uvs = texture_get_uvs(_texture);
     }
+    
+    var _uv_scaling = 1;
+    
+    if ((_texture_uvs[2] > 1) || (_texture_uvs[3] > 1))
+    {
+        __scribble_trace("  Warning! \"" + _name +"\" has UVs that exceed the size of a texture page (", string_format(_texture_uvs[0], 1, 10), ",", string_format(_texture_uvs[1], 1, 10), " -> ", string_format(_texture_uvs[2], 1, 10), ",", string_format(_texture_uvs[3], 1, 10), ")");
+        
+        var _max_axis = max(_texture_uvs[2], _texture_uvs[3]);
+        var _upper_power_of_two = ceil(ln(_max_axis) / ln(2));
+        _uv_scaling = power(2, -_upper_power_of_two);
+        
+        _texture_uvs[@ 2] = _texture_uvs[0] + _uv_scaling*(_texture_uvs[2] - _texture_uvs[0]);
+        _texture_uvs[@ 3] = _texture_uvs[1] + _uv_scaling*(_texture_uvs[3] - _texture_uvs[1]);
+        
+        __scribble_trace("  Chose UV scaling factor ", _uv_scaling, ", new UVs are ", string_format(_texture_uvs[0], 1, 10), ",", string_format(_texture_uvs[1], 1, 10), " -> ", string_format(_texture_uvs[2], 1, 10), ",", string_format(_texture_uvs[3], 1, 10));
+    }
 
-    var _texture_tw = texture_get_texel_width(_texture);
-    var _texture_th = texture_get_texel_height(_texture);
-    var _texture_w  = (_texture_uvs[2] - _texture_uvs[0])/_texture_tw; //texture_get_width(_texture);
-    var _texture_h  = (_texture_uvs[3] - _texture_uvs[1])/_texture_th; //texture_get_height(_texture);
+    var _texture_tw = _uv_scaling*texture_get_texel_width(_texture);
+    var _texture_th = _uv_scaling*texture_get_texel_height(_texture);
+    var _texture_w  = (_texture_uvs[2] - _texture_uvs[0]) / texture_get_texel_width(_texture);
+    var _texture_h  = (_texture_uvs[3] - _texture_uvs[1]) / texture_get_texel_height(_texture);
 
     if (SCRIBBLE_VERBOSE)
     {
@@ -254,11 +270,11 @@ function scribble_font_add()
         _font_data.glyph_max = _glyph_max;
         
         var _glyph_count = 1 + _glyph_max - _glyph_min;
-        if (SCRIBBLE_VERBOSE) __scribble_trace("  Glyphs start at " + string(_glyph_min) + " and end at " + string(_glyph_max) + ". Range is " + string(_glyph_count-1));
+        if (SCRIBBLE_VERBOSE) __scribble_trace("  Glyphs start at " + string(_glyph_min) + " and end at " + string(_glyph_max) + ", range is " + string(_glyph_count-1));
     
         if ((_glyph_count-1) > __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE)
         {
-            if (SCRIBBLE_VERBOSE) __scribble_trace("  Glyph range exceeds maximum (" + string(__SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE) + ")!");
+            if (SCRIBBLE_VERBOSE) __scribble_trace("  Glyph range exceeds maximum (" + string(__SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE) + ")");
         }
         else
         {
@@ -271,7 +287,7 @@ function scribble_font_add()
         
             if (_fraction > __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES)
             {
-                if (SCRIBBLE_VERBOSE) __scribble_trace("  Hole proportion exceeds maximum (" + string(__SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES*100) + "%)!");
+                if (SCRIBBLE_VERBOSE) __scribble_trace("  Hole proportion exceeds maximum (" + string(__SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES*100) + "%)");
             }
             else
             {
