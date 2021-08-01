@@ -1107,7 +1107,7 @@ function __scribble_generate_model(_element)
             _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
             
             _page_data = __new_page();
-            _page_data.__glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_START], __SCRIBBLE_PARSER_WORD.GLYPH_START];
+            _page_data.__glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_PARSER_WORD.GLYPH_START];
             
             _line_y = 0;
         }
@@ -1119,6 +1119,38 @@ function __scribble_generate_model(_element)
         {
             var _line_width  = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WIDTH ];
             var _line_halign = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HALIGN];
+            
+            if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE) 
+            {
+                var _line_x_offset = 0;
+                
+                //Search over all glyphs for the line looking for a valid glyph
+                //We use that's glyph's x-offset to adjust the position / width of the line
+                //We have to search over the entire line because events and alignment changes are stored as glyphs
+                var _line_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_PARSER_WORD.GLYPH_START];
+                var _line_glyph_end   = _word_grid[# _line_word_end,   __SCRIBBLE_PARSER_WORD.GLYPH_END  ];
+                
+                var _j = _line_glyph_start;
+                repeat(1 + _line_glyph_end - _line_glyph_start)
+                {
+                    var _glyph_data = _glyph_grid[# _j, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA];
+                    if (is_array(_glyph_data))
+                    {
+                        _line_x_offset = _glyph_data[SCRIBBLE_GLYPH.X_OFFSET];
+                        break;
+                    }
+                    
+                    ++_j;
+                }
+                
+                if (_line_x_offset > 0)
+                {
+                    ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.X, _line_word_end, __SCRIBBLE_PARSER_WORD.X, -_line_x_offset);
+                    
+                    _line_width -= _line_x_offset;
+                    _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WIDTH] = _line_width;
+                }
+            }
             
             //Move words vertically onto the line
             if (_line_y != 0)

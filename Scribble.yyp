@@ -31,6 +31,7 @@
     {"id":{"name":"spr_msdf_industrydemi","path":"sprites/spr_msdf_industrydemi/spr_msdf_industrydemi.yy",},"order":16,},
     {"id":{"name":"obj_test_combine_and_scale","path":"objects/obj_test_combine_and_scale/obj_test_combine_and_scale.yy",},"order":4,},
     {"id":{"name":"example_dialogue_set_name","path":"scripts/example_dialogue_set_name/example_dialogue_set_name.yy",},"order":5,},
+    {"id":{"name":"obj_test_newline_left_trim","path":"objects/obj_test_newline_left_trim/obj_test_newline_left_trim.yy",},"order":8,},
     {"id":{"name":"spr_portrait","path":"sprites/spr_portrait/spr_portrait.yy",},"order":4,},
     {"id":{"name":"obj_test_typewriter_delay_plus_sound","path":"objects/obj_test_typewriter_delay_plus_sound/obj_test_typewriter_delay_plus_sound.yy",},"order":8,},
     {"id":{"name":"obj_test_font_add","path":"objects/obj_test_font_add/obj_test_font_add.yy",},"order":0,},
