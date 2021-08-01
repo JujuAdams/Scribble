@@ -119,7 +119,7 @@ function scribble_font_add()
                 }
                 else
                 {
-                    __scribble_trace("WARNING! Could not find \"", _path, "\" in Included Files");
+                    __scribble_trace("Warning! Could not find \"", _path, "\" in Included Files");
                 }
                 
                 return undefined;

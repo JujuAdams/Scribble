@@ -32,20 +32,20 @@ function scribble_typewriter_add_event(_name, _function)
     
     if (ds_map_exists(global.__scribble_colours, _name))
     {
-        __scribble_trace("WARNING! Event name \"" + _name + "\" has already been defined as a colour");
+        __scribble_trace("Warning! Event name \"" + _name + "\" has already been defined as a colour");
         exit;
     }
     
     if (ds_map_exists(global.__scribble_effects, _name))
     {
-        __scribble_trace("WARNING! Event name \"" + _name + "\" has already been defined as an effect");
+        __scribble_trace("Warning! Event name \"" + _name + "\" has already been defined as an effect");
         exit;
     }
     
     var _old_function = global.__scribble_typewriter_events[? _name];
     if (!is_undefined(_old_function))
     {
-        __scribble_trace("WARNING! Overwriting event [" + _name + "] tied to \"" + (is_method(_old_function)? string(_old_function) : script_get_name(_old_function)) + "\"");
+        __scribble_trace("Warning! Overwriting event [" + _name + "] tied to \"" + (is_method(_old_function)? string(_old_function) : script_get_name(_old_function)) + "\"");
     }
     
     global.__scribble_typewriter_events[? _name] = _function;
