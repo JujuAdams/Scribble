@@ -22,11 +22,11 @@
 #macro SCRIBBLE_TICK_SIZE                 (delta_time / 16666) //Animation tick size per step. The default macro (delta_time / 16666) ensures that animations are smooth and consistent at all framerates
 #macro SCRIBBLE_SLANT_AMOUNT              0.25      //The x-axis displacement when using the [slant] tag
 #macro SCRIBBLE_DEFAULT_UNIQUE_ID         "default" //Default value to use for text element unique IDs. This is used when no unique ID is specified
-#macro SCRIBBLE_VERBOSE                   true      //Enables verbose console output to aid with debugging
+#macro SCRIBBLE_VERBOSE                   false     //Enables verbose console output to aid with debugging
 #macro SCRIBBLE_BEZIER_ACCURACY           20        //Controls how accurately text fits Beziér curves. Higher is more accurate but slower
 #macro SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE  true      //Whether to trim off empty left-hand space when moving a word to a new line. This can cause issues with spritefonts in some situations
 #macro SCRIBBLE_FIT_TO_BOX_ITERATIONS     3         //Number of iterations to fit text when using the .fit_to_box() method. Higher values are slower but more accurate
-#macro SCRIBBLE_SAFELY_WRAP_TIME          true      //Whether to wrap the internal time value. If you look at an animation for roughly 4.5 minutes then 
+#macro SCRIBBLE_SAFELY_WRAP_TIME          true      //Whether to wrap the internal time value
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
