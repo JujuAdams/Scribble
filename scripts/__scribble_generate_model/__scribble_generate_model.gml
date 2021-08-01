@@ -565,12 +565,13 @@ function __scribble_generate_model(_element)
                                     _image_speed = real(_tag_parameters[2]);
                                 break;
                             }
+                            
+                            var _old_effect_flags = _state_effect_flags;
+                            if (_image_speed > 0) _state_effect_flags |= 1; //Set the sprite flag bit
                         
                             if (!SCRIBBLE_COLORIZE_SPRITES)
                             {
-                                var _old_colour       = _state_final_colour;
-                                var _old_effect_flags = _state_effect_flags;
-                                
+                                var _old_colour = _state_final_colour;
                                 _state_final_colour = 0xFFFFFFFF;
                                 
                                 //Switch off rainbow
@@ -598,11 +599,8 @@ function __scribble_generate_model(_element)
                             ++_character_index;
                             _glyph_x_in_word += _sprite_width;
                             
-                            if (!SCRIBBLE_COLORIZE_SPRITES)
-                            {
-                                _state_final_colour = _old_colour;
-                                _state_effect_flags = _old_effect_flags;
-                            }
+                            _state_effect_flags = _old_effect_flags;
+                            if (!SCRIBBLE_COLORIZE_SPRITES) _state_final_colour = _old_colour;
                             
                             #endregion
                         }
@@ -1311,17 +1309,15 @@ function __scribble_generate_model(_element)
                     _image_speed = 4;
                 }
                 
-                if (_image_speed < 4)
+                if (_image_speed < 0)
                 {
                     __scribble_trace("Image speed cannot be less than 0.0 (" + string(_image_speed) + ")");
                     _image_speed = 0;
                 }
                 
-                
-                
+                var _glyph_sprite_data = 4096*floor(1024*_image_speed) + 64*_sprite_number + _image_index;
                 var _j = _image_index;
-                var _image_count = 0;
-                repeat(_sprite_number)
+                repeat((_image_speed > 0)? _sprite_number : 1) //Only draw one image if we have an image speed of 0 since we're not animating
                 {
                     var _glyph_texture = sprite_get_texture(_sprite_index, _j);
                     
@@ -1336,12 +1332,10 @@ function __scribble_generate_model(_element)
                     var _quad_r = _quad_l  + _uvs[6]*_glyph_width;
                     var _quad_b = _quad_t  + _uvs[7]*_glyph_height;
                     
-                    var _glyph_sprite_data = 4096*floor(1024*_image_speed) + 64*_sprite_number + _image_count;
-                    
                     __SCRIBBLE_PARSER_WRITE_GLYPH;
                     
                     ++_j;
-                    ++_image_count;
+                    ++_glyph_sprite_data;
                 }
                 
                 _glyph_sprite_data = 0; //Reset this because every other tyoe of glyph doesn't use this
