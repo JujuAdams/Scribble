@@ -88,7 +88,7 @@ function scribble_font_add_from_sprite()
     }
     else if (_length < _sprite_length)
     {
-        __scribble_trace("  WARNING! mapString for \"", _name, "\" has fewer characters (", _length, ") than the sprite (", _sprite_length, ")");
+        __scribble_trace("  Warning! mapString for \"", _name, "\" has fewer characters (", _length, ") than the sprite (", _sprite_length, ")");
     }
     
     
@@ -126,7 +126,7 @@ function scribble_font_add_from_sprite()
     {
         var _char = string_char_at(_sprite_string, _i+1);
         if (ds_map_exists(_font_glyphs_map, ord(_char))) continue;
-        if ((_char == " ") && (_space_width == undefined)) __scribble_trace("  WARNING! It is recommended that you do *not* use a space character in your spritefont. Please override the space character width by using the optional [spaceWidth] argument of scribble_add_spritefont()");
+        if ((_char == " ") && (_space_width == undefined)) __scribble_trace("  Warning! It is recommended that you do *not* use a space character in your spritefont. Please override the space character width by using the optional [spaceWidth] argument of scribble_add_spritefont()");
         
         var _uvs = sprite_get_uvs(_sprite, _i);
         if ((_uvs[0] == 0.0) && (_uvs[1] == 0.0) && (_uvs[4] == 0.0) && (_uvs[5] == 0.0) && (_uvs[6] == 1.0) && (_uvs[7] == 1.0)) _potential_separate_texture_page++;
@@ -143,7 +143,7 @@ function scribble_font_add_from_sprite()
         
         if ((_left > _right) && (_top > _bottom))
         {
-            __scribble_trace("  WARNING! Character " + string(ord(_char)) + " (" + _char + ") for spritefont \"" + _name + "\" is empty");
+            __scribble_trace("  Warning! Character " + string(ord(_char)) + " (" + _char + ") for spritefont \"" + _name + "\" is empty");
                 
             _array[@ SCRIBBLE_GLYPH.WIDTH     ] = 1;
             _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
