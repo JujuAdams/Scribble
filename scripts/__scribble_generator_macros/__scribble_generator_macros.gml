@@ -134,7 +134,7 @@ enum __SCRIBBLE_PARSER_LINE
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START] = _line_word_start;\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END  ] = _line_word_end;\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH     ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT    ] = ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT);\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT    ] = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN    ] = _state_halign;\n
                                    _line_count++;
 

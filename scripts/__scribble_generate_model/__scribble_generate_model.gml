@@ -84,6 +84,16 @@ function __scribble_generate_model(_element)
     
     
     
+    //Set up line height limits
+    var _line_height_min = _element.line_height_min;
+    var _line_height_max = _element.line_height_max;
+    
+    if (_line_height_min < 0) _line_height_min = _font_line_height;
+    if (_line_height_max < 0) _line_height_max = infinity;
+    
+    
+    
+    //Start the parser!
     var _element_text        = _element.text;
     var _element_text_length = string_length(_element_text);
     
