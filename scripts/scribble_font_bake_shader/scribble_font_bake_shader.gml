@@ -1,31 +1,19 @@
 /// Creates a new font with an outline based on a given source font
 ///
-/// @param sourceFontName    Name, as a string, of the font to use as a basis for the effect
-/// @param newFontName       Name of the new font to create, as a string
-/// @param shader            Shader to use
-/// @param emptyBorderSize   Border around the outside of every output glyph, in pixels. A value of 2 is typical
-/// @param leftPad           Padding around the outside of every *input* glyph. Positive values give more space. e.g. For a shader that adds a border of 2px around the entire glyph, *all* padding arguments should be set to <2>
-/// @param topPad            "
-/// @param rightPad          "
-/// @param bottomPad         "
-/// @param separationDelta   Change in every glyph's SCRIBBLE_GLYPH.SEPARATION value. For a shader that adds a border of 2px around the entire glyph, this value should be 4px
-/// @param smooth            Set to <true> to turn on linear interpolation
-/// @param [surfaceSize]     Size of the surface to use. Defaults to 2048x2048
+/// @param sourceFontName       Name, as a string, of the font to use as a basis for the effect
+/// @param newFontName          Name of the new font to create, as a string
+/// @param shader               Shader to use
+/// @param emptyBorderSize      Border around the outside of every output glyph, in pixels. A value of 2 is typical
+/// @param leftPad              Padding around the outside of every *input* glyph. Positive values give more space. e.g. For a shader that adds a border of 2px around the entire glyph, *all* padding arguments should be set to <2>
+/// @param topPad               "
+/// @param rightPad             "
+/// @param bottomPad            "
+/// @param separationDelta      Change in every glyph's SCRIBBLE_GLYPH.SEPARATION value. For a shader that adds a border of 2px around the entire glyph, this value should be 4px
+/// @param smooth               Set to <true> to turn on linear interpolation
+/// @param [surfaceSize=2048]   Size of the surface to use. Defaults to 2048x2048
 
-function scribble_font_bake_shader()
+function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _border, _l_pad, _t_pad, _r_pad, _b_pad, _separation, _smooth, _texture_size = 2048)
 {
-    var _source_font_name = argument[0];
-    var _new_font_name    = argument[1];
-    var _shader           = argument[2];
-    var _border           = argument[3];
-    var _l_pad            = argument[4];
-    var _t_pad            = argument[5];
-    var _r_pad            = argument[6];
-    var _b_pad            = argument[7];
-    var _separation       = argument[8];
-    var _smooth           = argument[9];
-    var _texture_size     = (argument_count > 10)? argument[10] : 2048;
-    
     if (!is_string(_source_font_name))
     {
         __scribble_error("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");

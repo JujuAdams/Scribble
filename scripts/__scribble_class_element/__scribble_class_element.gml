@@ -102,10 +102,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param string
     /// @param [uniqueID]
-    static overwrite = function()
+    static overwrite = function(_text, _unique_id = unique_id)
     {
-        text      = argument[0];
-        unique_id = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : unique_id;
+        text      = _text;
+        unique_id = _unique_id;
         
         var _new_cache_name = text + ":" + unique_id;
         if (cache_name != _new_cache_name)
@@ -239,13 +239,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     }
     
     /// @param maxWidth
-    /// @param [maxHeight]
-    /// @param [characterWrap]
-    static wrap = function()
+    /// @param [maxHeight=-1]
+    /// @param [characterWrap=false]
+    static wrap = function(_wrap_max_width, _wrap_max_height = -1, _wrap_per_char = false)
     {
-        var _wrap_max_width  = argument[0];
-        var _wrap_max_height = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
-        var _wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
         var _wrap_no_pages   = false;
         
         if ((_wrap_max_width  != wrap_max_width)
@@ -265,13 +262,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param maxWidth
     /// @param maxHeight
-    /// @param [characterWrap]
-    static fit_to_box = function()
+    /// @param [characterWrap=false]
+    static fit_to_box = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false)
     {
-        var _wrap_max_width  = argument[0];
-        var _wrap_max_height = argument[1];
-        var _wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
-        var _wrap_no_pages   = true;
+        var _wrap_no_pages = true;
         
         if ((_wrap_max_width  != wrap_max_width)
         ||  (_wrap_max_height != wrap_max_height)
@@ -308,12 +302,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     }
     
     /// @param templateFunction/Array
-    /// @param [executeOnlyOnChange]
-    static template = function()
+    /// @param [executeOnlyOnChange=false]
+    static template = function(_template, _on_change = false)
     {
-        var _template  = argument[0];
-        var _on_change = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : false;
-        
         if (is_array(_template))
         {
             if (!_on_change || !is_array(__template) || !array_equals(__template, _template))
@@ -399,30 +390,20 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param x1
-    /// @param y1
-    /// @param x2
-    /// @param y2
-    /// @param x3
-    /// @param y3
-    /// @param x4
-    /// @param y4
-    static bezier = function()
+    /// @param [x1=0]
+    /// @param [y1=0]
+    /// @param [x2=0]
+    /// @param [y2=0]
+    /// @param [x3=0]
+    /// @param [y3=0]
+    /// @param [x4=0]
+    /// @param [y4=0]
+    static bezier = function(_x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4)
     {
-        if (argument_count <= 0)
-        {
-            var _bezier_array = array_create(6, 0.0);
-        }
-        else if (argument_count == 8)
-        {
-            var _bezier_array = [argument[2] - argument[0], argument[3] - argument[1],
-                                 argument[4] - argument[0], argument[5] - argument[1],
-                                 argument[6] - argument[0], argument[7] - argument[1]];
-        }
-        else
-        {
-            __scribble_error("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
-        }
+        
+        var _bezier_array = [_x2 - _x1, _y2 - _y1,
+                             _x3 - _x1, _y3 - _y1,
+                             _x4 - _x1, _y4 - _y1];
         
         if (!array_equals(bezier_array, _bezier_array))
         {
@@ -619,21 +600,14 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Getters
     
-    /// @param [x]
-    /// @param [y]
-    /// @param [leftPad]
-    /// @param [topPad]
-    /// @param [rightPad]
-    /// @param [bottomPad]
-    static get_bbox = function()
+    /// @param [x=0]
+    /// @param [y=0]
+    /// @param [leftPad=0]
+    /// @param [topPad=0]
+    /// @param [rightPad=0]
+    /// @param [bottomPad=0]
+    static get_bbox = function(_x = 0, _y = 0, _margin_l = 0, _margin_t = 0, _margin_r = 0, _margin_b = 0)
     {
-        var _x        = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : 0;
-        var _y        = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
-        var _margin_l = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
-        var _margin_t = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
-        var _margin_r = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
-        var _margin_b = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
-        
         var _model = __get_model(true);
         if (!is_struct(_model))
         {
@@ -809,13 +783,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param x
     /// @param y
     /// @param [typist]
-    static draw = function()
+    static draw = function(_x, _y, _typist = undefined)
     {
         var _function_scope = other;
-        
-        var _x      = argument[0];
-        var _y      = argument[1];
-        var _typist = (argument_count > 2)? argument[2] : undefined;
         
         if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
         {
@@ -1115,14 +1085,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param speed
     /// @param smoothness
-    /// @param [backwards]
-    static typewriter_out = function()
+    /// @param [backwards=false]
+    static typewriter_out = function(_speed, _smoothness, _backwards = false)
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        var _speed      = argument[0];
-        var _smoothness = argument[1];
-        var _backwards  = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
         
         __tw_legacy_typist_use = true;
         __tw_legacy_typist.out(_speed, _smoothness, _backwards);

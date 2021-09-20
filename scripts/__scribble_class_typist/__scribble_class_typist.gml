@@ -60,13 +60,9 @@ function __scribble_class_typist() constructor
     
     /// @param speed
     /// @param smoothness
-    /// @param [backwards]
-    static out = function()
+    /// @param [backwards=false]
+    static out = function(_speed, _smoothness, _backwards = false)
     {
-        var _speed      = argument[0];
-        var _smoothness = argument[1];
-        var _backwards  = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
-        
         var _old_in = __in;
         
         __in         = false;
