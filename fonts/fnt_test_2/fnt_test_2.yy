@@ -225,6 +225,8 @@
   },
   "resourceVersion": "1.0",
   "name": "fnt_test_2",
-  "tags": [],
+  "tags": [
+    "Scribble",
+  ],
   "resourceType": "GMFont",
 }

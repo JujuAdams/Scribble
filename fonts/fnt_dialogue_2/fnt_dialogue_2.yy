@@ -375,6 +375,8 @@
   },
   "resourceVersion": "1.0",
   "name": "fnt_dialogue_2",
-  "tags": [],
+  "tags": [
+    "Scribble",
+  ],
   "resourceType": "GMFont",
 }

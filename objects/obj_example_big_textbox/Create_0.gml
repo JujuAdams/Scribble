@@ -1,4 +1,5 @@
 scribble_font_set_default("fnt_test_0");
+scribble_font_add_all();
 scribble_font_set_style_family("fnt_style", "fnt_style_b", "fnt_style_i", "fnt_style_bi");
 
 scribble_typewriter_add_event("portrait", example_dialogue_set_portrait);
@@ -30,7 +31,7 @@ textbox_height             = 100;
 textbox_portrait           = -1;
 textbox_name               = undefined;
 textbox_conversation_index = 0;
-textbox_element            = SCRIBBLE_NULL_ELEMENT;
+textbox_element            = undefined;
 
 typist = scribble_typist();
 typist.in(1, 0);

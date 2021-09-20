@@ -5,6 +5,8 @@ function __scribble_class_typist() constructor
     __last_character       = 0;
     __last_audio_character = 0;
     
+    __last_tick_time = -infinity;
+    
     __window_index = 0;
     __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     __skip         = false;
@@ -39,24 +41,6 @@ function __scribble_class_typist() constructor
     
     #region Setters
     
-    static reset = function()
-    {
-        __last_page            = 0;
-        __last_character       = 0;
-        __last_audio_character = 0;
-        
-        __window_index = 0;
-        __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
-        __skip         = false;
-        __paused       = false;
-        __delay_paused = false;
-        __delay_end    = -1;
-        __inline_speed = 1;
-        __event_stack  = [];
-        
-        return self;
-    }
-    
     /// @param speed
     /// @param smoothness
     static in = function(_speed, _smoothness)
@@ -69,7 +53,7 @@ function __scribble_class_typist() constructor
         __smoothness = _smoothness;
         __skip       = false;
         
-        if ((_old_in == undefined) || !_old_in) reset();
+        if ((_old_in == undefined) || !_old_in) __reset();
         
         return self;
     }
@@ -77,8 +61,12 @@ function __scribble_class_typist() constructor
     /// @param speed
     /// @param smoothness
     /// @param [backwards]
-    static out = function(_speed, _smoothness, _backwards = false)
+    static out = function()
     {
+        var _speed      = argument[0];
+        var _smoothness = argument[1];
+        var _backwards  = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+        
         var _old_in = __in;
         
         __in         = false;
@@ -87,7 +75,7 @@ function __scribble_class_typist() constructor
         __smoothness = _smoothness;
         __skip       = false;
         
-        if ((_old_in == undefined) || _old_in) reset();
+        if ((_old_in == undefined) || _old_in) __reset();
         
         return self;
     }
@@ -182,41 +170,26 @@ function __scribble_class_typist() constructor
         return self;
     }
     
-    static associate = function(_text_element)
-    {
-        if ((__last_element == undefined) || (__last_element.ref != _text_element)) //We didn't have an element defined, or we swapped to a different element
-        {
-            reset();
-            __last_element = weak_ref_create(_text_element);
-        }
-        else if (!weak_ref_alive(__last_element)) //Our associated element got GC'd for some reason and we didn't
-        {
-            __scribble_trace("Warning! Typist's target text element has been garbage collected");
-            reset();
-            __last_element = weak_ref_create(_text_element);
-        }
-        else if (__last_element.ref.__page != __last_page) //Page change
-        {
-            reset();
-        }
-        
-        __last_page = __last_element.ref.__page;
-        
-        return self;
-    }
-    
     #endregion
     
     
     
     #region Getters
     
+    static get_skip = function()
+    {
+        return __skip;
+    }
+    
     static get_state = function()
     {
         if ((__last_element == undefined) || (__last_page == undefined) || (__last_character == undefined)) return 0.0;
         if (__in == undefined) return 1.0;
         
-        var _pages_array = __last_element.ref.__get_model(true).get_page_array();
+        var _model = __last_element.ref.__get_model(true);
+        if (!is_struct(_model)) return 2.0; //If there's no model then report that the element is totally faded out
+        
+        var _pages_array = _model.get_page_array();
         if (array_length(_pages_array) <= __last_page) return 1.0;
         var _page_data = _pages_array[__last_page];
         var _min = 0;
@@ -249,6 +222,49 @@ function __scribble_class_typist() constructor
     
     
     #region Private Methods
+    
+    static __reset = function()
+    {
+        __last_page            = 0;
+        __last_character       = 0;
+        __last_audio_character = 0;
+        
+        __last_tick_time = -infinity;
+        
+        __window_index = 0;
+        __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
+        __skip         = false;
+        __paused       = false;
+        __delay_paused = false;
+        __delay_end    = -1;
+        __inline_speed = 1;
+        __event_stack  = [];
+        
+        return self;
+    }
+    
+    static __associate = function(_text_element)
+    {
+        if ((__last_element == undefined) || (__last_element.ref != _text_element)) //We didn't have an element defined, or we swapped to a different element
+        {
+            __reset();
+            __last_element = weak_ref_create(_text_element);
+        }
+        else if (!weak_ref_alive(__last_element)) //Our associated element got GC'd for some reason and we didn't
+        {
+            __scribble_trace("Warning! Typist's target text element has been garbage collected");
+            __reset();
+            __last_element = weak_ref_create(_text_element);
+        }
+        else if (__last_element.ref.__page != __last_page) //Page change
+        {
+            __reset();
+        }
+        
+        __last_page = __last_element.ref.__page;
+        
+        return self;
+    }
     
     static __process_event_stack = function(_target_element, _function_scope)
     {
@@ -369,11 +385,11 @@ function __scribble_class_typist() constructor
         //Execute function per character
         if (is_method(__function))
         {
-            __function(_function_scope, __last_character - 1);
+            __function(_function_scope, __last_character - 1, self);
         }
         else if (is_real(__function) && script_exists(__function))
         {
-            script_execute(__function, _function_scope, __last_character - 1);
+            script_execute(__function, _function_scope, __last_character - 1, self);
         }
     }
     
@@ -381,7 +397,11 @@ function __scribble_class_typist() constructor
     {
         //Associate the typist with the target element so that we're pulling data from the correct place
         //This saves the user from doing it themselves
-        associate(_target_element);
+        __associate(_target_element);
+        
+        //Don't tick if it's been less than a frame since we were last updated
+        if (current_time - __last_tick_time < __SCRIBBLE_EXPECTED_FRAME_TIME) return undefined;
+        __last_tick_time = current_time;
         
         //If __in hasn't been set yet (.in() / .out() haven't been set) then just nope out
         if (__in == undefined) return undefined;
@@ -405,7 +425,14 @@ function __scribble_class_typist() constructor
             if (array_length(_pages_array) <= __last_page) return undefined;
             var _page_data = _pages_array[__last_page];
             
-            __window_array[@ __window_index] = min(_page_data.__character_count, _head_pos + _speed);
+            if (__skip)
+            {
+                __window_array[@ __window_index] = _page_data.__character_count;
+            }
+            else
+            {
+                __window_array[@ __window_index] = min(_page_data.__character_count, _head_pos + _speed);
+            }
         }
         else
         {
@@ -477,7 +504,7 @@ function __scribble_class_typist() constructor
                         var _found_events = __last_element.ref.events_get(__last_character);
                         __last_character++;
                         
-                        __execute_function_per_character(_target_element);
+                        if (__last_character > 1) __execute_function_per_character(_target_element);
                         
                         var _found_size = array_length(_found_events);
                         if (_found_size > 0)
@@ -507,11 +534,23 @@ function __scribble_class_typist() constructor
         }
         
         //Move the typewriter tail
-        var _i = 0;
-        repeat(__SCRIBBLE_WINDOW_COUNT)
+        if (__skip)
         {
-            __window_array[@ _i+1] = min(__window_array[_i+1] + _speed, __window_array[_i]);
-            _i += 2;
+            var _i = 0;
+            repeat(__SCRIBBLE_WINDOW_COUNT)
+            {
+                __window_array[@ _i+1] = __window_array[_i];
+                _i += 2;
+            }
+        }
+        else
+        {
+            var _i = 0;
+            repeat(__SCRIBBLE_WINDOW_COUNT)
+            {
+                __window_array[@ _i+1] = min(__window_array[_i+1] + _speed, __window_array[_i]);
+                _i += 2;
+            }
         }
     }
     
@@ -530,7 +569,10 @@ function __scribble_class_typist() constructor
         var _char_max = 0;
         if (__backwards)
         {
-            var _pages_array = __last_element.ref.__get_model(true).get_page_array();
+            var _model = __last_element.ref.__get_model(true);
+            if (!is_struct(_model)) return undefined;
+            
+            var _pages_array = _model.get_page_array();
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];
@@ -567,7 +609,10 @@ function __scribble_class_typist() constructor
         var _char_max = 0;
         if (__backwards)
         {
-            var _pages_array = __last_element.ref.__get_model(true).get_page_array();
+            var _model = __last_element.ref.__get_model(true);
+            if (!is_struct(_model)) return undefined;
+            
+            var _pages_array = _model.get_page_array();
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];

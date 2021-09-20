@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Miscellaneous",
-    "path": "folders/Test Cases/Miscellaneous.yy",
+    "name": "Scribble Methods",
+    "path": "folders/Test Cases/Scribble Methods.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_sync",

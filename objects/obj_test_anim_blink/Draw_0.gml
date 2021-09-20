@@ -24,3 +24,7 @@ _y += _element.get_height() + 10;
 var _element = scribble("blink offset 6 [blink]blink blink", 3);
 _element.animation_blink(8, 8, 6).draw(_x, _y);
 _y += _element.get_height() + 10;
+
+var _element = scribble("double zero [blink]blink blink", 1);
+_element.animation_blink(0, 0, 0).draw(_x, _y);
+_y += _element.get_height() + 10;

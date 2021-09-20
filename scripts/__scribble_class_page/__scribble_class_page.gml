@@ -10,6 +10,8 @@ function __scribble_class_page() constructor
     __vertex_buffer_array           = [];
     __texture_to_vertex_buffer_dict = {};
     
+    __events = {};
+    
     static __get_vertex_buffer = function(_texture, _font_data, _for_text, _model_struct)
     {
         var _pointer_string = string(_texture);

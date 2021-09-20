@@ -1,0 +1,1 @@
+scribble("[scale,4][spr_coin]").draw(10, 10);

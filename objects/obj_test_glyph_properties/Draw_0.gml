@@ -1,0 +1,1 @@
+scribble("the quick brown foz jumps over the lazy dog.").draw(10, 10);

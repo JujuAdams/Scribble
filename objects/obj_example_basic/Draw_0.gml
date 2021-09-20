@@ -6,6 +6,8 @@ It supports[scale,2][spr_sprite_font] in-line font changes (and spritefonts!)[/]
 
 Other examples and test cases in this project file will show you what else Scribble can do including an in-built typewriter, the events system, MSDF fonts, and more!";
 
+
+
 //Draw our string with wrapping, and using a typist for the typewriter effect
 scribble(_string)
 .wrap(900)

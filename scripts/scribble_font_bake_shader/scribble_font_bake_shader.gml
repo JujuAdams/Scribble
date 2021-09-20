@@ -12,8 +12,20 @@
 /// @param smooth            Set to <true> to turn on linear interpolation
 /// @param [surfaceSize]     Size of the surface to use. Defaults to 2048x2048
 
-function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _border, _l_pad, _t_pad, _r_pad, _b_pad, _separation, _smooth, _texture_size = 2048)
+function scribble_font_bake_shader()
 {
+    var _source_font_name = argument[0];
+    var _new_font_name    = argument[1];
+    var _shader           = argument[2];
+    var _border           = argument[3];
+    var _l_pad            = argument[4];
+    var _t_pad            = argument[5];
+    var _r_pad            = argument[6];
+    var _b_pad            = argument[7];
+    var _separation       = argument[8];
+    var _smooth           = argument[9];
+    var _texture_size     = (argument_count > 10)? argument[10] : 2048;
+    
     if (!is_string(_source_font_name))
     {
         __scribble_error("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");

@@ -42,6 +42,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     fog_colour = c_white;
     fog_alpha  = 0.0;
     
+    gradient_colour = c_black;
+    gradient_alpha  = 0.0;
+    
     xscale = 1.0;
     yscale = 1.0;
     angle  = 0.0;
@@ -70,7 +73,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         //If we're permitting use of legacy typewriter functions, create a private typist for this specific text element
         __tw_legacy_typist = scribble_typist();
-        __tw_legacy_typist.associate(self);
+        __tw_legacy_typist.__associate(self);
         
         __tw_legacy_typist_use = false;
     }
@@ -99,10 +102,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param string
     /// @param [uniqueID]
-    static overwrite = function(_text, _unique_id = unique_id)
+    static overwrite = function()
     {
-        text      = _text;
-        unique_id = _unique_id;
+        text      = argument[0];
+        unique_id = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : unique_id;
         
         var _new_cache_name = text + ":" + unique_id;
         if (cache_name != _new_cache_name)
@@ -162,7 +165,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 if (_colour != starting_colour)
                 {
                     model_cache_name_dirty = true;
-                    starting_colour = _colour;
+                    starting_colour = _colour & 0xFFFFFF;
                 }
             }
         }
@@ -209,8 +212,9 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
         }
         
-        blend_colour = _colour;
-        blend_alpha  = _alpha;
+        if (_colour != undefined) blend_colour = _colour & 0xFFFFFF;
+        if (_alpha  != undefined) blend_alpha  = _alpha;
+        
         return self;
     }
     
@@ -237,9 +241,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param maxWidth
     /// @param [maxHeight]
     /// @param [characterWrap]
-    static wrap = function(_wrap_max_width, _wrap_max_height = -1, _wrap_per_char = false)
+    static wrap = function()
     {
-        var _wrap_no_pages = false;
+        var _wrap_max_width  = argument[0];
+        var _wrap_max_height = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : -1;
+        var _wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+        var _wrap_no_pages   = false;
         
         if ((_wrap_max_width  != wrap_max_width)
         ||  (_wrap_max_height != wrap_max_height)
@@ -259,9 +266,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param maxWidth
     /// @param maxHeight
     /// @param [characterWrap]
-    static fit_to_box = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false)
+    static fit_to_box = function()
     {
-        var _wrap_no_pages = true;
+        var _wrap_max_width  = argument[0];
+        var _wrap_max_height = argument[1];
+        var _wrap_per_char   = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
+        var _wrap_no_pages   = true;
         
         if ((_wrap_max_width  != wrap_max_width)
         ||  (_wrap_max_height != wrap_max_height)
@@ -299,8 +309,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param templateFunction/Array
     /// @param [executeOnlyOnChange]
-    static template = function(_template, _on_change = false)
+    static template = function()
     {
+        var _template  = argument[0];
+        var _on_change = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : false;
+        
         if (is_array(_template))
         {
             if (!_on_change || !is_array(__template) || !array_equals(__template, _template))
@@ -350,8 +363,27 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
         }
         
-        fog_colour = _colour;
+        fog_colour = _colour & 0xFFFFFF;
         fog_alpha  = _alpha;
+        return self;
+    }
+    
+    /// @param colour
+    /// @param alpha
+    static gradient = function(_colour, _alpha)
+    {
+        if (is_string(_colour))
+        {
+            _colour = global.__scribble_colours[? _colour];
+            if (_colour == undefined)
+            {
+                __scribble_error("Colour name \"", _colour, "\" not recognised");
+                exit;
+            }
+        }
+        
+        gradient_colour = _colour & 0xFFFFFF;
+        gradient_alpha  = _alpha;
         return self;
     }
     
@@ -418,12 +450,17 @@ function __scribble_class_element(_string, _unique_id) constructor
         return __tw_reveal;
     }
     
-    static events_get = function(_position)
+    static events_get = function()
     {
+        var _position = argument[0];
+        var _page     = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : __page;
+        
         var _model = __get_model(true);
         if (!is_struct(_model)) return [];
         
-        var _events = _model.events[$ _position];
+        var _page = _model.pages_array[_page];
+        
+        var _events = _page.__events[$ _position];
         if (!is_array(_events)) return [];
         
         return _events;
@@ -445,7 +482,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param sourceElement
     static animation_sync = function(_source_element)
     {
-        if (is_struct(_source_element) && (_source_element != SCRIBBLE_NULL_ELEMENT))
+        if (scribble_is_text_element(_source_element))
         {
             animation_time         = _source_element.animation_time;
             animation_tick_speed__ = _source_element.animation_tick_speed__;
@@ -588,36 +625,23 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [topPad]
     /// @param [rightPad]
     /// @param [bottomPad]
-    static get_bbox = function(_x = 0, _y = 0, _margin_l = 0, _margin_t = 0, _margin_r = 0, _margin_b = 0)
+    static get_bbox = function()
     {
+        var _x        = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : 0;
+        var _y        = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : 0;
+        var _margin_l = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : 0;
+        var _margin_t = ((argument_count > 3) && (argument[3] != undefined))? argument[3] : 0;
+        var _margin_r = ((argument_count > 4) && (argument[4] != undefined))? argument[4] : 0;
+        var _margin_b = ((argument_count > 5) && (argument[5] != undefined))? argument[5] : 0;
+        
         var _model = __get_model(true);
-        var _model_bbox = _model.get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
-        
-        switch(_model.valign)
+        if (!is_struct(_model))
         {
-            case fa_top:
-                var _bbox_t = 0;
-                var _bbox_b = _model_bbox.height;
-            break;
-        
-            case fa_middle:
-                var _bbox_t = -(_model_bbox.height div 2);
-                var _bbox_b = -_bbox_t;
-            break;
-        
-            case fa_bottom:
-                var _bbox_t = -_model_bbox.height;
-                var _bbox_b = 0;
-            break;
-        }
-        
-        if ((xscale == 1) && (yscale == 1) && (angle == 0))
-        {
-            //Avoid using matrices if we can
-            var _l = _x - origin_x + _model_bbox.left  - _margin_l;
-            var _t = _y - origin_y + _bbox_t           - _margin_t;
-            var _r = _x - origin_x + _model_bbox.right + _margin_r;
-            var _b = _y - origin_y + _bbox_b           + _margin_b;
+            //No extant model, return an empty bounding box
+            var _l = _x - _margin_l;
+            var _t = _y - _margin_t;
+            var _r = _x + _margin_r;
+            var _b = _y + _margin_b;
             
             var _x0 = _l;   var _y0 = _t;
             var _x1 = _r;   var _y1 = _t;
@@ -626,26 +650,62 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         else
         {
-            //TODO - Make this faster with custom code
-            var _matrix = matrix_build(-origin_x, -origin_y, 0,   0,0,0,   1,1,1);
-                _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
-                                                                0, 0, angle,
-                                                                xscale, yscale, 1));
+            var _model_bbox = _model.get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
+        
+            switch(_model.valign)
+            {
+                case fa_top:
+                    var _bbox_t = 0;
+                    var _bbox_b = _model_bbox.height;
+                break;
+        
+                case fa_middle:
+                    var _bbox_t = -(_model_bbox.height div 2);
+                    var _bbox_b = -_bbox_t;
+                break;
+        
+                case fa_bottom:
+                    var _bbox_t = -_model_bbox.height;
+                    var _bbox_b = 0;
+                break;
+            }
+        
+            if ((xscale == 1) && (yscale == 1) && (angle == 0))
+            {
+                //Avoid using matrices if we can
+                var _l = _x - origin_x + _model_bbox.left  - _margin_l;
+                var _t = _y - origin_y + _bbox_t           - _margin_t;
+                var _r = _x - origin_x + _model_bbox.right + _margin_r;
+                var _b = _y - origin_y + _bbox_b           + _margin_b;
             
-            var _l = _model_bbox.left  - _margin_l;
-            var _t = _bbox_t           - _margin_t;
-            var _r = _model_bbox.right + _margin_r;
-            var _b = _bbox_b           + _margin_b;
+                var _x0 = _l;   var _y0 = _t;
+                var _x1 = _r;   var _y1 = _t;
+                var _x2 = _l;   var _y2 = _b;
+                var _x3 = _r;   var _y3 = _b;
+            }
+            else
+            {
+                //TODO - Make this faster with custom code
+                var _matrix = matrix_build(-origin_x, -origin_y, 0,   0,0,0,   1,1,1);
+                    _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
+                                                                    0, 0, angle,
+                                                                    xscale, yscale, 1));
             
-            var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); var _x0 = _vertex[0]; var _y0 = _vertex[1];
-            var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); var _x1 = _vertex[0]; var _y1 = _vertex[1];
-            var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); var _x2 = _vertex[0]; var _y2 = _vertex[1];
-            var _vertex = matrix_transform_vertex(_matrix, _r, _b, 0); var _x3 = _vertex[0]; var _y3 = _vertex[1];
+                var _l = _model_bbox.left  - _margin_l;
+                var _t = _bbox_t           - _margin_t;
+                var _r = _model_bbox.right + _margin_r;
+                var _b = _bbox_b           + _margin_b;
             
-            var _l = min(_x0, _x1, _x2, _x3);
-            var _t = min(_y0, _y1, _y2, _y3);
-            var _r = max(_x0, _x1, _x2, _x3);
-            var _b = max(_y0, _y1, _y2, _y3);
+                var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); var _x0 = _vertex[0]; var _y0 = _vertex[1];
+                var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); var _x1 = _vertex[0]; var _y1 = _vertex[1];
+                var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); var _x2 = _vertex[0]; var _y2 = _vertex[1];
+                var _vertex = matrix_transform_vertex(_matrix, _r, _b, 0); var _x3 = _vertex[0]; var _y3 = _vertex[1];
+            
+                var _l = min(_x0, _x1, _x2, _x3);
+                var _t = min(_y0, _y1, _y2, _y3);
+                var _r = max(_x0, _x1, _x2, _x3);
+                var _b = max(_y0, _y1, _y2, _y3);
+            }
         }
         
         var _w = 1 + _r - _l;
@@ -667,12 +727,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static get_width = function()
     {
-        return __get_model(true).get_width();
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.get_width();
     }
     
     static get_height = function()
     {
-        return __get_model(true).get_height();
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.get_height();
     }
     
     static get_page = function()
@@ -682,19 +746,29 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static get_pages = function()
     {
-        return __get_model(true).get_pages();
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.get_pages();
     }
 	
 	/// @param [page]
-	static get_page_height = function(_page = __page)
+	static get_page_height = function()
 	{
-		return __get_model(true).get_page_height(_page);
+		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+		
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+		return _model.get_page_height(_page);
 	}
 	
 	/// @param [page]
-	static get_page_width = function(_page = __page)
+	static get_page_width = function()
 	{
-		return __get_model(true).get_page_width(_page);
+		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+		
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+		return _model.get_page_width(_page);
 	}
     
     static on_last_page = function()
@@ -704,18 +778,26 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static get_wrapped = function()
     {
-        return __get_model(true).get_wrapped();
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return false;
+        return _model.get_wrapped();
     }
     
     /// @param [page]
-    static get_line_count = function(_page = __page)
+    static get_line_count = function()
     {
-        return __get_model(true).get_line_count(_page);
+        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+        
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.get_line_count(_page);
     }
     
     static get_ltrb_array = function()
     {
-        return __get_model(true).get_ltrb_array();
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return [];
+        return _model.get_ltrb_array();
     }
     
     #endregion
@@ -727,9 +809,13 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param x
     /// @param y
     /// @param [typist]
-    static draw = function(_x, _y, _typist)
+    static draw = function()
     {
         var _function_scope = other;
+        
+        var _x      = argument[0];
+        var _y      = argument[1];
+        var _typist = (argument_count > 2)? argument[2] : undefined;
         
         if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
         {
@@ -738,6 +824,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         //Get our model, and create one if needed
         var _model = __get_model(true);
+        if (!is_struct(_model)) return undefined;
         
         //If enough time has elapsed since we drew this element then update our animation time
         if (current_time - last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
@@ -749,7 +836,14 @@ function __scribble_class_element(_string, _unique_id) constructor
         last_drawn = current_time;
         
         //Update the blink state
-        animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
+        if (animation_blink_on_duration + animation_blink_off_duration > 0)
+        {
+            animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
+        }
+        else
+        {
+            animation_blink_state = true;
+        }
         
         #region Prepare shaders for drawing
         
@@ -758,6 +852,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             shader_set(__shd_scribble);
             shader_set_uniform_f(global.__scribble_u_fTime, animation_time);
             
+            //TODO - Optimise
             shader_set_uniform_f(global.__scribble_u_vColourBlend, colour_get_red(  blend_colour)/255,
                                                                    colour_get_green(blend_colour)/255,
                                                                    colour_get_blue( blend_colour)/255,
@@ -767,6 +862,11 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                            colour_get_green(fog_colour)/255,
                                                            colour_get_blue( fog_colour)/255,
                                                            fog_alpha);
+            
+            shader_set_uniform_f(global.__scribble_u_vGradient, colour_get_red(  gradient_colour)/255,
+                                                                colour_get_green(gradient_colour)/255,
+                                                                colour_get_blue( gradient_colour)/255,
+                                                                gradient_alpha);
             
             shader_set_uniform_f_array(global.__scribble_u_aDataFields, animation_array);
             shader_set_uniform_f_array(global.__scribble_u_aBezier, bezier_array);
@@ -807,6 +907,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             shader_set(__shd_scribble_msdf);
             shader_set_uniform_f(global.__scribble_msdf_u_fTime, animation_time);
             
+            //TODO - Optimise
             shader_set_uniform_f(global.__scribble_msdf_u_vColourBlend, colour_get_red(  blend_colour)/255,
                                                                         colour_get_green(blend_colour)/255,
                                                                         colour_get_blue( blend_colour)/255,
@@ -816,6 +917,11 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                 colour_get_green(fog_colour)/255,
                                                                 colour_get_blue( fog_colour)/255,
                                                                 fog_alpha);
+            
+            shader_set_uniform_f(global.__scribble_msdf_u_vGradient, colour_get_red(  gradient_colour)/255,
+                                                                     colour_get_green(gradient_colour)/255,
+                                                                     colour_get_blue( gradient_colour)/255,
+                                                                     gradient_alpha);
             
             shader_set_uniform_f_array(global.__scribble_msdf_u_aDataFields, animation_array);
             shader_set_uniform_f_array(global.__scribble_msdf_u_aBezier, bezier_array);
@@ -829,7 +935,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                     __tick(other, _function_scope);
                     
                     //Let the typist set the shader uniforms
-                    __set_msdf_shader_uniforms();
+                    __set_shader_uniforms();
                 }
             }
             else if (__tw_reveal != undefined)
@@ -925,7 +1031,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (flushed || (text == ""))
         {
-            model = SCRIBBLE_NULL_MODEL;
+            model = undefined;
         }
         else
         {
@@ -952,20 +1058,15 @@ function __scribble_class_element(_string, _unique_id) constructor
             {
                 model = _weak.ref;
             }
+            else if (_allow_create)
+            {
+                //Create a new model if required
+                model = new __scribble_class_model(self, model_cache_name);
+            }
             else
             {
-                if (_allow_create)
-                {
-                    //Create a new model if required
-                    model = new __scribble_class_model(self, model_cache_name);
-                }
-                else
-                {
-                    model = undefined;
-                }
+                model = undefined;
             }
-            
-            if (model == undefined) model = SCRIBBLE_NULL_MODEL;
         }
         
         return model;
@@ -991,7 +1092,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
         
-        __tw_legacy_typist.reset();
+        
+        __tw_legacy_typist = scribble_typist();
+        __tw_legacy_typist.__associate(self);
         
         return self;
     }
@@ -1013,9 +1116,13 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param speed
     /// @param smoothness
     /// @param [backwards]
-    static typewriter_out = function(_speed, _smoothness, _backwards = false)
+    static typewriter_out = function()
     {
         if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://github.com/JujuAdams/Scribble/wiki/scribble_typist\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
+        
+        var _speed      = argument[0];
+        var _smoothness = argument[1];
+        var _backwards  = ((argument_count > 2) && (argument[2] != undefined))? argument[2] : false;
         
         __tw_legacy_typist_use = true;
         __tw_legacy_typist.out(_speed, _smoothness, _backwards);

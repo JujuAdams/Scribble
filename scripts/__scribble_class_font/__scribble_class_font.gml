@@ -14,6 +14,7 @@ function __scribble_class_font(_name, _type) constructor
     glyph_min    = 32;
     glyph_max    = 32;
     space_width  = undefined;
+    mapstring    = undefined;
     separation   = undefined;
     msdf_range   = undefined;
     xscale       = 1.0;

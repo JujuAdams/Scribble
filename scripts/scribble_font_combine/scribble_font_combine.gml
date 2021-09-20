@@ -138,7 +138,7 @@ function scribble_font_combine()
         ++_f;
     }
     
-    //Go go backwards so fonts listed first take priority (character from later fonts get overwritten)
+    //Go go backwards so fonts listed first take priority (characters from later fonts get overwritten)
     var _f = argument_count - 1;
     repeat(argument_count - 1)
     {

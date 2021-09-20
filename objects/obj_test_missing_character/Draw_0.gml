@@ -1,0 +1,1 @@
+scribble("Here's some missing Chinese text: 我爱你").draw(10, 10);

@@ -74,8 +74,6 @@
   },
   "resourceVersion": "1.0",
   "name": "spr_msdf_openhuninn",
-  "tags": [
-    "Scribble MSDF",
-  ],
+  "tags": [],
   "resourceType": "GMSprite",
 }
