@@ -1,4 +1,3 @@
-scribble_font_add_all();
 scribble_font_set_default("fnt_test_1");
 
 scribble_glyph_set("fnt_test_1", "b", SCRIBBLE_GLYPH.WIDTH,  2*scribble_glyph_get("fnt_test_1", "b", SCRIBBLE_GLYPH.WIDTH ), false);

@@ -1,5 +1,4 @@
 scribble_font_set_default("fnt_test_2");
-scribble_font_add_all();
 
 element1 = scribble("here's[delay] some[delay] cute[delay] text! [spr_large_coin]", 1);
 element1.typewriter_in(0.2, 10);

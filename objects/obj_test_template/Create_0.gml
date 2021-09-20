@@ -1,5 +1,3 @@
-scribble_font_add_all();
-
 template_test = method(undefined, function()
 {
     starting_format("fnt_style", c_white);

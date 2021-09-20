@@ -1,1 +1,0 @@
-scribble_font_add_all();

@@ -5,7 +5,7 @@
 function scribble_font_set_default(_font)
 {
     //Ensure we're initialised
-    __scribble_init();
+    __scribble_system();
     
     //Check if the default font parameter is the correct datatype
     if (!is_string(_font))

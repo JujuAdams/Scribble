@@ -1,7 +1,7 @@
 var _string = "the quick brown fox jumped over the lazy dog. the quick brown fox jumped over the lazy dog\nSPHINX OF BLACK QUARTZ, JUDGE MY VOW";
 
 var _standard = scribble("[scale,2][fnt_industrydemi]" + _string);
-var _msdf     = scribble("[scale,2][Industry-Demi]" + _string);
+var _msdf     = scribble("[scale,2][spr_msdf_industrydemi]" + _string);
 
 _standard.wrap(500).msdf_feather(1.5).draw(10, 10);
 _msdf.wrap(500).msdf_feather(1.5).draw(10, _standard.get_bbox(10, 10).bottom + 10);
