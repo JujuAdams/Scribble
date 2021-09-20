@@ -24,7 +24,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
     
     var _font_data = new __scribble_class_font(_name, "msdf");
     
-    if (SCRIBBLE_VERBOSE) show_debug_message( "Scribble: Defined \"" + _name + "\" as an MSDF font" );
+    if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Defined \"" + _name + "\" as an MSDF font");
     
     var _sprite_width  = sprite_get_width(_sprite);
     var _sprite_height = sprite_get_height(_sprite);

@@ -2,7 +2,7 @@
 
 function __scribble_font_add_from_project(_font)
 {
-    __scribble_trace("Scribble: Adding \"", font_get_name(_font), "\"");
+    __scribble_trace("Adding \"", font_get_name(_font), "\"");
     
     var _name = font_get_name(_font);
     
