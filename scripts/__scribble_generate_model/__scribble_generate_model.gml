@@ -132,6 +132,7 @@ function __scribble_generate_model(_element)
     var _state_slant        = false;
     var _state_cycle        = false;
     var _state_halign       = _starting_halign;
+    var _state_command_tag_flipflop = false;
     var _character_index    = 0;
     
     __SCRIBBLE_PARSER_WRITE_HALIGN;
@@ -721,12 +722,19 @@ function __scribble_generate_model(_element)
         }
         else
         {
-            if ((_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignore_commands)
+            if (!_ignore_commands && (_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) && (_state_command_tag_flipflop || (__scribble_buffer_peek_unicode(_string_buffer, buffer_tell(_string_buffer)) != SCRIBBLE_COMMAND_TAG_OPEN)))
             {
-                //Begin a command tag
-                _tag_start           = buffer_tell(_string_buffer);
-                _tag_parameter_count = 0;
-                _tag_parameters      = [];
+                if (_state_command_tag_flipflop)
+                {
+                    _state_command_tag_flipflop = false;
+                }
+                else
+                {
+                    //Begin a command tag
+                    _tag_start           = buffer_tell(_string_buffer);
+                    _tag_parameter_count = 0;
+                    _tag_parameters      = [];
+                }
             }
             else if ((_glyph_ord == 0x0A) //If we've hit a newline (\n)
                  || (SCRIBBLE_HASH_NEWLINE && (_glyph_ord == 0x23)) //If we've hit a hash, and hash newlines are on
@@ -850,6 +858,8 @@ function __scribble_generate_model(_element)
                     ++_character_index;
                     _glyph_x_in_word += _glyph_separation; //Already includes scaling
                 }
+                
+                if (_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) _state_command_tag_flipflop = true;
                 
                 #endregion
             }
