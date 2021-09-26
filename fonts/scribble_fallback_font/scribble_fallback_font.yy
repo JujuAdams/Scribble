@@ -131,7 +131,7 @@
     "path": "folders/Scribble/(System - don't call these functions).yy",
   },
   "resourceVersion": "1.0",
-  "name": "__scribble_default_font",
+  "name": "scribble_fallback_font",
   "tags": [],
   "resourceType": "GMFont",
 }
