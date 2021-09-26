@@ -6,7 +6,6 @@
 #macro SCRIBBLE_FIX_ESCAPED_NEWLINES          true   //Replaces newline literals ("\\n") with an actual newline ("\n")
 #macro SCRIBBLE_COLORIZE_SPRITES              true   //Whether to use colourization for sprites. This includes [rainbow] and [cycle]
 #macro SCRIBBLE_ADD_SPRITE_ORIGINS            false  //Whether to use sprite origins. Setting this to <false> will vertically centre sprites on the line of text
-#macro SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT  false  //Set to <true> to trim off empty space on the left-hand side of a spritefont, even for non-proportional spritefonts. This is GameMaker's native behaviour
 #macro SCRIBBLE_MISSING_CHARACTER             "?"    //Character to use when another character is missing from a font
 #macro SCRIBBLE_BGR_COLOR_HEX_CODES           false  //Set to <true> to use GameMaker's #BBGGRR format for in-line hex code colors. <false> uses the web standard #RRGGBB format
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED          0.1    //The default animation speed for sprites inserted into text
