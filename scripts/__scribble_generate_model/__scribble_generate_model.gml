@@ -902,7 +902,7 @@ function __scribble_generate_model(_element)
         ||  (_glyph_ord == 0x09)  //Horizontal tab (dec = 9)
         ||  (_glyph_ord == 0x0C)  //Page break ("form feed", dec = 12)
         ||  (_glyph_ord == 0x0D)  //Line break (dec = 13)
-        ||  (_glyph_ord == 0x20)) //Space (dec = 32))
+        ||  (_glyph_ord == 0x20)) //Space (dec = 32)
         {
             #region Word break
             
@@ -1268,7 +1268,29 @@ function __scribble_generate_model(_element)
         if (_word_glyph_end - _word_glyph_start >= 0)
         {
             ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.X, _word_grid[# _i, __SCRIBBLE_PARSER_WORD.X]);
-            ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.Y, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.Y, _word_grid[# _i, __SCRIBBLE_PARSER_WORD.Y]);
+            
+            //x-axis is easy, the difficult bit is the y-axis
+            //Basically, we want the glyph's top y-coordinate = word.y + (word.height - glyph.height)/2
+            //Doing this in bulk using grid functions requires us to do this in four steps:
+            //  1) glyph.y  = glyph.height
+            //  2) glyph.y -= word.height + 2*word.y
+            //  3) glyph.y *= -0.5
+            //We have to do some funny stuff with the signs because it's not possible to subtract a region, only to add a region
+            //Fortunately we can reverse some signs and get away with it!
+            
+            //FIXME - This is broken in runtime 23.1.1.385 (2021-09-26)
+            //ds_grid_set_grid_region(_glyph_grid, _glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.Y);
+            
+            //FIXME - Workaround for the above. This is slower than using the ds_grid functions
+            var _j = _word_glyph_start;
+            repeat(1 + _word_glyph_end - _word_glyph_start)
+            {
+                _glyph_grid[# _j, __SCRIBBLE_PARSER_GLYPH.Y] = _glyph_grid[# _j, __SCRIBBLE_PARSER_GLYPH.HEIGHT];
+                ++_j;
+            }
+            
+            ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.Y, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.Y, -_word_grid[# _i, __SCRIBBLE_PARSER_WORD.HEIGHT] - 2*_word_grid[# _i, __SCRIBBLE_PARSER_WORD.Y]);
+            ds_grid_multiply_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.Y, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.Y, -0.5);
         }
         
         ++_i;
