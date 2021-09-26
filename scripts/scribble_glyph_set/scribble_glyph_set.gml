@@ -57,14 +57,16 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
     }
     else
     {
+        var _ord = ord(_character);
+        
         if (_array == undefined)
         {
             //If the glyph array doesn't exist for this font, use the ds_map fallback
-            var _glyph_data = _map[? ord(_character)];
+            var _glyph_data = _map[? _ord];
         }
         else
         {
-            var _glyph_data = _array[ord(_character) - _font_data.glyph_min];
+            var _glyph_data = _array[_ord - _font_data.glyph_min];
         }
         
         if (_glyph_data == undefined)
@@ -75,6 +77,13 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
         
         var _new_value = _relative? (_glyph_data[_property] + _value) : _value;
         _glyph_data[@ _property] = _new_value;
+        
+        if (_ord == 0x20) //Space character separation and width should always be the same
+        {
+            if (_property == SCRIBBLE_GLYPH.SEPARATION) _glyph_data[@ SCRIBBLE_GLYPH.WIDTH] = _new_value;
+            if (_property == SCRIBBLE_GLYPH.WIDTH) _glyph_data[@ SCRIBBLE_GLYPH.SEPARATION] = _new_value;
+        }
+        
         return _new_value;
     }
 }
