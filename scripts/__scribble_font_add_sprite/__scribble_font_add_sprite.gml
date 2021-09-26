@@ -41,6 +41,7 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
     
     var _sprite_info = sprite_get_info(_sprite);
     var _sprite_frames = _sprite_info.frames;
+    var _sprite_x_offset = sprite_get_xoffset(_sprite);
     
     var _info_glyphs_dict = _font_info.glyphs;
     var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
@@ -56,12 +57,21 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
         
         if ((_glyph == " ") && (_image >= array_length(_sprite_frames)))
         {
+            if (_proportional)
+            {
+                var _space_width = 1 + sprite_get_bbox_right(_sprite) - sprite_get_bbox_left(_sprite) + _separation;
+            }
+            else
+            {
+                var _space_width = _sprite_width + _separation;
+            }
+            
             //For some reason if the dev doesn't put in a space character, generate an empty glyph for Scribble to use
-            _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _sprite_width - 2;
+            _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _space_width;
             _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
             _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = 0;
             _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
-            _array[@ SCRIBBLE_GLYPH.SEPARATION] = _sprite_width + _separation - 2;
+            _array[@ SCRIBBLE_GLYPH.SEPARATION] = _space_width;
             _array[@ SCRIBBLE_GLYPH.TEXTURE   ] = _sprite_frames[0].texture; //Use the texture ID for the first image from the sprite
             _array[@ SCRIBBLE_GLYPH.U0        ] = 0;
             _array[@ SCRIBBLE_GLYPH.V0        ] = 0;
@@ -73,13 +83,15 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
         {
             var _image_info = _sprite_frames[_image];
             
-            var _x_offset = SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT? 0 : _image_info.x_offset;
-            var _glyph_separation = _image_info.crop_width + _separation;
-            
-            if (!_proportional)
+            if (_proportional)
             {
-                _x_offset = _image_info.x_offset;
-                _glyph_separation = _sprite_width + _separation;
+                var _x_offset = -_sprite_x_offset
+                var _glyph_separation = _image_info.crop_width + _separation;
+            }
+            else
+            {            
+                var _x_offset = _image_info.x_offset - _sprite_x_offset;
+                var _glyph_separation = _sprite_width + _separation;
             }
             
             //Build an array to store this glyph's properties
@@ -88,7 +100,7 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             _array[@ SCRIBBLE_GLYPH.INDEX     ] = ord(_glyph);
             _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _image_info.crop_width;
             _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _image_info.crop_height;
-            _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _x_offset - 1; //Off by one?
+            _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _x_offset;
             _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _image_info.y_offset;
             _array[@ SCRIBBLE_GLYPH.SEPARATION] = _glyph_separation;
             _array[@ SCRIBBLE_GLYPH.TEXTURE   ] = _image_info.texture;
