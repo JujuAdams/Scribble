@@ -66,7 +66,7 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
                 var _space_width = _sprite_width + _separation;
             }
             
-            //For some reason if the dev doesn't put in a space character, generate an empty glyph for Scribble to use
+            var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
             _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _space_width;
             _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
             _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = 0;
