@@ -33,7 +33,6 @@
     {"id":{"name":"obj_test_newline_left_trim","path":"objects/obj_test_newline_left_trim/obj_test_newline_left_trim.yy",},"order":8,},
     {"id":{"name":"spr_portrait","path":"sprites/spr_portrait/spr_portrait.yy",},"order":4,},
     {"id":{"name":"obj_test_typewriter_delay_plus_sound","path":"objects/obj_test_typewriter_delay_plus_sound/obj_test_typewriter_delay_plus_sound.yy",},"order":8,},
-    {"id":{"name":"obj_test_font_add","path":"objects/obj_test_font_add/obj_test_font_add.yy",},"order":0,},
     {"id":{"name":"scribble_typewriter_add_event","path":"scripts/scribble_typewriter_add_event/scribble_typewriter_add_event.yy",},"order":1,},
     {"id":{"name":"__scribble_config_macros","path":"scripts/__scribble_config_macros/__scribble_config_macros.yy",},"order":0,},
     {"id":{"name":"obj_test_alpha","path":"objects/obj_test_alpha/obj_test_alpha.yy",},"order":3,},
