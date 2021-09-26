@@ -5,8 +5,8 @@ scribble_typewriter_add_event("portrait", example_dialogue_set_portrait);
 scribble_typewriter_add_event("name", example_dialogue_set_name);
 
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
-font_add_sprite_ext(spr_sprite_font, _mapstring, false, 0);
-scribble_glyph_set("spr_sprite_font", " ", SCRIBBLE_GLYPH.SEPARATION, 3);
+font_add_sprite_ext(spr_sprite_font, _mapstring, true, 1);
+scribble_glyph_set("spr_sprite_font", " ", SCRIBBLE_GLYPH.WIDTH, 4); //Set the space width to be a bit smaller for aesthetics
 
 textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave][rainbow]Scribble " + __SCRIBBLE_VERSION + "![/rainbow][/wave]\n\n\n[slant]Please press space to advance the conversation[/slant]",
                         "This example will show you how to make a simple dialogue system.[delay] This won't be an exhaustive demo but it should show you enough to get excited about what you can achieve with [rainbow]Scribble[/rainbow].",

@@ -1,7 +1,6 @@
-scribble_font_set_default("fnt_test_1");
+scribble_font_set_default("spr_sprite_font");
 
 var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
-font_add_sprite_ext(spr_sprite_font, _mapstring, false, 0);
-scribble_glyph_set("spr_sprite_font", " ", SCRIBBLE_GLYPH.SEPARATION, 5);
+font_add_sprite_ext(spr_sprite_font, _mapstring, true, 0);
 
 limit = 363;
