@@ -679,13 +679,13 @@ function __scribble_generate_model(_element)
                         }
                     break;
                 }
-                        
+                
                 if ((_new_halign != undefined) && (_new_halign != _state_halign))
                 {
                     _state_halign = _new_halign;
                     _new_halign = undefined;
                     
-                    if (_glyph_grid[# _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ORD] != 13)
+                    if ((_glyph_grid[# _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ORD] != 13) && (_glyph_grid[# _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ORD] != __SCRIBBLE_PARSER_HALIGN))
                     {
                         //Add a newline glyph to our grid
                         __SCRIBBLE_PARSER_WRITE_NEWLINE;
@@ -1206,7 +1206,6 @@ function __scribble_generate_model(_element)
                 
                 if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_i < _line_count - 1)) //Don't try to justify text on the last line
                 {
-                
                     #region Justify
                     
                     var _line_word_count = 1 + _line_word_end - _line_word_start;
