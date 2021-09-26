@@ -22,6 +22,11 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
     var _font_info = font_get_info(_spritefont);
     
     var _sprite_name = _font_info.name;
+    if (ds_map_exists(global.__scribble_font_data, _sprite_name))
+    {
+        __scribble_error("A spritefont for \"", _sprite_name, "\" has already been added");
+    }
+    
     var _sprite = asset_get_index(_sprite_name);
     
     if (global.__scribble_default_font == undefined)
