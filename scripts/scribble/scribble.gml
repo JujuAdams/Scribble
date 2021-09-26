@@ -6,16 +6,15 @@
 /// 
 /// For further information, please read the Reference note
 
-function scribble()
+function scribble(_string = undefined, _unique_id = SCRIBBLE_DEFAULT_UNIQUE_ID)
 {
-    var _string    = (argument_count > 0)? argument[0] : undefined;
-    var _unique_id = (argument_count > 1)? string(argument[1]) : string(SCRIBBLE_DEFAULT_UNIQUE_ID);
+	_unique_id = string(_unique_id);
     
     if (argument_count == 0)
     {
         do
         {
-            var _unique_id = "anonymous " + string(floor(999999*__scribble_random()));
+            _unique_id = "anonymous " + string(floor(999999*__scribble_random()));
         }
         until !ds_map_exists(global.__scribble_ecache_dict, ":" + _unique_id);
         
