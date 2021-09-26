@@ -34,13 +34,15 @@ enum __SCRIBBLE_PARSER_WORD
 
 enum __SCRIBBLE_PARSER_LINE
 {
-    Y,          //0
-    WORD_START, //1
-    WORD_END,   //2
-    WIDTH,      //3
-    HEIGHT,     //4
-    HALIGN,     //5
-    __SIZE,     //6
+    X,          //0
+    Y,          //1
+    WORD_START, //2
+    WORD_END,   //3
+    WIDTH,      //4
+    HEIGHT,     //5
+    HALIGN,     //6
+    X_RIGHT,    //7
+    __SIZE,     //8
 }
 
 //These can be used for ORD
@@ -130,12 +132,14 @@ enum __SCRIBBLE_PARSER_LINE
                                    _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.Y          ] = 0;\n
                                    _word_count++;
 
-#macro __SCRIBBLE_PARSER_ADD_LINE  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y         ] = 0;\n
+#macro __SCRIBBLE_PARSER_ADD_LINE  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X         ] = 0;\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y         ] = 0;\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START] = _line_word_start;\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END  ] = _line_word_end;\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH     ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT    ] = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);\n
                                    _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN    ] = _state_halign;\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X_RIGHT   ] = 0;\n
                                    _line_count++;
 
 #macro __SCRIBBLE_PARSER_READ_GLYPH_DATA   var _glyph_x            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X                 ];\n

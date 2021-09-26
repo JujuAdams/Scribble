@@ -1176,29 +1176,7 @@ function __scribble_generate_model(_element)
                 ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.Y, _line_word_end, __SCRIBBLE_PARSER_WORD.Y, _line_y);
             }
             
-            if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_i < _line_count - 1)) //Don't try to justify text on the last line
-            {
-                #region Justify
-                
-                var _line_word_count = 1 + _line_word_end - _line_word_start;
-                if (_line_word_count > 1) //Prevent div-by-zero
-                {
-                    //Distribute spacing over the line, on which there are n-1 spaces
-                    var _spacing_incr = (_alignment_width - _line_width) / (_line_word_count - 1);
-                    var _spacing = _spacing_incr;
-                    
-                    var _j = _line_word_start + 1; //Skip the first word
-                    repeat(_line_word_count - 1)
-                    {
-                        _word_grid[# _j, __SCRIBBLE_PARSER_WORD.X] = floor(_word_grid[# _j, __SCRIBBLE_PARSER_WORD.X] + _spacing);
-                        _spacing += _spacing_incr;
-                        ++_j;
-                    }
-                }
-                
-                #endregion
-            }
-            else if ((_line_halign != fa_left) && (_line_halign != __SCRIBBLE_PIN_LEFT)) //fa_left and pin_left do nothing
+            if ((_line_halign != fa_left) && (_line_halign != __SCRIBBLE_PIN_LEFT)) //fa_left and pin_left do nothing
             {
                 #region Other (simpler!) types of alignment
                 
@@ -1216,7 +1194,39 @@ function __scribble_generate_model(_element)
                     ds_grid_add_region(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.X, _line_word_end, __SCRIBBLE_PARSER_WORD.X, _xoffset);
                 }
                 
+                _line_grid[# _i, __SCRIBBLE_PARSER_LINE.X      ] = _xoffset;
+                _line_grid[# _i, __SCRIBBLE_PARSER_LINE.X_RIGHT] = _xoffset + _line_width;
+                
                 #endregion
+            }
+            else
+            {
+                //Either aligned left or justified
+                _line_grid[# _i, __SCRIBBLE_PARSER_LINE.X_RIGHT] = _line_width;
+                
+                if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_i < _line_count - 1)) //Don't try to justify text on the last line
+                {
+                
+                    #region Justify
+                    
+                    var _line_word_count = 1 + _line_word_end - _line_word_start;
+                    if (_line_word_count > 1) //Prevent div-by-zero
+                    {
+                        //Distribute spacing over the line, on which there are n-1 spaces
+                        var _spacing_incr = (_alignment_width - _line_width) / (_line_word_count - 1);
+                        var _spacing = _spacing_incr;
+                        
+                        var _j = _line_word_start + 1; //Skip the first word
+                        repeat(_line_word_count - 1)
+                        {
+                            _word_grid[# _j, __SCRIBBLE_PARSER_WORD.X] = floor(_word_grid[# _j, __SCRIBBLE_PARSER_WORD.X] + _spacing);
+                            _spacing += _spacing_incr;
+                            ++_j;
+                        }
+                    }
+                    
+                    #endregion
+                }
             }
         }
         
@@ -1240,6 +1250,9 @@ function __scribble_generate_model(_element)
     _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
     
     height = _line_y;
+    
+    min_x = ds_grid_get_min(_line_grid, 0, __SCRIBBLE_PARSER_LINE.X,       _line_count - 1, __SCRIBBLE_PARSER_LINE.X      );
+    max_x = ds_grid_get_min(_line_grid, 0, __SCRIBBLE_PARSER_LINE.X_RIGHT, _line_count - 1, __SCRIBBLE_PARSER_LINE.X_RIGHT);
     
     #endregion
     
