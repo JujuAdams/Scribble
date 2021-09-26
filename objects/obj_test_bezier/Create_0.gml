@@ -1,5 +1,3 @@
-scribble_font_set_default("fnt_test_1");
-
 x0 = 200;
 y0 = 300;
 x1 = x0 + 100;

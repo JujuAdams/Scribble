@@ -1,5 +1,3 @@
-scribble_font_set_default("fnt_test_1");
-
 typist = scribble_typist();
 typist.in(0.1, 0);
 typist.function_per_char(function(_element, _position, _typist)

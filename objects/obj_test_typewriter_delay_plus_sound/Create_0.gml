@@ -1,5 +1,3 @@
-scribble_font_set_default("fnt_test_2");
-
 scribble_typewriter_add_character_delay(".", 1000);
 
 typist = scribble_typist();

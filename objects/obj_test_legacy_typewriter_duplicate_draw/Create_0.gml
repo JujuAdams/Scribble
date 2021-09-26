@@ -1,5 +1,3 @@
-scribble_font_set_default("fnt_test_2");
-
 element1 = scribble("here's[delay] some[delay] cute[delay] text! [spr_large_coin]", 1);
 element1.typewriter_in(0.2, 10);
 element1.typewriter_ease(SCRIBBLE_EASE.BOUNCE, 0, -40, 1, 1, 0, 0.1);
