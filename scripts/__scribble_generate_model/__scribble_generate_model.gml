@@ -861,6 +861,18 @@ function __scribble_generate_model(_element)
                 
                 if (_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) _state_command_tag_flipflop = true;
                 
+                //Add a per-character delay if required
+                if (global.__scribble_character_delay)
+                {
+                    var _delay = global.__scribble_character_delay_map[? _glyph_ord];
+                    if (_delay != undefined)
+                    {
+                        var _tag_command_name = "delay";
+                        var _tag_parameters = [_delay];
+                        __SCRIBBLE_PARSER_WRITE_EVENT;
+                    }
+                }
+                
                 #endregion
             }
         }
