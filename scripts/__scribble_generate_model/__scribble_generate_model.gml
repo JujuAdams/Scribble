@@ -137,9 +137,14 @@ function __scribble_generate_model(_element)
     
     __SCRIBBLE_PARSER_WRITE_HALIGN;
     
+    //Repeat a fixed number of times. This prevents infinite loops and generally is more stable...
+    //...though we do still check for a null terminator
     repeat(string_byte_length(_element_text))
     {
         _glyph_ord = __scribble_buffer_read_unicode(_string_buffer);
+        
+        //Break out if we hit a null terminator
+        if (_glyph_ord == 0x00) break;
         
         if (SCRIBBLE_FIX_ESCAPED_NEWLINES)
         {
