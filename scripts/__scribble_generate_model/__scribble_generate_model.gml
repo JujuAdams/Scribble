@@ -689,15 +689,6 @@ function __scribble_generate_model(_element)
                 {
                     _state_halign = _new_halign;
                     _new_halign = undefined;
-                    
-                    if ((_glyph_grid[# _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ORD] != 13) && (_glyph_grid[# _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ORD] != __SCRIBBLE_PARSER_HALIGN))
-                    {
-                        //Add a newline glyph to our grid
-                        __SCRIBBLE_PARSER_WRITE_NEWLINE;
-                        
-                        _glyph_x_in_word = 0;
-                    }
-                    
                     __SCRIBBLE_PARSER_WRITE_HALIGN;
                 }
                         
