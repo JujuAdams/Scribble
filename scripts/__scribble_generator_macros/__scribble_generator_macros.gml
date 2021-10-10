@@ -24,9 +24,10 @@ enum __SCRIBBLE_PARSER_GLYPH
 enum __SCRIBBLE_PARSER_CONTROL
 {
     TYPE,     //0
-    POSITION, //1
-    DATA,     //2
-    __SIZE,   //3
+    DATA,     //1
+    POSITION, //2
+    PAGE,     //3
+    __SIZE,   //4
 }
 
 enum __SCRIBBLE_PARSER_WORD
@@ -42,22 +43,24 @@ enum __SCRIBBLE_PARSER_WORD
 
 enum __SCRIBBLE_PARSER_LINE
 {
-    X,          //0
-    Y,          //1
-    WORD_START, //2
-    WORD_END,   //3
-    WIDTH,      //4
-    HEIGHT,     //5
-    HALIGN,     //6
-    X_RIGHT,    //7
-    __SIZE,     //8
+    X,           //0
+    Y,           //1
+    WORD_START,  //2
+    WORD_END,    //3
+    WIDTH,       //4
+    HEIGHT,      //5
+    HALIGN,      //6
+    X_RIGHT,     //7
+    CONTROL_END, //8
+    __SIZE,      //9
 }
 
 //These can be used for ORD
-#macro  __SCRIBBLE_GLYPH_SPRITE    -1
-#macro  __SCRIBBLE_GLYPH_SURFACE   -2
-#macro  __SCRIBBLE_CONTROL_HALIGN  -3
-#macro  __SCRIBBLE_CONTROL_EVENT   -4
+#macro  __SCRIBBLE_GLYPH_SPRITE      -1
+#macro  __SCRIBBLE_GLYPH_SURFACE     -2
+#macro  __SCRIBBLE_CONTROL_HALIGN    -3
+#macro  __SCRIBBLE_CONTROL_EVENT     -4
+#macro  __SCRIBBLE_CONTROL_PAGEBREAK -5
 
 
 
@@ -74,13 +77,23 @@ enum __SCRIBBLE_PARSER_LINE
 #macro __SCRIBBLE_PARSER_WRITE_HALIGN  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_HALIGN;\n
                                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = _state_halign;\n
                                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _character_index;\n
+                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
                                        ++_control_count;
 
 
 #macro __SCRIBBLE_PARSER_WRITE_EVENT  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_EVENT;\n
                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = new __scribble_class_event(_tag_command_name, _tag_parameters);\n
                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _character_index;\n
+                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
                                       ++_control_count;
+
+
+#macro __SCRIBBLE_PARSER_WRITE_PAGEBREAK  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_PAGEBREAK;\n
+                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = undefined;\n
+                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _character_index;\n
+                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
+                                          ++_control_count;\n
+                                          ++_control_page;
 
 
 #macro __SCRIBBLE_PARSER_WRITE_NEWLINE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x0D;\n //ASCII line break (dec = 13)
@@ -122,14 +135,15 @@ enum __SCRIBBLE_PARSER_LINE
                                    _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.Y          ] = 0;\n
                                    _word_count++;
 
-#macro __SCRIBBLE_PARSER_ADD_LINE  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X         ] = 0;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y         ] = 0;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START] = _line_word_start;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END  ] = _line_word_end;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH     ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT    ] = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN    ] = _state_halign;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X_RIGHT   ] = 0;\n
+#macro __SCRIBBLE_PARSER_ADD_LINE  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X          ] = 0;\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y          ] = 0;\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START ] = _line_word_start;\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END   ] = _line_word_end;\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT     ] = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = _state_halign;\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X_RIGHT    ] = 0;\n
+                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.CONTROL_END] = _control_index - 1;\n
                                    _line_count++;
 
 #macro __SCRIBBLE_PARSER_READ_GLYPH_DATA   var _glyph_x            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X                 ];\n
@@ -140,23 +154,23 @@ enum __SCRIBBLE_PARSER_LINE
                                            var _glyph_slant        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT       ];\n
                                            var _glyph_char_index   = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX   ];
 
-#macro __SCRIBBLE_BUILDER_CHECK_CONTROLS  while(_i == _next_control_pos)\n //If this *global* glyph index is the same as our control position then scan for new controls to apply
-                                          {\n
-                                              if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_EVENT)\n //If this control is an event, add that to the page's events dictionary
-                                              {\n
-                                                  var _event_array = _page_events_dict[$ _character_index];\n //Find the correct event array in the diciontary, creating a new one if needed
-                                                  if (!is_array(_event_array))\n
-                                                  {\n
-                                                      var _event_array = [];\n
-                                                      _page_events_dict[$ _character_index] = _event_array;\n
-                                                  }\n
-                                                  var _event = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];\n
-                                                  _event.position = _character_index;\n //Update the glyph index to the *local* glyph index for the page
-                                                  array_push(_event_array, _event);\n
-                                              }\n
-                                              ++_control_index;\n //Increment which control we're processing
-                                              _next_control_pos = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.POSITION];\n
-                                          }
+#macro __SCRIBBLE_READ_CONTROL_EVENTS  while((_i == _next_control_pos) && (_p == _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.PAGE]))\n //If this *global* glyph index is the same as our control position then scan for new controls to apply
+                                       {\n
+                                           if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_EVENT)\n //If this control is an event, add that to the page's events dictionary
+                                           {\n
+                                                var _event_array = _page_events_dict[$ _character_index];\n //Find the correct event array in the diciontary, creating a new one if needed
+                                                if (!is_array(_event_array))\n
+                                                {\n
+                                                    var _event_array = [];\n
+                                                    _page_events_dict[$ _character_index] = _event_array;\n
+                                                }\n
+                                                var _event = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];\n
+                                                _event.position = _character_index;\n //Update the glyph index to the *local* glyph index for the page
+                                                array_push(_event_array, _event);\n
+                                           }\n
+                                           ++_control_index;\n //Increment which control we're processing
+                                           _next_control_pos = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.POSITION];\n
+                                       }
 
 
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  var _packed_indexes = _glyph_char_index*__SCRIBBLE_MAX_LINES + 1;\n //TODO

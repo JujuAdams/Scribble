@@ -126,6 +126,7 @@ function __scribble_generate_model(_element)
     var _glyph_x_in_word = 0;
     
     var _control_count = 0;
+    var _control_page  = 0;
     
     var _state_colour       = _starting_colour;
     var _state_alpha_255    = 0xFF;
@@ -242,24 +243,10 @@ function __scribble_generate_model(_element)
                     #endregion
                     
                     case "/page":
-                        #region Add a pagebreak (ASCII 0x0C, "form feed") glyph to our grid
+                        __SCRIBBLE_PARSER_WRITE_PAGEBREAK;
                         
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD        ] = 0x0C; //ASCII form feed (dec = 12)
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA  ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS     ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH      ] = 0;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ] = 0;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION ] = 0;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED] = undefined;
-                        __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
-                        ++_glyph_count;
-                        
+                        //The next glyph is going to be in a separate word so set its x-position to 0
                         _glyph_x_in_word = 0;
-                        
-                        #endregion
                     break;
                     
                     #region Scale
@@ -891,6 +878,7 @@ function __scribble_generate_model(_element)
     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = 0;
     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = undefined;
     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _character_index;
+    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;
     
     #endregion
     
@@ -911,7 +899,8 @@ function __scribble_generate_model(_element)
     var _space_width  = 0;
     var _state_halign = fa_left;
     
-    var _control_index = 0;
+    var _control_index     = 0;
+    var _control_pagebreak = false;
     //We store the next control position as there are typically many more glyphs than controls
     //This ends up being quite a lot faster than continually reading from the grid
     var _next_control_pos = _control_grid[# 0, __SCRIBBLE_PARSER_CONTROL.POSITION];
@@ -923,22 +912,31 @@ function __scribble_generate_model(_element)
         while(_i == _next_control_pos)
         {
             //If this control is a horizontal alignment, set the halign value
-            if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_HALIGN)
+            switch(_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE])
             {
-                _state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                case __SCRIBBLE_CONTROL_HALIGN:
+                    _state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                break;
+                
+                case __SCRIBBLE_CONTROL_PAGEBREAK:
+                    _control_pagebreak = true;
+                break;
             }
             
             //Increment which control we're processing
             ++_control_index;
             _next_control_pos = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.POSITION];
+            
+            //Break out of this loop immediately if we've hit a pagebreak
+            if (_control_pagebreak) break;
         }
         
         var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
-        if ((_glyph_ord == 0x00)  //Null
-        ||  (_glyph_ord == 0x09)  //Horizontal tab (dec = 9)
-        ||  (_glyph_ord == 0x0C)  //Page break ("form feed", dec = 12)
-        ||  (_glyph_ord == 0x0D)  //Line break (dec = 13)
-        ||  (_glyph_ord == 0x20)) //Space (dec = 32)
+        if ((_glyph_ord == 0x00) //Null
+        ||  (_glyph_ord == 0x09) //Horizontal tab (dec = 9)
+        ||  (_glyph_ord == 0x0D) //Line break (dec = 13)
+        ||  (_glyph_ord == 0x20) //Space (dec = 32)
+        ||   _control_pagebreak)
         {
             #region Word break
             
@@ -948,7 +946,7 @@ function __scribble_generate_model(_element)
             if (_word_glyph_end < _word_glyph_start)
             {
                 //Empty word (usually two spaces together)
-                _word_glyph_start = _i + 1;
+                _word_glyph_start = _word_glyph_end + 2;
                 _word_x += _space_width;
             }
             else
@@ -976,7 +974,7 @@ function __scribble_generate_model(_element)
                     
                     __SCRIBBLE_PARSER_ADD_WORD;
                     
-                    _word_glyph_start = _i + 1;
+                    _word_glyph_start = _word_glyph_end + 2;
                     _word_x += _space_width + _word_width;
                 }
                 else
@@ -1030,7 +1028,7 @@ function __scribble_generate_model(_element)
                     _word_glyph_end = _i - 1;
                     __SCRIBBLE_PARSER_ADD_WORD;
                 
-                    _word_glyph_start = _i + 1;
+                    _word_glyph_start = _word_glyph_end + 2;
                     _word_x += _word_width + _space_width;
                 
                     #endregion
@@ -1040,20 +1038,33 @@ function __scribble_generate_model(_element)
             #endregion
         }
         
-        if (_glyph_ord == 0x0C)
+        if (_glyph_ord == 0x0D)
         {
-            #region Page break
-            
-            _word_glyph_end = _i - 1;
-            
-            if (_word_glyph_end >= _word_glyph_start)
-            {
-                __SCRIBBLE_PARSER_ADD_WORD;
-            }
+            #region Line break
             
             _line_word_end = _word_count - 1;
             __SCRIBBLE_PARSER_ADD_LINE;
             _line_word_start = _word_count;
+            
+            _word_x     = 0;
+            _word_width = 0;
+            _word_glyph_start = _i + 1;
+            
+            #endregion
+        }
+        
+        if (_control_pagebreak)
+        {
+            _control_pagebreak = false;
+            
+            #region Page break
+            
+            if (_glyph_ord != 0x0D)
+            {
+                _line_word_end = _word_count - 1;
+                __SCRIBBLE_PARSER_ADD_LINE;
+                _line_word_start = _word_count;
+            }
             
             //Add an infinitely high line (which we'll read as a page break in a later step)
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y         ] = 0;
@@ -1066,28 +1077,7 @@ function __scribble_generate_model(_element)
             
             _word_x     = 0;
             _word_width = 0;
-            _word_glyph_start = _i + 1;
-            
-            #endregion
-        }
-        else if (_glyph_ord == 0x0D)
-        {
-            #region Line break
-            
-            _word_glyph_end = _i - 1;
-            
-            if (_word_glyph_end >= _word_glyph_start)
-            {
-                __SCRIBBLE_PARSER_ADD_WORD;
-            }
-            
-            _line_word_end = _word_count - 1;
-            __SCRIBBLE_PARSER_ADD_LINE;
-            _line_word_start = _word_count;
-            
-            _word_x     = 0;
-            _word_width = 0;
-            _word_glyph_start = _i + 1;
+            _word_glyph_start = _i;
             
             #endregion
         }
@@ -1132,23 +1122,24 @@ function __scribble_generate_model(_element)
         var _line_word_start = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_START];
         var _line_word_end   = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_END  ];
         
-        if (_line_height == infinity)
-        {
-            _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
-            
-            var _page_char_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
-            ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, -_page_char_start);
-            _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
-            
-            _page_data = __new_page();
-            _page_data.__glyph_start = _word_grid[# _line_grid[# _i+1, __SCRIBBLE_PARSER_LINE.WORD_START], __SCRIBBLE_PARSER_WORD.GLYPH_START];
-            
-            _line_y = 0;
-            _line_height = 0;
-        }
+        ////Manual page break
+        //if (_line_height == infinity)
+        //{
+        //    _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
+        //    
+        //    var _page_char_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
+        //    ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, -_page_char_start);
+        //    _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
+        //    
+        //    _page_data = __new_page();
+        //    _page_data.__glyph_start = _word_grid[# _line_grid[# _i+1, __SCRIBBLE_PARSER_LINE.WORD_START], __SCRIBBLE_PARSER_WORD.GLYPH_START];
+        //    
+        //    _line_y = 0;
+        //    _line_height = 0;
+        //}
         
         //Create a new page if we've run off the end of the current one
-        if ((_line_y + _line_height > _model_max_height) && (_line_y > 0))
+        if (is_infinity(_line_height) || ((_line_y + _line_height > _model_max_height) && (_line_y > 0)))
         {
             _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
             
@@ -1156,10 +1147,24 @@ function __scribble_generate_model(_element)
             ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX, -_page_char_start);
             _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX];
             
-            _page_data = __new_page();
-            _page_data.__glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_PARSER_WORD.GLYPH_START];
-            
             _line_y = 0;
+            
+            if (is_infinity(_line_height))
+            {
+                _page_data = __new_page();
+                _page_data.__glyph_start = _word_grid[# _line_grid[# _i+1, __SCRIBBLE_PARSER_LINE.WORD_START], __SCRIBBLE_PARSER_WORD.GLYPH_START];
+                
+                //Set our line height to 0!
+                _line_height = 0;
+            }
+            else
+            {
+                _page_data = __new_page();
+                _page_data.__glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_PARSER_WORD.GLYPH_START];
+                
+                //We also need to increment the page counter for our controls
+                ds_grid_add_region(_glyph_grid, _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.CONTROL_END], __SCRIBBLE_PARSER_CONTROL.PAGE, _control_count - 1, __SCRIBBLE_PARSER_CONTROL.PAGE, 1);
+            }
         }
         
         _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y] = _line_y;
@@ -1344,6 +1349,7 @@ function __scribble_generate_model(_element)
     }
     
     var _control_index = 0;
+    var _control_page  = 0;
     //We store the next control position as there are typically many more glyphs than controls
     //This ends up being quite a lot faster than continually reading from the grid
     var _next_control_pos = _control_grid[# 0, __SCRIBBLE_PARSER_CONTROL.POSITION];
@@ -1363,7 +1369,7 @@ function __scribble_generate_model(_element)
         var _i = _page_data.__glyph_start;
         repeat(1 + _page_data.__glyph_end - _page_data.__glyph_start)
         {
-            __SCRIBBLE_BUILDER_CHECK_CONTROLS;
+            __SCRIBBLE_READ_CONTROL_EVENTS;
             
             var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
             if (_glyph_ord == __SCRIBBLE_GLYPH_SPRITE)
@@ -1466,51 +1472,46 @@ function __scribble_generate_model(_element)
                 
                 #endregion
             }
-            else if (_glyph_ord == 9)
+            else
             {
-                buffer_write(_string_buffer, buffer_u8, 9);
-                _character_index++;
-            }
-            else if (_glyph_ord == 32)
-            {
-                buffer_write(_string_buffer, buffer_u8, 32);
-                _character_index++;
-            }
-            else if (_glyph_ord > 32)
-            {
-                #region Write standard glyph
-                
-                __SCRIBBLE_PARSER_READ_GLYPH_DATA;
-                
                 __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
                 _character_index++;
                 
-                var _write_scale = _glyph_scale*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST]; //TODO - Optimise this
-                
-                var _glyph_data = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA];
-                var _glyph_texture = _glyph_data[SCRIBBLE_GLYPH.TEXTURE];
-                var _quad_u0 = _glyph_data[SCRIBBLE_GLYPH.U0];
-                var _quad_v0 = _glyph_data[SCRIBBLE_GLYPH.V0];
-                var _quad_u1 = _glyph_data[SCRIBBLE_GLYPH.U1];
-                var _quad_v1 = _glyph_data[SCRIBBLE_GLYPH.V1];
-                
-                //Add glyph to buffer
-                var _quad_l = _glyph_data[SCRIBBLE_GLYPH.X_OFFSET]*_glyph_scale + _glyph_x;
-                var _quad_t = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET]*_glyph_scale + _glyph_y;
-                var _quad_r = _glyph_data[SCRIBBLE_GLYPH.WIDTH   ]*_glyph_scale + _quad_l;
-                var _quad_b = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ]*_glyph_scale + _quad_t;
-                
-                __SCRIBBLE_PARSER_WRITE_GLYPH;
-                
-                #endregion
+                if (_glyph_ord > 32)
+                {
+                    #region Write non-whitespace glyph
+                    
+                    __SCRIBBLE_PARSER_READ_GLYPH_DATA;
+                    
+                    
+                    var _write_scale = _glyph_scale*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST]; //TODO - Optimise this
+                    
+                    var _glyph_data = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA];
+                    var _glyph_texture = _glyph_data[SCRIBBLE_GLYPH.TEXTURE];
+                    var _quad_u0 = _glyph_data[SCRIBBLE_GLYPH.U0];
+                    var _quad_v0 = _glyph_data[SCRIBBLE_GLYPH.V0];
+                    var _quad_u1 = _glyph_data[SCRIBBLE_GLYPH.U1];
+                    var _quad_v1 = _glyph_data[SCRIBBLE_GLYPH.V1];
+                    
+                    //Add glyph to buffer
+                    var _quad_l = _glyph_data[SCRIBBLE_GLYPH.X_OFFSET]*_glyph_scale + _glyph_x;
+                    var _quad_t = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET]*_glyph_scale + _glyph_y;
+                    var _quad_r = _glyph_data[SCRIBBLE_GLYPH.WIDTH   ]*_glyph_scale + _quad_l;
+                    var _quad_b = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ]*_glyph_scale + _quad_t;
+                    
+                    __SCRIBBLE_PARSER_WRITE_GLYPH;
+                    
+                    #endregion
+                }
             }
             
             ++_i;
         }
         
-        __SCRIBBLE_BUILDER_CHECK_CONTROLS;
+        __SCRIBBLE_READ_CONTROL_EVENTS;
         
-        buffer_write(_string_buffer, buffer_u8, 0x0);
+        //Write a null terminator to finish off the string
+        buffer_write(_string_buffer, buffer_u8, 0);
         buffer_seek(_string_buffer, buffer_seek_start, 0);
         _page_data.__text = buffer_read(_string_buffer, buffer_string);
         
