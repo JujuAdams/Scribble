@@ -355,7 +355,7 @@ function __scribble_class_typist() constructor
             if (__sound_per_char)
             {
                 //Only play audio if a new character has been revealled
-                if (floor(_head_pos) > floor(__last_audio_character))
+                if (floor(_head_pos + 0.0001) > floor(__last_audio_character))
                 {
                     _play_sound = true;
                 }
