@@ -194,7 +194,22 @@ function __scribble_class_typist() constructor
         if (_max <= _min) return 1.0;
         
         var _t = clamp((get_position() - _min) / (_max - _min), 0, 1);
-        return __in? _t : (_t + 1);
+        if (__in)
+        {
+            if (__delay_paused || (array_length(__event_stack) > 0))
+            {
+                //If we're waiting for a delay or there's something in our delay stack we need to process, limit our return value to just less than 1.0
+                return min(1 - 2*math_get_epsilon(), _t);
+            }
+            else
+            {
+                return _t;
+            }
+        }
+        else
+        {
+            return _t + 1;
+        }
     }
     
     static get_paused = function()
