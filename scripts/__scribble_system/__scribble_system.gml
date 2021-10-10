@@ -48,6 +48,7 @@ global.__scribble_effects_slash       = ds_map_create();  //Bidirectional lookup
 global.__scribble_default_font        = "scribble_fallback_font";
 global.__scribble_buffer              = buffer_create(1024, buffer_grow, 1);
 global.__scribble_glyph_grid          = ds_grid_create(1000, __SCRIBBLE_PARSER_GLYPH.__SIZE);
+global.__scribble_control_grid        = ds_grid_create(1000, __SCRIBBLE_PARSER_CONTROL.__SIZE);
 global.__scribble_word_grid           = ds_grid_create(1000, __SCRIBBLE_PARSER_WORD.__SIZE);
 global.__scribble_line_grid           = ds_grid_create(__SCRIBBLE_MAX_LINES, __SCRIBBLE_PARSER_LINE.__SIZE);
 //global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0); //TODO - Do we still need this?

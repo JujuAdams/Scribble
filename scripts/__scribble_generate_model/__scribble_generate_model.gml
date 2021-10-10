@@ -101,6 +101,7 @@ function __scribble_generate_model(_element)
     var _glyph_grid    = global.__scribble_glyph_grid;
     var _word_grid     = global.__scribble_word_grid;
     var _line_grid     = global.__scribble_line_grid;
+    var _control_grid  = global.__scribble_control_grid; //This grid is cleared at the bottom of this function
     
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     buffer_write(_string_buffer, buffer_string, _element_text);
@@ -123,6 +124,8 @@ function __scribble_generate_model(_element)
     var _glyph_count     = 0;
     var _glyph_ord       = 0x0;
     var _glyph_x_in_word = 0;
+    
+    var _control_count = 0;
     
     var _state_colour       = _starting_colour;
     var _state_alpha_255    = 0xFF;
@@ -505,7 +508,7 @@ function __scribble_generate_model(_element)
                         }
                         
                         //Add this glyph to our grid
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = __SCRIBBLE_PARSER_SURFACE;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = __SCRIBBLE_GLYPH_SURFACE;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
@@ -598,7 +601,7 @@ function __scribble_generate_model(_element)
                             }
                             
                             //Add this glyph to our grid
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = __SCRIBBLE_PARSER_SPRITE;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = __SCRIBBLE_GLYPH_SPRITE;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
@@ -685,6 +688,7 @@ function __scribble_generate_model(_element)
                     break;
                 }
                 
+                //If this command set a new horizontal alignment, and this alignment is different to what we had before, store it as a command
                 if ((_new_halign != undefined) && (_new_halign != _state_halign))
                 {
                     _state_halign = _new_halign;
@@ -883,6 +887,11 @@ function __scribble_generate_model(_element)
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
     
+    //Also create a null terminator for control messages
+    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = 0;
+    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = undefined;
+    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _character_index;
+    
     #endregion
     
     
@@ -902,9 +911,28 @@ function __scribble_generate_model(_element)
     var _space_width  = 0;
     var _state_halign = fa_left;
     
+    var _control_index = 0;
+    //We store the next control position as there are typically many more glyphs than controls
+    //This ends up being quite a lot faster than continually reading from the grid
+    var _next_control_pos = _control_grid[# 0, __SCRIBBLE_PARSER_CONTROL.POSITION];
+    
     var _i = 0;
-    repeat(_glyph_count + 1) //Ensure we fully handle the last word
+    repeat(_glyph_count + 1) //Ensure we fully handle the last word by including the null terminator in this loop
     {
+        //If this glyph index is the same as our control position then scan for new controls to apply
+        while(_i == _next_control_pos)
+        {
+            //If this control is a horizontal alignment, set the halign value
+            if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_HALIGN)
+            {
+                _state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+            }
+            
+            //Increment which control we're processing
+            ++_control_index;
+            _next_control_pos = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.POSITION];
+        }
+        
         var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
         if ((_glyph_ord == 0x00)  //Null
         ||  (_glyph_ord == 0x09)  //Horizontal tab (dec = 9)
@@ -1062,10 +1090,6 @@ function __scribble_generate_model(_element)
             _word_glyph_start = _i + 1;
             
             #endregion
-        }
-        else if (_glyph_ord == __SCRIBBLE_PARSER_HALIGN)
-        {
-            _state_halign = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX];
         }
         
         ++_i;
@@ -1319,6 +1343,11 @@ function __scribble_generate_model(_element)
         var _bezier_prev_cx      = 0;
     }
     
+    var _control_index = 0;
+    //We store the next control position as there are typically many more glyphs than controls
+    //This ends up being quite a lot faster than continually reading from the grid
+    var _next_control_pos = _control_grid[# 0, __SCRIBBLE_PARSER_CONTROL.POSITION];
+    
     var _p = 0;
     repeat(pages)
     {
@@ -1334,8 +1363,10 @@ function __scribble_generate_model(_element)
         var _i = _page_data.__glyph_start;
         repeat(1 + _page_data.__glyph_end - _page_data.__glyph_start)
         {
+            __SCRIBBLE_BUILDER_CHECK_CONTROLS;
+            
             var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
-            if (_glyph_ord == __SCRIBBLE_PARSER_SPRITE)
+            if (_glyph_ord == __SCRIBBLE_GLYPH_SPRITE)
             {
                 #region Write sprite
                 
@@ -1404,7 +1435,7 @@ function __scribble_generate_model(_element)
                 
                 #endregion
             }
-            else if (_glyph_ord == __SCRIBBLE_PARSER_SURFACE)
+            else if (_glyph_ord == __SCRIBBLE_GLYPH_SURFACE)
             {
                 #region Write surface
                 
@@ -1432,23 +1463,6 @@ function __scribble_generate_model(_element)
                 var _quad_b = _quad_t + _glyph_height;
                 
                 __SCRIBBLE_PARSER_WRITE_GLYPH;
-                
-                #endregion
-            }
-            else if (_glyph_ord == __SCRIBBLE_PARSER_EVENT)
-            {
-                #region Add event to page
-                
-                var _event_array = _page_events_dict[$ _character_index];
-                if (!is_array(_event_array))
-                {
-                    var _event_array = [];
-                    _page_events_dict[$ _character_index] = _event_array;
-                }
-                
-                var _event = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX];
-                _event.position = _character_index;
-                array_push(_event_array, _event);
                 
                 #endregion
             }
@@ -1494,6 +1508,8 @@ function __scribble_generate_model(_element)
             ++_i;
         }
         
+        __SCRIBBLE_BUILDER_CHECK_CONTROLS;
+        
         buffer_write(_string_buffer, buffer_u8, 0x0);
         buffer_seek(_string_buffer, buffer_seek_start, 0);
         _page_data.__text = buffer_read(_string_buffer, buffer_string);
@@ -1509,6 +1525,11 @@ function __scribble_generate_model(_element)
     
     //Ensure we've ended the vertex buffers we created
     __finalize_vertex_buffers(_element.freeze);
+    
+    
+    
+    //Wipe the control grid so we don't accidentally hold references to event structs
+    ds_grid_clear(_control_grid, 0);
     
     
     
