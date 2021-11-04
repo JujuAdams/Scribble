@@ -72,6 +72,6 @@ This function is called on boot to initialise the library, and **you should edit
 |----|--------|-------|
 |None|        |       |
 
-All text drawn with [`scribble()`](scribble()-Methods) will use these settings until otherwise overwritten.
+All text drawn with [`scribble()`](scribble-methods) will use these settings until otherwise overwritten.
 
 This function is called on boot to initialise the library, and **you should edit this script to customise Scribble for your own purposes.**
