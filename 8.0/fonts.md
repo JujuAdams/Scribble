@@ -1,6 +1,14 @@
-# Font Modification
+# Fonts
 
-&nbsp;
+### `scribble_font_set_default(fontName)`
+
+**Returns:** N/A (`undefined`)
+
+|Name       |Datatype|Purpose                                                                                                                                                                                            |
+|-----------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`fontName` |string  |Name of the font to set as the default, as a string                                                                                                                                                               |
+
+This function sets the default font to use for future [`scribble()`](scribble-methods) calls.
 
 ### `scribble_font_set_style_family(regular, bold, italic, boldItalic)`
 
@@ -18,7 +26,6 @@ Associates four fonts together for use with `[r]` `[b]` `[i]` `[bi]` font tags. 
 &nbsp;
 
 &nbsp;
-
 
 ### `scribble_font_combine(destinationFontName, sourceFontName, preferSource)`
 
