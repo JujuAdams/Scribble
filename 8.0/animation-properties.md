@@ -1,32 +1,6 @@
 ## Animation Properties
 
-### `.animation_tick_speed(tickSpeed)`
-
-**Returns**: The text element
-
-|Name       |Datatype|Purpose                                                                                                       |
-|-----------|--------|--------------------------------------------------------------------------------------------------------------|
-|`tickSpeed`|real    |"Scaling factor" for animation ticks. A value of `2` doubles the speed, a value of `0.5` halves the speed etc.|
-
-This function controls the animation speed of all animation effects. It, however, does **not** alter the speed of the typewriter.
-
-&nbsp;
-
-### `.animation_sync(sourceElement)`
-
-**Returns**: The text element
-
-|Name           |Datatype    |Purpose                                             |
-|---------------|------------|----------------------------------------------------|
-|`sourceElement`|text element|Source text element to copy animation state **from**|
-
-Syncing a text element to another will overwrite the current values. Be careful how you sync your text elements! Animation state is updated when a text element is drawn so make sure to sync your text element once every frame/step before the source text element is drawn.
-
-When copying the animation state, the animation time and the animation tick speed ([`.animation_tick_speed()`](scribble-methods?id=animation_tick_speedtickspeed)) will be copied. Animation appearance properties themselves won't be copied. To share animation behaviours between elements, please use templates ([`.template()`](scribble()-Methods?id=templatefunction-executeonlyonchange)).
-
-&nbsp;
-
-### `.animation_wave(size, frequency, speed)`
+### `scribble_anim_wave(size, frequency, speed)`
 
 **Returns**: The text element
 
@@ -38,9 +12,7 @@ When copying the animation state, the animation time and the animation tick spee
 
 This function controls behaviour of the `[wave]` effect across all uses in the text element.
 
-&nbsp;
-
-### `.animation_shake(size, speed)`
+### `scribble_anim_shake(size, speed)`
 
 **Returns**: The text element
 
@@ -51,9 +23,7 @@ This function controls behaviour of the `[wave]` effect across all uses in the t
 
 This function controls behaviour of the `[shake]` effect across all uses in the text element.
 
-&nbsp;
-
-### `.animation_rainbow(weight, speed)`
+### `scribble_anim_rainbow(weight, speed)`
 
 **Returns**: The text element
 
@@ -64,9 +34,7 @@ This function controls behaviour of the `[shake]` effect across all uses in the 
 
 This function controls behaviour of the `[rainbow]` effect across all uses in the text element.
 
-&nbsp;
-
-### `.animation_wobble(angle, frequency)`
+### `scribble_anim_wobble(angle, frequency)`
 
 **Returns**: The text element
 
@@ -77,9 +45,7 @@ This function controls behaviour of the `[rainbow]` effect across all uses in th
 
 This function controls behaviour of the `[wobble]` effect across all uses in the text element.
 
-&nbsp;
-
-### `.animation_pulse(scale, speed)`
+### `scribble_anim_pulse(scale, speed)`
 
 **Returns**: The text element
 
@@ -90,9 +56,7 @@ This function controls behaviour of the `[wobble]` effect across all uses in the
 
 This function controls behaviour of the `[pulse]` effect across all uses in the text element.
 
-&nbsp;
-
-### `.animation_wheel(size, frequency, speed)`
+### `scribble_anim_wheel(size, frequency, speed)`
 
 **Returns**: The text element
 
@@ -104,9 +68,7 @@ This function controls behaviour of the `[pulse]` effect across all uses in the 
 
 This function controls behaviour of the `[wheel]` effect across all uses in the text element.
 
-&nbsp;
-
-### `.animation_cycle(speed, saturation, value)`
+### `scribble_anim_cycle(speed, saturation, value)`
 
 **Returns**: The text element
 
@@ -118,9 +80,7 @@ This function controls behaviour of the `[wheel]` effect across all uses in the 
 
 This function controls behaviour of the `[cycle]` effect across all uses in the text element.
 
-&nbsp;
-
-### `.animation_jitter(minScale, maxScale, speed)`
+### `scribble_anim_jitter(minScale, maxScale, speed)`
 
 **Returns**: The text element
 
@@ -132,9 +92,7 @@ This function controls behaviour of the `[cycle]` effect across all uses in the 
 
 This function controls behaviour of the `[jitter]` effect across all uses in the text element.
 
-&nbsp;
-
-### `.animation_blink(onDuration, offDuration, timeOffset)`
+### `scribble_anim_blink(onDuration, offDuration, timeOffset)`
 
 **Returns**: The text element
 
