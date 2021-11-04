@@ -8,7 +8,7 @@ Scribble offers a [lot of advantages](features) over GameMaker's native text ren
 
 -----
 
-### draw_set_font() / draw_set_halign() / draw_set_color() ###
+## draw_set_font() / draw_set_halign() / draw_set_color() ###
 
 GameMaker:
 ```GML
@@ -28,9 +28,7 @@ scribble("[fnt_large][c_red][fa_left]Hello world!").draw(10, 10);
 
 &nbsp;
 
------
-
-### Partial Text Colouring ###
+## Partial Text Colouring ###
 
 GameMaker:
 ```GML
@@ -47,9 +45,7 @@ scribble("Hello[c_red] world!").draw(10, 10);
 
 &nbsp;
 
------
-
-### In-line Sprites ###
+## In-line Sprites ###
 
 GameMaker:
 ```GML
@@ -68,9 +64,7 @@ scribble("This weapon costs [spr_coin,0]1,200").draw(10, 10);
 
 &nbsp;
 
------
-
-### draw_set_valign() ###
+## draw_set_valign() ###
 
 GameMaker:
 ```GML
@@ -86,9 +80,7 @@ scribble("[fa_bottom]Hello world!").draw(10, room_height - 10);
 
 &nbsp;
 
------
-
-### Text Borders ###
+## Text Borders ###
 
 GameMaker:
 ```GML
