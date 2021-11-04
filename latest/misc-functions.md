@@ -1,6 +1,6 @@
 # Miscellaneous Functions
 
----
+&nbsp;
 
 ### `scribble_flush_everything()`
 

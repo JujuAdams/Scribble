@@ -1,3 +1,7 @@
+# Text Formatting
+
+&nbsp;
+
 Scribble supports many in-line commands that can be used inside a string. Here's a quick example:
 
 ```

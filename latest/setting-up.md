@@ -1,6 +1,6 @@
 # Setting Up
 
----
+&nbsp;
 
 ## How do I import Scribble into my game?
 

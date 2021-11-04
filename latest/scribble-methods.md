@@ -1,6 +1,6 @@
 # `scribble()` Methods
 
----
+&nbsp;
 
 `scribble()` is the heart of Scribble and is responsible for managing the underlying systems.
 
