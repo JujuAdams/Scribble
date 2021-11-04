@@ -20,7 +20,7 @@ scribble("Here's some typewriter text!").draw(x, y, typist);
 
 Note that we called the `.in()` method. This is analogous to the old `.typewriter_in()` method that was available on text elements in previous versions. Below is a list of methods for typists, and they follow the same basic rules as the old typewriter functions.
 
-**N.B. A typist should only be used to control text reveal for one text element at a time.** Changing text element, or changing the page for that text element, will cause the typist to automatically be reset.
+!> A typist should only be used to control text reveal for one text element at a time.** Changing text element, or changing the page for that text element, will cause the typist to automatically be reset.
 
 &nbsp;
 
