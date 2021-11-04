@@ -39,7 +39,7 @@ Event scripts are executed with two arguments:
 |1       |`parameterArray`|An array of strings that contains the parameters defined in the text. See above|
 |2       |`characterIndex`|Which character has been revealed (1-indexed)|
 
-Your script should be formatted such that they can unpack parameters from the provided array. Scripts are executed in the scope of the instance that ran the [`.draw()`](scribble()-Methods#drawx-y) method, and in the associated GameMaker object event (typically the Draw event).
+Your script should be formatted such that they can unpack parameters from the provided array. Scripts are executed in the scope of the instance that ran the [`.draw()`](scribble-methods?id=drawx-y) method, and in the associated GameMaker object event (typically the Draw event).
 
 &nbsp;
 
