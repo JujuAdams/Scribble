@@ -6,9 +6,7 @@ Scribble has three scripts that are used to configure the library. **You should 
 
 &nbsp;
 
-&nbsp;
-
-### `__scribble_config_macros()`
+## `__scribble_config_macros()`
 
 **Returns:** N/A (`undefined`)
 
@@ -50,7 +48,7 @@ This script holds a number of macros that customise the behaviour of Scribble. `
 
 &nbsp;
 
-### `__scribble_config_colours()`
+## `__scribble_config_colours()`
 
 **Returns:** N/A (`undefined`)
 
@@ -64,7 +62,7 @@ This function is called on boot to initialise the library, and **you should edit
 
 &nbsp;
 
-### `__scribble_config_default_template()`
+## `__scribble_config_default_template()`
 
 **Returns:** N/A (`undefined`)
 
