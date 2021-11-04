@@ -16,7 +16,7 @@ Anything that GameMaker natively supports as a font resource, including spritefo
 
 ### Does Scribble work with GMLive?
 
-Scribble was confirmed to work with [GMLive](https://yellowafterlife.itch.io/gamemaker-live) using version 7.1.2. It's highly likely that future and past versions work with [GMLive](https://yellowafterlife.itch.io/gamemaker-live) as well.
+Scribble was confirmed to work with [GMLive](https://yellowafterlife.itch.io/gamemaker-live) using version 7.1.2. At the time of writing, version 8 has not been tested with GMLive.
 
 &nbsp;
 
