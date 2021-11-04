@@ -31,84 +31,15 @@ Scribble allows for many kinds of inline formatting tags. Please read the [Text 
 
 &nbsp;
 
-## Methods
+&nbsp;
+
+&nbsp;
+
+# The Methods
 
 Text element methods are broken down into several categories. There's a lot here; feel free to swing by the [Discord server](https://discord.gg/8krYCqr) if you'd like some pointers on what to use and when. As noted above, **be careful when adjusting regenerator methods** as it's easy to cause to performance problems.
-1. [**Basics**](scribble()-Methods#basics)
-    - [`.draw(x, y)`](scribble()-Methods#drawx-y)
-    - [`.starting_format(fontName, colour)` *regenerator*](scribble()-Methods#starting_formatfontname-colour-regenerator)
-    - [`.align(halign, valign)` *regenerator*](scribble()-Methods#alignhalign-valign-regenerator)
-    - [`.blend(colour, alpha)`](scribble()-Methods#blendcolour-alpha)
-2. [**Shape, Wrapping, and Positioning**](scribble()-Methods#shape-wrapping-and-positioning)
-    - [`.origin(x, y)`](scribble()-Methods#originx-y)
-    - [`.transform(xscale, yscale, angle)`](scribble()-Methods#transformxscale-yscale-angle)
-    - [`.wrap(maxWidth, [maxHeight], [characterWrap])` *regenerator*](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator)
-    - [`.fit_to_box(maxWidth, maxHeight, [characterWrap])` *regenerator*](scribble()-Methods#fit_to_boxmaxwidth-maxheight-characterwrap-regenerator)
-    - [`.line_height(min, max)` *regenerator*](scribble()-Methods#line_heightmin-max-regenerator)
-    - [`.bezier(x1, y1, x2, y2, x3, y3, x4, y4)` *regenerator*](scribble()-Methods#bezierx1-y1-x2-y2-x3-y3-x4-y4-regenerator)
-3. [**Pages**](scribble()-Methods#pages)
-    - [`.page(page)`](scribble()-Methods#pagepage)
-    - [`.get_page()`](scribble()-Methods#get_page)
-    - [`.get_pages()`](scribble()-Methods#get_pages)
-    - [`.on_last_page()`](scribble()-Methods#on_last_page)
-4. [**Typewriter**](scribble()-Methods#typewriter)
-    - [`.typewriter_off()`](scribble()-Methods#typewriter_off)
-    - [`.typewriter_reset()`](scribble()-Methods#typewriter_reset)
-    - [`.typewriter_in(speed, smoothness)`](scribble()-Methods#typewriter_inspeed-smoothness)
-    - [`.typewriter_out(speed, smoothness, [backwards])`](scribble()-Methods#typewriter_outspeed-smoothness-backwards)
-    - [`.typewriter_skip()`](scribble()-Methods#typewriter_skip)
-    - [`.get_typewriter_pos()`](scribble()-Methods#get_typewriter_pos)
-    - [`.typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`](scribble()-Methods#typewriter_easeeasemethod-dx-dy-xscale-yscale-rotation-alphaduration)
-    - [`.get_typewriter_state()`](scribble()-Methods#get_typewriter_state)
-    - [`.typewriter_pause()`](scribble()-Methods#typewriter_pause)
-    - [`.typewriter_unpause()`](scribble()-Methods#typewriter_unpause)
-    - [`.get_typewriter_paused()`](scribble()-Methods#get_typewriter_paused)
-    - [`.typewriter_sound(soundArray, overlap, pitchMin, pitchMax)`](scribble()-Methods#typewriter_soundsoundarray-overlap-pitchmin-pitchmax)
-    - [`.typewriter_sound_per_char(soundArray, pitchMin, pitchMax)`](scribble()-Methods#typewriter_sound_per_charsoundarray-pitchmin-pitchmax)
-    - [`.typewriter_function(function)`](scribble()-Methods#typewriter_functionfunction)
-5. [**Getters**](scribble()-Methods#getters)
-    - [`.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`](scribble()-Methods#get_bboxx-y-leftpad-toppad-rightpad-bottompad)
-    - [`.get_width()`](scribble()-Methods#get_width)
-    - [`.get_height()`](scribble()-Methods#get_height)
-    - [`.get_wrapped()`](scribble()-Methods#get_wrapped)
-    - [`.get_line_count([page])`](scribble()-Methods#get_line_countpage)
-6. [**Animation**](scribble()-Methods#animation)
-    - [`.animation_tick_speed(tickSpeed)`](scribble()-Methods#animation_tick_speedtickspeed)
-    - [`.animation_sync(sourceElement)`](scribble()-Methods#animation_syncsourceelement)
-    - [`.animation_wave(size, frequency, speed)`](scribble()-Methods#animation_wavesize-frequency-speed)
-    - [`.animation_shake(size, speed)`](scribble()-Methods#animation_shakesize-speed)
-    - [`.animation_rainbow(weight, speed)`](scribble()-Methods#animation_rainbowweight-speed)
-    - [`.animation_wobble(angle, frequency)`](scribble()-Methods#animation_wobbleangle-frequency)
-    - [`.animation_pulse(scale, speed)`](scribble()-Methods#animation_pulsescale-speed)
-    - [`.animation_wheel(size, frequency, speed)`](scribble()-Methods#animation_wheelsize-frequency-speed)
-    - [`.animation_cycle(speed, saturation, value)`](scribble()-Methods#animation_cyclespeed-saturation-value)
-    - [`.animation_jitter(minScale, maxScale, speed)`](scribble()-Methods#animation_jitterminscale-maxscale-speed)
-    - [`.animation_blink(onDuration, offDuration, timeOffset)`](scribble()-Methods#animation_blinkonduration-offduration-timeoffset)
-7. [**MSDF**](scribble()-Methods#msdf)
-    - [`.msdf_shadow(colour, alpha, xOffset, yOffset)`](scribble()-Methods#msdf_shadowcolour-alpha-xoffset-yoffset)
-    - [`.msdf_border(colour, thickness)`](scribble()-Methods#msdf_bordercolour-thickness)
-    - [`.msdf_feather(thickness)`](scribble()-Methods#msdf_featherthickness)
-8. [**Cache Management**](scribble()-Methods#cache-management)
-    - [`.build(freeze)`](scribble()-Methods#buildfreeze)
-    - [`.flush()`](scribble()-Methods#flush)
-9. [**Miscellaneous**](scribble()-Methods#miscellaneous)
-    - [`.events_get(position, [page])`](scribble()-Methods#events_getposition-page)
-    - [`.template(function, [executeOnlyOnChange])`](scribble()-Methods#templatefunction-executeonlyonchange)
-    - [`.overwrite(string)` *regenerator*](scribble()-Methods#overwritestring-regenerator)
-    - [`.fog(colour, alpha)`](scribble()-Methods#fogcolour-alpha)
-    - [`.ignore_command_tags(state)` *regenerator*](scribble()-Methods#ignore_command_tagsstate-regenerator)
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
 
 ## Basics
-
-[Previous section](scribble()-Methods#methods)  |  [Next section](scribble()-Methods#shape-wrapping-and-positioning)
-
-&nbsp;
 
 ### `.draw(x, y)`
 
@@ -167,10 +98,6 @@ Sets the blend colour/alpha, which is applied at the end of the drawing pipeline
 &nbsp;
 
 ## Shape, Wrapping, and Positioning
-
-[Previous section](scribble()-Methods#basics)  |  [Next section](scribble()-Methods#pages)
-
-&nbsp;
 
 ### `.origin(x, y)`
 
@@ -273,10 +200,6 @@ This function can also be executed with zero arguments (e.g. `scribble("text").b
 
 ## Pages
 
-[Previous section](scribble()-Methods#shape-wrapping-and-positioning)  |  [Next section](scribble()-Methods#typewriter)
-
-&nbsp;
-
 ### `.page(page)`
 
 **Returns**: The text element
@@ -332,10 +255,6 @@ Convenience function.
 &nbsp;
 
 ## Typewriter
-
-[Previous section](scribble()-Methods#pages)  |  [Next section](scribble()-Methods#getters)
-
-&nbsp;
 
 ### `.typewriter_off()`
 
@@ -556,10 +475,6 @@ It's quite common in games with typewriter-style text animations to have a sound
 
 ## Getters
 
-[Previous section](scribble()-Methods#typewriter)  |  [Next section](scribble()-Methods#animation)
-
-&nbsp;
-
 ### `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
 
 **Returns:** Struct containing the positions of the bounding box for a text element
@@ -647,10 +562,6 @@ Will return `true` only if the [`.wrap()` feature](scribble()-Methods#wrapmaxwid
 &nbsp;
 
 ## Animation
-
-[Previous section](scribble()-Methods#getters)  |  [Next section](scribble()-Methods#msdf)
-
-&nbsp;
 
 ### `.animation_tick_speed(tickSpeed)`
 
@@ -806,11 +717,7 @@ This function controls behaviour of the `[blink]` effect across all uses in the 
 
 ## MSDF
 
-[Previous section](scribble()-Methods#animation)  |  [Next section](scribble()-Methods#cache-management)
-
-*MSDF fonts require special considerations. Please read [the MSDF article](MSDF-Fonts) for more information.*
-
-&nbsp;
+!> MSDF fonts require special considerations. Please read [the MSDF article](msdf-fonts) for more information.
 
 ### `.msdf_shadow(colour, alpha, xoffset, yoffset)`
 
@@ -858,10 +765,6 @@ Changes the softness/hardness of the MSDF font outline. You may find you have to
 
 ## Cache Management
 
-[Previous section](scribble()-Methods#msdf)  |  [Next section](scribble()-Methods#miscellaneous)
-
-&nbsp;
-
 ### `.build(freeze)`
 
 **Returns**: N/A (`undefined`)
@@ -902,10 +805,6 @@ Forces Scribble to remove this text element from the internal cache, invalidatin
 &nbsp;
 
 ## Miscellaneous
-
-[Previous section](scribble()-Methods#cache-management)
-
-&nbsp;
 
 ### `.events_get(position, [page])`
 
