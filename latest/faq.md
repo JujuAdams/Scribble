@@ -10,13 +10,13 @@ Everything! ...apart from HTML5 due to [bugs in GameMaker's JavaScript runner](h
 
 ### What kinds of fonts can Scribble draw?
 
-Anything that GameMaker natively supports as a font resource, including spritefonts. Scribble additionally supports [MSDF fonts](MSDF-Fonts) which are very useful for mobile games or any game which might have a wide variety of text sizes. Scribble unfortunately doesn't (yet) support fonts added via `font_add()`.
+Anything that GameMaker natively supports as a font resource, including spritefonts. Scribble additionally supports [MSDF fonts](msdf-fonts) which are very useful for mobile games or any game which might have a wide variety of text sizes. Scribble unfortunately doesn't (yet) support fonts added via `font_add()`.
 
 &nbsp;
 
-### Does Scribble work with  [GMLive](https://yellowafterlife.itch.io/gamemaker-live)?
+### Does Scribble work with GMLive?
 
-Scribble was confirmed to work with GMLive using version 7.1.2. It's highly likely that future and past versions work with [GMLive](https://yellowafterlife.itch.io/gamemaker-live) as well.
+Scribble was confirmed to work with [GMLive](https://yellowafterlife.itch.io/gamemaker-live) using version 7.1.2. It's highly likely that future and past versions work with [GMLive](https://yellowafterlife.itch.io/gamemaker-live) as well.
 
 &nbsp;
 
@@ -28,7 +28,7 @@ Scribble was confirmed to work with GMLive using version 7.1.2. It's highly like
 
 ### What games are using Scribble?
 
-Scribble is being used in [Shovel Knight Pocket Dungeon](https://yachtclubgames.com/shovel-knight-pocket-dungeon/), [Wally and the Fantastic Predators](https://store.steampowered.com/app/1077450/Wally_and_the_FANTASTIC_PREDATORS/), [Stargrove](https://twitter.com/FauxOperative), [Wizarducks](https://twitter.com/wizarducks1) and [many others](https://www.youtube.com/watch?v=KvakyfLhvfU). Scribble gets a lot of real world testing!
+Scribble is being used in [Shovel Knight Pocket Dungeon](https://www.yachtclubgames.com/games/shovel-knight-pocket-dungeon), [Wally and the Fantastic Predators](https://store.steampowered.com/app/1077450/Wally_and_the_FANTASTIC_PREDATORS/), [Stargrove](https://twitter.com/FauxOperative), [Wizarducks](https://twitter.com/wizarducks1) and [many others](https://www.youtube.com/watch?v=KvakyfLhvfU). Scribble gets a lot of real world testing!
 
 &nbsp;
 
@@ -46,7 +46,7 @@ Please make a [bug report](https://github.com/JujuAdams/scribble/issues). Juju c
 
 ### Why does Scribble glitch my fonts sometimes and how do I fix it?
 
-GameMaker pre-renders fonts, creating a .yy metadata file and a .png texture (sort of like a mini texture page just for font glyphs). Scribble needs both files to render fonts. GameMaker automatically gives us access to the font texture but it doesn't easily allow us to read the contents of the .yy files. This is why [you need to add the .yy file to your project's Included Files](Setting-Up#how-do-i-set-up-scribble) before using Scribble.
+GameMaker pre-renders fonts, creating a .yy metadata file and a .png texture (sort of like a mini texture page just for font glyphs). Scribble needs both files to render fonts. GameMaker automatically gives us access to the font texture but it doesn't easily allow us to read the contents of the .yy files. This is why [you need to add the .yy file to your project's Included Files](setting-up) before using Scribble.
 
 Whenever you change the font's size or typeface etc., GameMaker will re-render the font creating a new .yy file and a new .png file. **The new .yy file will not match the old .yy file that we manually added to our Included Files.** As a result, our metadata doesn't match the new font texture and we get garbled, messy text instead.
 
@@ -54,13 +54,13 @@ The fix is simple: *Update your .yy file whenever you see glitched text!*
 
 &nbsp;
 
-### I'm using colour blending with an [outlined font](Functions-(Font-Modification)#scribble_font_bake_outlinesourcefontname-newfontname-thickness-samples-color-smooth) and the blend colour is affecting the outline too. What's going on?
+### I'm using colour blending with an outlined font and the blend colour is affecting the outline too. What's going on?
 
-[`scribble_font_bake_outline()`](Functions-(Font-Modification)#scribble_font_bake_outlinesourcefontname-newfontname-thickness-samples-color-smooth) works by pre-rendering the font to a surface using a simple outline shader. The outline and the font itself are inseparably combined. When these outlined glyphs are drawn with some sort of blending applied, Scribble has no way to separate out what's an outline and what's the main body of the glyph. This means the blend necessarily has to apply to both the outline and the glyph itself.
+[`scribble_font_bake_outline()`](font-modification?id=scribble_font_bake_outlinesourcefontname-newfontname-thickness-samples-color-smooth) works by pre-rendering the font to a surface using a simple outline shader. The outline and the font itself are inseparably combined. When these outlined glyphs are drawn with some sort of blending applied, Scribble has no way to separate out what's an outline and what's the main body of the glyph. This means the blend necessarily has to apply to both the outline and the glyph itself.
 
 &nbsp;
 
-### How do I fix weird spacing on the left hand side when my font [wraps](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator) to the next line?
+### How do I fix weird spacing on the left hand side when my font wraps to the next line?
 
 I've not yet found a really good solution for this bug, but I did make a workaround. Set the `SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT` macro to `true` and this should solve your problems. If it doesn't, please file a [bug report](https://github.com/JujuAdams/scribble/issues) and/or yell at me on the [Discord server](https://discord.gg/8krYCqr).
 
@@ -68,29 +68,23 @@ I've not yet found a really good solution for this bug, but I did make a workaro
 
 ### Scribble creates little hangs in my game when I draw lots and lots of text and it's making me sad :(
 
-Efficient text parsing is hard work in any language, but GML makes it even more strenuous. Scribble is about as fast as I can make it. The best thing to do to work around the text caching speed is to pre-cache large amount of text by using the [`.build()`](scribble()-Methods#buildfreeze) method. I recommend pre-caching text during a loading screen or other such pause in gameplay.
+Efficient text parsing is hard work in any language, but GML makes it even more strenuous. Scribble is about as fast as I can make it. The best thing to do to work around the text caching speed is to pre-cache large amount of text by using the [`.build()`](scribble-methods?id=buildfreeze) method. I recommend pre-caching text during a loading screen or other such pause in gameplay.
 
 &nbsp;
 
 ### How do I adjust the height of a line break?
 
-All line breaks in Scribble - either forced line breaks using `\n` or natural line breaks caused by [wrapping text](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator) - derive their height from the "height" of the space character in the font currently being used. You can adjust the height of a line break by using [`scribble_glyph_set()`](Functions-(Font-Modification)#scribble_glyph_setfontname-character-property-value-relative) and targeting the space character (`" "`).
+All line breaks in Scribble - either forced line breaks using `\n` or natural line breaks caused by [wrapping text](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) - derive their height from the "height" of the space character in the font currently being used. You can adjust the height of a line break by using [`scribble_glyph_set()`](font-modification?id=scribble_glyph_setfontname-character-property-value-relative) and targeting the space character (`" "`).
 
-If you'd only like to adjust the line spacing for a single text element, use the [`.line_height()`](scribble()-Methods#line_heightmin-max-regenerator) method instead.
+If you'd only like to adjust the line spacing for a single text element, use the [`.line_height()`](scribble-methods?id=line_heightmin-max-regenerator) method instead.
 
 &nbsp; 
 
 ### I'm coming from version 6 and `scribble_init()` is gone. Where do I set my font directory now?
 
-You can set your font directory (relative to Included Files) by modifying the `SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY` macro, found in `__scribble_config_macros()`.
+You can set your font directory (relative to Included Files) by modifying the `SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY` macro.
 
 &nbsp; 
-
-### I'm coming from version 6 and `scribble_set_box_align()` is missing. Where's it gone?
-
-That function was a pain in the arse from the very start and caused tons of unexpected behaviour that looked like bugs. It's been replaced by the [`.origin()`](scribble()-Methods#originx-y) method which hopefully will be more flexible and more easily understood!
-
-&nbsp;
 
 ### Can I send you donations? Are you going to start a Patreon?
 
