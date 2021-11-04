@@ -14,7 +14,7 @@ Anything that GameMaker natively supports as a font resource, including spritefo
 
 &nbsp;
 
-### Does Scribble work with [GMLive](https://yellowafterlife.itch.io/gamemaker-live)?
+### Does Scribble work with  [GMLive](https://yellowafterlife.itch.io/gamemaker-live)?
 
 Scribble was confirmed to work with GMLive using version 7.1.2. It's highly likely that future and past versions work with [GMLive](https://yellowafterlife.itch.io/gamemaker-live) as well.
 
@@ -89,14 +89,6 @@ You can set your font directory (relative to Included Files) by modifying the `S
 ### I'm coming from version 6 and `scribble_set_box_align()` is missing. Where's it gone?
 
 That function was a pain in the arse from the very start and caused tons of unexpected behaviour that looked like bugs. It's been replaced by the [`.origin()`](scribble()-Methods#originx-y) method which hopefully will be more flexible and more easily understood!
-
-&nbsp;
-
-### Who made Scribble?
-
-Scribble is built and maintained by [@jujuadams](https://twitter.com/jujuadams) who has a long history of fiddling with text engines. Juju's worked on a lot of [commercial GameMaker games](http://www.jujuadams.com/).
-
-Many, many other people have contributed bug reports and feature requests over the years, too many to list here. Scribble wouldn't exist without them and Juju is eternally grateful for their creativity and patience.
 
 &nbsp;
 
