@@ -1,5 +1,7 @@
 # Animation Properties
 
+&nbsp;
+
 ## `scribble_anim_wave(size, frequency, speed)`
 
 **Returns**: The text element
