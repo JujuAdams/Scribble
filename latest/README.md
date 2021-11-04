@@ -1,7 +1,3 @@
-# Introduction
-
-&nbsp;
-
 <img src="https://raw.githubusercontent.com/JujuAdams/scribble/master/LOGO.png" width="50%" style="display: block; margin: auto;" />
 <hr>
 <p align="center">A modern text renderer for GameMaker Studio 2 by <a href="https://twitter.com/jujuadams" target="_blank">Juju Adams</a></p>
