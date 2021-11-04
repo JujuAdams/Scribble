@@ -16,5 +16,6 @@
 -   [Configuration](configuration)
 -   [`scribble()`](scribble-methods)
 -   [Animation Properties](animation-properties)
--   [Fonts](fonts)
+-   [Font Setup](font-setup)
+-   [Font Modification](font-modification)
 -   [Misc Functions](misc-functions)
