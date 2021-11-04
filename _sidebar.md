@@ -2,7 +2,7 @@
 
 ---
 
--   [FAQ](FAQ)
+-   [FAQ](faq)
 -   [Features](features)
 -   [Setting Up](setting-up)
 -   [Coming from Native GM](coming-from-native-gm)
