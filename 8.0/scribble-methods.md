@@ -29,19 +29,13 @@ Scribble allows for many kinds of inline formatting tags. Please read the [Text 
 
 ?> Scribble text elements have **no publicly accessible variables**. Do not directly read or write variables, use the setter and getter methods provided instead.
 
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-# The Methods
-
 Text element methods are broken down into several categories. There's a lot here; feel free to swing by the [Discord server](https://discord.gg/8krYCqr) if you'd like some pointers on what to use and when. As noted above, **be careful when adjusting regenerator methods** as it's easy to cause to performance problems.
 
-## Basics
+&nbsp;
 
-### `.draw(x, y)`
+# Basics
+
+## `.draw(x, y)`
 
 **Returns**: N/A (`undefined`)
 
@@ -54,7 +48,7 @@ Draws your text! This function will automatically build the required text model 
 
 &nbsp;
 
-### `.starting_format(fontName, colour)` *regenerator*
+## `.starting_format(fontName, colour)` *regenerator*
 
 **Returns**: The text element
 
@@ -67,7 +61,7 @@ Sets the starting font and text colour for your text. The values that are set wi
 
 &nbsp;
 
-### `.align(halign, valign)` *regenerator*
+## `.align(halign, valign)` *regenerator*
 
 **Returns**: The text element
 
@@ -80,7 +74,7 @@ Sets the starting horizontal and vertical alignment for your text. You can chang
 
 &nbsp;
 
-### `.blend(colour, alpha)`
+## `.blend(colour, alpha)`
 
 **Returns**: The text element
 
@@ -97,9 +91,9 @@ Sets the blend colour/alpha, which is applied at the end of the drawing pipeline
 
 &nbsp;
 
-## Shape, Wrapping, and Positioning
+# Shape, Wrapping, and Positioning
 
-### `.origin(x, y)`
+## `.origin(x, y)`
 
 **Returns**: The text element
 
@@ -126,7 +120,7 @@ Rotates and scales a text element relative to the origin (set by [`.origin()`](s
 
 &nbsp;
 
-### `.wrap(maxWidth, [maxHeight], [characterWrap])` *regenerator*
+## `.wrap(maxWidth, [maxHeight], [characterWrap])` *regenerator*
 
 **Returns**: The text element
 
@@ -140,7 +134,7 @@ Instructs Scribble to fit text inside a box by automatically inserting line brea
 
 &nbsp;
 
-### `.fit_to_box(maxWidth, maxHeight, [characterWrap])` *regenerator*
+## `.fit_to_box(maxWidth, maxHeight, [characterWrap])` *regenerator*
 
 **Returns**: The text element
 
@@ -156,7 +150,7 @@ Fits text to a box by inserting line breaks and scaling text but **will not** in
 
 &nbsp;
 
-### `.line_height(min, max)` *regenerator*
+## `.line_height(min, max)` *regenerator*
 
 **Returns**: The text element
 
@@ -169,7 +163,7 @@ Sets limits on the height of each line for the text element. This is useful when
 
 &nbsp;
 
-### `.bezier(x1, y1, x2, y2, x3, y3, x4, y4)` *regenerator*
+## `.bezier(x1, y1, x2, y2, x3, y3, x4, y4)` *regenerator*
 
 **Returns**: The text element
 
@@ -198,9 +192,9 @@ This function can also be executed with zero arguments (e.g. `scribble("text").b
 
 &nbsp;
 
-## Pages
+# Pages
 
-### `.page(page)`
+## `.page(page)`
 
 **Returns**: The text element
 
@@ -214,7 +208,7 @@ Please note that changing the page will reset any typewriter animations i.e. tho
 
 &nbsp;
 
-### `.get_page()`
+## `.get_page()`
 
 **Returns:** Integer, page that the text element is currently on, starting at `0` for the first page
 
@@ -226,7 +220,7 @@ Returns which page Scribble is showing, as set by [`.page()`](scribble-methods?i
 
 &nbsp;
 
-### `.get_pages()`
+## `.get_pages()`
 
 **Returns:** Integer, total number of pages for the text element
 
@@ -238,7 +232,7 @@ Returns the total number of pages that this text element contains. In rare cases
 
 &nbsp;
 
-### `.on_last_page()`
+## `.on_last_page()`
 
 **Returns:** Boolean, whether the current page is the last page for the text element
 
@@ -254,9 +248,9 @@ Convenience function.
 
 &nbsp;
 
-## Getters
+# Getters
 
-### `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
+## `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
 
 **Returns:** Struct containing the positions of the bounding box for a text element
 
@@ -292,7 +286,7 @@ The struct returned by `.get_bbox()` contains the following member variables:
 
 &nbsp;
 
-### `.get_width()`
+## `.get_width()`
 
 **Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
 
@@ -304,7 +298,7 @@ Returns the raw width of the text element. This will **not** take into account r
 
 &nbsp;
 
-### `.get_height()`
+## `.get_height()`
 
 **Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
 
@@ -316,7 +310,7 @@ Returns the raw height of the text element. This will **not** take into account 
 
 &nbsp;
 
-### `.get_wrapped()`
+## `.get_wrapped()`
 
 **Returns:** Boolean, whether the text has wrapped onto a new line using the [`.wrap()` feature](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator)
 
@@ -328,7 +322,7 @@ Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwi
 
 &nbsp;
 
-### `.get_line_count([page])`
+## `.get_line_count([page])`
 
 **Returns:** Integer, how many lines of text are on the given page
 
@@ -342,11 +336,11 @@ Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwi
 
 &nbsp;
 
-## MSDF
+# MSDF
 
 !> MSDF fonts require special considerations. Please read [the MSDF article](msdf-fonts) for more information.
 
-### `.msdf_shadow(colour, alpha, xoffset, yoffset)`
+## `.msdf_shadow(colour, alpha, xoffset, yoffset)`
 
 **Returns**: The text element
 
@@ -361,7 +355,7 @@ Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alp
 
 &nbsp;
 
-### `.msdf_border(colour, thickness)`
+## `.msdf_border(colour, thickness)`
 
 **Returns**: The text element
 
@@ -374,7 +368,7 @@ Sets the colour and thickness for a procedural MSDF border. Setting the thicknes
 
 &nbsp;
 
-### `.msdf_feather(thickness)`
+## `.msdf_feather(thickness)`
 
 **Returns**: The text element
 
@@ -390,9 +384,9 @@ Changes the softness/hardness of the MSDF font outline. You may find you have to
 
 &nbsp;
 
-## Cache Management
+# Cache Management
 
-### `.build(freeze)`
+## `.build(freeze)`
 
 **Returns**: N/A (`undefined`)
 
@@ -415,7 +409,7 @@ element.draw(x, y);
 
 &nbsp;
 
-### `.flush()`
+## `.flush()`
 
 **Returns**: N/A (`undefined`)
 
@@ -431,9 +425,9 @@ Forces Scribble to remove this text element from the internal cache, invalidatin
 
 &nbsp;
 
-## Miscellaneous
+# Miscellaneous
 
-### `.events_get(position, [page])`
+## `.events_get(position, [page])`
 
 **Returns**: An array containing structs that describe typewrite events for the given character
 
@@ -453,7 +447,7 @@ The returned array contains structs that themselves contain the following member
 
 &nbsp;
 
-### `.template(function, [executeOnlyOnChange])`
+## `.template(function, [executeOnlyOnChange])`
 
 **Returns**: The text element
 
@@ -476,7 +470,7 @@ scribble("This text is red and will be wrapped inside a box that's 150px wide.")
 
 &nbsp;
 
-### `.overwrite(string)` *regenerator*
+## `.overwrite(string)` *regenerator*
 
 **Returns**: The text element
 
@@ -488,7 +482,7 @@ Replaces the string in an existing text element whilst maintaining the animation
 
 &nbsp;
 
-### `.fog(colour, alpha)`
+## `.fog(colour, alpha)`
 
 **Returns**: The text element
 
@@ -501,7 +495,7 @@ Forces the colour of all text (and sprites) to change to the given specified col
 
 &nbsp;
 
-### `.ignore_command_tags(state)` *regenerator*
+## `.ignore_command_tags(state)` *regenerator*
 
 **Returns**: The text element
 
