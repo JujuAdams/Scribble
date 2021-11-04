@@ -20,7 +20,7 @@ Alternatively, if you want to simplify some of your existing text drawing that y
 
 ## How do I use spritefonts?
 
-Spritefonts work similarly to standard fonts and they are interchangeable when drawing text. They do, however, require that you use [`font_add_sprite`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Fonts/font_add_sprite.htm) or [`font_add_sprite_ext`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Fonts/font_add_sprite.htm) to define the spritefont. The name of the spritefont in Scribble is the same as the name of the sprite asset.
+Spritefonts work similarly to standard fonts and they are interchangeable when drawing text. They do, however, require that you use [`font_add_sprite`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Fonts/font_add_sprite.htm) or [`font_add_sprite_ext`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Fonts/font_add_sprite.htm) to define the spritefont before using them with Scribble. The name of the spritefont in Scribble is the same as the name of the sprite asset.
 
 ## How do I use MSDF fonts?
 
