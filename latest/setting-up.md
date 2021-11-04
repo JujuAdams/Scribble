@@ -10,7 +10,7 @@ GameMaker Studio 2 allows you to import assets, including scripts and shaders, d
 
 ## How do I set up Scribble?
 
-Once added to your project, Scribble will automatically initialise its core functionality when you load the game. There's no "master" initialisation function that you need to run. However, you will very likely want to customise Scribble; take a look at the [Configuration page](Functions-(Configuration)) for more information on how to do that.
+Once added to your project, Scribble will automatically initialise its core functionality when you load the game. There's no "master" initialisation function that you need to run. However, you will very likely want to customise Scribble; take a look at the [Configuration page](configuration) for more information on how to do that.
 
 In addition to this, Scribble requires that you explicitly add fonts for use with Scribble. This is a four step process:
 
@@ -24,9 +24,9 @@ In addition to this, Scribble requires that you explicitly add fonts for use wit
 
 Scribble needs to access information that GameMaker generates. All this information is contained in a single .yy file in the font's folder on disk inside the project directory. This file can sometimes be frustrating to locate, but fortunately there's a shortcut we can take. In the IDE, Navigate to the font resource you wish to add and right click on it. From the drop-down menu, select "Show In Explorer". A window will open showing various files for the font resource. You can drag-and-drop the .yy file into the GameMaker IDE to add it as an Included File.
 
-***Please note** that if you change any font properties then the font will need to be regenerated, and the associated .yy file in Included Files will need to be updated too.*
+_**Please note** that if you change any font properties then the font will need to be regenerated, and the associated .yy file in Included Files will need to be updated too._
 
-Finally, we need to add some code that tells Scribble how to initialise the font. This is done with [`scribble_font_add()`](Functions-(Font-Setup)#scribble_font_addfontname-yypath-texture). Make sure to call [`scribble_font_add()`](Functions-(Font-Setup)#scribble_font_addfontname-yypath-texture) once at the start of the game for each of the fonts you want to use. By default, Scribble will use the first added font as the default font to use for text elements. The default font can be changed by using [`scribble_font_set_default()`](Functions-(Font-Setup)#scribble_font_set_defaultfontname).
+Finally, we need to add some code that tells Scribble how to initialise the font. This is done with [`scribble_font_add()`](font-setup?id=scribble_font_addfontname-yypath-texture). Make sure to call [`scribble_font_add()`](font-setup?id=scribble_font_addfontname-yypath-texture) once at the start of the game for each of the fonts you want to use. By default, Scribble will use the first added font as the default font to use for text elements. The default font can be changed by using [`scribble_font_set_default()`](font-setup?id=scribble_font_set_defaultfontname).
 
 ```gml
 //Add the font called "fnt_dialogue" to Scribble
@@ -40,7 +40,7 @@ scribble_font_add("fnt_title");
 scribble_font_set_default("fnt_title");
 ```
 
-For large projects, typing out lots of font names is boring and clumsy. By calling [`scribble_font_add_all()`](Functions-(Font-Setup)#scribble_font_add_all), Scribble will try to add all fonts in your project.
+For large projects, typing out lots of font names is boring and clumsy. By calling [`scribble_font_add_all()`](font-setup?id=scribble_font_add_all), Scribble will try to add all fonts in your project.
 
 &nbsp;
 
@@ -48,7 +48,7 @@ For large projects, typing out lots of font names is boring and clumsy. By calli
 
 Now you're ready to start drawing text with Scribble! The best way to learn is, as always, to read existing code. The main project file found in the repo has lots of examples and test cases for you to learn from.
 
-Alternatively, if you want to simplify some of your existing text drawing that you've done using native GameMaker functions, [here's a brief overview of ways Scribble makes that easier](Coming-from-Native-GM). There's a lot you can do with Scribble, either by using [in-line commands](Text-Formatting) or by controlling behaviour with [methods](scribble()-Methods).
+Alternatively, if you want to simplify some of your existing text drawing that you've done using native GameMaker functions, [here's a brief overview of ways Scribble makes that easier](coming-from-native-gm). There's a lot you can do with Scribble, either by using [in-line commands](Text-Formatting) or by controlling behaviour with [methods](scribble-methods).
 
 &nbsp;
 
@@ -58,8 +58,8 @@ Spritefonts work similarly to standard fonts and they are interchangeable when d
 
 1) Spritefonts use a sprite asset rather than a font asset
 2) Spritefonts do not require a .yy file to be added as an included file
-3) Spritefonts will not be found using [`scribble_font_add_all()`](https://github.com/JujuAdams/Scribble/wiki/Functions-(Font-Setup)#scribble_font_add_all) and must be added manually in code
-4) Use [`scribble_font_add_from_sprite()`](Functions-(Font-Setup)#scribble_font_add_from_spritefontname-mapstring-separation-spacewidth-proportional)
+3) Spritefonts will not be found using [`scribble_font_add_all()`](font-setup?id=scribble_font_add_all) and must be added manually in code
+4) Use [`scribble_font_add_from_sprite()`](font-setup?id=scribble_font_add_from_spritefontname-mapstring-separation-spacewidth-proportional)
 5) The sprite's collision mask mode must be set to **Automatic**
 6) The sprite's collision mask type must be set to **Precise Per Frame (Slow)**
 7) "Separate Texture Page" must be set to **off** for the sprite
@@ -77,4 +77,4 @@ scribble_font_add_from_sprite("fnt_score", "abcdefghijklmnopqrstuvwxyz", 0);
 
 ## How do I use MSDF fonts?
 
-[MSDF fonts](MSDF-Fonts) are an alternate way to draw text in a way that improves how text looks when it's scaled. This not only reduces texture page usage but it's very helpful when drawing text on mobile devices. Scribble's implementation of MSDF fonts also supports borders and drop shadows. MSDF fonts are useful but relatively complex; please read the dedicated [MSDF font page](MSDF-Fonts) for more information.
+[MSDF fonts](msdf-fonts) are an alternate way to draw text in a way that improves how text looks when it's scaled. This not only reduces texture page usage but it's very helpful when drawing text on mobile devices. Scribble's implementation of MSDF fonts also supports borders and drop shadows. MSDF fonts are useful but relatively complex; please read the dedicated [MSDF font page](msdf-fonts) for more information.
