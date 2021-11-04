@@ -106,7 +106,7 @@ Sets the origin relative to the top-left corner of the text element. You can thi
 
 &nbsp;
 
-### `.transform(xscale, yscale, angle)`
+## `.transform(xscale, yscale, angle)`
 
 **Returns**: The text element
 
