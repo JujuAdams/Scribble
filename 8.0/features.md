@@ -19,8 +19,6 @@ Scribble supports all GameMaker export modules, including consoles, with the exc
 
 Scroll down to read more about each feature.
 
-&nbsp;
-
 ## In-line Text Formatting & Sprites
 
 One of the biggest problems with GameMaker's native [`draw_text()` function](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/) is the clumsy and limited text formatting options. Draw state can only ever be applied to entire strings and splitting strings up to apply certain effects to specific parts is tedious and, more importantly, hard to do efficiently.
@@ -30,8 +28,6 @@ Scribble offers flexible in-line formatting. Using a BBCode-like syntax for its 
 Sometimes, instead of using words to describe something, using an in-line sprite does the job much more clearly. Scribble lets you insert sprites into the middle of strings with a single formatting tag: you just type the name of the sprite enclosed with brackets e.g. `[sprCoin]`. The relevant sprite will be drawn right there in the text and even animates automatically. I've seen this used as a way to handle button prompts on console, for emojis, and to indicate resources e.g. for a strategy game.
 
 You can read more about [text formatting here](text-formatting).
-
-&nbsp;
 
 ## Text Wrapping & Pages
 
@@ -43,8 +39,6 @@ Scribble also features automatic page breaks as well as automatic line breaks. P
 
 Pages can be created two ways. Most people will want to let Scribble handle page breaks automatically: [`.wrap()`](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) has an optional `maxHeight` argument. Any text that would be drawn outside the textbox is instead pushed onto a new page. For those looking for a little more control, the text formatting command `[/page]` can be used to manually create a new page. Manual page breaks with `[/page]` are useful when localising to help language feel more natural.
 
-&nbsp;
-
 ## Typewriter & Events
 
 A common use case for Scribble, though by no means its only use, is to draw dialogue text. It's very common, especially in retro-styled games, to reveal text slowly to the user, often character-by-character. This has a lot of names but it's usually known as a "typewriter effect".
@@ -52,8 +46,6 @@ A common use case for Scribble, though by no means its only use, is to draw dial
 Setting up a typewriter effect is simple - Precache the string you're using with a single call to [`scribble()`](scribble-methods), then call [`.typewriter_in()`](scribble-methods?id=typewriter_inspeed-smoothness) once. Now every frame that you draw the string using [`.draw()`](misc-functions?id=scribble_typewriter_add_eventname-function) it'll slowly reveal the text.
 
 Sometimes you'll want to execute code, such as triggering a screenshake or changing a character's portrait, in the middle of revealing text. [`scribble_typewriter_add_event()`](misc-functions?id=scribble_typewriter_add_eventname-function) lets you define your own custom event which you can insert anywhere in a string. When Scribble reaches that point as it reveals text, it'll execute the function. This is an extremely powerful feature!
-
-&nbsp;
 
 ## High Performance Caching
 
