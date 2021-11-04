@@ -2,12 +2,9 @@
 
 ?> This guide was written for version 1.1 of the [MSDF atlas generator](https://github.com/Chlumsky/msdf-atlas-gen), released 18th October 2020.
 
-&nbsp;
-
 ## Introduction
 
 MSDF fonts allow for text to be rendered at any size without needing to generate a unique font for each size. This effectively means MSDF fonts are resolution-independent, making them useful for software UIs in general, but essential for mobile game development. MSDFs reduce the texture memory usage of your game whilst also being easier to use and maintain. With Scribble, MSDF fonts are rendered at the same speed as normal fonts. MSDF fonts are supported for all of Scribble's target platforms.
-
 
 MSDF stands for "Multi-channel Signed Distance Field". It is a relatively new technique invented by Viktor Chlumsky in 2015 designed to address the limitations of the famous SDF method proposed by Valve in their 2007 SIGGRAPH paper. MSDFs typically produce superior results to SDFs owing to their better representation of sharp edges, and their more efficient use of RGB colourspace to allow for greater information about the shape to be stored.
 
