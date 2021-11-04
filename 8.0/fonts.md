@@ -1,6 +1,8 @@
 # Fonts
 
-### `scribble_font_set_default(fontName)`
+&nbsp;
+
+## `scribble_font_set_default(fontName)`
 
 **Returns:** N/A (`undefined`)
 
@@ -10,7 +12,9 @@
 
 This function sets the default font to use for future [`scribble()`](scribble-methods) calls.
 
-### `scribble_font_set_style_family(regular, bold, italic, boldItalic)`
+&nbsp;
+
+## `scribble_font_set_style_family(regular, bold, italic, boldItalic)`
 
 **Returns:** N/A (`undefined`)
 
@@ -25,9 +29,7 @@ Associates four fonts together for use with `[r]` `[b]` `[i]` `[bi]` font tags. 
 
 &nbsp;
 
-&nbsp;
-
-### `scribble_font_combine(destinationFontName, sourceFontName, preferSource)`
+## `scribble_font_combine(destinationFontName, sourceFontName, preferSource)`
 
 **Returns:** N/A (`undefined`)
 
@@ -41,10 +43,7 @@ The destination font will be converted to a dictionary look-up. This may slightl
 
 &nbsp;
 
-&nbsp;
-
-
-### `scribble_font_scale(fontName, xscale, yscale)`
+## `scribble_font_scale(fontName, xscale, yscale)`
 
 **Returns:** N/A (`undefined`)
 
@@ -58,9 +57,7 @@ Scales every glyph in a font (including the space character) by the given factor
 
 &nbsp;
 
-&nbsp;
-
-### `scribble_glyph_set(fontName, character, property, value, [relative])`
+## `scribble_glyph_set(fontName, character, property, value, [relative])`
 
 **Returns:** N/A (`undefined`)
 
@@ -86,9 +83,7 @@ Three properties are available:
 
 &nbsp;
 
-&nbsp;
-
-### `scribble_glyph_get(fontName, character, property)`
+## `scribble_glyph_get(fontName, character, property)`
 
 **Returns:** Real-value for the specified property
 
@@ -110,9 +105,7 @@ Three properties are available:
 
 &nbsp;
 
-&nbsp;
-
-### `scribble_font_bake_outline(sourceFontName, newFontName, thickness, samples, color, smooth)`
+## `scribble_font_bake_outline(sourceFontName, newFontName, thickness, samples, color, smooth)`
 
 **Returns:** N/A (`undefined`)
 
@@ -129,9 +122,7 @@ Three properties are available:
 
 &nbsp;
 
-&nbsp;
-
-### `scribble_font_bake_shader(sourceFontName, newFontName, shader, leftPad, topPad, rightPad, bottomPad, separationDelta, smooth, [surfaceSize])`
+## `scribble_font_bake_shader(sourceFontName, newFontName, shader, leftPad, topPad, rightPad, bottomPad, separationDelta, smooth, [surfaceSize])`
 
 **Returns:** N/A (`undefined`)
 
@@ -153,9 +144,7 @@ Three properties are available:
 
 &nbsp;
 
-&nbsp;
-
-### `scribble_font_has_character(fontName, character)`
+## `scribble_font_has_character(fontName, character)`
 
 **Returns:** Boolean, indicating whether the given character is found in the font
 
