@@ -1,0 +1,245 @@
+<!-- HOW TO & TIPS -->
+<!--
+	UPDATING MINOR VERSIONS:
+	1. Just change the `latestVersion` variable to the new version.
+	
+	UPDATING MAJOR VERSIONS: (for example, let's say we are upgrading from v2.4.5 -> v3.0.0)
+	1. Add '2.4.5' to the `otherVersions` array.
+	2. Update the `latestVersion` variable to '3.0.0'.
+	3. Rename the `latest` docs folder to '2.4.5'.
+	4. Create a new docs folder named 'latest' and store your v3.0.0 docs inside there.
+	
+	PREVIEWING CHANGES:
+	- If you'd like to make future modifications to markdown files and preview them before pushing your changes,
+	  you can do so with either Python or Node. If you have Node installed you can install Docsify with
+		'npm i docsify-cli -g' and then navigate to the docs folder and run 'docsify serve'. With Python you
+		can manually serve your docs with 'cd docs && python -m http.server 3000'.
+		More info: https://docsify.js.org/#/quickstart
+	
+	OTHER TIPS:
+	- If you want a different sidebar or navbar for different versions,
+	  you can just copy and paste the _sidebar.md or _navbar.md from the
+		main /docs/ folder into the version folder you'd like and modify it there.
+	- If copying over to other repos, the `.token.name` css style at the bottom
+	  of this document can be removed. As well as the file named `prism-yarn.js`,
+		as that's specific to get proper syntax highlighting working with the yarn language.
+-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Scribble Documentation</title>
+		<link rel="shortcut icon" type="image/jpg" href="assets/favicon.ico" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta
+			name="description"
+			content="Efficient multi-effects text renderer for GameMaker Studio 2.3"
+		/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+		<!-- Theme: Simple Dark -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css" />
+		<link rel="stylesheet" href="https://unpkg.com/dracula-prism/dist/css/dracula-prism.min.css" />
+	</head>
+	<body>
+		<div id="app"></div>
+		<script>
+			/* APP INFO */
+			const appName = 'Scribble';
+			const latestVersion = '8.0';
+			const otherVersions = [];
+
+			/* DOCSIFY CONFIG */
+			window.$docsify = {
+				name:
+					'<a id="home-link" class="app-name-link" data-nosearch href="/"><span id="home-text">' +
+					appName +
+					' Docs</span><br></a>' +
+					'<select id="version-selector" name="version">' +
+					'</select>',
+				nameLink: false,
+				loadSidebar: true,
+				loadNavbar: true,
+				subMaxLevel: 3,
+				relativePath: true,
+				auto2top: true,
+				footer: {
+					pre: '<br><hr>',
+					copy: '<span>' + appName + ' &copy; ' + new Date().getFullYear() + '</span>',
+					auth:
+						'by <a href="https://twitter.com/jujuadams/" target="_blank">JujuAdams</a>' +
+						'<br>Docs created by <a href="https://twitter.com/faultyfunctions/" target="_blank">Faulty</a> ' +
+						'with <a href="https://github.com/docsifyjs/docsify/" target="_blank">Docsify</a>',
+					style: 'text-align: right;',
+				},
+				tabs: {
+					persist: false,
+					sync: false,
+					theme: 'classic',
+					tabComments: false,
+					tabHeadings: true,
+				},
+				copyCode: {
+					buttonText: '📋',
+				},
+				search: {
+					paths: 'auto',
+					namespace: 'scribble',
+					hideOtherSidebarContent: true,
+					depth: 3,
+					pathNamespaces: (() => {
+						let pathNamespacesArray = ['/latest'];
+						for (const version of otherVersions) {
+							pathNamespacesArray.push('/' + version);
+						}
+						return pathNamespacesArray;
+					})(), // Run a self executed function to construct our pathNamespaces
+				},
+				namespaces: [
+					{
+						id: 'version',
+						values: ['latest', ...otherVersions],
+						optional: true,
+						default: 'latest',
+						selector: '#version-selector',
+					},
+				],
+				plugins: [
+					function (hook, vm) {
+						// ENSURE CLICKING THE LOGO TAKES US TO THE CORRECT VERSION DOCS
+						hook.doneEach(() => {
+							var appNameLink = Docsify.dom.find('#home-link');
+
+							if (appNameLink) {
+								appNameLink.href = vm.config.currentNamespace;
+							}
+
+							// ENSURE ANCHOR LINKS WILL STILL SCROLL INTO VIEW AS MANY TIMES AS NEEDED
+							var sidebarLinks = document.getElementsByTagName('a');
+							for (let link of sidebarLinks) {
+								if (Docsify.util.isExternal(link.href) === false) {
+									link.addEventListener('click', e => {
+										// Only trigger hash changes on parent "A" link elements
+										if (e.target.tagName == 'A') {
+											location.hash = '#dummy-hash'; // Dummy hash to change URL
+											history.replaceState(null, null, e.currentTarget.href); // Replace dummy hash so the browser can jump to actual target
+										} else {
+											e.preventDefault();
+											e.stopPropagation();
+											e.currentTarget.click(); // Manually trigger a click event for the current target.
+										}
+									});
+								}
+							}
+						});
+
+						hook.mounted(() => {
+							const versionSelector = Docsify.dom.find('#version-selector');
+
+							// CONSTRUCT DATA FOR OUR VERSION SELECTOR
+							const versionSelections = [];
+							versionSelections.push({ text: 'v' + latestVersion, value: 'latest', isDefault: true });
+							for (const version of otherVersions) {
+								versionSelections.push({
+									text: 'v' + version,
+									value: version,
+									isDefault: false,
+								});
+							}
+
+							// POPULATE VERSION SELECTOR DROP DOWN
+							versionSelections.map((version, index) => {
+								versionSelector.options[index] = new Option(
+									version.text,
+									version.value,
+									version.isDefault
+								);
+							});
+
+							// COLOR THE SIDEBAR ARROWS
+							const themeColor = window
+								.getComputedStyle(document.documentElement)
+								.getPropertyValue('--theme-color');
+
+							document.documentElement.style.setProperty(
+								'--sidebar-nav-pagelink-background-image--collapse',
+								"url(\"data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='11.2' viewBox='0 0 7 11.2'%3E%3Cpath d='M1.5 1.5l4 4.1 -4 4.1' stroke-width='1.5' stroke='" +
+									themeColor +
+									"' fill='none' stroke-linecap='square' stroke-linejoin='miter' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E\")"
+							);
+
+							document.documentElement.style.setProperty(
+								'--sidebar-nav-pagelink-background-image--active',
+								"url(\"data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='11.2' height='7' viewBox='0 0 11.2 7'%3E%3Cpath d='M1.5 1.5l4.1 4 4.1-4' stroke-width='1.5' stroke='" +
+									themeColor +
+									"' fill='none' stroke-linecap='square' stroke-linejoin='miter' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E\")"
+							);
+
+							document.documentElement.style.setProperty(
+								'--sidebar-nav-pagelink-background-image--loaded',
+								"url(\"data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='11.2' height='7' viewBox='0 0 11.2 7'%3E%3Cpath d='M1.5 1.5l4.1 4 4.1-4' stroke-width='1.5' stroke='" +
+									themeColor +
+									"' fill='none' stroke-linecap='square' stroke-linejoin='miter' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E\")"
+							);
+						});
+					},
+				],
+			};
+		</script>
+		<!-- Docsify v4 -->
+		<script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+		<script src="//unpkg.com/docsify-namespaced/dist/docsify-namespaced.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
+		<script src="//unpkg.com/docsify-footer-enh/dist/docsify-footer-enh.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+		<script src="https://unpkg.com/docsify-copy-code@2"></script>
+		<style>
+			:root {
+				/* Theme */
+				--background: #242e33;
+				--theme-hue: 47;
+				--theme-saturation: 100%;
+				--theme-lightness: 47%;
+
+				/* Content */
+				--content-max-width: 62em;
+				--link-color--hover: var(--theme-color);
+				--heading-h1-color: var(--theme-color);
+				--heading-h2-color: var(--theme-color);
+				--heading-h2-border-color: var(--theme-color);
+				--table-head-border-width: 1px;
+				--table-cell-border-width: 1px;
+
+				/* Navbar */
+				--navbar-root-border-color: var(--theme-color);
+				--navbar-root-color: var(--theme-color);
+				--navbar-root-color--hover: var(--background);
+				--navbar-root-background--hover: var(--theme-color);
+				--navbar-root-border-width: 1px;
+				--navbar-root-border-radius: 5px;
+				--navbar-root-padding: 5px;
+				--navbar-root-margin: 0 0 0 1em;
+			}
+			#version-selector {
+				background: var(--base-background-color);
+				color: var(--theme-color);
+				border-color: var(--blockquote-border-color);
+				border-radius: 5px;
+				margin-top: 0.75em;
+				padding: 0 5px;
+			}
+			pre[class*='language-'] {
+				border: 1px solid #1f282d;
+				overflow: auto;
+				position: relative;
+			}
+			a code:hover {
+				color: var(--theme-color) !important;
+			}
+			footer a {
+				text-decoration: none !important;
+				font-weight: bold;
+			}
+		</style>
+	</body>
+</html>
