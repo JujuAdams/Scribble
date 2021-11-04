@@ -2,21 +2,7 @@
 
 &nbsp;
 
-### `scribble_flush_everything()`
-
-**Returns:** N/A (`undefined`)
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Frees all memory that Scribble text elements and text models are currently using. You will not normally need to call this function (Scribble automatically garbage collects resources that haven't been used recently) but it's occasionally useful when you need memory to be available immediately, or you want to make sure memory is being freed.
-
-&nbsp;
-
-&nbsp;
-
-### `scribble_typewriter_add_event(name, function)`
+## `scribble_typewriter_add_event(name, function)`
 
 **Returns:** N/A (`undefined`)
 
@@ -72,9 +58,7 @@ Here, `callbackRumble()` will fetch the parameter from the array and use it to v
 
 &nbsp;
 
-&nbsp;
-
-### `scribble_typewriter_add_character_delay(character, delay)`
+## `scribble_typewriter_add_character_delay(character, delay)`
 
 **Returns:** N/A (`undefined`)
 
@@ -87,9 +71,19 @@ Automatically adds internal [delay tags](Text-Formatting) after specific charact
 
 &nbsp;
 
+## `scribble_flush_everything()`
+
+**Returns:** N/A (`undefined`)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Frees all memory that Scribble text elements and text models are currently using. You will not normally need to call this function (Scribble automatically garbage collects resources that haven't been used recently) but it's occasionally useful when you need memory to be available immediately, or you want to make sure memory is being freed.
+
 &nbsp;
 
-### `scribble_rgb_to_bgr(RGB)`
+## `scribble_rgb_to_bgr(RGB)`
 
 **Returns:** GM-native BGR colour
 
