@@ -12,6 +12,8 @@
 
 This function controls behaviour of the `[wave]` effect across all uses in the text element.
 
+&nbsp;
+
 ## `scribble_anim_shake(size, speed)`
 
 **Returns**: The text element
@@ -22,6 +24,8 @@ This function controls behaviour of the `[wave]` effect across all uses in the t
 |`speed`    |real    |Speed of the animation. Larger numbers cause text to shake faster|
 
 This function controls behaviour of the `[shake]` effect across all uses in the text element.
+
+&nbsp;
 
 ## `scribble_anim_rainbow(weight, speed)`
 
@@ -34,6 +38,8 @@ This function controls behaviour of the `[shake]` effect across all uses in the 
 
 This function controls behaviour of the `[rainbow]` effect across all uses in the text element.
 
+&nbsp;
+
 ## `scribble_anim_wobble(angle, frequency)`
 
 **Returns**: The text element
@@ -45,6 +51,8 @@ This function controls behaviour of the `[rainbow]` effect across all uses in th
 
 This function controls behaviour of the `[wobble]` effect across all uses in the text element.
 
+&nbsp;
+
 ## `scribble_anim_pulse(scale, speed)`
 
 **Returns**: The text element
@@ -55,6 +63,8 @@ This function controls behaviour of the `[wobble]` effect across all uses in the
 |`speed`|real    |Speed of the animation. Larger values will cause text to shrink and grow faster|
 
 This function controls behaviour of the `[pulse]` effect across all uses in the text element.
+
+&nbsp;
 
 ## `scribble_anim_wheel(size, frequency, speed)`
 
@@ -68,6 +78,8 @@ This function controls behaviour of the `[pulse]` effect across all uses in the 
 
 This function controls behaviour of the `[wheel]` effect across all uses in the text element.
 
+&nbsp;
+
 ## `scribble_anim_cycle(speed, saturation, value)`
 
 **Returns**: The text element
@@ -80,6 +92,8 @@ This function controls behaviour of the `[wheel]` effect across all uses in the 
 
 This function controls behaviour of the `[cycle]` effect across all uses in the text element.
 
+&nbsp;
+
 ## `scribble_anim_jitter(minScale, maxScale, speed)`
 
 **Returns**: The text element
@@ -91,6 +105,8 @@ This function controls behaviour of the `[cycle]` effect across all uses in the 
 |`speed`   |real    |Speed of the animation. Larger numbers cause text to shake faster|
 
 This function controls behaviour of the `[jitter]` effect across all uses in the text element.
+
+&nbsp;
 
 ## `scribble_anim_blink(onDuration, offDuration, timeOffset)`
 
