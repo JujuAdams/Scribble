@@ -6,11 +6,11 @@
 
 **Returns:** N/A (`undefined`)
 
-|Name       |Datatype|Purpose                                                                                                                                                                                            |
-|-----------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`fontName` |string  |Name of the font to add, as a string                                                                                                                                                               |
-|`[yyPath]` |string  |File path for the font's .yy file, including the .yy extension, relative to the font directory defined in [`__scribble_config_macros()`](Functions-(Configuration)#__scribble_config_macros)|
-|`[texture]`|texture |Custom texture to use for this font e.g. returned by `sprite_get_texture()`                                                                                                                        |
+|Name       |Datatype|Purpose                                                                                                                                                |
+|-----------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`fontName` |string  |Name of the font to add, as a string                                                                                                                   |
+|`[yyPath]` |string  |File path for the font's .yy file, including the .yy extension, relative to the font directory defined in [`__scribble_config_macros()`](configuration)|
+|`[texture]`|texture |Custom texture to use for this font e.g. returned by `sprite_get_texture()`                                                                            |
 
 Scribble requires that you explicitly initialise fonts for use with Scribble. This is a three-step process:
 
@@ -22,7 +22,7 @@ Scribble requires that you explicitly initialise fonts for use with Scribble. Th
 
 Scribble needs to access information that GameMaker generates. All this information is contained in a single .yy file in the font's folder on disk inside the project directory. This file can sometimes be frustrating to locate, but fortunately there's a shortcut we can take. In the IDE, Navigate to the font resource you wish to add and right click on it. From the drop-down menu, select "Show In Explorer". A window will open showing various files for the font resource. You can drag-and-drop the .yy file into the GameMaker IDE to add it as an Included File.
 
-***Please note** that if you change any font properties then the associated .yy file in Included Files will need to be updated too.*
+_**Please note** that if you change any font properties then the associated .yy file in Included Files will need to be updated too._
 
 &nbsp;
 
@@ -36,7 +36,7 @@ Scribble needs to access information that GameMaker generates. All this informat
 |----|--------|-------|
 |None|        |       |
 
-A convenience function that adds every normal font in your project to Scribble. Accordingly, you must follow the instructions for [`scribble_font_add()`](Functions-(Font-Setup)#scribble_font_addfontname-yypath-texture) for every font in your project.
+A convenience function that adds every normal font in your project to Scribble. Accordingly, you must follow the instructions for [`scribble_font_add()`](font-setup?id=scribble_font_addfontname-yypath-texture) for every font in your project.
 
 &nbsp;
 
@@ -67,7 +67,7 @@ Sprites used for spritefonts have specific requirements that must be met for Scr
 
 If your characters are drawn partially garbled, try placing the spritefont in its own texture group.
 
-Unlike [standard fonts](Functions-(Font-Setup)#scribble_font_addfontname-yypath-texture), spritefonts do **not** need to have any files added as Included Files. Spritefonts will **not** be added by [`scribble_font_add_all()`](Functions-(Font-Setup)#scribble_font_add_all).
+Unlike [standard fonts](Functions-(Font-Setup)#scribble_font_addfontname-yypath-texture), spritefonts do **not** need to have any files added as Included Files. Spritefonts will **not** be added by [`scribble_font_add_all()`](font-setup?id=scribble_font_add_all).
 
 &nbsp;
 
@@ -83,7 +83,7 @@ Unlike [standard fonts](Functions-(Font-Setup)#scribble_font_addfontname-yypath-
 |`sprite`  |sprite  |Sprite that contains the MSDF atlas                                        |
 |`jsonName`|string  |JSON source file to read glyph data from, usually added as an Included File|
 
-Please read [the MSDF article](MSDF-Fonts) for more information on generating and adding MSDF fonts to Scribble.
+Please read [the MSDF article](msdf-fonts) for more information on generating and adding MSDF fonts to Scribble.
 
 &nbsp;
 
@@ -97,4 +97,4 @@ Please read [the MSDF article](MSDF-Fonts) for more information on generating an
 |-----------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |`fontName` |string  |Name of the font to set as the default, as a string                                                                                                                                                               |
 
-This function sets the default font to use for future [`scribble()`](scribble()-Methods) calls.
+This function sets the default font to use for future [`scribble()`](scribble-methods) calls.
