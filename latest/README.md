@@ -26,7 +26,7 @@ There are a multitude of very useful features available:
 
 ## About & Support
 
-If you'd like to report a bug or suggest a feature, please use the repo's [Issues page](https://github.com/JujuAdams/scribble/issues). Chatterbox is constantly being maintained and upgraded; bugs are usually addressed within a few days of being reported.
+If you'd like to report a bug or suggest a feature, please use the repo's [Issues page](https://github.com/JujuAdams/scribble/issues). Scribble is constantly being maintained and upgraded; bugs are usually addressed within a few days of being reported.
 
 Scribble supports all GameMaker export modules, including consoles, with the exception that **HTML5 is not supported** due to [bugs in GameMaker's JavaScript runner](https://github.com/JujuAdams/scribble/issues/18).
 
