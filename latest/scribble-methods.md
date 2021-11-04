@@ -6,11 +6,11 @@
 
 When you call `scribble()`, the function searches Scribble's internal cache and will return the text element that matches the string you gave the function (and also matches the unique ID too, if you specified one). If the cache doesn't contain a matching string then a new text element is created and returned instead.
 
-**N.B. That even small changes in a string may cause a new text element to be generated.** Scribble is pretty fast, but you don't want to use it for text that changes rapidly (e.g. health points, money, or score) as this will cause Scribble to do a lot of work, potentially slowing down your game.
+**Even small changes in a string may cause a new text element to be generated automatically.** Scribble is pretty fast, but you don't want to use it for text that changes rapidly (e.g. health points, money, or score) as this will cause Scribble to do a lot of work, potentially slowing down your game.
 
 Each text element can be altered by calling methods, a new feature in [GMS2.3.0](https://www.yoyogames.com/blog/549/gamemaker-studio-2-3-new-gml-features). Most methods return the text element itself. This allows you to chain methods together, achieving a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Some methods are marked as "regenerator methods". Setting new, different values for a piece of text using a regenerator method will cause Scribble to regenerate the underlying vertex buffers. For the sake of performance, avoid frequently changing values for regenerator methods as this will cause performance problems.
 
-Don't worry about clearing up after yourself when you draw text - Scribble automatically manages memory for you. If you *do* want to manually control how memory is used, please use the [`.flush()`](scribble()-Methods#flush) method and [`scribble_flush_everything()`](Functions-(Miscellaneous)#scribble_flush_everything). Please be aware that it is not possible to serialise/deserialise Scribble text elements for e.g. a save system.
+Don't worry about clearing up after yourself when you draw text - Scribble automatically manages memory for you. If you *do* want to manually control how memory is used, please use the [`.flush()`](scribble-methods?id=flush) method and [`scribble_flush_everything()`](misc-functions?id=scribble_flush_everything). Please be aware that it is not possible to serialise/deserialise Scribble text elements for e.g. a save system.
 
 &nbsp;
 
@@ -21,13 +21,13 @@ Don't worry about clearing up after yourself when you draw text - Scribble autom
 |Name        |Datatype      |Purpose               |
 |------------|--------------|----------------------|
 |`[string]`  |string        |String to draw        |
-|`[uniqueID]`|string or real|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_UNIQUE_ID`](Functions-(Configuration)#__scribble_config_macros)|
+|`[uniqueID]`|string or real|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_UNIQUE_ID`](configuration)|
 
-If no string is specified (i.e. the function used with arguments), this function will return a **unique** text element that contains no text data (even if no unique ID is given). The text in any text element, including empty ones, can be overwritten using the [`.overwrite()`](scribble()-Methods#overwritestring-regenerator) method.
+If no string is specified (i.e. the function used with arguments), this function will return a **unique** text element that contains no text data (even if no unique ID is given). The text in any text element, including empty ones, can be overwritten using the [`.overwrite()`](scribble-methods?id=overwritestring-regenerator) method.
 
-Scribble allows for many kinds of inline formatting tags. Please read the [Text Formatting](Text-Formatting) article for more information.
+Scribble allows for many kinds of inline formatting tags. Please read the [Text Formatting](text-formatting) article for more information.
 
-**N.B.** Scribble text elements have **no publicly accessible variables**. Do not directly read or write variables, use the setter and getter methods provided instead.
+?> Scribble text elements have **no publicly accessible variables**. Do not directly read or write variables, use the setter and getter methods provided instead.
 
 &nbsp;
 
@@ -50,7 +50,7 @@ Text element methods are broken down into several categories. There's a lot here
 |`x` |real    |x position in the room to draw at|
 |`y` |real    |y position in the room to draw at|
 
-Draws your text! This function will automatically build the required text model if required. For very large amounts of text this may cause a slight hiccup in your framerate - to avoid this, split your text into smaller pieces or manually call the [`.build()`](scribble()-Methods#buildfreeze) method during a loading screen etc.
+Draws your text! This function will automatically build the required text model if required. For very large amounts of text this may cause a slight hiccup in your framerate - to avoid this, split your text into smaller pieces or manually call the [`.build()`](scribble-methods?id=buildfreeze) method during a loading screen etc.
 
 &nbsp;
 
@@ -63,7 +63,7 @@ Draws your text! This function will automatically build the required text model 
 |`fontName`|string  |Name of the starting font, as a string. This is the font that is set when `[/]` or `[/font]` is used in a string                        |
 |`colour`  |integer |Starting colour in the standard GameMaker 24-bit BGR format. This is the colour that is set when `[/]` or `[/color]` is used in a string|
 
-Sets the starting font and text colour for your text. The values that are set with `.starting_format()` are applied if you use the [`[/] or [/f] or [/c]` command tags](Text-Formatting) to reset your text format.
+Sets the starting font and text colour for your text. The values that are set with `.starting_format()` are applied if you use the [`[/] or [/f] or [/c]` command tags](text-formatting) to reset your text format.
 
 &nbsp;
 
@@ -108,7 +108,7 @@ Sets the blend colour/alpha, which is applied at the end of the drawing pipeline
 |`x` |real    |x-coordinate of the origin, in model space|
 |`y` |real    |y-coordinate of the origin, in model space|
 
-Sets the origin relative to the top-left corner of the text element. You can think of this similarly to a standard sprite's origin as set in the GameMaker IDE. Using this function with [`.get_width()`](scribble()-Methods#get_width) and [`.get_height()`](scribble()-Methods#get_height) will allow you to align the entire textbox as you see fit. Please note that this function may interact in unexpected ways with in-line alignment commands so some trial and error is necessary to get the effect you're looking for.
+Sets the origin relative to the top-left corner of the text element. You can think of this similarly to a standard sprite's origin as set in the GameMaker IDE. Using this function with [`.get_width()`](scribble-methods?id=get_width) and [`.get_height()`](scribble-methods?id=get_height) will allow you to align the entire textbox as you see fit. Please note that this function may interact in unexpected ways with in-line alignment commands so some trial and error is necessary to get the effect you're looking for.
 
 &nbsp;
 
@@ -122,7 +122,7 @@ Sets the origin relative to the top-left corner of the text element. You can thi
 |`yscale`|real    |y scale of the text element       |
 |`angle` |real    |rotation angle of the text element|
 
-Rotates and scales a text element relative to the origin (set by [`.origin()`](scribble()-Methods#originx-y)).
+Rotates and scales a text element relative to the origin (set by [`.origin()`](scribble-methods?id=originx-y)).
 
 &nbsp;
 
@@ -136,7 +136,7 @@ Rotates and scales a text element relative to the origin (set by [`.origin()`](s
 |`[maxHeight]`    |integer |Maximum height for the whole textbox. Use a negative number (the default) for no limit                                                          |
 |`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for tight textboxes and some East Asian languages|
 
-Instructs Scribble to fit text inside a box by automatically inserting line breaks and page breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/draw_text_ext.html). If text exceeds the horizontal maximum width then text will be pushed onto the next line. If text exceeds the maximum height of the textbox then a new page will be created (see [`.page()`](scribble()-Methods#pagepage) and [`.get_page()`](scribble()-Methods#get_page)). Very long sequences of glyphs without spaces will be split across multiple lines.
+Instructs Scribble to fit text inside a box by automatically inserting line breaks and page breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/draw_text_ext.html). If text exceeds the horizontal maximum width then text will be pushed onto the next line. If text exceeds the maximum height of the textbox then a new page will be created (see [`.page()`](scribble-methods?id=pagepage) and [`.get_page()`](scribble-methods?id=get_page)). Very long sequences of glyphs without spaces will be split across multiple lines.
 
 &nbsp;
 
@@ -152,7 +152,7 @@ Instructs Scribble to fit text inside a box by automatically inserting line brea
 
 Fits text to a box by inserting line breaks and scaling text but **will not** insert any page breaks. Text will take up as much space as possible without starting a new page. The macro `SCRIBBLE_FIT_TO_BOX_ITERATIONS` controls how many iterations to perform (higher is slower but more accurate).
 
-**N.B. This function is very slow and should be used sparingly. It is recommended you manually cache text elements when using `.fit_to_box()`.**
+!> N.B. This function is very slow and should be used sparingly. It is recommended you manually cache text elements when using `.fit_to_box()`.
 
 &nbsp;
 
@@ -186,9 +186,9 @@ Sets limits on the height of each line for the text element. This is useful when
 
 This function defines a [cubic Bézier curve](https://en.wikipedia.org/wiki/B%C3%A9zier_curve) to shape text to. The four x/y coordinate pairs provide a smooth curve that Scribble uses as a guide to position and rotate glyphs.
 
-**The curve is positioned relative to the coordinate specified when calling** [`.draw()`](scribble()-Methods#drawx-y) **so that the first Bézier coordinate is at the draw coordinate**. This enables you to move a curve without re-adjusting the values set in `.bezier()` (which would regenerate the text element, likely causing performance problems).
+**The curve is positioned relative to the coordinate specified when calling** [`.draw()`](scribble-methods?id=drawx-y) **so that the first Bézier coordinate is at the draw coordinate**. This enables you to move a curve without re-adjusting the values set in `.bezier()` (which would regenerate the text element, likely causing performance problems).
 
-If used in conjunction with [`.wrap()`](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator), the total length of the curve is used to wrap text horizontally and overrides the value specified in [`.wrap()`](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator). `.bezier()` will not work with `[fa_right]` or `[fa_center]` alignment. Instead, you should use `[pin_right]` and `[pin_center]`.
+If used in conjunction with [`.wrap()`](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator), the total length of the curve is used to wrap text horizontally and overrides the value specified in [`.wrap()`](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator). `.bezier()` will not work with `[fa_right]` or `[fa_center]` alignment. Instead, you should use `[pin_right]` and `[pin_center]`.
 
 This function can also be executed with zero arguments (e.g. `scribble("text").bezier()`) to turn off the Bézier curve for this text element.
 
@@ -208,9 +208,9 @@ This function can also be executed with zero arguments (e.g. `scribble("text").b
 |------|--------|-------------------------------------------------|
 |`page`|integer |Page to display, starting at 0 for the first page|
 
-Changes which page Scribble is display for the text element. Pages are created when using the [`.wrap()` method](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator) or when inserting [`[/page] command tags`](Text-Formatting) into your input string. Pages are 0-indexed.
+Changes which page Scribble is display for the text element. Pages are created when using the [`.wrap()` method](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) or when inserting [`[/page] command tags`](text-formatting) into your input string. Pages are 0-indexed.
 
-Please note that changing the page will reset any typewriter animations i.e. those started by [`.typewriter_in()`](scribble()-Methods#typewriter_inspeed-smoothness) and [`typewriter_out()`](scribble()-Methods#typewriter_outspeed-smoothness).
+Please note that changing the page will reset any typewriter animations i.e. those started by [`.typewriter_in()`](scribble-methods?id=typewriter_inspeed-smoothness) and [`typewriter_out()`](scribble-methods?id=typewriter_outspeed-smoothness-backwards).
 
 &nbsp;
 
@@ -222,7 +222,7 @@ Please note that changing the page will reset any typewriter animations i.e. tho
 |----|--------|-------|
 |None|        |       |
 
-Returns which page Scribble is showing, as set by [`.page()`](scribble()-Methods#pagepage). Pages are 0-indexed; this function will return `0` for the first page.
+Returns which page Scribble is showing, as set by [`.page()`](scribble-methods?id=pagepage). Pages are 0-indexed; this function will return `0` for the first page.
 
 &nbsp;
 
@@ -264,7 +264,7 @@ Convenience function.
 |----|--------|-------|
 |None|        |       |
 
-Turns off the typewriter effect and displays all text. [Typewriter events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) will **not** be executed.
+Turns off the typewriter effect and displays all text. [Typewriter events](misc-functions?id=scribble_typewriter_add_eventname-function) will **not** be executed.
 
 &nbsp;
 
@@ -291,7 +291,7 @@ Resets the position of the typewriter animation for the current page.
 
 The `smoothness` argument offers some customisation for how text fades in. A high value will cause text to be smoothly faded in whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades in.
 
-[Events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) (in-line scripts) will be executed as text fades in. This is a powerful tool and can be used to achieve many things, including triggering sound effects, changing character portraits, starting movement of instances, starting weather effects, giving the player items, and so on.
+[Events](misc-functions?id=scribble_typewriter_add_eventname-function) (in-line functions) will be executed as text fades in. This is a powerful tool and can be used to achieve many things, including triggering sound effects, changing character portraits, starting movement of instances, starting weather effects, giving the player items, and so on.
 
 &nbsp;
 
@@ -307,7 +307,7 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 
 The `smoothness` argument offers some customisation for how text fades out. A high value will cause text to be smoothly faded out whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades out.
 
-[Events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) will **not** be executed as text fades out.
+[Events](misc-functions?id=scribble_typewriter_add_eventname-function) will **not** be executed as text fades out.
 
 &nbsp;
 
@@ -412,7 +412,7 @@ Pauses the typewriter effect.
 |----|--------|-------|
 |None|        |       |
 
-Unpauses the typewriter effect. This is helpful when combined with the [`[pause]` command tag](Text-Formatting) and [`.get_typewriter_paused()`](scribble()-Methods#get_typewriter_paused).
+Unpauses the typewriter effect. This is helpful when combined with the [`[pause]` command tag](text-formatting) and [`.get_typewriter_paused()`](scribble-methods?id=get_typewriter_paused).
 
 &nbsp;
 
@@ -537,13 +537,13 @@ Returns the raw height of the text element. This will **not** take into account 
 
 ### `.get_wrapped()`
 
-**Returns:** Boolean, whether the text has wrapped onto a new line using the [`.wrap()` feature](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator)
+**Returns:** Boolean, whether the text has wrapped onto a new line using the [`.wrap()` feature](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator)
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
 |None|        |       |
 
-Will return `true` only if the [`.wrap()` feature](scribble()-Methods#wrapmaxwidth-maxheight-characterwrap-regenerator) is used. Manual newlines (`\n`) included in the input string will **not** cause this function to return `true`.
+Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) is used. Manual newlines (`\n`) included in the input string will **not** cause this function to return `true`.
 
 &nbsp;
 
@@ -585,7 +585,7 @@ This function controls the animation speed of all animation effects. It, however
 
 Syncing a text element to another will overwrite the current values. Be careful how you sync your text elements! Animation state is updated when a text element is drawn so make sure to sync your text element once every frame/step before the source text element is drawn.
 
-When copying the animation state, the animation time and the animation tick speed ([`.animation_tick_speed()`](https://github.com/JujuAdams/ScribbleNewDocs/wiki/scribble()-Methods#animation_tick_speedtickspeed)) will be copied. Animation appearance properties themselves won't be copied. To share animation behaviours between elements, please use templates ([`.template()`](scribble()-Methods#templatefunction)).
+When copying the animation state, the animation time and the animation tick speed ([`.animation_tick_speed()`](scribble-methods?id=animation_tick_speedtickspeed)) will be copied. Animation appearance properties themselves won't be copied. To share animation behaviours between elements, please use templates ([`.template()`](scribble()-Methods?id=templatefunction-executeonlyonchange)).
 
 &nbsp;
 
@@ -730,7 +730,7 @@ This function controls behaviour of the `[blink]` effect across all uses in the 
 |`xoffset`|real    |x-coordinate of the shadow, relative to the parent glyph                   |
 |`yoffset`|real    |y-coordinate of the shadow, relative to the parent glyph                   |
 
-Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all. If you find that your shadow(s) are being clipped or cut off when using large offset values, [regenerate your MSDF fonts](MSDF-Fonts) using a larger `pxrange`.
+Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all. If you find that your shadow(s) are being clipped or cut off when using large offset values, [regenerate your MSDF fonts](msdf-fonts) using a larger `pxrange`.
 
 &nbsp;
 
@@ -743,7 +743,7 @@ Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alp
 |`colour`   |integer |Colour of the glyph's border, as a standard GameMaker 24-bit BGR format|
 |`thickness`|real    |Thickness of the border, in pixels                                     |
 
-Sets the colour and thickness for a procedural MSDF border. Setting the thickness to `0` will prevent the border from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, [regenerate your MSDF fonts](MSDF-Fonts) using a larger `pxrange`.
+Sets the colour and thickness for a procedural MSDF border. Setting the thickness to `0` will prevent the border from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, [regenerate your MSDF fonts](msdf-fonts) using a larger `pxrange`.
 
 &nbsp;
 
@@ -882,4 +882,4 @@ Forces the colour of all text (and sprites) to change to the given specified col
 |-------|--------|-------|
 |`state`|boolean |       |
 
-Directs Scribble to ignore all [command tags](Text-Formatting) in the string.
+Directs Scribble to ignore all [command tags](text-formatting) in the string.
