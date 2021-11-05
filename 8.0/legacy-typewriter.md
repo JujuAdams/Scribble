@@ -1,5 +1,7 @@
 # Legacy Typewriter Functions
 
+!> These are legacy methods for text elements created by `scribble()`. Please avoid using these functions and use [`scribble_typist()`](typist-methods) instead as the functions on this page will be removed in a future release.
+
 ## `.typewriter_off()`
 
 **Returns**: The text element
