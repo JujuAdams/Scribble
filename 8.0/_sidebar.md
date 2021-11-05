@@ -19,4 +19,4 @@
 -   [Animation Properties](animation-properties)
 -   [Fonts](fonts)
 -   [Misc Functions](misc-functions)
--   [(Legacy Typewriter)](legacy-typewriter)
+-   [*Legacy Typewriter*](legacy-typewriter)
