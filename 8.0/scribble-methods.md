@@ -74,6 +74,8 @@ Sets the starting horizontal and vertical alignment for your text. You can chang
 
 &nbsp;
 
+# Colour
+
 ## `.blend(colour, alpha)`
 
 **Returns**: The text element
@@ -84,6 +86,32 @@ Sets the starting horizontal and vertical alignment for your text. You can chang
 |`alpha` |real    |Alpha used when drawing text, 0 being fully transparent and 1 being fully opaque|
 
 Sets the blend colour/alpha, which is applied at the end of the drawing pipeline. This is a little different to the interaction between [`draw_set_color()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/colour/draw_set_colour.html) and [`draw_text()` functions](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/). Scribble's blend colour is instead similar to [`draw_sprite_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/sprites_and_tiles/draw_sprite_ext.html)'s behaviour: The blend colour/alpha is applied multiplicatively with the source colour, in this case the source colour is whatever colour has been set using formatting tags in the input text string.
+
+&nbsp;
+
+## `.fog(colour, alpha)`
+
+**Returns**: The text element
+
+|Name    |Datatype|Purpose                                                |
+|--------|--------|-------------------------------------------------------|
+|`colour`|integer |Fog colour, in the standard GameMaker 24-bit BGR format|
+|`alpha` |real    |Blending factor for the fog, from 0 to 1               |
+
+Forces the colour of all text (and sprites) to change to the given specified colour.
+
+&nbsp;
+
+## `.gradient(colour, blendFactor)`
+
+**Returns**: The text element
+
+|Name         |Datatype|Purpose                                                                                                                                          |
+|-------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+|`colour`     |integer |Colour of the **bottom** of the gradient for each glyph                                                                                          |
+|`blendFactor`|real    |Blending factor for the gradient, from `0` (no gradient applied) to `1` (base blend colour of the bottom of each glyph is replaced with `colour`)|
+
+Sets up a gradient blend for each glyph in the text element. The base blend colour (defined by a combination of `.blend()` and in-line colour modification) is the top of the gradient and the colour defined by this method is the bottom of the gradient.
 
 &nbsp;
 
@@ -479,19 +507,6 @@ scribble("This text is red and will be wrapped inside a box that's 150px wide.")
 |`string`|string  |New string to display using the text element|
 
 Replaces the string in an existing text element whilst maintaining the animation, typewriter, and page state. This function may cause a recaching of the underlying text model so should be used sparingly.
-
-&nbsp;
-
-## `.fog(colour, alpha)`
-
-**Returns**: The text element
-
-|Name    |Datatype|Purpose                                                |
-|--------|--------|-------------------------------------------------------|
-|`colour`|integer |Fog colour, in the standard GameMaker 24-bit BGR format|
-|`alpha` |real    |Blending factor for the fog, from 0 to 1               |
-
-Forces the colour of all text (and sprites) to change to the given specified colour.
 
 &nbsp;
 
