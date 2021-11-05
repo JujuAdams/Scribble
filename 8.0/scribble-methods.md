@@ -404,7 +404,7 @@ Convenience function.
 
 # MSDF
 
-!> MSDF fonts require special considerations. Please read [the MSDF article](msdf-fonts) for more information.
+?> MSDF fonts require special considerations. Please read [the MSDF article](msdf-fonts) for more information.
 
 ## `.msdf_shadow(colour, alpha, xoffset, yoffset)`
 
