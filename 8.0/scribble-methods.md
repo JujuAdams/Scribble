@@ -220,6 +220,94 @@ This function can also be executed with zero arguments (e.g. `scribble("text").b
 
 &nbsp;
 
+# Getters
+
+## `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
+
+**Returns:** Struct containing the positions of the bounding box for a text element
+
+|Name         |Datatype|Purpose                                                                                            |
+|-------------|--------|---------------------------------------------------------------------------------------------------|
+|`[x]`        |real    |x position in the room. Defaults to 0                                                              |
+|`[y]`        |real    |y position in the room. Defaults to 0                                                              |
+|`[leftPad]`  |real    |Extra space on the left-hand side of the textbox. Positive values create more space. Defaults to 0 |
+|`[topPad]`   |real    |Extra space on the top of the textbox. Positive values create more space. Defaults to 0            |
+|`[rightPad]` |real    |Extra space on the right-hand side of the textbox. Positive values create more space. Defaults to 0|
+|`[bottomPad]`|real    |Extra space on the bottom of the textbox. Positive values create more space. Defaults to 0         |
+
+The struct returned by `.get_bbox()` contains the following member variables:
+
+|Variable        |Purpose                                |
+|----------------|---------------------------------------|
+|**Axis-aligned**|                                       |
+|`left`          |Axis-aligned lefthand boundary         |
+|`top`           |Axis-aligned top boundary              |
+|`right`         |Axis-aligned righthand boundary        |
+|`bottom`        |Axis-aligned bottom boundary           |
+|`width`         |Axis-aligned width of the bounding box |
+|`height`        |Axis-aligned height of the bounding box|
+|**Oriented**    |                                       |
+|`x0`            |x position of the top-left corner      |
+|`y0`            |y position of the top-left corner      |
+|`x1`            |x position of the top-right corner     |
+|`y1`            |y position of the top-right corner     |
+|`x2`            |x position of the bottom-left corner   |
+|`y2`            |y position of the bottom-left corner   |
+|`x3`            |x position of the bottom-right corner  |
+|`y3`            |y position of the bottom-right corner  |
+
+&nbsp;
+
+## `.get_width()`
+
+**Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Returns the raw width of the text element. This will **not** take into account rotation or scaling - this function returns the width value that Scribble uses internally.
+
+&nbsp;
+
+## `.get_height()`
+
+**Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Returns the raw height of the text element. This will **not** take into account rotation or scaling - this function returns the height value that Scribble uses internally.
+
+&nbsp;
+
+## `.get_wrapped()`
+
+**Returns:** Boolean, whether the text has wrapped onto a new line using the [`.wrap()` feature](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) is used. Manual newlines (`\n`) included in the input string will **not** cause this function to return `true`.
+
+&nbsp;
+
+## `.get_line_count([page])`
+
+**Returns:** Integer, how many lines of text are on the given page
+
+|Name    |Datatype|Purpose                                                                                  |
+|--------|--------|-----------------------------------------------------------------------------------------|
+|`[page]`|Integer |Page to retrieve the number of lines for. Defaults to the current page that's being shown|
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
 # Pages
 
 ## `.page(page)`
@@ -304,87 +392,9 @@ Convenience function.
 
 &nbsp;
 
-# Getters
+# Animation
 
-## `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
-
-**Returns:** Struct containing the positions of the bounding box for a text element
-
-|Name         |Datatype|Purpose                                                                                            |
-|-------------|--------|---------------------------------------------------------------------------------------------------|
-|`[x]`        |real    |x position in the room. Defaults to 0                                                              |
-|`[y]`        |real    |y position in the room. Defaults to 0                                                              |
-|`[leftPad]`  |real    |Extra space on the left-hand side of the textbox. Positive values create more space. Defaults to 0 |
-|`[topPad]`   |real    |Extra space on the top of the textbox. Positive values create more space. Defaults to 0            |
-|`[rightPad]` |real    |Extra space on the right-hand side of the textbox. Positive values create more space. Defaults to 0|
-|`[bottomPad]`|real    |Extra space on the bottom of the textbox. Positive values create more space. Defaults to 0         |
-
-The struct returned by `.get_bbox()` contains the following member variables:
-
-|Variable        |Purpose                                |
-|----------------|---------------------------------------|
-|**Axis-aligned**|                                       |
-|`left`          |Axis-aligned lefthand boundary         |
-|`top`           |Axis-aligned top boundary              |
-|`right`         |Axis-aligned righthand boundary        |
-|`bottom`        |Axis-aligned bottom boundary           |
-|`width`         |Axis-aligned width of the bounding box |
-|`height`        |Axis-aligned height of the bounding box|
-|**Oriented**    |                                       |
-|`x0`            |x position of the top-left corner      |
-|`y0`            |y position of the top-left corner      |
-|`x1`            |x position of the top-right corner     |
-|`y1`            |y position of the top-right corner     |
-|`x2`            |x position of the bottom-left corner   |
-|`y2`            |y position of the bottom-left corner   |
-|`x3`            |x position of the bottom-right corner  |
-|`y3`            |y position of the bottom-right corner  |
-
-&nbsp;
-
-## `.get_width()`
-
-**Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Returns the raw width of the text element. This will **not** take into account rotation or scaling - this function returns the width value that Scribble uses internally.
-
-&nbsp;
-
-## `.get_height()`
-
-**Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Returns the raw height of the text element. This will **not** take into account rotation or scaling - this function returns the height value that Scribble uses internally.
-
-&nbsp;
-
-## `.get_wrapped()`
-
-**Returns:** Boolean, whether the text has wrapped onto a new line using the [`.wrap()` feature](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator)
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) is used. Manual newlines (`\n`) included in the input string will **not** cause this function to return `true`.
-
-&nbsp;
-
-## `.get_line_count([page])`
-
-**Returns:** Integer, how many lines of text are on the given page
-
-|Name    |Datatype|Purpose                                                                                  |
-|--------|--------|-----------------------------------------------------------------------------------------|
-|`[page]`|Integer |Page to retrieve the number of lines for. Defaults to the current page that's being shown|
+!> The old animation methods have been moved to global scope. Please see the [Animation Properties](animation-properties) page for details.
 
 &nbsp;
 
