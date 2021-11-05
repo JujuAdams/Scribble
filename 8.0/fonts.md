@@ -8,9 +8,20 @@
 
 |Name       |Datatype|Purpose                                                                                                                                                                                            |
 |-----------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`fontName` |string  |Name of the font to set as the default, as a string                                                                                                                                                               |
+|`fontName` |string  |Name of the font to set as the default, as a string                                                                                                                                                |
 
 This function sets the default font to use for future [`scribble()`](scribble-methods) calls.
+
+&nbsp;
+
+## `scribble_font_rename(oldName, newName)`
+
+**Returns:** N/A (`undefined`)
+
+|Name        |Datatype|Purpose                   |
+|------------|--------|--------------------------|
+|`oldName`   |string  |Name of the font to rename|
+|`newName`   |string  |New name for the font     |
 
 &nbsp;
 
@@ -141,6 +152,18 @@ Three properties are available:
 |`[surfaceSize]`  |integer |Size of the surface to use. Defaults to 2048x2048                                  |
 
 `scribble_bake_shader()` creates a new font using a source font. The source font is passed through the given shader, character by character, using the parameters provided.
+
+&nbsp;
+
+## `scribble_font_scale(fontName, xScale, yScale)`
+
+**Returns:** N/A (`undefined`)
+
+|Name       |Datatype|Purpose                              |
+|-----------|--------|-------------------------------------|
+|`fontName` |string  |Name of the font to target           |
+|`xScale`   |number  |Scaling factor to apply in the x axis|
+|`yScale`   |number  |Scaling factor to apply in the y axis|
 
 &nbsp;
 
