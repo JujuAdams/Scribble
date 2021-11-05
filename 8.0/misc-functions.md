@@ -1,4 +1,14 @@
-# Miscellaneous Functions
+# Miscellaneous 
+
+&nbsp;
+
+## `scribble_is_text_element(value)`
+
+**Returns:** Boolean, whether the provided value is a Scribble text element
+
+|Name   |Datatype|Purpose      |
+|-------|--------|-------------|
+|`value`|any     |Value to test|
 
 &nbsp;
 
