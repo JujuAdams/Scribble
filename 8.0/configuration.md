@@ -54,7 +54,7 @@ This script holds a number of macros that customise the behaviour of Scribble. `
 
 This script holds custom colours that you can reference by name for many Scribble functions. `__scribble_config_colours()` never needs to be directly called in your code.
 
-This function is called on boot to initialise the library, and you should edit this script to customise Scribble for your own purposes.
+?> This function is called on boot to initialise the library, and you should edit this script to customise Scribble for your own purposes.
 
 &nbsp;
 
