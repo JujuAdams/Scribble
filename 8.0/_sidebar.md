@@ -7,6 +7,7 @@
 -   [Setting Up](setting-up)
 -   [Coming from Native GM](coming-from-native-gm)
 -   [Text Formatting](text-formatting)
+-   [How Does It Work?](how-does-it-work)
 -   [MSDF Fonts](msdf-fonts)
 
 ---
