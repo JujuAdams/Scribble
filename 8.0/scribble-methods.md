@@ -276,6 +276,34 @@ Convenience function.
 
 &nbsp;
 
+# Typewriter
+
+?> The old typewriter methods [have been deprecated](legacy-typewriter). Instead, please use [`scribble_typist()`](typist-methods). You may also use the following two functions for very simple typewriter effects.
+
+## `.reveal(character)`
+
+**Returns:** The text element
+
+|Name       |Datatype|Purpose                           |
+|-----------|--------|----------------------------------|
+|`character`|number  |The number of characters to reveal|
+
+&nbsp;
+
+## `.get_reveal()`
+
+**Returns:** Number, the amount of characters revealled, as set by `.reveal()`
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
 # Getters
 
 ## `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
