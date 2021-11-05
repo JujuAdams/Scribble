@@ -1,5 +1,17 @@
 # Animation Properties
 
+?> These functions are global in scope. Once an animation property is set, it will affect **every** Scribble text element that gets drawn until that property is adjusted again. `scribble_anim_reset()` is provided to conveniently restore animation properties to their defaults.
+
+&nbsp;
+
+## `scribble_anim_reset()`
+
+**Returns**: N/A (`undefined`)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
 &nbsp;
 
 ## `scribble_anim_wave(size, frequency, speed)`
