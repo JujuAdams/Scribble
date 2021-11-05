@@ -1,5 +1,7 @@
 # `scribble_typist()` Methods
 
+&nbsp;
+
 ## `scribble_typist()`
 
 **Returns:** Struct, an instance of `__scribble_class_typist`
@@ -10,7 +12,8 @@
 
 Typewriter behaviour is controlled using a "typist". A typist is a unique (non-cached) machine that controls how your text is revealed and how events are executed as text is revealed. For example, you should create one typist per textbox. Typists are created by calling `scribble_typist()` and are garbage collected automatically. Typists can be used with a text element by targetting the typist with the text element's `.draw()` method. For example:
 
-```///Create
+```GML
+///Create
 typist = scribble_typist();
 typist.in(1, 0);
 
