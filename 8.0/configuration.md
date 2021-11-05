@@ -2,10 +2,6 @@
 
 &nbsp;
 
-Scribble has three scripts that are used to configure the library. **You should edit these scripts to customise Scribble for your own purposes.**
-
-&nbsp;
-
 ## `__scribble_config_macros()`
 
 **Returns:** N/A (`undefined`)
