@@ -12,7 +12,7 @@
 |----|--------|-------|
 |None|        |       |
 
-Restores animation properties to the defaults set in `__scribble_config_animation()`.
+Restores animation properties to the defaults set in [`__scribble_config_animation()`](configuration).
 
 &nbsp;
 
