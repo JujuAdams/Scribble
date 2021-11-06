@@ -18,7 +18,7 @@ UTF-8 isn't perfect but, 90% of the time, its simplicity allows to draw text fro
 
 ## Font Rasterization and Glyphs
 
-Font authoring is a highly specialist field with a [myriad terms](https://www.monotype.com/resources/studio/typography-terms). I don't understand all of them myself and, even if I did, it would be overkill to explain it all here. To draw text in GameMaker we don't need to be fully fluent in the lingo nor do we need to understand how exactly to design and create fonts ourselves. What we do need to know, however, is the process that GameMaker uses to render fonts.
+Font authoring is a highly specialist field with a [myriad terms](https://www.monotype.com/resources/studio/typography-terms). I don't understand all of them myself and, even if I did, it would be overkill to explain it all here. To understand text in GameMaker we don't need to be fully fluent in the lingo nor do we need to understand how exactly to design and create fonts ourselves. What we do need to know, however, is the process that GameMaker uses to render fonts.
 
 Fonts are defined using geometric shapes that can be scaled up and down to whatever size you want. There's a lot of nuance as to how that happens (espeically at low resolutions) because those pure geometric shapes have to be crushed down to pixels to be drawn. This is called **rasterization** and it's a relatively slow process. You definitely *can* perform rasterization in realtime but it doesn't leave you much CPU time for anything else, like, for example, the game part of your game.
 
