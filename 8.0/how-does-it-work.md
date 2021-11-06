@@ -14,7 +14,7 @@ Each byte holds a value from 0 to 255. Clearly this isn't enough to describe eve
 
 Within UTF-8, English letters, Arabic numerals, and a bunch of common symbols only take up 1 byte per character. Letters and symbols from other languages often require two or more bytes per character. For example, Cyrillic is encoded using two bytes per character and Simplified Chinese is encoded using three bytes per character. Sumerian Cuneiform, should you need to call upon on its muddy, earthern charm, requires four bytes per character. Character encodings can get incredibly complicated! Whilst each character in Arabic requires only two bytes, symbols are often joined together to make visually distinct shapes. Hindi (specifically Devanagari script) has potentially hundreds of possible variants depending on the style being used. In fact, Devanagari has so many permutations that Unicode doesn't encode nearly all of them!
 
-UTF-8 isn't perfect but, 90% of the time, its simplicity allows to draw text from a wide variety of writing cultures with really very little trouble. What's important to remember about a string is that it's just numbers combined in such a way that it can be interpreted as text. There's nothing in a string that implies how text should be laid out or how to space things in a visually appealling way. Instead, we rely on fonts to provide that information.
+UTF-8 isn't perfect but, 90% of the time, its simplicity allows to draw text from a wide variety of writing cultures with really very little trouble. What's important to remember about a string is that it's just numbers combined in such a way that it can be interpreted as text. There's nothing in a string that implies what each character looks like, how text should be laid out, or how to space things in a visually appealling way. For that we need fonts and typesetting.
 
 ## Font Rasterization and Glyphs
 
@@ -30,7 +30,7 @@ Some scripts, such as Arabic, require additional and meaningful graphics to be d
 
 And that's how GameMaker works - when you define a font and set the rendering parameters (size, bold/italic etc.) GameMaker runs [some software](https://freetype.org/) in the background that rasterizes all the glyphs for the new font. The image that FreeType spits out is then stored on a [texture page](https://manual.yoyogames.com/Settings/Texture_Information/Texture_Pages.htm) ready for use in your game. When you call `draw_text()` (or [associated functions](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/Text.htm)) then GameMaker will grab glyphs off of the texture page and draw them in the right order to produce readable text.
 
-Something to point out here is that once you've rendered glyphs from your font at a certain size, you're locked in. Unless you want to redraw the entire set of glyphs, you cannot change the size of what's been cached. If you've made a game with more than one font size in GameMaker, you'll already be aware of this paradigm's limitations. [MSDF fonts](msdf-fonts) go a long way to solving this, a feature that is only available in Scribble.
+?> Once you've rendered glyphs from your font at a certain size, you're locked in. Unless we redraw the entire set of glyphs, we cannot change the size of what's been cached. We can scale the rasterized graphics up and down but this rarely looks good. [MSDF fonts](msdf-fonts) go a long way to solving this, a feature that is only available in Scribble.
 
 ## Typesetting
 
