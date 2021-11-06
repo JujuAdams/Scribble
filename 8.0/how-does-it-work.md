@@ -34,6 +34,8 @@ And that's how GameMaker works - when you define a font and set the rendering pa
 
 ## Typesetting
 
+Determining how to lay out glyphs on the screen is a surprisingly involved and complex process called **typesetting**. In games we're spared most of the unpleasant details, compared to book publishing or academic journal publishing, but we still have plenty of challenges nonetheless.
+
 ## Text Elements and Caching
 
 ## String Parsing
