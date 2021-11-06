@@ -16,12 +16,22 @@ Within UTF-8, English letters, Arabic numerals, and a bunch of common symbols on
 
 UTF-8 isn't perfect but, 90% of the time, its simplicity allows to draw text from a wide variety of writing cultures with really very little trouble. What's important to remember about a string is that it's just numbers combined in such a way that it can be interpreted as text. There's nothing in a string that implies how text should be laid out or how to space things in a visually appealling way. Instead, we rely on typefaces to provide that information.
 
-## Font Renderering (in general)
+## Font Renderering
 
-## Text Wrapping
+## Text Elements and Caching
+
+## String Parsing
+
+## Text Layout and Wrapping
 
 ## Vertex Buffers
 
+## Animation
+
 ## Typewriter and Events
+
+## Arabic
+
+## Bezièr Curves
 
 ## MSDF
