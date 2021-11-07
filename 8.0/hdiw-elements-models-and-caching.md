@@ -1,4 +1,4 @@
-# Text Elements, Text Models, and Caching
+# Elements, Models, and Caching
 
 &nbsp;
 
