@@ -25,7 +25,8 @@ Scribble's parser is built like so:
     - If we've seen a `[` symbol (and the previous character wasn't a `[`) then we've entered into a command tag
 	  - Reset our tag parameter count to 1
 	  - Record the byte position of the start of the command tag's content
-	  - Set our state to "inside a command tag". Do another iteration of the loop
+	  - Set our state to "inside a command tag"
+	  - Do another iteration of the loop
 	- If we've seen a whitespace character (newline `\n`, tab `\t`, or space) then write that character into the grid. Do another iteration of the loop
 	- If we've seen any other Unicode character, write that character into the grid. Do another iteration of the loop
   - If we _are_ in a command tag:
