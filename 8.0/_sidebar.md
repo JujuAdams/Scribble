@@ -21,3 +21,21 @@
 -   [Fonts](fonts)
 -   [Misc Functions](misc-functions)
 -   [*Legacy Typewriter*](legacy-typewriter)
+
+---
+
+**How Does It Work?**
+
+-   [Introduction](hdiw-introduction)
+-   [What Even Is A String Anyway?](hdiw-what-even-is-a-string-anyway)
+-   [Rasterization and Glyphs](hdiw-rasterization-and-glyphs)
+-   [Text Layout](hdiw-text-layout)
+-   [Elements, Models, and Caching](hdiw-elements-models-and-caching)
+-   [String Parsing](hdiw-string-parsing)
+-   [Text Wrapping, Revisited](hdiw-test-wrapping-revisited)
+-   [Animation](hdiw-animation)
+-   [Vertex Buffers and the Shader](hdiw-vertex-buffers-and-the-shader)
+-   [Typewriter and Events](hdiw-typewriter-and-events)
+-   [Arabic](hdiw-arabic)
+-   [Bezier Curves](hdiw-bezier-curves)
+-   [MSDF Fonts](hdiw-msdf-fonts)
