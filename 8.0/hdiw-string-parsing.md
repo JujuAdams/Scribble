@@ -41,6 +41,8 @@ Scribble's parser is built like so (some parts abbreviated for the sake of clari
 		- If the command is a state-changing command (font, colour, scaling etc.), set the relevant state
 	  - Do another iteration of the loop
 
+&nbsp;
+	  
 You can see that, with the exception of command tags, that Scribble is iterating over each byte in the buffer only once in a single pass. Command tags are parsed out of the buffer by using a technique that I don't know the name of so I'm going to call it "null overwrite". String concatenation is, surprise surprise, very slow in GameMaker. By strategically writing nulls into the buffer, we can leverage GameMaker's own internal code to extract substrings from the buffer far faster than if we concatenated the strings ourselves in pure GML.
 
 At the end of the the parser stage, Scribble produces two sets of data:
