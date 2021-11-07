@@ -4,13 +4,13 @@
 
 Determining how to lay out glyphs on the screen is a surprisingly involved and complex process. In games we're spared most of the unpleasant details compared to book publishing or academic journal publishing, but we still have plenty of challenges nonetheless. Text layout for games, at least for our purposes, has three main components:
 
-## 1. Horizontal Position and Kerning
+## Horizontal Position and Kerning
 
 The most basic task for drawing text is positioning the glyphs side by side. The way this is done is to have a "head" position, a variable that tracks the x-position of the next glyph to draw. At the very start of a string, the head position is at position 0. After drawing a glyph, the head position moves a certain number of pixels across, typically moving to the right. The distance that the head moves is called the **separation** (or **advance**) value for the glyph. Some glyphs have a separation of zero, other glyphs have a separation value greater than zero despite not drawing anything at all (notably the space glyph). More generally, we call the space between glyphs **kerning** when we're not talking specifically about the numeric values involved.
 
 Unfortunately, it turns out that having a constant separation value for a glyph looks a bit weird. A good example is how `A` and `W` look together. Compare "AL" and "AW". In most fonts, `A` will have a different kerning depending on whether it's followed by `L` or `W`. This extra level of polish can make text a lot more comfortable to read, especially if text is being displayed in large quantities. Well-designed fonts will have entire tables of kerning data. The more recent versions of GameMaker do support kerning adjustment for glyph pairs, but this has been a recent addition.
 
-## 2. Line Spacing and Text Wrapping
+## Line Spacing and Text Wrapping
 	
 Usually line height is defined as a percentage of the point size (or just "size") of a font. The space between lines of text, measured from the baseline of one line to the baseline of the next, is called **leading**, a curious term borrowed from the era of [metal printing](https://www.thisiscolossal.com/2016/09/a-fascinating-film-about-the-last-day-of-hot-metal-typesetting-at-the-new-york-times/). This value is defined by the font, and all GameMaker has to do is space lines accordingly. This is done in a similar way to horizontal positioning - when a new line is needed, we move down to a new line by travelling the required distance. The line height for a given font is consistent no matter what glyphs are drawn on the given line.
 
@@ -18,7 +18,7 @@ Usually line height is defined as a percentage of the point size (or just "size"
 
 Manually inserting line breaks into strings is tedious work and, whilst you can sort of get away with it if you're only supporting one language in your game, as soon as you look to localise your work you'll need to add manual line breaks for *every language*. This isn't feasible. As a result, automatic text wrapping is a very common feature. Latin-based scripts (and many others) don't allow for linebreaks in the middle of a word so extra processing must be done to figure out where best to place a newline character, usually by replacing a space, to maintain legibility whilst fitting text inside the given width.
 
-## 3. Ligatures and Glyph Substitutions
+## Ligatures and Glyph Substitutions
 	
 Ligatures are not natively supported by GameMaker's own text-drawning functions but are a commonly-deployed feature. A ligature is when two (or sometimes more) glyphs are replaced by a different, singular glyph. The traditional example in English is `a` and `e` combining to form `æ`, for example "archæology". It's rare to see ligatures in modern printed English, except in situations where the publication or work is borrowing a classic, or perhaps even archaic, style. It is mostly a nice-to-have feature for Latin-based languages.
 	
