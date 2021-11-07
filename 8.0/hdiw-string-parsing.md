@@ -32,6 +32,7 @@ Scribble's parser is built like so:
     - If the character is a comma `,`, replace the comma with a null (`0x00`) and increment our parameter count for this command tag. Do another iteration of the loop
 	- If the character is anything _but_ a `]` symbol then ignore it. Do another iteration of the loop
 	- If the is a `]` symbol then we've found the end of the command tag
+	  - Replace the `]` symbol with a null (`0x00`)
 	  - Jump back to the start of the command tag. For each parameter that we've found (number of commas plus 1), read a substring using `buffer_string`, and add it into an array
 	  - Look up what kind of command is inside the tag, and execute behaviour code accordingly. If the command is an event, add the event to an array and record the where in the string the event should be executed
 	  - Do another iteration of the loop
