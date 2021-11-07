@@ -48,17 +48,15 @@ Determining how to lay out glyphs on the screen is a surprisingly involved and c
 	
 	Manually inserting line breaks into strings is tedious work and, whilst you can sort of get away with it if you're only supporting one language in your game, as soon as you look to localise your work you'll need to add manual line breaks for *every language*. This isn't feasible. As a result, automatic text wrapping is a very common feature. Latin-based scripts (and many others) don't allow for linebreaks in the middle of a word so extra processing must be done to figure out where best to place a newline character, usually by replacing a space, to maintain legibility whilst fitting text inside the given width.
 
-?> You may have seen two different types of linebreak if you've compared text output from Windows and Linux/macOS. Windows uses `\r\n` (`0x0d` `0x0a`) whereas Unix-based systems use `\n` (`0x0a`). The reasons for this are outside the scope of this discussion (and honestly I find the situation frustrating). Generally, `\r` can be ignored as a zero-width whitespace character, and `\n` is used as the primary newline character instead in Scribble.
-
 **3. Ligatures and Glyph Substitutions**
 	
 	Ligatures are not natively supported by GameMaker's own text-drawning functions but are a commonly-deployed feature. A ligature is when two (or sometimes more) glyphs are replaced by a different, singular glyph. The traditional example in English is `a` and `e` combining to form `æ`, for example "archæology". It's rare to see ligatures in modern printed English, except in situations where the publication or work is borrowing a classic, or perhaps even archaic, style. It is mostly a nice-to-have feature for Latin-based languages.
 	
-	&nbsp;
-	
 	Ligatures are a special case of the more general practice of glyph substitution. Glyph substitution is where a glyph is replaced by another for the purposes of meaning or aesthetics. Whilst glyph substitutions are mostly for style only in Latin script, some scripts depend on glyph substitution to even make sense. Ligatures are absolutely essential for text rendering in Arabic, Devanagari, and Bengali, three of the most [widely-used scripts](https://www.britannica.com/list/the-worlds-5-most-commonly-used-writing-systems) in the world. It is regretable that GameMaker doesn't support these features natively, but Scribble can.
 
 The calculations required to appropriately position glyphs in an attractive manner, when added together, become something of a time hog. Like everything with text rendering, what seems like a simple problem to solve is remarkably difficult due to the existing expectations of players, and the need for clarity and comfort whilst reading. When calling `draw_text()` (or `draw_text_ext()` for text wrapping), GameMaker has to redo all these calculations _every frame for every call_. Even without the overhead of performing kerning, line spacing, text wrapping, and glyph substitution, a slice of dialogue drawn in a textbox can easily be 200 glyphs. That means GameMaker needs to draw, effectively, 200 sprite images. This is work that is done again and again every frame even though the output doesn't change.
+
+?> You may have seen two different types of linebreak if you've compared text output from Windows and Linux/macOS. Windows uses `\r\n` (`0x0d` `0x0a`) whereas Unix-based systems use `\n` (`0x0a`). The reasons for this are outside the scope of this discussion (and honestly I find the situation frustrating). Generally, `\r` can be ignored as a zero-width whitespace character, and `\n` is used as the primary newline character instead in Scribble.
 
 ## Text Elements, Text Models, and Caching
 
