@@ -36,13 +36,13 @@ And that's how GameMaker works - when you define a font and set the rendering pa
 
 Determining how to lay out glyphs on the screen is a surprisingly involved and complex process. In games we're spared most of the unpleasant details compared to book publishing or academic journal publishing, but we still have plenty of challenges nonetheless. Text layout for games, at least for our purposes, has three main components:
 
-1. **Horizontal Position and Kerning**
+**1. Horizontal Position and Kerning**
 	
 	The most basic task for drawing text is positioning the glyphs side by side. The way this is done is to have a "head" position, a variable that tracks the x-position of the next glyph to draw. At the very start of a string, the head position is at position 0. After drawing a glyph, the head position moves a certain number of pixels across, typically moving to the right. The distance that the head moves is called the **separation** (or **advance**) value for the glyph. Some glyphs have a separation of zero, other glyphs have a separation value greater than zero despite not drawing anything at all (notably the space glyph). More generally, we call the space between glyphs **kerning** when we're not talking specifically about the numeric values involved.
 	
 	Unfortunately, it turns out that having a constant separation value for a glyph looks a bit weird. A good example is how `A` and `W` look together. Compare "AL" and "AW". In most fonts, `A` will have a different kerning depending on whether it's followed by `L` or `W`. This extra level of polish can make text a lot more comfortable to read, especially if text is being displayed in large quantities. Well-designed fonts will have entire tables of kerning data. The more recent versions of GameMaker do support kerning adjustment for glyph pairs, but this has been a recent addition.
 
-2. **Line Spacing and Text Wrapping**
+**2. Line Spacing and Text Wrapping**
 	
 	Usually line height is defined as a percentage of the point size (or just "size") of a font. The space between lines of text, measured from the baseline of one line to the baseline of the next, is called **leading**, a curious term borrowed from the era of [metal printing](https://www.thisiscolossal.com/2016/09/a-fascinating-film-about-the-last-day-of-hot-metal-typesetting-at-the-new-york-times/). This value is defined by the font, and all GameMaker has to do is space lines accordingly. This is done in a similar way to horizontal positioning - when a new line is needed, we move down to a new line by travelling the required distance. The line height for a given font is consistent no matter what glyphs are drawn on the given line.
 	
@@ -50,9 +50,11 @@ Determining how to lay out glyphs on the screen is a surprisingly involved and c
 
 ?> You may have seen two different types of linebreak if you've compared text output from Windows and Linux/macOS. Windows uses `\r\n` (`0x0d` `0x0a`) whereas Unix-based systems use `\n` (`0x0a`). The reasons for this are outside the scope of this discussion (and honestly I find the situation frustrating). Generally, `\r` can be ignored as a zero-width whitespace character, and `\n` is used as the primary newline character instead in Scribble.
 
-3. **Ligatures and Glyph Substitutions**
+**3. Ligatures and Glyph Substitutions**
 	
 	Ligatures are not natively supported by GameMaker's own text-drawning functions but are a commonly-deployed feature. A ligature is when two (or sometimes more) glyphs are replaced by a different, singular glyph. The traditional example in English is `a` and `e` combining to form `æ`, for example "archæology". It's rare to see ligatures in modern printed English, except in situations where the publication or work is borrowing a classic, or perhaps even archaic, style. It is mostly a nice-to-have feature for Latin-based languages.
+	
+	&nbsp;
 	
 	Ligatures are a special case of the more general practice of glyph substitution. Glyph substitution is where a glyph is replaced by another for the purposes of meaning or aesthetics. Whilst glyph substitutions are mostly for style only in Latin script, some scripts depend on glyph substitution to even make sense. Ligatures are absolutely essential for text rendering in Arabic, Devanagari, and Bengali, three of the most [widely-used scripts](https://www.britannica.com/list/the-worlds-5-most-commonly-used-writing-systems) in the world. It is regretable that GameMaker doesn't support these features natively, but Scribble can.
 
@@ -62,7 +64,7 @@ The calculations required to appropriately position glyphs in an attractive mann
 
 Scribble uses two tiers of caching, one for **text elements** and another for **text models**. Both elements and models are automatically cached by Scribble, allowing for text layout to happen _once_ and then be reused for subsequent frames. This dramatically lowers the cost of drawing text after the text layout step has been completed. This is a similar solution to pre-rendering glyphs onto a texture page, though the caching that Scribble does is performed when the game is running rather than when the game compiles. Both text elements and text models can be reused in different ways and exist in two different cache pools.
 
-The distinction between text elements and text models is critical to Scribble.
+The distinction between text elements and text models is critical to Scribble:
 
 |Text Element                                                 |Text Model                                                     |
 |-------------------------------------------------------------|---------------------------------------------------------------|
@@ -72,13 +74,13 @@ The distinction between text elements and text models is critical to Scribble.
 |Dynamic, can be modified by calling methods                  |Static/read-only, cannot be modified once created              |
 |Does no drawing itself; draw commands are passed to the model|Able to submit text to the GPU for rendering                   |
 |Holds values to be sent to Scribble's shader                 |Configures Scribble's shader using values from a text element  |
-|Garbage collected after both:<br>1. It hasn't been drawn for a few frames<br>2. No reference to it exists elsewhere in memory|Garbage collected when no text elements references it|
+|Garbage collected after both:<br>1. It hasn't been drawn for a few frames<br>2. No reference to it exists elsewhere in memory|Garbage collected when no text elements reference it|
 
-- **Text Models**
+**Text Models**
 
-A new model is created by an element when the model cache contains no model with the _specific_ desired properties. These properties are things like font size and text wrapping width, things that fundamentally change the layout of glyphs. Anything marked as a **regenerator** on the [`scribble()` methods page](scribble-methods) is modifying a text element property that would cause a new model to be needed. If a regenerator method is called on an element then the element will mark itself as "dirty". When the text element is next drawn (or a model property is requested), the text element will discard its previous reference to its old model, and try to find a new model in the cache, creating a new model if necessary. If no other elements hold references to the old model then the old model will be automatically garbage collected by Scribble after a few frames. Creating text models is easily the most demanding operation for Scribble. Being able to cache text model results between frames means that Scribble can deliver a whole bunch of relatively expensive features without damaging performance.
+Being able to cache text model results between frames means that Scribble can deliver a whole bunch of relatively expensive features without damaging performance. A new model is created by an element when the model cache contains no model with the exact desired properties. These properties are things like font size and text wrapping width, things that fundamentally change the layout of glyphs. Anything marked as a **regenerator** on the [`scribble()` methods page](scribble-methods) is modifying a text element property that would cause a new model to be needed. If a regenerator method is called on an element then the element will mark itself as "dirty". When the text element is next drawn (or a model property is requested), the text element will discard its previous reference to its old model, and try to find a new model in the cache, creating a new model if necessary. If no other elements hold references to the old model then the old model will be automatically garbage collected by Scribble after a few frames. Creating text models is easily the most demanding operation for Scribble.
 
-- **Text Elements**
+**Text Elements**
 
 Models are created when an element needs them, and similarly a text element is created when _you_ need them. `scribble()` is a function that checks the cache of text elements and, if a match exists, then the already extant element is returned. If no text element exists then a new one is created and returned. The search string that is used is very simple: it's the text passed into `scribble()` plus the [unique ID](scribble-methods?id=scribblestring-uniqueid), if one is specified. This has the side effect of two calls to `scribble()` that use the same input text occasionally getting confused with each other. This is rarer than you'd think, and the unique ID option is provided to disambiguate text elements when it comes up.
 
@@ -125,7 +127,7 @@ stashed.wrap(400);
 stashed.build(true); //Force creation of a model, and freeze it for extra FPS
 
 ///Draw
-statshed.draw(x, y);
+stashed.draw(x, y); //Scribble won't generate a model, one already exists
 ```
 
 ## String Parsing
