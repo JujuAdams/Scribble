@@ -32,9 +32,23 @@ And that's how GameMaker works - when you define a font and set the rendering pa
 
 ?> Once you've rendered glyphs from your font at a certain size, you're locked in. Unless we redraw the entire set of glyphs, we cannot change the size of what's been cached. We can scale the rasterized graphics up and down but this rarely looks good. This means that if you want to vary text size in GameMaker, you need to create different font assets for each size, which is annoying. [MSDF fonts](msdf-fonts) go a long way to solving this, a feature that is only available in Scribble.
 
-## Typesetting
+## Text Layout
 
-Determining how to lay out glyphs on the screen is a surprisingly involved and complex process called **typesetting**. In games we're spared most of the unpleasant details, compared to book publishing or academic journal publishing, but we still have plenty of challenges nonetheless.
+Determining how to lay out glyphs on the screen is a surprisingly involved and complex process. In games we're spared most of the unpleasant details, compared to book publishing or academic journal publishing, but we still have plenty of challenges nonetheless. Text layout for games, at least for our purposes, has three main components:
+
+### 1. Horizontal position and Kerning
+
+Kerning 
+
+### 2. Line spacing
+
+Line spacing
+
+### 3. Ligatures and Glyph Substitutions
+
+Ligatures are not natively supported by GameMaker's own text-drawning functions but are a commonly-deployed feature. A ligature is when two (or sometimes more) glyphs are replaced by a different, singular glyph. The traditional example in English is `a` and `e` combining to form `æ`, for example "archæology". It's rare to see ligatures in modern printed English, except in situations where the publication or work is borrowing a classic, or perhaps even archaic, style. It is mostly a nice-to-have feature for Latin-based languages.
+
+Ligatures are a special case of the more general practice of glyph substitution. Glyph substitution is where a glyph is replaced by another for the purposes of meaning or aesthetics. Whilst glyph substitution (vis a vis ligatures) are mostly for style only in Latin script, some languages depend on ligatures to even make sense. Ligatures are absolutely essential for text rendering in Arabic, Devanagari, and Bengali, three of the most [widely-used scripts](https://www.britannica.com/list/the-worlds-5-most-commonly-used-writing-systems) in the world. It is regretable that GameMaker doesn't support these features natively, but Scribble can.
 
 ## Text Elements and Caching
 
