@@ -18,7 +18,7 @@ Scribble's parser is built like so (some parts abbreviated for the sake of clari
 - Create a data structure to store per-glyph data. Scribble uses a ds_grid for this
 - Create an array for event data to go into
 - Set our parser state to "not in a command tag"
-- Start a loop that iterates over the buffer
+- Start a loop that iterates over the buffer until a null (`0x00`) is found
   - Read the next character from the buffer, following UTF-8 decoding rules
   - If the character is a null (`0x00`) then we've found the end of the string. Break out of the loop
   - If we're _not_ in a command tag:
@@ -26,12 +26,13 @@ Scribble's parser is built like so (some parts abbreviated for the sake of clari
 	  - Reset our tag parameter count to 1
 	  - Record the byte position of the start of the command tag's content
 	  - Set our state to "inside a command tag"
-	  - Do another iteration of the loop
-	- If we've seen a whitespace character (newline `\n`, tab `\t`, or space) then write that character into the grid, including its width. Do another iteration of the loop
-	- If we've seen any other Unicode character, write that character into the grid by using data we extracted from the font, and including any state data set by command tags. Do another iteration of the loop
+	- If we've seen a whitespace character (newline `\n`, tab `\t`, or space) then write that character into the grid, including its width
+	- If we've seen any other Unicode character, write that character into the grid by using data we extracted from the font, and including any state data set by command tags
   - If we _are_ in a command tag:
-    - If the character is a comma `,`, replace the comma with a null (`0x00`) and increment our parameter count for this command tag. Do another iteration of the loop
-	- If the character is anything _but_ a `]` symbol then ignore it. Do another iteration of the loop
+    - If the character is a comma `,`
+	  - Replace the comma with a null (`0x00`)
+	  - Increment our parameter count for this command tag
+	- If the character is anything _but_ a `]` symbol then ignore it (for now)
 	- If the is a `]` symbol then we've found the end of the command tag
 	  - Replace the `]` symbol with a null (`0x00`)
 	  - Jump back to the start of the command tag. For each parameter that we've found (number of commas plus 1), read a substring using `buffer_string`, and add it into an array of tag parameters
@@ -39,7 +40,6 @@ Scribble's parser is built like so (some parts abbreviated for the sake of clari
 	    - If the command is an event, add the event to an array and record the where in the string the event should be executed
 		- If the command is a sprite, treat the sprite as a glyph, and add the sprite's data to the glyph grid
 		- If the command is a state-changing command (font, colour, scaling etc.), set the relevant state
-	  - Do another iteration of the loop
 
 &nbsp;
 	  
