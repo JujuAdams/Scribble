@@ -24,6 +24,6 @@ Ligatures are not natively supported by GameMaker's own text-drawning functions 
 	
 Ligatures are a special case of the more general practice of glyph substitution. Glyph substitution is where a glyph is replaced by another for the purposes of meaning or aesthetics. Whilst glyph substitutions are mostly for style only in Latin script, some scripts depend on glyph substitution to even make sense. Ligatures are absolutely essential for text rendering in Arabic, Devanagari, and Bengali, three of the most [widely-used scripts](https://www.britannica.com/list/the-worlds-5-most-commonly-used-writing-systems) in the world. It is regretable that GameMaker doesn't support these features natively, but Scribble can.
 
-&nbsp;
+---
 
 The calculations required to appropriately position glyphs in an attractive manner, when added together, become something of a time hog. Like everything with text rendering, what seems like a simple problem to solve is remarkably difficult due to the existing expectations of players, and the need for clarity and comfort whilst reading. When calling `draw_text()` (or `draw_text_ext()` for text wrapping), GameMaker has to redo all these calculations _every frame for every call_. Even without the overhead of performing kerning, line spacing, text wrapping, and glyph substitution, a slice of dialogue drawn in a textbox can easily be 200 glyphs. That means GameMaker needs to draw, effectively, 200 sprite images. This is work that is done again and again every frame even though the output doesn't change.
