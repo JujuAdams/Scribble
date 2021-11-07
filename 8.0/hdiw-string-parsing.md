@@ -12,7 +12,7 @@ Scribble needs to be _fast_ and the `string_*()` functions don't cut the mustard
 
 ?> If you're unfamiliar with buffers, take a look at [GameMaker's documentation](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Buffers/Buffers.htm) on the matter. Additionally, DragoniteSpam has a [good video](https://www.youtube.com/watch?v=xfUcVqEtYz4) on the topic.
 
-Scribble's parser is built like so (some parts abbreviated for the sake of clarity):
+Scribble's parser can be found in `__scribble_generate_model()` - it's the first major loop in that function. The parser is built like so (some parts abbreviated for the sake of clarity):
 
 - Create a buffer, and write the UTF-8-encoded string into it
 - Create a data structure to store per-glyph data. Scribble uses a ds_grid for this
