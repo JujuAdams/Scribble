@@ -40,6 +40,7 @@ Scribble's parser is built like so (some parts abbreviated for the sake of clari
 	    - If the command is an event, add the event to an array and record the where in the string the event should be executed
 		- If the command is a sprite, treat the sprite as a glyph, and add the sprite's data to the glyph grid
 		- If the command is a state-changing command (font, colour, scaling etc.), set the relevant state
+	  - Set our state to "not in a command tag"
 
 &nbsp;
 	  
