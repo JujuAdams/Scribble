@@ -14,7 +14,7 @@ Each byte holds a value from 0 to 255. Clearly this isn't enough to describe eve
 
 Within UTF-8, English letters, Arabic numerals, and a bunch of common symbols only take up 1 byte per character. Letters and symbols from other languages often require two or more bytes per character. For example, Cyrillic is encoded using two bytes per character and Simplified Chinese is encoded using three bytes per character. Sumerian Cuneiform, should you need to call upon on its muddy, earthern charm, requires four bytes per character. Character encodings can get incredibly complicated! Whilst each character in Arabic requires only two bytes, symbols are often joined together to make visually distinct shapes. Devanagari (used for Hindi) has potentially hundreds of possible variants depending on the style being used. In fact, Devanagari has so many permutations that Unicode doesn't bother encoding all of them and instead only specifies the basic consonant and vowel sounds!
 
-UTF-8 isn't perfect but its simplicity allows us to draw text from a wide variety of writing cultures with really very little trouble. What's important to remember about a string is that it's just numbers combined in such a way that it can be interpreted as text. There's nothing in a string that implies what each character looks like, how text should be laid out, or how to space things in a visually appealling way. For that we need fonts and typesetting.
+UTF-8 isn't perfect but its simplicity allows us to draw text from a wide variety of writing cultures with really very little trouble. What's important to remember about a string is that it's just numbers combined in such a way that it can be interpreted as text. There's nothing in a string that implies what each character looks like, how text should be laid out, or how to space things in a visually appealling way. For that we need fonts and a text layout system.
 
 ## Font Rasterization and Glyphs
 
@@ -36,7 +36,7 @@ And that's how GameMaker works - when you define a font and set the rendering pa
 
 Determining how to lay out glyphs on the screen is a surprisingly involved and complex process. In games we're spared most of the unpleasant details compared to book publishing or academic journal publishing, but we still have plenty of challenges nonetheless. Text layout for games, at least for our purposes, has three main components:
 
-1. Horizontal Position and Kerning**
+1. **Horizontal Position and Kerning**
 
 The most basic task for drawing text is positioning the glyphs side by side. The way this is done is to have a "head" position, a variable that tracks the x-position of the next glyph to draw. At the very start of a string, the head position is at position 0. After drawing a glyph, the head position moves a certain number of pixels across, typically moving to the right. The distance that the head moves is called the **separation** (or **advance**) value for the glyph. Some glyphs have a separation of zero, other glyphs have a separation value greater than zero despite not drawing anything at all (notably the space glyph). More generally, we call the space between glyphs **kerning** when we're not talking specifically about the numeric values involved.
 
@@ -56,15 +56,19 @@ Ligatures are not natively supported by GameMaker's own text-drawning functions 
 
 Ligatures are a special case of the more general practice of glyph substitution. Glyph substitution is where a glyph is replaced by another for the purposes of meaning or aesthetics. Whilst glyph substitutions are mostly for style only in Latin script, some scripts depend on glyph substitution to even make sense. Ligatures are absolutely essential for text rendering in Arabic, Devanagari, and Bengali, three of the most [widely-used scripts](https://www.britannica.com/list/the-worlds-5-most-commonly-used-writing-systems) in the world. It is regretable that GameMaker doesn't support these features natively, but Scribble can.
 
+---
+
+The calculations required to appropriately position glyphs in an attractive manner, when added together, become something of a time hog. Like everything with text rendering, what seems like a simple problem to solve is remarkably difficult due to the existing expectations of players, and the need for clarity and comfort whilst reading. When calling `draw_text()` (or `draw_text_ext()` for text wrapping), GameMaker has to redo all these calculations _every frame for every call_. Even without the overhead of performing kerning, line spacing, text wrapping, and glyph substitution, a slice of dialogue drawn in a textbox can easily be 200 glyphs. That means GameMaker needs to draw, effectively, 200 sprite images.
+
 ## Text Elements and Caching
 
 ## String Parsing
 
 ## Text Wrapping, Revisited
 
-## Vertex Buffers
-
 ## Animation
+
+## Vertex Buffers and The Scribble Shader
 
 ## Typewriter and Events
 
