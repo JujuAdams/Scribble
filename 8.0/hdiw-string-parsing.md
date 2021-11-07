@@ -2,7 +2,7 @@
 
 &nbsp;
 
-Parsing is the process by which a string is broken down into its component parts. Parsing text is the first stage in creating **text models**, the core graphics container for Scribble. At its core, the parser breaks down strings into glyphs. However, each glyph has a lot of additional data associated with it, data that is determined by the use of [formatting tags](text-formatting). Scribble also supports [typewriter events](hdiw-typewriter-and-events) and these need to be parsed too and added to their own data structure.
+Parsing is the process by which a string is broken down into its component parts. Parsing an input string is the first stage in creating a **text model**, the core graphics container for Scribble. At its core, the parser breaks down strings into glyphs. However, each glyph has a lot of additional data associated with it, data that is determined by the use of [formatting tags](text-formatting). Formatting tags can have multiple parameters and so require special parsing rules. Scribble also supports [typewriter events](hdiw-typewriter-and-events) and these need to be parsed too and added to their own data structure.
 
 Writing a parser in GameMaker using the `string_*()` functions is straight-forward (with the exception of 1-indexed strings 🙄). However, these functions are _horrifically_ slow. When we call a function like `string_delete()`, GameMaker returns a string. This string is a block of data that GameMaker has to allocate, and allocating memory is, unfortunately, a slow operation. This doesn't sound like too big of an issue until you consider that this may need to happen hundreds of times per string!
 
