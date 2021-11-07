@@ -64,12 +64,14 @@ Scribble uses two tiers of caching, one for **text elements** and another for **
 
 The distinction between text elements and text models is critical to Scribble.
 
-|Text Element                                          |Text Model                                                     |
-|------------------------------------------------------|---------------------------------------------------------------|
-|Holds variables                                       |Holds vertex buffer data                                       |
-|Stores text state, such as page or text wrapping width|Uses state values from a text element to generate graphics data|
-|Has [public methods](scribble-methods)                |Has no public methods at all                                   |
-|Dynamic, can be modified by calling methods           |Static/read-only, cannot be modified once created              |
+|Text Element                                                 |Text Model                                                     |
+|-------------------------------------------------------------|---------------------------------------------------------------|
+|Holds variables, and a reference to a text model             |Holds vertex buffer data                                       |
+|Stores text state, such as page or text wrapping width       |Uses state values from a text element to generate graphics data|
+|Has [public methods](scribble-methods)                       |Has no public methods at all                                   |
+|Dynamic, can be modified by calling methods                  |Static/read-only, cannot be modified once created              |
+|Does no drawing itself; draw commands are passed to the model|Able to submit text to the GPU for rendering                   |
+|Holds values to be sent to Scribble's shader                 |Configures Scribble's shader using values from the text element|
 |Garbage collected after both:<br>1. It hasn't been drawn for a few frames<br>2. No reference to it exists elsewhere in memory|Garbage collected when no text elements reference it|
 
 ## String Parsing
