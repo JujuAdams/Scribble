@@ -64,11 +64,13 @@ Scribble uses two tiers of caching, one for **text elements** and another for **
 
 The distinction between text elements and text models is critical to Scribble.
 
-|Text Element                                 |Text Model                                              |
-|---------------------------------------------|--------------------------------------------------------|
-|- Dynamic, can be modified by calling methods|- Static/read-only, cannot be modified once created     |
-|- Has [public methods](scribble-methods)     |- Has no public methods at all                          |
-|- Has [public methods](scribble-methods)     |- Has no public methods at all                          |
+|Text Element                                          |Text Model                                                     |
+|------------------------------------------------------|---------------------------------------------------------------|
+|Holds variables                                       |Holds vertex buffer data                                       |
+|Stores text state, such as page or text wrapping width|Uses state values from a text element to generate graphics data|
+|Has [public methods](scribble-methods)                |Has no public methods at all                                   |
+|Dynamic, can be modified by calling methods           |Static/read-only, cannot be modified once created              |
+|Garbage collected after both:<br>1. It hasn't been drawn for a few frames<br>2. No reference to it exists elsewhere in memory|Garbage collected when no text elements reference it|
 
 ## String Parsing
 
