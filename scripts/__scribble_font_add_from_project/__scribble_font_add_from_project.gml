@@ -97,4 +97,15 @@ function __scribble_font_add_from_project(_font)
     }
     
     _font_data.calculate_font_height();
+    
+    //Check to see if this texture has been resized during compile
+    var _GM_scaling = _font_glyphs_map[? 32][SCRIBBLE_GLYPH.HEIGHT] / _font_info.size;
+    if (_GM_scaling < 1)
+    {
+        __scribble_trace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyphs_map[? 32][SCRIBBLE_GLYPH.HEIGHT], ", scaling factor = ", _GM_scaling, ")");
+        
+        //FIXME - This seems to be inaccurate if the font is scaled down a long way - 20201-11-11  IDE v2.3.6.595  Runtime v2.3.6.464
+        //        Good test vector is fnt_noto_chinese with a 2K texture page
+        scribble_font_scale(_name, 1/_GM_scaling, 1/_GM_scaling);
+    }
 }
