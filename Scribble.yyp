@@ -179,6 +179,7 @@
     {"id":{"name":"obj_test_wrap_pages","path":"objects/obj_test_wrap_pages/obj_test_wrap_pages.yy",},"order":0,},
     {"id":{"name":"scribble_anim_wave","path":"scripts/scribble_anim_wave/scribble_anim_wave.yy",},"order":1,},
     {"id":{"name":"scribble_anim_shake","path":"scripts/scribble_anim_shake/scribble_anim_shake.yy",},"order":2,},
+    {"id":{"name":"obj_test_stress_stashed","path":"objects/obj_test_stress_stashed/obj_test_stress_stashed.yy",},"order":2,},
     {"id":{"name":"spr_msdf_openhuninn","path":"sprites/spr_msdf_openhuninn/spr_msdf_openhuninn.yy",},"order":15,},
     {"id":{"name":"obj_test_glyph_properties","path":"objects/obj_test_glyph_properties/obj_test_glyph_properties.yy",},"order":6,},
     {"id":{"name":"spr_white_coin","path":"sprites/spr_white_coin/spr_white_coin.yy",},"order":3,},
