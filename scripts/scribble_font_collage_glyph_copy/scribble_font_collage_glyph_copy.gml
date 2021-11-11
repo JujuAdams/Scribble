@@ -9,6 +9,16 @@ function scribble_font_collage_glyph_copy(_target, _source, _overwrite)
     var _target_font_data = global.__scribble_font_data[? _target];
     var _source_font_data = global.__scribble_font_data[? _source];
     
+    if (_target_font_data == undefined)
+    {
+        __scribble_error("Font \"", _target, "\" not found");
+    }
+    
+    if (_source_font_data == undefined)
+    {
+        __scribble_error("Font \"", _source, "\" not found");
+    }
+    
     //Verify that the two fonts can be used together
     var _y_offset = __scribble_font_collage_glyph_copy_common(_target_font_data, _source_font_data);
     
