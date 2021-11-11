@@ -159,7 +159,7 @@
     {"id":{"name":"fnt_test_1","path":"fonts/fnt_test_1/fnt_test_1.yy",},"order":2,},
     {"id":{"name":"obj_test_typewriter_events","path":"objects/obj_test_typewriter_events/obj_test_typewriter_events.yy",},"order":2,},
     {"id":{"name":"obj_test_scale_tags","path":"objects/obj_test_scale_tags/obj_test_scale_tags.yy",},"order":12,},
-    {"id":{"name":"obj_test_combine","path":"objects/obj_test_combine/obj_test_combine.yy",},"order":2,},
+    {"id":{"name":"obj_test_font_collage","path":"objects/obj_test_font_collage/obj_test_font_collage.yy",},"order":2,},
     {"id":{"name":"obj_test_linewrap_multi_vbuff","path":"objects/obj_test_linewrap_multi_vbuff/obj_test_linewrap_multi_vbuff.yy",},"order":4,},
     {"id":{"name":"obj_test_nbsp_repeat","path":"objects/obj_test_nbsp_repeat/obj_test_nbsp_repeat.yy",},"order":11,},
     {"id":{"name":"obj_test_typewriter_delay","path":"objects/obj_test_typewriter_delay/obj_test_typewriter_delay.yy",},"order":4,},

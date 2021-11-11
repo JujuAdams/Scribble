@@ -28,7 +28,7 @@
     "path": "folders/Test Cases/Fonts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_combine",
+  "name": "obj_test_font_collage",
   "tags": [],
   "resourceType": "GMObject",
 }
