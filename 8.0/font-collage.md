@@ -43,9 +43,9 @@ Copies a set of glyphs from the source font into the target font. The target fon
 As mentioned above, this function can be given as many glyph sets as you like. The following are interchangeable therefore:
 
 ```GML
-scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, 40, 41, 88, 89, 90)
-scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, "()", "XYZ")
-scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, [40, 41], [88, 90])
+scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, 40, 41, 88, 89, 90);
+scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, "()", "XYZ");
+scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, [40, 41], [88, 90]);
 ```
 
 &nbsp;
