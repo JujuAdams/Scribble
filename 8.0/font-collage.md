@@ -10,9 +10,9 @@
 |------|--------|--------------------------|
 |`name`|string  |Name of the font to create|
 
-Creates a new font collage.
+Creates a new font collage. The new font is totally blank and cannot be used until some glyphs have been added to it using `scribble_font_collage_glyph_copy()` or `scribble_font_collage_glyph_copy_all()`.
 
-!> The new font is totally blank and cannot be used until some glyphs have been added to it using `scribble_font_collage_glyph_copy()` or `scribble_font_collage_glyph_copy_all()`. Trying to use a blank font collage will cause the game to crash.
+!> Trying to use a blank font collage will cause the game to crash.
 
 &nbsp;
 
@@ -39,6 +39,14 @@ Copies a set of glyphs from the source font into the target font. The target fon
 2. String of characters<br>e.g. `scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, "abc")`
 
 3. Two-element array that describes a range of UTF-8 decimal character codes<br>e.g. `scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, [97, 122])`
+
+As mentioned above, this function can be given as many glyph sets as you like. The following are interchangeable therefore:
+
+```GML
+scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, 40, 41, 88, 89, 90)
+scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, "()", "XYZ")
+scribble_font_collage_glyph_copy("targetFont", "sourceFont", true, [40, 41], [88, 90])
+```
 
 &nbsp;
 
@@ -80,6 +88,6 @@ Deletes a set of glyphs from the specified font. The font must be a collage font
 |--------|--------|-------------------------|
 |`target`|string  |Name of the font to clear|
 
-Removes all glyphs from a font collage.
+Removes all glyphs from a font collage. Once cleared, the font is totally blank and cannot be used until some glyphs have been added to it using `scribble_font_collage_glyph_copy()` or `scribble_font_collage_glyph_copy_all()`.
 
-!> Once cleared, the font is totally blank and cannot be used until some glyphs have been added to it using `scribble_font_collage_glyph_copy()` or `scribble_font_collage_glyph_copy_all()`. Trying to use a blank font collage will cause the game to crash.
+!> Trying to use a blank font collage will cause the game to crash.
