@@ -55,7 +55,6 @@
     {"id":{"name":"scribble_font_bake_outline","path":"scripts/scribble_font_bake_outline/scribble_font_bake_outline.yy",},"order":6,},
     {"id":{"name":"obj_test_msdf_feather","path":"objects/obj_test_msdf_feather/obj_test_msdf_feather.yy",},"order":3,},
     {"id":{"name":"obj_test_fog","path":"objects/obj_test_fog/obj_test_fog.yy",},"order":15,},
-    {"id":{"name":"scribble_font_duplicate_as_collage","path":"scripts/scribble_font_duplicate_as_collage/scribble_font_duplicate_as_collage.yy",},"order":5,},
     {"id":{"name":"scribble_font_add_all","path":"scripts/scribble_font_add_all/scribble_font_add_all.yy",},"order":0,},
     {"id":{"name":"obj_test_typewriter_get_position","path":"objects/obj_test_typewriter_get_position/obj_test_typewriter_get_position.yy",},"order":10,},
     {"id":{"name":"obj_test_sound_tag","path":"objects/obj_test_sound_tag/obj_test_sound_tag.yy",},"order":14,},
