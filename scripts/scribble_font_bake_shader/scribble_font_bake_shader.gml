@@ -39,7 +39,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         return undefined;
     }
     
-    if ((_src_font_data.type == "msdf") || (_src_font_data.type == "runtime msdf"))
+    if (_src_font_data.msdf)
     {
     	__scribble_error("Source font cannot be an MSDF font");
     	return undefined;
@@ -295,7 +295,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         var _sprite_u1 = _sprite_uvs[2];
         var _sprite_v1 = _sprite_uvs[3];
     
-        var _new_font_data = new __scribble_class_font(_new_font_name, "baked");
+        var _new_font_data = new __scribble_class_font(_new_font_name);
         var _new_glyph_map = _new_font_data.glyphs_map;
         
         //Initialise our glyph data structure, copying what the source font used

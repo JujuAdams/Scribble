@@ -38,7 +38,8 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
     var _sprite_width  = sprite_get_width(_sprite);
     var _sprite_height = sprite_get_height(_sprite);
     
-    var _font_data = new __scribble_class_font(_sprite_name, "sprite");
+    var _font_data = new __scribble_class_font(_sprite_name);
+    _font_data.msdf = false;
     var _font_glyphs_map = _font_data.glyphs_map;
     
     var _sprite_info = sprite_get_info(_sprite);

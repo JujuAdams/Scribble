@@ -1,4 +1,10 @@
+/// @param newFontName
+
 function scribble_font_collage_create(_name)
 {
-    var _ = new __scribble_class_font(_name, "collage");
+    //Ensure we're initialised
+    __scribble_system();
+    
+    var _font_data = new __scribble_class_font(_name);
+    _font_data.collage = true;
 }

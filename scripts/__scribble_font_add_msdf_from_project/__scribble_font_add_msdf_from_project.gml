@@ -22,7 +22,8 @@ function __scribble_font_add_msdf_from_project(_sprite)
         global.__scribble_default_font = _name;
     }
     
-    var _font_data = new __scribble_class_font(_name, "msdf");
+    var _font_data = new __scribble_class_font(_name);
+    _font_data.msdf = true;
     var _font_glyphs_map = _font_data.glyphs_map;
     
     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Defined \"" + _name + "\" as an MSDF font");
@@ -52,12 +53,12 @@ function __scribble_font_add_msdf_from_project(_sprite)
     var _json_glyph_list = _json[? "glyphs" ];
     var _atlas_map       = _json[? "atlas"  ];
     
-    var _em_size    = _atlas_map[? "size"         ];
-    var _msdf_range = _atlas_map[? "distanceRange"];
+    var _em_size      = _atlas_map[? "size"         ];
+    var _msdf_pxrange = _atlas_map[? "distanceRange"];
     
     var _json_line_height = _em_size*_metrics_map[? "lineHeight"];
     
-    _font_data.msdf_range = _msdf_range;
+    _font_data.msdf_pxrange = _msdf_pxrange;
     
     var _size = ds_list_size(_json_glyph_list);
     if (SCRIBBLE_VERBOSE) __scribble_trace("\"" + _name + "\" has " + string(_size) + " characters");
@@ -96,7 +97,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
         {
             var _xoffset  = _em_size*_plane_map[? "left"];
             var _yoffset  = _em_size - _em_size*_plane_map[? "top"]; //So, so weird
-            var _xadvance = round(_em_size*_json_glyph_map[? "advance"]); //_w - _msdf_range - round(_em_size*_plane_map[? "left"]);
+            var _xadvance = round(_em_size*_json_glyph_map[? "advance"]); //_w - _msdf_pxrange - round(_em_size*_plane_map[? "left"]);
         }
         else
         {

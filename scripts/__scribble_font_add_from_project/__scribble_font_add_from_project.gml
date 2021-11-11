@@ -12,7 +12,8 @@ function __scribble_font_add_from_project(_font)
         global.__scribble_default_font = _name;
     }
     
-    var _font_data = new __scribble_class_font(_name, "standard");
+    var _font_data = new __scribble_class_font(_name);
+    _font_data.msdf = false;
     var _font_glyphs_map = _font_data.glyphs_map;
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");

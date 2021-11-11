@@ -20,14 +20,14 @@ function __scribble_class_page() constructor
         {
             if (_font_data == undefined)
             {
-                var _font_msdf_range = undefined;
+                var _font_msdf_pxrange = undefined;
             }
             else
             {
-                var _font_msdf_range = _font_data.msdf_range;
+                var _font_msdf_pxrange = _font_data.msdf_pxrange;
             }
             
-            if (_font_msdf_range == undefined)
+            if (_font_msdf_pxrange == undefined)
             {
                 _model_struct.uses_standard_font = true;
                 var _shader = __shd_scribble;
@@ -44,7 +44,7 @@ function __scribble_class_page() constructor
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = _vbuff;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE      ] = _texture;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE   ] = _font_msdf_range;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE   ] = _font_msdf_pxrange;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH  ] = texture_get_texel_width(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT ] = texture_get_texel_height(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.SHADER       ] = _shader;

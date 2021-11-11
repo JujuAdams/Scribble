@@ -392,6 +392,7 @@ enum SCRIBBLE_GLYPH
     V1,         //11
     __SIZE      //12
 }
+//TODO - Add pxrange field
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {

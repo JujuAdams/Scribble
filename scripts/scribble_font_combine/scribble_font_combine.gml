@@ -5,6 +5,15 @@
 
 function scribble_font_combine()
 {
+    __scribble_error("scribble_font_combine() has been removed. Please use the font collaging functions instead:\nscribble_font_collage_create()\nscribble_font_collage_copy_all()\netc.");
+
+    
+    
+    
+    
+    
+    
+    
     var _new_font_name = argument[0];
     
     if (!is_string(_new_font_name))
@@ -20,7 +29,7 @@ function scribble_font_combine()
     }
     
     //We always use a glyph map so we don't need to pre-parse the fonts
-    var _font_data = new __scribble_class_font(_new_font_name, "runtime");
+    var _font_data = new __scribble_class_font(_new_font_name);
     var _glyph_map = _font_data.glyphs_map;
 
     //Go go backwards so fonts listed first take priority (character from later fonts get overwritten)
@@ -28,7 +37,7 @@ function scribble_font_combine()
     //Collect MSDF state for the fonts
     var _any_msdf            = false;
     var _all_msdf            = true;
-    var _msdf_range          = undefined;
+    var _msdf_pxrange        = undefined;
     var _msdf_range_conflict = false;
     var _f = 1;
     repeat(argument_count - 1)
@@ -36,11 +45,11 @@ function scribble_font_combine()
         var _src_font_name = argument[_f];
         var _src_font_data = global.__scribble_font_data[? _src_font_name];
         
-        if ((_src_font_data.type == "msdf") || (_src_font_data.type == "runtime msdf"))
+        if (_src_font_data.msdf)
         {
             _any_msdf = true;
-            if ((_msdf_range != undefined) && (_msdf_range != _src_font_data.msdf_range)) _msdf_range_conflict = true;
-            _msdf_range = _src_font_data.msdf_range;
+            if ((_msdf_pxrange != undefined) && (_msdf_pxrange != _src_font_data.msdf_pxrange)) _msdf_range_conflict = true;
+            _msdf_pxrange = _src_font_data.msdf_pxrange;
         }
         else
         {
@@ -55,8 +64,8 @@ function scribble_font_combine()
     {
         if (!_all_msdf) __scribble_error("Cannot combine MSDF fonts with other types of fonts");
         if (_msdf_range_conflict) __scribble_error("Combined MSDF fonts must have the same pxrange");
-        _font_data.type = "runtime msdf";
-        _font_data.msdf_range = _msdf_range;
+        _font_data.msdf = true;
+        _font_data.msdf_pxrange = _msdf_pxrange;
     }
     
     //Calculate font min/max y-values so we can apply a y-offset per font so everything is centred
