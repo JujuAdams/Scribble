@@ -40,20 +40,6 @@ Associates four fonts together for use with `[r]` `[b]` `[i]` `[bi]` font tags. 
 
 &nbsp;
 
-## `scribble_font_combine(destinationFontName, sourceFontName, preferSource)`
-
-**Returns:** N/A (`undefined`)
-
-|Name                 |Datatype|Purpose                                                                                                          |
-|---------------------|--------|-----------------------------------------------------------------------------------------------------------------|
-|`destinationFontName`|string  |Name of the font to add to, as a string                                                                          |
-|`sourceFontName`     |string  |Name of the font to add from, as a string                                                                        |
-|`preferSource`       |boolean |Set to `true` to overwrite destination data if the source and destination fonts have data for the same glyph|
-
-The destination font will be converted to a dictionary look-up. This may slightly impact performance when caching text.
-
-&nbsp;
-
 ## `scribble_font_scale(fontName, xscale, yscale)`
 
 **Returns:** N/A (`undefined`)
@@ -64,7 +50,9 @@ The destination font will be converted to a dictionary look-up. This may slightl
 |`xscale`  |number  |Scaling factor for the x-axis          |
 |`yscale`  |number  |Scaling factor for the y-axis          |
 
-Scales every glyph in a font (including the space character) by the given factors. This directly modifies glyph properties for the font. Existing text elements that use the targetted font will not be immediately updated - you will need to recache those text elements. As a result, this function is intended to be used at the start of the game and not during operation.
+Scales every glyph in a font (including the space character) by the given factors. This directly modifies glyph properties for the font.
+
+?> Existing text elements that use the targetted font will not be immediately updated - you will need to refresh those text elements.
 
 &nbsp;
 
@@ -155,18 +143,6 @@ Three properties are available:
 
 &nbsp;
 
-## `scribble_font_scale(fontName, xScale, yScale)`
-
-**Returns:** N/A (`undefined`)
-
-|Name       |Datatype|Purpose                              |
-|-----------|--------|-------------------------------------|
-|`fontName` |string  |Name of the font to target           |
-|`xScale`   |number  |Scaling factor to apply in the x axis|
-|`yScale`   |number  |Scaling factor to apply in the y axis|
-
-&nbsp;
-
 ## `scribble_font_has_character(fontName, character)`
 
 **Returns:** Boolean, indicating whether the given character is found in the font
@@ -175,3 +151,18 @@ Three properties are available:
 |-----------|--------|----------------------------------|
 |`fontName` |string  |Name of the font to target        |
 |`character`|string  |Character to test for, as a string|
+
+&nbsp;
+
+## `scribble_font_get_glyph_ranges(fontName, [hex])`
+
+**Returns:** Array of arrays, the ranges of glyphs available to the given font
+
+|Name      |Datatype|Purpose                                                                                |
+|----------|--------|---------------------------------------------------------------------------------------|
+|`fontName`|string  |Name of the font to target                                                             |
+|`[hex]`   |boolean |Whether to return ranges as hex codes. If not specified, decimal codes will be returned|
+
+Returns an array of arrays, the nested arrays being comprised of two elements. The 0th element of a nested array is the minimum value for the range, the 1st element of a nested array is the maximum value for the range. Ranges that only contain one glyph will have their minimum and maximum values set to the same number.
+
+
