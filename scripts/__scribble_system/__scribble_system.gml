@@ -55,7 +55,6 @@ global.__scribble_line_grid           = ds_grid_create(__SCRIBBLE_MAX_LINES, __S
 global.__scribble_character_delay     = false;
 global.__scribble_character_delay_map = ds_map_create();
 
-global.__scribble_gc_collect_time  = current_time; //FIXME - Forcing gc_collect() every few seconds as large structs aren't being GC'd properly (2020-12-09, GMS2.3.1 Stable)
 global.__scribble_cache_check_time = current_time;
 
 global.__scribble_mcache_dict       = ds_map_create(); //FIXME - Using a ds_map here as structs are currently leaking memory (2020-12-09, GMS2.3.1 Stable)
@@ -157,34 +156,6 @@ global.__scribble_msdf_u_vBorderColour            = shader_get_uniform(__shd_scr
 global.__scribble_msdf_u_fBorderThickness         = shader_get_uniform(__shd_scribble_msdf, "u_fBorderThickness"        );
 global.__scribble_msdf_u_vOutputSize              = shader_get_uniform(__shd_scribble_msdf, "u_vOutputSize"             );
 
-//Hex converter array
-var _min = ord("0");
-var _max = ord("f");
-global.__scribble_hex_min = _min;
-global.__scribble_hex_max = _max;
-global.__scribble_hex_array = array_create(1 + _max - _min);
-global.__scribble_hex_array[@ ord("0") - _min] =  0; //ascii  48 = array  0
-global.__scribble_hex_array[@ ord("1") - _min] =  1; //ascii  49 = array  1
-global.__scribble_hex_array[@ ord("2") - _min] =  2; //ascii  50 = array  2
-global.__scribble_hex_array[@ ord("3") - _min] =  3; //ascii  51 = array  3
-global.__scribble_hex_array[@ ord("4") - _min] =  4; //ascii  52 = array  4
-global.__scribble_hex_array[@ ord("5") - _min] =  5; //ascii  53 = array  5
-global.__scribble_hex_array[@ ord("6") - _min] =  6; //ascii  54 = array  6
-global.__scribble_hex_array[@ ord("7") - _min] =  7; //ascii  55 = array  7
-global.__scribble_hex_array[@ ord("8") - _min] =  8; //ascii  56 = array  8
-global.__scribble_hex_array[@ ord("9") - _min] =  9; //ascii  57 = array  9
-global.__scribble_hex_array[@ ord("A") - _min] = 10; //ascii  65 = array 17
-global.__scribble_hex_array[@ ord("B") - _min] = 11; //ascii  66 = array 18
-global.__scribble_hex_array[@ ord("C") - _min] = 12; //ascii  67 = array 19
-global.__scribble_hex_array[@ ord("D") - _min] = 13; //ascii  68 = array 20
-global.__scribble_hex_array[@ ord("E") - _min] = 14; //ascii  69 = array 21
-global.__scribble_hex_array[@ ord("F") - _min] = 15; //ascii  70 = array 22
-global.__scribble_hex_array[@ ord("a") - _min] = 10; //ascii  97 = array 49
-global.__scribble_hex_array[@ ord("b") - _min] = 11; //ascii  98 = array 50
-global.__scribble_hex_array[@ ord("c") - _min] = 12; //ascii  99 = array 51
-global.__scribble_hex_array[@ ord("d") - _min] = 13; //ascii 100 = array 52
-global.__scribble_hex_array[@ ord("e") - _min] = 14; //ascii 101 = array 53
-global.__scribble_hex_array[@ ord("f") - _min] = 15; //ascii 102 = array 54
 
 
 
