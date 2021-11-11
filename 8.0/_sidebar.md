@@ -18,6 +18,7 @@
 -   [`scribble_typist()`](typist-methods)
 -   [Animation Properties](animation-properties)
 -   [Fonts](fonts)
+-   [Font Collage](font-collage)
 -   [Misc Functions](misc-functions)
 -   [*Legacy Typewriter*](legacy-typewriter)
 
