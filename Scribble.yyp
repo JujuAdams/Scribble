@@ -22,6 +22,7 @@
     {"id":{"name":"obj_test_msdf_comparison","path":"objects/obj_test_msdf_comparison/obj_test_msdf_comparison.yy",},"order":4,},
     {"id":{"name":"obj_test_legacy_typewriter_custom","path":"objects/obj_test_legacy_typewriter_custom/obj_test_legacy_typewriter_custom.yy",},"order":5,},
     {"id":{"name":"obj_example_basic","path":"objects/obj_example_basic/obj_example_basic.yy",},"order":1,},
+    {"id":{"name":"scribble_msdf_thickness_offset","path":"scripts/scribble_msdf_thickness_offset/scribble_msdf_thickness_offset.yy",},"order":5,},
     {"id":{"name":"obj_test_sprite_colourization","path":"objects/obj_test_sprite_colourization/obj_test_sprite_colourization.yy",},"order":2,},
     {"id":{"name":"scribble_font_set_default","path":"scripts/scribble_font_set_default/scribble_font_set_default.yy",},"order":0,},
     {"id":{"name":"__scribble_generator_macros","path":"scripts/__scribble_generator_macros/__scribble_generator_macros.yy",},"order":10,},
