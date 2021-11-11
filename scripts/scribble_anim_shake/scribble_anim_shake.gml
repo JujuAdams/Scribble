@@ -9,7 +9,9 @@ function scribble_anim_shake(_size, _speed)
         global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.SHAKE_SIZE ] = _size;
         global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.SHAKE_SPEED] = _speed;
         
-        global.__scribble_anim_shader_desync      = true;
-        global.__scribble_anim_shader_msdf_desync = true;
+        global.__scribble_anim_shader_desync                 = true;
+        global.__scribble_anim_shader_desync_to_default      = false;
+        global.__scribble_anim_shader_msdf_desync            = true;
+        global.__scribble_anim_shader_msdf_desync_to_default = false;
     }
 }

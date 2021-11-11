@@ -160,10 +160,12 @@ global.__scribble_msdf_u_fMSDFThicknessOffset     = shader_get_uniform(__shd_scr
 scribble_msdf_thickness_offset();
 
 //Set up animation properties
-global.__scribble_anim_shader_desync  = true;
+global.__scribble_anim_shader_desync = false;
+global.__scribble_anim_shader_desync_to_default = false;
 global.__scribble_anim_shader_default = false;
 
-global.__scribble_anim_shader_msdf_desync  = true;
+global.__scribble_anim_shader_msdf_desync = false;
+global.__scribble_anim_shader_msdf_desync_to_default = false;
 global.__scribble_anim_shader_msdf_default = false;
 
 global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE);

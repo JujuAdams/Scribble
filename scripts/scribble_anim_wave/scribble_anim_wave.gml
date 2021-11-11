@@ -12,7 +12,9 @@ function scribble_anim_wave(_size, _frequency, _speed)
         global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.WAVE_FREQ ] = _frequency;
         global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.WAVE_SPEED] = _speed;
         
-        global.__scribble_anim_shader_desync      = true;
-        global.__scribble_anim_shader_msdf_desync = true;
+        global.__scribble_anim_shader_desync                 = true;
+        global.__scribble_anim_shader_desync_to_default      = false;
+        global.__scribble_anim_shader_msdf_desync            = true;
+        global.__scribble_anim_shader_msdf_desync_to_default = false;
     }
 }

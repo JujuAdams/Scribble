@@ -78,13 +78,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         __tw_legacy_typist_use = false;
     }
     
-    animation_time               = current_time;
-    animation_tick_speed__       = 1;
-    animation_array              = array_create(__SCRIBBLE_ANIM.__SIZE, 0.0);
-    animation_blink_on_duration  = 8;
-    animation_blink_off_duration = 8;
-    animation_blink_time_offset  = 0;
-    animation_blink_state        = true;
+    animation_time         = current_time;
+    animation_tick_speed__ = 1;
+    animation_blink_state  = true;
     
     msdf_shadow_colour  = c_black;
     msdf_shadow_alpha   = 0.0;
@@ -450,122 +446,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     
     
-    #region Animation
-    
-    /// @param tickSpeed
-    static animation_tick_speed = function(_speed)
-    {
-        animation_tick_speed__ = _speed;
-        return self;
-    }
-    
-    /// @param sourceElement
-    static animation_sync = function(_source_element)
-    {
-        if (scribble_is_text_element(_source_element))
-        {
-            animation_time         = _source_element.animation_time;
-            animation_tick_speed__ = _source_element.animation_tick_speed__;
-        }
-        
-        return self;
-    }
-    
-    /// @param size
-    /// @param frequency
-    /// @param speed
-    static animation_wave = function(_size, _frequency, _speed)
-    {
-        animation_array[@ __SCRIBBLE_ANIM.WAVE_SIZE ] = _size;
-        animation_array[@ __SCRIBBLE_ANIM.WAVE_FREQ ] = _frequency;
-        animation_array[@ __SCRIBBLE_ANIM.WAVE_SPEED] = _speed;
-        return self;
-    }
-    
-    /// @param size
-    /// @param speed
-    static animation_shake = function(_size, _speed)
-    {
-        animation_array[@ __SCRIBBLE_ANIM.SHAKE_SIZE ] = _size;
-        animation_array[@ __SCRIBBLE_ANIM.SHAKE_SPEED] = _speed;
-        return self;
-    }
-    
-    /// @param weight
-    /// @param speed
-    static animation_rainbow = function(_weight, _speed)
-    {
-        animation_array[@ __SCRIBBLE_ANIM.RAINBOW_WEIGHT] = _weight;
-        animation_array[@ __SCRIBBLE_ANIM.RAINBOW_SPEED ] = _speed;
-        return self;
-    }
-    
-    /// @param angle
-    /// @param frequency
-    static animation_wobble = function(_angle, _frequency)
-    {
-        animation_array[@ __SCRIBBLE_ANIM.WOBBLE_ANGLE] = _angle;
-        animation_array[@ __SCRIBBLE_ANIM.WOBBLE_FREQ ] = _frequency;
-        return self;
-    }
-    
-    /// @param scale
-    /// @param speed
-    static animation_pulse = function(_scale, _speed)
-    {
-        animation_array[@ __SCRIBBLE_ANIM.PULSE_SCALE] = _scale;
-        animation_array[@ __SCRIBBLE_ANIM.PULSE_SPEED] = _speed;
-        return self;
-    }
-    
-    /// @param size
-    /// @param frequency
-    /// @param speed
-    static animation_wheel = function(_size, _frequency, _speed)
-    {
-        animation_array[@ __SCRIBBLE_ANIM.WHEEL_SIZE ] = _size;
-        animation_array[@ __SCRIBBLE_ANIM.WHEEL_FREQ ] = _frequency;
-        animation_array[@ __SCRIBBLE_ANIM.WHEEL_SPEED] = _speed;
-        return self;
-    }
-    
-    /// @param size
-    /// @param saturation
-    /// @param value
-    static animation_cycle = function(_speed, _saturation, _value)
-    {
-        animation_array[@ __SCRIBBLE_ANIM.CYCLE_SPEED     ] = _speed;
-        animation_array[@ __SCRIBBLE_ANIM.CYCLE_SATURATION] = _saturation;
-        animation_array[@ __SCRIBBLE_ANIM.CYCLE_VALUE     ] = _value;
-        return self;
-    }
-    
-    /// @param minScale
-    /// @param maxScale
-    /// @param speed
-    static animation_jitter = function(_min, _max, _speed)
-    {
-        animation_array[@ __SCRIBBLE_ANIM.JITTER_MINIMUM] = _min;
-        animation_array[@ __SCRIBBLE_ANIM.JITTER_MAXIMUM] = _max;
-        animation_array[@ __SCRIBBLE_ANIM.JITTER_SPEED  ] = _speed;
-        return self;
-    }
-    
-    /// @param onDuration
-    /// @param offDuration
-    /// @param timeOffset
-    static animation_blink = function(_on, _off, _offset)
-    {
-        animation_blink_on_duration  = _on;
-        animation_blink_off_duration = _off;
-        animation_blink_time_offset  = _offset;
-        return self;
-    }
-    
-    #endregion
-    
-    
-    
     #region MSDF
     
     static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset)
@@ -805,9 +685,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         last_drawn = current_time;
         
         //Update the blink state
-        if (animation_blink_on_duration + animation_blink_off_duration > 0)
+        if (global.__scribble_anim_blink_on_duration + global.__scribble_anim_blink_off_duration > 0)
         {
-            animation_blink_state = (((animation_time + animation_blink_time_offset) mod (animation_blink_on_duration + animation_blink_off_duration)) < animation_blink_on_duration);
+            animation_blink_state = (((animation_time + global.__scribble_anim_blink_time_offset) mod (global.__scribble_anim_blink_on_duration + global.__scribble_anim_blink_off_duration)) < global.__scribble_anim_blink_on_duration);
         }
         else
         {
@@ -837,7 +717,13 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                 colour_get_blue( gradient_colour)/255,
                                                                 gradient_alpha);
             
-            shader_set_uniform_f_array(global.__scribble_u_aDataFields, animation_array);
+            if (global.__scribble_anim_shader_desync)
+            {
+                global.__scribble_anim_shader_desync = false;
+                global.__scribble_anim_shader_default = global.__scribble_anim_shader_desync_to_default;
+                shader_set_uniform_f_array(global.__scribble_u_aDataFields, global.__scribble_anim_properties);
+            }
+            
             shader_set_uniform_f_array(global.__scribble_u_aBezier, bezier_array);
             shader_set_uniform_f(global.__scribble_u_fBlinkState, animation_blink_state);
             
@@ -892,7 +778,13 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                      colour_get_blue( gradient_colour)/255,
                                                                      gradient_alpha);
             
-            shader_set_uniform_f_array(global.__scribble_msdf_u_aDataFields, animation_array);
+            if (global.__scribble_anim_shader_msdf_desync)
+            {
+                global.__scribble_anim_shader_msdf_desync = false;
+                global.__scribble_anim_shader_msdf_default = global.__scribble_anim_shader_msdf_desync_to_default;
+                shader_set_uniform_f_array(global.__scribble_msdf_u_aDataFields, global.__scribble_anim_properties);
+            }
+            
             shader_set_uniform_f_array(global.__scribble_msdf_u_aBezier, bezier_array);
             shader_set_uniform_f(global.__scribble_msdf_u_fBlinkState, animation_blink_state);
             

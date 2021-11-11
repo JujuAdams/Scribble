@@ -30,11 +30,13 @@ function scribble_anim_reset()
     
     if (!global.__scribble_anim_shader_default)
     {
-        global.__scribble_anim_shader_desync = true;
+        global.__scribble_anim_shader_desync            = true;
+        global.__scribble_anim_shader_desync_to_default = true;
     }
     
     if (!global.__scribble_anim_shader_msdf_default)
     {
-        global.__scribble_anim_shader_msdf_desync = true;
+        global.__scribble_anim_shader_msdf_desync            = true;
+        global.__scribble_anim_shader_msdf_desync_to_default = true;
     }
 }
