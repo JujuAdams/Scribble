@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Collage",
-    "path": "folders/Scribble/Collage.yy",
+    "name": "Fonts",
+    "path": "folders/Scribble/Fonts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_font_combine",
+  "name": "scribble_font_get_glyph_ranges",
   "tags": [],
   "resourceType": "GMScript",
 }

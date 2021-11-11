@@ -304,7 +304,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         var _sprite_u1 = _sprite_uvs[2];
         var _sprite_v1 = _sprite_uvs[3];
     
-        var _new_font_data = new __scribble_class_font(_new_font_name, "runtime");
+        var _new_font_data = new __scribble_class_font(_new_font_name, "baked");
         _src_font_data.copy_to(_new_font_data);
         _new_font_data.path              = undefined;
         _new_font_data.glyphs_array      = undefined;

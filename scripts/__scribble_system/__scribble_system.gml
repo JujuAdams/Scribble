@@ -316,6 +316,45 @@ function __scribble_array_find_index(_array, _value)
     return -1;
 }
 
+function __scribble_prepare_collage_work_array(_input_array)
+{
+    var _output_array = [];
+    
+    var _i = 0;
+    repeat(_input_array)
+    {
+        var _glyph_to_copy = _input_array[_i];
+        
+        if (is_string(_glyph_to_copy))
+        {
+            var _j = 1;
+            repeat(string_length(_glyph_to_copy))
+            {
+                var _ord = ord(string_char_at(_glyph_to_copy, _j));
+                array_push(_output_array, [_ord, _ord]);
+                ++_j;
+            }
+            
+            _glyph_to_copy = undefined;
+        }
+        
+        if (is_numeric(_glyph_to_copy))
+        {
+            _glyph_to_copy = [_glyph_to_copy, _glyph_to_copy];
+        }
+        
+        if (is_array(_glyph_to_copy))
+        {
+            array_push(_output_array, _glyph_to_copy);
+        }
+        
+        ++_i;
+    }
+    
+    return _output_array;
+}
+
+
 #region Internal Macro Definitions
 
 // @jujuadams
@@ -415,7 +454,7 @@ enum SCRIBBLE_EASE
 
 //Normally, Scribble will try to sequentially store glyph data in an array for fast lookup.
 //However, some font definitons may have disjointed character indexes (e.g. Chinese). Scribble will detect these fonts and use a ds_map instead for glyph data lookup
-#macro __SCRIBBLE_SEQUENTIAL_GLYPH_TRY        true
+#macro __SCRIBBLE_SEQUENTIAL_GLYPH_TRY        false
 #macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_RANGE  300  //If the glyph range (min index to max index) exceeds this number, a font's glyphs will be indexed using a ds_map
 #macro __SCRIBBLE_SEQUENTIAL_GLYPH_MAX_HOLES  0.50 //Fraction (0 -> 1). If the number of holes exceeds this proportion, a font's glyphs will be indexed using a ds_map
 
