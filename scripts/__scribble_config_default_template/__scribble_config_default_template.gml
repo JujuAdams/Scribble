@@ -14,14 +14,6 @@ function __scribble_config_default_template()
     page(0);
     fog(c_white, 0.0);
     ignore_command_tags(false);
-    animation_wave(4, 50, 0.2);
-    animation_shake(2, 0.4);
-    animation_rainbow(0.5, 0.01);
-    animation_wobble(40, 0.15);
-    animation_pulse(0.4, 0.1);
-    animation_wheel(1, 0.5, 0.2);
-    animation_cycle(0.3, 180, 255);
-    animation_jitter(0.8, 1.2, 0.4);
     
     if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER) typewriter_off();
 }
