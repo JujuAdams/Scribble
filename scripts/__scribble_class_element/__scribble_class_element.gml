@@ -416,7 +416,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static reveal = function(_character)
     {
-        //Don't regenerate the array unless we really have to
         if (__tw_reveal != _character)
         {
             __tw_reveal = _character;
@@ -426,7 +425,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    static reveal_get = function()
+    static get_reveal = function()
     {
         return __tw_reveal;
     }
