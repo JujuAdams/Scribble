@@ -65,6 +65,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     __template = __scribble_config_default_template;
     
     bezier_array = array_create(6, 0.0);
+    bezier_using = false;
     
     __tw_reveal              = undefined;
     __tw_reveal_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
@@ -405,6 +406,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             model_cache_name_dirty = true;
             bezier_array = _bezier_array;
+            bezier_using = true;
         }
         
         return self;
@@ -717,6 +719,9 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                 colour_get_blue( gradient_colour)/255,
                                                                 gradient_alpha);
             
+            shader_set_uniform_f(global.__scribble_u_fBlinkState, animation_blink_state);
+            
+            //Update the animation properties for this shader if they've changed since the last time we drew an element
             if (global.__scribble_anim_shader_desync)
             {
                 global.__scribble_anim_shader_desync = false;
@@ -724,8 +729,18 @@ function __scribble_class_element(_string, _unique_id) constructor
                 shader_set_uniform_f_array(global.__scribble_u_aDataFields, global.__scribble_anim_properties);
             }
             
-            shader_set_uniform_f_array(global.__scribble_u_aBezier, bezier_array);
-            shader_set_uniform_f(global.__scribble_u_fBlinkState, animation_blink_state);
+            if (bezier_using)
+            {
+                //If we're using a Bezier curve for this element, push that value into the shader
+                global.__scribble_bezier_using = true;
+                shader_set_uniform_f_array(global.__scribble_u_aBezier, bezier_array);
+            }
+            else if (global.__scribble_bezier_using)
+            {
+                //If we're *not* using a Bezier curve but we have a previous Bezier curve cached, reset the curve in the shader
+                global.__scribble_bezier_using = false;
+                shader_set_uniform_f_array(global.__scribble_u_aBezier, global.__scribble_bezier_null_array);
+            }
             
             if (_typist != undefined)
             {
@@ -778,6 +793,9 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                      colour_get_blue( gradient_colour)/255,
                                                                      gradient_alpha);
             
+            shader_set_uniform_f(global.__scribble_msdf_u_fBlinkState, animation_blink_state);
+            
+            //Update the animation properties for this shader if they've changed since the last time we drew an element
             if (global.__scribble_anim_shader_msdf_desync)
             {
                 global.__scribble_anim_shader_msdf_desync = false;
@@ -785,8 +803,18 @@ function __scribble_class_element(_string, _unique_id) constructor
                 shader_set_uniform_f_array(global.__scribble_msdf_u_aDataFields, global.__scribble_anim_properties);
             }
             
-            shader_set_uniform_f_array(global.__scribble_msdf_u_aBezier, bezier_array);
-            shader_set_uniform_f(global.__scribble_msdf_u_fBlinkState, animation_blink_state);
+            if (bezier_using)
+            {
+                //If we're using a Bezier curve for this element, push that value into the shader
+                global.__scribble_bezier_msdf_using = true;
+                shader_set_uniform_f_array(global.__scribble_msdf_u_aBezier, bezier_array);
+            }
+            else if (global.__scribble_bezier_msdf_using)
+            {
+                //If we're *not* using a Bezier curve but we have a previous Bezier curve cached, reset the curve in the shader
+                global.__scribble_bezier_msdf_using = false;
+                shader_set_uniform_f_array(global.__scribble_msdf_u_aBezier, global.__scribble_bezier_null_array);
+            }
             
             if (_typist != undefined)
             {

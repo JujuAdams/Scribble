@@ -171,6 +171,11 @@ global.__scribble_anim_shader_msdf_default = false;
 global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE);
 scribble_anim_reset();
 
+//Bezier curve state
+global.__scribble_bezier_using      = false;
+global.__scribble_bezier_msdf_using = false;
+global.__scribble_bezier_null_array = array_create(6, 0);
+
 //Try to add all fonts in the project to Scribble
 var _i = 0;
 repeat(1000)
