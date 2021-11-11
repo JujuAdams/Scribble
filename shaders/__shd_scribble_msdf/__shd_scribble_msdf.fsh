@@ -11,6 +11,7 @@ varying float v_fTextScale;
 
 uniform vec2  u_vTexel;
 uniform float u_fMSDFRange;
+uniform float u_fMSDFThicknessOffset;
 uniform vec4  u_vFog;
 uniform vec4  u_vShadowColour;
 uniform vec2  u_vShadowOffset;
@@ -24,7 +25,7 @@ float median(vec3 v)
 
 float MSDFSignedDistance(vec2 texOffset)
 {
-    return median(texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel*texOffset).rgb) - 0.5;
+    return median(texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel*texOffset).rgb) + u_fMSDFThicknessOffset - 0.5;
 }
 
 float MSDFAlpha(float signedDistance, float pixelSize, float outerBorder)
