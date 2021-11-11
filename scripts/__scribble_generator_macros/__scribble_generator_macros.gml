@@ -111,12 +111,10 @@ enum __SCRIBBLE_PARSER_LINE
                                         ++_glyph_count;
 
 
-#macro __SCRIBBLE_PARSER_SET_FONT   var _font_data         = __scribble_get_font_data(_font_name);\n
-                                    var _font_glyphs_map   = _font_data.glyphs_map;\n
-                                    var _font_glyphs_min   = _font_data.glyph_min;\n
-                                    var _font_glyphs_max   = _font_data.glyph_max;\n
-                                    var _font_msdf_range   = _font_data.msdf_range;\n
-                                    var _font_scale_dist   = _font_data.scale_dist;\n
+#macro __SCRIBBLE_PARSER_SET_FONT   var _font_data        = __scribble_get_font_data(_font_name);\n
+                                    var _font_glyphs_map  = _font_data.glyphs_map;\n
+                                    var _font_msdf_range  = _font_data.msdf_range;\n
+                                    var _font_scale_dist  = _font_data.scale_dist;\n
                                     var _space_glyph_data = _font_glyphs_map[? 32];\n
                                     if (_space_glyph_data == undefined)\n
                                     {\n

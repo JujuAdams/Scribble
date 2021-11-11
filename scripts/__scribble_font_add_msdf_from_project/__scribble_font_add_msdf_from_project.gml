@@ -23,6 +23,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
     }
     
     var _font_data = new __scribble_class_font(_name, "msdf");
+    var _font_glyphs_map = _font_data.glyphs_map;
     
     if (SCRIBBLE_VERBOSE) show_debug_message("Scribble: Defined \"" + _name + "\" as an MSDF font");
     
@@ -60,9 +61,6 @@ function __scribble_font_add_msdf_from_project(_sprite)
     
     var _size = ds_list_size(_json_glyph_list);
     if (SCRIBBLE_VERBOSE) __scribble_trace("\"" + _name + "\" has " + string(_size) + " characters");
-    
-    var _font_glyphs_map = ds_map_create();
-    _font_data.glyphs_map = _font_glyphs_map;
     
     var _i = 0;
     repeat(_size)
@@ -154,4 +152,6 @@ function __scribble_font_add_msdf_from_project(_sprite)
     }
     
     ds_map_destroy(_json);
+    
+    _font_data.calculate_font_height();
 }

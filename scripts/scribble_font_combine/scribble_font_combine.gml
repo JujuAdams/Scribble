@@ -20,10 +20,8 @@ function scribble_font_combine()
     }
     
     //We always use a glyph map so we don't need to pre-parse the fonts
-    var _glyph_map = ds_map_create();
-    
     var _font_data = new __scribble_class_font(_new_font_name, "runtime");
-    _font_data.glyphs_map = _glyph_map;
+    var _glyph_map = _font_data.glyphs_map;
 
     //Go go backwards so fonts listed first take priority (character from later fonts get overwritten)
     
@@ -147,11 +145,7 @@ function scribble_font_combine()
             //If we have glyph data then copy it across to the combined font
             if (is_array(_src_array))
             {
-                var _dst_array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
-                array_copy(_dst_array, 0, _src_array, 0, SCRIBBLE_GLYPH.__SIZE);
-            
-                _dst_array[@ SCRIBBLE_GLYPH.Y_OFFSET] += _y_offset;
-            
+                var _dst_array = __scribble_glyph_duplicate(_src_array, _y_offset);
                 _glyph_map[? _dst_array[SCRIBBLE_GLYPH.INDEX]] = _dst_array;
             }
         

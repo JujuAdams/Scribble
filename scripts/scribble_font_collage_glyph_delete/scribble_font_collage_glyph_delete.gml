@@ -1,6 +1,7 @@
 function scribble_font_collage_glyph_delete(_target)
 {
-    var _target_font_data = global.__scribble_font_data[? _target];
+    var _font_data = global.__scribble_font_data[? _target];
+    var _glyphs_map = _font_data.glyphs_map;
     
     var _glyphs_array = array_create(argument_count - 1);
     var _i = 1;
@@ -17,15 +18,11 @@ function scribble_font_collage_glyph_delete(_target)
     {
         var _glyph_range_array = _work_array[_i];
         
-        var _j = _glyph_range_array[0];
-        repeat(1 + _glyph_range_array[1] - _j)
+        var _ord = _glyph_range_array[0];
+        repeat(1 + _glyph_range_array[1] - _ord)
         {
-            
-            
-            
-            
-            
-            ++_j;
+            ds_map_delete(_glyphs_map, _ord);
+            ++_ord;
         }
         
         ++_i;

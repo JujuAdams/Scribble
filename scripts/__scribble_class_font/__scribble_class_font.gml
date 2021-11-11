@@ -8,16 +8,12 @@ function __scribble_class_font(_name, _type) constructor
     name = _name;
     type = _type; //Can be either: "standard", "sprite", "msdf", "collage", "baked"
     
-    path         = undefined;
-    glyphs_map   = undefined;
-    glyph_min    = 32;
-    glyph_max    = 32;
-    space_width  = undefined;
-    separation   = undefined;
-    msdf_range   = undefined;
-    xscale       = 1.0;
-    yscale       = 1.0;
-    scale_dist   = 1.0;
+    glyphs_map = ds_map_create();
+    msdf_range = undefined;
+    xscale     = 1.0;
+    yscale     = 1.0;
+    scale_dist = 1.0;
+    height     = 0;
     
     style_regular     = undefined;
     style_bold        = undefined;
@@ -31,7 +27,7 @@ function __scribble_class_font(_name, _type) constructor
         repeat(array_length(_names))
         {
             var _name = _names[_i];
-            if ((_name != "name") && (_name != "type"))
+            if ((_name != "name") && (_name != "type") && (_name != "glyphs_map"))
             {
                 variable_struct_set(_target, _name, variable_struct_get(self, _name));
             }
@@ -39,4 +35,16 @@ function __scribble_class_font(_name, _type) constructor
             ++_i;
         }
     }
+    
+    static calculate_font_height = function()
+    {
+        height = glyphs_map[? 32][SCRIBBLE_GLYPH.HEIGHT];
+    }
+    
+    //Unused as of 2021-11-11. Not sure how many problems this would cause if it was enabled
+    //static destroy = function()
+    //{
+    //    ds_map_destroy(glyphs_map);
+    //    ds_map_delete(global.__scribble_font_data, name);
+    //}
 }

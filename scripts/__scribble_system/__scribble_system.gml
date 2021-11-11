@@ -354,6 +354,19 @@ function __scribble_prepare_collage_work_array(_input_array)
     return _output_array;
 }
 
+/// @param oldGlyph
+/// @param [yOffset=0]
+function __scribble_glyph_duplicate(_old, _y_offset = 0)
+{
+    var _new = array_create(SCRIBBLE_GLYPH.__SIZE);
+    array_copy(_new, 0, _old, 0, SCRIBBLE_GLYPH.__SIZE);
+    _new[@ SCRIBBLE_GLYPH.Y_OFFSET] += _y_offset;
+    return _new;
+}
+
+
+
+
 
 #region Internal Macro Definitions
 

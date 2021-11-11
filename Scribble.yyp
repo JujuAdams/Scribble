@@ -30,7 +30,6 @@
     {"id":{"name":"scribble_font_scale","path":"scripts/scribble_font_scale/scribble_font_scale.yy",},"order":9,},
     {"id":{"name":"spr_msdf_industrydemi","path":"sprites/spr_msdf_industrydemi/spr_msdf_industrydemi.yy",},"order":16,},
     {"id":{"name":"obj_test_combine_and_scale","path":"objects/obj_test_combine_and_scale/obj_test_combine_and_scale.yy",},"order":4,},
-    {"id":{"name":"scribble_font_ranges","path":"scripts/scribble_font_ranges/scribble_font_ranges.yy",},"order":12,},
     {"id":{"name":"example_dialogue_set_name","path":"scripts/example_dialogue_set_name/example_dialogue_set_name.yy",},"order":5,},
     {"id":{"name":"obj_test_newline_left_trim","path":"objects/obj_test_newline_left_trim/obj_test_newline_left_trim.yy",},"order":8,},
     {"id":{"name":"spr_portrait","path":"sprites/spr_portrait/spr_portrait.yy",},"order":4,},

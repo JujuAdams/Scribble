@@ -2,7 +2,7 @@
 
 function __scribble_font_add_from_project(_font)
 {
-    __scribble_trace("Adding \"", font_get_name(_font), "\"");
+    __scribble_trace("Adding \"", font_get_name(_font), "\" as standard font");
     
     var _name = font_get_name(_font);
     
@@ -13,6 +13,7 @@ function __scribble_font_add_from_project(_font)
     }
     
     var _font_data = new __scribble_class_font(_name, "standard");
+    var _font_glyphs_map = _font_data.glyphs_map;
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");
     
@@ -58,9 +59,6 @@ function __scribble_font_add_from_project(_font)
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("  Using a ds_map to index glyphs");
     
-    var _font_glyphs_map = ds_map_create();
-    _font_data.glyphs_map = _font_glyphs_map;
-    
     var _i = 0;
     repeat(_size)
     {
@@ -96,4 +94,6 @@ function __scribble_font_add_from_project(_font)
         
         ++_i;
     }
+    
+    _font_data.calculate_font_height();
 }
