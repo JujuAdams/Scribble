@@ -7,10 +7,10 @@ function scribble_font_collage_glyph_delete(_target)
     
     //Copy arguments into an array
     var _glyphs_array = array_create(argument_count - 1);
-    var _i = 1;
+    var _i = 0;
     repeat(argument_count - 1)
     {
-        _glyphs_array[@ _i] = argument[_i];
+        _glyphs_array[@ _i] = argument[_i+1];
         ++_i;
     }
     
@@ -19,7 +19,7 @@ function scribble_font_collage_glyph_delete(_target)
     var _work_array = __scribble_prepare_collage_work_array(_glyphs_array);
     
     var _i = 0;
-    repeat(_work_array)
+    repeat(array_length(_work_array))
     {
         var _glyph_range_array = _work_array[_i];
         

@@ -321,7 +321,7 @@ function __scribble_prepare_collage_work_array(_input_array)
     var _output_array = [];
     
     var _i = 0;
-    repeat(_input_array)
+    repeat(array_length(_input_array))
     {
         var _glyph_to_copy = _input_array[_i];
         
