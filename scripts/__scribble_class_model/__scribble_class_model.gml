@@ -90,17 +90,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         //Build a matrix to transform the text...
         if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
         {
-            //TODO - Optimise
-            //var _matrix = matrix_build(_left + _x, _top + _y, 0,   0,0,0,   1,1,1);
-            
-            var _matrix = array_create(16);
-            array_copy(_matrix, 0, _old_matrix, 0, 16);
-            _matrix[@ 12] += _left + _x;
-            _matrix[@ 13] += _top + _y;
+            var _matrix = matrix_build(_left + _x, _top + _y, 0,   0,0,0,   1,1,1);
         }
         else
         {
-            //TODO - Optimise
             var _matrix = matrix_build(_left, _top, 0,   0,0,0,   1,1,1);
                 _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
                                                                 0, 0, _angle,
