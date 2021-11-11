@@ -26,48 +26,24 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
     
     var _font_data = global.__scribble_font_data[? _font];
     
-    var _array = _font_data.glyphs_array;
-    var _map   = _font_data.glyphs_map;
+    var _map = _font_data.glyphs_map;
     
     if ((_character == all) || (_character == "all"))
     {
-        if (_array == undefined)
+        var _map = _font_data.glyphs_map;
+        
+        var _key = ds_map_find_first(_map);
+        repeat(ds_map_size(_map))
         {
-            //If the glyph array doesn't exist for this font, use the ds_map fallback
-            var _map = _font_data.glyphs_map;
-            
-            var _key = ds_map_find_first(_map);
-            repeat(ds_map_size(_map))
-            {
-                var _glyph_data = _map[? _key];
-                _glyph_data[@ _property] = _relative? (_glyph_data[_property] + _value) : _value;
-                _key = ds_map_find_next(_map, _key);
-            }
-        }
-        else
-        {
-            var _i = 0;
-            repeat(array_length(_array))
-            {
-                var _glyph_data = _array[_i];
-                if (is_array(_glyph_data)) _glyph_data[@ _property] = _relative? (_glyph_data[_property] + _value) : _value;
-                ++_i;
-            }
+            var _glyph_data = _map[? _key];
+            _glyph_data[@ _property] = _relative? (_glyph_data[_property] + _value) : _value;
+            _key = ds_map_find_next(_map, _key);
         }
     }
     else
     {
         var _ord = ord(_character);
-        
-        if (_array == undefined)
-        {
-            //If the glyph array doesn't exist for this font, use the ds_map fallback
-            var _glyph_data = _map[? _ord];
-        }
-        else
-        {
-            var _glyph_data = _array[_ord - _font_data.glyph_min];
-        }
+        var _glyph_data = _map[? _ord];
         
         if (_glyph_data == undefined)
         {

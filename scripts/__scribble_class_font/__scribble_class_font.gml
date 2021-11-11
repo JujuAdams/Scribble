@@ -10,7 +10,6 @@ function __scribble_class_font(_name, _type) constructor
     
     path         = undefined;
     glyphs_map   = undefined;
-    glyphs_array = undefined;
     glyph_min    = 32;
     glyph_max    = 32;
     space_width  = undefined;

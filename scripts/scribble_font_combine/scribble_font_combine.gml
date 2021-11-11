@@ -92,42 +92,19 @@ function scribble_font_combine()
     
         //Unpack source glyphs into an intermediate array
         var _src_glyphs_map = _src_font_data.glyphs_map;
-        if (_src_glyphs_map != undefined)
-        {
-            var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
+        var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
         
-            var _key = ds_map_find_first(_src_glyphs_map);
-            repeat(ds_map_size(_src_glyphs_map))
-            {
-                var _glyph_data = _src_glyphs_map[? _key];
-                var _y_min = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET];
-                var _y_max = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ] + _y_min;
-            
-                _font_min = min(_font_min, _y_min);
-                _font_max = max(_font_max, _y_max);
-            
-                _key = ds_map_find_next(_src_glyphs_map, _key);
-            }
-        }
-        else
+        var _key = ds_map_find_first(_src_glyphs_map);
+        repeat(ds_map_size(_src_glyphs_map))
         {
-            var _src_glyphs_array = _src_font_data.glyphs_array;
-            var _c = 0;
-            repeat(array_length(_src_glyphs_array))
-            {
-                var _glyph_data = _src_glyphs_array[_c];
+            var _glyph_data = _src_glyphs_map[? _key];
+            var _y_min = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET];
+            var _y_max = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ] + _y_min;
             
-                if (is_array(_glyph_data))
-                {
-                    var _y_min = _glyph_data[SCRIBBLE_GLYPH.Y_OFFSET];
-                    var _y_max = _glyph_data[SCRIBBLE_GLYPH.HEIGHT  ] + _y_min;
-                
-                    _font_min = min(_font_min, _y_min);
-                    _font_max = max(_font_max, _y_max);
-                }
+            _font_min = min(_font_min, _y_min);
+            _font_max = max(_font_max, _y_max);
             
-                ++_c;
-            }
+            _key = ds_map_find_next(_src_glyphs_map, _key);
         }
     
         _font_y_min_array[@ _f] = _font_min;
@@ -150,22 +127,15 @@ function scribble_font_combine()
     
         //Unpack source glyphs into an intermediate array
         var _src_glyphs_map = _src_font_data.glyphs_map;
-        if (_src_glyphs_map != undefined)
-        {
-            var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
+        var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
         
-            var _i = 0;
-            var _key = ds_map_find_first(_src_glyphs_map);
-            repeat(ds_map_size(_src_glyphs_map))
-            {
-                _src_glyphs_array[@ _i] = _src_glyphs_map[? _key];
-                ++_i;
-                _key = ds_map_find_next(_src_glyphs_map, _key);
-            }
-        }
-        else
+        var _i = 0;
+        var _key = ds_map_find_first(_src_glyphs_map);
+        repeat(ds_map_size(_src_glyphs_map))
         {
-            var _src_glyphs_array = _src_font_data.glyphs_array;
+            _src_glyphs_array[@ _i] = _src_glyphs_map[? _key];
+            ++_i;
+            _key = ds_map_find_next(_src_glyphs_map, _key);
         }
     
         //Add this font's glyph data to the combined font

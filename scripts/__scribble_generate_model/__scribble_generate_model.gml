@@ -784,39 +784,11 @@ function __scribble_generate_model(_element)
                 
                 //TODO - Ligature transform here
                 
-                #region Pull info out of the font's data structures
+                //Pull info out of the font's data structures
+                var _glyph_data = _font_glyphs_map[? _glyph_ord];
                 
-                if (_font_glyphs_array == undefined)
-                {
-                    //If there's no font array then check the font map
-                    var _glyph_data = _font_glyphs_map[? _glyph_ord];
-                    
-                    //If our glyph is missing, choose the missing character glyph instead!
-                    if (_glyph_data == undefined) _glyph_data = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];
-                }
-                else
-                {
-                    //Make sure this glyph is within the array's limits
-                    if ((_glyph_ord >= _font_glyphs_min) && (_glyph_ord <= _font_glyphs_max))
-                    {
-                        var _glyph_data = _font_glyphs_array[_glyph_ord - _font_glyphs_min];
-                    }
-                    else
-                    {
-                        //Otherwise, choose the missing character glyph
-                        _glyph_ord = ord(SCRIBBLE_MISSING_CHARACTER);
-                        if ((_glyph_ord < _font_glyphs_min) || (_glyph_ord > _font_glyphs_max)) //TODO - Report an error when loading the font
-                        {
-                            var _glyph_data = undefined;
-                        }
-                        else
-                        {
-                            var _glyph_data = _font_glyphs_array[_glyph_ord - _font_glyphs_min];
-                        }
-                    }
-                }
-                
-                #endregion
+                //If our glyph is missing, choose the missing character glyph instead!
+                if (_glyph_data == undefined) _glyph_data = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];
                 
                 if (_glyph_data == undefined)
                 {

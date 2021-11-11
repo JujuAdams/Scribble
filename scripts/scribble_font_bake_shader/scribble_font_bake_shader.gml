@@ -48,24 +48,15 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
     //Unpack source glyphs into an intermediate array
     var _src_glyphs_map = _src_font_data.glyphs_map;
-    if (_src_glyphs_map != undefined)
-    {
-        var _uses_glyph_map = true;
-        var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
+    var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
     
-        var _i = 0;
-        var _key = ds_map_find_first(_src_glyphs_map);
-        repeat(ds_map_size(_src_glyphs_map))
-        {
-            _src_glyphs_array[@ _i] = _src_glyphs_map[? _key];
-            ++_i;
-            _key = ds_map_find_next(_src_glyphs_map, _key);
-        }
-    }
-    else
+    var _i = 0;
+    var _key = ds_map_find_first(_src_glyphs_map);
+    repeat(ds_map_size(_src_glyphs_map))
     {
-        var _uses_glyph_map = false;
-        var _src_glyphs_array = _src_font_data.glyphs_array;
+        _src_glyphs_array[@ _i] = _src_glyphs_map[? _key];
+        ++_i;
+        _key = ds_map_find_next(_src_glyphs_map, _key);
     }
 
 
@@ -307,7 +298,6 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         var _new_font_data = new __scribble_class_font(_new_font_name, "baked");
         _src_font_data.copy_to(_new_font_data);
         _new_font_data.path              = undefined;
-        _new_font_data.glyphs_array      = undefined;
         _new_font_data.glyphs_map        = undefined;
         _new_font_data.style_regular     = undefined;
         _new_font_data.style_bold        = undefined;
@@ -315,27 +305,12 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         _new_font_data.style_bold_italic = undefined;
         
         //Initialise our glyph data structure, copying what the source font used
-        if (_uses_glyph_map)
-        {
-            var _new_glyph_map = ds_map_create();
-            _new_font_data.glyphs_map = _new_glyph_map;
+        var _new_glyph_map = ds_map_create();
+        _new_font_data.glyphs_map = _new_glyph_map;
         
-            var _array = array_create(SCRIBBLE_GLYPH.__SIZE);
-            array_copy(_array, 0, _src_glyphs_map[? 32], 0, SCRIBBLE_GLYPH.__SIZE);
-            _new_glyph_map[? 32] = _array;
-        }
-        else
-        {
-            var _glyph_min = _new_font_data.glyph_min;
-            var _glyph_max = _new_font_data.glyph_max;
-            
-            var _new_glyph_array = array_create(1 + _glyph_max - _glyph_min, undefined);
-            _new_font_data.glyphs_array = _new_glyph_array;
-            
-            var _array = array_create(SCRIBBLE_GLYPH.__SIZE);
-            array_copy(_array, 0, _src_glyphs_array[32 - _glyph_min], 0, SCRIBBLE_GLYPH.__SIZE);
-            _new_glyph_array[@ 32 - _glyph_min] = _array;
-        }
+        var _array = array_create(SCRIBBLE_GLYPH.__SIZE);
+        array_copy(_array, 0, _src_glyphs_map[? 32], 0, SCRIBBLE_GLYPH.__SIZE);
+        _new_glyph_map[? 32] = _array;
         
         //Copy across glyph data from the source, but using new UVs and dimensions
         var _i = 0;
@@ -346,50 +321,33 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             var _index = _glyph_position[4];
             var _src_glyph_array = _src_glyphs_array[_index];
             
-            if (!is_array(_src_glyph_array))
-            {
-                if (_uses_glyph_map)
-                {
-                    _new_glyph_array[@ _ord - _glyph_min] = undefined;
-                }
-            }
-            else
-            {
-                var _ord = _src_glyph_array[SCRIBBLE_GLYPH.INDEX];
+            var _ord = _src_glyph_array[SCRIBBLE_GLYPH.INDEX];
             
-                var _l = _glyph_position[0];
-                var _t = _glyph_position[1];
-                var _r = _l + _src_glyph_array[SCRIBBLE_GLYPH.WIDTH ] + _l_pad + _r_pad;
-                var _b = _t + _src_glyph_array[SCRIBBLE_GLYPH.HEIGHT] + _t_pad + _b_pad;
+            var _l = _glyph_position[0];
+            var _t = _glyph_position[1];
+            var _r = _l + _src_glyph_array[SCRIBBLE_GLYPH.WIDTH ] + _l_pad + _r_pad;
+            var _b = _t + _src_glyph_array[SCRIBBLE_GLYPH.HEIGHT] + _t_pad + _b_pad;
             
-                var _u0 = lerp(_sprite_u0, _sprite_u1, _l / _texture_size);
-                var _v0 = lerp(_sprite_v0, _sprite_v1, _t / _texture_size);
-                var _u1 = lerp(_sprite_u0, _sprite_u1, _r / _texture_size);
-                var _v1 = lerp(_sprite_v0, _sprite_v1, _b / _texture_size);
+            var _u0 = lerp(_sprite_u0, _sprite_u1, _l / _texture_size);
+            var _v0 = lerp(_sprite_v0, _sprite_v1, _t / _texture_size);
+            var _u1 = lerp(_sprite_u0, _sprite_u1, _r / _texture_size);
+            var _v1 = lerp(_sprite_v0, _sprite_v1, _b / _texture_size);
             
-                var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
-                _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _src_glyph_array[SCRIBBLE_GLYPH.CHARACTER ];
-                _array[@ SCRIBBLE_GLYPH.INDEX     ] = _ord;
-                _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _src_glyph_array[SCRIBBLE_GLYPH.WIDTH     ] + _l_pad + _r_pad;
-                _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _src_glyph_array[SCRIBBLE_GLYPH.HEIGHT    ] + _t_pad + _b_pad;
-                _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _src_glyph_array[SCRIBBLE_GLYPH.X_OFFSET  ] - _l_pad;
-                _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _src_glyph_array[SCRIBBLE_GLYPH.Y_OFFSET  ] - _t_pad;
-                _array[@ SCRIBBLE_GLYPH.SEPARATION] = _src_glyph_array[SCRIBBLE_GLYPH.SEPARATION] + _separation;
-                _array[@ SCRIBBLE_GLYPH.TEXTURE   ] = _texture;
-                _array[@ SCRIBBLE_GLYPH.U0        ] = _u0;
-                _array[@ SCRIBBLE_GLYPH.V0        ] = _v0;
-                _array[@ SCRIBBLE_GLYPH.U1        ] = _u1;
-                _array[@ SCRIBBLE_GLYPH.V1        ] = _v1;
+            var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
+            _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _src_glyph_array[SCRIBBLE_GLYPH.CHARACTER ];
+            _array[@ SCRIBBLE_GLYPH.INDEX     ] = _ord;
+            _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _src_glyph_array[SCRIBBLE_GLYPH.WIDTH     ] + _l_pad + _r_pad;
+            _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _src_glyph_array[SCRIBBLE_GLYPH.HEIGHT    ] + _t_pad + _b_pad;
+            _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _src_glyph_array[SCRIBBLE_GLYPH.X_OFFSET  ] - _l_pad;
+            _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _src_glyph_array[SCRIBBLE_GLYPH.Y_OFFSET  ] - _t_pad;
+            _array[@ SCRIBBLE_GLYPH.SEPARATION] = _src_glyph_array[SCRIBBLE_GLYPH.SEPARATION] + _separation;
+            _array[@ SCRIBBLE_GLYPH.TEXTURE   ] = _texture;
+            _array[@ SCRIBBLE_GLYPH.U0        ] = _u0;
+            _array[@ SCRIBBLE_GLYPH.V0        ] = _v0;
+            _array[@ SCRIBBLE_GLYPH.U1        ] = _u1;
+            _array[@ SCRIBBLE_GLYPH.V1        ] = _v1;
             
-                if (_uses_glyph_map)
-                {
-                    _new_glyph_map[? _ord] = _array;
-                }
-                else
-                {
-                    _new_glyph_array[@ _ord - _glyph_min] = _array;
-                }
-            }
+            _new_glyph_map[? _ord] = _array;
         
             ++_i;
         }
