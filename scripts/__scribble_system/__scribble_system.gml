@@ -156,8 +156,15 @@ global.__scribble_msdf_u_vBorderColour            = shader_get_uniform(__shd_scr
 global.__scribble_msdf_u_fBorderThickness         = shader_get_uniform(__shd_scribble_msdf, "u_fBorderThickness"        );
 global.__scribble_msdf_u_vOutputSize              = shader_get_uniform(__shd_scribble_msdf, "u_vOutputSize"             );
 
+//Set up animation properties
+global.__scribble_anim_shader_desync  = true;
+global.__scribble_anim_shader_default = false;
 
+global.__scribble_anim_shader_msdf_desync  = true;
+global.__scribble_anim_shader_msdf_default = false;
 
+global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE);
+scribble_anim_reset();
 
 //Try to add all fonts in the project to Scribble
 var _i = 0;

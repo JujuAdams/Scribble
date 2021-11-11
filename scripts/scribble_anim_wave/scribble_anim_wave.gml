@@ -1,0 +1,18 @@
+/// @param size
+/// @param frequency
+/// @param speed
+
+function scribble_anim_wave(_size, _frequency, _speed)
+{
+    if ((_size      != global.__scribble_anim_properties[__SCRIBBLE_ANIM.WAVE_SIZE ])
+    ||  (_frequency != global.__scribble_anim_properties[__SCRIBBLE_ANIM.WAVE_FREQ ])
+    ||  (_speed     != global.__scribble_anim_properties[__SCRIBBLE_ANIM.WAVE_SPEED]))
+    {
+        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.WAVE_SIZE ] = _size;
+        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.WAVE_FREQ ] = _frequency;
+        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.WAVE_SPEED] = _speed;
+        
+        global.__scribble_anim_shader_desync      = true;
+        global.__scribble_anim_shader_msdf_desync = true;
+    }
+}
