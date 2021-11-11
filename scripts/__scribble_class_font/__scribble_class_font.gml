@@ -16,7 +16,7 @@ function __scribble_class_font(_name) constructor
     xscale     = 1.0;
     yscale     = 1.0;
     scale_dist = 1.0;
-    height     = 0;
+    height     = 0; //*Not* the raw height. This value is changed by scribble_font_scale()
     
     style_regular     = undefined;
     style_bold        = undefined;
@@ -41,7 +41,8 @@ function __scribble_class_font(_name) constructor
     
     static calculate_font_height = function()
     {
-        height = glyphs_map[? 32][SCRIBBLE_GLYPH.HEIGHT];
+        height = yscale*glyphs_map[? 32][SCRIBBLE_GLYPH.HEIGHT];
+        return height;
     }
     
     static clear = function()
