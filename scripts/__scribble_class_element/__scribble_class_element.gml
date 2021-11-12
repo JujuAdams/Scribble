@@ -244,7 +244,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [characterWrap=false]
     static wrap = function(_wrap_max_width, _wrap_max_height = -1, _wrap_per_char = false)
     {
-        var _wrap_no_pages   = false;
+        var _wrap_no_pages = false;
         
         if ((_wrap_max_width  != wrap_max_width)
         ||  (_wrap_max_height != wrap_max_height)

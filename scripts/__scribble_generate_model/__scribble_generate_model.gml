@@ -1135,7 +1135,7 @@ function __scribble_generate_model(_element)
                 _page_data.__glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_PARSER_WORD.GLYPH_START];
                 
                 //We also need to increment the page counter for our controls
-                ds_grid_add_region(_glyph_grid, _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.CONTROL_END], __SCRIBBLE_PARSER_CONTROL.PAGE, _control_count - 1, __SCRIBBLE_PARSER_CONTROL.PAGE, 1);
+                ds_grid_add_region(_control_grid, _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.CONTROL_END], __SCRIBBLE_PARSER_CONTROL.PAGE, _control_count - 1, __SCRIBBLE_PARSER_CONTROL.PAGE, 1);
             }
         }
         
