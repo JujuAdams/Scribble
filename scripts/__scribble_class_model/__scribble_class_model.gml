@@ -184,11 +184,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if ((_page != undefined) && (_page >= 0))
         {
-            return pages_array[_page].width;
+            return fit_scale*pages_array[_page].width;
         }
         else
         {
-            return width;
+            return fit_scale*width;
         }
     }
     
@@ -197,11 +197,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if ((_page != undefined) && (_page >= 0))
         {
-            return pages_array[_page].height;
+            return fit_scale*pages_array[_page].height;
         }
         else
         {
-            return height;
+            return fit_scale*height;
         }
     }
     
@@ -302,6 +302,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __scribble_generator_line_heights();
     __scribble_generator_parser();
     __scribble_generator_build_words();
+    __scribble_generator_finalize_bidi();
+    __scribble_generator_text_wrap();
     __scribble_generator_build_pages();
     __scribble_generator_position_words();
     __scribble_generator_write_vbuffs();

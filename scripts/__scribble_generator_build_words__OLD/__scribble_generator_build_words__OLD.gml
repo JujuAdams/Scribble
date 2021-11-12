@@ -1,4 +1,4 @@
-function __scribble_generator_build_words()
+function __scribble_generator_build_words__OLD()
 {
     //Unpack generator state
     //Cache globals locally for a performance boost

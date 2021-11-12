@@ -4,32 +4,22 @@ function __scribble_generator_build_words()
     //Cache globals locally for a performance boost
     var _glyph_grid   = global.__scribble_glyph_grid;
     var _word_grid    = global.__scribble_word_grid;
-    var _line_grid    = global.__scribble_line_grid;
     var _control_grid = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
+    
+    var _glyph_bidi_map      = global.__scribble_glyph_data.bidi_map;
+    var _glyph_printable_map = global.__scribble_glyph_data.printable_map;
     
     with(global.__scribble_generator_state)
     {
-        var _element         = element;
-        var _glyph_count     = glyph_count;
-        var _line_height_min = line_height_min;
-        var _line_height_max = line_height_max;
-        var _model_max_width = model_max_width;
+        var _glyph_count = glyph_count;
     }
     
-    var _character_wrap  = _element.wrap_per_char;
-    
-    var _line_count      = 0;
-    var _line_word_start = 0;
-    var _line_word_end   = 0;
-    
-    var _word_count       = 0;
+    var _word_index       = -1;
     var _word_glyph_start = 0;
-    var _word_glyph_end   = 0;
-    var _word_width       = 0;
-    
-    var _word_x       = 0;
-    var _space_width  = 0;
-    var _state_halign = fa_left;
+    var _word_glyph_end   = undefined;
+    var _word_separation  = undefined;
+    var _word_bidi        = undefined;
+    var _word_printable   = undefined;
     
     var _control_index     = 0;
     var _control_pagebreak = false;
@@ -46,10 +36,6 @@ function __scribble_generator_build_words()
             //If this control is a horizontal alignment, set the halign value
             switch(_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE])
             {
-                case __SCRIBBLE_CONTROL_HALIGN:
-                    _state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
-                break;
-                
                 case __SCRIBBLE_CONTROL_PAGEBREAK:
                     _control_pagebreak = true;
                 break;
@@ -63,174 +49,72 @@ function __scribble_generator_build_words()
             if (_control_pagebreak) break;
         }
         
-        var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
-        if ((_glyph_ord == 0x00) //Null
-        ||  (_glyph_ord == 0x09) //Horizontal tab (dec = 9)
-        ||  (_glyph_ord == 0x0D) //Line break (dec = 13)
-        ||  (_glyph_ord == 0x20) //Space (dec = 32)
-        ||   _control_pagebreak)
-        {
-            #region Word break
-            
-            _word_glyph_end = _i - 1;
-            _space_width = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH];
-            
-            if (_word_glyph_end < _word_glyph_start)
-            {
-                //Empty word (usually two spaces together)
-                _word_glyph_start = _word_glyph_end + 2;
-                _word_x += _space_width;
-            }
-            else
-            {
-                var _last_glyph_width = _glyph_grid[# _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.WIDTH];
-                
-                //Word width is equal to the width of the last glyph plus its x-coordinate in the word
-                _word_width = _glyph_grid[# _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.X] + _last_glyph_width;
-                
-                //Steal the empty space for the last glyph and add it onto the space
-                _space_width += _glyph_grid[# _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.SEPARATION] - _last_glyph_width;
-                
-                if ((_word_width <= _model_max_width) && !_character_wrap) //TODO - Optimise per-character wrapping
-                {
-                    //Word is shorter than the maximum width, wrap it down to the next time
-                    
-                    if (_word_x + _word_width > _model_max_width)
-                    {
-                        _line_word_end = _word_count - 1;
-                        __SCRIBBLE_PARSER_ADD_LINE;
-                        _line_word_start = _word_count;
-                        
-                        _word_x = 0;
-                    }
-                    
-                    __SCRIBBLE_PARSER_ADD_WORD;
-                    
-                    _word_glyph_start = _word_glyph_end + 2;
-                    _word_x += _space_width + _word_width;
-                }
-                else
-                {
-                    #region The word itself is longer than the maximum width
-                
-                    //Gotta split it up!
-                
-                    _word_width = 0;
-                    var _prev_glyph_empty_space = 0;
-                    var _last_glyph = _word_glyph_end;
-                
-                    var _j = _word_glyph_start;
-                    repeat(1 + _word_glyph_end - _word_glyph_start)
-                    {
-                        var _glyph_width = _glyph_grid[# _j, __SCRIBBLE_PARSER_GLYPH.WIDTH];
-                        if (_word_x + _word_width + _prev_glyph_empty_space + _glyph_width > _model_max_width)
-                        {
-                            _word_glyph_end = _j - 1;
-                        
-                            if (_word_glyph_end >= _word_glyph_start)
-                            {
-                                __SCRIBBLE_PARSER_ADD_WORD;
-                            }
-                        
-                            _word_glyph_start = _j;
-                        
-                            if (_word_count > 0)
-                            {
-                                _line_word_end = _word_count - 1;
-                                __SCRIBBLE_PARSER_ADD_LINE;
-                                _line_word_start = _word_count;
-                            }
-                        
-                            //Adjust the x-coord-in-word position of the remaining glyphs in the word
-                            ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _last_glyph, __SCRIBBLE_PARSER_GLYPH.X, -_glyph_grid[# _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X]);
-                        
-                            _word_x     = 0;
-                            _word_width = _glyph_width;
-                        }
-                        else
-                        {
-                            _word_width += _prev_glyph_empty_space + _glyph_width;
-                        }
-                    
-                        _prev_glyph_empty_space = _glyph_grid[# _j, __SCRIBBLE_PARSER_GLYPH.SEPARATION] - _glyph_width;
-                    
-                        ++_j;
-                    }
-                
-                    _word_glyph_end = _i - 1;
-                    __SCRIBBLE_PARSER_ADD_WORD;
-                
-                    _word_glyph_start = _word_glyph_end + 2;
-                    _word_x += _word_width + _space_width;
-                
-                    #endregion
-                }
-            }
-            
-            #endregion
-        }
-        
-        if (_glyph_ord == 0x0D)
-        {
-            #region Line break
-            
-            _line_word_end = _word_count - 1;
-            __SCRIBBLE_PARSER_ADD_LINE;
-            _line_word_start = _word_count;
-            
-            _word_x     = 0;
-            _word_width = 0;
-            _word_glyph_start = _i + 1;
-            
-            #endregion
-        }
-        
         if (_control_pagebreak)
         {
-            _control_pagebreak = false;
-            
-            #region Page break
-            
-            if (_glyph_ord != 0x0D)
+            __scribble_error("Not yet implemented");
+        }
+        
+        var _glyph_ord       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
+        var _glyph_bidi      = _glyph_bidi_map[?      _glyph_ord];
+        var _glyph_printable = _glyph_printable_map[? _glyph_ord];
+        
+        if (_glyph_bidi      == undefined) _glyph_bidi      = __SCRIBBLE_BIDI.L2R;
+        if (_glyph_printable == undefined) _glyph_printable = true;
+        
+        if ((_glyph_ord == 0x0000) || (_glyph_bidi != _word_bidi) || (_glyph_printable != _word_printable))
+        {
+            if (_word_index >= 0)
             {
-                _line_word_end = _word_count - 1;
-                __SCRIBBLE_PARSER_ADD_LINE;
-                _line_word_start = _word_count;
+                _word_glyph_end = _i-1;
+                
+                var _word_width = _word_separation - _glyph_grid[# _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.SEPARATION] + _glyph_grid[# _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.WIDTH];
+                
+                //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_START]
+                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_END  ] = _word_glyph_end;
+                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.WIDTH      ] = _word_width;
+                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.HEIGHT     ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);
+                //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.X          ]
+                //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.Y          ]
+                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.SEPARATION ] = _word_separation;
+                //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI_RAW   ]
+                //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI       ]
+                //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.PRINTABLE  ]
+                
+                //TODO - Word positioning on lines
+                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.X   ] = 0;
+                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.Y   ] = 0;
+                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI] = __SCRIBBLE_BIDI.L2R;
+                
+                if (_glyph_ord == 0x0000) break;
             }
             
-            //Add an infinitely high line (which we'll read as a page break in a later step)
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y         ] = 0;
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START] = -1;
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END  ] = -2;
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH     ] = 0;
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT    ] = infinity;
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN    ] = _state_halign;
-            _line_count++;
+            _word_index++;
             
-            _word_x     = 0;
-            _word_width = 0;
             _word_glyph_start = _i;
+            _word_bidi        = _glyph_bidi;
+            _word_printable   = _glyph_printable;
+            _word_separation  = 0;
             
-            #endregion
+            _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_START] = _word_glyph_start;
+            //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_END  ]
+            //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.WIDTH      ]
+            //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.HEIGHT     ]
+            //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.X          ]
+            //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.Y          ]
+            //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.SEPARATION ]
+            _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI_RAW   ] = _word_bidi;
+            _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI       ] = (_word_bidi == __SCRIBBLE_BIDI.NEUTRAL)? undefined : _word_bidi;
+            _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.PRINTABLE  ] = _word_printable;
         }
+        
+        _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X] = _word_separation;
+        _word_separation += _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SEPARATION];
         
         ++_i;
     }
     
-    //Make sure we add a line for any words we have left on a trailing line
-    _line_word_end = _word_count - 1;
-    if (_line_word_end >= _line_word_start)
-    {
-        __SCRIBBLE_PARSER_ADD_LINE;
-    }
-    
-    
-    
-    width = ds_grid_get_max(_line_grid, 0, __SCRIBBLE_PARSER_LINE.WIDTH, _line_count - 1, __SCRIBBLE_PARSER_LINE.WIDTH);
-    
     with(global.__scribble_generator_state)
     {
-        word_count = _word_count;
-        line_count = _line_count;
+        word_count = _word_index + 1;
     }
 }

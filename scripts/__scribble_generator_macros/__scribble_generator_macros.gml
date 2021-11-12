@@ -38,7 +38,11 @@ enum __SCRIBBLE_PARSER_WORD
     HEIGHT,      //3
     X,           //4
     Y,           //5
-    __SIZE,      //6
+    SEPARATION,  //6
+    BIDI_RAW,    //7
+    BIDI,        //8
+    PRINTABLE,   //9
+    __SIZE,      //10
 }
 
 enum __SCRIBBLE_PARSER_LINE
@@ -65,7 +69,7 @@ enum __SCRIBBLE_PARSER_LINE
 
 
 //In-line macros!
-#macro __SCRIBBLE_PARSER_WRITE_GLYPH_STATE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X                 ] = _glyph_x_in_word;\n
+#macro __SCRIBBLE_PARSER_WRITE_GLYPH_STATE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X                 ] = 0;\n //TODO - Remove this. Glyph x positions are set in the word builder
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y                 ] = 0;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ] = _state_final_colour;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS] = _state_effect_flags;\n

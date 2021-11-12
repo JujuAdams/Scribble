@@ -5,17 +5,25 @@ function __scribble_generator_build_pages()
     var _line_grid    = global.__scribble_line_grid;
     var _control_grid = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
     
-    var _model_max_width  = global.__scribble_generator_state.model_max_width;
-    var _model_max_height = global.__scribble_generator_state.model_max_height;
-    var _line_count       = global.__scribble_generator_state.line_count;
-    var _control_count    = global.__scribble_generator_state.control_count;
+    with(global.__scribble_generator_state)
+    {
+        var _element          = element;
+        var _model_max_width  = model_max_width;
+        var _model_max_height = model_max_height;
+        var _line_count       = line_count;
+        var _control_count    = control_count;
+        var _wrap_no_pages    = _element.wrap_no_pages;
+    }
+    
+    var _simulated_model_width  = _model_max_width  / fit_scale;
+    var _simulated_model_height = _model_max_height / fit_scale;
     
     var _page_data = __new_page();
     _page_data.__glyph_start = _word_grid[# _line_grid[# 0, __SCRIBBLE_PARSER_LINE.WORD_START], __SCRIBBLE_PARSER_WORD.GLYPH_START];
     
-    if (_model_max_width != infinity)
+    if (_simulated_model_width != infinity)
     {
-        var _alignment_width = _model_max_width;
+        var _alignment_width = _simulated_model_width;
     }
     else
     {
@@ -47,7 +55,7 @@ function __scribble_generator_build_pages()
         //}
         
         //Create a new page if we've run off the end of the current one
-        if (is_infinity(_line_height) || ((_line_y + _line_height > _model_max_height) && (_line_y > 0)))
+        if (is_infinity(_line_height) || ((_line_y + _line_height > _simulated_model_height) && (_line_y > 0) && !_wrap_no_pages))
         {
             _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
             
