@@ -56,6 +56,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     wrap_max_height = -1;
     wrap_per_char   = false;
     wrap_no_pages   = false;
+    wrap_max_scale  = 1;
     
     scale_to_box_max_width  = 0;
     scale_to_box_max_height = 0;
@@ -245,17 +246,20 @@ function __scribble_class_element(_string, _unique_id) constructor
     static wrap = function(_wrap_max_width, _wrap_max_height = -1, _wrap_per_char = false)
     {
         var _wrap_no_pages = false;
+        var _wrap_max_scale = 1;
         
         if ((_wrap_max_width  != wrap_max_width)
         ||  (_wrap_max_height != wrap_max_height)
         ||  (_wrap_per_char   != wrap_per_char)
-        ||  (_wrap_no_pages   != wrap_no_pages))
+        ||  (_wrap_no_pages   != wrap_no_pages)
+        ||  (_wrap_max_scale  != wrap_max_scale))
         {
             model_cache_name_dirty = true;
             wrap_max_width  = _wrap_max_width;
             wrap_max_height = _wrap_max_height;
             wrap_per_char   = _wrap_per_char;
             wrap_no_pages   = _wrap_no_pages;
+            wrap_max_scale  = _wrap_max_scale;
         }
         
         return self;
@@ -264,7 +268,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param maxWidth
     /// @param maxHeight
     /// @param [characterWrap=false]
-    static fit_to_box = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false)
+    /// @param [maxScale=1]
+    static fit_to_box = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false, _wrap_max_scale = 1)
     {
         var _wrap_no_pages = true;
         
@@ -278,6 +283,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             wrap_max_height = _wrap_max_height;
             wrap_per_char   = _wrap_per_char;
             wrap_no_pages   = _wrap_no_pages;
+            wrap_max_scale  = _wrap_max_scale;
         }
         
         return self;
@@ -971,6 +977,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                                    string(wrap_max_height) + ":" +
                                    string(wrap_per_char  ) + ":" +
                                    string(wrap_no_pages  ) + ":" +
+                                   string(wrap_max_scale ) + ":" +
                                    string(bezier_array   ) + ":" +
                                    string(__ignore_command_tags);
             }

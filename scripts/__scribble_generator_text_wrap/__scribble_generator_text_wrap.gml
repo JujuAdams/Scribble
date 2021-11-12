@@ -13,6 +13,7 @@ function __scribble_generator_text_wrap()
         var _model_max_width  = model_max_width;
         var _model_max_height = model_max_height;
         var _wrap_no_pages    = _element.wrap_no_pages;
+        var _wrap_max_scale   = _element.wrap_max_scale;
     }
     
     var _fit_to_box_iterations = 0;
@@ -98,7 +99,7 @@ function __scribble_generator_text_wrap()
         if (_line_y < _simulated_model_max_height)
         {
             //The text is already small enough to fit!
-            if (_upper_limit == undefined) break;
+            if (fit_scale >= _wrap_max_scale) break;
             var _lower_limit = fit_scale;
         }
         else
@@ -117,7 +118,7 @@ function __scribble_generator_text_wrap()
         }
         else if (_upper_limit == undefined)
         {
-            fit_scale *= 2;
+            fit_scale = min(_wrap_max_scale, 2*fit_scale);
         }
         else
         {
