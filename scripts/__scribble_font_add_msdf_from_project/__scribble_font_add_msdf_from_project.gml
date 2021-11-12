@@ -4,15 +4,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
     
     if (ds_map_exists(global.__scribble_font_data, _name))
     {
-        if (SCRIBBLE_WARNING_REDEFINITION)
-        {
-            __scribble_error("Font \"", _name, "\" has already been defined\n\n(Set SCRIBBLE_WARNING_REDEFINITION to <false> to turn off this error)");
-        }
-        else
-        {
-            __scribble_trace("Warning! Font \"", _name, "\" has already been defined");
-        }
-        
+        __scribble_error("Font \"", _name, "\" has already been defined");
         return undefined;
     }
     
