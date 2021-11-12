@@ -157,7 +157,7 @@ global.__scribble_msdf_u_fBorderThickness         = shader_get_uniform(__shd_scr
 global.__scribble_msdf_u_vOutputSize              = shader_get_uniform(__shd_scribble_msdf, "u_vOutputSize"             );
 global.__scribble_msdf_u_fMSDFThicknessOffset     = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFThicknessOffset"    );
 
-scribble_msdf_thickness_offset();
+scribble_msdf_thickness_offset(0);
 
 //Set up animation properties
 global.__scribble_anim_shader_desync = false;
