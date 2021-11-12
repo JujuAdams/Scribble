@@ -5,6 +5,8 @@ if (variable_global_exists("__scribble_lcg")) return undefined;
 
 __scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
 
+__scribble_system_glyph_data();
+
 if (__SCRIBBLE_ON_MOBILE)
 {
     if (_font_directory != "")
