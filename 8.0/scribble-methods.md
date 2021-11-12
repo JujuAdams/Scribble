@@ -148,6 +148,17 @@ Rotates and scales a text element relative to the origin (set by [`.origin()`](s
 
 &nbsp;
 
+## `.scale_to_box(maxWidth, maxHeight)`
+
+**Returns**: The text element
+
+|Name       |Datatype|Purpose                                                |
+|-----------|--------|-------------------------------------------------------|
+|`maxWidth` |real    |Maximum width of the bounding box to fit the text into |
+|`maxHeight`|real    |Maximum height of the bounding box to fit the text into|
+
+&nbsp;
+
 ## `.wrap(maxWidth, [maxHeight], [characterWrap])` *regenerator*
 
 **Returns**: The text element
