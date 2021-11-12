@@ -71,6 +71,9 @@ global.__scribble_gc_vbuff_index = 0;
 global.__scribble_gc_vbuff_refs  = [];
 global.__scribble_gc_vbuff_ids   = [];
 
+global.__scribble_generator_state = {};
+
+
 
 if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
 
@@ -250,6 +253,8 @@ repeat(array_length(_assets))
 
 
 
+
+
 function __scribble_trace()
 {
     var _string = "Scribble: ";
@@ -372,6 +377,84 @@ function __scribble_glyph_duplicate(_old, _y_offset = 0)
     array_copy(_new, 0, _old, 0, SCRIBBLE_GLYPH.__SIZE);
     _new[@ SCRIBBLE_GLYPH.Y_OFFSET] += _y_offset;
     return _new;
+}
+
+function __scribble_buffer_read_unicode(_buffer)
+{
+    var _value = buffer_read(_buffer, buffer_u8); //Assume 0xxxxxxx
+    
+    if ((_value & $E0) == $C0) //110xxxxx 10xxxxxx
+    {
+        _value  = (                         _value & $1F) <<  6;
+        _value += (buffer_read(_buffer, buffer_u8) & $3F);
+    }
+    else if ((_value & $F0) == $E0) //1110xxxx 10xxxxxx 10xxxxxx
+    {
+        _value  = (                         _value & $0F) << 12;
+        _value += (buffer_read(_buffer, buffer_u8) & $3F) <<  6;
+        _value +=  buffer_read(_buffer, buffer_u8) & $3F;
+    }
+    else if ((_value & $F8) == $F0) //11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+    {
+        _value  = (                         _value & $07) << 18;
+        _value += (buffer_read(_buffer, buffer_u8) & $3F) << 12;
+        _value += (buffer_read(_buffer, buffer_u8) & $3F) <<  6;
+        _value +=  buffer_read(_buffer, buffer_u8) & $3F;
+    }
+    
+    return _value;
+}
+
+function __scribble_buffer_peek_unicode(_buffer, _offset)
+{
+    var _value = buffer_peek(_buffer, _offset, buffer_u8); //Assume 0xxxxxxx
+    
+    if ((_value & $E0) == $C0) //110xxxxx 10xxxxxx
+    {
+        _value  = (                                    _value & $1F) <<  6;
+        _value += (buffer_peek(_buffer, _offset+1, buffer_u8) & $3F);
+    }
+    else if ((_value & $F0) == $E0) //1110xxxx 10xxxxxx 10xxxxxx
+    {
+        _value  = (                                    _value & $0F) << 12;
+        _value += (buffer_peek(_buffer, _offset+1, buffer_u8) & $3F) <<  6;
+        _value +=  buffer_peek(_buffer, _offset+2, buffer_u8) & $3F;
+    }
+    else if ((_value & $F8) == $F0) //11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+    {
+        _value  = (                                     _value & $07) << 18;
+        _value += (buffer_peek(_buffer, _offset+1,  buffer_u8) & $3F) << 12;
+        _value += (buffer_peek(_buffer, _offset+2,  buffer_u8) & $3F) <<  6;
+        _value +=  buffer_peek(_buffer, _offset+3,  buffer_u8) & $3F;
+    }
+    
+    return _value;
+}
+
+function __scribble_buffer_write_unicode(_buffer, _value)
+{
+    if (_value <= 0x7F) //0xxxxxxx
+    {
+        buffer_write(_buffer, buffer_u8, _value);
+    }
+    else if (_value <= 0x07FF) //110xxxxx 10xxxxxx
+    {
+        buffer_write(_buffer, buffer_u8, 0xC0 | ( _value       & 0x1F));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >> 5) & 0x3F));
+    }
+    else if (_value <= 0xFFFF) //1110xxxx 10xxxxxx 10xxxxxx
+    {
+        buffer_write(_buffer, buffer_u8, 0xC0 | ( _value        & 0x0F));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >>  4) & 0x3F));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >> 10) & 0x3F));
+    }
+    else if (_value <= 0x10000) //11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+    {
+        buffer_write(_buffer, buffer_u8, 0xC0 | ( _value        & 0x07));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >>  3) & 0x3F));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >>  9) & 0x3F));
+        buffer_write(_buffer, buffer_u8, 0x80 | ((_value >> 15) & 0x3F));
+    }
 }
 
 

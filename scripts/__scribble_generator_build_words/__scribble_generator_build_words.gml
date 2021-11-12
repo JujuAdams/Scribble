@@ -2,16 +2,20 @@ function __scribble_generator_build_words()
 {
     //Unpack generator state
     //Cache globals locally for a performance boost
-    var _glyph_grid      = global.__scribble_glyph_grid;
-    var _word_grid       = global.__scribble_word_grid;
-    var _line_grid       = global.__scribble_line_grid;
-    var _control_grid    = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
-    var _glyph_count     = global.__scribble_generator_state.glyph_count;
-    var _line_height_min = global.__scribble_generator_state.line_height_min;
-    var _line_height_max = global.__scribble_generator_state.line_height_max;
-    var _model_max_width = global.__scribble_generator_state.model_max_width;
+    var _glyph_grid   = global.__scribble_glyph_grid;
+    var _word_grid    = global.__scribble_word_grid;
+    var _line_grid    = global.__scribble_line_grid;
+    var _control_grid = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
     
-    var _element         = global.__scribble_generator_state.element;
+    with(global.__scribble_generator_state)
+    {
+        var _element         = element;
+        var _glyph_count     = glyph_count;
+        var _line_height_min = line_height_min;
+        var _line_height_max = line_height_max;
+        var _model_max_width = model_max_width;
+    }
+    
     var _character_wrap  = _element.wrap_per_char;
     
     var _line_count      = 0;
