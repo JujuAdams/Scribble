@@ -70,10 +70,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
         with(_element)
         {
+            __update_scale_to_box_scale();
+            
             var _x_offset = -origin_x;
             var _y_offset = -origin_y;
-            var _xscale   = xscale;
-            var _yscale   = yscale;
+            var _xscale   = xscale*scale_to_box_scale;
+            var _yscale   = yscale*scale_to_box_scale;
             var _angle    = angle;
         }
         
@@ -88,6 +90,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         var _old_matrix = matrix_get(matrix_world);
         
         //Build a matrix to transform the text...
+        //TODO - Cache this
         if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
         {
             var _matrix = matrix_build(_left + _x, _top + _y, 0,   0,0,0,   1,1,1);
@@ -98,10 +101,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
                 _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
                                                                 0, 0, _angle,
                                                                 _xscale, _yscale, 1));
-            _matrix = matrix_multiply(_matrix, _old_matrix);
         }
         
         //...aaaand set the matrix
+        _matrix = matrix_multiply(_matrix, _old_matrix);
         matrix_set(matrix_world, _matrix);
         
         //Now iterate over the text element's vertex buffers and submit them

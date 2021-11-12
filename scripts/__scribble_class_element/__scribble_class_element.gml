@@ -57,6 +57,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     wrap_per_char   = false;
     wrap_no_pages   = false;
     
+    scale_to_box_max_width  = 0;
+    scale_to_box_max_height = 0;
+    scale_to_box_scale      = undefined;
+    
     line_height_min = -1;
     line_height_max = -1;
     
@@ -275,6 +279,16 @@ function __scribble_class_element(_string, _unique_id) constructor
             wrap_per_char   = _wrap_per_char;
             wrap_no_pages   = _wrap_no_pages;
         }
+        
+        return self;
+    }
+    
+    /// @param maxWidth
+    /// @param maxHeight
+    static scale_to_box = function(_max_width, _max_height)
+    {
+        scale_to_box_max_width  = ((_max_width  == undefined) || (_max_width  < 0))? 0 : _max_width;
+        scale_to_box_max_height = ((_max_height == undefined) || (_max_height < 0))? 0 : _max_height;
         
         return self;
     }
@@ -505,6 +519,10 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         else
         {
+            __update_scale_to_box_scale();
+            var _xscale = scale_to_box_scale*xscale;
+            var _yscale = scale_to_box_scale*yscale;
+            
             var _model_bbox = _model.get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
         
             switch(_model.valign)
@@ -525,7 +543,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 break;
             }
         
-            if ((xscale == 1) && (yscale == 1) && (angle == 0))
+            if ((_xscale == 1) && (_yscale == 1) && (angle == 0))
             {
                 //Avoid using matrices if we can
                 var _l = _x - origin_x + _model_bbox.left  - _margin_l;
@@ -540,11 +558,11 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
             else
             {
-                //TODO - Make this faster with custom code
+                //TODO - Cache this
                 var _matrix = matrix_build(-origin_x, -origin_y, 0,   0,0,0,   1,1,1);
                     _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
                                                                     0, 0, angle,
-                                                                    xscale, yscale, 1));
+                                                                    _xscale, _yscale, 1));
             
                 var _l = _model_bbox.left  - _margin_l;
                 var _t = _bbox_t           - _margin_t;
@@ -584,14 +602,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return _model.get_width();
+        __update_scale_to_box_scale();
+        return scale_to_box_scale*_model.get_width();
     }
     
     static get_height = function()
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return _model.get_height();
+        __update_scale_to_box_scale();
+        return scale_to_box_scale*_model.get_height();
     }
     
     static get_page = function()
@@ -660,6 +680,19 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     
     #region Public Methods
+    
+    static __update_scale_to_box_scale = function()
+    {
+        var _model = __get_model(true);
+        
+        var _xscale = 1.0;
+        var _yscale = 1.0;
+        
+        if (scale_to_box_max_width  > 0) _xscale = scale_to_box_max_width / _model.get_width();
+        if (scale_to_box_max_height > 0) _yscale = scale_to_box_max_height / _model.get_height();
+        
+        scale_to_box_scale = min(1.0, _xscale, _yscale);
+    }
     
     /// @param x
     /// @param y
