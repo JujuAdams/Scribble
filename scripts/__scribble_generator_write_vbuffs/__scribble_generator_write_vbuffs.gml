@@ -1,6 +1,10 @@
 function __scribble_generator_write_vbuffs()
 {
-    var _string_buffer = global.__scribble_buffer;
+    if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+    {
+        var _string_buffer = global.__scribble_buffer;
+    }
+    
     var _glyph_grid    = global.__scribble_glyph_grid;
     var _control_grid  = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
     
@@ -37,7 +41,10 @@ function __scribble_generator_write_vbuffs()
         var _glyph_sprite_data  = 0;
         var _character_index    = 0;
         
-        buffer_seek(_string_buffer, buffer_seek_start, 0);
+        if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+        {
+            buffer_seek(_string_buffer, buffer_seek_start, 0);
+        }
         
         var _i = _page_data.__glyph_start;
         repeat(1 + _page_data.__glyph_end - _page_data.__glyph_start)
@@ -51,7 +58,11 @@ function __scribble_generator_write_vbuffs()
                 
                 __SCRIBBLE_PARSER_READ_GLYPH_DATA;
                 
-                buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
+                if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+                {
+                    buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
+                }
+                
                 _character_index++;
                 
                 var _write_scale = _glyph_scale;
@@ -120,7 +131,11 @@ function __scribble_generator_write_vbuffs()
                 
                 __SCRIBBLE_PARSER_READ_GLYPH_DATA;
                 
-                buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
+                if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+                {
+                    buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
+                }
+                
                 _character_index++;
                 
                 var _write_scale = _glyph_scale;
@@ -147,7 +162,11 @@ function __scribble_generator_write_vbuffs()
             }
             else
             {
-                __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
+                if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+                {
+                    __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
+                }
+                
                 _character_index++;
                 
                 if (_glyph_ord > 32)
@@ -155,7 +174,6 @@ function __scribble_generator_write_vbuffs()
                     #region Write non-whitespace glyph
                     
                     __SCRIBBLE_PARSER_READ_GLYPH_DATA;
-                    
                     
                     var _write_scale = _glyph_scale*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST]; //TODO - Optimise this
                     
@@ -183,10 +201,13 @@ function __scribble_generator_write_vbuffs()
         
         __SCRIBBLE_READ_CONTROL_EVENTS;
         
-        //Write a null terminator to finish off the string
-        buffer_write(_string_buffer, buffer_u8, 0);
-        buffer_seek(_string_buffer, buffer_seek_start, 0);
-        _page_data.__text = buffer_read(_string_buffer, buffer_string);
+        if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+        {
+            //Write a null terminator to finish off the string
+            buffer_write(_string_buffer, buffer_u8, 0);
+            buffer_seek(_string_buffer, buffer_seek_start, 0);
+            _page_data.__text = buffer_read(_string_buffer, buffer_string);
+        }
         
         characters += _page_data.__character_count;
         
