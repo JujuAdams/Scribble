@@ -55,13 +55,14 @@ function __scribble_system_glyph_data()
         NEUTRAL,
         L2R,
         R2L,
+        WHITESPACE,
     }
     
     var _map = global.__scribble_glyph_data.bidi_map;
     for(var _i = 0x0000; _i <= 0x000D; _i++) _map[? _i] = __SCRIBBLE_BIDI.NEUTRAL;
     _map[? __SCRIBBLE_GLYPH_SPRITE ] = __SCRIBBLE_BIDI.NEUTRAL;
     _map[? __SCRIBBLE_GLYPH_SURFACE] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? 0x0020   ] = __SCRIBBLE_BIDI.NEUTRAL; //space
+    _map[? 0x0020   ] = __SCRIBBLE_BIDI.WHITESPACE; //space
     _map[? ord("!") ] = __SCRIBBLE_BIDI.NEUTRAL;
     _map[? ord("\"")] = __SCRIBBLE_BIDI.NEUTRAL;
     _map[? ord("&") ] = __SCRIBBLE_BIDI.NEUTRAL;
