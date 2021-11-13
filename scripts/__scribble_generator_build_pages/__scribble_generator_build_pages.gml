@@ -55,7 +55,7 @@ function __scribble_generator_build_pages()
                 
                 _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y] = _line_y;
                 _line_y = _line_height;
-            
+                
                 if (is_infinity(_line_height))
                 {
                     __scribble_error("Manual page breaks not implemented yet");

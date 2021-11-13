@@ -15,6 +15,9 @@ function __scribble_generator_position_glyphs()
     // If we were given no maximum alignment width, align to the actual width of the model
     var _alignment_width = (_model_max_width == infinity)? width : _model_max_width;
     
+    var _model_min_x =  infinity;
+    var _model_max_x = -infinity;
+    
     var _i = 0;
     repeat(_line_count)
     {
@@ -88,9 +91,7 @@ function __scribble_generator_position_glyphs()
             case __SCRIBBLE_PIN_LEFT:   var _glyph_x = 0;                                      break;
             case __SCRIBBLE_PIN_CENTRE: var _glyph_x = (_alignment_width - _line_width) div 2; break;
             case __SCRIBBLE_PIN_RIGHT:  var _glyph_x = _alignment_width - _line_width;         break;
-            case __SCRIBBLE_JUSTIFY:
-                var _glyph_x = 0;
-            break;
+            case __SCRIBBLE_JUSTIFY:    var _glyph_x = 0;                                      break;
         }
         
         var _justification_extra_spacing = 0;
@@ -104,6 +105,9 @@ function __scribble_generator_position_glyphs()
                 var _justification_extra_spacing = (_alignment_width - _line_width) / (_line_word_count - 1);
             }
         }
+        
+        var _model_min_x = min(_model_min_x, _glyph_x);
+        var _model_max_x = max(_model_max_x, _glyph_x + _line_width);
         
         if (_overall_bidi != __SCRIBBLE_BIDI.R2L)
         {
@@ -179,4 +183,11 @@ function __scribble_generator_position_glyphs()
         
         ++_i;
     }
+    
+    if (_model_min_x ==  infinity) _model_min_x = 0;
+    
+    //TODO - Set this per page too
+    min_x = _model_min_x;
+    max_x = max(_model_min_x, _model_max_x);
+    width = 1 + max_x - min_x;
 }
