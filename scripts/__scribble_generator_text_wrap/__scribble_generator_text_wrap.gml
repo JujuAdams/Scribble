@@ -1,6 +1,5 @@
 function __scribble_generator_text_wrap()
 {
-    //TODO
     var _word_grid = global.__scribble_word_grid;
     var _line_grid = global.__scribble_line_grid;
     
@@ -44,7 +43,6 @@ function __scribble_generator_text_wrap()
             else if (_word_width < _simulated_model_max_width)
             {
                 var _line_word_end = _i - 1;
-                
                 var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);
                 
                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X          ] = 0;
@@ -77,6 +75,7 @@ function __scribble_generator_text_wrap()
         if ((_line_word_start != _i - 1) || _word_grid[# _line_word_start, __SCRIBBLE_PARSER_WORD.PRINTABLE])
         {
             var _line_word_end = _i - 1;
+            var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);
         
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X          ] = 0;
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y          ] = 0;
@@ -92,7 +91,11 @@ function __scribble_generator_text_wrap()
             _line_y += _line_height;
         }
         
+        //If we're not running .fit_to_box() behaviour then escape now!
         if (!_wrap_no_pages) break;
+        
+        
+        
         
         _fit_to_box_iterations++;
         

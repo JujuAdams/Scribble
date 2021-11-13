@@ -98,6 +98,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     msdf_feather_thickness = 1.0;
     
+    __bidi_hint = undefined; //TODO - Allow bidi to be hinted
+    
     
     
     #region Setters

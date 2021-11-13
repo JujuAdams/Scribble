@@ -81,9 +81,8 @@ function __scribble_generator_build_words()
                 //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.PRINTABLE  ]
                 
                 //TODO - Word positioning on lines
-                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.X   ] = 0;
-                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.Y   ] = 0;
-                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI] = __SCRIBBLE_BIDI.L2R;
+                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.X] = 0;
+                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.Y] = 0;
                 
                 if (_glyph_ord == 0x0000) break;
             }
@@ -113,8 +112,21 @@ function __scribble_generator_build_words()
         ++_i;
     }
     
+    //Add a null word to help with bidi
+    _word_index++;
+    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_START] = _glyph_count;
+    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_END  ] = _glyph_count;
+    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.WIDTH      ] = 0;
+    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.HEIGHT     ] = 0;
+    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.X          ] = 0;
+    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.Y          ] = 0;
+    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.SEPARATION ] = 0;
+    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI_RAW   ] = __SCRIBBLE_BIDI.NEUTRAL;
+    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI       ] = undefined;
+    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.PRINTABLE  ] = false;
+    
     with(global.__scribble_generator_state)
     {
-        word_count = _word_index + 1;
+        word_count = _word_index;
     }
 }

@@ -45,6 +45,15 @@ enum __SCRIBBLE_PARSER_WORD
     __SIZE,      //10
 }
 
+enum __SCRIBBLE_PARSER_STRETCH
+{
+    WORD_START, //0
+    WORD_END,   //1
+    SEPARATION, //2
+    BIDI,       //3
+    __SIZE,
+}
+
 enum __SCRIBBLE_PARSER_LINE
 {
     X,           //0

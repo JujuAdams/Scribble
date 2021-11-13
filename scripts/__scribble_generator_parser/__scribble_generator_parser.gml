@@ -6,6 +6,11 @@ function __scribble_generator_parser()
     var _word_grid     = global.__scribble_word_grid;
     var _control_grid  = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
     
+    var _arabic_map_logical   = global.__scribble_glyph_data.arabic_logical_map;
+    var _arabic_map_tashkil   = global.__scribble_glyph_data.arabic_tashkil_map;
+    var _arabic_map_join_next = global.__scribble_glyph_data.arabic_join_next_map;
+    var _arabic_map_join_prev = global.__scribble_glyph_data.arabic_join_prev_map;
+    
     //Cache element properties locally
     var _element         = global.__scribble_generator_state.element;
     var _element_text    = _element.text;
@@ -37,8 +42,9 @@ function __scribble_generator_parser()
     var _tag_parameters      = undefined;
     var _tag_command_name    = "";
     
-    var _glyph_count = 0;
-    var _glyph_ord   = 0x0;
+    var _glyph_count       = 0;
+    var _glyph_ord         = 0x0000;
+    var _arabic_glyph_prev = _glyph_ord;
     
     var _control_count = 0;
     var _control_page  = 0;
@@ -685,10 +691,90 @@ function __scribble_generator_parser()
             {
                 #region Add a standard glyph
                 
+                var _glyph_write = _glyph_ord;
+                
                 //TODO - Ligature transform here
                 
+                
+                
+                #region Arabic handling
+                
+                if (_arabic_map_logical[? _glyph_write])
+                {
+                    has_arabic = true;
+                    
+                    var _buffer_offset = buffer_tell(_string_buffer);
+                    var _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, _buffer_offset);
+                    
+                    // Lam with Alef ligatures
+                    if (_glyph_write == 0x0644)
+                    {
+                        var _glyph_replacement = undefined;
+                        switch(_glyph_next)
+                        {
+                            case 0x0622: var _glyph_replacement = 0xFEF5; break; //Lam with Alef with madda above
+                            case 0x0623: var _glyph_replacement = 0xFEF7; break; //Lam with Alef with hamza above
+                            case 0x0625: var _glyph_replacement = 0xFEF9; break; //Lam with Alef with madda below
+                            case 0x0627: var _glyph_replacement = 0xFEFB; break; //Lam with Alef with hamza below
+                        }
+                        
+                        if (_glyph_replacement != undefined)
+                        {
+                            _glyph_write = _glyph_replacement;
+                            
+                            // Skip over the next glyph entirely
+                            // The size of an Alef, no matter what form, is only 2 bytes
+                            buffer_seek(_string_buffer, buffer_seek_relative, 2);
+                            
+                            _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, _buffer_offset);
+                        }
+                    }
+                    
+                    // If the next glyph is tashkil, ignore it for the purposes of determining join state
+                    while(_arabic_map_tashkil[? _glyph_next])
+                    {
+                        _buffer_offset += 2;
+                        _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, _buffer_offset);
+                    }
+                    
+                    // Figure out what to replace this glyph with, depending on what glyphs around it join in which directions
+                    var _new_glyph = undefined;
+                    if (_arabic_map_join_next[? _arabic_glyph_prev]) // Does the previous glyph allow joining to us?
+                    {
+                        if (_arabic_map_join_prev[? _glyph_next]) // Does the next glyph allow joining to us?
+                        {
+                            var _new_glyph = global.__scribble_glyph_data.arabic_medial_map[? _glyph_write];
+                        }
+                        else
+                        {
+                            var _new_glyph = global.__scribble_glyph_data.arabic_final_map[? _glyph_write];
+                        }
+                    }
+                    else
+                    {
+                        if (_arabic_map_join_prev[? _glyph_next]) // Does the next glyph allow joining to us?
+                        {
+                            var _new_glyph = global.__scribble_glyph_data.arabic_initial_map[? _glyph_write];
+                        }
+                        else
+                        {
+                            var _new_glyph = global.__scribble_glyph_data.arabic_isolated_map[? _glyph_write];
+                        }
+                    }
+                    
+                    // Update the glyph we're trying to write if we found a replacement
+                    if (_new_glyph != undefined) _glyph_write = _new_glyph;
+                    
+                    // If this glyph isn't tashkil then update the previous glyph state
+                    if (!_arabic_map_tashkil[? _glyph_ord]) _arabic_glyph_prev = _glyph_ord;
+                }
+                
+                #endregion
+                
+                
+                
                 //Pull info out of the font's data structures
-                var _glyph_data = _font_glyphs_map[? _glyph_ord];
+                var _glyph_data = _font_glyphs_map[? _glyph_write];
                 
                 //If our glyph is missing, choose the missing character glyph instead!
                 if (_glyph_data == undefined) _glyph_data = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];
@@ -696,18 +782,18 @@ function __scribble_generator_parser()
                 if (_glyph_data == undefined)
                 {
                     //This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
-                    __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_ord) + " (" + chr(_glyph_ord) + ") in font \"" + string(_font_name) + "\"");
+                    __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");
                 }
                 else
                 {
                     //Add this glyph to our grid
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = _glyph_ord;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = _glyph_write;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = _font_data;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = _glyph_data;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = _state_scale*_glyph_data[SCRIBBLE_GLYPH.WIDTH];
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_font_line_height;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = _state_scale*_glyph_data[SCRIBBLE_GLYPH.SEPARATION]; //Already includes scaling
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = _state_scale*_glyph_data[SCRIBBLE_GLYPH.SEPARATION];
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;

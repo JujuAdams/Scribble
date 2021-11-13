@@ -37,9 +37,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     height     = 0;
     min_x      = 0;
     max_x      = 0;
-    valign     = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
+    valign     = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
     fit_scale  = 1.0;
     wrapped    = false;
+    has_arabic = false; // Set to <true> if any Arabic text is detected during the string parsing phase
     
     pages_array      = []; //Stores each page of text
     character_array  = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
@@ -294,6 +295,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         line_height_max  = 0;
         model_max_width  = 0;
         model_max_height = 0;
+        overall_bidi     = _element.__bidi_hint;
         
         bezier_lengths_array = undefined;
     };
@@ -304,8 +306,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __scribble_generator_build_words();
     __scribble_generator_finalize_bidi();
     __scribble_generator_text_wrap();
+    __scribble_generator_position_words_in_lines();
     __scribble_generator_build_pages();
-    __scribble_generator_position_words();
+    __scribble_generator_position_glyphs_in_words();
     __scribble_generator_write_vbuffs();
     
     //Wipe the control grid so we don't accidentally hold references to event structs

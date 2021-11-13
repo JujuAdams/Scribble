@@ -6,6 +6,7 @@ function __scribble_system_glyph_data()
         bidi_map   : ds_map_create(),
         mirror_map : ds_map_create(),
         
+        arabic_logical_map   : ds_map_create(),
         arabic_tashkil_map   : ds_map_create(),
         arabic_isolated_map  : ds_map_create(),
         arabic_initial_map   : ds_map_create(),
@@ -110,6 +111,9 @@ function __scribble_system_glyph_data()
     _map[? ord("}")] = ord("{");
     
     
+    
+    var _map = global.__scribble_glyph_data.arabic_logical_map;
+    for(var _i = 0x0600; _i <= 0x06FF; _i++) _map[? _i] = true;
     
     var _map = global.__scribble_glyph_data.arabic_tashkil_map;
     for(var _i = 0x064B; _i <= 0x0652; _i++) _map[? _i] = true;
@@ -292,10 +296,10 @@ function __scribble_system_glyph_data()
     _map_a[? 0x0643] = 0xFEDB; //Initial
     
     //Lam
-    _map_i[? 0x0644] = 0xFED9; //Isolated
-    _map_c[? 0x0644] = 0xFEDA; //Final
-    _map_b[? 0x0644] = 0xFEDC; //Medial
-    _map_a[? 0x0644] = 0xFEDB; //Initial
+    _map_i[? 0x0644] = 0xFEDD; //Isolated
+    _map_c[? 0x0644] = 0xFEDE; //Final
+    _map_b[? 0x0644] = 0xFEE0; //Medial
+    _map_a[? 0x0644] = 0xFEDF; //Initial
     
     //Meem
     _map_i[? 0x0645] = 0xFEE1; //Isolated
@@ -353,7 +357,7 @@ function __scribble_system_glyph_data()
     _map_b[? 0xFEF7] = 0xFEF8; //Medial
     _map_a[? 0xFEF7] = 0xFEF7; //Initial
     
-    //Lam with Alef with hamza below
+    //Lam with Alef with mada below
     _map_i[? 0xFEF9] = 0xFEF9; //Isolated
     _map_c[? 0xFEF9] = 0xFEFA; //Final
     _map_b[? 0xFEF9] = 0xFEFA; //Medial
