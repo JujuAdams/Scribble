@@ -21,6 +21,13 @@ enum __SCRIBBLE_PARSER_GLYPH
     __SIZE,             //18
 }
 
+//These can be used for ORD
+#macro  __SCRIBBLE_GLYPH_SPRITE      -1
+#macro  __SCRIBBLE_GLYPH_SURFACE     -2
+#macro  __SCRIBBLE_CONTROL_HALIGN    -3
+#macro  __SCRIBBLE_CONTROL_EVENT     -4
+#macro  __SCRIBBLE_CONTROL_PAGEBREAK -5
+
 enum __SCRIBBLE_PARSER_CONTROL
 {
     TYPE,     //0
@@ -36,44 +43,31 @@ enum __SCRIBBLE_PARSER_WORD
     GLYPH_END,   //1
     WIDTH,       //2
     HEIGHT,      //3
-    X,           //4
-    Y,           //5
-    SEPARATION,  //6
-    BIDI_RAW,    //7
-    BIDI,        //8
-    PRINTABLE,   //9
-    __SIZE,      //10
+    BIDI_RAW,    //4
+    BIDI,        //5
+    PRINTABLE,   //6
+    __SIZE,      //7
 }
 
 enum __SCRIBBLE_PARSER_STRETCH
 {
     WORD_START, //0
     WORD_END,   //1
-    SEPARATION, //2
-    BIDI,       //3
+    BIDI,       //2
     __SIZE,
 }
 
 enum __SCRIBBLE_PARSER_LINE
 {
-    X,           //0
-    Y,           //1
-    WORD_START,  //2
-    WORD_END,    //3
-    WIDTH,       //4
-    HEIGHT,      //5
-    HALIGN,      //6
-    X_RIGHT,     //7
-    CONTROL_END, //8
-    __SIZE,      //9
+    Y,           //0
+    WORD_START,  //1
+    WORD_END,    //2
+    WIDTH,       //3
+    HEIGHT,      //4
+    HALIGN,      //5
+    CONTROL_END, //6
+    __SIZE,      //7
 }
-
-//These can be used for ORD
-#macro  __SCRIBBLE_GLYPH_SPRITE      -1
-#macro  __SCRIBBLE_GLYPH_SURFACE     -2
-#macro  __SCRIBBLE_CONTROL_HALIGN    -3
-#macro  __SCRIBBLE_CONTROL_EVENT     -4
-#macro  __SCRIBBLE_CONTROL_PAGEBREAK -5
 
 
 
@@ -136,25 +130,6 @@ enum __SCRIBBLE_PARSER_LINE
                                     }\n
                                     var _font_line_height = _space_glyph_data[SCRIBBLE_GLYPH.HEIGHT];\n
                                     var _font_space_width = _space_glyph_data[SCRIBBLE_GLYPH.WIDTH ];
-
-#macro __SCRIBBLE_PARSER_ADD_WORD  _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_START] = _word_glyph_start;\n
-                                   _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_END  ] = _word_glyph_end;\n
-                                   _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.WIDTH      ] = _word_width;\n
-                                   _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.HEIGHT     ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);\n
-                                   _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.X          ] = _word_x;\n
-                                   _word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.Y          ] = 0;\n
-                                   _word_count++;
-
-#macro __SCRIBBLE_PARSER_ADD_LINE  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X          ] = 0;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y          ] = 0;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START ] = _line_word_start;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END   ] = _line_word_end;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT     ] = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = _state_halign;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X_RIGHT    ] = 0;\n
-                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.CONTROL_END] = _control_index - 1;\n
-                                   _line_count++;
 
 #macro __SCRIBBLE_PARSER_READ_GLYPH_DATA   var _glyph_x            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X                 ];\n
                                            var _glyph_y            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y                 ];\n

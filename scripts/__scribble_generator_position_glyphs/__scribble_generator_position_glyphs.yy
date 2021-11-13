@@ -6,7 +6,7 @@
     "path": "folders/Scribble/(System - don't call these functions)/Generator.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__scribble_generator_text_wrap",
+  "name": "__scribble_generator_position_glyphs",
   "tags": [],
   "resourceType": "GMScript",
 }

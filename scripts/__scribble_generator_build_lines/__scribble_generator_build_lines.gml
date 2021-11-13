@@ -1,4 +1,4 @@
-function __scribble_generator_text_wrap()
+function __scribble_generator_build_lines()
 {
     var _word_grid = global.__scribble_word_grid;
     var _line_grid = global.__scribble_line_grid;
@@ -37,36 +37,28 @@ function __scribble_generator_text_wrap()
             var _word_width = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.WIDTH];
             if (_word_x + _word_width < _simulated_model_max_width)
             {
-                _word_grid[# _i, __SCRIBBLE_PARSER_WORD.X] = _word_x;
-                _word_x += _word_grid[# _i, __SCRIBBLE_PARSER_WORD.SEPARATION];
+                _word_x += _word_grid[# _i, __SCRIBBLE_PARSER_WORD.WIDTH];
             }
-            else if (_word_width < _simulated_model_max_width)
+            else
             {
+                //TODO - Check if word is too big to fit on one line
+                
                 var _line_word_end = _i - 1;
                 var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);
                 
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X          ] = 0;
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y          ] = 0;
+                //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y          ]  // Set in __scribble_generator_build_pages()
                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START ] = _line_word_start;
                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END   ] = _line_word_end;
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];
+                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_x + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];
                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT     ] = _line_height;
                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = _state_halign;
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X_RIGHT    ] = 0;
                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.CONTROL_END] = _control_index - 1;
             
                 _line_count++;
                 _line_y += _line_height;
                 
                 _line_word_start = _i;
-                _word_x = 0;
-            
-                _word_grid[# _i, __SCRIBBLE_PARSER_WORD.X] = _word_x;
-                _word_x += _word_grid[# _i, __SCRIBBLE_PARSER_WORD.SEPARATION];
-            }
-            else
-            {
-                //Word is too big to fit on one line
+                _word_x = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.WIDTH];
             }
         
             ++_i;
@@ -76,15 +68,13 @@ function __scribble_generator_text_wrap()
         {
             var _line_word_end = _i - 1;
             var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);
-        
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X          ] = 0;
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y          ] = 0;
+            
+            //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y          ]  // Set in __scribble_generator_build_pages()
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START ] = _line_word_start;
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END   ] = _line_word_end;
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.X] + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];
+            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_x + _word_grid[# _line_word_end, __SCRIBBLE_PARSER_WORD.WIDTH];
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT     ] = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = _state_halign;
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.X_RIGHT    ] = 0;
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.CONTROL_END] = _control_index - 1;
         
             _line_count++;

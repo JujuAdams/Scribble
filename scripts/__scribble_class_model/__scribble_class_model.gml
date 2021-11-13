@@ -305,10 +305,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __scribble_generator_parser();
     __scribble_generator_build_words();
     __scribble_generator_finalize_bidi();
-    __scribble_generator_text_wrap();
-    __scribble_generator_position_words_in_lines();
+    __scribble_generator_build_lines();
     __scribble_generator_build_pages();
-    __scribble_generator_position_glyphs_in_words();
+    __scribble_generator_position_glyphs();
     __scribble_generator_write_vbuffs();
     
     //Wipe the control grid so we don't accidentally hold references to event structs

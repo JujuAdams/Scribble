@@ -45,7 +45,7 @@ function __scribble_generator_finalize_bidi()
             //TODO - Handle this recursively
             
             // Prefer the overall direction if either adjacent word shares it
-            var _new_bidi = ((_prev_bidi == _overall_bidi) || (_next_bidi == _overall_bidi))? _next_bidi : _prev_bidi;
+            var _new_bidi = ((_prev_bidi == _overall_bidi) || (_next_bidi == _overall_bidi))? _overall_bidi : _prev_bidi;
             
             // If we *still* can't decide on the direction, default to L2R
             if (_new_bidi == undefined) _new_bidi = __SCRIBBLE_BIDI.L2R;
