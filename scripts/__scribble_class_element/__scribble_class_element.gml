@@ -354,7 +354,24 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param page
     static page = function(_page)
     {
-        __page = _page;
+        var _model = __get_model(true);
+        if (is_struct(_model))
+        {
+            if (_page < 0)
+            {
+                __scribble_trace("Warning! Cannot set a text element's page to less than 0");
+                __page = 0;
+            }
+            else if (_page > _model.get_pages()-1)
+            {
+                __page = _model.get_pages()-1;
+                __scribble_trace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", __page, " (pages are 0-indexed)");
+            }
+            else
+            {
+                __page = _page;
+            }
+        }
         
         return self;
     }
