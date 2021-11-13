@@ -15,8 +15,9 @@ function __scribble_generator_position_glyphs()
     // If we were given no maximum alignment width, align to the actual width of the model
     var _alignment_width = (_model_max_width == infinity)? width : _model_max_width;
     
-    var _model_min_x =  infinity;
-    var _model_max_x = -infinity;
+    var _model_min_x       =  infinity;
+    var _model_max_x       = -infinity;
+    var _model_glyph_count = 0;
     
     var _i = 0;
     repeat(_line_count)
@@ -181,10 +182,14 @@ function __scribble_generator_position_glyphs()
             _j += _stretch_incr;
         }
         
+        _model_glyph_count += _glyph_index;
+        
         ++_i;
     }
     
     if (_model_min_x ==  infinity) _model_min_x = 0;
+    
+    characters = _model_glyph_count;
     
     //TODO - Set this per page too
     min_x = _model_min_x;

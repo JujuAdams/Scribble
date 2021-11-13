@@ -44,7 +44,6 @@ function __scribble_generator_build_pages()
                 _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
                 
                 ////TODO - Probably need to move the page glyph start/end code after bidi correction
-                ////TODO - Implement handling for R2L (word count not glyph count)
                 //
                 //// Set up the character indexes for the page, relative to the character index of the first glyph on the page
                 //var _page_char_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
