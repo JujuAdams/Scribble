@@ -1,13 +1,9 @@
 function __scribble_system_glyph_data()
 {
     global.__scribble_glyph_data = {
-        printable_map : ds_map_create(),
-        
         bidi_map   : ds_map_create(),
         mirror_map : ds_map_create(),
         
-        arabic_logical_map   : ds_map_create(),
-        arabic_tashkil_map   : ds_map_create(),
         arabic_isolated_map  : ds_map_create(),
         arabic_initial_map   : ds_map_create(),
         arabic_medial_map    : ds_map_create(),
@@ -15,38 +11,6 @@ function __scribble_system_glyph_data()
         arabic_join_prev_map : ds_map_create(),
         arabic_join_next_map : ds_map_create(),
     }
-    
-    
-    
-    var _map = global.__scribble_glyph_data.printable_map;
-    //Control characters
-    _map[? $0000] = false;
-    _map[? $0001] = false;
-    _map[? $0002] = false;
-    _map[? $0003] = false;
-    _map[? $0004] = false;
-    _map[? $0005] = false;
-    _map[? $0006] = false;
-    _map[? $0007] = false;
-    _map[? $0008] = false;
-    _map[? $0009] = false;
-    
-    _map[? $000A] = false; //Linefeed
-    _map[? $000C] = false; //Horizontal tab
-    _map[? $000D] = false; //Carriage return
-    _map[? $0020] = false; //Space
-    _map[? $00A0] = false; //Non-breaking space
-    
-    //More control characters
-    _map[? $2066] = false;
-    _map[? $2067] = false;
-    _map[? $2068] = false;
-    _map[? $2069] = false;
-    _map[? $202A] = false;
-    _map[? $202B] = false;
-    _map[? $202C] = false;
-    _map[? $202D] = false;
-    _map[? $202E] = false;
     
     
     
@@ -63,6 +27,8 @@ function __scribble_system_glyph_data()
     _map[? __SCRIBBLE_GLYPH_SPRITE ] = __SCRIBBLE_BIDI.NEUTRAL;
     _map[? __SCRIBBLE_GLYPH_SURFACE] = __SCRIBBLE_BIDI.NEUTRAL;
     _map[? 0x0020   ] = __SCRIBBLE_BIDI.WHITESPACE; //space
+    
+    //Symbols
     _map[? ord("!") ] = __SCRIBBLE_BIDI.NEUTRAL;
     _map[? ord("\"")] = __SCRIBBLE_BIDI.NEUTRAL;
     _map[? ord("&") ] = __SCRIBBLE_BIDI.NEUTRAL;
@@ -90,6 +56,18 @@ function __scribble_system_glyph_data()
     _map[? ord(".") ] = __SCRIBBLE_BIDI.NEUTRAL;
     _map[? ord("/") ] = __SCRIBBLE_BIDI.NEUTRAL;
     _map[? ord(":") ] = __SCRIBBLE_BIDI.NEUTRAL;
+    
+    //More control characters
+    _map[? $2066    ] = __SCRIBBLE_BIDI.WHITESPACE;
+    _map[? $2067    ] = __SCRIBBLE_BIDI.WHITESPACE;
+    _map[? $2068    ] = __SCRIBBLE_BIDI.WHITESPACE;
+    _map[? $2069    ] = __SCRIBBLE_BIDI.WHITESPACE;
+    _map[? $202A    ] = __SCRIBBLE_BIDI.WHITESPACE;
+    _map[? $202B    ] = __SCRIBBLE_BIDI.WHITESPACE;
+    _map[? $202C    ] = __SCRIBBLE_BIDI.WHITESPACE;
+    _map[? $202D    ] = __SCRIBBLE_BIDI.WHITESPACE;
+    _map[? $202E    ] = __SCRIBBLE_BIDI.WHITESPACE;
+    
     _map[? $00A0    ] = __SCRIBBLE_BIDI.NEUTRAL; //Non-breaking space
     _map[? $060C    ] = __SCRIBBLE_BIDI.NEUTRAL; //Arabic comma
     _map[? $066B    ] = __SCRIBBLE_BIDI.R2L; //Arabic decimal separator
@@ -110,14 +88,6 @@ function __scribble_system_glyph_data()
     _map[? ord("]")] = ord("[");
     _map[? ord("{")] = ord("}");
     _map[? ord("}")] = ord("{");
-    
-    
-    
-    var _map = global.__scribble_glyph_data.arabic_logical_map;
-    for(var _i = 0x0600; _i <= 0x06FF; _i++) _map[? _i] = true;
-    
-    var _map = global.__scribble_glyph_data.arabic_tashkil_map;
-    for(var _i = 0x064B; _i <= 0x0652; _i++) _map[? _i] = true;
     
     
     

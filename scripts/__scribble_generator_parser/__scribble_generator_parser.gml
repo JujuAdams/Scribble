@@ -6,8 +6,6 @@ function __scribble_generator_parser()
     var _word_grid     = global.__scribble_word_grid;
     var _control_grid  = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
     
-    var _arabic_map_logical   = global.__scribble_glyph_data.arabic_logical_map;
-    var _arabic_map_tashkil   = global.__scribble_glyph_data.arabic_tashkil_map;
     var _arabic_map_join_next = global.__scribble_glyph_data.arabic_join_next_map;
     var _arabic_map_join_prev = global.__scribble_glyph_data.arabic_join_prev_map;
     
@@ -275,7 +273,6 @@ function __scribble_generator_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.NEUTRAL;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = true;
                             __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
                             
@@ -424,7 +421,6 @@ function __scribble_generator_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.NEUTRAL;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = true;
                         __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                         ++_glyph_count;
                             
@@ -518,7 +514,6 @@ function __scribble_generator_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = _image_speed;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.NEUTRAL;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = true;
                             __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
                             
@@ -665,7 +660,6 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.WHITESPACE;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = false;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
@@ -689,7 +683,6 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.WHITESPACE;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = false;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
@@ -709,7 +702,7 @@ function __scribble_generator_parser()
                 
                 #region Arabic handling
                 
-                if (_arabic_map_logical[? _glyph_write])
+                if ((_glyph_write >= 0x0600) && (_glyph_write <= 0x06FF)) // Arabic Unicode block
                 {
                     has_arabic = true;
                     
@@ -741,7 +734,7 @@ function __scribble_generator_parser()
                     }
                     
                     // If the next glyph is tashkil, ignore it for the purposes of determining join state
-                    while(_arabic_map_tashkil[? _glyph_next])
+                    while((_glyph_next >= 0x064B) && (_glyph_next <= 0x0652)) // Tashkil range
                     {
                         _buffer_offset += 2;
                         _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, _buffer_offset);
@@ -776,7 +769,7 @@ function __scribble_generator_parser()
                     if (_new_glyph != undefined) _glyph_write = _new_glyph;
                     
                     // If this glyph isn't tashkil then update the previous glyph state
-                    if (!_arabic_map_tashkil[? _glyph_ord]) _arabic_glyph_prev = _glyph_ord;
+                    if ((_glyph_next < 0x064B) || (_glyph_next > 0x0652)) _arabic_glyph_prev = _glyph_ord;
                 }
                 
                 #endregion
@@ -809,7 +802,6 @@ function __scribble_generator_parser()
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = _glyph_data[SCRIBBLE_GLYPH.BIDI];
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = _glyph_data[SCRIBBLE_GLYPH.PRINTABLE];
                     __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                     ++_glyph_count;
                     

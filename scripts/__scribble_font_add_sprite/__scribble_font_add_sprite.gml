@@ -27,8 +27,7 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
         __scribble_error("A spritefont for \"", _sprite_name, "\" has already been added");
     }
     
-    var _global_glyph_bidi_map      = global.__scribble_glyph_data.bidi_map;
-    var _global_glyph_printable_map = global.__scribble_glyph_data.printable_map;
+    var _global_glyph_bidi_map = global.__scribble_glyph_data.bidi_map;
     
     var _sprite = asset_get_index(_sprite_name);
     
@@ -75,9 +74,6 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             var _bidi = global.__scribble_glyph_data.bidi_map[? 32];
             if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
             
-            var _printable = global.__scribble_glyph_data.printable_map[? 32];
-            if (_printable == undefined) _printable = true;
-            
             var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
             _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _space_width;
             _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
@@ -90,7 +86,6 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             _array[@ SCRIBBLE_GLYPH.U1        ] = 0;
             _array[@ SCRIBBLE_GLYPH.V1        ] = 0;
             _array[@ SCRIBBLE_GLYPH.BIDI      ] = _bidi;
-            _array[@ SCRIBBLE_GLYPH.PRINTABLE ] = _printable;
             _font_glyphs_map[? 32] = _array;
         }
         else
@@ -111,9 +106,6 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             var _bidi = _global_glyph_bidi_map[? _index];
             if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
             
-            var _printable = _global_glyph_printable_map[? _index];
-            if (_printable == undefined) _printable = true;
-            
             //Build an array to store this glyph's properties
             var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
             _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _glyph;
@@ -129,7 +121,6 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             _array[@ SCRIBBLE_GLYPH.U1        ] = _uvs[2];
             _array[@ SCRIBBLE_GLYPH.V1        ] = _uvs[3];
             _array[@ SCRIBBLE_GLYPH.BIDI      ] = _bidi;
-            _array[@ SCRIBBLE_GLYPH.PRINTABLE ] = _printable;
             _font_glyphs_map[? ord(_glyph)] = _array;
         }
         

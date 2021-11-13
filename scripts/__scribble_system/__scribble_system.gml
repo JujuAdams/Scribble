@@ -504,8 +504,7 @@ enum SCRIBBLE_GLYPH //TODO - Add pxrange field
     U1,         //10
     V1,         //11
     BIDI,       //12
-    PRINTABLE,  //13
-    __SIZE      //14
+    __SIZE      //13
 }
 
 // TODO - Allow copying of glyph layout into a separate grid

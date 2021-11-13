@@ -64,7 +64,7 @@ function __scribble_generator_build_lines()
             ++_i;
         }
     
-        if ((_line_word_start != _i - 1) || _word_grid[# _line_word_start, __SCRIBBLE_PARSER_WORD.PRINTABLE])
+        if ((_line_word_start != _i - 1) || (_word_grid[# _line_word_start, __SCRIBBLE_PARSER_WORD.BIDI_RAW] != __SCRIBBLE_BIDI.WHITESPACE))
         {
             var _line_word_end = _i - 1;
             var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);
