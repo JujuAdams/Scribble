@@ -297,7 +297,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         model_max_height = 0;
         overall_bidi     = _element.__bidi_hint;
         
-        bezier_lengths_array = undefined;
+        bezier_lengths_array = undefined; //TODO
     };
     
     __scribble_generator_model_limits_and_bezier_curves()
