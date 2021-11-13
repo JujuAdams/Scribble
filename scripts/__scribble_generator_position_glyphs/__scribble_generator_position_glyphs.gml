@@ -71,6 +71,9 @@ function __scribble_generator_position_glyphs()
         // FIXME - This should work per-page not per-model
         if (_i >= _line_count - 1) _line_halign = fa_left;
         
+        // FIXME - This doesn't match the typewriter or the events system!
+        var _glyph_index = 0;
+        
         if (_overall_bidi == __SCRIBBLE_BIDI.R2L)
         {
             // Automatically pin left-aligned text to the right when rendering R2L text
@@ -119,18 +122,21 @@ function __scribble_generator_position_glyphs()
         {
             var _stretch_word_start = _stretch_grid[# _j, __SCRIBBLE_PARSER_STRETCH.WORD_START];
             var _stretch_word_end   = _stretch_grid[# _j, __SCRIBBLE_PARSER_STRETCH.WORD_END  ];
+            var _stretch_bidi       = _stretch_grid[# _j, __SCRIBBLE_PARSER_STRETCH.BIDI      ];
             
-            if (_stretch_grid[# _j, __SCRIBBLE_PARSER_STRETCH.BIDI] != __SCRIBBLE_BIDI.R2L)
+            if (_stretch_bidi != __SCRIBBLE_BIDI.R2L)
             {
                 // "Normal" L2R text, no word reordering required
                 var _k = _stretch_word_start;
                 var _word_incr = 1;
+                var _stretch_increment_index_on_glyphs = true;
             }
             else
             {
                 // R2L text, words need to be reversed
                 var _k = _stretch_word_end;
                 var _word_incr = -1;
+                var _stretch_increment_index_on_glyphs = false;
             }
             
             repeat(1 + _stretch_word_end - _stretch_word_start)
@@ -157,8 +163,13 @@ function __scribble_generator_position_glyphs()
                     _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.Y] = _line_y + (_line_height - _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.HEIGHT]) div 2;
                     _glyph_x += _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.SEPARATION] + _justification_extra_spacing;
                     
+                    _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _glyph_index;
+                    if (_stretch_increment_index_on_glyphs) _glyph_index++;
+                    
                     _l += _glyph_incr;
                 }
+                
+                if (!_stretch_increment_index_on_glyphs) _glyph_index += 1 + _word_glyph_end - _word_glyph_start;
                 
                 _k += _word_incr;
             }
