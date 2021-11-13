@@ -45,7 +45,6 @@ function __scribble_font_add_from_project(_font)
     //
     var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
     var _size = array_length(_info_glyph_names);
-    if (SCRIBBLE_VERBOSE) __scribble_trace("  \"" + _name + "\" has " + string(_size) + " characters");
     
     //
     var _info_glyphs_array = array_create(array_length(_info_glyph_names));
@@ -57,8 +56,6 @@ function __scribble_font_add_from_project(_font)
         _info_glyphs_array[@ _i] = _struct;
         ++_i;
     }
-    
-    if (SCRIBBLE_VERBOSE) __scribble_trace("  Using a ds_map to index glyphs");
     
     var _i = 0;
     repeat(_size)
