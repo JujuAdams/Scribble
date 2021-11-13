@@ -6,9 +6,6 @@ function __scribble_generator_build_words()
     var _word_grid    = global.__scribble_word_grid;
     var _control_grid = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
     
-    var _glyph_bidi_map      = global.__scribble_glyph_data.bidi_map;
-    var _glyph_printable_map = global.__scribble_glyph_data.printable_map;
-    
     with(global.__scribble_generator_state)
     {
         var _glyph_count = glyph_count;
@@ -54,14 +51,8 @@ function __scribble_generator_build_words()
         //    __scribble_error("Not yet implemented");
         //}
         
-        var _glyph_ord       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
-        var _glyph_bidi      = _glyph_bidi_map[?      _glyph_ord];
-        var _glyph_printable = _glyph_printable_map[? _glyph_ord];
-        
-        // TODO - Write this into font glyph data, then pull that information into parser glyphs
-        //        We can then do a bunch of processing in the parser stage
-        if (_glyph_bidi      == undefined) _glyph_bidi      = __SCRIBBLE_BIDI.L2R; 
-        if (_glyph_printable == undefined) _glyph_printable = true;
+        var _glyph_bidi      = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.BIDI     ];
+        var _glyph_printable = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.PRINTABLE];
         
         // If we find a glyph with a neutral direction and the current word isn't whitespace, inherit the word's direction
         if ((_glyph_bidi == __SCRIBBLE_BIDI.NEUTRAL) && (_word_bidi != __SCRIBBLE_BIDI.WHITESPACE) && (_word_bidi != undefined))
@@ -78,7 +69,7 @@ function __scribble_generator_build_words()
         }
         
         // If the glyph we found is a different direction, or is non-printable, then create a new word for the glyph
-        if ((_glyph_ord == 0x0000) || (_glyph_bidi != _word_bidi) || (_glyph_printable != _word_printable))
+        if ((_glyph_bidi != _word_bidi) || (_glyph_printable != _word_printable) || (_i == _glyph_count))
         {
             if (_word_index >= 0)
             {
@@ -92,7 +83,7 @@ function __scribble_generator_build_words()
                 //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI       ]
                 //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.PRINTABLE  ]
                 
-                if (_glyph_ord == 0x0000) break;
+                if (_i == _glyph_count) break;
             }
             
             _word_index++;

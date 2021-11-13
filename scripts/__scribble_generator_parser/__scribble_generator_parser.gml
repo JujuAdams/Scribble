@@ -274,6 +274,8 @@ function __scribble_generator_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.NEUTRAL;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = true;
                             __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
                             
@@ -421,6 +423,8 @@ function __scribble_generator_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.NEUTRAL;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = true;
                         __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                         ++_glyph_count;
                             
@@ -513,6 +517,8 @@ function __scribble_generator_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = _image_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = _image_speed;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.NEUTRAL;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = true;
                             __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
                             
@@ -658,6 +664,8 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.WHITESPACE;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = false;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
@@ -680,6 +688,8 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.WHITESPACE;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = false;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
@@ -798,6 +808,8 @@ function __scribble_generator_parser()
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = _glyph_data[SCRIBBLE_GLYPH.BIDI];
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = _glyph_data[SCRIBBLE_GLYPH.PRINTABLE];
                     __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                     ++_glyph_count;
                     

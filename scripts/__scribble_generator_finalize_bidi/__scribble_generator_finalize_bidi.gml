@@ -31,7 +31,7 @@ function __scribble_generator_finalize_bidi()
     repeat(_word_count)
     {
         var _bidi = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.BIDI_RAW];
-        if ((_bidi != __SCRIBBLE_BIDI.NEUTRAL) || (_bidi == __SCRIBBLE_BIDI.WHITESPACE))
+        if ((_bidi == __SCRIBBLE_BIDI.NEUTRAL) || (_bidi == __SCRIBBLE_BIDI.WHITESPACE))
         {
             // Get the direction of adjacent words
             var _prev_bidi = (_i > 0)?             _word_grid[# _i-1, __SCRIBBLE_PARSER_WORD.BIDI] : __SCRIBBLE_BIDI.NEUTRAL;

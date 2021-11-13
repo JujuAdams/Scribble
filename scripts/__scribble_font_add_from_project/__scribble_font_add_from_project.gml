@@ -12,6 +12,9 @@ function __scribble_font_add_from_project(_font)
         global.__scribble_default_font = _name;
     }
     
+    var _global_glyph_bidi_map      = global.__scribble_glyph_data.bidi_map;
+    var _global_glyph_printable_map = global.__scribble_glyph_data.printable_map;
+    
     var _font_data = new __scribble_class_font(_name);
     _font_data.msdf = false;
     var _font_glyphs_map = _font_data.glyphs_map;
@@ -74,6 +77,12 @@ function __scribble_font_add_from_project(_font)
         var _u1    = _u0 + _w*_texture_tw;
         var _v1    = _v0 + _h*_texture_th;
         
+        var _bidi = _global_glyph_bidi_map[? _index];
+        if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
+        
+        var _printable = _global_glyph_printable_map[? _index];
+        if (_printable == undefined) _printable = true;
+        
         var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
         _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _char;
         _array[@ SCRIBBLE_GLYPH.INDEX     ] = _index;
@@ -87,6 +96,8 @@ function __scribble_font_add_from_project(_font)
         _array[@ SCRIBBLE_GLYPH.V0        ] = _v0;
         _array[@ SCRIBBLE_GLYPH.U1        ] = _u1;
         _array[@ SCRIBBLE_GLYPH.V1        ] = _v1;
+        _array[@ SCRIBBLE_GLYPH.BIDI      ] = _bidi;
+        _array[@ SCRIBBLE_GLYPH.PRINTABLE ] = _printable;
         
         _font_glyphs_map[? ord(_char)] = _array;
         

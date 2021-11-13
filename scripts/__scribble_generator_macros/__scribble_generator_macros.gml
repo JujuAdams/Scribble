@@ -18,7 +18,9 @@ enum __SCRIBBLE_PARSER_GLYPH
     STATE_SCALE,        //15
     STATE_SLANT,        //16
     FONT_SCALE_DIST,    //17
-    __SIZE,             //18
+    BIDI,               //17
+    PRINTABLE,          //18
+    __SIZE,             //19
 }
 
 //These can be used for ORD
@@ -114,6 +116,8 @@ enum __SCRIBBLE_PARSER_LINE
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;\n
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;\n
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.WHITESPACE;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.PRINTABLE      ] = false;\n
                                         __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;\n
                                         ++_glyph_count;
 
