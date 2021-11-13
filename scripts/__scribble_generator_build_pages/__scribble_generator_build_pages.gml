@@ -53,7 +53,7 @@ function __scribble_generator_build_pages()
                 //// Set the character count for the page too
                 //_page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
                 
-                _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y] = _line_y;
+                _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y] = 0;
                 _line_y = _line_height;
                 
                 if (is_infinity(_line_height))
