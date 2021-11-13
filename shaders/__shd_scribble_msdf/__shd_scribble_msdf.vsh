@@ -239,7 +239,7 @@ vec3 hsv2rgb(vec3 c)
 //Colour cycling for the rainbow effect
 vec4 rainbow(float characterIndex, float weight, float speed, vec4 colour)
 {
-    return vec4(mix(colour.rgb, hsv2rgb(vec3(characterIndex + speed*u_fTime, 1.0, 1.0)), weight), colour.a);
+    return vec4(mix(colour.rgb, hsv2rgb(vec3(0.02*characterIndex + speed*u_fTime, 1.0, 1.0)), weight), colour.a);
 }
                            
 //Colour cycling through a defined palette
