@@ -2,21 +2,21 @@ enum __SCRIBBLE_PARSER_GLYPH
 {
     X,                  // 0
     Y,                  // 1
-    ORD,                // 2  Can be negative, see below
-    FONT_DATA,          // 3
-    GLYPH_DATA,         // 4
-    EVENTS,             // 5
-    WIDTH,              // 6
-    SEPARATION,         // 7
-    HEIGHT,             // 8
-    ASSET_INDEX,        // 9  This gets used for sprite index, surface index, and halign mode
-    IMAGE_INDEX,        //10
-    IMAGE_SPEED,        //11
-    STATE_COLOUR,       //12
-    STATE_EFFECT_FLAGS, //13
-    STATE_SCALE,        //14
-    STATE_SLANT,        //15
-    CHARACTER_INDEX,    //16
+    WIDTH,              // 2
+    HEIGHT,             // 3
+    ORD,                // 4  Can be negative, see below
+    ANIMATION_INDEX,    // 5
+    FONT_DATA,          // 6
+    GLYPH_DATA,         // 7
+    EVENTS,             // 8
+    SEPARATION,         // 9
+    ASSET_INDEX,        //10  This gets used for sprite index, surface index, and halign mode
+    IMAGE_INDEX,        //11
+    IMAGE_SPEED,        //12
+    STATE_COLOUR,       //13
+    STATE_EFFECT_FLAGS, //14
+    STATE_SCALE,        //15
+    STATE_SLANT,        //16
     FONT_SCALE_DIST,    //17
     __SIZE,             //18
 }
@@ -83,21 +83,21 @@ enum __SCRIBBLE_PARSER_LINE
 
 #macro __SCRIBBLE_PARSER_WRITE_HALIGN  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_HALIGN;\n
                                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = _state_halign;\n
-                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _character_index;\n
+                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _animation_index;\n
                                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
                                        ++_control_count;
 
 
 #macro __SCRIBBLE_PARSER_WRITE_EVENT  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_EVENT;\n
                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = new __scribble_class_event(_tag_command_name, _tag_parameters);\n
-                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _character_index;\n
+                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _animation_index;\n
                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
                                       ++_control_count;
 
 
 #macro __SCRIBBLE_PARSER_WRITE_PAGEBREAK  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_PAGEBREAK;\n
                                           _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = undefined;\n
-                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _character_index;\n
+                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _animation_index;\n
                                           _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
                                           ++_control_count;\n
                                           ++_control_page;
@@ -113,7 +113,7 @@ enum __SCRIBBLE_PARSER_LINE
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;\n
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;\n
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;\n
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;\n
                                         __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;\n
                                         ++_glyph_count;
 
@@ -137,20 +137,20 @@ enum __SCRIBBLE_PARSER_LINE
                                            var _glyph_effect_flags = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS];\n
                                            var _glyph_scale        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE       ];\n
                                            var _glyph_slant        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT       ];\n
-                                           var _glyph_char_index   = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX   ];
+                                           var _glyph_char_index   = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX   ];
 
 #macro __SCRIBBLE_READ_CONTROL_EVENTS  while((_i == _next_control_pos) && (_p == _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.PAGE]))\n //If this *global* glyph index is the same as our control position then scan for new controls to apply
                                        {\n
                                            if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_EVENT)\n //If this control is an event, add that to the page's events dictionary
                                            {\n
-                                                var _event_array = _page_events_dict[$ _character_index];\n //Find the correct event array in the diciontary, creating a new one if needed
+                                                var _event_array = _page_events_dict[$ _animation_index];\n //Find the correct event array in the diciontary, creating a new one if needed
                                                 if (!is_array(_event_array))\n
                                                 {\n
                                                     var _event_array = [];\n
-                                                    _page_events_dict[$ _character_index] = _event_array;\n
+                                                    _page_events_dict[$ _animation_index] = _event_array;\n
                                                 }\n
                                                 var _event = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];\n
-                                                _event.position = _character_index;\n //Update the glyph index to the *local* glyph index for the page
+                                                _event.position = _animation_index;\n //Update the glyph index to the *local* glyph index for the page
                                                 array_push(_event_array, _event);\n
                                            }\n
                                            ++_control_index;\n //Increment which control we're processing

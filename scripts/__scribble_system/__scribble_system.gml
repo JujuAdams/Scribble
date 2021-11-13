@@ -489,7 +489,7 @@ function __scribble_buffer_write_unicode(_buffer, _value)
 #macro __SCRIBBLE_DEBUG    false
 
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
-enum SCRIBBLE_GLYPH
+enum SCRIBBLE_GLYPH //TODO - Add pxrange field
 {
     CHARACTER,  // 0
     INDEX,      // 1
@@ -505,7 +505,18 @@ enum SCRIBBLE_GLYPH
     V1,         //11
     __SIZE      //12
 }
-//TODO - Add pxrange field
+
+// TODO - Allow copying of glyph layout into a separate grid
+enum SCRIBBLE_LAYOUT
+{
+    X,                // 1
+    Y,                // 2
+    WIDTH,            // 3
+    HEIGHT,           // 4
+    ORD,              // 5
+    ANIMATION_INDEX,  // 6
+    __SIZE,           // 7
+}
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {

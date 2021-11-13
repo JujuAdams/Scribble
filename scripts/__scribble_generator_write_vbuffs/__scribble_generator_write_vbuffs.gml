@@ -39,7 +39,7 @@ function __scribble_generator_write_vbuffs()
         var _vbuff              = undefined;
         var _last_glyph_texture = undefined;
         var _glyph_sprite_data  = 0;
-        var _character_index    = 0;
+        var _animation_index    = 0;
         
         if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
         {
@@ -63,7 +63,7 @@ function __scribble_generator_write_vbuffs()
                     buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                 }
                 
-                _character_index++;
+                _animation_index++;
                 
                 var _write_scale = _glyph_scale;
                                         
@@ -136,7 +136,7 @@ function __scribble_generator_write_vbuffs()
                     buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                 }
                 
-                _character_index++;
+                _animation_index++;
                 
                 var _write_scale = _glyph_scale;
                                        
@@ -167,7 +167,7 @@ function __scribble_generator_write_vbuffs()
                     __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
                 }
                 
-                _character_index++;
+                _animation_index++;
                 
                 if (_glyph_ord > 32)
                 {

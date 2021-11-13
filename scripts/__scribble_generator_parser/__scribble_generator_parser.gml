@@ -58,7 +58,7 @@ function __scribble_generator_parser()
     var _state_cycle        = false;
     var _state_halign       = _starting_halign;
     var _state_command_tag_flipflop = false;
-    var _character_index    = 0;
+    var _animation_index    = 0;
     
     __SCRIBBLE_PARSER_WRITE_HALIGN;
     
@@ -273,11 +273,11 @@ function __scribble_generator_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                             __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
                             
-                            ++_character_index;
+                            ++_animation_index;
                         }
                     break;
                     
@@ -420,11 +420,11 @@ function __scribble_generator_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = _surface;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                         __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                         ++_glyph_count;
                             
-                        ++_character_index;
+                        ++_animation_index;
                         
                         if (!SCRIBBLE_COLORIZE_SPRITES)
                         {
@@ -512,11 +512,11 @@ function __scribble_generator_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = _sprite_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = _image_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = _image_speed;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                             __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
                             
-                            ++_character_index;
+                            ++_animation_index;
                             
                             _state_effect_flags = _old_effect_flags;
                             if (!SCRIBBLE_COLORIZE_SPRITES) _state_final_colour = _old_colour;
@@ -657,11 +657,11 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
-                ++_character_index;
+                ++_animation_index;
                 
                 #endregion
             }
@@ -679,11 +679,11 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
-                ++_character_index;
+                ++_animation_index;
                 
                 #endregion
             }
@@ -797,11 +797,11 @@ function __scribble_generator_parser()
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
                     __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                     ++_glyph_count;
                     
-                    ++_character_index;
+                    ++_animation_index;
                 }
                 
                 if (_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) _state_command_tag_flipflop = true;
@@ -830,12 +830,12 @@ function __scribble_generator_parser()
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x00;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = 0;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _character_index;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;
     
     //Also create a null terminator for control messages
     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = 0;
     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = undefined;
-    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _character_index;
+    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _animation_index;
     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;
     
     with(global.__scribble_generator_state)

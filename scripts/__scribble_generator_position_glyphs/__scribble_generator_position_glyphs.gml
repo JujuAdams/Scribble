@@ -167,7 +167,7 @@ function __scribble_generator_position_glyphs()
                     _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.Y] = _line_y + (_line_height - _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.HEIGHT]) div 2;
                     _glyph_x += _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.SEPARATION] + _justification_extra_spacing;
                     
-                    _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.CHARACTER_INDEX] = _glyph_index;
+                    _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _glyph_index;
                     if (_stretch_increment_index_on_glyphs) _glyph_index++;
                     
                     _l += _glyph_incr;
