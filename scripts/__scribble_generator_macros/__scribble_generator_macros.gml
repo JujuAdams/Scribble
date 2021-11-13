@@ -8,16 +8,15 @@ enum __SCRIBBLE_PARSER_GLYPH
     ANIMATION_INDEX,    // 5
     FONT_DATA,          // 6
     GLYPH_DATA,         // 7
-    EVENTS,             // 8
-    SEPARATION,         // 9
-    ASSET_INDEX,        //10  This gets used for sprite index, surface index, and halign mode
-    IMAGE_INDEX,        //11
-    IMAGE_SPEED,        //12
-    STATE_COLOUR,       //13
-    STATE_EFFECT_FLAGS, //14
-    STATE_SCALE,        //15
-    STATE_SLANT,        //16
-    FONT_SCALE_DIST,    //17
+    SEPARATION,         // 8
+    ASSET_INDEX,        // 9  This gets used for sprite index, surface index, and halign mode
+    IMAGE_INDEX,        //10
+    IMAGE_SPEED,        //11
+    STATE_COLOUR,       //12
+    STATE_EFFECT_FLAGS, //13
+    STATE_SCALE,        //14
+    STATE_SLANT,        //15
+    FONT_SCALE_DIST,    //16
     BIDI,               //17
     __SIZE,             //18
 }
@@ -106,7 +105,6 @@ enum __SCRIBBLE_PARSER_LINE
 #macro __SCRIBBLE_PARSER_WRITE_NEWLINE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x0D;\n //ASCII line break (dec = 13)
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;\n
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.EVENTS         ] = undefined;\n
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = 0;\n
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_font_line_height;\n
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = 0;\n
