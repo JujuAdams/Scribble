@@ -72,10 +72,11 @@ function __scribble_generator_build_pages()
             }
             
             _model_height = max(_model_height, _line_y);
+            ++_i;
         }
         
         // Set the ending glyph - we set the starting glyph when the new page is created (above for the 0th page, and below for subsequent pages)
-        _page_data.__glyph_end = _word_grid[# _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
+        _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
     }
     
     height = _model_height;
