@@ -1,10 +1,11 @@
-var _bbox = element.get_bbox(room_width div 2, room_height div 2, 5, 5, 5, 5);
-draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, true);
-draw_primitive_begin(pr_trianglestrip);
-draw_vertex_color(_bbox.x0, _bbox.y0, c_gray, 1.0);
-draw_vertex_color(_bbox.x1, _bbox.y1, c_gray, 1.0);
-draw_vertex_color(_bbox.x2, _bbox.y2, c_gray, 1.0);
-draw_vertex_color(_bbox.x3, _bbox.y3, c_gray, 1.0);
-draw_primitive_end();
+element.wrap(width, height);
+page = clamp(page, 0, element.get_pages()-1);
+element.page(page);
+element.draw(x, y);
 
-element.transform(1, 1, -15).draw(room_width div 2, room_height div 2, typist);
+var _bbox = element.get_bbox(x, y);
+draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, true);
+
+draw_set_color(c_yellow);
+draw_rectangle(x, y, x + width, y + height, true);
+draw_set_color(c_white);
