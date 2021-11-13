@@ -5,6 +5,15 @@ if (variable_global_exists("__scribble_lcg")) return undefined;
 
 __scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
 
+if (SCRIBBLE_VERBOSE)
+{
+    __scribble_trace("Verbose mode is on");
+}
+else
+{
+    __scribble_trace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
+}
+
 __scribble_system_glyph_data();
 
 if (__SCRIBBLE_ON_MOBILE)
