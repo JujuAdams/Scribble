@@ -63,6 +63,7 @@ global.__scribble_control_grid        = ds_grid_create(1000, __SCRIBBLE_PARSER_C
 global.__scribble_word_grid           = ds_grid_create(1000, __SCRIBBLE_PARSER_WORD.__SIZE);
 global.__scribble_line_grid           = ds_grid_create(__SCRIBBLE_MAX_LINES, __SCRIBBLE_PARSER_LINE.__SIZE);
 global.__scribble_stretch_grid        = ds_grid_create(1000, __SCRIBBLE_PARSER_STRETCH.__SIZE);
+global.__scribble_temp_grid           = ds_grid_create(1000, 1);
 //global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0); //TODO - Do we still need this?
 global.__scribble_character_delay     = false;
 global.__scribble_character_delay_map = ds_map_create();

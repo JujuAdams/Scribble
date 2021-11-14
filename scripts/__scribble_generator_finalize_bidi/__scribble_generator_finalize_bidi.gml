@@ -29,8 +29,10 @@ function __scribble_generator_finalize_bidi()
             if ((_new_bidi == __SCRIBBLE_BIDI.SYMBOL) || (_new_bidi == __SCRIBBLE_BIDI.WHITESPACE)) _new_bidi = __SCRIBBLE_BIDI.L2R;
             
             _word_grid[# _i, __SCRIBBLE_PARSER_WORD.BIDI] = _new_bidi;
-        }
             
+            _bidi = _new_bidi;
+        }
+        
         ++_i;
     }
 }

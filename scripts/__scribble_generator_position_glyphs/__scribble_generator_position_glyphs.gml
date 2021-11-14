@@ -4,6 +4,7 @@ function __scribble_generator_position_glyphs()
     var _word_grid    = global.__scribble_word_grid;
     var _stretch_grid = global.__scribble_stretch_grid;
     var _line_grid    = global.__scribble_line_grid;
+    var _temp_grid    = global.__scribble_temp_grid;
     
     with(global.__scribble_generator_state)
     {
@@ -28,6 +29,21 @@ function __scribble_generator_position_glyphs()
         var _line_width      = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WIDTH     ];
         var _line_height     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HEIGHT    ];
         var _line_halign     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HALIGN    ];
+        
+        
+        
+        // Centre all glyphs vertically on the line
+        var _line_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_PARSER_WORD.GLYPH_START];
+        var _line_glyph_end   = _word_grid[# _line_word_end,   __SCRIBBLE_PARSER_WORD.GLYPH_END  ];
+        var _line_glyph_count = 1 + _line_glyph_end - _line_glyph_start;
+        
+        // _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y] = _line_y + (_line_height - _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT]) div 2;
+        ds_grid_set_grid_region(_temp_grid, _glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT, 0, 0);
+        ds_grid_multiply_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, -0.5);
+        ds_grid_add_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, 0.5*_line_height + _line_y);
+        ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _line_glyph_count-1, 0, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.Y);
+        
+        
         
         // Figure out what order words should come in
         var _line_stretch_count = 0;
@@ -99,6 +115,7 @@ function __scribble_generator_position_glyphs()
         
         if (_line_halign == __SCRIBBLE_JUSTIFY)
         {
+            // TODO - Apply justification spacing to glyphs
             var _line_word_count = 1 + _line_word_end - _line_word_start;
             if (_line_word_count > 1) //Prevent div-by-zero
             {
@@ -134,14 +151,12 @@ function __scribble_generator_position_glyphs()
                 // "Normal" L2R text, no word reordering required
                 var _k = _stretch_word_start;
                 var _word_incr = 1;
-                var _stretch_increment_index_on_glyphs = true;
             }
             else
             {
                 // R2L text, words need to be reversed
                 var _k = _stretch_word_end;
                 var _word_incr = -1;
-                var _stretch_increment_index_on_glyphs = false;
             }
             
             repeat(1 + _stretch_word_end - _stretch_word_start)
@@ -149,32 +164,8 @@ function __scribble_generator_position_glyphs()
                 var _word_glyph_start = _word_grid[# _k, __SCRIBBLE_PARSER_WORD.GLYPH_START];
                 var _word_glyph_end   = _word_grid[# _k, __SCRIBBLE_PARSER_WORD.GLYPH_END  ];
                 
-                if (_word_grid[# _k, __SCRIBBLE_PARSER_WORD.BIDI] != __SCRIBBLE_BIDI.R2L)
-                {
-                    // "Normal" L2R text, no word reordering required
-                    var _l = _word_glyph_start;
-                    var _glyph_incr = 1;
-                }
-                else
-                {
-                    // R2L text, words need to be reversed
-                    var _l = _word_glyph_end;
-                    var _glyph_incr = -1;
-                }
-                
-                repeat(1 + _word_glyph_end - _word_glyph_start)
-                {
-                    _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.X] = _glyph_x;
-                    _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.Y] = _line_y + (_line_height - _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.HEIGHT]) div 2;
-                    _glyph_x += _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.SEPARATION] + _justification_extra_spacing;
-                    
-                    _glyph_grid[# _l, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _glyph_index;
-                    if (_stretch_increment_index_on_glyphs) _glyph_index++;
-                    
-                    _l += _glyph_incr;
-                }
-                
-                if (!_stretch_increment_index_on_glyphs) _glyph_index += 1 + _word_glyph_end - _word_glyph_start;
+                ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.X, _glyph_x);
+                _glyph_x += _word_grid[# _k, __SCRIBBLE_PARSER_WORD.WIDTH];
                 
                 _k += _word_incr;
             }

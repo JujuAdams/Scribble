@@ -12,12 +12,12 @@ function __scribble_generator_build_words()
         var _overall_bidi = overall_bidi;
     }
     
-    var _word_index          = -1;
-    var _word_glyph_start    = 0;
-    var _word_glyph_end      = undefined;
-    var _word_width          = undefined;
-    var _word_bidi           = undefined;
-    var _glyph_prev_raw_bidi = undefined;
+    var _word_index            = -1;
+    var _word_glyph_start      = 0;
+    var _word_glyph_end        = undefined;
+    var _word_width            = undefined;
+    var _word_bidi             = undefined;
+    var _glyph_prev_whitespace = undefined;
     
     //var _control_index     = 0;
     //var _control_pagebreak = false;
@@ -55,33 +55,46 @@ function __scribble_generator_build_words()
         var _glyph_bidi_raw = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.BIDI];
         var _glyph_bidi = _glyph_bidi_raw;
         
-        if (_glyph_bidi == __SCRIBBLE_BIDI.WHITESPACE)
-        {
-            if ((_word_bidi == undefined) || (_word_bidi == _overall_bidi))
-            {
-                _glyph_bidi = _overall_bidi;
-            }
-        }
-        
-        // If we find a glyph with a neutral direction and the current word isn't whitespace, inherit the word's direction
-        if ((_glyph_bidi == __SCRIBBLE_BIDI.SYMBOL) && (_word_bidi != __SCRIBBLE_BIDI.WHITESPACE) && (_word_bidi != undefined))
-        {
-            _glyph_bidi = _word_bidi;
-        }
-        
-        // If the current word has a neutral direction, try to inherit the direction of the next L2R or R2L glyph
-        if ((_word_bidi == __SCRIBBLE_BIDI.SYMBOL) && ((_glyph_bidi == __SCRIBBLE_BIDI.L2R) || (_glyph_bidi == __SCRIBBLE_BIDI.R2L)))
-        {
-            // When (if) we find an L2R/R2L glyph then copy that glyph state back into the word itself
-            _word_bidi = _glyph_bidi;
-            _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI_RAW] = _glyph_bidi;
-            _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI    ] = _glyph_bidi;
-        }
-        
         var _new_word = false;
+        switch(_glyph_bidi)
+        {
+            case __SCRIBBLE_BIDI.WHITESPACE:
+                if ((_word_bidi == undefined) || (_word_bidi == _overall_bidi))
+                {
+                    _glyph_bidi = _overall_bidi;
+                }
+                
+                _glyph_prev_whitespace = true;
+            break;
+            
+            case __SCRIBBLE_BIDI.SYMBOL:
+                // If we find a glyph with a neutral direction and the current word isn't whitespace, inherit the word's direction
+                if ((_word_bidi != __SCRIBBLE_BIDI.WHITESPACE) && (_word_bidi != undefined))
+                {
+                    _glyph_bidi = _word_bidi;
+                }
+                
+                // If the current word has a neutral direction, try to inherit the direction of the next L2R or R2L glyph
+                if ((_glyph_bidi == __SCRIBBLE_BIDI.L2R) || (_glyph_bidi == __SCRIBBLE_BIDI.R2L))
+                {
+                    // When (if) we find an L2R/R2L glyph then copy that glyph state back into the word itself
+                    _word_bidi = _glyph_bidi;
+                    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI_RAW] = _glyph_bidi;
+                    _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI    ] = _glyph_bidi;
+                }
+            break;
+            
+            case __SCRIBBLE_BIDI.LINE_BREAK:
+                _new_word = true;
+            break;
+        }
+        
         if ((_glyph_bidi != _word_bidi) || (_i == _glyph_count)) _new_word = true;
-        if ((_glyph_bidi_raw != __SCRIBBLE_BIDI.WHITESPACE) && (_glyph_prev_raw_bidi == __SCRIBBLE_BIDI.WHITESPACE)) _new_word = true;
-        if (_glyph_bidi_raw == __SCRIBBLE_BIDI.LINE_BREAK) _new_word = true;
+        if ((_glyph_bidi_raw != __SCRIBBLE_BIDI.WHITESPACE) && _glyph_prev_whitespace)
+        {
+            _new_word = true;
+            _glyph_prev_whitespace = false;
+        }
         
         // If the glyph we found is a different direction then create a new word for the glyph
         if (_new_word)
@@ -90,9 +103,14 @@ function __scribble_generator_build_words()
             {
                 _word_glyph_end = _i-1;
                 
+                if (_word_bidi == __SCRIBBLE_BIDI.R2L)
+                {
+                    ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.Y, abs(_word_width));
+                }
+                
                 //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_START]
                 _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_END  ] = _word_glyph_end;
-                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.WIDTH      ] = _word_width;
+                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.WIDTH      ] = abs(_word_width);
                 _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.HEIGHT     ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);
                 //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI_RAW   ]
                 //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI       ]
@@ -104,7 +122,15 @@ function __scribble_generator_build_words()
             
             _word_glyph_start = _i;
             _word_bidi        = _glyph_bidi;
-            _word_width       = 0;
+            
+            if (_word_bidi != __SCRIBBLE_BIDI.R2L)
+            {
+                _word_width = 0;
+            }
+            else
+            {
+                _word_width = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SEPARATION] - _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH];
+            }
             
             _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_START] = _word_glyph_start;
             //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_END  ]
@@ -114,8 +140,18 @@ function __scribble_generator_build_words()
             _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI       ] = _word_bidi;
         }
         
-        _glyph_prev_raw_bidi = _glyph_bidi_raw;
-        _word_width += _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SEPARATION];
+        if (_word_bidi != __SCRIBBLE_BIDI.R2L)
+        {
+            _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X] = _word_width;
+            _word_width += _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SEPARATION];
+            _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _i;
+        }
+        else
+        {
+            _word_width -= _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SEPARATION];
+            _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X] = _word_width;
+            _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _word_glyph_start;
+        }
         
         ++_i;
     }
