@@ -35,7 +35,7 @@ function __scribble_generator_build_lines()
         repeat(_word_count)
         {
             var _word_width = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.WIDTH];
-            if (_word_x + _word_width < _simulated_model_max_width)
+            if ((_word_x + _word_width < _simulated_model_max_width) && (_word_grid[# _i, __SCRIBBLE_PARSER_WORD.BIDI] != __SCRIBBLE_BIDI.LINE_BREAK))
             {
                 _word_x += _word_grid[# _i, __SCRIBBLE_PARSER_WORD.WIDTH];
             }
@@ -58,7 +58,7 @@ function __scribble_generator_build_lines()
                 _line_y += _line_height;
                 
                 _line_word_start = _i;
-                _word_x = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.WIDTH];
+                _word_x = is_infinity(_word_width)? 0 : _word_width;
             }
         
             ++_i;

@@ -18,14 +18,19 @@ function __scribble_system_glyph_data()
     {
         WHITESPACE,
         SYMBOL,
+        LINE_BREAK,
         L2R,
         R2L,
     }
     
     var _map = global.__scribble_glyph_data.bidi_map;
-    for(var _i = 0x0000; _i <= 0x000D; _i++) _map[? _i] = __SCRIBBLE_BIDI.SYMBOL;
     _map[? __SCRIBBLE_GLYPH_SPRITE ] = __SCRIBBLE_BIDI.SYMBOL;
     _map[? __SCRIBBLE_GLYPH_SURFACE] = __SCRIBBLE_BIDI.SYMBOL;
+    for(var _i = 0x0000; _i <= 0x0009; _i++) _map[? _i] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? 0x000A   ] = __SCRIBBLE_BIDI.LINE_BREAK;
+    _map[? 0x000B   ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? 0x000C   ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? 0x000D   ] = __SCRIBBLE_BIDI.SYMBOL;
     _map[? 0x0020   ] = __SCRIBBLE_BIDI.WHITESPACE; //space
     
     //Symbols

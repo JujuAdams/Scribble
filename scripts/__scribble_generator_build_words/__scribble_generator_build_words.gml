@@ -81,6 +81,7 @@ function __scribble_generator_build_words()
         var _new_word = false;
         if ((_glyph_bidi != _word_bidi) || (_i == _glyph_count)) _new_word = true;
         if ((_glyph_bidi_raw != __SCRIBBLE_BIDI.WHITESPACE) && (_glyph_prev_raw_bidi == __SCRIBBLE_BIDI.WHITESPACE)) _new_word = true;
+        if (_glyph_bidi_raw == __SCRIBBLE_BIDI.LINE_BREAK) _new_word = true;
         
         // If the glyph we found is a different direction then create a new word for the glyph
         if (_new_word)
