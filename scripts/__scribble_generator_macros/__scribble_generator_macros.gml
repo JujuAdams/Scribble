@@ -71,9 +71,7 @@ enum __SCRIBBLE_PARSER_LINE
 
 
 //In-line macros!
-#macro __SCRIBBLE_PARSER_WRITE_GLYPH_STATE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X                 ] = 0;\n //TODO - Remove this. Glyph x positions are set in the word builder
-                                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y                 ] = 0;\n
-                                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ] = _state_final_colour;\n
+#macro __SCRIBBLE_PARSER_WRITE_GLYPH_STATE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ] = _state_final_colour;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS] = _state_effect_flags;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE       ] = _state_scale;\n
                                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT       ] = _state_slant;\n
@@ -82,39 +80,24 @@ enum __SCRIBBLE_PARSER_LINE
 
 #macro __SCRIBBLE_PARSER_WRITE_HALIGN  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_HALIGN;\n
                                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = _state_halign;\n
-                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _animation_index;\n
+                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _glyph_count;\n
                                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
                                        ++_control_count;
 
 
 #macro __SCRIBBLE_PARSER_WRITE_EVENT  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_EVENT;\n
                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = new __scribble_class_event(_tag_command_name, _tag_parameters);\n
-                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _animation_index;\n
+                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _glyph_count;\n
                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
                                       ++_control_count;
 
 
 #macro __SCRIBBLE_PARSER_WRITE_PAGEBREAK  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_PAGEBREAK;\n
                                           _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = undefined;\n
-                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _animation_index;\n
+                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _glyph_count;\n
                                           _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
                                           ++_control_count;\n
                                           ++_control_page;
-
-
-#macro __SCRIBBLE_PARSER_WRITE_NEWLINE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD            ] = 0x0A;\n //ASCII line break (dec = 10)
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA      ] = undefined;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA     ] = undefined;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH          ] = 0;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ] = _state_scale*_font_line_height;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION     ] = 0;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX    ] = undefined;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ] = undefined;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ] = undefined;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _animation_index;\n
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI           ] = __SCRIBBLE_BIDI.WHITESPACE;\n
-                                        __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;\n
-                                        ++_glyph_count;
 
 
 #macro __SCRIBBLE_PARSER_SET_FONT   var _font_data         = __scribble_get_font_data(_font_name);\n
