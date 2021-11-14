@@ -47,13 +47,3 @@
 #macro SCRIBBLE_WARNING_LEGACY_TYPEWRITER  true
 
 #endregion
-
-
-
-#region Deprecated
-
-//Macros in this region will be removed in the next major version update
-
-#macro SCRIBBLE_SKIP_SPEED_THRESHOLD  99  //A typewriter speed greater than or equal to this value is considered "skipping" and won't wait for delays or pauses in text
-
-#endregion
