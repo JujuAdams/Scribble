@@ -1056,8 +1056,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         __tw_legacy_typist_use = true;
         __tw_legacy_typist.in(_speed, _smoothness);
         
-        if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) __tw_legacy_typist.skip();
-        
         return self;
     }
     
@@ -1070,8 +1068,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         __tw_legacy_typist_use = true;
         __tw_legacy_typist.out(_speed, _smoothness, _backwards);
-        
-        if (_speed > SCRIBBLE_SKIP_SPEED_THRESHOLD) __tw_legacy_typist.skip();
         
         return self;
     }
