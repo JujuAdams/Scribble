@@ -23,13 +23,19 @@ function __scribble_generator_position_glyphs()
     var _i = 0;
     repeat(_line_count)
     {
-        var _line_y          = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y         ];
         var _line_word_start = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_START];
         var _line_word_end   = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_END  ];
-        var _line_width      = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WIDTH     ];
-        var _line_height     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HEIGHT    ];
-        var _line_halign     = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HALIGN    ];
         
+        if (_line_word_end < _line_word_start)
+        {
+            ++_i;
+            continue;
+        }
+        
+        var _line_y      = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y     ];
+        var _line_width  = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WIDTH ];
+        var _line_height = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HEIGHT];
+        var _line_halign = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HALIGN];
         
         
         // Centre all glyphs vertically on the line
