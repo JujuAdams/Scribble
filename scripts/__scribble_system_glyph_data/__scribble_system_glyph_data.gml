@@ -16,46 +16,46 @@ function __scribble_system_glyph_data()
     
     enum __SCRIBBLE_BIDI
     {
-        NEUTRAL,
+        WHITESPACE,
+        SYMBOL,
         L2R,
         R2L,
-        WHITESPACE,
     }
     
     var _map = global.__scribble_glyph_data.bidi_map;
-    for(var _i = 0x0000; _i <= 0x000D; _i++) _map[? _i] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? __SCRIBBLE_GLYPH_SPRITE ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? __SCRIBBLE_GLYPH_SURFACE] = __SCRIBBLE_BIDI.NEUTRAL;
+    for(var _i = 0x0000; _i <= 0x000D; _i++) _map[? _i] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? __SCRIBBLE_GLYPH_SPRITE ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? __SCRIBBLE_GLYPH_SURFACE] = __SCRIBBLE_BIDI.SYMBOL;
     _map[? 0x0020   ] = __SCRIBBLE_BIDI.WHITESPACE; //space
     
     //Symbols
-    _map[? ord("!") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("\"")] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("&") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("'") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("(") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord(")") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("*") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord(";") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("<") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("=") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord(">") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("?") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("@") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("[") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("\\")] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("]") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("^") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("_") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("`") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("{") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("|") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("}") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("~") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord(",") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord(".") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord("/") ] = __SCRIBBLE_BIDI.NEUTRAL;
-    _map[? ord(":") ] = __SCRIBBLE_BIDI.NEUTRAL;
+    _map[? ord("!") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("\"")] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("&") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("'") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("(") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord(")") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("*") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord(";") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("<") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("=") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord(">") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("?") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("@") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("[") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("\\")] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("]") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("^") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("_") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("`") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("{") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("|") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("}") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("~") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord(",") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord(".") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("/") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord(":") ] = __SCRIBBLE_BIDI.SYMBOL;
     
     //More control characters
     _map[? $2066    ] = __SCRIBBLE_BIDI.WHITESPACE;
@@ -68,8 +68,8 @@ function __scribble_system_glyph_data()
     _map[? $202D    ] = __SCRIBBLE_BIDI.WHITESPACE;
     _map[? $202E    ] = __SCRIBBLE_BIDI.WHITESPACE;
     
-    _map[? $00A0    ] = __SCRIBBLE_BIDI.NEUTRAL; //Non-breaking space
-    _map[? $060C    ] = __SCRIBBLE_BIDI.NEUTRAL; //Arabic comma
+    _map[? $00A0    ] = __SCRIBBLE_BIDI.SYMBOL; //Non-breaking space
+    _map[? $060C    ] = __SCRIBBLE_BIDI.SYMBOL; //Arabic comma
     _map[? $066B    ] = __SCRIBBLE_BIDI.R2L; //Arabic decimal separator
     _map[? $066C    ] = __SCRIBBLE_BIDI.R2L; //Arabic thousands separator
     for(var _i = 0x0600; _i <= 0x06FF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L; //Arabic block

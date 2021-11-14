@@ -288,7 +288,7 @@ function __scribble_generator_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _state_scale*_font_space_width;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _state_scale*_font_line_height;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _state_scale*_font_space_width;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.NEUTRAL;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.SYMBOL;
                             __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
                         }
@@ -428,7 +428,7 @@ function __scribble_generator_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ] = _state_scale*surface_get_height(_surface);
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION ] = _surface_width; //Already includes scaling
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX] = _surface;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI       ] = __SCRIBBLE_BIDI.NEUTRAL;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
                         __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                         ++_glyph_count;
                         
@@ -515,7 +515,7 @@ function __scribble_generator_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX] = _sprite_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX] = _image_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED] = _image_speed;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI       ] = __SCRIBBLE_BIDI.NEUTRAL;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
                             __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
                             
