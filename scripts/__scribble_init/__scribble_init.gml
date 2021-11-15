@@ -66,6 +66,7 @@ global.__scribble_gc_vbuff_index = 0;
 global.__scribble_gc_vbuff_refs  = [];
 global.__scribble_gc_vbuff_ids   = [];
 
+if (!variable_global_exists("__scribble_external_audio")) global.__scribble_external_audio = ds_map_create(); // Database for External Audio
 
 if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
 

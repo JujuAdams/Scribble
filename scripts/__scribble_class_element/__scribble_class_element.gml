@@ -495,6 +495,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param pitchMax
     static typewriter_sound = function(_sound_array, _overlap, _pitch_min, _pitch_max)
     {
+        
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
         
         tw_sound_array     = _sound_array;

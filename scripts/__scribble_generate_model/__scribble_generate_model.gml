@@ -968,6 +968,17 @@ function __scribble_generate_model(_element)
                                                 #endregion
                                             }
                                             else
+                                                if (ds_map_exists(global.__scribble_external_audio, _command_name))
+                                                {
+                                                    #region Audio Playback Event for External Audio
+													var _audio = global.__scribble_external_audio[? _command_name];
+                                                    __new_event(characters, "__scribble_audio_playback__", [_audio]);
+                                                    
+                                                    continue; // Skip the rest of the parser step
+                                                    
+                                                    #endregion
+                                                }
+                                            else
                                             {
                                                 if (ds_map_exists(global.__scribble_colours, _command_name))
                                                 {
