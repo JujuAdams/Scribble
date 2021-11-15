@@ -436,6 +436,33 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [y4=0]
     static bezier = function(_x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4)
     {
+        if (argument_count <= 0)
+        {
+            var _bezier_array = array_create(6, 0.0);
+        }
+        else if (argument_count == 8)
+        {
+            if (!is_numeric(_x1) || !is_numeric(_y1)
+            ||  !is_numeric(_x2) || !is_numeric(_y2)
+            ||  !is_numeric(_x3) || !is_numeric(_y3)
+            ||  !is_numeric(_x4) || !is_numeric(_y4))
+            {
+                __scribble_trace("Warning! One or more Bezier parameters were not numeric (", _x1, ", ", _y1, ", ", _x2, ", ", _y2, ", ", _x3, ", ", _y3, ", ", _x4, ", ", _y4, ")");
+                
+                _x1 = 0;
+                _y1 = 0;
+                _x2 = 0;
+                _y2 = 0;
+                _x3 = 0;
+                _y3 = 0;
+                _x4 = 0;
+                _y4 = 0;
+            }
+        }
+        else
+        {
+            __scribble_error("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
+        }
         
         var _bezier_array = [_x2 - _x1, _y2 - _y1,
                              _x3 - _x1, _y3 - _y1,
