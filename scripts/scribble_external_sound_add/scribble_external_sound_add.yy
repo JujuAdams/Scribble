@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "External Audio Database",
-    "path": "folders/Scribble/External Audio Database.yy",
+    "name": "External Sound Database",
+    "path": "folders/Scribble/External Sound Database.yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_external_audio_add",
+  "name": "scribble_external_sound_add",
   "tags": [],
   "resourceType": "GMScript",
 }

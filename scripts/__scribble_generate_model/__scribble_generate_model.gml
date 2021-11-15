@@ -968,11 +968,10 @@ function __scribble_generate_model(_element)
                                                 #endregion
                                             }
                                             else
-                                                if (ds_map_exists(global.__scribble_external_audio, _command_name))
+                                                if (ds_map_exists(global.__scribble_external_sound, _command_name))
                                                 {
-                                                    #region Audio Playback Event for External Audio
-													var _audio = global.__scribble_external_audio[? _command_name];
-                                                    __new_event(characters, "__scribble_audio_playback__", [_audio]);
+                                                    #region Audio Playback Event for External Sound
+                                                    __new_event(characters, "__scribble_audio_playback__", [global.__scribble_external_sound[? _command_name]]);
                                                     
                                                     continue; // Skip the rest of the parser step
                                                     
