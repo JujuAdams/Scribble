@@ -911,7 +911,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                     __tick(other, _function_scope);
                     
                     //Let the typist set the shader uniforms
-                    __set_shader_uniforms();
+                    __set_msdf_shader_uniforms();
                 }
             }
             else if (__tw_reveal != undefined)
