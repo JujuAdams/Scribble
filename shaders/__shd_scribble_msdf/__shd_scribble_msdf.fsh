@@ -28,6 +28,13 @@ float MSDFSignedDistance(vec2 texOffset)
     return median(texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel*texOffset).rgb) + u_fMSDFThicknessOffset - 0.5;
 }
 
+//TODO - Need to find out why MTSDF atlases are wrong before this feature can be used
+//
+// float SDFSignedDistance(vec2 texOffset)
+// {
+//     return texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel*texOffset).a + u_fMSDFThicknessOffset - 0.5;
+// }
+
 float MSDFAlpha(float signedDistance, float pixelSize, float outerBorder)
 {
     return clamp(u_fMSDFRange*pixelSize*signedDistance + outerBorder + 0.5, 0.0, 1.0);
@@ -46,11 +53,11 @@ void main()
         gl_FragColor.a = max(gl_FragColor.a, alphaBorder);
     }
     
-    vec2 shadowOffset = u_vShadowOffsetAndSoftness.xy;
-    if (length(shadowOffset) > 0.0)
+    if (u_vShadowColour.a > 0.0)
     {
-        float shadowDist = MSDFSignedDistance(shadowOffset/v_fPixelScale);
-        float alphaShadow = 1.0 - min(1.0, -2.5*shadowDist); //MSDFAlpha(shadowDist, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
+        float shadowDist = MSDFSignedDistance(u_vShadowOffsetAndSoftness.xy/v_fPixelScale);
+        float alphaShadow = 1.0 - min(1.0, -2.0*shadowDist/u_vShadowOffsetAndSoftness.z);
+        //Old method = MSDFAlpha(shadowDist, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
         alphaShadow *= u_vShadowColour.a;
         vec3 shadowColour = mix(gl_FragColor.rgb, u_vShadowColour.rgb, alphaShadow);
         
