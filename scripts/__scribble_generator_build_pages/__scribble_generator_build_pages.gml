@@ -1,5 +1,6 @@
 function __scribble_generator_build_pages()
 {
+    var _glyph_grid   = global.__scribble_glyph_grid;
     var _word_grid    = global.__scribble_word_grid;
     var _line_grid    = global.__scribble_line_grid;
     var _control_grid = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
@@ -43,14 +44,12 @@ function __scribble_generator_build_pages()
                 // Set the ending glyph - we set the starting glyph when the new page is created (above for the 0th page, and below for subsequent pages)
                 _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
                 
-                ////TODO - Probably need to move the page glyph start/end code after bidi correction
-                //
-                //// Set up the character indexes for the page, relative to the character index of the first glyph on the page
-                //var _page_char_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
-                //ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, -_page_char_start);
-                //
-                //// Set the character count for the page too
-                //_page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
+                // Set up the character indexes for the page, relative to the character index of the first glyph on the page
+                var _page_char_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
+                ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, -_page_char_start);
+                
+                // Set the character count for the page too
+                _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
                 
                 _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y] = 0;
                 _line_y = _line_height;
@@ -76,6 +75,13 @@ function __scribble_generator_build_pages()
         
         // Set the ending glyph - we set the starting glyph when the new page is created (above for the 0th page, and below for subsequent pages)
         _page_data.__glyph_end = _word_grid[# _line_grid[# _i-1, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];
+        
+        // Set up the character indexes for the page, relative to the character index of the first glyph on the page
+        var _page_char_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
+        ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, -_page_char_start);
+        
+        // Set the character count for the page too
+        _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
     }
     
     height = _model_height;

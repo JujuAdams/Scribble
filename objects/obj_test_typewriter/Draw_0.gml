@@ -1,1 +1,1 @@
-scribble("here's some cute text! [spr_large_coin]").draw(x, y, typist);
+scribble(test_string).draw(x, y, typist);

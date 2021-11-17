@@ -18,13 +18,13 @@ function __scribble_class_page() constructor
         var _data = __texture_to_vertex_buffer_dict[$ _pointer_string];
         if (_data == undefined)
         {
-            if (_font_data == undefined)
+            if (is_struct(_font_data))
             {
-                var _font_msdf_pxrange = undefined;
+                var _font_msdf_pxrange = _font_data.msdf_pxrange;
             }
             else
             {
-                var _font_msdf_pxrange = _font_data.msdf_pxrange;
+                var _font_msdf_pxrange = undefined;
             }
             
             if (_font_msdf_pxrange == undefined)
