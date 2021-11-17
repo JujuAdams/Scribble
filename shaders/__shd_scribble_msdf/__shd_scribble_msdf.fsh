@@ -14,7 +14,7 @@ uniform float u_fMSDFRange;
 uniform float u_fMSDFThicknessOffset;
 uniform vec4  u_vFog;
 uniform vec4  u_vShadowColour;
-uniform vec2  u_vShadowOffset;
+uniform vec3  u_vShadowOffsetAndSoftness;
 uniform vec3  u_vBorderColour;
 uniform float u_fBorderThickness;
 
@@ -46,10 +46,15 @@ void main()
         gl_FragColor.a = max(gl_FragColor.a, alphaBorder);
     }
     
-    if (length(u_vShadowOffset) > 0.0)
+    vec2 shadowOffset = u_vShadowOffsetAndSoftness.xy;
+    if (length(shadowOffset) > 0.0)
     {
-        float alphaShadow = u_vShadowColour.a*MSDFAlpha(MSDFSignedDistance(u_vShadowOffset/v_fPixelScale), v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
-        gl_FragColor.rgb = mix(u_vShadowColour.rgb, gl_FragColor.rgb, gl_FragColor.a);
+        float shadowDist = MSDFSignedDistance(shadowOffset/v_fPixelScale);
+        float alphaShadow = 1.0 - min(1.0, -2.5*shadowDist); //MSDFAlpha(shadowDist, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
+        alphaShadow *= u_vShadowColour.a;
+        vec3 shadowColour = mix(gl_FragColor.rgb, u_vShadowColour.rgb, alphaShadow);
+        
+        gl_FragColor.rgb = mix(shadowColour, gl_FragColor.rgb, gl_FragColor.a);
         gl_FragColor.a = max(gl_FragColor.a, alphaShadow);
     }
     

@@ -88,10 +88,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     animation_tick_speed__ = 1;
     animation_blink_state  = true;
     
-    msdf_shadow_colour  = c_black;
-    msdf_shadow_alpha   = 0.0;
-    msdf_shadow_xoffset = 0;
-    msdf_shadow_yoffset = 0;
+    msdf_shadow_colour   = c_black;
+    msdf_shadow_alpha    = 0.0;
+    msdf_shadow_xoffset  = 0;
+    msdf_shadow_yoffset  = 0;
+    msdf_shadow_softness = 0;
     
     msdf_border_colour    = c_black;
     msdf_border_thickness = 0.0;
@@ -516,12 +517,13 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region MSDF
     
-    static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset)
+    static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness)
     {
-        msdf_shadow_colour  = _colour;
-        msdf_shadow_alpha   = _alpha;
-        msdf_shadow_xoffset = _x_offset;
-        msdf_shadow_yoffset = _y_offset;
+        msdf_shadow_colour   = _colour;
+        msdf_shadow_alpha    = _alpha;
+        msdf_shadow_xoffset  = _x_offset;
+        msdf_shadow_yoffset  = _y_offset;
+        msdf_shadow_softness = _softness;
         
         return self;
     }
@@ -928,7 +930,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 shader_set_uniform_i(global.__scribble_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
             }
             
-            shader_set_uniform_f(global.__scribble_msdf_u_vShadowOffset, msdf_shadow_xoffset, msdf_shadow_yoffset);
+            shader_set_uniform_f(global.__scribble_msdf_u_vShadowOffsetAndSoftness, msdf_shadow_xoffset, msdf_shadow_yoffset, 1+msdf_shadow_softness);
             
             shader_set_uniform_f(global.__scribble_msdf_u_vShadowColour, colour_get_red(  msdf_shadow_colour)/255,
                                                                          colour_get_green(msdf_shadow_colour)/255,
