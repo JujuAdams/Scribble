@@ -93,6 +93,8 @@ uniform float u_fTypewriterAlphaDuration;               //1
 
 uniform vec2  u_vOutputSize;                            //2
 
+float flagArray[MAX_EFFECTS];
+
 
 
 //--------------------------------------------------------------------------------------------------------
