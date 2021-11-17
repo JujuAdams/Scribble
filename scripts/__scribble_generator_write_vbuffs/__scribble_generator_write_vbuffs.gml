@@ -18,7 +18,7 @@ function __scribble_generator_write_vbuffs()
         var _bezier_search_index    = 0;
         var _bezier_search_d0       = 0;
         var _bezier_search_d1       = _bezier_lengths[1];
-        var _bezier_prev_cx         = 0;
+        var _bezier_prev_cy         = -infinity;
         var _bezier_param_increment = 1 / (SCRIBBLE_BEZIER_ACCURACY-1);
     }
     else
