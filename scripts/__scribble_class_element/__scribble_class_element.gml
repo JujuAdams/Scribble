@@ -517,13 +517,13 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region MSDF
     
-    static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness)
+    static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.1)
     {
         msdf_shadow_colour   = _colour;
         msdf_shadow_alpha    = _alpha;
         msdf_shadow_xoffset  = _x_offset;
         msdf_shadow_yoffset  = _y_offset;
-        msdf_shadow_softness = _softness;
+        msdf_shadow_softness = clamp(_softness, 0, 1);
         
         return self;
     }
@@ -930,7 +930,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 shader_set_uniform_i(global.__scribble_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
             }
             
-            shader_set_uniform_f(global.__scribble_msdf_u_vShadowOffsetAndSoftness, msdf_shadow_xoffset, msdf_shadow_yoffset, 1+msdf_shadow_softness);
+            shader_set_uniform_f(global.__scribble_msdf_u_vShadowOffsetAndSoftness, msdf_shadow_xoffset, msdf_shadow_yoffset, msdf_shadow_softness);
             
             shader_set_uniform_f(global.__scribble_msdf_u_vShadowColour, colour_get_red(  msdf_shadow_colour)/255,
                                                                          colour_get_green(msdf_shadow_colour)/255,
@@ -963,7 +963,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         #endregion
         
         //Draw the model using ourselves as the context
-        _model.draw(_x, _y, self);
+        _model.draw(_x, _y, self, (msdf_border_thickness > 0) || (msdf_shadow_alpha > 0));
         
         //Run the garbage collecter
         __scribble_gc_collect();

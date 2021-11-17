@@ -50,7 +50,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     #region Public Methods
     
-    static draw = function(_x, _y, _element)
+    static draw = function(_x, _y, _element, _arabic_double_draw)
     {
         if (flushed) return undefined;
         if (_element == undefined) return undefined;
@@ -109,7 +109,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         matrix_set(matrix_world, _matrix);
         
         //Now iterate over the text element's vertex buffers and submit them
-        _page_data.__submit(_element);
+        _page_data.__submit(_element, has_arabic && _arabic_double_draw);
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);

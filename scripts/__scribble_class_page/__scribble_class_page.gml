@@ -90,7 +90,7 @@ function __scribble_class_page() constructor
         array_resize(__vertex_buffer_array, 0);
     }
     
-    static __submit = function(_element)
+    static __submit = function(_element, _arabic_double_draw)
     {
         var _shader = undefined;
         var _i = 0;
@@ -115,6 +115,14 @@ function __scribble_class_page() constructor
                 shader_set_uniform_f(global.__scribble_msdf_u_fMSDFRange, _element.msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE]);
                 
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
+                
+                if (_arabic_double_draw)
+                {
+                    shader_set_uniform_f(global.__scribble_msdf_u_vShadowColour, 0, 0, 0, 0);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fBorderThickness, 0);
+                    
+                    vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
+                }
                 
                 //Reset the texture filtering
                 gpu_set_tex_filter(_old_tex_filter);
