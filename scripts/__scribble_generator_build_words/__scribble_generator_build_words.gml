@@ -106,6 +106,7 @@ function __scribble_generator_build_words()
                 if (_word_bidi == __SCRIBBLE_BIDI.R2L)
                 {
                     ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.Y, abs(_word_width));
+                    ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _word_glyph_end);
                 }
                 
                 //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_START]
@@ -150,7 +151,6 @@ function __scribble_generator_build_words()
         {
             _word_width -= _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SEPARATION];
             _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X] = _word_width;
-            _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _word_glyph_start;
         }
         
         ++_i;
