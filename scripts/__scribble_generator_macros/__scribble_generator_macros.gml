@@ -196,6 +196,9 @@ enum __SCRIBBLE_PARSER_LINE
                                               _bezier_search_d0 = _bezier_search_d1;\ //Advance to the next line segment
                                               _bezier_search_d1 = _bezier_lengths[_bezier_search_index+1];\
                                           }\
+                                          _slant_offset = 0;\
+                                          _quad_l = _bezier_param_l;\
+                                          _quad_r = _bezier_param_r;\
                                           _quad_t = _quad_cy;\
                                           _quad_b = _quad_cy;\
                                           __scribble_trace("_quad_l = ", _quad_l, ", _quad_r = ", _quad_r);\
