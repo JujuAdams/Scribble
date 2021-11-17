@@ -6,3 +6,6 @@ x2 = x0 + 400;
 y2 = y0 - 200;
 x3 = x0 + 600;
 y3 = y0;
+
+// Force bilinear filtering on for this test case
+gpu_set_tex_filter(true);
