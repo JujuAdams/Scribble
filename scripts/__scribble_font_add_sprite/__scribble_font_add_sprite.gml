@@ -91,6 +91,7 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
         else
         {
             var _image_info = _sprite_frames[_image];
+            var _index = ord(_glyph);
             
             if (_proportional)
             {
@@ -109,7 +110,7 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             //Build an array to store this glyph's properties
             var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
             _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _glyph;
-            _array[@ SCRIBBLE_GLYPH.INDEX     ] = ord(_glyph);
+            _array[@ SCRIBBLE_GLYPH.INDEX     ] = _index;
             _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _image_info.crop_width;
             _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _image_info.crop_height;
             _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _x_offset;
