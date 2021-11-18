@@ -485,8 +485,8 @@ function __scribble_buffer_write_unicode(_buffer, _value)
 #region Internal Macro Definitions
 
 // @jujuadams
-#macro __SCRIBBLE_VERSION  "8.0.0 alpha 5"
-#macro __SCRIBBLE_DATE     "2021-10-12"
+#macro __SCRIBBLE_VERSION  "8.0.0 alpha 6"
+#macro __SCRIBBLE_DATE     "2021-11-18"
 #macro __SCRIBBLE_DEBUG    false
 
 //You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
