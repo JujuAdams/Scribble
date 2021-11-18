@@ -118,10 +118,9 @@ function __scribble_class_page() constructor
                 
                 if (_arabic_double_draw)
                 {
-                    shader_set_uniform_f(global.__scribble_msdf_u_vShadowColour, 0, 0, 0, 0);
-                    shader_set_uniform_f(global.__scribble_msdf_u_fBorderThickness, 0);
-                    
+                    shader_set_uniform_f(global.__scribble_msdf_u_fArabicSecondDraw, 1);
                     vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fArabicSecondDraw, 0);
                 }
                 
                 //Reset the texture filtering
