@@ -95,7 +95,7 @@ function __scribble_generator_position_glyphs()
         
         // Text on the last line is never justified
         // FIXME - This should work per-page not per-model
-        if (_i >= _line_count - 1) _line_halign = fa_left;
+        if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_i >= _line_count - 1)) _line_halign = fa_left;
         
         // FIXME - This doesn't match the typewriter or the events system!
         var _glyph_index = 0;
@@ -122,6 +122,7 @@ function __scribble_generator_position_glyphs()
         if (_line_halign == __SCRIBBLE_JUSTIFY)
         {
             // TODO - Apply justification spacing to glyphs
+            
             var _line_word_count = 1 + _line_word_end - _line_word_start;
             if (_line_word_count > 1) //Prevent div-by-zero
             {
