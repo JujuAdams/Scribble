@@ -29,12 +29,13 @@ function __scribble_generator_build_pages()
     }
     else
     {
+        var _page_start_line = 0;
         var _line_y = 0;
         var _i = 0;
         repeat(_line_count)
         {
             var _line_height = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HEIGHT];
-            if (_wrap_no_pages || (_line_y + _line_height < _simulated_model_height))
+            if ((_i <= _page_start_line) || _wrap_no_pages || (_line_y + _line_height < _simulated_model_height))
             {
                 _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y] = _line_y;
                 _line_y += _line_height;
@@ -53,6 +54,7 @@ function __scribble_generator_build_pages()
                 
                 _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y] = 0;
                 _line_y = _line_height;
+                _page_start_line = _i;
                 
                 if (is_infinity(_line_height))
                 {
