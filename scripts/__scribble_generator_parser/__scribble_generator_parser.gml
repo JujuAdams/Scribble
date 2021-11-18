@@ -291,6 +291,8 @@ function __scribble_generator_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.SYMBOL;
                             __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
+                            
+                            _arabic_glyph_prev = 0xA0; //Non-breaking space (dec = 160)
                         }
                     break;
                     
@@ -432,6 +434,8 @@ function __scribble_generator_parser()
                         __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                         ++_glyph_count;
                         
+                        _arabic_glyph_prev = __SCRIBBLE_GLYPH_SURFACE;
+                        
                         if (!SCRIBBLE_COLORIZE_SPRITES)
                         {
                             _state_final_colour = _old_colour;
@@ -521,6 +525,8 @@ function __scribble_generator_parser()
                             
                             _state_effect_flags = _old_effect_flags;
                             if (!SCRIBBLE_COLORIZE_SPRITES) _state_final_colour = _old_colour;
+                            
+                            _arabic_glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
                             
                             #endregion
                         }
@@ -648,6 +654,8 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.LINE_BREAK;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
+                
+                _arabic_glyph_prev = 0x0A;
             }
             else if (_glyph_ord == 0x09) //ASCII horizontal tab (dec = 9, obviously)
             {
@@ -662,6 +670,8 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.WHITESPACE;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
+                
+                _arabic_glyph_prev = 0x09;
                 
                 #endregion
             }
@@ -678,6 +688,8 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.WHITESPACE;
                 __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
+                
+                _arabic_glyph_prev = 0x20;
                 
                 #endregion
             }
