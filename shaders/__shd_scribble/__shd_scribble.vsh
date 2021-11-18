@@ -392,13 +392,13 @@ void main()
     //If we have a valid Bezier curve, apply it
     if ((u_aBezier[2].x != 0.0) || (u_aBezier[2].y != 0.0))
     {
-        pos = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+        centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         
         vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        centre = rotate_by_vector(pos + centreDelta, pos, normalize(orientation));
+        pos = rotate_by_vector(centre - centreDelta, centre, normalize(orientation));
         
-        vec2 perpendicular = normalize(vec2(-orientation.y, orientation.x));
-        pos += (in_Position.y - centreDelta.y)*perpendicular;
+        vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
+        pos += in_Position.y*perpendicular;
     }
     else
     {
