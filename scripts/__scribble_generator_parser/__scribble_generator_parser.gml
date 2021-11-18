@@ -772,6 +772,10 @@ function __scribble_generator_parser()
                     // If this glyph isn't tashkil then update the previous glyph state
                     if ((_glyph_next < 0x064B) || (_glyph_next > 0x0652)) _arabic_glyph_prev = _glyph_ord;
                 }
+                else
+                {
+                    _arabic_glyph_prev = _glyph_ord;
+                }
                 
                 #endregion
                 
