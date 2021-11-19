@@ -59,13 +59,13 @@ void main()
         if (u_vShadowColour.a > 0.0)
         {
             float shadowDist = MSDFSignedDistance(u_vShadowOffsetAndSoftness.xy/v_fPixelScale);
-            float alphaShadow = 1.0 - min(1.0, -2.0*shadowDist/u_vShadowOffsetAndSoftness.z);
+            float alphaShadow = u_vShadowColour.a*(1.0 - min(1.0, -2.0*shadowDist/u_vShadowOffsetAndSoftness.z));
             //Old method = MSDFAlpha(shadowDist, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
-            alphaShadow *= u_vShadowColour.a;
-            vec3 shadowColour = mix(gl_FragColor.rgb, u_vShadowColour.rgb, alphaShadow);
+            vec4 shadowColour = vec4(u_vShadowColour.rgb, alphaShadow);
             
-            gl_FragColor.rgb = mix(shadowColour, gl_FragColor.rgb, gl_FragColor.a);
-            gl_FragColor.a = max(gl_FragColor.a, alphaShadow);
+            float preAlpha = gl_FragColor.a;
+            gl_FragColor = mix(shadowColour, gl_FragColor, gl_FragColor.a);
+            gl_FragColor.a = max(preAlpha, alphaShadow);
         }
     }
     
