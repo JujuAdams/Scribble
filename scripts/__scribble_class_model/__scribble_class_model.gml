@@ -300,9 +300,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         bezier_lengths_array = undefined; //TODO
     };
     
+    //TODO - Number these
     __scribble_generator_model_limits_and_bezier_curves()
     __scribble_generator_line_heights();
-    __scribble_generator_parser();
+    __scribble_generator_parser(); //TODO - Write caching system for state and use ds_grid_set_region() to optimise/minimise ds_grid write operations
     __scribble_generator_determine_overall_bidi();
     __scribble_generator_build_words();
     __scribble_generator_finalize_bidi();

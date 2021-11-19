@@ -95,23 +95,37 @@ function __scribble_generator_position_glyphs()
         
         // Text on the last line is never justified
         // FIXME - This should work per-page not per-model
-        if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_i >= _line_count - 1)) _line_halign = fa_left;
+        if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_i >= _line_count - 1)) _line_halign = __SCRIBBLE_PIN_LEFT;
         
         // FIXME - This doesn't match the typewriter or the events system!
         var _glyph_index = 0;
         
-        if (_overall_bidi == __SCRIBBLE_BIDI.R2L)
-        {
-            // Automatically pin left-aligned text to the right when rendering R2L text
-            if ((_line_halign == fa_left) || (_line_halign == __SCRIBBLE_PIN_LEFT)) _line_halign = __SCRIBBLE_PIN_RIGHT;
-        }
-        
         switch(_line_halign)
         {
-            case fa_left:               var _glyph_x = 0;                                      break;
+            case fa_left:
+                if (_overall_bidi != __SCRIBBLE_BIDI.R2L)
+                {
+                    var _glyph_x = 0;
+                }
+                else
+                {
+                    var _glyph_x = width - _line_width;
+                }
+            break;
+            
+            case __SCRIBBLE_PIN_LEFT:
+                if (_overall_bidi != __SCRIBBLE_BIDI.R2L)
+                {
+                    var _glyph_x = 0; // FIXME - This should align to the minimum left-hand edge
+                }
+                else
+                {
+                    var _glyph_x = _alignment_width - _line_width;
+                }
+            break;
+            
             case fa_center:             var _glyph_x = -(_line_width div 2);                   break;
             case fa_right:              var _glyph_x = -_line_width;                           break;
-            case __SCRIBBLE_PIN_LEFT:   var _glyph_x = 0;                                      break;
             case __SCRIBBLE_PIN_CENTRE: var _glyph_x = (_alignment_width - _line_width) div 2; break;
             case __SCRIBBLE_PIN_RIGHT:  var _glyph_x = _alignment_width - _line_width;         break;
             case __SCRIBBLE_JUSTIFY:    var _glyph_x = 0;                                      break;
