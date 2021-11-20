@@ -1,4 +1,4 @@
-function scribble_font_collage_glyph_delete(_target)
+function scribble_super_glyph_delete(_target)
 {
     var _font_data = global.__scribble_font_data[? _target];
     if (_font_data == undefined) __scribble_error("Font \"", _font_data, "\" not found");

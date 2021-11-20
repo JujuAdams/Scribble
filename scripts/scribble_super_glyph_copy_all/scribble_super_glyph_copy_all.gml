@@ -2,7 +2,7 @@
 /// @param sourceFontName
 /// @param overwrite
 
-function scribble_font_collage_glyph_copy_all(_target, _source, _overwrite)
+function scribble_super_glyph_copy_all(_target, _source, _overwrite)
 {
     var _target_font_data = global.__scribble_font_data[? _target];
     var _source_font_data = global.__scribble_font_data[? _source];

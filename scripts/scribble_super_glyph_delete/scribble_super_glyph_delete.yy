@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Font Collage",
-    "path": "folders/Scribble/Font Collage.yy",
+    "name": "Superfonts",
+    "path": "folders/Scribble/Superfonts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "scribble_font_collage_glyph_copy",
+  "name": "scribble_super_glyph_delete",
   "tags": [],
   "resourceType": "GMScript",
 }
