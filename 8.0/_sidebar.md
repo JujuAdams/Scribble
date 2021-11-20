@@ -7,6 +7,7 @@
 -   [Setting Up](setting-up)
 -   [Coming from Native GM](coming-from-native-gm)
 -   [Text Formatting](text-formatting)
+-   [Superfonts](superfonts)
 -   [MSDF Fonts](msdf-fonts)
 
 ---
@@ -18,7 +19,7 @@
 -   [`scribble_typist()`](typist-methods)
 -   [Animation Properties](animation-properties)
 -   [Fonts](fonts)
--   [Font Collage](font-collage)
+-   [Superfont Functions](superfont-functions)
 -   [Misc Functions](misc-functions)
 -   [*Legacy Typewriter*](legacy-typewriter)
 
