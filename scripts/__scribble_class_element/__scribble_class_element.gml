@@ -355,7 +355,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param page
     static page = function(_page)
     {
-        var _model = __get_model(true);
+        var _model = __get_model(false);
         if (is_struct(_model))
         {
             if (_page < 0)
@@ -372,6 +372,10 @@ function __scribble_class_element(_string, _unique_id) constructor
             {
                 __page = _page;
             }
+        }
+        else
+        {
+            __page = 0;
         }
         
         return self;
