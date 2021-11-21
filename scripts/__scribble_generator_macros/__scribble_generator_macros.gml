@@ -1,6 +1,6 @@
 enum __SCRIBBLE_PARSER_GLYPH
 {
-    ORD,                // 0  }   Can be negative, see below
+    ORD,                // 0  \   Can be negative, see below
     BIDI,               // 1   |
                         //     |
     X,                  // 2   |
@@ -8,30 +8,26 @@ enum __SCRIBBLE_PARSER_GLYPH
     WIDTH,              // 4   |
     HEIGHT,             // 5   |
     SEPARATION,         // 6   |
-    DELTA_L,            // 7   |
-    DELTA_T,            // 8   | This group of enums must not change order or be split
-    DELTA_R,            // 9   |
-    DELTA_B,            //10   |
+                        //     | This group of enums must not change order or be split
+    TEXTURE,            // 7   |
+    QUAD_U0,            // 8   |
+    QUAD_V0,            // 9   |
+    QUAD_U1,            //10   |
+    QUAD_V1,            //11   |
                         //     |
-    TEXTURE,            //11   |
-    QUAD_U0,            //12   |
-    QUAD_V0,            //13   |
-    QUAD_U1,            //14   |
-    QUAD_V1,            //15   |
-                        //     |
-    MSDF_PXRANGE,       //16  }
+    MSDF_PXRANGE,       //12  /
     
-    STATE_COLOUR,       //17
-    STATE_EFFECT_FLAGS, //18
-    STATE_SLANT,        //19
-    FONT_SCALE_DIST,    //20
-    ANIMATION_INDEX,    //21
+    STATE_COLOUR,       //13
+    STATE_EFFECT_FLAGS, //14
+    STATE_SLANT,        //15
+    FONT_SCALE_DIST,    //16
+    ANIMATION_INDEX,    //17
     
-    SPRITE_INDEX,       //22  }
-    IMAGE_INDEX,        //23   | Only used for sprites
-    IMAGE_SPEED,        //24  }
+    SPRITE_INDEX,       //18  \
+    IMAGE_INDEX,        //19   | Only used for sprites
+    IMAGE_SPEED,        //20  /
     
-    __SIZE,             //25
+    __SIZE,             //21
 }
 
 enum __SCRIBBLE_VBUFF_POS //TODO - Implement slant offset
@@ -102,7 +98,7 @@ enum __SCRIBBLE_PARSER_LINE
 #macro __SCRIBBLE_PARSER_POP_SCALE  var _final_scale = _font_scale_dist*_state_scale;\
                                     if (_final_scale != 1)\
                                     {\
-                                        ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.DELTA_R, _final_scale);\ //Covers x/y offsets, width/height, separation, and LTRB deltas
+                                        ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.SEPARATION, _final_scale);\ //Covers x/y offsets, width/height, and separation
                                         ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _final_scale);\ //Covers font distance scale. This is important for MSDF fonts
                                     }\
                                     _state_scale_start_glyph = _glyph_count-1;
@@ -185,10 +181,8 @@ enum __SCRIBBLE_PARSER_LINE
                                       var _quad_u1 = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.QUAD_U1];\
                                       var _quad_v1 = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.QUAD_V1];\
                                       ;\
-                                      var _delta_l  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.DELTA_L];\
-                                      var _delta_t  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.DELTA_T];\
-                                      var _delta_r  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.DELTA_R];\
-                                      var _delta_b  = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.DELTA_B];\
+                                      var _half_w  = 0.5*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH ];\
+                                      var _half_h  = 0.5*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT];\
                                       ;\
                                       var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];\
                                       ;\
@@ -196,12 +190,12 @@ enum __SCRIBBLE_PARSER_LINE
                                       var _glyph_effect_flags = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS];\
                                       var _write_scale        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST   ];\
                                       ;\ //TODO - Implement slant offset
-                                      vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_l, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);\
-                                      vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\
-                                      vertex_position_3d(_vbuff, _quad_l, _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_l, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\
-                                      vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\
-                                      vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_l, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);\
-                                      vertex_position_3d(_vbuff, _quad_r, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_r, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);
+                                      vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale,  _half_h);\
+                                      vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, -_half_h);\
+                                      vertex_position_3d(_vbuff, _quad_l, _quad_b, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff, _write_scale, -_half_h);\
+                                      vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, -_half_h);\
+                                      vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale,  _half_h);\
+                                      vertex_position_3d(_vbuff, _quad_r, _quad_t, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, _write_scale,  _half_h);
 
 
 

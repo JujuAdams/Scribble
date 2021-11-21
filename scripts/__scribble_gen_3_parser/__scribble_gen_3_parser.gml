@@ -474,10 +474,6 @@ function __scribble_gen_3_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = _surface_w;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = _surface_h;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = _surface_w;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.DELTA_L     ] = -_surface_w/2;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.DELTA_T     ] = -_surface_h/2;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.DELTA_R     ] =  _surface_w/2;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.DELTA_B     ] =  _surface_h/2;
                         
                         //TODO - Add a way to force a regeneration of every text element that contains a given surface
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.TEXTURE     ] = surface_get_texture(_surface);

@@ -87,10 +87,6 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH     ] = _space_width;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION] = _space_width;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_L   ] = -_space_width/2;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_T   ] = -_sprite_height/2;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_R   ] =  _space_width/2;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_B   ] =  _sprite_height/2;
             
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE   ] = _sprite_frames[0].texture; //Use the texture ID for the first image from the sprite
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0        ] = 0;
@@ -134,10 +130,6 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH       ] = _w;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT      ] = _h;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION  ] = _glyph_separation;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_L     ] = -_w/2;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_T     ] = -_h/2;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_R     ] =  _w/2;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_B     ] =  _h/2;
             
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE     ] = _image_info.texture;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0          ] = _uvs[0];

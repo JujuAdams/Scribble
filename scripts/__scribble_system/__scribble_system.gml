@@ -503,18 +503,14 @@ enum SCRIBBLE_GLYPH
     WIDTH,        // 5   |
     HEIGHT,       // 6   |
     SEPARATION,   // 7   | This group of enums must not change order or be split
-    DELTA_L,      // 8   |
-    DELTA_T,      // 9   |
-    DELTA_R,      //10   |
-    DELTA_B,      //11  }
-    
-    TEXTURE,      //12
-    U0,           //13
-    V0,           //14
-    U1,           //15
-    V1,           //16
-    
-    MSDF_PXRANGE, //17
+                  //     |
+    TEXTURE,      //12   |
+    U0,           //13   |
+    V0,           //14   |
+    U1,           //15   |
+    V1,           //16   |
+                  //     |
+    MSDF_PXRANGE, //17  /
     
     __SIZE        //18
 }

@@ -95,10 +95,6 @@ function __scribble_font_add_from_project(_font)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH       ] = _w;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT      ] = _h;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION  ] = _glyph_dict.shift;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_L     ] = -_w/2;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_T     ] = -_h/2;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_R     ] =  _w/2;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_B     ] =  _h/2;
                                                                
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE     ] = _texture;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0          ] = _u0;
