@@ -514,13 +514,17 @@ function __scribble_class_element(_string, _unique_id) constructor
         return _events;
     }
     
-    static right_to_left = function()
+    static right_to_left = function(_state)
     {
-        if (__bidi_hint != __SCRIBBLE_BIDI.R2L)
+        var _new_bidi_hint = _state? __SCRIBBLE_BIDI.R2L : __SCRIBBLE_BIDI.L2R;
+        
+        if (__bidi_hint != _new_bidi_hint)
         {
             model_cache_name_dirty = true;
-            __bidi_hint = __SCRIBBLE_BIDI.R2L;
+            __bidi_hint = _new_bidi_hint;
         }
+        
+        return self;
     }
     
     static left_to_right = function()
