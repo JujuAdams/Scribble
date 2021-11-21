@@ -181,8 +181,8 @@ enum __SCRIBBLE_PARSER_LINE
                                       var _quad_u1 = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.QUAD_U1];\
                                       var _quad_v1 = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.QUAD_V1];\
                                       ;\
-                                      var _half_w  = 0.5*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH ];\
-                                      var _half_h  = 0.5*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT];\
+                                      var _half_w = 0.5*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH ];\
+                                      var _half_h = 0.5*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT];\
                                       ;\
                                       var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];\
                                       ;\
