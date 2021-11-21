@@ -1,14 +1,14 @@
 enum __SCRIBBLE_PARSER_GLYPH
 {
-    X,                  // 0
-    Y,                  // 1
-    WIDTH,              // 2
-    HEIGHT,             // 3
-    ORD,                // 4  Can be negative, see below
-    ANIMATION_INDEX,    // 5
-    FONT_DATA,          // 6
-    GLYPH_DATA,         // 7
-    SEPARATION,         // 8
+    ORD,                // 0  Can be negative, see below
+    X,                  // 1
+    Y,                  // 2
+    WIDTH,              // 3  These three parameters must be contiguous
+    HEIGHT,             // 4  These three parameters must be contiguous
+    SEPARATION,         // 5  These three parameters must be contiguous
+    ANIMATION_INDEX,    // 6
+    FONT_DATA,          // 7
+    GLYPH_DATA,         // 8
     ASSET_INDEX,        // 9  This gets used for sprite index, surface index, and halign mode
     IMAGE_INDEX,        //10
     IMAGE_SPEED,        //11
@@ -70,13 +70,19 @@ enum __SCRIBBLE_PARSER_LINE
 
 
 
-//In-line macros!
-#macro __SCRIBBLE_PARSER_WRITE_GLYPH_STATE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ] = _state_final_colour;\n
-                                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS] = _state_effect_flags;\n
-                                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE       ] = _state_scale;\n
-                                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT       ] = _state_slant;\n
-                                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST   ] = _font_scale_dist;
-
+//In-line macros!          
+#macro __SCRIBBLE_PARSER_POP_COLOUR  ds_grid_set_region(_glyph_grid, _state_colour_start_glyph, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR, _state_final_colour);\
+                                     _state_colour_start_glyph = _glyph_count-1;
+                                    
+#macro __SCRIBBLE_PARSER_POP_EFFECT_FLAGS  ds_grid_set_region(_glyph_grid, _state_effects_start_glyph, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS, _state_effect_flags);\
+                                           _state_effects_start_glyph = _glyph_count-1;
+                                    
+#macro __SCRIBBLE_PARSER_POP_SCALE  ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.WIDTH, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.SEPARATION, _state_scale);\
+                                    ds_grid_set_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE, _state_scale);\
+                                    _state_scale_start_glyph = _glyph_count-1;
+                                    
+#macro __SCRIBBLE_PARSER_POP_SLANT  ds_grid_set_region(_glyph_grid, _state_slant_start_glyph, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT, _state_slant);\
+                                    _state_slant_start_glyph = _glyph_count-1;
 
 #macro __SCRIBBLE_PARSER_WRITE_HALIGN  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_HALIGN;\n
                                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = _state_halign;\n
@@ -100,17 +106,19 @@ enum __SCRIBBLE_PARSER_LINE
                                           ++_control_page;
 
 
-#macro __SCRIBBLE_PARSER_SET_FONT   var _font_data         = __scribble_get_font_data(_font_name);\n
-                                    var _font_glyphs_map   = _font_data.glyphs_map;\n
-                                    var _font_msdf_pxrange = _font_data.msdf_pxrange;\n
-                                    var _font_scale_dist   = _font_data.scale_dist;\n
-                                    var _space_glyph_data  = _font_glyphs_map[? 32];\n
-                                    if (_space_glyph_data == undefined)\n
-                                    {\n
-                                        __scribble_error("The space character is missing from font definition for \"", _font_name, "\"");\n
-                                        return false;\n
-                                    }\n
-                                    var _font_line_height = _space_glyph_data[SCRIBBLE_GLYPH.HEIGHT];\n
+#macro __SCRIBBLE_PARSER_SET_FONT   ds_grid_set_region(_glyph_grid, _font_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _font_scale_dist);\
+                                    _font_scale_start_glyph = _glyph_count-1;\
+                                    var _font_data         = __scribble_get_font_data(_font_name);\
+                                    var _font_glyphs_map   = _font_data.glyphs_map;\
+                                    var _font_msdf_pxrange = _font_data.msdf_pxrange;\
+                                    var _font_scale_dist   = _font_data.scale_dist;\
+                                    var _space_glyph_data  = _font_glyphs_map[? 32];\
+                                    if (_space_glyph_data == undefined)\
+                                    {\
+                                        __scribble_error("The space character is missing from font definition for \"", _font_name, "\"");\
+                                        return false;\
+                                    }\
+                                    var _font_line_height = _space_glyph_data[SCRIBBLE_GLYPH.HEIGHT];\
                                     var _font_space_width = _space_glyph_data[SCRIBBLE_GLYPH.WIDTH ];
 
 #macro __SCRIBBLE_PARSER_READ_GLYPH_DATA   var _glyph_x            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X                 ];\n

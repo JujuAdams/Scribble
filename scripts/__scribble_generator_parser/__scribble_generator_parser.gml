@@ -21,7 +21,6 @@ function __scribble_generator_parser()
     if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
     
     var _font_name = _starting_font;
-    __SCRIBBLE_PARSER_SET_FONT;
     
     //Place our input string into a buffer for quicker reading
     buffer_seek(_string_buffer, buffer_seek_start, 0);
@@ -57,6 +56,15 @@ function __scribble_generator_parser()
     var _state_halign       = _starting_halign;
     var _state_command_tag_flipflop = false;
     
+    var _state_colour_start_glyph  = 0;
+    var _state_effects_start_glyph = 0;
+    var _state_scale_start_glyph   = 0;
+    var _state_slant_start_glyph   = 0;
+    
+    var _font_scale_dist        = 0;
+    var _font_scale_start_glyph = 0;
+    
+    __SCRIBBLE_PARSER_SET_FONT;
     __SCRIBBLE_PARSER_WRITE_HALIGN;
     
     //Repeat a fixed number of times. This prevents infinite loops and generally is more stable...
@@ -134,6 +142,11 @@ function __scribble_generator_parser()
                     
                     case "":
                     case "/":
+                        __SCRIBBLE_PARSER_POP_COLOUR;
+                        __SCRIBBLE_PARSER_POP_EFFECT_FLAGS;
+                        __SCRIBBLE_PARSER_POP_SCALE;
+                        __SCRIBBLE_PARSER_POP_SLANT;
+                        
                         _state_colour       = _starting_colour;
                         _state_alpha_255    = 0xFF;
                         _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
@@ -162,21 +175,30 @@ function __scribble_generator_parser()
                     case "/color":
                     case "/c":
                         _state_colour = _starting_colour;
-                        if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                        if (!_state_cycle)
+                        {
+                            __SCRIBBLE_PARSER_POP_COLOUR;
+                            _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                        }
                     break;
                     
                     case "/alpha":
                     case "/a":
                         _state_alpha_255 = 0xFF;
-                        if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                        if (!_state_cycle)
+                        {
+                            __SCRIBBLE_PARSER_POP_COLOUR;
+                            _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                        }
                     break;
                     
                     case "/scale":
                     case "/s":
-                        _state_scale = 1.0;
+                        __SCRIBBLE_PARSER_POP_SCALE;
                     break;
                     
                     case "/slant":
+                        __SCRIBBLE_PARSER_POP_SLANT;
                         _state_slant = false;
                     break;
                     
@@ -195,6 +217,7 @@ function __scribble_generator_parser()
                         }
                         else
                         {
+                            __SCRIBBLE_PARSER_POP_SCALE;
                             _state_scale = real(_tag_parameters[1]);
                         }
                     break;
@@ -206,6 +229,7 @@ function __scribble_generator_parser()
                         }
                         else
                         {
+                            __SCRIBBLE_PARSER_POP_SCALE;
                             _state_scale *= real(_tag_parameters[1]);
                         }
                     break;
@@ -213,12 +237,17 @@ function __scribble_generator_parser()
                     #endregion
                     
                     case "slant":
+                        __SCRIBBLE_PARSER_POP_SLANT;
                         _state_slant = true;
                     break;
                     
                     case "alpha":
                         _state_alpha_255 = floor(255*clamp(_tag_parameters[1], 0, 1));
-                        if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                        if (!_state_cycle)
+                        {
+                            __SCRIBBLE_PARSER_POP_COLOUR;
+                            _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                        }
                     break;
                     
                     #region Font Alignment
@@ -285,11 +314,10 @@ function __scribble_generator_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 0xA0; //Non-breaking space (dec = 160)
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _space_glyph_data;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _state_scale*_font_space_width;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _state_scale*_font_line_height;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _state_scale*_font_space_width;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _font_space_width;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _font_space_width;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.SYMBOL;
-                            __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
                             
                             _arabic_glyph_prev = 0xA0; //Non-breaking space (dec = 160)
@@ -301,6 +329,8 @@ function __scribble_generator_parser()
                     #region Cycle
                             
                     case "cycle":
+                        __SCRIBBLE_PARSER_POP_COLOUR;
+                        
                         var _cycle_r = (_tag_parameter_count > 1)? max(1, real(_tag_parameters[1])) : 0;
                         var _cycle_g = (_tag_parameter_count > 2)? max(1, real(_tag_parameters[2])) : 0;
                         var _cycle_b = (_tag_parameter_count > 3)? max(1, real(_tag_parameters[3])) : 0;
@@ -313,6 +343,8 @@ function __scribble_generator_parser()
                     break;
                             
                     case "/cycle":
+                        __SCRIBBLE_PARSER_POP_COLOUR;
+                        
                         _state_cycle = false;
                         _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
                         
@@ -408,39 +440,37 @@ function __scribble_generator_parser()
                     
                     case "surface":
                         var _surface = real(_tag_parameters[1]);
-                        var _surface_width = _state_scale*surface_get_width(_surface);
                         
-                        if (!SCRIBBLE_COLORIZE_SPRITES)
-                        {
-                            var _old_colour       = _state_final_colour;
-                            var _old_effect_flags = _state_effect_flags;
-                            
-                            _state_final_colour = 0xFFFFFFFF;
-                            
-                            //Switch off rainbow
-                            _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
-                            
-                            //Switch off colour cycling
-                            _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
-                        }
+                        //if (!SCRIBBLE_COLORIZE_SPRITES)
+                        //{
+                        //    var _old_colour       = _state_final_colour;
+                        //    var _old_effect_flags = _state_effect_flags;
+                        //    
+                        //    _state_final_colour = 0xFFFFFFFF;
+                        //    
+                        //    //Switch off rainbow
+                        //    _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
+                        //    
+                        //    //Switch off colour cycling
+                        //    _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
+                        //}
                         
                         //Add this glyph to our grid
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD        ] = __SCRIBBLE_GLYPH_SURFACE;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH      ] = _surface_width; //Already includes scaling
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ] = _state_scale*surface_get_height(_surface);
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION ] = _surface_width; //Already includes scaling
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH      ] = surface_get_width(_surface);
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ] = surface_get_height(_surface);
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION ] = surface_get_width(_surface);
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX] = _surface;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
-                        __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                         ++_glyph_count;
                         
                         _arabic_glyph_prev = __SCRIBBLE_GLYPH_SURFACE;
                         
-                        if (!SCRIBBLE_COLORIZE_SPRITES)
-                        {
-                            _state_final_colour = _old_colour;
-                            _state_effect_flags = _old_effect_flags;
-                        }
+                        //if (!SCRIBBLE_COLORIZE_SPRITES)
+                        //{
+                        //    _state_final_colour = _old_colour;
+                        //    _state_effect_flags = _old_effect_flags;
+                        //}
                     break;
                     
                     #endregion
@@ -457,7 +487,11 @@ function __scribble_generator_parser()
                         else if (ds_map_exists(global.__scribble_colours, _tag_command_name)) //Set a pre-defined colour
                         {
                             _state_colour = global.__scribble_colours[? _tag_command_name] & 0xFFFFFF;
-                            if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                            if (!_state_cycle)
+                            {
+                                __SCRIBBLE_PARSER_POP_COLOUR;
+                                _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                            }
                         }
                         else if (ds_map_exists(global.__scribble_typewriter_events, _tag_command_name)) //Events
                         {
@@ -474,7 +508,6 @@ function __scribble_generator_parser()
                             #region Sprite
                             
                             var _sprite_index = asset_get_index(_tag_command_name);
-                            var _sprite_width = _state_scale*sprite_get_width(_sprite_index);
                             
                             var _image_index = 0;
                             var _image_speed = 0;
@@ -499,32 +532,31 @@ function __scribble_generator_parser()
                             var _old_effect_flags = _state_effect_flags;
                             if (_image_speed > 0) _state_effect_flags |= 1; //Set the sprite flag bit
                         
-                            if (!SCRIBBLE_COLORIZE_SPRITES)
-                            {
-                                var _old_colour = _state_final_colour;
-                                _state_final_colour = 0xFFFFFFFF;
-                                
-                                //Switch off rainbow
-                                _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
-                                
-                                //Switch off colour cycling
-                                _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
-                            }
+                            //if (!SCRIBBLE_COLORIZE_SPRITES)
+                            //{
+                            //    var _old_colour = _state_final_colour;
+                            //    _state_final_colour = 0xFFFFFFFF;
+                            //    
+                            //    //Switch off rainbow
+                            //    _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
+                            //    
+                            //    //Switch off colour cycling
+                            //    _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
+                            //}
                             
                             //Add this glyph to our grid
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD        ] = __SCRIBBLE_GLYPH_SPRITE;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH      ] = _sprite_width; //Already includes scaling
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ] = _state_scale*sprite_get_height(_sprite_index);
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION ] = _sprite_width; //Already includes scaling
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH      ] = sprite_get_width(_sprite_index);
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ] = sprite_get_height(_sprite_index);
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION ] = sprite_get_width(_sprite_index);
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX] = _sprite_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX] = _image_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED] = _image_speed;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
-                            __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                             ++_glyph_count;
                             
                             _state_effect_flags = _old_effect_flags;
-                            if (!SCRIBBLE_COLORIZE_SPRITES) _state_final_colour = _old_colour;
+                            //if (!SCRIBBLE_COLORIZE_SPRITES) _state_final_colour = _old_colour;
                             
                             _arabic_glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
                             
@@ -551,13 +583,17 @@ function __scribble_generator_parser()
                                         _state_colour = scribble_rgb_to_bgr(_state_colour);
                                     }
                                 }
-                                catch(_)
+                                catch(_error)
                                 {
                                     __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a hexcode");
                                     _state_colour = _starting_colour;
                                 }
                                 
-                                if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                                if (!_state_cycle)
+                                {
+                                    __SCRIBBLE_PARSER_POP_COLOUR;
+                                    _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                                }
                                 
                                 #endregion
                             }
@@ -579,7 +615,11 @@ function __scribble_generator_parser()
                                         _state_colour = _starting_colour;
                                     }
                                     
-                                    if (!_state_cycle) _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                                    if (!_state_cycle)
+                                    {
+                                        __SCRIBBLE_PARSER_POP_COLOUR;
+                                        _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
+                                    }
                                     
                                     #endregion
                                 }
@@ -649,10 +689,9 @@ function __scribble_generator_parser()
                 //Add a newline glyph to our grid
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 0x0A; //ASCII line break (dec = 10)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _state_scale*_font_line_height;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.LINE_BREAK;
-                __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
                 _arabic_glyph_prev = 0x0A;
@@ -664,11 +703,10 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 0x09; //ASCII horizontal tab (dec = 9, obviously)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _space_glyph_data;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _state_scale*SCRIBBLE_TAB_WIDTH*_font_space_width;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _state_scale*_font_line_height;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _state_scale*SCRIBBLE_TAB_WIDTH*_font_space_width;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = SCRIBBLE_TAB_WIDTH*_font_space_width;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = SCRIBBLE_TAB_WIDTH*_font_space_width;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.WHITESPACE;
-                __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
                 _arabic_glyph_prev = 0x09;
@@ -682,11 +720,10 @@ function __scribble_generator_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 0x20; //ASCII space (dec = 32)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _space_glyph_data;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _state_scale*_font_space_width;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _state_scale*_font_line_height;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _state_scale*_font_space_width;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _font_space_width;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _font_space_width;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.WHITESPACE;
-                __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                 ++_glyph_count;
                 
                 _arabic_glyph_prev = 0x20;
@@ -796,11 +833,10 @@ function __scribble_generator_parser()
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = _glyph_write;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _glyph_data;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _state_scale*_glyph_data[SCRIBBLE_GLYPH.WIDTH];
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _state_scale*_font_line_height;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _state_scale*_glyph_data[SCRIBBLE_GLYPH.SEPARATION];
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _glyph_data[SCRIBBLE_GLYPH.WIDTH];
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
+                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _glyph_data[SCRIBBLE_GLYPH.SEPARATION];
                     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = _glyph_data[SCRIBBLE_GLYPH.BIDI];
-                    __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;
                     ++_glyph_count;
                 }
                 
@@ -822,6 +858,11 @@ function __scribble_generator_parser()
             }
         }
     }
+    
+    __SCRIBBLE_PARSER_POP_COLOUR;
+    __SCRIBBLE_PARSER_POP_EFFECT_FLAGS;
+    __SCRIBBLE_PARSER_POP_SCALE;
+    __SCRIBBLE_PARSER_POP_SLANT;
     
     //Set our vertical alignment if it hasn't been overrided
     if (valign == undefined) valign = _starting_valign;
