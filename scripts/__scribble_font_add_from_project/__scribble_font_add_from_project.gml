@@ -67,11 +67,6 @@ function __scribble_font_add_from_project(_font)
         var _ord  = _glyph_dict.char;
         var _char = chr(_ord);
         
-        if ((_char == "h") && (_font == fnt_test_0))
-        {
-            show_debug_message("!");
-        }
-        
         var _bidi = _global_glyph_bidi_map[? _ord];
         if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
         
