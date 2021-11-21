@@ -31,13 +31,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     last_drawn = current_time;
     freeze = false;
     
-    starting_font   = SCRIBBLE_DEFAULT_FONT;
-    starting_colour = c_white;
-    starting_halign = fa_left;
-    starting_valign = fa_top;
-    
-    blend_colour = c_white;
-    blend_alpha  = 1.0;
+    starting_font   = global.__scribble_default_font;
+    starting_colour = SCRIBBLE_DEFAULT_COLOR;
+    starting_halign = SCRIBBLE_DEFAULT_HALIGN;
+    starting_valign = SCRIBBLE_DEFAULT_VALIGN;
+    blend_colour    = c_white;
+    blend_alpha     = 1.0;
     
     fog_colour = c_white;
     fog_alpha  = 0.0;
@@ -67,7 +66,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __page = 0;
     __ignore_command_tags = false;
-    __template = __scribble_config_default_template;
+    __template = undefined;
     
     bezier_array = array_create(6, 0.0);
     bezier_using = false;
@@ -1210,9 +1209,4 @@ function __scribble_class_element(_string, _unique_id) constructor
     }
     
     #endregion
-    
-    
-    
-    //Apply the default template
-    __scribble_config_default_template();
 }
