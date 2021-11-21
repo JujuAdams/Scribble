@@ -527,15 +527,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    static left_to_right = function()
-    {
-        if (__bidi_hint != __SCRIBBLE_BIDI.L2R)
-        {
-            model_cache_name_dirty = true;
-            __bidi_hint = __SCRIBBLE_BIDI.L2R;
-        }
-    }
-    
     #endregion
     
     
