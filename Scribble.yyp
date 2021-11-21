@@ -98,7 +98,6 @@
     {"id":{"name":"obj_test_overwrite","path":"objects/obj_test_overwrite/obj_test_overwrite.yy",},"order":15,},
     {"id":{"name":"__shd_scribble","path":"shaders/__shd_scribble/__shd_scribble.yy",},"order":13,},
     {"id":{"name":"obj_test_legacy_typewriter_speed","path":"objects/obj_test_legacy_typewriter_speed/obj_test_legacy_typewriter_speed.yy",},"order":4,},
-    {"id":{"name":"__scribble_config_animation","path":"scripts/__scribble_config_animation/__scribble_config_animation.yy",},"order":4,},
     {"id":{"name":"obj_test_linewrap_single_word","path":"objects/obj_test_linewrap_single_word/obj_test_linewrap_single_word.yy",},"order":7,},
     {"id":{"name":"scribble_anim_reset","path":"scripts/scribble_anim_reset/scribble_anim_reset.yy",},"order":0,},
     {"id":{"name":"obj_test_scale_to_box","path":"objects/obj_test_scale_to_box/obj_test_scale_to_box.yy",},"order":7,},
