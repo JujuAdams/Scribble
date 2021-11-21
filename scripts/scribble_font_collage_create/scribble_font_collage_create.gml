@@ -1,6 +1,6 @@
 /// @param newFontName
 
-function scribble_super_create(_name)
+function scribble_font_collage_create(_name)
 {
     //Ensure we're initialised
     __scribble_system();
