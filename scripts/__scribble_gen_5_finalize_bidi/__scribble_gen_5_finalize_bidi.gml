@@ -1,4 +1,4 @@
-function __scribble_gen_6_finalize_bidi()
+function __scribble_gen_5_finalize_bidi()
 {
     var _word_grid    = global.__scribble_word_grid;
     var _word_count   = global.__scribble_generator_state.word_count;

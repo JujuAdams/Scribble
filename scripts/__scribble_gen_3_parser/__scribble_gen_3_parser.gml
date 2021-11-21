@@ -1,52 +1,3 @@
-var _map = ds_map_create();
-_map[? ""          ] =  0;
-_map[? "/"         ] =  0;
-_map[? "/font"     ] =  1;
-_map[? "/f"        ] =  1;
-_map[? "/colour"   ] =  2;
-_map[? "/color"    ] =  2;
-_map[? "/c"        ] =  2;
-_map[? "/alpha"    ] =  3;
-_map[? "/a"        ] =  3;
-_map[? "/scale"    ] =  4;
-_map[? "/s"        ] =  4;
-_map[? "/slant"    ] =  5;
-_map[? "/page"     ] =  6;
-_map[? "scale"     ] =  7;
-_map[? "scaleStack"] =  8;
-_map[? "slant"     ] =  9;
-_map[? "alpha"     ] = 10;
-_map[? "fa_left"   ] = 11;
-_map[? "fa_center" ] = 12;
-_map[? "fa_centre" ] = 12;
-_map[? "fa_right"  ] = 13;
-_map[? "fa_top"    ] = 14;
-_map[? "fa_middle" ] = 15;
-_map[? "fa_bottom" ] = 16;
-_map[? "pin_left"  ] = 17;
-_map[? "pin_center"] = 18;
-_map[? "pin_centre"] = 18;
-_map[? "pin_right" ] = 19;
-_map[? "fa_justify"] = 20;
-_map[? "nbsp"      ] = 21;
-_map[? "&nbsp"     ] = 21;
-_map[? "nbsp;"     ] = 21;
-_map[? "&nbsp;"    ] = 21;
-_map[? "cycle"     ] = 22;
-_map[? "/cycle"    ] = 23;
-_map[? "r"         ] = 24;
-_map[? "/b"        ] = 24;
-_map[? "/i"        ] = 24;
-_map[? "/bi"       ] = 24;
-_map[? "b"         ] = 25;
-_map[? "i"         ] = 26;
-_map[? "bi"        ] = 27;
-_map[? "surface"   ] = 28;
-
-global.__scribble_command_tag_lookup_accelerator = _map;
-
-
-
 function __scribble_gen_3_parser()
 {
     //Cache globals locally for a performance boost
@@ -76,6 +27,34 @@ function __scribble_gen_3_parser()
     buffer_write(_string_buffer, buffer_string, _element_text);
     buffer_write(_string_buffer, buffer_u64, 0x0); //Add some extra null characters to avoid errors where we're reading outside the buffer
     buffer_seek(_string_buffer, buffer_seek_start, 0);
+    
+    //Determine the overall bidi direction for the string
+    var _overall_bidi = global.__scribble_generator_state.overall_bidi;
+    if ((_overall_bidi != __SCRIBBLE_BIDI.L2R) && (_overall_bidi != __SCRIBBLE_BIDI.R2L))
+    {
+        var _global_glyph_bidi_map = global.__scribble_glyph_data.bidi_map;
+        
+        // Searching until we find a glyph with a well-defined direction
+        repeat(string_byte_length(_element_text))
+        {
+            var _glyph_ord = __scribble_buffer_read_unicode(_string_buffer)
+            if (_glyph_ord == 0) break;
+                
+            var _bidi = _global_glyph_bidi_map[? _glyph_ord];
+            if ((_bidi == __SCRIBBLE_BIDI.L2R) || (_bidi == __SCRIBBLE_BIDI.R2L))
+            {
+                _overall_bidi = _bidi;
+                break;
+            }
+        }
+        
+        buffer_seek(_string_buffer, buffer_seek_start, 0);
+        
+        // We didn't find a glyph with a direction, default to L2R
+        if ((_overall_bidi != __SCRIBBLE_BIDI.L2R) && (_overall_bidi != __SCRIBBLE_BIDI.R2L)) _overall_bidi = __SCRIBBLE_BIDI.L2R;
+        
+        global.__scribble_generator_state.overall_bidi = _overall_bidi;
+    }
     
     //Resize grids if we have to
     var _element_text_length = string_length(_element_text);
@@ -120,10 +99,9 @@ function __scribble_gen_3_parser()
     //...though we do still check for a null terminator
     repeat(string_byte_length(_element_text))
     {
-        //_glyph_ord = __scribble_buffer_read_unicode(_string_buffer);
-        
         // In-lined __scribble_buffer_read_unicode() for speed
-        var _glyph_ord = buffer_read(_string_buffer, buffer_u8); //Assume 0xxxxxxx
+        var _glyph_ord  = buffer_read(_string_buffer, buffer_u8); //Assume 0xxxxxxx
+        var _glyph_bidi_raw = undefined;
         
         // Break out if we hit a null terminator
         if (_glyph_ord == 0x00) break;
@@ -278,7 +256,8 @@ function __scribble_gen_3_parser()
                         else
                         {
                             __SCRIBBLE_PARSER_POP_SCALE;
-                            _state_scale = real(_tag_parameters[1]);
+                            _state_scale       = real(_tag_parameters[1]);
+                            _state_scale_final = _font_scale_dist*_state_scale
                         }
                     break;
                     
@@ -291,7 +270,8 @@ function __scribble_gen_3_parser()
                         else
                         {
                             __SCRIBBLE_PARSER_POP_SCALE;
-                            _state_scale *= real(_tag_parameters[1]);
+                            _state_scale       *= real(_tag_parameters[1]);
+                            _state_scale_final  = _font_scale_dist*_state_scale
                         }
                     break;
                     
@@ -522,20 +502,6 @@ function __scribble_gen_3_parser()
                         var _surface_w = surface_get_width(_surface);
                         var _surface_h = surface_get_height(_surface);
                         
-                        //if (!SCRIBBLE_COLORIZE_SPRITES)
-                        //{
-                        //    var _old_colour       = _state_final_colour;
-                        //    var _old_effect_flags = _state_effect_flags;
-                        //    
-                        //    _state_final_colour = 0xFFFFFFFF;
-                        //    
-                        //    //Switch off rainbow
-                        //    _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
-                        //    
-                        //    //Switch off colour cycling
-                        //    _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
-                        //}
-                        
                         //Add this glyph to our grid
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = __SCRIBBLE_GLYPH_SURFACE;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI        ] = __SCRIBBLE_BIDI.SYMBOL;
@@ -556,14 +522,8 @@ function __scribble_gen_3_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.MSDF_PXRANGE] = 0;
                         
                         ++_glyph_count;
-                        
+                        _glyph_bidi_raw = __SCRIBBLE_BIDI.SYMBOL;
                         _arabic_glyph_prev = __SCRIBBLE_GLYPH_SURFACE;
-                        
-                        //if (!SCRIBBLE_COLORIZE_SPRITES)
-                        //{
-                        //    _state_final_colour = _old_colour;
-                        //    _state_effect_flags = _old_effect_flags;
-                        //}
                     break;
                     
                     #endregion
@@ -638,6 +598,7 @@ function __scribble_gen_3_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ] = _image_speed;
                             
                             ++_glyph_count;
+                            _glyph_bidi_raw = __SCRIBBLE_BIDI.SYMBOL;
                             _arabic_glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
                             
                             #endregion
@@ -777,6 +738,7 @@ function __scribble_gen_3_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = 0;
                 
                 ++_glyph_count;
+                _glyph_bidi_raw = __SCRIBBLE_BIDI.LINE_BREAK;
                 _arabic_glyph_prev = 0x0A;
             }
             else if (_glyph_ord == 0x09) //ASCII horizontal tab
@@ -793,6 +755,7 @@ function __scribble_gen_3_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = SCRIBBLE_TAB_WIDTH*_font_space_width;
                 
                 ++_glyph_count;
+                _glyph_bidi_raw = __SCRIBBLE_BIDI.WHITESPACE;
                 _arabic_glyph_prev = 0x09;
                 
                 #endregion
@@ -809,8 +772,9 @@ function __scribble_gen_3_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _font_space_width;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _font_space_width;
-                ++_glyph_count;
                 
+                ++_glyph_count;
+                _glyph_bidi_raw = __SCRIBBLE_BIDI.WHITESPACE;
                 _arabic_glyph_prev = 0x20;
                 
                 #endregion
@@ -936,6 +900,102 @@ function __scribble_gen_3_parser()
                 #endregion
             }
         }
+        
+        ////TODO - Move into a macro
+        //if (_glyph_bidi_raw != undefined)
+        //{
+        //    var _glyph_bidi = _glyph_bidi_raw;
+        //    
+        //    var _new_word = false;
+        //    switch(_glyph_bidi)
+        //    {
+        //        case __SCRIBBLE_BIDI.WHITESPACE:
+        //            if ((_word_bidi == undefined) || (_word_bidi == _overall_bidi))
+        //            {
+        //                _glyph_bidi = _overall_bidi;
+        //            }
+        //        
+        //            _glyph_prev_whitespace = true;
+        //        break;
+        //        
+        //        case __SCRIBBLE_BIDI.SYMBOL:
+        //            // If we find a glyph with a neutral direction and the current word isn't whitespace, inherit the word's direction
+        //            if ((_word_bidi != __SCRIBBLE_BIDI.WHITESPACE) && (_word_bidi != undefined))
+        //            {
+        //                _glyph_bidi = _word_bidi;
+        //            }
+        //        
+        //            // If the current word has a neutral direction, try to inherit the direction of the next L2R or R2L glyph
+        //            if ((_glyph_bidi == __SCRIBBLE_BIDI.L2R) || (_glyph_bidi == __SCRIBBLE_BIDI.R2L))
+        //            {
+        //                // When (if) we find an L2R/R2L glyph then copy that glyph state back into the word itself
+        //                _word_bidi = _glyph_bidi;
+        //                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI_RAW] = _glyph_bidi;
+        //                _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI    ] = _glyph_bidi;
+        //            }
+        //        break;
+        //    
+        //        case __SCRIBBLE_BIDI.LINE_BREAK:
+        //            _new_word = true;
+        //        break;
+        //    }
+        //    
+        //    if ((_glyph_bidi != _word_bidi) || (_i == _glyph_count)) _new_word = true;
+        //    if ((_glyph_bidi_raw != __SCRIBBLE_BIDI.WHITESPACE) && _glyph_prev_whitespace)
+        //    {
+        //        _new_word = true;
+        //        _glyph_prev_whitespace = false;
+        //    }
+        //    
+        //    // If the glyph we found is a different direction then create a new word for the glyph
+        //    if (_new_word)
+        //    {
+        //        if (_word_index >= 0)
+        //        {
+        //            _word_glyph_end = _i-1;
+        //        
+        //            if (_word_bidi == __SCRIBBLE_BIDI.R2L)
+        //            {
+        //                ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.X, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.X, abs(_word_width));
+        //                ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _word_glyph_start);
+        //            }
+        //            
+        //            //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_START]
+        //            _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_END  ] = _word_glyph_end;
+        //            _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.WIDTH      ] = abs(_word_width);
+        //            _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.HEIGHT     ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _word_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT);
+        //            //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI_RAW   ]
+        //            //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI       ]
+        //            
+        //            if (_i == _glyph_count) break;
+        //        }
+        //        
+        //        _word_index++;
+        //        
+        //        _word_glyph_start = _i;
+        //        _word_bidi        = _glyph_bidi;
+        //        _word_width       = 0;
+        //        
+        //        _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_START] = _word_glyph_start;
+        //        //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.GLYPH_END  ]
+        //        //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.WIDTH      ]
+        //        //_word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.HEIGHT     ]
+        //        _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI_RAW   ] = _word_bidi;
+        //        _word_grid[# _word_index, __SCRIBBLE_PARSER_WORD.BIDI       ] = _word_bidi;
+        //    }
+        //    
+        //    if (_word_bidi != __SCRIBBLE_BIDI.R2L)
+        //    {
+        //        _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X] += _word_width;
+        //        _word_width += _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SEPARATION];
+        //        _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _i;
+        //    }
+        //    else
+        //    {
+        //        _word_width -= _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SEPARATION];
+        //        _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X] += _word_width;
+        //    }
+        //}
     }
     
     __SCRIBBLE_PARSER_POP_COLOUR;

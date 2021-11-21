@@ -91,24 +91,27 @@ enum __SCRIBBLE_PARSER_LINE
 //In-line macros!          
 #macro __SCRIBBLE_PARSER_POP_COLOUR  ds_grid_set_region(_glyph_grid, _state_colour_start_glyph, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR, _state_final_colour);\
                                      _state_colour_start_glyph = _glyph_count-1;
-                                    
+   
+
 #macro __SCRIBBLE_PARSER_POP_EFFECT_FLAGS  ds_grid_set_region(_glyph_grid, _state_effects_start_glyph, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS, _state_effect_flags);\
                                            _state_effects_start_glyph = _glyph_count-1;
-                                    
-#macro __SCRIBBLE_PARSER_POP_SCALE  var _final_scale = _font_scale_dist*_state_scale;\
-                                    if (_final_scale != 1)\
+  
+  
+#macro __SCRIBBLE_PARSER_POP_SCALE  if (_state_scale_final != 1)\ //Don't do any work if our final scaling factor is exactly 1
                                     {\
-                                        ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.SEPARATION, _final_scale);\ //Covers x/y offsets, width/height, and separation
-                                        ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _final_scale);\ //Covers font distance scale. This is important for MSDF fonts
+                                        ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.SEPARATION, _state_scale_final);\ //Covers x/y offsets, width/height, and separation
+                                        ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _state_scale_final);\ //Covers font distance scale. This is important for MSDF fonts
                                     }\
                                     _state_scale_start_glyph = _glyph_count-1;
                                     
 #macro __SCRIBBLE_PARSER_POP_SLANT  ds_grid_set_region(_glyph_grid, _state_slant_start_glyph, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT, _state_slant);\
                                     _state_slant_start_glyph = _glyph_count-1;
 
+
 // N.B. This must be called *before* calling __SCRIBBLE_PARSER_POP_SCALE
 #macro __SCRIBBLE_PARSER_POP_FONT_SCALE  ds_grid_set_region(_glyph_grid, _font_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _font_scale_dist);\
                                          _font_scale_start_glyph = _glyph_count-1;
+
 
 #macro __SCRIBBLE_PARSER_WRITE_HALIGN  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_HALIGN;\
                                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = _state_halign;\
@@ -136,6 +139,7 @@ enum __SCRIBBLE_PARSER_LINE
                                     var _font_glyph_data_grid = _font_data.glyph_data_grid;\
                                     var _font_glyphs_map      = _font_data.glyphs_map;\
                                     var _font_scale_dist      = _font_data.scale_dist;\
+                                    var _state_scale_final    = _font_scale_dist*_state_scale;\
                                     var _space_data_index     = _font_glyphs_map[? 32];\
                                     if (_space_data_index == undefined)\
                                     {\
@@ -144,6 +148,7 @@ enum __SCRIBBLE_PARSER_LINE
                                     }\
                                     var _font_line_height = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.HEIGHT];\
                                     var _font_space_width = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.WIDTH ];
+
 
 #macro __SCRIBBLE_READ_CONTROL_EVENTS  while((_i == _next_control_pos) && (_p == _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.PAGE]))\ //If this *global* glyph index is the same as our control position then scan for new controls to apply
                                        {\
@@ -162,7 +167,6 @@ enum __SCRIBBLE_PARSER_LINE
                                            ++_control_index;\ //Increment which control we're processing
                                            _next_control_pos = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.POSITION];\
                                        }
-
 
 
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  if (_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.TEXTURE] != _last_glyph_texture)\

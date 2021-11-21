@@ -1,4 +1,4 @@
-function __scribble_gen_7_build_lines()
+function __scribble_gen_6_build_lines()
 {
     var _word_grid    = global.__scribble_word_grid;
     var _line_grid    = global.__scribble_line_grid;
