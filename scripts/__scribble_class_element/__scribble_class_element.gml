@@ -98,7 +98,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     msdf_feather_thickness = 1.0;
     
-    __bidi_hint = undefined; //TODO - Allow bidi to be hinted
+    __bidi_hint = undefined;
     
     
     
@@ -512,6 +512,24 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (!is_array(_events)) return [];
         
         return _events;
+    }
+    
+    static right_to_left = function()
+    {
+        if (__bidi_hint != __SCRIBBLE_BIDI.R2L)
+        {
+            model_cache_name_dirty = true;
+            __bidi_hint = __SCRIBBLE_BIDI.R2L;
+        }
+    }
+    
+    static left_to_right = function()
+    {
+        if (__bidi_hint != __SCRIBBLE_BIDI.L2R)
+        {
+            model_cache_name_dirty = true;
+            __bidi_hint = __SCRIBBLE_BIDI.L2R;
+        }
     }
     
     #endregion
@@ -1030,6 +1048,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                                    string(wrap_no_pages  ) + ":" +
                                    string(wrap_max_scale ) + ":" +
                                    string(bezier_array   ) + ":" +
+                                   string(__bidi_hint    ) + ":" +
                                    string(__ignore_command_tags);
             }
             
