@@ -1,23 +1,23 @@
 enum __SCRIBBLE_PARSER_GLYPH
 {
-    ORD,                // 0  Can be negative, see below
-    X,                  // 1
-    Y,                  // 2
+    X,                  // 0
+    Y,                  // 1
+    ORD,                // 2  Can be negative, see below
     WIDTH,              // 3  These three parameters must be contiguous
     HEIGHT,             // 4  These three parameters must be contiguous
     SEPARATION,         // 5  These three parameters must be contiguous
     ANIMATION_INDEX,    // 6
     FONT_DATA,          // 7
     GLYPH_DATA,         // 8
-    ASSET_INDEX,        // 9  This gets used for sprite index, surface index, and halign mode
-    IMAGE_INDEX,        //10
-    IMAGE_SPEED,        //11
-    STATE_COLOUR,       //12
-    STATE_EFFECT_FLAGS, //13
-    STATE_SCALE,        //14
-    STATE_SLANT,        //15
-    FONT_SCALE_DIST,    //16
-    BIDI,               //17
+    BIDI,               // 9
+    ASSET_INDEX,        //10  This gets used for sprite index, surface index, and halign mode
+    IMAGE_INDEX,        //11
+    IMAGE_SPEED,        //12
+    STATE_COLOUR,       //13
+    STATE_EFFECT_FLAGS, //14
+    STATE_SCALE,        //15
+    STATE_SLANT,        //16
+    FONT_SCALE_DIST,    //17
     __SIZE,             //18
 }
 
@@ -84,25 +84,25 @@ enum __SCRIBBLE_PARSER_LINE
 #macro __SCRIBBLE_PARSER_POP_SLANT  ds_grid_set_region(_glyph_grid, _state_slant_start_glyph, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT, _state_slant);\
                                     _state_slant_start_glyph = _glyph_count-1;
 
-#macro __SCRIBBLE_PARSER_WRITE_HALIGN  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_HALIGN;\n
-                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = _state_halign;\n
-                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _glyph_count;\n
-                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
+#macro __SCRIBBLE_PARSER_WRITE_HALIGN  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_HALIGN;\
+                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = _state_halign;\
+                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _glyph_count;\
+                                       _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\
                                        ++_control_count;
 
 
-#macro __SCRIBBLE_PARSER_WRITE_EVENT  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_EVENT;\n
-                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = new __scribble_class_event(_tag_command_name, _tag_parameters);\n
-                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _glyph_count;\n
-                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
+#macro __SCRIBBLE_PARSER_WRITE_EVENT  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_EVENT;\
+                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = new __scribble_class_event(_tag_command_name, _tag_parameters);\
+                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _glyph_count;\
+                                      _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\
                                       ++_control_count;
 
 
-#macro __SCRIBBLE_PARSER_WRITE_PAGEBREAK  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_PAGEBREAK;\n
-                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = undefined;\n
-                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _glyph_count;\n
-                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\n
-                                          ++_control_count;\n
+#macro __SCRIBBLE_PARSER_WRITE_PAGEBREAK  _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = __SCRIBBLE_CONTROL_PAGEBREAK;\
+                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = undefined;\
+                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _glyph_count;\
+                                          _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;\
+                                          ++_control_count;\
                                           ++_control_page;
 
 
@@ -121,83 +121,83 @@ enum __SCRIBBLE_PARSER_LINE
                                     var _font_line_height = _space_glyph_data[SCRIBBLE_GLYPH.HEIGHT];\
                                     var _font_space_width = _space_glyph_data[SCRIBBLE_GLYPH.WIDTH ];
 
-#macro __SCRIBBLE_PARSER_READ_GLYPH_DATA   var _glyph_x            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X                 ];\n
-                                           var _glyph_y            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y                 ];\n
-                                           var _glyph_colour       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ];\n
-                                           var _glyph_effect_flags = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS];\n
-                                           var _glyph_scale        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE       ];\n
-                                           var _glyph_slant        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT       ];\n
+#macro __SCRIBBLE_PARSER_READ_GLYPH_DATA   var _glyph_x            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X                 ];\
+                                           var _glyph_y            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y                 ];\
+                                           var _glyph_colour       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ];\
+                                           var _glyph_effect_flags = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS];\
+                                           var _glyph_scale        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SCALE       ];\
+                                           var _glyph_slant        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_SLANT       ];\
                                            var _glyph_char_index   = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX   ];
 
-#macro __SCRIBBLE_READ_CONTROL_EVENTS  while((_i == _next_control_pos) && (_p == _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.PAGE]))\n //If this *global* glyph index is the same as our control position then scan for new controls to apply
-                                       {\n
-                                           if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_EVENT)\n //If this control is an event, add that to the page's events dictionary
-                                           {\n
-                                                var _event_array = _page_events_dict[$ _animation_index];\n //Find the correct event array in the diciontary, creating a new one if needed
-                                                if (!is_array(_event_array))\n
-                                                {\n
-                                                    var _event_array = [];\n
-                                                    _page_events_dict[$ _animation_index] = _event_array;\n
-                                                }\n
-                                                var _event = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];\n
-                                                _event.position = _animation_index;\n //Update the glyph index to the *local* glyph index for the page
-                                                array_push(_event_array, _event);\n
-                                           }\n
-                                           ++_control_index;\n //Increment which control we're processing
-                                           _next_control_pos = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.POSITION];\n
+#macro __SCRIBBLE_READ_CONTROL_EVENTS  while((_i == _next_control_pos) && (_p == _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.PAGE]))\ //If this *global* glyph index is the same as our control position then scan for new controls to apply
+                                       {\
+                                           if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_EVENT)\ //If this control is an event, add that to the page's events dictionary
+                                           {\
+                                                var _event_array = _page_events_dict[$ _animation_index];\ //Find the correct event array in the diciontary, creating a new one if needed
+                                                if (!is_array(_event_array))\
+                                                {\
+                                                    var _event_array = [];\
+                                                    _page_events_dict[$ _animation_index] = _event_array;\
+                                                }\
+                                                var _event = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];\
+                                                _event.position = _animation_index;\ //Update the glyph index to the *local* glyph index for the page
+                                                array_push(_event_array, _event);\
+                                           }\
+                                           ++_control_index;\ //Increment which control we're processing
+                                           _next_control_pos = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.POSITION];\
                                        }
 
 
-#macro __SCRIBBLE_PARSER_WRITE_GLYPH  var _packed_indexes = _glyph_char_index*__SCRIBBLE_MAX_LINES + 1;\n //TODO
-                                      var _quad_cx = 0.5*(_quad_l + _quad_r);\n
-                                      var _quad_cy = 0.5*(_quad_t + _quad_b);\n
-                                      var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_glyph_scale*_glyph_slant*(_quad_b - _quad_t);\n
-                                      var _delta_l  = _quad_cx - _quad_l;\n
-                                      var _delta_t  = _quad_cy - _quad_t;\n
-                                      var _delta_r  = _quad_cx - _quad_r;\n
-                                      var _delta_b  = _quad_cy - _quad_b;\n
-                                      var _delta_ls = _delta_l - _slant_offset;\n
-                                      var _delta_rs = _delta_r - _slant_offset;\n
-                                      if (_glyph_texture != _last_glyph_texture)\n
-                                      {\n
-                                          _last_glyph_texture = _glyph_texture;\n
-                                          _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_DATA], true, self);\n
-                                      }\n
-                                      if (_bezier_do)\n
-                                      {\n
-                                          if (_quad_cy > _bezier_prev_cy)\n //If we've snapped back to the LHS then reset our Bezier curve 
-                                          {\n //TODO - Maybe use a line number check instead? This could get slow
-                                              _bezier_search_index = 0;\n
-                                              _bezier_search_d0 = 0;\n
-                                              _bezier_search_d1 = _bezier_lengths[1];\n
-                                          }\n
-                                          _bezier_prev_cx = _quad_cx;\n
-                                          while (true)\n //Iterate forwards until we find a Bezier segment we can fit into
-                                          {\n
-                                              if (_quad_cx <= _bezier_search_d1)\n //If this glyph is on this line segment...
-                                              {\n
-                                                  var _bezier_param = _bezier_param_increment*((_quad_cx - _bezier_search_d0)/ (_bezier_search_d1 - _bezier_search_d0) + _bezier_search_index);\n //...then parameterise this glyph
-                                                  break;\n
-                                              }\n
-                                              _bezier_search_index++;\n
-                                              if (_bezier_search_index >= SCRIBBLE_BEZIER_ACCURACY-1)\n
-                                              {\n
-                                                  var _bezier_param = 1.0;\n //We've hit the end of the Bezier curve, force all the remaining glyphs to stack up at the end of the line
-                                                  break;\n
-                                              }\n
-                                              _bezier_search_d0 = _bezier_search_d1;\n //Advance to the next line segment
-                                              _bezier_search_d1 = _bezier_lengths[_bezier_search_index+1];\n
-                                          }\n
-                                          _slant_offset = 0;\n
-                                          _quad_l = _bezier_param;\n
-                                          _quad_r = _bezier_param;\n
-                                          _quad_t = _quad_cy;\n
-                                          _quad_b = _quad_cy;\n
-                                      }\n
-                                      vertex_position_3d(_vbuff, _quad_l + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_ls, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);\n
-                                      vertex_position_3d(_vbuff, _quad_r,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\n
-                                      vertex_position_3d(_vbuff, _quad_l,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_l,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\n
-                                      vertex_position_3d(_vbuff, _quad_r,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\n
-                                      vertex_position_3d(_vbuff, _quad_l + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_ls, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);\n
+#macro __SCRIBBLE_PARSER_WRITE_GLYPH  var _packed_indexes = _glyph_char_index*__SCRIBBLE_MAX_LINES + 1;\ //TODO
+                                      var _quad_cx = 0.5*(_quad_l + _quad_r);\
+                                      var _quad_cy = 0.5*(_quad_t + _quad_b);\
+                                      var _slant_offset = SCRIBBLE_SLANT_AMOUNT*_glyph_scale*_glyph_slant*(_quad_b - _quad_t);\
+                                      var _delta_l  = _quad_cx - _quad_l;\
+                                      var _delta_t  = _quad_cy - _quad_t;\
+                                      var _delta_r  = _quad_cx - _quad_r;\
+                                      var _delta_b  = _quad_cy - _quad_b;\
+                                      var _delta_ls = _delta_l - _slant_offset;\
+                                      var _delta_rs = _delta_r - _slant_offset;\
+                                      if (_glyph_texture != _last_glyph_texture)\
+                                      {\
+                                          _last_glyph_texture = _glyph_texture;\
+                                          _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_DATA], true, self);\
+                                      }\
+                                      if (_bezier_do)\
+                                      {\
+                                          if (_quad_cy > _bezier_prev_cy)\ //If we've snapped back to the LHS then reset our Bezier curve 
+                                          {\ //TODO - Maybe use a line number check instead? This could get slow
+                                              _bezier_search_index = 0;\
+                                              _bezier_search_d0 = 0;\
+                                              _bezier_search_d1 = _bezier_lengths[1];\
+                                          }\
+                                          _bezier_prev_cx = _quad_cx;\
+                                          while (true)\ //Iterate forwards until we find a Bezier segment we can fit into
+                                          {\
+                                              if (_quad_cx <= _bezier_search_d1)\ //If this glyph is on this line segment...
+                                              {\
+                                                  var _bezier_param = _bezier_param_increment*((_quad_cx - _bezier_search_d0)/ (_bezier_search_d1 - _bezier_search_d0) + _bezier_search_index);\ //...then parameterise this glyph
+                                                  break;\
+                                              }\
+                                              _bezier_search_index++;\
+                                              if (_bezier_search_index >= SCRIBBLE_BEZIER_ACCURACY-1)\
+                                              {\
+                                                  var _bezier_param = 1.0;\ //We've hit the end of the Bezier curve, force all the remaining glyphs to stack up at the end of the line
+                                                  break;\
+                                              }\
+                                              _bezier_search_d0 = _bezier_search_d1;\ //Advance to the next line segment
+                                              _bezier_search_d1 = _bezier_lengths[_bezier_search_index+1];\
+                                          }\
+                                          _slant_offset = 0;\
+                                          _quad_l = _bezier_param;\
+                                          _quad_r = _bezier_param;\
+                                          _quad_t = _quad_cy;\
+                                          _quad_b = _quad_cy;\
+                                      }\
+                                      vertex_position_3d(_vbuff, _quad_l + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_ls, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);\
+                                      vertex_position_3d(_vbuff, _quad_r,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\
+                                      vertex_position_3d(_vbuff, _quad_l,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_l,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\
+                                      vertex_position_3d(_vbuff, _quad_r,                 _quad_b, _packed_indexes); vertex_normal(_vbuff, _delta_r,  _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _write_scale, _delta_b);\
+                                      vertex_position_3d(_vbuff, _quad_l + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_ls, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);\
                                       vertex_position_3d(_vbuff, _quad_r + _slant_offset, _quad_t, _packed_indexes); vertex_normal(_vbuff, _delta_rs, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _glyph_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, _write_scale, _delta_t);
 
