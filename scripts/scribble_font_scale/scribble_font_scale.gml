@@ -14,26 +14,24 @@ function scribble_font_scale(_font, _xscale, _yscale)
     }
     
     var _font_data = global.__scribble_font_data[? _font];
-    var _map = _font_data.glyphs_map;
+    var _grid = _font_data.glyph_data_grid;
+    var _map  = _font_data.glyphs_map;
     
     _font_data.xscale *= _xscale;
     _font_data.yscale *= _yscale;
     _font_data.scale_dist = point_distance(0, 0, _font_data.xscale, _font_data.yscale);
     
-    //If the glyph array doesn't exist for this font, use the ds_map fallback
-    var _map = _font_data.glyphs_map;
+    var _last = ds_map_size(_map)-1;
     
-    var _key = ds_map_find_first(_map);
-    repeat(ds_map_size(_map))
-    {
-        var _glyph_data = _map[? _key];
-        _glyph_data[@ SCRIBBLE_GLYPH.X_OFFSET  ] *= _xscale;
-        _glyph_data[@ SCRIBBLE_GLYPH.Y_OFFSET  ] *= _yscale;
-        _glyph_data[@ SCRIBBLE_GLYPH.WIDTH     ] *= _xscale;
-        _glyph_data[@ SCRIBBLE_GLYPH.HEIGHT    ] *= _yscale;
-        _glyph_data[@ SCRIBBLE_GLYPH.SEPARATION] *= _xscale;
-        _key = ds_map_find_next(_map, _key);
-    }
+    ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.X_OFFSET,   _last, SCRIBBLE_GLYPH.X_OFFSET,   _xscale);
+    ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.Y_OFFSET,   _last, SCRIBBLE_GLYPH.Y_OFFSET,   _yscale);
+    ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.WIDTH,      _last, SCRIBBLE_GLYPH.WIDTH,      _xscale);
+    ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.HEIGHT,     _last, SCRIBBLE_GLYPH.HEIGHT,     _yscale);
+    ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.SEPARATION, _last, SCRIBBLE_GLYPH.SEPARATION, _xscale);
+    ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.DELTA_L,    _last, SCRIBBLE_GLYPH.DELTA_L,    _xscale);
+    ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.DELTA_T,    _last, SCRIBBLE_GLYPH.DELTA_T,    _yscale);
+    ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.DELTA_R,    _last, SCRIBBLE_GLYPH.DELTA_R,    _xscale);
+    ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.DELTA_B,    _last, SCRIBBLE_GLYPH.DELTA_B,    _yscale);
     
     _font_data.calculate_font_height();
 }

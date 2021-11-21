@@ -144,6 +144,7 @@ function __scribble_gen_3_parser()
                     case "/":
                         __SCRIBBLE_PARSER_POP_COLOUR;
                         __SCRIBBLE_PARSER_POP_EFFECT_FLAGS;
+                        __SCRIBBLE_PARSER_POP_FONT_SCALE; //Must be *before* __SCRIBBLE_PARSER_POP_SCALE
                         __SCRIBBLE_PARSER_POP_SCALE;
                         __SCRIBBLE_PARSER_POP_SLANT;
                         
@@ -164,6 +165,8 @@ function __scribble_gen_3_parser()
                     
                     case "/font":
                     case "/f":
+                        __SCRIBBLE_PARSER_POP_FONT_SCALE;
+                        
                         if (_font_name != _starting_font)
                         {
                             _font_name = _starting_font;
@@ -312,14 +315,14 @@ function __scribble_gen_3_parser()
                         repeat((array_length(_tag_parameters) == 2)? real(_tag_parameters[1]) : 1)
                         {
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 0xA0; //Non-breaking space (dec = 160)
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _space_glyph_data;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.SYMBOL;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X         ] = 0;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y         ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _font_space_width;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _font_space_width;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.SYMBOL;
-                            ++_glyph_count;
                             
+                            ++_glyph_count;
                             _arabic_glyph_prev = 0xA0; //Non-breaking space (dec = 160)
                         }
                     break;
@@ -359,8 +362,9 @@ function __scribble_gen_3_parser()
                     case "/b":
                     case "/i":
                     case "/bi":
-                        //Get the required font from the font family
+                        __SCRIBBLE_PARSER_POP_FONT_SCALE; 
                         
+                        //Get the required font from the font family
                         var _new_font = _font_data.style_regular;
                         if (_new_font == undefined)
                         {
@@ -378,8 +382,9 @@ function __scribble_gen_3_parser()
                     break;
                             
                     case "b":
-                        //Get the required font from the font family
+                        __SCRIBBLE_PARSER_POP_FONT_SCALE;
                         
+                        //Get the required font from the font family
                         var _new_font = _font_data.style_bold;
                         if (_new_font == undefined)
                         {
@@ -397,8 +402,9 @@ function __scribble_gen_3_parser()
                     break;
                             
                     case "i":
-                        //Get the required font from the font family
+                        __SCRIBBLE_PARSER_POP_FONT_SCALE;
                         
+                        //Get the required font from the font family
                         var _new_font = _font_data.style_italic;
                         if (_new_font == undefined)
                         {
@@ -416,8 +422,9 @@ function __scribble_gen_3_parser()
                     break;
                             
                     case "bi":
-                        //Get the required font from the font family
+                        __SCRIBBLE_PARSER_POP_FONT_SCALE;
                         
+                        //Get the required font from the font family
                         var _new_font = _font_data.style_bold_italic;
                         if (_new_font == undefined)
                         {
@@ -441,6 +448,9 @@ function __scribble_gen_3_parser()
                     case "surface":
                         var _surface = real(_tag_parameters[1]);
                         
+                        var _surface_w = surface_get_width(_surface);
+                        var _surface_h = surface_get_height(_surface);
+                        
                         //if (!SCRIBBLE_COLORIZE_SPRITES)
                         //{
                         //    var _old_colour       = _state_final_colour;
@@ -456,12 +466,28 @@ function __scribble_gen_3_parser()
                         //}
                         
                         //Add this glyph to our grid
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD        ] = __SCRIBBLE_GLYPH_SURFACE;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH      ] = surface_get_width(_surface);
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ] = surface_get_height(_surface);
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION ] = surface_get_width(_surface);
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX] = _surface;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = __SCRIBBLE_GLYPH_SURFACE;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI        ] = __SCRIBBLE_BIDI.SYMBOL;
+                        
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X           ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y           ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = _surface_w;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = _surface_h;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = _surface_w;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.DELTA_L     ] = -_surface_w/2;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.DELTA_T     ] = -_surface_h/2;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.DELTA_R     ] =  _surface_w/2;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.DELTA_B     ] =  _surface_h/2;
+                        
+                        //TODO - Add a way to force a regeneration of every text element that contains a given surface
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.TEXTURE     ] = surface_get_texture(_surface);
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.QUAD_U0     ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.QUAD_V0     ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.QUAD_U1     ] = 1;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.QUAD_V1     ] = 1;
+                        
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.MSDF_PXRANGE] = 0;
+                        
                         ++_glyph_count;
                         
                         _arabic_glyph_prev = __SCRIBBLE_GLYPH_SURFACE;
@@ -501,6 +527,7 @@ function __scribble_gen_3_parser()
                         else if (ds_map_exists(global.__scribble_font_data, _tag_command_name)) //Change font
                         {
                             _font_name = _tag_command_name;
+                            __SCRIBBLE_PARSER_POP_FONT_SCALE;
                             __SCRIBBLE_PARSER_SET_FONT;
                         }
                         else if (asset_get_type(_tag_command_name) == asset_sprite)
@@ -529,35 +556,21 @@ function __scribble_gen_3_parser()
                                 break;
                             }
                             
-                            var _old_effect_flags = _state_effect_flags;
-                            if (_image_speed > 0) _state_effect_flags |= 1; //Set the sprite flag bit
-                        
-                            //if (!SCRIBBLE_COLORIZE_SPRITES)
-                            //{
-                            //    var _old_colour = _state_final_colour;
-                            //    _state_final_colour = 0xFFFFFFFF;
-                            //    
-                            //    //Switch off rainbow
-                            //    _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects[? "rainbow"]));
-                            //    
-                            //    //Switch off colour cycling
-                            //    _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
-                            //}
-                            
                             //Add this glyph to our grid
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD        ] = __SCRIBBLE_GLYPH_SPRITE;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH      ] = sprite_get_width(_sprite_index);
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT     ] = sprite_get_height(_sprite_index);
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION ] = sprite_get_width(_sprite_index);
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ASSET_INDEX] = _sprite_index;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX] = _image_index;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED] = _image_speed;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = __SCRIBBLE_GLYPH_SPRITE;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI        ] = __SCRIBBLE_BIDI.SYMBOL;
+                            
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X           ] = 0;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y           ] = 0;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = sprite_get_width(_sprite_index);
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = sprite_get_height(_sprite_index);
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = sprite_get_width(_sprite_index);
+                            
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX] = _sprite_index;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ] = _image_index;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ] = _image_speed;
+                            
                             ++_glyph_count;
-                            
-                            _state_effect_flags = _old_effect_flags;
-                            //if (!SCRIBBLE_COLORIZE_SPRITES) _state_final_colour = _old_colour;
-                            
                             _arabic_glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
                             
                             #endregion
@@ -688,42 +701,47 @@ function __scribble_gen_3_parser()
             {
                 //Add a newline glyph to our grid
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 0x0A; //ASCII line break (dec = 10)
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.LINE_BREAK;
+                
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X         ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y         ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.LINE_BREAK;
-                ++_glyph_count;
                 
+                ++_glyph_count;
                 _arabic_glyph_prev = 0x0A;
             }
-            else if (_glyph_ord == 0x09) //ASCII horizontal tab (dec = 9, obviously)
+            else if (_glyph_ord == 0x09) //ASCII horizontal tab
             {
                 #region Add a tab glyph to our grid
                 
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 0x09; //ASCII horizontal tab (dec = 9, obviously)
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _space_glyph_data;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = SCRIBBLE_TAB_WIDTH*_font_space_width;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = SCRIBBLE_TAB_WIDTH*_font_space_width;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.WHITESPACE;
-                ++_glyph_count;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD         ] = 0x09; //ASCII horizontal tab (dec = 9, obviously)
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI        ] = __SCRIBBLE_BIDI.WHITESPACE;
                 
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X           ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y           ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = SCRIBBLE_TAB_WIDTH*_font_space_width;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = _font_line_height;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = SCRIBBLE_TAB_WIDTH*_font_space_width;
+                
+                ++_glyph_count;
                 _arabic_glyph_prev = 0x09;
                 
                 #endregion
             }
-            else if (_glyph_ord == 0x20) //ASCII space (dec = 32)
+            else if (_glyph_ord == 0x20) //ASCII space
             {
                 #region Add a space glyph to our grid
                 
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 0x20; //ASCII space (dec = 32)
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _space_glyph_data;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.WHITESPACE;
+                
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X         ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y         ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _font_space_width;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _font_space_width;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.WHITESPACE;
                 ++_glyph_count;
                 
                 _arabic_glyph_prev = 0x20;
@@ -817,26 +835,20 @@ function __scribble_gen_3_parser()
                 #endregion
                 
                 //Pull info out of the font's data structures
-                var _glyph_data = _font_glyphs_map[? _glyph_write];
+                var _data_index = _font_glyphs_map[? _glyph_write];
                 
                 //If our glyph is missing, choose the missing character glyph instead!
-                if (_glyph_data == undefined) _glyph_data = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];
+                if (_data_index == undefined) _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];
                 
-                if (_glyph_data == undefined)
+                if (_data_index == undefined)
                 {
                     //This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
                     __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");
                 }
                 else
                 {
-                    //Add this glyph to our grid
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = _glyph_write;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _glyph_data;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _glyph_data[SCRIBBLE_GLYPH.WIDTH];
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _glyph_data[SCRIBBLE_GLYPH.SEPARATION];
-                    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = _glyph_data[SCRIBBLE_GLYPH.BIDI];
+                    //Add this glyph to our grid by copying from the font's own glyph data grid
+                    ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.ORD, _data_index, SCRIBBLE_GLYPH.MSDF_PXRANGE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD);
                     ++_glyph_count;
                 }
                 
@@ -861,6 +873,7 @@ function __scribble_gen_3_parser()
     
     __SCRIBBLE_PARSER_POP_COLOUR;
     __SCRIBBLE_PARSER_POP_EFFECT_FLAGS;
+    __SCRIBBLE_PARSER_POP_FONT_SCALE; //Must be *before* __SCRIBBLE_PARSER_POP_SCALE
     __SCRIBBLE_PARSER_POP_SCALE;
     __SCRIBBLE_PARSER_POP_SLANT;
     

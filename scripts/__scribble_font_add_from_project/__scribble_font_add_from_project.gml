@@ -14,9 +14,24 @@ function __scribble_font_add_from_project(_font)
     
     var _global_glyph_bidi_map = global.__scribble_glyph_data.bidi_map;
     
-    var _font_data = new __scribble_class_font(_name);
-    _font_data.msdf = false;
-    var _font_glyphs_map = _font_data.glyphs_map;
+    //Get font info from the runtime
+    var _font_info = font_get_info(_font);
+    var _info_glyphs_dict = _font_info.glyphs;
+    
+    //
+    var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
+    var _size = array_length(_info_glyph_names);
+    
+    //
+    var _info_glyphs_array = array_create(array_length(_info_glyph_names));
+    var _i = 0;
+    repeat(_size)
+    {
+        var _glyph = _info_glyph_names[_i];
+        var _struct = _info_glyphs_dict[$ _glyph];
+        _info_glyphs_array[@ _i] = _struct;
+        ++_i;
+    }
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");
     
@@ -40,61 +55,61 @@ function __scribble_font_add_from_project(_font)
                          + " -> " + string_format(_texture_uvs[2], 1, 10) + "," + string_format(_texture_uvs[3], 1, 10));
     }
     
-    //Get font info from the runtime
-    var _font_info = font_get_info(_font);
-    var _info_glyphs_dict = _font_info.glyphs;
-    
-    //
-    var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
-    var _size = array_length(_info_glyph_names);
-    
-    //
-    var _info_glyphs_array = array_create(array_length(_info_glyph_names));
-    var _i = 0;
-    repeat(_size)
-    {
-        var _glyph = _info_glyph_names[_i];
-        var _struct = _info_glyphs_dict[$ _glyph];
-        _info_glyphs_array[@ _i] = _struct;
-        ++_i;
-    }
+    var _font_data = new __scribble_class_font(_name, _size, false);
+    var _font_glyphs_map      = _font_data.glyphs_map;
+    var _font_glyph_data_grid = _font_data.glyph_data_grid;
     
     var _i = 0;
     repeat(_size)
     {
         var _glyph_dict = _info_glyphs_array[_i];
         
-        var _index = _glyph_dict.char;
-        var _char  = chr(_index);
-        var _x     = _glyph_dict.x;
-        var _y     = _glyph_dict.y;
-        var _w     = _glyph_dict.w;
-        var _h     = _glyph_dict.h;
+        var _ord  = _glyph_dict.char;
+        var _char = chr(_ord);
         
-        var _u0    = _x*_texture_tw;
-        var _v0    = _y*_texture_th;
-        var _u1    = _u0 + _w*_texture_tw;
-        var _v1    = _v0 + _h*_texture_th;
+        if ((_char == "h") && (_font == fnt_test_0))
+        {
+            show_debug_message("!");
+        }
         
-        var _bidi = _global_glyph_bidi_map[? _index];
+        var _bidi = _global_glyph_bidi_map[? _ord];
         if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
         
-        var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
-        _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _char;
-        _array[@ SCRIBBLE_GLYPH.INDEX     ] = _index;
-        _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _w;
-        _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _h;
-        _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _glyph_dict.offset;
-        _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
-        _array[@ SCRIBBLE_GLYPH.SEPARATION] = _glyph_dict.shift;
-        _array[@ SCRIBBLE_GLYPH.TEXTURE   ] = _texture;
-        _array[@ SCRIBBLE_GLYPH.U0        ] = _u0;
-        _array[@ SCRIBBLE_GLYPH.V0        ] = _v0;
-        _array[@ SCRIBBLE_GLYPH.U1        ] = _u1;
-        _array[@ SCRIBBLE_GLYPH.V1        ] = _v1;
-        _array[@ SCRIBBLE_GLYPH.BIDI      ] = _bidi;
+        var _x = _glyph_dict.x;
+        var _y = _glyph_dict.y;
+        var _w = _glyph_dict.w;
+        var _h = _glyph_dict.h;
         
-        _font_glyphs_map[? ord(_char)] = _array;
+        var _u0 = _x*_texture_tw;
+        var _v0 = _y*_texture_th;
+        var _u1 = _u0 + _w*_texture_tw;
+        var _v1 = _v0 + _h*_texture_th;
+        
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER   ] = _char;
+        
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.ORD         ] = _ord;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI        ] = _bidi;
+        
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET    ] = _glyph_dict.offset;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET    ] = 0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH       ] = _w;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT      ] = _h;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION  ] = _glyph_dict.shift;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_L     ] = -_w/2;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_T     ] = -_h/2;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_R     ] =  _w/2;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.DELTA_B     ] =  _h/2;
+                                                               
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE     ] = _texture;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0          ] = _u0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V0          ] = _v0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U1          ] = _u1;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1          ] = _v1;
+        
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = undefined;
+        
+        
+        _font_glyphs_map[? _ord] = _i;
         
         ++_i;
     }
@@ -102,10 +117,10 @@ function __scribble_font_add_from_project(_font)
     _font_data.calculate_font_height();
     
     //Check to see if this texture has been resized during compile
-    var _GM_scaling = _font_glyphs_map[? 32][SCRIBBLE_GLYPH.HEIGHT] / _font_info.size;
+    var _GM_scaling = _font_glyph_data_grid[# _font_glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT] / _font_info.size;
     if (_GM_scaling < 1)
     {
-        __scribble_trace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyphs_map[? 32][SCRIBBLE_GLYPH.HEIGHT], ", scaling factor = ", _GM_scaling, ")");
+        __scribble_trace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyph_data_grid[# _font_glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT], ", scaling factor = ", _GM_scaling, ")");
         
         //FIXME - This seems to be inaccurate if the font is scaled down a long way - 20201-11-11  IDE v2.3.6.595  Runtime v2.3.6.464
         //        Good test vector is fnt_noto_chinese with a 2K texture page

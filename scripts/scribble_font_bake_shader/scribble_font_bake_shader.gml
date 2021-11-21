@@ -318,7 +318,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             var _index = _glyph_position[4];
             var _src_glyph_array = _src_glyphs_array[_index];
             
-            var _ord = _src_glyph_array[SCRIBBLE_GLYPH.INDEX];
+            var _ord = _src_glyph_array[SCRIBBLE_GLYPH.ORD];
             
             var _l = _glyph_position[0];
             var _t = _glyph_position[1];
@@ -332,7 +332,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             
             var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
             _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _src_glyph_array[SCRIBBLE_GLYPH.CHARACTER ];
-            _array[@ SCRIBBLE_GLYPH.INDEX     ] = _ord;
+            _array[@ SCRIBBLE_GLYPH.ORD       ] = _ord;
             _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _src_glyph_array[SCRIBBLE_GLYPH.WIDTH     ] + _l_pad + _r_pad;
             _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _src_glyph_array[SCRIBBLE_GLYPH.HEIGHT    ] + _t_pad + _b_pad;
             _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _src_glyph_array[SCRIBBLE_GLYPH.X_OFFSET  ] - _l_pad;

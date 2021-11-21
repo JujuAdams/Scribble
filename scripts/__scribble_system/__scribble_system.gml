@@ -64,6 +64,7 @@ global.__scribble_word_grid           = ds_grid_create(1000, __SCRIBBLE_PARSER_W
 global.__scribble_line_grid           = ds_grid_create(__SCRIBBLE_MAX_LINES, __SCRIBBLE_PARSER_LINE.__SIZE);
 global.__scribble_stretch_grid        = ds_grid_create(1000, __SCRIBBLE_PARSER_STRETCH.__SIZE);
 global.__scribble_temp_grid           = ds_grid_create(1000, 1);
+global.__scribble_vbuff_pos_grid      = ds_grid_create(1000, __SCRIBBLE_VBUFF_POS.__SIZE);
 //global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0); //TODO - Do we still need this?
 global.__scribble_character_delay     = false;
 global.__scribble_character_delay_map = ds_map_create();
@@ -490,23 +491,32 @@ function __scribble_buffer_write_unicode(_buffer, _value)
 #macro __SCRIBBLE_DATE     "2021-11-18"
 #macro __SCRIBBLE_DEBUG    false
 
-//You'll usually only want to modify SCRIBBLE_GLYPH.X_OFFSET, SCRIBBLE_GLYPH.Y_OFFSET, and SCRIBBLE_GLYPH.SEPARATION
-enum SCRIBBLE_GLYPH //TODO - Add pxrange field
+enum SCRIBBLE_GLYPH
 {
-    CHARACTER,  // 0
-    INDEX,      // 1
-    WIDTH,      // 2
-    HEIGHT,     // 3
-    X_OFFSET,   // 4
-    Y_OFFSET,   // 5
-    SEPARATION, // 6
-    TEXTURE,    // 7
-    U0,         // 8
-    V0,         // 9
-    U1,         //10
-    V1,         //11
-    BIDI,       //12
-    __SIZE      //13
+    CHARACTER,    // 0
+    
+    ORD,          // 1  }
+    BIDI,         // 2   |
+                  //     |
+    X_OFFSET,     // 3   |
+    Y_OFFSET,     // 4   |
+    WIDTH,        // 5   |
+    HEIGHT,       // 6   |
+    SEPARATION,   // 7   | This group of enums must not change order or be split
+    DELTA_L,      // 8   |
+    DELTA_T,      // 9   |
+    DELTA_R,      //10   |
+    DELTA_B,      //11  }
+    
+    TEXTURE,      //12
+    U0,           //13
+    V0,           //14
+    U1,           //15
+    V1,           //16
+    
+    MSDF_PXRANGE, //17
+    
+    __SIZE        //18
 }
 
 // TODO - Allow copying of glyph layout into a separate grid

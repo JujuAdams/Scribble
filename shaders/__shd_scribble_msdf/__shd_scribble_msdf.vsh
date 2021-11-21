@@ -411,14 +411,14 @@ void main()
         centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         
         vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        pos = rotate_by_vector(centre - centreDelta, centre, normalize(orientation));
+        pos = rotate_by_vector(centre + centreDelta, centre, normalize(orientation));
         
         vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
         pos += in_Position.y*perpendicular;
     }
     else
     {
-        centre = pos + centreDelta;
+        centre = pos - centreDelta;
     }
     
     

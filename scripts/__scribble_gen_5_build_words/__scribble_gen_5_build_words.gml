@@ -135,14 +135,14 @@ function __scribble_gen_5_build_words()
         
         if (_word_bidi != __SCRIBBLE_BIDI.R2L)
         {
-            _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X] = _word_width;
+            _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X] += _word_width;
             _word_width += _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SEPARATION];
             _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX] = _i;
         }
         else
         {
             _word_width -= _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SEPARATION];
-            _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X] = _word_width;
+            _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X] += _word_width;
         }
         
         ++_i;

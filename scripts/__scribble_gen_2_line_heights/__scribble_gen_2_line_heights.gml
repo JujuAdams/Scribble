@@ -8,14 +8,17 @@ function __scribble_gen_2_line_heights()
     if (_line_height_min < 0)
     {
         var _font_data = __scribble_get_font_data(_element.starting_font);
-        var _font_glyphs_map  = _font_data.glyphs_map;
-        var _space_glyph_data = _font_glyphs_map[? 32];
-        if (_space_glyph_data == undefined)
+        var _font_glyph_data_grid = _font_data.glyph_data_grid;
+        var _font_glyphs_map      = _font_data.glyphs_map;
+        
+        var _space_index = _font_glyphs_map[? 32];
+        if (_space_index == undefined)
         {
             __scribble_error("The space character is missing from font definition for \"", _font_name, "\"");
             return false;
         }
-        var _font_line_height = _space_glyph_data[SCRIBBLE_GLYPH.HEIGHT];
+        
+        var _font_line_height = _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.HEIGHT];
         _line_height_min = _font_line_height;
     }
     

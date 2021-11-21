@@ -1,1 +1,1 @@
-scribble("[fa_middle][fa_center]Sphinx of black quartz, hear my vow").draw(room_width div 2, room_height div 2);
+scribble("[fa_center][fa_middle]Sphinx of black quartz, hear my vow").draw(room_width div 2, room_height div 2);

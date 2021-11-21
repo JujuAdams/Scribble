@@ -12,22 +12,14 @@ function __scribble_class_page() constructor
     
     __events = {};
     
-    static __get_vertex_buffer = function(_texture, _font_data, _for_text, _model_struct)
+    static __get_vertex_buffer = function(_texture, _pxrange, _for_text, _model_struct)
     {
         var _pointer_string = string(_texture);
+        
         var _data = __texture_to_vertex_buffer_dict[$ _pointer_string];
         if (_data == undefined)
         {
-            if (is_struct(_font_data))
-            {
-                var _font_msdf_pxrange = _font_data.msdf_pxrange;
-            }
-            else
-            {
-                var _font_msdf_pxrange = undefined;
-            }
-            
-            if (_font_msdf_pxrange == undefined)
+            if (_pxrange == undefined)
             {
                 _model_struct.uses_standard_font = true;
                 var _shader = __shd_scribble;
@@ -44,7 +36,7 @@ function __scribble_class_page() constructor
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = _vbuff;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXTURE      ] = _texture;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE   ] = _font_msdf_pxrange;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE   ] = _pxrange;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH  ] = texture_get_texel_width(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT ] = texture_get_texel_height(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.SHADER       ] = _shader;
