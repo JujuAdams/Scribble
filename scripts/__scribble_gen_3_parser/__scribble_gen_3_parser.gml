@@ -1,3 +1,52 @@
+var _map = ds_map_create();
+_map[? ""          ] =  0;
+_map[? "/"         ] =  0;
+_map[? "/font"     ] =  1;
+_map[? "/f"        ] =  1;
+_map[? "/colour"   ] =  2;
+_map[? "/color"    ] =  2;
+_map[? "/c"        ] =  2;
+_map[? "/alpha"    ] =  3;
+_map[? "/a"        ] =  3;
+_map[? "/scale"    ] =  4;
+_map[? "/s"        ] =  4;
+_map[? "/slant"    ] =  5;
+_map[? "/page"     ] =  6;
+_map[? "scale"     ] =  7;
+_map[? "scaleStack"] =  8;
+_map[? "slant"     ] =  9;
+_map[? "alpha"     ] = 10;
+_map[? "fa_left"   ] = 11;
+_map[? "fa_center" ] = 12;
+_map[? "fa_centre" ] = 12;
+_map[? "fa_right"  ] = 13;
+_map[? "fa_top"    ] = 14;
+_map[? "fa_middle" ] = 15;
+_map[? "fa_bottom" ] = 16;
+_map[? "pin_left"  ] = 17;
+_map[? "pin_center"] = 18;
+_map[? "pin_centre"] = 18;
+_map[? "pin_right" ] = 19;
+_map[? "fa_justify"] = 20;
+_map[? "nbsp"      ] = 21;
+_map[? "&nbsp"     ] = 21;
+_map[? "nbsp;"     ] = 21;
+_map[? "&nbsp;"    ] = 21;
+_map[? "cycle"     ] = 22;
+_map[? "/cycle"    ] = 23;
+_map[? "r"         ] = 24;
+_map[? "/b"        ] = 24;
+_map[? "/i"        ] = 24;
+_map[? "/bi"       ] = 24;
+_map[? "b"         ] = 25;
+_map[? "i"         ] = 26;
+_map[? "bi"        ] = 27;
+_map[? "surface"   ] = 28;
+
+global.__scribble_command_tag_lookup_accelerator = _map;
+
+
+
 function __scribble_gen_3_parser()
 {
     //Cache globals locally for a performance boost
@@ -128,20 +177,21 @@ function __scribble_gen_3_parser()
                 var _new_halign = undefined;
                 var _new_valign = undefined;
                 
-                switch(_tag_command_name)
+                switch(global.__scribble_command_tag_lookup_accelerator[? _tag_command_name])
                 {
                     #region Reset formatting
                     
-                    //Resets:
-                    //    - colour
-                    //    - effect flags (inc. cycle)
-                    //    - scale
-                    //    - slant
-                    //    - font
-                    //But NOT alignment
-                    
-                    case "":
-                    case "/":
+                    // []
+                    // [/]
+                    case 0:
+                        //Resets:
+                        //    - colour
+                        //    - effect flags (inc. cycle)
+                        //    - scale
+                        //    - slant
+                        //    - font
+                        //But NOT alignment
+                        
                         __SCRIBBLE_PARSER_POP_COLOUR;
                         __SCRIBBLE_PARSER_POP_EFFECT_FLAGS;
                         __SCRIBBLE_PARSER_POP_FONT_SCALE; //Must be *before* __SCRIBBLE_PARSER_POP_SCALE
@@ -163,8 +213,9 @@ function __scribble_gen_3_parser()
                         }
                     break;
                     
-                    case "/font":
-                    case "/f":
+                    // [/font]
+                    // [/f]
+                    case 1:
                         __SCRIBBLE_PARSER_POP_FONT_SCALE;
                         
                         if (_font_name != _starting_font)
@@ -174,9 +225,10 @@ function __scribble_gen_3_parser()
                         }
                     break;
                     
-                    case "/colour":
-                    case "/color":
-                    case "/c":
+                    // [/color]
+                    // [/colour]
+                    // [/c]
+                    case 2:
                         _state_colour = _starting_colour;
                         if (!_state_cycle)
                         {
@@ -185,8 +237,9 @@ function __scribble_gen_3_parser()
                         }
                     break;
                     
-                    case "/alpha":
-                    case "/a":
+                    // [/alpha]
+                    // [/a]
+                    case 3:
                         _state_alpha_255 = 0xFF;
                         if (!_state_cycle)
                         {
@@ -195,25 +248,29 @@ function __scribble_gen_3_parser()
                         }
                     break;
                     
-                    case "/scale":
-                    case "/s":
+                    // [/scale]
+                    // [/s]
+                    case 4:
                         __SCRIBBLE_PARSER_POP_SCALE;
                     break;
                     
-                    case "/slant":
+                    // [/slant]
+                    case 5:
                         __SCRIBBLE_PARSER_POP_SLANT;
                         _state_slant = false;
                     break;
                     
                     #endregion
                     
-                    case "/page":
+                    // [/page]
+                    case 6:
                         __SCRIBBLE_PARSER_WRITE_PAGEBREAK;
                     break;
                     
                     #region Scale
                     
-                    case "scale":
+                    // [scale]
+                    case 7:
                         if (_tag_parameter_count <= 1)
                         {
                             __scribble_trace("Not enough parameters for [scale] tag!");
@@ -225,7 +282,8 @@ function __scribble_gen_3_parser()
                         }
                     break;
                     
-                    case "scaleStack":
+                    // [scaleStack]
+                    case 8:
                         if (_tag_parameter_count <= 1)
                         {
                             __scribble_trace("Not enough parameters for [scaleStack] tag!");
@@ -239,12 +297,14 @@ function __scribble_gen_3_parser()
                     
                     #endregion
                     
-                    case "slant":
+                    // [slant]
+                    case 9:
                         __SCRIBBLE_PARSER_POP_SLANT;
                         _state_slant = true;
                     break;
                     
-                    case "alpha":
+                    // [alpha]
+                    case 10:
                         _state_alpha_255 = floor(255*clamp(_tag_parameters[1], 0, 1));
                         if (!_state_cycle)
                         {
@@ -255,52 +315,55 @@ function __scribble_gen_3_parser()
                     
                     #region Font Alignment
                     
-                    case "fa_left":
+                    // [fa_left]
+                    case 11:
                         _new_halign = fa_left;
                     break;
                     
-                    case "fa_center":
-                    case "fa_centre":
+                    // [fa_center]
+                    // [fa_centre]
+                    case 12:
                         _new_halign = fa_center;
                     break;
                     
-                    case "fa_right":
+                    // [fa_right]
+                    case 13:
                         _new_halign = fa_right;
                     break;
                             
-                    case "fa_top":
+                    // [fa_top]
+                    case 14:
                         _new_valign = fa_top;
                     break;
-                            
-                    case "fa_middle":
+                         
+                    // [fa_middle]   
+                    case 15:
                         _new_valign = fa_middle;
                     break;
-                            
-                    case "fa_bottom":
+                        
+                    // [fa_bottom]    
+                    case 16:
                         _new_valign = fa_bottom;
                     break;
-                            
-                    case "js_left":
-                    case "js_center":
-                    case "js_centre":
-                    case "js_right":
-                        __scribble_error("[js_*] tags have been deprecated. Please use [pin_*]");
-                    break;
-                            
-                    case "pin_left":
+                    
+                    // [pin_left]   
+                    case 17:
                         _new_halign = __SCRIBBLE_PIN_LEFT;
                     break;
-                            
-                    case "pin_center":
-                    case "pin_centre":
+                    
+                    // [pin_center]
+                    // [pin_centre]
+                    case 18:
                         _new_halign = __SCRIBBLE_PIN_CENTRE;
                     break;
-                            
-                    case "pin_right":
+                    
+                    // [pin_right]
+                    case 19:
                         _new_halign = __SCRIBBLE_PIN_RIGHT;
                     break;
-                            
-                    case "fa_justify":
+                    
+                    // [fa_justify]
+                    case 20:
                         _new_halign = __SCRIBBLE_JUSTIFY;
                     break;
                             
@@ -308,10 +371,11 @@ function __scribble_gen_3_parser()
                             
                     #region Non-breaking space emulation
                     
-                    case "nbsp":
-                    case "&nbsp":
-                    case "nbsp;":
-                    case "&nbsp;":
+                    // [nbsp]
+                    // [&nbsp]
+                    // [nbsp]
+                    // [&nbsp;]
+                    case 21:
                         repeat((array_length(_tag_parameters) == 2)? real(_tag_parameters[1]) : 1)
                         {
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = 0xA0; //Non-breaking space (dec = 160)
@@ -330,8 +394,9 @@ function __scribble_gen_3_parser()
                     #endregion
                             
                     #region Cycle
-                            
-                    case "cycle":
+                    
+                    // [cycle]
+                    case 22:
                         __SCRIBBLE_PARSER_POP_COLOUR;
                         
                         var _cycle_r = (_tag_parameter_count > 1)? max(1, real(_tag_parameters[1])) : 0;
@@ -344,8 +409,9 @@ function __scribble_gen_3_parser()
                                 
                         _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? _tag_command_name]);
                     break;
-                            
-                    case "/cycle":
+                    
+                    // [/cycle]
+                    case 23:
                         __SCRIBBLE_PARSER_POP_COLOUR;
                         
                         _state_cycle = false;
@@ -357,11 +423,12 @@ function __scribble_gen_3_parser()
                     #endregion
                             
                     #region Style shorthands
-                            
-                    case "r":
-                    case "/b":
-                    case "/i":
-                    case "/bi":
+                    
+                    // [r]
+                    // [/b]
+                    // [/i]
+                    // [/bi]
+                    case 24:
                         __SCRIBBLE_PARSER_POP_FONT_SCALE; 
                         
                         //Get the required font from the font family
@@ -380,8 +447,9 @@ function __scribble_gen_3_parser()
                             __SCRIBBLE_PARSER_SET_FONT;
                         }
                     break;
-                            
-                    case "b":
+                    
+                    // [b]
+                    case 25:
                         __SCRIBBLE_PARSER_POP_FONT_SCALE;
                         
                         //Get the required font from the font family
@@ -400,8 +468,9 @@ function __scribble_gen_3_parser()
                             __SCRIBBLE_PARSER_SET_FONT;
                         }
                     break;
-                            
-                    case "i":
+                    
+                    // [i]
+                    case 26:
                         __SCRIBBLE_PARSER_POP_FONT_SCALE;
                         
                         //Get the required font from the font family
@@ -420,8 +489,9 @@ function __scribble_gen_3_parser()
                             __SCRIBBLE_PARSER_SET_FONT;
                         }
                     break;
-                            
-                    case "bi":
+                    
+                    // [bi]
+                    case 27:
                         __SCRIBBLE_PARSER_POP_FONT_SCALE;
                         
                         //Get the required font from the font family
@@ -445,7 +515,8 @@ function __scribble_gen_3_parser()
                     
                     #region Surface
                     
-                    case "surface":
+                    // [surface]
+                    case 28:
                         var _surface = real(_tag_parameters[1]);
                         
                         var _surface_w = surface_get_width(_surface);
