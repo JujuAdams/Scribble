@@ -1,4 +1,4 @@
-function __scribble_generator_build_pages()
+function __scribble_gen_8_build_pages()
 {
     var _glyph_grid   = global.__scribble_glyph_grid;
     var _word_grid    = global.__scribble_word_grid;

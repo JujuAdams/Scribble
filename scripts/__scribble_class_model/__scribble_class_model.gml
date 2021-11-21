@@ -301,16 +301,16 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     };
     
     //TODO - Number these
-    __scribble_generator_model_limits_and_bezier_curves()
-    __scribble_generator_line_heights();
-    __scribble_generator_parser(); //TODO - Write caching system for state and use ds_grid_set_region() to optimise/minimise ds_grid write operations
-    __scribble_generator_determine_overall_bidi();
-    __scribble_generator_build_words();
-    __scribble_generator_finalize_bidi();
-    __scribble_generator_build_lines();
-    __scribble_generator_build_pages();
-    __scribble_generator_position_glyphs();
-    __scribble_generator_write_vbuffs();
+    __scribble_gen_1_model_limits_and_bezier_curves()
+    __scribble_gen_2_line_heights();
+    __scribble_gen_3_parser(); //TODO - Write caching system for state and use ds_grid_set_region() to optimise/minimise ds_grid write operations
+    __scribble_gen_4_determine_overall_bidi();
+    __scribble_gen_5_build_words();
+    __scribble_gen_6_finalize_bidi();
+    __scribble_gen_7_build_lines();
+    __scribble_gen_8_build_pages();
+    __scribble_gen_9_position_glyphs();
+    __scribble_gen_10_write_vbuffs();
     
     //Wipe the control grid so we don't accidentally hold references to event structs
     ds_grid_clear(global.__scribble_control_grid, 0);

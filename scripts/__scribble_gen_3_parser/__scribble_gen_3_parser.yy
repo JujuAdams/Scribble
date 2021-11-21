@@ -6,7 +6,7 @@
     "path": "folders/Scribble/(System - don't call these functions)/Generator.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__scribble_generator_model_limits_and_bezier_curves",
+  "name": "__scribble_gen_3_parser",
   "tags": [],
   "resourceType": "GMScript",
 }

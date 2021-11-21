@@ -1,4 +1,4 @@
-function __scribble_generator_model_limits_and_bezier_curves()
+function __scribble_gen_1_model_limits_and_bezier_curves()
 {
     var _element = global.__scribble_generator_state.element;
     

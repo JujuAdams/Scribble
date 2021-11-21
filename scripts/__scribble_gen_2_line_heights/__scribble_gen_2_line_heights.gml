@@ -1,4 +1,4 @@
-function __scribble_generator_line_heights()
+function __scribble_gen_2_line_heights()
 {
     //Set up line height limits
     var _element = global.__scribble_generator_state.element;

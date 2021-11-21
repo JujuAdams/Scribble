@@ -1,4 +1,4 @@
-function __scribble_generator_parser()
+function __scribble_gen_3_parser()
 {
     //Cache globals locally for a performance boost
     var _string_buffer = global.__scribble_buffer;

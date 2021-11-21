@@ -6,7 +6,7 @@
     "path": "folders/Scribble/(System - don't call these functions)/Generator.yy",
   },
   "resourceVersion": "1.0",
-  "name": "__scribble_generator_parser",
+  "name": "__scribble_gen_5_build_words",
   "tags": [],
   "resourceType": "GMScript",
 }
