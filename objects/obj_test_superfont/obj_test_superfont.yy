@@ -8,7 +8,7 @@
   "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 1,
-  "physicsGroup": 1,
+  "physicsGroup": 0,
   "physicsDensity": 0.5,
   "physicsRestitution": 0.1,
   "physicsLinearDamping": 0.1,
@@ -24,11 +24,11 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "MSDF",
-    "path": "folders/Test Cases/MSDF.yy",
+    "name": "Fonts",
+    "path": "folders/Test Cases/Fonts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_msdf_collage",
+  "name": "obj_test_superfont",
   "tags": [],
   "resourceType": "GMObject",
 }

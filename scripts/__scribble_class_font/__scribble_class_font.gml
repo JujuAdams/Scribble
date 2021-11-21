@@ -8,7 +8,7 @@ function __scribble_class_font(_name) constructor
     
     glyphs_map = ds_map_create();
     
-    collage = false;
+    superfont = false;
     
     msdf_pxrange = undefined;
     msdf         = undefined;
@@ -47,7 +47,7 @@ function __scribble_class_font(_name) constructor
     
     static clear = function()
     {
-        if (!collage) __scribble_error("Cannot clear non-collage fonts");
+        if (!superfont) __scribble_error("Cannot clear non-superfont fonts");
         
         ds_map_clear(glyphs_map);
         

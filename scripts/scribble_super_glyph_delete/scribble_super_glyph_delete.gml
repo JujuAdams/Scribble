@@ -1,4 +1,4 @@
-function scribble_font_collage_glyph_delete(_target)
+function scribble_super_glyph_delete(_target)
 {
     var _font_data = global.__scribble_font_data[? _target];
     if (_font_data == undefined) __scribble_error("Font \"", _font_data, "\" not found");
@@ -16,7 +16,7 @@ function scribble_font_collage_glyph_delete(_target)
     
     //Pass the argument array into our preparation function
     //This turns the argument array in a series of ranges to operate on
-    var _work_array = __scribble_prepare_collage_work_array(_glyphs_array);
+    var _work_array = __scribble_prepare_super_work_array(_glyphs_array);
     
     var _i = 0;
     repeat(array_length(_work_array))

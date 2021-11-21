@@ -2,7 +2,7 @@
 /// @param sourceFontName
 /// @param overwrite
 
-function scribble_font_collage_glyph_copy_all(_target, _source, _overwrite)
+function scribble_super_glyph_copy_all(_target, _source, _overwrite)
 {
     var _target_font_data = global.__scribble_font_data[? _target];
     var _source_font_data = global.__scribble_font_data[? _source];
@@ -18,7 +18,7 @@ function scribble_font_collage_glyph_copy_all(_target, _source, _overwrite)
     }
     
     //Verify that the two fonts can be used together
-    var _y_offset = __scribble_font_collage_glyph_copy_common(_target_font_data, _source_font_data);
+    var _y_offset = __scribble_super_glyph_copy_common(_target_font_data, _source_font_data);
     
     var _target_glyphs_map = _target_font_data.glyphs_map;
     var _source_glyphs_map = _source_font_data.glyphs_map;

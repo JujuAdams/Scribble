@@ -4,7 +4,7 @@
 /// @param glyphs
 /// @param [glyphs]...
 
-function scribble_font_collage_glyph_copy(_target, _source, _overwrite)
+function scribble_super_glyph_copy(_target, _source, _overwrite)
 {
     var _target_font_data = global.__scribble_font_data[? _target];
     var _source_font_data = global.__scribble_font_data[? _source];
@@ -20,7 +20,7 @@ function scribble_font_collage_glyph_copy(_target, _source, _overwrite)
     }
     
     //Verify that the two fonts can be used together
-    var _y_offset = __scribble_font_collage_glyph_copy_common(_target_font_data, _source_font_data);
+    var _y_offset = __scribble_super_glyph_copy_common(_target_font_data, _source_font_data);
     
     var _target_glyphs_map = _target_font_data.glyphs_map;
     var _source_glyphs_map = _source_font_data.glyphs_map;
@@ -36,7 +36,7 @@ function scribble_font_collage_glyph_copy(_target, _source, _overwrite)
     
     //Pass the argument array into our preparation function
     //This turns the argument array in a series of ranges to operate on
-    var _work_array = __scribble_prepare_collage_work_array(_glyphs_array);
+    var _work_array = __scribble_prepare_super_work_array(_glyphs_array);
     
     var _i = 0;
     repeat(array_length(_work_array))
@@ -63,7 +63,7 @@ function scribble_font_collage_glyph_copy(_target, _source, _overwrite)
     }
 }
 
-function __scribble_font_collage_glyph_copy_common(_target_font_data, _source_font_data)
+function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data)
 {
     if (_target_font_data.msdf || _source_font_data.msdf)
     {

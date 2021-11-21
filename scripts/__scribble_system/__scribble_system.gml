@@ -353,7 +353,7 @@ function __scribble_array_find_index(_array, _value)
     return -1;
 }
 
-function __scribble_prepare_collage_work_array(_input_array)
+function __scribble_prepare_super_work_array(_input_array)
 {
     var _output_array = [];
     
