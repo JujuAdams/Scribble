@@ -117,7 +117,6 @@ function __scribble_gen_3_parser()
     {
         // In-lined __scribble_buffer_read_unicode() for speed
         var _glyph_ord  = buffer_read(_string_buffer, buffer_u8); //Assume 0xxxxxxx
-        var _glyph_bidi_raw = undefined;
         
         // Break out if we hit a null terminator
         if (_glyph_ord == 0x00) break;
@@ -382,8 +381,6 @@ function __scribble_gen_3_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _font_space_width;
                             
-                            _glyph_bidi_raw = __SCRIBBLE_BIDI.SYMBOL;
-                            
                             ++_glyph_count;
                             _glyph_prev_arabic_join_next = false;
                             _glyph_prev = 0xA0;
@@ -541,8 +538,6 @@ function __scribble_gen_3_parser()
                         
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.MSDF_PXRANGE] = undefined;
                         
-                        _glyph_bidi_raw = __SCRIBBLE_BIDI.SYMBOL;
-                        
                         _glyph_prev_arabic_join_next = false;
                         _glyph_prev = __SCRIBBLE_GLYPH_SURFACE;
                         _glyph_prev_prev = _glyph_prev;
@@ -620,8 +615,6 @@ function __scribble_gen_3_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX] = _sprite_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ] = _image_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED ] = _image_speed;
-                            
-                            _glyph_bidi_raw = __SCRIBBLE_BIDI.SYMBOL;
                             
                             ++_glyph_count;
                             _glyph_prev_arabic_join_next = false;
@@ -764,8 +757,6 @@ function __scribble_gen_3_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = 0;
                 
-                _glyph_bidi_raw = __SCRIBBLE_BIDI.LINE_BREAK;
-                
                 ++_glyph_count;
                 _glyph_prev_arabic_join_next = false;
                 _glyph_prev = 0x0A;
@@ -783,8 +774,6 @@ function __scribble_gen_3_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = SCRIBBLE_TAB_WIDTH*_font_space_width;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = SCRIBBLE_TAB_WIDTH*_font_space_width;
-                
-                _glyph_bidi_raw = __SCRIBBLE_BIDI.WHITESPACE;
                 
                 ++_glyph_count;
                 _glyph_prev_arabic_join_next = false;
@@ -806,8 +795,6 @@ function __scribble_gen_3_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _font_space_width;
                 
-                _glyph_bidi_raw = __SCRIBBLE_BIDI.WHITESPACE;
-                
                 ++_glyph_count;
                 _glyph_prev_arabic_join_next = false;
                 _glyph_prev = 0x20;
@@ -827,8 +814,6 @@ function __scribble_gen_3_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = 0;
-                
-                _glyph_bidi_raw = __SCRIBBLE_BIDI.WHITESPACE;
                 
                 ++_glyph_count;
                 _glyph_prev_arabic_join_next = false;
