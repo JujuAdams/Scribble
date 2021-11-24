@@ -100,6 +100,36 @@ enum __SCRIBBLE_PARSER_LINE
                                           ++_control_page;
 
 
+#macro __SCRIBBLE_PARSER_WRITE_FULL_GLYPH  ;\//Pull info out of the font's data structures
+                                           var _glyph_data = _font_glyphs_map[? _glyph_write];\
+                                           ;\
+                                           ;\//If our glyph is missing, choose the missing character glyph instead!
+                                           if (_glyph_data == undefined) _glyph_data = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
+                                           ;\
+                                           if (_glyph_data == undefined)\
+                                           {\
+                                               ;\//This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
+                                               __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");\
+                                           }\
+                                           else\
+                                           {\
+                                               ;\//Add this glyph to our grid
+                                               _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD       ] = _glyph_write;\
+                                               _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_DATA ] = _font_data;\
+                                               _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.GLYPH_DATA] = _glyph_data;\
+                                               _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH     ] = _state_scale*_glyph_data[SCRIBBLE_GLYPH.WIDTH];\
+                                               _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT    ] = _state_scale*_font_line_height;\
+                                               _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION] = _state_scale*_glyph_data[SCRIBBLE_GLYPH.SEPARATION];\
+                                               _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI      ] = _glyph_data[SCRIBBLE_GLYPH.BIDI];\
+                                               __SCRIBBLE_PARSER_WRITE_GLYPH_STATE;\
+                                               ++_glyph_count;\
+                                               ;\
+                                               ;\//We don't set _glyph_prev_arabic_join_next here, we do it further up
+                                               _glyph_prev = _glyph_write;\
+                                               _glyph_prev_prev = _glyph_prev;\
+                                           }
+
+
 #macro __SCRIBBLE_PARSER_SET_FONT   var _font_data         = __scribble_get_font_data(_font_name);\n
                                     var _font_glyphs_map   = _font_data.glyphs_map;\n
                                     var _font_msdf_pxrange = _font_data.msdf_pxrange;\n

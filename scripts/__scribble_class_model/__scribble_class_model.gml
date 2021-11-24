@@ -41,6 +41,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     fit_scale  = 1.0;
     wrapped    = false;
     has_arabic = false; // Set to <true> if any Arabic text is detected during the string parsing phase
+    has_thai   = false; // Similarly for Thai
     
     pages_array      = []; //Stores each page of text
     character_array  = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;

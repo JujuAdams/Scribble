@@ -169,7 +169,7 @@ function __scribble_generator_write_vbuffs()
                 
                 _animation_index++;
                 
-                if (_glyph_ord > 32)
+                if ((_glyph_ord > 32) && (_glyph_ord != 0x200B))
                 {
                     #region Write non-whitespace glyph
                     
