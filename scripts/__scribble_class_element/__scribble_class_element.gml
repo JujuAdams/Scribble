@@ -952,6 +952,48 @@ function __scribble_class_element(_string, _unique_id) constructor
         //Run the garbage collecter
         __scribble_gc_collect();
         
+        if (SCRIBBLE_SHOW_WRAP_BOUNDARY)
+        {
+            if (((scale_to_box_max_width > 0) && (scale_to_box_max_height > 0))
+            ||  ((wrap_max_width > 0) && (wrap_max_height > 0)))
+            {
+                var _l = _x;
+                var _t = _y;
+                
+                if ((scale_to_box_max_width > 0) && (scale_to_box_max_height > 0))
+                {
+                    var _w = scale_to_box_max_width;
+                    var _h = scale_to_box_max_height;
+                }
+                else
+                {
+                    var _w = wrap_max_width;
+                    var _h = wrap_max_height;
+                }
+                
+                _w *= xscale;
+                _h *= yscale;
+                
+                switch(starting_halign)
+                {
+                    case fa_left:               break;
+                    case fa_center: _l -= _w/2; break;
+                    case fa_right:  _l -= _w;   break;
+                }
+                
+                switch(_model.valign)
+                {
+                    case fa_top:                break;
+                    case fa_middle: _t -= _h/2; break;
+                    case fa_bottom: _t -= _h;   break;
+                }
+                
+                draw_set_color(c_red);
+                draw_rectangle(_l, _t, _l + _w, _t + _h, true);
+                draw_set_color(c_white);
+            }
+        }
+        
         return SCRIBBLE_DRAW_RETURNS_SELF? self : undefined;
     }
     
