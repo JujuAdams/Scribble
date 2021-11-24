@@ -3,6 +3,7 @@ precision highp float;
 
 #define PROPORTIONAL_BORDER_SCALE false
 #define PREMULTIPLY_ALPHA false
+#define ROUNDED_BORDERS false
 
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
@@ -23,17 +24,15 @@ float median(vec3 v)
     return max(min(v.x, v.y), min(max(v.x, v.y), v.z));
 }
 
-float MSDFSignedDistance(vec2 texOffset)
+float MSDFSignedDistance(vec4 sample)
 {
-    return median(texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel*texOffset).rgb) + u_fMSDFThicknessOffset - 0.5;
+    return median(sample.rgb) + u_fMSDFThicknessOffset - 0.5;
 }
 
-//TODO - Need to find out why MTSDF atlases are wrong before this feature can be used
-//
-// float SDFSignedDistance(vec2 texOffset)
-// {
-//     return texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel*texOffset).a + u_fMSDFThicknessOffset - 0.5;
-// }
+float SDFSignedDistance(vec4 sample)
+{
+    return sample.a + u_fMSDFThicknessOffset - 0.5;
+}
 
 float MSDFAlpha(float signedDistance, float pixelSize, float outerBorder)
 {
@@ -42,7 +41,8 @@ float MSDFAlpha(float signedDistance, float pixelSize, float outerBorder)
 
 void main()
 {
-    float distBase = MSDFSignedDistance(vec2(0.0));
+    vec4 sample = texture2D(gm_BaseTexture, v_vTexcoord);
+    float distBase = MSDFSignedDistance(sample);
     float alphaBase = MSDFAlpha(distBase, v_fPixelScale, 0.0);
     gl_FragColor = vec4(v_vColour.rgb, alphaBase);
     
@@ -50,14 +50,16 @@ void main()
     {
         if (u_fBorderThickness > 0.0)
         {
-            float alphaBorder = MSDFAlpha(distBase, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
+            float distRounded = ROUNDED_BORDERS? SDFSignedDistance(sample) : MSDFSignedDistance(sample);
+            float alphaBorder = MSDFAlpha(distRounded, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
             gl_FragColor.rgb = mix(u_vBorderColour, gl_FragColor.rgb, gl_FragColor.a);
             gl_FragColor.a = max(gl_FragColor.a, alphaBorder);
         }
         
         if (u_vShadowColour.a > 0.0)
         {
-            float shadowDist = MSDFSignedDistance(u_vShadowOffsetAndSoftness.xy/v_fPixelScale);
+            vec4 shadowSample = texture2D(gm_BaseTexture, v_vTexcoord + u_vTexel*u_vShadowOffsetAndSoftness.xy/v_fPixelScale);
+            float shadowDist = MSDFSignedDistance(shadowSample);
             float alphaShadow = u_vShadowColour.a*(1.0 - min(1.0, -2.0*shadowDist/u_vShadowOffsetAndSoftness.z));
             //Old method = MSDFAlpha(shadowDist, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
             vec4 shadowColour = vec4(u_vShadowColour.rgb, alphaShadow);
