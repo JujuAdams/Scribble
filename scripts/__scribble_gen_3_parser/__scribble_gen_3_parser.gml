@@ -519,7 +519,7 @@ function __scribble_gen_3_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.QUAD_U1     ] = 1;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.QUAD_V1     ] = 1;
                         
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.MSDF_PXRANGE] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.MSDF_PXRANGE] = undefined;
                         
                         ++_glyph_count;
                         _glyph_bidi_raw = __SCRIBBLE_BIDI.SYMBOL;
@@ -592,6 +592,8 @@ function __scribble_gen_3_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH       ] = sprite_get_width(_sprite_index);
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT      ] = sprite_get_height(_sprite_index);
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION  ] = sprite_get_width(_sprite_index);
+                        
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.MSDF_PXRANGE] = undefined;
                             
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX] = _sprite_index;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX ] = _image_index;
