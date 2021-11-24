@@ -135,7 +135,6 @@ global.__scribble_passthrough_vertex_format = vertex_format_end();
 //Cache uniform indexes
 global.__scribble_u_fTime                    = shader_get_uniform(__shd_scribble, "u_fTime"                   );
 global.__scribble_u_vColourBlend             = shader_get_uniform(__shd_scribble, "u_vColourBlend"            );
-global.__scribble_u_vFog                     = shader_get_uniform(__shd_scribble, "u_vFog"                    );
 global.__scribble_u_vGradient                = shader_get_uniform(__shd_scribble, "u_vGradient"               );
 global.__scribble_u_aDataFields              = shader_get_uniform(__shd_scribble, "u_aDataFields"             );
 global.__scribble_u_aBezier                  = shader_get_uniform(__shd_scribble, "u_aBezier"                 );
@@ -151,7 +150,6 @@ global.__scribble_u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble
 
 global.__scribble_msdf_u_fTime                    = shader_get_uniform(__shd_scribble_msdf, "u_fTime"                   );
 global.__scribble_msdf_u_vColourBlend             = shader_get_uniform(__shd_scribble_msdf, "u_vColourBlend"            );
-global.__scribble_msdf_u_vFog                     = shader_get_uniform(__shd_scribble_msdf, "u_vFog"                    );
 global.__scribble_msdf_u_vGradient                = shader_get_uniform(__shd_scribble_msdf, "u_vGradient"               );
 global.__scribble_msdf_u_aDataFields              = shader_get_uniform(__shd_scribble_msdf, "u_aDataFields"             );
 global.__scribble_msdf_u_aBezier                  = shader_get_uniform(__shd_scribble_msdf, "u_aBezier"                 );
