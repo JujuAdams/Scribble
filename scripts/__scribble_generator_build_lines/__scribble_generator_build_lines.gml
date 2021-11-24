@@ -110,7 +110,7 @@ function __scribble_generator_build_lines()
         }
         
         //If we're not running .fit_to_box() behaviour then escape now!
-        if (!_wrap_no_pages) break;
+        if (!_wrap_no_pages || (SCRIBBLE_FIT_TO_BOX_ITERATIONS <= 1)) break;
         
         
         
