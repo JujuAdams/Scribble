@@ -8,8 +8,10 @@ function __scribble_gen_4_build_words()
     
     with(global.__scribble_generator_state)
     {
-        var _glyph_count  = glyph_count;
-        var _overall_bidi = overall_bidi;
+        var _element       = element;
+        var _glyph_count   = glyph_count;
+        var _overall_bidi  = overall_bidi;
+        var _wrap_per_char = _element.wrap_per_char;
     }
     
     var _word_index            = -1;
@@ -95,6 +97,8 @@ function __scribble_gen_4_build_words()
             _new_word = true;
             _glyph_prev_whitespace = false;
         }
+        
+        if (_wrap_per_char && (_glyph_bidi_raw != __SCRIBBLE_BIDI.SYMBOL)) _new_word = true;
         
         // If the glyph we found is a different direction then create a new word for the glyph
         if (_new_word)
