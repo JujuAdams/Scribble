@@ -538,6 +538,7 @@ function __scribble_gen_3_parser()
                         
                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.MSDF_PXRANGE] = undefined;
                         
+                        ++_glyph_count;
                         _glyph_prev_arabic_join_next = false;
                         _glyph_prev = __SCRIBBLE_GLYPH_SURFACE;
                         _glyph_prev_prev = _glyph_prev;
