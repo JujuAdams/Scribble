@@ -17,17 +17,19 @@ enum __SCRIBBLE_PARSER_GLYPH
                         //     |
     MSDF_PXRANGE,       //12  /
     
-    STATE_COLOUR,       //13
-    STATE_EFFECT_FLAGS, //14
-    STATE_SLANT,        //15
-    FONT_SCALE_DIST,    //16
-    ANIMATION_INDEX,    //17
+    FONT_SCALE_DIST,    //13
+    CONTROL_COUNT,      //14
     
-    SPRITE_INDEX,       //18  \
-    IMAGE_INDEX,        //19   | Only used for sprites
-    IMAGE_SPEED,        //20  /
+    STATE_COLOUR,       //15
+    STATE_EFFECT_FLAGS, //16
+    STATE_SLANT,        //17
+    ANIMATION_INDEX,    //18
     
-    __SIZE,             //21
+    SPRITE_INDEX,       //19  \
+    IMAGE_INDEX,        //20   | Only used for sprites
+    IMAGE_SPEED,        //21  /
+    
+    __SIZE,             //22
 }
 
 enum __SCRIBBLE_VBUFF_POS //TODO - Implement slant offset
@@ -110,6 +112,8 @@ enum __SCRIBBLE_PARSER_LINE
 
 
 // N.B. This must be called *before* calling __SCRIBBLE_PARSER_POP_SCALE
+//TODO - Check this works with font scaling
+//TODO - Can this just be used as a generic scale tracker?
 #macro __SCRIBBLE_PARSER_POP_FONT_SCALE  ds_grid_set_region(_glyph_grid, _font_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST, _font_scale_dist);\
                                          _font_scale_start_glyph = _glyph_count-1;
 
