@@ -38,9 +38,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     blend_colour    = c_white;
     blend_alpha     = 1.0;
     
-    fog_colour = c_white;
-    fog_alpha  = 0.0;
-    
     gradient_colour = c_black;
     gradient_alpha  = 0.0;
     
@@ -377,25 +374,6 @@ function __scribble_class_element(_string, _unique_id) constructor
             __page = 0;
         }
         
-        return self;
-    }
-    
-    /// @param colour
-    /// @param alpha
-    static fog = function(_colour, _alpha)
-    {
-        if (is_string(_colour))
-        {
-            _colour = global.__scribble_colours[? _colour];
-            if (_colour == undefined)
-            {
-                __scribble_error("Colour name \"", _colour, "\" not recognised");
-                exit;
-            }
-        }
-        
-        fog_colour = _colour & 0xFFFFFF;
-        fog_alpha  = _alpha;
         return self;
     }
     
@@ -812,11 +790,6 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                    colour_get_blue( blend_colour)/255,
                                                                    blend_alpha);
             
-            shader_set_uniform_f(global.__scribble_u_vFog, colour_get_red(  fog_colour)/255,
-                                                           colour_get_green(fog_colour)/255,
-                                                           colour_get_blue( fog_colour)/255,
-                                                           fog_alpha);
-            
             shader_set_uniform_f(global.__scribble_u_vGradient, colour_get_red(  gradient_colour)/255,
                                                                 colour_get_green(gradient_colour)/255,
                                                                 colour_get_blue( gradient_colour)/255,
@@ -885,11 +858,6 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                         colour_get_green(blend_colour)/255,
                                                                         colour_get_blue( blend_colour)/255,
                                                                         blend_alpha);
-            
-            shader_set_uniform_f(global.__scribble_msdf_u_vFog, colour_get_red(  fog_colour)/255,
-                                                                colour_get_green(fog_colour)/255,
-                                                                colour_get_blue( fog_colour)/255,
-                                                                fog_alpha);
             
             shader_set_uniform_f(global.__scribble_msdf_u_vGradient, colour_get_red(  gradient_colour)/255,
                                                                      colour_get_green(gradient_colour)/255,
