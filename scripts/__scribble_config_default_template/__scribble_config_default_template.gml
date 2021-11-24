@@ -12,7 +12,6 @@ function __scribble_config_default_template()
     wrap(-1, -1, false);
     line_height(-1, -1);
     page(0);
-    fog(c_white, 0.0);
     ignore_command_tags(false);
     
     if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER) typewriter_off();

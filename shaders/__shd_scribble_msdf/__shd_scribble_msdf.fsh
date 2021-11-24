@@ -12,7 +12,6 @@ varying float v_fTextScale;
 uniform vec2  u_vTexel;
 uniform float u_fMSDFRange;
 uniform float u_fMSDFThicknessOffset;
-uniform vec4  u_vFog;
 uniform vec4  u_vShadowColour;
 uniform vec3  u_vShadowOffsetAndSoftness;
 uniform vec3  u_vBorderColour;
@@ -68,8 +67,6 @@ void main()
             gl_FragColor.a = max(preAlpha, alphaShadow);
         }
     }
-    
-    gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFog.rgb, u_vFog.a);
     
     if (PREMULTIPLY_ALPHA)
     {
