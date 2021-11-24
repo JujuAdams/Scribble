@@ -16,7 +16,7 @@ uniform vec4  u_vShadowColour;
 uniform vec3  u_vShadowOffsetAndSoftness;
 uniform vec3  u_vBorderColour;
 uniform float u_fBorderThickness;
-uniform float u_fArabicSecondDraw;
+uniform float u_fSecondDraw;
 
 float median(vec3 v)
 {
@@ -46,7 +46,7 @@ void main()
     float alphaBase = MSDFAlpha(distBase, v_fPixelScale, 0.0);
     gl_FragColor = vec4(v_vColour.rgb, alphaBase);
     
-    if (u_fArabicSecondDraw < 0.5)
+    if (u_fSecondDraw < 0.5)
     {
         if (u_fBorderThickness > 0.0)
         {

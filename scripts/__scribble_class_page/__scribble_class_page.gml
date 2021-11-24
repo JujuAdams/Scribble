@@ -90,7 +90,7 @@ function __scribble_class_page() constructor
         array_resize(__vertex_buffer_array, 0);
     }
     
-    static __submit = function(_element, _arabic_double_draw)
+    static __submit = function(_element, _double_draw)
     {
         var _shader = undefined;
         var _i = 0;
@@ -116,11 +116,11 @@ function __scribble_class_page() constructor
                 
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
                 
-                if (_arabic_double_draw)
+                if (_double_draw)
                 {
-                    shader_set_uniform_f(global.__scribble_msdf_u_fArabicSecondDraw, 1);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fSecondDraw, 1);
                     vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
-                    shader_set_uniform_f(global.__scribble_msdf_u_fArabicSecondDraw, 0);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fSecondDraw, 0);
                 }
                 
                 //Reset the texture filtering
