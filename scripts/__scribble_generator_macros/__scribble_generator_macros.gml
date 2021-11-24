@@ -89,7 +89,8 @@ enum __SCRIBBLE_PARSER_LINE
 
 
 //In-line macros!          
-#macro __SCRIBBLE_PARSER_POP_COLOUR  ds_grid_set_region(_glyph_grid, _state_colour_start_glyph, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR, _state_final_colour);\
+#macro __SCRIBBLE_PARSER_POP_COLOUR  var _state_write_colour = (__SCRIBBLE_ON_OPENGL? scribble_rgb_to_bgr(_state_final_colour) : _state_final_colour);\ //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                                     ds_grid_set_region(_glyph_grid, _state_colour_start_glyph, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR, _state_write_colour);\
                                      _state_colour_start_glyph = _glyph_count-1;
    
 

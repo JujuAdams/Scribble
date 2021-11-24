@@ -4,5 +4,6 @@
 
 function scribble_rgb_to_bgr(_rgb)
 {
-    return make_colour_rgb(colour_get_blue(_rgb), colour_get_green(_rgb), colour_get_red(_rgb));
+    var _msb = _rgb >> 24;
+    return make_colour_rgb(colour_get_blue(_rgb), colour_get_green(_rgb), colour_get_red(_rgb)) | (_msb << 24);
 }
