@@ -54,7 +54,7 @@ const int EASE_METHOD_COUNT = 15;
 
 const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
 
-const int WINDOW_COUNT = 4;
+const int WINDOW_COUNT = 3;
 
 const float PI = 3.14159265359;
 
@@ -409,9 +409,7 @@ void main()
     
     //Colour
     v_vColour = in_Colour;
-    
     if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
-    
     if (CYCLE_FLAG > 0.5) v_vColour = cycle(characterIndex, v_vColour); //Cycle colours through the defined palette
     v_vColour = rainbow(characterIndex, v_vColour); //Cycle colours for the rainbow effect
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
