@@ -881,7 +881,7 @@ function __scribble_generator_parser()
                             
                             if (!_skip_write)
                             {
-                                if ((_glyph_count >= 2) && _thai_upper_map(_glyph_prev) && _thai_base_ascender_map[? _glyph_prev])
+                                if ((_glyph_count >= 2) && _thai_upper_map[? _glyph_prev] && _thai_base_ascender_map[? _glyph_prev])
                                 {
                                     _glyph_write += 0xf713 - 0x0e48;
                                 }
