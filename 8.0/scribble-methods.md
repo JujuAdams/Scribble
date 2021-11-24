@@ -89,19 +89,6 @@ Sets the blend colour/alpha, which is applied at the end of the drawing pipeline
 
 &nbsp;
 
-## `.fog(colour, alpha)`
-
-**Returns**: The text element
-
-|Name    |Datatype|Purpose                                                |
-|--------|--------|-------------------------------------------------------|
-|`colour`|integer |Fog colour, in the standard GameMaker 24-bit BGR format|
-|`alpha` |real    |Blending factor for the fog, from 0 to 1               |
-
-Forces the colour of all text (and sprites) to change to the given specified colour.
-
-&nbsp;
-
 ## `.gradient(colour, blendFactor)`
 
 **Returns**: The text element
