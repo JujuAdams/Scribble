@@ -11,6 +11,7 @@ function __scribble_gen_8_position_glyphs()
         var _line_count      = line_count;
         var _overall_bidi    = overall_bidi;
         var _model_max_width = model_max_width;
+        var _glyph_count     = glyph_count;
     }
     
     // If we were given no maximum alignment width, align to the actual width of the model
@@ -207,4 +208,18 @@ function __scribble_gen_8_position_glyphs()
     min_x = _model_min_x;
     max_x = max(_model_min_x, _model_max_x);
     width = 1 + max_x - min_x;
+    var _vbuff_pos_grid = global.__scribble_vbuff_pos_grid;
+    
+    //Copy the x/y offset into the quad LTRB
+    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.Y, 0, __SCRIBBLE_VBUFF_POS.QUAD_L);
+    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.Y, 0, __SCRIBBLE_VBUFF_POS.QUAD_R);
+    
+    //Then add the deltas to give us the final quad LTRB positions
+    //Note that the delta are already scaled via font scale / scaling tags etc
+    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_PARSER_GLYPH.WIDTH,   _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.WIDTH,   0, __SCRIBBLE_VBUFF_POS.QUAD_R);
+    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_PARSER_GLYPH.HEIGHT,  _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.HEIGHT,  0, __SCRIBBLE_VBUFF_POS.QUAD_B);
+    
+    //Transform the animation index into a proper packed index
+    ds_grid_multiply_region(_vbuff_pos_grid, 0, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, __SCRIBBLE_MAX_LINES);
+    ds_grid_add_region(_vbuff_pos_grid, 0, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, 1); //TODO - Put line indexes into the packed index
 }
