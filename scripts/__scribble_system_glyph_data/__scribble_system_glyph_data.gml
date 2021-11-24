@@ -10,9 +10,18 @@ function __scribble_system_glyph_data()
         arabic_final_map     : ds_map_create(),
         arabic_join_prev_map : ds_map_create(),
         arabic_join_next_map : ds_map_create(),
+        
+        thai_base_map           : ds_map_create(),
+        thai_base_descender_map : ds_map_create(),
+        thai_base_ascender_map  : ds_map_create(),
+        thai_top_map            : ds_map_create(),
+        thai_lower_map          : ds_map_create(),
+        thai_upper_map          : ds_map_create(),
     }
     
     
+    
+    #region BiDi definitions
     
     enum __SCRIBBLE_BIDI
     {
@@ -93,6 +102,8 @@ function __scribble_system_glyph_data()
     _map[? ord("]")] = ord("[");
     _map[? ord("{")] = ord("}");
     _map[? ord("}")] = ord("{");
+    
+    #endregion
     
     
     
@@ -380,6 +391,49 @@ function __scribble_system_glyph_data()
         
         ++_i;
     }
+    
+    #endregion
+    
+    
+    
+    #region Thai
+    
+    var _map = global.__scribble_glyph_data.thai_base_map;
+    for(var _i = 0x0E01; _i <= 0x0E2F; _i++) _map[? _i] = true;
+    _map[? 0x0E30] = true;
+    _map[? 0x0E40] = true;
+    _map[? 0x0E41] = true;
+    
+    var _map = global.__scribble_glyph_data.thai_base_descender_map;
+    _map[? 0x0E0E] = true;
+    _map[? 0x0E0F] = true;
+    
+    var _map = global.__scribble_glyph_data.thai_base_ascender_map;
+    _map[? 0x0E1B] = true;
+    _map[? 0x0E1D] = true;
+    _map[? 0x0E1F] = true;
+    _map[? 0x0E2C] = true;
+    
+    var _map = global.__scribble_glyph_data.thai_top_map;
+    _map[? 0x0E48] = true;
+    _map[? 0x0E49] = true;
+    _map[? 0x0E4A] = true;
+    _map[? 0x0E4B] = true;
+    _map[? 0x0E4C] = true;
+    
+    var _map = global.__scribble_glyph_data.thai_lower_map;
+    _map[? 0x0E38] = true;
+    _map[? 0x0E39] = true;
+    _map[? 0x0E3A] = true;
+    
+    var _map = global.__scribble_glyph_data.thai_upper_map;
+    _map[? 0x0E31] = true;
+    _map[? 0x0E34] = true;
+    _map[? 0x0E35] = true;
+    _map[? 0x0E36] = true;
+    _map[? 0x0E37] = true;
+    _map[? 0x0E47] = true;
+    _map[? 0x0E4D] = true;
     
     #endregion
 }

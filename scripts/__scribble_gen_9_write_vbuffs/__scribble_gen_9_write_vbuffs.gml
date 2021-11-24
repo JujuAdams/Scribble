@@ -146,7 +146,7 @@ function __scribble_gen_9_write_vbuffs()
                 //    var _quad_r = _quad_l  + _uvs[6]*_glyph_width;
                 //    var _quad_b = _quad_t  + _uvs[7]*_glyph_height;
                 //    
-                //    __SCRIBBLE_PARSER_WRITE_GLYPH;
+                //    __SCRIBBLE_VBUFF_WRITE_GLYPH;
                 //    
                 //    ++_j;
                 //    ++_glyph_sprite_data;
@@ -170,7 +170,7 @@ function __scribble_gen_9_write_vbuffs()
                 
                 //TODO - Implement SCRIBBLE_COLORIZE_SPRITES
                 
-                __SCRIBBLE_PARSER_WRITE_GLYPH;
+                __SCRIBBLE_VBUFF_WRITE_GLYPH;
                 
                 #endregion
             }
@@ -181,9 +181,9 @@ function __scribble_gen_9_write_vbuffs()
                     __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
                 }
                 
-                if (_glyph_ord > 32)
+                if ((_glyph_ord > 32) && (_glyph_ord != 0x200B))
                 {
-                    __SCRIBBLE_PARSER_WRITE_GLYPH;
+                    __SCRIBBLE_VBUFF_WRITE_GLYPH;
                 }
             }
             
