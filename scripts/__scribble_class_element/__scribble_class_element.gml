@@ -943,7 +943,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
             else
             {
-                shader_set_uniform_i(global.__scribble_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
+                shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
             }
             
             shader_set_uniform_f(global.__scribble_msdf_u_vShadowOffsetAndSoftness, msdf_shadow_xoffset, msdf_shadow_yoffset, msdf_shadow_softness);
