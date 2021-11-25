@@ -87,29 +87,19 @@ function __scribble_gen_3_parser()
     var _glyph_prev_arabic_join_next = false;
     
     var _control_count = 0;
-    var _control_page  = 0;
     var _skip_write    = false;
     
-    var _state_colour       = _starting_colour;
-    var _state_alpha_255    = 0xFF;
-    var _state_final_colour = (_state_alpha_255 << 24) | _state_colour; //Uses all four bytes
     var _state_effect_flags = 0;
+    var _state_colour       = 0xFF000000 | _starting_colour; //Uses all four bytes
     var _state_scale        = 1.0;
-    var _state_slant        = false;
-    var _state_cycle        = false;
     var _state_halign       = _starting_halign;
     var _state_command_tag_flipflop = false;
     
-    var _state_colour_start_glyph  = 0;
-    var _state_effects_start_glyph = 0;
-    var _state_scale_start_glyph   = 0;
-    var _state_slant_start_glyph   = 0;
-    
-    var _font_scale_dist        = 0;
-    var _font_scale_start_glyph = 0;
-    
     __SCRIBBLE_PARSER_SET_FONT;
-    __SCRIBBLE_PARSER_WRITE_HALIGN;
+    
+    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.HALIGN;
+    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_halign;
+    ++_control_count;
     
     //Repeat a fixed number of times. This prevents infinite loops and generally is more stable...
     //...though we do still check for a null terminator
@@ -185,79 +175,101 @@ function __scribble_gen_3_parser()
                         //    - font
                         //But NOT alignment
                         
-                        __SCRIBBLE_PARSER_POP_COLOUR;
-                        __SCRIBBLE_PARSER_POP_EFFECT_FLAGS;
-                        __SCRIBBLE_PARSER_POP_FONT_SCALE; //Must be *before* __SCRIBBLE_PARSER_POP_SCALE
-                        __SCRIBBLE_PARSER_POP_SCALE;
-                        __SCRIBBLE_PARSER_POP_SLANT;
-                        
-                        _state_colour       = _starting_colour;
-                        _state_alpha_255    = 0xFF;
-                        _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
-                        _state_effect_flags = 0;
-                        _state_scale        = 1.0;
-                        _state_slant        = false;
-                        _state_cycle        = false;
-                        
                         if (_font_name != _starting_font)
                         {
                             _font_name = _starting_font;
                             __SCRIBBLE_PARSER_SET_FONT;
                         }
+                        
+                        _state_effect_flags = 0;
+                        _state_scale        = 1.0;
+                        _state_colour       = 0xFF000000 | _starting_colour;
+                        
+                        //Add an effect flag control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.EFFECT;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = 0;
+                        ++_control_count;
+                        
+                        //Add a colour control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.COLOUR;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_colour;
+                        ++_control_count;
+                        
+                        //Add a scale control
+                        _state_scale = 1;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist;
+                        ++_control_count;
+                        
+                        //Add a slant control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SLANT;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = false;
+                        ++_control_count;
                     break;
                     
                     // [/font]
                     // [/f]
                     case 1:
-                        __SCRIBBLE_PARSER_POP_FONT_SCALE;
-                        
                         if (_font_name != _starting_font)
                         {
                             _font_name = _starting_font;
                             __SCRIBBLE_PARSER_SET_FONT;
                         }
+                        
+                        //Add a scale control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
+                        ++_control_count;
                     break;
                     
                     // [/color]
                     // [/colour]
                     // [/c]
                     case 2:
-                        _state_colour = _starting_colour;
-                        if (!_state_cycle)
-                        {
-                            __SCRIBBLE_PARSER_POP_COLOUR;
-                            _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
-                        }
+                        _state_colour = (_state_colour & 0xFF000000) | _starting_colour;
+                        
+                        //Add a colour control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.COLOUR;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_colour;
+                        ++_control_count;
                     break;
                     
                     // [/alpha]
                     // [/a]
                     case 3:
-                        _state_alpha_255 = 0xFF;
-                        if (!_state_cycle)
-                        {
-                            __SCRIBBLE_PARSER_POP_COLOUR;
-                            _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
-                        }
+                        _state_colour = 0xFF000000 | _state_colour;
+                        
+                        //Add a colour control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.COLOUR;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_colour;
+                        ++_control_count;
                     break;
                     
                     // [/scale]
                     // [/s]
                     case 4:
-                        __SCRIBBLE_PARSER_POP_SCALE;
+                        //Add a scale control
+                        _state_scale = 1;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist;
+                        ++_control_count;
                     break;
                     
                     // [/slant]
                     case 5:
-                        __SCRIBBLE_PARSER_POP_SLANT;
-                        _state_slant = false;
+                        //Add a slant control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SLANT;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = false;
+                        ++_control_count;
                     break;
                     
                     #endregion
                     
                     // [/page]
                     case 6:
-                        __SCRIBBLE_PARSER_WRITE_PAGEBREAK;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.PAGEBREAK;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = undefined;
+                        ++_control_count;
                     break;
                     
                     #region Scale
@@ -270,9 +282,11 @@ function __scribble_gen_3_parser()
                         }
                         else
                         {
-                            __SCRIBBLE_PARSER_POP_SCALE;
-                            _state_scale       = real(_tag_parameters[1]);
-                            _state_scale_final = _font_scale_dist*_state_scale
+                            //Add a scale control
+                            _state_scale = real(_tag_parameters[1]);
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
+                            ++_control_count;
                         }
                     break;
                     
@@ -284,9 +298,11 @@ function __scribble_gen_3_parser()
                         }
                         else
                         {
-                            __SCRIBBLE_PARSER_POP_SCALE;
-                            _state_scale       *= real(_tag_parameters[1]);
-                            _state_scale_final  = _font_scale_dist*_state_scale
+                            //Add a scale control
+                            _state_scale *= real(_tag_parameters[1]);
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
+                            ++_control_count;
                         }
                     break;
                     
@@ -294,18 +310,20 @@ function __scribble_gen_3_parser()
                     
                     // [slant]
                     case 9:
-                        __SCRIBBLE_PARSER_POP_SLANT;
-                        _state_slant = true;
+                        //Add a slant control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SLANT;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = true;
+                        ++_control_count;
                     break;
                     
                     // [alpha]
                     case 10:
-                        _state_alpha_255 = floor(255*clamp(_tag_parameters[1], 0, 1));
-                        if (!_state_cycle)
-                        {
-                            __SCRIBBLE_PARSER_POP_COLOUR;
-                            _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
-                        }
+                        _state_colour = (floor(255*clamp(_tag_parameters[1], 0, 1)) << 24) | (_state_colour & 0x00FFFFFF);
+                        
+                        //Add a colour control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.COLOUR;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_colour;
+                        ++_control_count;
                     break;
                     
                     #region Font Alignment
@@ -395,27 +413,23 @@ function __scribble_gen_3_parser()
                     
                     // [cycle]
                     case 22:
-                        __SCRIBBLE_PARSER_POP_COLOUR;
-                        
                         var _cycle_r = (_tag_parameter_count > 1)? max(1, real(_tag_parameters[1])) : 0;
                         var _cycle_g = (_tag_parameter_count > 2)? max(1, real(_tag_parameters[2])) : 0;
                         var _cycle_b = (_tag_parameter_count > 3)? max(1, real(_tag_parameters[3])) : 0;
                         var _cycle_a = (_tag_parameter_count > 4)? max(1, real(_tag_parameters[4])) : 0;
-                                
-                        _state_cycle = true;
-                        _state_final_colour = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
-                                
-                        _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? _tag_command_name]);
+                        
+                        //Add a cycle control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.CYCLE;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
+                        ++_control_count;
                     break;
                     
                     // [/cycle]
                     case 23:
-                        __SCRIBBLE_PARSER_POP_COLOUR;
-                        
-                        _state_cycle = false;
-                        _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
-                        
-                        _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? _tag_command_name]));
+                        //Add a cycle control
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.CYCLE;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = undefined;
+                        ++_control_count;
                     break;
                             
                     #endregion
@@ -427,8 +441,6 @@ function __scribble_gen_3_parser()
                     // [/i]
                     // [/bi]
                     case 24:
-                        __SCRIBBLE_PARSER_POP_FONT_SCALE; 
-                        
                         //Get the required font from the font family
                         var _new_font = _font_data.style_regular;
                         if (_new_font == undefined)
@@ -443,13 +455,16 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
+                            
+                            //Add a scale control
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
+                            ++_control_count;
                         }
                     break;
                     
                     // [b]
                     case 25:
-                        __SCRIBBLE_PARSER_POP_FONT_SCALE;
-                        
                         //Get the required font from the font family
                         var _new_font = _font_data.style_bold;
                         if (_new_font == undefined)
@@ -464,13 +479,16 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
+                            
+                            //Add a scale control
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
+                            ++_control_count;
                         }
                     break;
                     
                     // [i]
                     case 26:
-                        __SCRIBBLE_PARSER_POP_FONT_SCALE;
-                        
                         //Get the required font from the font family
                         var _new_font = _font_data.style_italic;
                         if (_new_font == undefined)
@@ -485,13 +503,16 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
+                            
+                            //Add a scale control
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
+                            ++_control_count;
                         }
                     break;
                     
                     // [bi]
                     case 27:
-                        __SCRIBBLE_PARSER_POP_FONT_SCALE;
-                        
                         //Get the required font from the font family
                         var _new_font = _font_data.style_bold_italic;
                         if (_new_font == undefined)
@@ -506,6 +527,11 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
+                            
+                            //Add a scale control
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
+                            ++_control_count;
                         }
                     break;
                             
@@ -552,30 +578,47 @@ function __scribble_gen_3_parser()
                         if (ds_map_exists(global.__scribble_effects, _tag_command_name)) //Set an effect
                         {
                             _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? _tag_command_name]);
+                            
+                            //Add an effect flag control
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.EFFECT;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_effect_flags;
+                            ++_control_count;
                         }
                         else if (ds_map_exists(global.__scribble_effects_slash, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
                         {
                             _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? _tag_command_name]));
+                            
+                            //Add an effect flag control
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.EFFECT;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_effect_flags;
+                            ++_control_count;
                         }
                         else if (ds_map_exists(global.__scribble_colours, _tag_command_name)) //Set a pre-defined colour
                         {
-                            _state_colour = global.__scribble_colours[? _tag_command_name] & 0xFFFFFF;
-                            if (!_state_cycle)
-                            {
-                                __SCRIBBLE_PARSER_POP_COLOUR;
-                                _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
-                            }
+                            _state_colour = (_state_colour & 0xFF000000) | (global.__scribble_colours[? _tag_command_name] & 0x00FFFFFF);
+                            
+                            //Add a colour control
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.COLOUR;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_colour;
+                            ++_control_count;
                         }
                         else if (ds_map_exists(global.__scribble_typewriter_events, _tag_command_name)) //Events
                         {
                             array_delete(_tag_parameters, 0, 1);
-                            __SCRIBBLE_PARSER_WRITE_EVENT;
+                            
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.EVENT;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = new __scribble_class_event(_tag_command_name, _tag_parameters);
+                            ++_control_count;
                         }
                         else if (ds_map_exists(global.__scribble_font_data, _tag_command_name)) //Change font
                         {
                             _font_name = _tag_command_name;
-                            __SCRIBBLE_PARSER_POP_FONT_SCALE;
                             __SCRIBBLE_PARSER_SET_FONT;
+                            
+                            //Add a scale control
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
+                            ++_control_count;
                         }
                         else if (asset_get_type(_tag_command_name) == asset_sprite)
                         {
@@ -629,8 +672,9 @@ function __scribble_gen_3_parser()
                         }
                         else if (asset_get_type(_tag_command_name) == asset_sound)
                         {
-                            var _tag_command_name = __SCRIBBLE_AUDIO_COMMAND_TAG;
-                            __SCRIBBLE_PARSER_WRITE_EVENT;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.EVENT;
+                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters);
+                            ++_control_count;
                         }
                         else
                         {
@@ -641,24 +685,25 @@ function __scribble_gen_3_parser()
                                 
                                 try
                                 {
-                                    var _state_colour = real("0x" + string_delete(_tag_command_name, 1, 1));
+                                    var _decoded_colour = real("0x" + string_delete(_tag_command_name, 1, 1));
                                     
                                     if (!SCRIBBLE_BGR_COLOR_HEX_CODES)
                                     {
-                                        _state_colour = scribble_rgb_to_bgr(_state_colour);
+                                        _decoded_colour = scribble_rgb_to_bgr(_state_colour);
                                     }
                                 }
                                 catch(_error)
                                 {
                                     __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a hexcode");
-                                    _state_colour = _starting_colour;
+                                    _decoded_colour = _starting_colour;
                                 }
                                 
-                                if (!_state_cycle)
-                                {
-                                    __SCRIBBLE_PARSER_POP_COLOUR;
-                                    _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
-                                }
+                                _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
+                                
+                                //Add a colour control
+                                _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.COLOUR;
+                                _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_colour;
+                                ++_control_count;
                                 
                                 #endregion
                             }
@@ -672,19 +717,20 @@ function __scribble_gen_3_parser()
                                     
                                     try
                                     {
-                                        _state_colour = real(string_delete(_tag_command_name, 1, 2));
+                                        var _decoded_colour = real(string_delete(_tag_command_name, 1, 2));
                                     }
                                     catch(_error)
                                     {
                                         __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a decimal");
-                                        _state_colour = _starting_colour;
+                                        _decoded_colour = _starting_colour;
                                     }
                                     
-                                    if (!_state_cycle)
-                                    {
-                                        __SCRIBBLE_PARSER_POP_COLOUR;
-                                        _state_final_colour = (_state_alpha_255 << 24) | _state_colour;
-                                    }
+                                    _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
+                                    
+                                    //Add a colour control
+                                    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.COLOUR;
+                                    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_colour;
+                                    ++_control_count;
                                     
                                     #endregion
                                 }
@@ -705,7 +751,10 @@ function __scribble_gen_3_parser()
                 {
                     _state_halign = _new_halign;
                     _new_halign = undefined;
-                    __SCRIBBLE_PARSER_WRITE_HALIGN;
+                    
+                    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.HALIGN;
+                    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_halign;
+                    ++_control_count;
                 }
                         
                 //Handle vertical alignment changes
@@ -1018,9 +1067,9 @@ function __scribble_gen_3_parser()
                     var _delay = global.__scribble_character_delay_map[? _glyph_ord];
                     if (_delay != undefined)
                     {
-                        var _tag_command_name = "delay";
-                        var _tag_parameters = [_delay];
-                        __SCRIBBLE_PARSER_WRITE_EVENT;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.EVENT;
+                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = new __scribble_class_event("delay", [_delay]);
+                        ++_control_count;
                     }
                 }
                 
@@ -1028,12 +1077,6 @@ function __scribble_gen_3_parser()
             }
         }
     }
-    
-    __SCRIBBLE_PARSER_POP_COLOUR;
-    __SCRIBBLE_PARSER_POP_EFFECT_FLAGS;
-    __SCRIBBLE_PARSER_POP_FONT_SCALE; //Must be *before* __SCRIBBLE_PARSER_POP_SCALE
-    __SCRIBBLE_PARSER_POP_SCALE;
-    __SCRIBBLE_PARSER_POP_SLANT;
     
     //Set our vertical alignment if it hasn't been overrided
     if (valign == undefined) valign = _starting_valign;
@@ -1043,12 +1086,6 @@ function __scribble_gen_3_parser()
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH        ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION   ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] = _control_count; //Make sure we collect controls at the end of a string
-    
-    //Also create a null terminator for control messages
-    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE    ] = 0;
-    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA    ] = undefined;
-    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.POSITION] = _glyph_count;
-    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.PAGE    ] = _control_page;
     
     with(global.__scribble_generator_state)
     {

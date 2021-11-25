@@ -313,6 +313,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __scribble_gen_9_write_vbuffs();
     
     //Wipe the control grid so we don't accidentally hold references to event structs
+    //TODO - Clean up as we go
     ds_grid_clear(global.__scribble_control_grid, 0);
     
     

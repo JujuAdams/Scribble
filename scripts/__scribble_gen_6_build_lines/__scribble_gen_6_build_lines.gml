@@ -1,5 +1,6 @@
 function __scribble_gen_6_build_lines()
 {
+    var _glyph_grid   = global.__scribble_glyph_grid;
     var _word_grid    = global.__scribble_word_grid;
     var _line_grid    = global.__scribble_line_grid;
     var _control_grid = global.__scribble_control_grid;
@@ -32,30 +33,25 @@ function __scribble_gen_6_build_lines()
         var _simulated_model_max_width  = _model_max_width  / fit_scale;
         var _simulated_model_max_height = _model_max_height / fit_scale;
         
-        var _next_control_pos = _control_grid[# 0, __SCRIBBLE_PARSER_CONTROL.POSITION];
         var _force_break = false;
         
         var _i = 0;
         repeat(_word_count)
         {
-            var _word_width       = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.WIDTH];
+            var _word_width       = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.WIDTH      ];
             var _word_start_glyph = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.GLYPH_START];
             
-            //If this glyph index is the same as our control position then scan for new controls to apply
-            while(_word_start_glyph == _next_control_pos)
+            //Find any horizontal alignment changes
+            var _control_delta = _glyph_grid[# _word_start_glyph, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] - _control_index;
+            repeat(_control_delta)
             {
-                //If this control is a horizontal alignment, set the halign value
-                switch(_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE])
+                if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_TYPE.HALIGN)
                 {
-                    case __SCRIBBLE_CONTROL_HALIGN:
-                        if (_i != _line_word_start) _force_break = true;
-                        _state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
-                    break;
+                    if (_i != _line_word_start) _force_break = true;
+                    _state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
                 }
                 
-                //Increment which control we're processing
-                ++_control_index;
-                _next_control_pos = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.POSITION];
+                _control_index++;
             }
             
             // Check for \n line break characters (stored as words)
@@ -80,7 +76,6 @@ function __scribble_gen_6_build_lines()
                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_x;
                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT     ] = _line_height;
                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = _state_halign;
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.CONTROL_END] = _control_index - 1;
             
                 _line_count++;
                 _line_y += _line_height;
@@ -103,7 +98,6 @@ function __scribble_gen_6_build_lines()
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_x;
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT     ] = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);
             _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = _state_halign;
-            _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.CONTROL_END] = _control_index - 1;
         
             _line_count++;
             _line_y += _line_height;

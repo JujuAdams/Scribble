@@ -21,38 +21,25 @@ function __scribble_gen_4_build_words()
     var _word_bidi             = undefined;
     var _glyph_prev_whitespace = undefined;
     
-    //var _control_index     = 0;
-    //var _control_pagebreak = false;
-    ////We store the next control position as there are typically many more glyphs than controls
-    ////This ends up being quite a lot faster than continually reading from the grid
-    //var _next_control_pos = _control_grid[# 0, __SCRIBBLE_PARSER_CONTROL.POSITION];
+    var _control_index     = 0;
+    var _control_pagebreak = false;
     
     var _i = 0;
     repeat(_glyph_count + 1) //Ensure we fully handle the last word by including the null terminator in this loop
     {
-        ////If this glyph index is the same as our control position then scan for new controls to apply
-        //while(_i == _next_control_pos)
-        //{
-        //    //If this control is a horizontal alignment, set the halign value
-        //    switch(_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE])
-        //    {
-        //        case __SCRIBBLE_CONTROL_PAGEBREAK:
-        //            _control_pagebreak = true;
-        //        break;
-        //    }
-        //    
-        //    //Increment which control we're processing
-        //    ++_control_index;
-        //    _next_control_pos = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.POSITION];
-        //    
-        //    //Break out of this loop immediately if we've hit a pagebreak
-        //    if (_control_pagebreak) break;
-        //}
-        //
-        //if (_control_pagebreak)
-        //{
-        //    __scribble_error("Not yet implemented");
-        //}
+        var _control_delta = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] - _control_index;
+        repeat(_control_delta)
+        {
+            if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_TYPE.PAGEBREAK)
+            {
+                _control_pagebreak = true;
+                
+                //Break out of this loop immediately if we've hit a pagebreak
+                break;
+            }
+                
+            _control_index++;
+        }
         
         var _glyph_bidi_raw = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.BIDI];
         var _glyph_bidi = _glyph_bidi_raw;

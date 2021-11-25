@@ -27,12 +27,18 @@ function __scribble_gen_9_write_vbuffs()
         _bezier_do = false;
     }
     
-    var _control_index = 0;
-    //We store the next control position as there are typically many more glyphs than controls
-    //This ends up being quite a lot faster than continually reading from the grid
-    var _next_control_pos = _control_grid[# 0, __SCRIBBLE_PARSER_CONTROL.POSITION];
-    
     var _vbuff_pos_grid = global.__scribble_vbuff_pos_grid;
+    
+    var _glyph_scale        = 1.0;
+    var _glyph_colour       = 0xFFFFFFFF;
+    var _glyph_cycle        = 0x00000000;
+    var _glyph_effect_flags = 0;
+    var _glyph_slant        = false;
+    var _glyph_sprite_data  = 0;
+    var _write_colour       = 0xFFFFFFFF;
+    var _slant_offset       = 0;
+    
+    var _control_index = 0;
     
     var _p = 0;
     repeat(pages)
@@ -41,7 +47,6 @@ function __scribble_gen_9_write_vbuffs()
         var _page_events_dict   = _page_data.__events;
         var _vbuff              = undefined;
         var _last_glyph_texture = undefined;
-        var _glyph_sprite_data  = 0;
         
         if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
         {
@@ -51,7 +56,65 @@ function __scribble_gen_9_write_vbuffs()
         var _i = _page_data.__glyph_start;
         repeat(1 + _page_data.__glyph_end - _page_data.__glyph_start)
         {
-            __SCRIBBLE_READ_CONTROL_EVENTS;
+            #region Read controls
+            
+            var _control_delta = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] - _control_index;
+            repeat(_control_delta)
+            {
+                switch(_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE])
+                {
+                    case __SCRIBBLE_CONTROL_TYPE.COLOUR:
+                        _glyph_colour = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                        var _write_colour = (__SCRIBBLE_ON_OPENGL? scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                    break;
+                    
+                    case __SCRIBBLE_CONTROL_TYPE.SLANT:
+                        _glyph_slant = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                    break;
+                    
+                    case __SCRIBBLE_CONTROL_TYPE.EFFECT:
+                        _glyph_effect_flags = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                    break;
+                    
+                    case __SCRIBBLE_CONTROL_TYPE.SCALE:
+                        _glyph_scale = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                    break;
+                    
+                    case __SCRIBBLE_CONTROL_TYPE.CYCLE:
+                        _glyph_cycle = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                        
+                        if (_glyph_cycle == undefined)
+                        {
+                            _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
+                            _write_colour = (__SCRIBBLE_ON_OPENGL? scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                        }
+                        else
+                        {
+                            _glyph_effect_flags |= (1 << global.__scribble_effects[? "cycle"]);
+                            _write_colour = (__SCRIBBLE_ON_OPENGL? scribble_rgb_to_bgr(_glyph_cycle) : _glyph_cycle); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                        }
+                    break;
+                    
+                    case __SCRIBBLE_CONTROL_TYPE.EVENT:
+                        var _animation_index = _i; //TODO
+                        var _event_array = _page_events_dict[$ _animation_index]; //Find the correct event array in the diciontary, creating a new one if needed
+                        
+                        if (!is_array(_event_array))
+                        {
+                            var _event_array = [];
+                            _page_events_dict[$ _animation_index] = _event_array;
+                        }
+                        
+                        var _event = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                        _event.position = _animation_index; //Update the glyph index to the *local* glyph index for the page
+                        array_push(_event_array, _event);
+                    break;
+                }
+                
+                _control_index++;
+            }
+            
+            #endregion
             
             var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ORD];
             if (_glyph_ord == __SCRIBBLE_GLYPH_SPRITE)
@@ -63,27 +126,26 @@ function __scribble_gen_9_write_vbuffs()
                     buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                 }
                 
-                var _glyph_x            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X                 ];
-                var _glyph_y            = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y                 ];
-                var _glyph_width        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH             ];
-                var _glyph_height       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT            ];
+                var _glyph_x        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.X              ];
+                var _glyph_y        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y              ];
+                var _glyph_width    = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH          ];
+                var _glyph_height   = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT         ];
                 
-                var _glyph_colour       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ];
-                var _glyph_effect_flags = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS];
+                var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
                 
-                var _packed_indexes     = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX   ];
-                var _write_scale        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_SCALE_DIST   ];
-                
-                var _sprite_index       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX      ];
-                var _image_index        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX       ];
-                var _image_speed        = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED       ];
+                var _sprite_index   = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SPRITE_INDEX   ];
+                var _image_index    = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.IMAGE_INDEX    ];
+                var _image_speed    = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.IMAGE_SPEED    ];
                 
                 var _glyph_xscale = sprite_get_width(_sprite_index) / _glyph_width;
                 var _glyph_yscale = sprite_get_height(_sprite_index) / _glyph_height;
                 
                 if (!SCRIBBLE_COLORIZE_SPRITES)
                 {
-                    _glyph_colour = _glyph_colour | 0xFFFFFF;
+                    var _old_write_colour       = _write_colour;
+                    var _old_glyph_effect_flags = _glyph_effect_flags;
+                    
+                    _write_colour = _write_colour | 0xFFFFFF;
                     
                     _glyph_effect_flags = ~_glyph_effect_flags;
                     _glyph_effect_flags |= (1 << global.__scribble_effects[? "rainbow"]);
@@ -145,6 +207,12 @@ function __scribble_gen_9_write_vbuffs()
                     ++_glyph_sprite_data;
                 }
                 
+                if (!SCRIBBLE_COLORIZE_SPRITES)
+                {
+                    _write_colour       = _old_write_colour;
+                    _glyph_effect_flags = _old_glyph_effect_flags;
+                }
+                
                 _glyph_sprite_data = 0; //Reset this because every other tyoe of glyph doesn't use this
                 
                 #endregion
@@ -157,12 +225,13 @@ function __scribble_gen_9_write_vbuffs()
                 }
                 
                 __SCRIBBLE_VBUFF_READ_GLYPH;
-                var _glyph_colour       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ];
-                var _glyph_effect_flags = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS];
                 
                 if (!SCRIBBLE_COLORIZE_SPRITES)
                 {
-                    _glyph_colour = _glyph_colour | 0xFFFFFF;
+                    var _old_write_colour       = _write_colour;
+                    var _old_glyph_effect_flags = _glyph_effect_flags;
+                    
+                    _write_colour = _write_colour | 0xFFFFFF;
                     
                     _glyph_effect_flags = ~_glyph_effect_flags;
                     _glyph_effect_flags |= (1 << global.__scribble_effects[? "rainbow"]);
@@ -171,6 +240,12 @@ function __scribble_gen_9_write_vbuffs()
                 }
                 
                 __SCRIBBLE_VBUFF_WRITE_GLYPH;
+                
+                if (!SCRIBBLE_COLORIZE_SPRITES)
+                {
+                    _write_colour       = _old_write_colour;
+                    _glyph_effect_flags = _old_glyph_effect_flags;
+                }
             }
             else
             {
@@ -181,18 +256,18 @@ function __scribble_gen_9_write_vbuffs()
                 
                 if ((_glyph_ord > 32) && (_glyph_ord != 0x200B))
                 {
-                    __SCRIBBLE_VBUFF_READ_GLYPH;
-                    var _glyph_colour       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_COLOUR      ];
-                    var _glyph_effect_flags = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.STATE_EFFECT_FLAGS];
+                    if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+                    {
+                        __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
+                    }
                     
+                    __SCRIBBLE_VBUFF_READ_GLYPH;
                     __SCRIBBLE_VBUFF_WRITE_GLYPH;
                 }
             }
             
             ++_i;
         }
-        
-        __SCRIBBLE_READ_CONTROL_EVENTS;
         
         if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
         {
@@ -205,6 +280,29 @@ function __scribble_gen_9_write_vbuffs()
         characters += _page_data.__character_count;
         
         ++_p;
+    }
+    
+    //Sweep up any remaining controls
+    var _control_delta = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] - _control_index;
+    repeat(_control_delta)
+    {
+        if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_TYPE.EVENT)
+        {
+            var _animation_index = _i; //TODO
+            var _event_array = _page_events_dict[$ _animation_index]; //Find the correct event array in the diciontary, creating a new one if needed
+            
+            if (!is_array(_event_array))
+            {
+                var _event_array = [];
+                _page_events_dict[$ _animation_index] = _event_array;
+            }
+            
+            var _event = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+            _event.position = _animation_index; //Update the glyph index to the *local* glyph index for the page
+            array_push(_event_array, _event);
+        }
+                
+        _control_index++;
     }
     
     //Ensure we've ended the vertex buffers we created

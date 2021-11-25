@@ -32,6 +32,7 @@ function __scribble_class_page() constructor
             
             var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version
             vertex_begin(_vbuff, global.__scribble_vertex_format);
+            __scribble_gc_add_vbuff(self, _vbuff);
             
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER] = _vbuff;
@@ -41,7 +42,6 @@ function __scribble_class_page() constructor
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT ] = texture_get_texel_height(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.SHADER       ] = _shader;
             
-            __scribble_gc_add_vbuff(self, _vbuff);
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;
             __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;
             

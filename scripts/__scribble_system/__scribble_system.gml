@@ -580,7 +580,8 @@ enum __SCRIBBLE_VERTEX_BUFFER
     TEXEL_WIDTH,   //3
     TEXEL_HEIGHT,  //4
     SHADER,        //5
-    __SIZE         //6
+    BUFFER,        //6
+    __SIZE         //7
 }
 
 enum __SCRIBBLE_ANIM
