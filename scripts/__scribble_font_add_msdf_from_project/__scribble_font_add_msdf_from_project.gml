@@ -27,7 +27,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
     var _texel_w = texture_get_texel_width(_texture);
     var _texel_h = texture_get_texel_height(_texture);
     _sprite_uvs[0] -= _texel_w*_sprite_uvs[4];
-    _sprite_uvs[1] -= _texel_w*_sprite_uvs[5];
+    _sprite_uvs[1] -= _texel_h*_sprite_uvs[5];
     _sprite_uvs[2] += _texel_w*_sprite_width*(1 - _sprite_uvs[6]);
     _sprite_uvs[3] += _texel_h*_sprite_height*(1 - _sprite_uvs[7]);
     
