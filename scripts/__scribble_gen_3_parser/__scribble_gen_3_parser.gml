@@ -54,6 +54,8 @@ function __scribble_gen_3_parser()
             if (_glyph_ord == 0) break;
                 
             var _bidi = _global_glyph_bidi_map[? _glyph_ord];
+            if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
+            
             if ((_bidi == __SCRIBBLE_BIDI.L2R) || (_bidi == __SCRIBBLE_BIDI.R2L))
             {
                 _overall_bidi = _bidi;

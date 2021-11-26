@@ -1,5 +1,7 @@
 function __scribble_gen_5_finalize_bidi()
 {
+    if (!has_arabic) exit;
+    
     var _word_grid    = global.__scribble_word_grid;
     var _word_count   = global.__scribble_generator_state.word_count;
     var _overall_bidi = global.__scribble_generator_state.overall_bidi;
