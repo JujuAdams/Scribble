@@ -954,7 +954,7 @@ function __scribble_gen_3_parser()
                     if (_new_glyph != undefined) _glyph_write = _new_glyph;
                     
                     // If this glyph isn't tashkil then update the previous glyph state
-                    if ((_glyph_next < 0x064B) || (_glyph_next > 0x0652))
+                    if ((_glyph_ord < 0x064B) || (_glyph_ord > 0x0652))
                     {
                         _glyph_prev_arabic_join_next = _arabic_join_next_map[? _glyph_ord];
                     }
