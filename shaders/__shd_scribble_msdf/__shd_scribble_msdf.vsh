@@ -422,8 +422,9 @@ void main()
     else
     {
         centre = pos + centreDelta;
-        if (SLANT_FLAG > 0.5) pos.x += centreDelta.y*SLANT_GRADIENT;
     }
+    
+    if (SLANT_FLAG > 0.5) pos.x += centreDelta.y*SLANT_GRADIENT;
     
     
     
