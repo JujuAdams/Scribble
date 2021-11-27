@@ -16,15 +16,16 @@ enum __SCRIBBLE_PARSER_GLYPH
     QUAD_V1,          //11   |
                       //     |
     MSDF_PXRANGE,     //12  /
+    
+    SCALE,            //13
+    CONTROL_COUNT,    //14
+    ANIMATION_INDEX,  //15
                       
-    CONTROL_COUNT,    //13
-    ANIMATION_INDEX,  //14
+    SPRITE_INDEX,     //16  \
+    IMAGE_INDEX,      //17   | Only used for sprites
+    IMAGE_SPEED,      //18  /
                       
-    SPRITE_INDEX,     //15  \
-    IMAGE_INDEX,      //16   | Only used for sprites
-    IMAGE_SPEED,      //17  /
-                      
-    __SIZE,           //18
+    __SIZE,           //19
 }
 
 enum __SCRIBBLE_VBUFF_POS //TODO - Implement slant offset
@@ -40,11 +41,9 @@ enum __SCRIBBLE_CONTROL_TYPE
 {
     EVENT,
     HALIGN,
-    PAGEBREAK,
     COLOUR,
     SLANT,
     EFFECT,
-    SCALE,
     CYCLE
 }
 
@@ -91,12 +90,17 @@ enum __SCRIBBLE_PARSER_LINE
 
 
 //In-line macros!
+#macro __SCRIBBLE_PARSER_PUSH_SCALE  if (_state_final_scale != 1)\
+                                     {\
+                                            ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.WIDTH, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION, _state_final_scale);\ //Covers width, height, and separation
+                                            ds_grid_set_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.SCALE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SCALE, _state_final_scale);\
+                                     }\
+                                     _state_scale_start_glyph = _glyph_count;
+
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  ;\//Pull info out of the font's data structures
                                       var _data_index = _font_glyphs_map[? _glyph_write];\
-                                      ;\
                                       ;\//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined) _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
-                                      ;\
                                       if (_data_index == undefined)\
                                       {\
                                           ;\//This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
@@ -106,8 +110,9 @@ enum __SCRIBBLE_PARSER_LINE
                                       {\
                                           ;\//Add this glyph to our grid by copying from the font's own glyph data grid
                                           ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.ORD, _data_index, SCRIBBLE_GLYPH.MSDF_PXRANGE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD);\
-                                          ++_glyph_count;\
+                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] = _control_count;\
                                           ;\
+                                          ++_glyph_count;\
                                           ;\//We don't set _glyph_prev_arabic_join_next here, we do it further up
                                           _glyph_prev = _glyph_write;\
                                           _glyph_prev_prev = _glyph_prev;\
@@ -147,7 +152,7 @@ enum __SCRIBBLE_PARSER_LINE
 
 #macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_glyph_texture != _last_glyph_texture)\
                                      {\
-                                         _last_glyph_texture = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.TEXTURE];\
+                                         _last_glyph_texture = _glyph_texture;\
                                          _vbuff = _page_data.__get_vertex_buffer(_last_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.MSDF_PXRANGE], true, self);\
                                      }\
                                      if (_bezier_do)\
@@ -184,9 +189,9 @@ enum __SCRIBBLE_PARSER_LINE
                                          _quad_b = _quad_cy;\
                                      }\
                                      ;\ //TODO - Implement slant offset
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _glyph_scale,  _half_h);\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _glyph_scale, -_half_h);\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_b, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff, _glyph_scale, -_half_h);\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _glyph_scale, -_half_h);\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _glyph_scale,  _half_h);\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_t, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, _glyph_scale,  _half_h);
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _glyph_scale,  _half_h);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _glyph_scale, -_half_h);\
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_b, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff, _glyph_scale, -_half_h);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _glyph_scale, -_half_h);\
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _glyph_scale,  _half_h);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_t, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, _glyph_scale,  _half_h);

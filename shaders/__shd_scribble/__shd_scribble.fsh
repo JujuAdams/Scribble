@@ -8,11 +8,11 @@ varying vec4 v_vColour;
 
 void main()
 {
-    gl_FragColor = texture2D(gm_BaseTexture, v_vTexcoord);
+    gl_FragColor = v_vColour*texture2D(gm_BaseTexture, v_vTexcoord);
     
     if (PREMULTIPLY_ALPHA)
     {
-        gl_FragColor *= v_vColour.a;
+        gl_FragColor.rgb *= v_vColour.a;
     }
     else
     {

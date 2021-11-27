@@ -40,8 +40,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     valign     = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
     fit_scale  = 1.0;
     wrapped    = false;
-    has_arabic = false; // Set to <true> if any Arabic text is detected during the string parsing phase
-    has_thai   = false; // Similarly for Thai
+    
+    has_r2l        = false;
+    has_arabic     = false;
+    has_thai       = false;
+    has_hebrew     = false;
+    has_devanagari = false;
     
     pages_array      = []; //Stores each page of text
     character_array  = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
@@ -301,22 +305,16 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         bezier_lengths_array = undefined; //TODO
     };
     
-    //TODO - Number these
     __scribble_gen_1_model_limits_and_bezier_curves()
     __scribble_gen_2_line_heights();
     __scribble_gen_3_parser();
-    __scribble_gen_4_build_words();
-    __scribble_gen_5_finalize_bidi();
-    __scribble_gen_6_build_lines();
-    __scribble_gen_7_build_pages();
-    __scribble_gen_8_position_glyphs();
-    __scribble_gen_9_write_vbuffs();
-    
-    //Wipe the control grid so we don't accidentally hold references to event structs
-    //TODO - Clean up as we go
-    ds_grid_clear(global.__scribble_control_grid, 0);
-    
-    
+    __scribble_gen_4_devanagari();
+    __scribble_gen_5_build_words();
+    __scribble_gen_6_finalize_bidi();
+    __scribble_gen_7_build_lines();
+    __scribble_gen_8_build_pages();
+    __scribble_gen_9_position_glyphs();
+    __scribble_gen_10_write_vbuffs();
     
     if (SCRIBBLE_VERBOSE)
     {

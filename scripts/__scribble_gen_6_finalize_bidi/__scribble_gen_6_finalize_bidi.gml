@@ -1,10 +1,19 @@
-function __scribble_gen_5_finalize_bidi()
+function __scribble_gen_6_finalize_bidi()
 {
-    if (!has_arabic) exit;
+    if (!has_r2l) exit;
     
     var _word_grid    = global.__scribble_word_grid;
+    //var _glyph_count  = global.__scribble_generator_state.glyph_count;
     var _word_count   = global.__scribble_generator_state.word_count;
     var _overall_bidi = global.__scribble_generator_state.overall_bidi;
+    
+    ////Add a null word to help with bidi
+    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_START] = _glyph_count;
+    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_END  ] = _glyph_count;
+    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.WIDTH      ] = 0;
+    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.HEIGHT     ] = 0;
+    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.BIDI_RAW   ] = __SCRIBBLE_BIDI.SYMBOL;
+    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
     
     // Iterate over all words, assigning directionality to neutral words
     var _i = 0;

@@ -67,8 +67,15 @@ function __scribble_font_add_from_project(_font)
         var _ord  = _glyph_dict.char;
         var _char = chr(_ord);
         
-        var _bidi = _global_glyph_bidi_map[? _ord];
-        if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
+        if ((_ord >= 0x4E00) && (_ord <= 0x9FFF)) //CJK Unified ideographs block
+        {
+            var _bidi = __SCRIBBLE_BIDI.ISOLATED;
+        }
+        else
+        {
+            var _bidi = _global_glyph_bidi_map[? _ord];
+            if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
+        }
         
         var _x = _glyph_dict.x;
         var _y = _glyph_dict.y;

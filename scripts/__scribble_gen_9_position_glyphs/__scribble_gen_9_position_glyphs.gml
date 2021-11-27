@@ -1,4 +1,4 @@
-function __scribble_gen_8_position_glyphs()
+function __scribble_gen_9_position_glyphs()
 {
     var _glyph_grid   = global.__scribble_glyph_grid;
     var _word_grid    = global.__scribble_word_grid;
@@ -220,6 +220,6 @@ function __scribble_gen_8_position_glyphs()
     ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_PARSER_GLYPH.HEIGHT,  _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.HEIGHT,  0, __SCRIBBLE_VBUFF_POS.QUAD_B);
     
     //Transform the animation index into a proper packed index
-    ds_grid_multiply_region(_vbuff_pos_grid, 0, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, __SCRIBBLE_MAX_LINES);
-    ds_grid_add_region(_vbuff_pos_grid, 0, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, 1); //TODO - Put line indexes into the packed index
+    ds_grid_multiply_region(_glyph_grid, 0, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, __SCRIBBLE_MAX_LINES);
+    ds_grid_add_region(_glyph_grid, 0, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, 1); //TODO - Put line indexes into the packed index
 }

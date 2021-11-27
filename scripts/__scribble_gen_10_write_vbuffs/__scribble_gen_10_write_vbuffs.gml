@@ -1,4 +1,4 @@
-function __scribble_gen_9_write_vbuffs()
+function __scribble_gen_10_write_vbuffs()
 {
     if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
     {
@@ -76,10 +76,6 @@ function __scribble_gen_9_write_vbuffs()
                         _glyph_effect_flags = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
                     break;
                     
-                    case __SCRIBBLE_CONTROL_TYPE.SCALE:
-                        _glyph_scale = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
-                    break;
-                    
                     case __SCRIBBLE_CONTROL_TYPE.CYCLE:
                         _glyph_cycle = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
                         
@@ -140,10 +136,11 @@ function __scribble_gen_9_write_vbuffs()
                 var _glyph_xscale = sprite_get_width(_sprite_index) / _glyph_width;
                 var _glyph_yscale = sprite_get_height(_sprite_index) / _glyph_height;
                 
+                var _old_glyph_effect_flags = _glyph_effect_flags;
+                
                 if (!SCRIBBLE_COLORIZE_SPRITES)
                 {
-                    var _old_write_colour       = _write_colour;
-                    var _old_glyph_effect_flags = _glyph_effect_flags;
+                    var _old_write_colour = _write_colour;
                     
                     _write_colour = _write_colour | 0xFFFFFF;
                     
@@ -193,8 +190,8 @@ function __scribble_gen_9_write_vbuffs()
                     var _quad_u1 = _uvs[2];
                     var _quad_v1 = _uvs[3];
                     
-                    var _quad_l = _glyph_x + _uvs[4]*_glyph_xscale;
-                    var _quad_t = _glyph_y + _uvs[5]*_glyph_yscale;
+                    var _quad_l = floor(_glyph_x + _uvs[4]*_glyph_xscale);
+                    var _quad_t = floor(_glyph_y + _uvs[5]*_glyph_yscale);
                     var _quad_r = _quad_l  + _uvs[6]*_glyph_width;
                     var _quad_b = _quad_t  + _uvs[7]*_glyph_height;
                     
@@ -207,13 +204,9 @@ function __scribble_gen_9_write_vbuffs()
                     ++_glyph_sprite_data;
                 }
                 
-                if (!SCRIBBLE_COLORIZE_SPRITES)
-                {
-                    _write_colour       = _old_write_colour;
-                    _glyph_effect_flags = _old_glyph_effect_flags;
-                }
-                
-                _glyph_sprite_data = 0; //Reset this because every other tyoe of glyph doesn't use this
+                if (!SCRIBBLE_COLORIZE_SPRITES) _write_colour = _old_write_colour;
+                _glyph_effect_flags = _old_glyph_effect_flags;
+                _glyph_sprite_data = 0; //Reset this because every other type of glyph doesn't use this
                 
                 #endregion
             }

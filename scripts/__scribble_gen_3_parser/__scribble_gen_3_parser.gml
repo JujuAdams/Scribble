@@ -52,9 +52,16 @@ function __scribble_gen_3_parser()
         {
             var _glyph_ord = __scribble_buffer_read_unicode(_string_buffer)
             if (_glyph_ord == 0) break;
-                
-            var _bidi = _global_glyph_bidi_map[? _glyph_ord];
-            if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
+            
+            if ((_glyph_ord >= 0x4E00) && (_glyph_ord <= 0x9FFF)) //CJK Unified ideographs block
+            {
+                var _bidi = __SCRIBBLE_BIDI.ISOLATED;
+            }
+            else
+            {
+                var _bidi = _global_glyph_bidi_map[? _glyph_ord];
+                if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
+            }
             
             if ((_bidi == __SCRIBBLE_BIDI.L2R) || (_bidi == __SCRIBBLE_BIDI.R2L))
             {
@@ -91,13 +98,16 @@ function __scribble_gen_3_parser()
     var _control_count = 0;
     var _skip_write    = false;
     
+    __SCRIBBLE_PARSER_SET_FONT;
+    
     var _state_effect_flags = 0;
     var _state_colour       = 0xFF000000 | _starting_colour; //Uses all four bytes
-    var _state_scale        = 1.0;
     var _state_halign       = _starting_halign;
     var _state_command_tag_flipflop = false;
     
-    __SCRIBBLE_PARSER_SET_FONT;
+    var _state_scale             = 1.0;
+    var _state_final_scale       = _font_scale_dist;
+    var _state_scale_start_glyph = 0;
     
     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.HALIGN;
     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_halign;
@@ -177,6 +187,8 @@ function __scribble_gen_3_parser()
                         //    - font
                         //But NOT alignment
                         
+                        __SCRIBBLE_PARSER_PUSH_SCALE;
+                        
                         if (_font_name != _starting_font)
                         {
                             _font_name = _starting_font;
@@ -185,6 +197,7 @@ function __scribble_gen_3_parser()
                         
                         _state_effect_flags = 0;
                         _state_scale        = 1.0;
+                        _state_final_scale  = _font_scale_dist;
                         _state_colour       = 0xFF000000 | _starting_colour;
                         
                         //Add an effect flag control
@@ -195,12 +208,6 @@ function __scribble_gen_3_parser()
                         //Add a colour control
                         _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.COLOUR;
                         _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_colour;
-                        ++_control_count;
-                        
-                        //Add a scale control
-                        _state_scale = 1;
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist;
                         ++_control_count;
                         
                         //Add a slant control
@@ -218,10 +225,8 @@ function __scribble_gen_3_parser()
                             __SCRIBBLE_PARSER_SET_FONT;
                         }
                         
-                        //Add a scale control
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
-                        ++_control_count;
+                        __SCRIBBLE_PARSER_PUSH_SCALE;
+                        _state_final_scale = _font_scale_dist*_state_scale;
                     break;
                     
                     // [/color]
@@ -250,11 +255,9 @@ function __scribble_gen_3_parser()
                     // [/scale]
                     // [/s]
                     case 4:
-                        //Add a scale control
+                        __SCRIBBLE_PARSER_PUSH_SCALE;
                         _state_scale = 1;
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist;
-                        ++_control_count;
+                        _state_final_scale = _font_scale_dist;
                     break;
                     
                     // [/slant]
@@ -269,9 +272,20 @@ function __scribble_gen_3_parser()
                     
                     // [/page]
                     case 6:
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.PAGEBREAK;
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = undefined;
-                        ++_control_count;
+                        //Add a null glyph to our grid
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD          ] = 0x00;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH        ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT       ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION   ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] = _control_count;
+                        
+                        ++_glyph_count;
+                        _glyph_prev_arabic_join_next = false;
+                        _glyph_prev = 0x00;
+                        _glyph_prev_prev = _glyph_prev;
                     break;
                     
                     #region Scale
@@ -284,11 +298,9 @@ function __scribble_gen_3_parser()
                         }
                         else
                         {
-                            //Add a scale control
+                            __SCRIBBLE_PARSER_PUSH_SCALE;
                             _state_scale = real(_tag_parameters[1]);
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
-                            ++_control_count;
+                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                     
@@ -300,11 +312,9 @@ function __scribble_gen_3_parser()
                         }
                         else
                         {
-                            //Add a scale control
+                            __SCRIBBLE_PARSER_PUSH_SCALE;
                             _state_scale *= real(_tag_parameters[1]);
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
-                            ++_control_count;
+                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                     
@@ -457,11 +467,8 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
-                            
-                            //Add a scale control
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
-                            ++_control_count;
+                            __SCRIBBLE_PARSER_PUSH_SCALE;
+                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                     
@@ -481,11 +488,8 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
-                            
-                            //Add a scale control
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
-                            ++_control_count;
+                            __SCRIBBLE_PARSER_PUSH_SCALE;
+                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                     
@@ -505,11 +509,8 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
-                            
-                            //Add a scale control
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
-                            ++_control_count;
+                            __SCRIBBLE_PARSER_PUSH_SCALE;
+                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                     
@@ -529,11 +530,8 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
-                            
-                            //Add a scale control
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
-                            ++_control_count;
+                            __SCRIBBLE_PARSER_PUSH_SCALE;
+                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                             
@@ -576,7 +574,7 @@ function __scribble_gen_3_parser()
                     
                     #endregion
                             
-                    default:
+                    default: //TODO - Optimize
                         if (ds_map_exists(global.__scribble_effects, _tag_command_name)) //Set an effect
                         {
                             _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? _tag_command_name]);
@@ -616,11 +614,8 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _tag_command_name;
                             __SCRIBBLE_PARSER_SET_FONT;
-                            
-                            //Add a scale control
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SCALE;
-                            _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _font_scale_dist*_state_scale;
-                            ++_control_count;
+                            __SCRIBBLE_PARSER_PUSH_SCALE;
+                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                         else if (asset_get_type(_tag_command_name) == asset_sprite)
                         {
@@ -688,11 +683,7 @@ function __scribble_gen_3_parser()
                                 try
                                 {
                                     var _decoded_colour = real("0x" + string_delete(_tag_command_name, 1, 1));
-                                    
-                                    if (!SCRIBBLE_BGR_COLOR_HEX_CODES)
-                                    {
-                                        _decoded_colour = scribble_rgb_to_bgr(_state_colour);
-                                    }
+                                    if (!SCRIBBLE_BGR_COLOR_HEX_CODES) _decoded_colour = scribble_rgb_to_bgr(_decoded_colour);
                                 }
                                 catch(_error)
                                 {
@@ -804,7 +795,7 @@ function __scribble_gen_3_parser()
             {
                 //Add a newline glyph to our grid
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD          ] = 0x0A; //ASCII line break (dec = 10)
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI         ] = __SCRIBBLE_BIDI.LINE_BREAK;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X            ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y            ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH        ] = 0;
@@ -1057,6 +1048,16 @@ function __scribble_gen_3_parser()
                         
                         #endregion
                     }
+                    else if ((_glyph_write >= 0x0590) && (_glyph_write <= 0x05FF))
+                    {
+                        //Hebrew handling is, mercifully, straight-forward beyond R2L directionality
+                        has_hebrew = true;
+                    }
+                    else if ((_glyph_write >= 0x0900) && (_glyph_write <= 0x097F))
+                    {
+                        //Devanagari is so complex it gets its own function
+                        has_devanagari = true;
+                    }
                 }
                 
                 __SCRIBBLE_PARSER_WRITE_GLYPH;
@@ -1080,12 +1081,20 @@ function __scribble_gen_3_parser()
         }
     }
     
+    __SCRIBBLE_PARSER_PUSH_SCALE;
+    
+    if (has_arabic || has_hebrew) has_r2l = true;
+    
     //Set our vertical alignment if it hasn't been overrided
     if (valign == undefined) valign = _starting_valign;
     
     //Create a null terminator so we correctly handle the last character in the string
-    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD          ] = 0x00;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD          ] = 0x00; //ASCII line break (dec = 10)
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X            ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y            ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH        ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT       ] = _font_line_height;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION   ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] = _control_count; //Make sure we collect controls at the end of a string
     

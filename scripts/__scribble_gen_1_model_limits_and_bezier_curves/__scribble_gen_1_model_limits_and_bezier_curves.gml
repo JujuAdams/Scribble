@@ -9,7 +9,9 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
     if (_model_max_height < 0) _model_max_height = infinity;
     
     #region Build Bezier curve segment lengths
-      
+    
+    //TODO - Cache Bezier curves
+    
     //Make a copy of the Bezier array
     var _element_bezier_array = _element.bezier_array;
     var _bezier_do = ((_element_bezier_array[0] != _element_bezier_array[4]) || (_element_bezier_array[1] != _element_bezier_array[5]));

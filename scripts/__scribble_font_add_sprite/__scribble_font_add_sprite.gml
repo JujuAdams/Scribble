@@ -74,13 +74,10 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
                 var _space_width = _sprite_width + _separation;
             }
             
-            var _bidi = global.__scribble_glyph_data.bidi_map[? _ord];
-            if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
-            
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER ] = _glyph;
             
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.ORD       ] = _ord;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI      ] = _bidi;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.WHITESPACE;
             
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET  ] = 0;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
@@ -113,8 +110,15 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
                 var _glyph_separation = _sprite_width + _separation;
             }
             
-            var _bidi = _global_glyph_bidi_map[? _ord];
-            if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
+            if ((_ord >= 0x4E00) && (_ord <= 0x9FFF)) //CJK Unified ideographs block
+            {
+                var _bidi = __SCRIBBLE_BIDI.ISOLATED;
+            }
+            else
+            {
+                var _bidi = _global_glyph_bidi_map[? _ord];
+                if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
+            }
             
             var _w = _image_info.crop_width;
             var _h = _image_info.crop_height;
