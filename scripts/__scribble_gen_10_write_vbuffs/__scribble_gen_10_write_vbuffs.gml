@@ -33,10 +33,8 @@ function __scribble_gen_10_write_vbuffs()
     var _glyph_colour       = 0xFFFFFFFF;
     var _glyph_cycle        = 0x00000000;
     var _glyph_effect_flags = 0;
-    var _glyph_slant        = false;
     var _glyph_sprite_data  = 0;
     var _write_colour       = 0xFFFFFFFF;
-    var _slant_offset       = 0;
     
     var _control_index = 0;
     
@@ -66,10 +64,6 @@ function __scribble_gen_10_write_vbuffs()
                     case __SCRIBBLE_CONTROL_TYPE.COLOUR:
                         _glyph_colour = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
                         var _write_colour = (__SCRIBBLE_ON_OPENGL? scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
-                    break;
-                    
-                    case __SCRIBBLE_CONTROL_TYPE.SLANT:
-                        _glyph_slant = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
                     break;
                     
                     case __SCRIBBLE_CONTROL_TYPE.EFFECT:

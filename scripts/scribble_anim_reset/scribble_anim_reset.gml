@@ -22,6 +22,7 @@ function scribble_anim_reset()
         global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.JITTER_MINIMUM  ] = SCRIBBLE_DEFAULT_JITTER_MIN_SCALE;
         global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.JITTER_MAXIMUM  ] = SCRIBBLE_DEFAULT_JITTER_MAX_SCALE;
         global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.JITTER_SPEED    ] = SCRIBBLE_DEFAULT_JITTER_SPEED;
+        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.SLANT_GRADIENT  ] = SCRIBBLE_SLANT_GRADIENT;
         
         global.__scribble_anim_blink_on_duration  = SCRIBBLE_DEFAULT_BLINK_ON_DURATION;
         global.__scribble_anim_blink_off_duration = SCRIBBLE_DEFAULT_BLINK_OFF_DURATION;

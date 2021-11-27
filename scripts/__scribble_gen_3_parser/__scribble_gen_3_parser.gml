@@ -183,7 +183,6 @@ function __scribble_gen_3_parser()
                         //    - colour
                         //    - effect flags (inc. cycle)
                         //    - scale
-                        //    - slant
                         //    - font
                         //But NOT alignment
                         
@@ -208,11 +207,6 @@ function __scribble_gen_3_parser()
                         //Add a colour control
                         _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.COLOUR;
                         _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_colour;
-                        ++_control_count;
-                        
-                        //Add a slant control
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SLANT;
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = false;
                         ++_control_count;
                     break;
                     
@@ -258,14 +252,6 @@ function __scribble_gen_3_parser()
                         __SCRIBBLE_PARSER_PUSH_SCALE;
                         _state_scale = 1;
                         _state_final_scale = _font_scale_dist;
-                    break;
-                    
-                    // [/slant]
-                    case 5:
-                        //Add a slant control
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SLANT;
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = false;
-                        ++_control_count;
                     break;
                     
                     #endregion
@@ -319,14 +305,6 @@ function __scribble_gen_3_parser()
                     break;
                     
                     #endregion
-                    
-                    // [slant]
-                    case 9:
-                        //Add a slant control
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.SLANT;
-                        _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = true;
-                        ++_control_count;
-                    break;
                     
                     // [alpha]
                     case 10:

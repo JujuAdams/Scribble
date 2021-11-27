@@ -1,19 +1,20 @@
 //   @jujuadams   v7.1.2   2021-03-16
 precision highp float;
 
-const int MAX_EFFECTS = 10;
-#define SPRITE_FLAG   flagArray[0]
-#define WAVE_FLAG     flagArray[1]
-#define SHAKE_FLAG    flagArray[2]
-#define RAINBOW_FLAG  flagArray[3]
-#define WOBBLE_FLAG   flagArray[4]
-#define PULSE_FLAG    flagArray[5]
-#define WHEEL_FLAG    flagArray[6]
-#define CYCLE_FLAG    flagArray[7]
-#define JITTER_FLAG   flagArray[8]
-#define BLINK_FLAG    flagArray[9]
+const int MAX_EFFECTS = 11;
+#define SPRITE_FLAG   flagArray[ 0]
+#define WAVE_FLAG     flagArray[ 1]
+#define SHAKE_FLAG    flagArray[ 2]
+#define RAINBOW_FLAG  flagArray[ 3]
+#define WOBBLE_FLAG   flagArray[ 4]
+#define PULSE_FLAG    flagArray[ 5]
+#define WHEEL_FLAG    flagArray[ 6]
+#define CYCLE_FLAG    flagArray[ 7]
+#define JITTER_FLAG   flagArray[ 8]
+#define BLINK_FLAG    flagArray[ 9]
+#define SLANT_FLAG    flagArray[10]
 
-const int MAX_ANIM_FIELDS = 20;
+const int MAX_ANIM_FIELDS = 21;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
 #define WAVE_FREQUENCY    u_aDataFields[ 1]
 #define WAVE_SPEED        u_aDataFields[ 2]
@@ -34,6 +35,7 @@ const int MAX_ANIM_FIELDS = 20;
 #define JITTER_MINIMUM    u_aDataFields[17]
 #define JITTER_MAXIMUM    u_aDataFields[18]
 #define JITTER_SPEED      u_aDataFields[19]
+#define SLANT_GRADIENT    u_aDataFields[20]
 
 const int EASE_METHOD_COUNT = 15;
 #define EASE_NONE         0
@@ -78,13 +80,13 @@ varying float v_fTextScale;
 uniform vec4  u_vColourBlend;                           //4
 uniform vec4  u_vGradient;                              //4
 uniform float u_fTime;                                  //1
-uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
+uniform float u_aDataFields[MAX_ANIM_FIELDS];           //21
 uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
 
 uniform int   u_iTypewriterMethod;                      //1
 uniform int   u_iTypewriterCharMax;                     //1
-uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
+uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //6
 uniform float u_fTypewriterSmoothness;                  //1
 uniform vec2  u_vTypewriterStartPos;                    //2
 uniform vec2  u_vTypewriterStartScale;                  //2
@@ -380,16 +382,17 @@ void main()
     //MAX_EFFECTS = 10
     float flagValue = in_Normal.z;
     float edge;
-    edge = step(512.0, flagValue); flagArray[9] = edge; flagValue -= 512.0*edge;
-    edge = step(256.0, flagValue); flagArray[8] = edge; flagValue -= 256.0*edge;
-    edge = step(128.0, flagValue); flagArray[7] = edge; flagValue -= 128.0*edge;
-    edge = step( 64.0, flagValue); flagArray[6] = edge; flagValue -=  64.0*edge;
-    edge = step( 32.0, flagValue); flagArray[5] = edge; flagValue -=  32.0*edge;
-    edge = step( 16.0, flagValue); flagArray[4] = edge; flagValue -=  16.0*edge;
-    edge = step(  8.0, flagValue); flagArray[3] = edge; flagValue -=   8.0*edge;
-    edge = step(  4.0, flagValue); flagArray[2] = edge; flagValue -=   4.0*edge;
-    edge = step(  2.0, flagValue); flagArray[1] = edge; flagValue -=   2.0*edge;
-    edge = step(  1.0, flagValue); flagArray[0] = edge; flagValue -=   1.0*edge;
+    edge = step(1024.0, flagValue); flagArray[10] = edge; flagValue -= 1024.0*edge;
+    edge = step( 512.0, flagValue); flagArray[ 9] = edge; flagValue -=  512.0*edge;
+    edge = step( 256.0, flagValue); flagArray[ 8] = edge; flagValue -=  256.0*edge;
+    edge = step( 128.0, flagValue); flagArray[ 7] = edge; flagValue -=  128.0*edge;
+    edge = step(  64.0, flagValue); flagArray[ 6] = edge; flagValue -=   64.0*edge;
+    edge = step(  32.0, flagValue); flagArray[ 5] = edge; flagValue -=   32.0*edge;
+    edge = step(  16.0, flagValue); flagArray[ 4] = edge; flagValue -=   16.0*edge;
+    edge = step(   8.0, flagValue); flagArray[ 3] = edge; flagValue -=    8.0*edge;
+    edge = step(   4.0, flagValue); flagArray[ 2] = edge; flagValue -=    4.0*edge;
+    edge = step(   2.0, flagValue); flagArray[ 1] = edge; flagValue -=    2.0*edge;
+    edge = step(   1.0, flagValue); flagArray[ 0] = edge; flagValue -=    1.0*edge;
     
     
     
@@ -411,14 +414,15 @@ void main()
         centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         
         vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        pos = rotate_by_vector(centre + centreDelta, centre, normalize(orientation));
+        pos = rotate_by_vector(centre - centreDelta, centre, normalize(orientation));
         
         vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
         pos += in_Position.y*perpendicular;
     }
     else
     {
-        centre = pos - centreDelta;
+        centre = pos + centreDelta;
+        if (SLANT_FLAG > 0.5) pos.x += centreDelta.y*SLANT_GRADIENT;
     }
     
     

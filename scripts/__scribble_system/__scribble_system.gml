@@ -110,11 +110,11 @@ _map[? "/alpha"    ] =  3;
 _map[? "/a"        ] =  3;
 _map[? "/scale"    ] =  4;
 _map[? "/s"        ] =  4;
-_map[? "/slant"    ] =  5;
+//5 is unused
 _map[? "/page"     ] =  6;
 _map[? "scale"     ] =  7;
 _map[? "scaleStack"] =  8;
-_map[? "slant"     ] =  9;
+//9 is unused
 _map[? "alpha"     ] = 10;
 _map[? "fa_left"   ] = 11;
 _map[? "fa_center" ] = 12;
@@ -155,6 +155,7 @@ global.__scribble_effects[?       "wheel"   ] = 6;
 global.__scribble_effects[?       "cycle"   ] = 7;
 global.__scribble_effects[?       "jitter"  ] = 8;
 global.__scribble_effects[?       "blink"   ] = 9;
+global.__scribble_effects[?       "slant"   ] = 10;
 global.__scribble_effects_slash[? "/wave"   ] = 1;
 global.__scribble_effects_slash[? "/shake"  ] = 2;
 global.__scribble_effects_slash[? "/rainbow"] = 3;
@@ -164,6 +165,7 @@ global.__scribble_effects_slash[? "/wheel"  ] = 6;
 global.__scribble_effects_slash[? "/cycle"  ] = 7;
 global.__scribble_effects_slash[? "/jitter" ] = 8;
 global.__scribble_effects_slash[? "/blink"  ] = 9;
+global.__scribble_effects_slash[? "/slant"  ] = 10;
 
 //Create a vertex format for our text
 vertex_format_begin();
@@ -606,7 +608,8 @@ enum __SCRIBBLE_ANIM
     JITTER_MINIMUM,   //17
     JITTER_MAXIMUM,   //18
     JITTER_SPEED,     //19
-    __SIZE,           //20
+    SLANT_GRADIENT,   //20
+    __SIZE,           //21
 }
 
 enum SCRIBBLE_EASE

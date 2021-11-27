@@ -37,3 +37,5 @@
 #macro SCRIBBLE_DEFAULT_BLINK_ON_DURATION   50
 #macro SCRIBBLE_DEFAULT_BLINK_OFF_DURATION  50
 #macro SCRIBBLE_DEFAULT_BLINK_TIME_OFFSET   0
+
+#macro SCRIBBLE_SLANT_GRADIENT              0.25  //The x-axis displacement when using the [slant] tag
