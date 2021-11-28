@@ -9,15 +9,15 @@ enum __SCRIBBLE_PARSER_GLYPH
     HEIGHT,           // 5   |
     FONT_HEIGHT,      // 6   |
     SEPARATION,       // 7   | This group of enums must not change order or be split
+    SCALE,            // 8   |
                       //     |
-    TEXTURE,          // 8   |
-    QUAD_U0,          // 9   |
-    QUAD_V0,          //10   |
-    QUAD_U1,          //11   |
-    QUAD_V1,          //12   |
+    TEXTURE,          // 9   |
+    QUAD_U0,          //10   |
+    QUAD_V0,          //11   |
+    QUAD_U1,          //12   |
+    QUAD_V1,          //13   |
                       //     |
-    MSDF_PXRANGE,     //13   |
-    SCALE,            //14  /
+    MSDF_PXRANGE,     //14  /
     
     CONTROL_COUNT,    //15
     ANIMATION_INDEX,  //16
@@ -92,8 +92,7 @@ enum __SCRIBBLE_PARSER_LINE
 //In-line macros!
 #macro __SCRIBBLE_PARSER_PUSH_SCALE  if (_state_scale != 1)\
                                      {\
-                                            ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION, _state_scale);\ //Covers x, y, width, height, and separation
-                                            ds_grid_set_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.SCALE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SCALE, _state_scale);\
+                                            ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SCALE, _state_scale);\ //Covers x, y, width, height, and separation
                                      }\
                                      _state_scale_start_glyph = _glyph_count;
 
@@ -125,7 +124,7 @@ enum __SCRIBBLE_PARSER_LINE
                                       else\
                                       {\
                                           ;\//Add this glyph to our grid by copying from the font's own glyph data grid
-                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.ORD, _data_index, SCRIBBLE_GLYPH.FONT_SCALE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD);\
+                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.ORD, _data_index, SCRIBBLE_GLYPH.MSDF_PXRANGE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD);\
                                           _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] = _control_count;\
                                           ;\
                                           ++_glyph_count;\

@@ -143,6 +143,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT      ] = _h;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT ] = _json_line_height;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION  ] = _xadvance;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE     ] = _texture;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0          ] = _u0;
@@ -151,7 +152,6 @@ function __scribble_font_add_msdf_from_project(_sprite)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1          ] = _v1;
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = _msdf_pxrange;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
         
         _font_glyphs_map[? _ord] = _i;
         

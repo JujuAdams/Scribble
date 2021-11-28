@@ -98,6 +98,7 @@ function __scribble_font_add_from_project(_font)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT      ] = _h;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT ] = _h;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION  ] = _glyph_dict.shift;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
                                                                
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE     ] = _texture;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0          ] = _u0;
@@ -106,7 +107,6 @@ function __scribble_font_add_from_project(_font)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1          ] = _v1;
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = undefined;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
         
         
         _font_glyphs_map[? _ord] = _i;
@@ -124,6 +124,6 @@ function __scribble_font_add_from_project(_font)
         
         //FIXME - This seems to be inaccurate if the font is scaled down a long way - 20201-11-11  IDE v2.3.6.595  Runtime v2.3.6.464
         //        Good test vector is fnt_noto_chinese with a 2K texture page
-        scribble_font_scale(_name, 1/_GM_scaling, 1/_GM_scaling);
+        scribble_font_scale(_name, 1/_GM_scaling);
     }
 }

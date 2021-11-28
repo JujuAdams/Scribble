@@ -551,15 +551,15 @@ enum SCRIBBLE_GLYPH
     HEIGHT,       // 6   |
     FONT_HEIGHT,  // 7   |
     SEPARATION,   // 8   | This group of enums must not change order or be split
+    FONT_SCALE,   // 9   |
                   //     |
-    TEXTURE,      // 9   |
-    U0,           //10   |
-    V0,           //11   |
-    U1,           //12   |
-    V1,           //13   |
+    TEXTURE,      //10   |
+    U0,           //11   |
+    V0,           //12   |
+    U1,           //13   |
+    V1,           //14   |
                   //     |
-    MSDF_PXRANGE, //14   |
-    FONT_SCALE,   //15  /
+    MSDF_PXRANGE, //15  /
     
     __SIZE        //16
 }
