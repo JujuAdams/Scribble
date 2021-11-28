@@ -240,7 +240,7 @@ function __scribble_gen_10_write_vbuffs()
                     __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
                 }
                 
-                if ((_glyph_ord > 32) && (_glyph_ord != 0x200B))
+                if ((_glyph_ord > 0x20) && (_glyph_ord != 0xA0) && (_glyph_ord != 0x200B))
                 {
                     if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
                     {
