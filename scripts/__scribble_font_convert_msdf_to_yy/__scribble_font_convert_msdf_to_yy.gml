@@ -13,6 +13,12 @@ function __scribble_font_convert_msdf_to_yy(_resource_name, _json_filename)
     var _msdf_pxrange = _json.atlas.distanceRange;
     var _atlas_height = _json.atlas.height;
     
+    var _extra_data_buffer = buffer_create(1024, buffer_grow, 1);
+    buffer_write(_extra_data_buffer, buffer_f64, _msdf_pxrange);
+    repeat(2000) buffer_write(_extra_data_buffer, buffer_s16, irandom_range(-9999, 9999));
+    var _base64 = buffer_base64_encode(_extra_data_buffer, 0, buffer_tell(_extra_data_buffer));
+    buffer_delete(_extra_data_buffer);
+    
     var _output_buffer = buffer_create(1024, buffer_grow, 1);
     
     buffer_write(_output_buffer, buffer_text, "{\n");
@@ -21,7 +27,7 @@ function __scribble_font_convert_msdf_to_yy(_resource_name, _json_filename)
     buffer_write(_output_buffer, buffer_text, "  \"interpreter\": 0,\n");
     buffer_write(_output_buffer, buffer_text, "  \"pointRounding\": 0,\n");
     buffer_write(_output_buffer, buffer_text, "  \"applyKerning\": 0,\n");
-    buffer_write(_output_buffer, buffer_text, "  \"fontName\": \"Scribble MSDF\",\n");
+    buffer_write(_output_buffer, buffer_text, "  \"fontName\": \"" + _base64 + "\",\n");
     buffer_write(_output_buffer, buffer_text, "  \"styleName\": \"MSDF\",\n");
     buffer_write(_output_buffer, buffer_text, "  \"size\": " + string(_em_size) + ".0,\n");
     buffer_write(_output_buffer, buffer_text, "  \"bold\": false,\n");
