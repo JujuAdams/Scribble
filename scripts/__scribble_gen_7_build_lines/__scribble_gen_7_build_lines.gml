@@ -88,7 +88,7 @@ function __scribble_gen_7_build_lines()
                 _line_y += _line_height;
                 
                 _line_word_start = (_force_break == 1)? _i : _i+1;
-                _word_x = 0;
+                _word_x = (_force_break == 2)? 0 : _word_width;
                 
                 _force_break = 0;
                 _state_halign = _new_state_halign;
