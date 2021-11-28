@@ -14,10 +14,8 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     msdf_pxrange = undefined;
     superfont    = false;
     
-    xscale     = 1.0;
-    yscale     = 1.0;
-    scale_dist = 1.0;
-    height     = 0; //*Not* the raw height. This value is changed by scribble_font_scale()
+    scale  = 1.0;
+    height = 0; //*Not* the raw height. This value is changed by scribble_font_scale()
     
     style_regular     = undefined;
     style_bold        = undefined;
@@ -42,7 +40,7 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     
     static calculate_font_height = function()
     {
-        height = yscale*glyph_data_grid[# glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT];
+        height = glyph_data_grid[# glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT];
         return height;
     }
     

@@ -90,10 +90,10 @@ enum __SCRIBBLE_PARSER_LINE
 
 
 //In-line macros!
-#macro __SCRIBBLE_PARSER_PUSH_SCALE  if (_state_final_scale != 1)\
+#macro __SCRIBBLE_PARSER_PUSH_SCALE  if (_state_scale != 1)\
                                      {\
-                                            ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION, _state_final_scale);\ //Covers x, y, width, height, and separation
-                                            ds_grid_set_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.SCALE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SCALE, _state_final_scale);\
+                                            ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION, _state_scale);\ //Covers x, y, width, height, and separation
+                                            ds_grid_set_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.SCALE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SCALE, _state_scale);\
                                      }\
                                      _state_scale_start_glyph = _glyph_count;
 
@@ -138,7 +138,6 @@ enum __SCRIBBLE_PARSER_LINE
 #macro __SCRIBBLE_PARSER_SET_FONT   var _font_data            = __scribble_get_font_data(_font_name);\
                                     var _font_glyph_data_grid = _font_data.glyph_data_grid;\
                                     var _font_glyphs_map      = _font_data.glyphs_map;\
-                                    var _font_scale_dist      = _font_data.scale_dist;\
                                     var _space_data_index     = _font_glyphs_map[? 32];\
                                     if (_space_data_index == undefined)\
                                     {\

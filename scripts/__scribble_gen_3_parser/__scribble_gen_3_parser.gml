@@ -106,7 +106,6 @@ function __scribble_gen_3_parser()
     var _state_command_tag_flipflop = false;
     
     var _state_scale             = 1.0;
-    var _state_final_scale       = _font_scale_dist;
     var _state_scale_start_glyph = 0;
     
     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.HALIGN;
@@ -200,7 +199,6 @@ function __scribble_gen_3_parser()
                         
                         _state_effect_flags = 0;
                         _state_scale        = 1.0;
-                        _state_final_scale  = _font_scale_dist;
                         _state_colour       = 0xFF000000 | _starting_colour;
                         
                         //Add an effect flag control
@@ -222,9 +220,6 @@ function __scribble_gen_3_parser()
                             _font_name = _starting_font;
                             __SCRIBBLE_PARSER_SET_FONT;
                         }
-                        
-                        __SCRIBBLE_PARSER_PUSH_SCALE;
-                        _state_final_scale = _font_scale_dist*_state_scale;
                     break;
                     
                     // [/color]
@@ -255,7 +250,6 @@ function __scribble_gen_3_parser()
                     case 4:
                         __SCRIBBLE_PARSER_PUSH_SCALE;
                         _state_scale = 1;
-                        _state_final_scale = _font_scale_dist;
                     break;
                     
                     #endregion
@@ -291,7 +285,6 @@ function __scribble_gen_3_parser()
                         {
                             __SCRIBBLE_PARSER_PUSH_SCALE;
                             _state_scale = real(_tag_parameters[1]);
-                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                     
@@ -305,7 +298,6 @@ function __scribble_gen_3_parser()
                         {
                             __SCRIBBLE_PARSER_PUSH_SCALE;
                             _state_scale *= real(_tag_parameters[1]);
-                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                     
@@ -452,7 +444,6 @@ function __scribble_gen_3_parser()
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
                             __SCRIBBLE_PARSER_PUSH_SCALE;
-                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                     
@@ -472,8 +463,6 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
-                            __SCRIBBLE_PARSER_PUSH_SCALE;
-                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                     
@@ -493,8 +482,6 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
-                            __SCRIBBLE_PARSER_PUSH_SCALE;
-                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                     
@@ -514,8 +501,6 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _new_font;
                             __SCRIBBLE_PARSER_SET_FONT;
-                            __SCRIBBLE_PARSER_PUSH_SCALE;
-                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                     break;
                             
@@ -599,8 +584,6 @@ function __scribble_gen_3_parser()
                         {
                             _font_name = _tag_command_name;
                             __SCRIBBLE_PARSER_SET_FONT;
-                            __SCRIBBLE_PARSER_PUSH_SCALE;
-                            _state_final_scale = _font_scale_dist*_state_scale;
                         }
                         else if (asset_get_type(_tag_command_name) == asset_sprite)
                         {
