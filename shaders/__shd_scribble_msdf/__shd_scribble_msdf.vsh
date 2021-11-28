@@ -224,8 +224,28 @@ vec4 cycle(float characterIndex, vec4 colour)
     if (colour.b < 0.003) max_h = 2.0; //2-colour cycle
     
     float h = abs(mod((CYCLE_SPEED*u_fTime - characterIndex)/10.0, max_h));
-    vec3 rgbA = hsv2rgb(vec3(colour[int(h)], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
-    vec3 rgbB = hsv2rgb(vec3(colour[int(mod(h + 1.0, max_h))], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
+    
+    //vec3 rgbA = hsv2rgb(vec3(colour[int(h)], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
+    //vec3 rgbB = hsv2rgb(vec3(colour[int(mod(h + 1.0, max_h))], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
+    
+    // rgbA
+    int ih = int(h); // int h
+    float c1 = 0.0; // colour 1
+    if (ih == 0) c1 = colour[0];
+    else if (ih == 1) c1 = colour[1];
+    else if (ih == 2) c1 = colour[2];
+    else if (ih == 3) c1 = colour[3];
+    
+    // rgbB
+    int ih2 = int(mod(h + 1.0, max_h)); // int h 2
+    float c2 = 0.0; // colour 2
+    if (ih2 == 0) c2 = colour[0];
+    else if (ih2 == 1) c2 = colour[1];
+    else if (ih2 == 2) c2 = colour[2];
+    else if (ih2 == 3) c2 = colour[3];
+    
+    vec3 rgbA = hsv2rgb(vec3(c1, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
+    vec3 rgbB = hsv2rgb(vec3(c2, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
     
     return vec4(mix(rgbA, rgbB, fract(h)), 1.0);
 }

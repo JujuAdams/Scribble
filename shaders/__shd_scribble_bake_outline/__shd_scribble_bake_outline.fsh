@@ -8,8 +8,11 @@ varying vec4 v_vColor;
 
 uniform vec2 u_vTexel;
 uniform vec3 u_vOutlineColor;
-uniform int  u_iOutlineSamples;
-uniform int  u_iOutlineSize;
+//uniform int  u_iOutlineSamples;
+//uniform int  u_iOutlineSize;
+
+const int  u_iOutlineSamples = 4;
+const int  u_iOutlineSize = 1;
 
 void main()
 {
