@@ -49,6 +49,7 @@ function __scribble_gen_7_build_lines()
                 if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_TYPE.HALIGN)
                 {
                     _new_state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                    if (_i == 0) _state_halign = _new_state_halign;
                 }
                 
                 _control_index++;
