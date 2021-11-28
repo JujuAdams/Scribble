@@ -26,38 +26,49 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
     
     var _font_data = global.__scribble_font_data[? _font];
     
-    var _map = _font_data.glyphs_map;
+    var _grid = _font_data.glyph_data_grid;
+    var _map  = _font_data.glyphs_map;
     
     if ((_character == all) || (_character == "all"))
     {
-        var _map = _font_data.glyphs_map;
-        
-        var _key = ds_map_find_first(_map);
-        repeat(ds_map_size(_map))
+        if (_relative)
         {
-            var _glyph_data = _map[? _key];
-            _glyph_data[@ _property] = _relative? (_glyph_data[_property] + _value) : _value;
-            _key = ds_map_find_next(_map, _key);
+            ds_grid_add_region(_grid, 0, _property, ds_grid_height(_grid)-1, _property, _value);
         }
+        else
+        {
+            ds_grid_set_region(_grid, 0, _property, ds_grid_height(_grid)-1, _property, _value);
+        }
+        
+        //Space character separation and width should always be the same
+        var _glyph_index = _map[? 0x20];
+        if (_glyph_index == undefined)
+        {
+            __scribble_error("Space character not found for font \"", _font, "\"");
+            exit;
+        }
+        
+        if (_property == SCRIBBLE_GLYPH.SEPARATION) _grid[# _glyph_index, SCRIBBLE_GLYPH.WIDTH     ] = _grid[# _glyph_index, SCRIBBLE_GLYPH.SEPARATION];
+        if (_property == SCRIBBLE_GLYPH.WIDTH     ) _grid[# _glyph_index, SCRIBBLE_GLYPH.SEPARATION] = _grid[# _glyph_index, SCRIBBLE_GLYPH.WIDTH     ];
     }
     else
     {
         var _ord = ord(_character);
-        var _glyph_data = _map[? _ord];
+        var _glyph_index = _map[? _ord];
         
-        if (_glyph_data == undefined)
+        if (_glyph_index == undefined)
         {
             __scribble_error("Character \"", _character, "\" not found for font \"", _font, "\"");
             exit;
         }
         
-        var _new_value = _relative? (_glyph_data[_property] + _value) : _value;
-        _glyph_data[@ _property] = _new_value;
+        var _new_value = _relative? (_grid[# _glyph_index, _property] + _value) : _value;
+        _grid[# _glyph_index, _property] = _new_value;
         
         if (_ord == 0x20) //Space character separation and width should always be the same
         {
-            if (_property == SCRIBBLE_GLYPH.SEPARATION) _glyph_data[@ SCRIBBLE_GLYPH.WIDTH] = _new_value;
-            if (_property == SCRIBBLE_GLYPH.WIDTH) _glyph_data[@ SCRIBBLE_GLYPH.SEPARATION] = _new_value;
+            if (_property == SCRIBBLE_GLYPH.SEPARATION) _grid[# _glyph_index, SCRIBBLE_GLYPH.WIDTH     ] = _new_value;
+            if (_property == SCRIBBLE_GLYPH.WIDTH     ) _grid[# _glyph_index, SCRIBBLE_GLYPH.SEPARATION] = _new_value;
         }
         
         return _new_value;
