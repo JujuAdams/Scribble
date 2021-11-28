@@ -40,17 +40,16 @@ Associates four fonts together for use with `[r]` `[b]` `[i]` `[bi]` font tags. 
 
 &nbsp;
 
-## `scribble_font_scale(fontName, xscale, yscale)`
+## `scribble_font_scale(fontName, scale)`
 
 **Returns:** N/A (`undefined`)
 
 |Name      |Datatype|Purpose                                |
 |----------|--------|---------------------------------------|
 |`fontName`|string  |Name of the font to modify, as a string|
-|`xscale`  |number  |Scaling factor for the x-axis          |
-|`yscale`  |number  |Scaling factor for the y-axis          |
+|`scale`   |number  |Scaling factor to apply                |
 
-Scales every glyph in a font (including the space character) by the given factors. This directly modifies glyph properties for the font.
+Scales every glyph in a font (including the space character) by the given factor. This directly modifies glyph properties for the font.
 
 ?> Existing text elements that use the targetted font will not be immediately updated - you will need to refresh those text elements.
 
