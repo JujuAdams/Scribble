@@ -140,7 +140,6 @@
     {"id":{"name":"example_dialogue_set_portrait","path":"scripts/example_dialogue_set_portrait/example_dialogue_set_portrait.yy",},"order":4,},
     {"id":{"name":"__scribble_font_convert_msdf_to_yy","path":"scripts/__scribble_font_convert_msdf_to_yy/__scribble_font_convert_msdf_to_yy.yy",},"order":19,},
     {"id":{"name":"obj_test_stress_multi","path":"objects/obj_test_stress_multi/obj_test_stress_multi.yy",},"order":1,},
-    {"id":{"name":"Shader5","path":"shaders/Shader5/Shader5.yy",},"order":14,},
     {"id":{"name":"__scribble_gen_7_build_lines","path":"scripts/__scribble_gen_7_build_lines/__scribble_gen_7_build_lines.yy",},"order":7,},
     {"id":{"name":"obj_test_line_height","path":"objects/obj_test_line_height/obj_test_line_height.yy",},"order":5,},
     {"id":{"name":"obj_test_typewriter_pause","path":"objects/obj_test_typewriter_pause/obj_test_typewriter_pause.yy",},"order":5,},
