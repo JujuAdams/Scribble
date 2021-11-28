@@ -7,25 +7,26 @@ enum __SCRIBBLE_PARSER_GLYPH
     Y,                // 3   |
     WIDTH,            // 4   |
     HEIGHT,           // 5   |
-    SEPARATION,       // 6   |
-                      //     | This group of enums must not change order or be split
-    TEXTURE,          // 7   |
-    QUAD_U0,          // 8   |
-    QUAD_V0,          // 9   |
-    QUAD_U1,          //10   |
-    QUAD_V1,          //11   |
+    FONT_HEIGHT,      // 6   |
+    SEPARATION,       // 7   | This group of enums must not change order or be split
                       //     |
-    MSDF_PXRANGE,     //12  /
+    TEXTURE,          // 8   |
+    QUAD_U0,          // 9   |
+    QUAD_V0,          //10   |
+    QUAD_U1,          //11   |
+    QUAD_V1,          //12   |
+                      //     |
+    MSDF_PXRANGE,     //13  /
     
-    SCALE,            //13
-    CONTROL_COUNT,    //14
-    ANIMATION_INDEX,  //15
+    SCALE,            //14
+    CONTROL_COUNT,    //15
+    ANIMATION_INDEX,  //16
                       
-    SPRITE_INDEX,     //16  \
-    IMAGE_INDEX,      //17   | Only used for sprites
-    IMAGE_SPEED,      //18  /
+    SPRITE_INDEX,     //17  \
+    IMAGE_INDEX,      //18   | Only used for sprites
+    IMAGE_SPEED,      //19  /
                       
-    __SIZE,           //19
+    __SIZE,           //20
 }
 
 enum __SCRIBBLE_VBUFF_POS
@@ -103,6 +104,7 @@ enum __SCRIBBLE_PARSER_LINE
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y            ] = 0;\
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH        ] = 0;\
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT       ] = _font_line_height;\
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_HEIGHT  ] = _font_line_height;\
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION   ] = 0;\
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] = _control_count;\
                                         ;\

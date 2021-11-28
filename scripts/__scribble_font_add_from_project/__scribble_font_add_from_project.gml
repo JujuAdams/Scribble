@@ -96,6 +96,7 @@ function __scribble_font_add_from_project(_font)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET    ] = 0;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH       ] = _w;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT      ] = _h;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT ] = _h;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION  ] = _glyph_dict.shift;
                                                                
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE     ] = _texture;

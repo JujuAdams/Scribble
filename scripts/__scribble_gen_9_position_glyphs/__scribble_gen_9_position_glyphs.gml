@@ -44,13 +44,11 @@ function __scribble_gen_9_position_glyphs()
         var _line_glyph_end   = _word_grid[# _line_word_end,   __SCRIBBLE_PARSER_WORD.GLYPH_END  ];
         var _line_glyph_count = 1 + _line_glyph_end - _line_glyph_start;
         
-        // _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y] = _line_y + (_line_height - _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT]) div 2;
-        ds_grid_set_grid_region(_temp_grid, _glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.HEIGHT, 0, 0);
+        // _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.Y] = _line_y + (_line_height - _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.FONT_HEIGHT]) div 2;
+        ds_grid_set_grid_region(_temp_grid, _glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.FONT_HEIGHT, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.FONT_HEIGHT, 0, 0);
         ds_grid_multiply_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, -0.5);
         ds_grid_add_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, 0.5*_line_height + _line_y);
         ds_grid_add_grid_region(_glyph_grid, _temp_grid, 0, 0, _line_glyph_count-1, 0, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.Y);
-        
-        
         
         // Figure out what order words should come in
         var _line_stretch_count = 0;
