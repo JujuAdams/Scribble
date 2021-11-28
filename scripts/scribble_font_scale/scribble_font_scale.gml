@@ -29,6 +29,7 @@ function scribble_font_scale(_font, _xscale, _yscale)
     ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.HEIGHT,      _last, SCRIBBLE_GLYPH.HEIGHT,      _yscale);
     ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, _last, SCRIBBLE_GLYPH.FONT_HEIGHT, _yscale);
     ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.SEPARATION,  _last, SCRIBBLE_GLYPH.SEPARATION,  _xscale);
+    ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.FONT_SCALE,  _last, SCRIBBLE_GLYPH.FONT_SCALE,  _font_data.scale_dist);
     
     _font_data.calculate_font_height();
 }

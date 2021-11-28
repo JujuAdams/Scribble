@@ -151,6 +151,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1          ] = _v1;
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = _msdf_pxrange;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
         
         _font_glyphs_map[? _ord] = _i;
         

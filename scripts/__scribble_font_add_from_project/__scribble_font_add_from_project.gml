@@ -106,6 +106,7 @@ function __scribble_font_add_from_project(_font)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1          ] = _v1;
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = undefined;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
         
         
         _font_glyphs_map[? _ord] = _i;

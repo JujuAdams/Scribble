@@ -16,9 +16,9 @@ enum __SCRIBBLE_PARSER_GLYPH
     QUAD_U1,          //11   |
     QUAD_V1,          //12   |
                       //     |
-    MSDF_PXRANGE,     //13  /
+    MSDF_PXRANGE,     //13   |
+    SCALE,            //14  /
     
-    SCALE,            //14
     CONTROL_COUNT,    //15
     ANIMATION_INDEX,  //16
                       
@@ -125,7 +125,7 @@ enum __SCRIBBLE_PARSER_LINE
                                       else\
                                       {\
                                           ;\//Add this glyph to our grid by copying from the font's own glyph data grid
-                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.ORD, _data_index, SCRIBBLE_GLYPH.MSDF_PXRANGE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD);\
+                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.ORD, _data_index, SCRIBBLE_GLYPH.FONT_SCALE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD);\
                                           _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] = _control_count;\
                                           ;\
                                           ++_glyph_count;\
@@ -164,7 +164,7 @@ enum __SCRIBBLE_PARSER_LINE
                                     var _half_h = 0.5*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT];\
                                     ;\
                                     var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];\
-                                    var _glyph_scale = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SCALE];
+                                    var _glyph_scale    = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SCALE          ];
 
 
 #macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_glyph_texture != _last_glyph_texture)\

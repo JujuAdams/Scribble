@@ -558,9 +558,10 @@ enum SCRIBBLE_GLYPH
     U1,           //12   |
     V1,           //13   |
                   //     |
-    MSDF_PXRANGE, //14  /
+    MSDF_PXRANGE, //14   |
+    FONT_SCALE,   //15  /
     
-    __SIZE        //18
+    __SIZE        //16
 }
 
 // TODO - Allow copying of glyph layout into a separate grid

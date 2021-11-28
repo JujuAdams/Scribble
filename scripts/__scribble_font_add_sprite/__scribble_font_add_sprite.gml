@@ -92,6 +92,7 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1        ] = 0;
         
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = undefined;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
             
             _font_glyphs_map[? _ord] = _i;
         }
@@ -142,6 +143,7 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1          ] = _uvs[3];
         
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = undefined;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
             
             _font_glyphs_map[? _ord] = _i;
         }
