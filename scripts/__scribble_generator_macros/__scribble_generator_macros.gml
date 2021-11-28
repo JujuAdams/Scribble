@@ -198,8 +198,8 @@ enum __SCRIBBLE_PARSER_LINE
                                          }\
                                          _quad_l = _bezier_param;\
                                          _quad_r = _bezier_param;\
-                                         _quad_t = _quad_cx;\
-                                         _quad_b = _quad_cy;\
+                                         _quad_t = _quad_t;\
+                                         _quad_b = _quad_t;\
                                      }\
                                      ;\
                                      vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _glyph_scale,  _half_h);\
