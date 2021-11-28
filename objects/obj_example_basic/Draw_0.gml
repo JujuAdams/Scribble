@@ -10,5 +10,5 @@ Other examples and test cases in this project file will show you what else Scrib
 
 //Draw our string with wrapping, and using a typist for the typewriter effect
 scribble(_string)
-.wrap(900)
+.wrap(850)
 .draw(room_width div 2, room_height div 2, typist);
