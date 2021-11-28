@@ -1,0 +1,1 @@
+gpu_set_tex_filter(true); //Force on linear filtering to solve some of the jank

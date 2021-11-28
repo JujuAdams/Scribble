@@ -166,7 +166,6 @@
     {"id":{"name":"obj_test_sprite_origins","path":"objects/obj_test_sprite_origins/obj_test_sprite_origins.yy",},"order":3,},
     {"id":{"name":"__scribble_font_add_sprite","path":"scripts/__scribble_font_add_sprite/__scribble_font_add_sprite.yy",},"order":4,},
     {"id":{"name":"__shd_scribble_bake_outline","path":"shaders/__shd_scribble_bake_outline/__shd_scribble_bake_outline.yy",},"order":15,},
-    {"id":{"name":"obj_test_sync","path":"objects/obj_test_sync/obj_test_sync.yy",},"order":8,},
     {"id":{"name":"__shd_scribble_bake_shadow","path":"shaders/__shd_scribble_bake_shadow/__shd_scribble_bake_shadow.yy",},"order":16,},
     {"id":{"name":"fnt_test_0","path":"fonts/fnt_test_0/fnt_test_0.yy",},"order":1,},
     {"id":{"name":"obj_test_nbsp","path":"objects/obj_test_nbsp/obj_test_nbsp.yy",},"order":10,},
