@@ -135,8 +135,7 @@ function __scribble_gen_10_write_vbuffs()
                 if (!SCRIBBLE_COLORIZE_SPRITES)
                 {
                     var _old_write_colour = _write_colour;
-                    
-                    _write_colour = _write_colour | 0xFFFFFF;
+                    _write_colour = _glyph_colour | 0xFFFFFF; //Make sure we use the general glyph alpha
                     
                     _glyph_effect_flags = ~_glyph_effect_flags;
                     _glyph_effect_flags |= (1 << global.__scribble_effects[? "rainbow"]);
