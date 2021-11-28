@@ -113,6 +113,10 @@ function __scribble_gen_3_parser()
     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_halign;
     ++_control_count;
     
+    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.COLOUR;
+    _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_colour;
+    ++_control_count;
+    
     //Repeat a fixed number of times. This prevents infinite loops and generally is more stable...
     //...though we do still check for a null terminator
     repeat(string_byte_length(_element_text))
