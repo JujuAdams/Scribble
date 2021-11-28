@@ -22,8 +22,9 @@ function __scribble_gen_7_build_lines()
     var _upper_limit = undefined;
     repeat(SCRIBBLE_FIT_TO_BOX_ITERATIONS)
     {
-        var _state_halign  = fa_left;
-        var _control_index = 0;
+        var _state_halign     = fa_left;
+        var _new_state_halign = fa_left;
+        var _control_index    = 0;
         
         var _line_y          = 0;
         var _line_count      = 0;
@@ -47,8 +48,7 @@ function __scribble_gen_7_build_lines()
             {
                 if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_TYPE.HALIGN)
                 {
-                    if (_i != _line_word_start) _force_break = 1;
-                    _state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                    _new_state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
                 }
                 
                 _control_index++;
@@ -88,9 +88,10 @@ function __scribble_gen_7_build_lines()
                 _line_y += _line_height;
                 
                 _line_word_start = (_force_break == 1)? _i : _i+1;
-                _word_x = is_infinity(_word_width)? 0 : _word_width;
+                _word_x = 0;
                 
                 _force_break = 0;
+                _state_halign = _new_state_halign;
             }
         
             ++_i;

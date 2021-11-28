@@ -726,6 +726,16 @@ function __scribble_gen_3_parser()
                     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.TYPE] = __SCRIBBLE_CONTROL_TYPE.HALIGN;
                     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_halign;
                     ++_control_count;
+                    
+                    //Add a newline character if the previous character wasn't also a newline
+                    if ((_glyph_prev != 0x00) && (_glyph_prev != 0x0A))
+                    {
+                        __SCRIBBLE_PARSER_WRITE_NEWLINE;
+                    }
+                    else
+                    {
+                        _glyph_grid[# _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT]++;
+                    }
                 }
                         
                 //Handle vertical alignment changes
@@ -771,20 +781,7 @@ function __scribble_gen_3_parser()
             else if ((_glyph_ord == 0x0A) //If we've hit a newline (\n)
                  || (SCRIBBLE_HASH_NEWLINE && (_glyph_ord == 0x23))) //If we've hit a hash, and hash newlines are on
             {
-                //Add a newline glyph to our grid
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD          ] = 0x0A; //ASCII line break (dec = 10)
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X            ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y            ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH        ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT       ] = _font_line_height;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION   ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] = _control_count;
-                
-                ++_glyph_count;
-                _glyph_prev_arabic_join_next = false;
-                _glyph_prev = 0x0A;
-                _glyph_prev_prev = _glyph_prev;
+                __SCRIBBLE_PARSER_WRITE_NEWLINE;
             }
             else if (_glyph_ord == 0x09) //ASCII horizontal tab
             {
