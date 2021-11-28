@@ -731,14 +731,17 @@ function __scribble_gen_3_parser()
                     _control_grid[# _control_count, __SCRIBBLE_PARSER_CONTROL.DATA] = _state_halign;
                     ++_control_count;
                     
-                    //Add a newline character if the previous character wasn't also a newline
-                    if ((_glyph_prev != 0x00) && (_glyph_prev != 0x0A))
+                    if (_glyph_count > 0)
                     {
-                        __SCRIBBLE_PARSER_WRITE_NEWLINE;
-                    }
-                    else
-                    {
-                        _glyph_grid[# _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT]++;
+                        //Add a newline character if the previous character wasn't also a newline
+                        if ((_glyph_prev != 0x00) && (_glyph_prev != 0x0A))
+                        {
+                            __SCRIBBLE_PARSER_WRITE_NEWLINE;
+                        }
+                        else
+                        {
+                            _glyph_grid[# _glyph_count-1, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT]++;
+                        }
                     }
                 }
                         
