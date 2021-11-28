@@ -79,12 +79,13 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.ORD       ] = _ord;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI      ] = __SCRIBBLE_BIDI.WHITESPACE;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET  ] = 0;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET  ] = 0;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH     ] = _space_width;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT    ] = _sprite_height;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION] = _space_width;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET   ] = 0;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET   ] = 0;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH      ] = _space_width;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT     ] = _sprite_height;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT] = _sprite_height;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION ] = _space_width;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE ] = 1;
             
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE   ] = _sprite_frames[0].texture; //Use the texture ID for the first image from the sprite
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0        ] = 0;
@@ -134,6 +135,7 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET    ] = _image_info.y_offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH       ] = _w;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT      ] = _h;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT ] = _sprite_height;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION  ] = _glyph_separation;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
             
