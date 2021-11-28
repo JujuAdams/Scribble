@@ -91,7 +91,7 @@ enum __SCRIBBLE_PARSER_LINE
 //In-line macros!
 #macro __SCRIBBLE_PARSER_PUSH_SCALE  if (_state_final_scale != 1)\
                                      {\
-                                            ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.WIDTH, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION, _state_final_scale);\ //Covers width, height, and separation
+                                            ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION, _state_final_scale);\ //Covers x, y, width, height, and separation
                                             ds_grid_set_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.SCALE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SCALE, _state_final_scale);\
                                      }\
                                      _state_scale_start_glyph = _glyph_count;
