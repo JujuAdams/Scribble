@@ -1,10 +1,11 @@
 function __scribble_gen_3_parser()
 {
     //Cache globals locally for a performance boost
-    var _string_buffer = global.__scribble_buffer;
-    var _glyph_grid    = global.__scribble_glyph_grid;
-    var _word_grid     = global.__scribble_word_grid;
-    var _control_grid  = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
+    var _string_buffer  = global.__scribble_buffer;
+    var _glyph_grid     = global.__scribble_glyph_grid;
+    var _word_grid      = global.__scribble_word_grid;
+    var _control_grid   = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
+    var _vbuff_pos_grid = global.__scribble_vbuff_pos_grid;
     
     //Arabic look-up tables
     var _arabic_join_next_map = global.__scribble_glyph_data.arabic_join_next_map;
@@ -79,9 +80,10 @@ function __scribble_gen_3_parser()
     }
     
     //Resize grids if we have to
-    var _element_text_length = string_length(_element_text);
-    if (ds_grid_width(_glyph_grid) < _element_text_length) ds_grid_resize(_glyph_grid, _element_text_length+1, __SCRIBBLE_PARSER_GLYPH.__SIZE);
-    if (ds_grid_width(_word_grid ) < _element_text_length) ds_grid_resize(_word_grid,  _element_text_length+1, __SCRIBBLE_PARSER_GLYPH.__SIZE);
+    var _element_expected_text_length = string_length(_element_text) + 2;
+    if (ds_grid_width(_glyph_grid    ) < _element_expected_text_length) ds_grid_resize(_glyph_grid,     _element_expected_text_length, __SCRIBBLE_PARSER_GLYPH.__SIZE);
+    if (ds_grid_width(_word_grid     ) < _element_expected_text_length) ds_grid_resize(_word_grid,      _element_expected_text_length, __SCRIBBLE_PARSER_GLYPH.__SIZE);
+    if (ds_grid_width(_vbuff_pos_grid) < _element_expected_text_length) ds_grid_resize(_vbuff_pos_grid, _element_expected_text_length, __SCRIBBLE_PARSER_GLYPH.__SIZE);
     
     //Start the parser!
     var _tag_start           = undefined;
