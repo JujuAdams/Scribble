@@ -1,0 +1,1 @@
+gpu_set_tex_filter(true); //Smooth out this effect

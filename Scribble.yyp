@@ -118,7 +118,6 @@
     {"id":{"name":"__scribble_class_typist","path":"scripts/__scribble_class_typist/__scribble_class_typist.yy",},"order":10,},
     {"id":{"name":"__scribble_system_glyph_data","path":"scripts/__scribble_system_glyph_data/__scribble_system_glyph_data.yy",},"order":2,},
     {"id":{"name":"obj_test_anim_blink","path":"objects/obj_test_anim_blink/obj_test_anim_blink.yy",},"order":9,},
-    {"id":{"name":"obj_test_blink","path":"objects/obj_test_blink/obj_test_blink.yy",},"order":11,},
     {"id":{"name":"obj_test_missing_character","path":"objects/obj_test_missing_character/obj_test_missing_character.yy",},"order":4,},
     {"id":{"name":"obj_test_anim_jitter","path":"objects/obj_test_anim_jitter/obj_test_anim_jitter.yy",},"order":8,},
     {"id":{"name":"obj_test_msdf_superfont","path":"objects/obj_test_msdf_superfont/obj_test_msdf_superfont.yy",},"order":7,},
