@@ -106,7 +106,7 @@ function __scribble_font_convert_msdf_to_yy(_resource_name, _json_filename)
     buffer_write(_output_buffer, buffer_text, "    \"name\": \"Fonts\",\n");
     buffer_write(_output_buffer, buffer_text, "    \"path\": \"folders/Fonts.yy\",\n");
     buffer_write(_output_buffer, buffer_text, "  },\n");
-    buffer_write(_output_buffer, buffer_text, "  \"resourceVersion\": 1.0,\n");
+    buffer_write(_output_buffer, buffer_text, "  \"resourceVersion\": \"1.0\",\n");
     buffer_write(_output_buffer, buffer_text, "  \"name\": \"" + string(_resource_name) + "\",\n");
     buffer_write(_output_buffer, buffer_text, "  \"tags\": [],\n");
     buffer_write(_output_buffer, buffer_text, "  \"resourceType\": \"GMFont\",\n");
