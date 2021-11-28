@@ -1,5 +1,6 @@
 {
   "resources": [
+    {"id":{"name":"fnt_msdf_custom","path":"fonts/fnt_msdf_custom/fnt_msdf_custom.yy",},"order":20,},
     {"id":{"name":"spr_sprite_font","path":"sprites/spr_sprite_font/spr_sprite_font.yy",},"order":0,},
     {"id":{"name":"obj_example_big_textbox","path":"objects/obj_example_big_textbox/obj_example_big_textbox.yy",},"order":3,},
     {"id":{"name":"spr_coin","path":"sprites/spr_coin/spr_coin.yy",},"order":1,},
@@ -137,6 +138,7 @@
     {"id":{"name":"scribble_super_clear","path":"scripts/scribble_super_clear/scribble_super_clear.yy",},"order":4,},
     {"id":{"name":"scribble_anim_pulse","path":"scripts/scribble_anim_pulse/scribble_anim_pulse.yy",},"order":5,},
     {"id":{"name":"example_dialogue_set_portrait","path":"scripts/example_dialogue_set_portrait/example_dialogue_set_portrait.yy",},"order":4,},
+    {"id":{"name":"__scribble_font_convert_msdf_to_yy","path":"scripts/__scribble_font_convert_msdf_to_yy/__scribble_font_convert_msdf_to_yy.yy",},"order":19,},
     {"id":{"name":"obj_test_stress_multi","path":"objects/obj_test_stress_multi/obj_test_stress_multi.yy",},"order":1,},
     {"id":{"name":"__scribble_gen_7_build_lines","path":"scripts/__scribble_gen_7_build_lines/__scribble_gen_7_build_lines.yy",},"order":7,},
     {"id":{"name":"obj_test_line_height","path":"objects/obj_test_line_height/obj_test_line_height.yy",},"order":5,},
@@ -209,6 +211,7 @@
     {"id":{"name":"scribble_super_glyph_delete","path":"scripts/scribble_super_glyph_delete/scribble_super_glyph_delete.yy",},"order":3,},
     {"id":{"name":"obj_test_world_matrix","path":"objects/obj_test_world_matrix/obj_test_world_matrix.yy",},"order":8,},
     {"id":{"name":"__scribble_gen_6_finalize_bidi","path":"scripts/__scribble_gen_6_finalize_bidi/__scribble_gen_6_finalize_bidi.yy",},"order":6,},
+    {"id":{"name":"Object111","path":"objects/Object111/Object111.yy",},"order":13,},
     {"id":{"name":"obj_test_alignment","path":"objects/obj_test_alignment/obj_test_alignment.yy",},"order":15,},
     {"id":{"name":"obj_test_ignore_command_tags","path":"objects/obj_test_ignore_command_tags/obj_test_ignore_command_tags.yy",},"order":17,},
     {"id":{"name":"obj_test_anim_pulse","path":"objects/obj_test_anim_pulse/obj_test_anim_pulse.yy",},"order":5,},
@@ -238,8 +241,8 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
+    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
   ],
   "Folders": [
     {"folderPath":"folders/Sprites.yy","order":1,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},
@@ -280,6 +283,7 @@
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"spr_msdf_openhuninn.json","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"spr_msdf_industrydemi.json","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"spr_msdf_notoarabic.json","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"spr_msdf_custom.json","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
     "IDEVersion": "2.3.7.603",
