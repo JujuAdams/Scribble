@@ -29,7 +29,7 @@ Note that we called the `.in()` method. This is analogous to the old `.typewrite
 
 ## `.in(speed, smoothness)`
 
-**Returns**: The text element
+**Returns**: `self`, the typist
 
 |Name        |Datatype|Purpose                                                                                                                        |
 |------------|--------|-------------------------------------------------------------------------------------------------------------------------------|
@@ -44,7 +44,7 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 
 ## `.out(speed, smoothness, [backwards])`
 
-**Returns**: The text element
+**Returns**: `self`, the typist
 
 |Name         |Datatype|Purpose                                                                                                                        |
 |-------------|--------|-------------------------------------------------------------------------------------------------------------------------------|
@@ -54,13 +54,13 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 
 The `smoothness` argument offers some customisation for how text fades out. A high value will cause text to be smoothly faded out whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades out.
 
-[Events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) will **not** be executed as text fades out.
+?> [Events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) will **not** be executed as text fades out.
 
 &nbsp;
 
 ## `.skip()`
 
-**Returns**: The text element
+**Returns**: `self`, the typist
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
@@ -82,9 +82,21 @@ This method will return a decimal value if the speed is a decimal value too.
 
 &nbsp;
 
+## `.reset()`
+
+**Returns**: `self`, the typist
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Resets the typist entirely, resetting progress and deactivating any animation.
+
+&nbsp;
+
 ## `.ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`
 
-**Returns**: The text element
+**Returns**: `self`, the typist
 
 |Name           |Datatype|Purpose                                                           |
 |---------------|--------|------------------------------------------------------------------|
@@ -153,7 +165,7 @@ If no typewriter animation has been started, this function will return `1`.
 
 ## `.pause()`
 
-**Returns**: The text element
+**Returns**: `self`, the typist
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
@@ -165,7 +177,7 @@ Pauses the typewriter effect.
 
 ## `.unpause()`
 
-**Returns**: The text element
+**Returns**: `self`, the typist
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
@@ -187,7 +199,7 @@ Unpauses the typewriter effect. This is helpful when combined with the [`[pause]
 
 ## `.sound(soundArray, overlap, pitchMin, pitchMax)`
 
-**Returns**: The text element
+**Returns**: `self`, the typist
 
 |Name        |Datatype                                                                                      |Purpose                                                                                                             |
 |------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
@@ -204,7 +216,7 @@ Setting the `overlap` value to `0` will ensure that sound effects never overlap 
 
 ## `.sound_per_char(soundArray, pitchMin, pitchMax)`
 
-**Returns**: The text element
+**Returns**: `self`, the typist
 
 |Name        |Datatype                                                                                      |Purpose                                                                                                             |
 |------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
@@ -218,7 +230,7 @@ It's quite common in games with typewriter-style text animations to have a sound
 
 ## `.function_per_char(function)`
 
-**Returns**: The text element
+**Returns**: `self`, the typist
 
 |Name      |Datatype|Purpose|
 |----------|--------|-------|
