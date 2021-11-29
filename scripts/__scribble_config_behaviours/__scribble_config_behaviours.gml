@@ -11,6 +11,7 @@
 #macro SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY   ""     //The directory to look in for font .yy files, relative to the root folder that Included Files are stored in
 #macro SCRIBBLE_BOX_ALIGN_TO_PAGE             false  //Whether to use text element sizes (false) or page sizes (true)
 #macro SCRIBBLE_TAB_WIDTH                     4      //Width of a horizontal tab, as a number of spaces
+#macro SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE  true
 
 
 

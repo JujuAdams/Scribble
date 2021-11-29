@@ -7,6 +7,14 @@ function __scribble_class_page() constructor
     __glyph_start = undefined;
     __glyph_end   = undefined;
     
+    __line_start = undefined;
+    __line_end   = undefined;
+    
+    __width  = 0;
+    __height = 0;
+    __min_x  = 0;
+    __max_x  = 0;
+    
     __vertex_buffer_array           = [];
     __texture_to_vertex_buffer_dict = {};
     

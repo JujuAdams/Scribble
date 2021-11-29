@@ -226,7 +226,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	{
 		if ((_page == undefined) || (_page < 0)) _page = 0;
 		
-		return pages_array[_page].height;
+		return pages_array[_page].__height;
 	}
 	
 	/// @param page
@@ -234,7 +234,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	{
 		if ((_page == undefined) || (_page < 0)) _page = 0;
 		
-		return pages_array[_page].width;
+		return pages_array[_page].__width;
 	}
     
     static get_wrapped = function()

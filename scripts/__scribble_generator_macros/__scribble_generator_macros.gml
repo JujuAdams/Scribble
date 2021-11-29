@@ -79,13 +79,14 @@ enum __SCRIBBLE_PARSER_STRETCH
 
 enum __SCRIBBLE_PARSER_LINE
 {
-    Y,           //0
-    WORD_START,  //1
-    WORD_END,    //2
-    WIDTH,       //3
-    HEIGHT,      //4
-    HALIGN,      //5
-    __SIZE,      //6
+    Y,                  //0
+    WORD_START,         //1
+    WORD_END,           //2
+    WIDTH,              //3
+    HEIGHT,             //4
+    HALIGN,             //5
+    STARTS_MANUAL_PAGE, //6
+    __SIZE,             //7
 }
 
 
@@ -145,6 +146,18 @@ enum __SCRIBBLE_PARSER_LINE
                                     }\
                                     var _font_space_width = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.WIDTH ];\
                                     var _font_line_height = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.HEIGHT];
+
+
+#macro __SCRIBBLE_GEN_PAGE_POP  var _page_end_line = _i - 1;\
+                                _page_data.__line_end  = _page_end_line;\
+                                _page_data.__glyph_end = _word_grid[# _line_grid[# _page_end_line, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];\
+                                _page_data.__width     = ds_grid_get_max(_line_grid, _page_start_line, __SCRIBBLE_PARSER_LINE.WIDTH, _page_end_line, __SCRIBBLE_PARSER_LINE.WIDTH);\
+                                _page_data.__height    = _line_y;\
+                                ;\// Set up the character indexes for the page, relative to the character index of the first glyph on the page
+                                var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];\
+                                ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, -_page_anim_start);\
+                                ;\// Set the character count for the page too
+                                _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
 
 
 #macro __SCRIBBLE_VBUFF_READ_GLYPH  var _quad_l = _vbuff_pos_grid[# _i, __SCRIBBLE_VBUFF_POS.QUAD_L];\

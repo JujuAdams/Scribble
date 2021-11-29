@@ -26,10 +26,11 @@ function __scribble_gen_7_build_lines()
         var _new_state_halign = fa_left;
         var _control_index    = 0;
         
-        var _line_y          = 0;
         var _line_count      = 0;
         var _line_word_start = 0;
         var _word_x          = 0;
+        var _line_y          = 0;
+        var _line_max_y      = 0;
         
         var _simulated_model_max_width  = _model_max_width  / fit_scale;
         var _simulated_model_max_height = _model_max_height / fit_scale;
@@ -78,18 +79,23 @@ function __scribble_gen_7_build_lines()
                 var _line_word_end = (_force_break == 1)? _i-1 : _i;
                 var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);
                 
-                //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y          ]  // Set in __scribble_generator_build_pages()
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START ] = _line_word_start;
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END   ] = _line_word_end;
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH      ] = _word_x;
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT     ] = _line_height;
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN     ] = _state_halign;
-            
+                //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.Y                 ] // Set in __scribble_generator_build_pages()
+                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START        ] = _line_word_start;
+                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END          ] = _line_word_end;
+                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH             ] = _word_x;
+                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT            ] = _line_height;
+                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN            ] = _state_halign;
+                //_line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE]
+                
                 _line_count++;
-                _line_y += _line_height;
+                
+                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE] = (_force_break == 2);
+                
+                _line_y = (_force_break == 2)? 0 : (_line_y + _line_height);
+                if (_line_y > _line_max_y) _line_max_y = _line_y;
                 
                 _line_word_start = (_force_break == 1)? _i : _i+1;
-                _word_x = (_force_break == 2)? 0 : _word_width;
+                _word_x = _word_width;
                 
                 _force_break = 0;
                 _state_halign = _new_state_halign;
@@ -106,7 +112,7 @@ function __scribble_gen_7_build_lines()
         
         _fit_to_box_iterations++;
         
-        if (_line_y < _simulated_model_max_height)
+        if (_line_max_y < _simulated_model_max_height)
         {
             //The text is already small enough to fit!
             if (fit_scale >= _wrap_max_scale) break;

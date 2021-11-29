@@ -848,8 +848,6 @@ function __scribble_gen_3_parser()
                 
                 var _glyph_write = _glyph_ord;
                 
-                //TODO - Ligature transform here
-                
                 if ((_glyph_write >= 0x0600) && (_glyph_write <= 0x06FF)) // Arabic Unicode block
                 {
                     #region Arabic handling
@@ -933,7 +931,7 @@ function __scribble_gen_3_parser()
                     
                     if ((_glyph_write >= 0x0E00) && (_glyph_write <= 0x0E7F))
                     {
-                        #region Thai handling
+                        #region C90 Thai handling
                         
                         has_thai = true;
                         
@@ -1031,7 +1029,11 @@ function __scribble_gen_3_parser()
                     {
                         //Devanagari is so complex it gets its own function
                         has_devanagari = true;
+                        
+                        //TODO - Follow the 16 unicode rules to reorder Devanagari for GSUB ligature substitution
                     }
+                    
+                    //TODO - Ligature transform here
                 }
                 
                 __SCRIBBLE_PARSER_WRITE_GLYPH;
