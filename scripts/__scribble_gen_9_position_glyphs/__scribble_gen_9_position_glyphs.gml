@@ -43,7 +43,7 @@ function __scribble_gen_9_position_glyphs()
         var _page_start_line = _page_data.__line_start;
         var _page_end_line   = _page_data.__line_end;
         
-        var _j = _page_data.__line_start;
+        var _j = _page_start_line;
         repeat(1 + _page_end_line - _page_start_line)
         {
             var _line_y          = _line_grid[# _j, __SCRIBBLE_PARSER_LINE.Y         ];
@@ -58,7 +58,7 @@ function __scribble_gen_9_position_glyphs()
             
             
             
-            ds_grid_add_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _j);
+            ds_grid_add_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _line_glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _j - _page_start_line);
             
             
             
@@ -81,7 +81,7 @@ function __scribble_gen_9_position_glyphs()
             // TODO - Do this whilst building lines
             
             var _line_stretch_count = 0;
-            var _stretch_bidi       = undefined;
+            var _stretch_bidi       = _word_grid[# _line_word_start, __SCRIBBLE_PARSER_WORD.BIDI];
             
             var _stretch_word_start = _line_word_start;
             var _w = _line_word_start;
@@ -95,6 +95,7 @@ function __scribble_gen_9_position_glyphs()
                     _stretch_grid[# _line_stretch_count, __SCRIBBLE_PARSER_STRETCH.BIDI      ] = _stretch_bidi;
                     _line_stretch_count++;
                     
+                    _stretch_word_start = _w;
                     _stretch_bidi = _word_bidi;
                 }
             
