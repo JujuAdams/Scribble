@@ -102,7 +102,7 @@ function __scribble_gen_9_position_glyphs()
                 ++_w;
             }
             
-            if (_line_stretch_count > 0)
+            if (_w > 0)
             {
                 _stretch_grid[# _line_stretch_count, __SCRIBBLE_PARSER_STRETCH.WORD_START] = _stretch_word_start;
                 _stretch_grid[# _line_stretch_count, __SCRIBBLE_PARSER_STRETCH.WORD_END  ] = _w - 1;

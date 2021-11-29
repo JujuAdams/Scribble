@@ -35,7 +35,7 @@ function __scribble_gen_7_build_lines()
         var _simulated_model_max_width  = _model_max_width  / fit_scale;
         var _simulated_model_max_height = _model_max_height / fit_scale;
         
-        var _force_break = 0; // 0 = no break, 1 = break before, 2 = break after
+        var _force_break = 0; // 0 = no break, 1 = break before, 2 = linebreak after, 3 = pagebreak after
         
         var _i = 0;
         repeat(_word_count)
@@ -56,16 +56,22 @@ function __scribble_gen_7_build_lines()
                 _control_index++;
             }
             
-            // Check for \n line break characters or nulls (manual page breaks) stored at the start of words
-            var _glyph_start_ord = _glyph_grid[# _word_start_glyph, __SCRIBBLE_PARSER_GLYPH.ORD];
-            if ((_glyph_start_ord == 0x00) || (_glyph_start_ord == 0x0A))
-            {
-                _force_break = 2;
-            }
-            
             if (_word_x + _word_width >= _simulated_model_max_width)
             {
                 _force_break = 1;
+            }
+            else
+            {
+                // Check for \n line break characters or nulls (manual page breaks) stored at the start of words
+                var _glyph_start_ord = _glyph_grid[# _word_start_glyph, __SCRIBBLE_PARSER_GLYPH.ORD];
+                if (_glyph_start_ord == 0x0A)
+                {
+                    _force_break = 2;
+                }
+                else if (_glyph_start_ord == 0x00)
+                {
+                    _force_break = 3;
+                }
             }
             
             if (!_force_break)
@@ -89,9 +95,9 @@ function __scribble_gen_7_build_lines()
                 
                 _line_count++;
                 
-                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE] = (_force_break == 2);
+                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE] = (_force_break == 3);
                 
-                _line_y = (_force_break == 2)? 0 : (_line_y + _line_height);
+                _line_y = ((_force_break == 2) || (_force_break == 3))? 0 : (_line_y + _line_height);
                 if (_line_y > _line_max_y) _line_max_y = _line_y;
                 
                 _line_word_start = (_force_break == 1)? _i : _i+1;
