@@ -25,8 +25,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Shape, Wrapping, Position",
-    "path": "folders/Test Cases/Shape, Wrapping, Position.yy",
+    "name": "Arabic",
+    "path": "folders/Test Cases/Language Support/Arabic.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_bezier_arabic",

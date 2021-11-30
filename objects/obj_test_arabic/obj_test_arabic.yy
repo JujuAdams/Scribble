@@ -25,8 +25,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Language Support",
-    "path": "folders/Test Cases/Language Support.yy",
+    "name": "Arabic",
+    "path": "folders/Test Cases/Language Support/Arabic.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_arabic",
