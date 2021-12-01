@@ -4,7 +4,7 @@ scribble_font_set_style_family("fnt_style", "fnt_style_b", "fnt_style_i", "fnt_s
 scribble_typewriter_add_event("portrait", example_dialogue_set_portrait);
 scribble_typewriter_add_event("name", example_dialogue_set_name);
 
-var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
+var _mapstring = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 font_add_sprite_ext(spr_sprite_font, _mapstring, true, 1);
 scribble_glyph_set("spr_sprite_font", " ", SCRIBBLE_GLYPH.WIDTH, 4); //Set the space width to be a bit smaller for aesthetics
 
