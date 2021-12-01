@@ -97,8 +97,16 @@ function __scribble_gen_7_build_lines()
                 
                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE] = (_force_break == 3);
                 
-                _line_y = ((_force_break == 2) || (_force_break == 3))? 0 : (_line_y + _line_height);
-                if (_line_y > _line_max_y) _line_max_y = _line_y;
+                if ((_force_break == 2) || (_force_break == 3))
+                {
+                    _line_y = 0;
+                    if (_line_height > _line_max_y) _line_max_y = _line_height;
+                }
+                else
+                {
+                    _line_y += _line_height;
+                    if (_line_y > _line_max_y) _line_max_y = _line_y;
+                }
                 
                 _line_word_start = (_force_break == 1)? _i : _i+1;
                 _word_x = _word_width;
