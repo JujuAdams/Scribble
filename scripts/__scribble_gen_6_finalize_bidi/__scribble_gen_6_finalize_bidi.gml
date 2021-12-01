@@ -7,20 +7,15 @@ function __scribble_gen_6_finalize_bidi()
     var _word_count   = global.__scribble_generator_state.word_count;
     var _overall_bidi = global.__scribble_generator_state.overall_bidi;
     
-    ////Add a null word to help with bidi
-    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_START] = _glyph_count;
-    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.GLYPH_END  ] = _glyph_count;
-    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.WIDTH      ] = 0;
-    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.HEIGHT     ] = 0;
-    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.BIDI_RAW   ] = __SCRIBBLE_BIDI.SYMBOL;
-    //_word_grid[# _word_count, __SCRIBBLE_PARSER_WORD.BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
+    //TODO - Optimise this by storing where symbolic bidi words are
+    //       This saves iterating over the whole text element
     
     // Iterate over all words, assigning directionality to neutral words
     var _i = 0;
     repeat(_word_count)
     {
         var _bidi = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.BIDI_RAW];
-        if ((_bidi == __SCRIBBLE_BIDI.SYMBOL) || (_bidi == __SCRIBBLE_BIDI.WHITESPACE))
+        if (_bidi <= __SCRIBBLE_BIDI.SYMBOL)
         {
             // Get the direction of adjacent words
             var _prev_bidi = (_i > 0)?             _word_grid[# _i-1, __SCRIBBLE_PARSER_WORD.BIDI] : __SCRIBBLE_BIDI.SYMBOL;
@@ -28,8 +23,8 @@ function __scribble_gen_6_finalize_bidi()
             
             // If either adjacent word has no defined bidi (usually the case at the end of strings
             // or in a sequence of symbols) then use the direction of the other adjacent word
-            if ((_prev_bidi == __SCRIBBLE_BIDI.SYMBOL) || (_prev_bidi == __SCRIBBLE_BIDI.WHITESPACE)) _prev_bidi = _next_bidi;
-            if ((_next_bidi == __SCRIBBLE_BIDI.SYMBOL) || (_next_bidi == __SCRIBBLE_BIDI.WHITESPACE)) _next_bidi = _prev_bidi;
+            if (_prev_bidi <= __SCRIBBLE_BIDI.SYMBOL) _prev_bidi = _next_bidi;
+            if (_next_bidi <= __SCRIBBLE_BIDI.SYMBOL) _next_bidi = _prev_bidi;
             
             //TODO - Handle this recursively
             
@@ -37,7 +32,7 @@ function __scribble_gen_6_finalize_bidi()
             var _new_bidi = ((_prev_bidi == _overall_bidi) || (_next_bidi == _overall_bidi))? _overall_bidi : _prev_bidi;
             
             // If we *still* can't decide on the direction, default to L2R
-            if ((_new_bidi == __SCRIBBLE_BIDI.SYMBOL) || (_new_bidi == __SCRIBBLE_BIDI.WHITESPACE)) _new_bidi = __SCRIBBLE_BIDI.L2R;
+            if (_new_bidi <= __SCRIBBLE_BIDI.SYMBOL) _new_bidi = __SCRIBBLE_BIDI.L2R;
             
             _word_grid[# _i, __SCRIBBLE_PARSER_WORD.BIDI] = _new_bidi;
             

@@ -25,9 +25,9 @@ function __scribble_system_glyph_data()
     
     enum __SCRIBBLE_BIDI
     {
-        WHITESPACE,
-        SYMBOL,
-        ISOLATED, //More of a layout property - .ISOLATED words get converted to .L2R when building words
+        WHITESPACE = 0, //Must be 0 for the sake of __scribble_gen_6_finalize_bidi()
+        SYMBOL     = 1, //Must be 1 for the sake of __scribble_gen_6_finalize_bidi()
+        ISOLATED,       //More of a layout property - .ISOLATED words get converted to .L2R when building words
         L2R,
         R2L,
     }
