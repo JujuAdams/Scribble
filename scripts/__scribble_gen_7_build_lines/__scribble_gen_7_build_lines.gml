@@ -1,25 +1,14 @@
 #macro __SCRIBBLE_GEN_LINE_START  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START        ] = _line_word_start;\
                                   _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN            ] = _state_halign;\
-                                  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE] = (_force_break == 3);
+                                  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE] = false;
 
 
-#macro __SCRIBBLE_GEN_LINE_END  var _line_word_end = (_force_break == 1)? _i-1 : _i;\
-                                var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);\
+#macro __SCRIBBLE_GEN_LINE_END  var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);\
                                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END] = _line_word_end;\
                                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH   ] = _word_x;\
                                 _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT  ] = _line_height;\
                                 _line_count++;\
-                                ;\
-                                if ((_force_break == 2) || (_force_break == 3))\
-                                {\
-                                    _line_y = 0;\
-                                    if (_line_height > _line_max_y) _line_max_y = _line_height;\
-                                }\
-                                else\
-                                {\
-                                    _line_y += _line_height;\
-                                    if (_line_y > _line_max_y) _line_max_y = _line_y;\
-                                }
+                                _word_width = 0;
 
 
 function __scribble_gen_7_build_lines()
@@ -56,11 +45,8 @@ function __scribble_gen_7_build_lines()
         {
             var _state_halign  = fa_left;
             var _control_index = 0;
-            var _force_break   = 0; // 0 = no break, 1 = break before, 2 = linebreak after, 3 = pagebreak after
-            
-            var _line_word_start = 0;
-            var _word_x          = 0;
-            var _line_y          = 0;
+            var _word_x        = 0;
+            var _line_y        = 0;
             
             //Find any horizontal alignment changes
             var _control_delta = _glyph_grid[# 0, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] - _control_index;
@@ -74,6 +60,7 @@ function __scribble_gen_7_build_lines()
                 _control_index++;
             }
             
+            var _line_word_start = 0;
             __SCRIBBLE_GEN_LINE_START;
             
             var _i = 0;
@@ -96,7 +83,16 @@ function __scribble_gen_7_build_lines()
                 
                 if (_word_x + _word_width >= _simulated_model_max_width)
                 {
-                    _force_break = 1; //Break before this word
+                    //TODO - Check if word is too big to fit on one line
+                    
+                    var _line_word_end = _i-1;
+                    __SCRIBBLE_GEN_LINE_END;
+                    
+                    _line_y += _line_height;
+                    if (_line_y > _line_max_y) _line_max_y = _line_y;
+                    
+                    _line_word_start = _i;
+                    __SCRIBBLE_GEN_LINE_START;
                 }
                 else
                 {
@@ -104,37 +100,42 @@ function __scribble_gen_7_build_lines()
                     var _glyph_start_ord = _glyph_grid[# _word_start_glyph, __SCRIBBLE_PARSER_GLYPH.ORD];
                     if (_glyph_start_ord == 0x0A) //Newline
                     {
-                        _force_break = 2; //Linebreak after this word
+                        //Linebreak after this word
+                        
+                        var _line_word_end = _i;
+                        __SCRIBBLE_GEN_LINE_END;
+                        
+                        _line_y += _line_height;
+                        if (_line_y > _line_max_y) _line_max_y = _line_y;
+                        
+                        _line_word_start = _i+1;
+                        __SCRIBBLE_GEN_LINE_START;
                     }
                     else if (_glyph_start_ord == 0x00) //Null, indicates a new page
                     {
-                        _force_break = 3; //Pagebreak after this word
+                        //Pagebreak after this word
+                        
+                        var _line_word_end = _i;
+                        __SCRIBBLE_GEN_LINE_END;
+                        
+                        _line_y = 0;
+                        
+                        _line_word_start = _i+1;
+                        __SCRIBBLE_GEN_LINE_START;
+                        _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE] = true;
                     }
                 }
                 
-                if (!_force_break)
-                {
-                    _word_x += _word_grid[# _i, __SCRIBBLE_PARSER_WORD.WIDTH];
-                }
-                else
-                {
-                    //TODO - Check if word is too big to fit on one line
-                    
-                    __SCRIBBLE_GEN_LINE_END;
-                    
-                    _line_word_start = (_force_break == 1)? _i : _i+1;
-                    __SCRIBBLE_GEN_LINE_START;
-                    
-                    _word_x = _word_width;
-                    
-                    _force_break = 0;
-                }
-                
+                _word_x += _word_width;
                 ++_i;
             }
             
-            _force_break = 1;
+            //Finalize the line we've already started
+            var _line_word_end = _i-1;
             __SCRIBBLE_GEN_LINE_END;
+            
+            _line_y += _line_height;
+            if (_line_y > _line_max_y) _line_max_y = _line_y;
         }
         
         //If we're not running .fit_to_box() behaviour then escape now!
