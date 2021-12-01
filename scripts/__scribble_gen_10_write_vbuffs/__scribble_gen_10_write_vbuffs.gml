@@ -1,3 +1,69 @@
+#macro __SCRIBBLE_VBUFF_READ_GLYPH  var _quad_l = _vbuff_pos_grid[# _i, __SCRIBBLE_VBUFF_POS.QUAD_L];\
+                                    var _quad_t = _vbuff_pos_grid[# _i, __SCRIBBLE_VBUFF_POS.QUAD_T];\
+                                    var _quad_r = _vbuff_pos_grid[# _i, __SCRIBBLE_VBUFF_POS.QUAD_R];\
+                                    var _quad_b = _vbuff_pos_grid[# _i, __SCRIBBLE_VBUFF_POS.QUAD_B];\
+                                    ;\
+                                    var _glyph_texture = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.TEXTURE];\
+                                    var _quad_u0       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.QUAD_U0];\
+                                    var _quad_v0       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.QUAD_V0];\
+                                    var _quad_u1       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.QUAD_U1];\
+                                    var _quad_v1       = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.QUAD_V1];\
+                                    ;\
+                                    var _half_w = 0.5*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.WIDTH ];\
+                                    var _half_h = 0.5*_glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.HEIGHT];\
+                                    ;\
+                                    var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];\
+                                    var _glyph_scale    = _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.SCALE          ];
+
+
+
+#macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_glyph_texture != _last_glyph_texture)\
+                                     {\
+                                         _last_glyph_texture = _glyph_texture;\
+                                         _vbuff = _page_data.__get_vertex_buffer(_last_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_PARSER_GLYPH.MSDF_PXRANGE], true, self);\
+                                     }\
+                                     if (_bezier_do)\
+                                     {\
+                                         var _quad_cx = _quad_l + _half_w;\
+                                         var _quad_cy = _quad_t + _half_h;\
+                                         if (_quad_cy > _bezier_prev_cy)\ //If we've snapped back to the LHS then reset our Bezier curve 
+                                         {\ //TODO - Maybe use a line number check instead? This could get slow
+                                             _bezier_search_index = 0;\
+                                             _bezier_search_d0 = 0;\
+                                             _bezier_search_d1 = _bezier_lengths[1];\
+                                         }\
+                                         _bezier_prev_cy = _quad_cy;\
+                                         while (true)\ //Iterate forwards until we find a Bezier segment we can fit into
+                                         {\
+                                             if (_quad_cx <= _bezier_search_d1)\ //If this glyph is on this line segment...
+                                             {\
+                                                 var _bezier_param = _bezier_param_increment*((_quad_cx - _bezier_search_d0)/ (_bezier_search_d1 - _bezier_search_d0) + _bezier_search_index);\ //...then parameterise this glyph
+                                                 break;\
+                                             }\
+                                             _bezier_search_index++;\
+                                             if (_bezier_search_index >= SCRIBBLE_BEZIER_ACCURACY-1)\
+                                             {\
+                                                 var _bezier_param = 1.0;\ //We've hit the end of the Bezier curve, force all the remaining glyphs to stack up at the end of the line
+                                                 break;\
+                                             }\
+                                             _bezier_search_d0 = _bezier_search_d1;\ //Advance to the next line segment
+                                             _bezier_search_d1 = _bezier_lengths[_bezier_search_index+1];\
+                                         }\
+                                         _quad_l = _bezier_param;\
+                                         _quad_r = _bezier_param;\
+                                         _quad_t = _quad_cy;\
+                                         _quad_b = _quad_cy;\
+                                     }\
+                                     ;\
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _glyph_scale,  _half_h);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _glyph_scale, -_half_h);\
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_b, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff, _glyph_scale, -_half_h);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, _glyph_scale, -_half_h);\
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff,  _half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff, _glyph_scale,  _half_h);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_t, _packed_indexes); vertex_normal(_vbuff, -_half_w, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, _glyph_scale,  _half_h);
+
+
+
 function __scribble_gen_10_write_vbuffs()
 {
     if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)

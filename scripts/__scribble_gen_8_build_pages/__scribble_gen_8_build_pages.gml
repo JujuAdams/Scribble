@@ -1,3 +1,16 @@
+#macro __SCRIBBLE_GEN_PAGE_POP  var _page_end_line = _i - 1;\
+                                _page_data.__line_end  = _page_end_line;\
+                                _page_data.__glyph_end = _word_grid[# _line_grid[# _page_end_line, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];\
+                                _page_data.__width     = ds_grid_get_max(_line_grid, _page_start_line, __SCRIBBLE_PARSER_LINE.WIDTH, _page_end_line, __SCRIBBLE_PARSER_LINE.WIDTH);\
+                                _page_data.__height    = _line_y;\
+                                ;\// Set up the character indexes for the page, relative to the character index of the first glyph on the page
+                                var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];\
+                                ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, -_page_anim_start);\
+                                ;\// Set the character count for the page too
+                                _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
+
+
+
 function __scribble_gen_8_build_pages()
 {
     var _glyph_grid   = global.__scribble_glyph_grid;

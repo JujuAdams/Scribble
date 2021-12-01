@@ -305,8 +305,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         bezier_lengths_array = undefined; //TODO
     };
     
-    __scribble_gen_1_model_limits_and_bezier_curves()
-    __scribble_gen_2_line_heights();
+    __scribble_gen_1_model_limits_and_bezier_curves();
+    //TODO - Fix numbering
     __scribble_gen_3_parser();
     __scribble_gen_4_devanagari();
     __scribble_gen_5_build_words();

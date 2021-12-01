@@ -8,8 +8,6 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
     var _model_max_height = _element.wrap_max_height;
     if (_model_max_height < 0) _model_max_height = infinity;
     
-    #region Build Bezier curve segment lengths
-    
     //TODO - Cache Bezier curves
     
     //Make a copy of the Bezier array
@@ -62,11 +60,20 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
         global.__scribble_generator_state.bezier_lengths_array = _bezier_lengths;
     }
     
-    #endregion
+    //Set up line height limits
+    var _element = global.__scribble_generator_state.element;
+    var _line_height_min = _element.line_height_min;
+    var _line_height_max = _element.line_height_max;
+    
+    if (_line_height_min < 0) _line_height_min = 1;
+    if (_line_height_max < 0) _line_height_max = infinity;
     
     with(global.__scribble_generator_state)
     {
         model_max_width  = _model_max_width;
         model_max_height = _model_max_height;
+        
+        line_height_min = _line_height_min;
+        line_height_max = _line_height_max;
     }
 }

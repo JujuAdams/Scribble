@@ -1,3 +1,65 @@
+#macro __SCRIBBLE_PARSER_PUSH_SCALE  if (_state_scale != 1)\
+                                     {\
+                                            ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_PARSER_GLYPH.X, _glyph_count, __SCRIBBLE_PARSER_GLYPH.SCALE, _state_scale);\ //Covers x, y, width, height, and separation
+                                     }\
+                                     _state_scale_start_glyph = _glyph_count;
+
+
+
+#macro __SCRIBBLE_PARSER_WRITE_NEWLINE  _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD          ] = 0x0A;\ //ASCII line break (dec = 10)
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;\
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.X            ] = 0;\
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.Y            ] = 0;\
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.WIDTH        ] = 0;\
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.HEIGHT       ] = _font_line_height;\
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.FONT_HEIGHT  ] = _font_line_height;\
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.SEPARATION   ] = 0;\
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] = _control_count;\
+                                        ;\
+                                        ++_glyph_count;\
+                                        _glyph_prev_arabic_join_next = false;\
+                                        _glyph_prev = 0x0A;\
+                                        _glyph_prev_prev = _glyph_prev;
+
+
+
+#macro __SCRIBBLE_PARSER_WRITE_GLYPH  ;\//Pull info out of the font's data structures
+                                      var _data_index = _font_glyphs_map[? _glyph_write];\
+                                      ;\//If our glyph is missing, choose the missing character glyph instead!
+                                      if (_data_index == undefined) _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
+                                      if (_data_index == undefined)\
+                                      {\
+                                          ;\//This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
+                                          __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");\
+                                      }\
+                                      else\
+                                      {\
+                                          ;\//Add this glyph to our grid by copying from the font's own glyph data grid
+                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.ORD, _data_index, SCRIBBLE_GLYPH.MSDF_PXRANGE, _glyph_count, __SCRIBBLE_PARSER_GLYPH.ORD);\
+                                          _glyph_grid[# _glyph_count, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] = _control_count;\
+                                          ;\
+                                          ++_glyph_count;\
+                                          ;\//We don't set _glyph_prev_arabic_join_next here, we do it further up
+                                          _glyph_prev = _glyph_write;\
+                                          _glyph_prev_prev = _glyph_prev;\
+                                      }
+
+
+
+#macro __SCRIBBLE_PARSER_SET_FONT   var _font_data            = __scribble_get_font_data(_font_name);\
+                                    var _font_glyph_data_grid = _font_data.glyph_data_grid;\
+                                    var _font_glyphs_map      = _font_data.glyphs_map;\
+                                    var _space_data_index     = _font_glyphs_map[? 32];\
+                                    if (_space_data_index == undefined)\
+                                    {\
+                                        __scribble_error("The space character is missing from font definition for \"", _font_name, "\"");\
+                                        return false;\
+                                    }\
+                                    var _font_space_width = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.WIDTH ];\
+                                    var _font_line_height = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.HEIGHT];
+
+
+
 function __scribble_gen_3_parser()
 {
     //Cache globals locally for a performance boost

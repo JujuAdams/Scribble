@@ -79,7 +79,6 @@
     {"id":{"name":"__scribble_class_page","path":"scripts/__scribble_class_page/__scribble_class_page.yy",},"order":9,},
     {"id":{"name":"obj_test_wrap_pages_with_typist","path":"objects/obj_test_wrap_pages_with_typist/obj_test_wrap_pages_with_typist.yy",},"order":2,},
     {"id":{"name":"draw_text_scribble","path":"scripts/draw_text_scribble/draw_text_scribble.yy",},"order":0,},
-    {"id":{"name":"__scribble_gen_2_line_heights","path":"scripts/__scribble_gen_2_line_heights/__scribble_gen_2_line_heights.yy",},"order":2,},
     {"id":{"name":"obj_test_bbox","path":"objects/obj_test_bbox/obj_test_bbox.yy",},"order":0,},
     {"id":{"name":"fnt_style","path":"fonts/fnt_style/fnt_style.yy",},"order":9,},
     {"id":{"name":"obj_test_build","path":"objects/obj_test_build/obj_test_build.yy",},"order":10,},
