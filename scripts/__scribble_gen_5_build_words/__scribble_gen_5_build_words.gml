@@ -148,8 +148,8 @@ function __scribble_gen_5_build_words()
         __SCRIBBLE_GEN_WORD_END;
     }
     
-    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.GLYPH_START] = _word_glyph_end;
-    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.GLYPH_END  ] = _word_glyph_end;
+    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.GLYPH_START] = _word_glyph_end+1;
+    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.GLYPH_END  ] = _word_glyph_end+1;
     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.WIDTH      ] = 0;
     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.HEIGHT     ] = 0;
     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.BIDI_RAW   ] = __SCRIBBLE_BIDI.SYMBOL;
