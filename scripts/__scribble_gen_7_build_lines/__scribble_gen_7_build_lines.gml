@@ -110,6 +110,8 @@ function __scribble_gen_7_build_lines()
                         
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
+                        
+                        _word_x = 0;
                     }
                     else if (_glyph_start_ord == 0x00) //Null, indicates a new page
                     {
@@ -123,6 +125,8 @@ function __scribble_gen_7_build_lines()
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
                         _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE] = true;
+                        
+                        _word_x = 0;
                     }
                 }
                 
