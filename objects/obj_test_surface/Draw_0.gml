@@ -10,3 +10,5 @@ surface_reset_target();
 
 scribble("[fa_center][fa_middle]Here's a sprite: [spr_large_coin,0]... Here's a surface: [surface," + string(surface) + "]")
 .draw(room_width/2, room_height/2);
+
+draw_line(0, room_height/2, room_width, room_height/2);
