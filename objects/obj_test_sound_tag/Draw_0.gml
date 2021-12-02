@@ -1,1 +1,1 @@
-scribble("abcdef. [snd_crank]abcdef.").draw(x, y, typist);
+scribble("abcdef. [snd_crank]abcdef.[snd_crank]").draw(x, y, typist);
