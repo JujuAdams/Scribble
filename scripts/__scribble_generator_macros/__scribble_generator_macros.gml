@@ -1,4 +1,4 @@
-enum __SCRIBBLE_PARSER_GLYPH
+enum __SCRIBBLE_GEN_GLYPH
 {
     ORD,              // 0  \   Can be negative, see below
     BIDI,             // 1   |
@@ -29,7 +29,7 @@ enum __SCRIBBLE_PARSER_GLYPH
     __SIZE,           //20
 }
 
-enum __SCRIBBLE_VBUFF_POS
+enum __SCRIBBLE_GEN_VBUFF_POS
 {
     QUAD_L, //0
     QUAD_T, //1
@@ -38,7 +38,7 @@ enum __SCRIBBLE_VBUFF_POS
     __SIZE, //4
 }
 
-enum __SCRIBBLE_CONTROL_TYPE
+enum __SCRIBBLE_GEN_CONTROL_TYPE
 {
     EVENT,
     HALIGN,
@@ -51,14 +51,14 @@ enum __SCRIBBLE_CONTROL_TYPE
 #macro  __SCRIBBLE_GLYPH_SPRITE   -1
 #macro  __SCRIBBLE_GLYPH_SURFACE  -2
 
-enum __SCRIBBLE_PARSER_CONTROL
+enum __SCRIBBLE_GEN_CONTROL
 {
     TYPE,   //0
     DATA,   //1
     __SIZE, //2
 }
 
-enum __SCRIBBLE_PARSER_WORD
+enum __SCRIBBLE_GEN_WORD
 {
     BIDI_RAW,    //0
     BIDI,        //1
@@ -69,7 +69,7 @@ enum __SCRIBBLE_PARSER_WORD
     __SIZE,      //6
 }
 
-enum __SCRIBBLE_PARSER_STRETCH
+enum __SCRIBBLE_GEN_STRETCH
 {
     WORD_START, //0
     WORD_END,   //1
@@ -77,7 +77,7 @@ enum __SCRIBBLE_PARSER_STRETCH
     __SIZE,
 }
 
-enum __SCRIBBLE_PARSER_LINE
+enum __SCRIBBLE_GEN_LINE
 {
     Y,                  //0
     WORD_START,         //1

@@ -1,12 +1,12 @@
-#macro __SCRIBBLE_GEN_LINE_START  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_START        ] = _line_word_start;\
-                                  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HALIGN            ] = _state_halign;\
-                                  _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE] = false;
+#macro __SCRIBBLE_GEN_LINE_START  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.WORD_START        ] = _line_word_start;\
+                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.HALIGN            ] = _state_halign;\
+                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE] = false;
 
 
-#macro __SCRIBBLE_GEN_LINE_END  var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_PARSER_WORD.HEIGHT, _line_word_end, __SCRIBBLE_PARSER_WORD.HEIGHT), _line_height_min, _line_height_max);\
-                                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WORD_END] = _line_word_end;\
-                                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.WIDTH   ] = _word_x;\
-                                _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.HEIGHT  ] = _line_height;\
+#macro __SCRIBBLE_GEN_LINE_END  var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_GEN_WORD.HEIGHT, _line_word_end, __SCRIBBLE_GEN_WORD.HEIGHT), _line_height_min, _line_height_max);\
+                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.WORD_END] = _line_word_end;\
+                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.WIDTH   ] = _word_x;\
+                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.HEIGHT  ] = _line_height;\
                                 _line_count++;\
                                 _word_width = 0;
 
@@ -49,12 +49,12 @@ function __scribble_gen_7_build_lines()
             var _line_y        = 0;
             
             //Find any horizontal alignment changes
-            var _control_delta = _glyph_grid[# 0, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] - _control_index;
+            var _control_delta = _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
             repeat(_control_delta)
             {
-                if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_TYPE.HALIGN)
+                if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.HALIGN)
                 {
-                    _state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                    _state_halign = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
                 }
                 
                 _control_index++;
@@ -66,16 +66,16 @@ function __scribble_gen_7_build_lines()
             var _i = 0;
             repeat(_word_count)
             {
-                var _word_width       = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.WIDTH      ];
-                var _word_start_glyph = _word_grid[# _i, __SCRIBBLE_PARSER_WORD.GLYPH_START];
+                var _word_width       = _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH      ];
+                var _word_start_glyph = _word_grid[# _i, __SCRIBBLE_GEN_WORD.GLYPH_START];
                 
                 //Find any horizontal alignment changes
-                var _control_delta = _glyph_grid[# _word_start_glyph, __SCRIBBLE_PARSER_GLYPH.CONTROL_COUNT] - _control_index;
+                var _control_delta = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
                 repeat(_control_delta)
                 {
-                    if (_control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.TYPE] == __SCRIBBLE_CONTROL_TYPE.HALIGN)
+                    if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.HALIGN)
                     {
-                        _state_halign = _control_grid[# _control_index, __SCRIBBLE_PARSER_CONTROL.DATA];
+                        _state_halign = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
                     }
                     
                     _control_index++;
@@ -97,7 +97,7 @@ function __scribble_gen_7_build_lines()
                 else
                 {
                     // Check for \n line break characters or nulls (manual page breaks) stored at the start of words
-                    var _glyph_start_ord = _glyph_grid[# _word_start_glyph, __SCRIBBLE_PARSER_GLYPH.ORD];
+                    var _glyph_start_ord = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.ORD];
                     if (_glyph_start_ord == 0x0A) //Newline
                     {
                         //Linebreak after this word
@@ -122,7 +122,7 @@ function __scribble_gen_7_build_lines()
                         
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
-                        _line_grid[# _line_count, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE] = true;
+                        _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE] = true;
                     }
                 }
                 
@@ -176,7 +176,7 @@ function __scribble_gen_7_build_lines()
         }
     }
     
-    width = ds_grid_get_max(_line_grid, 0, __SCRIBBLE_PARSER_LINE.WIDTH, _line_count - 1, __SCRIBBLE_PARSER_LINE.WIDTH);
+    width = ds_grid_get_max(_line_grid, 0, __SCRIBBLE_GEN_LINE.WIDTH, _line_count - 1, __SCRIBBLE_GEN_LINE.WIDTH);
     
     with(global.__scribble_generator_state)
     {

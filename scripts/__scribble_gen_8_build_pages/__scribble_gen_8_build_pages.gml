@@ -1,13 +1,13 @@
 #macro __SCRIBBLE_GEN_PAGE_POP  var _page_end_line = _i - 1;\
                                 _page_data.__line_end  = _page_end_line;\
-                                _page_data.__glyph_end = _word_grid[# _line_grid[# _page_end_line, __SCRIBBLE_PARSER_LINE.WORD_END], __SCRIBBLE_PARSER_WORD.GLYPH_END];\
-                                _page_data.__width     = ds_grid_get_max(_line_grid, _page_start_line, __SCRIBBLE_PARSER_LINE.WIDTH, _page_end_line, __SCRIBBLE_PARSER_LINE.WIDTH);\
+                                _page_data.__glyph_end = _word_grid[# _line_grid[# _page_end_line, __SCRIBBLE_GEN_LINE.WORD_END], __SCRIBBLE_GEN_WORD.GLYPH_END];\
+                                _page_data.__width     = ds_grid_get_max(_line_grid, _page_start_line, __SCRIBBLE_GEN_LINE.WIDTH, _page_end_line, __SCRIBBLE_GEN_LINE.WIDTH);\
                                 _page_data.__height    = _line_y;\
                                 ;\// Set up the character indexes for the page, relative to the character index of the first glyph on the page
-                                var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];\
-                                ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX, -_page_anim_start);\
+                                var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX];\
+                                ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, -_page_anim_start);\
                                 ;\// Set the character count for the page too
-                                _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_PARSER_GLYPH.ANIMATION_INDEX];
+                                _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX];
 
 
 
@@ -35,19 +35,19 @@ function __scribble_gen_8_build_pages()
     // We'll set the ending glyph in the loop below
     var _page_data = __new_page();
     _page_data.__line_start  = 0;
-    _page_data.__glyph_start = _word_grid[# _line_grid[# 0, __SCRIBBLE_PARSER_LINE.WORD_START], __SCRIBBLE_PARSER_WORD.GLYPH_START];
+    _page_data.__glyph_start = _word_grid[# _line_grid[# 0, __SCRIBBLE_GEN_LINE.WORD_START], __SCRIBBLE_GEN_WORD.GLYPH_START];
     
     var _page_start_line = 0;
     var _line_y = 0;
     var _i = 0;
     repeat(_line_count)
     {
-        var _line_height        = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.HEIGHT            ];
-        var _starts_manual_page = _line_grid[# _i, __SCRIBBLE_PARSER_LINE.STARTS_MANUAL_PAGE];
+        var _line_height        = _line_grid[# _i, __SCRIBBLE_GEN_LINE.HEIGHT            ];
+        var _starts_manual_page = _line_grid[# _i, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE];
         
         if (!_starts_manual_page && (_line_y + _line_height < _simulated_model_height))
         {
-            _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y] = _line_y;
+            _line_grid[# _i, __SCRIBBLE_GEN_LINE.Y] = _line_y;
             _line_y += _line_height;
         }
         else
@@ -57,10 +57,10 @@ function __scribble_gen_8_build_pages()
             // Create a new page
             _page_data = __new_page();
             _page_data.__line_start  = _i;
-            _page_data.__glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_PARSER_LINE.WORD_START], __SCRIBBLE_PARSER_WORD.GLYPH_START];
+            _page_data.__glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.WORD_START], __SCRIBBLE_GEN_WORD.GLYPH_START];
             
             _page_start_line = _i;
-            _line_grid[# _i, __SCRIBBLE_PARSER_LINE.Y] = 0;
+            _line_grid[# _i, __SCRIBBLE_GEN_LINE.Y] = 0;
             _line_y = _line_height;
         }
         
