@@ -88,7 +88,7 @@ function __scribble_gen_5_build_words()
                 
                 case __SCRIBBLE_BIDI.SYMBOL:
                     // If we find a glyph with a neutral direction and the current word isn't whitespace, inherit the word's direction
-                    if (_word_bidi != __SCRIBBLE_BIDI.WHITESPACE)
+                    if ((_word_bidi != __SCRIBBLE_BIDI.WHITESPACE) && (_word_bidi != __SCRIBBLE_BIDI.ISOLATED))
                     {
                         _glyph_bidi = _word_bidi;
                     }
