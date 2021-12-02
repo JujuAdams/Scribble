@@ -33,7 +33,7 @@ function __scribble_gc_collect()
         var _element = _list[| _index];
         if (_element.last_drawn + __SCRIBBLE_CACHE_TIMEOUT < current_time)
         {
-            if (__SCRIBBLE_DEBUG) __scribble_trace("\"", _element.cache_name, "\" has timed out (", current_time, " > ", _element.last_drawn, " + ", __SCRIBBLE_CACHE_TIMEOUT, ")");
+            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("\"", _element.cache_name, "\" has timed out (", current_time, " > ", _element.last_drawn, " + ", __SCRIBBLE_CACHE_TIMEOUT, ")");
             ds_list_delete(_list, _index);
         }
     }
@@ -66,7 +66,7 @@ function __scribble_gc_collect()
         var _weak = _dict[? _name];
         if ((_weak == undefined) || !weak_ref_alive(_weak))
         {
-            if (__SCRIBBLE_DEBUG) __scribble_trace("Removing element \"", _name, "\" from cache");
+            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Removing element \"", _name, "\" from cache");
             ds_map_delete(_dict, _name);
             ds_list_delete(_list, _index);
         }
@@ -100,7 +100,7 @@ function __scribble_gc_collect()
         var _weak = _dict[? _name];
         if ((_weak == undefined) || !weak_ref_alive(_weak))
         {
-            if (__SCRIBBLE_DEBUG) __scribble_trace("Removing model \"", _name, "\" from cache");
+            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Removing model \"", _name, "\" from cache");
             ds_map_delete(_dict, _name);
             ds_list_delete(_list, _index);
         }
@@ -134,7 +134,7 @@ function __scribble_gc_collect()
         var _weak = _ref_array[_index];
         if (!weak_ref_alive(_weak))
         {
-            if (__SCRIBBLE_DEBUG) __scribble_trace("Cleaning up vertex buffer ", _id_array[_index]);
+            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Cleaning up vertex buffer ", _id_array[_index]);
             vertex_delete_buffer(_id_array[_index]);
             array_delete(_ref_array, _index, 1);
             array_delete(_id_array , _index, 1);
@@ -148,7 +148,7 @@ function __scribble_gc_collect()
 
 function __scribble_gc_add_vbuff(_struct, _vbuff)
 {
-    if (__SCRIBBLE_DEBUG) __scribble_trace("Adding vertex buffer ", _vbuff, " to tracking");
+    if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding vertex buffer ", _vbuff, " to tracking");
     array_push(global.__scribble_gc_vbuff_refs, weak_ref_create(_struct));
     array_push(global.__scribble_gc_vbuff_ids, _vbuff);
 }
@@ -158,7 +158,7 @@ function __scribble_gc_remove_vbuff(_vbuff)
     var _index = __scribble_array_find_index(global.__scribble_gc_vbuff_ids, _vbuff);
     if (_index >= 0)
     {
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Manually removing vertex buffer ", _vbuff, " from tracking");
+        if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Manually removing vertex buffer ", _vbuff, " from tracking");
         array_delete(global.__scribble_gc_vbuff_refs, _index, 1);
         array_delete(global.__scribble_gc_vbuff_ids,  _index, 1);
     }
