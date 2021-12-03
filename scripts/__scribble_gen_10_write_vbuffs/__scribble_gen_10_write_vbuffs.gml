@@ -167,7 +167,7 @@ function __scribble_gen_10_write_vbuffs()
                     break;
                     
                     case __SCRIBBLE_GEN_CONTROL_TYPE.EVENT:
-                        var _animation_index = _packed_indexes div __SCRIBBLE_MAX_LINES; //TODO
+                        var _animation_index = _packed_indexes div __SCRIBBLE_MAX_LINES;
                         var _event_array = _page_events_dict[$ _animation_index]; //Find the correct event array in the dictionary, creating a new one if needed
                         
                         if (!is_array(_event_array))

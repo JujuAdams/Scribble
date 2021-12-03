@@ -534,8 +534,8 @@ function __scribble_buffer_write_unicode(_buffer, _value)
 #region Internal Macro Definitions
 
 // @jujuadams
-#macro __SCRIBBLE_VERSION     "8.0.0 alpha 6"
-#macro __SCRIBBLE_DATE        "2021-11-18"
+#macro __SCRIBBLE_VERSION     "8.0.0 alpha 7"
+#macro __SCRIBBLE_DATE        "2021-12-03"
 #macro __SCRIBBLE_DEBUG       false
 #macro __SCRIBBLE_VERBOSE_GC  false
 
@@ -543,7 +543,7 @@ enum SCRIBBLE_GLYPH
 {
     CHARACTER,    // 0
     
-    ORD,          // 1  }
+    ORD,          // 1  \
     BIDI,         // 2   |
                   //     |
     X_OFFSET,     // 3   |
