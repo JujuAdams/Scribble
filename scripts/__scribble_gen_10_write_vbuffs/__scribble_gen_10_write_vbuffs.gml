@@ -11,9 +11,8 @@
                                     ;\
                                     var _half_w = 0.5*_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.WIDTH ];\
                                     var _half_h = 0.5*_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.HEIGHT];\
-                                    ;\
-                                    var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX];\
-                                    var _glyph_scale    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.SCALE          ];
+                                    ;\\
+                                    var _glyph_scale    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.SCALE];
 
 
 
@@ -134,6 +133,8 @@ function __scribble_gen_10_write_vbuffs()
         var _i = _page_data.__glyph_start;
         repeat(1 + _page_data.__glyph_end - _page_data.__glyph_start)
         {
+            var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX];
+            
             #region Read controls
             
             var _control_delta = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
@@ -166,8 +167,8 @@ function __scribble_gen_10_write_vbuffs()
                     break;
                     
                     case __SCRIBBLE_GEN_CONTROL_TYPE.EVENT:
-                        var _animation_index = _i; //TODO
-                        var _event_array = _page_events_dict[$ _animation_index]; //Find the correct event array in the diciontary, creating a new one if needed
+                        var _animation_index = _packed_indexes div __SCRIBBLE_MAX_LINES; //TODO
+                        var _event_array = _page_events_dict[$ _animation_index]; //Find the correct event array in the dictionary, creating a new one if needed
                         
                         if (!is_array(_event_array))
                         {
