@@ -1,14 +1,14 @@
 #macro __SCRIBBLE_GEN_LINE_START  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.WORD_START        ] = _line_word_start;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.HALIGN            ] = _state_halign;\
-                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE] = false;
+                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE] = false;\
+                                  _word_x = 0;
 
 
 #macro __SCRIBBLE_GEN_LINE_END  var _line_height = clamp(ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_GEN_WORD.HEIGHT, _line_word_end, __SCRIBBLE_GEN_WORD.HEIGHT), _line_height_min, _line_height_max);\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.WORD_END] = _line_word_end;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.WIDTH   ] = _word_x;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.HEIGHT  ] = _line_height;\
-                                _line_count++;\
-                                _word_width = 0;
+                                _line_count++;
 
 
 function __scribble_gen_7_build_lines()
@@ -17,6 +17,7 @@ function __scribble_gen_7_build_lines()
     var _word_grid    = global.__scribble_word_grid;
     var _line_grid    = global.__scribble_line_grid;
     var _control_grid = global.__scribble_control_grid;
+    var _temp_grid    = global.__scribble_temp_grid;
     
     with(global.__scribble_generator_state)
     {
@@ -83,16 +84,103 @@ function __scribble_gen_7_build_lines()
                 
                 if (_word_x + _word_width >= _simulated_model_max_width)
                 {
-                    //TODO - Check if word is too big to fit on one line
-                    
-                    var _line_word_end = _i-1;
-                    __SCRIBBLE_GEN_LINE_END;
-                    
-                    _line_y += _line_height;
-                    if (_line_y > _line_max_y) _line_max_y = _line_y;
-                    
-                    _line_word_start = _i;
-                    __SCRIBBLE_GEN_LINE_START;
+                    if (_word_width >= _simulated_model_max_width)
+                    {
+                        //Emergency! We're going to have to retroactively implement per-glyph line wrapping
+                        
+                        if (_word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI] == __SCRIBBLE_BIDI.R2L)
+                        {
+                            //TODO - Implement R2L emergency per-glyph line wrapping
+                            
+                            var _line_word_end = _i;
+                            __SCRIBBLE_GEN_LINE_END;
+                            
+                            _line_y += _line_height;
+                            if (_line_y > _line_max_y) _line_max_y = _line_y;
+                            
+                            _line_word_start = _i+1;
+                            __SCRIBBLE_GEN_LINE_START;
+                        }
+                        else
+                        {
+                            //Back up existing word definitions=
+                            var _stashed_word_count = _word_count - (_i+1);
+                            ds_grid_set_grid_region(_temp_grid, _word_grid, _i+1, 0, _word_count, __SCRIBBLE_GEN_WORD.__SIZE-1, 0, 0);
+                            
+                            var _original_word_bidi_raw    = _word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI_RAW   ];
+                            var _original_word_bidi        = _word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI       ];
+                            var _original_word_glyph_start = _word_grid[# _i, __SCRIBBLE_GEN_WORD.GLYPH_START];
+                            var _original_word_glyph_end   = _word_grid[# _i, __SCRIBBLE_GEN_WORD.GLYPH_END  ];
+                            var _original_word_width       = _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH      ];
+                            var _original_word_height      = _word_grid[# _i, __SCRIBBLE_GEN_WORD.HEIGHT     ];
+                            
+                            var _new_word_start_x     = _word_x;
+                            var _new_word_glyph_start = _original_word_glyph_start;
+                            
+                            var _j = _original_word_glyph_start;
+                            repeat(1 + _original_word_glyph_end - _original_word_glyph_start)
+                            {
+                                var _glyph_width = _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.SEPARATION];
+                                
+                                if (_word_x + _glyph_width >= _simulated_model_max_width)
+                                {
+                                    _word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI_RAW   ] = _original_word_bidi_raw;
+                                    _word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI       ] = _original_word_bidi;
+                                    _word_grid[# _i, __SCRIBBLE_GEN_WORD.GLYPH_START] = _new_word_glyph_start;
+                                    _word_grid[# _i, __SCRIBBLE_GEN_WORD.GLYPH_END  ] = _j-1;
+                                    _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH      ] = _word_x - _new_word_start_x;
+                                    _word_grid[# _i, __SCRIBBLE_GEN_WORD.HEIGHT     ] = _original_word_height;
+                                    
+                                    //Adjust the glyph X position in the new word
+                                    ds_grid_add_region(_glyph_grid, _j, __SCRIBBLE_GEN_GLYPH.X, _original_word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, -(_word_x - _new_word_start_x));
+                                    
+                                    var _line_word_end = _i;
+                                    __SCRIBBLE_GEN_LINE_END;
+                                    
+                                    _line_y += _line_height;
+                                    if (_line_y > _line_max_y) _line_max_y = _line_y;
+                                    
+                                    _line_word_start = _i+1;
+                                    __SCRIBBLE_GEN_LINE_START;
+                                    
+                                    _new_word_start_x     = 0;
+                                    _new_word_glyph_start = _j;
+                                    
+                                    ++_i; //We've added a new word!
+                                    ++_word_count;
+                                    
+                                    //TODO - We can early out here if the last glyph in the word fits onto a line
+                                }
+                                
+                                _word_x += _glyph_width;
+                                ++_j;
+                            }
+                            
+                            _word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI_RAW   ] = _original_word_bidi_raw;
+                            _word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI       ] = _original_word_bidi;
+                            _word_grid[# _i, __SCRIBBLE_GEN_WORD.GLYPH_START] = _new_word_glyph_start;
+                            _word_grid[# _i, __SCRIBBLE_GEN_WORD.GLYPH_END  ] = _j-1;
+                            _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH      ] = _original_word_width - _new_word_start_x;
+                            _word_grid[# _i, __SCRIBBLE_GEN_WORD.HEIGHT     ] = _original_word_height;
+                            
+                            ds_grid_set_grid_region(_word_grid, _temp_grid, 0, 0, _stashed_word_count, __SCRIBBLE_GEN_WORD.__SIZE-1, _i+1, 0);
+                        }
+                    }
+                    else if (_line_word_start >= _line_word_end)
+                    {
+                        __scribble_trace("Warning! Edge case encountered in __scribble_gen_7_build_lines(), please report this as a bug");
+                    }
+                    else
+                    {
+                        var _line_word_end = _i-1;
+                        __SCRIBBLE_GEN_LINE_END;
+                        
+                        _line_y += _line_height;
+                        if (_line_y > _line_max_y) _line_max_y = _line_y;
+                        
+                        _line_word_start = _i;
+                        __SCRIBBLE_GEN_LINE_START;
+                    }
                 }
                 else
                 {
@@ -110,8 +198,6 @@ function __scribble_gen_7_build_lines()
                         
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
-                        
-                        _word_x = 0;
                     }
                     else if (_glyph_start_ord == 0x00) //Null, indicates a new page
                     {
@@ -125,8 +211,6 @@ function __scribble_gen_7_build_lines()
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
                         _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE] = true;
-                        
-                        _word_x = 0;
                     }
                 }
                 
