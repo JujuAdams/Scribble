@@ -6,6 +6,8 @@ function __scribble_gen_9_position_glyphs()
     var _line_grid    = global.__scribble_line_grid;
     var _temp_grid    = global.__scribble_temp_grid;
     
+    ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
+    
     with(global.__scribble_generator_state)
     {
         var _line_count      = line_count;
