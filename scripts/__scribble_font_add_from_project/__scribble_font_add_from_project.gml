@@ -87,24 +87,25 @@ function __scribble_font_add_from_project(_font)
         var _u1 = _u0 + _w*_texture_tw;
         var _v1 = _v0 + _h*_texture_th;
         
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER   ] = _char;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER  ] = _char;
         
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.ORD         ] = _ord;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI        ] = _bidi;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.ORD        ] = _ord;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI       ] = _bidi;
         
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET    ] = _glyph_dict.offset;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET    ] = 0;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH       ] = _w;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT      ] = _h;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT ] = _h;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION  ] = _glyph_dict.shift;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1;
-                                                               
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE     ] = _texture;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0          ] = _u0;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V0          ] = _v0;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U1          ] = _u1;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1          ] = _v1;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET   ] = _glyph_dict.offset;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET   ] = 0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH      ] = _w;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT     ] = _h;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT] = _h;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION ] = _glyph_dict.shift;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.LEFT_OFFSET] = -_glyph_dict.offset;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE ] = 1;
+                                                              
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE    ] = _texture;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0         ] = _u0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V0         ] = _v0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U1         ] = _u1;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1         ] = _v1;
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = undefined;
         

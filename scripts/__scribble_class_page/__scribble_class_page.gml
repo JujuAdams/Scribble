@@ -1,11 +1,13 @@
 function __scribble_class_page() constructor
 {
     __text = "";
+    __glyph_grid = undefined;
     
     __character_count = 0;
     
     __glyph_start = undefined;
     __glyph_end   = undefined;
+    __glyph_count = 0;
     
     __line_start = undefined;
     __line_end   = undefined;
@@ -19,6 +21,43 @@ function __scribble_class_page() constructor
     __texture_to_vertex_buffer_dict = {};
     
     __events = {};
+    
+    static __get_glyph_data = function(_index)
+    {
+        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Cannot get glyph data, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to <true> to get glyph data");
+        
+        if (_index < 1)
+        {
+            return {
+                unicode: 0,
+                x:       __glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.X],
+                y:       __glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.Y],
+                width:   0,
+                height:  0,
+            };
+        }
+        else if (_index <= __glyph_count)
+        {
+            return {
+                unicode: __glyph_grid[# _index-1, __SCRIBBLE_GEN_GLYPH.ORD   ],
+                x:       __glyph_grid[# _index-1, __SCRIBBLE_GEN_GLYPH.X     ],
+                y:       __glyph_grid[# _index-1, __SCRIBBLE_GEN_GLYPH.Y     ],
+                width:   __glyph_grid[# _index-1, __SCRIBBLE_GEN_GLYPH.WIDTH ],
+                height:  __glyph_grid[# _index-1, __SCRIBBLE_GEN_GLYPH.HEIGHT],
+            };
+        }
+        else
+        {
+            _index = __glyph_count-1;
+            return {
+                unicode: 0,
+                x:       __glyph_grid[# _index, __SCRIBBLE_GEN_GLYPH.X] + __glyph_grid[# _index, __SCRIBBLE_GEN_GLYPH.WIDTH ],
+                y:       __glyph_grid[# _index, __SCRIBBLE_GEN_GLYPH.Y] + __glyph_grid[# _index, __SCRIBBLE_GEN_GLYPH.HEIGHT],
+                width:   0,
+                height:  0,
+            };
+        }
+    }
     
     static __get_vertex_buffer = function(_texture, _pxrange, _for_text, _model_struct)
     {

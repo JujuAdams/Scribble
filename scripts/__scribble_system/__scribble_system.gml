@@ -551,16 +551,17 @@ enum SCRIBBLE_GLYPH
     WIDTH,        // 5   |
     HEIGHT,       // 6   |
     FONT_HEIGHT,  // 7   |
-    SEPARATION,   // 8   | This group of enums must not change order or be split
-    FONT_SCALE,   // 9   |
+    SEPARATION,   // 8   |
+    LEFT_OFFSET,  // 9   | This group of enums must not change order or be split
+    FONT_SCALE,   //10   |
                   //     |
-    TEXTURE,      //10   |
-    U0,           //11   |
-    V0,           //12   |
-    U1,           //13   |
-    V1,           //14   |
+    TEXTURE,      //11   |
+    U0,           //12   |
+    V0,           //13   |
+    U1,           //14   |
+    V1,           //15   |
                   //     |
-    MSDF_PXRANGE, //15  /
+    MSDF_PXRANGE, //16  /
     
     __SIZE        //16
 }

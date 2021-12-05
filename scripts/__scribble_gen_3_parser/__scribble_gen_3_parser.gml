@@ -1102,18 +1102,6 @@ function __scribble_gen_3_parser()
                 
                 if (_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) _state_command_tag_flipflop = true;
                 
-                //Add a per-character delay if required
-                if (global.__scribble_character_delay)
-                {
-                    var _delay = global.__scribble_character_delay_map[? _glyph_ord];
-                    if (_delay != undefined)
-                    {
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EVENT;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = new __scribble_class_event("delay", [_delay]);
-                        ++_control_count;
-                    }
-                }
-                
                 #endregion
             }
         }
@@ -1139,7 +1127,7 @@ function __scribble_gen_3_parser()
     
     with(global.__scribble_generator_state)
     {
-        glyph_count = _glyph_count;
+        glyph_count = _glyph_count+1;
         control_count = _control_count;
     }
 }

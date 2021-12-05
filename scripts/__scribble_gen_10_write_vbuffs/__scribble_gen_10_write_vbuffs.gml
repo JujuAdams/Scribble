@@ -65,7 +65,7 @@
 
 function __scribble_gen_10_write_vbuffs()
 {
-    if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+    if (SCRIBBLE_ALLOW_TEXT_GETTER)
     {
         var _string_buffer = global.__scribble_buffer;
     }
@@ -125,13 +125,22 @@ function __scribble_gen_10_write_vbuffs()
         var _vbuff              = undefined;
         var _last_glyph_texture = undefined;
         
-        if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+        if (SCRIBBLE_ALLOW_TEXT_GETTER)
         {
             buffer_seek(_string_buffer, buffer_seek_start, 0);
         }
         
+        if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER)
+        {
+            with(_page_data)
+            {
+                __glyph_grid = ds_grid_create(__glyph_count, __SCRIBBLE_GEN_GLYPH.__SIZE);
+                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, 0, __glyph_end, __SCRIBBLE_GEN_GLYPH.__SIZE-1, 0, 0);
+            }
+        }
+        
         var _i = _page_data.__glyph_start;
-        repeat(1 + _page_data.__glyph_end - _page_data.__glyph_start)
+        repeat(_page_data.__glyph_count)
         {
             var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX];
             
@@ -192,7 +201,7 @@ function __scribble_gen_10_write_vbuffs()
             {
                 #region Write sprite
                 
-                if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+                if (SCRIBBLE_ALLOW_TEXT_GETTER)
                 {
                     buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                 }
@@ -286,7 +295,7 @@ function __scribble_gen_10_write_vbuffs()
             }
             else if (_glyph_ord == __SCRIBBLE_GLYPH_SURFACE)
             {
-                if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+                if (SCRIBBLE_ALLOW_TEXT_GETTER)
                 {
                     buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                 }
@@ -316,18 +325,13 @@ function __scribble_gen_10_write_vbuffs()
             }
             else
             {
-                if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+                if (SCRIBBLE_ALLOW_TEXT_GETTER)
                 {
                     __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
                 }
                 
                 if ((_glyph_ord > 0x20) && (_glyph_ord != 0xA0) && (_glyph_ord != 0x200B))
                 {
-                    if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
-                    {
-                        __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
-                    }
-                    
                     __SCRIBBLE_VBUFF_READ_GLYPH;
                     __SCRIBBLE_VBUFF_WRITE_GLYPH;
                 }
@@ -336,7 +340,7 @@ function __scribble_gen_10_write_vbuffs()
             ++_i;
         }
         
-        if (SCRIBBLE_ALLOW_PAGE_TEXT_GETTER)
+        if (SCRIBBLE_ALLOW_TEXT_GETTER)
         {
             //Write a null terminator to finish off the string
             buffer_write(_string_buffer, buffer_u8, 0);

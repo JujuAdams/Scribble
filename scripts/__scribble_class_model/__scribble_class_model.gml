@@ -236,6 +236,24 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 		
 		return pages_array[_page].__width;
 	}
+	
+	/// @param page
+	static get_text = function(_page)
+	{
+		if ((_page == undefined) || (_page < 0)) _page = 0;
+		
+        if (!SCRIBBLE_ALLOW_TEXT_GETTER) __scribble_error("Cannot get text, SCRIBBLE_ALLOW_TEXT_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_TEXT_GETTER to <true> to get text");
+        
+		return pages_array[_page].__text;
+	}
+	
+	/// @param page
+	static get_glyph_data = function(_index, _page)
+	{
+		if ((_page == undefined) || (_page < 0)) _page = 0;
+		
+		return pages_array[_page].__get_glyph_data(_index);
+	}
     
     static get_wrapped = function()
     {
@@ -250,15 +268,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         return pages_array[_page].lines;
     }
     
-    static get_ltrb_array = function()
+    /// @param page
+    static get_glyph_count = function(_page)
     {
-        if (!SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY)
-        {
-            __scribble_error("SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY is not enabled\nPlease set this macro to <true> to use this function");
-            return [];
-        }
+        if ((_page == undefined) || (_page < 0)) _page = 0;
         
-        return glyph_ltrb_array;
+        //N.B. Off by one since we consider the terminating null as a glyph for the purposes of typists
+        return pages_array[_page].__glyph_count - 1;
     }
     
     #endregion

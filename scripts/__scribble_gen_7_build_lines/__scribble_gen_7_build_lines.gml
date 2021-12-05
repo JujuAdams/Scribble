@@ -1,6 +1,23 @@
 #macro __SCRIBBLE_GEN_LINE_START  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.WORD_START        ] = _line_word_start;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.HALIGN            ] = _state_halign;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE] = false;\
+                                  ;\
+                                  ;\ //Align the left-hand side of the word to the left-hand side of the line. This corrects visually unpleasant gaps and overlaps
+                                  ;\ //TODO - Implement for R2L text
+                                  if (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.BIDI] != __SCRIBBLE_BIDI.R2L)\
+                                  {\
+                                      _word_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.GLYPH_START];\
+                                      _word_glyph_end   = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.GLYPH_END  ];\
+                                      var _left_correction = _glyph_grid[# _word_glyph_start, __SCRIBBLE_GEN_GLYPH.LEFT_OFFSET];\
+                                      ;\
+                                      if (((_left_correction > 0) && SCRIBBLE_NEWLINES_PAD_LEFT_SPACE) || ((_left_correction < 0) && SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE))\
+                                      {\
+                                          ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, _left_correction);\
+                                          _word_width += _left_correction;\
+                                          _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH] += _left_correction;\
+                                      }\
+                                  }\
+                                  ;\
                                   _word_x = 0;
 
 
@@ -61,10 +78,12 @@ function __scribble_gen_7_build_lines()
                 _control_index++;
             }
             
+            var _i = 0;
+                        
+            var _word_width      = 0;
             var _line_word_start = 0;
             __SCRIBBLE_GEN_LINE_START;
             
-            var _i = 0;
             repeat(_word_count)
             {
                 var _word_width       = _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH      ];

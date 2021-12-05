@@ -9,15 +9,16 @@ enum __SCRIBBLE_GEN_GLYPH
     HEIGHT,           // 5   |
     FONT_HEIGHT,      // 6   |
     SEPARATION,       // 7   | This group of enums must not change order or be split
-    SCALE,            // 8   |
+    LEFT_OFFSET,      // 8   |
+    SCALE,            // 9   |
                       //     |
-    TEXTURE,          // 9   |
-    QUAD_U0,          //10   |
-    QUAD_V0,          //11   |
-    QUAD_U1,          //12   |
-    QUAD_V1,          //13   |
+    TEXTURE,          //10   |
+    QUAD_U0,          //11   |
+    QUAD_V0,          //12   |
+    QUAD_U1,          //13   |
+    QUAD_V1,          //14   |
                       //     |
-    MSDF_PXRANGE,     //14  /
+    MSDF_PXRANGE,     //15  /
     
     CONTROL_COUNT,    //15
     ANIMATION_INDEX,  //16

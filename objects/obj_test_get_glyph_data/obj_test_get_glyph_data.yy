@@ -24,11 +24,11 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Configurations",
-    "path": "folders/Test Cases/Configurations.yy",
+    "name": "Getters",
+    "path": "folders/Test Cases/Getters.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_newline_left_trim",
+  "name": "obj_test_get_glyph_data",
   "tags": [],
   "resourceType": "GMObject",
 }

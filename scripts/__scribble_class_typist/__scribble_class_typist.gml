@@ -513,8 +513,16 @@ function __scribble_class_typist() constructor
                         
                         //Get an array of events for this character from the text element
                         var _found_events = __last_element.ref.events_get(__last_character);
-                        __last_character++;
                         
+                        //Add a per-character delay if required
+                        if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER && global.__scribble_character_delay && (__last_character > 0))
+                        {
+                            var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GEN_GLYPH.ORD];
+                            var _delay = global.__scribble_character_delay_map[? _glyph_ord];
+                            if (_delay != undefined) array_push(_found_events, new __scribble_class_event("delay", [_delay]));
+                        }
+                        
+                        __last_character++;
                         if (__last_character > 1) __execute_function_per_character(_target_element);
                         
                         var _found_size = array_length(_found_events);

@@ -113,14 +113,9 @@ function __scribble_gen_9_position_glyphs()
             }
             
             #endregion
-        
-        
-        
-            if (SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE) 
-            {
-                __scribble_error("SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE not implemented yet"); 
-            }
-        
+            
+            
+            
             // Text on the last line is never justified
             // FIXME - This should work per-page not per-model
             if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_j >= _line_count - 1)) _line_halign = __SCRIBBLE_PIN_LEFT;

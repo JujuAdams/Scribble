@@ -12,6 +12,8 @@
 #macro SCRIBBLE_BOX_ALIGN_TO_PAGE             false  //Whether to use text element sizes (false) or page sizes (true)
 #macro SCRIBBLE_TAB_WIDTH                     4      //Width of a horizontal tab, as a number of spaces
 #macro SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE  true
+#macro SCRIBBLE_ALLOW_TEXT_GETTER             false
+#macro SCRIBBLE_ALLOW_GLYPH_DATA_GETTER       true
 
 
 
@@ -22,6 +24,7 @@
 #macro SCRIBBLE_VERBOSE                   true      //Enables verbose console output to aid with debugging
 #macro SCRIBBLE_BEZIER_ACCURACY           20        //Controls how accurately text fits Beziér curves. Higher is more accurate but slower
 #macro SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE  false     //Whether to trim off empty left-hand space when moving a word to a new line. This can cause issues with spritefonts in some situations
+#macro SCRIBBLE_NEWLINES_PAD_LEFT_SPACE   true      //Whether to pad extra space left-hand space when moving a word to a new line
 #macro SCRIBBLE_FIT_TO_BOX_ITERATIONS     7         //Number of iterations to fit text when using the .fit_to_box() method. Higher values are slower but more accurate
 #macro SCRIBBLE_SAFELY_WRAP_TIME          true      //Whether to wrap the internal time value
 
@@ -29,9 +32,7 @@
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT      ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
-#macro SCRIBBLE_CREATE_GLYPH_LTRB_ARRAY   false    //*DEPRECATED*   Outputs an array of glyph LTRB bounding boxes
 #macro SCRIBBLE_CREATE_CHARACTER_ARRAY    false    //*DEPRECATED*   Outputs an array of character codes
-#macro SCRIBBLE_ALLOW_PAGE_TEXT_GETTER    false
 #macro SCRIBBLE_DRAW_RETURNS_SELF         false    // Whether the .draw() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
 #macro SCRIBBLE_BUILD_RETURNS_SELF        false    // Whether the .build() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
 #macro SCRIBBLE_SHOW_WRAP_BOUNDARY        false    //Controls the drawing of a rectangle that indicates the boundaries of the .wrap(), .fit_to_box(), and .scale_to_box() methods
