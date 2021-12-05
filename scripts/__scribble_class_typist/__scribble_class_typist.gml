@@ -518,10 +518,22 @@ function __scribble_class_typist() constructor
                         if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER && global.__scribble_character_delay && (__last_character > 0))
                         {
                             var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GEN_GLYPH.ORD];
-                            var _delay = global.__scribble_character_delay_map[? _glyph_ord];
-                            if (_delay != undefined) array_push(_found_events, new __scribble_class_event("delay", [_delay]));
+                            var _delay = global.__scribble_character_delay_map[? int64(_glyph_ord)];
+                            _delay = (_delay == undefined)? 0 : _delay;
+                            
+                            if (__last_character > 1)
+                            {
+                                _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, __SCRIBBLE_GEN_GLYPH.ORD];
+                                var _double_char_delay = global.__scribble_character_delay_map[? int64(_glyph_ord)];
+                                _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
+                                
+                                _delay = max(_delay, _double_char_delay);
+                            }
+                            
+                            if (_delay > 0) array_push(_found_events, new __scribble_class_event("delay", [_delay]));
                         }
                         
+                        //Move to the next character
                         __last_character++;
                         if (__last_character > 1) __execute_function_per_character(_target_element);
                         
