@@ -84,6 +84,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     animation_tick_speed__ = 1;
     animation_blink_state  = true;
     
+    padding_l = 0;
+    padding_t = 0;
+    padding_r = 0;
+    padding_b = 0;
+    
+    margin_l = 0;
+    margin_t = 0;
+    margin_r = 0;
+    margin_b = 0;
+    
     msdf_shadow_colour   = c_black;
     msdf_shadow_alpha    = 0.0;
     msdf_shadow_xoffset  = 0;
@@ -501,6 +511,30 @@ function __scribble_class_element(_string, _unique_id) constructor
             model_cache_name_dirty = true;
             __bidi_hint = _new_bidi_hint;
         }
+        
+        return self;
+    }
+    
+    static padding = function(_l, _t, _r, _b)
+    {
+        if ((_l != padding_l) || (_t != padding_t) || (_r != padding_r) || (_b != padding_b))
+        {
+            model_cache_name_dirty = true;
+            padding_l = _l;
+            padding_t = _t;
+            padding_r = _r;
+            padding_b = _b;
+        }
+        
+        return self;
+    }
+    
+    static margin = function(_l, _t, _r, _b)
+    {
+        margin_l = _l;
+        margin_t = _t;
+        margin_r = _r;
+        margin_b = _b;
         
         return self;
     }
