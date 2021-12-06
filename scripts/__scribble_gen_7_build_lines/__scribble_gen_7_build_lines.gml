@@ -25,7 +25,8 @@
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.WORD_END] = _line_word_end;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.WIDTH   ] = _word_x;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.HEIGHT  ] = _line_height;\
-                                _line_count++;
+                                _line_count++;\
+                                if (_line_y + _line_height > _line_max_y) _line_max_y = _line_y + _line_height;
 
 
 function __scribble_gen_7_build_lines()
@@ -105,7 +106,7 @@ function __scribble_gen_7_build_lines()
                 {
                     if (_word_width >= _simulated_model_max_width)
                     {
-                        //Emergency! We're going to have to retroactively implement per-glyph line wrapping
+                        #region Emergency! We're going to have to retroactively implement per-glyph line wrapping
                         
                         if (_word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI] == __SCRIBBLE_BIDI.R2L)
                         {
@@ -113,7 +114,6 @@ function __scribble_gen_7_build_lines()
                             var _line_word_end = _i;
                             __SCRIBBLE_GEN_LINE_END;
                             _line_y += _line_height;
-                            if (_line_y > _line_max_y) _line_max_y = _line_y;
                             _line_word_start = _i+1;
                             __SCRIBBLE_GEN_LINE_START;
                         }
@@ -140,7 +140,6 @@ function __scribble_gen_7_build_lines()
                                 var _line_word_end = _i-1;
                                 __SCRIBBLE_GEN_LINE_END;
                                 _line_y += _line_height;
-                                if (_line_y > _line_max_y) _line_max_y = _line_y;
                                 _line_word_start = _i;
                                 __SCRIBBLE_GEN_LINE_START;
                                 
@@ -168,7 +167,6 @@ function __scribble_gen_7_build_lines()
                                     var _line_word_end = _i;
                                     __SCRIBBLE_GEN_LINE_END;
                                     _line_y += _line_height;
-                                    if (_line_y > _line_max_y) _line_max_y = _line_y;
                                     _line_word_start = _i+1;
                                     __SCRIBBLE_GEN_LINE_START;
                                     
@@ -195,13 +193,14 @@ function __scribble_gen_7_build_lines()
                             ds_grid_set_grid_region(_word_grid, _temp_grid, 0, 0, _stashed_word_count, __SCRIBBLE_GEN_WORD.__SIZE-1, _i+1, 0);
                             _word_width = 0;
                         }
+                        
+                        #endregion
                     }
                     else
                     {
                         var _line_word_end = _i-1;
                         __SCRIBBLE_GEN_LINE_END;
                         _line_y += _line_height;
-                        if (_line_y > _line_max_y) _line_max_y = _line_y;
                         _line_word_start = _i;
                         __SCRIBBLE_GEN_LINE_START;
                     }
@@ -216,7 +215,6 @@ function __scribble_gen_7_build_lines()
                         var _line_word_end = _i;
                         __SCRIBBLE_GEN_LINE_END;
                         _line_y += _line_height;
-                        if (_line_y > _line_max_y) _line_max_y = _line_y;
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
                     }
@@ -240,7 +238,6 @@ function __scribble_gen_7_build_lines()
             var _line_word_end = _i-1;
             __SCRIBBLE_GEN_LINE_END;
             _line_y += _line_height;
-            if (_line_y > _line_max_y) _line_max_y = _line_y;
         }
         
         //If we're not running .fit_to_box() behaviour then escape now!
