@@ -2,10 +2,10 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
 {
     var _element = global.__scribble_generator_state.element;
     
-    var _model_max_width = _element.wrap_max_width;
+    var _model_max_width = _element.wrap_max_width - (_element.padding_l + _element.padding_r);
     if (_model_max_width < 0) _model_max_width = infinity;
     
-    var _model_max_height = _element.wrap_max_height;
+    var _model_max_height = _element.wrap_max_height - (_element.padding_t + _element.padding_b);
     if (_model_max_height < 0) _model_max_height = infinity;
     
     //TODO - Cache Bezier curves

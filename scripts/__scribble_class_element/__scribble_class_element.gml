@@ -996,18 +996,18 @@ function __scribble_class_element(_string, _unique_id) constructor
             if (((scale_to_box_max_width > 0) && (scale_to_box_max_height > 0))
             ||  ((wrap_max_width > 0) && (wrap_max_height > 0)))
             {
-                var _l = _x;
-                var _t = _y;
+                var _l = _x + padding_l;
+                var _t = _y + padding_t;
                 
                 if ((scale_to_box_max_width > 0) && (scale_to_box_max_height > 0))
                 {
-                    var _w = scale_to_box_max_width;
-                    var _h = scale_to_box_max_height;
+                    var _w = scale_to_box_max_width  - (padding_l + padding_r);
+                    var _h = scale_to_box_max_height - (padding_t + padding_b);
                 }
                 else
                 {
-                    var _w = wrap_max_width;
-                    var _h = wrap_max_height;
+                    var _w = wrap_max_width  - (padding_l + padding_r);
+                    var _h = wrap_max_height - (padding_t + padding_b);
                 }
                 
                 _w *= xscale;
@@ -1093,6 +1093,10 @@ function __scribble_class_element(_string, _unique_id) constructor
                                    string(wrap_max_scale ) + ":" +
                                    string(bezier_array   ) + ":" +
                                    string(__bidi_hint    ) + ":" +
+                                   string(padding_l      ) + ":" +
+                                   string(padding_t      ) + ":" +
+                                   string(padding_r      ) + ":" +
+                                   string(padding_b      ) + ":" +
                                    string(__ignore_command_tags);
             }
             
