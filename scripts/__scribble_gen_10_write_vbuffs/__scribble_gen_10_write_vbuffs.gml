@@ -79,6 +79,10 @@ function __scribble_gen_10_write_vbuffs()
     
     
     
+    //Apply padding left/top offset
+    ds_grid_add_region(_glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.X, _element.padding_l);
+    ds_grid_add_region(_glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.Y, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.Y, _element.padding_t);
+    
     //Copy the x/y offset into the quad LTRB
     ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.Y, 0, __SCRIBBLE_GEN_VBUFF_POS.QUAD_L);
     ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.Y, 0, __SCRIBBLE_GEN_VBUFF_POS.QUAD_R);
