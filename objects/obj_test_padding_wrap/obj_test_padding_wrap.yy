@@ -8,7 +8,7 @@
   "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 1,
-  "physicsGroup": 1,
+  "physicsGroup": 0,
   "physicsDensity": 0.5,
   "physicsRestitution": 0.1,
   "physicsLinearDamping": 0.1,
@@ -27,7 +27,7 @@
     "path": "folders/Test Cases/Shape, Wrapping, Position.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_scale_to_box",
+  "name": "obj_test_padding_wrap",
   "tags": [],
   "resourceType": "GMObject",
 }
