@@ -245,7 +245,6 @@ function __scribble_gen_7_build_lines()
         
         
         
-        
         _fit_to_box_iterations++;
         
         if (_line_max_y < _simulated_model_max_height)
@@ -262,7 +261,7 @@ function __scribble_gen_7_build_lines()
         if (_fit_to_box_iterations >= SCRIBBLE_FIT_TO_BOX_ITERATIONS-1)
         {
             if (fit_scale == _lower_limit) break;
-            fit_scale = _lower_limit;
+            fit_scale = (_lower_limit == undefined)? _upper_limit : _lower_limit;
         }
         else if (_lower_limit == undefined)
         {
