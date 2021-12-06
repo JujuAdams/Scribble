@@ -89,11 +89,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     padding_r = 0;
     padding_b = 0;
     
-    margin_l = 0;
-    margin_t = 0;
-    margin_r = 0;
-    margin_b = 0;
-    
     msdf_shadow_colour   = c_black;
     msdf_shadow_alpha    = 0.0;
     msdf_shadow_xoffset  = 0;
@@ -529,16 +524,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    static margin = function(_l, _t, _r, _b)
-    {
-        margin_l = _l;
-        margin_t = _t;
-        margin_r = _r;
-        margin_b = _b;
-        
-        return self;
-    }
-    
     #endregion
     
     
@@ -579,20 +564,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param [x=0]
     /// @param [y=0]
-    /// @param [leftPad=0]
-    /// @param [topPad=0]
-    /// @param [rightPad=0]
-    /// @param [bottomPad=0]
-    static get_bbox = function(_x = 0, _y = 0, _margin_l = 0, _margin_t = 0, _margin_r = 0, _margin_b = 0)
+    static get_bbox = function(_x = 0, _y = 0)
     {
         var _model = __get_model(true);
         if (!is_struct(_model))
         {
             //No extant model, return an empty bounding box
-            var _l = _x - _margin_l;
-            var _t = _y - _margin_t;
-            var _r = _x + _margin_r;
-            var _b = _y + _margin_b;
+            var _l = _x - padding_l;
+            var _t = _y - padding_t;
+            var _r = _x + padding_r;
+            var _b = _y + padding_b;
             
             var _x0 = _l;   var _y0 = _t;
             var _x1 = _r;   var _y1 = _t;
@@ -628,10 +609,10 @@ function __scribble_class_element(_string, _unique_id) constructor
             if ((_xscale == 1) && (_yscale == 1) && (angle == 0))
             {
                 //Avoid using matrices if we can
-                var _l = _x - origin_x + _model_bbox.left  - _margin_l;
-                var _t = _y - origin_y + _bbox_t           - _margin_t;
-                var _r = _x - origin_x + _model_bbox.right + _margin_r;
-                var _b = _y - origin_y + _bbox_b           + _margin_b;
+                var _l = _x - origin_x + _model_bbox.left  - padding_l;
+                var _t = _y - origin_y + _bbox_t           - padding_t;
+                var _r = _x - origin_x + _model_bbox.right + padding_r;
+                var _b = _y - origin_y + _bbox_b           + padding_b;
             
                 var _x0 = _l;   var _y0 = _t;
                 var _x1 = _r;   var _y1 = _t;
@@ -646,10 +627,10 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                     0, 0, angle,
                                                                     _xscale, _yscale, 1));
             
-                var _l = _model_bbox.left  - _margin_l;
-                var _t = _bbox_t           - _margin_t;
-                var _r = _model_bbox.right + _margin_r;
-                var _b = _bbox_b           + _margin_b;
+                var _l = _model_bbox.left  - padding_l;
+                var _t = _bbox_t           - padding_t;
+                var _r = _model_bbox.right + padding_r;
+                var _b = _bbox_b           + padding_b;
             
                 var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); var _x0 = _vertex[0]; var _y0 = _vertex[1];
                 var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); var _x1 = _vertex[0]; var _y1 = _vertex[1];
