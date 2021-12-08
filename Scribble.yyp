@@ -19,6 +19,7 @@
     {"id":{"name":"snd_switch","path":"sounds/snd_switch/snd_switch.yy",},"order":1,},
     {"id":{"name":"scribble_is_text_element","path":"scripts/scribble_is_text_element/scribble_is_text_element.yy",},"order":6,},
     {"id":{"name":"obj_test_sprite_colouring","path":"objects/obj_test_sprite_colouring/obj_test_sprite_colouring.yy",},"order":5,},
+    {"id":{"name":"obj_test_scale_to_box_plus_transformation","path":"objects/obj_test_scale_to_box_plus_transformation/obj_test_scale_to_box_plus_transformation.yy",},"order":13,},
     {"id":{"name":"obj_test_hash_to_newline","path":"objects/obj_test_hash_to_newline/obj_test_hash_to_newline.yy",},"order":0,},
     {"id":{"name":"obj_test_msdf_comparison","path":"objects/obj_test_msdf_comparison/obj_test_msdf_comparison.yy",},"order":6,},
     {"id":{"name":"spr_msdf_notoarabic","path":"sprites/spr_msdf_notoarabic/spr_msdf_notoarabic.yy",},"order":19,},
