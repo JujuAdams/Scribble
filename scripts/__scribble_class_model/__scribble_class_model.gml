@@ -90,9 +90,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         _xscale *= fit_scale;
         _yscale *= fit_scale;
         
-        _x_offset /= _xscale;
-        _y_offset /= _yscale;
-        
         var _old_matrix = matrix_get(matrix_world);
         
         //Build a matrix to transform the text...
@@ -103,10 +100,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         }
         else
         {
-            var _matrix = matrix_build(_x_offset, _y_offset, 0,   0,0,0,   1,1,1);
-                _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
-                                                                0, 0, _angle,
-                                                                _xscale, _yscale, 1));
+            var _matrix = matrix_multiply(matrix_build(_x_offset, _y_offset, 0,   0, 0,      0,   _xscale, _yscale, 1),
+                                          matrix_build(       _x,        _y, 0,   0, 0, _angle,         1,       1, 1));
         }
         
         //...aaaand set the matrix

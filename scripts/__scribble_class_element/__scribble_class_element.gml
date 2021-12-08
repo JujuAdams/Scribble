@@ -604,10 +604,8 @@ function __scribble_class_element(_string, _unique_id) constructor
             else
             {
                 //TODO - Cache this
-                var _matrix = matrix_build(-origin_x/_xscale, -origin_y/_yscale, 0,   0,0,0,   1,1,1);
-                    _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
-                                                                    0, 0, angle,
-                                                                    _xscale, _yscale, 1));
+                var _matrix = matrix_multiply(matrix_build(-origin_x, -origin_y, 0,   0, 0,     0,   _xscale, _yscale, 1),
+                                              matrix_build(       _x,        _y, 0,   0, 0, angle,         1,       1, 1));
                 
                 var _l = _model_bbox.left;
                 var _t = _model_bbox.top;
