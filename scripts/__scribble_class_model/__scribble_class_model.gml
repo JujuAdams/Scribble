@@ -36,7 +36,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     width      = 0;
     height     = 0;
     min_x      = 0;
+    min_y      = 0;
     max_x      = 0;
+    max_y      = 0;
     valign     = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
     fit_scale  = 1.0;
     wrapped    = false;
@@ -88,10 +90,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         _xscale *= fit_scale;
         _yscale *= fit_scale;
         
-        var _left = _x_offset;
-        var _top  = _y_offset;
-        if (valign == fa_middle) _top -= _model_h div 2;
-        if (valign == fa_bottom) _top -= _model_h;
+        _x_offset /= _xscale;
+        _y_offset /= _yscale;
         
         var _old_matrix = matrix_get(matrix_world);
         
@@ -99,11 +99,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         //TODO - Cache this
         if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
         {
-            var _matrix = matrix_build(_left + _x, _top + _y, 0,   0,0,0,   1,1,1);
+            var _matrix = matrix_build(_x_offset + _x, _y_offset + _y, 0,   0,0,0,   1,1,1);
         }
         else
         {
-            var _matrix = matrix_build(_left, _top, 0,   0,0,0,   1,1,1);
+            var _matrix = matrix_build(_x_offset, _y_offset, 0,   0,0,0,   1,1,1);
                 _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
                                                                 0, 0, _angle,
                                                                 _xscale, _yscale, 1));
@@ -168,9 +168,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         {
             var _page_data = pages_array[_page];
             return { left:   _page_data.min_x,
-                     top:    0,
+                     top:    _page_data.min_y,
                      right:  _page_data.max_x,
-                     bottom: _page_data.height,
+                     bottom: _page_data.max_y,
                      width:  _page_data.width,
                      height: _page_data.height };
         }

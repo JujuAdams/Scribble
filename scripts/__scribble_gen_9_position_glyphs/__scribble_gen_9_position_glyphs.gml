@@ -20,7 +20,9 @@ function __scribble_gen_9_position_glyphs()
     ds_grid_multiply_region(_glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, __SCRIBBLE_MAX_LINES);
     
     var _model_min_x =  infinity;
+    var _model_min_y =  infinity;
     var _model_max_x = -infinity;
+    var _model_max_y = -infinity;
     
     var _i = 0;
     repeat(array_length(pages_array))
@@ -75,6 +77,11 @@ function __scribble_gen_9_position_glyphs()
             ds_grid_add_grid_region(_glyph_grid, _temp_grid, 0, 0, _line_glyph_count-1, 0, _line_glyph_start, __SCRIBBLE_GEN_GLYPH.Y);
             
             #endregion
+            
+            
+            
+            //Correct for vertical alignment
+            if (_page_data.__min_y != 0) ds_grid_add_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH.Y, _line_glyph_end, __SCRIBBLE_GEN_GLYPH.Y, _page_data.__min_y);
             
             
             
@@ -206,9 +213,13 @@ function __scribble_gen_9_position_glyphs()
             ++_j;
         }
         
+        
         if (_page_min_x == infinity) _page_min_x = 0;
         _page_data.__min_x = _page_min_x;
         _page_data.__max_x = max(_page_min_x, _page_max_x);
+        
+        _model_min_y = min(_model_min_y, _page_data.__min_y);
+        _model_max_y = max(_model_max_y, _page_data.__max_y);
         
         ++_i;
     }
@@ -216,7 +227,12 @@ function __scribble_gen_9_position_glyphs()
     characters = _glyph_count;
     
     if (_model_min_x == infinity) _model_min_x = 0;
+    
     min_x = _model_min_x;
+    min_y = _model_min_y;
     max_x = max(_model_min_x, _model_max_x);
-    width = 1 + max_x - min_x;
+    max_y = _model_max_y;
+    
+    width  = 1 + max_x - min_x;
+    height = 1 + max_y - min_y;
 }

@@ -587,33 +587,15 @@ function __scribble_class_element(_string, _unique_id) constructor
             var _yscale = scale_to_box_scale*_model.fit_scale*yscale;
             
             var _model_bbox = _model.get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
-        
-            switch(_model.valign)
-            {
-                case fa_top:
-                    var _bbox_t = 0;
-                    var _bbox_b = _model_bbox.height;
-                break;
-        
-                case fa_middle:
-                    var _bbox_t = -(_model_bbox.height div 2);
-                    var _bbox_b = -_bbox_t;
-                break;
-        
-                case fa_bottom:
-                    var _bbox_t = -_model_bbox.height;
-                    var _bbox_b = 0;
-                break;
-            }
-        
+            
             if ((_xscale == 1) && (_yscale == 1) && (angle == 0))
             {
                 //Avoid using matrices if we can
                 var _l = _x - origin_x + _model_bbox.left;
-                var _t = _y - origin_y + _bbox_t;
-                var _r = _x - origin_x + _model_bbox.right + (padding_l + padding_r);
-                var _b = _y - origin_y + _bbox_b           + (padding_t + padding_b);
-            
+                var _t = _y - origin_y + _model_bbox.top;
+                var _r = _x - origin_x + _model_bbox.right  + (padding_l + padding_r);
+                var _b = _y - origin_y + _model_bbox.bottom + (padding_t + padding_b);
+                
                 var _x0 = _l;   var _y0 = _t;
                 var _x1 = _r;   var _y1 = _t;
                 var _x2 = _l;   var _y2 = _b;
@@ -622,21 +604,21 @@ function __scribble_class_element(_string, _unique_id) constructor
             else
             {
                 //TODO - Cache this
-                var _matrix = matrix_build(-origin_x, -origin_y, 0,   0,0,0,   1,1,1);
+                var _matrix = matrix_build(-origin_x/_xscale, -origin_y/_yscale, 0,   0,0,0,   1,1,1);
                     _matrix = matrix_multiply(_matrix, matrix_build(_x, _y, 0,
                                                                     0, 0, angle,
                                                                     _xscale, _yscale, 1));
-            
+                
                 var _l = _model_bbox.left;
-                var _t = _bbox_t;
-                var _r = _model_bbox.right + (padding_l + padding_r);
-                var _b = _bbox_b           + (padding_t + padding_b);
-            
+                var _t = _model_bbox.top;
+                var _r = _model_bbox.right  + (padding_l + padding_r);
+                var _b = _model_bbox.bottom + (padding_t + padding_b);
+                
                 var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); var _x0 = _vertex[0]; var _y0 = _vertex[1];
                 var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); var _x1 = _vertex[0]; var _y1 = _vertex[1];
                 var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); var _x2 = _vertex[0]; var _y2 = _vertex[1];
                 var _vertex = matrix_transform_vertex(_matrix, _r, _b, 0); var _x3 = _vertex[0]; var _y3 = _vertex[1];
-            
+                
                 var _l = min(_x0, _x1, _x2, _x3);
                 var _t = min(_y0, _y1, _y2, _y3);
                 var _r = max(_x0, _x1, _x2, _x3);
@@ -991,6 +973,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         //Run the garbage collecter
         __scribble_gc_collect();
         
+        //TODO - Make this a method
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY)
         {
             if (((scale_to_box_max_width > 0) && (scale_to_box_max_height > 0))
