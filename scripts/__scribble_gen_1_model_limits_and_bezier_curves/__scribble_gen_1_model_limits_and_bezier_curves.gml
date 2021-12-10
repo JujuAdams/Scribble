@@ -68,6 +68,34 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
     if (_line_height_min < 0) _line_height_min = 1;
     if (_line_height_max < 0) _line_height_max = infinity;
     
+    var _line_spacing_raw = _element.__line_spacing;
+    if (is_string(_line_spacing_raw))
+    {
+        var _length = string_length(_line_spacing_raw);
+        if (string_char_at(_line_spacing_raw, _length) == "%")
+        {
+            try
+            {
+                var _line_spacing_add      = 0;
+                var _line_spacing_multiply = real(string_copy(_line_spacing_raw, 1, _length-1)) / 100;
+            }
+            catch(_error)
+            {
+                __scribble_trace(_error);
+                __scribble_error("Could not parse line spacing \"", _line_spacing_raw, "\"\nLine spacing must be number or percentage strings e.g. \"200%\"");
+            }
+        }
+        else
+        {
+            __scribble_error("Could not parse line spacing \"", _line_spacing_raw, "\"\nLine spacing must be number or percentage strings e.g. \"200%\"");
+        }
+    }
+    else
+    {
+        var _line_spacing_add      = _line_spacing_raw;
+        var _line_spacing_multiply = 0;
+    }
+    
     with(global.__scribble_generator_state)
     {
         model_max_width  = _model_max_width;
@@ -75,5 +103,8 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
         
         line_height_min = _line_height_min;
         line_height_max = _line_height_max;
+        
+        line_spacing_add      = _line_spacing_add;
+        line_spacing_multiply = _line_spacing_multiply;
     }
 }

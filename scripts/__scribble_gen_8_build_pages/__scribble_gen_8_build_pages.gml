@@ -23,11 +23,13 @@ function __scribble_gen_8_build_pages()
     
     with(global.__scribble_generator_state)
     {
-        var _element          = element;
-        var _model_max_height = model_max_height;
-        var _line_count       = line_count;
-        var _control_count    = control_count;
-        var _wrap_no_pages    = _element.wrap_no_pages;
+        var _element               = element;
+        var _model_max_height      = model_max_height;
+        var _line_count            = line_count;
+        var _control_count         = control_count;
+        var _wrap_no_pages         = _element.wrap_no_pages;
+        var _line_spacing_add      = line_spacing_add;
+        var _line_spacing_multiply = line_spacing_multiply;
     }
     
     var _simulated_model_height = _wrap_no_pages? infinity : (_model_max_height / fit_scale);
@@ -51,7 +53,8 @@ function __scribble_gen_8_build_pages()
         if (!_starts_manual_page && (_line_y + _line_height < _simulated_model_height))
         {
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.Y] = _line_y;
-            _line_y += _line_height;
+            if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
+            _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
         }
         else
         {
@@ -64,10 +67,10 @@ function __scribble_gen_8_build_pages()
             
             _page_start_line = _i;
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.Y] = 0;
-            _line_y = _line_height;
+            if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
+            _line_y = _line_spacing_add + _line_height*_line_spacing_multiply;
         }
         
-        if (_line_y > _model_height) _model_height = _line_y;
         ++_i;
     }
     

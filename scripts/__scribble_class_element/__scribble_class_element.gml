@@ -60,6 +60,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     line_height_min = -1;
     line_height_max = -1;
+    __line_spacing  = "100%";
     
     __page = 0;
     __ignore_command_tags = false;
@@ -319,6 +320,18 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             model_cache_name_dirty = true;
             line_height_max = _max;
+        }
+        
+        return self;
+    }
+    
+    /// @param spacing
+    static line_spacing = function(_spacing)
+    {
+        if (_spacing != __line_spacing)
+        {
+            model_cache_name_dirty = true;
+            __line_spacing = _spacing;
         }
         
         return self;
@@ -1081,6 +1094,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                                    string(starting_valign) + ":" +
                                    string(line_height_min) + ":" +
                                    string(line_height_max) + ":" +
+                                   string(__line_spacing ) + ":" +
                                    string(wrap_max_width ) + ":" +
                                    string(wrap_max_height) + ":" +
                                    string(wrap_per_char  ) + ":" +

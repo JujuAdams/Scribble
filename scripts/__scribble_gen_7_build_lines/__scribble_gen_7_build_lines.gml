@@ -26,7 +26,8 @@
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.WIDTH   ] = _word_x;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.HEIGHT  ] = _line_height;\
                                 _line_count++;\
-                                if (_line_y + _line_height > _line_max_y) _line_max_y = _line_y + _line_height;
+                                if (_line_y + _line_height > _line_max_y) _line_max_y = _line_y + _line_height;\
+                                _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
 
 
 function __scribble_gen_7_build_lines()
@@ -39,14 +40,16 @@ function __scribble_gen_7_build_lines()
     
     with(global.__scribble_generator_state)
     {
-        var _element          = element;
-        var _word_count       = word_count;
-        var _line_height_min  = line_height_min;
-        var _line_height_max  = line_height_max;
-        var _model_max_width  = model_max_width;
-        var _model_max_height = model_max_height;
-        var _wrap_no_pages    = _element.wrap_no_pages;
-        var _wrap_max_scale   = _element.wrap_max_scale;
+        var _element               = element;
+        var _word_count            = word_count;
+        var _line_height_min       = line_height_min;
+        var _line_height_max       = line_height_max;
+        var _line_spacing_add      = line_spacing_add;
+        var _line_spacing_multiply = line_spacing_multiply;
+        var _model_max_width       = model_max_width;
+        var _model_max_height      = model_max_height;
+        var _wrap_no_pages         = _element.wrap_no_pages;
+        var _wrap_max_scale        = _element.wrap_max_scale;
     }
     
     var _fit_to_box_iterations = 0;
