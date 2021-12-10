@@ -16,6 +16,7 @@ function __scribble_class_typist() constructor
     __sound_per_char    = false;
     __sound_finish_time = current_time;
     __function          = undefined;
+    __function_scope    = undefined;
     
     __ease_method         = SCRIBBLE_EASE.LINEAR;
     __ease_dx             = 0;
@@ -163,13 +164,20 @@ function __scribble_class_typist() constructor
     /// @param alphaDuration
     static ease = function(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration)
     {
-        __ease_method    = _ease_method;
+        __ease_method         = _ease_method;
         __ease_dx             = _dx;
         __ease_dy             = _dy;
         __ease_xscale         = _xscale;
         __ease_yscale         = _yscale;
         __ease_rotation       = _rotation;
         __ease_alpha_duration = _alpha_duration;
+        
+        return self;
+    }
+    
+    static execution_scope = function(_scope)
+    {
+        __function_scope = _scope;
         
         return self;
     }
@@ -234,6 +242,11 @@ function __scribble_class_typist() constructor
     static get_text_element = function()
     {
         return __last_element;
+    }
+    
+    static get_execution_scope = function()
+    {
+        return __function_scope;
     }
     
     #endregion
@@ -392,8 +405,10 @@ function __scribble_class_typist() constructor
         }
     }
     
-    static __tick = function(_target_element, _function_scope)
+    static __tick = function(_target_element, _in_function_scope)
     {
+        var _function_scope = (__function_scope != undefined)? __function_scope : _in_function_scope;
+        
         //Associate the typist with the target element so that we're pulling data from the correct place
         //This saves the user from doing it themselves
         __associate(_target_element);
