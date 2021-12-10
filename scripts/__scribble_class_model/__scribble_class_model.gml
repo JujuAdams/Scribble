@@ -57,7 +57,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     #region Public Methods
     
-    static draw = function(_x, _y, _element, _double_draw)
+    static draw = function(_x, _y, _z, _element, _double_draw)
     {
         if (flushed) return undefined;
         if (_element == undefined) return undefined;
@@ -96,12 +96,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         //TODO - Cache this
         if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
         {
-            var _matrix = matrix_build(_x_offset + _x, _y_offset + _y, 0,   0,0,0,   1,1,1);
+            var _matrix = matrix_build(_x_offset + _x, _y_offset + _y, _z,   0,0,0,   1,1,1);
         }
         else
         {
-            var _matrix = matrix_multiply(matrix_build(_x_offset, _y_offset, 0,   0, 0,      0,   _xscale, _yscale, 1),
-                                          matrix_build(       _x,        _y, 0,   0, 0, _angle,         1,       1, 1));
+            var _matrix = matrix_multiply(matrix_build(_x_offset, _y_offset,  0,   0, 0,      0,   _xscale, _yscale, 1),
+                                          matrix_build(       _x,        _y, _z,   0, 0, _angle,         1,       1, 1));
         }
         
         //...aaaand set the matrix

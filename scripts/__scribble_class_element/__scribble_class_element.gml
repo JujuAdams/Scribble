@@ -102,6 +102,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __bidi_hint = undefined;
     
+    __z = SCRIBBLE_DEFAULT_Z;
+    
     
     
     #region Setters
@@ -524,6 +526,13 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+    static z = function(_z)
+    {
+        __z = _z;
+        
+        return self;
+    }
+    
     #endregion
     
     
@@ -740,6 +749,11 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
         return _model.get_line_count(_page);
+    }
+    
+    static get_z = function()
+    {
+        return __z;
     }
     
     #endregion
@@ -966,7 +980,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         #endregion
         
         //Draw the model using ourselves as the context
-        _model.draw(_x, _y, self, (msdf_border_thickness > 0) || (msdf_shadow_alpha > 0));
+        _model.draw(_x, _y, __z, self, (msdf_border_thickness > 0) || (msdf_shadow_alpha > 0));
         
         //Run the garbage collecter
         __scribble_gc_collect();
