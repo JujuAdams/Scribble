@@ -61,7 +61,7 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_texture, _pxrange, _for_text, _model_struct)
+    static __get_vertex_buffer = function(_texture, _pxrange, _bilinear, _for_text, _model_struct)
     {
         var _pointer_string = string(_texture);
         
@@ -90,6 +90,7 @@ function __scribble_class_page() constructor
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH  ] = texture_get_texel_width(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT ] = texture_get_texel_height(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.SHADER       ] = _shader;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.BILINEAR     ] = _bilinear;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;
             __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;
@@ -138,6 +139,7 @@ function __scribble_class_page() constructor
         repeat(array_length(__vertex_buffer_array))
         {
             var _data = __vertex_buffer_array[_i];
+            var _bilinear = _data[__SCRIBBLE_VERTEX_BUFFER.BILINEAR];
             
             if (_data[__SCRIBBLE_VERTEX_BUFFER.SHADER] != _shader)
             {
@@ -145,12 +147,15 @@ function __scribble_class_page() constructor
                 shader_set(_shader);
             }
             
-            if (_shader == __shd_scribble_msdf)
+            if (_bilinear != undefined)
             {
                 //Force texture filtering when using MSDF fonts
                 var _old_tex_filter = gpu_get_tex_filter();
-                gpu_set_tex_filter(true);
-                
+                gpu_set_tex_filter(_bilinear);
+            }
+            
+            if (_shader == __shd_scribble_msdf)
+            {
                 //Set shader uniforms unique to the MSDF shader
                 shader_set_uniform_f(global.__scribble_msdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT]);
                 shader_set_uniform_f(global.__scribble_msdf_u_fMSDFRange, _element.msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE]);
@@ -163,14 +168,17 @@ function __scribble_class_page() constructor
                     vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
                     shader_set_uniform_f(global.__scribble_msdf_u_fSecondDraw, 0);
                 }
-                
-                //Reset the texture filtering
-                gpu_set_tex_filter(_old_tex_filter);
             }
             else
             {
                 //Other shaders don't need extra work
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
+            }
+            
+            if (_bilinear != undefined)
+            {
+                //Reset the texture filtering
+                gpu_set_tex_filter(_old_tex_filter);
             }
             
             ++_i;

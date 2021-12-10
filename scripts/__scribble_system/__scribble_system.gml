@@ -541,27 +541,28 @@ function __scribble_buffer_write_unicode(_buffer, _value)
 
 enum SCRIBBLE_GLYPH
 {
-    CHARACTER,    // 0
-    
-    ORD,          // 1  \
-    BIDI,         // 2   |
-                  //     |
-    X_OFFSET,     // 3   |
-    Y_OFFSET,     // 4   |
-    WIDTH,        // 5   |
-    HEIGHT,       // 6   |
-    FONT_HEIGHT,  // 7   |
-    SEPARATION,   // 8   |
-    LEFT_OFFSET,  // 9   | This group of enums must not change order or be split
-    FONT_SCALE,   //10   |
-                  //     |
-    TEXTURE,      //11   |
-    U0,           //12   |
-    V0,           //13   |
-    U1,           //14   |
-    V1,           //15   |
-                  //     |
-    MSDF_PXRANGE, //16  /
+    CHARACTER,     // 0
+                   
+    ORD,           // 1 \
+    BIDI,          // 2  |
+                   //    |
+    X_OFFSET,      // 3  |
+    Y_OFFSET,      // 4  |
+    WIDTH,         // 5  |
+    HEIGHT,        // 6  |
+    FONT_HEIGHT,   // 7  |
+    SEPARATION,    // 8  |
+    LEFT_OFFSET,   // 9  | This group of enums must not change order or be split
+    FONT_SCALE,    //10  |
+                   //    |
+    TEXTURE,       //11  |
+    U0,            //12  |
+    V0,            //13  |
+    U1,            //14  |
+    V1,            //15  |
+                   //    |
+    MSDF_PXRANGE,  //16  |
+    BILINEAR,      //17 /
     
     __SIZE        //16
 }
@@ -587,7 +588,8 @@ enum __SCRIBBLE_VERTEX_BUFFER
     TEXEL_HEIGHT,  //4
     SHADER,        //5
     BUFFER,        //6
-    __SIZE         //7
+    BILINEAR,      //7
+    __SIZE         //8
 }
 
 enum __SCRIBBLE_ANIM

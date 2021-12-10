@@ -8,9 +8,9 @@ enum __SCRIBBLE_GEN_GLYPH
     WIDTH,            // 4   |
     HEIGHT,           // 5   |
     FONT_HEIGHT,      // 6   |
-    SEPARATION,       // 7   | This group of enums must not change order or be split
+    SEPARATION,       // 7   |
     LEFT_OFFSET,      // 8   |
-    SCALE,            // 9   |
+    SCALE,            // 9   | This group of enums must not change order or be split
                       //     |
     TEXTURE,          //10   |
     QUAD_U0,          //11   |
@@ -18,14 +18,15 @@ enum __SCRIBBLE_GEN_GLYPH
     QUAD_U1,          //13   |
     QUAD_V1,          //14   |
                       //     |
-    MSDF_PXRANGE,     //15  /
+    MSDF_PXRANGE,     //15   |
+    BILINEAR,         //16  /
     
-    CONTROL_COUNT,    //15
-    ANIMATION_INDEX,  //16
+    CONTROL_COUNT,    //17
+    ANIMATION_INDEX,  //18
                       
-    SPRITE_INDEX,     //17  \
-    IMAGE_INDEX,      //18   | Only used for sprites
-    IMAGE_SPEED,      //19  /
+    SPRITE_INDEX,     //19  \
+    IMAGE_INDEX,      //20   | Only used for sprites
+    IMAGE_SPEED,      //21  /
                       
     __SIZE,           //20
 }
