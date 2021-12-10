@@ -288,7 +288,7 @@ By default, a typist will execute functions in the scope of the instance/struct 
 
 &nbsp;
 
-## `.get_execution_scope(textElement)`
+## `.get_execution_scope()`
 
 **Returns**: The execution scope for this typist's function, or `undefined`
 
