@@ -557,3 +557,25 @@ Replaces the string in an existing text element whilst maintaining the animation
 |`state`|boolean |       |
 
 Directs Scribble to ignore all [command tags](text-formatting) in the string.
+
+&nbsp;
+
+## `.z(z)`
+
+**Returns**: The text element
+
+|Name|Datatype|Purpose                                     |
+|----|--------|--------------------------------------------|
+|`z` |number  |The z coordinate to draw the text element at|
+
+Controls the z coordinate to draw the text element at. This is largely irrelevant in 2D games, but this functionality is occasionally useful nonetheless. The z coordinate defaults to [`SCRIBBLE_DEFAULT_Z`](https://github.com/JujuAdams/Scribble/blob/docs/8.0/configuration.md).
+
+&nbsp;
+
+## `.get_z()`
+
+**Returns**: The text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|    |        |       |
