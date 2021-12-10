@@ -266,10 +266,34 @@ typist.function_per_char(function(_element, _position, _typist)
 
 &nbsp;
 
-## `.get_text_element(textElement)`
+## `.get_text_element()`
 
 **Returns**: The text element associated with the typist, or `undefined` if no text element is associated
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
 |None|        |       |
+
+&nbsp;
+
+## `.execution_scope(scope)`
+
+**Returns**: `self`, the typist
+
+|Name   |Datatype       |Purpose                                       |
+|-------|---------------|----------------------------------------------|
+|`scope`|instance/struct|The new scope to execution typist functions in|
+
+By default, a typist will execute functions in the scope of the instance/struct that called the `.draw()` method for the text element associated with the typist. `.execution_scope()` overrides this execution scope, setting it to a specific instance or struct. If you'd like to reset the execution scope, use `undefined` as the method argument.
+
+&nbsp;
+
+## `.get_execution_scope(textElement)`
+
+**Returns**: The execution scope for this typist's function, or `undefined`
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+This method will, by default, return `undefined`. See `.execution_scope()` for details.
