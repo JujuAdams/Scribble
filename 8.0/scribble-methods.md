@@ -184,10 +184,24 @@ Fits text to a box by inserting line breaks and scaling text but **will not** in
 
 |Name |Datatype|Purpose                                                                                                                               |
 |-----|--------|--------------------------------------------------------------------------------------------------------------------------------------|
-|`min`|integer |Minimum line height for each line of text. Use a negative number (the default) for the height of a space character of the default font|
-|`max`|integer |Maximum line height for each line of text. Use a negative number (the default) for no limit                                           |
+|`min`|number  |Minimum line height for each line of text. Use a negative number (the default) for the height of a space character of the default font|
+|`max`|number  |Maximum line height for each line of text. Use a negative number (the default) for no limit                                           |
 
 Sets limits on the height of each line for the text element. This is useful when mixing and matching fonts that aren't necessarily perfectly sized to each other.
+
+&nbsp;
+
+## `.line_spacing(spacing)` *regenerator*
+
+**Returns**: The text element
+
+|Name     |Datatype     |Purpose                                                                                             |
+|---------|-------------|----------------------------------------------------------------------------------------------------|
+|`spacing`|number/string|The spacing from one line of text to the next. Can be a number, or a percentage string e.g. `"100%"`|
+
+If a number is passed to this method then a fixed line spacing is used. If a string is passed to this method then it must be a percentage string indication the fraction of the line height to use for spacing (`"100%"` being normal spacing, `"200%"` being double spacing). The default value is `"100%"`
+
+?> The term "spacing" is being used a little inaccurately here. The value that is being adjusted is more properly called ["leading"](https://99designs-blog.imgix.net/blog/wp-content/uploads/2014/06/Leading1.png?auto=format&q=60&fit=max&w=930) (as in the metal).
 
 &nbsp;
 
