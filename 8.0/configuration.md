@@ -2,7 +2,7 @@
 
 &nbsp;
 
-## `__scribble_config_macros()`
+## `__scribble_config_behaviours()`
 
 **Returns:** N/A (`undefined`)
 
@@ -10,7 +10,7 @@
 |----|--------|-------|
 |None|        |       |
 
-This script holds a number of macros that customise the behaviour of Scribble. `__scribble_config_macros()` never needs to be directly called in code, but the script and the macros it contains must be present in a project for Scribble to work.
+This script holds a number of macros that customise the behaviour of Scribble. `__scribble_config_behaviours()` never needs to be directly called in code, but the script and the macros it contains must be present in a project for Scribble to work.
 
 ?> You should edit this script to customise Scribble for your own purposes.
 
@@ -58,7 +58,7 @@ This script holds custom colours that you can reference by name for many Scribbl
 
 &nbsp;
 
-## `__scribble_config_default_template()`
+## `__scribble_config_defaults()`
 
 **Returns:** N/A (`undefined`)
 
@@ -66,46 +66,39 @@ This script holds custom colours that you can reference by name for many Scribbl
 |----|--------|-------|
 |None|        |       |
 
-All text drawn with [`scribble()`](scribble-methods) will use these settings until otherwise overwritten.
-
-?> This function is called on boot to initialise the library, and you should edit this script to customise Scribble for your own purposes.
-
-&nbsp;
-
-## `__scribble_config_animation()`
-
-**Returns:** N/A (`undefined`)
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-This script holds a number of macros that customise the default text animation properties for Scribble. `__scribble_config_animation()` never needs to be directly called in code, but the script and the macros it contains must be present in a project for Scribble to work.
+This script holds a number of macros that customise the default text animation properties for Scribble. `__scribble_config_defaults()` never needs to be directly called in code, but the script and the macros it contains must be present in a project for Scribble to work.
 
 ?> You should edit this script to customise Scribble for your own purposes.
 
-|Macro                                     |Typical value|Purpose                                                                                                                                                                                    |
-|------------------------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`SCRIBBLE_ANIM_DEFAULT_WAVE_SIZE`         |`4`          |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_WAVE_FREQUENCY`    |`50`         |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_WAVE_SPEED`        |`0.2`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_SHAKE_SIZE`        |`2`          |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_SHAKE_SPEED`       |`0.4`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_RAINBOW_WEIGHT`    |`0.5`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_RAINBOW_SPEED`     |`0.01`       |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_WOBBLE_ANGLE`      |`40`         |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_WOBBLE_FREQ`       |`0.15`       |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_PULSE_SCALE`       |`0.4`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_PULSE_SPEED`       |`0.1`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_WHEEL_SIZE`        |`1`          |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_WHEEL_FREQUENCY`   |`0.5`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_WHEEL_SPEED`       |`0.2`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_CYCLE_SPEED`       |`0.5`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_CYCLE_SATURATION`  |`180`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_CYCLE_VALUE`       |`255`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_JITTER_MIN_SCALE`  |`0.8`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_JITTER_MAX_SCALE`  |`1.2`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_JITTER_SPEED`      |`0.4`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_BLINK_ON_DURATION` |`150`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_BLINK_OFF_DURATION`|`150`        |                                                                                                                                                                                           |
-|`SCRIBBLE_ANIM_DEFAULT_BLINK_TIME_OFFSET` |`0`          |                                                                                                                                                                                           |
+|Macro                                |Typical value|Purpose                                                                                                                                                                                    |
+|-------------------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`SCRIBBLE_DEFAULT_COLOR`             |`c_white`    |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_HALIGN`            |`fa_left`    |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_VALIGN`            |`fa_top`     |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_SPRITE_SPEED`      |`0.1`        |The default animation speed for sprites inserted into text                                                                                                                                 |
+|`SCRIBBLE_DEFAULT_DELAY_DURATION`    |`450`        |Default duration of the `[delay]` command, in milliseconds                                                                                                                                 |
+|`SCRIBBLE_SLANT_GRADIENT`            |`0.25`       |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_Z`                 |`0`          |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_WAVE_SIZE`         |`4`          |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_WAVE_FREQUENCY`    |`50`         |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_WAVE_SPEED`        |`0.2`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_SHAKE_SIZE`        |`2`          |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_SHAKE_SPEED`       |`0.4`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_RAINBOW_WEIGHT`    |`0.5`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_RAINBOW_SPEED`     |`0.01`       |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_WOBBLE_ANGLE`      |`40`         |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_WOBBLE_FREQ`       |`0.15`       |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_PULSE_SCALE`       |`0.4`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_PULSE_SPEED`       |`0.1`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_WHEEL_SIZE`        |`1`          |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_WHEEL_FREQUENCY`   |`0.5`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_WHEEL_SPEED`       |`0.2`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_CYCLE_SPEED`       |`0.5`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_CYCLE_SATURATION`  |`180`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_CYCLE_VALUE`       |`255`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_JITTER_MIN_SCALE`  |`0.8`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_JITTER_MAX_SCALE`  |`1.2`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_JITTER_SPEED`      |`0.4`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_BLINK_ON_DURATION` |`150`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_BLINK_OFF_DURATION`|`150`        |                                                                                                                                                                                           |
+|`SCRIBBLE_DEFAULT_BLINK_TIME_OFFSET` |`0`          |                                                                                                                                                                                           |
