@@ -565,26 +565,14 @@ enum SCRIBBLE_GLYPH
     __SIZE        //16
 }
 
-enum SCRIBBLE_GLYPH_LAYOUT
+enum __SCRIBBLE_GLYPH_LAYOUT
 {
-    UNICODE,          // 0
-    LEFT,             // 1
-    TOP,              // 2
-    RIGHT,            // 3
-    BOTTOM,           // 4
-    __SIZE,           // 5
-}
-
-// TODO - Allow copying of glyph layout into a separate grid
-enum SCRIBBLE_LAYOUT
-{
-    X,                // 1
-    Y,                // 2
-    WIDTH,            // 3
-    HEIGHT,           // 4
-    ORD,              // 5
-    ANIMATION_INDEX,  // 6
-    __SIZE,           // 7
+    UNICODE, // 0
+    LEFT,    // 1
+    TOP,     // 2
+    RIGHT,   // 3
+    BOTTOM,  // 4
+    __SIZE,  // 5
 }
 
 enum __SCRIBBLE_VERTEX_BUFFER

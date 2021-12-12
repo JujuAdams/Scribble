@@ -190,18 +190,18 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
         if (_end < 0)
         {
-            return { left:  _glyph_grid[# 0, SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
-                     top:   _glyph_grid[# 0, SCRIBBLE_GLYPH_LAYOUT.TOP   ],
-                     right: _glyph_grid[# 0, SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
-                     bottom:_glyph_grid[# 0, SCRIBBLE_GLYPH_LAYOUT.BOTTOM],
+            return { left:  _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
+                     top:   _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.TOP   ],
+                     right: _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
+                     bottom:_glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM],
             };
         }
         else
         {
-            var _left   = ds_grid_get_min(_glyph_grid, _start, SCRIBBLE_GLYPH_LAYOUT.LEFT,   _end, SCRIBBLE_GLYPH_LAYOUT.LEFT  );
-            var _top    = ds_grid_get_min(_glyph_grid, _start, SCRIBBLE_GLYPH_LAYOUT.TOP,    _end, SCRIBBLE_GLYPH_LAYOUT.TOP   );
-            var _right  = ds_grid_get_max(_glyph_grid, _start, SCRIBBLE_GLYPH_LAYOUT.RIGHT,  _end, SCRIBBLE_GLYPH_LAYOUT.RIGHT );
-            var _bottom = ds_grid_get_max(_glyph_grid, _start, SCRIBBLE_GLYPH_LAYOUT.BOTTOM, _end, SCRIBBLE_GLYPH_LAYOUT.BOTTOM);
+            var _left   = ds_grid_get_min(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.LEFT,   _end, __SCRIBBLE_GLYPH_LAYOUT.LEFT  );
+            var _top    = ds_grid_get_min(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.TOP,    _end, __SCRIBBLE_GLYPH_LAYOUT.TOP   );
+            var _right  = ds_grid_get_max(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.RIGHT,  _end, __SCRIBBLE_GLYPH_LAYOUT.RIGHT );
+            var _bottom = ds_grid_get_max(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM, _end, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM);
             
             return { left:   _left,
                      top:    _top,

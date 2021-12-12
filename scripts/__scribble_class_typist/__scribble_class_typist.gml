@@ -598,13 +598,13 @@ function __scribble_class_typist() constructor
                         //Add a per-character delay if required
                         if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER && __character_delay && (__last_character > 0))
                         {
-                            var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, SCRIBBLE_GLYPH_LAYOUT.UNICODE];
+                            var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.UNICODE];
                             var _delay = __character_delay_dict[$ _glyph_ord];
                             _delay = (_delay == undefined)? 0 : _delay;
                             
                             if (__last_character > 1)
                             {
-                                _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, SCRIBBLE_GLYPH_LAYOUT.UNICODE];
+                                _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, __SCRIBBLE_GLYPH_LAYOUT.UNICODE];
                                 var _double_char_delay = __character_delay_dict[$ _glyph_ord];
                                 _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
                                 
@@ -638,7 +638,7 @@ function __scribble_class_typist() constructor
                 }
                 
                 //Only play sound once per frame if we're going reaaaally fast
-                if (_play_sound) __play_sound(_head_pos, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER? (_page_data.__glyph_grid[# _head_pos-1, SCRIBBLE_GLYPH_LAYOUT.UNICODE]) : 0);
+                if (_play_sound) __play_sound(_head_pos, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER? (_page_data.__glyph_grid[# _head_pos-1, __SCRIBBLE_GLYPH_LAYOUT.UNICODE]) : 0);
                 
                 //Set the typewriter head
                 __window_array[@ __window_index] = _head_pos;
