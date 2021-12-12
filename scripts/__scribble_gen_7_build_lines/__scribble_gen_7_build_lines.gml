@@ -229,7 +229,9 @@ function __scribble_gen_7_build_lines()
                         _line_y = 0;
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
-                        _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE] = true;
+                        
+                        //Only mark the new line as beginning a new page if this null *isn't* the last glyph for the input string
+                        if (_i < _word_count - 1) _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE] = true;
                     }
                 }
                 
