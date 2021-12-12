@@ -145,7 +145,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         width      = 0;
         height     = 0;
         min_x      = 0;
+        min_y      = 0;
         max_x      = 0;
+        max_y      = 0;
         valign     = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
         fit_scale  = 1.0;
         
@@ -153,7 +155,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     /// @param page
-    static get_bbox = function(_page)
+    static __get_bbox = function(_page)
     {
         if ((_page != undefined) && (_page >= 0))
         {
@@ -161,18 +163,51 @@ function __scribble_class_model(_element, _model_cache_name) constructor
             return { left:   _page_data.min_x,
                      top:    _page_data.min_y,
                      right:  _page_data.max_x,
-                     bottom: _page_data.max_y,
-                     width:  _page_data.width,
-                     height: _page_data.height };
+                     bottom: _page_data.max_y, };
         }
         else
         {
             return { left:   min_x,
-                     top:    0,
+                     top:    min_y,
                      right:  max_x,
-                     bottom: height,
-                     width:  width,
-                     height: height };
+                     bottom: max_y, };
+        }
+    }
+    
+    /// @param page
+    /// @param startCharacter
+    /// @param endCharacter
+    static __get_bbox_revealed = function(_page, _in_start, _in_end)
+    {
+        //TODO - Optimize by returning page bounds if the number of characters revealed is the same as the whole page
+        
+        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Getting the revealed glyph bounding box requires SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to be set to <true>");
+        
+        var _glyph_grid = get_glyph_data_grid(_page);
+        
+        var _start = _in_start - 1;
+        var _end   = _in_end   - 1;
+        
+        if (_end < 0)
+        {
+            return { left:  _glyph_grid[# 0, SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
+                     top:   _glyph_grid[# 0, SCRIBBLE_GLYPH_LAYOUT.TOP   ],
+                     right: _glyph_grid[# 0, SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
+                     bottom:_glyph_grid[# 0, SCRIBBLE_GLYPH_LAYOUT.BOTTOM],
+            };
+        }
+        else
+        {
+            var _left   = ds_grid_get_min(_glyph_grid, _start, SCRIBBLE_GLYPH_LAYOUT.LEFT,   _end, SCRIBBLE_GLYPH_LAYOUT.LEFT  );
+            var _top    = ds_grid_get_min(_glyph_grid, _start, SCRIBBLE_GLYPH_LAYOUT.TOP,    _end, SCRIBBLE_GLYPH_LAYOUT.TOP   );
+            var _right  = ds_grid_get_max(_glyph_grid, _start, SCRIBBLE_GLYPH_LAYOUT.RIGHT,  _end, SCRIBBLE_GLYPH_LAYOUT.RIGHT );
+            var _bottom = ds_grid_get_max(_glyph_grid, _start, SCRIBBLE_GLYPH_LAYOUT.BOTTOM, _end, SCRIBBLE_GLYPH_LAYOUT.BOTTOM);
+            
+            return { left:   _left,
+                     top:    _top,
+                     right:  _right,
+                     bottom: _bottom,
+            };
         }
     }
     
@@ -266,6 +301,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
         //N.B. Off by one since we consider the terminating null as a glyph for the purposes of typists
         return pages_array[_page].__glyph_count - 1;
+    }
+    
+    static get_glyph_data_grid = function(_page)
+    {
+        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Getting glyph data requires SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to be set to <true>");
+        
+        return pages_array[_page].__glyph_grid;
     }
     
     #endregion

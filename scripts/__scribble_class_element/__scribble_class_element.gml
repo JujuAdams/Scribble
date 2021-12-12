@@ -584,19 +584,79 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Getters
     
-    /// @param [x=0]
-    /// @param [y=0]
-    static get_bbox = function(_x = 0, _y = 0)
+    /// @param x
+    /// @param y
+    static get_bbox = function(_x, _y)
     {
         var _model = __get_model(true);
         if (!is_struct(_model))
         {
             //No extant model, return an empty bounding box
-            var _l = _x;
-            var _t = _y;
-            var _r = _x + (padding_l + padding_r);
-            var _b = _y + (padding_t + padding_b);
-            
+            return __get_bbox_transform(_x, _y, _model, {
+                left   : _x,
+                top    : _y,
+                right  : _x,
+                bottom : _y,
+                width  : 1,
+                height : 1,
+            });
+        }
+        else
+        {
+            var _model_bbox = _model.__get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
+            return __get_bbox_transform(_x, _y, _model, _model_bbox);
+        }
+    }
+    
+    /// @param x
+    /// @param y
+    /// @param [typist]
+    static get_bbox_revealed = function(_x, _y, _typist)
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model))
+        {
+            //No extant model, return an empty bounding box
+            return __get_bbox_transform(_x, _y, _model, {
+                left   : _x,
+                top    : _y,
+                right  : _x,
+                bottom : _y,
+                width  : 1,
+                height : 1,
+            });
+        }
+        else
+        {
+            if (_typist != undefined)
+            {
+                return __get_bbox_transform(_x, _y, _model, _model.__get_bbox_revealed(__page, 0, _typist.__window_array[_typist.__window_index]));
+            }
+            else if (__tw_reveal != undefined)
+            {
+                return __get_bbox_transform(_x, _y, _model, _model.__get_bbox_revealed(__page, 0, __tw_reveal));
+            }
+            else
+            {
+                return get_bbox(_x, _y);
+            }
+        }
+    }
+    
+    static __get_bbox_transform = function(_x, _y, _model, _bbox)
+    {
+        __update_scale_to_box_scale();
+        var _xscale = scale_to_box_scale*_model.fit_scale*xscale;
+        var _yscale = scale_to_box_scale*_model.fit_scale*yscale;
+        
+        if ((_xscale == 1) && (_yscale == 1) && (angle == 0))
+        {
+            //Avoid using matrices if we can
+            var _l = _x - origin_x + _bbox.left;
+            var _t = _y - origin_y + _bbox.top;
+            var _r = _x - origin_x + _bbox.right  + (padding_l + padding_r);
+            var _b = _y - origin_y + _bbox.bottom + (padding_t + padding_b);
+                
             var _x0 = _l;   var _y0 = _t;
             var _x1 = _r;   var _y1 = _t;
             var _x2 = _l;   var _y2 = _b;
@@ -604,46 +664,24 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         else
         {
-            __update_scale_to_box_scale();
-            var _xscale = scale_to_box_scale*_model.fit_scale*xscale;
-            var _yscale = scale_to_box_scale*_model.fit_scale*yscale;
-            
-            var _model_bbox = _model.get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
-            
-            if ((_xscale == 1) && (_yscale == 1) && (angle == 0))
-            {
-                //Avoid using matrices if we can
-                var _l = _x - origin_x + _model_bbox.left;
-                var _t = _y - origin_y + _model_bbox.top;
-                var _r = _x - origin_x + _model_bbox.right  + (padding_l + padding_r);
-                var _b = _y - origin_y + _model_bbox.bottom + (padding_t + padding_b);
+            //TODO - Cache this
+            var _matrix = matrix_multiply(matrix_build(-origin_x, -origin_y, 0,   0, 0,     0,   _xscale, _yscale, 1),
+                                          matrix_build(       _x,        _y, 0,   0, 0, angle,         1,       1, 1));
                 
-                var _x0 = _l;   var _y0 = _t;
-                var _x1 = _r;   var _y1 = _t;
-                var _x2 = _l;   var _y2 = _b;
-                var _x3 = _r;   var _y3 = _b;
-            }
-            else
-            {
-                //TODO - Cache this
-                var _matrix = matrix_multiply(matrix_build(-origin_x, -origin_y, 0,   0, 0,     0,   _xscale, _yscale, 1),
-                                              matrix_build(       _x,        _y, 0,   0, 0, angle,         1,       1, 1));
+            var _l = _bbox.left;
+            var _t = _bbox.top;
+            var _r = _bbox.right  + (padding_l + padding_r);
+            var _b = _bbox.bottom + (padding_t + padding_b);
                 
-                var _l = _model_bbox.left;
-                var _t = _model_bbox.top;
-                var _r = _model_bbox.right  + (padding_l + padding_r);
-                var _b = _model_bbox.bottom + (padding_t + padding_b);
+            var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); var _x0 = _vertex[0]; var _y0 = _vertex[1];
+            var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); var _x1 = _vertex[0]; var _y1 = _vertex[1];
+            var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); var _x2 = _vertex[0]; var _y2 = _vertex[1];
+            var _vertex = matrix_transform_vertex(_matrix, _r, _b, 0); var _x3 = _vertex[0]; var _y3 = _vertex[1];
                 
-                var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); var _x0 = _vertex[0]; var _y0 = _vertex[1];
-                var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); var _x1 = _vertex[0]; var _y1 = _vertex[1];
-                var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); var _x2 = _vertex[0]; var _y2 = _vertex[1];
-                var _vertex = matrix_transform_vertex(_matrix, _r, _b, 0); var _x3 = _vertex[0]; var _y3 = _vertex[1];
-                
-                var _l = min(_x0, _x1, _x2, _x3);
-                var _t = min(_y0, _y1, _y2, _y3);
-                var _r = max(_x0, _x1, _x2, _x3);
-                var _b = max(_y0, _y1, _y2, _y3);
-            }
+            var _l = min(_x0, _x1, _x2, _x3);
+            var _t = min(_y0, _y1, _y2, _y3);
+            var _r = max(_x0, _x1, _x2, _x3);
+            var _b = max(_y0, _y1, _y2, _y3);
         }
         
         var _w = 1 + _r - _l;
