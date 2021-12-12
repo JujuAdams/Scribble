@@ -68,19 +68,6 @@ Here, `callbackRumble()` will fetch the parameter from the array and use it to v
 
 &nbsp;
 
-## `scribble_typewriter_add_character_delay(character, delay)`
-
-**Returns:** N/A (`undefined`)
-
-|Name       |Datatype      |Purpose                                                                       |
-|-----------|--------------|------------------------------------------------------------------------------|
-|`character`|string/integer|The character to delay after. Can either be a string or a UTF-8 character code|
-|`delay`    |real          |Delay time in milliseconds                                                    |
-
-Automatically adds internal [delay tags](Text-Formatting) after specific characters. This is a global setting for all Scribble strings.
-
-&nbsp;
-
 ## `scribble_flush_everything()`
 
 **Returns:** N/A (`undefined`)
