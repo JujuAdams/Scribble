@@ -326,7 +326,7 @@ The string that is returned is the raw text that is drawn i.e. all command tags 
 
 |Name        |Datatype|Purpose                                                                    |
 |------------|--------|---------------------------------------------------------------------------|
-|`glyphIndex`|integer |Page to get the raw text from. If not specified, the current page is used  |
+|`glyphIndex`|integer |Index of the glyph whose data will be returned                             |
 |`[page]`    |integer |Page to get the glyph data from. If not specified, the current page is used|
 
 The struct that is returned has the following member variables:
