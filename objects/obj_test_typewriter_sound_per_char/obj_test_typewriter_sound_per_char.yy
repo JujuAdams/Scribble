@@ -28,7 +28,7 @@
     "path": "folders/Test Cases/Typewriter.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_typewriter_sound",
+  "name": "obj_test_typewriter_sound_per_char",
   "tags": [],
   "resourceType": "GMObject",
 }

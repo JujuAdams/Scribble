@@ -13,8 +13,11 @@ function __scribble_class_typist() constructor
     __sound_pitch_max   = 1;
     __sound_per_char    = false;
     __sound_finish_time = current_time;
-    __function          = undefined;
-    __function_scope    = undefined;
+    __sound_per_char_exception = false;
+    __sound_per_char_exception_dict = undefined;
+    
+    __function       = undefined;
+    __function_scope = undefined;
     
     __ease_method         = SCRIBBLE_EASE.LINEAR;
     __ease_dx             = 0;
@@ -115,7 +118,8 @@ function __scribble_class_typist() constructor
     /// @param soundArray
     /// @param pitchMin
     /// @param pitchMax
-    static sound_per_char = function(_sound_array, _pitch_min, _pitch_max)
+    /// @param [exceptionString]
+    static sound_per_char = function(_sound_array, _pitch_min, _pitch_max, _exception_string)
     {
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
         
@@ -123,6 +127,25 @@ function __scribble_class_typist() constructor
         __sound_pitch_min = _pitch_min;
         __sound_pitch_max = _pitch_max;
         __sound_per_char  = true;
+        
+        if (is_string(_exception_string))
+        {
+            if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> to use sound-per-character exceptions");
+            
+            __sound_per_char_exception = true;
+            __sound_per_char_exception_dict = {};
+            
+            var _i = 1;
+            repeat(string_length(_exception_string))
+            {
+                __sound_per_char_exception_dict[$ ord(string_char_at(_exception_string, _i))] = true;
+                ++_i;
+            }
+        }
+        else
+        {
+            __sound_per_char_exception = false;
+        }
         
         return self;
     }
@@ -410,7 +433,7 @@ function __scribble_class_typist() constructor
         return true;
     }
     
-    static __play_sound = function(_head_pos)
+    static __play_sound = function(_head_pos, _character)
     {
         var _sound_array = __sound_array;
         if (is_array(_sound_array) && (array_length(_sound_array) > 0))
@@ -421,7 +444,14 @@ function __scribble_class_typist() constructor
                 //Only play audio if a new character has been revealled
                 if (floor(_head_pos + 0.0001) > floor(__last_audio_character))
                 {
-                    _play_sound = true;
+                    if (!__sound_per_char_exception)
+                    {
+                        _play_sound = true;
+                    }
+                    else if (!variable_struct_exists(__sound_per_char_exception_dict, _character))
+                    {
+                        _play_sound = true;
+                    }
                 }
             }
             else if (current_time >= __sound_finish_time) 
@@ -608,7 +638,7 @@ function __scribble_class_typist() constructor
                 }
                 
                 //Only play sound once per frame if we're going reaaaally fast
-                if (_play_sound) __play_sound(_head_pos);
+                if (_play_sound) __play_sound(_head_pos, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER? (_page_data.__glyph_grid[# _head_pos-1, __SCRIBBLE_GEN_GLYPH.ORD]) : 0);
                 
                 //Set the typewriter head
                 __window_array[@ __window_index] = _head_pos;
