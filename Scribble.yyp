@@ -141,7 +141,7 @@
     {"id":{"name":"obj_test_font_shadow","path":"objects/obj_test_font_shadow/obj_test_font_shadow.yy",},"order":8,},
     {"id":{"name":"obj_test_anim_wobble","path":"objects/obj_test_anim_wobble/obj_test_anim_wobble.yy",},"order":4,},
     {"id":{"name":"obj_test_msdf_drop_shadow","path":"objects/obj_test_msdf_drop_shadow/obj_test_msdf_drop_shadow.yy",},"order":3,},
-    {"id":{"name":"scribble_typewriter_add_character_delay","path":"scripts/scribble_typewriter_add_character_delay/scribble_typewriter_add_character_delay.yy",},"order":4,},
+    {"id":{"name":"scribble_typewriter_add_character_delay","path":"scripts/scribble_typewriter_add_character_delay/scribble_typewriter_add_character_delay.yy",},"order":5,},
     {"id":{"name":"obj_test_msdf_soft_drop_shadow","path":"objects/obj_test_msdf_soft_drop_shadow/obj_test_msdf_soft_drop_shadow.yy",},"order":4,},
     {"id":{"name":"scribble_super_clear","path":"scripts/scribble_super_clear/scribble_super_clear.yy",},"order":4,},
     {"id":{"name":"scribble_anim_pulse","path":"scripts/scribble_anim_pulse/scribble_anim_pulse.yy",},"order":5,},

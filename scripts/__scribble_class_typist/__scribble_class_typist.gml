@@ -2,8 +2,6 @@ function __scribble_class_typist() constructor
 {
     __last_element = undefined;
     
-    reset();
-    
     __speed      = 1;
     __smoothness = 0;
     __in         = undefined;
@@ -25,6 +23,11 @@ function __scribble_class_typist() constructor
     __ease_yscale         = 1;
     __ease_rotation       = 0;
     __ease_alpha_duration = 1.0;
+    
+    __character_delay = false;
+    __character_delay_dict = {};
+    
+    reset();
     
     
     
@@ -178,6 +181,51 @@ function __scribble_class_typist() constructor
     static execution_scope = function(_scope)
     {
         __function_scope = _scope;
+        
+        return self;
+    }
+    
+    static character_delay_add = function(_character, _delay)
+    {
+        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> to use per-character delay");
+        
+        var _char_1 = _character;
+        var _char_2 = 0;
+        
+        if (is_string(_character))
+        {
+            _char_1 = ord(string_char_at(_character, 1));
+            if (string_length(_character) >= 2) _char_2 = ord(string_char_at(_character, 2));
+        }
+        
+        var _code = _char_1 | (_char_2 << 32);
+        __character_delay = true;
+        __character_delay_dict[$ _code] = _delay;
+        
+        return self;
+    }
+    
+    static character_delay_remove = function(_character)
+    {
+        var _char_1 = _character;
+        var _char_2 = 0;
+        
+        if (is_string(_character))
+        {
+            _char_1 = ord(string_char_at(_character, 1));
+            if (string_length(_character) >= 2) _char_2 = ord(string_char_at(_character, 2));
+        }
+        
+        var _code = _char_1 | (_char_2 << 32);
+        variable_struct_remove(__character_delay_dict, _code);
+        
+        return self;
+    }
+    
+    static character_delay_clear = function()
+    {
+        __character_delay = false;
+        __character_delay_dict = {};
         
         return self;
     }
@@ -518,16 +566,16 @@ function __scribble_class_typist() constructor
                         var _found_events = __last_element.ref.events_get(__last_character);
                         
                         //Add a per-character delay if required
-                        if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER && global.__scribble_character_delay && (__last_character > 0))
+                        if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER && __character_delay && (__last_character > 0))
                         {
                             var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GEN_GLYPH.ORD];
-                            var _delay = global.__scribble_character_delay_map[? int64(_glyph_ord)];
+                            var _delay = __character_delay_dict[$ _glyph_ord];
                             _delay = (_delay == undefined)? 0 : _delay;
                             
                             if (__last_character > 1)
                             {
                                 _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, __SCRIBBLE_GEN_GLYPH.ORD];
-                                var _double_char_delay = global.__scribble_character_delay_map[? int64(_glyph_ord)];
+                                var _double_char_delay = __character_delay_dict[$ _glyph_ord];
                                 _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
                                 
                                 _delay = max(_delay, _double_char_delay);
