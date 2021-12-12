@@ -49,9 +49,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     has_hebrew     = false;
     has_devanagari = false;
     
-    pages_array      = []; //Stores each page of text
-    character_array  = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
-    glyph_ltrb_array = undefined;
+    pages_array = []; //Stores each page of text
     
     
     
@@ -151,9 +149,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         valign     = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
         fit_scale  = 1.0;
         
-        pages_array      = []; //Stores each page of text
-        character_array  = SCRIBBLE_CREATE_CHARACTER_ARRAY? [] : undefined;
-        glyph_ltrb_array = undefined;
+        pages_array = []; //Stores each page of text
     }
     
     /// @param page
