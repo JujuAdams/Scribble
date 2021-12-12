@@ -10,10 +10,13 @@ function __scribble_gen_9_position_glyphs()
     
     with(global.__scribble_generator_state)
     {
+        var _element         = element;
         var _line_count      = line_count;
         var _overall_bidi    = overall_bidi;
         var _model_max_width = model_max_width;
         var _glyph_count     = glyph_count;
+        var _padding_l       = _element.padding_l;
+        var _padding_t       = _element.padding_t;
     }
     
     //Transform the animation index into a proper packed index
@@ -157,10 +160,10 @@ function __scribble_gen_9_position_glyphs()
             
             
             // Figure out the boundaries of the page + model
-            var _page_min_x  = min(_page_min_x,  _glyph_x              );
-            var _page_max_x  = max(_page_max_x,  _glyph_x + _line_width);
-            var _model_min_x = min(_model_min_x, _glyph_x              );
-            var _model_max_x = max(_model_max_x, _glyph_x + _line_width);
+            var _page_min_x  = min(_page_min_x,  _padding_l + _glyph_x              );
+            var _page_max_x  = max(_page_max_x,  _padding_l + _glyph_x + _line_width);
+            var _model_min_x = min(_model_min_x, _padding_l + _glyph_x              );
+            var _model_max_x = max(_model_max_x, _padding_l + _glyph_x + _line_width);
             
             
             
@@ -215,8 +218,10 @@ function __scribble_gen_9_position_glyphs()
         
         
         if (_page_min_x == infinity) _page_min_x = 0;
-        _page_data.__min_x = _page_min_x;
-        _page_data.__max_x = max(_page_min_x, _page_max_x);
+        _page_data.__min_x  = _page_min_x;
+        _page_data.__max_x  = max(_page_min_x, _page_max_x);
+        _page_data.__min_y += _padding_t;
+        _page_data.__max_y += _padding_t;
         
         _model_min_y = min(_model_min_y, _page_data.__min_y);
         _model_max_y = max(_model_max_y, _page_data.__max_y);

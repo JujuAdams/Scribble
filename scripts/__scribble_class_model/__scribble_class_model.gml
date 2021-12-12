@@ -98,8 +98,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         }
         else
         {
-            var _matrix = matrix_multiply(matrix_build(_x_offset, _y_offset,  0,   0, 0,      0,   _xscale, _yscale, 1),
-                                          matrix_build(       _x,        _y, _z,   0, 0, _angle,         1,       1, 1));
+            var _matrix = matrix_multiply(matrix_build(_x_offset, _y_offset,  0,   0, 0,      0,         1,       1, 1),
+                          matrix_multiply(matrix_build(        0,         0,  0,   0, 0,      0,   _xscale, _yscale, 1),
+                                          matrix_build(       _x,        _y, _z,   0, 0, _angle,         1,       1, 1)));
         }
         
         //...aaaand set the matrix
