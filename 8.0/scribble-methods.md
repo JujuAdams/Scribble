@@ -205,6 +205,19 @@ If a number is passed to this method then a fixed line spacing is used. If a str
 
 &nbsp;
 
+## `.padding(left, top, right, bottom)` *regenerator*
+
+**Returns**: The text element
+
+|Name    |Datatype |Purpose                                                                            |
+|--------|--------|------------------------------------------------------------------------------------|
+|`left`  |number  |Extra space on the left-hand side of the textbox. Positive values create more space |
+|`top`   |number  |Extra space on the top of the textbox. Positive values create more space            |
+|`right` |number  |Extra space on the right-hand side of the textbox. Positive values create more space|
+|`bottom`|number  |Extra space on the bottom of the textbox. Positive values create more space         |
+
+&nbsp;
+
 ## `.bezier(x1, y1, x2, y2, x3, y3, x4, y4)` *regenerator*
 
 **Returns**: The text element
@@ -236,18 +249,14 @@ This function can also be executed with zero arguments (e.g. `scribble("text").b
 
 # Getters
 
-## `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
+## `.get_bbox(x, y)`
 
 **Returns:** Struct containing the positions of the bounding box for a text element
 
-|Name         |Datatype|Purpose                                                                                            |
-|-------------|--------|---------------------------------------------------------------------------------------------------|
-|`[x]`        |real    |x position in the room. Defaults to 0                                                              |
-|`[y]`        |real    |y position in the room. Defaults to 0                                                              |
-|`[leftPad]`  |real    |Extra space on the left-hand side of the textbox. Positive values create more space. Defaults to 0 |
-|`[topPad]`   |real    |Extra space on the top of the textbox. Positive values create more space. Defaults to 0            |
-|`[rightPad]` |real    |Extra space on the right-hand side of the textbox. Positive values create more space. Defaults to 0|
-|`[bottomPad]`|real    |Extra space on the bottom of the textbox. Positive values create more space. Defaults to 0         |
+|Name|Datatype|Purpose               |
+|----|--------|----------------------|
+|`x` |real    |x position in the room|
+|`y` |real    |y position in the room|
 
 The struct returned by `.get_bbox()` contains the following member variables:
 
