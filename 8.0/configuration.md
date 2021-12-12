@@ -45,6 +45,7 @@ This script holds a number of macros that customise the behaviour of Scribble. `
 |`SCRIBBLE_COMMAND_TAG_ARGUMENT`        |`ord(",")`   |Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only                                                                                             |
 |`SCRIBBLE_DRAW_RETURNS_SELF`           |`false`      |Whether the `.draw()` method for text element returns <self>. This defaults to <false> to avoid unintentional misuse                                                                       |
 |`SCRIBBLE_BUILD_RETURNS_SELF`          |`false`      |Whether the `.build()` method for text element returns <self>. This defaults to <false> to avoid unintentional misuse                                                                      |
+|`SCRIBBLE_SHOW_WRAP_BOUNDARY`          |`false`      |Set to `true` to call `.debug_draw_bbox()` for all text elements. This is useful for debugging wrapping boundaries                                                                         |
 
 &nbsp;
 
