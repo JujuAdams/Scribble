@@ -998,48 +998,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         //Run the garbage collecter
         __scribble_gc_collect();
         
-        //TODO - Make this a method
-        if (SCRIBBLE_SHOW_WRAP_BOUNDARY)
-        {
-            if (((scale_to_box_max_width > 0) && (scale_to_box_max_height > 0))
-            ||  ((wrap_max_width > 0) && (wrap_max_height > 0)))
-            {
-                var _l = _x + padding_l;
-                var _t = _y + padding_t;
-                
-                if ((scale_to_box_max_width > 0) && (scale_to_box_max_height > 0))
-                {
-                    var _w = scale_to_box_max_width  - (padding_l + padding_r);
-                    var _h = scale_to_box_max_height - (padding_t + padding_b);
-                }
-                else
-                {
-                    var _w = wrap_max_width  - (padding_l + padding_r);
-                    var _h = wrap_max_height - (padding_t + padding_b);
-                }
-                
-                _w *= xscale;
-                _h *= yscale;
-                
-                switch(starting_halign)
-                {
-                    case fa_left:               break;
-                    case fa_center: _l -= _w/2; break;
-                    case fa_right:  _l -= _w;   break;
-                }
-                
-                switch(_model.valign)
-                {
-                    case fa_top:                break;
-                    case fa_middle: _t -= _h/2; break;
-                    case fa_bottom: _t -= _h;   break;
-                }
-                
-                draw_set_color(c_red);
-                draw_rectangle(_l, _t, _l + _w, _t + _h, true);
-                draw_set_color(c_white);
-            }
-        }
+        if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox();
         
         return SCRIBBLE_DRAW_RETURNS_SELF? self : undefined;
     }
@@ -1068,6 +1027,65 @@ function __scribble_class_element(_string, _unique_id) constructor
         __get_model(true);
         
         return SCRIBBLE_BUILD_RETURNS_SELF? self : undefined;
+    }
+    
+    static debug_draw_bbox = function(_x, _y)
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return undefined;
+        
+        if ((scale_to_box_max_width > 0) && (scale_to_box_max_height > 0))
+        {
+            var _w = scale_to_box_max_width  - (padding_l + padding_r);
+            var _h = scale_to_box_max_height - (padding_t + padding_b);
+        }
+        else
+        {
+            var _w = wrap_max_width  - (padding_l + padding_r);
+            var _h = wrap_max_height - (padding_t + padding_b);
+        }
+        
+        _w *= xscale;
+        _h *= yscale;
+        
+        var _l = _x + padding_l;
+        var _t = _y + padding_t;
+        var _r = _l + _w;
+        var _b = _t + _h;
+        
+        switch(starting_halign)
+        {
+            case fa_left:               break;
+            case fa_center: _l -= _w/2; break;
+            case fa_right:  _l -= _w;   break;
+        }
+        
+        switch(_model.valign)
+        {
+            case fa_top:                break;
+            case fa_middle: _t -= _h/2; break;
+            case fa_bottom: _t -= _h;   break;
+        }
+        
+        if (((scale_to_box_max_width > 0) && (scale_to_box_max_height > 0))
+        ||  ((wrap_max_width > 0) && (wrap_max_height > 0)))
+        {
+            draw_set_color(c_red);
+            draw_rectangle(_l, _t, _r, _b, true);
+            draw_set_color(c_white);
+        }
+        else if (wrap_max_width > 0)
+        {
+            _h = _model.get_height();
+            _b = _t + _h;
+            
+            draw_set_color(c_red);
+            draw_line(_l, _t, _l, _t + _h);
+            draw_line(_r, _t, _r, _t + _h);
+            draw_set_color(c_white);
+        }
+        
+        return self;
     }
     
     #endregion

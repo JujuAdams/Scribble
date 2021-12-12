@@ -74,6 +74,7 @@
     {"id":{"name":"__scribble_config_colours","path":"scripts/__scribble_config_colours/__scribble_config_colours.yy",},"order":2,},
     {"id":{"name":"__scribble_class_model","path":"scripts/__scribble_class_model/__scribble_class_model.yy",},"order":8,},
     {"id":{"name":"scribble_font_rename","path":"scripts/scribble_font_rename/scribble_font_rename.yy",},"order":1,},
+    {"id":{"name":"obj_test_debug_draw_bbox","path":"objects/obj_test_debug_draw_bbox/obj_test_debug_draw_bbox.yy",},"order":14,},
     {"id":{"name":"obj_test_legacy_typewriter","path":"objects/obj_test_legacy_typewriter/obj_test_legacy_typewriter.yy",},"order":1,},
     {"id":{"name":"obj_test_legacy_typewriter_pos","path":"objects/obj_test_legacy_typewriter_pos/obj_test_legacy_typewriter_pos.yy",},"order":6,},
     {"id":{"name":"fnt_noto_arabic","path":"fonts/fnt_noto_arabic/fnt_noto_arabic.yy",},"order":8,},
