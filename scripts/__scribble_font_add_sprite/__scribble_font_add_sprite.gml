@@ -63,11 +63,18 @@ function __scribble_font_add_sprite_common(_spritefont, _proportional, _separati
         
         var _uvs = sprite_get_uvs(_sprite, _image);
         
-        if ((_glyph == " ") && (_image >= array_length(_sprite_frames)))
+        if (_ord == 32)
         {
             if (_proportional)
             {
-                var _space_width = 1 + sprite_get_bbox_right(_sprite) - sprite_get_bbox_left(_sprite) + _separation;
+                if (_image >= array_length(_sprite_frames)) //Cases where the space character has not been added to the mapstring
+                {
+                    var _space_width = 1 + sprite_get_bbox_right(_sprite) - sprite_get_bbox_left(_sprite) + _separation;
+                }
+                else
+                {
+                    var _space_width = _sprite_frames[_image].crop_width + _separation;
+                }
             }
             else
             {
