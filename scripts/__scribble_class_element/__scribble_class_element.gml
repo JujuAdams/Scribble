@@ -998,7 +998,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         //Run the garbage collecter
         __scribble_gc_collect();
         
-        if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox();
+        if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
         
         return SCRIBBLE_DRAW_RETURNS_SELF? self : undefined;
     }
