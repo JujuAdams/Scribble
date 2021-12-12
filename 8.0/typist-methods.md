@@ -247,15 +247,16 @@ Setting the `overlap` value to `0` will ensure that sound effects never overlap 
 
 &nbsp;
 
-## `.sound_per_char(soundArray, pitchMin, pitchMax)`
+## `.sound_per_char(soundArray, pitchMin, pitchMax, [exceptionString])`
 
 **Returns**: `self`, the typist
 
-|Name        |Datatype                                                                                      |Purpose                                                                                                             |
-|------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-|`soundArray`|array of [sounds](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|Array of audio assets that can be used for playback                                                                 |
-|`pitchMin`  |real                                                                                          |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc. |
-|`pitchMax`  |real                                                                                          |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.|
+|Name               |Datatype                                                                                      |Purpose                                                                                                                                  |
+|-------------------|----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+|`soundArray`       |array of [sounds](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|Array of audio assets that can be used for playback                                                                                      |
+|`pitchMin`         |real                                                                                          |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc.                      |
+|`pitchMax`         |real                                                                                          |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.                     |
+|`[exceptionString]`|real                                                                                          |String of characters for whom a sound should **not** be played. If no string is specified, all characters will play a sound when revealed|
 
 It's quite common in games with typewriter-style text animations to have a sound effect that plays as text shows up. This function allows you to define an array of sound effects that will be randomly played as **each character** is revealed. The pitch of these sounds can be randomly modulated as well by selecting `pitchMin` and `pitchMax` values.
 
