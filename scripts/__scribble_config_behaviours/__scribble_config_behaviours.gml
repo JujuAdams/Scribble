@@ -28,7 +28,7 @@
 #macro SCRIBBLE_FIT_TO_BOX_ITERATIONS          7         //Number of iterations to fit text when using the .fit_to_box() method. Higher values are slower but more accurate
 #macro SCRIBBLE_SAFELY_WRAP_TIME               true      //Whether to wrap the internal time value
 #macro SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN       false     //Set to <true> to ignore a sprite origin's contribution to its spritefont glyph x/y offsets
-#macro SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK  true      //Disables [pause] commands immediately before pagebreaks, though only if there are no other events between the pause and the pagebreak
+#macro SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK  true      //Disables [pause] events immediately before pagebreaks, though only if there are no other events between the pause and the pagebreak
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
