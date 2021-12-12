@@ -349,7 +349,7 @@ function __scribble_class_typist() constructor
         return self;
     }
     
-    static __process_event_stack = function(_target_element, _function_scope)
+    static __process_event_stack = function(_character_count, _target_element, _function_scope)
     {
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
         //We return <true> if there have been no pausing behaviours called i.e. [pause] and [delay]
@@ -373,9 +373,16 @@ function __scribble_class_typist() constructor
                 case "pause":
                     if (!__skip)
                     {
-                        __paused = true;
-                        
-                        return false;
+                        if (SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK && (__last_character >= _character_count) && (array_length(__event_stack) <= 0))
+                        {
+                            __scribble_trace("Warning! Ignoring [pause] command before the end of a page");
+                        }
+                        else
+                        {
+                            __paused = true;
+                            
+                            return false;
+                        }
                     }
                 break;
                 
@@ -505,25 +512,26 @@ function __scribble_class_typist() constructor
         //Find the leading edge of our windows
         var _head_pos = __window_array[__window_index];
         
+        //Find the model from the last element
+        var _model = __last_element.ref.__get_model(true);
+        if (!is_struct(_model)) return undefined;
+        
+        //Get page data
+        //We use this to set the maximum limit for the typewriter feature
+        var _pages_array = _model.get_page_array();
+        if (array_length(_pages_array) == 0) return undefined;
+        var _page_data = _pages_array[__last_page];
+        var _page_character_count = _page_data.__character_count;
+        
         if (!__in)
         {
-            //Find the model from the last element
-            var _model = __last_element.ref.__get_model(true);
-            if (!is_struct(_model)) return undefined;
-            
-            //Get page data
-            //We use this to set the maximum limit for the typewriter feature
-            var _pages_array = _model.get_page_array();
-            if (array_length(_pages_array) <= __last_page) return undefined;
-            var _page_data = _pages_array[__last_page];
-            
             if (__skip)
             {
-                __window_array[@ __window_index] = _page_data.__character_count;
+                __window_array[@ __window_index] = _page_character_count;
             }
             else
             {
-                __window_array[@ __window_index] = min(_page_data.__character_count, _head_pos + _speed);
+                __window_array[@ __window_index] = min(_page_character_count, _head_pos + _speed);
             }
         }
         else
@@ -555,30 +563,20 @@ function __scribble_class_typist() constructor
             //If we've still got stuff on the event stack, pop those off
             if (!_paused && (array_length(__event_stack) > 0))
             {
-                if (!__process_event_stack(_target_element, _function_scope)) _paused = true;
+                if (!__process_event_stack(_page_character_count, _target_element, _function_scope)) _paused = true;
             }
             
             if (!_paused)
             {
-                //Find the model from the last element
-                var _model = __last_element.ref.__get_model(true);
-                if (!is_struct(_model)) return undefined;
-                
-                //Get page data
-                //We use this to set the maximum limit for the typewriter feature
-                var _pages_array = _model.get_page_array();
-                if (array_length(_pages_array) == 0) return undefined;
-                var _page_data = _pages_array[__last_page];
-                
                 var _play_sound = false;
                 
                 if (__skip)
                 {
-                    var _remaining = _page_data.__character_count - _head_pos;
+                    var _remaining = _page_character_count - _head_pos;
                 }
                 else
                 {
-                    var _remaining = min(_page_data.__character_count - _head_pos, _speed);
+                    var _remaining = min(_page_character_count - _head_pos, _speed);
                 }
                 
                 while(_remaining > 0)
@@ -628,7 +626,7 @@ function __scribble_class_typist() constructor
                             
                             //Process the stack
                             //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
-                            if (!__process_event_stack(_target_element, _function_scope))
+                            if (!__process_event_stack(_page_character_count, _target_element, _function_scope))
                             {
                                 _head_pos = __last_character - 1; //Lock our head position so we don't overstep
                                 break;
