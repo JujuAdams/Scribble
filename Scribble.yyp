@@ -47,6 +47,7 @@
     {"id":{"name":"obj_test_alpha","path":"objects/obj_test_alpha/obj_test_alpha.yy",},"order":3,},
     {"id":{"name":"obj_test_typewriter","path":"objects/obj_test_typewriter/obj_test_typewriter.yy",},"order":1,},
     {"id":{"name":"scribble_super_glyph_copy","path":"scripts/scribble_super_glyph_copy/scribble_super_glyph_copy.yy",},"order":1,},
+    {"id":{"name":"obj_test_pages_pause_before_pagebreak","path":"objects/obj_test_pages_pause_before_pagebreak/obj_test_pages_pause_before_pagebreak.yy",},"order":4,},
     {"id":{"name":"obj_test_align","path":"objects/obj_test_align/obj_test_align.yy",},"order":1,},
     {"id":{"name":"__scribble_system","path":"scripts/__scribble_system/__scribble_system.yy",},"order":1,},
     {"id":{"name":"spr_portrait_2","path":"sprites/spr_portrait_2/spr_portrait_2.yy",},"order":5,},
