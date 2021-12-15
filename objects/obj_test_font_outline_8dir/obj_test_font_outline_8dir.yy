@@ -28,7 +28,7 @@
     "path": "folders/Test Cases/Fonts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_font_outline",
+  "name": "obj_test_font_outline_8dir",
   "tags": [],
   "resourceType": "GMObject",
 }
