@@ -5,7 +5,7 @@
     "path": "folders/Scribble/(System - don't call these functions).yy",
   },
   "resourceVersion": "1.0",
-  "name": "__shd_scribble_bake_outline",
+  "name": "__shd_scribble_bake_outline_4dir",
   "tags": [],
   "resourceType": "GMShader",
 }
