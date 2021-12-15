@@ -1,4 +1,4 @@
-//   @jujuadams   v7.1.2   2020-03-16
+//   @jujuadams   v8.0.0   2020-03-16
 precision highp float;
 
 #define PREMULTIPLY_ALPHA false
