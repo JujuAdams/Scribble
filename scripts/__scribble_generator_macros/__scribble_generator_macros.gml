@@ -13,9 +13,9 @@ enum __SCRIBBLE_GEN_GLYPH
     SCALE,            // 9   | This group of enums must not change order or be split
                       //     |
     TEXTURE,          //10   |
-    QUAD_U0,          //11   |
-    QUAD_V0,          //12   |
-    QUAD_U1,          //13   |
+    QUAD_U0,          //11   | Be careful of ordering!
+    QUAD_U1,          //12   | scribble_font_bake_shader() relies on this
+    QUAD_V0,          //13   |
     QUAD_V1,          //14   |
                       //     |
     MSDF_PXRANGE,     //15   |

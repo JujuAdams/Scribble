@@ -4,8 +4,9 @@
 /// @param newFontName      Name of the new font to create, as a strintg
 /// @param outlineColour    Colour of the outline
 /// @param smooth           Whether or not to interpolate the outline. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
+/// @param [textureSize]
 
-function scribble_font_bake_outline_8dir(_source_font_name, _new_font_name, _outline_color, _smooth)
+function scribble_font_bake_outline_8dir(_source_font_name, _new_font_name, _outline_color, _smooth, _textureSize = undefined)
 {
     if (is_string(_outline_color))
     {
@@ -28,5 +29,5 @@ function scribble_font_bake_outline_8dir(_source_font_name, _new_font_name, _out
     //Run the baking operation
     scribble_font_bake_shader(_source_font_name, _new_font_name, __shd_scribble_bake_outline_8dir,
                               2, 1, 1, 1, 1,
-                              1, _smooth);
+                              1, _smooth, _textureSize);
 }

@@ -48,14 +48,14 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
     
     var _src_glyph_grid = _src_font_data.glyph_data_grid;
+    var _glyph_count = ds_grid_width(_src_glyph_grid);
     
     //Create a new font
     var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, false);
+    var _new_glyphs_grid = _new_font_data.glyph_data_grid;
     
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
     _src_font_data.copy_to(_new_font_data);
-    var _new_glyphs_grid = _new_font_data.glyph_data_grid;
-    var _glyph_count = ds_grid_width(_new_glyphs_grid);
     
     
     
@@ -192,7 +192,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.U0] = _l;
             _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.V0] = _t;
             _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.U1] = _l + _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.WIDTH ] + _l_pad + _r_pad;;
-            _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.V1] = _t + _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.WIDTH ] + _l_pad + _r_pad;;
+            _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.V1] = _t + _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.HEIGHT] + _t_pad + _b_pad;;
             
             //__scribble_trace("   " + string(_l) + "," + string(_t) + " -> " + string(_r) + "," + string(_b));
             ++_added_count;
@@ -304,12 +304,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _sprite_v1 = _sprite_uvs[3];
     
     ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.V1, 1/_texture_size);
-    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.U0, _sprite_u1 - _sprite_u0);
-    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V0, _glyph_count-1, SCRIBBLE_GLYPH.U0, _sprite_v1 - _sprite_v0);
-    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U1, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_u1 - _sprite_u0);
-    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V1, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_v1 - _sprite_v0);
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.U0, _sprite_u0);
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V0, _glyph_count-1, SCRIBBLE_GLYPH.U0, _sprite_v0);
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U1, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_u0);
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V1, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_v0);
+    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.U1, _sprite_u1 - _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
+    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V0, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_v1 - _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.U1, _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V0, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
 }

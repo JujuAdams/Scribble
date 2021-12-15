@@ -554,9 +554,9 @@ enum SCRIBBLE_GLYPH
     FONT_SCALE,    //10  |
                    //    |
     TEXTURE,       //11  |
-    U0,            //12  |
-    V0,            //13  |
-    U1,            //14  |
+    U0,            //12  | Be careful of ordering!
+    U1,            //13  | scribble_font_bake_shader() relies on this
+    V0,            //14  |
     V1,            //15  |
                    //    |
     MSDF_PXRANGE,  //16  |
