@@ -99,11 +99,11 @@ Three properties are available:
 |`SCRIBBLE_GLYPH.HEIGHT`    |Height of the glyph, in pixels              |
 |`SCRIBBLE_GLYPH.X_OFFSET`  |x-coordinate offset to draw the glyph       |
 |`SCRIBBLE_GLYPH.Y_OFFSET`  |y-coordinate offset to draw the glyph       |
-|`SCRIBBLE_GLYPH.SEPARATION`|Distance between this glyph's right edge and the left edge of the next glyph<br>**N.B.** This can be a negative value|
+|`SCRIBBLE_GLYPH.SEPARATION`|Distance between this glyph's right edge and the left edge of the next glyph<br>**N.B.** This can be a negative value
 
 &nbsp;
 
-## `scribble_font_bake_outline(sourceFontName, newFontName, thickness, samples, color, smooth)`
+## `scribble_font_bake_outline_4dir(sourceFontName, newFontName, color, smooth)`
 
 **Returns:** N/A (`undefined`)
 
@@ -111,12 +111,43 @@ Three properties are available:
 |----------------|--------|---------------------------------------------------------------------------------------------------------------|
 |`sourceFontName`|string  |Name of the source font, as a string                                                                           |
 |`newFontName`   |string  |Name of the new font to create, as a string                                                                    |
-|`thickness`     |integer |Number of layers to use to generate the outline e.g. a value of `2` will give a 2px outline                    |
-|`samples`       |integer |Number of samples to use for the outline per layer                                                             |
 |`outlineColor`  |integer |Colour of the outline                                                                                          |
 |`smooth`        |boolean |Whether or not to interpolate the outline. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
+|`[surfaceSize]` |integer |Size of the surface to use. Defaults to 2048x2048                                                              |
 
-`scribble_bake_outline()` creates a new font using a source font. The source font is passed through the `shd_scribble_bake_outline` shader, character by character, using the parameters provided.
+`scribble_bake_outline_4dir()` creates a new font using a source font. The new font will include a one-pixel thick border in the 4 cardinal directions around each input glyph.
+
+&nbsp;
+
+## `scribble_font_bake_outline_8dir(sourceFontName, newFontName, color, smooth)`
+
+**Returns:** N/A (`undefined`)
+
+|Name            |Datatype|Purpose                                                                                                        |
+|----------------|--------|---------------------------------------------------------------------------------------------------------------|
+|`sourceFontName`|string  |Name of the source font, as a string                                                                           |
+|`newFontName`   |string  |Name of the new font to create, as a string                                                                    |
+|`outlineColor`  |integer |Colour of the outline                                                                                          |
+|`smooth`        |boolean |Whether or not to interpolate the outline. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
+|`[surfaceSize]` |integer |Size of the surface to use. Defaults to 2048x2048                                                              |
+
+`scribble_bake_outline_8dir()` creates a new font using a source font. The new font will include a 1-pixel thick border in the 8 compass directions around each input glyph. For a thicker variation on this shader, try `scribble_font_bake_outline_8dir_2px()`.
+
+&nbsp;
+
+## `scribble_font_bake_outline_8dir_2px(sourceFontName, newFontName, color, smooth)`
+
+**Returns:** N/A (`undefined`)
+
+|Name            |Datatype|Purpose                                                                                                        |
+|----------------|--------|---------------------------------------------------------------------------------------------------------------|
+|`sourceFontName`|string  |Name of the source font, as a string                                                                           |
+|`newFontName`   |string  |Name of the new font to create, as a string                                                                    |
+|`outlineColor`  |integer |Colour of the outline                                                                                          |
+|`smooth`        |boolean |Whether or not to interpolate the outline. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
+|`[surfaceSize]` |integer |Size of the surface to use. Defaults to 2048x2048                                                              |
+
+`scribble_bake_outline_8dir()` creates a new font using a source font. The new font will include a 2-pixel thick border in the 8 compass directions around each input glyph. This is useful for more cartoony text, especially high resolution anti-aliased text.
 
 &nbsp;
 
@@ -138,7 +169,7 @@ Three properties are available:
 |`smooth`         |boolean |Whether or not to interpolate the output texture. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
 |`[surfaceSize]`  |integer |Size of the surface to use. Defaults to 2048x2048                                  |
 
-`scribble_bake_shader()` creates a new font using a source font. The source font is passed through the given shader, character by character, using the parameters provided.
+`scribble_bake_shader()` creates a new font using a source font. The source font is rendered to a surface, then passed through the given shader using whatever uniforms that have been set for that shader.
 
 &nbsp;
 
