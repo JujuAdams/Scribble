@@ -88,6 +88,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     //__scribble_trace("" + string(ds_priority_size(_priority_queue)) + " glyphs to pack");
     
     var _layout_grid = ds_grid_create(_layout_count, 5);
+    var _free_right_list = ds_list_create();
+    var _free_bottom_list = ds_list_create();
     var _added_count = 0;
     while(!ds_priority_empty(_priority_queue))
     {
@@ -115,10 +117,13 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             //Scan to the right of each glyph to try to find a free spot
             if (!_found)
             {
-                for(var _j = 0; _j < _added_count; _j++)
+                var _j = 0;
+                repeat(ds_list_size(_free_right_list))
                 {
-                    var _l = _layout_grid[# _j, 2] + 1;
-                    var _t = _layout_grid[# _j, 1];
+                    var _adj_index = _free_right_list[| _j];
+                    
+                    var _l = _layout_grid[# _adj_index, 2] + 1;
+                    var _t = _layout_grid[# _adj_index, 1];
                     var _r = _l + _width_ext  - 1;
                     var _b = _t + _height_ext - 1;
                 
@@ -127,7 +132,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
                         _found = true;
                         //__scribble_trace("   Trying to the right of \"" + string(_target_array[5]) + "\"");
                         
-                        for(var _k = 0; _k < _added_count; _k++)
+                        var _k = 0;
+                        repeat(_added_count) //TODO - Write a faster AABB check
                         {
                             var _check_l = _layout_grid[# _k, 0];
                             var _check_t = _layout_grid[# _k, 1];
@@ -139,18 +145,29 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
                                 _found = false;
                                 break;
                             }
+                            
+                            ++_k;
                         }
                         
-                        if (_found) break;
+                        if (_found)
+                        {
+                            ds_list_delete(_free_right_list, _adj_index);
+                            break;
+                        }
                     }
+                    
+                    ++_j;
                 }
             }
         
             //If we've not found a free space yet, try scanning underneath each font texture
             if (!_found)
             {
-                for( var _j = 0; _j < _added_count; _j++ )
+                var _j = 0;
+                repeat(ds_list_size(_free_bottom_list))
                 {
+                    var _adj_index = _free_bottom_list[| _j];
+                    
                     var _l = _layout_grid[# _j, 0];
                     var _t = _layout_grid[# _j, 3] + 1;
                     var _r = _l + _width_ext  - 1;
@@ -160,8 +177,9 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
                     {
                         _found = true;
                         //__scribble_trace("   Trying beneath \"" + string(_target_array[5]) + "\"");
-                    
-                        for(var _k = 0; _k < _added_count; _k++)
+                        
+                        var _k = 0;
+                        repeat(_added_count) //TODO - Write a faster AABB check
                         {
                             var _check_l = _layout_grid[# _k, 0];
                             var _check_t = _layout_grid[# _k, 1];
@@ -173,10 +191,18 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
                                 _found = false;
                                 break;
                             }
+                            
+                            ++_k;
                         }
                     
-                        if (_found) break;
+                        if (_found)
+                        {
+                            ds_list_delete(_free_bottom_list, _adj_index);
+                            break;
+                        }
                     }
+                    
+                    ++_j;
                 }
             }
         }
@@ -188,6 +214,9 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             _layout_grid[# _added_count, 2] = _r;
             _layout_grid[# _added_count, 3] = _b;
             _layout_grid[# _added_count, 4] = _index;
+            
+            ds_list_add(_free_right_list, _added_count);
+            ds_list_add(_free_bottom_list, _added_count);
             
             _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.U0] = _l;
             _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.V0] = _t;
@@ -204,6 +233,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     }
     
     ds_priority_destroy(_priority_queue);
+    ds_list_destroy(_free_right_list);
+    ds_list_destroy(_free_bottom_list);
     
     if (!_found)
     {
