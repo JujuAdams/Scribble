@@ -46,65 +46,59 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     }
     
     
-    //Unpack source glyphs into an intermediate array
-    var _src_glyphs_map = _src_font_data.glyphs_map;
-    var _src_glyphs_array = array_create(ds_map_size(_src_glyphs_map));
     
-    var _i = 0;
-    var _key = ds_map_find_first(_src_glyphs_map);
-    repeat(ds_map_size(_src_glyphs_map))
-    {
-        _src_glyphs_array[@ _i] = _src_glyphs_map[? _key];
-        ++_i;
-        _key = ds_map_find_next(_src_glyphs_map, _key);
-    }
-
-
-
-    //Build a priority queue, wide assets first
+    var _src_glyph_grid = _src_font_data.glyph_data_grid;
+    
+    //Create a new font
+    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, false);
+    
+    //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
+    _src_font_data.copy_to(_new_font_data);
+    var _new_glyphs_grid = _new_font_data.glyph_data_grid;
+    var _glyph_count = ds_grid_width(_new_glyphs_grid);
+    
+    
+    
+    //Build a priority queue of glyphs, wide assets first
     var _priority_queue = ds_priority_create();
     var _i = 0;
-    repeat(array_length(_src_glyphs_array))
+    repeat(_glyph_count)
     {
-        var _glyph_array = _src_glyphs_array[_i];
-        if (_glyph_array != undefined)
+        var _unicode = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.ORD];
+        if (_unicode != 32)
         {
-            var _character   = _glyph_array[SCRIBBLE_GLYPH.CHARACTER];
-            if (_character != " ")
-            {
-                var _width      = _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
-                var _height     = _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-                var _width_ext  = _width  + _border + _l_pad + _r_pad;
-                var _height_ext = _height + _border + _t_pad + _b_pad;
-        
-                var _priority = _width_ext*_texture_size + _height_ext;
-                ds_priority_add(_priority_queue, _i, _priority);
-                //__scribble_trace("Queuing \"" + _character + "\" (" + string(_i) + ") for packing (size=" + string(_width_ext) + "x" + string(_height_ext) + ", weight=" + string(_priority) + ")");
-            }
+            var _width      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.WIDTH ];
+            var _height     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.HEIGHT];
+            var _width_ext  = _width  + _border + _l_pad + _r_pad;
+            var _height_ext = _height + _border + _t_pad + _b_pad;
+            
+            var _priority = _width_ext*_texture_size + _height_ext;
+            ds_priority_add(_priority_queue, _i, _priority);
+            //__scribble_trace("Queuing \"" + _unicode + "\" (" + string(_i) + ") for packing (size=" + string(_width_ext) + "x" + string(_height_ext) + ", weight=" + string(_priority) + ")");
         }
     
         ++_i;
     }
-
-
-
+    
+    var _layout_count = ds_priority_size(_priority_queue);
+    
+    
+    
     //Pack glyphs on the texture page
     //__scribble_trace("" + string(ds_priority_size(_priority_queue)) + " glyphs to pack");
-
-    var _surface_glyphs = [];
+    
+    var _layout_grid = ds_grid_create(_layout_count, 5);
     var _added_count = 0;
     while(!ds_priority_empty(_priority_queue))
     {
         var _index       = ds_priority_delete_max(_priority_queue);
-        var _glyph_array = _src_glyphs_array[_index];
-        var _character   = _glyph_array[SCRIBBLE_GLYPH.CHARACTER];
-        var _width       = _glyph_array[SCRIBBLE_GLYPH.WIDTH    ];
-        var _height      = _glyph_array[SCRIBBLE_GLYPH.HEIGHT   ];
+        var _width       = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.WIDTH ];
+        var _height      = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.HEIGHT];
         var _width_ext   = _width  + _border + _l_pad + _r_pad;
         var _height_ext  = _height + _border + _t_pad + _b_pad;
-    
+        
         //__scribble_trace("Packing \"" + _character + "\" (" + string(_index) + "), size=" + string(_width_ext) + "," + string(_height_ext));
-    
+        
         if (_added_count == 0)
         {
             var _found = true;
@@ -121,11 +115,10 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             //Scan to the right of each glyph to try to find a free spot
             if (!_found)
             {
-                for( var _j = 0; _j < _added_count; _j++ )
+                for(var _j = 0; _j < _added_count; _j++)
                 {
-                    var _target_array = _surface_glyphs[_j];
-                    var _l = _target_array[2] + 1;
-                    var _t = _target_array[1];
+                    var _l = _layout_grid[# _j, 2] + 1;
+                    var _t = _layout_grid[# _j, 1];
                     var _r = _l + _width_ext  - 1;
                     var _b = _t + _height_ext - 1;
                 
@@ -133,14 +126,13 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
                     {
                         _found = true;
                         //__scribble_trace("   Trying to the right of \"" + string(_target_array[5]) + "\"");
-                    
-                        for( var _k = 0; _k < _added_count; _k++ )
+                        
+                        for(var _k = 0; _k < _added_count; _k++)
                         {
-                            var _check_array = _surface_glyphs[_k];
-                            var _check_l = _check_array[0];
-                            var _check_t = _check_array[1];
-                            var _check_r = _check_array[2];
-                            var _check_b = _check_array[3];
+                            var _check_l = _layout_grid[# _k, 0];
+                            var _check_t = _layout_grid[# _k, 1];
+                            var _check_r = _layout_grid[# _k, 2];
+                            var _check_b = _layout_grid[# _k, 3];
                         
                             if ((_l <= _check_r) && (_r >= _check_l) && (_t <= _check_b) && (_b >= _check_t))
                             {
@@ -148,7 +140,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
                                 break;
                             }
                         }
-                    
+                        
                         if (_found) break;
                     }
                 }
@@ -159,9 +151,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             {
                 for( var _j = 0; _j < _added_count; _j++ )
                 {
-                    var _target_array = _surface_glyphs[_j];
-                    var _l = _target_array[0];
-                    var _t = _target_array[3] + 1;
+                    var _l = _layout_grid[# _j, 0];
+                    var _t = _layout_grid[# _j, 3] + 1;
                     var _r = _l + _width_ext  - 1;
                     var _b = _t + _height_ext - 1;
                 
@@ -172,11 +163,10 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
                     
                         for(var _k = 0; _k < _added_count; _k++)
                         {
-                            var _check_array = _surface_glyphs[_k];
-                            var _check_l = _check_array[0];
-                            var _check_t = _check_array[1];
-                            var _check_r = _check_array[2];
-                            var _check_b = _check_array[3];
+                            var _check_l = _layout_grid[# _k, 0];
+                            var _check_t = _layout_grid[# _k, 1];
+                            var _check_r = _layout_grid[# _k, 2];
+                            var _check_b = _layout_grid[# _k, 3];
                         
                             if ((_l <= _check_r) && (_r >= _check_l) && (_t <= _check_b) && (_b >= _check_t))
                             {
@@ -193,7 +183,17 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
         if (_found)
         {
-            _surface_glyphs[@ _added_count] = [_l, _t, _r, _b, _index, _character];
+            _layout_grid[# _added_count, 0] = _l;
+            _layout_grid[# _added_count, 1] = _t;
+            _layout_grid[# _added_count, 2] = _r;
+            _layout_grid[# _added_count, 3] = _b;
+            _layout_grid[# _added_count, 4] = _index;
+            
+            _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.U0] = _l;
+            _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.V0] = _t;
+            _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.U1] = _l + _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.WIDTH ] + _l_pad + _r_pad;;
+            _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.V1] = _t + _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.WIDTH ] + _l_pad + _r_pad;;
+            
             //__scribble_trace("   " + string(_l) + "," + string(_t) + " -> " + string(_r) + "," + string(_b));
             ++_added_count;
         }
@@ -202,151 +202,114 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             break;
         }
     }
-
+    
     ds_priority_destroy(_priority_queue);
-
-
-
+    
     if (!_found)
     {
         __scribble_error("No space left on ", _texture_size, "x", _texture_size, " texture page\nPlease increase the size of the texture page");
+        return;
     }
-    else
+    
+    
+    
+    //Build a vertex buffer for all the glyphs
+    var _vbuff = vertex_create_buffer();
+    vertex_begin(_vbuff, global.__scribble_passthrough_vertex_format);
+    
+    var _i = 0;
+    repeat(_layout_count)
     {
-        //Build a vertex buffer for all the glyphs
-        var _vbuff = vertex_create_buffer();
-        vertex_begin(_vbuff, global.__scribble_passthrough_vertex_format);
-    
-        var _i = 0;
-        repeat(array_length(_surface_glyphs))
-        {
-            var _glyph_position = _surface_glyphs[_i];
-            var _index = _glyph_position[4];
-            var _glyph_array = _src_glyphs_array[_index];
+        var _index = _layout_grid[# _i, 4];
         
-            var _l  = _glyph_position[0] + _l_pad; //Offset by the L,T padding
-            var _t  = _glyph_position[1] + _t_pad;
-            var _r  = _l + _glyph_array[SCRIBBLE_GLYPH.WIDTH ];
-            var _b  = _t + _glyph_array[SCRIBBLE_GLYPH.HEIGHT];
-            var _u0 = _glyph_array[SCRIBBLE_GLYPH.U0];
-            var _v0 = _glyph_array[SCRIBBLE_GLYPH.V0];
-            var _u1 = _glyph_array[SCRIBBLE_GLYPH.U1];
-            var _v1 = _glyph_array[SCRIBBLE_GLYPH.V1];
+        var _l  = _layout_grid[# _i, 0] + _l_pad; //Offset by the L,T padding
+        var _t  = _layout_grid[# _i, 1] + _t_pad;
+        var _r  = _l + _src_glyph_grid[# _index, SCRIBBLE_GLYPH.WIDTH ];
+        var _b  = _t + _src_glyph_grid[# _index, SCRIBBLE_GLYPH.HEIGHT];
+        var _u0 = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.U0];
+        var _v0 = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.V0];
+        var _u1 = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.U1];
+        var _v1 = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.V1];
         
-            vertex_position(_vbuff, _l, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
-            vertex_position(_vbuff, _r, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
-            vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+        vertex_position(_vbuff, _l, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
+        vertex_position(_vbuff, _r, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+        vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
         
-            vertex_position(_vbuff, _r, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
-            vertex_position(_vbuff, _r, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
-            vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+        vertex_position(_vbuff, _r, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+        vertex_position(_vbuff, _r, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
+        vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
         
-            ++_i;
-        }
-    
-        vertex_end(_vbuff);
-    
-    
-    
-        var _texture = _glyph_array[SCRIBBLE_GLYPH.TEXTURE]; //TODO
-        var _surface_0 = surface_create(_texture_size, _texture_size);
-        var _surface_1 = surface_create(_texture_size, _texture_size);
-    
-        //Draw the source glyphs to a surface
-        surface_set_target(_surface_0);
-        draw_clear_alpha(c_white, 0.0);
-        gpu_set_blendenable(false);
-        vertex_submit(_vbuff, pr_trianglelist, _texture);
-        gpu_set_blendenable(true);
-        surface_reset_target();
-    
-        var _texture = surface_get_texture(_surface_0);
-    
-        //Draw one surface to another using the shader
-        surface_set_target(_surface_1);
-        draw_clear_alpha(c_white, 0.0);
-    
-        var _old_filter = gpu_get_tex_filter();
-        gpu_set_tex_filter(_smooth);
-        gpu_set_blendenable(false);
-    
-        shader_set(_shader);
-        shader_set_uniform_f(shader_get_uniform(_shader, "u_vTexel"), texture_get_texel_width(_texture), texture_get_texel_height(_texture));
-        draw_surface(_surface_0, 0, 0);
-        shader_reset();
-    
-        gpu_set_tex_filter(_old_filter);
-        gpu_set_blendenable(true);
-        surface_reset_target();
-    
-        //Make a sprite from the effect surface to make the texture stick
-        var _sprite = sprite_create_from_surface(_surface_1, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
-        surface_free(_surface_0);
-        surface_free(_surface_1);
-        vertex_delete_buffer(_vbuff);
-    
-    
-    
-        //Build a new font definition
-        var _texture = sprite_get_texture(_sprite, 0);
-        var _sprite_uvs = sprite_get_uvs(_sprite, 0);
-        var _sprite_u0 = _sprite_uvs[0];
-        var _sprite_v0 = _sprite_uvs[1];
-        var _sprite_u1 = _sprite_uvs[2];
-        var _sprite_v1 = _sprite_uvs[3];
-    
-        var _new_font_data = new __scribble_class_font(_new_font_name);
-        var _new_glyph_map = _new_font_data.glyphs_map;
-        
-        //Initialise our glyph data structure, copying what the source font used
-        _src_font_data.copy_to(_new_font_data);
-        _new_font_data.style_regular     = undefined;
-        _new_font_data.style_bold        = undefined;
-        _new_font_data.style_italic      = undefined;
-        _new_font_data.style_bold_italic = undefined;
-        
-        var _array = array_create(SCRIBBLE_GLYPH.__SIZE);
-        array_copy(_array, 0, _src_glyphs_map[? 32], 0, SCRIBBLE_GLYPH.__SIZE);
-        _new_glyph_map[? 32] = _array;
-        
-        //Copy across glyph data from the source, but using new UVs and dimensions
-        var _i = 0;
-        repeat(array_length(_surface_glyphs))
-        {
-            var _glyph_position = _surface_glyphs[_i];
-            
-            var _index = _glyph_position[4];
-            var _src_glyph_array = _src_glyphs_array[_index];
-            
-            var _ord = _src_glyph_array[SCRIBBLE_GLYPH.ORD];
-            
-            var _l = _glyph_position[0];
-            var _t = _glyph_position[1];
-            var _r = _l + _src_glyph_array[SCRIBBLE_GLYPH.WIDTH ] + _l_pad + _r_pad;
-            var _b = _t + _src_glyph_array[SCRIBBLE_GLYPH.HEIGHT] + _t_pad + _b_pad;
-            
-            var _u0 = lerp(_sprite_u0, _sprite_u1, _l / _texture_size);
-            var _v0 = lerp(_sprite_v0, _sprite_v1, _t / _texture_size);
-            var _u1 = lerp(_sprite_u0, _sprite_u1, _r / _texture_size);
-            var _v1 = lerp(_sprite_v0, _sprite_v1, _b / _texture_size);
-            
-            var _array = array_create(SCRIBBLE_GLYPH.__SIZE, 0);
-            _array[@ SCRIBBLE_GLYPH.CHARACTER ] = _src_glyph_array[SCRIBBLE_GLYPH.CHARACTER ];
-            _array[@ SCRIBBLE_GLYPH.ORD       ] = _ord;
-            _array[@ SCRIBBLE_GLYPH.WIDTH     ] = _src_glyph_array[SCRIBBLE_GLYPH.WIDTH     ] + _l_pad + _r_pad;
-            _array[@ SCRIBBLE_GLYPH.HEIGHT    ] = _src_glyph_array[SCRIBBLE_GLYPH.HEIGHT    ] + _t_pad + _b_pad;
-            _array[@ SCRIBBLE_GLYPH.X_OFFSET  ] = _src_glyph_array[SCRIBBLE_GLYPH.X_OFFSET  ] - _l_pad;
-            _array[@ SCRIBBLE_GLYPH.Y_OFFSET  ] = _src_glyph_array[SCRIBBLE_GLYPH.Y_OFFSET  ] - _t_pad;
-            _array[@ SCRIBBLE_GLYPH.SEPARATION] = _src_glyph_array[SCRIBBLE_GLYPH.SEPARATION] + _separation;
-            _array[@ SCRIBBLE_GLYPH.TEXTURE   ] = _texture;
-            _array[@ SCRIBBLE_GLYPH.U0        ] = _u0;
-            _array[@ SCRIBBLE_GLYPH.V0        ] = _v0;
-            _array[@ SCRIBBLE_GLYPH.U1        ] = _u1;
-            _array[@ SCRIBBLE_GLYPH.V1        ] = _v1;
-            
-            _new_glyph_map[? _ord] = _array;
-        
-            ++_i;
-        }
+        ++_i;
     }
+    
+    vertex_end(_vbuff);
+    
+    
+    
+    //Draw the vertex buffer to a surface, then bake that surface into a sprite
+    var _texture = _src_glyph_grid[# 0, SCRIBBLE_GLYPH.TEXTURE]; //FIXME - Don't assume every glyph is on the same texture page
+    var _surface_0 = surface_create(_texture_size, _texture_size);
+    var _surface_1 = surface_create(_texture_size, _texture_size);
+    
+    //Draw the source glyphs to a surface
+    surface_set_target(_surface_0);
+    draw_clear_alpha(c_white, 0.0);
+    gpu_set_blendenable(false);
+    vertex_submit(_vbuff, pr_trianglelist, _texture);
+    gpu_set_blendenable(true);
+    surface_reset_target();
+    
+    var _texture = surface_get_texture(_surface_0);
+    
+    //Draw one surface to another using the shader
+    surface_set_target(_surface_1);
+    draw_clear_alpha(c_white, 0.0);
+    
+    var _old_filter = gpu_get_tex_filter();
+    gpu_set_tex_filter(_smooth);
+    gpu_set_blendenable(false);
+    
+    shader_set(_shader);
+    shader_set_uniform_f(shader_get_uniform(_shader, "u_vTexel"), texture_get_texel_width(_texture), texture_get_texel_height(_texture));
+    draw_surface(_surface_0, 0, 0);
+    shader_reset();
+    
+    gpu_set_tex_filter(_old_filter);
+    gpu_set_blendenable(true);
+    surface_reset_target();
+    
+    //Make a sprite from the effect surface to make the texture stick
+    var _sprite = sprite_create_from_surface(_surface_1, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
+    surface_free(_surface_0);
+    surface_free(_surface_1);
+    vertex_delete_buffer(_vbuff);
+    
+    
+    
+    //Make bulk corrections to various glyph properties based on the input parameters
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.X_OFFSET,    _glyph_count-1, SCRIBBLE_GLYPH.X_OFFSET,    -_l_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.Y_OFFSET,    _glyph_count-1, SCRIBBLE_GLYPH.Y_OFFSET,    -_t_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.WIDTH,       _glyph_count-1, SCRIBBLE_GLYPH.WIDTH,       _l_pad + _r_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.HEIGHT,      _glyph_count-1, SCRIBBLE_GLYPH.HEIGHT,      _t_pad + _b_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, _glyph_count-1, SCRIBBLE_GLYPH.FONT_HEIGHT, _t_pad + _b_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.SEPARATION,  _glyph_count-1, SCRIBBLE_GLYPH.SEPARATION,  _separation);
+    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.TEXTURE,     _glyph_count-1, SCRIBBLE_GLYPH.TEXTURE,     sprite_get_texture(_sprite, 0));
+    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.BILINEAR,    _glyph_count-1, SCRIBBLE_GLYPH.BILINEAR,    _smooth);
+    
+    //Figure out the new UVs using some bulk commands
+    var _sprite_uvs = sprite_get_uvs(_sprite, 0);
+    var _sprite_u0 = _sprite_uvs[0];
+    var _sprite_v0 = _sprite_uvs[1];
+    var _sprite_u1 = _sprite_uvs[2];
+    var _sprite_v1 = _sprite_uvs[3];
+    
+    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.V1, 1/_texture_size);
+    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.U0, _sprite_u1 - _sprite_u0);
+    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V0, _glyph_count-1, SCRIBBLE_GLYPH.U0, _sprite_v1 - _sprite_v0);
+    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U1, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_u1 - _sprite_u0);
+    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V1, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_v1 - _sprite_v0);
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.U0, _sprite_u0);
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V0, _glyph_count-1, SCRIBBLE_GLYPH.U0, _sprite_v0);
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U1, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_u0);
+    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V1, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_v0);
 }

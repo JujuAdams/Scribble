@@ -29,7 +29,15 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
         repeat(array_length(_names))
         {
             var _name = _names[_i];
-            if ((_name != "name") && (_name != "glyphs_map"))
+            if (_name == "glyphs_map")
+            {
+                ds_map_copy(_target.glyphs_map, glyphs_map);
+            }
+            else if (_name == "glyph_data_grid")
+            {
+                ds_grid_copy(_target.glyph_data_grid, glyph_data_grid);
+            }
+            else if ((_name != "name") && (_name != "style_regular") && (_name != "style_bold") && (_name != "style_italic") && (_name != "style_bold_italic"))
             {
                 variable_struct_set(_target, _name, variable_struct_get(self, _name));
             }
