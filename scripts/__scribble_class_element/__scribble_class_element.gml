@@ -5,22 +5,22 @@ function __scribble_class_element(_string, _unique_id) constructor
 {
     text       = _string;
     unique_id  = _unique_id;
-    cache_name = _string + ":" + _unique_id;
+    __cache_name = _string + ":" + _unique_id;
     
-    if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + cache_name + "\"");
+    if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + __cache_name + "\"");
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-    var _weak = global.__scribble_ecache_dict[? cache_name];
+    var _weak = global.__scribble_ecache_dict[? __cache_name];
     if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.flushed)
     {
-        __scribble_trace("Warning! Flushing element \"", cache_name, "\" due to cache name collision");
+        __scribble_trace("Warning! Flushing element \"", __cache_name, "\" due to cache name collision");
         _weak.ref.flush();
     }
     
     //Add this text element to the global cache
-    global.__scribble_ecache_dict[? cache_name] = weak_ref_create(self);
+    global.__scribble_ecache_dict[? __cache_name] = weak_ref_create(self);
     ds_list_add(global.__scribble_ecache_list, self);
-    ds_list_add(global.__scribble_ecache_name_list, cache_name);
+    ds_list_add(global.__scribble_ecache_name_list, __cache_name);
     
     flushed = false;
     
@@ -28,7 +28,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     model_cache_name = undefined;
     model = undefined;
     
-    last_drawn = current_time;
+    __last_drawn = current_time;
     freeze = false;
     
     starting_font   = global.__scribble_default_font;
@@ -99,7 +99,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     msdf_border_colour    = c_black;
     msdf_border_thickness = 0.0;
     
-    msdf_feather_thickness = 1.0;
+    __msdf_feather_thickness = 1.0;
     
     __bidi_hint = undefined;
     
@@ -122,25 +122,25 @@ function __scribble_class_element(_string, _unique_id) constructor
         unique_id = _unique_id;
         
         var _new_cache_name = text + ":" + unique_id;
-        if (cache_name != _new_cache_name)
+        if (__cache_name != _new_cache_name)
         {
             flush();
             flushed = false;
             
             model_cache_name_dirty = true;
-            cache_name = _new_cache_name;
+            __cache_name = _new_cache_name;
             
-            var _weak = global.__scribble_ecache_dict[? cache_name];
+            var _weak = global.__scribble_ecache_dict[? __cache_name];
             if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.flushed)
             {
-                __scribble_trace("Warning! Flushing element \"", cache_name, "\" due to cache name collision (try choosing a different unique ID)");
+                __scribble_trace("Warning! Flushing element \"", __cache_name, "\" due to cache name collision (try choosing a different unique ID)");
                 _weak.ref.flush();
             }
             
             //Add this text element to the global cache
-            global.__scribble_ecache_dict[? cache_name] = weak_ref_create(self);
+            global.__scribble_ecache_dict[? __cache_name] = weak_ref_create(self);
             ds_list_add(global.__scribble_ecache_list, self);
-            ds_list_add(global.__scribble_ecache_name_list, cache_name);
+            ds_list_add(global.__scribble_ecache_name_list, __cache_name);
         }
         
         return self;
@@ -669,7 +669,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static msdf_feather = function(_thickness)
     {
-        msdf_feather_thickness = _thickness;
+        __msdf_feather_thickness = _thickness;
         
         return self;
     }
@@ -877,13 +877,13 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (!is_struct(_model)) return undefined;
         
         //If enough time has elapsed since we drew this element then update our animation time
-        if (current_time - last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
+        if (current_time - __last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
         {
             animation_time += animation_tick_speed__*SCRIBBLE_TICK_SIZE;
             if (SCRIBBLE_SAFELY_WRAP_TIME) animation_time = animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
-        last_drawn = current_time;
+        __last_drawn = current_time;
         
         //Update the blink state
         if (global.__scribble_anim_blink_on_duration + global.__scribble_anim_blink_off_duration > 0)
@@ -899,7 +899,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         #region Prepare shaders for drawing
         
-        if (_model.uses_standard_font)
+        if (_model.__uses_standard_font)
         {
             shader_set(__shd_scribble);
             shader_set_uniform_f(global.__scribble_u_fTime, animation_time);
@@ -975,7 +975,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             shader_reset();
         }
         
-        if (_model.uses_msdf_font)
+        if (_model.__uses_msdf_font)
         {
             shader_set(__shd_scribble_msdf);
             shader_set_uniform_f(global.__scribble_msdf_u_fTime, animation_time);
@@ -1094,10 +1094,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     static flush = function()
     {
         if (flushed) return undefined;
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(cache_name) + "\"");
+        if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(__cache_name) + "\"");
         
         //Remove reference from cache
-        ds_map_delete(global.__scribble_ecache_dict, cache_name);
+        ds_map_delete(global.__scribble_ecache_dict, __cache_name);
         var _index = ds_list_find_index(global.__scribble_ecache_list, self);
         if (_index >= 0) ds_list_delete(global.__scribble_ecache_list, _index);
         

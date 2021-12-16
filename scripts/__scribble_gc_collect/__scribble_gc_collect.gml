@@ -31,9 +31,9 @@ function __scribble_gc_collect()
         
         //Only flush if we want to garbage collect this text element and it hasn't been drawn for a while
         var _element = _list[| _index];
-        if (_element.last_drawn + __SCRIBBLE_CACHE_TIMEOUT < current_time)
+        if (_element.__last_drawn + __SCRIBBLE_CACHE_TIMEOUT < current_time)
         {
-            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("\"", _element.cache_name, "\" has timed out (", current_time, " > ", _element.last_drawn, " + ", __SCRIBBLE_CACHE_TIMEOUT, ")");
+            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("\"", _element.__cache_name, "\" has timed out (", current_time, " > ", _element.__last_drawn, " + ", __SCRIBBLE_CACHE_TIMEOUT, ")");
             ds_list_delete(_list, _index);
         }
     }

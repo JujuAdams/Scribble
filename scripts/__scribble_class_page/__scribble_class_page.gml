@@ -71,12 +71,12 @@ function __scribble_class_page() constructor
         {
             if (_pxrange == undefined)
             {
-                _model_struct.uses_standard_font = true;
+                _model_struct.__uses_standard_font = true;
                 var _shader = __shd_scribble;
             }
             else
             {
-                _model_struct.uses_msdf_font = true;
+                _model_struct.__uses_msdf_font = true;
                 var _shader = __shd_scribble_msdf;
             }
             
@@ -159,7 +159,7 @@ function __scribble_class_page() constructor
             {
                 //Set shader uniforms unique to the MSDF shader
                 shader_set_uniform_f(global.__scribble_msdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT]);
-                shader_set_uniform_f(global.__scribble_msdf_u_fMSDFRange, _element.msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE]);
+                shader_set_uniform_f(global.__scribble_msdf_u_fMSDFRange, _element.__msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE]);
                 
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
                 

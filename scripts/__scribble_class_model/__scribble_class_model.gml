@@ -6,29 +6,29 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     //Record the start time so we can get a duration later
     if (SCRIBBLE_VERBOSE) var _timer_total = get_timer();
     
-    cache_name = _model_cache_name;
+    __cache_name = _model_cache_name;
     
     
     
-    if (__SCRIBBLE_DEBUG) __scribble_trace("Caching model \"" + cache_name + "\"");
+    if (__SCRIBBLE_DEBUG) __scribble_trace("Caching model \"", __cache_name, "\"");
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-    var _weak = global.__scribble_mcache_dict[? cache_name];
+    var _weak = global.__scribble_mcache_dict[? __cache_name];
     if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.flushed)
     {
-        __scribble_trace("Warning! Rebuilding model \"", cache_name, "\"");
+        __scribble_trace("Warning! Rebuilding model \"", __cache_name, "\"");
         _weak.ref.flush();
     }
     
     //Add this model to the global cache
-    global.__scribble_mcache_dict[? cache_name] = weak_ref_create(self);
-    ds_list_add(global.__scribble_mcache_name_list, cache_name);
+    global.__scribble_mcache_dict[? __cache_name] = weak_ref_create(self);
+    ds_list_add(global.__scribble_mcache_name_list, __cache_name);
     
-    last_drawn = current_time;
+    __last_drawn = current_time;
     flushed    = false;
     
-    uses_standard_font = false;
-    uses_msdf_font     = false;
+    __uses_standard_font = false;
+    __uses_msdf_font     = false;
     
     characters = 0;
     lines      = 0;
@@ -60,7 +60,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         if (flushed) return undefined;
         if (_element == undefined) return undefined;
         
-        last_drawn = current_time;
+        __last_drawn = current_time;
         
         var _page_data = pages_array[_element.__page];
         if (SCRIBBLE_BOX_ALIGN_TO_PAGE)
@@ -117,12 +117,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     static flush = function()
     {
         if (flushed) return undefined;
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing model \"" + string(cache_name) + "\"");
+        if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing model \"" + string(__cache_name) + "\"");
         
         reset();
         
         //Remove reference from cache
-        ds_map_delete(global.__scribble_mcache_dict, cache_name);
+        ds_map_delete(global.__scribble_mcache_dict, __cache_name);
         
         //Set as flushed
         flushed = true;
@@ -130,7 +130,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     static reset = function()
     {
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Resetting model \"" + string(cache_name) + "\"");
+        if (__SCRIBBLE_DEBUG) __scribble_trace("Resetting model \"" + string(__cache_name) + "\"");
         
         //Flush our pages
         var _i = 0;
@@ -238,7 +238,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         }
     }
     
-    static get_page_array = function()
+    static __get_page_array = function()
     {
         return pages_array;
     }

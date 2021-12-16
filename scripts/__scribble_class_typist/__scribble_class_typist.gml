@@ -272,7 +272,7 @@ function __scribble_class_typist() constructor
         var _model = __last_element.ref.__get_model(true);
         if (!is_struct(_model)) return 2.0; //If there's no model then report that the element is totally faded out
         
-        var _pages_array = _model.get_page_array();
+        var _pages_array = _model.__get_page_array();
         if (array_length(_pages_array) <= __last_page) return 1.0;
         var _page_data = _pages_array[__last_page];
         var _min = 0;
@@ -518,7 +518,7 @@ function __scribble_class_typist() constructor
         
         //Get page data
         //We use this to set the maximum limit for the typewriter feature
-        var _pages_array = _model.get_page_array();
+        var _pages_array = _model.__get_page_array();
         if (array_length(_pages_array) == 0) return undefined;
         var _page_data = _pages_array[__last_page];
         var _page_character_count = _page_data.__character_count;
@@ -682,7 +682,7 @@ function __scribble_class_typist() constructor
             var _model = __last_element.ref.__get_model(true);
             if (!is_struct(_model)) return undefined;
             
-            var _pages_array = _model.get_page_array();
+            var _pages_array = _model.__get_page_array();
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];
@@ -722,7 +722,7 @@ function __scribble_class_typist() constructor
             var _model = __last_element.ref.__get_model(true);
             if (!is_struct(_model)) return undefined;
             
-            var _pages_array = _model.get_page_array();
+            var _pages_array = _model.__get_page_array();
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];
