@@ -538,8 +538,8 @@ function __scribble_buffer_write_unicode(_buffer, _value)
 #region Internal Macro Definitions
 
 // @jujuadams
-#macro __SCRIBBLE_VERSION     "8.0.0 alpha 9"
-#macro __SCRIBBLE_DATE        "2021-12-15"
+#macro __SCRIBBLE_VERSION     "8.0.0 alpha 10"
+#macro __SCRIBBLE_DATE        "2021-12-16"
 #macro __SCRIBBLE_DEBUG       false
 #macro __SCRIBBLE_VERBOSE_GC  false
 
