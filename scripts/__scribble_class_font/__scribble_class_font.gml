@@ -11,16 +11,16 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     glyphs_map = ds_map_create();
     
     msdf         = _msdf;
-    msdf_pxrange = undefined;
-    superfont    = false;
+    __msdf_pxrange = undefined;
+    __superfont    = false;
     
     scale  = 1.0;
     height = 0; //*Not* the raw height. This value is changed by scribble_font_scale()
     
-    style_regular     = undefined;
-    style_bold        = undefined;
-    style_italic      = undefined;
-    style_bold_italic = undefined;
+    __style_regular     = undefined;
+    __style_bold        = undefined;
+    __style_italic      = undefined;
+    __style_bold_italic = undefined;
     
     static copy_to = function(_target)
     {
@@ -37,7 +37,7 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
             {
                 ds_grid_copy(_target.glyph_data_grid, glyph_data_grid);
             }
-            else if ((_name != "name") && (_name != "style_regular") && (_name != "style_bold") && (_name != "style_italic") && (_name != "style_bold_italic"))
+            else if ((_name != "name") && (_name != "__style_regular") && (_name != "__style_bold") && (_name != "__style_italic") && (_name != "__style_bold_italic"))
             {
                 variable_struct_set(_target, _name, variable_struct_get(self, _name));
             }
@@ -54,11 +54,11 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     
     static clear = function()
     {
-        if (!superfont) __scribble_error("Cannot clear non-superfont fonts");
+        if (!__superfont) __scribble_error("Cannot clear non-superfont fonts");
         
         ds_map_clear(glyphs_map);
         
-        msdf_pxrange = undefined;
+        __msdf_pxrange = undefined;
         msdf         = undefined;
         
         height = 0;

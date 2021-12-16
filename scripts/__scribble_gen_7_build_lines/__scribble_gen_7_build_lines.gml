@@ -42,14 +42,14 @@ function __scribble_gen_7_build_lines()
     {
         var _element               = element;
         var _word_count            = word_count;
-        var _line_height_min       = line_height_min;
-        var _line_height_max       = line_height_max;
+        var _line_height_min       = __line_height_min;
+        var _line_height_max       = __line_height_max;
         var _line_spacing_add      = line_spacing_add;
         var _line_spacing_multiply = line_spacing_multiply;
         var _model_max_width       = model_max_width;
         var _model_max_height      = model_max_height;
-        var _wrap_no_pages         = _element.wrap_no_pages;
-        var _wrap_max_scale        = _element.wrap_max_scale;
+        var _wrap_no_pages         = _element.__wrap_no_pages;
+        var _wrap_max_scale        = _element.__wrap_max_scale;
     }
     
     var _fit_to_box_iterations = 0;
@@ -58,8 +58,8 @@ function __scribble_gen_7_build_lines()
     repeat(SCRIBBLE_FIT_TO_BOX_ITERATIONS)
     {
         var _line_max_y                 = 0;
-        var _simulated_model_max_width  = _model_max_width  / fit_scale;
-        var _simulated_model_max_height = _model_max_height / fit_scale;
+        var _simulated_model_max_width  = _model_max_width  / __fit_scale;
+        var _simulated_model_max_height = _model_max_height / __fit_scale;
         
         var _line_count = 0;
         
@@ -255,30 +255,30 @@ function __scribble_gen_7_build_lines()
         if (_line_max_y < _simulated_model_max_height)
         {
             //The text is already small enough to fit!
-            if (fit_scale >= _wrap_max_scale) break;
-            var _lower_limit = fit_scale;
+            if (__fit_scale >= _wrap_max_scale) break;
+            var _lower_limit = __fit_scale;
         }
         else
         {
-            var _upper_limit = fit_scale;
+            var _upper_limit = __fit_scale;
         }
         
         if (_fit_to_box_iterations >= SCRIBBLE_FIT_TO_BOX_ITERATIONS-1)
         {
-            if (fit_scale == _lower_limit) break;
-            fit_scale = (_lower_limit == undefined)? _upper_limit : _lower_limit;
+            if (__fit_scale == _lower_limit) break;
+            __fit_scale = (_lower_limit == undefined)? _upper_limit : _lower_limit;
         }
         else if (_lower_limit == undefined)
         {
-            fit_scale *= 0.5;
+            __fit_scale *= 0.5;
         }
         else if (_upper_limit == undefined)
         {
-            fit_scale = min(_wrap_max_scale, 2*fit_scale);
+            __fit_scale = min(_wrap_max_scale, 2*__fit_scale);
         }
         else
         {
-            fit_scale = _lower_limit + 0.5*(_upper_limit - _lower_limit);
+            __fit_scale = _lower_limit + 0.5*(_upper_limit - _lower_limit);
         }
     }
     

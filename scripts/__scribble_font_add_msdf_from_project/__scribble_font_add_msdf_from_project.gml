@@ -62,7 +62,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
     var _font_data = new __scribble_class_font(_name, _size, true);
     var _font_glyphs_map      = _font_data.glyphs_map;
     var _font_glyph_data_grid = _font_data.glyph_data_grid;
-    _font_data.msdf_pxrange = _msdf_pxrange;
+    _font_data.__msdf_pxrange = _msdf_pxrange;
     
     var _i = 0;
     repeat(_size)

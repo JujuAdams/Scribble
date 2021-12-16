@@ -27,12 +27,12 @@ function __scribble_gen_8_build_pages()
         var _model_max_height      = model_max_height;
         var _line_count            = line_count;
         var _control_count         = control_count;
-        var _wrap_no_pages         = _element.wrap_no_pages;
+        var _wrap_no_pages         = _element.__wrap_no_pages;
         var _line_spacing_add      = line_spacing_add;
         var _line_spacing_multiply = line_spacing_multiply;
     }
     
-    var _simulated_model_height = _wrap_no_pages? infinity : (_model_max_height / fit_scale);
+    var _simulated_model_height = _wrap_no_pages? infinity : (_model_max_height / __fit_scale);
     
     var _model_height = 0;
     

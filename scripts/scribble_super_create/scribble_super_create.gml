@@ -6,5 +6,5 @@ function scribble_super_create(_name)
     __scribble_system();
     
     var _font_data = new __scribble_class_font(_name);
-    _font_data.superfont = true;
+    _font_data.__superfont = true;
 }

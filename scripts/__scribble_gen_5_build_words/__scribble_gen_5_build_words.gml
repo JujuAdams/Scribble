@@ -37,7 +37,7 @@ function __scribble_gen_5_build_words()
         var _element       = element;
         var _glyph_count   = glyph_count;
         var _overall_bidi  = overall_bidi;
-        var _wrap_per_char = _element.wrap_per_char; //TODO - Optimize by checking outside the loop
+        var _wrap_per_char = _element.__wrap_per_char; //TODO - Optimize by checking outside the loop
     }
     
     var _word_count            = 0;

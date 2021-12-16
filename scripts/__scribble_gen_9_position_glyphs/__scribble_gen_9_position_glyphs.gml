@@ -15,8 +15,8 @@ function __scribble_gen_9_position_glyphs()
         var _overall_bidi    = overall_bidi;
         var _model_max_width = model_max_width;
         var _glyph_count     = glyph_count;
-        var _padding_l       = _element.padding_l;
-        var _padding_t       = _element.padding_t;
+        var _padding_l       = _element.__padding_l;
+        var _padding_t       = _element.__padding_t;
     }
     
     //Transform the animation index into a proper packed index
@@ -28,9 +28,9 @@ function __scribble_gen_9_position_glyphs()
     var _model_max_y = -infinity;
     
     var _i = 0;
-    repeat(array_length(pages_array))
+    repeat(array_length(__pages_array))
     {
-        var _page_data = pages_array[_i];
+        var _page_data = __pages_array[_i];
         
         if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE)
         {

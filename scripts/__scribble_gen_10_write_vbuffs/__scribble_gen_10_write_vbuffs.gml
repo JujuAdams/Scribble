@@ -76,8 +76,8 @@ function __scribble_gen_10_write_vbuffs()
     
     var _element     = global.__scribble_generator_state.element;
     var _glyph_count = global.__scribble_generator_state.glyph_count;
-    var _padding_l   = _element.padding_l;
-    var _padding_t   = _element.padding_t;
+    var _padding_l   = _element.__padding_l;
+    var _padding_t   = _element.__padding_t;
     
     
     
@@ -128,7 +128,7 @@ function __scribble_gen_10_write_vbuffs()
     var _p = 0;
     repeat(pages)
     {
-        var _page_data          = pages_array[_p];
+        var _page_data          = __pages_array[_p];
         var _page_events_dict   = _page_data.__events;
         var _vbuff              = undefined;
         var _last_glyph_texture = undefined;
@@ -424,5 +424,5 @@ function __scribble_gen_10_write_vbuffs()
     }
     
     //Ensure we've ended the vertex buffers we created
-    __finalize_vertex_buffers(_element.freeze);
+    __finalize_vertex_buffers(_element.__freeze);
 }

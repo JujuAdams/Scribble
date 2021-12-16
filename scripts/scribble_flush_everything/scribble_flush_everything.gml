@@ -10,7 +10,7 @@ function scribble_flush_everything()
     var _i = 0;
     repeat(ds_list_size(global.__scribble_ecache_list))
     {
-        global.__scribble_ecache_list[| _i].flushed = true;
+        global.__scribble_ecache_list[| _i].__flushed = true;
         ++_i;
     }
     

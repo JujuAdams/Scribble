@@ -33,7 +33,7 @@ function scribble()
         }
         
         var _weak = global.__scribble_ecache_dict[? _string + ":" + _unique_id];
-        if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.flushed)
+        if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.__flushed)
         {
             return new __scribble_class_element(_string, _unique_id);
         }

@@ -1,6 +1,6 @@
 function __scribble_gen_6_finalize_bidi()
 {
-    if (!has_r2l) exit;
+    if (!__has_r2l) exit;
     
     var _word_grid    = global.__scribble_word_grid;
     //var _glyph_count  = global.__scribble_generator_state.glyph_count;

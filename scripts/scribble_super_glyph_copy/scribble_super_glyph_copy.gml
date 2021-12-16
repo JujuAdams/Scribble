@@ -77,19 +77,19 @@ function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data
             __scribble_error("Cannot mix standard/sprite fonts with MSDF fonts (source is not an MSDF font)");
         }
         
-        if (_source_font_data.msdf_pxrange == undefined)
+        if (_source_font_data.__msdf_pxrange == undefined)
         {
             __scribble_error("Source font's MSDF pxrange must be defined before copying glyphs");
         }
         
-        if ((_target_font_data.msdf_pxrange != undefined) && (_target_font_data.msdf_pxrange != _source_font_data.msdf_pxrange))
+        if ((_target_font_data.__msdf_pxrange != undefined) && (_target_font_data.__msdf_pxrange != _source_font_data.__msdf_pxrange))
         {
-            __scribble_error("MSDF font pxrange must match (target = ", _target_font_data.msdf_pxrange, " vs. source = ", _source_font_data.msdf_pxrange, ")");
+            __scribble_error("MSDF font pxrange must match (target = ", _target_font_data.__msdf_pxrange, " vs. source = ", _source_font_data.__msdf_pxrange, ")");
         }
     }
     
     _target_font_data.msdf = _source_font_data.msdf;
-    _target_font_data.msdf_pxrange = _source_font_data.msdf_pxrange;
+    _target_font_data.__msdf_pxrange = _source_font_data.__msdf_pxrange;
     
     //Now calculate the y offset required to centre one font to the other
     if (_target_font_data.height > _source_font_data.height)

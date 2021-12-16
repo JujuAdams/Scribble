@@ -14,7 +14,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
     var _weak = global.__scribble_mcache_dict[? __cache_name];
-    if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.flushed)
+    if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
     {
         __scribble_trace("Warning! Rebuilding model \"", __cache_name, "\"");
         _weak.ref.flush();
@@ -25,7 +25,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     ds_list_add(global.__scribble_mcache_name_list, __cache_name);
     
     __last_drawn = current_time;
-    flushed    = false;
+    __flushed    = false;
     
     __uses_standard_font = false;
     __uses_msdf_font     = false;
@@ -40,16 +40,16 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     max_x      = 0;
     max_y      = 0;
     valign     = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
-    fit_scale  = 1.0;
+    __fit_scale  = 1.0;
     wrapped    = false;
     
-    has_r2l        = false;
-    has_arabic     = false;
-    has_thai       = false;
-    has_hebrew     = false;
-    has_devanagari = false;
+    __has_r2l        = false;
+    __has_arabic     = false;
+    __has_thai       = false;
+    __has_hebrew     = false;
+    __has_devanagari = false;
     
-    pages_array = []; //Stores each page of text
+    __pages_array = []; //Stores each page of text
     
     
     
@@ -57,12 +57,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     static draw = function(_x, _y, _z, _element, _double_draw)
     {
-        if (flushed) return undefined;
+        if (__flushed) return undefined;
         if (_element == undefined) return undefined;
         
         __last_drawn = current_time;
         
-        var _page_data = pages_array[_element.__page];
+        var _page_data = __pages_array[_element.__page];
         if (SCRIBBLE_BOX_ALIGN_TO_PAGE)
         {
             var _model_w = _page_data.width;
@@ -78,15 +78,15 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         {
             __update_scale_to_box_scale();
             
-            var _x_offset = -origin_x;
-            var _y_offset = -origin_y;
-            var _xscale   = xscale*scale_to_box_scale;
-            var _yscale   = yscale*scale_to_box_scale;
-            var _angle    = angle;
+            var _x_offset = -__origin_x;
+            var _y_offset = -__origin_y;
+            var _xscale   = __xscale*__scale_to_box_scale;
+            var _yscale   = __yscale*__scale_to_box_scale;
+            var _angle    = __angle;
         }
         
-        _xscale *= fit_scale;
-        _yscale *= fit_scale;
+        _xscale *= __fit_scale;
+        _yscale *= __fit_scale;
         
         var _old_matrix = matrix_get(matrix_world);
         
@@ -108,7 +108,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         matrix_set(matrix_world, _matrix);
         
         //Now iterate over the text element's vertex buffers and submit them
-        _page_data.__submit(_element, (has_arabic || has_thai) && _double_draw);
+        _page_data.__submit(_element, (__has_arabic || __has_thai) && _double_draw);
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);
@@ -116,7 +116,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     static flush = function()
     {
-        if (flushed) return undefined;
+        if (__flushed) return undefined;
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing model \"" + string(__cache_name) + "\"");
         
         reset();
@@ -124,8 +124,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         //Remove reference from cache
         ds_map_delete(global.__scribble_mcache_dict, __cache_name);
         
-        //Set as flushed
-        flushed = true;
+        //Set as __flushed
+        __flushed = true;
     }
     
     static reset = function()
@@ -134,9 +134,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
         //Flush our pages
         var _i = 0;
-        repeat(array_length(pages_array))
+        repeat(array_length(__pages_array))
         {
-            pages_array[_i].__flush();
+            __pages_array[_i].__flush();
             ++_i;
         }
         
@@ -150,9 +150,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         max_x      = 0;
         max_y      = 0;
         valign     = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
-        fit_scale  = 1.0;
+        __fit_scale  = 1.0;
         
-        pages_array = []; //Stores each page of text
+        __pages_array = []; //Stores each page of text
     }
     
     /// @param page
@@ -160,7 +160,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if ((_page != undefined) && (_page >= 0))
         {
-            var _page_data = pages_array[_page];
+            var _page_data = __pages_array[_page];
             return { left:   _page_data.min_x,
                      top:    _page_data.min_y,
                      right:  _page_data.max_x,
@@ -217,11 +217,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if ((_page != undefined) && (_page >= 0))
         {
-            return fit_scale*pages_array[_page].width;
+            return __fit_scale*__pages_array[_page].width;
         }
         else
         {
-            return fit_scale*width;
+            return __fit_scale*width;
         }
     }
     
@@ -230,17 +230,17 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if ((_page != undefined) && (_page >= 0))
         {
-            return fit_scale*pages_array[_page].height;
+            return __fit_scale*__pages_array[_page].height;
         }
         else
         {
-            return fit_scale*height;
+            return __fit_scale*height;
         }
     }
     
     static __get_page_array = function()
     {
-        return pages_array;
+        return __pages_array;
     }
     
     static get_pages = function()
@@ -253,7 +253,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	{
 		if ((_page == undefined) || (_page < 0)) _page = 0;
 		
-		return pages_array[_page].__height;
+		return __pages_array[_page].__height;
 	}
 	
 	/// @param page
@@ -261,7 +261,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	{
 		if ((_page == undefined) || (_page < 0)) _page = 0;
 		
-		return pages_array[_page].__width;
+		return __pages_array[_page].__width;
 	}
 	
 	/// @param page
@@ -271,7 +271,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 		
         if (!SCRIBBLE_ALLOW_TEXT_GETTER) __scribble_error("Cannot get text, SCRIBBLE_ALLOW_TEXT_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_TEXT_GETTER to <true> to get text");
         
-		return pages_array[_page].__text;
+		return __pages_array[_page].__text;
 	}
 	
 	/// @param page
@@ -279,7 +279,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	{
 		if ((_page == undefined) || (_page < 0)) _page = 0;
 		
-		return pages_array[_page].__get_glyph_data(_index);
+		return __pages_array[_page].__get_glyph_data(_index);
 	}
     
     static get_wrapped = function()
@@ -292,7 +292,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if ((_page == undefined) || (_page < 0)) _page = 0;
         
-        return pages_array[_page].lines;
+        return __pages_array[_page].lines;
     }
     
     /// @param page
@@ -301,14 +301,14 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         if ((_page == undefined) || (_page < 0)) _page = 0;
         
         //N.B. Off by one since we consider the terminating null as a glyph for the purposes of typists
-        return pages_array[_page].__glyph_count - 1;
+        return __pages_array[_page].__glyph_count - 1;
     }
     
     static get_glyph_data_grid = function(_page)
     {
         if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Getting glyph data requires SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to be set to <true>");
         
-        return pages_array[_page].__glyph_grid;
+        return __pages_array[_page].__glyph_grid;
     }
     
     #endregion
@@ -319,7 +319,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         var _page_data = new __scribble_class_page();
         
-        pages_array[@ pages] = _page_data;
+        __pages_array[@ pages] = _page_data;
         pages++;
         
         return _page_data;
@@ -328,9 +328,9 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     static __finalize_vertex_buffers = function(_freeze)
     {
         var _i = 0;
-        repeat(array_length(pages_array))
+        repeat(array_length(__pages_array))
         {
-            pages_array[_i].__finalize_vertex_buffers(_freeze);
+            __pages_array[_i].__finalize_vertex_buffers(_freeze);
             ++_i;
         }
     }
@@ -346,8 +346,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         control_count    = 0;
         word_count       = 0;
         line_count       = 0;
-        line_height_min  = 0;
-        line_height_max  = 0;
+        __line_height_min  = 0;
+        __line_height_max  = 0;
         model_max_width  = 0;
         model_max_height = 0;
         overall_bidi     = _element.__bidi_hint;

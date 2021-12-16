@@ -88,12 +88,12 @@ function __scribble_gen_3_parser()
     //Cache element properties locally
     var _element         = global.__scribble_generator_state.element;
     var _element_text    = _element.text;
-    var _starting_colour = __scribble_process_colour(_element.starting_colour);
-    var _starting_halign = _element.starting_halign;
-    var _starting_valign = _element.starting_valign;
+    var _starting_colour = __scribble_process_colour(_element.__starting_colour);
+    var _starting_halign = _element.__starting_halign;
+    var _starting_valign = _element.__starting_valign;
     var _ignore_commands = _element.__ignore_command_tags;
     
-    var _starting_font = _element.starting_font;
+    var _starting_font = _element.__starting_font;
     if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
     
     var _font_name = _starting_font;
@@ -494,7 +494,7 @@ function __scribble_gen_3_parser()
                     // [/bi]
                     case 24:
                         //Get the required font from the font family
-                        var _new_font = _font_data.style_regular;
+                        var _new_font = _font_data.__style_regular;
                         if (_new_font == undefined)
                         {
                             __scribble_trace("Regular style not set for font \"", _font_name, "\"");
@@ -514,7 +514,7 @@ function __scribble_gen_3_parser()
                     // [b]
                     case 25:
                         //Get the required font from the font family
-                        var _new_font = _font_data.style_bold;
+                        var _new_font = _font_data.__style_bold;
                         if (_new_font == undefined)
                         {
                             __scribble_trace("Bold style not set for font \"", _font_name, "\"");
@@ -533,7 +533,7 @@ function __scribble_gen_3_parser()
                     // [i]
                     case 26:
                         //Get the required font from the font family
-                        var _new_font = _font_data.style_italic;
+                        var _new_font = _font_data.__style_italic;
                         if (_new_font == undefined)
                         {
                             __scribble_trace("Italic style not set for font \"", _font_name, "\"");
@@ -552,7 +552,7 @@ function __scribble_gen_3_parser()
                     // [bi]
                     case 27:
                         //Get the required font from the font family
-                        var _new_font = _font_data.style_bold_italic;
+                        var _new_font = _font_data.__style_bold_italic;
                         if (_new_font == undefined)
                         {
                             __scribble_trace("Bold-Italic style not set for font \"", _font_name, "\"");
@@ -932,7 +932,7 @@ function __scribble_gen_3_parser()
                 {
                     #region Arabic handling
                     
-                    has_arabic = true;
+                    __has_arabic = true;
                     
                     var _buffer_offset = buffer_tell(_string_buffer);
                     var _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, _buffer_offset);
@@ -1013,7 +1013,7 @@ function __scribble_gen_3_parser()
                     {
                         #region C90 Thai handling
                         
-                        has_thai = true;
+                        __has_thai = true;
                         
                         if (_thai_top_map[? _glyph_write] && (_glyph_count >= 1))
                         {
@@ -1103,12 +1103,12 @@ function __scribble_gen_3_parser()
                     else if ((_glyph_write >= 0x0590) && (_glyph_write <= 0x05FF))
                     {
                         //Hebrew handling is, mercifully, straight-forward beyond R2L directionality
-                        has_hebrew = true;
+                        __has_hebrew = true;
                     }
                     else if ((_glyph_write >= 0x0900) && (_glyph_write <= 0x097F))
                     {
                         //Devanagari is so complex it gets its own function
-                        has_devanagari = true;
+                        __has_devanagari = true;
                         
                         //TODO - Follow the 16 unicode rules to reorder Devanagari for GSUB ligature substitution
                     }
@@ -1127,7 +1127,7 @@ function __scribble_gen_3_parser()
     
     __SCRIBBLE_PARSER_PUSH_SCALE;
     
-    if (has_arabic || has_hebrew) has_r2l = true;
+    if (__has_arabic || __has_hebrew) __has_r2l = true;
     
     //Set our vertical alignment if it hasn't been overrided
     if (valign == undefined) valign = _starting_valign;
