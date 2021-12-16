@@ -6,30 +6,28 @@
 function __scribble_font_add_sprite(_sprite, _first, _proportional, _separation)
 {
     var _spritefont = __font_add_sprite__(_sprite, _first, _proportional, _separation);
-    __scribble_font_add_sprite_common(_spritefont, _proportional, _separation);
+    __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, _separation);
     return _spritefont;
 }
 
 function __scribble_font_add_sprite_ext(_sprite, _mapstring, _proportional, _separation)
 {
     var _spritefont = __font_add_sprite_ext__(_sprite, _mapstring, _proportional, _separation);
-    __scribble_font_add_sprite_common(_spritefont, _proportional, _separation);
+    __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, _separation);
     return _spritefont;
 }
 
-function __scribble_font_add_sprite_common(_spritefont, _proportional, _separation)
+function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, _separation)
 {
     var _font_info = font_get_info(_spritefont);
     
-    var _sprite_name = _font_info.name;
+    var _sprite_name = sprite_get_name(_sprite);
     if (ds_map_exists(global.__scribble_font_data, _sprite_name))
     {
         __scribble_error("A spritefont for \"", _sprite_name, "\" has already been added");
     }
     
     var _global_glyph_bidi_map = global.__scribble_glyph_data.bidi_map;
-    
-    var _sprite = asset_get_index(_sprite_name);
     
     if (global.__scribble_default_font == undefined)
     {
