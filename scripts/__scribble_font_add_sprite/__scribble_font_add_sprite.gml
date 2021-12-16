@@ -65,13 +65,13 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _i = 0;
     repeat(_size)
     {
-        var _glyph = _info_glyph_names[_i];
-        var _ord   = ord(_glyph);
-        var _image = _info_glyphs_dict[$ _glyph].char;
+        var _glyph   = _info_glyph_names[_i];
+        var _unicode = ord(_glyph);
+        var _image   = _info_glyphs_dict[$ _glyph].char;
         
         var _uvs = sprite_get_uvs(_sprite, _image);
         
-        if (_ord == 32)
+        if (_unicode == 32)
         {
             if (_proportional)
             {
@@ -91,7 +91,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER   ] = _glyph;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE     ] = _ord;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE     ] = _unicode;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI        ] = __SCRIBBLE_BIDI.WHITESPACE;
             
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET    ] = -_sprite_x_offset;
@@ -112,7 +112,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = undefined;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BILINEAR    ] = undefined;
             
-            _font_glyphs_map[? _ord] = _i;
+            _font_glyphs_map[? _unicode] = _i;
         }
         else
         {
@@ -129,13 +129,13 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
                 var _glyph_separation = _sprite_width + _separation;
             }
             
-            if ((_ord >= 0x4E00) && (_ord <= 0x9FFF)) //CJK Unified ideographs block
+            if ((_unicode >= 0x4E00) && (_unicode <= 0x9FFF)) //CJK Unified ideographs block
             {
                 var _bidi = __SCRIBBLE_BIDI.ISOLATED;
             }
             else
             {
-                var _bidi = _global_glyph_bidi_map[? _ord];
+                var _bidi = _global_glyph_bidi_map[? _unicode];
                 if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
             }
             
@@ -145,7 +145,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             //Build an array to store this glyph's properties
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER   ] = _glyph;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE     ] = _ord;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE     ] = _unicode;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI        ] = _bidi;
            
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET    ] = _x_offset - _sprite_x_offset;
@@ -166,7 +166,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = undefined;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BILINEAR    ] = undefined;
             
-            _font_glyphs_map[? _ord] = _i;
+            _font_glyphs_map[? _unicode] = _i;
         }
         
         ++_i;

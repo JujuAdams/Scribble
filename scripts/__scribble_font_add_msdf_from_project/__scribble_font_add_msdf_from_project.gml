@@ -71,10 +71,10 @@ function __scribble_font_add_msdf_from_project(_sprite)
         var _plane_map = _json_glyph_map[? "planeBounds"];
         var _atlas_map = _json_glyph_map[? "atlasBounds"];
         
-        var _ord  = _json_glyph_map[? "unicode"];
-        var _char = chr(_ord);
+        var _unicode  = _json_glyph_map[? "unicode"];
+        var _char = chr(_unicode);
         
-        if (__SCRIBBLE_DEBUG) __scribble_trace("     Adding data for character \"" + string(_char) + "\" (" + string(_ord) + ")");
+        if (__SCRIBBLE_DEBUG) __scribble_trace("     Adding data for character \"" + string(_char) + "\" (" + string(_unicode) + ")");
         
         if (_atlas_map != undefined)
         {
@@ -124,19 +124,19 @@ function __scribble_font_add_msdf_from_project(_sprite)
         var _u1 = lerp(_sprite_uvs[0], _sprite_uvs[2], _tex_r/_sprite_width );
         var _v1 = lerp(_sprite_uvs[1], _sprite_uvs[3], _tex_b/_sprite_height);
         
-        if ((_ord >= 0x4E00) && (_ord <= 0x9FFF)) //CJK Unified ideographs block
+        if ((_unicode >= 0x4E00) && (_unicode <= 0x9FFF)) //CJK Unified ideographs block
         {
             var _bidi = __SCRIBBLE_BIDI.ISOLATED;
         }
         else
         {
-            var _bidi = _global_glyph_bidi_map[? _ord];
+            var _bidi = _global_glyph_bidi_map[? _unicode];
             if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
         }
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER   ] = _char;
         
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE     ] = _ord;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE     ] = _unicode;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI        ] = _bidi;
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET    ] = _xoffset;
@@ -157,7 +157,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE] = _msdf_pxrange;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BILINEAR    ] = true;
         
-        _font_glyphs_map[? _ord] = _i;
+        _font_glyphs_map[? _unicode] = _i;
         
         ++_i;
     }

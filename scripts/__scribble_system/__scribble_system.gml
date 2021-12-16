@@ -419,8 +419,8 @@ function __scribble_prepare_super_work_array(_input_array)
             var _j = 1;
             repeat(string_length(_glyph_to_copy))
             {
-                var _ord = ord(string_char_at(_glyph_to_copy, _j));
-                array_push(_output_array, [_ord, _ord]);
+                var _unicode = ord(string_char_at(_glyph_to_copy, _j));
+                array_push(_output_array, [_unicode, _unicode]);
                 ++_j;
             }
             
