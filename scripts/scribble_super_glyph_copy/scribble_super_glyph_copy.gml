@@ -43,20 +43,20 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
     {
         var _glyph_range_array = _work_array[_i];
         
-        var _ord = _glyph_range_array[0];
-        repeat(1 + _glyph_range_array[1] - _ord)
+        var _unicode = _glyph_range_array[0];
+        repeat(1 + _glyph_range_array[1] - _unicode)
         {
-            var _source_glyph_data = _source_glyphs_map[? _ord];
+            var _source_glyph_data = _source_glyphs_map[? _unicode];
             if (_source_glyph_data == undefined)
             {
-                __scribble_trace("Warning! Glyph ", _ord, " (", chr(_ord), ") not found in source font");
+                __scribble_trace("Warning! Glyph ", _unicode, " (", chr(_unicode), ") not found in source font");
             }
-            else if (_overwrite || !ds_map_exists(_target_glyphs_map, _ord))
+            else if (_overwrite || !ds_map_exists(_target_glyphs_map, _unicode))
             {
-                _target_glyphs_map[? _ord] = __scribble_glyph_duplicate(_source_glyph_data, _y_offset);
+                _target_glyphs_map[? _unicode] = __scribble_glyph_duplicate(_source_glyph_data, _y_offset);
             }
             
-            ++_ord;
+            ++_unicode;
         }
         
         ++_i;

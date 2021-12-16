@@ -1,6 +1,6 @@
 enum __SCRIBBLE_GEN_GLYPH
 {
-    ORD,              // 0  \   Can be negative, see below
+    UNICODE,          // 0  \   Can be negative, see below
     BIDI,             // 1   |
                       //     |
     X,                // 2   |

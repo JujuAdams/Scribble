@@ -23,11 +23,11 @@ function scribble_super_glyph_delete(_target)
     {
         var _glyph_range_array = _work_array[_i];
         
-        var _ord = _glyph_range_array[0];
-        repeat(1 + _glyph_range_array[1] - _ord)
+        var _unicode = _glyph_range_array[0];
+        repeat(1 + _glyph_range_array[1] - _unicode)
         {
-            ds_map_delete(_glyphs_map, _ord);
-            ++_ord;
+            ds_map_delete(_glyphs_map, _unicode);
+            ++_unicode;
         }
         
         ++_i;

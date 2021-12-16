@@ -64,7 +64,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _i = 0;
     repeat(_glyph_count)
     {
-        var _unicode = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.ORD];
+        var _unicode = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.UNICODE];
         if (_unicode != 32)
         {
             var _width      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.WIDTH ];

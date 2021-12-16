@@ -547,7 +547,7 @@ enum SCRIBBLE_GLYPH
 {
     CHARACTER,     // 0
                    
-    ORD,           // 1 \
+    UNICODE,       // 1 \
     BIDI,          // 2  |
                    //    |
     X_OFFSET,      // 3  |

@@ -136,7 +136,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER   ] = _char;
         
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.ORD         ] = _ord;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE     ] = _ord;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI        ] = _bidi;
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET    ] = _xoffset;

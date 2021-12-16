@@ -143,7 +143,7 @@ function __scribble_gen_10_write_vbuffs()
             with(_page_data)
             {
                 __glyph_grid = ds_grid_create(__glyph_count, __SCRIBBLE_GLYPH_LAYOUT.__SIZE);
-                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH.ORD, __glyph_end, __SCRIBBLE_GEN_GLYPH.ORD, 0, __SCRIBBLE_GLYPH_LAYOUT.UNICODE);
+                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH.UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH.UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT.UNICODE);
                 ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyph_start, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT);
             }
         }
@@ -225,7 +225,7 @@ function __scribble_gen_10_write_vbuffs()
             
             #endregion
             
-            var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.ORD];
+            var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE];
             if (_glyph_ord == __SCRIBBLE_GLYPH_SPRITE)
             {
                 #region Write sprite

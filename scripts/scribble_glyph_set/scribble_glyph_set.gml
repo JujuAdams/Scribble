@@ -53,8 +53,8 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
     }
     else
     {
-        var _ord = ord(_character);
-        var _glyph_index = _map[? _ord];
+        var _unicode = ord(_character);
+        var _glyph_index = _map[? _unicode];
         
         if (_glyph_index == undefined)
         {
@@ -65,7 +65,7 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
         var _new_value = _relative? (_grid[# _glyph_index, _property] + _value) : _value;
         _grid[# _glyph_index, _property] = _new_value;
         
-        if (_ord == 0x20) //Space character separation and width should always be the same
+        if (_unicode == 0x20) //Space character separation and width should always be the same
         {
             if (_property == SCRIBBLE_GLYPH.SEPARATION) _grid[# _glyph_index, SCRIBBLE_GLYPH.WIDTH     ] = _new_value;
             if (_property == SCRIBBLE_GLYPH.WIDTH     ) _grid[# _glyph_index, SCRIBBLE_GLYPH.SEPARATION] = _new_value;

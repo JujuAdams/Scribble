@@ -91,7 +91,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER   ] = _glyph;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.ORD         ] = _ord;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE     ] = _ord;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI        ] = __SCRIBBLE_BIDI.WHITESPACE;
             
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET    ] = -_sprite_x_offset;
@@ -145,9 +145,9 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             //Build an array to store this glyph's properties
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER   ] = _glyph;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.ORD         ] = _ord;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE     ] = _ord;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI        ] = _bidi;
-            
+           
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET    ] = _x_offset - _sprite_x_offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET    ] = _image_info.y_offset - _sprite_y_offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH       ] = _w;
