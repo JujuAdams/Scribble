@@ -23,6 +23,7 @@ function __scribble_class_page() constructor
     __texture_to_vertex_buffer_dict = {};
     
     __events = {};
+    __region_array = [];
     
     static __get_glyph_data = function(_index)
     {

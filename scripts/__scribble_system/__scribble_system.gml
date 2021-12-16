@@ -140,6 +140,8 @@ _map[? "b"         ] = 25;
 _map[? "i"         ] = 26;
 _map[? "bi"        ] = 27;
 _map[? "surface"   ] = 28;
+_map[? "region"    ] = 29;
+_map[? "/region"   ] = 30;
 global.__scribble_command_tag_lookup_accelerator = _map;
 
 //Add bindings for default effect names
@@ -184,6 +186,8 @@ global.__scribble_passthrough_vertex_format = vertex_format_end();
 global.__scribble_u_fTime                    = shader_get_uniform(__shd_scribble, "u_fTime"                   );
 global.__scribble_u_vColourBlend             = shader_get_uniform(__shd_scribble, "u_vColourBlend"            );
 global.__scribble_u_vGradient                = shader_get_uniform(__shd_scribble, "u_vGradient"               );
+global.__scribble_u_vRegionActive            = shader_get_uniform(__shd_scribble, "u_vRegionActive"           );
+global.__scribble_u_vRegionColour            = shader_get_uniform(__shd_scribble, "u_vRegionColour"           );
 global.__scribble_u_aDataFields              = shader_get_uniform(__shd_scribble, "u_aDataFields"             );
 global.__scribble_u_aBezier                  = shader_get_uniform(__shd_scribble, "u_aBezier"                 );
 global.__scribble_u_fBlinkState              = shader_get_uniform(__shd_scribble, "u_fBlinkState"             );
@@ -199,6 +203,8 @@ global.__scribble_u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble
 global.__scribble_msdf_u_fTime                    = shader_get_uniform(__shd_scribble_msdf, "u_fTime"                   );
 global.__scribble_msdf_u_vColourBlend             = shader_get_uniform(__shd_scribble_msdf, "u_vColourBlend"            );
 global.__scribble_msdf_u_vGradient                = shader_get_uniform(__shd_scribble_msdf, "u_vGradient"               );
+global.__scribble_msdf_u_vRegionActive            = shader_get_uniform(__shd_scribble_msdf, "u_vRegionActive"           );
+global.__scribble_msdf_u_vRegionColour            = shader_get_uniform(__shd_scribble_msdf, "u_vRegionColour"           );
 global.__scribble_msdf_u_aDataFields              = shader_get_uniform(__shd_scribble_msdf, "u_aDataFields"             );
 global.__scribble_msdf_u_aBezier                  = shader_get_uniform(__shd_scribble_msdf, "u_aBezier"                 );
 global.__scribble_msdf_u_fBlinkState              = shader_get_uniform(__shd_scribble_msdf, "u_fBlinkState"             );

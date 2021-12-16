@@ -46,7 +46,8 @@ enum __SCRIBBLE_GEN_CONTROL_TYPE
     HALIGN,
     COLOUR,
     EFFECT,
-    CYCLE
+    CYCLE,
+    REGION,
 }
 
 //These can be used for ORD

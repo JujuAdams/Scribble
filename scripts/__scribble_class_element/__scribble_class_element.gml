@@ -105,6 +105,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __z = SCRIBBLE_DEFAULT_Z;
     
+    __region_active      = undefined;
+    __region_glyph_start = 0;
+    __region_glyph_end   = 0;
+    __region_colour      = c_black;
+    __region_blend       = 0.0;
     
     
     #region Setters
@@ -551,6 +556,96 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     
     
+    #region Regions
+    
+    static region_detect = function(_element_x, _element_y, _pointer_x, _pointer_y)
+    {
+        //TODO - Include transforms here. More efficient to convert x/y into element-space than to go the other way
+        var _x = _pointer_x - _element_x;
+        var _y = _pointer_y - _element_y;
+        
+        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> to use .region_detect()");
+        
+        var _model        = __get_model(true);
+        var _page         = _model.pages_array[__page];
+        var _region_array = _page.__region_array;
+        var _glyph_grid   = _page.__glyph_grid;
+        
+        var _found = undefined;
+        var _i = 0;
+        repeat(array_length(_region_array))
+        {
+            var _region = _region_array[_i];
+            var _glyph_start = _region.__start_glyph;
+            var _glyph_end   = _region.__end_glyph;
+            
+            var _j = _glyph_start;
+            repeat(1 + _glyph_end - _glyph_start)
+            {
+                if ((_x >= _glyph_grid[# _j, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ])
+                &&  (_y >= _glyph_grid[# _j, __SCRIBBLE_GLYPH_LAYOUT.TOP   ])
+                &&  (_x <= _glyph_grid[# _j, __SCRIBBLE_GLYPH_LAYOUT.RIGHT ])
+                &&  (_y <= _glyph_grid[# _j, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM]))
+                {
+                    _found = _region.__name;
+                    break;
+                }
+                
+                ++_j;
+            }
+            
+            if (_found != undefined) break;
+            ++_i;
+        }
+        
+        return _found;
+    }
+    
+    static region_set_active = function(_name, _colour, _blend_amount)
+    {
+        if (!is_string(_name))
+        {
+            __region_active      = undefined;
+            __region_glyph_start = 0;
+            __region_glyph_end   = 0;
+            __region_colour      = c_black;
+            __region_blend       = 0.0;
+            return;
+        }
+        
+        var _model        = __get_model(true);
+        var _page         = _model.pages_array[__page];
+        var _region_array = _page.__region_array;
+        
+        var _i = 0;
+        repeat(array_length(_region_array))
+        {
+            var _region = _region_array[_i];
+            if (_region.__name == _name)
+            {
+                __region_active      = _name;
+                __region_glyph_start = _region.__start_glyph;
+                __region_glyph_end   = _region.__end_glyph;
+                __region_colour      = _colour;
+                __region_blend       = _blend_amount;
+                return;
+            }
+            
+            ++_i;
+        }
+        
+        __scribble_error("Region \"", _name, "\" not found");
+    }
+    
+    static region_get_active = function()
+    {
+        return __region_active;
+    }
+    
+    #endregion
+    
+    
+    
     #region MSDF
     
     static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.1)
@@ -800,6 +895,8 @@ function __scribble_class_element(_string, _unique_id) constructor
             animation_blink_state = true;
         }
         
+        
+        
         #region Prepare shaders for drawing
         
         if (_model.uses_standard_font)
@@ -817,6 +914,13 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                 colour_get_green(gradient_colour)/255,
                                                                 colour_get_blue( gradient_colour)/255,
                                                                 gradient_alpha);
+            
+            shader_set_uniform_f(global.__scribble_u_vRegionActive, __region_glyph_start, __region_glyph_end);
+            
+            shader_set_uniform_f(global.__scribble_u_vRegionColour, colour_get_red(  __region_colour)/255,
+                                                                    colour_get_green(__region_colour)/255,
+                                                                    colour_get_blue( __region_colour)/255,
+                                                                    __region_blend);
             
             shader_set_uniform_f(global.__scribble_u_fBlinkState, animation_blink_state);
             
@@ -886,6 +990,13 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                      colour_get_green(gradient_colour)/255,
                                                                      colour_get_blue( gradient_colour)/255,
                                                                      gradient_alpha);
+            
+            shader_set_uniform_f(global.__scribble_msdf_u_vRegionActive, __region_glyph_start, __region_glyph_end);
+            
+            shader_set_uniform_f(global.__scribble_msdf_u_vRegionColour, colour_get_red(  __region_colour)/255,
+                                                                         colour_get_green(__region_colour)/255,
+                                                                         colour_get_blue( __region_colour)/255,
+                                                                         __region_blend);
             
             shader_set_uniform_f(global.__scribble_msdf_u_fBlinkState, animation_blink_state);
             

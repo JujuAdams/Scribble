@@ -122,6 +122,8 @@ function __scribble_gen_10_write_vbuffs()
     var _write_colour       = 0xFFFFFFFF;
     
     var _control_index = 0;
+    var _region        = undefined;
+    var _region_start  = undefined;
     
     var _p = 0;
     repeat(pages)
@@ -195,6 +197,26 @@ function __scribble_gen_10_write_vbuffs()
                         var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
                         _event.position = _animation_index; //Update the glyph index to the *local* glyph index for the page
                         array_push(_event_array, _event);
+                    break;
+                    
+                    case __SCRIBBLE_GEN_CONTROL_TYPE.REGION:
+                        if (_region != undefined)
+                        {
+                            var _region_end = _i - 1;
+                            if (_region_start <= _region_end)
+                            {
+                                //Only store a region that actually covers a glyph
+                                array_push(_page_data.__region_array, {
+                                    __name        : _region,
+                                    __start_glyph : _region_start - _page_data.__glyph_start,
+                                    __end_glyph   : _region_end - _page_data.__glyph_start,
+                                });
+                            }
+                        }
+                        
+                        // [/region] just sets the .DATA field to undefined
+                        _region = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
+                        _region_start = _i;
                     break;
                 }
                 
@@ -345,6 +367,24 @@ function __scribble_gen_10_write_vbuffs()
             }
             
             ++_i;
+        }
+        
+        //If we have a hanging glyph then ensure we pop it onto the page we left
+        if (_region != undefined)
+        {
+            var _region_end = _i - 1;
+            if (_region_start <= _region_end)
+            {
+                //Only store a region that actually covers a glyph
+                array_push(_page_data.__region_array, {
+                    __name        : _region,
+                    __start_glyph : _region_start - _page_data.__glyph_start,
+                    __end_glyph   : _region_end - _page_data.__glyph_start,
+                });
+            }
+            
+            //Set up so that we still have a region open on the next page
+            _region_start = _i;
         }
         
         if (SCRIBBLE_ALLOW_TEXT_GETTER)

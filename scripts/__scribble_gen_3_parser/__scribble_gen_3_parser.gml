@@ -607,7 +607,25 @@ function __scribble_gen_3_parser()
                     break;
                     
                     #endregion
-                            
+                    
+                    #region Regions
+                    
+                    case 29:
+                        if (array_length(_tag_parameters) != 2) __scribble_error("[region] tags must contain a name e.g. [region,This is a region]");
+                        
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.REGION;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _tag_parameters[1];
+                        ++_control_count;
+                    break;
+                    
+                    case 30:
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.REGION;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = undefined;
+                        ++_control_count;
+                    break;
+                    
+                    #endregion
+                    
                     default: //TODO - Optimize
                         if (ds_map_exists(global.__scribble_effects, _tag_command_name)) //Set an effect
                         {
