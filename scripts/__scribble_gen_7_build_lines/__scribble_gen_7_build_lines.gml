@@ -138,7 +138,7 @@ function __scribble_gen_7_build_lines()
                             
                             var _j = _new_word_glyph_start;
                             var _glyph_width = _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.SEPARATION];
-                            if (_word_x + _glyph_width >= _simulated_model_max_width)
+                            if ((_word_x + _glyph_width >= _simulated_model_max_width) && (_i > _line_word_start))
                             {
                                 var _line_word_end = _i-1;
                                 __SCRIBBLE_GEN_LINE_END;
