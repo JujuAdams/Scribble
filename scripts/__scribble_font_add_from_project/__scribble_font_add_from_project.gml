@@ -56,8 +56,8 @@ function __scribble_font_add_from_project(_font)
     }
     
     var _font_data = new __scribble_class_font(_name, _size, false);
-    var _font_glyphs_map      = _font_data.glyphs_map;
-    var _font_glyph_data_grid = _font_data.glyph_data_grid;
+    var _font_glyphs_map      = _font_data.__glyphs_map;
+    var _font_glyph_data_grid = _font_data.__glyph_data_grid;
     
     var _i = 0;
     repeat(_size)
@@ -116,7 +116,7 @@ function __scribble_font_add_from_project(_font)
         ++_i;
     }
     
-    _font_data.calculate_font_height();
+    _font_data.__calculate_font_height();
     
     //Check to see if this texture has been resized during compile
     var _GM_scaling = _font_glyph_data_grid[# _font_glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT] / _font_info.size;

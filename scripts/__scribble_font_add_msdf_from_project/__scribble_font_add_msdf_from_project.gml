@@ -60,8 +60,8 @@ function __scribble_font_add_msdf_from_project(_sprite)
     if (SCRIBBLE_VERBOSE) __scribble_trace("\"" + _name + "\" has " + string(_size) + " characters");
     
     var _font_data = new __scribble_class_font(_name, _size, true);
-    var _font_glyphs_map      = _font_data.glyphs_map;
-    var _font_glyph_data_grid = _font_data.glyph_data_grid;
+    var _font_glyphs_map      = _font_data.__glyphs_map;
+    var _font_glyph_data_grid = _font_data.__glyph_data_grid;
     _font_data.__msdf_pxrange = _msdf_pxrange;
     
     var _i = 0;
@@ -176,5 +176,5 @@ function __scribble_font_add_msdf_from_project(_sprite)
     
     ds_map_destroy(_json);
     
-    _font_data.calculate_font_height();
+    _font_data.__calculate_font_height();
 }

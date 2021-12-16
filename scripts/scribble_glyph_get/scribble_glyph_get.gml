@@ -13,8 +13,8 @@ function scribble_glyph_get(_font, _character, _property)
 {
     var _font_data = global.__scribble_font_data[? _font ];
 
-    var _grid = _font_data.glyph_data_grid;
-    var _map  = _font_data.glyphs_map;
+    var _grid = _font_data.__glyph_data_grid;
+    var _map  = _font_data.__glyphs_map;
     var _glyph_index = _map[? ord(_character)];
     
     if (_glyph_index == undefined)

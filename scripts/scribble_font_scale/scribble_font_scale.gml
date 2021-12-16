@@ -13,12 +13,12 @@ function scribble_font_scale(_font, _scale)
     }
     
     var _font_data = global.__scribble_font_data[? _font];
-    var _grid = _font_data.glyph_data_grid;
-    var _map  = _font_data.glyphs_map;
+    var _grid = _font_data.__glyph_data_grid;
+    var _map  = _font_data.__glyphs_map;
     
     _font_data.scale *= _scale;
     
     ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.X_OFFSET, ds_map_size(_map) - 1, SCRIBBLE_GLYPH.FONT_SCALE, _scale);
     
-    _font_data.calculate_font_height();
+    _font_data.__calculate_font_height();
 }

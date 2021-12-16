@@ -22,8 +22,8 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
     //Verify that the two fonts can be used together
     var _y_offset = __scribble_super_glyph_copy_common(_target_font_data, _source_font_data);
     
-    var _target_glyphs_map = _target_font_data.glyphs_map;
-    var _source_glyphs_map = _source_font_data.glyphs_map;
+    var _target_glyphs_map = _target_font_data.__glyphs_map;
+    var _source_glyphs_map = _source_font_data.__glyphs_map;
     
     //Copy arguments into an array
     var _glyphs_array = array_create(argument_count - 3);
@@ -99,7 +99,7 @@ function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data
     
     if (_target_font_data.height < _source_font_data.height)
     {
-        var _glyphs_map = _target_font_data.glyphs_map;
+        var _glyphs_map = _target_font_data.__glyphs_map;
         if (ds_map_size(_glyphs_map) > 0)
         {
             var _y_offset = (_source_font_data.height - _target_font_data.height) div 2;

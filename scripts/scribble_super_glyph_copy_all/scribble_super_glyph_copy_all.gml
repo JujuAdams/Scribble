@@ -20,8 +20,8 @@ function scribble_super_glyph_copy_all(_target, _source, _overwrite)
     //Verify that the two fonts can be used together
     var _y_offset = __scribble_super_glyph_copy_common(_target_font_data, _source_font_data);
     
-    var _target_glyphs_map = _target_font_data.glyphs_map;
-    var _source_glyphs_map = _source_font_data.glyphs_map;
+    var _target_glyphs_map = _target_font_data.__glyphs_map;
+    var _source_glyphs_map = _source_font_data.__glyphs_map;
     
     var _keys_array = ds_map_keys_to_array(_source_glyphs_map);
     var _i = 0;

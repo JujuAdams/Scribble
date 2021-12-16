@@ -59,8 +59,8 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _size = array_length(_info_glyph_names);
     
     var _font_data = new __scribble_class_font(_sprite_name, _size, false);
-    var _font_glyphs_map      = _font_data.glyphs_map;
-    var _font_glyph_data_grid = _font_data.glyph_data_grid;
+    var _font_glyphs_map      = _font_data.__glyphs_map;
+    var _font_glyph_data_grid = _font_data.__glyph_data_grid;
     
     var _i = 0;
     repeat(_size)
@@ -172,7 +172,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         ++_i;
     }
     
-    _font_data.calculate_font_height();
+    _font_data.__calculate_font_height();
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"", _sprite_name, "\" as a spritefont");
     

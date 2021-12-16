@@ -47,8 +47,8 @@
 
 
 #macro __SCRIBBLE_PARSER_SET_FONT   var _font_data            = __scribble_get_font_data(_font_name);\
-                                    var _font_glyph_data_grid = _font_data.glyph_data_grid;\
-                                    var _font_glyphs_map      = _font_data.glyphs_map;\
+                                    var _font_glyph_data_grid = _font_data.__glyph_data_grid;\
+                                    var _font_glyphs_map      = _font_data.__glyphs_map;\
                                     var _space_data_index     = _font_glyphs_map[? 32];\
                                     if (_space_data_index == undefined)\
                                     {\

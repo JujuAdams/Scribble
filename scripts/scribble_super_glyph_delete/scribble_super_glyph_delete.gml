@@ -3,7 +3,7 @@ function scribble_super_glyph_delete(_target)
     var _font_data = global.__scribble_font_data[? _target];
     if (_font_data == undefined) __scribble_error("Font \"", _font_data, "\" not found");
     
-    var _glyphs_map = _font_data.glyphs_map;
+    var _glyphs_map = _font_data.__glyphs_map;
     
     //Copy arguments into an array
     var _glyphs_array = array_create(argument_count - 1);
