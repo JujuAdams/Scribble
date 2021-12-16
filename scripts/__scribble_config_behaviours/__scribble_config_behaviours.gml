@@ -13,7 +13,7 @@
 #macro SCRIBBLE_TAB_WIDTH                     4      //Width of a horizontal tab, as a number of spaces
 #macro SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE  false
 #macro SCRIBBLE_ALLOW_TEXT_GETTER             false
-#macro SCRIBBLE_ALLOW_GLYPH_DATA_GETTER       true
+#macro SCRIBBLE_ALLOW_GLYPH_DATA_GETTER       false
 
 
 
