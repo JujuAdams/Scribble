@@ -260,7 +260,7 @@ This function can also be executed with zero arguments (e.g. `scribble("text").b
 |`pointerX`|number  |x position of the mouse/cursor                                                                             |
 |`pointerY`|number  |y position of the mouse/cursor                                                                             |
 
-This function returns the name of a region if one is being hovered over. You can define a region in your text by using the `[region,<name>]` / `[/region]` formatting tags.
+This function returns the name of a region if one is being hovered over. You can define a region in your text by using the `[region,<name>]` and `[/region]` formatting tags.
 
 !> Using this function requires that `SCRIBBLE_ALLOW_GLYPH_DATA_GETTER` be set to `true`.
 
@@ -276,7 +276,7 @@ This function returns the name of a region if one is being hovered over. You can
 |`colour`     |integer |Colour to highlight the region (a standard GameMaker BGR colour)       |
 |`blendAmount`|number  |Blend factor to apply for the highlighted region                       |
 
-This function expects the name of a region that has been defined in your text using the `[region,<name>]` / `[/region]` formatting tags. You can get the name of the region that the player is currently highlighting with their cursor by using `.region_detect()`.
+This function expects the name of a region that has been defined in your text using the `[region,<name>]` and `[/region]` formatting tags. You can get the name of the region that the player is currently highlighting with their cursor by using `.region_detect()`.
 
 &nbsp;
 
