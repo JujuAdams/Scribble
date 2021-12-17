@@ -9,4 +9,4 @@
 
 - ### [Download the .yymps](https://github.com/JujuAdams/scribble/releases/)
 - ### Read the [documentation](http://jujuadams.github.io/Scribble)
-- ### Talk about Input on the [Discord server](https://discord.gg/8krYCqr)
+- ### Talk about Scribble on the [Discord server](https://discord.gg/8krYCqr)
