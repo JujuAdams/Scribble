@@ -16,9 +16,9 @@
 
 function __scribble_gen_8_build_pages()
 {
-    var _glyph_grid   = global.__scribble_glyph_grid;
-    var _word_grid    = global.__scribble_word_grid;
-    var _line_grid    = global.__scribble_line_grid;
+    var _glyph_grid = global.__scribble_glyph_grid;
+    var _word_grid  = global.__scribble_word_grid;
+    var _line_grid  = global.__scribble_line_grid;
     
     with(global.__scribble_generator_state)
     {
@@ -49,7 +49,7 @@ function __scribble_gen_8_build_pages()
         var _line_height        = _line_grid[# _i, __SCRIBBLE_GEN_LINE.HEIGHT            ];
         var _starts_manual_page = _line_grid[# _i, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE];
         
-        if (!_starts_manual_page && (_line_y + _line_height < _simulated_model_height))
+        if (!_starts_manual_page && (_line_y + _line_height < _simulated_model_height) && (_page_start_line < _page_end_line))
         {
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.Y] = _line_y;
             if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
