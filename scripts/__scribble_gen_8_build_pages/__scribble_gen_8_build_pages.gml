@@ -19,7 +19,6 @@ function __scribble_gen_8_build_pages()
     var _glyph_grid   = global.__scribble_glyph_grid;
     var _word_grid    = global.__scribble_word_grid;
     var _line_grid    = global.__scribble_line_grid;
-    var _control_grid = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
     
     with(global.__scribble_generator_state)
     {
