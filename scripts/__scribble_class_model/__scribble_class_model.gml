@@ -161,10 +161,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         if ((_page != undefined) && (_page >= 0))
         {
             var _page_data = __pages_array[_page];
-            return { left:   _page_data.min_x,
-                     top:    _page_data.min_y,
-                     right:  _page_data.max_x,
-                     bottom: _page_data.max_y, };
+            return { left:   _page_data.__min_x,
+                     top:    _page_data.__min_y,
+                     right:  _page_data.__max_x,
+                     bottom: _page_data.__max_y, };
         }
         else
         {
