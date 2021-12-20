@@ -49,7 +49,7 @@ function __scribble_gen_8_build_pages()
         var _line_height        = _line_grid[# _i, __SCRIBBLE_GEN_LINE.HEIGHT            ];
         var _starts_manual_page = _line_grid[# _i, __SCRIBBLE_GEN_LINE.STARTS_MANUAL_PAGE];
         
-        if (!_starts_manual_page && (_line_y + _line_height < _simulated_model_height) && (_page_start_line < _page_end_line))
+        if (!_starts_manual_page && ((_line_y + _line_height < _simulated_model_height) || (_page_start_line >= _i)))
         {
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.Y] = _line_y;
             if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
