@@ -1,6 +1,6 @@
 // @jujuadams
-#macro __SCRIBBLE_VERSION     "8.0.0 alpha 10"
-#macro __SCRIBBLE_DATE        "2021-12-16"
+#macro __SCRIBBLE_VERSION     "8.0.0 alpha 11"
+#macro __SCRIBBLE_DATE        "2021-12-20"
 #macro __SCRIBBLE_DEBUG       false
 #macro __SCRIBBLE_VERBOSE_GC  false
 
