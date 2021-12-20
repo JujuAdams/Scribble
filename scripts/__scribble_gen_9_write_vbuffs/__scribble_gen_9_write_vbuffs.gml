@@ -63,7 +63,7 @@
 
 
 
-function __scribble_gen_10_write_vbuffs()
+function __scribble_gen_9_write_vbuffs()
 {
     if (SCRIBBLE_ALLOW_TEXT_GETTER)
     {

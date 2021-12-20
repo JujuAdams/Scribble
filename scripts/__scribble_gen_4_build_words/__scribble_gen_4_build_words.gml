@@ -25,7 +25,7 @@
                                 __SCRIBBLE_GEN_WORD_START;
 
 
-function __scribble_gen_5_build_words()
+function __scribble_gen_4_build_words()
 {
     //Unpack generator state
     //Cache globals locally for a performance boost

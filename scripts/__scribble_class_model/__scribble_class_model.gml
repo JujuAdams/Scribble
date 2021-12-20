@@ -352,15 +352,14 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     };
     
     __scribble_gen_1_model_limits_and_bezier_curves();
-    //TODO - Fix numbering
-    __scribble_gen_3_parser();
-    __scribble_gen_4_devanagari();
-    __scribble_gen_5_build_words();
-    __scribble_gen_6_finalize_bidi();
-    __scribble_gen_7_build_lines();
-    __scribble_gen_8_build_pages();
-    __scribble_gen_9_position_glyphs();
-    __scribble_gen_10_write_vbuffs();
+    __scribble_gen_2_parser();
+    __scribble_gen_3_devanagari();
+    __scribble_gen_4_build_words();
+    __scribble_gen_5_finalize_bidi();
+    __scribble_gen_6_build_lines();
+    __scribble_gen_7_build_pages();
+    __scribble_gen_8_position_glyphs();
+    __scribble_gen_9_write_vbuffs();
     
     if (SCRIBBLE_VERBOSE)
     {

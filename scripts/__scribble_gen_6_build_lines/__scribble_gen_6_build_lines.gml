@@ -30,7 +30,7 @@
                                 _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
 
 
-function __scribble_gen_7_build_lines()
+function __scribble_gen_6_build_lines()
 {
     var _glyph_grid   = global.__scribble_glyph_grid;
     var _word_grid    = global.__scribble_word_grid;
