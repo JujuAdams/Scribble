@@ -355,7 +355,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 var _i = 0;
                 repeat(array_length(_template))
                 {
-                    _template[_i]();
+                    method(self, _template[_i])();
                     ++_i;
                 }
             }
@@ -366,7 +366,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             {
                 __template = _template;
                 
-                _template();
+                method(self, _template)();
             }
         }
         
