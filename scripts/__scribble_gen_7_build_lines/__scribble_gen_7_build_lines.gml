@@ -107,6 +107,8 @@ function __scribble_gen_7_build_lines()
                 
                 if (_word_x + _word_width >= _simulated_model_max_width)
                 {
+                    __wrapped = true;
+                    
                     if (_word_width >= _simulated_model_max_width)
                     {
                         #region Emergency! We're going to have to retroactively implement per-glyph line wrapping

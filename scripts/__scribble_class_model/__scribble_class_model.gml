@@ -41,7 +41,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     max_y      = 0;
     valign     = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
     __fit_scale  = 1.0;
-    wrapped    = false;
+    __wrapped    = false;
     
     __has_r2l        = false;
     __has_arabic     = false;
@@ -284,7 +284,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     static get_wrapped = function()
     {
-        return wrapped;
+        return __wrapped;
     }
     
     /// @param page
