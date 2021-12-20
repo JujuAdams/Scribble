@@ -1168,7 +1168,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             case fa_right:  _l -= _w;   break;
         }
         
-        switch(_model.valign)
+        switch(_model.__valign)
         {
             case fa_top:                break;
             case fa_middle: _t -= _h/2; break;

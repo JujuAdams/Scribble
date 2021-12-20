@@ -30,16 +30,14 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __uses_standard_font = false;
     __uses_msdf_font     = false;
     
-    characters = 0;
-    lines      = 0;
-    pages      = 0;
+    __pages      = 0;
     __width      = 0;
     __height     = 0;
-    min_x      = 0;
-    min_y      = 0;
-    max_x      = 0;
-    max_y      = 0;
-    valign     = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
+    __min_x      = 0;
+    __min_y      = 0;
+    __max_x      = 0;
+    __max_y      = 0;
+    __valign     = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
     __fit_scale  = 1.0;
     __wrapped    = false;
     
@@ -140,16 +138,14 @@ function __scribble_class_model(_element, _model_cache_name) constructor
             ++_i;
         }
         
-        characters = 0;
-        lines      = 0;
-        pages      = 0;
+        __pages      = 0;
         __width      = 0;
         __height     = 0;
-        min_x      = 0;
-        min_y      = 0;
-        max_x      = 0;
-        max_y      = 0;
-        valign     = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
+        __min_x      = 0;
+        __min_y      = 0;
+        __max_x      = 0;
+        __max_y      = 0;
+        __valign     = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
         __fit_scale  = 1.0;
         
         __pages_array = []; //Stores each page of text
@@ -168,10 +164,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         }
         else
         {
-            return { left:   min_x,
-                     top:    min_y,
-                     right:  max_x,
-                     bottom: max_y, };
+            return { left:   __min_x,
+                     top:    __min_y,
+                     right:  __max_x,
+                     bottom: __max_y, };
         }
     }
     
@@ -245,7 +241,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     static get_pages = function()
     {
-        return pages;
+        return __pages;
     }
 	
 	/// @param page
@@ -292,7 +288,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if ((_page == undefined) || (_page < 0)) _page = 0;
         
-        return __pages_array[_page].lines;
+        return __pages_array[_page].__lines;
     }
     
     /// @param page
@@ -319,8 +315,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         var _page_data = new __scribble_class_page();
         
-        __pages_array[@ pages] = _page_data;
-        pages++;
+        __pages_array[@ __pages] = _page_data;
+        __pages++;
         
         return _page_data;
     }
@@ -369,6 +365,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     if (SCRIBBLE_VERBOSE)
     {
         var _elapsed = (get_timer() - _timer_total)/1000;
-        __scribble_trace("scribble_cache() took ", _elapsed, "ms for ", characters, " characters (ratio=", string_format(_elapsed/characters, 0, 6), ")");
+        __scribble_trace("scribble_cache() took ", _elapsed, "ms");
     }
 }

@@ -126,7 +126,7 @@ function __scribble_gen_10_write_vbuffs()
     var _region_start  = undefined;
     
     var _p = 0;
-    repeat(pages)
+    repeat(__pages)
     {
         var _page_data          = __pages_array[_p];
         var _page_events_dict   = _page_data.__events;
@@ -394,8 +394,6 @@ function __scribble_gen_10_write_vbuffs()
             buffer_seek(_string_buffer, buffer_seek_start, 0);
             _page_data.__text = buffer_read(_string_buffer, buffer_string);
         }
-        
-        characters += _page_data.__character_count;
         
         ++_p;
     }

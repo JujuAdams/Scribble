@@ -229,15 +229,13 @@ function __scribble_gen_9_position_glyphs()
         ++_i;
     }
     
-    characters = _glyph_count;
-    
     if (_model_min_x == infinity) _model_min_x = 0;
     
-    min_x = _model_min_x;
-    min_y = _model_min_y;
-    max_x = max(_model_min_x, _model_max_x);
-    max_y = _model_max_y;
+   __min_x = _model_min_x;
+   __min_y = _model_min_y;
+   __max_x = max(_model_min_x, _model_max_x);
+   __max_y = _model_max_y;
     
-    __width  = 1 + max_x - min_x;
-    __height = 1 + max_y - min_y;
+    __width  = 1 + __max_x - __min_x;
+    __height = 1 + __max_y - __min_y;
 }
