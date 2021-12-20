@@ -16,6 +16,8 @@ function __scribble_class_typist() constructor
     __sound_per_char_exception      = false;
     __sound_per_char_exception_dict = undefined;
     
+    __ignore_delay = false;
+    
     __function       = undefined;
     __function_scope = undefined;
     
@@ -47,7 +49,6 @@ function __scribble_class_typist() constructor
         __window_index = 0;
         __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
         __skip         = false;
-        __ignore_delay = false;
         __paused       = false;
         __delay_paused = false;
         __delay_end    = -1;
@@ -92,14 +93,14 @@ function __scribble_class_typist() constructor
         return self;
     }
     
-    static skip = function()
+    static skip = function(_state = true)
     {
-        __skip = true;
+        __skip = _state;
         
         return self;
     }
     
-    static ignore_delay = function(_state)
+    static ignore_delay = function(_state = true)
     {
         __ignore_delay = _state;
         
