@@ -350,7 +350,15 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             if (!_on_change || !is_array(__template) || !array_equals(__template, _template))
             {
-                __template = _template;
+                if (_on_change)
+                {
+                    __template = array_create(array_length(_template));
+                    array_copy(__template, 0, _template, 0, array_length(_template));
+                }
+                else
+                {
+                    __template = _template;
+                }
                 
                 var _i = 0;
                 repeat(array_length(_template))
