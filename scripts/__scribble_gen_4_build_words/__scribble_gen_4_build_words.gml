@@ -34,9 +34,9 @@ function __scribble_gen_4_build_words()
     
     with(global.__scribble_generator_state)
     {
-        var _element       = element;
-        var _glyph_count   = glyph_count;
-        var _overall_bidi  = overall_bidi;
+        var _element       = __element;
+        var _glyph_count   = __glyph_count;
+        var _overall_bidi  = __overall_bidi;
         var _wrap_per_char = _element.__wrap_per_char; //TODO - Optimize by checking outside the loop
     }
     
@@ -157,6 +157,6 @@ function __scribble_gen_4_build_words()
     
     with(global.__scribble_generator_state)
     {
-        word_count = _word_count;
+        __word_count = _word_count;
     }
 }

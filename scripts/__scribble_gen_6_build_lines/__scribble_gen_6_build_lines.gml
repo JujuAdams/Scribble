@@ -40,14 +40,14 @@ function __scribble_gen_6_build_lines()
     
     with(global.__scribble_generator_state)
     {
-        var _element               = element;
-        var _word_count            = word_count;
+        var _element               = __element;
+        var _word_count            = __word_count;
         var _line_height_min       = __line_height_min;
         var _line_height_max       = __line_height_max;
-        var _line_spacing_add      = line_spacing_add;
-        var _line_spacing_multiply = line_spacing_multiply;
-        var _model_max_width       = model_max_width;
-        var _model_max_height      = model_max_height;
+        var _line_spacing_add      = __line_spacing_add;
+        var _line_spacing_multiply = __line_spacing_multiply;
+        var _model_max_width       = __model_max_width;
+        var _model_max_height      = __model_max_height;
         var _wrap_no_pages         = _element.__wrap_no_pages;
         var _wrap_max_scale        = _element.__wrap_max_scale;
     }
@@ -284,11 +284,11 @@ function __scribble_gen_6_build_lines()
         }
     }
     
-    width = ds_grid_get_max(_line_grid, 0, __SCRIBBLE_GEN_LINE.WIDTH, _line_count - 1, __SCRIBBLE_GEN_LINE.WIDTH);
+    __width = ds_grid_get_max(_line_grid, 0, __SCRIBBLE_GEN_LINE.WIDTH, _line_count - 1, __SCRIBBLE_GEN_LINE.WIDTH);
     
     with(global.__scribble_generator_state)
     {
-        word_count = _word_count;
-        line_count = _line_count;
+        __word_count = _word_count;
+        __line_count = _line_count;
     }
 }

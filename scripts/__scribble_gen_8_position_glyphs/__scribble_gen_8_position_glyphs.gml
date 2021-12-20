@@ -10,11 +10,11 @@ function __scribble_gen_8_position_glyphs()
     
     with(global.__scribble_generator_state)
     {
-        var _element         = element;
-        var _line_count      = line_count;
-        var _overall_bidi    = overall_bidi;
-        var _model_max_width = model_max_width;
-        var _glyph_count     = glyph_count;
+        var _element         = __element;
+        var _line_count      = __line_count;
+        var _overall_bidi    = __overall_bidi;
+        var _model_max_width = __model_max_width;
+        var _glyph_count     = __glyph_count;
         var _padding_l       = _element.__padding_l;
         var _padding_t       = _element.__padding_t;
     }

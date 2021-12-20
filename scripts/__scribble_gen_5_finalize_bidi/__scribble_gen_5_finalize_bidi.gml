@@ -3,9 +3,9 @@ function __scribble_gen_5_finalize_bidi()
     if (!__has_r2l) exit;
     
     var _word_grid    = global.__scribble_word_grid;
-    //var _glyph_count  = global.__scribble_generator_state.glyph_count;
-    var _word_count   = global.__scribble_generator_state.word_count;
-    var _overall_bidi = global.__scribble_generator_state.overall_bidi;
+    //var _glyph_count  = global.__scribble_generator_state.__glyph_count;
+    var _word_count   = global.__scribble_generator_state.__word_count;
+    var _overall_bidi = global.__scribble_generator_state.__overall_bidi;
     
     //TODO - Optimise this by storing where symbolic bidi words are
     //       This saves iterating over the whole text element
