@@ -195,7 +195,7 @@ function __scribble_gen_10_write_vbuffs()
                         }
                         
                         var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
-                        _event.position = _animation_index; //Update the glyph index to the *local* glyph index for the page
+                        _event.__position = _animation_index; //Update the glyph index to the *local* glyph index for the page
                         array_push(_event_array, _event);
                     break;
                     
@@ -416,7 +416,7 @@ function __scribble_gen_10_write_vbuffs()
             }
             
             var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
-            _event.position = _animation_index; //Update the glyph index to the *local* glyph index for the page
+            _event.__position = _animation_index; //Update the glyph index to the *local* glyph index for the page
             array_push(_event_array, _event);
         }
                 

@@ -1,6 +1,6 @@
 function __scribble_class_event(_name, _data) constructor
 {
-    position = undefined;
-    name     = _name;
-    data     = _data;
+    __position = undefined;
+    __name     = _name;
+    __data     = _data;
 }

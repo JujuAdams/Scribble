@@ -4,7 +4,7 @@
 
 function __scribble_class_font(_name, _glyph_count, _msdf) constructor
 {
-    name = _name;
+    __name = _name;
     global.__scribble_font_data[? _name] = self;
     
     __glyph_data_grid = ds_grid_create(_glyph_count, SCRIBBLE_GLYPH.__SIZE);
@@ -37,7 +37,7 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
             {
                 ds_grid_copy(_target.__glyph_data_grid, __glyph_data_grid);
             }
-            else if ((_name != "name") && (_name != "__style_regular") && (_name != "__style_bold") && (_name != "__style_italic") && (_name != "__style_bold_italic"))
+            else if ((_name != "__name") && (_name != "__style_regular") && (_name != "__style_bold") && (_name != "__style_italic") && (_name != "__style_bold_italic"))
             {
                 variable_struct_set(_target, _name, variable_struct_get(self, _name));
             }
