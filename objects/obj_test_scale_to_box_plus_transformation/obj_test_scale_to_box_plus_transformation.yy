@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Shape, Wrapping, Position",
-    "path": "folders/Test Cases/Shape, Wrapping, Position.yy",
+    "name": "Misc Positioning",
+    "path": "folders/Test Cases/Misc Positioning.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_scale_to_box_plus_transformation",

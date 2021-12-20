@@ -23,8 +23,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Shape, Wrapping, Position",
-    "path": "folders/Test Cases/Shape, Wrapping, Position.yy",
+    "name": "Padding",
+    "path": "folders/Test Cases/Padding.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_padding_scale_to_box",
