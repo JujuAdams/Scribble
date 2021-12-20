@@ -1,1 +1,0 @@
-if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) show_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> for this test case", true);
