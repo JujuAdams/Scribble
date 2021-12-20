@@ -99,9 +99,9 @@ function __scribble_class_typist() constructor
         return self;
     }
     
-    static ignore_delay = function()
+    static ignore_delay = function(_state)
     {
-        __ignore_delay = true;
+        __ignore_delay = _state;
         
         return self;
     }
@@ -607,7 +607,7 @@ function __scribble_class_typist() constructor
                         var _found_events = __last_element.ref.events_get(__last_character);
                         
                         //Add a per-character delay if required
-                        if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER && __character_delay && (__last_character > 0))
+                        if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER && !__ignore_delay && __character_delay && (__last_character > 0))
                         {
                             var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.UNICODE];
                             var _delay = __character_delay_dict[$ _glyph_ord];
