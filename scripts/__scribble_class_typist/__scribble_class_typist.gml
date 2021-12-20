@@ -7,13 +7,13 @@ function __scribble_class_typist() constructor
     __in         = undefined;
     __backwards  = false;
     
-    __sound_array       = undefined;
-    __sound_overlap     = 0;
-    __sound_pitch_min   = 1;
-    __sound_pitch_max   = 1;
-    __sound_per_char    = false;
-    __sound_finish_time = current_time;
-    __sound_per_char_exception = false;
+    __sound_array                   = undefined;
+    __sound_overlap                 = 0;
+    __sound_pitch_min               = 1;
+    __sound_pitch_max               = 1;
+    __sound_per_char                = false;
+    __sound_finish_time             = current_time;
+    __sound_per_char_exception      = false;
     __sound_per_char_exception_dict = undefined;
     
     __function       = undefined;
@@ -27,7 +27,7 @@ function __scribble_class_typist() constructor
     __ease_rotation       = 0;
     __ease_alpha_duration = 1.0;
     
-    __character_delay = false;
+    __character_delay      = false;
     __character_delay_dict = {};
     
     reset();
@@ -47,6 +47,7 @@ function __scribble_class_typist() constructor
         __window_index = 0;
         __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
         __skip         = false;
+        __ignore_delay = false;
         __paused       = false;
         __delay_paused = false;
         __delay_end    = -1;
@@ -94,6 +95,13 @@ function __scribble_class_typist() constructor
     static skip = function()
     {
         __skip = true;
+        
+        return self;
+    }
+    
+    static ignore_delay = function()
+    {
+        __ignore_delay = true;
         
         return self;
     }
@@ -264,6 +272,11 @@ function __scribble_class_typist() constructor
         return __skip;
     }
     
+    static get_ignore_delay = function()
+    {
+        return __ignore_delay;
+    }
+    
     static get_state = function()
     {
         if ((__last_element == undefined) || (__last_page == undefined) || (__last_character == undefined)) return 0.0;
@@ -388,7 +401,7 @@ function __scribble_class_typist() constructor
                 
                 //Time-related delay
                 case "delay":
-                    if (!__skip)
+                    if (!__skip && !__ignore_delay)
                     {
                         var _duration = (array_length(_event_data) >= 1)? real(_event_data[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
                         __delay_paused = true;
@@ -544,7 +557,7 @@ function __scribble_class_typist() constructor
             }
             else if (__delay_paused)
             {
-                if (current_time > __delay_end)
+                if ((current_time > __delay_end) || __ignore_delay)
                 {
                     //We've waited long enough, start showing more text
                     __delay_paused = false;
