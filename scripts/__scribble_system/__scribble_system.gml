@@ -1,3 +1,13 @@
+// @jujuadams
+#macro __SCRIBBLE_VERSION     "8.0.0 alpha 10"
+#macro __SCRIBBLE_DATE        "2021-12-16"
+#macro __SCRIBBLE_DEBUG       false
+#macro __SCRIBBLE_VERBOSE_GC  false
+
+
+
+#region Pre-Initialization Checks
+
 var _font_directory = SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY;
 
 //If we've already initialized, don't try to do it again
@@ -49,6 +59,12 @@ if (!__SCRIBBLE_ON_WEB)
         __scribble_trace("Warning! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
     }
 }
+
+#endregion
+
+
+
+#region Initialization
     
 //Declare global variables
 global.__scribble_lcg                 = date_current_datetime()*100;
@@ -84,8 +100,6 @@ global.__scribble_gc_vbuff_refs  = [];
 global.__scribble_gc_vbuff_ids   = [];
 
 global.__scribble_generator_state = {};
-
-
 
 if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
 
@@ -280,8 +294,6 @@ repeat(1000)
     ++_i;
 }
 
-
-
 //Find every sprite asset with the "scribble msdf" tag
 //We check variations on the tag because they're case sensitive and people might spell it differently despite what documentation says
 var _assets = [];
@@ -317,9 +329,11 @@ repeat(array_length(_assets))
     ++_i;
 }
 
+#endregion
 
 
 
+#region Functions
 
 function __scribble_trace()
 {
@@ -531,17 +545,11 @@ function __scribble_buffer_write_unicode(_buffer, _value)
     }
 }
 
+#endregion
 
 
 
-
-#region Internal Macro Definitions
-
-// @jujuadams
-#macro __SCRIBBLE_VERSION     "8.0.0 alpha 10"
-#macro __SCRIBBLE_DATE        "2021-12-16"
-#macro __SCRIBBLE_DEBUG       false
-#macro __SCRIBBLE_VERBOSE_GC  false
+#region Enums
 
 enum SCRIBBLE_GLYPH
 {
@@ -639,6 +647,112 @@ enum SCRIBBLE_EASE
     CUSTOM_3, //14
     __SIZE    //15
 }
+
+#endregion
+
+
+
+#region Generator Enums
+
+enum __SCRIBBLE_GEN_GLYPH
+{
+    UNICODE,          // 0  \   Can be negative, see below
+    BIDI,             // 1   |
+                      //     |
+    X,                // 2   |
+    Y,                // 3   |
+    WIDTH,            // 4   |
+    HEIGHT,           // 5   |
+    FONT_HEIGHT,      // 6   |
+    SEPARATION,       // 7   |
+    LEFT_OFFSET,      // 8   |
+    SCALE,            // 9   | This group of enums must not change order or be split
+                      //     |
+    TEXTURE,          //10   |
+    QUAD_U0,          //11   | Be careful of ordering!
+    QUAD_U1,          //12   | scribble_font_bake_shader() relies on this
+    QUAD_V0,          //13   |
+    QUAD_V1,          //14   |
+                      //     |
+    MSDF_PXRANGE,     //15   |
+    BILINEAR,         //16  /
+    
+    CONTROL_COUNT,    //17
+    ANIMATION_INDEX,  //18
+                      
+    SPRITE_INDEX,     //19  \
+    IMAGE_INDEX,      //20   | Only used for sprites
+    IMAGE_SPEED,      //21  /
+                      
+    __SIZE,           //20
+}
+
+enum __SCRIBBLE_GEN_VBUFF_POS
+{
+    QUAD_L, //0
+    QUAD_T, //1
+    QUAD_R, //2
+    QUAD_B, //3
+    __SIZE, //4
+}
+
+enum __SCRIBBLE_GEN_CONTROL_TYPE
+{
+    EVENT,
+    HALIGN,
+    COLOUR,
+    EFFECT,
+    CYCLE,
+    REGION,
+}
+
+//These can be used for ORD
+#macro  __SCRIBBLE_GLYPH_SPRITE   -1
+#macro  __SCRIBBLE_GLYPH_SURFACE  -2
+
+enum __SCRIBBLE_GEN_CONTROL
+{
+    TYPE,   //0
+    DATA,   //1
+    __SIZE, //2
+}
+
+enum __SCRIBBLE_GEN_WORD
+{
+    BIDI_RAW,    //0
+    BIDI,        //1
+    GLYPH_START, //2
+    GLYPH_END,   //3
+    WIDTH,       //4
+    HEIGHT,      //5
+    __SIZE,      //6
+}
+
+enum __SCRIBBLE_GEN_STRETCH
+{
+    WORD_START, //0
+    WORD_END,   //1
+    BIDI,       //2
+    __SIZE,
+}
+
+enum __SCRIBBLE_GEN_LINE
+{
+    Y,                  //0
+    WORD_START,         //1
+    WORD_END,           //2
+    WIDTH,              //3
+    HEIGHT,             //4
+    HALIGN,             //5
+    STARTS_MANUAL_PAGE, //6
+    __SIZE,             //7
+}
+
+#endregion
+
+
+
+#region Misc Macros
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone))
 #macro __SCRIBBLE_ON_OPENGL            (!__SCRIBBLE_ON_DIRECTX)
