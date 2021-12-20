@@ -68,6 +68,24 @@ The `smoothness` argument offers some customisation for how text fades out. A hi
 
 Skips the current typist animation, be it typing in or typing out. If text is typing in then all events on the current page will be executed in order of appearance.
 
+## `.ignore_delay()`
+
+**Returns**: `self`, the typist
+
+|Name   |Datatype|Purpose                                                                |
+|-------|--------|-----------------------------------------------------------------------|
+|`state`|boolean |Whether the typist should ignore per-character delay and `[delay]` tags|
+
+&nbsp;
+
+## `.ignore_delay()`
+
+**Returns**: Boolean, whether the typist is ignoring per-character delay and `[delay]` tags
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
 &nbsp;
 
 ## `.get_position()`
