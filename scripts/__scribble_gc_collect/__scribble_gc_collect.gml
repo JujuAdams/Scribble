@@ -7,8 +7,8 @@ function __scribble_gc_collect()
     
     #region Scan through the cache to see if any text elements have elapsed
     
-    var _list  = global.__scribble_ecache_list;
-    var _size  = ds_list_size(_list);
+    var _array = global.__scribble_ecache_array;
+    var _size  = array_length(_array);
     var _index = min(global.__scribble_ecache_list_index, _size);
     repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(_size)))) //Choose a step size that scales with the size of the cache, but doesn't get too big
     {
@@ -19,7 +19,7 @@ function __scribble_gc_collect()
         if (_index < 0)
         {
             //If we do, jump to the end of the list
-            _index += ds_list_size(_list);
+            _index += array_length(_array);
             
             //If the size of the list is 0 then we'll still be negative
             if (_index < 0)
@@ -30,11 +30,11 @@ function __scribble_gc_collect()
         }
         
         //Only flush if we want to garbage collect this text element and it hasn't been drawn for a while
-        var _element = _list[| _index];
+        var _element = _array[_index];
         if (_element.__last_drawn + __SCRIBBLE_CACHE_TIMEOUT < current_time)
         {
             if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("\"", _element.__cache_name, "\" has timed out (", current_time, " > ", _element.__last_drawn, " + ", __SCRIBBLE_CACHE_TIMEOUT, ")");
-            ds_list_delete(_list, _index);
+            array_delete(_array, _index, 1);
         }
     }
     
@@ -47,14 +47,14 @@ function __scribble_gc_collect()
     #region Check through text elements to clean anything up
     
     var _index = global.__scribble_ecache_name_index;
-    var _list  = global.__scribble_ecache_name_list;
+    var _array = global.__scribble_ecache_name_array;
     var _dict  = global.__scribble_ecache_dict;
-    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(ds_list_size(_list))))) //Choose a step size that scales with the size of the cache, but doesn't get too big
+    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(array_length(_array))))) //Choose a step size that scales with the size of the cache, but doesn't get too big
     {
         _index--;
         if (_index < 0)
         {
-            _index += ds_list_size(_list);
+            _index += array_length(_array);
             if (_index < 0)
             {
                 _index = 0;
@@ -62,13 +62,13 @@ function __scribble_gc_collect()
             }
         }
         
-        var _name = _list[| _index];
-        var _weak = _dict[? _name];
+        var _name = _array[_index];
+        var _weak = _dict[$ _name];
         if ((_weak == undefined) || !weak_ref_alive(_weak))
         {
             if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Removing element \"", _name, "\" from cache");
-            ds_map_delete(_dict, _name);
-            ds_list_delete(_list, _index);
+            variable_struct_remove(_dict, _name);
+            array_delete(_array, _index, 1);
         }
     }
     

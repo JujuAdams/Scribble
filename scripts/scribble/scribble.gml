@@ -17,7 +17,7 @@ function scribble()
         {
             var _unique_id = "anonymous " + string(floor(999999*__scribble_random()));
         }
-        until !ds_map_exists(global.__scribble_ecache_dict, ":" + _unique_id);
+        until !variable_struct_exists(global.__scribble_ecache_dict, ":" + _unique_id);
         
         return new __scribble_class_element("", _unique_id);
     }
@@ -32,7 +32,7 @@ function scribble()
             _string = string(_string);
         }
         
-        var _weak = global.__scribble_ecache_dict[? _string + ":" + _unique_id];
+        var _weak = global.__scribble_ecache_dict[$ _string + ":" + _unique_id];
         if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.__flushed)
         {
             return new __scribble_class_element(_string, _unique_id);

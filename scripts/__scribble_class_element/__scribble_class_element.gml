@@ -10,7 +10,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + __cache_name + "\"");
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-    var _weak = global.__scribble_ecache_dict[? __cache_name];
+    var _weak = global.__scribble_ecache_dict[$ __cache_name];
     if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
     {
         __scribble_trace("Warning! Flushing element \"", __cache_name, "\" due to cache name collision");
@@ -18,9 +18,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     }
     
     //Add this text element to the global cache
-    global.__scribble_ecache_dict[? __cache_name] = weak_ref_create(self);
-    ds_list_add(global.__scribble_ecache_list, self);
-    ds_list_add(global.__scribble_ecache_name_list, __cache_name);
+    global.__scribble_ecache_dict[$ __cache_name] = weak_ref_create(self);
+    array_push(global.__scribble_ecache_array, self);
+    array_push(global.__scribble_ecache_name_array, __cache_name);
     
     __flushed = false;
     
@@ -130,7 +130,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             __model_cache_name_dirty = true;
             __cache_name = _new_cache_name;
             
-            var _weak = global.__scribble_ecache_dict[? __cache_name];
+            var _weak = global.__scribble_ecache_dict[$ __cache_name];
             if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
             {
                 __scribble_trace("Warning! Flushing element \"", __cache_name, "\" due to cache name collision (try choosing a different unique ID)");
@@ -138,9 +138,9 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
             
             //Add this text element to the global cache
-            global.__scribble_ecache_dict[? __cache_name] = weak_ref_create(self);
-            ds_list_add(global.__scribble_ecache_list, self);
-            ds_list_add(global.__scribble_ecache_name_list, __cache_name);
+            global.__scribble_ecache_dict[$ __cache_name] = weak_ref_create(self);
+            array_push(global.__scribble_ecache_array, self);
+            array_push(global.__scribble_ecache_name_array, __cache_name);
         }
         
         return self;
@@ -1105,9 +1105,21 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(__cache_name) + "\"");
         
         //Remove reference from cache
-        ds_map_delete(global.__scribble_ecache_dict, __cache_name);
-        var _index = ds_list_find_index(global.__scribble_ecache_list, self);
-        if (_index >= 0) ds_list_delete(global.__scribble_ecache_list, _index);
+        variable_struct_remove(global.__scribble_ecache_dict, __cache_name);
+        
+        var _array = global.__scribble_ecache_array;
+        var _i = 0;
+        repeat(array_length(_array))
+        {
+            if (_array[_i] == self)
+            {
+                array_delete(_array, _i, 1);
+            }
+            else
+            {
+                ++_i;
+            }
+        }
         
         //Set as __flushed
         __flushed = true;
