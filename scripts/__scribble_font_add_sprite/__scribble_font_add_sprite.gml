@@ -27,7 +27,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         __scribble_error("A spritefont for \"", _sprite_name, "\" has already been added");
     }
     
-    var _global_glyph_bidi_map = global.__scribble_glyph_data.bidi_map;
+    var _global_glyph_bidi_map = global.__scribble_glyph_data.__bidi_map;
     
     if (global.__scribble_default_font == undefined)
     {

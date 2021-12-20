@@ -12,7 +12,7 @@ function __scribble_font_add_from_project(_font)
         global.__scribble_default_font = _name;
     }
     
-    var _global_glyph_bidi_map = global.__scribble_glyph_data.bidi_map;
+    var _global_glyph_bidi_map = global.__scribble_glyph_data.__bidi_map;
     
     //Get font info from the runtime
     var _font_info = font_get_info(_font);

@@ -14,7 +14,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
         global.__scribble_default_font = _name;
     }
     
-    var _global_glyph_bidi_map = global.__scribble_glyph_data.bidi_map;
+    var _global_glyph_bidi_map = global.__scribble_glyph_data.__bidi_map;
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Defined \"" + _name + "\" as an MSDF font");
     

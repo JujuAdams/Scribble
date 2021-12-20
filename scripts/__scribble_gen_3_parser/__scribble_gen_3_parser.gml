@@ -70,20 +70,20 @@ function __scribble_gen_3_parser()
     var _vbuff_pos_grid = global.__scribble_vbuff_pos_grid;
     
     //Arabic look-up tables
-    var _arabic_join_next_map = global.__scribble_glyph_data.arabic_join_next_map;
-    var _arabic_join_prev_map = global.__scribble_glyph_data.arabic_join_prev_map;
-    var _arabic_isolated_map  = global.__scribble_glyph_data.arabic_isolated_map;
-    var _arabic_initial_map   = global.__scribble_glyph_data.arabic_initial_map;
-    var _arabic_medial_map    = global.__scribble_glyph_data.arabic_medial_map;
-    var _arabic_final_map     = global.__scribble_glyph_data.arabic_final_map;
+    var _arabic_join_next_map = global.__scribble_glyph_data.__arabic_join_next_map;
+    var _arabic_join_prev_map = global.__scribble_glyph_data.__arabic_join_prev_map;
+    var _arabic_isolated_map  = global.__scribble_glyph_data.__arabic_isolated_map;
+    var _arabic_initial_map   = global.__scribble_glyph_data.__arabic_initial_map;
+    var _arabic_medial_map    = global.__scribble_glyph_data.__arabic_medial_map;
+    var _arabic_final_map     = global.__scribble_glyph_data.__arabic_final_map;
     
     //Thai look-up tables
-    var _thai_base_map           = global.__scribble_glyph_data.thai_base_map;
-    var _thai_base_descender_map = global.__scribble_glyph_data.thai_base_descender_map;
-    var _thai_base_ascender_map  = global.__scribble_glyph_data.thai_base_ascender_map;
-    var _thai_top_map            = global.__scribble_glyph_data.thai_top_map;
-    var _thai_lower_map          = global.__scribble_glyph_data.thai_lower_map;
-    var _thai_upper_map          = global.__scribble_glyph_data.thai_upper_map;
+    var _thai_base_map           = global.__scribble_glyph_data.__thai_base_map;
+    var _thai_base_descender_map = global.__scribble_glyph_data.__thai_base_descender_map;
+    var _thai_base_ascender_map  = global.__scribble_glyph_data.__thai_base_ascender_map;
+    var _thai_top_map            = global.__scribble_glyph_data.__thai_top_map;
+    var _thai_lower_map          = global.__scribble_glyph_data.__thai_lower_map;
+    var _thai_upper_map          = global.__scribble_glyph_data.__thai_upper_map;
     
     //Cache element properties locally
     var _element         = global.__scribble_generator_state.element;
@@ -108,7 +108,7 @@ function __scribble_gen_3_parser()
     var _overall_bidi = global.__scribble_generator_state.overall_bidi;
     if ((_overall_bidi != __SCRIBBLE_BIDI.L2R) && (_overall_bidi != __SCRIBBLE_BIDI.R2L))
     {
-        var _global_glyph_bidi_map = global.__scribble_glyph_data.bidi_map;
+        var _global_glyph_bidi_map = global.__scribble_glyph_data.__bidi_map;
         
         // Searching until we find a glyph with a well-defined direction
         repeat(string_byte_length(_element_text))
