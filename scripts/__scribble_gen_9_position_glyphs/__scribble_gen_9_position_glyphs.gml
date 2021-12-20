@@ -40,8 +40,8 @@ function __scribble_gen_9_position_glyphs()
         else
         {
             // If we were given no maximum alignment width, align to the actual width of the model
-            var _alignment_width     = (_model_max_width == infinity)? width : _model_max_width;
-            var _pin_alignment_width = (_model_max_width == infinity)? width : _model_max_width;
+            var _alignment_width     = (_model_max_width == infinity)? __width : _model_max_width;
+            var _pin_alignment_width = (_model_max_width == infinity)? __width : _model_max_width;
         }
         
         var _page_min_x =  infinity;
@@ -238,6 +238,6 @@ function __scribble_gen_9_position_glyphs()
     max_x = max(_model_min_x, _model_max_x);
     max_y = _model_max_y;
     
-    width  = 1 + max_x - min_x;
-    height = 1 + max_y - min_y;
+    __width  = 1 + max_x - min_x;
+    __height = 1 + max_y - min_y;
 }

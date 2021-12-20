@@ -75,5 +75,5 @@ function __scribble_gen_8_build_pages()
     
     __SCRIBBLE_GEN_PAGE_POP;
     
-    height = _model_height;
+    __height = _model_height;
 }

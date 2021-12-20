@@ -16,7 +16,7 @@ function scribble_font_scale(_font, _scale)
     var _grid = _font_data.__glyph_data_grid;
     var _map  = _font_data.__glyphs_map;
     
-    _font_data.scale *= _scale;
+    _font_data.__scale *= _scale;
     
     ds_grid_multiply_region(_grid, 0, SCRIBBLE_GLYPH.X_OFFSET, ds_map_size(_map) - 1, SCRIBBLE_GLYPH.FONT_SCALE, _scale);
     

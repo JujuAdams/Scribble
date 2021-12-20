@@ -33,8 +33,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     characters = 0;
     lines      = 0;
     pages      = 0;
-    width      = 0;
-    height     = 0;
+    __width      = 0;
+    __height     = 0;
     min_x      = 0;
     min_y      = 0;
     max_x      = 0;
@@ -65,13 +65,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         var _page_data = __pages_array[_element.__page];
         if (SCRIBBLE_BOX_ALIGN_TO_PAGE)
         {
-            var _model_w = _page_data.width;
-            var _model_h = _page_data.height;
+            var _model_w = _page_data.__width;
+            var _model_h = _page_data.__height;
         }
         else
         {
-            var _model_w = width;
-            var _model_h = height;
+            var _model_w = __width;
+            var _model_h = __height;
         }
         
         with(_element)
@@ -143,8 +143,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         characters = 0;
         lines      = 0;
         pages      = 0;
-        width      = 0;
-        height     = 0;
+        __width      = 0;
+        __height     = 0;
         min_x      = 0;
         min_y      = 0;
         max_x      = 0;
@@ -217,11 +217,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if ((_page != undefined) && (_page >= 0))
         {
-            return __fit_scale*__pages_array[_page].width;
+            return __fit_scale*__pages_array[_page].__width;
         }
         else
         {
-            return __fit_scale*width;
+            return __fit_scale*__width;
         }
     }
     
@@ -230,11 +230,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if ((_page != undefined) && (_page >= 0))
         {
-            return __fit_scale*__pages_array[_page].height;
+            return __fit_scale*__pages_array[_page].__height;
         }
         else
         {
-            return __fit_scale*height;
+            return __fit_scale*__height;
         }
     }
     

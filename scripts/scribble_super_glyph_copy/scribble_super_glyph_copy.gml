@@ -65,14 +65,14 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
 
 function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data)
 {
-    if (_target_font_data.msdf || _source_font_data.msdf)
+    if (_target_font_data.__msdf || _source_font_data.__msdf)
     {
-        if (_target_font_data.msdf == false)
+        if (_target_font_data.__msdf == false)
         {
             __scribble_error("Cannot mix standard/sprite fonts with MSDF fonts (target is not an MSDF font)");
         }
         
-        if (_source_font_data.msdf == false)
+        if (_source_font_data.__msdf == false)
         {
             __scribble_error("Cannot mix standard/sprite fonts with MSDF fonts (source is not an MSDF font)");
         }
@@ -88,21 +88,21 @@ function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data
         }
     }
     
-    _target_font_data.msdf = _source_font_data.msdf;
+    _target_font_data.__msdf = _source_font_data.__msdf;
     _target_font_data.__msdf_pxrange = _source_font_data.__msdf_pxrange;
     
     //Now calculate the y offset required to centre one font to the other
-    if (_target_font_data.height > _source_font_data.height)
+    if (_target_font_data.__height > _source_font_data.__height)
     {
-        return (_target_font_data.height - _source_font_data.height) div 2;
+        return (_target_font_data.__height - _source_font_data.__height) div 2;
     }
     
-    if (_target_font_data.height < _source_font_data.height)
+    if (_target_font_data.__height < _source_font_data.__height)
     {
         var _glyphs_map = _target_font_data.__glyphs_map;
         if (ds_map_size(_glyphs_map) > 0)
         {
-            var _y_offset = (_source_font_data.height - _target_font_data.height) div 2;
+            var _y_offset = (_source_font_data.__height - _target_font_data.__height) div 2;
             
             var _glyphs_array = ds_map_values_to_array(_glyphs_map);
             var _i = 0;
@@ -113,7 +113,7 @@ function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data
             }
         }
         
-        _target_font_data.height = _source_font_data.height;
+        _target_font_data.__height = _source_font_data.__height;
     }
     
     return 0;

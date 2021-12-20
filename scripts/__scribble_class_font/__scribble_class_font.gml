@@ -10,12 +10,12 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     __glyph_data_grid = ds_grid_create(_glyph_count, SCRIBBLE_GLYPH.__SIZE);
     __glyphs_map = ds_map_create();
     
-    msdf         = _msdf;
+    __msdf         = _msdf;
     __msdf_pxrange = undefined;
     __superfont    = false;
     
-    scale  = 1.0;
-    height = 0; //*Not* the raw height. This value is changed by scribble_font_scale()
+    __scale  = 1.0;
+    __height = 0; //*Not* the raw height. This value is changed by scribble_font_scale()
     
     __style_regular     = undefined;
     __style_bold        = undefined;
@@ -48,8 +48,8 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     
     static __calculate_font_height = function()
     {
-        height = __glyph_data_grid[# __glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT];
-        return height;
+        __height = __glyph_data_grid[# __glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT];
+        return __height;
     }
     
     static __clear = function()
@@ -59,9 +59,9 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
         ds_map_clear(__glyphs_map);
         
         __msdf_pxrange = undefined;
-        msdf         = undefined;
+        __msdf         = undefined;
         
-        height = 0;
+        __height = 0;
     }
     
     //Unused as of 2021-11-11. Not sure how many problems this would cause if it was enabled
