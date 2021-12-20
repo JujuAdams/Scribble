@@ -1,5 +1,6 @@
 #macro __SCRIBBLE_GEN_PAGE_POP  var _page_end_line = _i - 1;\
                                 _page_data.__line_end    = _page_end_line;\
+                                _page_data.__line_count  = 1 + _page_data.__line_end - _page_data.__line_start;\
                                 _page_data.__glyph_end   = _word_grid[# _line_grid[# _page_end_line, __SCRIBBLE_GEN_LINE.WORD_END], __SCRIBBLE_GEN_WORD.GLYPH_END];\
                                 _page_data.__glyph_count = 1 + _page_data.__glyph_end - _page_data.__glyph_start;\
                                 _page_data.__width       = ds_grid_get_max(_line_grid, _page_start_line, __SCRIBBLE_GEN_LINE.WIDTH, _page_end_line, __SCRIBBLE_GEN_LINE.WIDTH);\

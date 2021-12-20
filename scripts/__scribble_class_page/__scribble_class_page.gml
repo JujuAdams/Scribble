@@ -11,6 +11,7 @@ function __scribble_class_page() constructor
     
     __line_start = undefined;
     __line_end   = undefined;
+    __line_count = 0;
     
     __width  = 0;
     __height = 0;
