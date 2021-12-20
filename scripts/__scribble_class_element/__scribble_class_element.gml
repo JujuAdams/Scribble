@@ -3,7 +3,7 @@
 
 function __scribble_class_element(_string, _unique_id) constructor
 {
-    text       = _string;
+    __text       = _string;
     __unique_id  = _unique_id;
     __cache_name = _string + ":" + _unique_id;
     
@@ -26,7 +26,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __model_cache_name_dirty = true;
     __model_cache_name = undefined;
-    model = undefined;
+    __model = undefined;
     
     __last_drawn = current_time;
     __freeze = false;
@@ -118,10 +118,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [uniqueID]
     static overwrite = function(_text, _unique_id = __unique_id)
     {
-        text      = _text;
+        __text      = _text;
         __unique_id = _unique_id;
         
-        var _new_cache_name = text + ":" + __unique_id;
+        var _new_cache_name = __text + ":" + __unique_id;
         if (__cache_name != _new_cache_name)
         {
             flush();
@@ -1204,54 +1204,54 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static __get_model = function(_allow_create)
     {
-        if (__flushed || (text == ""))
+        if (__flushed || (__text == ""))
         {
-            model = undefined;
+            __model = undefined;
         }
         else
         {
             if (__model_cache_name_dirty)
             {
                 __model_cache_name_dirty = false;
-                __model_cache_name = text + ":" +
-                                   string(__starting_font  ) + ":" +
-                                   string(__starting_colour) + ":" +
-                                   string(__starting_halign) + ":" +
-                                   string(__starting_valign) + ":" +
-                                   string(__line_height_min) + ":" +
-                                   string(__line_height_max) + ":" +
-                                   string(__line_spacing ) + ":" +
-                                   string(__wrap_max_width ) + ":" +
-                                   string(__wrap_max_height) + ":" +
-                                   string(__wrap_per_char  ) + ":" +
-                                   string(__wrap_no_pages  ) + ":" +
-                                   string(__wrap_max_scale ) + ":" +
-                                   string(__bezier_array   ) + ":" +
-                                   string(__bidi_hint    ) + ":" +
-                                   string(__padding_l      ) + ":" +
-                                   string(__padding_t      ) + ":" +
-                                   string(__padding_r      ) + ":" +
-                                   string(__padding_b      ) + ":" +
-                                   string(__ignore_command_tags);
+                __model_cache_name = __text + ":" +
+                                     string(__starting_font  ) + ":" +
+                                     string(__starting_colour) + ":" +
+                                     string(__starting_halign) + ":" +
+                                     string(__starting_valign) + ":" +
+                                     string(__line_height_min) + ":" +
+                                     string(__line_height_max) + ":" +
+                                     string(__line_spacing ) + ":" +
+                                     string(__wrap_max_width ) + ":" +
+                                     string(__wrap_max_height) + ":" +
+                                     string(__wrap_per_char  ) + ":" +
+                                     string(__wrap_no_pages  ) + ":" +
+                                     string(__wrap_max_scale ) + ":" +
+                                     string(__bezier_array   ) + ":" +
+                                     string(__bidi_hint    ) + ":" +
+                                     string(__padding_l      ) + ":" +
+                                     string(__padding_t      ) + ":" +
+                                     string(__padding_r      ) + ":" +
+                                     string(__padding_b      ) + ":" +
+                                     string(__ignore_command_tags);
             }
             
             var _weak = global.__scribble_mcache_dict[$ __model_cache_name];
             if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
             {
-                model = _weak.ref;
+                __model = _weak.ref;
             }
             else if (_allow_create)
             {
                 //Create a new model if required
-                model = new __scribble_class_model(self, __model_cache_name);
+                __model = new __scribble_class_model(self, __model_cache_name);
             }
             else
             {
-                model = undefined;
+                __model = undefined;
             }
         }
         
-        return model;
+        return __model;
     }
     
     static __get_bbox_transform = function(_x, _y, _model, _bbox)

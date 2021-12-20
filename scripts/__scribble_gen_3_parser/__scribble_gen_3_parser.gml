@@ -87,7 +87,7 @@ function __scribble_gen_3_parser()
     
     //Cache element properties locally
     var _element         = global.__scribble_generator_state.element;
-    var _element_text    = _element.text;
+    var _element_text    = _element.__text;
     var _starting_colour = __scribble_process_colour(_element.__starting_colour);
     var _starting_halign = _element.__starting_halign;
     var _starting_valign = _element.__starting_valign;
