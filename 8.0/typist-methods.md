@@ -62,11 +62,23 @@ The `smoothness` argument offers some customisation for how text fades out. A hi
 
 **Returns**: `self`, the typist
 
+|Name   |Datatype|Purpose                                                |
+|-------|--------|-------------------------------------------------------|
+|`state`|boolean |Whether the typist should skip the typewriter animation|
+
+Skips the current typist animation, be it typing in or typing out. If text is typing in then all events on the current page will be executed in order of appearance. The skip behaviour also ignores per-character delay and `[delay]` tags.
+
+&nbsp;
+
+## `.get_skip()`
+
+**Returns**: Boolean, whether the typist is skipping typewriter animation
+
 |Name|Datatype|Purpose|
 |----|--------|-------|
 |None|        |       |
 
-Skips the current typist animation, be it typing in or typing out. If text is typing in then all events on the current page will be executed in order of appearance.
+&nbsp;
 
 ## `.ignore_delay()`
 
@@ -76,9 +88,11 @@ Skips the current typist animation, be it typing in or typing out. If text is ty
 |-------|--------|-----------------------------------------------------------------------|
 |`state`|boolean |Whether the typist should ignore per-character delay and `[delay]` tags|
 
+Unlike the `.skip()` method above, this behaviour will still play the typewriter animation.
+
 &nbsp;
 
-## `.ignore_delay()`
+## `.get_ignore_delay()`
 
 **Returns**: Boolean, whether the typist is ignoring per-character delay and `[delay]` tags
 
