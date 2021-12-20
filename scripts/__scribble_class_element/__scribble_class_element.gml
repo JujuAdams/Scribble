@@ -572,28 +572,22 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _x = _pointer_x - _element_x;
         var _y = _pointer_y - _element_y;
         
-        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> to use .region_detect()");
-        
         var _model        = __get_model(true);
         var _page         = _model.__pages_array[__page];
         var _region_array = _page.__region_array;
-        var _glyph_grid   = _page.__glyph_grid;
         
         var _found = undefined;
         var _i = 0;
         repeat(array_length(_region_array))
         {
             var _region = _region_array[_i];
-            var _glyph_start = _region.__start_glyph;
-            var _glyph_end   = _region.__end_glyph;
+            var _bbox_array = _region.__bbox_array;
             
-            var _j = _glyph_start;
-            repeat(1 + _glyph_end - _glyph_start)
+            var _j = 0;
+            repeat(array_length(_bbox_array))
             {
-                if ((_x >= _glyph_grid[# _j, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ])
-                &&  (_y >= _glyph_grid[# _j, __SCRIBBLE_GLYPH_LAYOUT.TOP   ])
-                &&  (_x <= _glyph_grid[# _j, __SCRIBBLE_GLYPH_LAYOUT.RIGHT ])
-                &&  (_y <= _glyph_grid[# _j, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM]))
+                var _bbox = _bbox_array[_j];
+                if ((_x >= _bbox.__x1) && (_y >= _bbox.__y1) && (_x <= _bbox.__x2) && (_y <= _bbox.__y2))
                 {
                     _found = _region.__name;
                     break;
