@@ -69,8 +69,8 @@ global.__scribble_vbuff_pos_grid      = ds_grid_create(1000, __SCRIBBLE_GEN_VBUF
 
 global.__scribble_cache_check_time = current_time;
 
-global.__scribble_mcache_dict       = ds_map_create(); //FIXME - Using a ds_map here as structs are currently leaking memory (2020-12-09, GMS2.3.1 Stable)
-global.__scribble_mcache_name_list  = ds_list_create();
+global.__scribble_mcache_dict       = {};
+global.__scribble_mcache_name_array = [];
 global.__scribble_mcache_name_index = 0;
 
 global.__scribble_ecache_dict        = ds_map_create();

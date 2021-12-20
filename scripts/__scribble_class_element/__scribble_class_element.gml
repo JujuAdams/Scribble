@@ -1223,7 +1223,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                                    string(__ignore_command_tags);
             }
             
-            var _weak = global.__scribble_mcache_dict[? __model_cache_name];
+            var _weak = global.__scribble_mcache_dict[$ __model_cache_name];
             if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
             {
                 model = _weak.ref;

@@ -81,14 +81,14 @@ function __scribble_gc_collect()
     #region Check through text models to clean anything up
     
     var _index = global.__scribble_mcache_name_index;
-    var _list  = global.__scribble_mcache_name_list;
+    var _array = global.__scribble_mcache_name_array;
     var _dict  = global.__scribble_mcache_dict;
-    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(ds_list_size(_list))))) //Choose a step size that scales with the size of the cache, but doesn't get too big
+    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(array_length(_array))))) //Choose a step size that scales with the size of the cache, but doesn't get too big
     {
         _index--;
         if (_index < 0)
         {
-            _index += ds_list_size(_list);
+            _index += array_length(_array);
             if (_index < 0)
             {
                 _index = 0;
@@ -96,13 +96,13 @@ function __scribble_gc_collect()
             }
         }
         
-        var _name = _list[| _index];
-        var _weak = _dict[? _name];
+        var _name = _array[_index];
+        var _weak = _dict[$ _name];
         if ((_weak == undefined) || !weak_ref_alive(_weak))
         {
             if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Removing model \"", _name, "\" from cache");
-            ds_map_delete(_dict, _name);
-            ds_list_delete(_list, _index);
+            variable_struct_remove(_dict, _name);
+            array_delete(_array, _index, 1);
         }
     }
     
