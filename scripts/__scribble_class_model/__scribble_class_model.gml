@@ -53,15 +53,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     #region Public Methods
     
-    static draw = function(_element, _double_draw)
+    static draw = function(_page, _msdf_feather_thickness, _double_draw)
     {
         if (__flushed) return undefined;
-        if (_element == undefined) return undefined;
         
         __last_drawn = current_time;
         
-        var _page_data = __pages_array[_element.__page];
-        _page_data.__submit(_element, (__has_arabic || __has_thai) && _double_draw);
+        __pages_array[_page].__submit(_msdf_feather_thickness, (__has_arabic || __has_thai) && _double_draw);
     }
     
     static flush = function()
