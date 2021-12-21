@@ -77,7 +77,7 @@ function __scribble_gen_4_build_words()
             switch(_glyph_bidi)
             {
                 case __SCRIBBLE_BIDI.WHITESPACE:
-                    if (_wrap_per_char)
+                    if (_wrap_per_char || _glyph_prev_whitespace)
                     {
                         __SCRIBBLE_GEN_WORD_NEW;
                     }
@@ -85,7 +85,7 @@ function __scribble_gen_4_build_words()
                     {
                         _glyph_prev_whitespace = true;
                         
-                        if ((_word_bidi != _overall_bidi) && (_glyph_bidi != _word_bidi))
+                        if (((_word_bidi != _overall_bidi) && (_glyph_bidi != _word_bidi)) || !SCRIBBLE_FIXED_WHITESPACE_WIDTH)
                         {
                             __SCRIBBLE_GEN_WORD_NEW;
                         }
