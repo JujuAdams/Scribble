@@ -61,16 +61,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         __last_drawn = current_time;
         
         var _page_data = __pages_array[_element.__page];
-        if (SCRIBBLE_BOX_ALIGN_TO_PAGE)
-        {
-            var _model_w = _page_data.__width;
-            var _model_h = _page_data.__height;
-        }
-        else
-        {
-            var _model_w = __width;
-            var _model_h = __height;
-        }
         
         with(_element)
         {
