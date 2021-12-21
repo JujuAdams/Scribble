@@ -41,12 +41,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     __gradient_colour = c_black;
     __gradient_alpha  = 0.0;
     
-    __xscale = 1.0;
-    __yscale = 1.0;
-    __angle  = 0.0;
-    
-    __origin_x = 0.0;
-    __origin_y = 0.0;
+    __origin_x       = 0.0;
+    __origin_y       = 0.0;
+    __xscale         = 1.0;
+    __yscale         = 1.0;
+    __angle          = 0.0;
+    __matrix_dirty   = true;
+    __matrix         = undefined;
+    __matrix_inverse = undefined;
+    __matrix_x       = undefined;
+    __matrix_y       = undefined;
     
     __wrap_max_width  = -1;
     __wrap_max_height = -1;
@@ -237,9 +241,15 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param angle
     static transform = function(_xscale, _yscale, _angle)
     {
-        __xscale = _xscale;
-        __yscale = _yscale;
-        __angle  = _angle;
+        if ((__xscale != _xscale) || (__yscale != _yscale) || (__angle != _angle))
+        {
+            __matrix_dirty = true;
+            
+            __xscale = _xscale;
+            __yscale = _yscale;
+            __angle  = _angle;
+        }
+        
         return self;
     }
     
@@ -247,8 +257,14 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param yOffset
     static origin = function(_x, _y)
     {
-        __origin_x = _x;
-        __origin_y = _y;
+        if ((__origin_x != _x) || (__origin_y != _y))
+        {
+            __matrix_dirty = true;
+            
+            __origin_x = _x;
+            __origin_y = _y;
+        }
+        
         return self;
     }
     
@@ -572,37 +588,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _page         = _model.__pages_array[__page];
         var _region_array = _page.__region_array;
         
-        __update_scale_to_box_scale();
-        
-        var _x_offset = -__origin_x;
-        var _y_offset = -__origin_y;
-        var _xscale   = __xscale*__scale_to_box_scale;
-        var _yscale   = __yscale*__scale_to_box_scale;
-        var _angle    = __angle;
-        
-        _xscale *= _model.__fit_scale;
-        _yscale *= _model.__fit_scale;
-        
-        var _old_matrix = matrix_get(matrix_world);
-        
-        //Build a matrix to transform the text...
-        //TODO - Cache this
-        if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
-        {
-            var _matrix = matrix_build(_x_offset + _element_x, _y_offset + _element_y, __z,   0,0,0,   1,1,1);
-        }
-        else
-        {
-            var _matrix = matrix_multiply(matrix_build( _x_offset,  _y_offset,   0,   0, 0,      0,         1,       1, 1),
-                          matrix_multiply(matrix_build(         0,          0,   0,   0, 0,      0,   _xscale, _yscale, 1),
-                                          matrix_build(_element_x, _element_y, __z,   0, 0, _angle,         1,       1, 1)));
-        }
-        
-        //...aaaand set the matrix
-        _matrix = matrix_multiply(_matrix, _old_matrix);
-        
-        var _inverse_matrix = __scribble_matrix_inverse(_matrix);
-        var _vector = matrix_transform_vertex(_inverse_matrix, _pointer_x, _pointer_y, 0);
+        var _matrix = __update_matrix(_element_x, _element_y);
+        if (__matrix_inverse == undefined) __matrix_inverse = __scribble_matrix_inverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
+        var _vector = matrix_transform_vertex(__matrix_inverse, _pointer_x, _pointer_y, 0);
         var _x = _vector[0];
         var _y = _vector[1];
         
@@ -889,7 +877,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (__scale_to_box_max_width  > 0) _xscale = __scale_to_box_max_width  / (_model.get_width()  + __padding_l + __padding_r);
         if (__scale_to_box_max_height > 0) _yscale = __scale_to_box_max_height / (_model.get_height() + __padding_t + __padding_b);
         
+        var _previous_scale_to_box_scale = __scale_to_box_scale;
         __scale_to_box_scale = min(1.0, _xscale, _yscale);
+        if (__scale_to_box_scale != _previous_scale_to_box_scale) __matrix_dirty = true;
     }
     
     /// @param x
@@ -1112,11 +1102,25 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         #endregion
         
+        
+        
+        //...aaaand set the matrix
+        var _old_matrix = matrix_get(matrix_world);
+        var _matrix = matrix_multiply(__update_matrix(_x, _y), _old_matrix);
+        matrix_set(matrix_world, _matrix);
+        
         //Draw the model using ourselves as the context
-        _model.draw(_x, _y, __z, self, (__msdf_border_thickness > 0) || (__msdf_shadow_alpha > 0));
+        _model.draw(self, (__msdf_border_thickness > 0) || (__msdf_shadow_alpha > 0));
+        
+        //Make sure we reset the world matrix
+        matrix_set(matrix_world, _old_matrix);
+        
+        
         
         //Run the garbage collecter
         __scribble_gc_collect();
+        
+        
         
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
         
@@ -1276,6 +1280,58 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         
         return __model;
+    }
+    
+    static __update_matrix = function(_x, _y)
+    {
+        __update_scale_to_box_scale();
+        
+        if (__matrix_dirty || (__matrix_x != _x) || (__matrix_y != _y))
+        {
+            __matrix_dirty   = false;
+            __matrix_inverse = undefined;
+            __matrix_x       = _x;
+            __matrix_y       = _y;
+            
+            var _x_offset = -__origin_x;
+            var _y_offset = -__origin_y;
+            var _xscale   = __xscale*__scale_to_box_scale;
+            var _yscale   = __yscale*__scale_to_box_scale;
+            var _angle    = __angle;
+            
+            with(__get_model(true))
+            {
+                _xscale *= __fit_scale;
+                _yscale *= __fit_scale;
+            }
+            
+            //Build a matrix to transform the text...
+            if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
+            {
+                //Faster than creating our own array
+                __matrix = matrix_build(_x_offset + _x, _y_offset + _y, __z,   0,0,0,   1,1,1);
+            }
+            else
+            {
+                var _sin = dsin(_angle);
+                var _cos = dcos(_angle);
+                
+                var _m00 =  _xscale*_cos;
+                var _m10 = -_yscale*_sin;
+                var _m01 =  _xscale*_sin;
+                var _m11 =  _yscale*_cos;
+                
+                var _m03 = _x_offset*_m00 + _y_offset*_m10 + _x;
+                var _m13 = _x_offset*_m01 + _y_offset*_m11 + _y;
+                
+                __matrix = [_m00, _m10,   0, 0,
+                            _m01, _m11,   0, 0,
+                               0,    0,   1, 0,
+                            _m03, _m13, __z, 1];
+            }
+        }
+        
+        return __matrix;
     }
     
     static __get_bbox_transform = function(_x, _y, _model, _bbox)

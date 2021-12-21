@@ -53,7 +53,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     #region Public Methods
     
-    static draw = function(_x, _y, _z, _element, _double_draw)
+    static draw = function(_element, _double_draw)
     {
         if (__flushed) return undefined;
         if (_element == undefined) return undefined;
@@ -61,45 +61,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         __last_drawn = current_time;
         
         var _page_data = __pages_array[_element.__page];
-        
-        with(_element)
-        {
-            __update_scale_to_box_scale();
-            
-            var _x_offset = -__origin_x;
-            var _y_offset = -__origin_y;
-            var _xscale   = __xscale*__scale_to_box_scale;
-            var _yscale   = __yscale*__scale_to_box_scale;
-            var _angle    = __angle;
-        }
-        
-        _xscale *= __fit_scale;
-        _yscale *= __fit_scale;
-        
-        var _old_matrix = matrix_get(matrix_world);
-        
-        //Build a matrix to transform the text...
-        //TODO - Cache this
-        if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
-        {
-            var _matrix = matrix_build(_x_offset + _x, _y_offset + _y, _z,   0,0,0,   1,1,1);
-        }
-        else
-        {
-            var _matrix = matrix_multiply(matrix_build(_x_offset, _y_offset,  0,   0, 0,      0,         1,       1, 1),
-                          matrix_multiply(matrix_build(        0,         0,  0,   0, 0,      0,   _xscale, _yscale, 1),
-                                          matrix_build(       _x,        _y, _z,   0, 0, _angle,         1,       1, 1)));
-        }
-        
-        //...aaaand set the matrix
-        _matrix = matrix_multiply(_matrix, _old_matrix);
-        matrix_set(matrix_world, _matrix);
-        
-        //Now iterate over the text element's vertex buffers and submit them
         _page_data.__submit(_element, (__has_arabic || __has_thai) && _double_draw);
-        
-        //Make sure we reset the world matrix
-        matrix_set(matrix_world, _old_matrix);
     }
     
     static flush = function()
