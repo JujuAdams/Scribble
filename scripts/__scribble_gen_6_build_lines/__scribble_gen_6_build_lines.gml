@@ -4,7 +4,7 @@
                                   ;\
                                   ;\ //Align the left-hand side of the word to the left-hand side of the line. This corrects visually unpleasant gaps and overlaps
                                   ;\ //TODO - Implement for R2L text
-                                  if (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.BIDI] != __SCRIBBLE_BIDI.R2L)\
+                                  if (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.BIDI] < __SCRIBBLE_BIDI.R2L)\
                                   {\
                                       _word_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.GLYPH_START];\
                                       _word_glyph_end   = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.GLYPH_END  ];\
@@ -113,7 +113,7 @@ function __scribble_gen_6_build_lines()
                     {
                         #region Emergency! We're going to have to retroactively implement per-glyph line wrapping
                         
-                        if (_word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI] == __SCRIBBLE_BIDI.R2L)
+                        if (_word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI] >= __SCRIBBLE_BIDI.R2L)
                         {
                             //TODO - Implement R2L emergency per-glyph line wrapping
                             var _line_word_end = _i;

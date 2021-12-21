@@ -1,5 +1,5 @@
 var _element = scribble("דג סקרן שט בים מאוכזב ולפתע מצא חברה").starting_format("fnt_hebrew", c_white).wrap(width);
-_element.draw(x, y);
+_element.draw(x, y, typist);
 
 var _bbox = _element.get_bbox(x, y);
 draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, true);

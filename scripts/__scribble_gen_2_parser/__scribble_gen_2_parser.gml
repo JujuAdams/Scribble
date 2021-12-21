@@ -126,9 +126,16 @@ function __scribble_gen_2_parser()
                 if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
             }
             
-            if ((_bidi == __SCRIBBLE_BIDI.L2R) || (_bidi == __SCRIBBLE_BIDI.R2L))
+            if (_bidi == __SCRIBBLE_BIDI.L2R)
             {
                 _overall_bidi = _bidi;
+                break;
+            }
+            
+            //Group R2L and R2L_ARABIC under the same overall bidi direction
+            if (_bidi >= __SCRIBBLE_BIDI.R2L)
+            {
+                _overall_bidi = __SCRIBBLE_BIDI.R2L;
                 break;
             }
         }

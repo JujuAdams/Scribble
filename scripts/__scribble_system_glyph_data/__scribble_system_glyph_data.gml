@@ -30,6 +30,7 @@ function __scribble_system_glyph_data()
         ISOLATED,       //More of a layout property - .ISOLATED words get converted to .L2R when building words
         L2R,
         R2L,
+        R2L_ARABIC, //Cursive. Animation indexes are calculated per word
     }
     
     var _map = global.__scribble_glyph_data.__bidi_map;
@@ -87,9 +88,9 @@ function __scribble_system_glyph_data()
     _map[? $066B] = __SCRIBBLE_BIDI.R2L; //Arabic decimal separator
     _map[? $066C] = __SCRIBBLE_BIDI.R2L; //Arabic thousands separator
     for(var _i = 0x0590; _i <= 0x05FF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L; //Hebrew block
-    for(var _i = 0x0600; _i <= 0x06FF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L; //Arabic block
-    for(var _i = 0xFB50; _i <= 0xFDFF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L; //Arabic presentation forms A
-    for(var _i = 0xFE70; _i <= 0xFEFF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L; //Arabic presentation forms B
+    for(var _i = 0x0600; _i <= 0x06FF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L_ARABIC; //Arabic block
+    for(var _i = 0xFB50; _i <= 0xFDFF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L_ARABIC; //Arabic presentation forms A
+    for(var _i = 0xFE70; _i <= 0xFEFF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L_ARABIC; //Arabic presentation forms B
     
     
     

@@ -5,10 +5,14 @@
 
 #macro __SCRIBBLE_GEN_WORD_END  _word_glyph_end = _i-1;\
                                 ;\
-                                if (_word_bidi == __SCRIBBLE_BIDI.R2L)\
+                                if (_word_bidi == __SCRIBBLE_BIDI.R2L_ARABIC)\ //Arabic groups visually glyphs together into words
                                 {\
                                     ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, abs(_word_width));\
                                     ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _word_glyph_start);\
+                                }\
+                                else if (_word_bidi == __SCRIBBLE_BIDI.R2L)\ //Any R2L languages, apart from Arabic
+                                {\
+                                    ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, abs(_word_width));\
                                 }\
                                 ;\
                                 _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.GLYPH_END] = _word_glyph_end;\
@@ -53,7 +57,7 @@ function __scribble_gen_4_build_words()
         
         __SCRIBBLE_GEN_WORD_START;
         
-        if (_word_bidi != __SCRIBBLE_BIDI.R2L)
+        if (_word_bidi < __SCRIBBLE_BIDI.R2L) //Any L2R text
         {
             _word_width += _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.SEPARATION];
             _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX] = 0;
@@ -110,6 +114,7 @@ function __scribble_gen_4_build_words()
                 
                 case __SCRIBBLE_BIDI.L2R:
                 case __SCRIBBLE_BIDI.R2L:
+                case __SCRIBBLE_BIDI.R2L_ARABIC:
                     if (_glyph_prev_whitespace)
                     {
                         __SCRIBBLE_GEN_WORD_NEW;
@@ -130,16 +135,19 @@ function __scribble_gen_4_build_words()
                 break;
             }
             
-            if (_word_bidi != __SCRIBBLE_BIDI.R2L)
+            if (_word_bidi < __SCRIBBLE_BIDI.R2L) //Any non-R2L text is laid out left-to-right
             {
                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.X] += _word_width;
                 _word_width += _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.SEPARATION];
                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX] = _i;
             }
-            else
+            else // __SCRIBBLE_BIDI.R2L or __SCRIBBLE_BIDI.R2L_ARABIC
             {
                 _word_width -= _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.SEPARATION];
                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.X] += _word_width;
+                
+                //Arabic groups visually glyphs together into words. Other R2L doesn't so we can assign animation indexes here
+                if (_word_bidi == __SCRIBBLE_BIDI.R2L) _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX] = _i;
             }
             
             ++_i;

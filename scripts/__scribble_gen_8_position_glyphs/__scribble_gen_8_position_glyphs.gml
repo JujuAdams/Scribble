@@ -167,7 +167,7 @@ function __scribble_gen_8_position_glyphs()
             
             
             
-            if (_overall_bidi != __SCRIBBLE_BIDI.R2L)
+            if (_overall_bidi < __SCRIBBLE_BIDI.R2L)
             {
                 // "Normal" L2R text, no stretch reordering required
                 var _k = 0;
@@ -186,7 +186,7 @@ function __scribble_gen_8_position_glyphs()
                 var _stretch_word_end   = _stretch_grid[# _k, __SCRIBBLE_GEN_STRETCH.WORD_END  ];
                 var _stretch_bidi       = _stretch_grid[# _k, __SCRIBBLE_GEN_STRETCH.BIDI      ];
             
-                if (_stretch_bidi != __SCRIBBLE_BIDI.R2L)
+                if (_stretch_bidi < __SCRIBBLE_BIDI.R2L)
                 {
                     // "Normal" L2R text, no word reordering required
                     var _w = _stretch_word_start;
