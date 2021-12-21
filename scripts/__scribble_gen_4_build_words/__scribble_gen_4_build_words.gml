@@ -9,6 +9,8 @@
                                 {\
                                     ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, abs(_word_width));\
                                     ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _word_glyph_start);\
+                                    ;\//For the purposes for further text layout, force this bidi to generic R2L
+                                    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.BIDI] = __SCRIBBLE_BIDI.R2L;\
                                 }\
                                 else if (_word_bidi == __SCRIBBLE_BIDI.R2L)\ //Any R2L languages, apart from Arabic
                                 {\
