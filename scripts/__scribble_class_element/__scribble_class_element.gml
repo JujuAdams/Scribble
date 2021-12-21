@@ -568,13 +568,43 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static region_detect = function(_element_x, _element_y, _pointer_x, _pointer_y)
     {
-        //TODO - Include transforms here. More efficient to convert x/y into element-space than to go the other way
-        var _x = _pointer_x - _element_x;
-        var _y = _pointer_y - _element_y;
-        
         var _model        = __get_model(true);
         var _page         = _model.__pages_array[__page];
         var _region_array = _page.__region_array;
+        
+        __update_scale_to_box_scale();
+        
+        var _x_offset = -__origin_x;
+        var _y_offset = -__origin_y;
+        var _xscale   = __xscale*__scale_to_box_scale;
+        var _yscale   = __yscale*__scale_to_box_scale;
+        var _angle    = __angle;
+        
+        _xscale *= _model.__fit_scale;
+        _yscale *= _model.__fit_scale;
+        
+        var _old_matrix = matrix_get(matrix_world);
+        
+        //Build a matrix to transform the text...
+        //TODO - Cache this
+        if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
+        {
+            var _matrix = matrix_build(_x_offset + _element_x, _y_offset + _element_y, __z,   0,0,0,   1,1,1);
+        }
+        else
+        {
+            var _matrix = matrix_multiply(matrix_build( _x_offset,  _y_offset,   0,   0, 0,      0,         1,       1, 1),
+                          matrix_multiply(matrix_build(         0,          0,   0,   0, 0,      0,   _xscale, _yscale, 1),
+                                          matrix_build(_element_x, _element_y, __z,   0, 0, _angle,         1,       1, 1)));
+        }
+        
+        //...aaaand set the matrix
+        _matrix = matrix_multiply(_matrix, _old_matrix);
+        
+        var _inverse_matrix = __scribble_matrix_inverse(_matrix);
+        var _vector = matrix_transform_vertex(_inverse_matrix, _pointer_x, _pointer_y, 0);
+        var _x = _vector[0];
+        var _y = _vector[1];
         
         var _found = undefined;
         var _i = 0;
