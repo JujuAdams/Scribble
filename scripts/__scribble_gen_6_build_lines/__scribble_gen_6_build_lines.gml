@@ -105,7 +105,7 @@ function __scribble_gen_6_build_lines()
                     _control_index++;
                 }
                 
-                if (_word_x + _word_width >= _simulated_model_max_width)
+                if (_word_x + _word_width > _simulated_model_max_width)
                 {
                     __wrapped = true;
                     
@@ -200,6 +200,16 @@ function __scribble_gen_6_build_lines()
                         }
                         
                         #endregion
+                    }
+                    else if (!SCRIBBLE_FIXED_WHITESPACE_WIDTH && _word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE)
+                    {
+                        _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH] = _simulated_model_max_width - _word_x;
+                        
+                        var _line_word_end = _i;
+                        __SCRIBBLE_GEN_LINE_END;
+                        _line_y += _line_height;
+                        _line_word_start = _i+1;
+                        __SCRIBBLE_GEN_LINE_START;
                     }
                     else
                     {
