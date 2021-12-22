@@ -770,6 +770,26 @@ function __scribble_class_element(_string, _unique_id) constructor
         __update_scale_to_box_scale();
         return __scale_to_box_scale*(_model.get_height() + __padding_t + __padding_b);
     }
+	
+	/// @param [page]
+	static get_page_width = function()
+	{
+		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+		
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+		return __scale_to_box_scale*(_model.get_page_width(_page) + __padding_l + __padding_r);
+	}
+	
+	/// @param [page]
+	static get_page_height = function()
+	{
+		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+		
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+		return __scale_to_box_scale*(_model.get_page_height(_page) + __padding_t + __padding_b);
+	}
     
     static get_page = function()
     {
@@ -782,26 +802,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (!is_struct(_model)) return 0;
         return _model.get_pages();
     }
-	
-	/// @param [page]
-	static get_page_height = function()
-	{
-		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
-		
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
-		return _model.get_page_height(_page);
-	}
-	
-	/// @param [page]
-	static get_page_width = function()
-	{
-		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
-		
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
-		return _model.get_page_width(_page);
-	}
     
     static on_last_page = function()
     {

@@ -164,33 +164,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     /// @page
     static get_width = function(_page)
     {
-        if (_page != undefined)
-        {
-            if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-            if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-            
-            return __fit_scale*__pages_array[_page].__width;
-        }
-        else
-        {
-            return __fit_scale*__width;
-        }
+        return __fit_scale*__width;
     }
     
     /// @page
     static get_height = function(_page)
     {
-        if (_page != undefined)
-        {
-            if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-            if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-            
-            return __fit_scale*__pages_array[_page].__height;
-        }
-        else
-        {
-            return __fit_scale*__height;
-        }
+        return __fit_scale*__height;
     }
     
     static __get_page_array = function()
