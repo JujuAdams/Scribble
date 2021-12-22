@@ -377,9 +377,9 @@ function __scribble_class_typist() constructor
             
             //Collect data from the struct
             //This data is set in __scribble_generate_model() via the .__new_event() method on the model class
-            var _event_position = _event_struct.__position;
-            var _event_name     = _event_struct.__name;
-            var _event_data     = _event_struct.__data;
+            var _event_position = _event_struct.position;
+            var _event_name     = _event_struct.name;
+            var _event_data     = _event_struct.data;
             
             switch(_event_name)
             {
