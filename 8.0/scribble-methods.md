@@ -649,18 +649,6 @@ scribble("This text is red and will be wrapped inside a box that's 150px wide.")
 
 &nbsp;
 
-## `.overwrite(string)` *regenerator*
-
-**Returns**: The text element
-
-|Name    |Datatype|Purpose                                     |
-|--------|--------|--------------------------------------------|
-|`string`|string  |New string to display using the text element|
-
-Replaces the string in an existing text element whilst maintaining the animation, typewriter, and page state. This function may cause a recaching of the underlying text model so should be used sparingly.
-
-&nbsp;
-
 ## `.ignore_command_tags(state)` *regenerator*
 
 **Returns**: The text element
@@ -692,3 +680,17 @@ Controls the z coordinate to draw the text element at. This is largely irrelevan
 |Name|Datatype|Purpose|
 |----|--------|-------|
 |    |        |       |
+
+&nbsp;
+
+## `.overwrite(string)` *regenerator*
+
+**Returns**: The text element
+
+|Name    |Datatype|Purpose                                     |
+|--------|--------|--------------------------------------------|
+|`string`|string  |New string to display using the text element|
+
+Replaces the string in an existing text element.
+
+!> This function may cause a recaching of the underlying text model so should be used sparingly. Do not be surprised if this method resets associated typists, invalidates text element state, or causes outright crashes.
