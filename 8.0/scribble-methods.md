@@ -14,16 +14,14 @@ Don't worry about clearing up after yourself when you draw text - Scribble autom
 
 &nbsp;
 
-## `scribble([string], [uniqueID])`
+## `scribble(string, [uniqueID])`
 
 **Returns:** A text element that contains the string (a struct, an instance of `__scribble_class_element`)
 
 |Name        |Datatype      |Purpose               |
 |------------|--------------|----------------------|
-|`[string]`  |string        |String to draw        |
+|`string`    |string        |String to draw        |
 |`[uniqueID]`|string or real|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_UNIQUE_ID`](configuration)|
-
-If no string is specified (i.e. the function used with arguments), this function will return a **unique** text element that contains no text data (even if no unique ID is given). The text in any text element, including empty ones, can be overwritten using the [`.overwrite()`](scribble-methods?id=overwritestring-regenerator) method.
 
 Scribble allows for many kinds of inline formatting tags. Please read the [Text Formatting](text-formatting) article for more information.
 
