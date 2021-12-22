@@ -72,8 +72,6 @@ Sets the starting horizontal and vertical alignment for your text. You can chang
 
 &nbsp;
 
-# Colour
-
 ## `.blend(colour, alpha)`
 
 **Returns**: The text element
