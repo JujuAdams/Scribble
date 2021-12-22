@@ -237,6 +237,8 @@ If used in conjunction with [`.wrap()`](scribble-methods?id=wrapmaxwidth-maxheig
 
 This function can also be executed with zero arguments (e.g. `scribble("text").bezier()`) to turn off the Bézier curve for this text element.
 
+&nbsp;
+
 ## `.right_to_left(state)` *regenerator*
 
 **Returns**: The text element
