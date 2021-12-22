@@ -604,7 +604,7 @@ Forces Scribble to remove this text element from the internal cache, invalidatin
 
 # Miscellaneous
 
-## `.events_get(position, [page])`
+## `.get_events(position, [page])`
 
 **Returns**: An array containing structs that describe typewrite events for the given character
 
@@ -616,6 +616,7 @@ Forces Scribble to remove this text element from the internal cache, invalidatin
 To match GameMaker's native string behaviour for functions such as `string_copy()`, character positions are 1-indexed such that the character at position 1 in the string `"abc"` is `a`. Events are indexed such that an event placed immediately before a character has an index one less than the character. Events placed immediately after a character have an index equal to the character e.g. `"[event index 0]X[event index 1]"`.
 
 The returned array contains structs that themselves contain the following member variables:
+
 |Member Variable|Datatype        |Purpose                                                                                                  |
 |---------------|----------------|---------------------------------------------------------------------------------------------------------|
 |`.position`    |integer         |The character position for this event. This should (!) be the same as the index provided to get the event|
