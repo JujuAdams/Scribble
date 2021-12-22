@@ -28,7 +28,7 @@ function __scribble_gen_8_position_glyphs()
     var _model_max_y = -infinity;
     
     var _i = 0;
-    repeat(array_length(__pages_array))
+    repeat(__pages)
     {
         var _page_data = __pages_array[_i];
         
