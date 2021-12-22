@@ -1,6 +1,8 @@
 # Coming from Scribble 7.1
 
-Version 8 is, on the surface, rather similar to version 7.1. Calling methods on text elements is still the primary way of interacting with Scribble. However, under the surface, the text parser that powers Scribble has undergone a complete rewrite. Thanks to features added in GameMaker 2.3.4 (and lateR), Scribble can now cut out some of the font definition tedium. Typewriters have changed too, dropping the clumsy and error-prone `.typewriter_*()` functions in preference for a new "typist" system. This is just the start - Scribble version 8 has close to 500 commits between it and version 7.1, making it the most substantial version upgrade to date.
+Version 8 is, on the surface, rather similar to version 7.1. Calling methods on text elements is still the primary way of interacting with Scribble. However, under the surface, the text parser that powers Scribble has undergone a complete rewrite. Thanks to features added in GameMaker 2.3.4 (and lateR), Scribble can now cut out some of the font definition tedium. Typewriters have changed too, dropping the clumsy and error-prone `.typewriter_*()` functions in preference for a new "typist" system. This is just the start - Scribble version 8 has over 450 commits between it and version 7.1, making it the most substantial version upgrade to date.
+
+&nbsp;
 
 ## General Improvements
 
@@ -32,9 +34,11 @@ Version 8 is, on the surface, rather similar to version 7.1. Calling methods on 
 - Typewriter character delay is now more customisable, and has been moved to a method on typists. Per-character delay can now accept a pair of characters to look for
 - ...and if you want to ignore all of the delays set up in your text, you now can using the power of the `.ignore_delay()` method for typists (useful for rapidly skipping through text without going all the way to using `.skip()`)
 - If you don't want to use typists and would instead like to implement typewriter behaviour yourself, `.reveal()` and `.get_reveal()` allow you to take control yourself. Additionally, `.get_events()` has been added to help find and trigger events if you wish
+- Sound-per-characters behaviour (using the new `.sound_per_char()` method for typists) can now be given a string of characters to ignore when deciding whether to play a sound when a character is revealed by the typist
 
 ## Layout
 
+- Adds `[fa_justify]` for justified text
 - Right-to-left text rendering is now supported natively. No external tools are needed
 - Beta support for Arabic and Hebrew. Some rendering behaviours may not be perfect, please report issues as you see them
 - Partial support for Thai (requires "C90" Thai fonts to be used)
