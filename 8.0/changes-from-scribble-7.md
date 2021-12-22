@@ -20,6 +20,7 @@ Scribble version 8 has over 450 commits between it and version 7.1, making it th
 
 - Spritefonts should now be added using GameMaker's native `font_add_sprite()` and/or `font_add_sprite_ext()`. No Scribble-specific functions exist to add spritefonts; Scribble will now use GameMaker's own spritefont data to build a Scribble font as soon as a GameMaker spritefont is defined
 - Various edgecase spritefont issues, have now been fixed including character occasionally being garbled
+- `SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN` can be turned on or off to control how a sprite's origin affects the associated spritefont
 
 ## MSDF
 
