@@ -26,7 +26,7 @@ In pursuit of an easier-to-use yet more powerful library, some breaking changes 
 - `.get_text()` method has been added to text elements. This returns the raw text for a page of text, stripped of formatting and command tags
 - Scribble configuration has been split into three separate scripts to help guide people to what they're looking for faster
 - CJK text now automatically wraps per-character instead of per-word. This was a feature in previous versions, but it is fully automated now with no effort required on behalf of the developer
-- Added superfonts to allow for fonts (especially those covering different languages or charactersets) to be combined together transparently
+- Added superfonts to allow for fonts (especially those covering different languages or charactersets) to be combined together transparently. This replaces `scribble_font_combine()`
 - Fonts can now have bilinear filtering forced on per font. This is useful for rendering clean pixel fonts in high res games, or visa versa
 - Added `scribble_font_get_glyph_ranges()` to help debug font support for different languages
 - Font outline baking has been simplified down into `scribble_font_bake_outline_4dir`, `..._outline_8dir()`, and `..._outline_8dir_2px()`. This makes the feature easier to use, as well as being a key step in enabling compilation for Opera GX
