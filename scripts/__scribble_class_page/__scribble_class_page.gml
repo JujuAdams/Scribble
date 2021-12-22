@@ -63,7 +63,7 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_texture, _pxrange, _bilinear, _for_text, _model_struct)
+    static __get_vertex_buffer = function(_texture, _pxrange, _bilinear, _model_struct)
     {
         var _pointer_string = string(_texture);
         
