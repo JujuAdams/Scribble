@@ -1,4 +1,4 @@
 - Right-to-left text rendering
 - Support for Hebrew
-- Beta support for Arabic; some rendering behaviours may not be perfect
-- Partial support for Thai; requires "C90" Thai fonts to be used)
+- Beta support for Arabic. Some rendering behaviours may not be perfect, please report issues as you see them
+- Partial support for Thai - requires "C90" Thai fonts to be used)
