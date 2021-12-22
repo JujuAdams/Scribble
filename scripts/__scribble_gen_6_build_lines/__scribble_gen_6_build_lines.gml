@@ -132,7 +132,7 @@ function __scribble_gen_6_build_lines()
                             var _original_word_bidi        = _word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI       ];
                             var _original_word_glyph_start = _word_grid[# _i, __SCRIBBLE_GEN_WORD.GLYPH_START];
                             var _original_word_glyph_end   = _word_grid[# _i, __SCRIBBLE_GEN_WORD.GLYPH_END  ];
-                            var _original_word_width       = _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH      ];
+                            //var _original_word_width       = _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH      ]; //Unused
                             var _original_word_height      = _word_grid[# _i, __SCRIBBLE_GEN_WORD.HEIGHT     ];
                             
                             var _new_word_start_x     = _word_x;

@@ -26,7 +26,6 @@ function __scribble_gen_7_build_pages()
         var _element               = __element;
         var _model_max_height      = __model_max_height;
         var _line_count            = __line_count;
-        var _control_count         = __control_count;
         var _wrap_no_pages         = _element.__wrap_no_pages;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
