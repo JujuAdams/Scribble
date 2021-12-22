@@ -1,4 +1,4 @@
-# Coming from Scribble 7.1
+# Changes from Scribble 7.1
 
 Version 8 is, on the surface, rather similar to version 7.1. Calling methods on text elements is still the primary way of interacting with Scribble. However, under the surface, the text parser that powers Scribble has undergone a complete rewrite. Thanks to features added in GameMaker 2.3.4 (and lateR), Scribble can now cut out some of the font definition tedium. Typewriters have changed too, dropping the clumsy and error-prone `.typewriter_*()` functions in preference for a new "typist" system. This is just the start - Scribble version 8 has over 450 commits between it and version 7.1, making it the most substantial version upgrade to date.
 
