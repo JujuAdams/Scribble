@@ -6,8 +6,6 @@ scribble_glyph_set("spr_sprite_font", " ", SCRIBBLE_GLYPH.SEPARATION, 11);
 scribble_glyph_set("spr_sprite_font", "f", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 scribble_glyph_set("spr_sprite_font", "q", SCRIBBLE_GLYPH.SEPARATION, -1, true);
 
-scribble_typewriter_add_character_delay(",", 300);
-
 //demo_string  = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 //demo_string += "[rainbow][pulse]TEST[/] [slant]AaBbCcDdEeFf[/slant]##";
 //demo_string += "a b c d e f g h i j k l m n o p q r s t u v w x y z\n\n";
