@@ -673,11 +673,11 @@ Controls the z coordinate to draw the text element at. This is largely irrelevan
 
 ## `.get_z()`
 
-**Returns**: The text element
+**Returns**: Number, the z-position of the text element as set by `.z()`
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
-|    |        |       |
+|None|        |       |
 
 &nbsp;
 
