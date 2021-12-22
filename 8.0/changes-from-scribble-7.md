@@ -54,7 +54,7 @@ Scribble version 8 has over 450 commits between it and version 7.1, making it th
 - `.get_text()` method has been added to text elements. This returns the raw text for a page of text, stripped of formatting and command tags
 - `.get_bbox_revealed()` has been added to text elements to allow calculation of the bounding box for only the revealed text
 - `.fog()` has been removed since no one was using this feature
-- `.z()` can now be used to set the z-coordinate that text elements are drawn at. This will probably end up the same as `.fog()` but you never know...
+- `.z()` can now be used to set the z-coordinate that text elements are drawn at. This will probably never see use and end up in the bin alongside `.fog()` but you never know...
 - Text element templates are now forcibly scoped to the text element when applied to avoid confusing and intimidating scope-related bugs
 - Template functions now default to only being executed when the template changes. This can be customised by setting the `[executeOnlyOnChange]` argument for `.template()`
 
