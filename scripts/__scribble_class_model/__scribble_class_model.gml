@@ -17,7 +17,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
     {
         __scribble_trace("Warning! Rebuilding model \"", __cache_name, "\"");
-        _weak.ref.flush();
+        _weak.ref.__flush();
     }
     
     //Add this model to the global cache
@@ -51,7 +51,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     
     
-    static draw = function(_page, _msdf_feather_thickness, _double_draw)
+    static __submit = function(_page, _msdf_feather_thickness, _double_draw)
     {
         if (__flushed) return undefined;
         
@@ -60,12 +60,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         __pages_array[_page].__submit(_msdf_feather_thickness, (__has_arabic || __has_thai) && _double_draw);
     }
     
-    static flush = function()
+    static __flush = function()
     {
         if (__flushed) return undefined;
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing model \"" + string(__cache_name) + "\"");
         
-        reset();
+        __reset();
         
         //Remove reference from cache
         variable_struct_remove(global.__scribble_mcache_dict, __cache_name);
@@ -74,7 +74,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         __flushed = true;
     }
     
-    static reset = function()
+    static __reset = function()
     {
         if (__SCRIBBLE_DEBUG) __scribble_trace("Resetting model \"" + string(__cache_name) + "\"");
         
