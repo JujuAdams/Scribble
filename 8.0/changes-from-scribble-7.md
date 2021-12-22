@@ -4,19 +4,20 @@ Version 8 is, on the surface, rather similar to version 7.1. Calling methods on 
 
 ## General Improvements
 
-- Added `draw_text_scribble()` and `draw_text_scribble_ext()` for immediate plug-and-play usage. These functions are useful for drawing formatted text without needing to navigate Scribble's fluent interface
+- Adding fonts is now far less tedious with the common use cases (standard fonts and spritefonts) being essentially automatic
 - Scribble is now supported on Opera GX (but not HTML5! Waiting on fixes from YYG still)
 - Drawing text should now be faster than before thanks to some additional streamlining and caching
-- Adds text regions via the `[region]` command tag. Regions can be detected using `.region_detect()` and regions can be highlighted using `.region_set_active()`. Text regions are very useful for tooltips and hyperlinks
+- Added `draw_text_scribble()` and `draw_text_scribble_ext()` for immediate plug-and-play usage. These functions are useful for drawing formatted text without needing to navigate Scribble's fluent interface
+- Text regions can now be defined using the `[region]` command tag. Regions can be detected using `.region_detect()` and regions can be highlighted using `.region_set_active()`. Text regions are very useful for tooltips and hyperlinks
 
 ## Standard Fonts
 
-- .yy files for standard fonts no longer need to be included in the project. Scribble will automatically parse and set up fonts on boot. No font definition function calls are needed for standard fonts
+- .yy files for standard fonts no longer need to be included in the project. Scribble will automatically parse and set up fonts on boot using data that GameMaker provides internally. No font definition function calls are needed for standard fonts
 
 ## Spritefonts
 
-- Spritefonts should now be added using GameMaker's native `font_add_sprite()` and/or `font_add_sprite_ext()`. No Scribble-specific functions exist to add spritefonts; Scribble will now use GameMaker's own spritefont data
-- Variou edgecase spritefont issues, have now been fixed including character occasionally being garbled
+- Spritefonts should now be added using GameMaker's native `font_add_sprite()` and/or `font_add_sprite_ext()`. No Scribble-specific functions exist to add spritefonts; Scribble will now use GameMaker's own spritefont data to build a Scribble font as soon as a GameMaker spritefont is defined
+- Various edgecase spritefont issues, have now been fixed including character occasionally being garbled
 
 ## MSDF
 
@@ -24,15 +25,6 @@ Version 8 is, on the surface, rather similar to version 7.1. Calling methods on 
 - MTSDF fonts can now be used with Scribble, though the alpha channel is not used for anything at the moment
 - MSDF drop shadows can now be softened
 - Adds `scribble_msdf_thickness_offset()` to dynamically alter the thickness of MSDF fonts. This is useful to tweak the appearance of different fonts to match each other
-
-## Font Modification
-
-- Added superfonts to allow for fonts (especially those covering different languages or charactersets) to be combined together transparently. This replaces `scribble_font_combine()`
-- Fonts can now have bilinear filtering forced on per font. This is useful for rendering clean pixel fonts in high res games, or visa versa
-- Added `scribble_font_get_glyph_ranges()` to help debug font support for different languages
-- Font outline baking has been simplified down into `scribble_font_bake_outline_4dir`, `..._outline_8dir()`, and `..._outline_8dir_2px()`. This makes the feature easier to use, as well as being a key step in enabling compilation for Opera GX
-- Baking shadows into fonts, much like baking outlines, is now possible using the new `scribble_font_bake_shadow()` function
-- Fonts can now be renamed (at least for use with Scribble) by using `scribble_font_rename()`
 
 ## Typewriter
 
@@ -43,12 +35,12 @@ Version 8 is, on the surface, rather similar to version 7.1. Calling methods on 
 
 ## Layout
 
-- Right-to-left text rendering is now supported
+- Right-to-left text rendering is now supported natively. No external tools are needed
 - Beta support for Arabic and Hebrew. Some rendering behaviours may not be perfect, please report issues as you see them
 - Partial support for Thai (requires "C90" Thai fonts to be used)
-- CJK text now automatically wraps per-character instead of per-word. This was a feature in previous versions, but it is fully automated now with no effort required on behalf of the developer
+- CJK text now automatically wraps per-character instead of per-word. This was a feature in previous versions via an optional argument for `.wrap()`, but it is fully automated now with no additional effort required on behalf of the developer
 - Added `.line_spacing()` to customise the mechanics of spacing out lines
-- In addition to `.fit_to_box()` being many, many times faster than previously, the new `.scale_to_box()` method allows for an even faster way to scale text inside a bounding box
+- In addition to `.fit_to_box()` being many times faster than previously, the new `.scale_to_box()` method allows for an even faster way to scale text inside a bounding box
 - Padding is now baked into text elements using the `.padding()` method. `.get_bbox()` no longer has padding arguments as a result
 
 ## Text Element Methods
@@ -59,7 +51,16 @@ Version 8 is, on the surface, rather similar to version 7.1. Calling methods on 
 - `.get_bbox_revealed()` has been added to text elements to allow calculation of the bounding box for only the revealed text
 - `.fog()` has been removed since no one was using this feature
 - `.z()` can now be used to set the z-coordinate that text elements are drawn at. This will probably end up the same as `.fog()` but you never know...
-- Text element templates are now forcibly scoped to the text element when applied to avoid nasty scope-related bugs
+- Text element templates are now forcibly scoped to the text element when applied to avoid confusing and intimidating scope-related bugs
+
+## Font Modification
+
+- Added superfonts to allow for fonts to be combined together transparently. The is especially useful when trying to cover different languages or charactersets using a single font name. This replaces `scribble_font_combine()`
+- Fonts can now have bilinear filtering forced per font. This is useful for rendering clean pixel fonts in high res games, or visa versa
+- Added `scribble_font_get_glyph_ranges()` to help debug font support for different languages
+- Font outline baking has been simplified down into `scribble_font_bake_outline_4dir`, `..._outline_8dir()`, and `..._outline_8dir_2px()`. This makes the feature easier to use, as well as being a key step in enabling compilation for Opera GX
+- Baking shadows into fonts, much like baking outlines, is now possible using the new `scribble_font_bake_shadow()` function
+- Fonts can now be renamed (at least for use with Scribble) by using `scribble_font_rename()`
 
 ## Other Changes
 
