@@ -102,7 +102,7 @@ Sets up a gradient blend for each glyph in the text element. The base blend colo
 
 &nbsp;
 
-# Shape, Wrapping, and Positioning
+# Layout
 
 ## `.origin(x, y)`
 
@@ -236,6 +236,16 @@ This function defines a [cubic Bézier curve](https://en.wikipedia.org/wiki/B%C3
 If used in conjunction with [`.wrap()`](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator), the total length of the curve is used to wrap text horizontally and overrides the value specified in [`.wrap()`](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator). `.bezier()` will not work with `[fa_right]` or `[fa_center]` alignment. Instead, you should use `[pin_right]` and `[pin_center]`.
 
 This function can also be executed with zero arguments (e.g. `scribble("text").bezier()`) to turn off the Bézier curve for this text element.
+
+## `.right_to_left(state)` *regenerator*
+
+**Returns**: The text element
+
+|Name    |Datatype|Purpose                                            |
+|--------|--------|---------------------------------------------------|
+|`state` |boolean |Whether the overall text direction is right-to-left|
+
+Hints to the text parser whether the overall text direction is right-to-left (`true`) or left-to-right (`false`). This method also accepts an input of `undefined` to use the default behaviour whereby Scribble attempts to figure out the overall text direction based on the first glyph in the string.
 
 &nbsp;
 
