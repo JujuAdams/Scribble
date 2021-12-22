@@ -2,8 +2,6 @@
 
 Version 8 is, on the surface, rather similar to version 7.1. Calling methods on text elements is still the primary way of interacting with Scribble. However, under the surface, the text parser that powers Scribble has undergone a complete rewrite. Thanks to features added in GameMaker 2.3.4 (and lateR), Scribble can now cut out some of the font definition tedium. Typewriters have changed too, dropping the clumsy and error-prone `.typewriter_*()` functions in preference for a new "typist" system. This is just the start - Scribble version 8 has close to 500 commits between it and version 7.1, making it the most substantial version upgrade to date.
 
-In pursuit of an easier-to-use yet more powerful library, some breaking changes have had to be made.
-
 - .yy files for standard fonts no longer need to be included in the project. Scribble will automatically parse and set up fonts on boot. No font definition function calls are needed for standard fonts
 - Spritefonts should now be added using GameMaker's native `font_add_sprite()` and/or `font_add_sprite_ext()`. No Scribble-specific functions exist to add spritefonts; Scribble will now use GameMaker's own spritefont data
 - Added `draw_text_scribble()` and `draw_text_scribble_ext()` for immediate plug-and-play usage. These functions are useful for drawing formatted text without needing to navigate Scribble's fluent interface
