@@ -56,6 +56,7 @@ Version 8 is, on the surface, rather similar to version 7.1. Calling methods on 
 - `.fog()` has been removed since no one was using this feature
 - `.z()` can now be used to set the z-coordinate that text elements are drawn at. This will probably end up the same as `.fog()` but you never know...
 - Text element templates are now forcibly scoped to the text element when applied to avoid confusing and intimidating scope-related bugs
+- Template functions now default to only being executed when the template changes. This can be customised by setting the `[executeOnlyOnChange]` argument for `.template()`
 
 ## Font Modification
 
