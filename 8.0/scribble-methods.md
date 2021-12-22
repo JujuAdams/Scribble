@@ -290,7 +290,7 @@ This function expects the name of a region that has been defined in your text us
 
 &nbsp;
 
-# Getters
+# Dimensions
 
 ## `.get_bbox(x, y)`
 
@@ -324,6 +324,20 @@ The struct returned by `.get_bbox()` contains the following member variables:
 
 &nbsp;
 
+## `.get_bbox_revealed(x, y, [typist])`
+
+**Returns:** Struct containing the positions of the bounding box for a text element
+
+|Name    |Datatype|Purpose                                                                                                                     |
+|--------|--------|----------------------------------------------------------------------------------------------------------------------------|
+|`x`     |number  |x position in the room                                                                                                      |
+|`y`     |number  |y position in the room                                                                                                      |
+|`typist`|typist  |Typist being used to render the text element. If not specified, the manual reveal value is used instead (set by `.reveal()`)|
+
+The struct returned by `.get_bbox_revealed()` contains the same member variables as `.get_bbox()`; see above for details.
+
+&nbsp;
+
 ## `.get_width()`
 
 **Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
@@ -332,7 +346,7 @@ The struct returned by `.get_bbox()` contains the following member variables:
 |----|--------|-------|
 |None|        |       |
 
-Returns the raw width of the text element. This will **not** take into account rotation or scaling - this function returns the width value that Scribble uses internally.
+Returns the untransformed width of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method.
 
 &nbsp;
 
@@ -344,9 +358,39 @@ Returns the raw width of the text element. This will **not** take into account r
 |----|--------|-------|
 |None|        |       |
 
-Returns the raw height of the text element. This will **not** take into account rotation or scaling - this function returns the height value that Scribble uses internally.
+Returns the untransformed height of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method.
 
 &nbsp;
+
+## `.get_page_width([page])`
+
+**Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
+
+|Name    |Datatype|Purpose                                                                |
+|--------|--------|-----------------------------------------------------------------------|
+|`[page]`|Integer |Page to return the width of. If not specified, the current page is used|
+
+Returns the raw width of the given page This will **not** take into account rotation or scaling - this function returns the width value that Scribble uses internally.
+
+&nbsp;
+
+## `.get_page_height([page])`
+
+**Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
+
+|Name    |Datatype|Purpose                                                                 |
+|--------|--------|------------------------------------------------------------------------|
+|`[page]`|Integer |Page to return the height of. If not specified, the current page is used|
+
+Returns the raw height of the given page. This will **not** take into account rotation or scaling - this function returns the height value that Scribble uses internally.
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+# Other Getters
 
 ## `.get_wrapped()`
 
@@ -445,7 +489,7 @@ Returns which page Scribble is showing, as set by [`.page()`](scribble-methods?i
 
 &nbsp;
 
-## `.get_pages()`
+## `.get_page_count()`
 
 **Returns:** Integer, total number of pages for the text element
 
