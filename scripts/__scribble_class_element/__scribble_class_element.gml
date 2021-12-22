@@ -525,7 +525,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         return __tw_reveal;
     }
     
-    static events_get = function()
+    static get_events = function()
     {
         var _position = argument[0];
         var _page     = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : __page;

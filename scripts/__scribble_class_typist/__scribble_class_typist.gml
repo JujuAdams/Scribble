@@ -605,7 +605,7 @@ function __scribble_class_typist() constructor
                         _play_sound = true;
                         
                         //Get an array of events for this character from the text element
-                        var _found_events = __last_element.ref.events_get(__last_character);
+                        var _found_events = __last_element.ref.get_events(__last_character);
                         
                         //Add a per-character delay if required
                         if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER && !__ignore_delay && __character_delay && (__last_character > 0))
