@@ -1,8 +1,8 @@
 # Changes from Scribble 7.1
 
-Version 8 is, on the surface, rather similar to version 7.1. Calling methods on text elements is still the primary way of interacting with Scribble. However, under the surface, the text parser that powers Scribble has undergone a complete rewrite. Thanks to features added in GameMaker 2.3.4 (and lateR), Scribble can now cut out some of the font definition tedium. Typewriters have changed too, dropping the clumsy and error-prone `.typewriter_*()` functions in preference for a new "typist" system. This is just the start - Scribble version 8 has over 450 commits between it and version 7.1, making it the most substantial version upgrade to date.
+Version 8 is, on the surface, rather similar to version 7.1. Calling methods on text elements is still the primary way of interacting with Scribble. However, under the surface, the text parser that powers Scribble has undergone a complete rewrite. This has enabled a multitude of new layout options, not least `[fa_justify]`, right-to-left rendering, and text regions. Thanks to features added in GameMaker 2.3.4 (and later), Scribble now cuts out the font definition tedium by simply not requiring it at all for standard fonts. Spritefonts in version 8 are added by using GameMaker's native spritefont functions. Typewriters have changed too, dropping the clumsy and error-prone `.typewriter_*()` functions in preference for a new "typist" system.
 
-&nbsp;
+Scribble version 8 has over 450 commits between it and version 7.1, making it the most substantial version upgrade to date. I've tried to keep as much consistent as possible whilst bringing in new ideas to make the library easier to use whilst at the same time opening up new possibilities. Given the scope of the changes, if you notice something has changed or I've not mentioned a critical piece of information then please alert me. I want to make Scribble 8 the best it can be!
 
 ## General Improvements
 
