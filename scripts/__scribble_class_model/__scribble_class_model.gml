@@ -51,8 +51,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     
     
-    #region Public Methods
-    
     static draw = function(_page, _msdf_feather_thickness, _double_draw)
     {
         if (__flushed) return undefined;
@@ -133,17 +131,17 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
         if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Getting the revealed glyph bounding box requires SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to be set to <true>");
         
-        var _glyph_grid = get_glyph_data_grid(_page);
+        var _glyph_grid = __get_glyph_data_grid(_page);
         
         var _start = _in_start - 1;
         var _end   = _in_end   - 1;
         
         if (_end < 0)
         {
-            return { left:  _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
-                     top:   _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.TOP   ],
-                     right: _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
-                     bottom:_glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM],
+            return { left:   _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
+                     top:    _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.TOP   ],
+                     right:  _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
+                     bottom: _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM],
             };
         }
         else
@@ -162,13 +160,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     /// @page
-    static get_width = function(_page)
+    static __get_width = function(_page)
     {
         return __fit_scale*__width;
     }
     
     /// @page
-    static get_height = function(_page)
+    static __get_height = function(_page)
     {
         return __fit_scale*__height;
     }
@@ -178,22 +176,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         return __pages_array;
     }
     
-    static get_pages = function()
+    static __get_page_count = function()
     {
         return __pages;
     }
 	
 	/// @param page
-	static get_page_height = function(_page)
-	{
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-		
-		return __fit_scale*__pages_array[_page].__height;
-	}
-	
-	/// @param page
-	static get_page_width = function(_page)
+	static __get_page_width = function(_page)
 	{
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
@@ -202,7 +191,16 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	}
 	
 	/// @param page
-	static get_text = function(_page)
+	static __get_page_height = function(_page)
+	{
+        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
+        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+		
+		return __fit_scale*__pages_array[_page].__height;
+	}
+	
+	/// @param page
+	static __get_text = function(_page)
 	{
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
@@ -213,7 +211,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 	}
 	
 	/// @param page
-	static get_glyph_data = function(_index, _page)
+	static __get_glyph_data = function(_index, _page)
 	{
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
@@ -221,13 +219,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
 		return __pages_array[_page].__get_glyph_data(_index);
 	}
     
-    static get_wrapped = function()
+    static __get_wrapped = function()
     {
         return __wrapped;
     }
     
     /// @param page
-    static get_line_count = function(_page)
+    static __get_line_count = function(_page)
     {
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
@@ -236,7 +234,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     /// @param page
-    static get_glyph_count = function(_page)
+    static __get_glyph_count = function(_page)
     {
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
@@ -245,7 +243,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         return __pages_array[_page].__glyph_count - 1;
     }
     
-    static get_glyph_data_grid = function(_page)
+    static __get_glyph_data_grid = function(_page)
     {
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
@@ -254,10 +252,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
         return __pages_array[_page].__glyph_grid;
     }
-    
-    #endregion
-    
-    #region Private Methods
     
     static __new_page = function()
     {
@@ -277,8 +271,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
             ++_i;
         }
     }
-    
-    #endregion
     
     
     

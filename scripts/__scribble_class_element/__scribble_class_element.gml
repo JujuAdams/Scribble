@@ -408,9 +408,9 @@ function __scribble_class_element(_string, _unique_id) constructor
                 __scribble_trace("Warning! Cannot set a text element's page to less than 0");
                 __page = 0;
             }
-            else if (_page > _model.get_pages()-1)
+            else if (_page > _model.__get_pages()-1)
             {
-                __page = _model.get_pages()-1;
+                __page = _model.__get_pages()-1;
                 __scribble_trace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", __page, " (pages are 0-indexed)");
             }
             else
@@ -760,7 +760,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
         __update_scale_to_box_scale();
-        return __scale_to_box_scale*(_model.get_width() + __padding_l + __padding_r);
+        return __scale_to_box_scale*(_model.__get_width() + __padding_l + __padding_r);
     }
     
     static get_height = function()
@@ -768,7 +768,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
         __update_scale_to_box_scale();
-        return __scale_to_box_scale*(_model.get_height() + __padding_t + __padding_b);
+        return __scale_to_box_scale*(_model.__get_height() + __padding_t + __padding_b);
     }
 	
 	/// @param [page]
@@ -778,7 +778,7 @@ function __scribble_class_element(_string, _unique_id) constructor
 		
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-		return __scale_to_box_scale*(_model.get_page_width(_page) + __padding_l + __padding_r);
+		return __scale_to_box_scale*(_model.__get_page_width(_page) + __padding_l + __padding_r);
 	}
 	
 	/// @param [page]
@@ -788,7 +788,7 @@ function __scribble_class_element(_string, _unique_id) constructor
 		
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-		return __scale_to_box_scale*(_model.get_page_height(_page) + __padding_t + __padding_b);
+		return __scale_to_box_scale*(_model.__get_page_height(_page) + __padding_t + __padding_b);
 	}
     
     static get_page = function()
@@ -800,7 +800,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return _model.get_pages();
+        return _model.__get_page_count();
     }
     
     static on_last_page = function()
@@ -812,7 +812,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return false;
-        return _model.get_wrapped();
+        return _model.__get_wrapped();
     }
     
 	/// @param [page]
@@ -822,7 +822,7 @@ function __scribble_class_element(_string, _unique_id) constructor
 		
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-		return _model.get_text(_page);
+		return _model.__get_text(_page);
     }
     
     /// @param [page]
@@ -833,7 +833,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return _model.get_glyph_data(_index, _page);
+        return _model.__get_glyph_data(_index, _page);
     }
     
     /// @param [page]
@@ -843,7 +843,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return _model.get_glyph_count(_page);
+        return _model.__get_glyph_count(_page);
     }
     
     /// @param [page]
@@ -853,7 +853,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return _model.get_line_count(_page);
+        return _model.__get_line_count(_page);
     }
     
     static get_z = function()
