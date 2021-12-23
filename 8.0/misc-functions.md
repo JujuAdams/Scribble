@@ -68,6 +68,39 @@ Here, `callbackRumble()` will fetch the parameter from the array and use it to v
 
 &nbsp;
 
+## `scribble_external_sound_add(soundID, alias)`
+
+**Returns:** N/A (`undefined`)
+
+|Name     |Datatype                                                                            |Purpose                                                       |
+|---------|------------------------------------------------------------------------------------|--------------------------------------------------------------|
+|`soundID`|[sound](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|The sound to target                                           |
+|`alias`  |string                                                                              |A string to use to refer to the sound ID in Scribble functions|
+
+Adds a sound that can be referenced in Scribble functions using the given alias. This is intended for use with externally added sounds via `audio_create_stream()` or `audio_create_buffer_sound()`.
+
+&nbsp;
+
+## `scribble_external_sound_remove(alias)`
+
+**Returns:** N/A (`undefined`)
+
+|Name     |Datatype|Purpose                                         |
+|---------|--------|------------------------------------------------|
+|`alias`  |string  |The external sound alias to remove from Scribble|
+
+&nbsp;
+
+## `scribble_external_sound_exists(alias)`
+
+**Returns:** Boolean, whether the alias has been added by `scribble_external_sound_add()`
+
+|Name     |Datatype|Purpose                              |
+|---------|--------|-------------------------------------|
+|`alias`  |string  |The external sound alias to check for|
+
+&nbsp;
+
 ## `scribble_flush_everything()`
 
 **Returns:** N/A (`undefined`)
