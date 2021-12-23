@@ -16,6 +16,7 @@
 **API Reference**
 
 -   [Configuration](configuration)
+-   [Quick Functions](quick-functions)
 -   [`scribble()`](scribble-methods)
 -   [`scribble_typist()`](typist-methods)
 -   [Animation Properties](animation-properties)
