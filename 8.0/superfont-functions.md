@@ -10,7 +10,7 @@
 |------|--------|--------------------------|
 |`name`|string  |Name of the font to create|
 
-Creates a new superfont. The new font is totally blank and cannot be used until some glyphs have been added to it using `scribble_super_glyph_copy()` or `scribble_super_glyph_copy_all()`.
+Creates a new superfont. The new font is totally blank and should not be used until some glyphs have been added to it using `scribble_super_glyph_copy()` or `scribble_super_glyph_copy_all()`.
 
 !> Trying to use a blank superfont will cause the game to crash.
 
@@ -22,15 +22,15 @@ Creates a new superfont. The new font is totally blank and cannot be used until 
 
 |Name       |Datatype|Purpose                                                                                     |
 |-----------|--------|--------------------------------------------------------------------------------------------|
-|`target`   |string  |Name of the font to add glyphs to                                                           |
+|`target`   |string  |Name of the superfont to add glyphs to                                                      |
 |`source`   |string  |Name of the font to add glyphs from                                                         |
 |`overwrite`|boolean |Whether to overwrite existing glyphs in the target font with new glyphs from the source font|
 |`glyphSet` |various |The glyph, or glyphs, to add. See below                                                     |
 |`...`      |various |Additional glyph, or glyphs, to add                                                         |
 
-Copies a set of glyphs from the source font into the target font. The target font must be a superfont created by `scribble_super_create()`. If `overwrite` is set to `false`, any glyphs that already exist in the target font will be ignored. If `overwrite` is set to `true` existing glyphs will be overwritten.
+Copies a set of glyphs from the source font into the target superfont. The target font must be a superfont created by `scribble_super_create()`, though the source font can be either a superfont or not. If `overwrite` is set to `false`, any glyphs that already exist in the target font will be ignored. If `overwrite` is set to `true` existing glyphs will be overwritten.
 
-!> It is not possible to combine glyphs from an MSDF font and a standard/sprite font. It is further not possible to combine glyphs from MSDF fonts that have a different `pxrange`. Standard fonts and sprite fonts can otherwise be combined however you like.
+?> It is not possible to combine glyphs from an MSDF font and a standard/sprite font. It is further not possible to combine glyphs from MSDF fonts that have a different `pxrange`. Standard fonts and sprite fonts can otherwise be combined however you like.
 
 `glyphSet` can be one of three different types of input. You may specify as many glyph sets as you like
 
@@ -56,13 +56,13 @@ scribble_super_glyph_copy("targetFont", "sourceFont", true, [40, 41], [88, 90]);
 
 |Name       |Datatype|Purpose                                                                                     |
 |-----------|--------|--------------------------------------------------------------------------------------------|
-|`target`   |string  |Name of the font to add glyphs to                                                           |
+|`target`   |string  |Name of the superfont to add glyphs to                                                      |
 |`source`   |string  |Name of the font to add glyphs from                                                         |
 |`overwrite`|boolean |Whether to overwrite existing glyphs in the target font with new glyphs from the source font|
 
-Copies **all** glyphs from the source font into the target font. The target font must be a superfont created by `scribble_super_create()`. If `overwrite` is set to `false`, any glyphs that already exist in the target font will be ignored. If `overwrite` is set to `true` existing glyphs will be overwritten.
+Copies **all** glyphs from the source font into the target superfont. The target font must be a superfont created by `scribble_super_create()`, though the source font can be either a superfont or not. If `overwrite` is set to `false`, any glyphs that already exist in the target font will be ignored. If `overwrite` is set to `true` existing glyphs will be overwritten.
 
-!> It is not possible to combine glyphs from an MSDF font and a standard/sprite font. It is further not possible to combine glyphs from MSDF fonts that have a different `pxrange`. Standard fonts and sprite fonts can otherwise be combined however you like.
+?> It is not possible to combine glyphs from an MSDF font and a standard/sprite font. It is further not possible to combine glyphs from MSDF fonts that have a different `pxrange`. Standard fonts and sprite fonts can otherwise be combined however you like.
 
 &nbsp;
 
@@ -88,6 +88,6 @@ Deletes a set of glyphs from the specified font. The font must be a superfont. F
 |--------|--------|-------------------------|
 |`target`|string  |Name of the font to clear|
 
-Removes all glyphs from a superfont. Once cleared, the font is totally blank and cannot be used until some glyphs have been added to it using `scribble_super_glyph_copy()` or `scribble_super_glyph_copy_all()`.
+Removes all glyphs from a superfont. Once cleared, the font is totally blank and should not be used until some glyphs have been added to it using `scribble_super_glyph_copy()` or `scribble_super_glyph_copy_all()`.
 
 !> Trying to use a blank superfont will cause the game to crash.
