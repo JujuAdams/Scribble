@@ -7,7 +7,7 @@ if (keyboard_check_pressed(vk_space))
     }
     else if (element.get_typewriter_state() >= 1)
     {
-        if (element.get_page() >= element.get_pages() - 1)
+        if (element.get_page() >= element.get_page_count() - 1)
         {
             //Wrap back round to the first page
             element.page(0);

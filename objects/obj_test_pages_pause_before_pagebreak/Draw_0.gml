@@ -11,7 +11,7 @@ else if (typist.get_state() == 1)
 {
     if (keyboard_check_pressed(vk_space))
     {
-        var _page = (_element.get_page() + 1) mod _element.get_pages();
+        var _page = (_element.get_page() + 1) mod _element.get_page_count();
         _element.page(_page);
     }
 }

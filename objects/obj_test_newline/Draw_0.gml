@@ -20,7 +20,7 @@ var _element = scribble(_demo_string).wrap(wrap_x, wrap_y);
 if (mouse_check_button_pressed(mb_left)) page++;
 if (mouse_check_button_pressed(mb_right)) page--;
 
-page = clamp(page, 0, _element.get_pages()-1);
+page = clamp(page, 0, _element.get_page_count()-1);
 
 _element.page(page);
 _element.draw(10, 10);

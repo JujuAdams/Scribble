@@ -1,5 +1,5 @@
 element.wrap(width, height);
-page = clamp(page, 0, element.get_pages()-1);
+page = clamp(page, 0, element.get_page_count()-1);
 element.page(page);
 element.draw(x, y);
 
