@@ -72,6 +72,7 @@ Scribble version 8 has over 450 commits between it and version 7.1, making it th
 ## Other Changes
 
 - Scribble configuration has been split into three separate scripts to help guide people to what they're looking for faster
+- Externally added sounds can now be used with events and per-character sounds. See `scribble_external_sound_add()`, `scribble_external_sound_remove()`, and `scribble_external_sound_exists()`
 - Removes `SCRIBBLE_SKIP_SPEED_THRESHOLD` as it was a bad idea to begin with
 - `SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK` can now be turned on or off to automatically disable `[pause]` commands that occur immediately before a natural or forced (`[/page]`) pagebreak
 - Virtually all constructor variables are now prefixed with `__` in a vain attempt to clean up the global namespace for GameMaker's intellisense
