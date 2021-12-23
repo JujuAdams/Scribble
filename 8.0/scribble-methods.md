@@ -683,10 +683,10 @@ The returned array contains structs that themselves contain the following member
 
 **Returns**: The text element
 
-|Name                   |Datatype                       |Purpose                                                                             |
-|-----------------------|-------------------------------|------------------------------------------------------------------------------------|
-|`function`             |function, or array of functions|Function to execute to set Scribble behaviour for this text element                 |
-|`[executeOnlyOnChange]`|boolean                        |Whether to only execute the template function if it has changed. Defaults to `false`|
+|Name                   |Datatype                       |Purpose                                                                            |
+|-----------------------|-------------------------------|-----------------------------------------------------------------------------------|
+|`function`             |function, or array of functions|Function to execute to set Scribble behaviour for this text element                |
+|`[executeOnlyOnChange]`|boolean                        |Whether to only execute the template function if it has changed. Defaults to `true`|
 
 Executes a function in the scope of this text element. If that function contains method calls then the methods will be applied to this text element. For example:
 
