@@ -878,9 +878,9 @@ function __scribble_class_element(_string, _unique_id) constructor
                 __scribble_trace("Warning! Cannot set a text element's page to less than 0");
                 __page = 0;
             }
-            else if (_page > _model.__get_pages()-1)
+            else if (_page > _model.__get_page_count()-1)
             {
-                __page = _model.__get_pages()-1;
+                __page = _model.__get_page_count()-1;
                 __scribble_trace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", __page, " (pages are 0-indexed)");
             }
             else
