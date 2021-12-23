@@ -1093,8 +1093,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     }
     
     /// @param templateFunction/Array
-    /// @param [executeOnlyOnChange=false]
-    static template = function(_template, _on_change = false)
+    /// @param [executeOnlyOnChange=true]
+    static template = function(_template, _on_change = true)
     {
         if (is_array(_template))
         {
