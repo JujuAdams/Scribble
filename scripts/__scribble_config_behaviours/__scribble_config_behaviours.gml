@@ -11,10 +11,10 @@
 #macro SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY   ""     //The directory to look in for font .yy files, relative to the root folder that Included Files are stored in
 #macro SCRIBBLE_BOX_ALIGN_TO_PAGE             false  //Whether to use text element sizes (false) or page sizes (true)
 #macro SCRIBBLE_TAB_WIDTH                     4      //Width of a horizontal tab, as a number of spaces
-#macro SCRIBBLE_FIXED_WHITESPACE_WIDTH        false
-#macro SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE  false
-#macro SCRIBBLE_ALLOW_TEXT_GETTER             false
-#macro SCRIBBLE_ALLOW_GLYPH_DATA_GETTER       false
+#macro SCRIBBLE_FIXED_WHITESPACE_WIDTH        false  //Controls if spaces and tabs have a fixed, unchanging size. Setting this to true will ensure that spaces are always the same size, which is useful for monospaced fonts
+#macro SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE  false  //Sets whether pin alignments use the size of the page for positioning, or the size of the text element (the bounding box across all pages)
+#macro SCRIBBLE_ALLOW_TEXT_GETTER             false  //Set to `true` to enable the .get_text() method on text elements. This will apply to all text elements and carries a performance penalty
+#macro SCRIBBLE_ALLOW_GLYPH_DATA_GETTER       false  //Set to `true` to enable the .get_glyph_data() method on text elements (and a few other features too). This will apply to all text elements and carries a performance penalty
 
 
 
@@ -35,7 +35,6 @@
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT      ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
-#macro SCRIBBLE_CREATE_CHARACTER_ARRAY    false    //*DEPRECATED*   Outputs an array of character codes
 #macro SCRIBBLE_DRAW_RETURNS_SELF         false    // Whether the .draw() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
 #macro SCRIBBLE_BUILD_RETURNS_SELF        false    // Whether the .build() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
 #macro SCRIBBLE_SHOW_WRAP_BOUNDARY        false    //Controls the drawing of a rectangle that indicates the boundaries of the .wrap(), .fit_to_box(), and .scale_to_box() methods
