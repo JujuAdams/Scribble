@@ -12,7 +12,7 @@
 
 &nbsp;
 
-## `scribble_typewriter_add_event(name, function)`
+## `scribble_typists_add_event(name, function)`
 
 **Returns:** N/A (`undefined`)
 
