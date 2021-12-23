@@ -111,8 +111,9 @@ function __scribble_class_typist() constructor
     /// @param overlap
     /// @param pitchMin
     /// @param pitchMax
-    static sound = function(_sound_array, _overlap, _pitch_min, _pitch_max)
+    static sound = function(_in_sound_array, _overlap, _pitch_min, _pitch_max)
     {
+        var _sound_array = _in_sound_array;
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
         
         __sound_array     = _sound_array;
@@ -128,8 +129,9 @@ function __scribble_class_typist() constructor
     /// @param pitchMin
     /// @param pitchMax
     /// @param [exceptionString]
-    static sound_per_char = function(_sound_array, _pitch_min, _pitch_max, _exception_string)
+    static sound_per_char = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string)
     {
+        var _sound_array = _in_sound_array;
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
         
         __sound_array     = _sound_array;
@@ -484,9 +486,15 @@ function __scribble_class_typist() constructor
             {
                 __last_audio_character = _head_pos;
                 
-                var _inst = audio_play_sound(_sound_array[floor(__scribble_random()*array_length(_sound_array))], 0, false);
-                audio_sound_pitch(_inst, lerp(__sound_pitch_min, __sound_pitch_max, __scribble_random()));
-                __sound_finish_time = current_time + 1000*audio_sound_length(_inst) - __sound_overlap;
+                var _audio_asset = _sound_array[floor(__scribble_random()*array_length(_sound_array))];
+                if (is_string(_audio_asset)) _audio_asset = global.__scribble_external_sound_map[? _audio_asset];
+                
+                if (_audio_asset != undefined)
+                {
+                    var _inst = audio_play_sound(_audio_asset, 0, false);
+                    audio_sound_pitch(_inst, lerp(__sound_pitch_min, __sound_pitch_max, __scribble_random()));
+                    __sound_finish_time = current_time + 1000*audio_sound_length(_inst) - __sound_overlap;
+                }
             }
         }
     }
