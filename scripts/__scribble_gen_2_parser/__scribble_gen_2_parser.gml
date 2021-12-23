@@ -731,6 +731,13 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters);
                             ++_control_count;
                         }
+                        else if (ds_map_exists(global.__scribble_external_sound_map, _tag_command_name))
+                        {
+                            //External audio added via scribble_external_sound_add()
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EVENT;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, global.__scribble_external_sound_map[? _tag_command_name]);
+                            ++_control_count;
+                        }
                         else
                         {
                             var _first_char = string_copy(_tag_command_name, 1, 1);

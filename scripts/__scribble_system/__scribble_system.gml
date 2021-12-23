@@ -72,6 +72,7 @@ global.__scribble_font_directory      = _font_directory;
 global.__scribble_font_data           = ds_map_create();  //Stores a data array for each font defined inside Scribble
 global.__scribble_effects             = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
 global.__scribble_effects_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_external_sound_map  = ds_map_create();
 global.__scribble_default_font        = "scribble_fallback_font";
 global.__scribble_buffer              = buffer_create(1024, buffer_grow, 1);
 global.__scribble_glyph_grid          = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
