@@ -1,3 +1,5 @@
+/// Resets animation effects to their default values
+
 function scribble_anim_reset()
 {
     if (!global.__scribble_anim_shader_default || !global.__scribble_anim_shader_msdf_default)
