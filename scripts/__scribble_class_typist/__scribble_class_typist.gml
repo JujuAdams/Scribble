@@ -425,8 +425,8 @@ function __scribble_class_typist() constructor
                 case __SCRIBBLE_AUDIO_COMMAND_TAG: //TODO - Rename and add warning when adding a conflicting custom event
                     if (array_length(_event_data) >= 1)
                     {
-                        var _asset = asset_get_index(_event_data[0]);
-                        __scribble_trace(_asset);
+                        var _asset = _event_data[0];
+                        if (is_string(_asset)) _asset = asset_get_index(_asset);
                         audio_play_sound(_asset, 1, false);
                     }
                 break;
