@@ -1,5 +1,5 @@
-/// @param weight
-/// @param speed
+/// @param weight  Rainbow blend weight. 0 does not show any rainbow effect at all, and 1 will blend a glyph's colour fully with the rainbow colour
+/// @param speed   Rainbow speed. Larger values cause characters to change colour more rapidly
 
 function scribble_anim_rainbow(_weight, _speed)
 {

@@ -1,5 +1,5 @@
-/// @param size
-/// @param speed
+/// @param size   Shake amplitude, in pixels
+/// @param speed  Shake speed. Larger values cause characters to move around more rapidly
 
 function scribble_anim_shake(_size, _speed)
 {

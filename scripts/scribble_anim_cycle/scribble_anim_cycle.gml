@@ -1,6 +1,6 @@
-/// @param speed
-/// @param saturation
-/// @param value
+/// @param speed       Cycle speed. Larger numbers cause characters to change colour more rapidly
+/// @param saturation  Cycle colour saturation, from 0 to 255. Colour cycles using the HSV model to create colours
+/// @param value       Cycle colour value, from 0 to 255. Colour cycles using the HSV model to create colours
 
 function scribble_anim_cycle(_speed, _saturation, _value)
 {

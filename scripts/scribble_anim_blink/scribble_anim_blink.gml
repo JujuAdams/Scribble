@@ -1,6 +1,6 @@
-/// @param onDuration
-/// @param offDuration
-/// @param timeOffset
+/// @param onDuration   Duration that blinking text should stay on for, in milliseconds
+/// @param offDuration  Duration that blinking text should turn off for, in milliseconds
+/// @param timeOffset   Blink time offset, in milliseconds
 
 function scribble_anim_blink(_on_duration, _off_duration, _time_offset)
 {
