@@ -27,10 +27,10 @@ This script holds a number of macros that customise the behaviour of Scribble. `
 |`SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY`  |`""`         |The directory to look in for font .yy files, relative to the root folder that Included Files are stored in                                                                                 |
 |`SCRIBBLE_BOX_ALIGN_TO_PAGE`            |`false`      |Whether to use text element sizes (`false`) or page sizes (`true`)                                                                                                                         |
 |`SCRIBBLE_TAB_WIDTH`                    |`4`          |Width of a horizontal tab, as a number of spaces                                                                                                                                           |
-|`SCRIBBLE_FIXED_WHITESPACE_WIDTH`       |`false`      |                                                                                                                                                                                           |
-|`SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE` |`true`       |                                                                                                                                                                                           |
-|`SCRIBBLE_ALLOW_TEXT_GETTER`            |`false`      |                                                                                                                                                                                           |
-|`SCRIBBLE_ALLOW_GLYPH_DATA_GETTER`      |`false`      |                                                                                                                                                                                           |
+|`SCRIBBLE_FIXED_WHITESPACE_WIDTH`       |`false`      |Controls if spaces and tabs have a fixed, unchanging size. Setting this to true will ensure that spaces are always the same size, which is useful for monospaced fonts                     |
+|`SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE` |`true`       |Sets whether pin alignments use the size of the page for positioning, or the size of the text element (the bounding box across all pages)                                                  |
+|`SCRIBBLE_ALLOW_TEXT_GETTER`            |`false`      |Set to `true` to enable the `.get_text()` method on text elements. This will apply to all text elements and carries a performance penalty                                                  |
+|`SCRIBBLE_ALLOW_GLYPH_DATA_GETTER`      |`false`      |Set to `true` to enable the `.get_glyph_data()` method on text elements (and a few other features too). This will apply to all text elements and carries a performance penalty             |
 |**Advanced Features**                   |             |                                                                                                                                                                                           |
 |`SCRIBBLE_TICK_SIZE`                    |`1`          |Animation tick size per step. The default value for this macro (`delta_time / 16666`) ensures that animations are smooth and consistent at all framerates                                  |
 |`SCRIBBLE_DEFAULT_UNIQUE_ID`            |`"default"`  |Default value to use for text element unique IDs. This is used when no unique ID is specified                                                                                              |
@@ -48,20 +48,6 @@ This script holds a number of macros that customise the behaviour of Scribble. `
 |`SCRIBBLE_DRAW_RETURNS_SELF`            |`false`      |Whether the `.draw()` method for text element returns <self>. This defaults to <false> to avoid unintentional misuse                                                                       |
 |`SCRIBBLE_BUILD_RETURNS_SELF`           |`false`      |Whether the `.build()` method for text element returns <self>. This defaults to <false> to avoid unintentional misuse                                                                      |
 |`SCRIBBLE_SHOW_WRAP_BOUNDARY`           |`false`      |Set to `true` to call `.debug_draw_bbox()` for all text elements. This is useful for debugging wrapping boundaries                                                                         |
-
-&nbsp;
-
-## `__scribble_config_colours()`
-
-**Returns:** N/A (`undefined`)
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-This script holds custom colours that you can reference by name for many Scribble functions. `__scribble_config_colours()` never needs to be directly called in your code.
-
-?> This function is called on boot to initialise the library, and you should edit this script to customise Scribble for your own purposes.
 
 &nbsp;
 
@@ -109,3 +95,17 @@ This script holds a number of macros that customise the default text animation p
 |`SCRIBBLE_DEFAULT_BLINK_ON_DURATION` |`150`        |                                                                                                                                                                                           |
 |`SCRIBBLE_DEFAULT_BLINK_OFF_DURATION`|`150`        |                                                                                                                                                                                           |
 |`SCRIBBLE_DEFAULT_BLINK_TIME_OFFSET` |`0`          |                                                                                                                                                                                           |
+
+&nbsp;
+
+## `__scribble_config_colours()`
+
+**Returns:** N/A (`undefined`)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+This script holds custom colours that you can reference by name for many Scribble functions. `__scribble_config_colours()` never needs to be directly called in your code.
+
+?> This function is called on boot to initialise the library, and you should edit this script to customise Scribble for your own purposes.
