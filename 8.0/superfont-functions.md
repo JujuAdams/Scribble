@@ -12,7 +12,7 @@
 
 Creates a new superfont. The new font is totally blank and should not be used until some glyphs have been added to it using `scribble_super_glyph_copy()` or `scribble_super_glyph_copy_all()`.
 
-!> Trying to use a blank superfont will cause the game to crash.
+!> Trying to use a blank superfont to draw text will cause the game to crash.
 
 &nbsp;
 
@@ -90,4 +90,4 @@ Deletes a set of glyphs from the specified font. The font must be a superfont. F
 
 Removes all glyphs from a superfont. Once cleared, the font is totally blank and should not be used until some glyphs have been added to it using `scribble_super_glyph_copy()` or `scribble_super_glyph_copy_all()`.
 
-!> Trying to use a blank superfont will cause the game to crash.
+!> Trying to use a blank superfont to draw text will cause the game to crash.
