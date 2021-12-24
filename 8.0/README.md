@@ -31,4 +31,4 @@ This library will never truly be finished because contributions and suggestions 
 
 ## License
 
-Scribble is licensed under the [MIT License](https://github.com/JujuAdams/Scribbe/blob/master/LICENSE).
+Scribble is licensed under the [MIT License](https://github.com/JujuAdams/Scribble/blob/master/LICENSE).
