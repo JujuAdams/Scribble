@@ -3,6 +3,9 @@ function __scribble_class_page() constructor
     __text = "";
     __glyph_grid = undefined;
     
+    __created_time = current_time;
+    __frozen = undefined;
+    
     __character_count = 0;
     
     __glyph_start = undefined;
@@ -25,6 +28,88 @@ function __scribble_class_page() constructor
     
     __events = {};
     __region_array = [];
+    
+    static __submit = function(_msdf_feather_thickness, _double_draw)
+    {
+        if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (current_time - __created_time > __SCRIBBLE_EXPECTED_FRAME_TIME)) __freeze();
+        
+        var _shader = undefined;
+        var _i = 0;
+        repeat(array_length(__vertex_buffer_array))
+        {
+            var _data = __vertex_buffer_array[_i];
+            var _bilinear = _data[__SCRIBBLE_VERTEX_BUFFER.BILINEAR];
+            
+            if (_data[__SCRIBBLE_VERTEX_BUFFER.SHADER] != _shader)
+            {
+                _shader = _data[__SCRIBBLE_VERTEX_BUFFER.SHADER];
+                shader_set(_shader);
+            }
+            
+            if (_bilinear != undefined)
+            {
+                //Force texture filtering when using MSDF fonts
+                var _old_tex_filter = gpu_get_tex_filter();
+                gpu_set_tex_filter(_bilinear);
+            }
+            
+            if (_shader == __shd_scribble_msdf)
+            {
+                //Set shader uniforms unique to the MSDF shader
+                shader_set_uniform_f(global.__scribble_msdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT]);
+                shader_set_uniform_f(global.__scribble_msdf_u_fMSDFRange, _msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE]);
+                
+                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
+                
+                if (_double_draw)
+                {
+                    shader_set_uniform_f(global.__scribble_msdf_u_fSecondDraw, 1);
+                    vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
+                    shader_set_uniform_f(global.__scribble_msdf_u_fSecondDraw, 0);
+                }
+            }
+            else
+            {
+                //Other shaders don't need extra work
+                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
+            }
+            
+            if (_bilinear != undefined)
+            {
+                //Reset the texture filtering
+                gpu_set_tex_filter(_old_tex_filter);
+            }
+            
+            ++_i;
+        }
+        
+        shader_reset();
+    }
+    
+    static __freeze = function()
+    {
+        if (!__frozen)
+        {
+            if (SCRIBBLE_VERBOSE)
+            {
+                var _t = get_timer();
+            }
+            
+            var _i = 0;
+            repeat(array_length(__vertex_buffer_array))
+            {
+                vertex_freeze(__vertex_buffer_array[_i][__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER]);
+                ++_i;
+            }
+            
+            __frozen = true;
+            
+            if (SCRIBBLE_VERBOSE)
+            {
+                __scribble_trace("Incrementally froze page vertex buffers, time taken = ", (get_timer() - _t)/1000);
+            }
+        }
+    }
     
     static __get_glyph_data = function(_index)
     {
@@ -116,6 +201,8 @@ function __scribble_class_page() constructor
             
             ++_i;
         }
+        
+        __frozen = _freeze;
     }
     
     static __flush = function()
@@ -132,60 +219,5 @@ function __scribble_class_page() constructor
         
         __texture_to_vertex_buffer_dict = {};
         array_resize(__vertex_buffer_array, 0);
-    }
-    
-    static __submit = function(_msdf_feather_thickness, _double_draw)
-    {
-        var _shader = undefined;
-        var _i = 0;
-        repeat(array_length(__vertex_buffer_array))
-        {
-            var _data = __vertex_buffer_array[_i];
-            var _bilinear = _data[__SCRIBBLE_VERTEX_BUFFER.BILINEAR];
-            
-            if (_data[__SCRIBBLE_VERTEX_BUFFER.SHADER] != _shader)
-            {
-                _shader = _data[__SCRIBBLE_VERTEX_BUFFER.SHADER];
-                shader_set(_shader);
-            }
-            
-            if (_bilinear != undefined)
-            {
-                //Force texture filtering when using MSDF fonts
-                var _old_tex_filter = gpu_get_tex_filter();
-                gpu_set_tex_filter(_bilinear);
-            }
-            
-            if (_shader == __shd_scribble_msdf)
-            {
-                //Set shader uniforms unique to the MSDF shader
-                shader_set_uniform_f(global.__scribble_msdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.TEXEL_HEIGHT]);
-                shader_set_uniform_f(global.__scribble_msdf_u_fMSDFRange, _msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.MSDF_RANGE]);
-                
-                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
-                
-                if (_double_draw)
-                {
-                    shader_set_uniform_f(global.__scribble_msdf_u_fSecondDraw, 1);
-                    vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
-                    shader_set_uniform_f(global.__scribble_msdf_u_fSecondDraw, 0);
-                }
-            }
-            else
-            {
-                //Other shaders don't need extra work
-                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.TEXTURE]);
-            }
-            
-            if (_bilinear != undefined)
-            {
-                //Reset the texture filtering
-                gpu_set_tex_filter(_old_tex_filter);
-            }
-            
-            ++_i;
-        }
-        
-        shader_reset();
     }
 }

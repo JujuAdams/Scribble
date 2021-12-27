@@ -25,6 +25,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     array_push(global.__scribble_mcache_name_array, __cache_name);
     
     __last_drawn = current_time;
+    __frozen     = undefined;
     __flushed    = false;
     
     __uses_standard_font = false;
@@ -58,6 +59,21 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         __last_drawn = current_time;
         
         __pages_array[_page].__submit(_msdf_feather_thickness, (__has_arabic || __has_thai) && _double_draw);
+    }
+    
+    static __freeze = function()
+    {
+        if (!__frozen)
+        {
+            var _i = 0;
+            repeat(__pages)
+            {
+                __pages_array[_i].__freeze();
+                ++_i;
+            }
+            
+            __frozen = true;
+        }
     }
     
     static __flush = function()

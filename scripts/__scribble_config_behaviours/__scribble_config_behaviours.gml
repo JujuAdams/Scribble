@@ -30,6 +30,7 @@
 #macro SCRIBBLE_SAFELY_WRAP_TIME               true      //Whether to wrap the internal time value
 #macro SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN       false     //Set to <true> to ignore a sprite origin's contribution to its spritefont glyph x/y offsets
 #macro SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK  true      //Disables [pause] events immediately before pagebreaks, though only if there are no other events between the pause and the pagebreak
+#macro SCRIBBLE_INCREMENTAL_FREEZE             true      //Whether text models should freeze their vertex buffers one frame after the text model is created. This leads to increased performance, especially with large amounts of text
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
