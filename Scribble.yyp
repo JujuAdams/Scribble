@@ -239,6 +239,7 @@
     {"id":{"name":"scribble_external_sound_remove","path":"scripts/scribble_external_sound_remove/scribble_external_sound_remove.yy",},"order":9,},
     {"id":{"name":"obj_test_alignment_changes","path":"objects/obj_test_alignment_changes/obj_test_alignment_changes.yy",},"order":16,},
     {"id":{"name":"scribble_super_glyph_delete","path":"scripts/scribble_super_glyph_delete/scribble_super_glyph_delete.yy",},"order":3,},
+    {"id":{"name":"obj_test_stress_lots_of_text","path":"objects/obj_test_stress_lots_of_text/obj_test_stress_lots_of_text.yy",},"order":3,},
     {"id":{"name":"obj_test_line_spacing","path":"objects/obj_test_line_spacing/obj_test_line_spacing.yy",},"order":6,},
     {"id":{"name":"scribble_font_bake_outline_8dir_2px","path":"scripts/scribble_font_bake_outline_8dir_2px/scribble_font_bake_outline_8dir_2px.yy",},"order":7,},
     {"id":{"name":"obj_test_world_matrix","path":"objects/obj_test_world_matrix/obj_test_world_matrix.yy",},"order":8,},
@@ -272,8 +273,8 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
+    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
   ],
   "Folders": [
     {"folderPath":"folders/Sprites.yy","order":1,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},
