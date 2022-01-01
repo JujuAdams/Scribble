@@ -443,7 +443,7 @@ function __scribble_gen_9_write_vbuffs()
     }
     
     //Sweep up any remaining controls
-    var _control_delta = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
+    var _control_delta = _glyph_grid[# _i-1, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
     repeat(_control_delta)
     {
         if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.EVENT)
