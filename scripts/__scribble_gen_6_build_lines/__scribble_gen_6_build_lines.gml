@@ -252,9 +252,14 @@ function __scribble_gen_6_build_lines()
             }
             
             //Finalize the line we've already started
+            //Generally speaking this should never actually execute as 0x00 NULL will terminate a line and 0x00 always appears as the final glyph
             var _line_word_end = _i-1;
-            __SCRIBBLE_GEN_LINE_END;
-            _line_y += _line_height;
+            if (_line_word_end >= _line_word_start) //Only generate a new line if we actually have glyphs on the final line
+            {
+                __SCRIBBLE_GEN_LINE_END;
+                _line_y += _line_height;
+                __scribble_trace("Warning! Model generator found hanging line data");
+            }
         }
         
         //If we're not running .fit_to_box() behaviour then escape now!
