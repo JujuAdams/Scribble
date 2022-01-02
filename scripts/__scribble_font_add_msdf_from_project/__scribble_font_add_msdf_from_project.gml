@@ -4,8 +4,8 @@ function __scribble_font_add_msdf_from_project(_sprite)
     
     if (ds_map_exists(global.__scribble_font_data, _name))
     {
-        __scribble_error("Font \"", _name, "\" has already been defined");
-        return undefined;
+        __scribble_trace("Warning! An MSDF font for \"", _name, "\" has already been added. Destroying the old MSDF font and creating a new one");
+        global.__scribble_font_data[? _name].__destroy();
     }
     
     if (global.__scribble_default_font == undefined)

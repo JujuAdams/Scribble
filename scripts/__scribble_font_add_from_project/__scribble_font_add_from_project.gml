@@ -2,9 +2,15 @@
 
 function __scribble_font_add_from_project(_font)
 {
-    if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", font_get_name(_font), "\" as standard font");
-    
     var _name = font_get_name(_font);
+    
+    if (ds_map_exists(global.__scribble_font_data, _name))
+    {
+        __scribble_trace("Warning! A font for \"", _name, "\" has already been added. Destroying the old font and creating a new one");
+        global.__scribble_font_data[? _name].__destroy();
+    }
+    
+    if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", _name, "\" as standard font");
     
     if (global.__scribble_default_font == undefined)
     {
