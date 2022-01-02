@@ -1,5 +1,5 @@
 var _t = get_timer();
-repeat(100) scribble(test_text).wrap(room_width - 20).draw(10, 90);
+repeat(1000) scribble(test_text).wrap(room_width).draw(room_width, 90);
 _t = get_timer() - _t;
 
 smoothed_time = lerp(smoothed_time, _t, 0.01);

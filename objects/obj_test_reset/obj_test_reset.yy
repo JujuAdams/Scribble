@@ -23,8 +23,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Basic",
-    "path": "folders/Test Cases/Basic.yy",
+    "name": "Test Cases",
+    "path": "folders/Test Cases.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_reset",
