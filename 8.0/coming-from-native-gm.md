@@ -21,7 +21,12 @@ draw_set_halign(fa_left);
 draw_set_font(-1);
 ```
 
-Scribble:
+With `draw_text_scribble()`:
+```GML
+draw_text_scribble(10, 10, "[fnt_large][c_red][fa_left]Hello world!");
+```
+
+Scribble (fluent interface):
 ```GML
 scribble("[fnt_large][c_red][fa_left]Hello world!").draw(10, 10);
 ```
@@ -38,7 +43,12 @@ draw_text(10 + string_width("Hello"), 10, " world!");
 draw_set_color(c_white);
 ```
 
-Scribble:
+With `draw_text_scribble()`:
+```GML
+draw_text_scribble(10, 10, "Hello[c_red] world!");
+```
+
+Scribble (fluent interface):
 ```GML
 scribble("Hello[c_red] world!").draw(10, 10);
 ```
@@ -57,7 +67,12 @@ _x += sprite_get_width(spr_coin);
 draw_text_x, 10, "1,200");
 ```
 
-Scribble:
+With `draw_text_scribble()`:
+```GML
+draw_text_scribble(10, 10, "This weapon costs [spr_coin,0]1,200");
+```
+
+Scribble (fluent interface):
 ```GML
 scribble("This weapon costs [spr_coin,0]1,200").draw(10, 10);
 ```
@@ -69,13 +84,18 @@ scribble("This weapon costs [spr_coin,0]1,200").draw(10, 10);
 GameMaker:
 ```GML
 draw_set_valign(fa_bottom);
-draw_text(10, room_height - 10, "Hello world!");
+draw_text(10, room_height-10, "Hello world!");
 draw_set_valign(fa_top);
 ```
 
-Scribble:
+With `draw_text_scribble()`:
 ```GML
-scribble("[fa_bottom]Hello world!").draw(10, room_height - 10);
+draw_text_scribble(10, room_height-10, "[fa_bottom]Hello world!");
+```
+
+Scribble (fluent interface):
+```GML
+scribble("[fa_bottom]Hello world!").draw(10, room_height-10);
 ```
 
 &nbsp;
@@ -92,8 +112,16 @@ draw_set_color(c_black);
 draw_text(10, 10, "Hello world!");
 ```
 
-Scribble:
+With `draw_text_scribble()`:
 ```GML
+var _text = draw_text_scribble(10, 10, "[c_black]Hello world!");
+var _bbox = _text.get_bbox(10, 10, 5, 5, 5, 5);
+draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, false);
+_text.draw(10, 10);
+```
+
+Scribble (fluent interface):
+```js
 var _text = scribble("[c_black]Hello world!");
 var _bbox = _text.get_bbox(10, 10, 5, 5, 5, 5);
 draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, false);
