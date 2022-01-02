@@ -66,7 +66,7 @@ draw_text(_x, 10, "This weapon costs ");
 _x += string_width("This weapon costs ");
 draw_sprite(spr_coin, 0, _x, 10);
 _x += sprite_get_width(spr_coin);
-draw_text_x, 10, "1,200");
+draw_text(_x, 10, "1,200");
 ```
 
 With `draw_text_scribble()`:
