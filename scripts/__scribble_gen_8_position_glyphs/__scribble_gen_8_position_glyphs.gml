@@ -133,7 +133,7 @@ function __scribble_gen_8_position_glyphs()
             var _justification_extra_spacing = 0;
             
             var _line_adjusted_width = _line_width;
-            if (!SCRIBBLE_FIXED_WHITESPACE_WIDTH && (_line_halign != fa_left) && (_line_halign != __SCRIBBLE_PIN_LEFT))
+            if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && (_line_halign != fa_left) && (_line_halign != __SCRIBBLE_PIN_LEFT))
             {
                 if ((_line_word_end >= 1)
                 && (_word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD.BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE)

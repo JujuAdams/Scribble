@@ -201,7 +201,7 @@ function __scribble_gen_6_build_lines()
                         
                         #endregion
                     }
-                    else if (!SCRIBBLE_FIXED_WHITESPACE_WIDTH && (_word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE))
+                    else if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && (_word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE))
                     {
                         //If the word at the end of the line is whitespace, trim the whitespace down to fit on the line
                         //This helps the glyph position getter return more visually pleasing results by ensuring the RHS of the glypg doesn't exceed the wrapping width
