@@ -112,18 +112,10 @@ draw_set_color(c_black);
 draw_text(10, 10, "Hello world!");
 ```
 
-With `draw_text_scribble()`:
-```GML
-var _text = draw_text_scribble(10, 10, "[c_black]Hello world!");
-var _bbox = _text.get_bbox(10, 10, 5, 5, 5, 5);
-draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, false);
-_text.draw(10, 10);
-```
-
 Scribble (fluent interface):
 ```js
-var _text = scribble("[c_black]Hello world!");
-var _bbox = _text.get_bbox(10, 10, 5, 5, 5, 5);
+var _text = scribble("[c_black]Hello world!").padding(5, 5, 5, 5);
+var _bbox = _text.get_bbox(10, 10);
 draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, false);
 _text.draw(10, 10);
 ```
