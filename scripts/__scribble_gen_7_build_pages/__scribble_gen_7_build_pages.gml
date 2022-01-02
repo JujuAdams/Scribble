@@ -53,7 +53,7 @@ function __scribble_gen_7_build_pages()
         {
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.Y] = _line_y;
             if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
-            if (_i < _line_count-1) _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
+            _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
         }
         else
         {
