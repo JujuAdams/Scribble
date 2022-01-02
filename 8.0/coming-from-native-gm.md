@@ -11,7 +11,7 @@ Scribble offers a [lot of advantages](features) over GameMaker's native text ren
 ## draw_set_font() / draw_set_halign() / draw_set_color() ###
 
 GameMaker:
-```GML
+```js
 draw_set_color(c_red);
 draw_set_halign(fa_center);
 draw_set_font(fnt_large);
@@ -22,12 +22,12 @@ draw_set_font(-1);
 ```
 
 With `draw_text_scribble()`:
-```GML
+```js
 draw_text_scribble(10, 10, "[fnt_large][c_red][fa_left]Hello world!");
 ```
 
 Scribble (fluent interface):
-```GML
+```js
 scribble("[fnt_large][c_red][fa_left]Hello world!").draw(10, 10);
 ```
 
@@ -36,7 +36,7 @@ scribble("[fnt_large][c_red][fa_left]Hello world!").draw(10, 10);
 ## Partial Text Colouring ###
 
 GameMaker:
-```GML
+```js
 draw_text(10, 10, "Hello");
 draw_set_color(c_red);
 draw_text(10 + string_width("Hello"), 10, " world!");
@@ -44,12 +44,12 @@ draw_set_color(c_white);
 ```
 
 With `draw_text_scribble()`:
-```GML
+```js
 draw_text_scribble(10, 10, "Hello[c_red] world!");
 ```
 
 Scribble (fluent interface):
-```GML
+```js
 scribble("Hello[c_red] world!").draw(10, 10);
 ```
 
@@ -58,7 +58,7 @@ scribble("Hello[c_red] world!").draw(10, 10);
 ## In-line Sprites ###
 
 GameMaker:
-```GML
+```js
 var _x = 10;
 draw_text(_x, 10, "This weapon costs ");
 _x += string_width("This weapon costs ");
@@ -68,12 +68,12 @@ draw_text_x, 10, "1,200");
 ```
 
 With `draw_text_scribble()`:
-```GML
+```js
 draw_text_scribble(10, 10, "This weapon costs [spr_coin,0]1,200");
 ```
 
 Scribble (fluent interface):
-```GML
+```js
 scribble("This weapon costs [spr_coin,0]1,200").draw(10, 10);
 ```
 
@@ -82,19 +82,19 @@ scribble("This weapon costs [spr_coin,0]1,200").draw(10, 10);
 ## draw_set_valign() ###
 
 GameMaker:
-```GML
+```js
 draw_set_valign(fa_bottom);
 draw_text(10, room_height-10, "Hello world!");
 draw_set_valign(fa_top);
 ```
 
 With `draw_text_scribble()`:
-```GML
+```js
 draw_text_scribble(10, room_height-10, "[fa_bottom]Hello world!");
 ```
 
 Scribble (fluent interface):
-```GML
+```js
 scribble("[fa_bottom]Hello world!").draw(10, room_height-10);
 ```
 
@@ -103,7 +103,7 @@ scribble("[fa_bottom]Hello world!").draw(10, room_height-10);
 ## Text Borders ###
 
 GameMaker:
-```GML
+```js
 var _w = string_get_width("Hello world!");
 var _h = string_get_height("Hello world!");
 draw_set_color(c_white);
