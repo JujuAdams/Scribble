@@ -132,14 +132,30 @@ function __scribble_gen_8_position_glyphs()
             
             var _justification_extra_spacing = 0;
             
+            var _line_adjusted_width = _line_width;
+            if (!SCRIBBLE_FIXED_WHITESPACE_WIDTH && (_line_halign != fa_left) && (_line_halign != __SCRIBBLE_PIN_LEFT))
+            {
+                if ((_line_word_end >= 1)
+                && (_word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD.BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE)
+                && (_word_grid[# _line_word_end-1, __SCRIBBLE_GEN_WORD.BIDI_RAW] != __SCRIBBLE_BIDI.WHITESPACE))
+                {
+                    _line_adjusted_width -= _word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD.WIDTH];
+                    
+                    _word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD.WIDTH] = 0;
+                    var _word_glyph = _word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD.GLYPH_START]; //Assume that whitespace words only have one glyph
+                    _glyph_grid[# _word_glyph, __SCRIBBLE_GEN_GLYPH.WIDTH     ] = 0;
+                    _glyph_grid[# _word_glyph, __SCRIBBLE_GEN_GLYPH.SEPARATION] = 0;
+                }
+            }
+            
             switch(_line_halign)
             {
-                case fa_left:               var _glyph_x = (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_alignment_width - _line_width) : 0;     break;
-                case __SCRIBBLE_PIN_LEFT:   var _glyph_x = (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_pin_alignment_width - _line_width) : 0; break;
-                case fa_center:             var _glyph_x = -(_line_width div 2);                                                             break;
-                case fa_right:              var _glyph_x = -_line_width;                                                                     break;
-                case __SCRIBBLE_PIN_CENTRE: var _glyph_x = (_pin_alignment_width - _line_width) div 2;                                       break;
-                case __SCRIBBLE_PIN_RIGHT:  var _glyph_x = _pin_alignment_width - _line_width;                                               break;
+                case fa_left:               var _glyph_x = (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_alignment_width - _line_adjusted_width) : 0;     break;
+                case __SCRIBBLE_PIN_LEFT:   var _glyph_x = (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_pin_alignment_width - _line_adjusted_width) : 0; break;
+                case fa_center:             var _glyph_x = -(_line_adjusted_width div 2);                                                             break;
+                case fa_right:              var _glyph_x = -_line_adjusted_width;                                                                     break;
+                case __SCRIBBLE_PIN_CENTRE: var _glyph_x = (_pin_alignment_width - _line_adjusted_width) div 2;                                       break;
+                case __SCRIBBLE_PIN_RIGHT:  var _glyph_x = _pin_alignment_width - _line_adjusted_width;                                               break;
                 
                 case __SCRIBBLE_JUSTIFY:
                     var _glyph_x = 0;
@@ -151,7 +167,7 @@ function __scribble_gen_8_position_glyphs()
                         if (_line_word_count > 1) // Prevent div-by-zero
                         {
                             // Distribute spacing over the line, on which there are n-1 spaces
-                            var _justification_extra_spacing = (_pin_alignment_width - _line_width) / (_line_word_count - 1);
+                            var _justification_extra_spacing = (_pin_alignment_width - _line_adjusted_width) / (_line_word_count - 1);
                         }
                     }
                 break;
@@ -161,9 +177,9 @@ function __scribble_gen_8_position_glyphs()
             
             // Figure out the boundaries of the page + model
             var _page_min_x  = min(_page_min_x,  _padding_l + _glyph_x              );
-            var _page_max_x  = max(_page_max_x,  _padding_l + _glyph_x + _line_width);
+            var _page_max_x  = max(_page_max_x,  _padding_l + _glyph_x + _line_adjusted_width);
             var _model_min_x = min(_model_min_x, _padding_l + _glyph_x              );
-            var _model_max_x = max(_model_max_x, _padding_l + _glyph_x + _line_width);
+            var _model_max_x = max(_model_max_x, _padding_l + _glyph_x + _line_adjusted_width);
             
             
             

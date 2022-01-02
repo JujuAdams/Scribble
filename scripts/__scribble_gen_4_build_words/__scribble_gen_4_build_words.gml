@@ -85,7 +85,7 @@ function __scribble_gen_4_build_words()
                     {
                         _glyph_prev_whitespace = true;
                         
-                        if (((_word_bidi != _overall_bidi) && (_glyph_bidi != _word_bidi)) || !SCRIBBLE_FIXED_WHITESPACE_WIDTH)
+                        if (!SCRIBBLE_FIXED_WHITESPACE_WIDTH || ((_word_bidi != _overall_bidi) && (_glyph_bidi != _word_bidi)))
                         {
                             __SCRIBBLE_GEN_WORD_NEW;
                         }

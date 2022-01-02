@@ -201,15 +201,26 @@ function __scribble_gen_6_build_lines()
                         
                         #endregion
                     }
-                    else if (!SCRIBBLE_FIXED_WHITESPACE_WIDTH && _word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE)
+                    else if (!SCRIBBLE_FIXED_WHITESPACE_WIDTH && (_word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE))
                     {
-                        _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH] = _simulated_model_max_width - _word_x;
+                        //If the word at the end of the line is whitespace, trim the whitespace down to fit on the line
+                        //This helps the glyph position getter return more visually pleasing results by ensuring the RHS of the glypg doesn't exceed the wrapping width
+                        
+                        var _remaining_space = _simulated_model_max_width - _word_x;
+                        _word_grid[# _i, __SCRIBBLE_GEN_WORD.WIDTH] = _remaining_space;
+                        _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.WIDTH     ] = _remaining_space;
+                        _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.SEPARATION] = _remaining_space;
+                        
+                        _word_x += _remaining_space;
                         
                         var _line_word_end = _i;
                         __SCRIBBLE_GEN_LINE_END;
                         _line_y += _line_height;
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
+                        
+                        //Ensure we don't carry the space's width over to the new line
+                        _word_width = 0;
                     }
                     else
                     {
