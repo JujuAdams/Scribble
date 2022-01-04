@@ -21,7 +21,8 @@ Scribble version 8 has over 450 commits between it and version 7.1, making it th
 - Spritefonts should now be added using GameMaker's native `font_add_sprite()` and/or `font_add_sprite_ext()`. No Scribble-specific functions exist to add spritefonts; Scribble will now use GameMaker's own spritefont data to build a Scribble font as soon as a GameMaker spritefont is defined
 - Spritefonts source sprites no longer need to be set up in any particular way i.e. version 7 required that you set up spritefonts with a 1px transparent border, per-frame precise collision detection etc. Version 8 does not require any setup steps beyond calling `font_add_sprite()` or `font_add_sprite_ext()` once to set up the spritefont
 - Various edgecase spritefont issues have now been fixed, including characters occasionally being invisible or garbled
-- `SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN` can be turned on or off to control how a sprite's origin affects the associated spritefont
+- `SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN` can be turned on or off to control how a sprite's origin affects the associated spritefon
+- As part of the change to more closely work with GameMaker's native font definitions, the optional space width argument is no longer directly accessible. Instead, please use the `scribble_glyph_set()` function to adjust the width of spaces (specifically `scribble_glyph_set("fontName", " ", SCRIBBLE_GLYPH.WIDTH, <width>, false)`
 
 ## MSDF
 
@@ -40,7 +41,7 @@ Scribble version 8 has over 450 commits between it and version 7.1, making it th
 
 ## Layout and Text Formatting
 
-- The format-clearing command `[]` has been deprecated. Please use `[/]` instead.
+- The format-clearing command `[]` has been deprecated. Please use `[/]` instead
 - Adds `[fa_justify]` for justified text
 - Right-to-left text rendering is now supported natively. No external tools are needed
 - Beta support for Arabic and Hebrew. Some rendering behaviours may not be perfect, please report issues as you see them
