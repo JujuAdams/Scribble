@@ -38,8 +38,9 @@ Scribble version 8 has over 450 commits between it and version 7.1, making it th
 - If you don't want to use typists and would instead like to implement typewriter behaviour yourself, `.reveal()` and `.get_reveal()` allow you to take control yourself. Additionally, `.get_events()` has been added to help find and trigger events if you wish
 - Sound-per-characters behaviour (using the new `.sound_per_char()` method for typists) can now be given a string of characters to ignore when deciding whether to play a sound when a character is revealed by the typist
 
-## Layout
+## Layout and Text Formatting
 
+- The format-clearing command `[]` has been deprecated. Please use `[/]` instead.
 - Adds `[fa_justify]` for justified text
 - Right-to-left text rendering is now supported natively. No external tools are needed
 - Beta support for Arabic and Hebrew. Some rendering behaviours may not be perfect, please report issues as you see them
