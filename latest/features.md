@@ -13,7 +13,7 @@ There are a multitude of very useful features available:
 - Automatic [pagination](https://en.wikipedia.org/wiki/Pagination)
 - High performance caching
 - Font effect baking
-- Resolution-independent [MSDF fonts](MSDF-Fonts)
+- Resolution-independent [MSDF fonts](msdf-fonts)
 
 Scribble supports all GameMaker export modules, including consoles, with the exception that **HTML5 is not supported** due to [bugs in GameMaker's JavaScript runner](https://github.com/JujuAdams/scribble/issues/18).
 
