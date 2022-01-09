@@ -10,3 +10,4 @@
 - ### [Download the .yymps](https://github.com/JujuAdams/scribble/releases/)
 - ### Read the [documentation](http://jujuadams.github.io/Scribble)
 - ### Talk about Scribble on the [Discord server](https://discord.gg/8krYCqr)
+- ### Learn how to manage your game's dialogue and narrative flow with [Chatterbox](https://github.com/JujuAdams/Scribblebox)
