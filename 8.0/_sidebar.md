@@ -10,6 +10,7 @@
 -   [Text Formatting](text-formatting)
 -   [Superfonts](superfonts)
 -   [MSDF Fonts](msdf-fonts)
+-   [Extended Language Support](extended-language-support)
 
 ---
 
