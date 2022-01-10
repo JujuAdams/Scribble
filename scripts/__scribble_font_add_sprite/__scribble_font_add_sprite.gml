@@ -42,15 +42,19 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _sprite_info = sprite_get_info(_sprite);
     var _sprite_frames = _sprite_info.frames;
     
-    if (SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN)
+    var _sprite_x_offset = 0;
+    var _sprite_y_offset = 0;
+    
+    if (SCRIBBLE_SPRITEFONT_LEGACY_HEIGHT)
     {
-        var _sprite_x_offset = 0;
-        var _sprite_y_offset = 0;
+        _sprite_height = 1 + sprite_get_bbox_bottom(_sprite) - sprite_get_bbox_top(_sprite);
+        _sprite_y_offset += sprite_get_bbox_top(_sprite);
     }
-    else
+    
+    if (!SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN)
     {
-        var _sprite_x_offset = sprite_get_xoffset(_sprite);
-        var _sprite_y_offset = sprite_get_yoffset(_sprite);
+        _sprite_x_offset += sprite_get_xoffset(_sprite);
+        _sprite_y_offset += sprite_get_yoffset(_sprite);
     }
     
     var _info_glyphs_dict = _font_info.glyphs;

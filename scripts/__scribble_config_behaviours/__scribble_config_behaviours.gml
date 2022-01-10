@@ -28,9 +28,10 @@
 #macro SCRIBBLE_NEWLINES_PAD_LEFT_SPACE        true      //Whether to pad extra space left-hand space when moving a word to a new line
 #macro SCRIBBLE_FIT_TO_BOX_ITERATIONS          7         //Number of iterations to fit text when using the .fit_to_box() method. Higher values are slower but more accurate
 #macro SCRIBBLE_SAFELY_WRAP_TIME               true      //Whether to wrap the internal time value
-#macro SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN       false     //Set to <true> to ignore a sprite origin's contribution to its spritefont glyph x/y offsets
 #macro SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK  true      //Disables [pause] events immediately before pagebreaks, though only if there are no other events between the pause and the pagebreak
 #macro SCRIBBLE_INCREMENTAL_FREEZE             true      //Whether text models should freeze their vertex buffers one frame after the text model is created. This leads to increased performance, especially with large amounts of text
+#macro SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN       false     //Set to <true> to ignore a sprite origin's contribution to its spritefont glyph x/y offsets
+#macro SCRIBBLE_SPRITEFONT_LEGACY_HEIGHT       false     //Version 8 uses GameMaker's native spritefont dimension. Older versions used the tight bounding box leading to narrower lines. Set this macro to <true> to use the tighter legacy behaviour
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
