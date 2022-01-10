@@ -1147,14 +1147,14 @@ function __scribble_class_element(_string, _unique_id) constructor
                                      string(__starting_valign) + ":" +
                                      string(__line_height_min) + ":" +
                                      string(__line_height_max) + ":" +
-                                     string(__line_spacing ) + ":" +
+                                     string(__line_spacing   ) + ":" +
                                      string(__wrap_max_width ) + ":" +
                                      string(__wrap_max_height) + ":" +
                                      string(__wrap_per_char  ) + ":" +
                                      string(__wrap_no_pages  ) + ":" +
                                      string(__wrap_max_scale ) + ":" +
                                      string(__bezier_array   ) + ":" +
-                                     string(__bidi_hint    ) + ":" +
+                                     string(__bidi_hint      ) + ":" +
                                      string(__padding_l      ) + ":" +
                                      string(__padding_t      ) + ":" +
                                      string(__padding_r      ) + ":" +

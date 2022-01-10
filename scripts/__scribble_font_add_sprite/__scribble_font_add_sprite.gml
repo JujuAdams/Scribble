@@ -63,6 +63,9 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _font_glyphs_map      = _font_data.__glyphs_map;
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
     
+    //Also create a duplicate entry so that we can find this spritefont in draw_text_scribble()
+    global.__scribble_font_data[? font_get_name(_spritefont)] = _font_data;
+    
     var _i = 0;
     repeat(_size)
     {
