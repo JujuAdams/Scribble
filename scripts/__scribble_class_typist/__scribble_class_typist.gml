@@ -658,7 +658,10 @@ function __scribble_class_typist() constructor
                 }
                 
                 //Only play sound once per frame if we're going reaaaally fast
-                if (_play_sound) __play_sound(_head_pos, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER? (_page_data.__glyph_grid[# _head_pos-1, __SCRIBBLE_GLYPH_LAYOUT.UNICODE]) : 0);
+                if (_play_sound && (__last_character <= _page_character_count))
+                {
+                    __play_sound(_head_pos, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER? (_page_data.__glyph_grid[# _head_pos-1, __SCRIBBLE_GLYPH_LAYOUT.UNICODE]) : 0);
+                }
                 
                 //Set the typewriter head
                 __window_array[@ __window_index] = _head_pos;
