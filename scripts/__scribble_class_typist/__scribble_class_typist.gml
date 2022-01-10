@@ -48,7 +48,7 @@ function __scribble_class_typist() constructor
         
         __window_index = 0;
         __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
-        __skip         = false;
+        if (__last_element != undefined) __skip = false;
         __paused       = false;
         __delay_paused = false;
         __delay_end    = -1;
