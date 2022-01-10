@@ -1,8 +1,10 @@
 # Extended Lanuage Support
 
+&nbsp;
+
 ## Cyrillic and Other Non-Latin Alphabetic Scripts
 
-Scribble natively supports the vast majority of alphabetic languages. You should expect that the rendering pf alphabetic languages will be close to what a native speaker of that language would expect. Some ligatures (a glyph that combines two or more component glyphs) will not be supported by Scribble, but they can be added on request. When supporting non-Latin languages please remember to choose a font that contains the necessary glyphs and, additionally, ensure that the font asset you've created inside the GameMaker IDE has the correct character range for the glyphs you wish to draw.
+Scribble natively supports the vast majority of alphabetic languages. Some ligatures (a glyph that combines two or more component glyphs) will not be supported by Scribble, but they can be added on request. When supporting non-Latin languages please remember to choose a font that contains the necessary glyphs and, additionally, ensure that the font asset you've created inside the GameMaker IDE has the correct character range for the glyphs you wish to draw.
 
 All non-Latin languages are presumed by Scribble to be written from left to right, with the exception of Hebrew which is written from right to left. Again, this can be modified on request. Left-to-right and right-to-left fonts can be combined as you see fit.
 
@@ -38,6 +40,6 @@ Ultimately, the best solution available to us is for zero-width spaces to be ins
 
 &nbsp;
 
-### Devanagari/Hindi (unsupported)
+## Devanagari/Hindi (unsupported)
 
 At this time, Devanagari script is not supported by Scribble. In the near future, the "Krutidev" algorithm may make an appearance in Scribble.
