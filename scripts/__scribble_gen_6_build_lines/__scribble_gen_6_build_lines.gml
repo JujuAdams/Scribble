@@ -77,6 +77,13 @@ function __scribble_gen_6_build_lines()
                 if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.HALIGN)
                 {
                     _state_halign = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
+                    
+                    switch(_state_halign)
+                    {
+                        case fa_left:   global.__scribble_generator_state.__uses_halign_left   = true; break;
+                        case fa_center: global.__scribble_generator_state.__uses_halign_center = true; break;
+                        case fa_right:  global.__scribble_generator_state.__uses_halign_right  = true; break;
+                    }
                 }
                 
                 _control_index++;

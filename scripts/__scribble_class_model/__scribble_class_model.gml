@@ -303,6 +303,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         __model_max_height = 0;
         __overall_bidi     = _element.__bidi_hint;
         
+        __uses_halign_left   = false;
+        __uses_halign_center = false;
+        __uses_halign_right  = false;
+        
         __bezier_lengths_array = undefined;
     };
     
