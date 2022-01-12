@@ -23,7 +23,7 @@ There are a multitude of very useful features available:
 
 ## About & Support
 
-Scribble supports almost all GameMaker export modules, including consoles, mobile, and Opera GX. Scribble does **not** support HTML5 at this time due to the general bugginess of GameMaker's web browser runtime. If you'd like to report a bug or suggest a feature, please use the repo's [Issues page](https://github.com/JujuAdams/scribble/issues). Scribble is constantly being maintained and upgraded; bugs are usually addressed within a few days of being reported.
+Scribble supports all GameMaker export modules, including consoles, mobile, HTML5, and Opera GX. If you'd like to report a bug or suggest a feature, please use the repo's [Issues page](https://github.com/JujuAdams/scribble/issues). Scribble is constantly being maintained and upgraded; bugs are usually addressed within a few days of being reported.
 
 Scribble is built and maintained by [@jujuadams](https://twitter.com/jujuadams) who has a long history of fiddling with text engines. Juju's worked on a lot of [commercial GameMaker games](http://www.jujuadams.com/). Many, many other people have contributed bug reports and feature requests over the years, too many to list here. Scribble wouldn't exist without them and Juju is eternally grateful for their creativity and patience.
 
