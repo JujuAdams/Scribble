@@ -485,7 +485,7 @@ The struct that is returned has the following member variables:
 
 Changes which page Scribble is display for the text element. Pages are created when using the [`.wrap()` method](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) or when inserting [`[/page] command tags`](text-formatting) into your input string. Pages are 0-indexed.
 
-Please note that changing the page will reset any typewriter animations i.e. those started by [`.typewriter_in()`](scribble-methods?id=typewriter_inspeed-smoothness) and [`typewriter_out()`](scribble-methods?id=typewriter_outspeed-smoothness-backwards).
+Please note that changing the page will reset any typewriter animations started by a [typist](typist-methods) associated with the text element.
 
 &nbsp;
 
