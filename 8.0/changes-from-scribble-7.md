@@ -6,8 +6,8 @@ Scribble version 8 has over 450 commits between it and version 7.1, making it th
 
 ## General Improvements
 
-- Adding fonts is now far less tedious with the common use cases (standard fonts and spritefonts) being essentially automatic
 - Scribble is now supported on HTML5 and Opera GX
+- Adding fonts is now far less tedious with the common use cases (standard fonts and spritefonts) being essentially automatic
 - Drawing text should now be faster than before thanks to some additional streamlining and caching
 - Added `draw_text_scribble()` and `draw_text_scribble_ext()` for immediate plug-and-play usage. These functions are useful for drawing formatted text without needing to navigate Scribble's fluent interface
 - Text regions can now be defined using the `[region]` command tag. Regions can be detected using `.region_detect()` and regions can be highlighted using `.region_set_active()`. Text regions are very useful for tooltips and hyperlinks
