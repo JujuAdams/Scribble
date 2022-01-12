@@ -323,6 +323,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     if (SCRIBBLE_VERBOSE)
     {
         var _elapsed = (get_timer() - _timer_total)/1000;
-        __scribble_trace("scribble_cache() took ", _elapsed, "ms");
+        __scribble_trace("__scribble_class_model() took ", _elapsed, "ms");
     }
 }
