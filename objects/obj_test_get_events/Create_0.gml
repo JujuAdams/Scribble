@@ -1,4 +1,4 @@
-scribble_typewriter_add_event("sdm", function(_element, _parameters)
+scribble_typists_add_event("sdm", function(_element, _parameters)
 {
     show_debug_message(_parameters);
 });

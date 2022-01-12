@@ -18,7 +18,7 @@ typist.function_per_char(function(_element, _position, _typist)
     }
 });
 
-scribble_typewriter_add_event("sdm", function(_element, _parameters)
+scribble_typists_add_event("sdm", function(_element, _parameters)
 {
     show_debug_message(_parameters);
 });
