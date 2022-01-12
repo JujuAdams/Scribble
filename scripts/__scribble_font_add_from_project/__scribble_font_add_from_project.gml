@@ -49,12 +49,15 @@ function __scribble_font_add_from_project(_font)
     var _texture_th = texture_get_texel_height(_texture);
     var _texture_w  = (_texture_uvs[2] - _texture_uvs[0])/_texture_tw; //texture_get_width(_texture);
     var _texture_h  = (_texture_uvs[3] - _texture_uvs[1])/_texture_th; //texture_get_height(_texture);
-
+    var _texture_l  = round(_texture_uvs[0] / _texture_tw);
+    var _texture_t  = round(_texture_uvs[1] / _texture_th);
+    
     if (SCRIBBLE_VERBOSE)
     {
         __scribble_trace("  \"" + _name +"\""
                          + ", asset = " + string(_asset)
                          + ", texture = " + string(_texture)
+                         + ", top-left = " + string(_texture_l) + "," + string(_texture_t)
                          + ", size = " + string(_texture_w) + " x " + string(_texture_h)
                          + ", texel = " + string_format(_texture_tw, 1, 10) + " x " + string_format(_texture_th, 1, 10)
                          + ", uvs = " + string_format(_texture_uvs[0], 1, 10) + "," + string_format(_texture_uvs[1], 1, 10)
@@ -87,6 +90,12 @@ function __scribble_font_add_from_project(_font)
         var _y = _glyph_dict.y;
         var _w = _glyph_dict.w;
         var _h = _glyph_dict.h;
+        
+        if (os_browser != browser_not_a_browser)
+        {
+            _x += _texture_l;
+            _y += _texture_t;
+        }
         
         var _u0 = _x*_texture_tw;
         var _v0 = _y*_texture_th;
