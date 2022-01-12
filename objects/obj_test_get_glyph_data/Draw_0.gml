@@ -15,7 +15,7 @@ var _i = 0;
 repeat(_element.get_glyph_count())
 {
     var _struct = _element.get_glyph_data(_i);
-    draw_rectangle(10 + _struct.x, 10 + _struct.y, 10 + _struct.x + _struct.width, 10 + _struct.y + _struct.height, false);
+    draw_rectangle(10 + _struct.left, 10 + _struct.top, 10 + _struct.right, 10 + _struct.bottom, false);
     draw_set_colour((draw_get_colour() == c_maroon)? c_green : c_maroon);
     ++_i;
 }
