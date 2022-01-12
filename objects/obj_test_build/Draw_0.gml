@@ -2,6 +2,7 @@
 //This call ensures that Scribble's garbage collector runs outside of the timers
 scribble("[fnt_test_0]Frozen vertex buffer test").draw(10, 10);
 
+draw_set_font(scribble_fallback_font);
 draw_text(10, 30, frozen_smoothed);
 draw_text(10 + room_width*0.5, 30, unfrozen_smoothed);
 

@@ -1,6 +1,7 @@
 var _element = scribble("[fa_center]First page, we should skip the pause[pause][/page]Second page. we should *not* skip the pause[pause][sdm,test][/page]Third page");
 _element.draw(room_width/2, room_height/2, typist);
 
+draw_set_font(scribble_fallback_font);
 draw_text(10, 10, typist.get_paused()? "PAUSED" : "");
 
 if (typist.get_paused())

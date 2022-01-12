@@ -1,3 +1,4 @@
+draw_set_font(scribble_fallback_font);
 draw_text(10, 10, "SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE = " + string(SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE));
 
 scribble("[scale,5]iiiii!").starting_format("spr_sprite_font").draw(10,  50);

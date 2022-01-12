@@ -5,4 +5,5 @@ repeat(draw_count)
     ++_i;
 }
 
+draw_set_font(scribble_fallback_font);
 draw_text(10, 10, "repeats = " + string(draw_count));

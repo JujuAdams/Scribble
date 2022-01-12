@@ -1,4 +1,5 @@
 var _element = scribble("abcdefghijklmnopqrstuvwxyz0123456789");
+draw_set_font(scribble_fallback_font);
 draw_text(10, 10, typist.get_position());
 _element.draw(10, 30, typist);
 

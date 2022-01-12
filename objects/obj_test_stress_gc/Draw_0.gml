@@ -15,6 +15,7 @@ else
     __scribble_gc_collect();
 }
 
+draw_set_font(scribble_fallback_font);
 draw_text(10,  10, "models cached = " + string(variable_struct_names_count(global.__scribble_mcache_dict)));
 draw_text(10,  30, "elements cached = " + string(array_length(global.__scribble_ecache_array)) + "/" + string(variable_struct_names_count(global.__scribble_ecache_dict)));
 draw_text(10,  50, "vertex buffers cached = " + string(array_length(global.__scribble_gc_vbuff_refs)) + "/" + string(array_length(global.__scribble_gc_vbuff_ids)));

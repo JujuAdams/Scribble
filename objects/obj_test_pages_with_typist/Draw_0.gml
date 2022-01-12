@@ -12,5 +12,6 @@ if (keyboard_check_pressed(ord("2")))
     _element.page(1);
 }
 
+draw_set_font(scribble_fallback_font);
 draw_text(10, 10, typist.get_position());
 draw_text(10, 30, typist.get_state());

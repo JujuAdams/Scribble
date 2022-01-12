@@ -1,3 +1,4 @@
+draw_set_font(scribble_fallback_font);
 draw_text(10, 10, "SCRIBBLE_BGR_COLOR_HEX_CODES = " + string(SCRIBBLE_BGR_COLOR_HEX_CODES));
 
 var _x = 10;

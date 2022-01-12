@@ -7,4 +7,6 @@ _element.draw(_x, _y);
 
 var _region = _element.region_detect(_x, _y, mouse_x, mouse_y);
 _element.region_set_active(_region, c_red, 0.5);
+
+draw_set_font(scribble_fallback_font);
 draw_text(10, 10, _region);
