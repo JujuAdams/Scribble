@@ -68,22 +68,23 @@ if (!__SCRIBBLE_ON_WEB)
 #region Initialization
     
 //Declare global variables
-global.__scribble_lcg                 = date_current_datetime()*100;
-global.__scribble_font_directory      = _font_directory;
-global.__scribble_font_data           = ds_map_create();  //Stores a data array for each font defined inside Scribble
-global.__scribble_effects             = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_effects_slash       = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_external_sound_map  = ds_map_create();
-global.__scribble_default_font        = "scribble_fallback_font";
-global.__scribble_buffer              = buffer_create(1024, buffer_grow, 1);
-global.__scribble_glyph_grid          = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
-global.__scribble_control_grid        = ds_grid_create(1000, __SCRIBBLE_GEN_CONTROL.__SIZE);
-global.__scribble_word_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE);
-global.__scribble_line_grid           = ds_grid_create(__SCRIBBLE_MAX_LINES, __SCRIBBLE_GEN_LINE.__SIZE);
-global.__scribble_stretch_grid        = ds_grid_create(1000, __SCRIBBLE_GEN_STRETCH.__SIZE);
-global.__scribble_temp_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE); //Somewhat arbitrary size. Feel free to increase this size as is needed
-global.__scribble_vbuff_pos_grid      = ds_grid_create(1000, __SCRIBBLE_GEN_VBUFF_POS.__SIZE);
-//global.__scribble_window_array_null   = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0); //TODO - Do we still need this?
+global.__scribble_lcg                  = date_current_datetime()*100;
+global.__scribble_font_directory       = _font_directory;
+global.__scribble_font_data            = ds_map_create();  //Stores a data array for each font defined inside Scribble
+global.__scribble_effects              = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_effects_slash        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+global.__scribble_external_sound_map   = ds_map_create();
+global.__scribble_tex_index_lookup_map = ds_map_create();
+global.__scribble_default_font         = "scribble_fallback_font";
+global.__scribble_buffer               = buffer_create(1024, buffer_grow, 1);
+global.__scribble_glyph_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
+global.__scribble_control_grid         = ds_grid_create(1000, __SCRIBBLE_GEN_CONTROL.__SIZE);
+global.__scribble_word_grid            = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE);
+global.__scribble_line_grid            = ds_grid_create(__SCRIBBLE_MAX_LINES, __SCRIBBLE_GEN_LINE.__SIZE);
+global.__scribble_stretch_grid         = ds_grid_create(1000, __SCRIBBLE_GEN_STRETCH.__SIZE);
+global.__scribble_temp_grid            = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE); //Somewhat arbitrary size. Feel free to increase this size as is needed
+global.__scribble_vbuff_pos_grid       = ds_grid_create(1000, __SCRIBBLE_GEN_VBUFF_POS.__SIZE);
+//global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0); //TODO - Do we still need this?
 
 global.__scribble_cache_check_time = current_time;
 
