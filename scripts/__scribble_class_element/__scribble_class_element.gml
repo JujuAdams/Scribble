@@ -1368,8 +1368,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _xscale = 1.0;
         var _yscale = 1.0;
         
-        if (__scale_to_box_max_width  > 0) _xscale = __scale_to_box_max_width  / (_model.get_width()  + __padding_l + __padding_r);
-        if (__scale_to_box_max_height > 0) _yscale = __scale_to_box_max_height / (_model.get_height() + __padding_t + __padding_b);
+        if (__scale_to_box_max_width  > 0) _xscale = __scale_to_box_max_width  / (_model.__get_width()  + __padding_l + __padding_r);
+        if (__scale_to_box_max_height > 0) _yscale = __scale_to_box_max_height / (_model.__get_height() + __padding_t + __padding_b);
         
         var _previous_scale_to_box_scale = __scale_to_box_scale;
         __scale_to_box_scale = min(1.0, _xscale, _yscale);
