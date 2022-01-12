@@ -7,7 +7,7 @@ Scribble version 8 has over 450 commits between it and version 7.1, making it th
 ## General Improvements
 
 - Adding fonts is now far less tedious with the common use cases (standard fonts and spritefonts) being essentially automatic
-- Scribble is now supported on Opera GX (but not HTML5! Waiting on fixes from YYG still)
+- Scribble is now supported on HTML5 and Opera GX
 - Drawing text should now be faster than before thanks to some additional streamlining and caching
 - Added `draw_text_scribble()` and `draw_text_scribble_ext()` for immediate plug-and-play usage. These functions are useful for drawing formatted text without needing to navigate Scribble's fluent interface
 - Text regions can now be defined using the `[region]` command tag. Regions can be detected using `.region_detect()` and regions can be highlighted using `.region_set_active()`. Text regions are very useful for tooltips and hyperlinks
@@ -74,6 +74,7 @@ Scribble version 8 has over 450 commits between it and version 7.1, making it th
 ## Other Changes
 
 - Scribble configuration has been split into three separate scripts to help guide people to what they're looking for faster
+- Adds `SCRIBBLE_INCREMENTAL_FREEZE` for a nice performance boost when drawing large amounts of text. Vertex buffer freezing happens one frame after the text model is created to help smooth out any one-time performance costs
 - Externally added sounds can now be used with events and per-character sounds. See `scribble_external_sound_add()`, `scribble_external_sound_remove()`, and `scribble_external_sound_exists()`
 - Removes `SCRIBBLE_SKIP_SPEED_THRESHOLD` as it was a bad idea to begin with
 - `SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK` can now be turned on or off to automatically disable `[pause]` commands that occur immediately before a natural or forced (`[/page]`) pagebreak
