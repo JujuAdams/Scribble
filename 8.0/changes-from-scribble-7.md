@@ -22,7 +22,7 @@ Scribble version 8 has over 600 Git commits between it and version 7.1, making i
 - Spritefont source sprites no longer need to be set up in any particular way e.g. version 7 required that you set up spritefonts with a 1px transparent border, per-frame precise collision detection etc. Version 8 does not require any setup steps beyond calling `font_add_sprite()` or `font_add_sprite_ext()` once to set up the spritefont
 - Various edgecase spritefont issues have now been fixed, including characters occasionally being invisible or garbled
 - `SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN` can be turned on or off to control how a sprite's origin affects the associated spritefon
-- As part of the change to more closely work with GameMaker's native font definitions, the optional space width argument is no longer directly accessible. Instead, please use the `scribble_glyph_set()` function to adjust the width of spaces (specifically `scribble_glyph_set("fontName", " ", SCRIBBLE_GLYPH.WIDTH, <width>, false)`
+- As part of the change to more closely work with GameMaker's native font definitions, changing a spritefont's space width now requires a specific function call. Please use the `scribble_glyph_set()` function to adjust the width of spaces (specifically `scribble_glyph_set("fontName", " ", SCRIBBLE_GLYPH.WIDTH, <width>, false)`)
 
 ## MSDF
 
