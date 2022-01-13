@@ -67,7 +67,7 @@ Scribble version 8 has over 600 Git commits between it and version 7.1, making i
 - Added superfonts to allow for fonts to be combined together transparently. The is especially useful when trying to cover different languages or charactersets using a single font name. This replaces `scribble_font_combine()`
 - Fonts can now have bilinear filtering forced per font. This is useful for rendering clean pixel fonts in high res games, or visa versa
 - Added `scribble_font_get_glyph_ranges()` to help debug font support for different languages
-- Font outline baking has been simplified down into `scribble_font_bake_outline_4dir`, `..._outline_8dir()`, and `..._outline_8dir_2px()`. This makes the feature easier to use, as well as being a key step in enabling compilation for Opera GX
+- Font outline baking has been simplified down into `scribble_font_bake_outline_4dir`, `..._outline_8dir()`, and `..._outline_8dir_2px()`. This makes the feature easier to use, as well as being a key step in enabling compilation for HTML5 and Opera GX
 - Baking shadows into fonts, much like baking outlines, is now possible using the new `scribble_font_bake_shadow()` function
 - Fonts can now be renamed (at least for use with Scribble) by using `scribble_font_rename()`
 
