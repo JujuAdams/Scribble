@@ -8,7 +8,7 @@
 -   [Coming from Native GM](coming-from-native-gm)
 -   [Changes from Scribble 7](changes-from-scribble-7)
 -   [Text Formatting](text-formatting)
--   [Superfonts](superfonts)
+-   [Superfonts](superfont-functions)
 -   [MSDF Fonts](msdf-fonts)
 -   [Extended Language Support](extended-language-support)
 
