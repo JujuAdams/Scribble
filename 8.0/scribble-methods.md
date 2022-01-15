@@ -312,7 +312,9 @@ This function expects the name of a region that has been defined in your text us
 |----|--------|------------------------------------------|
 |`x` |real    |x position of the text element in the room|
 
-This function takes into account the transformation and padding applied to the text element. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+This function takes into account the transformation and padding applied to the text element.
+
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
 &nbsp;
 
@@ -324,7 +326,9 @@ This function takes into account the transformation and padding applied to the t
 |----|--------|------------------------------------------|
 |`y` |real    |y position of the text element in the room|
 
-This function takes into account the transformation and padding applied to the text element. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+This function takes into account the transformation and padding applied to the text element.
+
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
 &nbsp;
 
@@ -336,7 +340,9 @@ This function takes into account the transformation and padding applied to the t
 |----|--------|------------------------------------------|
 |`x` |real    |x position of the text element in the room|
 
-This function takes into account the transformation and padding applied to the text element. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+This function takes into account the transformation and padding applied to the text element.
+
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
 &nbsp;
 
@@ -348,7 +354,9 @@ This function takes into account the transformation and padding applied to the t
 |----|--------|------------------------------------------|
 |`y` |real    |y position of the text element in the room|
 
-This function takes into account the transformation and padding applied to the text element. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+This function takes into account the transformation and padding applied to the text element.
+
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
 &nbsp;
 
@@ -360,9 +368,9 @@ This function takes into account the transformation and padding applied to the t
 |----|--------|-------|
 |None|        |       |
 
-!> This function returns the untransformed width of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method but will take into account padding.
-
 If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+
+!> This function returns the untransformed width of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method but will take into account padding.
 
 &nbsp;
 
@@ -374,9 +382,9 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 |----|--------|-------|
 |None|        |       |
 
-!> This functions returns the untransformed height of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method but will take into account padding.
-
 If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+
+!> This functions returns the untransformed height of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method but will take into account padding.
 
 &nbsp;
 
