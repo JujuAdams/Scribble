@@ -171,7 +171,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             var _yscale = __scale_to_box_scale*_model.__fit_scale*__yscale;
             
             //Left/top padding is baked into the model
-            var _bbox = _model.__get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined, __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__get_bbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __page : undefined, __padding_l, __padding_t, __padding_r, __padding_b);
             
             __bbox_raw_width  = 1 + _bbox.right - _bbox.left;
             __bbox_raw_height = 1 + _bbox.bottom - _bbox.top;
