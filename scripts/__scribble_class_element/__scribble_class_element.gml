@@ -581,6 +581,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             __model_cache_name_dirty = true;
             __bbox_dirty = true;
+            
             __wrap_max_width  = _wrap_max_width;
             __wrap_max_height = _wrap_max_height;
             __wrap_per_char   = _wrap_per_char;
@@ -604,7 +605,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         ||  (_wrap_max_scale  != __wrap_max_scale))
         {
             __model_cache_name_dirty = true;
+            __matrix_dirty = true;
             __bbox_dirty = true;
+            
             __wrap_max_width  = _wrap_max_width;
             __wrap_max_height = _wrap_max_height;
             __wrap_per_char   = _wrap_per_char;
