@@ -435,7 +435,7 @@ function __scribble_gen_2_parser()
                     
                     // [fa_justify]
                     case 20:
-                        _new_halign = __SCRIBBLE_JUSTIFY;
+                        _new_halign = __SCRIBBLE_FA_JUSTIFY;
                     break;
                             
                     #endregion

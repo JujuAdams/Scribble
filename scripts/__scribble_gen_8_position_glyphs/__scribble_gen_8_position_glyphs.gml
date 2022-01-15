@@ -126,7 +126,7 @@ function __scribble_gen_8_position_glyphs()
             
             // Text on the last line is never justified
             // FIXME - This should work per-page not per-model
-            if ((_line_halign == __SCRIBBLE_JUSTIFY) && (_j >= _line_count - 1)) _line_halign = __SCRIBBLE_PIN_LEFT;
+            if ((_line_halign == __SCRIBBLE_FA_JUSTIFY) && (_j >= _line_count - 1)) _line_halign = __SCRIBBLE_PIN_LEFT;
             
             var _justification_extra_spacing = 0;
             
@@ -155,7 +155,7 @@ function __scribble_gen_8_position_glyphs()
                 case __SCRIBBLE_PIN_CENTRE: var _glyph_x = (_pin_alignment_width - _line_adjusted_width) div 2;                                       break;
                 case __SCRIBBLE_PIN_RIGHT:  var _glyph_x = _pin_alignment_width - _line_adjusted_width;                                               break;
                 
-                case __SCRIBBLE_JUSTIFY:
+                case __SCRIBBLE_FA_JUSTIFY:
                     var _glyph_x = 0;
                     
                     // Don't apply justification on the last line on a page

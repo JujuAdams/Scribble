@@ -457,7 +457,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
         if (_halign == "pin_center") _halign = __SCRIBBLE_PIN_CENTRE;
         if (_halign == "pin_right" ) _halign = __SCRIBBLE_PIN_RIGHT;
-        if (_halign == "justify"   ) _halign = __SCRIBBLE_JUSTIFY;
+        if (_halign == "fa_justify") _halign = __SCRIBBLE_FA_JUSTIFY;
         
         if (_halign != __starting_halign)
         {
