@@ -1504,6 +1504,8 @@ function __scribble_class_element(_string, _unique_id) constructor
             
             if (!_model.__pad_bbox_l) _x_offset += __padding_l;
             if (!_model.__pad_bbox_t) _y_offset += __padding_t;
+            if (!_model.__pad_bbox_r) _x_offset -= __padding_r;
+            if (!_model.__pad_bbox_b) _y_offset -= __padding_b;
             
             //Build a matrix to transform the text...
             if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))

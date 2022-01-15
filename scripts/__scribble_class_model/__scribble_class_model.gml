@@ -146,7 +146,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         if (__pad_bbox_l) _left   -= _padding_l; else _right  += _padding_l;
         if (__pad_bbox_t) _top    -= _padding_t; else _bottom += _padding_t;
         if (__pad_bbox_r) _right  += _padding_r; else _left   -= _padding_r;
-        if (__pad_bbox_b) _bottom += _padding_b; else _bottom -= _padding_b;
+        if (__pad_bbox_b) _bottom += _padding_b; else _top    -= _padding_b;
         
         return {
             left:   _left,

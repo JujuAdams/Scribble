@@ -10,9 +10,9 @@ function __scribble_gen_10_set_padding_flags()
     //Figure out how to pad the bounding box based on what alignments have been used
     switch(__valign)
     {
-        case fa_top:    __pad_bbox_t = true;  __pad_bbox_b = false; break;
+        case fa_top:    __pad_bbox_t = false; __pad_bbox_b = true;  break;
         case fa_middle: __pad_bbox_t = true;  __pad_bbox_b = true;  break;
-        case fa_bottom: __pad_bbox_t = false; __pad_bbox_b = true;  break;
+        case fa_bottom: __pad_bbox_t = true;  __pad_bbox_b = false; break;
     }
     
     if (_uses_halign_center)
@@ -40,7 +40,7 @@ function __scribble_gen_10_set_padding_flags()
     }
     else
     {
-        __pad_bbox_l = true;
-        __pad_bbox_r = false;
+        __pad_bbox_l = false;
+        __pad_bbox_r = true;
     }
 }
