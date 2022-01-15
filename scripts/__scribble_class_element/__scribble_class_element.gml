@@ -34,7 +34,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     
     __starting_font   = global.__scribble_default_font;
-    __starting_colour = SCRIBBLE_DEFAULT_COLOR;
+    __starting_colour = __scribble_process_colour(SCRIBBLE_DEFAULT_COLOR);
     __starting_halign = SCRIBBLE_DEFAULT_HALIGN;
     __starting_valign = SCRIBBLE_DEFAULT_VALIGN;
     __blend_colour    = c_white;
@@ -180,7 +180,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param fontName
     /// @param colour
-    static starting_format = function(_font_name, _colour)
+    static starting_format = function(_font_name, _in_colour)
     {
         if (is_string(_font_name))
         {
@@ -195,24 +195,13 @@ function __scribble_class_element(_string, _unique_id) constructor
             __scribble_error("Fonts should be specified using their name as a string\nUse <undefined> to not set a new font");
         }
         
-        if (_colour != undefined)
+        if (_in_colour != undefined)
         {
-            if (is_string(_colour))
+            var _colour = __scribble_process_colour(_in_colour);
+            if ((_colour != undefined) && (_colour >= 0) && (_colour != __starting_colour))
             {
-                _colour = global.__scribble_colours[? _colour];
-                if (_colour == undefined)
-                {
-                    __scribble_error("Colour name \"", _colour, "\" not recognised");
-                }
-            }
-        
-            if ((_colour != undefined) && (_colour >= 0))
-            {
-                if (_colour != __starting_colour)
-                {
-                    __model_cache_name_dirty = true;
-                    __starting_colour = _colour & 0xFFFFFF;
-                }
+                __model_cache_name_dirty = true;
+                __starting_colour = _colour & 0xFFFFFF;
             }
         }
         
@@ -1140,26 +1129,26 @@ function __scribble_class_element(_string, _unique_id) constructor
             if (__model_cache_name_dirty)
             {
                 __model_cache_name_dirty = false;
-                __model_cache_name = __text + ":" +
-                                     string(__starting_font  ) + ":" +
-                                     string(__starting_colour) + ":" +
-                                     string(__starting_halign) + ":" +
-                                     string(__starting_valign) + ":" +
-                                     string(__line_height_min) + ":" +
-                                     string(__line_height_max) + ":" +
-                                     string(__line_spacing   ) + ":" +
-                                     string(__wrap_max_width ) + ":" +
-                                     string(__wrap_max_height) + ":" +
-                                     string(__wrap_per_char  ) + ":" +
-                                     string(__wrap_no_pages  ) + ":" +
-                                     string(__wrap_max_scale ) + ":" +
-                                     string(__bezier_array   ) + ":" +
-                                     string(__bidi_hint      ) + ":" +
-                                     string(__padding_l      ) + ":" +
-                                     string(__padding_t      ) + ":" +
-                                     string(__padding_r      ) + ":" +
-                                     string(__padding_b      ) + ":" +
-                                     string(__ignore_command_tags);
+                
+                buffer_seek(global.__scribble_buffer, buffer_seek_start, 0);
+                buffer_write(global.__scribble_buffer, buffer_text, __starting_font  );
+                buffer_write(global.__scribble_buffer, buffer_text, __starting_colour);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A); //colon
+                buffer_write(global.__scribble_buffer, buffer_text, __starting_halign);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __starting_valign);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __line_height_min);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __line_height_max);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __line_spacing   );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __wrap_max_width  - (__padding_l + __padding_r)); buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __wrap_max_height - (__padding_t + __padding_b)); buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __wrap_per_char  );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __wrap_no_pages  );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __wrap_max_scale );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array   );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __bidi_hint      );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __ignore_command_tags); buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_u8, 0x00);
+                buffer_seek(global.__scribble_buffer, buffer_seek_start, 0);
+                __model_cache_name = buffer_read(global.__scribble_buffer, buffer_string);
             }
             
             var _weak = global.__scribble_mcache_dict[$ __model_cache_name];
