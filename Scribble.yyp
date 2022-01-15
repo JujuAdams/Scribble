@@ -96,6 +96,7 @@
     {"id":{"name":"obj_test_build","path":"objects/obj_test_build/obj_test_build.yy",},"order":9,},
     {"id":{"name":"obj_test_font_scale","path":"objects/obj_test_font_scale/obj_test_font_scale.yy",},"order":2,},
     {"id":{"name":"obj_test_typewriter_speed","path":"objects/obj_test_typewriter_speed/obj_test_typewriter_speed.yy",},"order":8,},
+    {"id":{"name":"__scribble_gen_10_set_padding_flags","path":"scripts/__scribble_gen_10_set_padding_flags/__scribble_gen_10_set_padding_flags.yy",},"order":11,},
     {"id":{"name":"obj_test_legacy_typewriter_duplicate_draw","path":"objects/obj_test_legacy_typewriter_duplicate_draw/obj_test_legacy_typewriter_duplicate_draw.yy",},"order":7,},
     {"id":{"name":"obj_test_typewriter_default_delay","path":"objects/obj_test_typewriter_default_delay/obj_test_typewriter_default_delay.yy",},"order":7,},
     {"id":{"name":"scribble","path":"scripts/scribble/scribble.yy",},"order":2,},

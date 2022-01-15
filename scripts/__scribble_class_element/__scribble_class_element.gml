@@ -119,6 +119,247 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     
     
+    
+    
+    __bbox_dirty       = true;
+    __bbox_matrix      = undefined;
+    __bbox_aabb_left   = 0;
+    __bbox_aabb_top    = 0;
+    __bbox_aabb_right  = 0;
+    __bbox_aabb_bottom = 0;
+    __bbox_obb_x0      = 0;
+    __bbox_obb_y0      = 0;
+    __bbox_obb_x1      = 0;
+    __bbox_obb_y1      = 0;
+    __bbox_obb_x2      = 0;
+    __bbox_obb_y2      = 0;
+    __bbox_obb_x3      = 0;
+    __bbox_obb_y3      = 0;
+    
+    static __update_bbox_matrix = function()
+    {
+        __update_scale_to_box_scale();
+        
+        if (__bbox_dirty)
+        {
+            __bbox_dirty = false;
+            
+            var _model = __get_model(true);
+            if (!is_struct(_model))
+            {
+                __bbox_matrix      = matrix_build(-__origin_x, -__origin_y, 0,    0,0,0,    1,1,1);
+                __bbox_aabb_left   = 0;
+                __bbox_aabb_top    = 0;
+                __bbox_aabb_right  = 0;
+                __bbox_aabb_bottom = 0;
+                __bbox_obb_x0      = 0;
+                __bbox_obb_y0      = 0;
+                __bbox_obb_x1      = 0;
+                __bbox_obb_y1      = 0;
+                __bbox_obb_x2      = 0;
+                __bbox_obb_y2      = 0;
+                __bbox_obb_x3      = 0;
+                __bbox_obb_y3      = 0;
+                return;
+            }
+            
+            var _xscale = __scale_to_box_scale*_model.__fit_scale*__xscale;
+            var _yscale = __scale_to_box_scale*_model.__fit_scale*__yscale;
+            
+            //Left/top padding is baked into the model
+            var _bbox = _model.__get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined, __padding_l, __padding_t, __padding_r, __padding_b);
+            
+            if ((_xscale == 1) && (_yscale == 1) && (__angle == 0))
+            {
+                __bbox_matrix = matrix_build(-__origin_x, -__origin_y, 0,    0,0,0,    1,1,1);
+                
+                //Avoid using matrices if we can
+                __bbox_aabb_left   = -__origin_x + _bbox.left;
+                __bbox_aabb_top    = -__origin_y + _bbox.top;
+                __bbox_aabb_right  = -__origin_x + _bbox.right;
+                __bbox_aabb_bottom = -__origin_y + _bbox.bottom;
+                
+                __bbox_obb_x0 = __bbox_aabb_left;   __bbox_obb_y0 = __bbox_aabb_top;
+                __bbox_obb_x1 = __bbox_aabb_right;  __bbox_obb_y1 = __bbox_aabb_top;
+                __bbox_obb_x2 = __bbox_aabb_left;   __bbox_obb_y2 = __bbox_aabb_bottom;
+                __bbox_obb_x3 = __bbox_aabb_right;  __bbox_obb_y3 = __bbox_aabb_bottom;
+            }
+            else
+            {
+                //TODO - Optimize this
+                __bbox_matrix = matrix_multiply(matrix_build(-__origin_x, -__origin_y, 0,    0, 0,       0,          1,       1, 1),
+                                matrix_multiply(matrix_build(          0,           0, 0,    0, 0,       0,    _xscale, _yscale, 1),
+                                                matrix_build(          0,           0, 0,    0, 0, __angle,          1,       1, 1)));
+                
+                var _l = _bbox.left;
+                var _t = _bbox.top;
+                var _r = _bbox.right;
+                var _b = _bbox.bottom;
+                
+                var _vertex = matrix_transform_vertex(__bbox_matrix, _l, _t, 0); __bbox_obb_x0 = _vertex[0]; __bbox_obb_y0 = _vertex[1];
+                var _vertex = matrix_transform_vertex(__bbox_matrix, _r, _t, 0); __bbox_obb_x1 = _vertex[0]; __bbox_obb_y1 = _vertex[1];
+                var _vertex = matrix_transform_vertex(__bbox_matrix, _l, _b, 0); __bbox_obb_x2 = _vertex[0]; __bbox_obb_y2 = _vertex[1];
+                var _vertex = matrix_transform_vertex(__bbox_matrix, _r, _b, 0); __bbox_obb_x3 = _vertex[0]; __bbox_obb_y3 = _vertex[1];
+                
+                __bbox_aabb_left   = min(__bbox_obb_x0, __bbox_obb_x1, __bbox_obb_x2, __bbox_obb_x3);
+                __bbox_aabb_top    = min(__bbox_obb_y0, __bbox_obb_y1, __bbox_obb_y2, __bbox_obb_y3);
+                __bbox_aabb_right  = max(__bbox_obb_x0, __bbox_obb_x1, __bbox_obb_x2, __bbox_obb_x3);
+                __bbox_aabb_bottom = max(__bbox_obb_y0, __bbox_obb_y1, __bbox_obb_y2, __bbox_obb_y3);
+            }
+        }
+    }
+    
+    static get_left = function(_x = 0)
+    {
+        __update_bbox_matrix();
+        return __bbox_aabb_left + _x;
+    }
+    
+    static get_top = function(_y = 0)
+    {
+        __update_bbox_matrix();
+        return __bbox_aabb_top + _y;
+    }
+    
+    static get_right = function(_x = 0)
+    {
+        __update_bbox_matrix();
+        return __bbox_aabb_right + _x;
+    }
+    
+    static get_bottom = function(_y = 0)
+    {
+        __update_bbox_matrix();
+        return __bbox_aabb_bottom + _y;
+    }
+    
+    static get_width = function()
+    {
+        __update_bbox_matrix();
+        return 1 + __bbox_aabb_right - __bbox_aabb_left;
+    }
+    
+    static get_height = function()
+    {
+        __update_bbox_matrix();
+        return 1 + __bbox_aabb_bottom - __bbox_aabb_top;
+    }
+    
+    /// @param x
+    /// @param y
+    static get_bbox = function(_x = 0, _y = 0)
+    {
+        __update_bbox_matrix();
+        
+        return {
+            left:   _x + __bbox_aabb_left,
+            top:    _y + __bbox_aabb_top,
+            right:  _x + __bbox_aabb_right,
+            bottom: _y + __bbox_aabb_bottom,
+            
+            width:  1 + __bbox_aabb_right - __bbox_aabb_left,
+            height: 1 + __bbox_aabb_bottom - __bbox_aabb_top,
+            
+            x0: _x + __bbox_obb_x0,  y0: _y + __bbox_obb_y0,
+            x1: _x + __bbox_obb_x1,  y1: _y + __bbox_obb_y1,
+            x2: _x + __bbox_obb_x2,  y2: _y + __bbox_obb_y2,
+            x3: _x + __bbox_obb_x3,  y3: _y + __bbox_obb_y3
+        };
+    }
+    
+    /// @param x
+    /// @param y
+    /// @param [typist]
+    static get_bbox_revealed = function(_x, _y, _typist)
+    {
+        //No typist set up, return the whole bounding box
+        if ((_typist == undefined) && (__tw_reveal == undefined))
+        {
+            return get_bbox(_x, _y);
+        }
+        
+        var _model = __get_model(true);
+        if (!is_struct(_model))
+        {
+            //No extant model, return an empty bounding box
+            return {
+                left:   _x,
+                top:    _y,
+                right:  _x,
+                bottom: _y,
+                
+                width:  1,
+                height: 1,
+                
+                x0: _x,  y0: _y,
+                x1: _x,  y1: _y,
+                x2: _x,  y2: _y,
+                x3: _x,  y3: _y
+            };
+        }
+        
+        if (_typist != undefined)
+        {
+            var _bbox = _model.__get_bbox_revealed(__page, 0, _typist.__window_array[_typist.__window_index], __padding_l, __padding_t, __padding_r, __padding_b);
+        }
+        else if (__tw_reveal != undefined)
+        {
+            var _bbox = _model.__get_bbox_revealed(__page, 0, __tw_reveal, __padding_l, __padding_t, __padding_r, __padding_b);
+        }
+        
+        __update_bbox_matrix();
+        var _xscale = __scale_to_box_scale*_model.__fit_scale*__xscale;
+        var _yscale = __scale_to_box_scale*_model.__fit_scale*__yscale;
+        
+        if ((_xscale == 1) && (_yscale == 1) && (__angle == 0))
+        {
+            //Avoid using matrices if we can
+            var _l = _x - __origin_x + _bbox.left;
+            var _t = _y - __origin_y + _bbox.top;
+            var _r = _x - __origin_x + _bbox.right;
+            var _b = _y - __origin_y + _bbox.bottom;
+                
+            var _x0 = _l;   var _y0 = _t;
+            var _x1 = _r;   var _y1 = _t;
+            var _x2 = _l;   var _y2 = _b;
+            var _x3 = _r;   var _y3 = _b;
+        }
+        else
+        {
+            var _l = _bbox.left;
+            var _t = _bbox.top;
+            var _r = _bbox.right;
+            var _b = _bbox.bottom;
+                
+            var _vertex = matrix_transform_vertex(__bbox_matrix, _l, _t, 0); var _x0 = _vertex[0]; var _y0 = _vertex[1];
+            var _vertex = matrix_transform_vertex(__bbox_matrix, _r, _t, 0); var _x1 = _vertex[0]; var _y1 = _vertex[1];
+            var _vertex = matrix_transform_vertex(__bbox_matrix, _l, _b, 0); var _x2 = _vertex[0]; var _y2 = _vertex[1];
+            var _vertex = matrix_transform_vertex(__bbox_matrix, _r, _b, 0); var _x3 = _vertex[0]; var _y3 = _vertex[1];
+                
+            var _l = min(_x0, _x1, _x2, _x3);
+            var _t = min(_y0, _y1, _y2, _y3);
+            var _r = max(_x0, _x1, _x2, _x3);
+            var _b = max(_y0, _y1, _y2, _y3);
+        }
+        
+        return {
+            left:   _l,
+            top:    _t,
+            right:  _r,
+            bottom: _b,
+            
+            width:  1 + _r - _l,
+            height: 1 + _b - _t,
+            
+            x0: _x0,  y0: _y0,
+            x1: _x1,  y1: _y1,
+            x2: _x2,  y2: _y2,
+            x3: _x3,  y3: _y3
+        };
+    }
+    
+    
+    
     #region Basics
     
     /// @param x
@@ -285,6 +526,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         if ((__origin_x != _x) || (__origin_y != _y))
         {
             __matrix_dirty = true;
+            __bbox_dirty = true;
             
             __origin_x = _x;
             __origin_y = _y;
@@ -301,6 +543,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         if ((__xscale != _xscale) || (__yscale != _yscale) || (__angle != _angle))
         {
             __matrix_dirty = true;
+            __bbox_dirty = true;
             
             __xscale = _xscale;
             __yscale = _yscale;
@@ -401,6 +644,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         if ((_l != __padding_l) || (_t != __padding_t) || (_r != __padding_r) || (_b != __padding_b))
         {
             __model_cache_name_dirty = true;
+            __matrix_dirty = true;
+            __bbox_dirty = true;
             
             __padding_l = _l;
             __padding_t = _t;
@@ -575,97 +820,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Dimensions
     
-    /// @param x
-    /// @param y
-    static get_bbox = function(_x, _y)
-    {
-        var _model = __get_model(true);
-        if (!is_struct(_model))
-        {
-            //No extant model, return an empty bounding box
-            return __get_bbox_transform(_x, _y, _model, {
-                left   : _x,
-                top    : _y,
-                right  : _x,
-                bottom : _y,
-            });
-        }
-        else
-        {
-            var _model_bbox = _model.__get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined);
-            return __get_bbox_transform(_x, _y, _model, _model_bbox);
-        }
-    }
-    
-    /// @param x
-    /// @param y
-    /// @param [typist]
-    static get_bbox_revealed = function(_x, _y, _typist)
-    {
-        var _model = __get_model(true);
-        if (!is_struct(_model))
-        {
-            //No extant model, return an empty bounding box
-            return __get_bbox_transform(_x, _y, _model, {
-                left   : _x,
-                top    : _y,
-                right  : _x,
-                bottom : _y,
-            });
-        }
-        else
-        {
-            if (_typist != undefined)
-            {
-                return __get_bbox_transform(_x, _y, _model, _model.__get_bbox_revealed(__page, 0, _typist.__window_array[_typist.__window_index]));
-            }
-            else if (__tw_reveal != undefined)
-            {
-                return __get_bbox_transform(_x, _y, _model, _model.__get_bbox_revealed(__page, 0, __tw_reveal));
-            }
-            else
-            {
-                return get_bbox(_x, _y);
-            }
-        }
-    }
-    
-    static get_width = function()
-    {
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
-        __update_scale_to_box_scale();
-        return __scale_to_box_scale*(_model.__get_width() + __padding_l + __padding_r);
-    }
-    
-    static get_height = function()
-    {
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
-        __update_scale_to_box_scale();
-        return __scale_to_box_scale*(_model.__get_height() + __padding_t + __padding_b);
-    }
-	
-	/// @param [page]
-	static get_page_width = function()
-	{
-		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
-		
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
-		return __scale_to_box_scale*(_model.__get_page_width(_page) + __padding_l + __padding_r);
-	}
-	
-	/// @param [page]
-	static get_page_height = function()
-	{
-		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
-		
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
-		return __scale_to_box_scale*(_model.__get_page_height(_page) + __padding_t + __padding_b);
-	}
-    
     #endregion
     
     
@@ -675,6 +829,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param page
     static page = function(_page)
     {
+        var _old_page = __page;
+        
         var _model = __get_model(false);
         if (is_struct(_model))
         {
@@ -697,6 +853,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             __page = 0;
         }
+        
+        if (_old_page != __page) __bbox_dirty = true;
         
         return self;
     }
@@ -1055,60 +1213,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static debug_draw_bbox = function(_x, _y)
     {
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return undefined;
-        
-        if ((__scale_to_box_max_width > 0) && (__scale_to_box_max_height > 0))
-        {
-            var _w = __scale_to_box_max_width  - (__padding_l + __padding_r);
-            var _h = __scale_to_box_max_height - (__padding_t + __padding_b);
-        }
-        else
-        {
-            var _w = __wrap_max_width  - (__padding_l + __padding_r);
-            var _h = __wrap_max_height - (__padding_t + __padding_b);
-        }
-        
-        _w *= __xscale;
-        _h *= __yscale;
-        
-        var _l = _x + __padding_l;
-        var _t = _y + __padding_t;
-        var _r = _l + _w;
-        var _b = _t + _h;
-        
-        switch(__starting_halign)
-        {
-            case fa_left:               break;
-            case fa_center: _l -= _w/2; break;
-            case fa_right:  _l -= _w;   break;
-        }
-        
-        switch(_model.__valign)
-        {
-            case fa_top:                break;
-            case fa_middle: _t -= _h/2; break;
-            case fa_bottom: _t -= _h;   break;
-        }
-        
-        if (((__scale_to_box_max_width > 0) && (__scale_to_box_max_height > 0))
-        ||  ((__wrap_max_width > 0) && (__wrap_max_height > 0)))
-        {
-            draw_set_color(c_red);
-            draw_rectangle(_l, _t, _r, _b, true);
-            draw_set_color(c_white);
-        }
-        else if (__wrap_max_width > 0)
-        {
-            _h = _model.get_height();
-            _b = _t + _h;
-            
-            draw_set_color(c_red);
-            draw_line(_l, _t, _l, _t + _h);
-            draw_line(_r, _t, _r, _t + _h);
-            draw_set_color(c_white);
-        }
-        
+        //FIXME - Reimplement
         return self;
     }
     
@@ -1362,11 +1467,18 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         var _previous_scale_to_box_scale = __scale_to_box_scale;
         __scale_to_box_scale = min(1.0, _xscale, _yscale);
-        if (__scale_to_box_scale != _previous_scale_to_box_scale) __matrix_dirty = true;
+        if (__scale_to_box_scale != _previous_scale_to_box_scale)
+        {
+            __matrix_dirty = true;
+            __bbox_dirty = true;
+        }
     }
     
     static __update_matrix = function(_x, _y)
     {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return;
+        
         __update_scale_to_box_scale();
         
         if (__matrix_dirty || (__matrix_x != _x) || (__matrix_y != _y))
@@ -1378,15 +1490,12 @@ function __scribble_class_element(_string, _unique_id) constructor
             
             var _x_offset = -__origin_x;
             var _y_offset = -__origin_y;
-            var _xscale   = __xscale*__scale_to_box_scale;
-            var _yscale   = __yscale*__scale_to_box_scale;
+            var _xscale   = __scale_to_box_scale*_model.__fit_scale*__xscale;
+            var _yscale   = __scale_to_box_scale*_model.__fit_scale*__yscale;
             var _angle    = __angle;
             
-            with(__get_model(true))
-            {
-                _xscale *= __fit_scale;
-                _yscale *= __fit_scale;
-            }
+            if (!_model.__pad_bbox_l) _x_offset += __padding_l;
+            if (!_model.__pad_bbox_t) _y_offset += __padding_t;
             
             //Build a matrix to transform the text...
             if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
@@ -1396,90 +1505,31 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
             else
             {
-                var _sin = dsin(_angle);
-                var _cos = dcos(_angle);
+                //FIXME - Re-optimise
+                __matrix = matrix_multiply(matrix_build(_x_offset, _y_offset, 0,    0,0,0,          1,1,1),
+                           matrix_multiply(matrix_build(0,0,0,                      0,0,0,          _xscale, _yscale, 1),
+                           matrix_multiply(matrix_build(0,0,0,                      0,0,__angle,    1,1,1),
+                                           matrix_build(_x, _y, __z,                0,0,0,          1,1,1))));
                 
-                var _m00 =  _xscale*_cos;
-                var _m10 = -_yscale*_sin;
-                var _m01 =  _xscale*_sin;
-                var _m11 =  _yscale*_cos;
-                
-                var _m03 = _x_offset*_m00 + _y_offset*_m10 + _x;
-                var _m13 = _x_offset*_m01 + _y_offset*_m11 + _y;
-                
-                __matrix = [_m00, _m10,   0, 0,
-                            _m01, _m11,   0, 0,
-                               0,    0,   1, 0,
-                            _m03, _m13, __z, 1];
+                //var _sin = dsin(_angle);
+                //var _cos = dcos(_angle);
+                //
+                //var _m00 =  _xscale*_cos;
+                //var _m10 = -_yscale*_sin;
+                //var _m01 =  _xscale*_sin;
+                //var _m11 =  _yscale*_cos;
+                //
+                //var _m03 = _x_offset*_m00 + _y_offset*_m10 + _x;
+                //var _m13 = _x_offset*_m01 + _y_offset*_m11 + _y;
+                //
+                //__matrix = [_m00, _m10,   0, 0,
+                //            _m01, _m11,   0, 0,
+                //               0,    0,   1, 0,
+                //            _m03, _m13, __z, 1];
             }
         }
         
         return __matrix;
-    }
-    
-    static __get_bbox_transform = function(_x, _y, _model, _bbox)
-    {
-        __update_scale_to_box_scale();
-        var _xscale = __scale_to_box_scale*_model.__fit_scale*__xscale;
-        var _yscale = __scale_to_box_scale*_model.__fit_scale*__yscale;
-        
-        //Left/top padding is baked into the model
-        _bbox.left   -= __padding_l;
-        _bbox.top    -= __padding_t;
-        _bbox.right  += __padding_r;
-        _bbox.bottom += __padding_b;
-        
-        if ((_xscale == 1) && (_yscale == 1) && (__angle == 0))
-        {
-            //Avoid using matrices if we can
-            var _l = _x - __origin_x + _bbox.left;
-            var _t = _y - __origin_y + _bbox.top;
-            var _r = _x - __origin_x + _bbox.right;
-            var _b = _y - __origin_y + _bbox.bottom;
-                
-            var _x0 = _l;   var _y0 = _t;
-            var _x1 = _r;   var _y1 = _t;
-            var _x2 = _l;   var _y2 = _b;
-            var _x3 = _r;   var _y3 = _b;
-        }
-        else
-        {
-            //TODO - Optimize or cache this
-            var _matrix = matrix_multiply(matrix_build(-__origin_x, -__origin_y, 0,    0, 0,       0,          1,       1, 1),
-                          matrix_multiply(matrix_build(          0,           0, 0,    0, 0,       0,    _xscale, _yscale, 1),
-                                          matrix_build(         _x,          _y, 0,    0, 0, __angle,          1,       1, 1)));
-                
-            var _l = _bbox.left;
-            var _t = _bbox.top;
-            var _r = _bbox.right;
-            var _b = _bbox.bottom;
-                
-            var _vertex = matrix_transform_vertex(_matrix, _l, _t, 0); var _x0 = _vertex[0]; var _y0 = _vertex[1];
-            var _vertex = matrix_transform_vertex(_matrix, _r, _t, 0); var _x1 = _vertex[0]; var _y1 = _vertex[1];
-            var _vertex = matrix_transform_vertex(_matrix, _l, _b, 0); var _x2 = _vertex[0]; var _y2 = _vertex[1];
-            var _vertex = matrix_transform_vertex(_matrix, _r, _b, 0); var _x3 = _vertex[0]; var _y3 = _vertex[1];
-                
-            var _l = min(_x0, _x1, _x2, _x3);
-            var _t = min(_y0, _y1, _y2, _y3);
-            var _r = max(_x0, _x1, _x2, _x3);
-            var _b = max(_y0, _y1, _y2, _y3);
-        }
-        
-        var _w = 1 + _r - _l;
-        var _h = 1 + _b - _t;
-        
-        return { left:   _l,
-                 top:    _t,
-                 right:  _r,
-                 bottom: _b,
-                 
-                 width:  _w,
-                 height: _h,
-                 
-                 x0: _x0, y0: _y0,
-                 x1: _x1, y1: _y1,
-                 x2: _x2, y2: _y2,
-                 x3: _x3, y3: _y3 };
     }
     
     #endregion

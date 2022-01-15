@@ -42,6 +42,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __fit_scale  = 1.0;
     __wrapped    = false;
     
+    __pad_bbox_l = false;
+    __pad_bbox_t = false;
+    __pad_bbox_r = false;
+    __pad_bbox_b = false;
+    
     __has_r2l        = false;
     __has_arabic     = false;
     __has_thai       = false;
@@ -116,7 +121,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     /// @param page
-    static __get_bbox = function(_page)
+    static __get_bbox = function(_page, _padding_l, _padding_t, _padding_r, _padding_b)
     {
         if (_page != undefined)
         {
@@ -124,24 +129,37 @@ function __scribble_class_model(_element, _model_cache_name) constructor
             if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
             
             var _page_data = __pages_array[_page];
-            return { left:   _page_data.__min_x,
-                     top:    _page_data.__min_y,
-                     right:  _page_data.__max_x,
-                     bottom: _page_data.__max_y, };
+            var _left   = _page_data.__min_x;
+            var _top    = _page_data.__min_y;
+            var _right  = _page_data.__max_x;
+            var _bottom = _page_data.__max_y;
+            
         }
         else
         {
-            return { left:   __min_x,
-                     top:    __min_y,
-                     right:  __max_x,
-                     bottom: __max_y, };
+            var _left   = __min_x;
+            var _top    = __min_y;
+            var _right  = __max_x;
+            var _bottom = __max_y;
         }
+        
+        if (__pad_bbox_l) _left   -= _padding_l; else _right  += _padding_l;
+        if (__pad_bbox_t) _top    -= _padding_t; else _bottom += _padding_t;
+        if (__pad_bbox_r) _right  += _padding_r; else _left   -= _padding_r;
+        if (__pad_bbox_b) _bottom += _padding_b; else _bottom -= _padding_b;
+        
+        return {
+            left:   _left,
+            top:    _top,
+            right:  _right,
+            bottom: _bottom,
+        };
     }
     
     /// @param page
     /// @param startCharacter
     /// @param endCharacter
-    static __get_bbox_revealed = function(_page, _in_start, _in_end)
+    static __get_bbox_revealed = function(_page, _in_start, _in_end, _padding_l, _padding_t, _padding_r, _padding_b)
     {
         //TODO - Optimize by returning page bounds if the number of characters revealed is the same as the whole page
         
@@ -154,11 +172,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
         if (_end < 0)
         {
-            return { left:   _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
-                     top:    _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.TOP   ],
-                     right:  _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ],
-                     bottom: _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM],
-            };
+            var _left   = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ];
+            var _top    = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.TOP   ];
+            var _right  = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT  ];
+            var _bottom = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM];
         }
         else
         {
@@ -166,13 +183,19 @@ function __scribble_class_model(_element, _model_cache_name) constructor
             var _top    = ds_grid_get_min(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.TOP,    _end, __SCRIBBLE_GLYPH_LAYOUT.TOP   );
             var _right  = ds_grid_get_max(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.RIGHT,  _end, __SCRIBBLE_GLYPH_LAYOUT.RIGHT );
             var _bottom = ds_grid_get_max(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM, _end, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM);
-            
-            return { left:   _left,
-                     top:    _top,
-                     right:  _right,
-                     bottom: _bottom,
-            };
         }
+        
+        if (__pad_bbox_l) _left   -= _padding_l; else _right  += _padding_l;
+        if (__pad_bbox_t) _top    -= _padding_t; else _bottom += _padding_t;
+        if (__pad_bbox_r) _right  += _padding_r; else _left   -= _padding_r;
+        if (__pad_bbox_b) _bottom += _padding_b; else _bottom -= _padding_b;
+        
+        return {
+            left:   _left,
+            top:    _top,
+            right:  _right,
+            bottom: _bottom,
+        };
     }
     
     /// @page
@@ -196,24 +219,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         return __pages;
     }
-	
-	/// @param page
-	static __get_page_width = function(_page)
-	{
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-		
-		return __fit_scale*__pages_array[_page].__width;
-	}
-	
-	/// @param page
-	static __get_page_height = function(_page)
-	{
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-		
-		return __fit_scale*__pages_array[_page].__height;
-	}
 	
 	/// @param page
 	static __get_text = function(_page)
@@ -319,6 +324,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __scribble_gen_7_build_pages();
     __scribble_gen_8_position_glyphs();
     __scribble_gen_9_write_vbuffs();
+    __scribble_gen_10_set_padding_flags();
     
     if (SCRIBBLE_VERBOSE)
     {

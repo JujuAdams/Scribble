@@ -15,10 +15,6 @@ function __scribble_gen_8_position_glyphs()
         var _overall_bidi    = __overall_bidi;
         var _model_max_width = __model_max_width;
         var _glyph_count     = __glyph_count;
-        var _padding_l       = _element.__padding_l;
-        var _padding_t       = _element.__padding_t;
-        var _padding_r       = _element.__padding_r;
-        var _padding_b       = _element.__padding_b;
     }
     
     //Transform the animation index into a proper packed index
@@ -28,34 +24,6 @@ function __scribble_gen_8_position_glyphs()
     var _model_min_y =  infinity;
     var _model_max_x = -infinity;
     var _model_max_y = -infinity;
-    
-    //Apply padding to the model by figuring out the model's x-offset for text
-    if (global.__scribble_generator_state.__uses_halign_center)
-    {
-        var _model_x_offset = 0;
-    }
-    else if (global.__scribble_generator_state.__uses_halign_right)
-    {
-        if (global.__scribble_generator_state.__uses_halign_left && (_overall_bidi != __SCRIBBLE_BIDI.R2L))
-        {
-            var _model_x_offset = 0;
-        }
-        else
-        {
-            var _model_x_offset = -_padding_r;
-        }
-    }
-    else
-    {
-        if (_overall_bidi == __SCRIBBLE_BIDI.R2L)
-        {
-            var _model_x_offset = -_padding_r;
-        }
-        else
-        {
-            var _model_x_offset = _padding_l;
-        }
-    }
     
     //Now handle each page in turn
     var _i = 0;
@@ -179,17 +147,18 @@ function __scribble_gen_8_position_glyphs()
                 }
             }
             
-            var _glyph_x = _model_x_offset;
             switch(_line_halign)
             {
-                case fa_left:               if (_overall_bidi == __SCRIBBLE_BIDI.R2L) _glyph_x += _alignment_width - _line_adjusted_width;     break;
-                case __SCRIBBLE_PIN_LEFT:   if (_overall_bidi == __SCRIBBLE_BIDI.R2L) _glyph_x += _pin_alignment_width - _line_adjusted_width; break;
-                case fa_center:             _glyph_x -= _line_adjusted_width div 2;                                                            break;
-                case fa_right:              _glyph_x -= _line_adjusted_width;                                                                  break;
-                case __SCRIBBLE_PIN_CENTRE: _glyph_x += (_pin_alignment_width - _line_adjusted_width) div 2;                                   break;
-                case __SCRIBBLE_PIN_RIGHT:  _glyph_x += _pin_alignment_width - _line_adjusted_width;                                           break;
+                case fa_left:               if (_overall_bidi == __SCRIBBLE_BIDI.R2L) var _glyph_x = _alignment_width - _line_adjusted_width;     break;
+                case __SCRIBBLE_PIN_LEFT:   if (_overall_bidi == __SCRIBBLE_BIDI.R2L) var _glyph_x = _pin_alignment_width - _line_adjusted_width; break;
+                case fa_center:             var _glyph_x = -(_line_adjusted_width div 2);                                                         break;
+                case fa_right:              var _glyph_x = -(_line_adjusted_width);                                                               break;
+                case __SCRIBBLE_PIN_CENTRE: var _glyph_x = (_pin_alignment_width - _line_adjusted_width) div 2;                                   break;
+                case __SCRIBBLE_PIN_RIGHT:  var _glyph_x = _pin_alignment_width - _line_adjusted_width;                                           break;
                 
                 case __SCRIBBLE_JUSTIFY:
+                    var _glyph_x = 0;
+                    
                     // Don't apply justification on the last line on a page
                     if (_j != _page_end_line)
                     {
@@ -206,10 +175,10 @@ function __scribble_gen_8_position_glyphs()
             
             
             // Figure out the boundaries of the page + model
-            var _page_min_x  = min(_page_min_x,  -_padding_l + _glyph_x                       );
-            var _page_max_x  = max(_page_max_x,   _padding_r + _glyph_x + _line_adjusted_width);
-            var _model_min_x = min(_model_min_x, -_padding_l + _glyph_x                       );
-            var _model_max_x = max(_model_max_x,  _padding_r + _glyph_x + _line_adjusted_width);
+            var _page_min_x  = min(_page_min_x,  _glyph_x                       );
+            var _page_max_x  = max(_page_max_x,  _glyph_x + _line_adjusted_width);
+            var _model_min_x = min(_model_min_x, _glyph_x                       );
+            var _model_max_x = max(_model_max_x, _glyph_x + _line_adjusted_width);
             
             
             
@@ -266,8 +235,6 @@ function __scribble_gen_8_position_glyphs()
         if (_page_min_x == infinity) _page_min_x = 0;
         _page_data.__min_x  = _page_min_x;
         _page_data.__max_x  = max(_page_min_x, _page_max_x);
-        _page_data.__min_y += _padding_t;
-        _page_data.__max_y += _padding_t + _padding_b;
         
         _model_min_y = min(_model_min_y, _page_data.__min_y);
         _model_max_y = max(_model_max_y, _page_data.__max_y);
