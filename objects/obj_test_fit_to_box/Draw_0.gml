@@ -2,9 +2,7 @@ var _string = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do e
 
 var _element = scribble(_string).fit_to_box(width, height);
 _element.draw(x, y);
-
-var _bbox = _element.get_bbox(x, y);
-draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, true);
+draw_rectangle(_element.get_left(x), _element.get_top(y), _element.get_right(x), _element.get_bottom(y), true);
 
 draw_circle(x, y, 6, true);
 draw_rectangle(x, y, x + _element.get_width(), y + _element.get_height(), true);
