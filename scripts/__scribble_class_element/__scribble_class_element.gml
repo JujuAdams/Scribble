@@ -123,6 +123,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __bbox_dirty       = true;
     __bbox_matrix      = undefined;
+    __bbox_raw_width   = 1;
+    __bbox_raw_height  = 1;
     __bbox_aabb_left   = 0;
     __bbox_aabb_top    = 0;
     __bbox_aabb_right  = 0;
@@ -168,6 +170,9 @@ function __scribble_class_element(_string, _unique_id) constructor
             
             //Left/top padding is baked into the model
             var _bbox = _model.__get_bbox(SCRIBBLE_BOX_ALIGN_TO_PAGE? __page : undefined, __padding_l, __padding_t, __padding_r, __padding_b);
+            
+            __bbox_raw_width  = 1 + _bbox.right - _bbox.left;
+            __bbox_raw_height = 1 + _bbox.bottom - _bbox.top;
             
             if ((_xscale == 1) && (_yscale == 1) && (__angle == 0))
             {
@@ -236,13 +241,13 @@ function __scribble_class_element(_string, _unique_id) constructor
     static get_width = function()
     {
         __update_bbox_matrix();
-        return 1 + __bbox_aabb_right - __bbox_aabb_left;
+        return __bbox_raw_width;
     }
     
     static get_height = function()
     {
         __update_bbox_matrix();
-        return 1 + __bbox_aabb_bottom - __bbox_aabb_top;
+        return __bbox_raw_height;
     }
     
     /// @param x
@@ -257,8 +262,8 @@ function __scribble_class_element(_string, _unique_id) constructor
             right:  _x + __bbox_aabb_right,
             bottom: _y + __bbox_aabb_bottom,
             
-            width:  1 + __bbox_aabb_right - __bbox_aabb_left,
-            height: 1 + __bbox_aabb_bottom - __bbox_aabb_top,
+            width:  __bbox_raw_width,
+            height: __bbox_raw_height,
             
             x0: _x + __bbox_obb_x0,  y0: _y + __bbox_obb_y0,
             x1: _x + __bbox_obb_x1,  y1: _y + __bbox_obb_y1,
