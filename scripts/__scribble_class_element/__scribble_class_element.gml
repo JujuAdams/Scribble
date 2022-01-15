@@ -129,6 +129,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     __bbox_aabb_top    = 0;
     __bbox_aabb_right  = 0;
     __bbox_aabb_bottom = 0;
+    __bbox_aabb_width  = 1;
+    __bbox_aabb_height = 1;
     __bbox_obb_x0      = 0;
     __bbox_obb_y0      = 0;
     __bbox_obb_x1      = 0;
@@ -211,6 +213,9 @@ function __scribble_class_element(_string, _unique_id) constructor
                 __bbox_aabb_right  = max(__bbox_obb_x0, __bbox_obb_x1, __bbox_obb_x2, __bbox_obb_x3);
                 __bbox_aabb_bottom = max(__bbox_obb_y0, __bbox_obb_y1, __bbox_obb_y2, __bbox_obb_y3);
             }
+            
+            __bbox_aabb_width  = 1 + __bbox_aabb_right - __bbox_aabb_left;
+            __bbox_aabb_height = 1 + __bbox_aabb_bottom - __bbox_aabb_top;
         }
     }
     
@@ -262,8 +267,8 @@ function __scribble_class_element(_string, _unique_id) constructor
             right:  _x + __bbox_aabb_right,
             bottom: _y + __bbox_aabb_bottom,
             
-            width:  __bbox_raw_width,
-            height: __bbox_raw_height,
+            width:  __bbox_aabb_width,
+            height: __bbox_aabb_height,
             
             x0: _x + __bbox_obb_x0,  y0: _y + __bbox_obb_y0,
             x1: _x + __bbox_obb_x1,  y1: _y + __bbox_obb_y1,
