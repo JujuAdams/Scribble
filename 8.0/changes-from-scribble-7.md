@@ -50,6 +50,8 @@ Scribble version 8 has over 600 Git commits between it and version 7.1, making i
 - Added `.line_spacing()` to customise the mechanics of spacing out lines
 - In addition to `.fit_to_box()` being many times faster than previously, the new `.scale_to_box()` method allows for an even faster way to scale text inside a bounding box
 - Padding is now baked into text elements using the `.padding()` method. `.get_bbox()` no longer has padding arguments as a result
+- Adds `SCRIBBLE_BOUNDING_BOX_USES_PAGE` to control how bounding boxes (`.get_width()` etc.) are calculated. It defaults to `true` indicating that bounding boxes should use text on the current page only when calculating bounding boxes. `.get_page_width()` and `.get_page_height()` have been removed
+- Adds `.get_left()`, `.get_top()`, `.get_bottom()`, and `.get_right()` as convenient axis-aligned bounding box getters
 
 ## Text Element Methods
 
