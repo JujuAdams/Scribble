@@ -10,7 +10,6 @@ function __scribble_gen_8_position_glyphs()
     
     with(global.__scribble_generator_state)
     {
-        var _element         = __element;
         var _line_count      = __line_count;
         var _overall_bidi    = __overall_bidi;
         var _model_max_width = __model_max_width;
@@ -149,12 +148,12 @@ function __scribble_gen_8_position_glyphs()
             
             switch(_line_halign)
             {
-                case fa_left:               if (_overall_bidi == __SCRIBBLE_BIDI.R2L) var _glyph_x = _alignment_width - _line_adjusted_width;     break;
-                case __SCRIBBLE_PIN_LEFT:   if (_overall_bidi == __SCRIBBLE_BIDI.R2L) var _glyph_x = _pin_alignment_width - _line_adjusted_width; break;
-                case fa_center:             var _glyph_x = -(_line_adjusted_width div 2);                                                         break;
-                case fa_right:              var _glyph_x = -(_line_adjusted_width);                                                               break;
-                case __SCRIBBLE_PIN_CENTRE: var _glyph_x = (_pin_alignment_width - _line_adjusted_width) div 2;                                   break;
-                case __SCRIBBLE_PIN_RIGHT:  var _glyph_x = _pin_alignment_width - _line_adjusted_width;                                           break;
+                case fa_left:               var _glyph_x = (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_alignment_width - _line_adjusted_width) : 0;     break;
+                case __SCRIBBLE_PIN_LEFT:   var _glyph_x = (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_pin_alignment_width - _line_adjusted_width) : 0; break;
+                case fa_center:             var _glyph_x = -(_line_adjusted_width div 2);                                                             break;
+                case fa_right:              var _glyph_x = -_line_adjusted_width;                                                                     break;
+                case __SCRIBBLE_PIN_CENTRE: var _glyph_x = (_pin_alignment_width - _line_adjusted_width) div 2;                                       break;
+                case __SCRIBBLE_PIN_RIGHT:  var _glyph_x = _pin_alignment_width - _line_adjusted_width;                                               break;
                 
                 case __SCRIBBLE_JUSTIFY:
                     var _glyph_x = 0;
