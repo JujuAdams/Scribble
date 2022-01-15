@@ -1248,8 +1248,13 @@ function __scribble_class_element(_string, _unique_id) constructor
                 buffer_write(global.__scribble_buffer, buffer_text, __wrap_per_char  );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
                 buffer_write(global.__scribble_buffer, buffer_text, __wrap_no_pages  );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
                 buffer_write(global.__scribble_buffer, buffer_text, __wrap_max_scale );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array   );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __bidi_hint      );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[0]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C); //comma
+                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[1]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
+                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[2]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
+                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[3]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
+                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[4]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
+                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[5]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__bidi_hint));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
                 buffer_write(global.__scribble_buffer, buffer_text, __ignore_command_tags); buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
                 buffer_write(global.__scribble_buffer, buffer_u8, 0x00);
                 buffer_seek(global.__scribble_buffer, buffer_seek_start, 0);
