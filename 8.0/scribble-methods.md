@@ -312,7 +312,7 @@ This function expects the name of a region that has been defined in your text us
 |----|--------|------------------------------------------|
 |`x` |real    |x position of the text element in the room|
 
-This function takes into account the transformation and padding applied to the text element.
+This function takes into account the transformation and padding applied to the text element. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
 &nbsp;
 
@@ -324,7 +324,7 @@ This function takes into account the transformation and padding applied to the t
 |----|--------|------------------------------------------|
 |`y` |real    |y position of the text element in the room|
 
-This function takes into account the transformation and padding applied to the text element.
+This function takes into account the transformation and padding applied to the text element. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
 &nbsp;
 
@@ -336,7 +336,7 @@ This function takes into account the transformation and padding applied to the t
 |----|--------|------------------------------------------|
 |`x` |real    |x position of the text element in the room|
 
-This function takes into account the transformation and padding applied to the text element.
+This function takes into account the transformation and padding applied to the text element. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
 &nbsp;
 
@@ -348,7 +348,7 @@ This function takes into account the transformation and padding applied to the t
 |----|--------|------------------------------------------|
 |`y` |real    |y position of the text element in the room|
 
-This function takes into account the transformation and padding applied to the text element.
+This function takes into account the transformation and padding applied to the text element. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
 &nbsp;
 
@@ -362,6 +362,8 @@ This function takes into account the transformation and padding applied to the t
 
 !> This function returns the untransformed width of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method but will take into account padding.
 
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+
 &nbsp;
 
 ## `.get_height()`
@@ -374,6 +376,8 @@ This function takes into account the transformation and padding applied to the t
 
 !> This functions returns the untransformed height of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method but will take into account padding.
 
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+
 &nbsp;
 
 ## `.get_bbox(x, y)`
@@ -385,7 +389,7 @@ This function takes into account the transformation and padding applied to the t
 |`x` |real    |x position in the room|
 |`y` |real    |y position in the room|
 
-This functions returns the **transformed** width and height of the text element. This **will** take into account rotation or scaling applied by the `.transform()` method as well as padding.
+This functions returns the **transformed** width and height of the text element. This **will** take into account rotation or scaling applied by the `.transform()` method as well as padding. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
 The struct returned by `.get_bbox()` contains the following member variables:
 
@@ -420,7 +424,7 @@ The struct returned by `.get_bbox()` contains the following member variables:
 |`y`     |number  |y position in the room                                                                                                      |
 |`typist`|typist  |Typist being used to render the text element. If not specified, the manual reveal value is used instead (set by `.reveal()`)|
 
-The struct returned by `.get_bbox_revealed()` contains the same member variables as `.get_bbox()`; see above for details.
+The struct returned by `.get_bbox_revealed()` contains the same member variables as `.get_bbox()`; see above for details. Only text that is visible will be considered for calculating the bounding boxes.
 
 This functions returns the **transformed** width and height of the text element. This **will** take into account rotation or scaling applied by the `.transform()` method as well as padding.
 
