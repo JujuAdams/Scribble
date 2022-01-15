@@ -304,6 +304,78 @@ This function expects the name of a region that has been defined in your text us
 
 # Dimensions
 
+## `.get_left(x)`
+
+**Returns:** Real, the left position of the text element's axis-aligned bounding box in the room
+
+|Name|Datatype|Purpose                                   |
+|----|--------|------------------------------------------|
+|`x` |real    |x position of the text element in the room|
+
+This function takes into account the transformation and padding applied to the text element.
+
+&nbsp;
+
+## `.get_top(y)`
+
+**Returns:** Real, the top position of the text element's axis-aligned bounding box in the room
+
+|Name|Datatype|Purpose                                   |
+|----|--------|------------------------------------------|
+|`y` |real    |y position of the text element in the room|
+
+This function takes into account the transformation and padding applied to the text element.
+
+&nbsp;
+
+## `.get_right(x)`
+
+**Returns:** Real, the right position of the text element's axis-aligned bounding box in the room
+
+|Name|Datatype|Purpose                                   |
+|----|--------|------------------------------------------|
+|`x` |real    |x position of the text element in the room|
+
+This function takes into account the transformation and padding applied to the text element.
+
+&nbsp;
+
+## `.get_bottom(y)`
+
+**Returns:** Real, the bottom position of the text element's axis-aligned bounding box in the room
+
+|Name|Datatype|Purpose                                   |
+|----|--------|------------------------------------------|
+|`y` |real    |y position of the text element in the room|
+
+This function takes into account the transformation and padding applied to the text element.
+
+&nbsp;
+
+## `.get_width()`
+
+**Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+!> This function returns the untransformed width of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method but will take into account padding.
+
+&nbsp;
+
+## `.get_height()`
+
+**Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+!> This functions returns the untransformed height of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method but will take into account padding.
+
+&nbsp;
+
 ## `.get_bbox(x, y)`
 
 **Returns:** Struct containing the positions of the bounding box for a text element
@@ -312,6 +384,8 @@ This function expects the name of a region that has been defined in your text us
 |----|--------|----------------------|
 |`x` |real    |x position in the room|
 |`y` |real    |y position in the room|
+
+This functions returns the **transformed** width and height of the text element. This **will** take into account rotation or scaling applied by the `.transform()` method as well as padding.
 
 The struct returned by `.get_bbox()` contains the following member variables:
 
@@ -348,53 +422,7 @@ The struct returned by `.get_bbox()` contains the following member variables:
 
 The struct returned by `.get_bbox_revealed()` contains the same member variables as `.get_bbox()`; see above for details.
 
-&nbsp;
-
-## `.get_width()`
-
-**Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Returns the untransformed width of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method.
-
-&nbsp;
-
-## `.get_height()`
-
-**Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Returns the untransformed height of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method.
-
-&nbsp;
-
-## `.get_page_width([page])`
-
-**Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
-
-|Name    |Datatype|Purpose                                                                |
-|--------|--------|-----------------------------------------------------------------------|
-|`[page]`|Integer |Page to return the width of. If not specified, the current page is used|
-
-Returns the raw width of the given page This will **not** take into account rotation or scaling - this function returns the width value that Scribble uses internally.
-
-&nbsp;
-
-## `.get_page_height([page])`
-
-**Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
-
-|Name    |Datatype|Purpose                                                                 |
-|--------|--------|------------------------------------------------------------------------|
-|`[page]`|Integer |Page to return the height of. If not specified, the current page is used|
-
-Returns the raw height of the given page. This will **not** take into account rotation or scaling - this function returns the height value that Scribble uses internally.
+This functions returns the **transformed** width and height of the text element. This **will** take into account rotation or scaling applied by the `.transform()` method as well as padding.
 
 &nbsp;
 
@@ -706,11 +734,11 @@ scribble("This text is red and will be wrapped inside a box that's 150px wide.")
 
 **Returns**: The text element
 
-|Name   |Datatype|Purpose|
-|-------|--------|-------|
-|`state`|boolean |       |
+|Name   |Datatype|Purpose                       |
+|-------|--------|------------------------------|
+|`state`|boolean |Whether to ignore command tags|
 
-Directs Scribble to ignore all [command tags](text-formatting) in the string.
+Directs Scribble to ignore all [command tags](text-formatting) in the string and instead render them as plaintext.
 
 &nbsp;
 
