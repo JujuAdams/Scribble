@@ -1236,8 +1236,9 @@ function __scribble_class_element(_string, _unique_id) constructor
                 __model_cache_name_dirty = false;
                 
                 buffer_seek(global.__scribble_buffer, buffer_seek_start, 0);
-                buffer_write(global.__scribble_buffer, buffer_text, __starting_font  );
-                buffer_write(global.__scribble_buffer, buffer_text, __starting_colour);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A); //colon
+                buffer_write(global.__scribble_buffer, buffer_text, __text           );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A); //colon
+                buffer_write(global.__scribble_buffer, buffer_text, __starting_font  );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A); //colon
+                buffer_write(global.__scribble_buffer, buffer_text, __starting_colour);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
                 buffer_write(global.__scribble_buffer, buffer_text, __starting_halign);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
                 buffer_write(global.__scribble_buffer, buffer_text, __starting_valign);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
                 buffer_write(global.__scribble_buffer, buffer_text, __line_height_min);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
@@ -1368,16 +1369,16 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                     __blend_alpha);
         
         shader_set_uniform_f(global.__scribble_msdf_u_vGradient, colour_get_red(  __gradient_colour)/255,
-                                                                    colour_get_green(__gradient_colour)/255,
-                                                                    colour_get_blue( __gradient_colour)/255,
-                                                                    __gradient_alpha);
+                                                                 colour_get_green(__gradient_colour)/255,
+                                                                 colour_get_blue( __gradient_colour)/255,
+                                                                 __gradient_alpha);
         
         shader_set_uniform_f(global.__scribble_msdf_u_vRegionActive, __region_glyph_start, __region_glyph_end);
         
         shader_set_uniform_f(global.__scribble_msdf_u_vRegionColour, colour_get_red(  __region_colour)/255,
-                                                                        colour_get_green(__region_colour)/255,
-                                                                        colour_get_blue( __region_colour)/255,
-                                                                        __region_blend);
+                                                                     colour_get_green(__region_colour)/255,
+                                                                     colour_get_blue( __region_colour)/255,
+                                                                     __region_blend);
         
         shader_set_uniform_f(global.__scribble_msdf_u_fBlinkState, __animation_blink_state);
         
