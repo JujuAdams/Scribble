@@ -6,7 +6,7 @@ Scribble version 8 has over 600 Git commits between it and version 7.1, making i
 
 ## General Improvements
 
-- Scribble is now supported on HTML5 and Opera GX
+- Scribble is now supported on HTML5 and Opera GX. Be warned - GM's HTML5 is notoriously buggy so bugs may exist that require upstream fixes
 - Adding fonts is now far less tedious with the common use cases (standard fonts and spritefonts) being essentially automatic
 - Drawing text should now be faster than before thanks to some additional streamlining and caching
 - Added `draw_text_scribble()` and `draw_text_scribble_ext()` for immediate plug-and-play usage. These functions are useful for drawing formatted text without needing to navigate Scribble's fluent interface
