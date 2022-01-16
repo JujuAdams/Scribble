@@ -4,7 +4,7 @@
 
 ## What platforms does Scribble support?
 
-Everything! ...apart from HTML5 due to [bugs in GameMaker's JavaScript runner](https://github.com/JujuAdams/scribble/issues/18). You might run into edge cases on platforms that I don't regularly test; please [report any bugs](https://github.com/JujuAdams/Scribble/issues) if and when you find them.
+Everything! You might run into edge cases on platforms that I don't regularly test; please [report any bugs](https://github.com/JujuAdams/Scribble/issues) if and when you find them. Please note that diagnosing HTML5 bugs in particular can be frustrating due to the generally patchy nature of GameMaker's JS runtime.
 
 &nbsp;
 
