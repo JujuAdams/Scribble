@@ -13,11 +13,13 @@ There are a multitude of very useful features available:
 - Automatic [pagination](https://en.wikipedia.org/wiki/Pagination)
 - High performance caching
 - Font effect baking
-- Resolution-independent [MSDF fonts](MSDF-Fonts)
+- Resolution-independent [MSDF fonts](msdf-fonts)
 
 Scribble supports all GameMaker export modules, including consoles, with the exception that **HTML5 is not supported** due to [bugs in GameMaker's JavaScript runner](https://github.com/JujuAdams/scribble/issues/18).
 
 Scroll down to read more about each feature.
+
+&nbsp;
 
 ## In-line Text Formatting & Sprites
 
@@ -29,6 +31,8 @@ Sometimes, instead of using words to describe something, using an in-line sprite
 
 You can read more about [text formatting here](text-formatting).
 
+&nbsp;
+
 ## Text Wrapping & Pages
 
 Text wrapping is a standard feature for lots of text renderers, and Scribble is no different. The [`.wrap()`](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) method allows you to set the maximum width and height of your textbox. If Scribble sees that your text is going off the end of a line, it'll simply wrap around the text to the next line down.
@@ -39,6 +43,8 @@ Scribble also features automatic page breaks as well as automatic line breaks. P
 
 Pages can be created two ways. Most people will want to let Scribble handle page breaks automatically: [`.wrap()`](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) has an optional `maxHeight` argument. Any text that would be drawn outside the textbox is instead pushed onto a new page. For those looking for a little more control, the text formatting command `[/page]` can be used to manually create a new page. Manual page breaks with `[/page]` are useful when localising to help language feel more natural.
 
+&nbsp;
+
 ## Typewriter & Events
 
 A common use case for Scribble, though by no means its only use, is to draw dialogue text. It's very common, especially in retro-styled games, to reveal text slowly to the user, often character-by-character. This has a lot of names but it's usually known as a "typewriter effect".
@@ -46,6 +52,8 @@ A common use case for Scribble, though by no means its only use, is to draw dial
 Setting up a typewriter effect is simple - Precache the string you're using with a single call to [`scribble()`](scribble-methods), then call [`.typewriter_in()`](scribble-methods?id=typewriter_inspeed-smoothness) once. Now every frame that you draw the string using [`.draw()`](misc-functions?id=scribble_typewriter_add_eventname-function) it'll slowly reveal the text.
 
 Sometimes you'll want to execute code, such as triggering a screenshake or changing a character's portrait, in the middle of revealing text. [`scribble_typewriter_add_event()`](misc-functions?id=scribble_typewriter_add_eventname-function) lets you define your own custom event which you can insert anywhere in a string. When Scribble reaches that point as it reveals text, it'll execute the function. This is an extremely powerful feature!
+
+&nbsp;
 
 ## High Performance Caching
 

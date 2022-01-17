@@ -1,22 +1,18 @@
-# Miscellaneous Functions
+# Miscellaneous 
 
 &nbsp;
 
-### `scribble_flush_everything()`
+## `scribble_is_text_element(value)`
 
-**Returns:** N/A (`undefined`)
+**Returns:** Boolean, whether the provided value is a Scribble text element
 
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Frees all memory that Scribble text elements and text models are currently using. You will not normally need to call this function (Scribble automatically garbage collects resources that haven't been used recently) but it's occasionally useful when you need memory to be available immediately, or you want to make sure memory is being freed.
+|Name   |Datatype|Purpose      |
+|-------|--------|-------------|
+|`value`|any     |Value to test|
 
 &nbsp;
 
-&nbsp;
-
-### `scribble_typewriter_add_event(name, function)`
+## `scribble_typists_add_event(name, function)`
 
 **Returns:** N/A (`undefined`)
 
@@ -33,11 +29,11 @@ It is possible to send parameters into an executed script from your text. **Para
 
 Event scripts are executed with two arguments:
 
-|Argument|Name            |Purpose                                                               |
-|--------|----------------|----------------------------------------------------------------------|
-|0       |`element`       |Text element that caused the script to be executed|
+|Argument|Name            |Purpose                                                                        |
+|--------|----------------|-------------------------------------------------------------------------------|
+|0       |`element`       |Text element that caused the script to be executed                             |
 |1       |`parameterArray`|An array of strings that contains the parameters defined in the text. See above|
-|2       |`characterIndex`|Which character has been revealed (1-indexed)|
+|2       |`characterIndex`|Which character has been revealed (1-indexed)                                  |
 
 Your script should be formatted such that they can unpack parameters from the provided array. Scripts are executed in the scope of the instance that ran the [`.draw()`](scribble-methods?id=drawx-y) method, and in the associated GameMaker object event (typically the Draw event).
 
@@ -72,24 +68,52 @@ Here, `callbackRumble()` will fetch the parameter from the array and use it to v
 
 &nbsp;
 
-&nbsp;
-
-### `scribble_typewriter_add_character_delay(character, delay)`
+## `scribble_external_sound_add(soundID, alias)`
 
 **Returns:** N/A (`undefined`)
 
-|Name       |Datatype      |Purpose                                                                       |
-|-----------|--------------|------------------------------------------------------------------------------|
-|`character`|string/integer|The character to delay after. Can either be a string or a UTF-8 character code|
-|`delay`    |real          |Delay time in milliseconds                                                    |
+|Name     |Datatype                                                                            |Purpose                                                       |
+|---------|------------------------------------------------------------------------------------|--------------------------------------------------------------|
+|`soundID`|[sound](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|The sound to target                                           |
+|`alias`  |string                                                                              |A string to use to refer to the sound ID in Scribble functions|
 
-Automatically adds internal [delay tags](Text-Formatting) after specific characters. This is a global setting for all Scribble strings.
-
-&nbsp;
+Adds a sound that can be referenced in Scribble functions using the given alias. This is intended for use with externally added sounds via `audio_create_stream()` or `audio_create_buffer_sound()`.
 
 &nbsp;
 
-### `scribble_rgb_to_bgr(RGB)`
+## `scribble_external_sound_remove(alias)`
+
+**Returns:** N/A (`undefined`)
+
+|Name     |Datatype|Purpose                                         |
+|---------|--------|------------------------------------------------|
+|`alias`  |string  |The external sound alias to remove from Scribble|
+
+&nbsp;
+
+## `scribble_external_sound_exists(alias)`
+
+**Returns:** Boolean, whether the alias has been added by `scribble_external_sound_add()`
+
+|Name     |Datatype|Purpose                              |
+|---------|--------|-------------------------------------|
+|`alias`  |string  |The external sound alias to check for|
+
+&nbsp;
+
+## `scribble_flush_everything()`
+
+**Returns:** N/A (`undefined`)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Frees all memory that Scribble text elements and text models are currently using. You will not normally need to call this function (Scribble automatically garbage collects resources that haven't been used recently) but it's occasionally useful when you need memory to be available immediately, or you want to make sure memory is being freed.
+
+&nbsp;
+
+## `scribble_rgb_to_bgr(RGB)`
 
 **Returns:** GM-native BGR colour
 
@@ -98,3 +122,15 @@ Automatically adds internal [delay tags](Text-Formatting) after specific charact
 |`RGB`|integer |Industry standard (`#RRGGBB`) 24-bit RGB colour|
 
 Converts an RGB colour code (the industry standard) to GameMaker's native BGR format.
+
+&nbsp;
+
+## `scribble_msdf_thickness_offset(offset)`
+
+**Returns:** N/A (`undefined`)
+
+|Name    |Datatype|Purpose                                                                         |
+|--------|--------|--------------------------------------------------------------------------------|
+|`offset`|number  |The global MSDF font thickness offset to apply. The default offset values is `0`|
+
+Applies a global thickness adjustment to MSDF fonts. An offset less than `0` will make MSDF glyphs thinner, an offset greater than `0` will make MSDF glyphs thicker. The offset value is very sensitive and values of `+/- 0.01` may make a significant difference to the appearance of glyphs.

@@ -14,34 +14,26 @@ Don't worry about clearing up after yourself when you draw text - Scribble autom
 
 &nbsp;
 
-## `scribble([string], [uniqueID])`
+## `scribble(string, [uniqueID])`
 
 **Returns:** A text element that contains the string (a struct, an instance of `__scribble_class_element`)
 
 |Name        |Datatype      |Purpose               |
 |------------|--------------|----------------------|
-|`[string]`  |string        |String to draw        |
+|`string`    |string        |String to draw        |
 |`[uniqueID]`|string or real|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_UNIQUE_ID`](configuration)|
-
-If no string is specified (i.e. the function used with arguments), this function will return a **unique** text element that contains no text data (even if no unique ID is given). The text in any text element, including empty ones, can be overwritten using the [`.overwrite()`](scribble-methods?id=overwritestring-regenerator) method.
 
 Scribble allows for many kinds of inline formatting tags. Please read the [Text Formatting](text-formatting) article for more information.
 
 ?> Scribble text elements have **no publicly accessible variables**. Do not directly read or write variables, use the setter and getter methods provided instead.
 
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-# The Methods
-
 Text element methods are broken down into several categories. There's a lot here; feel free to swing by the [Discord server](https://discord.gg/8krYCqr) if you'd like some pointers on what to use and when. As noted above, **be careful when adjusting regenerator methods** as it's easy to cause to performance problems.
 
-## Basics
+&nbsp;
 
-### `.draw(x, y)`
+# Basics
+
+## `.draw(x, y)`
 
 **Returns**: N/A (`undefined`)
 
@@ -54,7 +46,7 @@ Draws your text! This function will automatically build the required text model 
 
 &nbsp;
 
-### `.starting_format(fontName, colour)` *regenerator*
+## `.starting_format(fontName, colour)` *regenerator*
 
 **Returns**: The text element
 
@@ -67,7 +59,7 @@ Sets the starting font and text colour for your text. The values that are set wi
 
 &nbsp;
 
-### `.align(halign, valign)` *regenerator*
+## `.align(halign, valign)` *regenerator*
 
 **Returns**: The text element
 
@@ -80,7 +72,7 @@ Sets the starting horizontal and vertical alignment for your text. You can chang
 
 &nbsp;
 
-### `.blend(colour, alpha)`
+## `.blend(colour, alpha)`
 
 **Returns**: The text element
 
@@ -93,13 +85,26 @@ Sets the blend colour/alpha, which is applied at the end of the drawing pipeline
 
 &nbsp;
 
+## `.gradient(colour, blendFactor)`
+
+**Returns**: The text element
+
+|Name         |Datatype|Purpose                                                                                                                                          |
+|-------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+|`colour`     |integer |Colour of the **bottom** of the gradient for each glyph                                                                                          |
+|`blendFactor`|real    |Blending factor for the gradient, from `0` (no gradient applied) to `1` (base blend colour of the bottom of each glyph is replaced with `colour`)|
+
+Sets up a gradient blend for each glyph in the text element. The base blend colour (defined by a combination of `.blend()` and in-line colour modification) is the top of the gradient and the colour defined by this method is the bottom of the gradient.
+
+&nbsp;
+
 &nbsp;
 
 &nbsp;
 
-## Shape, Wrapping, and Positioning
+# Layout
 
-### `.origin(x, y)`
+## `.origin(x, y)`
 
 **Returns**: The text element
 
@@ -112,7 +117,7 @@ Sets the origin relative to the top-left corner of the text element. You can thi
 
 &nbsp;
 
-### `.transform(xscale, yscale, angle)`
+## `.transform(xscale, yscale, angle)`
 
 **Returns**: The text element
 
@@ -126,7 +131,20 @@ Rotates and scales a text element relative to the origin (set by [`.origin()`](s
 
 &nbsp;
 
-### `.wrap(maxWidth, [maxHeight], [characterWrap])` *regenerator*
+## `.scale_to_box(maxWidth, maxHeight)`
+
+**Returns**: The text element
+
+|Name       |Datatype|Purpose                                                                                                  |
+|-----------|--------|---------------------------------------------------------------------------------------------------------|
+|`maxWidth` |real    |Maximum width of the bounding box to fit the text into. Use a negative number (the default) for no limit |
+|`maxHeight`|real    |Maximum height of the bounding box to fit the text into. Use a negative number (the default) for no limit|
+
+Scales the text element such that it always fits inside the maximum width and height specified. Scaling is equal in both the x and y axes. This behaviour does not recalculate text wrapping so will not re-flow text. `.scale_to_box()` is a simple scaling operation therefore, and one that is best used for single lines of text (e.g. for buttons).
+
+&nbsp;
+
+## `.wrap(maxWidth, [maxHeight], [characterWrap])` *regenerator*
 
 **Returns**: The text element
 
@@ -140,7 +158,7 @@ Instructs Scribble to fit text inside a box by automatically inserting line brea
 
 &nbsp;
 
-### `.fit_to_box(maxWidth, maxHeight, [characterWrap])` *regenerator*
+## `.fit_to_box(maxWidth, maxHeight, [characterWrap])` *regenerator*
 
 **Returns**: The text element
 
@@ -156,20 +174,47 @@ Fits text to a box by inserting line breaks and scaling text but **will not** in
 
 &nbsp;
 
-### `.line_height(min, max)` *regenerator*
+## `.line_height(min, max)` *regenerator*
 
 **Returns**: The text element
 
 |Name |Datatype|Purpose                                                                                                                               |
 |-----|--------|--------------------------------------------------------------------------------------------------------------------------------------|
-|`min`|integer |Minimum line height for each line of text. Use a negative number (the default) for the height of a space character of the default font|
-|`max`|integer |Maximum line height for each line of text. Use a negative number (the default) for no limit                                           |
+|`min`|number  |Minimum line height for each line of text. Use a negative number (the default) for the height of a space character of the default font|
+|`max`|number  |Maximum line height for each line of text. Use a negative number (the default) for no limit                                           |
 
 Sets limits on the height of each line for the text element. This is useful when mixing and matching fonts that aren't necessarily perfectly sized to each other.
 
 &nbsp;
 
-### `.bezier(x1, y1, x2, y2, x3, y3, x4, y4)` *regenerator*
+## `.line_spacing(spacing)` *regenerator*
+
+**Returns**: The text element
+
+|Name     |Datatype     |Purpose                                                                                             |
+|---------|-------------|----------------------------------------------------------------------------------------------------|
+|`spacing`|number/string|The spacing from one line of text to the next. Can be a number, or a percentage string e.g. `"100%"`|
+
+If a number is passed to this method then a fixed line spacing is used. If a string is passed to this method then it must be a percentage string indication the fraction of the line height to use for spacing (`"100%"` being normal spacing, `"200%"` being double spacing). The default value is `"100%"`
+
+?> The term "spacing" is being used a little inaccurately here. The value that is being adjusted is more properly called ["leading"](https://99designs-blog.imgix.net/blog/wp-content/uploads/2014/06/Leading1.png?auto=format&q=60&fit=max&w=930) (as in the metal).
+
+&nbsp;
+
+## `.padding(left, top, right, bottom)` *regenerator*
+
+**Returns**: The text element
+
+|Name    |Datatype |Purpose                                                                            |
+|--------|--------|------------------------------------------------------------------------------------|
+|`left`  |number  |Extra space on the left-hand side of the textbox. Positive values create more space |
+|`top`   |number  |Extra space on the top of the textbox. Positive values create more space            |
+|`right` |number  |Extra space on the right-hand side of the textbox. Positive values create more space|
+|`bottom`|number  |Extra space on the bottom of the textbox. Positive values create more space         |
+
+&nbsp;
+
+## `.bezier(x1, y1, x2, y2, x3, y3, x4, y4)` *regenerator*
 
 **Returns**: The text element
 
@@ -194,59 +239,15 @@ This function can also be executed with zero arguments (e.g. `scribble("text").b
 
 &nbsp;
 
-&nbsp;
-
-&nbsp;
-
-## Pages
-
-### `.page(page)`
+## `.right_to_left(state)` *regenerator*
 
 **Returns**: The text element
 
-|Name  |Datatype|Purpose                                          |
-|------|--------|-------------------------------------------------|
-|`page`|integer |Page to display, starting at 0 for the first page|
+|Name    |Datatype|Purpose                                            |
+|--------|--------|---------------------------------------------------|
+|`state` |boolean |Whether the overall text direction is right-to-left|
 
-Changes which page Scribble is display for the text element. Pages are created when using the [`.wrap()` method](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) or when inserting [`[/page] command tags`](text-formatting) into your input string. Pages are 0-indexed.
-
-Please note that changing the page will reset any typewriter animations i.e. those started by [`.typewriter_in()`](scribble-methods?id=typewriter_inspeed-smoothness) and [`typewriter_out()`](scribble-methods?id=typewriter_outspeed-smoothness-backwards).
-
-&nbsp;
-
-### `.get_page()`
-
-**Returns:** Integer, page that the text element is currently on, starting at `0` for the first page
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Returns which page Scribble is showing, as set by [`.page()`](scribble-methods?id=pagepage). Pages are 0-indexed; this function will return `0` for the first page.
-
-&nbsp;
-
-### `.get_pages()`
-
-**Returns:** Integer, total number of pages for the text element
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Returns the total number of pages that this text element contains. In rare cases, this function can return 0.
-
-&nbsp;
-
-### `.on_last_page()`
-
-**Returns:** Boolean, whether the current page is the last page for the text element
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Convenience function.
+Hints to the text parser whether the overall text direction is right-to-left (`true`) or left-to-right (`false`). This method also accepts an input of `undefined` to use the default behaviour whereby Scribble attempts to figure out the overall text direction based on the first glyph in the string.
 
 &nbsp;
 
@@ -254,66 +255,42 @@ Convenience function.
 
 &nbsp;
 
-## Typewriter
+# Regions
 
-### `.typewriter_off()`
+## `.region_detect(elementX, elementY, pointerX, pointerY)`
 
-**Returns**: The text element
+**Returns:** String, the name of the region that is being pointed to, or `undefined` if no region is being pointed to
 
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
+|Name      |Datatype|Purpose                                                                                                    |
+|----------|--------|-----------------------------------------------------------------------------------------------------------|
+|`elementX`|number  |x position of the text element in the room (usually the same as the coordinate you'd specify for `.draw()`)|
+|`elementY`|number  |y position of the text element in the room (usually the same as the coordinate you'd specify for `.draw()`)|
+|`pointerX`|number  |x position of the mouse/cursor                                                                             |
+|`pointerY`|number  |y position of the mouse/cursor                                                                             |
 
-Turns off the typewriter effect and displays all text. [Typewriter events](misc-functions?id=scribble_typewriter_add_eventname-function) will **not** be executed.
+This function returns the name of a region if one is being hovered over. You can define a region in your text by using the `[region,<name>]` and `[/region]` formatting tags.
 
-&nbsp;
-
-### `.typewriter_reset()`
-
-**Returns**: The text element
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Resets the position of the typewriter animation for the current page.
+!> Using this function requires that `SCRIBBLE_ALLOW_GLYPH_DATA_GETTER` be set to `true`.
 
 &nbsp;
 
-### `.typewriter_in(speed, smoothness)`
+## `.region_set_active(name, colour, blendAmount)`
 
-**Returns**: The text element
+**Returns:** N/A (`undefined`)
 
-|Name        |Datatype|Purpose                                                                                                                        |
-|------------|--------|-------------------------------------------------------------------------------------------------------------------------------|
-|`speed`     |real    |Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above|
-|`smoothness`|real    |How much text is visible during the fade. Higher numbers will allow more text to be visible as it fades in                     |
+|Name         |Datatype|Purpose                                                                |
+|-------------|--------|-----------------------------------------------------------------------|
+|`name`       |string  |Name of the region to highlight. Use `undefined` to highlight no region|
+|`colour`     |integer |Colour to highlight the region (a standard GameMaker BGR colour)       |
+|`blendAmount`|number  |Blend factor to apply for the highlighted region                       |
 
-The `smoothness` argument offers some customisation for how text fades in. A high value will cause text to be smoothly faded in whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades in.
-
-[Events](misc-functions?id=scribble_typewriter_add_eventname-function) (in-line functions) will be executed as text fades in. This is a powerful tool and can be used to achieve many things, including triggering sound effects, changing character portraits, starting movement of instances, starting weather effects, giving the player items, and so on.
-
-&nbsp;
-
-### `.typewriter_out(speed, smoothness, [backwards])`
-
-**Returns**: The text element
-
-|Name         |Datatype|Purpose                                                                                                                        |
-|-------------|--------|-------------------------------------------------------------------------------------------------------------------------------|
-|`speed`      |real    |Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above|
-|`smoothness` |real    |How much text is visible during the fade. Higher numbers will allow more text to be visible as it fades out                    |
-|`[backwards]`|boolean |Whether to animate the typewriter backwards. Defaults to `false`                                                               |
-
-The `smoothness` argument offers some customisation for how text fades out. A high value will cause text to be smoothly faded out whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades out.
-
-[Events](misc-functions?id=scribble_typewriter_add_eventname-function) will **not** be executed as text fades out.
+This function expects the name of a region that has been defined in your text using the `[region,<name>]` and `[/region]` formatting tags. You can get the name of the region that the player is currently highlighting with their cursor by using `.region_detect()`.
 
 &nbsp;
 
-### `.typewriter_skip()`
+## `.region_get_active()`
 
-**Returns**: The text element
+**Returns:** String, the name of the active region, or `undefined` if no region is active
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
@@ -321,172 +298,106 @@ The `smoothness` argument offers some customisation for how text fades out. A hi
 
 &nbsp;
 
-### `.get_typewriter_pos()`
+&nbsp;
 
-**Returns**: Real, the position of the typewriter "head", corresponding to the most recent revealed glyph
+&nbsp;
+
+# Dimensions
+
+## `.get_left(x)`
+
+**Returns:** Real, the left position of the text element's axis-aligned bounding box in the room
+
+|Name|Datatype|Purpose                                   |
+|----|--------|------------------------------------------|
+|`x` |real    |x position of the text element in the room|
+
+This function takes into account the transformation and padding applied to the text element.
+
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+
+&nbsp;
+
+## `.get_top(y)`
+
+**Returns:** Real, the top position of the text element's axis-aligned bounding box in the room
+
+|Name|Datatype|Purpose                                   |
+|----|--------|------------------------------------------|
+|`y` |real    |y position of the text element in the room|
+
+This function takes into account the transformation and padding applied to the text element.
+
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+
+&nbsp;
+
+## `.get_right(x)`
+
+**Returns:** Real, the right position of the text element's axis-aligned bounding box in the room
+
+|Name|Datatype|Purpose                                   |
+|----|--------|------------------------------------------|
+|`x` |real    |x position of the text element in the room|
+
+This function takes into account the transformation and padding applied to the text element.
+
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+
+&nbsp;
+
+## `.get_bottom(y)`
+
+**Returns:** Real, the bottom position of the text element's axis-aligned bounding box in the room
+
+|Name|Datatype|Purpose                                   |
+|----|--------|------------------------------------------|
+|`y` |real    |y position of the text element in the room|
+
+This function takes into account the transformation and padding applied to the text element.
+
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+
+&nbsp;
+
+## `.get_width()`
+
+**Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
 |None|        |       |
 
-This method will return a decimal value if the speed is a decimal value too.
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
+
+!> This function returns the untransformed width of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method but will take into account padding.
 
 &nbsp;
 
-### `.typewriter_ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`
+## `.get_height()`
 
-**Returns**: The text element
-
-|Name           |Datatype|Purpose                                                           |
-|---------------|--------|------------------------------------------------------------------|
-|`easeMethod`   |integer |A member of the `SCRIBBLE_EASE` enum. See below                   |
-|`dx`           |real    |Starting x-coordinate of the glyph, relative to its final position|
-|`dy`           |real    |Starting y-coordinate of the glyph, relative to its final position|
-|`xscale`       |real    |Starting x-scale of the glyph, relative to its final scale        |
-|`yscale`       |real    |Starting y-scale of the glyph, relative to its final scale        |
-|`rotation`     |real    |Starting rotation of the glyph, relative to its final rotation    |
-|`alphaDuration`|real    |Value from `0` to `1` (inclusive). See below                      |
-
-The `alphaDuration` argument controls how glyphs fade in using alpha blending. A value of `0` will cause the glyph to "pop" into view with no fading, a value of `1` will cause the glyph to fade into view smoothly such that it reaches 100% alpha at the very end of the typewriter animation for the glyph.
-
-**N.B.** Alpha fading is always linear and is not affected by the easing method chosen.
-
-Scribble offers the following easing functions for typewriter behaviour. These are implemented using methods found in the widely used [easings.net](https://easings.net/) library.
-
-|`SCRIBBLE_EASE` members|
-|-----------------------|
-|`.NONE`                |
-|`.LINEAR`              |
-|`.QUAD`                |
-|`.CUBIC`               |
-|`.QUART`               |
-|`.QUINT`               |
-|`.SINE`                |
-|`.EXPO`                |
-|`.CIRC`                |
-|`.BACK`                |
-|`.ELASTIC`             |
-|`.BOUNCE`              |
-
-&nbsp;
-
-### `.get_typewriter_state()`
-
-**Returns:** Real value from 0 to 2 (inclusive) that represents what proportion of text on the current page is visible
+**Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
 |None|        |       |
 
-The value returned by this function is as follows:
+If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
-|Value         |Visibility                                                                                                      |
-|--------------|----------------------------------------------------------------------------------------------------------------|
-|`= 0`         |No text is visible                                                                                              |
-|`> 0`<br>`< 1`|Text is fading in. This value is the proportion of text that is visible<br>e.g. `0.4` is 40% visibility         |
-|`= 1`         |Text is fully visible and the fade in animation has finished                                                    |
-|`> 1`<br>`< 2`|Text is fading out. 2 minus this value is the proportion of text that is visible<br>e.g. `1.6` is 40% visibility|
-|`= 2`         |No text is visible and the fade out animation has finished                                                      |
-
-If no typewriter animation has been started, this function will return `1`.
+!> This functions returns the untransformed height of the text element. This will **not** take into account rotation or scaling applied by the `.transform()` method but will take into account padding.
 
 &nbsp;
 
-### `.typewriter_pause()`
-
-**Returns**: The text element
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Pauses the typewriter effect.
-
-&nbsp;
-
-### `.typewriter_unpause()`
-
-**Returns**: The text element
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Unpauses the typewriter effect. This is helpful when combined with the [`[pause]` command tag](text-formatting) and [`.get_typewriter_paused()`](scribble-methods?id=get_typewriter_paused).
-
-&nbsp;
-
-### `.get_typewriter_paused()`
-
-**Returns:** Boolean, whether the text element is currently paused due to encountering `[pause]` tag when typing out text
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-&nbsp;
-
-### `.typewriter_sound(soundArray, overlap, pitchMin, pitchMax)`
-
-**Returns**: The text element
-
-|Name        |Datatype                                                                                      |Purpose                                                                                                             |
-|------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-|`soundArray`|array of [sounds](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|Array of audio assets that can be used for playback                                                                 |
-|`overlap`   |real                                                                                          |Amount of overlap between sound effect playback, in milliseconds                                                    |
-|`pitchMin`  |real                                                                                          |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc. |
-|`pitchMax`  |real                                                                                          |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.|
-
-It's quite common in games with typewriter-style text animations to have a "mumble" or "gibberish" sound effect that plays whilst text is being revealed. This function allows you to define an array of sound effects that will be randomly played as text is revealed. The pitch of these sounds can be randomly modulated as well by selecting `pitchMin` and `pitchMax` values.
-
-Setting the `overlap` value to `0` will ensure that sound effects never overlap at all, which is generally what's desirable, but it can sound a bit stilted and unnatural. By setting the `overlap` argument to a number above `0`, sound effects will be played with a little bit of overlap which improves the effect considerably. A value around 30ms usually sounds ok. The `overlap` argument can be set to a value less than 0 if you'd like more space between sound effects.
-
-&nbsp;
-
-### `.typewriter_sound_per_char(soundArray, pitchMin, pitchMax)`
-
-**Returns**: The text element
-
-|Name        |Datatype                                                                                      |Purpose                                                                                                             |
-|------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-|`soundArray`|array of [sounds](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|Array of audio assets that can be used for playback                                                                 |
-|`pitchMin`  |real                                                                                          |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc. |
-|`pitchMax`  |real                                                                                          |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.|
-
-It's quite common in games with typewriter-style text animations to have a sound effect that plays as text shows up. This function allows you to define an array of sound effects that will be randomly played as **each character** is revealed. The pitch of these sounds can be randomly modulated as well by selecting `pitchMin` and `pitchMax` values.
-
-&nbsp;
-
-### `.typewriter_function(function)`
-
-**Returns**: The text element
-
-|Name      |Datatype|Purpose|
-|----------|--------|-------|
-|`function`|function|       |
-
-`.typewriter_function()` allows you to define a function that will be executed once per character as that character is revealed. The function is given two arguments: the text element that triggered the callback, and the position of the character that was just revealed.
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-## Getters
-
-### `.get_bbox([x], [y], [leftPad], [topPad], [rightPad], [bottomPad])`
+## `.get_bbox(x, y)`
 
 **Returns:** Struct containing the positions of the bounding box for a text element
 
-|Name         |Datatype|Purpose                                                                                            |
-|-------------|--------|---------------------------------------------------------------------------------------------------|
-|`[x]`        |real    |x position in the room. Defaults to 0                                                              |
-|`[y]`        |real    |y position in the room. Defaults to 0                                                              |
-|`[leftPad]`  |real    |Extra space on the left-hand side of the textbox. Positive values create more space. Defaults to 0 |
-|`[topPad]`   |real    |Extra space on the top of the textbox. Positive values create more space. Defaults to 0            |
-|`[rightPad]` |real    |Extra space on the right-hand side of the textbox. Positive values create more space. Defaults to 0|
-|`[bottomPad]`|real    |Extra space on the bottom of the textbox. Positive values create more space. Defaults to 0         |
+|Name|Datatype|Purpose               |
+|----|--------|----------------------|
+|`x` |real    |x position in the room|
+|`y` |real    |y position in the room|
+
+This functions returns the **transformed** width and height of the text element. This **will** take into account rotation or scaling applied by the `.transform()` method as well as padding. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 
 The struct returned by `.get_bbox()` contains the following member variables:
 
@@ -511,31 +422,29 @@ The struct returned by `.get_bbox()` contains the following member variables:
 
 &nbsp;
 
-### `.get_width()`
+## `.get_bbox_revealed(x, y, [typist])`
 
-**Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
+**Returns:** Struct containing the positions of the bounding box for a text element
 
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
+|Name    |Datatype|Purpose                                                                                                                     |
+|--------|--------|----------------------------------------------------------------------------------------------------------------------------|
+|`x`     |number  |x position in the room                                                                                                      |
+|`y`     |number  |y position in the room                                                                                                      |
+|`typist`|typist  |Typist being used to render the text element. If not specified, the manual reveal value is used instead (set by `.reveal()`)|
 
-Returns the raw width of the text element. This will **not** take into account rotation or scaling - this function returns the width value that Scribble uses internally.
+The struct returned by `.get_bbox_revealed()` contains the same member variables as `.get_bbox()`; see above for details. Only text that is visible will be considered for calculating the bounding boxes.
 
-&nbsp;
-
-### `.get_height()`
-
-**Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Returns the raw height of the text element. This will **not** take into account rotation or scaling - this function returns the height value that Scribble uses internally.
+This functions returns the **transformed** width and height of the text element. This **will** take into account rotation or scaling applied by the `.transform()` method as well as padding.
 
 &nbsp;
 
-### `.get_wrapped()`
+&nbsp;
+
+&nbsp;
+
+# Other Getters
+
+## `.get_wrapped()`
 
 **Returns:** Boolean, whether the text has wrapped onto a new line using the [`.wrap()` feature](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator)
 
@@ -547,7 +456,50 @@ Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwi
 
 &nbsp;
 
-### `.get_line_count([page])`
+## `.get_text([page])`
+
+**Returns:** String, the parsed string for the given page
+
+|Name    |Datatype|Purpose                                                                  |
+|--------|--------|-------------------------------------------------------------------------|
+|`[page]`|integer |Page to get the raw text from. If not specified, the current page is used|
+
+The string that is returned is the raw text that is drawn i.e. all command tags and events have been stripped out. Sprites and surfaces are represented by a single glyph with the Unicode value of `26` ([`0x001A` "substitute character"](https://unicode-table.com/en/001A/)).
+
+&nbsp;
+
+## `.get_glyph_data(glyphIndex, [page])`
+
+**Returns:** Struct, containing layout details for the glyph on the given page (see below)
+
+|Name        |Datatype|Purpose                                                                    |
+|------------|--------|---------------------------------------------------------------------------|
+|`glyphIndex`|integer |Index of the glyph whose data will be returned                             |
+|`[page]`    |integer |Page to get the glyph data from. If not specified, the current page is used|
+
+The struct that is returned has the following member variables:
+
+|Name      |Datatype|Purpose                                                       |
+|----------|--------|--------------------------------------------------------------|
+|`unicode` |integer |The Unicode character code for the glyph. Sprites and surfaces are represented by a single glyph with the Unicode value of `26` ([`0x001A` "substitute character"](https://unicode-table.com/en/001A/))                     |
+|`left`    |number  |Left x-position of the glyph, relative to the model's origin  |
+|`top`     |number  |Top y-position of the glyph, relative to the model's origin   |
+|`right`   |number  |Right x-position of the glyph, relative to the model's origin |
+|`bottom`  |number  |Bottom y-position of the glyph, relative to the model's origin|
+
+&nbsp;
+
+## `.get_glyph_count([page])`
+
+**Returns:** Integer, the number of glyphs on the given page
+
+|Name        |Datatype|Purpose                                                                     |
+|------------|--------|----------------------------------------------------------------------------|
+|`[page]`    |integer |Page to get the glyph count from. If not specified, the current page is used|
+
+&nbsp;
+
+## `.get_line_count([page])`
 
 **Returns:** Integer, how many lines of text are on the given page
 
@@ -561,153 +513,55 @@ Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwi
 
 &nbsp;
 
-## Animation
+# Pages
 
-### `.animation_tick_speed(tickSpeed)`
-
-**Returns**: The text element
-
-|Name       |Datatype|Purpose                                                                                                       |
-|-----------|--------|--------------------------------------------------------------------------------------------------------------|
-|`tickSpeed`|real    |"Scaling factor" for animation ticks. A value of `2` doubles the speed, a value of `0.5` halves the speed etc.|
-
-This function controls the animation speed of all animation effects. It, however, does **not** alter the speed of the typewriter.
-
-&nbsp;
-
-### `.animation_sync(sourceElement)`
+## `.page(page)`
 
 **Returns**: The text element
 
-|Name           |Datatype    |Purpose                                             |
-|---------------|------------|----------------------------------------------------|
-|`sourceElement`|text element|Source text element to copy animation state **from**|
+|Name  |Datatype|Purpose                                          |
+|------|--------|-------------------------------------------------|
+|`page`|integer |Page to display, starting at 0 for the first page|
 
-Syncing a text element to another will overwrite the current values. Be careful how you sync your text elements! Animation state is updated when a text element is drawn so make sure to sync your text element once every frame/step before the source text element is drawn.
+Changes which page Scribble is display for the text element. Pages are created when using the [`.wrap()` method](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) or when inserting [`[/page] command tags`](text-formatting) into your input string. Pages are 0-indexed.
 
-When copying the animation state, the animation time and the animation tick speed ([`.animation_tick_speed()`](scribble-methods?id=animation_tick_speedtickspeed)) will be copied. Animation appearance properties themselves won't be copied. To share animation behaviours between elements, please use templates ([`.template()`](scribble()-Methods?id=templatefunction-executeonlyonchange)).
-
-&nbsp;
-
-### `.animation_wave(size, frequency, speed)`
-
-**Returns**: The text element
-
-|Name       |Datatype|Purpose                                                                                             |
-|-----------|--------|----------------------------------------------------------------------------------------------------|
-|`size`     |real    |Maximum pixel offset of the animation                                                               |
-|`frequency`|real    |Frequency of the animation. Larger values will create more horizontally frequent "humps" in the text|
-|`speed`    |real    |Speed of the animation                                                                              |
-
-This function controls behaviour of the `[wave]` effect across all uses in the text element.
+Please note that changing the page will reset any typewriter animations started by a [typist](typist-methods) associated with the text element.
 
 &nbsp;
 
-### `.animation_shake(size, speed)`
+## `.get_page()`
 
-**Returns**: The text element
+**Returns:** Integer, page that the text element is currently on, starting at `0` for the first page
 
-|Name       |Datatype|Purpose                                                          |
-|-----------|--------|-----------------------------------------------------------------|
-|`size`     |real    |Maximum pixel offset of the animation                            |
-|`speed`    |real    |Speed of the animation. Larger numbers cause text to shake faster|
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
 
-This function controls behaviour of the `[shake]` effect across all uses in the text element.
-
-&nbsp;
-
-### `.animation_rainbow(weight, speed)`
-
-**Returns**: The text element
-
-|Name    |Datatype|Purpose                                                                                                                   |
-|--------|--------|--------------------------------------------------------------------------------------------------------------------------|
-|`weight`|real    |Blend weight of the rainbow colouring. A value of 0 will not apply the effect, a value of 1 will blend with 100% weighting|
-|`speed` |real    |Cycling speed of the animation. Larger numbers scroll faster                                                              |
-
-This function controls behaviour of the `[rainbow]` effect across all uses in the text element.
+Returns which page Scribble is showing, as set by [`.page()`](scribble-methods?id=pagepage). Pages are 0-indexed; this function will return `0` for the first page.
 
 &nbsp;
 
-### `.animation_wobble(angle, frequency)`
+## `.get_page_count()`
 
-**Returns**: The text element
+**Returns:** Integer, total number of pages for the text element
 
-|Name       |Datatype|Purpose                                                              |
-|-----------|--------|---------------------------------------------------------------------|
-|`angle`    |real    |Maximum angular offset of the animation                              |
-|`frequency`|real    |Speed of the animation. Larger numbers cause text to oscillate faster|
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
 
-This function controls behaviour of the `[wobble]` effect across all uses in the text element.
-
-&nbsp;
-
-### `.animation_pulse(scale, speed)`
-
-**Returns**: The text element
-
-|Name   |Datatype|Purpose                                                                        |
-|-------|--------|-------------------------------------------------------------------------------|
-|`scale`|real    |Maximum scale of the animation                                                 |
-|`speed`|real    |Speed of the animation. Larger values will cause text to shrink and grow faster|
-
-This function controls behaviour of the `[pulse]` effect across all uses in the text element.
+Returns the total number of pages that this text element contains. In rare cases, this function can return 0.
 
 &nbsp;
 
-### `.animation_wheel(size, frequency, speed)`
+## `.on_last_page()`
 
-**Returns**: The text element
+**Returns:** Boolean, whether the current page is the last page for the text element
 
-|Name       |Datatype|Purpose                                                                  |
-|-----------|--------|-------------------------------------------------------------------------|
-|`size`     |real    |Maximum pixel offset of the animation                                    |
-|`frequency`|real    |Frequency of the animation. Larger values will create more chaotic motion|
-|`speed`    |real    |Speed of the animation                                                   |
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
 
-This function controls behaviour of the `[wheel]` effect across all uses in the text element.
-
-&nbsp;
-
-### `.animation_cycle(speed, saturation, value)`
-
-**Returns**: The text element
-
-|Name        |Datatype|Purpose                                                                                                                                                                                                                                                             |
-|------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`speed`     |real    |Speed of the animation. Larger values will cause the colour to cycle faster                                                                                                                                                                                         |
-|`saturation`|integer |Saturation of colours generated by the animation. Values from 0 to 255 (inclusive) are accepted, much like GM's [`make_color_hsv()`](https://manual.yoyogames.com/#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FColour_And_Alpha%2Fmake_colour_hsv.htm)         |
-|`value`     |integer |Value ("lightness") of colours generated by the animation. Values from 0 to 255 (inclusive) are accepted, much like GM's [`make_color_hsv()`](https://manual.yoyogames.com/#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FColour_And_Alpha%2Fmake_colour_hsv.htm)|
-
-This function controls behaviour of the `[cycle]` effect across all uses in the text element.
-
-&nbsp;
-
-### `.animation_jitter(minScale, maxScale, speed)`
-
-**Returns**: The text element
-
-|Name      |Datatype|Purpose                                                          |
-|----------|--------|-----------------------------------------------------------------|
-|`minScale`|real    |Minimum scale offset of the animation                            |
-|`maxScale`|real    |Maximum scale offset of the animation                            |
-|`speed`   |real    |Speed of the animation. Larger numbers cause text to shake faster|
-
-This function controls behaviour of the `[jitter]` effect across all uses in the text element.
-
-&nbsp;
-
-### `.animation_blink(onDuration, offDuration, timeOffset)`
-
-**Returns**: The text element
-
-|Name         |Datatype|Purpose                                         |
-|-------------|--------|------------------------------------------------|
-|`onDuration` |real    |Number of ticks that blinking text is shown for |
-|`offDuration`|real    |Number of ticks that blinking text is hidden for|
-|`timeOffset` |real    |Time offset for calculating the blink state     |
-
-This function controls behaviour of the `[blink]` effect across all uses in the text element.
+Convenience function.
 
 &nbsp;
 
@@ -715,11 +569,49 @@ This function controls behaviour of the `[blink]` effect across all uses in the 
 
 &nbsp;
 
-## MSDF
+# Typewriter
 
-!> MSDF fonts require special considerations. Please read [the MSDF article](msdf-fonts) for more information.
+?> The old typewriter methods [have been deprecated](legacy-typewriter). Instead, please use [`scribble_typist()`](typist-methods). You may also use the following two functions for very simple typewriter effects.
 
-### `.msdf_shadow(colour, alpha, xoffset, yoffset)`
+## `.reveal(character)`
+
+**Returns:** The text element
+
+|Name       |Datatype|Purpose                           |
+|-----------|--------|----------------------------------|
+|`character`|number  |The number of characters to reveal|
+
+&nbsp;
+
+## `.get_reveal()`
+
+**Returns:** Number, the amount of characters revealled, as set by `.reveal()`
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+# Animation
+
+!> The old animation methods have been moved to global scope. Please see the [Animation Properties](animation-properties) page for details.
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+# MSDF
+
+?> MSDF fonts require special considerations. Please read [the MSDF article](msdf-fonts) for more information.
+
+## `.msdf_shadow(colour, alpha, xoffset, yoffset)`
 
 **Returns**: The text element
 
@@ -734,7 +626,7 @@ Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alp
 
 &nbsp;
 
-### `.msdf_border(colour, thickness)`
+## `.msdf_border(colour, thickness)`
 
 **Returns**: The text element
 
@@ -747,7 +639,7 @@ Sets the colour and thickness for a procedural MSDF border. Setting the thicknes
 
 &nbsp;
 
-### `.msdf_feather(thickness)`
+## `.msdf_feather(thickness)`
 
 **Returns**: The text element
 
@@ -763,9 +655,9 @@ Changes the softness/hardness of the MSDF font outline. You may find you have to
 
 &nbsp;
 
-## Cache Management
+# Cache Management
 
-### `.build(freeze)`
+## `.build(freeze)`
 
 **Returns**: N/A (`undefined`)
 
@@ -788,7 +680,7 @@ element.draw(x, y);
 
 &nbsp;
 
-### `.flush()`
+## `.flush()`
 
 **Returns**: N/A (`undefined`)
 
@@ -804,9 +696,9 @@ Forces Scribble to remove this text element from the internal cache, invalidatin
 
 &nbsp;
 
-## Miscellaneous
+# Miscellaneous
 
-### `.events_get(position, [page])`
+## `.get_events(position, [page])`
 
 **Returns**: An array containing structs that describe typewrite events for the given character
 
@@ -818,6 +710,7 @@ Forces Scribble to remove this text element from the internal cache, invalidatin
 To match GameMaker's native string behaviour for functions such as `string_copy()`, character positions are 1-indexed such that the character at position 1 in the string `"abc"` is `a`. Events are indexed such that an event placed immediately before a character has an index one less than the character. Events placed immediately after a character have an index equal to the character e.g. `"[event index 0]X[event index 1]"`.
 
 The returned array contains structs that themselves contain the following member variables:
+
 |Member Variable|Datatype        |Purpose                                                                                                  |
 |---------------|----------------|---------------------------------------------------------------------------------------------------------|
 |`.position`    |integer         |The character position for this event. This should (!) be the same as the index provided to get the event|
@@ -826,14 +719,14 @@ The returned array contains structs that themselves contain the following member
 
 &nbsp;
 
-### `.template(function, [executeOnlyOnChange])`
+## `.template(function, [executeOnlyOnChange])`
 
 **Returns**: The text element
 
-|Name                   |Datatype                       |Purpose                                                                             |
-|-----------------------|-------------------------------|------------------------------------------------------------------------------------|
-|`function`             |function, or array of functions|Function to execute to set Scribble behaviour for this text element                 |
-|`[executeOnlyOnChange]`|boolean                        |Whether to only execute the template function if it has changed. Defaults to `false`|
+|Name                   |Datatype                       |Purpose                                                                            |
+|-----------------------|-------------------------------|-----------------------------------------------------------------------------------|
+|`function`             |function, or array of functions|Function to execute to set Scribble behaviour for this text element                |
+|`[executeOnlyOnChange]`|boolean                        |Whether to only execute the template function if it has changed. Defaults to `true`|
 
 Executes a function in the scope of this text element. If that function contains method calls then the methods will be applied to this text element. For example:
 
@@ -849,7 +742,41 @@ scribble("This text is red and will be wrapped inside a box that's 150px wide.")
 
 &nbsp;
 
-### `.overwrite(string)` *regenerator*
+## `.ignore_command_tags(state)` *regenerator*
+
+**Returns**: The text element
+
+|Name   |Datatype|Purpose                       |
+|-------|--------|------------------------------|
+|`state`|boolean |Whether to ignore command tags|
+
+Directs Scribble to ignore all [command tags](text-formatting) in the string and instead render them as plaintext.
+
+&nbsp;
+
+## `.z(z)`
+
+**Returns**: The text element
+
+|Name|Datatype|Purpose                                     |
+|----|--------|--------------------------------------------|
+|`z` |number  |The z coordinate to draw the text element at|
+
+Controls the z coordinate to draw the text element at. This is largely irrelevant in 2D games, but this functionality is occasionally useful nonetheless. The z coordinate defaults to [`SCRIBBLE_DEFAULT_Z`](https://github.com/JujuAdams/Scribble/blob/docs/8.0/configuration.md).
+
+&nbsp;
+
+## `.get_z()`
+
+**Returns**: Number, the z-position of the text element as set by `.z()`
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+&nbsp;
+
+## `.overwrite(string)` *regenerator*
 
 **Returns**: The text element
 
@@ -857,29 +784,6 @@ scribble("This text is red and will be wrapped inside a box that's 150px wide.")
 |--------|--------|--------------------------------------------|
 |`string`|string  |New string to display using the text element|
 
-Replaces the string in an existing text element whilst maintaining the animation, typewriter, and page state. This function may cause a recaching of the underlying text model so should be used sparingly.
+Replaces the string in an existing text element.
 
-&nbsp;
-
-### `.fog(colour, alpha)`
-
-**Returns**: The text element
-
-|Name    |Datatype|Purpose                                                |
-|--------|--------|-------------------------------------------------------|
-|`colour`|integer |Fog colour, in the standard GameMaker 24-bit BGR format|
-|`alpha` |real    |Blending factor for the fog, from 0 to 1               |
-
-Forces the colour of all text (and sprites) to change to the given specified colour.
-
-&nbsp;
-
-### `.ignore_command_tags(state)` *regenerator*
-
-**Returns**: The text element
-
-|Name   |Datatype|Purpose|
-|-------|--------|-------|
-|`state`|boolean |       |
-
-Directs Scribble to ignore all [command tags](text-formatting) in the string.
+!> This function may cause a recaching of the underlying text model so should be used sparingly. Do not be surprised if this method resets associated typists, invalidates text element state, or causes outright crashes.
