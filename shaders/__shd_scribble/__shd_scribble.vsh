@@ -1,62 +1,62 @@
-//   @jujuadams   v7.1.2   2021-03-16
+//   @jujuadams   v8.0.0   2021-12-15
 precision highp float;
 
-const int MAX_EFFECTS = 10;
-//By default, the effect indexes are:
-//0 = is an animated sprite
-//1 = wave
-//2 = shake
-//3 = rainbow
-//4 = wobble
-//5 = pulse
-//6 = wheel
-//7 = cycle
-//8 = jitter
-//9 = blink
+const int MAX_EFFECTS = 11;
+#define SPRITE_FLAG   flagArray[ 0]
+#define WAVE_FLAG     flagArray[ 1]
+#define SHAKE_FLAG    flagArray[ 2]
+#define RAINBOW_FLAG  flagArray[ 3]
+#define WOBBLE_FLAG   flagArray[ 4]
+#define PULSE_FLAG    flagArray[ 5]
+#define WHEEL_FLAG    flagArray[ 6]
+#define CYCLE_FLAG    flagArray[ 7]
+#define JITTER_FLAG   flagArray[ 8]
+#define BLINK_FLAG    flagArray[ 9]
+#define SLANT_FLAG    flagArray[10]
 
-const int MAX_ANIM_FIELDS = 20;
-//By default, the data fields are:
-// 0 = wave amplitude
-// 1 = wave frequency
-// 2 = wave speed
-// 3 = shake amplitude
-// 4 = shake speed
-// 5 = rainbow weight
-// 6 = rainbow speed
-// 7 = wobble angle
-// 8 = wobble frequency
-// 9 = pulse scale
-//10 = pulse speed
-//11 = wheel amplitude
-//12 = wheel frequency
-//13 = wheel speed
-//14 = cycle speed
-//15 = cycle saturation
-//16 = cycle value
-//17 = jitter minimum scale
-//18 = jitter maximum scale
-//19 = jitter speed
+const int MAX_ANIM_FIELDS = 21;
+#define WAVE_AMPLITUDE    u_aDataFields[ 0]
+#define WAVE_FREQUENCY    u_aDataFields[ 1]
+#define WAVE_SPEED        u_aDataFields[ 2]
+#define SHAKE_AMPLITUDE   u_aDataFields[ 3]
+#define SHAKE_SPEED       u_aDataFields[ 4]
+#define RAINBOW_WEIGHT    u_aDataFields[ 5]
+#define RAINBOW_SPEED     u_aDataFields[ 6]
+#define WOBBLE_ANGLE      u_aDataFields[ 7]
+#define WOBBLE_FREQUENCY  u_aDataFields[ 8]
+#define PULSE_SCALE       u_aDataFields[ 9]
+#define PULSE_SPEED       u_aDataFields[10]
+#define WHEEL_AMPLITUDE   u_aDataFields[11]
+#define WHEEL_FREQUENCY   u_aDataFields[12]
+#define WHEEL_SPEED       u_aDataFields[13]
+#define CYCLE_SPEED       u_aDataFields[14]
+#define CYCLE_SATURATION  u_aDataFields[15]
+#define CYCLE_VALUE       u_aDataFields[16]
+#define JITTER_MINIMUM    u_aDataFields[17]
+#define JITTER_MAXIMUM    u_aDataFields[18]
+#define JITTER_SPEED      u_aDataFields[19]
+#define SLANT_GRADIENT    u_aDataFields[20]
 
 const int EASE_METHOD_COUNT = 15;
-// 0 = None
-// 1 = Linear
-// 2 = Quadratic
-// 3 = Cubic
-// 4 = Quartic
-// 5 = Quintic
-// 6 = Sine
-// 7 = Exponential
-// 8 = Circular
-// 9 = Back
-//10 = Elastic
-//11 = Bounce
-//12 = Custom 1
-//13 = Custom 2
-//14 = Custom 3
+#define EASE_NONE         0
+#define EASE_LINEAR       1
+#define EASE_QUADRATIC    2
+#define EASE_CUBIC        3
+#define EASE_QUARTIC      4
+#define EASE_QUINTIC      5
+#define EASE_SINE         6
+#define EASE_EXPONENTIAL  7
+#define EASE_CIRCULAR     8
+#define EASE_BACK         9
+#define EASE_ELASTIC     10
+#define EASE_BOUNCE      11
+#define EASE_CUSTOM_1    12
+#define EASE_CUSTOM_2    13
+#define EASE_CUSTOM_3    14
 
 const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
 
-const int WINDOW_COUNT = 4;
+const int WINDOW_COUNT = 3;
 
 const float PI = 3.14159265359;
 
@@ -76,21 +76,24 @@ varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
 uniform vec4  u_vColourBlend;                           //4
+uniform vec4  u_vGradient;                              //4
+uniform vec2  u_vRegionActive;                          //2
+uniform vec4  u_vRegionColour;                          //4
 uniform float u_fTime;                                  //1
-uniform float u_aDataFields[MAX_ANIM_FIELDS];           //18
+uniform float u_aDataFields[MAX_ANIM_FIELDS];           //21
 uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
 
 uniform int   u_iTypewriterMethod;                      //1
 uniform int   u_iTypewriterCharMax;                     //1
-uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //8
+uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //6
 uniform float u_fTypewriterSmoothness;                  //1
 uniform vec2  u_vTypewriterStartPos;                    //2
 uniform vec2  u_vTypewriterStartScale;                  //2
 uniform float u_fTypewriterStartRotation;               //1
 uniform float u_fTypewriterAlphaDuration;               //1
 
-
+float flagArray[MAX_EFFECTS];
 
 //--------------------------------------------------------------------------------------------------------
 // Functions
@@ -101,26 +104,6 @@ uniform float u_fTypewriterAlphaDuration;               //1
 float rand(vec2 co)
 {
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
-
-//Bitwise unpacking of effect flags
-//The effect bits are stored in the Z-channel of the Normal attribute
-void unpackFlags(float flagValue, inout float array[MAX_EFFECTS])
-{
-    float check = pow(2.0, float(MAX_EFFECTS)-1.0);
-    for(int i = MAX_EFFECTS-1; i >= 0; i--)
-    {
-        if (flagValue >= check)
-        {
-            array[i] = 1.0;
-            flagValue -= check;
-        }
-        else
-        {
-            array[i] = 0.0;
-        }
-        check /= 2.0;
-    }
 }
 
 //Rotate by vector
@@ -149,37 +132,37 @@ vec2 scale(vec2 position, vec2 centre, vec2 scale)
 }
 
 //Oscillate the character
-vec2 wave(vec2 position, float characterIndex, float amplitude, float frequency, float speed)
+vec2 wave(vec2 position, float characterIndex)
 {
-    return vec2(position.x, position.y + amplitude*sin(frequency*characterIndex + speed*u_fTime));
+    return vec2(position.x, position.y + WAVE_FLAG*WAVE_AMPLITUDE*sin(WAVE_FREQUENCY*characterIndex + WAVE_SPEED*u_fTime));
 }
 
 //Wheel the character around
-vec2 wheel(vec2 position, float characterIndex, float amplitude, float frequency, float speed)
+vec2 wheel(vec2 position, float characterIndex)
 {
-    float time = frequency*characterIndex + speed*u_fTime;
-    return position.xy + amplitude*vec2(cos(time), -sin(time));
+    float time = WHEEL_FREQUENCY*characterIndex + WHEEL_SPEED*u_fTime;
+    return position.xy + WHEEL_FLAG*WHEEL_AMPLITUDE*vec2(cos(time), -sin(time));
 }
 
 //Wobble the character by rotating around its central point
-vec2 wobble(vec2 position, vec2 centre, float angle, float frequency)
+vec2 wobble(vec2 position, vec2 centre)
 {
-    return rotate(position, centre, angle*sin(frequency*u_fTime));
+    return rotate(position, centre, WOBBLE_FLAG*WOBBLE_ANGLE*sin(WOBBLE_FREQUENCY*u_fTime));
 }
 
 //Pulse the character by scaling it up and down
-vec2 pulse(vec2 position, vec2 centre, float characterIndex, float scale_, float frequency)
+vec2 pulse(vec2 position, vec2 centre, float characterIndex)
 {
-    float adjustedScale = 1.0 + scale_*(0.5 + 0.5*sin(frequency*(250.0*characterIndex + u_fTime)));
+    float adjustedScale = 1.0 +  PULSE_FLAG*PULSE_SCALE*(0.5 + 0.5*sin(PULSE_SPEED*(250.0*characterIndex + u_fTime)));
     return scale(position, centre, adjustedScale);
 }
 
 //Shake the character along the x/y axes
 //We use integer time steps so that at low speeds characters don't jump around too much
 //Lots of magic numbers in here to try to get a nice-looking shake
-vec2 shake(vec2 position, float characterIndex, float magnitude, float speed)
+vec2 shake(vec2 position, float characterIndex)
 {
-    float time = speed*u_fTime + 0.5;
+    float time = SHAKE_SPEED*u_fTime + 0.5;
     float floorTime = floor(time);
     float merge = 1.0 - abs(2.0*(time - floorTime) - 1.0);
     
@@ -187,18 +170,18 @@ vec2 shake(vec2 position, float characterIndex, float magnitude, float speed)
     vec2 delta = vec2(rand(vec2(characterIndex/149.0 + floorTime/13.0, characterIndex/727.0 - floorTime/331.0)),
                       rand(vec2(characterIndex/501.0 - floorTime/19.0, characterIndex/701.0 + floorTime/317.0)));
     
-    return position + magnitude*merge*(2.0*delta - 1.0);
+    return position + SHAKE_FLAG*SHAKE_AMPLITUDE*merge*(2.0*delta - 1.0);
 }
 
 //Jitter the character scale, using a similar method to above
-vec2 jitter(vec2 position, vec2 centre, float characterIndex, float mini, float maxi, float speed)
+vec2 jitter(vec2 position, vec2 centre, float characterIndex)
 {
-    float floorTime = floor(speed*u_fTime + 0.5);
+    float floorTime = floor(JITTER_SPEED*u_fTime + 0.5);
     
     //Use some misc prime numbers to try to get a varied-looking jitter
     float delta = rand(vec2(characterIndex/149.0 + floorTime/13.0, characterIndex/727.0 - floorTime/331.0));
     
-    return scale(position, centre, mix(mini, maxi, delta));
+    return scale(position, centre, mix(JITTER_MINIMUM, JITTER_MAXIMUM, delta));
 }
 
 float filterSprite(float spriteData)
@@ -220,25 +203,45 @@ vec3 hsv2rgb(vec3 c)
 }
 
 //Colour cycling for the rainbow effect
-vec4 rainbow(float characterIndex, float weight, float speed, vec4 colour)
+vec4 rainbow(float characterIndex, vec4 colour)
 {
-    return vec4(mix(colour.rgb, hsv2rgb(vec3(characterIndex + speed*u_fTime, 1.0, 1.0)), weight), colour.a);
+    return vec4(mix(colour.rgb, hsv2rgb(vec3(0.02*characterIndex + RAINBOW_SPEED*u_fTime, 1.0, 1.0)), RAINBOW_FLAG*RAINBOW_WEIGHT), colour.a);
 }
                            
 //Colour cycling through a defined palette
-vec4 cycle(float characterIndex, float speed, float saturation, float value, vec4 colour)
+vec4 cycle(float characterIndex, vec4 colour)
 {
     float max_h = 4.0; //Default to a 4-colour cycle
     
     //Special cases for 0- and 1-colour cycles
     if (colour.r < 0.003) return colour;
-    if (colour.g < 0.003) return vec4(hsv2rgb(vec3(colour.r, saturation/255.0, value/255.0)), 1.0);
+    if (colour.g < 0.003) return vec4(hsv2rgb(vec3(colour.r, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0)), 1.0);
     if (colour.a < 0.003) max_h = 3.0; //3-colour cycle
     if (colour.b < 0.003) max_h = 2.0; //2-colour cycle
     
-    float h = abs(mod((speed*u_fTime - characterIndex)/10.0, max_h));
-    vec3 rgbA = hsv2rgb(vec3(colour[int(h)], saturation/255.0, value/255.0));
-    vec3 rgbB = hsv2rgb(vec3(colour[int(mod(h + 1.0, max_h))], saturation/255.0, value/255.0));
+    float h = abs(mod((CYCLE_SPEED*u_fTime - characterIndex)/10.0, max_h));
+    
+    //vec3 rgbA = hsv2rgb(vec3(colour[int(h)], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
+    //vec3 rgbB = hsv2rgb(vec3(colour[int(mod(h + 1.0, max_h))], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
+    
+    // rgbA
+    int ih = int(h); // int h
+    float c1 = 0.0; // colour 1
+    if (ih == 0) c1 = colour[0];
+    else if (ih == 1) c1 = colour[1];
+    else if (ih == 2) c1 = colour[2];
+    else if (ih == 3) c1 = colour[3];
+    
+    // rgbB
+    int ih2 = int(mod(h + 1.0, max_h)); // int h 2
+    float c2 = 0.0; // colour 2
+    if (ih2 == 0) c2 = colour[0];
+    else if (ih2 == 1) c2 = colour[1];
+    else if (ih2 == 2) c2 = colour[2];
+    else if (ih2 == 3) c2 = colour[3];
+    
+    vec3 rgbA = hsv2rgb(vec3(c1, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
+    vec3 rgbB = hsv2rgb(vec3(c2, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
     
     return vec4(mix(rgbA, rgbB, fract(h)), 1.0);
 }
@@ -382,41 +385,22 @@ void main()
     float characterIndex = floor(in_Position.z / MAX_LINES);
     float lineIndex      = in_Position.z - characterIndex*MAX_LINES;
     
-    //Unpack data fields into variables
-    //This isn't strictly necessary but it makes the shader easier to read
-    float waveAmplitude   = u_aDataFields[ 0];
-    float waveFrequency   = u_aDataFields[ 1];
-    float waveSpeed       = u_aDataFields[ 2];
-    float shakeAmplitude  = u_aDataFields[ 3];
-    float shakeSpeed      = u_aDataFields[ 4];
-    float rainbowWeight   = u_aDataFields[ 5];
-    float rainbowSpeed    = u_aDataFields[ 6];
-    float wobbleAngle     = u_aDataFields[ 7];
-    float wobbleFrequency = u_aDataFields[ 8];
-    float pulseScale      = u_aDataFields[ 9];
-    float pulseSpeed      = u_aDataFields[10];
-    float wheelAmplitude  = u_aDataFields[11];
-    float wheelFrequency  = u_aDataFields[12];
-    float wheelSpeed      = u_aDataFields[13];
-    float cycleSpeed      = u_aDataFields[14];
-    float cycleSaturation = u_aDataFields[15];
-    float cycleValue      = u_aDataFields[16];
-    float jitterMinimum   = u_aDataFields[17];
-    float jitterMaximum   = u_aDataFields[18];
-    float jitterSpeed     = u_aDataFields[19];
+    //MAX_EFFECTS = 11
+    float flagValue = in_Normal.z;
+    float edge;
+    edge = step(1024.0, flagValue); flagArray[10] = edge; flagValue -= 1024.0*edge;
+    edge = step( 512.0, flagValue); flagArray[ 9] = edge; flagValue -=  512.0*edge;
+    edge = step( 256.0, flagValue); flagArray[ 8] = edge; flagValue -=  256.0*edge;
+    edge = step( 128.0, flagValue); flagArray[ 7] = edge; flagValue -=  128.0*edge;
+    edge = step(  64.0, flagValue); flagArray[ 6] = edge; flagValue -=   64.0*edge;
+    edge = step(  32.0, flagValue); flagArray[ 5] = edge; flagValue -=   32.0*edge;
+    edge = step(  16.0, flagValue); flagArray[ 4] = edge; flagValue -=   16.0*edge;
+    edge = step(   8.0, flagValue); flagArray[ 3] = edge; flagValue -=    8.0*edge;
+    edge = step(   4.0, flagValue); flagArray[ 2] = edge; flagValue -=    4.0*edge;
+    edge = step(   2.0, flagValue); flagArray[ 1] = edge; flagValue -=    2.0*edge;
+    edge = step(   1.0, flagValue); flagArray[ 0] = edge; flagValue -=    1.0*edge;
     
-    //Unpack the effect flag bits into an array, then into variables for readability
-    float flagArray[MAX_EFFECTS]; unpackFlags(in_Normal.z, flagArray);
-    float spriteFlag  = flagArray[0];
-    float waveFlag    = flagArray[1];
-    float shakeFlag   = flagArray[2];
-    float rainbowFlag = flagArray[3];
-    float wobbleFlag  = flagArray[4];
-    float pulseFlag   = flagArray[5];
-    float wheelFlag   = flagArray[6];
-    float cycleFlag   = flagArray[7];
-    float jitterFlag  = flagArray[8];
-    float blinkFlag   = flagArray[9];
+    
     
     //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
     vec2 pos = in_Position.xy;
@@ -446,33 +430,44 @@ void main()
         centre = pos + centreDelta;
     }
     
+    if (SLANT_FLAG > 0.5) pos.x += centreDelta.y*SLANT_GRADIENT;
+    
     
     
     //Colour
     v_vColour = in_Colour;
     
-    if (cycleFlag > 0.5) v_vColour = cycle(characterIndex, cycleSpeed, cycleSaturation, cycleValue, v_vColour); //Cycle colours through the defined palette
-    v_vColour = rainbow(characterIndex, rainbowFlag*rainbowWeight, rainbowSpeed, v_vColour); //Cycle colours for the rainbow effect
+    if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
+    
+    if (CYCLE_FLAG > 0.5) v_vColour = cycle(characterIndex, v_vColour); //Cycle colours through the defined palette
+    v_vColour = rainbow(characterIndex, v_vColour); //Cycle colours for the rainbow effect
     v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
-    if (spriteFlag > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
-    if ((blinkFlag > 0.5) && (u_fBlinkState < 0.5)) v_vColour.a = 0.0;
+    if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
+    if ((BLINK_FLAG > 0.5) && (u_fBlinkState < 0.5)) v_vColour.a = 0.0;
+    
+    
+    
+    //Regions
+    if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y))
+    {
+        v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
+    }
     
     
     
     //Vertex animation
-    pos.xy = wobble(pos, centre, wobbleFlag*wobbleAngle, wobbleFrequency);
-    pos.xy = pulse( pos, centre, characterIndex, pulseFlag*pulseScale, pulseSpeed);
-    if (jitterFlag > 0.5) pos.xy = jitter(pos, centre, characterIndex, jitterMinimum, jitterMaximum, jitterSpeed); //Apply the jitter effect
+    pos.xy = wobble(pos, centre);
+    pos.xy = pulse( pos, centre, characterIndex);
+    if (JITTER_FLAG > 0.5) pos.xy = jitter(pos, centre, characterIndex); //Apply the jitter effect
     
     
     
     //Apply fade (if we're given a method)
     int easeMethod = u_iTypewriterMethod;
-    
     bool fadeOut = (easeMethod >= EASE_METHOD_COUNT);
     if (fadeOut) easeMethod -= EASE_METHOD_COUNT;
     
-    if (easeMethod > 0)
+    if (easeMethod > EASE_NONE)
     {
         float fadeIndex = characterIndex + 1.0;
         if (u_iTypewriterCharMax > 0) fadeIndex = float(u_iTypewriterCharMax) - fadeIndex;
@@ -487,20 +482,19 @@ void main()
         {
             v_vColour.a *= clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
         }
-        
-             if (easeMethod ==  2) { time = 1.0 - easeQuad(   1.0 - time); }
-        else if (easeMethod ==  3) { time = 1.0 - easeCubic(  1.0 - time); }
-        else if (easeMethod ==  4) { time = 1.0 - easeQuart(  1.0 - time); }
-        else if (easeMethod ==  5) { time = 1.0 - easeQuint(  1.0 - time); }
-        else if (easeMethod ==  6) { time = 1.0 - easeSine(   1.0 - time); }
-        else if (easeMethod ==  7) { time = 1.0 - easeExpo(   1.0 - time); }
-        else if (easeMethod ==  8) { time = 1.0 - easeCirc(   1.0 - time); }
-        else if (easeMethod ==  9) { time = 1.0 - easeBack(   1.0 - time); }
-        else if (easeMethod == 10) { time = 1.0 - easeElastic(1.0 - time); }
-        else if (easeMethod == 11) { time = 1.0 - easeBounce( 1.0 - time); }
-        else if (easeMethod == 12) { /*Custom ease slot 1*/ }
-        else if (easeMethod == 13) { /*Custom ease slot 2*/ }
-        else if (easeMethod == 14) { /*Custom ease slot 3*/ }
+             if (easeMethod == EASE_QUADRATIC  ) { time = 1.0 - easeQuad(   1.0 - time); }
+        else if (easeMethod == EASE_CUBIC      ) { time = 1.0 - easeCubic(  1.0 - time); }
+        else if (easeMethod == EASE_QUARTIC    ) { time = 1.0 - easeQuart(  1.0 - time); }
+        else if (easeMethod == EASE_QUINTIC    ) { time = 1.0 - easeQuint(  1.0 - time); }
+        else if (easeMethod == EASE_SINE       ) { time = 1.0 - easeSine(   1.0 - time); }
+        else if (easeMethod == EASE_EXPONENTIAL) { time = 1.0 - easeExpo(   1.0 - time); }
+        else if (easeMethod == EASE_CIRCULAR   ) { time = 1.0 - easeCirc(   1.0 - time); }
+        else if (easeMethod == EASE_BACK       ) { time = 1.0 - easeBack(   1.0 - time); }
+        else if (easeMethod == EASE_ELASTIC    ) { time = 1.0 - easeElastic(1.0 - time); }
+        else if (easeMethod == EASE_BOUNCE     ) { time = 1.0 - easeBounce( 1.0 - time); }
+        else if (easeMethod == EASE_CUSTOM_1   ) { /*Custom ease slot 1*/ }
+        else if (easeMethod == EASE_CUSTOM_2   ) { /*Custom ease slot 2*/ }
+        else if (easeMethod == EASE_CUSTOM_3   ) { /*Custom ease slot 3*/ }
         
         pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
         pos = rotate(pos, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
@@ -510,9 +504,9 @@ void main()
     
     
     //Vertex
-    pos.xy = wave( pos, characterIndex, waveFlag*waveAmplitude, waveFrequency, waveSpeed); //Apply the wave effect
-    pos.xy = wheel(pos, characterIndex, wheelFlag*wheelAmplitude, wheelFrequency, wheelSpeed); //Apply the wheel effect
-    pos.xy = shake(pos, characterIndex, shakeFlag*shakeAmplitude, shakeSpeed); //Apply the shake effect
+    pos.xy = wave( pos, characterIndex); //Apply the wave effect
+    pos.xy = wheel(pos, characterIndex); //Apply the wheel effect
+    pos.xy = shake(pos, characterIndex); //Apply the shake effect
     
     
     

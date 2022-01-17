@@ -1,15 +1,13 @@
-if (keyboard_check_pressed(vk_space))
+if (keyboard_check_pressed(vk_space) && scribble_is_text_element(textbox_element))
 {
-    if (textbox_element.get_typewriter_paused())
+    if (typist.get_paused())
     {
         //If we're paused, unpause!
-        textbox_element.typewriter_unpause(false);
+        typist.unpause();
     }
-    else if (textbox_element.get_typewriter_state() >= 1)
+    else if (typist.get_state() >= 1)
     {
-        textbox_skip = false;
-        
-        if (textbox_element.get_page() < textbox_element.get_pages() - 1)
+        if (textbox_element.get_page() < textbox_element.get_page_count() - 1)
         {
             //Otherwise move to the next page
             textbox_element.page(textbox_element.get_page() + 1);
@@ -22,6 +20,6 @@ if (keyboard_check_pressed(vk_space))
     }
     else
     {
-        textbox_skip = true;
+        typist.skip();
     }
 }

@@ -1,1 +1,1 @@
-element.draw(x, y);
+scribble(test_string).draw(x, y, typist);

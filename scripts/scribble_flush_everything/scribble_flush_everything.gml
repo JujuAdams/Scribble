@@ -8,9 +8,9 @@ function scribble_flush_everything()
     
     //Flush elements
     var _i = 0;
-    repeat(ds_list_size(global.__scribble_ecache_list))
+    repeat(array_length(global.__scribble_ecache_array))
     {
-        global.__scribble_ecache_list[| _i].flushed = true;
+        global.__scribble_ecache_array[_i].__flushed = true;
         ++_i;
     }
     
@@ -24,15 +24,15 @@ function scribble_flush_everything()
     }
     
     //Clean out the cache structures
-    ds_map_clear(global.__scribble_ecache_dict);
-    ds_list_clear(global.__scribble_ecache_name_list);
+    global.__scribble_ecache_dict = {};
+    array_resize(global.__scribble_ecache_name_array, 0);
     global.__scribble_ecache_name_index = 0;
     
-    ds_list_clear(global.__scribble_ecache_list);
+    array_resize(global.__scribble_ecache_array, 0);
     global.__scribble_ecache_list_index = 0;
     
-    ds_map_clear(global.__scribble_mcache_dict);
-    ds_list_clear(global.__scribble_mcache_name_list);
+    global.__scribble_mcache_dict = {};
+    array_resize(global.__scribble_mcache_name_array, 0);
     global.__scribble_mcache_name_index = 0;
     
     if (__SCRIBBLE_DEBUG) __scribble_trace("Clearing vertex buffer cache");

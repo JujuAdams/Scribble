@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "MSDF",
+    "path": "folders/Test Cases/MSDF.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_msdf",

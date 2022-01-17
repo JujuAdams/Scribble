@@ -25,8 +25,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Wrapping",
+    "path": "folders/Test Cases/Wrapping.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_wrap",

@@ -9,11 +9,10 @@ draw_set_colour(c_white);
 //Get the text element for our current line of text
 //Note that we're setting "textbox_element" here
 textbox_element = scribble(textbox_conversation[textbox_conversation_index])
-.wrap(textbox_width, textbox_height)
-.typewriter_in(textbox_skip? 9999 : 1, 0);
+.wrap(textbox_width, textbox_height);
 
 //Draw main text body
-textbox_element.draw(_x + 10, _y + 10);
+textbox_element.draw(_x + 10, _y + 10, typist);
 
 //Draw portrait
 draw_set_colour($936969);
@@ -26,7 +25,7 @@ if (sprite_exists(textbox_portrait))
 }
 
 //Draw a little icon once the text has finished displaying, or if text display is paused
-if ((textbox_element.get_typewriter_state() >= 1) || textbox_element.get_typewriter_paused())
+if ((typist.get_state() >= 1) || typist.get_paused())
 {
     draw_sprite(spr_white_coin, 0, _x + textbox_width + 20, _y + textbox_height + 20);
 }

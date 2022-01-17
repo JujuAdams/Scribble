@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Font Setup",
-    "path": "folders/Scribble/Font Setup.yy",
+    "name": "Deprecated",
+    "path": "folders/Scribble/(System - don't call these functions)/Deprecated.yy",
   },
   "resourceVersion": "1.0",
   "name": "scribble_font_add_msdf",

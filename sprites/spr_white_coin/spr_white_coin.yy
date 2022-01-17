@@ -54,7 +54,7 @@
             {"id":"fdc3b3fe-9018-4437-b141-28fafe1c3581","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"fe1bb1b4-4016-4e8d-8505-cc68c48b678f","path":"sprites/spr_white_coin/spr_white_coin.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"34910ddc-637a-466a-905b-f5238e5a44f9","Key":2.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"c8f5e9aa-c50a-46d1-af7d-80245117c38b","path":"sprites/spr_white_coin/spr_white_coin.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"5be8f23d-76b4-4dcf-b278-897a9f3342a0","Key":3.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"381af9c7-9201-43b3-81f2-e3d7de3f7ec6","path":"sprites/spr_white_coin/spr_white_coin.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"modifiers":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack",},
+          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
     ],
     "visibleRange": null,
     "lockOrigin": false,
@@ -82,7 +82,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Sprites",
-    "path": "folders/Examples/Sprites.yy",
+    "path": "folders/Sprites.yy",
   },
   "resourceVersion": "1.0",
   "name": "spr_white_coin",

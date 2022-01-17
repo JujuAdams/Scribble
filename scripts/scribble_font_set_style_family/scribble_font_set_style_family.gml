@@ -22,10 +22,10 @@ function scribble_font_set_style_family(_r_font, _b_font, _i_font, _bi_font)
         {
             with(_struct)
             {
-                style_regular     = _font_names[0];
-                style_bold        = _font_names[1];
-                style_italic      = _font_names[2];
-                style_bold_italic = _font_names[3];
+                __style_regular     = _font_names[0];
+                __style_bold        = _font_names[1];
+                __style_italic      = _font_names[2];
+                __style_bold_italic = _font_names[3];
             }
         }
         

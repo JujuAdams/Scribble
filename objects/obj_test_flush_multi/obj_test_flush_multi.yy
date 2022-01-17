@@ -25,8 +25,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Scribble Methods",
+    "path": "folders/Test Cases/Scribble Methods.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_flush_multi",

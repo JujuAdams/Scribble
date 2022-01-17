@@ -1,11 +1,12 @@
 scribble_font_set_default("fnt_test_0");
-scribble_font_add_all();
 scribble_font_set_style_family("fnt_style", "fnt_style_b", "fnt_style_i", "fnt_style_bi");
 
-scribble_typewriter_add_event("portrait", example_dialogue_set_portrait);
-scribble_typewriter_add_event("name", example_dialogue_set_name);
-var _mapstring = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
-scribble_font_add_from_sprite("spr_sprite_font", _mapstring, 0, 3);
+scribble_typists_add_event("portrait", example_dialogue_set_portrait);
+scribble_typists_add_event("name", example_dialogue_set_name);
+
+var _mapstring = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
+font_add_sprite_ext(spr_sprite_font, _mapstring, true, 1);
+scribble_glyph_set("spr_sprite_font", " ", SCRIBBLE_GLYPH.WIDTH, 4); //Set the space width to be a bit smaller for aesthetics
 
 textbox_conversation = ["[portrait,spr_portrait][name,Juju]Hi! Welcome to [wave][rainbow]Scribble " + __SCRIBBLE_VERSION + "![/rainbow][/wave]\n\n\n[slant]Please press space to advance the conversation[/slant]",
                         "This example will show you how to make a simple dialogue system.[delay] This won't be an exhaustive demo but it should show you enough to get excited about what you can achieve with [rainbow]Scribble[/rainbow].",
@@ -31,5 +32,7 @@ textbox_height             = 100;
 textbox_portrait           = -1;
 textbox_name               = undefined;
 textbox_conversation_index = 0;
-textbox_skip               = false;
-textbox_element            = SCRIBBLE_NULL_ELEMENT;
+textbox_element            = undefined;
+
+typist = scribble_typist();
+typist.in(1, 0);

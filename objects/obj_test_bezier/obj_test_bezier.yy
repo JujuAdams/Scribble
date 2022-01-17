@@ -25,8 +25,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Test Cases",
-    "path": "folders/Test Cases.yy",
+    "name": "Misc Positioning",
+    "path": "folders/Test Cases/Misc Positioning.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_bezier",
