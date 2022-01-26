@@ -611,16 +611,17 @@ Convenience function.
 
 ?> MSDF fonts require special considerations. Please read [the MSDF article](msdf-fonts) for more information.
 
-## `.msdf_shadow(colour, alpha, xoffset, yoffset)`
+## `.msdf_shadow(colour, alpha, xoffset, yoffset, [softness])`
 
 **Returns**: The text element
 
-|Name     |Datatype|Purpose                                                                    |
-|---------|--------|---------------------------------------------------------------------------|
-|`colour` |integer |The colour of the shadow, as a standard GameMaker 24-bit BGR format        |
-|`alpha`  |real    |Opacity of the shadow, `0.0` being transparent and `1.0` being fully opaque|
-|`xoffset`|real    |x-coordinate of the shadow, relative to the parent glyph                   |
-|`yoffset`|real    |y-coordinate of the shadow, relative to the parent glyph                   |
+|Name      |Datatype|Purpose                                                                                                  |
+|----------|--------|---------------------------------------------------------------------------------------------------------|
+|`colour`  |integer |The colour of the shadow, as a standard GameMaker 24-bit BGR format                                      |
+|`alpha`   |number  |Opacity of the shadow, `0.0` being transparent and `1.0` being fully opaque                              |
+|`xoffset` |number  |x-coordinate of the shadow, relative to the parent glyph                                                 |
+|`yoffset` |number  |y-coordinate of the shadow, relative to the parent glyph                                                 |
+|`softness`|number  |Optional. Larger values give a softer edge to the shadow. If not specified, this will default to `0.1` (which draws an antialiased but clean shadow edge)|
 
 Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all. If you find that your shadow(s) are being clipped or cut off when using large offset values, [regenerate your MSDF fonts](msdf-fonts) using a larger `pxrange`.
 
