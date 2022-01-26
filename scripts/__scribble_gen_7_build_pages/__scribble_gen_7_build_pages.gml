@@ -5,8 +5,8 @@
                                 _page_data.__glyph_count = 1 + _page_data.__glyph_end - _page_data.__glyph_start;\
                                 _page_data.__width       = ds_grid_get_max(_line_grid, _page_start_line, __SCRIBBLE_GEN_LINE.WIDTH, _page_end_line, __SCRIBBLE_GEN_LINE.WIDTH);\
                                 _page_data.__height      = _line_y;\
-                                _page_data.__min_y       = (__valign == fa_middle)? -_line_y/2 : ((__valign == fa_bottom)? -_line_y :       0);\
-                                _page_data.__max_y       = (__valign == fa_middle)?  _line_y/2 : ((__valign == fa_bottom)?        0 : _line_y);\
+                                _page_data.__min_y       = (__valign == fa_middle)? -(_line_y div 2) : ((__valign == fa_bottom)? -_line_y :       0);\
+                                _page_data.__max_y       = (__valign == fa_middle)?  (_line_y div 2) : ((__valign == fa_bottom)?        0 : _line_y);\
                                 ;\// Set up the character indexes for the page, relative to the character index of the first glyph on the page
                                 var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX];\
                                 ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, -_page_anim_start);\

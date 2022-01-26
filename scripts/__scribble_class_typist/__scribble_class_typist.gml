@@ -285,6 +285,8 @@ function __scribble_class_typist() constructor
         if ((__last_element == undefined) || (__last_page == undefined) || (__last_character == undefined)) return 0.0;
         if (__in == undefined) return 1.0;
         
+        if (!weak_ref_alive(__last_element)) return 2.0; //If there's no element then report that the element is totally faded out
+        
         var _model = __last_element.ref.__get_model(true);
         if (!is_struct(_model)) return 2.0; //If there's no model then report that the element is totally faded out
         
@@ -344,7 +346,7 @@ function __scribble_class_typist() constructor
     
     static __associate = function(_text_element)
     {
-        if ((__last_element == undefined) || (__last_element.ref != _text_element)) //We didn't have an element defined, or we swapped to a different element
+        if ((__last_element == undefined) || !weak_ref_alive(__last_element) || (__last_element.ref != _text_element)) //We didn't have an element defined, or we swapped to a different element
         {
             reset();
             __last_element = weak_ref_create(_text_element);

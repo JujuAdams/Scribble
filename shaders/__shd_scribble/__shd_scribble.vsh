@@ -1,6 +1,8 @@
 //   @jujuadams   v8.0.0   2021-12-15
 precision highp float;
 
+#define BLEND_SPRITES true
+
 const int MAX_EFFECTS = 11;
 #define SPRITE_FLAG   flagArray[ 0]
 #define WAVE_FLAG     flagArray[ 1]
@@ -441,11 +443,20 @@ void main()
     
     if (CYCLE_FLAG > 0.5) v_vColour = cycle(characterIndex, v_vColour); //Cycle colours through the defined palette
     v_vColour = rainbow(characterIndex, v_vColour); //Cycle colours for the rainbow effect
-    v_vColour *= u_vColourBlend; //And then blend with the blend colour/alpha
+    
+    if (!BLEND_SPRITES && (SPRITE_FLAG > 0.5))
+    {
+        //If we're not RGB blending sprites and this *is* a sprite then only modify the alpha channel
+        v_vColour.a *= u_vColourBlend.a;
+    }
+    else
+    {
+        //And then blend with the blend colour/alpha
+        v_vColour *= u_vColourBlend;
+    }
+    
     if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
     if ((BLINK_FLAG > 0.5) && (u_fBlinkState < 0.5)) v_vColour.a = 0.0;
-    
-    
     
     //Regions
     if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y))
