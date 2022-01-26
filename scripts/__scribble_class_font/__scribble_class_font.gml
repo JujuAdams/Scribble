@@ -22,7 +22,7 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     __style_italic      = undefined;
     __style_bold_italic = undefined;
     
-    static __copy_to = function(_target)
+    static __copy_to = function(_target, _copy_styles)
     {
         var _names = variable_struct_get_names(self);
         var _i = 0;
@@ -37,7 +37,7 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
             {
                 ds_grid_copy(_target.__glyph_data_grid, __glyph_data_grid);
             }
-            else if ((_name != "__name") && (_name != "__style_regular") && (_name != "__style_bold") && (_name != "__style_italic") && (_name != "__style_bold_italic"))
+            else if ((_name != "__name") && (_copy_styles || ((_name != "__style_regular") && (_name != "__style_bold") && (_name != "__style_italic") && (_name != "__style_bold_italic"))))
             {
                 variable_struct_set(_target, _name, variable_struct_get(self, _name));
             }
