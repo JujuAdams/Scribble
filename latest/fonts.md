@@ -25,6 +25,17 @@ This function sets the default font to use for future [`scribble()`](scribble-me
 
 &nbsp;
 
+## `scribble_font_duplicate(fontName, newName)`
+
+**Returns:** N/A (`undefined`)
+
+|Name      |Datatype|Purpose                      |
+|----------|--------|-----------------------------|
+|`fontName`|string  |Name of the font to duplicate|
+|`newName` |string  |Name for the new font        |
+
+&nbsp;
+
 ## `scribble_font_set_style_family(regular, bold, italic, boldItalic)`
 
 **Returns:** N/A (`undefined`)
