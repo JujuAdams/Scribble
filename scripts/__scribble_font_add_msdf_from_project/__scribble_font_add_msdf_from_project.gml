@@ -107,6 +107,20 @@ function __scribble_font_add_msdf_from_project(_sprite)
             var _xadvance = round(_em_size*_json_glyph_map[? "advance"]);
         }
         
+        if (SCRIBBLE_MSDF_BORDER_TRIM > 0)
+        {
+            _tex_l += SCRIBBLE_MSDF_BORDER_TRIM;
+            _tex_t += SCRIBBLE_MSDF_BORDER_TRIM;
+            _tex_r -= SCRIBBLE_MSDF_BORDER_TRIM;
+            _tex_b -= SCRIBBLE_MSDF_BORDER_TRIM;
+            
+            _w -= 2*SCRIBBLE_MSDF_BORDER_TRIM;
+            _h -= 2*SCRIBBLE_MSDF_BORDER_TRIM;
+            
+            _xoffset += SCRIBBLE_MSDF_BORDER_TRIM;
+            _yoffset += SCRIBBLE_MSDF_BORDER_TRIM;
+        }
+        
         //if (_xoffset < 0) __scribble_trace("char = ", _char, ", offset = ", _xoffset);
         
         if (__SCRIBBLE_DEBUG)
