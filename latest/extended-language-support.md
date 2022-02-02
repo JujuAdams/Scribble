@@ -40,8 +40,12 @@ Additionally, Thai script does not customarily put spaces between words as in ma
 
 Ultimately, the best solution available to us is for zero-width spaces to be inserted between words. If you're using Scribble professionally and in conjunction with a localisation team, please direct them to add zero-width spaces between words. This ensures that the parser understands where to split a line of text for the purposes of text wrapping whilst also ensuring that text is familiar for a native Thai speaker.
 
+?> The Unicode character ranges used by C90 fonts are `3584 -> 3711` and `63232 -> 63258` (decimal).
+
 &nbsp;
 
 ## Devanagari/Hindi (unsupported)
 
 At this time, Devanagari script is not supported by Scribble. In the near future, the "Krutidev" algorithm may make an appearance in Scribble.
+
+?> The Unicode character ranges used by Krutidev are a bit weird, but here they are: `144`, `160 -> 249`, `338`, `352`, `376`, `402`, `710`, `732`, `8208 -> 8250`, and `8482` (decimal).
