@@ -10,6 +10,16 @@ Scribble natively supports the vast majority of alphabetic languages. Some ligat
 
 All non-Latin languages are presumed by Scribble to be written from left to right, with the exception of Hebrew which is written from right to left. Again, this can be modified on request. Left-to-right and right-to-left fonts can be combined as you see fit.
 
+Below is a table with the standard glyph range for some common alphabetic scripts. These are not exhaustive and many be inaccurate, please test in detail before releasing your game!
+
+|Font Family                  |Unicode Glyph Range (decimal)|
+|-----------------------------|-----------------------------|
+|Basic Symbols and Basic Latin|`32 -> 127`                  |
+|Extended Latin               |`128 -> 591`                 |
+|Greek                        |`880 -> 1023`                |
+|Cyrillic                     |`1024 -> 1279`               |
+|Hebrew                       |`1424 -> 1535`               |
+
 &nbsp;
 
 ## Chinese, Japanese, and Korean
