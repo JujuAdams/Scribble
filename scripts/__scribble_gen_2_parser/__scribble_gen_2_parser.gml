@@ -106,6 +106,7 @@ function __scribble_gen_2_parser()
     
     #region Determine the overall bidi direction for the string
     
+    //TODO - Is it faster to scan for the overall bidi post-hoc?
     
     var _overall_bidi = global.__scribble_generator_state.__overall_bidi;
     if ((_overall_bidi != __SCRIBBLE_BIDI.L2R) && (_overall_bidi != __SCRIBBLE_BIDI.R2L))
