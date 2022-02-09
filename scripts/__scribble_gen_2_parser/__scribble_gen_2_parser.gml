@@ -507,6 +507,13 @@ function __scribble_gen_2_parser()
                         var _cycle_b = (_tag_parameter_count > 3)? max(1, real(_tag_parameters[3])) : 0;
                         var _cycle_a = (_tag_parameter_count > 4)? max(1, real(_tag_parameters[4])) : 0;
                         
+                        _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? "cycle"]);
+                        
+                        //Add an effect flag control
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_effect_flags;
+                        ++_control_count;
+                        
                         //Add a cycle control
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.CYCLE;
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
@@ -515,6 +522,13 @@ function __scribble_gen_2_parser()
                     
                     // [/cycle]
                     case 23:
+                        _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? "cycle"]));
+                        
+                        //Add an effect flag control
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_effect_flags;
+                        ++_control_count;
+                        
                         //Add a cycle control
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.CYCLE;
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = undefined;

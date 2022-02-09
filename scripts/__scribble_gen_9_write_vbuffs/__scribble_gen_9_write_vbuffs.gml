@@ -12,7 +12,7 @@
                                     var _half_w = 0.5*_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.WIDTH ];\
                                     var _half_h = 0.5*_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.HEIGHT];\
                                     ;\\
-                                    var _glyph_scale    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.SCALE];
+                                    var _glyph_scale   = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.SCALE];
 
 
 
@@ -170,12 +170,10 @@ function __scribble_gen_9_write_vbuffs()
                         
                         if (_glyph_cycle == undefined)
                         {
-                            _glyph_effect_flags = ~((~_glyph_effect_flags) | (1 << global.__scribble_effects[? "cycle"]));
                             _write_colour = (__SCRIBBLE_FIX_ARGB? scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
                         }
                         else
                         {
-                            _glyph_effect_flags |= (1 << global.__scribble_effects[? "cycle"]);
                             _write_colour = (__SCRIBBLE_FIX_ARGB? scribble_rgb_to_bgr(_glyph_cycle) : _glyph_cycle); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
                         }
                     break;
