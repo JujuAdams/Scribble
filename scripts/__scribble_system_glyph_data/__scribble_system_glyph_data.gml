@@ -71,6 +71,7 @@ function __scribble_system_glyph_data()
     _map[? ord(".") ] = __SCRIBBLE_BIDI.SYMBOL;
     _map[? ord("/") ] = __SCRIBBLE_BIDI.SYMBOL;
     _map[? ord(":") ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? ord("-") ] = __SCRIBBLE_BIDI.SYMBOL;
     
     //More control characters
     _map[? $2066] = __SCRIBBLE_BIDI.WHITESPACE;

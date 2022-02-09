@@ -45,7 +45,14 @@ function scribble_typists_add_event(_name, _function)
     var _old_function = global.__scribble_typewriter_events[? _name];
     if (!is_undefined(_old_function))
     {
-        __scribble_trace("Warning! Overwriting event [" + _name + "] tied to \"" + (is_method(_old_function)? string(_old_function) : script_get_name(_old_function)) + "\"");
+        if (is_numeric(_old_function) and (_old_function < 0))
+        {
+            __scribble_trace("Warning! Overwriting event [" + _name + "] tied to <invalid script>");
+        }
+        else
+        {
+            __scribble_trace("Warning! Overwriting event [" + _name + "] tied to \"" + (is_method(_old_function)? string(_old_function) : script_get_name(_old_function)) + "\"");
+        }
     }
     
     global.__scribble_typewriter_events[? _name] = _function;

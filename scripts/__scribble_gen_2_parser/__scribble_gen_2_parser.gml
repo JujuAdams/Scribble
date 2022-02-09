@@ -104,17 +104,45 @@ function __scribble_gen_2_parser()
     buffer_write(_string_buffer, buffer_u64, 0x0); //Add some extra null characters to avoid errors where we're reading outside the buffer
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     
-    //Determine the overall bidi direction for the string
+    #region Determine the overall bidi direction for the string
+    
+    //TODO - Is it faster to scan for the overall bidi post-hoc?
+    
     var _overall_bidi = global.__scribble_generator_state.__overall_bidi;
     if ((_overall_bidi != __SCRIBBLE_BIDI.L2R) && (_overall_bidi != __SCRIBBLE_BIDI.R2L))
     {
         var _global_glyph_bidi_map = global.__scribble_glyph_data.__bidi_map;
         
         // Searching until we find a glyph with a well-defined direction
+        var _in_tag = false;
+        var _state_command_tag_flipflop = false;
         repeat(string_byte_length(_element_text))
         {
             var _glyph_ord = __scribble_buffer_read_unicode(_string_buffer)
             if (_glyph_ord == 0) break;
+            
+            if (_in_tag)
+            {
+                if (_glyph_ord == SCRIBBLE_COMMAND_TAG_CLOSE) _in_tag = false;
+                continue;
+            }
+            
+            if ((_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignore_commands)
+            {
+                if (__scribble_buffer_peek_unicode(_string_buffer, buffer_tell(_string_buffer)) == SCRIBBLE_COMMAND_TAG_OPEN)
+                {
+                    _state_command_tag_flipflop = true;
+                }
+                else if (_state_command_tag_flipflop)
+                {
+                    _state_command_tag_flipflop = false;
+                }
+                else
+                {
+                    _in_tag = true;
+                    continue;
+                }
+            }
             
             if ((_glyph_ord >= 0x4E00) && (_glyph_ord <= 0x9FFF)) //CJK Unified ideographs block
             {
@@ -148,6 +176,8 @@ function __scribble_gen_2_parser()
         global.__scribble_generator_state.__overall_bidi = _overall_bidi;
     }
     
+    #endregion
+    
     //Resize grids if we have to
     var _element_expected_text_length = string_length(_element_text) + 2;
     if (ds_grid_width(_glyph_grid    ) < _element_expected_text_length) ds_grid_resize(_glyph_grid,     _element_expected_text_length, __SCRIBBLE_GEN_GLYPH.__SIZE);
@@ -171,9 +201,9 @@ function __scribble_gen_2_parser()
     
     __SCRIBBLE_PARSER_SET_FONT;
     
-    var _state_effect_flags = 0;
-    var _state_colour       = 0xFF000000 | _starting_colour; //Uses all four bytes
-    var _state_halign       = _starting_halign;
+    var _state_effect_flags         = 0;
+    var _state_colour               = 0xFF000000 | _starting_colour; //Uses all four bytes
+    var _state_halign               = _starting_halign;
     var _state_command_tag_flipflop = false;
     
     var _state_scale             = 1.0;
@@ -477,6 +507,13 @@ function __scribble_gen_2_parser()
                         var _cycle_b = (_tag_parameter_count > 3)? max(1, real(_tag_parameters[3])) : 0;
                         var _cycle_a = (_tag_parameter_count > 4)? max(1, real(_tag_parameters[4])) : 0;
                         
+                        _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? "cycle"]);
+                        
+                        //Add an effect flag control
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_effect_flags;
+                        ++_control_count;
+                        
                         //Add a cycle control
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.CYCLE;
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
@@ -485,6 +522,13 @@ function __scribble_gen_2_parser()
                     
                     // [/cycle]
                     case 23:
+                        _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? "cycle"]));
+                        
+                        //Add an effect flag control
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_effect_flags;
+                        ++_control_count;
+                        
                         //Add a cycle control
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.CYCLE;
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = undefined;
