@@ -439,10 +439,11 @@ void main()
     //Colour
     v_vColour = in_Colour;
     
-    if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
-    
     if (CYCLE_FLAG > 0.5) v_vColour = cycle(characterIndex, v_vColour); //Cycle colours through the defined palette
     v_vColour = rainbow(characterIndex, v_vColour); //Cycle colours for the rainbow effect
+    
+    //Apply the gradient effect
+    if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
     
     if (!BLEND_SPRITES && (SPRITE_FLAG > 0.5))
     {
