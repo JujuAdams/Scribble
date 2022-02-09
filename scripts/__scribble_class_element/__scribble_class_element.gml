@@ -1251,27 +1251,27 @@ function __scribble_class_element(_string, _unique_id) constructor
                 __model_cache_name_dirty = false;
                 
                 buffer_seek(global.__scribble_buffer, buffer_seek_start, 0);
-                buffer_write(global.__scribble_buffer, buffer_text, __text           );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A); //colon
-                buffer_write(global.__scribble_buffer, buffer_text, __starting_font  );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A); //colon
-                buffer_write(global.__scribble_buffer, buffer_text, __starting_colour);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __starting_halign);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __starting_valign);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __line_height_min);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __line_height_max);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __line_spacing   );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __wrap_max_width  - (__padding_l + __padding_r)); buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __wrap_max_height - (__padding_t + __padding_b)); buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __wrap_per_char  );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __wrap_no_pages  );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __wrap_max_scale );     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[0]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C); //comma
-                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[1]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
-                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[2]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
-                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[3]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
-                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[4]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
-                buffer_write(global.__scribble_buffer, buffer_text, __bezier_array[5]);     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, string(__bidi_hint));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
-                buffer_write(global.__scribble_buffer, buffer_text, __ignore_command_tags); buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__text           ));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A); //colon
+                buffer_write(global.__scribble_buffer, buffer_text, string(__starting_font  ));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A); //colon
+                buffer_write(global.__scribble_buffer, buffer_text, string(__starting_colour));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__starting_halign));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__starting_valign));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__line_height_min));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__line_height_max));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__line_spacing   ));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__wrap_max_width  - (__padding_l + __padding_r))); buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__wrap_max_height - (__padding_t + __padding_b))); buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__wrap_per_char  ));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__wrap_no_pages  ));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__wrap_max_scale ));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__bezier_array[0]));     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C); //comma
+                buffer_write(global.__scribble_buffer, buffer_text, string(__bezier_array[1]));     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__bezier_array[2]));     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__bezier_array[3]));     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__bezier_array[4]));     buffer_write(global.__scribble_buffer, buffer_u8,  0x2C);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__bezier_array[5]));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__bidi_hint));           buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
+                buffer_write(global.__scribble_buffer, buffer_text, string(__ignore_command_tags)); buffer_write(global.__scribble_buffer, buffer_u8,  0x3A);
                 buffer_write(global.__scribble_buffer, buffer_u8, 0x00);
                 buffer_seek(global.__scribble_buffer, buffer_seek_start, 0);
                 __model_cache_name = buffer_read(global.__scribble_buffer, buffer_string);
