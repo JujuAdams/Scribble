@@ -20,7 +20,7 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
     }
     
     //Verify that the two fonts can be used together
-    var _y_offset = __scribble_super_glyph_copy_common(_target_font_data, _source_font_data);
+    __scribble_super_glyph_copy_common(_target_font_data, _source_font_data);
     
     var _target_glyphs_map       = _target_font_data.__glyphs_map;
     var _target_glyph_data_grid  = _target_font_data.__glyph_data_grid;
@@ -48,7 +48,7 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
         var _unicode = _glyph_range_array[0];
         repeat(1 + _glyph_range_array[1] - _unicode)
         {
-            __scribble_glyph_duplicate(_source_glyphs_map, _source_glyphs_data_grid, _target_glyphs_map, _target_glyph_data_grid, _unicode, _y_offset, _overwrite);
+            __scribble_glyph_duplicate(_source_glyphs_map, _source_glyphs_data_grid, _target_glyphs_map, _target_glyph_data_grid, _unicode, _overwrite);
             ++_unicode;
         }
         
@@ -94,33 +94,6 @@ function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data
     
     _target_font_data.__msdf = _source_font_data.__msdf;
     _target_font_data.__msdf_pxrange = _source_font_data.__msdf_pxrange;
-    
-    //Now calculate the y offset required to centre one font to the other
-    if (_target_font_data.__height > _source_font_data.__height)
-    {
-        return (_target_font_data.__height - _source_font_data.__height) div 2;
-    }
-    
-    if (_target_font_data.__height < _source_font_data.__height)
-    {
-        var _glyphs_map = _target_font_data.__glyphs_map;
-        if (ds_map_size(_glyphs_map) > 0)
-        {
-            var _y_offset = (_source_font_data.__height - _target_font_data.__height) div 2;
-            
-            var _glyphs_array = ds_map_values_to_array(_glyphs_map);
-            var _i = 0;
-            repeat(array_length(_glyphs_array))
-            {
-                _glyphs_array[_i][@ SCRIBBLE_GLYPH.Y_OFFSET] += _y_offset;
-                ++_i;
-            }
-        }
-        
-        _target_font_data.__height = _source_font_data.__height;
-    }
-    
-    return 0;
 }
 
 function __scribble_prepare_super_work_array(_input_array)
@@ -137,6 +110,7 @@ function __scribble_prepare_super_work_array(_input_array)
             var _j = 1;
             repeat(string_length(_glyph_to_copy))
             {
+                //TODO - Make this more efficient by grouping contiguous glyphs together
                 var _unicode = ord(string_char_at(_glyph_to_copy, _j));
                 array_push(_output_array, [_unicode, _unicode]);
                 ++_j;
@@ -161,7 +135,7 @@ function __scribble_prepare_super_work_array(_input_array)
     return _output_array;
 }
 
-function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _target_grid, _glyph, _y_offset, _overwrite)
+function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _target_grid, _glyph, _overwrite)
 {
     var _source_x = _source_map[? _glyph];
     if (_source_x == undefined)
