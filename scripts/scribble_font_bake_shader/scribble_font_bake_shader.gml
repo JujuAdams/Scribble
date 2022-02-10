@@ -59,208 +59,46 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
     
     
-    //Build a priority queue of glyphs, wide assets first
-    var _priority_queue = ds_priority_create();
-    var _i = 0;
-    repeat(_glyph_count)
-    {
-        var _unicode = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.UNICODE];
-        if (_unicode != 32)
-        {
-            var _width      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.WIDTH ];
-            var _height     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.HEIGHT];
-            var _width_ext  = _width  + _border + _l_pad + _r_pad;
-            var _height_ext = _height + _border + _t_pad + _b_pad;
-            
-            var _priority = _width_ext*_texture_size + _height_ext;
-            ds_priority_add(_priority_queue, _i, _priority);
-            //__scribble_trace("Queuing \"" + _unicode + "\" (" + string(_i) + ") for packing (size=" + string(_width_ext) + "x" + string(_height_ext) + ", weight=" + string(_priority) + ")");
-        }
-    
-        ++_i;
-    }
-    
-    var _layout_count = ds_priority_size(_priority_queue);
-    
-    
-    
-    //Pack glyphs on the texture page
-    //__scribble_trace("" + string(ds_priority_size(_priority_queue)) + " glyphs to pack");
-    
-    var _layout_grid = ds_grid_create(_layout_count, 5);
-    var _free_right_list = ds_list_create();
-    var _free_bottom_list = ds_list_create();
-    var _added_count = 0;
-    while(!ds_priority_empty(_priority_queue))
-    {
-        var _index       = ds_priority_delete_max(_priority_queue);
-        var _width       = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.WIDTH ];
-        var _height      = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.HEIGHT];
-        var _width_ext   = _width  + _border + _l_pad + _r_pad;
-        var _height_ext  = _height + _border + _t_pad + _b_pad;
-        
-        //__scribble_trace("Packing \"" + _character + "\" (" + string(_index) + "), size=" + string(_width_ext) + "," + string(_height_ext));
-        
-        if (_added_count == 0)
-        {
-            var _found = true;
-        
-            var _l = _border;
-            var _t = _border;
-            var _r = _l + _width_ext  - 1;
-            var _b = _t + _height_ext - 1;
-        }
-        else
-        {
-            var _found = false;
-        
-            //Scan to the right of each glyph to try to find a free spot
-            if (!_found)
-            {
-                var _j = 0;
-                repeat(ds_list_size(_free_right_list))
-                {
-                    var _adj_index = _free_right_list[| _j];
-                    
-                    var _l = _layout_grid[# _adj_index, 2] + 1;
-                    var _t = _layout_grid[# _adj_index, 1];
-                    var _r = _l + _width_ext  - 1;
-                    var _b = _t + _height_ext - 1;
-                
-                    if ((_r < _texture_size) && (_b < _texture_size))
-                    {
-                        _found = true;
-                        //__scribble_trace("   Trying to the right of \"" + string(_target_array[5]) + "\"");
-                        
-                        var _k = 0;
-                        repeat(_added_count) //TODO - Write a faster AABB check
-                        {
-                            var _check_l = _layout_grid[# _k, 0];
-                            var _check_t = _layout_grid[# _k, 1];
-                            var _check_r = _layout_grid[# _k, 2];
-                            var _check_b = _layout_grid[# _k, 3];
-                        
-                            if ((_l <= _check_r) && (_r >= _check_l) && (_t <= _check_b) && (_b >= _check_t))
-                            {
-                                _found = false;
-                                break;
-                            }
-                            
-                            ++_k;
-                        }
-                        
-                        if (_found)
-                        {
-                            ds_list_delete(_free_right_list, _adj_index);
-                            break;
-                        }
-                    }
-                    
-                    ++_j;
-                }
-            }
-        
-            //If we've not found a free space yet, try scanning underneath each font texture
-            if (!_found)
-            {
-                var _j = 0;
-                repeat(ds_list_size(_free_bottom_list))
-                {
-                    var _adj_index = _free_bottom_list[| _j];
-                    
-                    var _l = _layout_grid[# _j, 0];
-                    var _t = _layout_grid[# _j, 3] + 1;
-                    var _r = _l + _width_ext  - 1;
-                    var _b = _t + _height_ext - 1;
-                
-                    if ((_r < _texture_size) && (_b < _texture_size))
-                    {
-                        _found = true;
-                        //__scribble_trace("   Trying beneath \"" + string(_target_array[5]) + "\"");
-                        
-                        var _k = 0;
-                        repeat(_added_count) //TODO - Write a faster AABB check
-                        {
-                            var _check_l = _layout_grid[# _k, 0];
-                            var _check_t = _layout_grid[# _k, 1];
-                            var _check_r = _layout_grid[# _k, 2];
-                            var _check_b = _layout_grid[# _k, 3];
-                        
-                            if ((_l <= _check_r) && (_r >= _check_l) && (_t <= _check_b) && (_b >= _check_t))
-                            {
-                                _found = false;
-                                break;
-                            }
-                            
-                            ++_k;
-                        }
-                    
-                        if (_found)
-                        {
-                            ds_list_delete(_free_bottom_list, _adj_index);
-                            break;
-                        }
-                    }
-                    
-                    ++_j;
-                }
-            }
-        }
-    
-        if (_found)
-        {
-            _layout_grid[# _added_count, 0] = _l;
-            _layout_grid[# _added_count, 1] = _t;
-            _layout_grid[# _added_count, 2] = _r;
-            _layout_grid[# _added_count, 3] = _b;
-            _layout_grid[# _added_count, 4] = _index;
-            
-            ds_list_add(_free_right_list, _added_count);
-            ds_list_add(_free_bottom_list, _added_count);
-            
-            _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.U0] = _l;
-            _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.V0] = _t;
-            _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.U1] = _l + _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.WIDTH ] + _l_pad + _r_pad;;
-            _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.V1] = _t + _new_glyphs_grid[# _index, SCRIBBLE_GLYPH.HEIGHT] + _t_pad + _b_pad;;
-            
-            //__scribble_trace("   " + string(_l) + "," + string(_t) + " -> " + string(_r) + "," + string(_b));
-            ++_added_count;
-        }
-        else
-        {
-            break;
-        }
-    }
-    
-    ds_priority_destroy(_priority_queue);
-    ds_list_destroy(_free_right_list);
-    ds_list_destroy(_free_bottom_list);
-    
-    if (!_found)
-    {
-        __scribble_error("No space left on ", _texture_size, "x", _texture_size, " texture page\nPlease increase the size of the texture page");
-        return;
-    }
-    
-    
-    
     //Build a vertex buffer for all the glyphs
     var _vbuff = vertex_create_buffer();
     vertex_begin(_vbuff, global.__scribble_passthrough_vertex_format);
     
+    var _line_x      = 0;
+    var _line_y      = 0;
+    var _line_height = 0;
+    
     var _i = 0;
-    repeat(_layout_count)
+    repeat(_glyph_count)
     {
-        var _index = _layout_grid[# _i, 4];
+        var _width  = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.WIDTH ];
+        var _height = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.HEIGHT];
+        var _u0     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U0    ];
+        var _v0     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V0    ];
+        var _u1     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U1    ];
+        var _v1     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V1    ];
         
-        var _l  = _layout_grid[# _i, 0] + _l_pad; //Offset by the L,T padding
-        var _t  = _layout_grid[# _i, 1] + _t_pad;
-        var _r  = _l + _src_glyph_grid[# _index, SCRIBBLE_GLYPH.WIDTH ];
-        var _b  = _t + _src_glyph_grid[# _index, SCRIBBLE_GLYPH.HEIGHT];
-        var _u0 = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.U0];
-        var _v0 = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.V0];
-        var _u1 = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.U1];
-        var _v1 = _src_glyph_grid[# _index, SCRIBBLE_GLYPH.V1];
+        var _width_ext  = _width  + _border + _l_pad + _r_pad;
+        var _height_ext = _height + _border + _t_pad + _b_pad;
+        
+        if (_line_y + _height_ext >= _texture_size)
+        {
+            __scribble_error("No space left on ", _texture_size, "x", _texture_size, " texture page\nPlease increase the size of the texture page");
+            vertex_end(_vbuff);
+            vertex_delete_buffer(_vbuff);
+            return;
+        }
+        
+        if (_line_x + _width_ext >= _texture_size)
+        {
+            _line_x       = 0;
+            _line_y      += _line_height;
+            _line_height  = 0;
+        }
+        
+        var _l = _l_pad + _line_x;
+        var _t = _t_pad + _line_y;
+        var _r = _l + _width;
+        var _b = _t + _height;
         
         vertex_position(_vbuff, _l, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
         vertex_position(_vbuff, _r, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
@@ -269,6 +107,14 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         vertex_position(_vbuff, _r, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
         vertex_position(_vbuff, _r, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
         vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+            
+        _new_glyphs_grid[# _i, SCRIBBLE_GLYPH.U0] = _line_x;
+        _new_glyphs_grid[# _i, SCRIBBLE_GLYPH.V0] = _line_y;
+        _new_glyphs_grid[# _i, SCRIBBLE_GLYPH.U1] = _line_x + _width  + _l_pad + _r_pad;;
+        _new_glyphs_grid[# _i, SCRIBBLE_GLYPH.V1] = _line_y + _height + _t_pad + _b_pad;;
+        
+        _line_x += _width_ext;
+        _line_height = max(_line_height, _height_ext);
         
         ++_i;
     }

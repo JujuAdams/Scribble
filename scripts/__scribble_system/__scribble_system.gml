@@ -1,6 +1,6 @@
 // @jujuadams
-#macro __SCRIBBLE_VERSION           "8.0.1 beta 6"
-#macro __SCRIBBLE_DATE              "2022-02-09"
+#macro __SCRIBBLE_VERSION           "8.0.1 beta 7"
+#macro __SCRIBBLE_DATE              "2022-02-10"
 #macro __SCRIBBLE_DEBUG             false
 #macro __SCRIBBLE_VERBOSE_GC        false
 #macro SCRIBBLE_LOAD_FONTS_ON_BOOT  true
@@ -184,6 +184,27 @@ global.__scribble_effects_slash[? "/jitter" ] = 8;
 global.__scribble_effects_slash[? "/blink"  ] = 9;
 global.__scribble_effects_slash[? "/slant"  ] = 10;
 
+global.__scribble_effects[?       "WAVE"    ] = 1;
+global.__scribble_effects[?       "SHAKE"   ] = 2;
+global.__scribble_effects[?       "RAINBOW" ] = 3;
+global.__scribble_effects[?       "WOBBLE"  ] = 4;
+global.__scribble_effects[?       "PULSE"   ] = 5;
+global.__scribble_effects[?       "WHEEL"   ] = 6;
+global.__scribble_effects[?       "CYCLE"   ] = 7;
+global.__scribble_effects[?       "JITTER"  ] = 8;
+global.__scribble_effects[?       "BLINK"   ] = 9;
+global.__scribble_effects[?       "SLANT"   ] = 10;
+global.__scribble_effects_slash[? "/WAVE"   ] = 1;
+global.__scribble_effects_slash[? "/SHAKE"  ] = 2;
+global.__scribble_effects_slash[? "/RAINBOW"] = 3;
+global.__scribble_effects_slash[? "/WOBBLE" ] = 4;
+global.__scribble_effects_slash[? "/PULSE"  ] = 5;
+global.__scribble_effects_slash[? "/WHEEL"  ] = 6;
+global.__scribble_effects_slash[? "/CYCLE"  ] = 7;
+global.__scribble_effects_slash[? "/JITTER" ] = 8;
+global.__scribble_effects_slash[? "/BLINK"  ] = 9;
+global.__scribble_effects_slash[? "/SLANT"  ] = 10;
+
 //Create a vertex format for our text
 vertex_format_begin();
 vertex_format_add_position_3d();                                  //12 bytes
@@ -352,54 +373,6 @@ function __scribble_array_find_index(_array, _value)
     }
     
     return -1;
-}
-
-function __scribble_prepare_super_work_array(_input_array)
-{
-    var _output_array = [];
-    
-    var _i = 0;
-    repeat(array_length(_input_array))
-    {
-        var _glyph_to_copy = _input_array[_i];
-        
-        if (is_string(_glyph_to_copy))
-        {
-            var _j = 1;
-            repeat(string_length(_glyph_to_copy))
-            {
-                var _unicode = ord(string_char_at(_glyph_to_copy, _j));
-                array_push(_output_array, [_unicode, _unicode]);
-                ++_j;
-            }
-            
-            _glyph_to_copy = undefined;
-        }
-        
-        if (is_numeric(_glyph_to_copy))
-        {
-            _glyph_to_copy = [_glyph_to_copy, _glyph_to_copy];
-        }
-        
-        if (is_array(_glyph_to_copy))
-        {
-            array_push(_output_array, _glyph_to_copy);
-        }
-        
-        ++_i;
-    }
-    
-    return _output_array;
-}
-
-/// @param oldGlyph
-/// @param [yOffset=0]
-function __scribble_glyph_duplicate(_old, _y_offset = 0)
-{
-    var _new = array_create(SCRIBBLE_GLYPH.__SIZE);
-    array_copy(_new, 0, _old, 0, SCRIBBLE_GLYPH.__SIZE);
-    _new[@ SCRIBBLE_GLYPH.Y_OFFSET] += _y_offset;
-    return _new;
 }
 
 function __scribble_buffer_read_unicode(_buffer)

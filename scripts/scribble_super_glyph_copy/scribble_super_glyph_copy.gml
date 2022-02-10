@@ -20,10 +20,12 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
     }
     
     //Verify that the two fonts can be used together
-    var _y_offset = __scribble_super_glyph_copy_common(_target_font_data, _source_font_data);
+    __scribble_super_glyph_copy_common(_target_font_data, _source_font_data);
     
-    var _target_glyphs_map = _target_font_data.__glyphs_map;
-    var _source_glyphs_map = _source_font_data.__glyphs_map;
+    var _target_glyphs_map       = _target_font_data.__glyphs_map;
+    var _target_glyph_data_grid  = _target_font_data.__glyph_data_grid;
+    var _source_glyphs_map       = _source_font_data.__glyphs_map;
+    var _source_glyphs_data_grid = _source_font_data.__glyph_data_grid;
     
     //Copy arguments into an array
     var _glyphs_array = array_create(argument_count - 3);
@@ -46,26 +48,28 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
         var _unicode = _glyph_range_array[0];
         repeat(1 + _glyph_range_array[1] - _unicode)
         {
-            var _source_glyph_data = _source_glyphs_map[? _unicode];
-            if (_source_glyph_data == undefined)
-            {
-                __scribble_trace("Warning! Glyph ", _unicode, " (", chr(_unicode), ") not found in source font");
-            }
-            else if (_overwrite || !ds_map_exists(_target_glyphs_map, _unicode))
-            {
-                _target_glyphs_map[? _unicode] = __scribble_glyph_duplicate(_source_glyph_data, _y_offset);
-            }
-            
+            __scribble_glyph_duplicate(_source_glyphs_map, _source_glyphs_data_grid, _target_glyphs_map, _target_glyph_data_grid, _unicode, _overwrite);
             ++_unicode;
         }
         
         ++_i;
     }
+    
+    ds_grid_set_region(_target_glyph_data_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), SCRIBBLE_GLYPH.FONT_HEIGHT,
+                       max(_target_font_data.__height, _source_font_data.__height));
 }
 
 function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data)
 {
-    if (_target_font_data.__msdf || _source_font_data.__msdf)
+    if (_source_font_data.__msdf == undefined)
+    {
+        __scribble_error("Cannot determine if the source font is an MSDF font. Please add glyphs to it");
+    }
+    else if (_target_font_data.__msdf == undefined)
+    {
+        //Target font hasn't had anything added to it yet
+    }
+    else if (_target_font_data.__msdf || _source_font_data.__msdf)
     {
         if (_target_font_data.__msdf == false)
         {
@@ -90,31 +94,75 @@ function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data
     
     _target_font_data.__msdf = _source_font_data.__msdf;
     _target_font_data.__msdf_pxrange = _source_font_data.__msdf_pxrange;
+}
+
+function __scribble_prepare_super_work_array(_input_array)
+{
+    var _output_array = [];
     
-    //Now calculate the y offset required to centre one font to the other
-    if (_target_font_data.__height > _source_font_data.__height)
+    var _i = 0;
+    repeat(array_length(_input_array))
     {
-        return (_target_font_data.__height - _source_font_data.__height) div 2;
-    }
-    
-    if (_target_font_data.__height < _source_font_data.__height)
-    {
-        var _glyphs_map = _target_font_data.__glyphs_map;
-        if (ds_map_size(_glyphs_map) > 0)
+        var _glyph_to_copy = _input_array[_i];
+        
+        if (is_string(_glyph_to_copy))
         {
-            var _y_offset = (_source_font_data.__height - _target_font_data.__height) div 2;
-            
-            var _glyphs_array = ds_map_values_to_array(_glyphs_map);
-            var _i = 0;
-            repeat(array_length(_glyphs_array))
+            var _j = 1;
+            repeat(string_length(_glyph_to_copy))
             {
-                _glyphs_array[_i][@ SCRIBBLE_GLYPH.Y_OFFSET] += _y_offset;
-                ++_i;
+                //TODO - Make this more efficient by grouping contiguous glyphs together
+                var _unicode = ord(string_char_at(_glyph_to_copy, _j));
+                array_push(_output_array, [_unicode, _unicode]);
+                ++_j;
             }
+            
+            _glyph_to_copy = undefined;
         }
         
-        _target_font_data.__height = _source_font_data.__height;
+        if (is_numeric(_glyph_to_copy))
+        {
+            _glyph_to_copy = [_glyph_to_copy, _glyph_to_copy];
+        }
+        
+        if (is_array(_glyph_to_copy))
+        {
+            array_push(_output_array, _glyph_to_copy);
+        }
+        
+        ++_i;
     }
     
-    return 0;
+    return _output_array;
+}
+
+function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _target_grid, _glyph, _overwrite)
+{
+    var _source_x = _source_map[? _glyph];
+    if (_source_x == undefined)
+    {
+        __scribble_trace("Warning! Glyph ", _glyph, " (", chr(_glyph), ") not found in source font");
+        return;
+    }
+    
+    var _target_x = _target_map[? _glyph];
+    if (_target_x == undefined)
+    {
+        //Create a new column in the grid to store this glyph's data
+        var _target_x = ds_grid_width(_target_grid);
+        _target_map[? _glyph] = _target_x;
+        ds_grid_resize(_target_grid, _target_x+1, SCRIBBLE_GLYPH.__SIZE);
+    }
+    else
+    {
+        if (!_overwrite)
+        {
+            //Glyph already exists in target, skip it
+            return;
+        }
+        
+        //Copy data from source directly into the existing slot in the font's glyph table
+    }
+    
+    //Do the actual copying
+    ds_grid_set_grid_region(_target_grid, _source_grid, _source_x, 0, _source_x, SCRIBBLE_GLYPH.__SIZE, _target_x, 0);
 }
