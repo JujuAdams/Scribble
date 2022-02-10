@@ -279,8 +279,6 @@
     {"name":"macOS","path":"options/mac/options_mac.yy",},
     {"name":"Main","path":"options/main/options_main.yy",},
     {"name":"operagx","path":"options/operagx/options_operagx.yy",},
-    {"name":"PlayStation 5","path":"options/ps5/options_ps5.yy",},
-    {"name":"Xbox Series XS","path":"options/xboxseriesxs/options_xboxseriesxs.yy",},
   ],
   "isDnDProject": false,
   "isEcma": false,
