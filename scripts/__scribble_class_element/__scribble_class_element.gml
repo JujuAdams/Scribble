@@ -546,9 +546,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     }
     
     /// @param xScale
-    /// @param yScale
-    /// @param angle
-    static transform = function(_xscale, _yscale, _angle)
+    /// @param [yScale=xScale]
+    /// @param [angle=0]
+    static transform = function(_xscale, _yscale = _xscale, _angle = 0)
     {
         if ((__xscale != _xscale) || (__yscale != _yscale) || (__angle != _angle))
         {
