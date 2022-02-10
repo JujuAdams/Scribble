@@ -375,54 +375,6 @@ function __scribble_array_find_index(_array, _value)
     return -1;
 }
 
-function __scribble_prepare_super_work_array(_input_array)
-{
-    var _output_array = [];
-    
-    var _i = 0;
-    repeat(array_length(_input_array))
-    {
-        var _glyph_to_copy = _input_array[_i];
-        
-        if (is_string(_glyph_to_copy))
-        {
-            var _j = 1;
-            repeat(string_length(_glyph_to_copy))
-            {
-                var _unicode = ord(string_char_at(_glyph_to_copy, _j));
-                array_push(_output_array, [_unicode, _unicode]);
-                ++_j;
-            }
-            
-            _glyph_to_copy = undefined;
-        }
-        
-        if (is_numeric(_glyph_to_copy))
-        {
-            _glyph_to_copy = [_glyph_to_copy, _glyph_to_copy];
-        }
-        
-        if (is_array(_glyph_to_copy))
-        {
-            array_push(_output_array, _glyph_to_copy);
-        }
-        
-        ++_i;
-    }
-    
-    return _output_array;
-}
-
-/// @param oldGlyph
-/// @param [yOffset=0]
-function __scribble_glyph_duplicate(_old, _y_offset = 0)
-{
-    var _new = array_create(SCRIBBLE_GLYPH.__SIZE);
-    array_copy(_new, 0, _old, 0, SCRIBBLE_GLYPH.__SIZE);
-    _new[@ SCRIBBLE_GLYPH.Y_OFFSET] += _y_offset;
-    return _new;
-}
-
 function __scribble_buffer_read_unicode(_buffer)
 {
     var _value = buffer_read(_buffer, buffer_u8); //Assume 0xxxxxxx
