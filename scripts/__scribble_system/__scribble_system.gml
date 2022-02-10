@@ -184,6 +184,27 @@ global.__scribble_effects_slash[? "/jitter" ] = 8;
 global.__scribble_effects_slash[? "/blink"  ] = 9;
 global.__scribble_effects_slash[? "/slant"  ] = 10;
 
+global.__scribble_effects[?       "WAVE"    ] = 1;
+global.__scribble_effects[?       "SHAKE"   ] = 2;
+global.__scribble_effects[?       "RAINBOW" ] = 3;
+global.__scribble_effects[?       "WOBBLE"  ] = 4;
+global.__scribble_effects[?       "PULSE"   ] = 5;
+global.__scribble_effects[?       "WHEEL"   ] = 6;
+global.__scribble_effects[?       "CYCLE"   ] = 7;
+global.__scribble_effects[?       "JITTER"  ] = 8;
+global.__scribble_effects[?       "BLINK"   ] = 9;
+global.__scribble_effects[?       "SLANT"   ] = 10;
+global.__scribble_effects_slash[? "/WAVE"   ] = 1;
+global.__scribble_effects_slash[? "/SHAKE"  ] = 2;
+global.__scribble_effects_slash[? "/RAINBOW"] = 3;
+global.__scribble_effects_slash[? "/WOBBLE" ] = 4;
+global.__scribble_effects_slash[? "/PULSE"  ] = 5;
+global.__scribble_effects_slash[? "/WHEEL"  ] = 6;
+global.__scribble_effects_slash[? "/CYCLE"  ] = 7;
+global.__scribble_effects_slash[? "/JITTER" ] = 8;
+global.__scribble_effects_slash[? "/BLINK"  ] = 9;
+global.__scribble_effects_slash[? "/SLANT"  ] = 10;
+
 //Create a vertex format for our text
 vertex_format_begin();
 vertex_format_add_position_3d();                                  //12 bytes
