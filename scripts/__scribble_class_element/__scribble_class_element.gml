@@ -893,7 +893,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static on_last_page = function()
     {
-        return (get_page() >= get_pages() - 1);
+        return (get_page() >= get_page_count() - 1);
     }
     
     #endregion
