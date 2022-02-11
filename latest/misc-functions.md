@@ -43,11 +43,12 @@ Here's an example. Let's say we run this code in the Create event of an object:
 ```
 scribble_typists_add_event("rumble", callbackRumble);
 element = scribble("Here's some[rumble,0.2] rumble!");
-element.typewriter_in(0.5, 0);
+typist = scribble_typist();
+typist.in(0.5, 0);
 ```
 And then in the Draw event we run:
 ```
-element.draw(x, y);
+element.draw(x, y, typist);
 ```
 The object will draw the text `Here's some rumble!`, slowly revealling the text character by character. When the `e` of the word `some` is displayed, Scribble will automatically call the script `callbackRumble()`.
 
