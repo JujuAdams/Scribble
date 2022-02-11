@@ -41,7 +41,7 @@ Your script should be formatted such that they can unpack parameters from the pr
 
 Here's an example. Let's say we run this code in the Create event of an object:
 ```
-scribble_typewriter_add_event("rumble", callbackRumble);
+scribble_typists_add_event("rumble", callbackRumble);
 element = scribble("Here's some[rumble,0.2] rumble!");
 element.typewriter_in(0.5, 0);
 ```
