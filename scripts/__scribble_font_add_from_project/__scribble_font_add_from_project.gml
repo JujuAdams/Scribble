@@ -18,6 +18,22 @@ function __scribble_font_add_from_project(_font)
         global.__scribble_default_font = _name;
     }
     
+    //Check tags to see if this font is a Krutidev font
+    var _is_krutidev = false;
+    var _tagsArray = asset_get_tags(_font, asset_font);
+    var _i = 0;
+    repeat(array_length(_tagsArray))
+    {
+        var _tag = _tagsArray[_i];
+        if ((_tag == "scribble krutidev") || (_tag == "Scribble krutidev") || (_tag == "Scribble Krutidev"))
+        {
+            _is_krutidev = true;
+            break;
+        }
+        
+        ++_i;
+    }
+    
     var _global_glyph_bidi_map = global.__scribble_glyph_data.__bidi_map;
     
     //Get font info from the runtime
@@ -68,12 +84,15 @@ function __scribble_font_add_from_project(_font)
     var _font_glyphs_map      = _font_data.__glyphs_map;
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
     
+    if (_is_krutidev) _font_data.__is_krutidev = true;
+    
     var _i = 0;
     repeat(_size)
     {
         var _glyph_dict = _info_glyphs_array[_i];
         
-        var _unicode  = _glyph_dict.char;
+        var _unicode = _glyph_dict.char;
+        if (_is_krutidev && (_unicode != 0x20)) _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
         var _char = chr(_unicode);
         
         if ((_unicode >= 0x4E00) && (_unicode <= 0x9FFF)) //CJK Unified ideographs block

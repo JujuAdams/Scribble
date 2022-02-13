@@ -1,6 +1,61 @@
+/// Unicode to Krutidev
+/// @jujuadams  2022-01-29
+/// 
+/// Krutidev is an old font format that allows for Devanagari ("Hindi") to be rendered without relying
+/// on GSUB and GPOS tables found in modern .ttf font files. GameMaker doesn't allow us to access GPOS
+/// and GSUB tables so this is the best we have until someone puts together a .ttf file reader.
+/// 
+/// Krutidev works by inserting Devanagari glyphs into a font by overwriting Latin character slots.
+/// For example, "k" is replaced by "ा". Devanagari glyphs can get quite complicated, for example "ह्न"
+/// is made up of three Unicode characters but is represented in Krutidev using "à".
+/// 
+/// This function converts Unicode-formatted Devanagari into the necessary Latin characters so that
+/// when the outputted string is rendered using a Krutidev font the Devanagari glyphs are comfortably
+/// readable to the player.
+/// 
+/// There are, of course, more Devanagari glyph variants than there are Latin characters. This means
+/// that Krutidev fonts need to be set up with an expanded range of glyphs. Judging by the sample font
+/// I found (Krutidev 010), the glyph ranges required are:
+///   32 ->  126        0x0020 -> 0x007E
+///  144                0x0090
+///  160 ->  249        0x00A0 -> 0x00F9
+///  338                0x0152
+///  352                0x0160
+///  376                0x0178
+///  402                0x0192
+///  710                0x02C6
+///  732                0x02DC
+/// 8208                0x2010
+/// 8211 -> 8212        0x2013 -> 0x2014
+/// 8216 -> 8218        0x2018 -> 0x201A
+/// 8220 -> 8225        0x201C -> 0x2021
+/// 8230                0x2026
+/// 8240                0x2030
+/// 8249 -> 8250        0x2039 -> 0x203A
+/// 8482                0x2122
+/// This list may not be exhaustive. I highly recommend grabbing FontForge to help determined what
+/// glyphs are available in your font of choice.
+/// 
+/// Using Krutidev to render Devanagari has drawbacks:
+/// 1) Only Krutidev fonts can be used with Krutidev-formatted text. There seem to be a *lot* of
+///    Krutidev fonts out there but that may dry up over time. I found a website that seems to
+///    host a bazillion Krutidev fonts: https://www.wfonts.com/search?kwd=Kruti+Dev
+/// 2) Krutidev doesn't have a lot of the fancier Devanagari glyphs. I am unsure exactly what is
+///    missing - I'm not a native Hindi speaker - so don't be surprised if some text doesn't look
+///    quite right to people familiar with the language.
+/// 3) Since Krutidev fonts replace Western characters with Devanagari glyphs, this means it is
+///    not possible to draw Latin script and Devanagari script from the same font. This is a bit
+///    of a pain but can be worked around if you're desperate.
+/// 4) Setting Krutidev font glyph ranges is a faff. Not the worst thing in the world, but worth
+///    bearing in mind.
+/// 
+/// @param unicodeString
+
+
+
 #region Build find-replace lookup table
 
-var _unicode_source_array = [
+var _unicodeSourceArray = [
     "‘",   "’",   "“",   "”",   "(",    ")",   "{",    "}",   "=", "।",  "?",  "-",  "µ", "॰", ",", ".",
 	"०",  "१",  "२",  "३",     "४",   "५",  "६",   "७",   "८",   "९", "x", 
 
@@ -28,7 +83,7 @@ var _unicode_source_array = [
 	"ं",   "ँ",   "ः",   "ॅ",    "ऽ", chr(0x94D), //virama
 ];
     
-var _krutidev_source_array = [
+var _krutidevSourceArray = [
     "^", "*",  "Þ", "ß", "¼", "½", "¿", "À", "¾", "A", "\\", "&", "&", "Œ", "]","-", 
 	"å",  "ƒ",  "„",   "…",   "†",   "‡",   "ˆ",   "‰",   "Š",   "‹","Û",
 
@@ -60,9 +115,9 @@ var _krutidev_source_array = [
 global.__scribble_krutidev_lookup_map = ds_map_create();
     
 var _i = 0;
-repeat(array_length(_unicode_source_array))
+repeat(array_length(_unicodeSourceArray))
 {
-    var _string = _unicode_source_array[_i];
+    var _string = _unicodeSourceArray[_i];
         
     var _searchInteger = 0;
     var _j = string_length(_string);
@@ -72,7 +127,7 @@ repeat(array_length(_unicode_source_array))
         --_j;
     }
         
-    var _string = _krutidev_source_array[_i];
+    var _string = _krutidevSourceArray[_i];
     var _writeArray = [];
     var _j = 1;
     repeat(string_length(_string))
@@ -113,106 +168,93 @@ global.__scribble_krutidev_matra_lookup_map[? 2380] = true;
 
 
 
-#macro __SCRIBBLE_PARSER_INSERT_NUKTA  ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+1, 0, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);\
-                                       ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - (_i+1), __SCRIBBLE_GEN_GLYPH.__SIZE, 0, _i+2);\
-                                       ;\
-                                       _glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH.UNICODE      ] = 0x093C;\ //Nukta
-                                       _glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT];\
-                                       ;\
-                                       ++_i;\
-                                       ++_glyph_count;
-
-
-function __scribble_gen_3_devanagari()
+function UnicodeToKrutidev(_inString)
 {
-    if (!__has_devanagari) exit;
-    
-    var _glyph_grid  = global.__scribble_glyph_grid;
-    var _temp_grid   = global.__scribble_temp_grid;
-    var _glyph_count = global.__scribble_generator_state.__glyph_count;
-    
-    //Glyph count includes the terminating null. We don't need that for Krutidev conversion
-    --_glyph_count;
-    
+    //Convert the string into an array
+    var _stringLength = string_length(_inString);
     //Pad the end because we'll need to read beyond the end of the string during the final find-replace
     //We pad with 0xFFFF to avoid accidentally making incorrect substring matches later
-    _glyph_grid[# _glyph_count,   __SCRIBBLE_GEN_GLYPH.UNICODE] = 0xFFFF;
-    _glyph_grid[# _glyph_count+1, __SCRIBBLE_GEN_GLYPH.UNICODE] = 0xFFFF;
-    _glyph_grid[# _glyph_count+2, __SCRIBBLE_GEN_GLYPH.UNICODE] = 0xFFFF;
-    _glyph_grid[# _glyph_count+3, __SCRIBBLE_GEN_GLYPH.UNICODE] = 0xFFFF;
+    var _charArray = array_create(_stringLength + 4, 0xFFFF);
+    
+    var _i = 0;
+    repeat(_stringLength)
+    {
+        _charArray[@ _i] = ord(string_char_at(_inString, _i+1));
+        ++_i;
+    }
     
     
     
     #region Transform quotes and split up nukta ligatures
     
-    var _in_single_quote = false;
-    var _in_double_quote = false;
+    var _inSingleQuote = false;
+    var _inDoubleQuote = false;
     var _i = 0;
-    repeat(_glyph_count)
+    repeat(_stringLength)
     {
-        switch(_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE])
+        switch(_charArray[_i])
         {
             //Set up alternating single quote marks
             case ord("'"):
-                _in_single_quote = !_in_single_quote;
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = _in_single_quote? ord("^") : ord("*");
+                _inSingleQuote = !_inSingleQuote;
+                _charArray[@ _i] = _inSingleQuote? ord("^") : ord("*");
             break;
             
             //Set up alternating double quote marks
             case ord("\""):
-                _in_double_quote = !_in_double_quote;
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = _in_double_quote? ord("ß") : ord("Þ");
+                _inDoubleQuote = !_inDoubleQuote;
+                _charArray[@ _i] = _inDoubleQuote? ord("ß") : ord("Þ");
             break;
             
             //Split up nukta ligatures into their componant parts
             case ord("ऩ"):
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = ord("न");
-                __SCRIBBLE_PARSER_INSERT_NUKTA
+                _charArray[@ _i] = ord("न");
+                array_insert(_charArray, _i+1, 0x093C); ++_i; ++_stringLength; //Nukta
             break;
             
             case ord("ऱ"):
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = ord("र");
-                __SCRIBBLE_PARSER_INSERT_NUKTA
+                _charArray[@ _i] = ord("र");
+                array_insert(_charArray, _i+1, 0x093C); ++_i; ++_stringLength; //Nukta
             break;
             
             case ord("क़"):
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = ord("क");
-                __SCRIBBLE_PARSER_INSERT_NUKTA
+                _charArray[@ _i] = ord("क");
+                array_insert(_charArray, _i+1, 0x093C); ++_i; ++_stringLength; //Nukta
             break;
             
             case ord("ख़"):
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = ord("ख");
-                __SCRIBBLE_PARSER_INSERT_NUKTA
+                _charArray[@ _i] = ord("ख");
+                array_insert(_charArray, _i+1, 0x093C); ++_i; ++_stringLength; //Nukta
             break;
             
             case ord("ग़"):
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = ord("ग");
-                __SCRIBBLE_PARSER_INSERT_NUKTA
+                _charArray[@ _i] = ord("ग");
+                array_insert(_charArray, _i+1, 0x093C); ++_i; ++_stringLength; //Nukta
             break;
             
             case ord("ज़"):
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = ord("ज");
-                __SCRIBBLE_PARSER_INSERT_NUKTA
+                _charArray[@ _i] = ord("ज");
+                array_insert(_charArray, _i+1, 0x093C); ++_i; ++_stringLength; //Nukta
             break;
             
             case ord("ड़"):
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = ord("ड");
-                __SCRIBBLE_PARSER_INSERT_NUKTA
+                _charArray[@ _i] = ord("ड");
+                array_insert(_charArray, _i+1, 0x093C); ++_i; ++_stringLength; //Nukta
             break;
             
             case ord("ढ़"):
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = ord("ढ");
-                __SCRIBBLE_PARSER_INSERT_NUKTA
+                _charArray[@ _i] = ord("ढ");
+                array_insert(_charArray, _i+1, 0x093C); ++_i; ++_stringLength; //Nukta
             break;
             
             case ord("फ़"):
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = ord("फ");
-                __SCRIBBLE_PARSER_INSERT_NUKTA
+                _charArray[@ _i] = ord("फ");
+                array_insert(_charArray, _i+1, 0x093C); ++_i; ++_stringLength; //Nukta
             break;
             
             case ord("य़"):
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = ord("य");
-                __SCRIBBLE_PARSER_INSERT_NUKTA
+                _charArray[@ _i] = ord("य");
+                array_insert(_charArray, _i+1, 0x093C); ++_i; ++_stringLength; //Nukta
             break;
         }
         
@@ -227,21 +269,22 @@ function __scribble_gen_3_devanagari()
     
     //TODO - Log where ि  is found during the nukta ligature sweep
     var _i = 1; //Start at the second char because we don't care if the string starts with 0x093F (Vowel Sign I)
-    repeat(_glyph_count-1)
+    repeat(_stringLength-1)
     {
-        var _char = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE];
+        var _char = _charArray[_i];
         if (_char == ord("ि"))
         {
+            var _fPosition = _i;
+            
             //If we find a virama behind us keep tracking backwards
             //We go two indexes backwards because virama (should) always follows another character
             var _j = _i - 1;
-            while((_j >= 0) && (_glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.UNICODE] == 0x094D)) _j -= 2;
+            while((_j >= 0) && (_charArray[_j] == 0x094D)) _j -= 2;
             
-            ds_grid_set_grid_region(_temp_grid, _glyph_grid, _j, 0, _i-1, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
-            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _i-1 - _j, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, _j+1);
+            array_delete(_charArray, _fPosition, 1);
+            array_insert(_charArray, _j, ord("f"));
             
-            _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.UNICODE      ] = ord("f");
-            _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _glyph_grid[# _j+1, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT];
+            _i = _fPosition;
         }
         
         ++_i;
@@ -255,37 +298,25 @@ function __scribble_gen_3_devanagari()
     
     var _matraLookupMap = global.__scribble_krutidev_matra_lookup_map;
     
-    //Using a for-loop here as _glyph_count may change
-    for(var _i = 0; _i < _glyph_count; ++_i)
+    //Using a for-loop here as _stringLength may change
+    for(var _i = 0; _i < _stringLength; ++_i)
     {
         //TODO - Log where ra-virama is found during the nukta ligature sweep
-        if ((_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] == ord("र")) && (_glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH.UNICODE] == 0x094D)) //Ra followed by virama
+        if ((_charArray[_i] == ord("र")) && (_charArray[_i+1] == 0x094D)) //Ra followed by virama
         {
             var _probablePosition = _i + 3;
             
-            var _charRight = _glyph_grid[# _probablePosition, __SCRIBBLE_GEN_GLYPH.UNICODE];
+            var _charRight = _charArray[_probablePosition];
             while(ds_map_exists(_matraLookupMap, _charRight))
             {
                 _probablePosition++;
-                _charRight = _glyph_grid[# _probablePosition, __SCRIBBLE_GEN_GLYPH.UNICODE];
+                _charRight = _charArray[_probablePosition];
             }
             
+            array_insert(_charArray, _probablePosition, ord("Z"));
+            array_delete(_charArray, _i, 2);
             
-            
-            ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+2, 0, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
-            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _probablePosition - (_i + 2), __SCRIBBLE_GEN_GLYPH.__SIZE, _i, 0);
-            
-            _glyph_grid[# _probablePosition, __SCRIBBLE_GEN_GLYPH.UNICODE      ] = ord("Z");
-            _glyph_grid[# _probablePosition, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _glyph_grid[# _probablePosition-1, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT];
-            
-            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count-1 - (_probablePosition - (_i + 2)), __SCRIBBLE_GEN_GLYPH.__SIZE, _probablePosition+1, 0);
-            
-            
-            
-            //array_insert(_charArray, _probablePosition, ord("Z"));
-            //array_delete(_charArray, _i, 2);
-            
-            --_glyph_count;
+            --_stringLength;
         }
     }
     
@@ -304,8 +335,8 @@ function __scribble_gen_3_devanagari()
     var _threeChar = _twoChar   | ((_charArray[1] & 0xFFFF) << 32);
     var _fourChar  = _threeChar | ((_charArray[2] & 0xFFFF) << 48);
     
-    //Using a for-loop here as _glyph_count may change
-    for(var _i = 0; _i < _glyph_count; ++_i;)
+    //Using a for-loop here as _stringLength may change
+    for(var _i = 0; _i < _stringLength; ++_i;)
     {
         _oneChar   = _twoChar   >> 16;
         _twoChar   = _threeChar >> 16;
@@ -384,7 +415,7 @@ function __scribble_gen_3_devanagari()
                 }
                 
                 _i            += _replacementLength - 1; //Off-by-one to account for ++_i in the for-loop
-                _glyph_count += _replacementLength - _foundLength;
+                _stringLength += _replacementLength - _foundLength;
                 
                 //Recalculate our minibuffer since we've messed around with the array a lot
                 _twoChar   =              ((_charArray[_i+1] & 0xFFFF) << 16);
@@ -395,4 +426,17 @@ function __scribble_gen_3_devanagari()
     }
     
     #endregion
+    
+    
+    
+    //Convert the array back into a string
+    var _outString = "";
+    var _i = 0;
+    repeat(_stringLength)
+    {
+        _outString += chr(_charArray[_i]);
+        ++_i;
+    }
+    
+    return _outString;
 }

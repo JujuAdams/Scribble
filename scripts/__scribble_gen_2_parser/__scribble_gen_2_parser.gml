@@ -6,6 +6,12 @@
 
 
 
+#macro __SCRIBBLE_PARSER_NEXT_GLYPH  ++_glyph_count;\
+                                     _glyph_prev = _glyph_write;\
+                                     _glyph_prev_prev = _glyph_prev;
+
+
+
 #macro __SCRIBBLE_PARSER_WRITE_NEWLINE  _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.UNICODE      ] = 0x0A;\ //ASCII line break (dec = 10)
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;\
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.X            ] = 0;\
@@ -38,15 +44,13 @@
                                           ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.UNICODE, _data_index, SCRIBBLE_GLYPH.BILINEAR, _glyph_count, __SCRIBBLE_GEN_GLYPH.UNICODE);\
                                           _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _control_count;\
                                           ;\
-                                          ++_glyph_count;\
-                                          ;\//We don't set _glyph_prev_arabic_join_next here, we do it further up
-                                          _glyph_prev = _glyph_write;\
-                                          _glyph_prev_prev = _glyph_prev;\
+                                          __SCRIBBLE_PARSER_NEXT_GLYPH\
                                       }
 
 
 
 #macro __SCRIBBLE_PARSER_SET_FONT   var _font_data            = __scribble_get_font_data(_font_name);\
+                                    if (_font_data.__is_krutidev) __has_devanagari = true;\
                                     var _font_glyph_data_grid = _font_data.__glyph_data_grid;\
                                     var _font_glyphs_map      = _font_data.__glyphs_map;\
                                     var _space_data_index     = _font_glyphs_map[? 32];\
@@ -1099,120 +1103,128 @@ function __scribble_gen_2_parser()
                     }
                     
                     #endregion
+                    
+                    __SCRIBBLE_PARSER_WRITE_GLYPH
                 }
                 else
                 {
                     //Not an Arabic colour, this glyph definitely doesn't join backwards...
                     _glyph_prev_arabic_join_next = false;
                     
-                    if ((_glyph_write >= 0x0E00) && (_glyph_write <= 0x0E7F))
+                    if ((_glyph_write >= 0x0900) && (_glyph_write <= 0x097F))
                     {
-                        #region C90 Thai handling
+                        //Devanagari is so complex it gets its own function
+                        __has_devanagari = true;
                         
-                        __has_thai = true;
+                        //Create a placeholder glyph entry
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.UNICODE      ] = _glyph_write;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _control_count;
                         
-                        if (_thai_top_map[? _glyph_write] && (_glyph_count >= 1))
+                        __SCRIBBLE_PARSER_NEXT_GLYPH
+                    }
+                    else
+                    {
+                        if ((_glyph_write >= 0x0E00) && (_glyph_write <= 0x0E7F))
                         {
-                            var _base = _glyph_prev;
-                            if (_thai_lower_map[? _base] && (_glyph_count >= 2)) _base = _glyph_prev_prev;
-                            
-                            if (_thai_base_map[? _base])
+                            #region C90 Thai handling
+                        
+                            __has_thai = true;
+                        
+                            if (_thai_top_map[? _glyph_write] && (_glyph_count >= 1))
                             {
-                                _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, buffer_tell(_string_buffer));
-                                
-                                var _followingNikhahit = ((_glyph_next == 0x0e33) || (_glyph_next == 0x0e4d));
-                                if (_thai_base_ascender_map[? _base])
+                                var _base = _glyph_prev;
+                                if (_thai_lower_map[? _base] && (_glyph_count >= 2)) _base = _glyph_prev_prev;
+                            
+                                if (_thai_base_map[? _base])
                                 {
-                                    if (_followingNikhahit)
+                                    _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, buffer_tell(_string_buffer));
+                                
+                                    var _followingNikhahit = ((_glyph_next == 0x0e33) || (_glyph_next == 0x0e4d));
+                                    if (_thai_base_ascender_map[? _base])
                                     {
-                                        _glyph_write += 0xf713 - 0x0e48;
-                                        __SCRIBBLE_PARSER_WRITE_GLYPH;
-                                        
-                                        _glyph_write = 0xf711;
-                                        
-                                        if (_glyph_next == 0x0e33)
+                                        if (_followingNikhahit)
                                         {
+                                            _glyph_write += 0xf713 - 0x0e48;
                                             __SCRIBBLE_PARSER_WRITE_GLYPH;
-                                            _glyph_write = 0x0e32;
+                                        
+                                            _glyph_write = 0xf711;
+                                        
+                                            if (_glyph_next == 0x0e33)
+                                            {
+                                                __SCRIBBLE_PARSER_WRITE_GLYPH;
+                                                _glyph_write = 0x0e32;
+                                            }
+                                        
+                                            //Skip over the next glyph
+                                            buffer_seek(_string_buffer, buffer_seek_relative, 2);
+                                        
+                                            //Fall through remaining code
+                                            _skip_write = true;
                                         }
+                                        else
+                                        {
+                                            _glyph_write += 0xf705 - 0x0e48;
                                         
-                                        //Skip over the next glyph
-                                        buffer_seek(_string_buffer, buffer_seek_relative, 2);
-                                        
-                                        //Fall through remaining code
-                                        _skip_write = true;
+                                            if ((_glyph_count >= 2) && _thai_upper_map[? _glyph_prev] && _thai_base_ascender_map[? _glyph_prev])
+                                            {
+                                                _glyph_write += 0xf713 - 0x0e48;
+                                            }
+                                        }
                                     }
-                                    else
+                                    else if (!_followingNikhahit)
                                     {
-                                        _glyph_write += 0xf705 - 0x0e48;
-                                        
+                                        _glyph_write += 0xf70a - 0x0e48;
+                                    
                                         if ((_glyph_count >= 2) && _thai_upper_map[? _glyph_prev] && _thai_base_ascender_map[? _glyph_prev])
                                         {
                                             _glyph_write += 0xf713 - 0x0e48;
                                         }
                                     }
                                 }
-                                else if (!_followingNikhahit)
+                            }
+                            else if (_thai_upper_map[? _glyph_write] && (_glyph_count > 0) && _thai_base_ascender_map[? _glyph_prev])
+                            {
+                                switch(_glyph_write)
                                 {
-                                    _glyph_write += 0xf70a - 0x0e48;
-                                    
-                                    if ((_glyph_count >= 2) && _thai_upper_map[? _glyph_prev] && _thai_base_ascender_map[? _glyph_prev])
-                                    {
-                                        _glyph_write += 0xf713 - 0x0e48;
-                                    }
+                                    case 0x0e31: _glyph_write = 0xf710; break;
+                                    case 0x0e34: _glyph_write = 0xf701; break;
+                                    case 0x0e35: _glyph_write = 0xf702; break;
+                                    case 0x0e36: _glyph_write = 0xf703; break;
+                                    case 0x0e37: _glyph_write = 0xf704; break;
+                                    case 0x0e4d: _glyph_write = 0xf711; break;
+                                    case 0x0e47: _glyph_write = 0xf712; break;
                                 }
                             }
-                        }
-                        else if (_thai_upper_map[? _glyph_write] && (_glyph_count > 0) && _thai_base_ascender_map[? _glyph_prev])
-                        {
-                            switch(_glyph_write)
+                            else if (_thai_lower_map[? _glyph_write] && (_glyph_count > 0) && _thai_base_descender_map[? _glyph_prev])
                             {
-                                case 0x0e31: _glyph_write = 0xf710; break;
-                                case 0x0e34: _glyph_write = 0xf701; break;
-                                case 0x0e35: _glyph_write = 0xf702; break;
-                                case 0x0e36: _glyph_write = 0xf703; break;
-                                case 0x0e37: _glyph_write = 0xf704; break;
-                                case 0x0e4d: _glyph_write = 0xf711; break;
-                                case 0x0e47: _glyph_write = 0xf712; break;
+                                _glyph_write += 0xf718 - 0x0e38;
                             }
-                        }
-                        else if (_thai_lower_map[? _glyph_write] && (_glyph_count > 0) && _thai_base_descender_map[? _glyph_prev])
-                        {
-                            _glyph_write += 0xf718 - 0x0e38;
-                        }
-                        else
-                        {
-                            _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, buffer_tell(_string_buffer));
+                            else
+                            {
+                                _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, buffer_tell(_string_buffer));
                             
-                            if ((_glyph_write == 0x0e0d) && _thai_lower_map[? _glyph_next])
-                            {
-                                _glyph_write = 0xf70f;
+                                if ((_glyph_write == 0x0e0d) && _thai_lower_map[? _glyph_next])
+                                {
+                                    _glyph_write = 0xf70f;
+                                }
+                                else if ((_glyph_write == 0x0e10) && _thai_lower_map[? _glyph_next])
+                                {
+                                    _glyph_write = 0xf700;
+                                }
                             }
-                            else if ((_glyph_write == 0x0e10) && _thai_lower_map[? _glyph_next])
-                            {
-                                _glyph_write = 0xf700;
-                            }
+                        
+                            #endregion
+                        }
+                        else if ((_glyph_write >= 0x0590) && (_glyph_write <= 0x05FF))
+                        {
+                            //Hebrew handling is, mercifully, straight-forward beyond R2L directionality
+                            __has_hebrew = true;
                         }
                         
-                        #endregion
+                        //TODO - Ligature transform here
+                        __SCRIBBLE_PARSER_WRITE_GLYPH
                     }
-                    else if ((_glyph_write >= 0x0590) && (_glyph_write <= 0x05FF))
-                    {
-                        //Hebrew handling is, mercifully, straight-forward beyond R2L directionality
-                        __has_hebrew = true;
-                    }
-                    else if ((_glyph_write >= 0x0900) && (_glyph_write <= 0x097F))
-                    {
-                        //Devanagari is so complex it gets its own function
-                        __has_devanagari = true;
-                        
-                        //TODO - Follow the 16 unicode rules to reorder Devanagari for GSUB ligature substitution
-                    }
-                    
-                    //TODO - Ligature transform here
                 }
-                
-                __SCRIBBLE_PARSER_WRITE_GLYPH;
                 
                 if (_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) _state_command_tag_flipflop = true;
                 
