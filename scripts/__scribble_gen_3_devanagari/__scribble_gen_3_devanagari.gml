@@ -113,14 +113,14 @@ global.__scribble_krutidev_matra_lookup_map[? 2380] = true;
 
 
 
-#macro __SCRIBBLE_PARSER_INSERT_NUKTA  ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+1, 0, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);\
-                                       ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - (_i+1), __SCRIBBLE_GEN_GLYPH.__SIZE, 0, _i+2);\
-                                       ;\
-                                       _glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH.UNICODE      ] = 0x093C;\ //Nukta
-                                       _glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT];\
+#macro __SCRIBBLE_PARSER_INSERT_NUKTA  ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+1, 0, _glyph_count+3, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);\
+                                       ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count+3 - _i, __SCRIBBLE_GEN_GLYPH.__SIZE, _i+2, 0);\
                                        ;\
                                        ++_i;\
-                                       ++_glyph_count;
+                                       ++_glyph_count;\
+                                       ;\
+                                       _glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH.UNICODE      ] = 0x093C;\ //Nukta
+                                       _glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT];
 
 
 function __scribble_gen_3_devanagari()
@@ -238,7 +238,7 @@ function __scribble_gen_3_devanagari()
             while((_j >= 0) && (_glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.UNICODE] == 0x094D)) _j -= 2;
             
             ds_grid_set_grid_region(_temp_grid, _glyph_grid, _j, 0, _i-1, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
-            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _i-1 - _j, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, _j+1);
+            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _i - _j, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, _j+1);
             
             _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.UNICODE      ] = ord("f");
             _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _glyph_grid[# _j+1, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT];
@@ -278,7 +278,7 @@ function __scribble_gen_3_devanagari()
             _glyph_grid[# _probablePosition, __SCRIBBLE_GEN_GLYPH.UNICODE      ] = ord("Z");
             _glyph_grid[# _probablePosition, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _glyph_grid[# _probablePosition-1, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT];
             
-            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count-1 - (_probablePosition - (_i + 2)), __SCRIBBLE_GEN_GLYPH.__SIZE, _probablePosition+1, 0);
+            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - (_probablePosition - (_i + 2)), __SCRIBBLE_GEN_GLYPH.__SIZE, _probablePosition+1, 0);
             
             
             
@@ -342,7 +342,7 @@ function __scribble_gen_3_devanagari()
             if ((_foundLength == 1) && (_replacementLength == 1))
             {
                 //Shortcut for the most common replacement operation
-                _charArray[@ _i] = _replacementArray[0];
+                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE] = _replacementArray[0];
             }
             else
             {
@@ -351,39 +351,37 @@ function __scribble_gen_3_devanagari()
                 
                 //Copy over as much data as possible from one array
                 var _copyCount = min(_foundLength, _replacementLength);
-                array_copy(_charArray, _i, _replacementArray, 0, _copyCount);
+                
+                var _j = 0;
+                repeat(_copyCount)
+                {
+                    _glyph_grid[# _i + _j, __SCRIBBLE_GEN_GLYPH.UNICODE] = _replacementArray[_j];
+                    ++_j;
+                }
                 
                 if (_foundLength > _replacementLength)
                 {
                     //If we're replacing with fewer characters than we found then we need to delete some characters
+                    var _deleteStart = _i + _copyCount + _foundLength - _replacementLength;
+                    var _deleteEnd = _deleteStart + _foundLength - _replacementLength;
+                    
                     array_delete(_charArray, _i + _copyCount, _foundLength - _replacementLength);
+                    
+                    ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i + _copyCount
                 }
                 else
                 {
-                    //Otherwise, we're adding characters to the array so we have to insert some characters
-                    switch(_replacementLength - _foundLength)
+                    if (_replacementLength - _foundLength == 1)
                     {
-                        case 1:
                             array_insert(_charArray, _i + _copyCount, _replacementArray[_copyCount]);
-                        break;
-                        
-                        //I'm not sure the 2 or 3 case ever happens but we should cover it just in case
-                        case 2:
-                            array_insert(_charArray, _i + _copyCount,
-                                         _replacementArray[_copyCount  ],
-                                         _replacementArray[_copyCount+1]);
-                        break;
-                        
-                        case 3:
-                            array_insert(_charArray, _i + _copyCount,
-                                         _replacementArray[_copyCount  ],
-                                         _replacementArray[_copyCount+1],
-                                         _replacementArray[_copyCount+2]);
-                        break;
+                    }
+                    else if (_replacementLength - _foundLength > 1)
+                    {
+                        __scribble_error("Insertion length > 1. Please report this error");
                     }
                 }
                 
-                _i            += _replacementLength - 1; //Off-by-one to account for ++_i in the for-loop
+                _i           += _replacementLength - 1; //Off-by-one to account for ++_i in the for-loop
                 _glyph_count += _replacementLength - _foundLength;
                 
                 //Recalculate our minibuffer since we've messed around with the array a lot
