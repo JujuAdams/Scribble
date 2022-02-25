@@ -94,7 +94,7 @@ Sets the blend colour/alpha, which is applied at the end of the drawing pipeline
 |`colour`     |integer |Colour of the **bottom** of the gradient for each glyph                                                                                          |
 |`blendFactor`|real    |Blending factor for the gradient, from `0` (no gradient applied) to `1` (base blend colour of the bottom of each glyph is replaced with `colour`)|
 
-Sets up a gradient blend for each glyph in the text element. The base blend colour (defined by a combination of `.blend()` and in-line colour modification) is the top of the gradient and the colour defined by this method is the bottom of the gradient.### `.fog(colour, alpha)`
+Sets up a gradient blend for each glyph in the text element. The base blend colour (defined by a combination of `.blend()` and in-line colour modification) is the top of the gradient and the colour defined by this method is the bottom of the gradient.
 
 &nbsp;
 
