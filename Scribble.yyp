@@ -160,6 +160,7 @@
     {"id":{"name":"obj_test_style","path":"objects/obj_test_style/obj_test_style.yy",},"order":0,},
     {"id":{"name":"obj_test_sprite_blend","path":"objects/obj_test_sprite_blend/obj_test_sprite_blend.yy",},"order":3,},
     {"id":{"name":"__shd_scribble_bake_outline_8dir_2px","path":"shaders/__shd_scribble_bake_outline_8dir_2px/__shd_scribble_bake_outline_8dir_2px.yy",},"order":4,},
+    {"id":{"name":"obj_test_wrap_zwsp","path":"objects/obj_test_wrap_zwsp/obj_test_wrap_zwsp.yy",},"order":7,},
     {"id":{"name":"obj_test_font_shadow","path":"objects/obj_test_font_shadow/obj_test_font_shadow.yy",},"order":10,},
     {"id":{"name":"obj_test_anim_wobble","path":"objects/obj_test_anim_wobble/obj_test_anim_wobble.yy",},"order":4,},
     {"id":{"name":"obj_test_msdf_drop_shadow","path":"objects/obj_test_msdf_drop_shadow/obj_test_msdf_drop_shadow.yy",},"order":3,},
