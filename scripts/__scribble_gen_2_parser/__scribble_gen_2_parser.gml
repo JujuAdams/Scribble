@@ -501,7 +501,29 @@ function __scribble_gen_2_parser()
                     break;
                     
                     #endregion
-                            
+                    
+                    #region Zero-width space emulation
+                    
+                    // [zwsp]
+                    case 31:
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.UNICODE      ] = 0x200B;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.BIDI         ] = __SCRIBBLE_BIDI.WHITESPACE;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.X            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.Y            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.WIDTH        ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.HEIGHT       ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT  ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.SEPARATION   ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _control_count;
+                        
+                        ++_glyph_count;
+                        _glyph_prev_arabic_join_next = false;
+                        _glyph_prev = 0x200B;
+                        _glyph_prev_prev = _glyph_prev;
+                    break;
+                    
+                    #endregion
+                    
                     #region Cycle
                     
                     // [cycle]

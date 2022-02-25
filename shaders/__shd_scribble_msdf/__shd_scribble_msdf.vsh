@@ -81,6 +81,7 @@ varying float v_fTextScale;
 
 uniform vec4  u_vColourBlend;                           //4
 uniform vec4  u_vGradient;                              //4
+uniform vec4  u_vFlash;                                 //4
 uniform vec2  u_vRegionActive;                          //2
 uniform vec4  u_vRegionColour;                          //4
 uniform float u_fTime;                                  //1
@@ -475,13 +476,11 @@ void main()
     if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
     if ((BLINK_FLAG > 0.5) && (u_fBlinkState < 0.5)) v_vColour.a = 0.0;
     
-    
-    
     //Regions
-    if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y))
-    {
-        v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
-    }
+    if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
+    
+    //Flash
+    v_vColour.rgb = mix(v_vColour.rgb, u_vFlash.rgb, u_vFlash.a);
     
     
     

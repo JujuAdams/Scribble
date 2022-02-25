@@ -39,9 +39,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     __starting_valign = SCRIBBLE_DEFAULT_VALIGN;
     __blend_colour    = c_white;
     __blend_alpha     = 1.0;
-    
     __gradient_colour = c_black;
     __gradient_alpha  = 0.0;
+    __flash_colour    = c_white;
+    __flash_alpha     = 1.0;
     
     __origin_x       = 0.0;
     __origin_y       = 0.0;
@@ -87,9 +88,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         __tw_legacy_typist_use = false;
     }
     
-    __animation_time         = current_time;
-    __animation_tick_speed = 1;
-    __animation_blink_state  = true;
+    __animation_time        = current_time;
+    __animation_speed       = 1;
+    __animation_blink_state = true;
     
     __padding_l = 0;
     __padding_t = 0;
@@ -163,7 +164,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         //If enough time has elapsed since we drew this element then update our animation time
         if (current_time - __last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
         {
-            __animation_time += __animation_tick_speed*SCRIBBLE_TICK_SIZE;
+            __animation_time += __animation_speed*SCRIBBLE_TICK_SIZE;
             if (SCRIBBLE_SAFELY_WRAP_TIME) __animation_time = __animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
@@ -292,6 +293,30 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         __gradient_colour = _colour & 0xFFFFFF;
         __gradient_alpha  = _alpha;
+        return self;
+    }
+    
+    static fog = function()
+    {
+        __scribble_error(".fog() has been replaced by .flash()");
+    }
+    
+    /// @param colour
+    /// @param alpha
+    static flash = function(_colour, _alpha)
+    {
+        if (is_string(_colour))
+        {
+            _colour = global.__scribble_colours[? _colour];
+            if (_colour == undefined)
+            {
+                __scribble_error("Colour name \"", _colour, "\" not recognised");
+                exit;
+            }
+        }
+        
+        __flash_colour = _colour & 0xFFFFFF;
+        __flash_alpha  = _alpha;
         return self;
     }
     
@@ -980,7 +1005,19 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static animation_tick_speed = function()
     {
-        __scribble_error(".animation_tick_speed() has been removed\nPlease get in touch if this feature is essential for your project");
+        __scribble_error(".animation_tick_speed() has been replaced by .animation_speed()");
+    }
+    
+    static animation_speed = function(_speed)
+    {
+        __animation_speed = _speed;
+        
+        return self;
+    }
+    
+    static get_animation_speed = function()
+    {
+        return __animation_speed;
     }
     
     static animation_sync = function()
@@ -1312,6 +1349,11 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                             colour_get_blue( __gradient_colour)/255,
                                                             __gradient_alpha);
         
+        shader_set_uniform_f(global.__scribble_u_vFlash, colour_get_red(  __flash_colour)/255,
+                                                         colour_get_green(__flash_colour)/255,
+                                                         colour_get_blue( __flash_colour)/255,
+                                                         __flash_alpha);
+        
         shader_set_uniform_f(global.__scribble_u_vRegionActive, __region_glyph_start, __region_glyph_end);
         
         shader_set_uniform_f(global.__scribble_u_vRegionColour, colour_get_red(  __region_colour)/255,
@@ -1387,6 +1429,11 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                  colour_get_green(__gradient_colour)/255,
                                                                  colour_get_blue( __gradient_colour)/255,
                                                                  __gradient_alpha);
+        
+        shader_set_uniform_f(global.__scribble_msdf_u_vFlash, colour_get_red(  __flash_colour)/255,
+                                                              colour_get_green(__flash_colour)/255,
+                                                              colour_get_blue( __flash_colour)/255,
+                                                              __flash_alpha);
         
         shader_set_uniform_f(global.__scribble_msdf_u_vRegionActive, __region_glyph_start, __region_glyph_end);
         

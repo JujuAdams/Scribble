@@ -105,8 +105,9 @@ function __scribble_font_add_from_project(_font)
             if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
         }
         
-        var _x = _glyph_dict.x;
-        var _y = _glyph_dict.y;
+        //FIXME - Workaround for HTML5 in GMS2.3.7.606 and above
+        var _x = _glyph_dict[$ "x"];
+        var _y = _glyph_dict[$ "y"];
         var _w = _glyph_dict.w;
         var _h = _glyph_dict.h;
         
