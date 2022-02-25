@@ -87,9 +87,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         __tw_legacy_typist_use = false;
     }
     
-    __animation_time         = current_time;
-    __animation_tick_speed = 1;
-    __animation_blink_state  = true;
+    __animation_time        = current_time;
+    __animation_speed       = 1;
+    __animation_blink_state = true;
     
     __padding_l = 0;
     __padding_t = 0;
@@ -391,7 +391,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         //If enough time has elapsed since we drew this element then update our animation time
         if (current_time - __last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
         {
-            __animation_time += __animation_tick_speed*SCRIBBLE_TICK_SIZE;
+            __animation_time += __animation_speed*SCRIBBLE_TICK_SIZE;
             if (SCRIBBLE_SAFELY_WRAP_TIME) __animation_time = __animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
@@ -980,7 +980,19 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static animation_tick_speed = function()
     {
-        __scribble_error(".animation_tick_speed() has been removed\nPlease get in touch if this feature is essential for your project");
+        __scribble_error(".animation_tick_speed() has been replaced by animation_speed()");
+    }
+    
+    static animation_speed = function(_speed)
+    {
+        __animation_speed = _speed;
+        
+        return self;
+    }
+    
+    static get_animation_speed = function()
+    {
+        return __animation_speed;
     }
     
     static animation_sync = function()
