@@ -86,8 +86,8 @@ function __scribble_font_add_from_project(_font)
             if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
         }
         
-        var _x = _glyph_dict.x;
-        var _y = _glyph_dict.y;
+        var _x = _glyph_dict[$ "x"];
+        var _y = _glyph_dict[$ "y"];
         var _w = _glyph_dict.w;
         var _h = _glyph_dict.h;
         
