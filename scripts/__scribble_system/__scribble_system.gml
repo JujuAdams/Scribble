@@ -159,6 +159,7 @@ _map[? "bi"        ] = 27;
 _map[? "surface"   ] = 28;
 _map[? "region"    ] = 29;
 _map[? "/region"   ] = 30;
+_map[? "zwsp"      ] = 31;
 global.__scribble_command_tag_lookup_accelerator = _map;
 
 //Add bindings for default effect names
