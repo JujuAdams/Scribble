@@ -39,9 +39,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     __starting_valign = SCRIBBLE_DEFAULT_VALIGN;
     __blend_colour    = c_white;
     __blend_alpha     = 1.0;
-    
     __gradient_colour = c_black;
     __gradient_alpha  = 0.0;
+    __flash_colour    = c_white;
+    __flash_alpha     = 1.0;
     
     __origin_x       = 0.0;
     __origin_y       = 0.0;
@@ -523,6 +524,30 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+    static fog = function()
+    {
+        __scribble_error(".fog() has been replaced by .flash()");
+    }
+    
+    /// @param colour
+    /// @param alpha
+    static flash = function(_colour, _alpha)
+    {
+        if (is_string(_colour))
+        {
+            _colour = global.__scribble_colours[? _colour];
+            if (_colour == undefined)
+            {
+                __scribble_error("Colour name \"", _colour, "\" not recognised");
+                exit;
+            }
+        }
+        
+        __flash_colour = _colour & 0xFFFFFF;
+        __flash_alpha  = _alpha;
+        return self;
+    }
+    
     #endregion
     
     
@@ -980,7 +1005,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static animation_tick_speed = function()
     {
-        __scribble_error(".animation_tick_speed() has been replaced by animation_speed()");
+        __scribble_error(".animation_tick_speed() has been replaced by .animation_speed()");
     }
     
     static animation_speed = function(_speed)
@@ -1324,6 +1349,11 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                             colour_get_blue( __gradient_colour)/255,
                                                             __gradient_alpha);
         
+        shader_set_uniform_f(global.__scribble_u_vFlash, colour_get_red(  __flash_colour)/255,
+                                                         colour_get_green(__flash_colour)/255,
+                                                         colour_get_blue( __flash_colour)/255,
+                                                         __flash_alpha);
+        
         shader_set_uniform_f(global.__scribble_u_vRegionActive, __region_glyph_start, __region_glyph_end);
         
         shader_set_uniform_f(global.__scribble_u_vRegionColour, colour_get_red(  __region_colour)/255,
@@ -1399,6 +1429,11 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                  colour_get_green(__gradient_colour)/255,
                                                                  colour_get_blue( __gradient_colour)/255,
                                                                  __gradient_alpha);
+        
+        shader_set_uniform_f(global.__scribble_msdf_u_vFlash, colour_get_red(  __flash_colour)/255,
+                                                              colour_get_green(__flash_colour)/255,
+                                                              colour_get_blue( __flash_colour)/255,
+                                                              __flash_alpha);
         
         shader_set_uniform_f(global.__scribble_msdf_u_vRegionActive, __region_glyph_start, __region_glyph_end);
         
