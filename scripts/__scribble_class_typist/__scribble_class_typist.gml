@@ -293,10 +293,10 @@ function __scribble_class_typist() constructor
         var _pages_array = _model.__get_page_array();
         if (array_length(_pages_array) <= __last_page) return 1.0;
         var _page_data = _pages_array[__last_page];
-        var _min = 0;
-        var _max = _page_data.__character_count;
         
-        if (_max <= _min) return 1.0;
+        var _max = _page_data.__character_count;
+        if (_max <= 0) return 1.0;
+        
         var _t = clamp((__window_array[__window_index] + max(0, __window_array[__window_index+1] + __smoothness - _max)) / (_max + __smoothness), 0, 1);
         
         if (__in)
