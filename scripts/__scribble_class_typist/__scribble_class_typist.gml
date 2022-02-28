@@ -297,8 +297,8 @@ function __scribble_class_typist() constructor
         var _max = _page_data.__character_count;
         
         if (_max <= _min) return 1.0;
+        var _t = clamp((__window_array[__window_index] + max(0, __window_array[__window_index+1] + __smoothness - _max)) / (_max + __smoothness), 0, 1);
         
-        var _t = clamp((get_position() - _min) / (_max - _min), 0, 1);
         if (__in)
         {
             if (__delay_paused || (array_length(__event_stack) > 0))
