@@ -1,0 +1,1 @@
+if (typist.get_state() == 2.0) instance_destroy();

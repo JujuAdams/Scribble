@@ -9659,7 +9659,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"spr_mallangche","path":"sprites/spr_mallangche/spr_mallangche.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "spr_mallangche",
     "tags": [],
     "resourceType": "GMSequence",

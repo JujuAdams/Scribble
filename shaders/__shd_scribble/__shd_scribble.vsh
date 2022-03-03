@@ -460,10 +460,7 @@ void main()
     if ((BLINK_FLAG > 0.5) && (u_fBlinkState < 0.5)) v_vColour.a = 0.0;
     
     //Regions
-    if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y))
-    {
-        v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
-    }
+    if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
     
     
     

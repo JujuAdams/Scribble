@@ -10,6 +10,8 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     __glyph_data_grid = ds_grid_create(_glyph_count, SCRIBBLE_GLYPH.__SIZE);
     __glyphs_map = ds_map_create();
     
+    __is_krutidev = false;
+    
     __msdf         = _msdf;
     __msdf_pxrange = undefined;
     __superfont    = false;

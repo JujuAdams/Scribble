@@ -71,7 +71,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"spr_white_coin","path":"sprites/spr_white_coin/spr_white_coin.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "spr_white_coin",
     "tags": [],
     "resourceType": "GMSequence",
