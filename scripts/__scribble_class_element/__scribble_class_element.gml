@@ -42,7 +42,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     __gradient_colour = c_black;
     __gradient_alpha  = 0.0;
     __flash_colour    = c_white;
-    __flash_alpha     = 1.0;
+    __flash_alpha     = 0.0;
     
     __origin_x       = 0.0;
     __origin_y       = 0.0;
