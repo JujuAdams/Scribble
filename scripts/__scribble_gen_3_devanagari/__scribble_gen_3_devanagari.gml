@@ -128,6 +128,9 @@ global.__scribble_krutidev_matra_lookup_map[? 2380] = true;
 
 function __scribble_gen_3_devanagari()
 {
+    return;
+    
+    /*
     //Avoid this mess if we can
     if (!__has_devanagari) exit;
     
@@ -443,4 +446,5 @@ function __scribble_gen_3_devanagari()
     }
     
     #endregion
+    */
 }
