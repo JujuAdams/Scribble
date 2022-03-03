@@ -81,7 +81,6 @@ varying float v_fTextScale;
 
 uniform vec4  u_vColourBlend;                           //4
 uniform vec4  u_vGradient;                              //4
-uniform vec4  u_vFlash;                                 //4
 uniform vec2  u_vRegionActive;                          //2
 uniform vec4  u_vRegionColour;                          //4
 uniform float u_fTime;                                  //1
@@ -478,9 +477,6 @@ void main()
     
     //Regions
     if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
-    
-    //Flash
-    v_vColour.rgb = mix(v_vColour.rgb, u_vFlash.rgb, u_vFlash.a);
     
     
     

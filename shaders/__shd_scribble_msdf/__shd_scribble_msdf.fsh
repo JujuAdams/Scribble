@@ -18,6 +18,7 @@ uniform vec3  u_vShadowOffsetAndSoftness;
 uniform vec3  u_vBorderColour;
 uniform float u_fBorderThickness;
 uniform float u_fSecondDraw;
+uniform vec4  u_vFlash;
 
 float median(vec3 v)
 {
@@ -69,6 +70,8 @@ void main()
             gl_FragColor.a = max(preAlpha, alphaShadow);
         }
     }
+    
+    gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFlash.rgb, u_vFlash.a);
     
     if (PREMULTIPLY_ALPHA)
     {
