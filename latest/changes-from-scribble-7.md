@@ -55,11 +55,11 @@ Scribble version 8 has over 600 Git commits between it and version 7.1, making i
 
 ## Text Element Methods
 
-- Animation methods have been removed from text elements and are now globally-scoped. This was a hard decision to make as the people who were using this feature will likely suffer... sorry. This change has been done to optimise the drawing pipeline as constantly updating shader uniforms is slow, and per-element animation settings were hard to cache
+- Animation methods have mostly been removed from text elements and are now globally-scoped. This was a hard decision to make as the people who were using this feature will likely suffer... sorry. This change has been done to optimise the drawing pipeline as constantly updating shader uniforms is slow, and per-element animation settings were hard to cache
 - `.get_glyph_data()` method has been added to text elements. This allows you to get the position of a glyph in a text element, and which unicode character it is exactly
 - `.get_text()` method has been added to text elements. This returns the raw text for a page of text, stripped of formatting and command tags
 - `.get_bbox_revealed()` has been added to text elements to allow calculation of the bounding box for only the revealed text
-- `.fog()` has been removed since no one was using this feature
+- `.fog()` has been renamed to `.flash()`
 - `.z()` can now be used to set the z-coordinate that text elements are drawn at. This will probably never see use and end up in the bin alongside `.fog()` but you never know...
 - Text element templates are now forcibly scoped to the text element when applied to avoid confusing and intimidating scope-related bugs
 - Template functions now default to only being executed when the template changes. This can be customised by setting the `[executeOnlyOnChange]` argument for `.template()`
@@ -81,4 +81,5 @@ Scribble version 8 has over 600 Git commits between it and version 7.1, making i
 - Removes `SCRIBBLE_SKIP_SPEED_THRESHOLD` as it was a bad idea to begin with
 - `SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK` can now be turned on or off to automatically disable `[pause]` commands that occur immediately before a natural or forced (`[/page]`) pagebreak
 - Virtually all constructor variables are now prefixed with `__` in a vain attempt to clean up the global namespace for GameMaker's intellisense
+- Added `[nbsp]` and `[zwsp]` tags to insert non-breaking spaces and zero width spaces into strings. You can still use the actual Unicode characters too but these two formatting tags make it easier to visualize where those characters have been placed
 - `[slant]` formatting has now been promoted to a full GPU-accelerated effect. Congratulations `[slant]`, you made it
