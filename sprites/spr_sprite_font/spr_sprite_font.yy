@@ -467,7 +467,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"spr_sprite_font","path":"sprites/spr_sprite_font/spr_sprite_font.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "",
     "tags": [],
     "resourceType": "GMSequence",

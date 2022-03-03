@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"spr_msdf_industrydemi","path":"sprites/spr_msdf_industrydemi/spr_msdf_industrydemi.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "spr_msdf_industrydemi",
     "tags": [],
     "resourceType": "GMSequence",

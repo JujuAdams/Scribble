@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"spr_msdf_notoarabic","path":"sprites/spr_msdf_notoarabic/spr_msdf_notoarabic.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "spr_msdf_notoarabic",
     "tags": [],
     "resourceType": "GMSequence",
