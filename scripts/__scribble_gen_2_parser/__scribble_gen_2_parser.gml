@@ -548,7 +548,7 @@ function __scribble_gen_2_parser()
                     
                     // [/cycle]
                     case 23:
-                        _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? "cycle"]));
+                        _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? "/cycle"]));
                         
                         //Add an effect flag control
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
