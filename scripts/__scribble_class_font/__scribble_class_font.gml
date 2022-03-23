@@ -66,12 +66,11 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
         __height = 0;
     }
     
-    //Unused as of 2021-11-11. Not sure how many problems this would cause if it was enabled
     static __destroy = function()
     {
         if (__SCRIBBLE_DEBUG) __scribble_trace("Destroying font \"", __name, "\"");
         ds_map_destroy(__glyphs_map);
         ds_grid_destroy(__glyph_data_grid);
-        ds_map_delete(global.__scribble_font_data, name);
+        ds_map_delete(global.__scribble_font_data, __name);
     }
 }
