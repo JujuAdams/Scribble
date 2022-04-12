@@ -162,6 +162,25 @@ Three properties are available:
 
 &nbsp;
 
+## `scribble_font_bake_shadow(sourceFontName, newFontName, dX, dY, shadowColor, shadowAlpha, separation, smooth)`
+
+**Returns:** N/A (`undefined`)
+
+|Name            |Datatype|Purpose                                                                                                       |
+|----------------|--------|--------------------------------------------------------------------------------------------------------------|
+|`sourceFontName`|string  |Name of the source font, as a string                                                                          |
+|`newFontName`   |string  |Name of the new font to create, as a string                                                                   |
+|`dX`            |number  |x-axis displacement for the shadow                                                                            |
+|`dY`            |number  |y-axis displacement for the shadow                                                                            |
+|`shadowColor`   |integer |Colour of the shadow                                                                                          |
+|`shadowAlpha`   |number  |Alpha of the shadow  from `0.0` to `1.0`                                                                      |
+|`separation`    |integer |Change in every glyph's [`SCRIBBLE_GLYPH.SEPARATION`](scribble_set_glyph_property) value                      |
+|`smooth`        |boolean |Whether or not to interpolate the shadow. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
+
+`scribble_font_bake_shadow()` creates a new font using a source font. The new font will include a drop shadow with the given displacement, and using the given colour and alpha.
+
+&nbsp;
+
 ## `scribble_font_bake_shader(sourceFontName, newFontName, shader, leftPad, topPad, rightPad, bottomPad, separationDelta, smooth, [surfaceSize])`
 
 **Returns:** N/A (`undefined`)
