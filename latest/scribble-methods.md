@@ -662,7 +662,7 @@ The value returned from this function defaults to `1`.
 
 Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all. If you find that your shadow(s) are being clipped or cut off when using large offset values, [regenerate your MSDF fonts](msdf-fonts) using a larger `pxrange`.
 
-?> This method will only affect [MSDF fonts](msdf-fonts). If you'd like to add shadows to standard fonts or spritefonts, you may want to consider [baking this effect]().
+?> This method will only affect [MSDF fonts](msdf-fonts). If you'd like to add shadows to standard fonts or spritefonts, you may want to consider [baking this effect](fonts?id=scribble_font_bake_shadowsourcefontname-newfontname-dx-dy-shadowcolor-shadowalpha-separation-smooth).
 
 &nbsp;
 
