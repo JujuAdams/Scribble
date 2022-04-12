@@ -662,6 +662,8 @@ The value returned from this function defaults to `1`.
 
 Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all. If you find that your shadow(s) are being clipped or cut off when using large offset values, [regenerate your MSDF fonts](msdf-fonts) using a larger `pxrange`.
 
+?> This method will only affect [MSDF fonts](msdf-fonts). If you'd like to add shadows to standard fonts or spritefonts, you may want to consider [baking this effect]().
+
 &nbsp;
 
 ## `.msdf_border(colour, thickness)`
@@ -675,6 +677,8 @@ Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alp
 
 Sets the colour and thickness for a procedural MSDF border. Setting the thickness to `0` will prevent the border from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, [regenerate your MSDF fonts](msdf-fonts) using a larger `pxrange`.
 
+?> This method will only affect [MSDF fonts](msdf-fonts). If you'd like to add outlines to standard fonts or spritefonts, you may want to consider [baking this effect](fonts?id=scribble_font_bake_outline_4dirsourcefontname-newfontname-color-smooth).
+
 &nbsp;
 
 ## `.msdf_feather(thickness)`
@@ -686,6 +690,8 @@ Sets the colour and thickness for a procedural MSDF border. Setting the thicknes
 |`thickness`|real    |Feather thickness, in pixels        |
 
 Changes the softness/hardness of the MSDF font outline. You may find you have to fiddle with this number to correct for screen scaling but, normally, this feature will not be needed. The feather thickness defaults to `1.0`.
+
+?> This method will only affect [MSDF fonts](msdf-fonts).
 
 &nbsp;
 
