@@ -20,6 +20,7 @@
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.HEIGHT       ] = _font_line_height;\
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT  ] = _font_line_height;\
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.SEPARATION   ] = 0;\
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.LEFT_OFFSET  ] = 0;\
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _control_count;\
                                         ;\
                                         ++_glyph_count;\
@@ -666,6 +667,7 @@ function __scribble_gen_2_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.HEIGHT       ] = _surface_h;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT  ] = _surface_h;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.SEPARATION   ] = _surface_w;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.LEFT_OFFSET  ] = 0;
                         
                         //TODO - Add a way to force a regeneration of every text element that contains a given surface
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.TEXTURE      ] = surface_get_texture(_surface);
@@ -780,6 +782,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.HEIGHT       ] = sprite_get_height(_sprite_index);
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT  ] = sprite_get_height(_sprite_index);
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.SEPARATION   ] = sprite_get_width(_sprite_index);
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.LEFT_OFFSET  ] = 0;
                         
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.MSDF_PXRANGE ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _control_count;
@@ -993,6 +996,7 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.HEIGHT       ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT  ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.SEPARATION   ] = SCRIBBLE_TAB_WIDTH*_font_space_width;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _control_count;
                 
                 ++_glyph_count;
@@ -1014,6 +1018,7 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.HEIGHT       ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT  ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.SEPARATION   ] = _font_space_width;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _control_count;
                 
                 ++_glyph_count;
@@ -1035,6 +1040,7 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.HEIGHT       ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT  ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.SEPARATION   ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] = _control_count;
                 
                 ++_glyph_count;
