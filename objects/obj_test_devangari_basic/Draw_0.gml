@@ -1,1 +1,1 @@
-scribble(krutidev).draw(10, 10);
+scribble(unicode).draw(10, 10);
