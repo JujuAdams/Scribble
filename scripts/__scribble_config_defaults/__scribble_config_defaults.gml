@@ -3,7 +3,8 @@
 #macro SCRIBBLE_DEFAULT_COLOR               c_white  //Default vertex colour when drawing text models. This can be overwritten by the .starting_format() text element method. This will not affect draw_text_scribble() which instead uses draw_get_color()
 #macro SCRIBBLE_DEFAULT_HALIGN              fa_left  //Default horizontal alignment for text. This can be changed using the .align() text element method. This will not affect draw_text_scribble() which instead uses draw_get_halign()
 #macro SCRIBBLE_DEFAULT_VALIGN              fa_top   //Default vertical alignment for text. This can be changed using the .align() text element method. This will not affect draw_text_scribble() which instead uses draw_get_valign()
-#macro SCRIBBLE_DEFAULT_SPRITE_SPEED        0.1      //The default animation speed for sprites inserted into text
+#macro SCRIBBLE_DEFAULT_SPRITE_SPEED        1        //The default animation speed for sprites inserted into text
+#macro SCRIBBLE_LEGACY_ANIMATION_SPEED      false    //Set to <False> to use the old animation speed system which ignores the IDE sprite speed
 #macro SCRIBBLE_DEFAULT_DELAY_DURATION      450      //Default duration of the [delay] command, in milliseconds
 #macro SCRIBBLE_SLANT_GRADIENT              0.25     //The x-axis displacement when using the [slant] tag as a proportion of the glyph height
 #macro SCRIBBLE_DEFAULT_Z                   0        //Default z-position when drawing text models. This can be overwritten by the .z() text element method

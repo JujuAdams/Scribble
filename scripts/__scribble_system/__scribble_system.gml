@@ -457,6 +457,11 @@ function __scribble_buffer_write_unicode(_buffer, _value)
     }
 }
 
+function __scribble_image_speed_get(_sprite)
+{
+    return (sprite_get_speed_type(_sprite) == spritespeed_framespergameframe)? sprite_get_speed(_sprite) : (sprite_get_speed(_sprite) / game_get_speed(gamespeed_fps));
+}
+
 function __scribble_matrix_inverse(_matrix)
 {
     var _inv = array_create(16, undefined);
