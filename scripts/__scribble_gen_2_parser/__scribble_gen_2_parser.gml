@@ -772,6 +772,9 @@ function __scribble_gen_2_parser()
                                 break;
                             }
                             
+                            //Apply IDE sprite speed
+                            if (!SCRIBBLE_LEGACY_ANIMATION_SPEED) _image_speed *= __scribble_image_speed_get(_sprite_index);
+                            
                             //Add this glyph to our grid
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_SPRITE;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
