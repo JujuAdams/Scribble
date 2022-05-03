@@ -105,7 +105,7 @@ global.__scribble_gc_vbuff_ids   = [];
 
 global.__scribble_generator_state = {};
 
-if (!variable_global_exists("__scribble_colours")) global.__scribble_colours = ds_map_create();
+if (!variable_global_exists("__scribble_colours")) __scribble_config_colours();
 
 if (!variable_global_exists("__scribble_typewriter_events")) global.__scribble_typewriter_events = ds_map_create();
 global.__scribble_typewriter_events[? "pause" ] = undefined;
@@ -348,12 +348,12 @@ function __scribble_process_colour(_value)
 {
     if (is_string(_value))
     {
-        if (!ds_map_exists(global.__scribble_colours, _value))
+        if (!variable_struct_exists(global.__scribble_colours, _value))
         {
             __scribble_error("Colour \"", _value, "\" not recognised. Please add it to __scribble_config_colours()");
         }
         
-        return (global.__scribble_colours[? _value] & 0xFFFFFF);
+        return (global.__scribble_colours[$ _value] & 0xFFFFFF);
     }
     else
     {

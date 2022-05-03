@@ -13,7 +13,7 @@ function scribble_font_bake_shadow(_source_font_name, _new_font_name, _dx, _dy, 
 {
     if (is_string(_shadow_color))
     {
-        var _found = global.__scribble_colours[? _shadow_color];
+        var _found = global.__scribble_colours[$ _shadow_color];
         if (_shadow_color == undefined)
         {
             __scribble_error("Colour \"", _shadow_color, "\" not recognised");

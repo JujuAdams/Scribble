@@ -263,7 +263,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (is_string(_colour))
         {
-            _colour = global.__scribble_colours[? _colour];
+            _colour = global.__scribble_colours[$ _colour];
             if (_colour == undefined)
             {
                 __scribble_error("Colour name \"", _colour, "\" not recognised");
@@ -283,7 +283,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (is_string(_colour))
         {
-            _colour = global.__scribble_colours[? _colour];
+            _colour = global.__scribble_colours[$ _colour];
             if (_colour == undefined)
             {
                 __scribble_error("Colour name \"", _colour, "\" not recognised");
@@ -307,7 +307,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (is_string(_colour))
         {
-            _colour = global.__scribble_colours[? _colour];
+            _colour = global.__scribble_colours[$ _colour];
             if (_colour == undefined)
             {
                 __scribble_error("Colour name \"", _colour, "\" not recognised");

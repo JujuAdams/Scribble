@@ -724,9 +724,9 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_effect_flags;
                             ++_control_count;
                         }
-                        else if (ds_map_exists(global.__scribble_colours, _tag_command_name)) //Set a pre-defined colour
+                        else if (variable_struct_exists(global.__scribble_colours, _tag_command_name)) //Set a pre-defined colour
                         {
-                            _state_colour = (_state_colour & 0xFF000000) | (global.__scribble_colours[? _tag_command_name] & 0x00FFFFFF);
+                            _state_colour = (_state_colour & 0xFF000000) | (global.__scribble_colours[$ _tag_command_name] & 0x00FFFFFF);
                             
                             //Add a colour control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
