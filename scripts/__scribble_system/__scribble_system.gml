@@ -279,7 +279,7 @@ global.__scribble_anim_shader_msdf_desync = false;
 global.__scribble_anim_shader_msdf_desync_to_default = false;
 global.__scribble_anim_shader_msdf_default = false;
 
-global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE);
+global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.____SIZE);
 scribble_anim_reset();
 
 //Bezier curve state
@@ -661,28 +661,28 @@ enum __SCRIBBLE_VERTEX_BUFFER
 
 enum __SCRIBBLE_ANIM
 {
-    WAVE_SIZE,        // 0
-    WAVE_FREQ,        // 1
-    WAVE_SPEED,       // 2
-    SHAKE_SIZE,       // 3
-    SHAKE_SPEED,      // 4
-    RAINBOW_WEIGHT,   // 5
-    RAINBOW_SPEED,    // 6
-    WOBBLE_ANGLE,     // 7
-    WOBBLE_FREQ,      // 8
-    PULSE_SCALE,      // 9
-    PULSE_SPEED,      //10
-    WHEEL_SIZE,       //11
-    WHEEL_FREQ,       //12
-    WHEEL_SPEED,      //13
-    CYCLE_SPEED,      //14
-    CYCLE_SATURATION, //15
-    CYCLE_VALUE,      //16
-    JITTER_MINIMUM,   //17
-    JITTER_MAXIMUM,   //18
-    JITTER_SPEED,     //19
-    SLANT_GRADIENT,   //20
-    __SIZE,           //21
+    __WAVE_SIZE,        // 0
+    __WAVE_FREQ,        // 1
+    __WAVE_SPEED,       // 2
+    __SHAKE_SIZE,       // 3
+    __SHAKE_SPEED,      // 4
+    __RAINBOW_WEIGHT,   // 5
+    __RAINBOW_SPEED,    // 6
+    __WOBBLE_ANGLE,     // 7
+    __WOBBLE_FREQ,      // 8
+    __PULSE_SCALE,      // 9
+    __PULSE_SPEED,      //10
+    __WHEEL_SIZE,       //11
+    __WHEEL_FREQ,       //12
+    __WHEEL_SPEED,      //13
+    __CYCLE_SPEED,      //14
+    __CYCLE_SATURATION, //15
+    __CYCLE_VALUE,      //16
+    __JITTER_MINIMUM,   //17
+    __JITTER_MAXIMUM,   //18
+    __JITTER_SPEED,     //19
+    __SLANT_GRADIENT,   //20
+    __SIZE,             //21
 }
 
 enum SCRIBBLE_EASE
@@ -746,21 +746,21 @@ enum __SCRIBBLE_GEN_GLYPH
 
 enum __SCRIBBLE_GEN_VBUFF_POS
 {
-    QUAD_L, //0
-    QUAD_T, //1
-    QUAD_R, //2
-    QUAD_B, //3
-    __SIZE, //4
+    __QUAD_L, //0
+    __QUAD_T, //1
+    __QUAD_R, //2
+    __QUAD_B, //3
+    __SIZE,   //4
 }
 
 enum __SCRIBBLE_GEN_CONTROL_TYPE
 {
-    EVENT,
-    HALIGN,
-    COLOUR,
-    EFFECT,
-    CYCLE,
-    REGION,
+    __EVENT,  //0
+    __HALIGN, //1
+    __COLOUR, //2
+    __EFFECT, //3
+    __CYCLE,  //4
+    __REGION, //5
 }
 
 //These can be used for ORD
