@@ -766,6 +766,7 @@ enum __SCRIBBLE_GEN_CONTROL_TYPE
     __EFFECT, //3
     __CYCLE,  //4
     __REGION, //5
+    __FONT,   //6
 }
 
 //These can be used for ORD

@@ -223,6 +223,10 @@ function __scribble_gen_9_write_vbuffs()
                         _region_bbox_start = _i;
                         _region_bbox_array = [];
                     break;
+                    
+                    case __SCRIBBLE_GEN_CONTROL_TYPE.__FONT:
+                        //Do nothing
+                    break;
                 }
                 
                 _control_index++;
