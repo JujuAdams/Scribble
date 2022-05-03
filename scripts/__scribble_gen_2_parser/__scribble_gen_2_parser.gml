@@ -214,12 +214,12 @@ function __scribble_gen_2_parser()
     var _state_scale             = 1.0;
     var _state_scale_start_glyph = 0;
     
-    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.HALIGN;
-    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_halign;
+    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.HALIGN;
+    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_halign;
     ++_control_count;
     
-    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
-    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_colour;
+    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
+    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
     ++_control_count;
     
     //Repeat a fixed number of times. This prevents infinite loops and generally is more stable...
@@ -308,13 +308,13 @@ function __scribble_gen_2_parser()
                         _state_colour       = 0xFF000000 | _starting_colour;
                         
                         //Add an effect flag control
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = 0;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = 0;
                         ++_control_count;
                         
                         //Add a colour control
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_colour;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                         ++_control_count;
                     break;
                     
@@ -335,8 +335,8 @@ function __scribble_gen_2_parser()
                         _state_colour = (_state_colour & 0xFF000000) | _starting_colour;
                         
                         //Add a colour control
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_colour;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                         ++_control_count;
                     break;
                     
@@ -346,8 +346,8 @@ function __scribble_gen_2_parser()
                         _state_colour = 0xFF000000 | _state_colour;
                         
                         //Add a colour control
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_colour;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                         ++_control_count;
                     break;
                     
@@ -414,8 +414,8 @@ function __scribble_gen_2_parser()
                         _state_colour = (floor(255*clamp(_tag_parameters[1], 0, 1)) << 24) | (_state_colour & 0x00FFFFFF);
                         
                         //Add a colour control
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_colour;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                         ++_control_count;
                     break;
                     
@@ -537,13 +537,13 @@ function __scribble_gen_2_parser()
                         _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? "cycle"]);
                         
                         //Add an effect flag control
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_effect_flags;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
                         ++_control_count;
                         
                         //Add a cycle control
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.CYCLE;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.CYCLE;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
                         ++_control_count;
                     break;
                     
@@ -552,13 +552,13 @@ function __scribble_gen_2_parser()
                         _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? "/cycle"]));
                         
                         //Add an effect flag control
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_effect_flags;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
                         ++_control_count;
                         
                         //Add a cycle control
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.CYCLE;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = undefined;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.CYCLE;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = undefined;
                         ++_control_count;
                     break;
                             
@@ -692,14 +692,14 @@ function __scribble_gen_2_parser()
                     case 29:
                         if (array_length(_tag_parameters) != 2) __scribble_error("[region] tags must contain a name e.g. [region,This is a region]");
                         
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.REGION;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _tag_parameters[1];
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.REGION;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _tag_parameters[1];
                         ++_control_count;
                     break;
                     
                     case 30:
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.REGION;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = undefined;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.REGION;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = undefined;
                         ++_control_count;
                     break;
                     
@@ -711,8 +711,8 @@ function __scribble_gen_2_parser()
                             _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? _tag_command_name]);
                             
                             //Add an effect flag control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_effect_flags;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
                             ++_control_count;
                         }
                         else if (ds_map_exists(global.__scribble_effects_slash, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
@@ -720,8 +720,8 @@ function __scribble_gen_2_parser()
                             _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? _tag_command_name]));
                             
                             //Add an effect flag control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_effect_flags;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
                             ++_control_count;
                         }
                         else if (variable_struct_exists(global.__scribble_colours, _tag_command_name)) //Set a pre-defined colour
@@ -729,16 +729,16 @@ function __scribble_gen_2_parser()
                             _state_colour = (_state_colour & 0xFF000000) | (global.__scribble_colours[$ _tag_command_name] & 0x00FFFFFF);
                             
                             //Add a colour control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_colour;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                             ++_control_count;
                         }
                         else if (ds_map_exists(global.__scribble_typewriter_events, _tag_command_name)) //Events
                         {
                             array_delete(_tag_parameters, 0, 1);
                             
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EVENT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = new __scribble_class_event(_tag_command_name, _tag_parameters);
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EVENT;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(_tag_command_name, _tag_parameters);
                             ++_control_count;
                         }
                         else if (ds_map_exists(global.__scribble_font_data, _tag_command_name)) //Change font
@@ -800,15 +800,15 @@ function __scribble_gen_2_parser()
                         }
                         else if (asset_get_type(_tag_command_name) == asset_sound)
                         {
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EVENT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters);
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EVENT;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters);
                             ++_control_count;
                         }
                         else if (ds_map_exists(global.__scribble_external_sound_map, _tag_command_name))
                         {
                             //External audio added via scribble_external_sound_add()
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EVENT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, [global.__scribble_external_sound_map[? _tag_command_name]]);
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.EVENT;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, [global.__scribble_external_sound_map[? _tag_command_name]]);
                             ++_control_count;
                         }
                         else
@@ -870,8 +870,8 @@ function __scribble_gen_2_parser()
                                 _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
                                 
                                 //Add a colour control
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_colour;
+                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
+                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                                 ++_control_count;
                                 
                                 #endregion
@@ -897,8 +897,8 @@ function __scribble_gen_2_parser()
                                     _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
                                     
                                     //Add a colour control
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_colour;
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR;
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                                     ++_control_count;
                                     
                                     #endregion
@@ -921,8 +921,8 @@ function __scribble_gen_2_parser()
                     _state_halign = _new_halign;
                     _new_halign = undefined;
                     
-                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.HALIGN;
-                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.DATA] = _state_halign;
+                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.HALIGN;
+                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_halign;
                     ++_control_count;
                     
                     if (_glyph_count > 0)
