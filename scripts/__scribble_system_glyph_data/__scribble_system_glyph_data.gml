@@ -29,6 +29,7 @@ function __scribble_system_glyph_data()
         SYMBOL     = 1, //Must be 1 for the sake of __scribble_gen_6_finalize_bidi()
         ISOLATED,       //More of a layout property - .ISOLATED words get converted to .L2R when building words
         L2R,
+        L2R_DEVANAGARI,
         R2L,
         R2L_ARABIC, //Cursive. Animation indexes are calculated per word
     }
@@ -90,6 +91,7 @@ function __scribble_system_glyph_data()
     _map[? $066C] = __SCRIBBLE_BIDI.R2L; //Arabic thousands separator
     for(var _i = 0x0590; _i <= 0x05FF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L; //Hebrew block
     for(var _i = 0x0600; _i <= 0x06FF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L_ARABIC; //Arabic block
+    for(var _i = 0x0900; _i <= 0x097F; _i++) _map[? _i] = __SCRIBBLE_BIDI.L2R_DEVANAGARI; //Hindi block
     for(var _i = 0xFB50; _i <= 0xFDFF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L_ARABIC; //Arabic presentation forms A
     for(var _i = 0xFE70; _i <= 0xFEFF; _i++) _map[? _i] = __SCRIBBLE_BIDI.R2L_ARABIC; //Arabic presentation forms B
     

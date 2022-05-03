@@ -92,9 +92,6 @@ function __scribble_font_add_from_project(_font)
         var _glyph_dict = _info_glyphs_array[_i];
         
         var _unicode = _glyph_dict.char;
-        if (_is_krutidev && (_unicode != 0x20)) _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
-        var _char = chr(_unicode);
-        
         if ((_unicode >= 0x4E00) && (_unicode <= 0x9FFF)) //CJK Unified ideographs block
         {
             var _bidi = __SCRIBBLE_BIDI.ISOLATED;
@@ -104,6 +101,17 @@ function __scribble_font_add_from_project(_font)
             var _bidi = _global_glyph_bidi_map[? _unicode];
             if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
         }
+        
+        if (_is_krutidev)
+        {
+            if (_bidi == __SCRIBBLE_BIDI.L2R)
+            {
+                _bidi = __SCRIBBLE_BIDI.L2R_DEVANAGARI;
+                _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
+            }
+        }
+        
+        var _char = chr(_unicode);
         
         //FIXME - Workaround for HTML5 in GMS2.3.7.606 and above
         var _x = _glyph_dict[$ "x"];
