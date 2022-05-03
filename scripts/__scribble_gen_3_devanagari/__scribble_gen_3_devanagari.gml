@@ -128,15 +128,13 @@ global.__scribble_krutidev_matra_lookup_map[? 2380] = true;
 
 function __scribble_gen_3_devanagari()
 {
-    return;
-    
-    /*
     //Avoid this mess if we can
     if (!__has_devanagari) exit;
     
-    var _glyph_grid  = global.__scribble_glyph_grid;
-    var _temp_grid   = global.__scribble_temp2_grid;
-    var _glyph_count = global.__scribble_generator_state.__glyph_count;
+    var _glyph_grid   = global.__scribble_glyph_grid;
+    var _control_grid = global.__scribble_control_grid;
+    var _temp_grid    = global.__scribble_temp2_grid;
+    var _glyph_count  = global.__scribble_generator_state.__glyph_count;
     
     //Glyph count includes the terminating null. We don't need that for Krutidev conversion
     --_glyph_count;
@@ -417,14 +415,29 @@ function __scribble_gen_3_devanagari()
     
     #region Copy data across for all the Krutidev characters we've just inserted
     
-    //FIXME
-    var _font_glyphs_map = undefined;
-    var _font_name = "?";
+    var _control_index = 0;
+    
+    var _font_name            = undefined;
+    var _font_glyphs_map      = undefined;
     var _font_glyph_data_grid = undefined;
     
     var _i = 0;
     repeat(_glyph_count)
     {
+        var _control_delta = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] - _control_index;
+        repeat(_control_delta)
+        {
+            if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.__FONT)
+            {
+                var _font_name            = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
+                var _font_data            = __scribble_get_font_data(_font_name);
+                var _font_glyph_data_grid = _font_data.__glyph_data_grid;
+                var _font_glyphs_map      = _font_data.__glyphs_map;
+            }
+                
+            _control_index++;
+        }
+        
         var _glyph_write = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
         
         //Pull info out of the font's data structures
@@ -446,5 +459,4 @@ function __scribble_gen_3_devanagari()
     }
     
     #endregion
-    */
 }
