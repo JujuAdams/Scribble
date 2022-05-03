@@ -11,6 +11,7 @@ Scribble version 8 has over 600 Git commits between it and version 7.1, making i
 - Drawing text should now be faster than before thanks to some additional streamlining and caching
 - Added `draw_text_scribble()` and `draw_text_scribble_ext()` for immediate plug-and-play usage. These functions are useful for drawing formatted text without needing to navigate Scribble's fluent interface
 - Text regions can now be defined using the `[region]` command tag. Regions can be detected using `.region_detect()` and regions can be highlighted using `.region_set_active()`. Text regions are very useful for tooltips and hyperlinks
+- In-line sprite animation speeds are now tied to the speed defined in the IDE. This behaviour can be turned off by setting `SCRIBBLE_LEGACY_ANIMATION_SPEED` to `true`
 
 ## Standard Fonts
 
@@ -76,6 +77,7 @@ Scribble version 8 has over 600 Git commits between it and version 7.1, making i
 ## Other Changes
 
 - Scribble configuration has been split into three separate scripts to help guide people to what they're looking for faster
+- Custom colour definitions are now held in a struct rather than a ds_map, please see `__scribble_config_colours()`
 - Adds `SCRIBBLE_INCREMENTAL_FREEZE` for a nice performance boost when drawing large amounts of text. Vertex buffer freezing happens one frame after the text model is created to help smooth out any one-time performance costs
 - Externally added sounds can now be used with events and per-character sounds. See `scribble_external_sound_add()`, `scribble_external_sound_remove()`, and `scribble_external_sound_exists()`
 - Removes `SCRIBBLE_SKIP_SPEED_THRESHOLD` as it was a bad idea to begin with
