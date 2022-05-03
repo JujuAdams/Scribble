@@ -3,11 +3,11 @@
 
 function scribble_anim_wobble(_angle, _frequency)
 {
-    if ((_angle     != global.__scribble_anim_properties[__SCRIBBLE_ANIM.WOBBLE_ANGLE])
-    ||  (_frequency != global.__scribble_anim_properties[__SCRIBBLE_ANIM.WOBBLE_FREQ ]))
+    if ((_angle     != global.__scribble_anim_properties[__SCRIBBLE_ANIM.__WOBBLE_ANGLE])
+    ||  (_frequency != global.__scribble_anim_properties[__SCRIBBLE_ANIM.__WOBBLE_FREQ ]))
     {
-        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.WOBBLE_ANGLE] = _angle;
-        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.WOBBLE_FREQ ] = _frequency;
+        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.__WOBBLE_ANGLE] = _angle;
+        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.__WOBBLE_FREQ ] = _frequency;
         
         global.__scribble_anim_shader_desync                 = true;
         global.__scribble_anim_shader_desync_to_default      = false;

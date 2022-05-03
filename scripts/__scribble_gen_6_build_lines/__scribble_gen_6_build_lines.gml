@@ -75,7 +75,7 @@ function __scribble_gen_6_build_lines()
             var _control_delta = _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
             repeat(_control_delta)
             {
-                if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.HALIGN)
+                if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.__HALIGN)
                 {
                     _state_halign = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
                 }
@@ -98,7 +98,7 @@ function __scribble_gen_6_build_lines()
                 var _control_delta = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
                 repeat(_control_delta)
                 {
-                    if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.HALIGN)
+                    if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.__HALIGN)
                     {
                         _state_halign = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
                     }
