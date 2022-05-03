@@ -139,8 +139,8 @@ function __scribble_gen_9_write_vbuffs()
             with(_page_data)
             {
                 __glyph_grid = ds_grid_create(__glyph_count, __SCRIBBLE_GLYPH_LAYOUT.__SIZE);
-                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH.UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH.UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT.UNICODE);
-                ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyph_start, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT);
+                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH.UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH.UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE);
+                ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyph_start, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT);
             }
         }
         
@@ -154,19 +154,19 @@ function __scribble_gen_9_write_vbuffs()
             var _control_delta = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
             repeat(_control_delta)
             {
-                switch(_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.TYPE])
+                switch(_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE])
                 {
                     case __SCRIBBLE_GEN_CONTROL_TYPE.COLOUR:
-                        _glyph_colour = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
+                        _glyph_colour = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
                         var _write_colour = (__SCRIBBLE_FIX_ARGB? scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
                     break;
                     
                     case __SCRIBBLE_GEN_CONTROL_TYPE.EFFECT:
-                        _glyph_effect_flags = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
+                        _glyph_effect_flags = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
                     break;
                     
                     case __SCRIBBLE_GEN_CONTROL_TYPE.CYCLE:
-                        _glyph_cycle = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
+                        _glyph_cycle = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
                         
                         if (_glyph_cycle == undefined)
                         {
@@ -188,7 +188,7 @@ function __scribble_gen_9_write_vbuffs()
                             _page_events_dict[$ _animation_index] = _event_array;
                         }
                         
-                        var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
+                        var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
                         _event.position = _animation_index; //Update the glyph index to the *local* glyph index for the page
                         array_push(_event_array, _event);
                     break;
@@ -218,7 +218,7 @@ function __scribble_gen_9_write_vbuffs()
                         }
                         
                         // [/region] just sets the .DATA field to undefined
-                        _region_name       = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
+                        _region_name       = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
                         _region_start      = _i;
                         _region_bbox_start = _i;
                         _region_bbox_array = [];
@@ -438,7 +438,7 @@ function __scribble_gen_9_write_vbuffs()
     var _control_delta = _glyph_grid[# _i-1, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
     repeat(_control_delta)
     {
-        if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.EVENT)
+        if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.EVENT)
         {
             var _animation_index = _i; //TODO
             var _event_array = _page_events_dict[$ _animation_index]; //Find the correct event array in the diciontary, creating a new one if needed
@@ -449,7 +449,7 @@ function __scribble_gen_9_write_vbuffs()
                 _page_events_dict[$ _animation_index] = _event_array;
             }
             
-            var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.DATA];
+            var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
             _event.position = _animation_index; //Update the glyph index to the *local* glyph index for the page
             array_push(_event_array, _event);
         }

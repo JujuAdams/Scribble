@@ -638,12 +638,12 @@ enum SCRIBBLE_GLYPH
 
 enum __SCRIBBLE_GLYPH_LAYOUT
 {
-    UNICODE, // 0
-    LEFT,    // 1
-    TOP,     // 2
-    RIGHT,   // 3
-    BOTTOM,  // 4
-    __SIZE,  // 5
+    __UNICODE, // 0
+    __LEFT,    // 1
+    __TOP,     // 2
+    __RIGHT,   // 3
+    __BOTTOM,  // 4
+    __SIZE,    // 5
 }
 
 enum __SCRIBBLE_VERTEX_BUFFER
@@ -769,40 +769,40 @@ enum __SCRIBBLE_GEN_CONTROL_TYPE
 
 enum __SCRIBBLE_GEN_CONTROL
 {
-    TYPE,   //0
-    DATA,   //1
+    __TYPE, //0
+    __DATA, //1
     __SIZE, //2
 }
 
 enum __SCRIBBLE_GEN_WORD
 {
-    BIDI_RAW,    //0
-    BIDI,        //1
-    GLYPH_START, //2
-    GLYPH_END,   //3
-    WIDTH,       //4
-    HEIGHT,      //5
-    __SIZE,      //6
+    __BIDI_RAW,    //0
+    __BIDI,        //1
+    __GLYPH_START, //2
+    __GLYPH_END,   //3
+    __WIDTH,       //4
+    __HEIGHT,      //5
+    __SIZE,        //6
 }
 
 enum __SCRIBBLE_GEN_STRETCH
 {
-    WORD_START, //0
-    WORD_END,   //1
-    BIDI,       //2
+    __WORD_START, //0
+    __WORD_END,   //1
+    __BIDI,       //2
     __SIZE,
 }
 
 enum __SCRIBBLE_GEN_LINE
 {
-    Y,                  //0
-    WORD_START,         //1
-    WORD_END,           //2
-    WIDTH,              //3
-    HEIGHT,             //4
-    HALIGN,             //5
-    STARTS_MANUAL_PAGE, //6
-    __SIZE,             //7
+    __Y,                  //0
+    __WORD_START,         //1
+    __WORD_END,           //2
+    __WIDTH,              //3
+    __HEIGHT,             //4
+    __HALIGN,             //5
+    __STARTS_MANUAL_PAGE, //6
+    __SIZE,               //7
 }
 
 #endregion

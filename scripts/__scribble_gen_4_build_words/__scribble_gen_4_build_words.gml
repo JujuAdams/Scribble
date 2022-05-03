@@ -1,6 +1,6 @@
-#macro __SCRIBBLE_GEN_WORD_START  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.GLYPH_START] = _word_glyph_start;\
-                                  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.BIDI_RAW   ] = _word_bidi;\
-                                  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.BIDI       ] = (_word_bidi == __SCRIBBLE_BIDI.ISOLATED)? __SCRIBBLE_BIDI.L2R : _word_bidi; //CJK isolated characters are written L2R
+#macro __SCRIBBLE_GEN_WORD_START  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__GLYPH_START] = _word_glyph_start;\
+                                  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI_RAW   ] = _word_bidi;\
+                                  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI       ] = (_word_bidi == __SCRIBBLE_BIDI.ISOLATED)? __SCRIBBLE_BIDI.L2R : _word_bidi; //CJK isolated characters are written L2R
 
 
 #macro __SCRIBBLE_GEN_WORD_END  _word_glyph_end = _i-1;\
@@ -10,16 +10,16 @@
                                     ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, abs(_word_width));\
                                     ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _word_glyph_start);\
                                     ;\//For the purposes for further text layout, force this bidi to generic R2L
-                                    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.BIDI] = __SCRIBBLE_BIDI.R2L;\
+                                    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI] = __SCRIBBLE_BIDI.R2L;\
                                 }\
                                 else if (_word_bidi == __SCRIBBLE_BIDI.R2L)\ //Any R2L languages, apart from Arabic
                                 {\
                                     ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, abs(_word_width));\
                                 }\
                                 ;\
-                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.GLYPH_END] = _word_glyph_end;\
-                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.WIDTH    ] = abs(_word_width);\
-                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.HEIGHT   ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT);\
+                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__GLYPH_END] = _word_glyph_end;\
+                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__WIDTH    ] = abs(_word_width);\
+                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__HEIGHT   ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT);\
                                 ;\
                                 _word_count++;
 
@@ -127,8 +127,8 @@ function __scribble_gen_4_build_words()
                     {
                         // When (if) we find an L2R/R2L glyph then copy that glyph state back into the word itself
                         _word_bidi = _glyph_bidi;
-                        _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.BIDI_RAW] = _glyph_bidi;
-                        _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.BIDI    ] = _glyph_bidi;
+                        _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI_RAW] = _glyph_bidi;
+                        _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI    ] = _glyph_bidi;
                     }
                     else if (_wrap_per_char || (_glyph_bidi != _word_bidi))
                     {
@@ -158,12 +158,12 @@ function __scribble_gen_4_build_words()
         __SCRIBBLE_GEN_WORD_END;
     }
     
-    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.GLYPH_START] = _word_glyph_end+1;
-    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.GLYPH_END  ] = _word_glyph_end+1;
-    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.WIDTH      ] = 0;
-    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.HEIGHT     ] = 0;
-    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.BIDI_RAW   ] = __SCRIBBLE_BIDI.SYMBOL;
-    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
+    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__GLYPH_START] = _word_glyph_end+1;
+    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__GLYPH_END  ] = _word_glyph_end+1;
+    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__WIDTH      ] = 0;
+    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__HEIGHT     ] = 0;
+    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI_RAW   ] = __SCRIBBLE_BIDI.SYMBOL;
+    _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
     
     with(global.__scribble_generator_state)
     {

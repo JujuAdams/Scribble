@@ -119,20 +119,20 @@ function __scribble_class_page() constructor
         {
             return {
                 unicode: 0,
-                left:    __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT],
-                top:     __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.TOP ],
-                right:   __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.LEFT],
-                bottom:  __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.TOP ],
+                left:    __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT],
+                top:     __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__TOP ],
+                right:   __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT],
+                bottom:  __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__TOP ],
             };
         }
         else if (_index <= __glyph_count)
         {
             return {
-                unicode: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.UNICODE],
-                left:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.LEFT   ],
-                top:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.TOP    ],
-                right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.RIGHT  ],
-                bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM ],
+                unicode: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE],
+                left:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__LEFT   ],
+                top:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__TOP    ],
+                right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT  ],
+                bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM ],
             };
         }
         else
@@ -140,10 +140,10 @@ function __scribble_class_page() constructor
             _index = __glyph_count-1;
             return {
                 unicode: 0,
-                left:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.RIGHT ],
-                top:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM],
-                right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.RIGHT ],
-                bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.BOTTOM],
+                left:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT ],
+                top:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM],
+                right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT ],
+                bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM],
             };
         }
     }
