@@ -423,6 +423,10 @@ function __scribble_gen_3_devanagari()
     //    ++_i;
     //}
     
+    //show_debug_message("grid = \"" + _debug_string + "\"");
+    //show_debug_message("string_length(" + _debug_string + ") = " + string(string_length(_debug_string)));
+    //show_debug_message("_glyph_count = " + string(_glyph_count));
+    
     var _control_index = 0;
     
     var _font_name            = undefined;
@@ -446,7 +450,8 @@ function __scribble_gen_3_devanagari()
             _control_index++;
         }
         
-        var _glyph_write = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE] + __SCRIBBLE_DEVANAGARI_OFFSET;
+        var _glyph_write = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
+        if (_glyph_write != 32) _glyph_write += __SCRIBBLE_DEVANAGARI_OFFSET;
         
         //Pull info out of the font's data structures
         var _data_index = _font_glyphs_map[? _glyph_write];
@@ -471,6 +476,8 @@ function __scribble_gen_3_devanagari()
         
         ++_i;
     }
+    
+    global.__scribble_generator_state.__glyph_count = _glyph_count;
     
     #endregion
 }
