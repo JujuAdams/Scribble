@@ -415,6 +415,14 @@ function __scribble_gen_3_devanagari()
     
     #region Copy data across for all the Krutidev characters we've just inserted
     
+    //var _debug_string = "";
+    //var _i = 0;
+    //repeat(_glyph_count)
+    //{
+    //    _debug_string += chr(_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE]);
+    //    ++_i;
+    //}
+    
     var _control_index = 0;
     
     var _font_name            = undefined;
@@ -434,16 +442,22 @@ function __scribble_gen_3_devanagari()
                 var _font_glyph_data_grid = _font_data.__glyph_data_grid;
                 var _font_glyphs_map      = _font_data.__glyphs_map;
             }
-                
+            
             _control_index++;
         }
         
-        var _glyph_write = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
+        var _glyph_write = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE] + __SCRIBBLE_DEVANAGARI_OFFSET;
         
         //Pull info out of the font's data structures
         var _data_index = _font_glyphs_map[? _glyph_write];
+        
         //If our glyph is missing, choose the missing character glyph instead!
-        if (_data_index == undefined) _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];
+        if (_data_index == undefined)
+        {
+            __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");
+            _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];
+        }
+        
         if (_data_index == undefined)
         {
             //This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
