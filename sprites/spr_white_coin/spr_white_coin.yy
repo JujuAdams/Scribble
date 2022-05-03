@@ -41,7 +41,7 @@
     "spriteId": {"name":"spr_white_coin","path":"sprites/spr_white_coin/spr_white_coin.yy",},
     "timeUnits": 1,
     "playback": 1,
-    "playbackSpeed": 30.0,
+    "playbackSpeed": 6.0,
     "playbackSpeedType": 0,
     "autoRecord": true,
     "volume": 1.0,
