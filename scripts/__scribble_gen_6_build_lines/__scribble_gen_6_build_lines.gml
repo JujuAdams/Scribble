@@ -62,6 +62,7 @@ function __scribble_gen_6_build_lines()
         var _simulated_model_max_height = _model_max_height / __fit_scale;
         
         var _line_count = 0;
+        var _word_broken = false;
         
         if (_word_count > 0)
         {
@@ -121,6 +122,8 @@ function __scribble_gen_6_build_lines()
                     if (_word_width >= _simulated_model_max_width)
                     {
                         #region Emergency! We're going to have to retroactively implement per-glyph line wrapping
+                        
+                        _word_broken = true;
                         
                         if (_word_grid[# _i, __SCRIBBLE_GEN_WORD.BIDI] >= __SCRIBBLE_BIDI.R2L)
                         {
@@ -289,9 +292,9 @@ function __scribble_gen_6_build_lines()
         
         _fit_to_box_iterations++;
         
-        if (_line_max_y < _simulated_model_max_height)
+        if ((_line_max_y < _simulated_model_max_height) && !_word_broken)
         {
-            //The text is already small enough to fit!
+            //The text is already small enough to fit (and none of the words have been split in the middle)
             if (__fit_scale >= _wrap_max_scale) break;
             var _lower_limit = __fit_scale;
         }
