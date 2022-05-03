@@ -8,10 +8,10 @@
                                 _page_data.__min_y       = (__valign == fa_middle)? -(_line_y div 2) : ((__valign == fa_bottom)? -_line_y :       0);\
                                 _page_data.__max_y       = (__valign == fa_middle)?  (_line_y div 2) : ((__valign == fa_bottom)?        0 : _line_y);\
                                 ;\// Set up the character indexes for the page, relative to the character index of the first glyph on the page
-                                var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX];\
-                                ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, -_page_anim_start);\
+                                var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];\
+                                ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, -_page_anim_start);\
                                 ;\// Set the character count for the page too
-                                _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX];
+                                _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];
 
 
 
