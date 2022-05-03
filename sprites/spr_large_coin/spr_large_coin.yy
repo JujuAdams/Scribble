@@ -41,7 +41,7 @@
     "spriteId": {"name":"spr_large_coin","path":"sprites/spr_large_coin/spr_large_coin.yy",},
     "timeUnits": 1,
     "playback": 1,
-    "playbackSpeed": 15.0,
+    "playbackSpeed": 6.0,
     "playbackSpeedType": 0,
     "autoRecord": true,
     "volume": 1.0,
