@@ -251,7 +251,7 @@ function __scribble_gen_9_write_vbuffs()
                 var _image_index    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__IMAGE_INDEX    ];
                 var _image_speed    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__IMAGE_SPEED    ];
                 
-                var _glyph_xscale = sprite_get_width(_sprite_index) / _glyph_width;
+                var _glyph_xscale = sprite_get_width( _sprite_index) / _glyph_width;
                 var _glyph_yscale = sprite_get_height(_sprite_index) / _glyph_height;
                 
                 var _old_glyph_effect_flags = _glyph_effect_flags;
@@ -267,7 +267,7 @@ function __scribble_gen_9_write_vbuffs()
                     _glyph_effect_flags = ~_glyph_effect_flags;
                 }
                 
-                if (_image_speed > 0) _glyph_effect_flags |= 1; //Set the sprite flag bit
+                if (_image_speed > 0) _glyph_effect_flags |= 0x01; //Set the sprite flag bit
                 
                 if (SCRIBBLE_ADD_SPRITE_ORIGINS)
                 {
@@ -307,10 +307,10 @@ function __scribble_gen_9_write_vbuffs()
                     var _quad_u1 = _uvs[2];
                     var _quad_v1 = _uvs[3];
                     
-                    var _quad_l = floor(_glyph_x + _uvs[4]*_glyph_xscale);
-                    var _quad_t = floor(_glyph_y + _uvs[5]*_glyph_yscale);
-                    var _quad_r = _quad_l  + _uvs[6]*_glyph_width;
-                    var _quad_b = _quad_t  + _uvs[7]*_glyph_height;
+                    var _quad_l = floor(_glyph_x + _uvs[4]/_glyph_xscale);
+                    var _quad_t = floor(_glyph_y + _uvs[5]/_glyph_yscale);
+                    var _quad_r = _quad_l + _uvs[6]*_glyph_width;
+                    var _quad_b = _quad_t + _uvs[7]*_glyph_height;
                     
                     var _half_w = 0.5*(_quad_r - _quad_l);
                     var _half_h = 0.5*(_quad_b - _quad_t);
