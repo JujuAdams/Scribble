@@ -279,7 +279,7 @@ global.__scribble_anim_shader_msdf_desync = false;
 global.__scribble_anim_shader_msdf_desync_to_default = false;
 global.__scribble_anim_shader_msdf_default = false;
 
-global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.____SIZE);
+global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE);
 scribble_anim_reset();
 
 //Bezier curve state
@@ -636,6 +636,26 @@ enum SCRIBBLE_GLYPH
     __SIZE        //16
 }
 
+enum SCRIBBLE_EASE
+{
+    NONE,     // 0
+    LINEAR,   // 1
+    QUAD,     // 2
+    CUBIC,    // 3
+    QUART,    // 4
+    QUINT,    // 5
+    SINE,     // 6
+    EXPO,     // 7
+    CIRC,     // 8
+    BACK,     // 9
+    ELASTIC,  //10
+    BOUNCE,   //11
+    CUSTOM_1, //12
+    CUSTOM_2, //13
+    CUSTOM_3, //14
+    __SIZE    //15
+}
+
 enum __SCRIBBLE_GLYPH_LAYOUT
 {
     __UNICODE, // 0
@@ -648,15 +668,15 @@ enum __SCRIBBLE_GLYPH_LAYOUT
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {
-    VERTEX_BUFFER, //0
-    TEXTURE,       //1
-    MSDF_RANGE,    //2
-    TEXEL_WIDTH,   //3
-    TEXEL_HEIGHT,  //4
-    SHADER,        //5
-    BUFFER,        //6
-    BILINEAR,      //7
-    __SIZE         //8
+    __VERTEX_BUFFER, //0
+    __TEXTURE,       //1
+    __MSDF_RANGE,    //2
+    __TEXEL_WIDTH,   //3
+    __TEXEL_HEIGHT,  //4
+    __SHADER,        //5
+    __BUFFER,        //6
+    __BILINEAR,      //7
+    __SIZE           //8
 }
 
 enum __SCRIBBLE_ANIM
@@ -685,26 +705,6 @@ enum __SCRIBBLE_ANIM
     __SIZE,             //21
 }
 
-enum SCRIBBLE_EASE
-{
-    NONE,     // 0
-    LINEAR,   // 1
-    QUAD,     // 2
-    CUBIC,    // 3
-    QUART,    // 4
-    QUINT,    // 5
-    SINE,     // 6
-    EXPO,     // 7
-    CIRC,     // 8
-    BACK,     // 9
-    ELASTIC,  //10
-    BOUNCE,   //11
-    CUSTOM_1, //12
-    CUSTOM_2, //13
-    CUSTOM_3, //14
-    __SIZE    //15
-}
-
 #endregion
 
 
@@ -713,35 +713,35 @@ enum SCRIBBLE_EASE
 
 enum __SCRIBBLE_GEN_GLYPH
 {
-    UNICODE,          // 0  \   Can be negative, see below
-    BIDI,             // 1   |
-                      //     |
-    X,                // 2   |
-    Y,                // 3   |
-    WIDTH,            // 4   |
-    HEIGHT,           // 5   |
-    FONT_HEIGHT,      // 6   |
-    SEPARATION,       // 7   |
-    LEFT_OFFSET,      // 8   |
-    SCALE,            // 9   | This group of enums must not change order or be split
-                      //     |
-    TEXTURE,          //10   |
-    QUAD_U0,          //11   | Be careful of ordering!
-    QUAD_U1,          //12   | scribble_font_bake_shader() relies on this
-    QUAD_V0,          //13   |
-    QUAD_V1,          //14   |
-                      //     |
-    MSDF_PXRANGE,     //15   |
-    BILINEAR,         //16  /
+    __UNICODE,          // 0  \   Can be negative, see below
+    __BIDI,             // 1   |
+                        //     |
+    __X,                // 2   |
+    __Y,                // 3   |
+    __WIDTH,            // 4   |
+    __HEIGHT,           // 5   |
+    __FONT_HEIGHT,      // 6   |
+    __SEPARATION,       // 7   |
+    __LEFT_OFFSET,      // 8   |
+    __SCALE,            // 9   | This group of enums must not change order or be split
+                        //     |
+    __TEXTURE,          //10   |
+    __QUAD_U0,          //11   | Be careful of ordering!
+    __QUAD_U1,          //12   | scribble_font_bake_shader() relies on this
+    __QUAD_V0,          //13   |
+    __QUAD_V1,          //14   |
+                        //     |
+    __MSDF_PXRANGE,     //15   |
+    __BILINEAR,         //16  /
     
-    CONTROL_COUNT,    //17
-    ANIMATION_INDEX,  //18
+    __CONTROL_COUNT,    //17
+    __ANIMATION_INDEX,  //18
                       
-    SPRITE_INDEX,     //19  \
-    IMAGE_INDEX,      //20   | Only used for sprites
-    IMAGE_SPEED,      //21  /
+    __SPRITE_INDEX,     //19  \
+    __IMAGE_INDEX,      //20   | Only used for sprites
+    __IMAGE_SPEED,      //21  /
                       
-    __SIZE,           //22
+    __SIZE,             //22
 }
 
 enum __SCRIBBLE_GEN_VBUFF_POS

@@ -3,23 +3,23 @@
                                     var _quad_r = _vbuff_pos_grid[# _i, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R];\
                                     var _quad_b = _vbuff_pos_grid[# _i, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B];\
                                     ;\
-                                    var _glyph_texture = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.TEXTURE];\
-                                    var _quad_u0       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.QUAD_U0];\
-                                    var _quad_v0       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.QUAD_V0];\
-                                    var _quad_u1       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.QUAD_U1];\
-                                    var _quad_v1       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.QUAD_V1];\
+                                    var _glyph_texture = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__TEXTURE];\
+                                    var _quad_u0       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_U0];\
+                                    var _quad_v0       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_V0];\
+                                    var _quad_u1       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_U1];\
+                                    var _quad_v1       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_V1];\
                                     ;\
-                                    var _half_w = 0.5*_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.WIDTH ];\
-                                    var _half_h = 0.5*_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.HEIGHT];\
+                                    var _half_w = 0.5*_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__WIDTH ];\
+                                    var _half_h = 0.5*_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__HEIGHT];\
                                     ;\\
-                                    var _glyph_scale   = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.SCALE];
+                                    var _glyph_scale   = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__SCALE];
 
 
 
 #macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_glyph_texture != _last_glyph_texture)\
                                      {\
                                          _last_glyph_texture = _glyph_texture;\
-                                         _vbuff = _page_data.__get_vertex_buffer(_last_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.MSDF_PXRANGE], _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.BILINEAR], self);\
+                                         _vbuff = _page_data.__get_vertex_buffer(_last_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE], _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BILINEAR], self);\
                                      }\
                                      if (_bezier_do)\
                                      {\
@@ -80,13 +80,13 @@ function __scribble_gen_9_write_vbuffs()
     
     
     //Copy the x/y offset into the quad LTRB
-    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.Y, 0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_L);
-    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.Y, 0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R);
+    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y, 0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_L);
+    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y, 0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R);
     
     //Then add the deltas to give us the final quad LTRB positions
     //Note that the delta are already scaled via font scale / scaling tags etc
-    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.WIDTH,   _glyph_count-1, __SCRIBBLE_GEN_GLYPH.WIDTH,   0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R);
-    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.HEIGHT,  _glyph_count-1, __SCRIBBLE_GEN_GLYPH.HEIGHT,  0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B);
+    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__WIDTH,   _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__WIDTH,   0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R);
+    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__HEIGHT,  _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__HEIGHT,  0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B);
     
     
     
@@ -139,7 +139,7 @@ function __scribble_gen_9_write_vbuffs()
             with(_page_data)
             {
                 __glyph_grid = ds_grid_create(__glyph_count, __SCRIBBLE_GLYPH_LAYOUT.__SIZE);
-                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH.UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH.UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE);
+                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH.__UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH.__UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE);
                 ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyph_start, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT);
             }
         }
@@ -147,11 +147,11 @@ function __scribble_gen_9_write_vbuffs()
         var _i = _page_data.__glyph_start;
         repeat(_page_data.__glyph_count)
         {
-            var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX];
+            var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];
             
             #region Read controls
             
-            var _control_delta = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
+            var _control_delta = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] - _control_index;
             repeat(_control_delta)
             {
                 switch(_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE])
@@ -230,7 +230,7 @@ function __scribble_gen_9_write_vbuffs()
             
             #endregion
             
-            var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.UNICODE];
+            var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
             if (_glyph_ord == __SCRIBBLE_GLYPH_SPRITE)
             {
                 #region Write sprite
@@ -240,16 +240,16 @@ function __scribble_gen_9_write_vbuffs()
                     buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                 }
                 
-                var _glyph_x        = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.X              ];
-                var _glyph_y        = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.Y              ];
-                var _glyph_width    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.WIDTH          ];
-                var _glyph_height   = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.HEIGHT         ];
+                var _glyph_x        = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__X              ];
+                var _glyph_y        = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__Y              ];
+                var _glyph_width    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__WIDTH          ];
+                var _glyph_height   = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__HEIGHT         ];
                 
-                var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX];
+                var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];
                 
-                var _sprite_index   = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.SPRITE_INDEX   ];
-                var _image_index    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.IMAGE_INDEX    ];
-                var _image_speed    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.IMAGE_SPEED    ];
+                var _sprite_index   = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__SPRITE_INDEX   ];
+                var _image_index    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__IMAGE_INDEX    ];
+                var _image_speed    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__IMAGE_SPEED    ];
                 
                 var _glyph_xscale = sprite_get_width(_sprite_index) / _glyph_width;
                 var _glyph_yscale = sprite_get_height(_sprite_index) / _glyph_height;
@@ -435,7 +435,7 @@ function __scribble_gen_9_write_vbuffs()
     }
     
     //Sweep up any remaining controls
-    var _control_delta = _glyph_grid[# _i-1, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
+    var _control_delta = _glyph_grid[# _i-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] - _control_index;
     repeat(_control_delta)
     {
         if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.__EVENT)

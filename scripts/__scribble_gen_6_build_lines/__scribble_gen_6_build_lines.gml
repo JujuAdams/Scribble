@@ -8,11 +8,11 @@
                                   {\
                                       _word_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.__GLYPH_START];\
                                       _word_glyph_end   = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.__GLYPH_END  ];\
-                                      var _left_correction = _glyph_grid[# _word_glyph_start, __SCRIBBLE_GEN_GLYPH.LEFT_OFFSET];\
+                                      var _left_correction = _glyph_grid[# _word_glyph_start, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET];\
                                       ;\
                                       if (((_left_correction > 0) && SCRIBBLE_NEWLINES_PAD_LEFT_SPACE) || ((_left_correction < 0) && SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE))\
                                       {\
-                                          ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, _left_correction);\
+                                          ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.__X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.__X, _left_correction);\
                                           _word_width += _left_correction;\
                                           _word_grid[# _i, __SCRIBBLE_GEN_WORD.__WIDTH] += _left_correction;\
                                       }\
@@ -72,7 +72,7 @@ function __scribble_gen_6_build_lines()
             var _line_y        = 0;
             
             //Find any horizontal alignment changes
-            var _control_delta = _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
+            var _control_delta = _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] - _control_index;
             repeat(_control_delta)
             {
                 if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.__HALIGN)
@@ -95,7 +95,7 @@ function __scribble_gen_6_build_lines()
                 var _word_start_glyph = _word_grid[# _i, __SCRIBBLE_GEN_WORD.__GLYPH_START];
                 
                 //Find any horizontal alignment changes
-                var _control_delta = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.CONTROL_COUNT] - _control_index;
+                var _control_delta = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] - _control_index;
                 repeat(_control_delta)
                 {
                     if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE.__HALIGN)
@@ -151,7 +151,7 @@ function __scribble_gen_6_build_lines()
                             var _new_word_glyph_start = _original_word_glyph_start;
                             
                             var _j = _new_word_glyph_start;
-                            var _glyph_width = _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.SEPARATION];
+                            var _glyph_width = _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__SEPARATION];
                             if ((_word_x + _glyph_width >= _simulated_model_max_width) && (_i > _line_word_start))
                             {
                                 var _line_word_end = _i-1;
@@ -168,7 +168,7 @@ function __scribble_gen_6_build_lines()
                             
                             repeat(1 + _original_word_glyph_end - _j)
                             {
-                                var _glyph_width = _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.SEPARATION];
+                                var _glyph_width = _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__SEPARATION];
                                 if (_word_x + _glyph_width >= _simulated_model_max_width)
                                 {
                                     _word_grid[# _i, __SCRIBBLE_GEN_WORD.__BIDI_RAW   ] = _original_word_bidi_raw;
@@ -179,7 +179,7 @@ function __scribble_gen_6_build_lines()
                                     _word_grid[# _i, __SCRIBBLE_GEN_WORD.__HEIGHT     ] = _original_word_height;
                                     
                                     //Adjust the glyph X position in the new word
-                                    ds_grid_add_region(_glyph_grid, _j, __SCRIBBLE_GEN_GLYPH.X, _original_word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, -(_word_x - _new_word_start_x));
+                                    ds_grid_add_region(_glyph_grid, _j, __SCRIBBLE_GEN_GLYPH.__X, _original_word_glyph_end, __SCRIBBLE_GEN_GLYPH.__X, -(_word_x - _new_word_start_x));
                                     
                                     var _line_word_end = _i;
                                     __SCRIBBLE_GEN_LINE_END;
@@ -220,8 +220,8 @@ function __scribble_gen_6_build_lines()
                         
                         var _remaining_space = _simulated_model_max_width - _word_x;
                         _word_grid[# _i, __SCRIBBLE_GEN_WORD.__WIDTH] = _remaining_space;
-                        _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.WIDTH     ] = _remaining_space;
-                        _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.SEPARATION] = _remaining_space;
+                        _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.__WIDTH     ] = _remaining_space;
+                        _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.__SEPARATION] = _remaining_space;
                         
                         _word_x += _remaining_space;
                         
@@ -246,7 +246,7 @@ function __scribble_gen_6_build_lines()
                 else
                 {
                     // Check for \n line break characters or nulls (manual page breaks) stored at the start of words
-                    var _glyph_start_ord = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.UNICODE];
+                    var _glyph_start_ord = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.__UNICODE];
                     if (_glyph_start_ord == 0x0A) //Newline
                     {
                         //Linebreak after this word

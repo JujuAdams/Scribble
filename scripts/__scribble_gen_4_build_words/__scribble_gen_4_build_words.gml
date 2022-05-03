@@ -7,19 +7,19 @@
                                 ;\
                                 if (_word_bidi == __SCRIBBLE_BIDI.R2L_ARABIC)\ //Arabic groups visually glyphs together into words
                                 {\
-                                    ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, abs(_word_width));\
-                                    ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX, _word_glyph_start);\
+                                    ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.__X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.__X, abs(_word_width));\
+                                    ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _word_glyph_start);\
                                     ;\//For the purposes for further text layout, force this bidi to generic R2L
                                     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI] = __SCRIBBLE_BIDI.R2L;\
                                 }\
                                 else if (_word_bidi == __SCRIBBLE_BIDI.R2L)\ //Any R2L languages, apart from Arabic
                                 {\
-                                    ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.X, abs(_word_width));\
+                                    ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.__X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.__X, abs(_word_width));\
                                 }\
                                 ;\
                                 _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__GLYPH_END] = _word_glyph_end;\
                                 _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__WIDTH    ] = abs(_word_width);\
-                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__HEIGHT   ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.FONT_HEIGHT);\
+                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__HEIGHT   ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT);\
                                 ;\
                                 _word_count++;
 
@@ -55,25 +55,25 @@ function __scribble_gen_4_build_words()
     
     if (_glyph_count > 0)
     {
-        var _word_bidi = _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.BIDI];
+        var _word_bidi = _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.__BIDI];
         
         __SCRIBBLE_GEN_WORD_START;
         
         if (_word_bidi < __SCRIBBLE_BIDI.R2L) //Any L2R text
         {
-            _word_width += _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.SEPARATION];
-            _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX] = 0;
+            _word_width += _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.__SEPARATION];
+            _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX] = 0;
         }
         else
         {
-            _word_width -= _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.SEPARATION];
-            _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.X] += _word_width;
+            _word_width -= _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.__SEPARATION];
+            _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH.__X] += _word_width;
         }
         
         var _i = 1;
         repeat(_glyph_count-1) //Ensure we fully handle the last word by including the null terminator in this loop
         {
-            var _glyph_bidi = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.BIDI];
+            var _glyph_bidi = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BIDI];
             switch(_glyph_bidi)
             {
                 case __SCRIBBLE_BIDI.WHITESPACE:
@@ -139,17 +139,17 @@ function __scribble_gen_4_build_words()
             
             if (_word_bidi < __SCRIBBLE_BIDI.R2L) //Any non-R2L text is laid out left-to-right
             {
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.X] += _word_width;
-                _word_width += _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.SEPARATION];
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX] = _i;
+                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__X] += _word_width;
+                _word_width += _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__SEPARATION];
+                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX] = _i;
             }
             else // __SCRIBBLE_BIDI.R2L or __SCRIBBLE_BIDI.R2L_ARABIC
             {
-                _word_width -= _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.SEPARATION];
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.X] += _word_width;
+                _word_width -= _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__SEPARATION];
+                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__X] += _word_width;
                 
                 //Arabic groups visually glyphs together into words. Other R2L doesn't so we can assign animation indexes here
-                if (_word_bidi == __SCRIBBLE_BIDI.R2L) _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.ANIMATION_INDEX] = _i;
+                if (_word_bidi == __SCRIBBLE_BIDI.R2L) _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX] = _i;
             }
             
             ++_i;
