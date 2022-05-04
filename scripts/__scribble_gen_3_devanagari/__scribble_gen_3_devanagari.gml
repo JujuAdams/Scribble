@@ -245,8 +245,14 @@ function __scribble_gen_3_devanagari()
             
             //Copy everything from the start of the subtring (where ि  will go) to the end (which is where ि  currently is)
             ds_grid_set_grid_region(_temp_grid, _glyph_grid, _j, 0, _i-1, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
+            __scribble_trace("a = ", __debug_glyph_string(_temp_grid, _i - _j));
+            
             //Then copy that back into the glyph grid, but one character forwards
-            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _i-1 - _j, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, _j+1);
+            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _i-1 - _j, __SCRIBBLE_GEN_GLYPH.__SIZE, _j+1, 0);
+            
+            //_glyph_grid[# _j+1, __SCRIBBLE_GEN_GLYPH.__UNICODE] = _temp_grid[# _i-1 - _j, __SCRIBBLE_GEN_GLYPH.__UNICODE];
+            
+            __scribble_trace("b = ", DEBUG_GLYPH_STRING);
             
             //Insert ि  (encoded in Krutidev as f) into its new position
             _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = ord("f");
@@ -357,8 +363,7 @@ function __scribble_gen_3_devanagari()
             }
             else
             {
-                //Heavyweight general replacement code... we want to avoid as many delete/insert commands as
-                //possible as it causes lots of reallocation in the background
+                //Heavyweight general replacement code... we want to avoid as many delete/insert commands as possible
                 
                 //Copy over as much data as possible from one array
                 var _copyCount = min(_foundLength, _replacementLength);
@@ -379,23 +384,23 @@ function __scribble_gen_3_devanagari()
                     ds_grid_set_grid_region(_temp_grid, _glyph_grid, _copyStart, 0, _glyph_count, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
                     ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _copyLength, __SCRIBBLE_GEN_GLYPH.__SIZE, _i + _copyCount, 0);
                 }
-                else
+                else if (_foundLength < _replacementLength)
                 {
-                    //Otherwise, we're adding characters to the array so we have to insert some characters
-                    //This code presumes we're only adding 1 character
-                    var _insertPos = _i + _copyCount;
-                    ds_grid_set_grid_region(_temp_grid, _glyph_grid, _insertPos, 0, _glyph_count, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
-                    ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - _insertPos, __SCRIBBLE_GEN_GLYPH.__SIZE, _insertPos+1, 0);
-                    
-                    _glyph_grid[# _insertPos, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = _replacementArray[_copyCount];
-                    _glyph_grid[# _insertPos, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _insertPos-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
-                    
                     //Throw an error if we're trying to add more than one character
                     //I don't think this ever comes up but it might in the future
                     if (_replacementLength - _foundLength > 1)
                     {
                         __scribble_error("Devanagari substring insertion length > 1. Please report this error");
                     }
+                    
+                    //Otherwise, we're adding characters to the array so we have to insert some characters
+                    //This code presumes we're only adding 1 character
+                    var _insertPos = _i + _copyCount;
+                    ds_grid_set_grid_region(_temp_grid, _glyph_grid, _insertPos, 0, _glyph_count, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
+                    ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - _insertPos, __SCRIBBLE_GEN_GLYPH.__SIZE, _insertPos+1, 0);
+                    
+                    _glyph_grid[# _insertPos, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = _replacementArray[_replacementLength-1];
+                    _glyph_grid[# _insertPos, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _insertPos-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
                 }
                 
                 _i           += _replacementLength - 1; //Off-by-one to account for ++_i in the for-loop
@@ -415,17 +420,9 @@ function __scribble_gen_3_devanagari()
     
     #region Copy data across for all the Krutidev characters we've just inserted
     
-    //var _debug_string = "";
-    //var _i = 0;
-    //repeat(_glyph_count)
-    //{
-    //    _debug_string += chr(_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE]);
-    //    ++_i;
-    //}
-    
-    //show_debug_message("grid = \"" + _debug_string + "\"");
-    //show_debug_message("string_length(" + _debug_string + ") = " + string(string_length(_debug_string)));
-    //show_debug_message("_glyph_count = " + string(_glyph_count));
+    __scribble_trace("grid = \"", DEBUG_GLYPH_STRING, "\"");
+    __scribble_trace("string_length(", DEBUG_GLYPH_STRING, ") = ", DEBUG_GLYPH_STRING);
+    __scribble_trace("_glyph_count = ", _glyph_count);
     
     var _control_index = 0;
     
@@ -480,4 +477,19 @@ function __scribble_gen_3_devanagari()
     global.__scribble_generator_state.__glyph_count = _glyph_count;
     
     #endregion
+}
+
+#macro DEBUG_GLYPH_STRING  __debug_glyph_string(_glyph_grid, _glyph_count)
+
+function __debug_glyph_string(_glyph_grid, _glyph_count)
+{
+    var _string = "";
+    var _i = 0;
+    repeat(_glyph_count)
+    {
+        _string += chr(_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE]);
+        ++_i;
+    }
+    
+    return _string;
 }
