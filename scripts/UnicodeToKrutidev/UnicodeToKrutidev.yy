@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scribble",
-    "path": "Scribble.yyp",
+    "name": "Devanagari",
+    "path": "folders/Test Cases/Language Support/Devanagari.yy",
   },
   "resourceVersion": "1.0",
   "name": "UnicodeToKrutidev",

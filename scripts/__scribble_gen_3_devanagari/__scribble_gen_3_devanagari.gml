@@ -245,14 +245,9 @@ function __scribble_gen_3_devanagari()
             
             //Copy everything from the start of the subtring (where ि  will go) to the end (which is where ि  currently is)
             ds_grid_set_grid_region(_temp_grid, _glyph_grid, _j, 0, _i-1, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
-            __scribble_trace("a = ", __debug_glyph_string(_temp_grid, _i - _j));
             
             //Then copy that back into the glyph grid, but one character forwards
             ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _i-1 - _j, __SCRIBBLE_GEN_GLYPH.__SIZE, _j+1, 0);
-            
-            //_glyph_grid[# _j+1, __SCRIBBLE_GEN_GLYPH.__UNICODE] = _temp_grid[# _i-1 - _j, __SCRIBBLE_GEN_GLYPH.__UNICODE];
-            
-            __scribble_trace("b = ", DEBUG_GLYPH_STRING);
             
             //Insert ि  (encoded in Krutidev as f) into its new position
             _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = ord("f");
@@ -420,10 +415,6 @@ function __scribble_gen_3_devanagari()
     
     #region Copy data across for all the Krutidev characters we've just inserted
     
-    __scribble_trace("grid = \"", DEBUG_GLYPH_STRING, "\"");
-    __scribble_trace("string_length(", DEBUG_GLYPH_STRING, ") = ", DEBUG_GLYPH_STRING);
-    __scribble_trace("_glyph_count = ", _glyph_count);
-    
     var _control_index = 0;
     
     var _font_name            = undefined;
@@ -477,19 +468,4 @@ function __scribble_gen_3_devanagari()
     global.__scribble_generator_state.__glyph_count = _glyph_count;
     
     #endregion
-}
-
-#macro DEBUG_GLYPH_STRING  __debug_glyph_string(_glyph_grid, _glyph_count)
-
-function __debug_glyph_string(_glyph_grid, _glyph_count)
-{
-    var _string = "";
-    var _i = 0;
-    repeat(_glyph_count)
-    {
-        _string += chr(_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE]);
-        ++_i;
-    }
-    
-    return _string;
 }

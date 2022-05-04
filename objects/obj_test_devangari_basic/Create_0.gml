@@ -1,3 +1,7 @@
+scribble_font_set_default("fnt_krutidev");
+
+index = 0;
+
 testVectorArray = [
 /*  0 */    { unicode: "गया", expected: "x;k" },
 /*  1 */    { unicode: "बोधगया", expected: "cks/kx;k" },
@@ -36,11 +40,3 @@ testVectorArray = [
 /* 34 */    { unicode: "न0 पंचायत", expected: "u0 iapk;r" },
 /* 35 */    { unicode: "रिक्त", expected: "fjDr" },
 ];
-
-scribble_font_set_default("fnt_krutidev");
-unicode = "चाह नहीं मैं सुरबाला के गहनों में गूँथा जाऊँ";
-show_debug_message(unicode);
-krutidev = UnicodeToKrutidev(unicode);
-show_debug_message("UnicodeToKrutidev = \"" + krutidev + "\"");
-
-index = 0;
