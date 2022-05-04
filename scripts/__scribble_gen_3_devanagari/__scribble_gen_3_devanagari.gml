@@ -271,30 +271,32 @@ function __scribble_gen_3_devanagari()
         //TODO - Log where ra-virama is found during the nukta ligature sweep
         if ((_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE] == ord("र")) && (_glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH.__UNICODE] == 0x094D)) //Ra followed by virama
         {
-            var _newPosition = _i + 3;
+            var _newPosition = _i + 2;
             
             //If the character after the probable position for ra+virama is a matra, keep searching right
-            var _charRight = _glyph_grid[# _newPosition, __SCRIBBLE_GEN_GLYPH.__UNICODE];
+            var _charRight = _glyph_grid[# _newPosition+1, __SCRIBBLE_GEN_GLYPH.__UNICODE];
             while(ds_map_exists(_matraLookupMap, _charRight))
             {
                 _newPosition++;
-                _charRight = _glyph_grid[# _newPosition, __SCRIBBLE_GEN_GLYPH.__UNICODE];
+                _charRight = _glyph_grid[# _newPosition+1, __SCRIBBLE_GEN_GLYPH.__UNICODE];
             }
+            
+            var _copyCount = 1 + _newPosition - (_i+2)
             
             //Copy everything after the ra-virama position into the temp buffer
             //We're going to copy that back into the glyph grid in two stages
-            ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+2, 0, _glyph_count, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
+            ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+2, 0, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__SIZE, _i+2, 0);
             
             //First copy: Move the gylphs between the old position and the new position back two slots
             //            This effective deletes the old ra+virama position
-            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _newPosition - (_i+2), __SCRIBBLE_GEN_GLYPH.__SIZE, _i, 0);
+            ds_grid_set_grid_region(_glyph_grid, _temp_grid, _i+2, 0, _newPosition, __SCRIBBLE_GEN_GLYPH.__SIZE, _i, 0);
             
             //Insert the new ra+virama combined character. Krutidev handles this as a single glyph (encoded as Z)
-            _glyph_grid[# _newPosition, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = ord("Z");
-            _glyph_grid[# _newPosition, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _newPosition-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
+            _glyph_grid[# _i + _copyCount, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = ord("Z");
+            _glyph_grid[# _i + _copyCount, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _copyCount-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
             
             //Second copy: Place the remainder of the glyphs after ra+virama
-            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - (_newPosition - (_i + 2)), __SCRIBBLE_GEN_GLYPH.__SIZE, _newPosition+1, 0);
+            ds_grid_set_grid_region(_glyph_grid, _temp_grid, _newPosition+1, 0, _glyph_count+3, __SCRIBBLE_GEN_GLYPH.__SIZE, _i + _copyCount + 1, 0);
             
             //Overall this reduces the total number of glyphs by one since we're replace ra + virama with a single Z
             --_glyph_count;
@@ -438,7 +440,10 @@ function __scribble_gen_3_devanagari()
             _control_index++;
         }
         
-        var _glyph_write = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
+        var _found_glyph = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
+        __scribble_trace(chr(_found_glyph));
+        
+        var _glyph_write = _found_glyph;
         if (_glyph_write != 32) _glyph_write += __SCRIBBLE_DEVANAGARI_OFFSET;
         
         //Pull info out of the font's data structures
@@ -447,8 +452,9 @@ function __scribble_gen_3_devanagari()
         //If our glyph is missing, choose the missing character glyph instead!
         if (_data_index == undefined)
         {
-            __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");
-            _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];
+            __scribble_trace("Couldn't find glyph data for character code " + string(_found_glyph) + " (" + chr(_found_glyph) + ") in font \"" + string(_font_name) + "\"");
+            _glyph_write = ord(SCRIBBLE_MISSING_CHARACTER);
+            _data_index = _font_glyphs_map[? _glyph_write];
         }
         
         if (_data_index == undefined)
@@ -468,4 +474,19 @@ function __scribble_gen_3_devanagari()
     global.__scribble_generator_state.__glyph_count = _glyph_count;
     
     #endregion
+}
+
+#macro DEBUG_GLYPH_STRING  __debug_glyph_string(_glyph_grid, _glyph_count)
+
+function __debug_glyph_string(_glyph_grid, _glyph_count)
+{
+    var _string = "";
+    var _i = 0;
+    repeat(_glyph_count)
+    {
+        _string += chr(_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE]);
+        ++_i;
+    }
+    
+    return _string;
 }
