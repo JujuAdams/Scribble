@@ -285,7 +285,7 @@ function __scribble_gen_3_devanagari()
             
             //Copy everything after the ra-virama position into the temp buffer
             //We're going to copy that back into the glyph grid in two stages
-            ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+2, 0, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__SIZE, _i+2, 0);
+            ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+2, 0, _glyph_count-1 + 4, __SCRIBBLE_GEN_GLYPH.__SIZE, _i+2, 0);
             
             //First copy: Move the gylphs between the old position and the new position back two slots
             //            This effective deletes the old ra+virama position
