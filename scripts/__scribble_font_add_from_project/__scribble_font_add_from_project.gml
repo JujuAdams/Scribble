@@ -104,7 +104,7 @@ function __scribble_font_add_from_project(_font)
         
         if (_is_krutidev)
         {
-            if (_bidi == __SCRIBBLE_BIDI.L2R)
+            if (_bidi != __SCRIBBLE_BIDI.WHITESPACE)
             {
                 _bidi = __SCRIBBLE_BIDI.L2R_DEVANAGARI;
                 _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
