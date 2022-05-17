@@ -2,7 +2,11 @@
 
 ?> The functions on this page are intended as quick and easy functions to get you started with Scribble as fast as possible. Scribble is capable of much more, unlocked by using [`scribble()` methods](scribble-methods) and Scribble's many other functions.
 
+&nbsp;
+
 ## `draw_text_scribble(x, y, string)`
+
+**Returns**: N/A (`undefined`)
 
 |Name    |Datatype|Purpose                           |
 |--------|--------|----------------------------------|
@@ -17,6 +21,8 @@ Draws a string to the screen, much like GameMaker's native `draw_text_ext()`, bu
 &nbsp;
 
 ## `draw_text_scribble_ext(x, y, string, width, [charCount])`
+
+**Returns**: N/A (`undefined`)
 
 |Name         |Datatype|Purpose                                                                                       |
 |-------------|--------|----------------------------------------------------------------------------------------------|
