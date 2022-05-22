@@ -1084,13 +1084,13 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region MSDF
     
-    static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.1)
+    static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 1)
     {
         __msdf_shadow_colour   = _colour;
         __msdf_shadow_alpha    = _alpha;
         __msdf_shadow_xoffset  = _x_offset;
         __msdf_shadow_yoffset  = _y_offset;
-        __msdf_shadow_softness = clamp(_softness, 0, 1);
+        __msdf_shadow_softness = max(0, _softness);
         
         return self;
     }
