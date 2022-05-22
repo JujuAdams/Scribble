@@ -441,7 +441,6 @@ function __scribble_gen_3_devanagari()
         }
         
         var _found_glyph = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
-        __scribble_trace(chr(_found_glyph));
         
         var _glyph_write = _found_glyph;
         if (_glyph_write != 32) _glyph_write += __SCRIBBLE_DEVANAGARI_OFFSET;
@@ -471,22 +470,18 @@ function __scribble_gen_3_devanagari()
         ++_i;
     }
     
-    global.__scribble_generator_state.__glyph_count = _glyph_count;
+    //Create a null terminator so we correctly handle the last character in the string
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x00; //ASCII line break (dec = 10)
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT]; //Make sure we collect controls at the end of a string
+    
+    global.__scribble_generator_state.__glyph_count = _glyph_count+1;
     
     #endregion
-}
-
-#macro DEBUG_GLYPH_STRING  __debug_glyph_string(_glyph_grid, _glyph_count)
-
-function __debug_glyph_string(_glyph_grid, _glyph_count)
-{
-    var _string = "";
-    var _i = 0;
-    repeat(_glyph_count)
-    {
-        _string += chr(_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE]);
-        ++_i;
-    }
-    
-    return _string;
 }
