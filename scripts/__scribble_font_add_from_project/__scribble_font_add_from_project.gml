@@ -103,7 +103,7 @@ function __scribble_font_add_from_project(_font)
         var _w = _glyph_dict.w;
         var _h = _glyph_dict.h;
         
-        if (os_browser != browser_not_a_browser)
+        if (__SCRIBBLE_ON_WEB)
         {
             _x += _texture_l;
             _y += _texture_t;

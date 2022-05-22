@@ -831,7 +831,7 @@ function __scribble_gen_2_parser()
                             {
                                 #region Hex colour decoding
                                 
-                                if (os_browser == browser_not_a_browser)
+                                if (!__SCRIBBLE_ON_WEB)
                                 {
                                     //Crafty trick to quickly convert a hex string into a number
                                     try
