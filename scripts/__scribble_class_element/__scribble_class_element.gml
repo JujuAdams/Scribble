@@ -1020,6 +1020,14 @@ function __scribble_class_element(_string, _unique_id) constructor
         return __animation_speed;
     }
     
+    static is_animated = function()
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return false;
+        
+        return _model.__has_animation;
+    }
+    
     static animation_sync = function()
     {
         __scribble_error(".animation_sync() has been removed\nPlease get in touch if this feature is essential for your project");
@@ -1076,13 +1084,13 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region MSDF
     
-    static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.1)
+    static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 1)
     {
         __msdf_shadow_colour   = _colour;
         __msdf_shadow_alpha    = _alpha;
         __msdf_shadow_xoffset  = _x_offset;
         __msdf_shadow_yoffset  = _y_offset;
-        __msdf_shadow_softness = clamp(_softness, 0, 1);
+        __msdf_shadow_softness = max(0, _softness);
         
         return self;
     }

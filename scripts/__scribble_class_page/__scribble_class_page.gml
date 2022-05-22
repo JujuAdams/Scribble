@@ -23,8 +23,8 @@ function __scribble_class_page() constructor
     __max_x  = 0;
     __max_y  = 0;
     
-    __vertex_buffer_array           = [];
-    __texture_to_vertex_buffer_dict = {};
+    __vertex_buffer_array = [];
+    if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict = {}; //FIXME - Workaround for pointers not being stringified properly on HTML5
     
     __events = {};
     __region_array = [];
@@ -152,7 +152,27 @@ function __scribble_class_page() constructor
     {
         var _pointer_string = string(_texture);
         
-        var _data = __texture_to_vertex_buffer_dict[$ _pointer_string];
+        if (!__SCRIBBLE_ON_WEB)
+        {
+            var _data = __texture_to_vertex_buffer_dict[$ _pointer_string];
+        }
+        else //FIXME - Workaround for pointers not being stringified properly on HTML5
+        {
+            var _data = undefined;
+            var _i = 0;
+            repeat(array_length(__vertex_buffer_array))
+            {
+                var _vbuff_data = __vertex_buffer_array[_i];
+                if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE] == _texture)
+                {
+                    _data = _vbuff_data;
+                    break;
+                }
+                
+                ++_i;
+            }
+        }
+        
         if (_data == undefined)
         {
             if (_pxrange == undefined)
@@ -180,7 +200,7 @@ function __scribble_class_page() constructor
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR     ] = _bilinear;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;
-            __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;
+            if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;
             
             return _vbuff;
         }

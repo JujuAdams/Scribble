@@ -1,6 +1,6 @@
 // @jujuadams
-#macro __SCRIBBLE_VERSION           "8.0.1 beta 9"
-#macro __SCRIBBLE_DATE              "2022-05-03"
+#macro __SCRIBBLE_VERSION           "8.0.1 beta 11"
+#macro __SCRIBBLE_DATE              "2022-05-22"
 #macro __SCRIBBLE_DEBUG             false
 #macro __SCRIBBLE_VERBOSE_GC        false
 #macro SCRIBBLE_LOAD_FONTS_ON_BOOT  true
@@ -104,6 +104,7 @@ global.__scribble_gc_vbuff_refs  = [];
 global.__scribble_gc_vbuff_ids   = [];
 
 global.__scribble_generator_state = {};
+if (__SCRIBBLE_ON_WEB) global.__scribble_html5_sprite_height_workaround = {};
 
 if (!variable_global_exists("__scribble_colours")) __scribble_config_colours();
 
@@ -317,6 +318,29 @@ function __scribble_trace()
     show_debug_message(_string);
 }
 
+function __scribble_loud()
+{
+    var _string = "Scribble:\n";
+    
+    var _i = 0
+    repeat(argument_count)
+    {
+        if (is_real(argument[_i]))
+        {
+            _string += string_format(argument[_i], 0, 4);
+        }
+        else
+        {
+            _string += string(argument[_i]);
+        }
+        
+        ++_i;
+    }
+    
+    show_debug_message(_string);
+    show_message(_string);
+}
+
 function __scribble_error()
 {
     var _string = "";
@@ -377,6 +401,20 @@ function __scribble_array_find_index(_array, _value)
     }
     
     return -1;
+}
+ 
+function __scribble_asset_is_krutidev(_asset, _asset_type)
+{
+    var _tags_array = asset_get_tags(_asset, _asset_type);
+    var _i = 0;
+    repeat(array_length(_tags_array))
+    {
+        var _tag = _tags_array[_i];
+        if ((_tag == "scribble krutidev") || (_tag == "Scribble krutidev") || (_tag == "Scribble Krutidev")) return true;
+        ++_i;
+    }
+    
+    return false;
 }
 
 function __scribble_buffer_read_unicode(_buffer)

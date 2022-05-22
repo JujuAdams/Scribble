@@ -548,6 +548,8 @@ function __scribble_gen_2_parser()
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
                         ++_control_count;
+                        
+                        __has_animation = true;
                     break;
                     
                     // [/cycle]
@@ -717,6 +719,8 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
                             ++_control_count;
+                            
+                            __has_animation = true;
                         }
                         else if (ds_map_exists(global.__scribble_effects_slash, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
                         {
@@ -778,6 +782,9 @@ function __scribble_gen_2_parser()
                             //Apply IDE sprite speed
                             if (!SCRIBBLE_LEGACY_ANIMATION_SPEED) _image_speed *= __scribble_image_speed_get(_sprite_index);
                             
+                            //Only report the model as animated if we're actually able to animate this sprite
+                            if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __has_animation = true;
+                            
                             //Add this glyph to our grid
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_SPRITE;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
@@ -824,7 +831,7 @@ function __scribble_gen_2_parser()
                             {
                                 #region Hex colour decoding
                                 
-                                if (os_browser == browser_not_a_browser)
+                                if (!__SCRIBBLE_ON_WEB)
                                 {
                                     //Crafty trick to quickly convert a hex string into a number
                                     try

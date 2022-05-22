@@ -12,9 +12,17 @@
                                     ;\//For the purposes for further text layout, force this bidi to generic R2L
                                     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI] = __SCRIBBLE_BIDI.R2L;\
                                 }\
-                                else if (_word_bidi == __SCRIBBLE_BIDI.R2L)\ //Any R2L languages, apart from Arabic
+                                else\
                                 {\
-                                    ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.__X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.__X, abs(_word_width));\
+                                    if (_word_bidi == __SCRIBBLE_BIDI.L2R_DEVANAGARI)\
+                                    {\
+                                        ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _word_glyph_start);\
+                                    }\
+                                    ;\
+                                    if (_word_bidi == __SCRIBBLE_BIDI.R2L)\ //Any R2L languages, apart from Arabic
+                                    {\
+                                        ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH.__X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH.__X, abs(_word_width));\
+                                    }\
                                 }\
                                 ;\
                                 _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__GLYPH_END] = _word_glyph_end;\
@@ -115,6 +123,7 @@ function __scribble_gen_4_build_words()
                 break;
                 
                 case __SCRIBBLE_BIDI.L2R:
+                case __SCRIBBLE_BIDI.L2R_DEVANAGARI:
                 case __SCRIBBLE_BIDI.R2L:
                 case __SCRIBBLE_BIDI.R2L_ARABIC:
                     if (_glyph_prev_whitespace)

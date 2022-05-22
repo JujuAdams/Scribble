@@ -1,6 +1,6 @@
-var _element = scribble("[fa_center][fa_middle][scale,4]the quick brown fox jumped over the [scale,2]lazy dog") //\n\nSPHINX OF BLACK QUARTZ, JUDGE MY VOW")
-.msdf_border(c_navy, 2)
-.msdf_shadow(c_black, 0.4, 2, 2, 0)
+var _element = scribble("[fa_center][fa_middle][scale,3]the quick brown fox jumped over the [scale,2]lazy dog") //\n\nSPHINX OF BLACK QUARTZ, JUDGE MY VOW")
+.msdf_border(c_navy, 10*mouse_x/room_width)
+.msdf_shadow(c_black, 0.3, 4, 4)
 .wrap(551)
 
 _element.draw(room_width div 2, room_height div 2);

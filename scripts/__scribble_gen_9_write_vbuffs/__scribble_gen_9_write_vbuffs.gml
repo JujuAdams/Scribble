@@ -19,7 +19,7 @@
 #macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_glyph_texture != _last_glyph_texture)\
                                      {\
                                          _last_glyph_texture = _glyph_texture;\
-                                         _vbuff = _page_data.__get_vertex_buffer(_last_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE], _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BILINEAR], self);\
+                                         _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE], _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BILINEAR], self);\
                                      }\
                                      if (_bezier_do)\
                                      {\
@@ -314,7 +314,25 @@ function __scribble_gen_9_write_vbuffs()
                     var _quad_l = floor(_glyph_x + _uvs[4]/_glyph_xscale);
                     var _quad_t = floor(_glyph_y + _uvs[5]/_glyph_yscale);
                     var _quad_r = _quad_l + _uvs[6]*_glyph_width;
-                    var _quad_b = _quad_t + _uvs[7]*_glyph_height;
+                    
+                    if (!__SCRIBBLE_ON_WEB)
+                    {
+                        var _quad_b = _quad_t + _uvs[7]*_glyph_height;
+                    }
+                    else
+                    {
+                        //FIXME - sprite_get_uvs() occasionally gives us nonsense for the 7-index result in runtime 2022.3.0.497
+                        var _crop_height = global.__scribble_html5_sprite_height_workaround[$ string(_sprite_index) + ":" + string(_j)];
+                        if (_crop_height == undefined)
+                        {
+                            var _sprite_data = sprite_get_info(_sprite_index);
+                            _crop_height = _sprite_data.frames[_j].crop_height;
+                            
+                            global.__scribble_html5_sprite_height_workaround[$ string(_sprite_index) + ":" + string(_j)] = _crop_height;
+                        }
+                        
+                        var _quad_b = _quad_t + _crop_height/_glyph_yscale;
+                    }
                     
                     var _half_w = 0.5*(_quad_r - _quad_l);
                     var _half_h = 0.5*(_quad_b - _quad_t);
@@ -361,7 +379,7 @@ function __scribble_gen_9_write_vbuffs()
                     _glyph_effect_flags = _old_glyph_effect_flags;
                 }
             }
-            else
+            else //Writing a standard glyph
             {
                 if (SCRIBBLE_ALLOW_TEXT_GETTER)
                 {

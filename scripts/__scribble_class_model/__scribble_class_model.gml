@@ -52,6 +52,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __has_thai       = false;
     __has_hebrew     = false;
     __has_devanagari = false;
+    __has_animation  = false;
     
     __pages_array = []; //Stores each page of text
     
@@ -63,7 +64,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
         __last_drawn = current_time;
         
-        __pages_array[_page].__submit(_msdf_feather_thickness, (__has_arabic || __has_thai) && _double_draw);
+        __pages_array[_page].__submit(_msdf_feather_thickness, (__has_arabic || __has_thai || SCRIBBLE_ALWAYS_DOUBLE_DRAW) && _double_draw);
     }
     
     static __freeze = function()

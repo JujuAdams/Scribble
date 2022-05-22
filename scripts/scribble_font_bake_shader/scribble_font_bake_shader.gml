@@ -45,8 +45,6 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     	return undefined;
     }
     
-    
-    
     var _src_glyph_grid = _src_font_data.__glyph_data_grid;
     var _glyph_count = ds_grid_width(_src_glyph_grid);
     
@@ -122,9 +120,17 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     vertex_end(_vbuff);
     
     
+    //Search through our glyphs until we find a valid texture pointer
+    //Due to HTML5 being dogshit, we can't use is_ptr()
+    var _texture = -1;
+    var _i = 0;
+    while(is_numeric(_texture))
+    {
+        _texture = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.TEXTURE]; //FIXME - Don't assume every glyph is on the same texture page
+        ++_i;
+    }
     
     //Draw the vertex buffer to a surface, then bake that surface into a sprite
-    var _texture = _src_glyph_grid[# 0, SCRIBBLE_GLYPH.TEXTURE]; //FIXME - Don't assume every glyph is on the same texture page
     var _surface_0 = surface_create(_texture_size, _texture_size);
     var _surface_1 = surface_create(_texture_size, _texture_size);
     
@@ -155,11 +161,12 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     gpu_set_blendenable(true);
     surface_reset_target();
     
+    surface_free(_surface_0);
+    vertex_delete_buffer(_vbuff);
+    
     //Make a sprite from the effect surface to make the texture stick
     var _sprite = sprite_create_from_surface(_surface_1, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
-    surface_free(_surface_0);
     surface_free(_surface_1);
-    vertex_delete_buffer(_vbuff);
     
     
     

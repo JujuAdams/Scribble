@@ -18,22 +18,7 @@ function __scribble_font_add_from_project(_font)
         global.__scribble_default_font = _name;
     }
     
-    //Check tags to see if this font is a Krutidev font
-    var _is_krutidev = false;
-    var _tagsArray = asset_get_tags(_font, asset_font);
-    var _i = 0;
-    repeat(array_length(_tagsArray))
-    {
-        var _tag = _tagsArray[_i];
-        if ((_tag == "scribble krutidev") || (_tag == "Scribble krutidev") || (_tag == "Scribble Krutidev"))
-        {
-            _is_krutidev = true;
-            break;
-        }
-        
-        ++_i;
-    }
-    
+    var _is_krutidev = __scribble_asset_is_krutidev(_font, asset_font);
     var _global_glyph_bidi_map = global.__scribble_glyph_data.__bidi_map;
     
     //Get font info from the runtime
@@ -83,7 +68,6 @@ function __scribble_font_add_from_project(_font)
     var _font_data = new __scribble_class_font(_name, _size, false);
     var _font_glyphs_map      = _font_data.__glyphs_map;
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
-    
     if (_is_krutidev) _font_data.__is_krutidev = true;
     
     var _i = 0;
@@ -92,9 +76,6 @@ function __scribble_font_add_from_project(_font)
         var _glyph_dict = _info_glyphs_array[_i];
         
         var _unicode = _glyph_dict.char;
-        if (_is_krutidev && (_unicode != 0x20)) _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
-        var _char = chr(_unicode);
-        
         if ((_unicode >= 0x4E00) && (_unicode <= 0x9FFF)) //CJK Unified ideographs block
         {
             var _bidi = __SCRIBBLE_BIDI.ISOLATED;
@@ -105,13 +86,25 @@ function __scribble_font_add_from_project(_font)
             if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
         }
         
+        if (_is_krutidev)
+        {
+            if (_bidi != __SCRIBBLE_BIDI.WHITESPACE)
+            {
+                _bidi = __SCRIBBLE_BIDI.L2R_DEVANAGARI;
+                _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
+            }
+        }
+        
+        var _char = chr(_unicode);
+        
         //FIXME - Workaround for HTML5 in GMS2.3.7.606 and above
+        //        This doesn't seem to be needed in 2022.3.0.497
         var _x = _glyph_dict[$ "x"];
         var _y = _glyph_dict[$ "y"];
         var _w = _glyph_dict.w;
         var _h = _glyph_dict.h;
         
-        if (os_browser != browser_not_a_browser)
+        if (__SCRIBBLE_ON_WEB)
         {
             _x += _texture_l;
             _y += _texture_t;

@@ -53,7 +53,7 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
     }
     else
     {
-        var _unicode = ord(_character);
+        var _unicode = is_real(_character)? _character : ord(_character);
         var _glyph_index = _map[? _unicode];
         
         if (_glyph_index == undefined)

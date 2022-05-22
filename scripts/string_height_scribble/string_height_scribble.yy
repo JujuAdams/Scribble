@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Devanagari",
-    "path": "folders/Test Cases/Language Support/Devanagari.yy",
+    "name": "Quick Functions",
+    "path": "folders/Scribble/Quick Functions.yy",
   },
   "resourceVersion": "1.0",
-  "name": "UnicodeToKrutidev",
+  "name": "string_height_scribble",
   "tags": [],
   "resourceType": "GMScript",
 }
