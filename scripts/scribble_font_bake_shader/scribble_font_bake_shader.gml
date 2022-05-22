@@ -161,11 +161,12 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     gpu_set_blendenable(true);
     surface_reset_target();
     
+    surface_free(_surface_0);
+    vertex_delete_buffer(_vbuff);
+    
     //Make a sprite from the effect surface to make the texture stick
     var _sprite = sprite_create_from_surface(_surface_1, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
-    surface_free(_surface_0);
     surface_free(_surface_1);
-    vertex_delete_buffer(_vbuff);
     
     
     
