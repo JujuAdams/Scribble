@@ -1020,6 +1020,14 @@ function __scribble_class_element(_string, _unique_id) constructor
         return __animation_speed;
     }
     
+    static is_animated = function()
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return false;
+        
+        return _model.__has_animation;
+    }
+    
     static animation_sync = function()
     {
         __scribble_error(".animation_sync() has been removed\nPlease get in touch if this feature is essential for your project");
