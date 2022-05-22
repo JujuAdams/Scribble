@@ -28,6 +28,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         global.__scribble_font_data[? _sprite_name].__destroy();
     }
     
+    var _is_krutidev = __scribble_asset_is_krutidev(_sprite, asset_sprite);
     var _global_glyph_bidi_map = global.__scribble_glyph_data.__bidi_map;
     
     if (global.__scribble_default_font == undefined)
@@ -66,6 +67,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _font_data = new __scribble_class_font(_sprite_name, _size, false);
     var _font_glyphs_map      = _font_data.__glyphs_map;
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
+    if (_is_krutidev) _font_data.__is_krutidev = true;
     
     //Also create a duplicate entry so that we can find this spritefont in draw_text_scribble()
     global.__scribble_font_data[? font_get_name(_spritefont)] = _font_data;
@@ -154,6 +156,15 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             {
                 var _bidi = _global_glyph_bidi_map[? _unicode];
                 if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
+            }
+            
+            if (_is_krutidev)
+            {
+                if (_bidi != __SCRIBBLE_BIDI.WHITESPACE)
+                {
+                    _bidi = __SCRIBBLE_BIDI.L2R_DEVANAGARI;
+                    _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
+                }
             }
             
             var _w = _image_info.crop_width;
