@@ -19,7 +19,7 @@
 #macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_glyph_texture != _last_glyph_texture)\
                                      {\
                                          _last_glyph_texture = _glyph_texture;\
-                                         _vbuff = _page_data.__get_vertex_buffer(_last_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE], _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BILINEAR], self);\
+                                         _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE], _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BILINEAR], self);\
                                      }\
                                      if (_bezier_do)\
                                      {\
@@ -361,7 +361,7 @@ function __scribble_gen_9_write_vbuffs()
                     _glyph_effect_flags = _old_glyph_effect_flags;
                 }
             }
-            else
+            else //Writing a standard glyph
             {
                 if (SCRIBBLE_ALLOW_TEXT_GETTER)
                 {
