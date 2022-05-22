@@ -104,6 +104,7 @@ global.__scribble_gc_vbuff_refs  = [];
 global.__scribble_gc_vbuff_ids   = [];
 
 global.__scribble_generator_state = {};
+if (__SCRIBBLE_ON_WEB) global.__scribble_html5_sprite_height_workaround = {};
 
 if (!variable_global_exists("__scribble_colours")) __scribble_config_colours();
 

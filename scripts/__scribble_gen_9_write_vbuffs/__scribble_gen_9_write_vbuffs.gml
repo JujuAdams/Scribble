@@ -321,7 +321,17 @@ function __scribble_gen_9_write_vbuffs()
                     }
                     else
                     {
-                        var _quad_b = _quad_t + _uvs[7]*_glyph_height*0.5; //FIXME - Workaround for HTML5 on runtime 2022.3.0.497
+                        //FIXME - sprite_get_uvs() occasionally gives us nonsense for the 7-index result in runtime 2022.3.0.497
+                        var _crop_height = global.__scribble_html5_sprite_height_workaround[$ string(_sprite_index) + ":" + string(_j)];
+                        if (_crop_height == undefined)
+                        {
+                            var _sprite_data = sprite_get_info(_sprite_index);
+                            _crop_height = _sprite_data.frames[_j].crop_height;
+                            
+                            global.__scribble_html5_sprite_height_workaround[$ string(_sprite_index) + ":" + string(_j)] = _crop_height;
+                        }
+                        
+                        var _quad_b = _quad_t + _crop_height/_glyph_yscale;
                     }
                     
                     var _half_w = 0.5*(_quad_r - _quad_l);
