@@ -33,6 +33,7 @@
 #macro SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN       false     //Set to <true> to ignore a sprite origin's contribution to its spritefont glyph x/y offsets
 #macro SCRIBBLE_SPRITEFONT_LEGACY_HEIGHT       false     //Version 8 uses GameMaker's native spritefont dimensions. Older versions used the tight bounding box leading to narrower lines. Set this macro to <true> to use the tighter legacy behaviour
 #macro SCRIBBLE_MSDF_BORDER_TRIM               0         //
+#macro SCRIBBLE_ALWAYS_DOUBLE_DRAW             true
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
