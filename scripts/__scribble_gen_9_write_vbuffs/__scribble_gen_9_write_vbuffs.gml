@@ -324,9 +324,6 @@ function __scribble_gen_9_write_vbuffs()
                         var _quad_b = _quad_t + _uvs[7]*_glyph_height*0.5; //FIXME - Workaround for HTML5 on runtime 2022.3.0.497
                     }
                     
-                    __scribble_trace(sprite_get_name(_sprite_index), ":", _j, " = ", _uvs);
-                    __scribble_trace(sprite_get_name(_sprite_index), ":", _j, " = ", _quad_l, ",", _quad_t, " -> ", _quad_r, ",", _quad_b);
-                    
                     var _half_w = 0.5*(_quad_r - _quad_l);
                     var _half_h = 0.5*(_quad_b - _quad_t);
                     
