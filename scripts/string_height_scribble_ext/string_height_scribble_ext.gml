@@ -5,7 +5,7 @@
 /// @param string  The string to draw
 /// @param width   The maximum width in pixels of the string before a line break
 
-function string_height_ext_scribble(_string, _width)
+function string_height_scribble_ext(_string, _width)
 {
     var _font = draw_get_font();
     _font = !font_exists(_font)? global.__scribble_default_font : font_get_name(_font);
