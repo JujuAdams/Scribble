@@ -313,6 +313,8 @@ function __scribble_trace()
         
         ++_i;
     }
+    
+    show_debug_message(_string);
 }
 
 function __scribble_error()
