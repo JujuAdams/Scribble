@@ -72,7 +72,7 @@
     "eventStubScript": null,
     "parent": {"name":"spr_coin","path":"sprites/spr_coin/spr_coin.yy",},
     "resourceVersion": "1.4",
-    "name": "",
+    "name": "spr_coin",
     "tags": [],
     "resourceType": "GMSequence",
   },
