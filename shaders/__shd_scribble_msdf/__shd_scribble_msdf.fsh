@@ -65,7 +65,7 @@ void main()
         if (u_vShadowColour.a > 0.0)
         {
             vec4 shadowSample = texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel*u_vShadowOffsetAndSoftness.xy/v_fPixelScale);
-            float shadowDist = MSDFSignedDistance(shadowSample);
+            float shadowDist = ROUNDED_BORDERS? SDFSignedDistance(shadowSample) : MSDFSignedDistance(shadowSample);
             float alphaShadow = MSDFAlphaSoft(shadowDist, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness, u_vShadowOffsetAndSoftness.z);
             
             float preAlpha = gl_FragColor.a;
