@@ -22,7 +22,7 @@ There are a multitude of very useful features available:
 - High performance caching
 - Font effect baking
 - Resolution-independent [MSDF fonts](msdf-fonts)
-- Arabic, Thai, and Hebrew support
+- Arabic and Hebrew support, and limited Thai and Hindi (Devanagari) support
 
 ## About & Support
 
