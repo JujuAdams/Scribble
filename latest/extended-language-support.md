@@ -54,8 +54,8 @@ Ultimately, the best solution available to us is for zero-width spaces to be ins
 
 &nbsp;
 
-## Devanagari/Hindi (unsupported)
+## Hindi (limited supported)
 
-At this time, Devanagari script is not supported by Scribble. In the near future, the "Krutidev" algorithm may make an appearance in Scribble.
+Scribble offers partial support for Hindi script (Devanagari) using the Krutidev system. This is similar to the C90 specification for Thai (see above) insofar that it is a legacy system developed before Unicode. Krutidev requires the use of a special font that is set up to turn Latin characters into Devangari glyphs. Scribble handles the transformation for you, but you will be limited in the fonts that are available for you to use. You can find a wide selection online, here are two links that I've found useful: [1](https://hindityping.info/download/hindi-fonts-kruti-dev)  [2](https://indiatyping.com/index.php/download/95-hindi-font-krutidev)
 
-?> The Unicode character ranges used by Krutidev are a bit weird, but here they are: `144`, `160 -> 249`, `338`, `352`, `376`, `402`, `710`, `732`, `8208 -> 8250`, and `8482` (decimal).
+Once you've loaded the Krutidev font of your choosing into GameMaker, you will need to set up two extra things. First, you will need to tag the font asset with the `scribble krutidev` tag. Secondly, you will need to set up the following glyph ranges for your font: `[32, 255], 338, 362, 402, 710, 8211, 8212, 8218, 8222, 8224, 8225, 8230, 8240, 8249`. These are a bit perculiar but they correspond to necessary characters for the algorithm that Scribble uses internally.
