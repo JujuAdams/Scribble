@@ -215,15 +215,9 @@ function __scribble_gen_6_build_lines()
                     }
                     else if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && (_word_grid[# _i, __SCRIBBLE_GEN_WORD.__BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE))
                     {
-                        //If the word at the end of the line is whitespace, trim the whitespace down to fit on the line
-                        //This helps the glyph position getter return more visually pleasing results by ensuring the RHS of the glypg doesn't exceed the wrapping width
-                        
-                        var _remaining_space = _simulated_model_max_width - _word_x;
-                        _word_grid[# _i, __SCRIBBLE_GEN_WORD.__WIDTH] = _remaining_space;
-                        _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.__WIDTH     ] = _remaining_space;
-                        _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.__SEPARATION] = _remaining_space;
-                        
-                        _word_x += _remaining_space;
+                        //If the word at the end of the line is whitespace, include that on this line
+                        //We trim the whitespace down to fit on the line later
+                        _word_x += _word_width;
                         
                         var _line_word_end = _i;
                         __SCRIBBLE_GEN_LINE_END;
@@ -319,6 +313,35 @@ function __scribble_gen_6_build_lines()
         else
         {
             __fit_scale = _lower_limit + 0.5*(_upper_limit - _lower_limit);
+        }
+    }
+    
+    //Trim the whitespace at the end of lines to fit into the desired width
+    //This helps the glyph position getter return more visually pleasing results by ensuring the RHS of the glypg doesn't exceed the wrapping width
+    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH)
+    {
+        var _line = 0;
+        repeat(_line_count)
+        {
+            var _line_end_word = _word_grid[# _line, __SCRIBBLE_GEN_WORD.__GLYPH_END];
+            if (_word_grid[# _line_end_word, __SCRIBBLE_GEN_WORD.__BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE) //Only adjust whitespace words
+            {
+                var _line_width = _line_grid[# _line, __SCRIBBLE_GEN_LINE.__WIDTH];
+                if (_line_width > _simulated_model_max_width) //Only adjust lines that actually exceed the maximum size
+                {
+                    var _delta = _simulated_model_max_width - _line_width;
+                    
+                    _line_grid[# _line, __SCRIBBLE_GEN_LINE.__WIDTH] = _simulated_model_max_width;
+                    
+                    _word_grid[# _line_end_word, __SCRIBBLE_GEN_WORD.__WIDTH] += _delta;
+                    
+                    var _word_start_glyph = _word_grid[# _line_end_word, __SCRIBBLE_GEN_WORD.__GLYPH_START];
+                    _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.__WIDTH     ] += _delta;
+                    _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH.__SEPARATION] += _delta;
+                }
+            }
+            
+            ++_line;
         }
     }
     
