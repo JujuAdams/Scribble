@@ -17,8 +17,4 @@ void main()
     {
         gl_FragColor.rgb *= v_vColour.a;
     }
-    else
-    {
-        gl_FragColor.a *= v_vColour.a;
-    }
 }
