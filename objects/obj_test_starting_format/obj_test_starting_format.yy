@@ -23,8 +23,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Scribble Methods",
-    "path": "folders/Test Cases/Scribble Methods.yy",
+    "name": "Text Element Methods",
+    "path": "folders/Test Cases/Text Element Methods.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_test_starting_format",
