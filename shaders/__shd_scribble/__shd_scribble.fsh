@@ -15,10 +15,6 @@ void main()
     
     if (PREMULTIPLY_ALPHA)
     {
-        gl_FragColor.rgb *= v_vColour.a;
-    }
-    else
-    {
-        gl_FragColor.a *= v_vColour.a;
+        gl_FragColor.rgb *= gl_FragColor.a;
     }
 }

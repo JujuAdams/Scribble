@@ -79,6 +79,7 @@ varying vec4 v_vColour;
 
 uniform vec4  u_vColourBlend;                           //4
 uniform vec4  u_vGradient;                              //4
+uniform vec2  u_vSkew;                                  //2
 uniform vec2  u_vRegionActive;                          //2
 uniform vec4  u_vRegionColour;                          //4
 uniform float u_fTime;                                  //1
@@ -432,6 +433,7 @@ void main()
         centre = pos + centreDelta;
     }
     
+    pos += u_vSkew*centre.yx;
     if (SLANT_FLAG > 0.5) pos.x += centreDelta.y*SLANT_GRADIENT;
     
     

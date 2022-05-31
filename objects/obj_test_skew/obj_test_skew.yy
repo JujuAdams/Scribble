@@ -27,7 +27,7 @@
     "path": "folders/Test Cases/Text Element Methods.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_starting_format",
+  "name": "obj_test_skew",
   "tags": [],
   "resourceType": "GMObject",
 }

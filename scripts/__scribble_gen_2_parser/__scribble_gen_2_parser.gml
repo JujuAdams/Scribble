@@ -662,6 +662,13 @@ function __scribble_gen_2_parser()
                         var _surface_w = surface_get_width(_surface);
                         var _surface_h = surface_get_height(_surface);
                         
+                        if (SCRIBBLE_AUTOFIT_INLINE_SURFACES)
+                        {
+                            var _scale = min(1, (_font_line_height+2)/_surface_h);
+                            _surface_w *= _scale;
+                            _surface_h *= _scale;
+                        }
+                        
                         //Add this glyph to our grid
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_SURFACE;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
@@ -759,6 +766,16 @@ function __scribble_gen_2_parser()
                             
                             var _sprite_index = asset_get_index(_tag_command_name);
                             
+                            var _sprite_w = sprite_get_width( _sprite_index);
+                            var _sprite_h = sprite_get_height(_sprite_index);
+                            
+                            if (SCRIBBLE_AUTOFIT_INLINE_SPRITES)
+                            {
+                                var _scale = min(1, (_font_line_height+2)/_sprite_h);
+                                _sprite_w *= _scale;
+                                _sprite_h *= _scale;
+                            }
+                            
                             var _image_index = 0;
                             var _image_speed = 0;
                             switch(_tag_parameter_count)
@@ -791,10 +808,10 @@ function __scribble_gen_2_parser()
                             
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = sprite_get_width(_sprite_index);
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = sprite_get_height(_sprite_index);
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = sprite_get_height(_sprite_index);
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = sprite_get_width(_sprite_index);
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = _sprite_w;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _sprite_h;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _sprite_h;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = _sprite_w;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
                         
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE ] = undefined;

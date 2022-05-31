@@ -8,7 +8,7 @@
   "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 1,
-  "physicsGroup": 1,
+  "physicsGroup": 0,
   "physicsDensity": 0.5,
   "physicsRestitution": 0.1,
   "physicsLinearDamping": 0.1,
@@ -23,11 +23,11 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Text Element Methods",
-    "path": "folders/Test Cases/Text Element Methods.yy",
+    "name": "Configurations",
+    "path": "folders/Test Cases/Configurations.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_test_starting_format",
+  "name": "obj_test_sprite_autofit",
   "tags": [],
   "resourceType": "GMObject",
 }
