@@ -144,6 +144,19 @@ Rotates and scales a text element relative to the origin (set by [`.origin()`](s
 
 &nbsp;
 
+## `.skew(skewX, skewY)`
+
+**Returns**: The text element
+
+|Name   |Datatype|Purpose                                                                                                 |
+|-------|--------|--------------------------------------------------------------------------------------------------------|
+|`skewX`|real    |Skew factor contributed by x-coordinate of glyphs in the text element. A value is `0` confers no skewing|
+|`skewY`|real    |Skew factor contributed by y-coordinate of glyphs in the text element. A value of `0` confers no skewing|
+
+Skews glyph positions relative to the origin (set by [`.origin()`](scribble-methods?id=originx-y)).
+
+&nbsp;
+
 ## `.scale_to_box(maxWidth, maxHeight)`
 
 **Returns**: The text element
