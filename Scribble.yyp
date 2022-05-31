@@ -188,6 +188,7 @@
     {"id":{"name":"obj_test_typewriter_pause","path":"objects/obj_test_typewriter_pause/obj_test_typewriter_pause.yy",},"order":7,},
     {"id":{"name":"obj_test_anim_rainbow","path":"objects/obj_test_anim_rainbow/obj_test_anim_rainbow.yy",},"order":3,},
     {"id":{"name":"obj_test_surface","path":"objects/obj_test_surface/obj_test_surface.yy",},"order":6,},
+    {"id":{"name":"obj_test_sprite_autofit","path":"objects/obj_test_sprite_autofit/obj_test_sprite_autofit.yy",},"order":10,},
     {"id":{"name":"scribble_external_sound_exists","path":"scripts/scribble_external_sound_exists/scribble_external_sound_exists.yy",},"order":10,},
     {"id":{"name":"scribble_font_get_glyph_ranges","path":"scripts/scribble_font_get_glyph_ranges/scribble_font_get_glyph_ranges.yy",},"order":14,},
     {"id":{"name":"__scribble_config_defaults","path":"scripts/__scribble_config_defaults/__scribble_config_defaults.yy",},"order":0,},
