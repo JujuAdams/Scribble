@@ -31,6 +31,7 @@
     {"id":{"name":"obj_test_msdf_comparison","path":"objects/obj_test_msdf_comparison/obj_test_msdf_comparison.yy",},"order":6,},
     {"id":{"name":"spr_msdf_notoarabic","path":"sprites/spr_msdf_notoarabic/spr_msdf_notoarabic.yy",},"order":20,},
     {"id":{"name":"obj_test_legacy_typewriter_custom","path":"objects/obj_test_legacy_typewriter_custom/obj_test_legacy_typewriter_custom.yy",},"order":5,},
+    {"id":{"name":"obj_test_skew","path":"objects/obj_test_skew/obj_test_skew.yy",},"order":5,},
     {"id":{"name":"obj_example_basic","path":"objects/obj_example_basic/obj_example_basic.yy",},"order":1,},
     {"id":{"name":"obj_test_padding_fit_to_box","path":"objects/obj_test_padding_fit_to_box/obj_test_padding_fit_to_box.yy",},"order":3,},
     {"id":{"name":"scribble_msdf_thickness_offset","path":"scripts/scribble_msdf_thickness_offset/scribble_msdf_thickness_offset.yy",},"order":7,},
