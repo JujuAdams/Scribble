@@ -39,6 +39,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     __starting_valign = SCRIBBLE_DEFAULT_VALIGN;
     __blend_colour    = c_white;
     __blend_alpha     = 1.0;
+    __skew_x          = 0;
+    __skew_y          = 0;
     __gradient_colour = c_black;
     __gradient_alpha  = 0.0;
     __flash_colour    = c_white;
@@ -356,6 +358,14 @@ function __scribble_class_element(_string, _unique_id) constructor
             __yscale = _yscale;
             __angle  = _angle;
         }
+        
+        return self;
+    }
+    
+    static skew = function(_skew_x, _skew_y)
+    {
+        __skew_x = _skew_x;
+        __skew_y = _skew_y;
         
         return self;
     }
@@ -1357,6 +1367,8 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                             colour_get_blue( __gradient_colour)/255,
                                                             __gradient_alpha);
         
+        shader_set_uniform_f(global.__scribble_u_vSkew, __skew_x, __skew_y);
+        
         shader_set_uniform_f(global.__scribble_u_vFlash, colour_get_red(  __flash_colour)/255,
                                                          colour_get_green(__flash_colour)/255,
                                                          colour_get_blue( __flash_colour)/255,
@@ -1437,6 +1449,8 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                  colour_get_green(__gradient_colour)/255,
                                                                  colour_get_blue( __gradient_colour)/255,
                                                                  __gradient_alpha);
+        
+        shader_set_uniform_f(global.__scribble_msdf_u_vSkew, __skew_x, __skew_y);
         
         shader_set_uniform_f(global.__scribble_msdf_u_vFlash, colour_get_red(  __flash_colour)/255,
                                                               colour_get_green(__flash_colour)/255,
