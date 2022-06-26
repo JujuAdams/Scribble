@@ -46,7 +46,7 @@ Please make a [bug report](https://github.com/JujuAdams/scribble/issues). Juju c
 
 ## I'm using colour blending with an outlined font and the blend colour is affecting the outline too. What's going on?
 
-[`scribble_font_bake_outline()`](font-modification?id=scribble_font_bake_outlinesourcefontname-newfontname-thickness-samples-color-smooth) works by pre-rendering the font to a surface using a simple outline shader. The outline and the font itself are inseparably combined. When these outlined glyphs are drawn with some sort of blending applied, Scribble has no way to separate out what's an outline and what's the main body of the glyph. This means the blend necessarily has to apply to both the outline and the glyph itself.
+[`scribble_font_bake_outline_4dir()`](fonts?id=scribble_font_bake_outline_4dirsourcefontname-newfontname-color-smooth), [`scribble_font_bake_outline_8dir`](fonts?id=scribble_font_bake_outline_8dirsourcefontname-newfontname-color-smooth) and [`scribble_font_bake_outline_8dir_2px`](https://www.jujuadams.com/Scribble/#/latest/fonts?id=scribble_font_bake_outline_8dir_2pxsourcefontname-newfontname-color-smooth) work by pre-rendering the font to a surface using a simple outline shader. The outline and the font itself are inseparably combined. When these outlined glyphs are drawn with some sort of blending applied, Scribble has no way to separate out what's an outline and what's the main body of the glyph. This means the blend necessarily has to apply to both the outline and the glyph itself.
 
 &nbsp;
 
