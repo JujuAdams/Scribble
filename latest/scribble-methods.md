@@ -37,10 +37,11 @@ Text element methods are broken down into several categories. There's a lot here
 
 **Returns**: N/A (`undefined`)
 
-|Name|Datatype|Purpose                          |
-|----|--------|---------------------------------|
-|`x` |real    |x position in the room to draw at|
-|`y` |real    |y position in the room to draw at|
+|Name      |Datatype|Purpose                          |
+|----------|--------|---------------------------------|
+|`x`       |real    |x position in the room to draw at|
+|`y`       |real    |y position in the room to draw at|
+|`[typist]`|typist  |Optional. Typist being used to render the text element. See [`scribble_typist()`](typist-methods) for more information.|
 
 Draws your text! This function will automatically build the required text model if required. For very large amounts of text this may cause a slight hiccup in your framerate - to avoid this, split your text into smaller pieces or manually call the [`.build()`](scribble-methods?id=buildfreeze) method during a loading screen etc.
 
