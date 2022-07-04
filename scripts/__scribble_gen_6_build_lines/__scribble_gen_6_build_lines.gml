@@ -246,7 +246,6 @@ function __scribble_gen_6_build_lines()
                         //Linebreak after this word
                         var _line_word_end = _i;
                         __SCRIBBLE_GEN_LINE_END;
-                        _line_y += _line_height;
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
                     }
