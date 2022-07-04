@@ -1,3 +1,4 @@
+/// @ignore
 function __scribble_gen_10_set_padding_flags()
 {
     with(global.__scribble_generator_state)

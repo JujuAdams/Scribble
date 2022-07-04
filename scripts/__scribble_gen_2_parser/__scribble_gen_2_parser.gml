@@ -67,7 +67,7 @@
                                     ++_control_count;
 
 
-
+/// @ignore
 function __scribble_gen_2_parser()
 {
     //Cache globals locally for a performance boost

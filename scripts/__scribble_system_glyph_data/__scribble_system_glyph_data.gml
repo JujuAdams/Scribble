@@ -1,3 +1,4 @@
+/// @ignore
 function __scribble_system_glyph_data()
 {
     global.__scribble_glyph_data = {

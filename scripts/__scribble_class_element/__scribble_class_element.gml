@@ -1,6 +1,6 @@
 /// @param string
 /// @param uniqueID
-
+/// @ignore
 function __scribble_class_element(_string, _unique_id) constructor
 {
     __text       = _string;

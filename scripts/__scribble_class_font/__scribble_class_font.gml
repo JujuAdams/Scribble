@@ -1,7 +1,7 @@
 /// @param fontName
 /// @param glyphCount
 /// @param isMSDF
-
+/// @ignore
 function __scribble_class_font(_name, _glyph_count, _msdf) constructor
 {
     __name = _name;

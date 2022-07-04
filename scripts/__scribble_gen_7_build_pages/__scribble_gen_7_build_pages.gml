@@ -14,7 +14,7 @@
                                 _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];
 
 
-
+/// @ignore
 function __scribble_gen_7_build_pages()
 {
     var _glyph_grid = global.__scribble_glyph_grid;

@@ -3,6 +3,7 @@
 #macro __font_add_sprite__      font_add_sprite
 #macro __font_add_sprite_ext__  font_add_sprite_ext
 
+/// @ignore
 function __scribble_font_add_sprite(_sprite, _first, _proportional, _separation)
 {
     var _spritefont = __font_add_sprite__(_sprite, _first, _proportional, _separation);
@@ -10,6 +11,7 @@ function __scribble_font_add_sprite(_sprite, _first, _proportional, _separation)
     return _spritefont;
 }
 
+/// @ignore
 function __scribble_font_add_sprite_ext(_sprite, _mapstring, _proportional, _separation)
 {
     var _spritefont = __font_add_sprite_ext__(_sprite, _mapstring, _proportional, _separation);
@@ -17,6 +19,7 @@ function __scribble_font_add_sprite_ext(_sprite, _mapstring, _proportional, _sep
     return _spritefont;
 }
 
+/// @ignore
 function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, _separation)
 {
     var _font_info = font_get_info(_spritefont);

@@ -1,3 +1,4 @@
+/// @ignore
 function __scribble_gen_8_position_glyphs()
 {
     var _glyph_grid   = global.__scribble_glyph_grid;

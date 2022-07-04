@@ -1,3 +1,4 @@
+/// @ignore
 function __scribble_gc_collect()
 {
     if (current_time - global.__scribble_cache_check_time < __SCRIBBLE_EXPECTED_FRAME_TIME) exit;
@@ -146,6 +147,7 @@ function __scribble_gc_collect()
     #endregion
 }
 
+/// @ignore
 function __scribble_gc_add_vbuff(_struct, _vbuff)
 {
     if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding vertex buffer ", _vbuff, " to tracking");
@@ -153,6 +155,7 @@ function __scribble_gc_add_vbuff(_struct, _vbuff)
     array_push(global.__scribble_gc_vbuff_ids, _vbuff);
 }
 
+/// @ignore
 function __scribble_gc_remove_vbuff(_vbuff)
 {
     var _index = __scribble_array_find_index(global.__scribble_gc_vbuff_ids, _vbuff);

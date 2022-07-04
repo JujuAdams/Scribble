@@ -39,6 +39,7 @@
                                 __SCRIBBLE_GEN_WORD_START;
 
 
+/// @ignore
 function __scribble_gen_4_build_words()
 {
     //Unpack generator state

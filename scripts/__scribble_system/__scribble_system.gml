@@ -298,6 +298,7 @@ if (SCRIBBLE_LOAD_FONTS_ON_BOOT) __scribble_font_add_all_from_project();
 
 #region Functions
 
+/// @ignore
 function __scribble_trace()
 {
     var _string = "Scribble: ";
@@ -320,6 +321,7 @@ function __scribble_trace()
     show_debug_message(_string);
 }
 
+/// @ignore
 function __scribble_loud()
 {
     var _string = "Scribble:\n";
@@ -343,6 +345,7 @@ function __scribble_loud()
     show_message(_string);
 }
 
+/// @ignore
 function __scribble_error()
 {
     var _string = "";
@@ -358,6 +361,7 @@ function __scribble_error()
     show_error("Scribble:\n" + _string + "\n ", true);
 }
 
+/// @ignore
 function __scribble_get_font_data(_name)
 {
     var _data = global.__scribble_font_data[? _name];
@@ -370,6 +374,7 @@ function __scribble_get_font_data(_name)
     return _data;
 }
 
+/// @ignore
 function __scribble_process_colour(_value)
 {
     if (is_string(_value))
@@ -387,12 +392,14 @@ function __scribble_process_colour(_value)
     }
 }
 
+/// @ignore
 function __scribble_random()
 {
     global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
     return global.__scribble_lcg / 2147483648;
 }
 
+/// @ignore
 function __scribble_array_find_index(_array, _value)
 {
     var _i = 0;
@@ -404,7 +411,8 @@ function __scribble_array_find_index(_array, _value)
     
     return -1;
 }
- 
+
+/// @ignore
 function __scribble_asset_is_krutidev(_asset, _asset_type)
 {
     var _tags_array = asset_get_tags(_asset, _asset_type);
@@ -419,6 +427,7 @@ function __scribble_asset_is_krutidev(_asset, _asset_type)
     return false;
 }
 
+/// @ignore
 function __scribble_buffer_read_unicode(_buffer)
 {
     var _value = buffer_read(_buffer, buffer_u8); //Assume 0xxxxxxx
@@ -445,6 +454,7 @@ function __scribble_buffer_read_unicode(_buffer)
     return _value;
 }
 
+/// @ignore
 function __scribble_buffer_peek_unicode(_buffer, _offset)
 {
     var _value = buffer_peek(_buffer, _offset, buffer_u8); //Assume 0xxxxxxx
@@ -471,6 +481,7 @@ function __scribble_buffer_peek_unicode(_buffer, _offset)
     return _value;
 }
 
+/// @ignore
 function __scribble_buffer_write_unicode(_buffer, _value)
 {
     if (_value <= 0x7F) //0xxxxxxx
@@ -497,11 +508,13 @@ function __scribble_buffer_write_unicode(_buffer, _value)
     }
 }
 
+/// @ignore
 function __scribble_image_speed_get(_sprite)
 {
     return (sprite_get_speed_type(_sprite) == spritespeed_framespergameframe)? sprite_get_speed(_sprite) : (sprite_get_speed(_sprite) / game_get_speed(gamespeed_fps));
 }
 
+/// @ignore
 function __scribble_matrix_inverse(_matrix)
 {
     var _inv = array_create(16, undefined);
