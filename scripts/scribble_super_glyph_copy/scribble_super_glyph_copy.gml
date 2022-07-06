@@ -59,6 +59,7 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
                        max(_target_font_data.__height, _source_font_data.__height));
 }
 
+/// @ignore
 function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data)
 {
     if (_source_font_data.__msdf == undefined)
@@ -96,6 +97,7 @@ function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data
     _target_font_data.__msdf_pxrange = _source_font_data.__msdf_pxrange;
 }
 
+/// @ignore
 function __scribble_prepare_super_work_array(_input_array)
 {
     var _output_array = [];
@@ -135,6 +137,7 @@ function __scribble_prepare_super_work_array(_input_array)
     return _output_array;
 }
 
+/// @ignore
 function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _target_grid, _glyph, _overwrite)
 {
     var _source_x = _source_map[? _glyph];

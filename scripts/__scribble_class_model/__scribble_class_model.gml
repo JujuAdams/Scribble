@@ -1,6 +1,7 @@
 /// @param element
 /// @param modelCacheName
 
+/// @ignore
 function __scribble_class_model(_element, _model_cache_name) constructor
 {
     //Record the start time so we can get a duration later

@@ -1,3 +1,4 @@
+/// @ignore
 function __scribble_gen_5_finalize_bidi()
 {
     if (!__has_r2l) exit;

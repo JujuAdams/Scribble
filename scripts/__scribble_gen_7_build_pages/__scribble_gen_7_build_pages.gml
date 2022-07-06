@@ -15,6 +15,7 @@
 
 
 
+/// @ignore
 function __scribble_gen_7_build_pages()
 {
     var _glyph_grid = global.__scribble_glyph_grid;

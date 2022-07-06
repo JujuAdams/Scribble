@@ -1,3 +1,4 @@
+/// @ignore
 function __scribble_class_typist() constructor
 {
     __last_element = undefined;

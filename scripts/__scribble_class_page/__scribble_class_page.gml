@@ -1,3 +1,4 @@
+/// @ignore
 function __scribble_class_page() constructor
 {
     __text = "";
