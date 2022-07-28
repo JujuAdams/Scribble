@@ -146,6 +146,9 @@ function __scribble_gen_8_position_glyphs()
                 }
             }
             
+            //Make sure we take the fit_to_box() scale into account for pinning alignments
+            _line_adjusted_width *= __fit_scale;
+            
             switch(_line_halign)
             {
                 case fa_left:               var _glyph_x = (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_alignment_width - _line_adjusted_width) : 0;     break;
