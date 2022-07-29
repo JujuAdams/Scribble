@@ -362,9 +362,8 @@ function __scribble_gen_3_devanagari()
             {
                 //Heavyweight general replacement code... we want to avoid as many delete/insert commands as possible
                 
-                //Copy over as much data as possible from one array
+                //Overwrite as much data as possible. This reduces ds_grid_set_grid_region() calls
                 var _copyCount = min(_foundLength, _replacementLength);
-                
                 var _j = 0;
                 repeat(_copyCount)
                 {
@@ -383,21 +382,31 @@ function __scribble_gen_3_devanagari()
                 }
                 else if (_foundLength < _replacementLength)
                 {
-                    //Throw an error if we're trying to add more than one character
-                    //I don't think this ever comes up but it might in the future
-                    if (_replacementLength - _foundLength > 1)
-                    {
-                        __scribble_error("Devanagari substring insertion length > 1. Please report this error");
-                    }
+                    //Otherwise, we're adding characters to the array so we have to insert some characters into the output grid
                     
-                    //Otherwise, we're adding characters to the array so we have to insert some characters
-                    //This code presumes we're only adding 1 character
                     var _insertPos = _i + _copyCount;
                     ds_grid_set_grid_region(_temp_grid, _glyph_grid, _insertPos, 0, _glyph_count, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
                     ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - _insertPos, __SCRIBBLE_GEN_GLYPH.__SIZE, _insertPos+1, 0);
                     
-                    _glyph_grid[# _insertPos, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = _replacementArray[_replacementLength-1];
-                    _glyph_grid[# _insertPos, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _insertPos-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
+                    if (_replacementLength - _foundLength == 1)
+                    {
+                        //Adding one character
+                        _glyph_grid[# _insertPos, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = _replacementArray[_replacementLength-1];
+                        _glyph_grid[# _insertPos, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _insertPos-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
+                    }
+                    else if (_replacementLength - _foundLength == 2)
+                    {
+                        //Adding two characters
+                        _glyph_grid[# _insertPos, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = _replacementArray[_replacementLength-2];
+                        _glyph_grid[# _insertPos, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _insertPos-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
+                        
+                        _glyph_grid[# _insertPos+1, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = _replacementArray[_replacementLength-1];
+                        _glyph_grid[# _insertPos+1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _insertPos-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
+                    }
+                    else
+                    {
+                        __scribble_error("Devanagari substring insertion length > 2. Please report this error");
+                    }
                 }
                 
                 _i           += _replacementLength - 1; //Off-by-one to account for ++_i in the for-loop
