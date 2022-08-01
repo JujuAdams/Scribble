@@ -35,6 +35,7 @@ function __scribble_gc_collect()
         {
             if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("\"", _element.__cache_name, "\" has timed out (", current_time, " > ", _element.__last_drawn, " + ", __SCRIBBLE_CACHE_TIMEOUT, ")");
             array_delete(_array, _index, 1);
+            variable_struct_remove(global.__scribble_ecache_dict, _element.__cache_name);
         }
     }
     
