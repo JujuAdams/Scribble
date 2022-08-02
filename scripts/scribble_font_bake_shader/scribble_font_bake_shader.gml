@@ -50,6 +50,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
     //Create a new font
     var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, false);
+    _new_font_data.__runtime = true;
     var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
     
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
@@ -166,6 +167,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
     //Make a sprite from the effect surface to make the texture stick
     var _sprite = sprite_create_from_surface(_surface_1, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
+    _new_font_data.__source_sprite = _sprite;
     surface_free(_surface_1);
     
     

@@ -12,9 +12,11 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     
     __is_krutidev = false;
     
-    __msdf         = _msdf;
-    __msdf_pxrange = undefined;
-    __superfont    = false;
+    __msdf          = _msdf;
+    __msdf_pxrange  = undefined;
+    __superfont     = false;
+    __runtime       = false;
+    __source_sprite = undefined;
     
     __scale  = 1.0;
     __height = 0; //*Not* the raw height. This value is changed by scribble_font_scale()
@@ -69,8 +71,15 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     static __destroy = function()
     {
         if (__SCRIBBLE_DEBUG) __scribble_trace("Destroying font \"", __name, "\"");
+        
         ds_map_destroy(__glyphs_map);
         ds_grid_destroy(__glyph_data_grid);
         ds_map_delete(global.__scribble_font_data, __name);
+        
+        if (__source_sprite != undefined)
+        {
+            sprite_delete(__source_sprite);
+            __source_sprite = undefined;
+        }
     }
 }

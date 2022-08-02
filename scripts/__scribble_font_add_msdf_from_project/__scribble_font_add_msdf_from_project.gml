@@ -61,6 +61,8 @@ function __scribble_font_add_msdf_from_project(_sprite)
     if (SCRIBBLE_VERBOSE) __scribble_trace("\"" + _name + "\" has " + string(_size) + " characters");
     
     var _font_data = new __scribble_class_font(_name, _size, true);
+    _font_data.__runtime = true;
+    
     var _font_glyphs_map      = _font_data.__glyphs_map;
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
     if (_is_krutidev) _font_data.__is_krutidev = true;
