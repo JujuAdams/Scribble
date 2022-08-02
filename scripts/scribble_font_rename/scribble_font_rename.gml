@@ -3,6 +3,18 @@
 
 function scribble_font_rename(_old, _new)
 {
+    if (!ds_map_exists(global.__scribble_font_data, _old))
+    {
+        __scribble_error("Font \"", _old, "\" doesn't exist");
+        return;
+    }
+    
+    if (ds_map_exists(global.__scribble_font_data, _new))
+    {
+        __scribble_error("Font \"", _new, "\" already exists");
+        return;
+    }
+    
     var _data = global.__scribble_font_data[? _old];
     
     global.__scribble_font_data[? _new] = _data;
