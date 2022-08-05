@@ -323,7 +323,7 @@ function __scribble_gen_6_build_lines()
         var _line = 0;
         repeat(_line_count)
         {
-            var _line_end_word = _word_grid[# _line, __SCRIBBLE_GEN_WORD.__GLYPH_END];
+            var _line_end_word = _line_grid[# _line, __SCRIBBLE_GEN_LINE.__WORD_END];
             if (_word_grid[# _line_end_word, __SCRIBBLE_GEN_WORD.__BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE) //Only adjust whitespace words
             {
                 var _line_width = _line_grid[# _line, __SCRIBBLE_GEN_LINE.__WIDTH];
