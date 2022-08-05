@@ -1,7 +1,7 @@
 var _element = scribble(test_animation).align(fa_center, fa_left).fit_to_box(width, height);
 _element.draw(x + width/2, y);
 
-var _bbox = _element.get_bbox(x, y);
+var _bbox = _element.get_bbox(x + width/2, y);
 draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, true);
 
 draw_set_color(c_yellow);
