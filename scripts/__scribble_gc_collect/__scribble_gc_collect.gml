@@ -3,6 +3,15 @@ function __scribble_gc_collect()
     if (current_time - global.__scribble_cache_check_time < __SCRIBBLE_EXPECTED_FRAME_TIME) exit;
     global.__scribble_cache_check_time = current_time;
     
+    //If there's been a change in os_is_paused() state then force a refresh of shader uniforms
+    if (os_is_paused() != global.__scribble_os_is_paused)
+    {
+        global.__scribble_os_is_paused = os_is_paused();
+        
+        global.__scribble_anim_shader_desync      = true;
+        global.__scribble_anim_shader_msdf_desync = true;
+    }
+    
     
     
     #region Scan through the cache to see if any text elements have elapsed
