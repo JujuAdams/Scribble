@@ -89,6 +89,8 @@ global.__scribble_vbuff_pos_grid       = ds_grid_create(1000, __SCRIBBLE_GEN_VBU
 //Give us 1 second breathing room when booting up before trying to garbage collect
 global.__scribble_cache_check_time = current_time + 1000;
 
+global.__scribble_null_element = new __scribble_class_null_element();
+
 global.__scribble_mcache_dict       = {};
 global.__scribble_mcache_name_array = [];
 global.__scribble_mcache_name_index = 0;

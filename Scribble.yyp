@@ -129,6 +129,7 @@
     {"id":{"name":"obj_test_manual_page_break","path":"objects/obj_test_manual_page_break/obj_test_manual_page_break.yy",},"order":0,},
     {"id":{"name":"obj_test_wrap_align_right","path":"objects/obj_test_wrap_align_right/obj_test_wrap_align_right.yy",},"order":3,},
     {"id":{"name":"scribble_glyph_get","path":"scripts/scribble_glyph_get/scribble_glyph_get.yy",},"order":7,},
+    {"id":{"name":"__scribble_class_null_element","path":"scripts/__scribble_class_null_element/__scribble_class_null_element.yy",},"order":6,},
     {"id":{"name":"obj_test_padding_wrap","path":"objects/obj_test_padding_wrap/obj_test_padding_wrap.yy",},"order":1,},
     {"id":{"name":"obj_test_msdf","path":"objects/obj_test_msdf/obj_test_msdf.yy",},"order":0,},
     {"id":{"name":"obj_test_overwrite","path":"objects/obj_test_overwrite/obj_test_overwrite.yy",},"order":15,},
