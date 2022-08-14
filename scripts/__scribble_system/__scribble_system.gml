@@ -85,9 +85,9 @@ global.__scribble_stretch_grid         = ds_grid_create(1000, __SCRIBBLE_GEN_STR
 global.__scribble_temp_grid            = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE); //For some reason, changing the width of this grid causes GM to crash
 global.__scribble_temp2_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
 global.__scribble_vbuff_pos_grid       = ds_grid_create(1000, __SCRIBBLE_GEN_VBUFF_POS.__SIZE);
-//global.__scribble_window_array_null    = array_create(2*__SCRIBBLE_WINDOW_COUNT, 1.0); //TODO - Do we still need this?
 
-global.__scribble_cache_check_time = current_time;
+//Give us 1 second breathing room when booting up before trying to garbage collect
+global.__scribble_cache_check_time = current_time + 1000;
 
 global.__scribble_mcache_dict       = {};
 global.__scribble_mcache_name_array = [];
