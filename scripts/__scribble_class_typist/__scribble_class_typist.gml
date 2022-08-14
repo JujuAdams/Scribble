@@ -7,6 +7,9 @@ function __scribble_class_typist() constructor
     __in         = undefined;
     __backwards  = false;
     
+    __skip = false;
+    __drawn_since_skip = false;
+    
     __sound_array                   = undefined;
     __sound_overlap                 = 0;
     __sound_pitch_min               = 1;
@@ -46,14 +49,15 @@ function __scribble_class_typist() constructor
         
         __last_tick_time = -infinity;
         
-        __window_index = 0;
-        __window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
-        if (__last_element != undefined) __skip = false;
-        __paused       = false;
-        __delay_paused = false;
-        __delay_end    = -1;
-        __inline_speed = 1;
-        __event_stack  = [];
+        __window_index     = 0;
+        __window_array     = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
+        __paused           = false;
+        __delay_paused     = false;
+        __delay_end        = -1;
+        __inline_speed     = 1;
+        __event_stack      = [];
+        __skip             = false;
+        __drawn_since_skip = false;
         
         return self;
     }
@@ -96,6 +100,7 @@ function __scribble_class_typist() constructor
     static skip = function(_state = true)
     {
         __skip = _state;
+        __drawn_since_skip = false;
         
         return self;
     }
@@ -346,6 +351,8 @@ function __scribble_class_typist() constructor
     
     static __associate = function(_text_element)
     {
+        var _carry_skip = __skip && ((__last_element == undefined) || !__drawn_since_skip);
+        
         if ((__last_element == undefined) || !weak_ref_alive(__last_element) || (__last_element.ref != _text_element)) //We didn't have an element defined, or we swapped to a different element
         {
             reset();
@@ -363,6 +370,12 @@ function __scribble_class_typist() constructor
         }
         
         __last_page = __last_element.ref.__page;
+        
+        if (_carry_skip)
+        {
+            __skip = true;
+            __drawn_since_skip = false;
+        }
         
         return self;
     }
@@ -521,6 +534,8 @@ function __scribble_class_typist() constructor
         //Associate the typist with the target element so that we're pulling data from the correct place
         //This saves the user from doing it themselves
         __associate(_target_element);
+        
+        if (__skip) __drawn_since_skip = true;
         
         //Don't tick if it's been less than a frame since we were last updated
         if (current_time - __last_tick_time < __SCRIBBLE_EXPECTED_FRAME_TIME) return undefined;
