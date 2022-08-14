@@ -23,7 +23,7 @@ This function sets the default font to use for future [`scribble()`](scribble-me
 |`oldName`   |string  |Name of the font to rename|
 |`newName`   |string  |New name for the font     |
 
-&nbsp;
+&nbsp
 
 ## `scribble_font_duplicate(fontName, newName)`
 
@@ -33,6 +33,26 @@ This function sets the default font to use for future [`scribble()`](scribble-me
 |----------|--------|-----------------------------|
 |`fontName`|string  |Name of the font to duplicate|
 |`newName` |string  |Name for the new font        |
+
+&nbsp;
+
+## `scribble_font_delete(fontName)`
+
+**Returns:** N/A (`undefined`)
+
+|Name      |Datatype|Purpose                   |
+|----------|--------|--------------------------|
+|`fontName`|string  |Name of the font to delete|
+
+&nbsp;
+
+## `scribble_font_exists(fontName`
+
+**Returns:** Boolean, whether a Scribble font with the given name exists
+
+|Name      |Datatype|Purpose                      |
+|----------|--------|-----------------------------|
+|`fontName`|string  |Name of the font to check for|
 
 &nbsp;
 
