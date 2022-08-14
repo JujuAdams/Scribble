@@ -8,6 +8,7 @@
     {"id":{"name":"obj_test_anim_wave","path":"objects/obj_test_anim_wave/obj_test_anim_wave.yy",},"order":1,},
     {"id":{"name":"scribble_anim_rainbow","path":"scripts/scribble_anim_rainbow/scribble_anim_rainbow.yy",},"order":3,},
     {"id":{"name":"obj_test_bezier_arabic","path":"objects/obj_test_bezier_arabic/obj_test_bezier_arabic.yy",},"order":3,},
+    {"id":{"name":"obj_test_typewriter_preskip","path":"objects/obj_test_typewriter_preskip/obj_test_typewriter_preskip.yy",},"order":20,},
     {"id":{"name":"obj_test_is_animated","path":"objects/obj_test_is_animated/obj_test_is_animated.yy",},"order":4,},
     {"id":{"name":"obj_test_hebrew_hyphenated","path":"objects/obj_test_hebrew_hyphenated/obj_test_hebrew_hyphenated.yy",},"order":1,},
     {"id":{"name":"obj_test_pages_with_typist","path":"objects/obj_test_pages_with_typist/obj_test_pages_with_typist.yy",},"order":2,},
