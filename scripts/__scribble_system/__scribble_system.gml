@@ -358,7 +358,7 @@ function __scribble_error()
         ++_i;
     }
     
-    show_debug_message("Scribble: " + string_replace_all(_string, "\n", "\n          "));
+    show_debug_message("Scribble " + __SCRIBBLE_VERSION + ": " + string_replace_all(_string, "\n", "\n          "));
     show_error("Scribble:\n" + _string + "\n ", true);
 }
 
