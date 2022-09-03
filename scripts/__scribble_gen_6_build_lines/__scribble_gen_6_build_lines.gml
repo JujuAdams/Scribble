@@ -121,9 +121,10 @@ function __scribble_gen_6_build_lines()
                     
                     if (_word_width >= _simulated_model_max_width)
                     {
-                        #region Emergency! We're going to have to retroactively implement per-glyph line wrapping
-                        
                         _word_broken = true;
+                        if (_wrap_no_pages) break;
+                        
+                        #region Emergency! We're going to have to retroactively implement per-glyph line wrapping
                         
                         if (_word_grid[# _i, __SCRIBBLE_GEN_WORD.__BIDI] >= __SCRIBBLE_BIDI.R2L)
                         {
