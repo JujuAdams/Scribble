@@ -324,7 +324,7 @@ function __scribble_gen_3_devanagari()
         _oneChar   = _twoChar   >> 16;
         _twoChar   = _threeChar >> 16;
         _threeChar = _fourChar  >> 16;
-        _fourChar  = _threeChar | ((_glyph_grid[# _i+3, __SCRIBBLE_GEN_GLYPH.__UNICODE] & 0xFFFF) << 48);
+        _fourChar  = _threeChar | ((max(0, _glyph_grid[# _i+3, __SCRIBBLE_GEN_GLYPH.__UNICODE]) & 0xFFFF) << 48);
         
         //Try to find a matching substring
         var _foundLength = 4;
@@ -450,30 +450,32 @@ function __scribble_gen_3_devanagari()
         }
         
         var _found_glyph = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
-        
-        var _glyph_write = _found_glyph;
-        if (_glyph_write != 32) _glyph_write += __SCRIBBLE_DEVANAGARI_OFFSET;
-        
-        //Pull info out of the font's data structures
-        var _data_index = _font_glyphs_map[? _glyph_write];
-        
-        //If our glyph is missing, choose the missing character glyph instead!
-        if (_data_index == undefined)
+        if (_found_glyph > 0) //Don't transform sprites or surfaces
         {
-            __scribble_trace("Couldn't find glyph data for character code " + string(_found_glyph) + " (" + chr(_found_glyph) + ") in font \"" + string(_font_name) + "\"");
-            _glyph_write = ord(SCRIBBLE_MISSING_CHARACTER);
-            _data_index = _font_glyphs_map[? _glyph_write];
-        }
-        
-        if (_data_index == undefined)
-        {
-            //This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
-            __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");
-        }
-        else
-        {
-            //Add this glyph to our grid by copying from the font's own glyph data grid
-            ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.UNICODE, _data_index, SCRIBBLE_GLYPH.BILINEAR, _i, __SCRIBBLE_GEN_GLYPH.__UNICODE);
+            var _glyph_write = _found_glyph;
+            if (_glyph_write != 32) _glyph_write += __SCRIBBLE_DEVANAGARI_OFFSET;
+            
+            //Pull info out of the font's data structures
+            var _data_index = _font_glyphs_map[? _glyph_write];
+            
+            //If our glyph is missing, choose the missing character glyph instead!
+            if (_data_index == undefined)
+            {
+                __scribble_trace("Couldn't find glyph data for character code " + string(_found_glyph) + " (" + chr(_found_glyph) + ") in font \"" + string(_font_name) + "\"");
+                _glyph_write = ord(SCRIBBLE_MISSING_CHARACTER);
+                _data_index = _font_glyphs_map[? _glyph_write];
+            }
+            
+            if (_data_index == undefined)
+            {
+                //This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
+                __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");
+            }
+            else
+            {
+                //Add this glyph to our grid by copying from the font's own glyph data grid
+                ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.UNICODE, _data_index, SCRIBBLE_GLYPH.BILINEAR, _i, __SCRIBBLE_GEN_GLYPH.__UNICODE);
+            }
         }
         
         ++_i;
