@@ -1283,7 +1283,30 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static debug_draw_bbox = function(_x, _y)
     {
-        //FIXME - Reimplement
+        //FIXME - Reimplement properly
+        
+        var _oldColour = draw_get_colour();
+        draw_set_colour(c_red);
+        
+        switch(__starting_halign)
+        {
+            case fa_left:                             break;
+            case fa_center: _x -= __wrap_max_width/2; break;
+            case fa_right:  _x -= __wrap_max_width;   break;
+        }
+        
+        switch(__starting_valign)
+        {
+            case fa_top:                               break;
+            case fa_middle: _y -= __wrap_max_height/2; break;
+            case fa_bottom: _y -= __wrap_max_height;   break;
+        }
+        
+        draw_rectangle(_x, _y, _x + __wrap_max_width, _y + __wrap_max_height, true);
+        draw_rectangle(_x+1, _y+1, _x-1 + __wrap_max_width, _y-1 + __wrap_max_height, true);
+        
+        draw_set_colour(_oldColour);
+        
         return self;
     }
     
