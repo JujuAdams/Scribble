@@ -188,7 +188,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         //...aaaand set the matrix
         var _old_matrix = matrix_get(matrix_world);
-        var _matrix = matrix_multiply(__update_matrix(_x, _y), _old_matrix);
+        var _matrix = matrix_multiply(__update_matrix(_model, _x, _y), _old_matrix);
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
@@ -573,7 +573,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _page         = _model.__pages_array[__page];
         var _region_array = _page.__region_array;
         
-        var _matrix = __update_matrix(_element_x, _element_y);
+        var _matrix = __update_matrix(_model, _element_x, _element_y);
         if (__matrix_inverse == undefined) __matrix_inverse = __scribble_matrix_inverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
         var _vector = matrix_transform_vertex(__matrix_inverse, _pointer_x, _pointer_y, 0);
         var _x = _vector[0];
@@ -1632,11 +1632,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
     }
     
-    static __update_matrix = function(_x, _y)
+    static __update_matrix = function(_model, _x, _y)
     {
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return;
-        
         __update_scale_to_box_scale();
         
         if (__matrix_dirty || (__matrix_x != _x) || (__matrix_y != _y))
