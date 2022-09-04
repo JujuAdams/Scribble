@@ -286,6 +286,9 @@ global.__scribble_anim_shader_msdf_desync = false;
 global.__scribble_anim_shader_msdf_desync_to_default = false;
 global.__scribble_anim_shader_msdf_default = false;
 
+global.__scribble_standard_shader_uniforms_dirty = true;
+global.__scribble_msdf_shader_uniforms_dirty = true;
+
 global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE);
 scribble_anim_reset();
 
