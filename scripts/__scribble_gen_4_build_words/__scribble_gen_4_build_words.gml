@@ -138,6 +138,20 @@ function __scribble_gen_4_build_words()
                         _word_bidi = _glyph_bidi;
                         _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI_RAW] = _glyph_bidi;
                         _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI    ] = _glyph_bidi;
+                        
+                        //Fix symbol positioning when transitioning to R2L text
+                        if (_word_bidi >= __SCRIBBLE_BIDI.R2L)
+                        {
+                            _word_width = 0;
+                            var _j = _word_glyph_start;
+                            repeat(_i - _j)
+                            {
+                                _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__X] += _word_width;
+                                _word_width -= _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__SEPARATION];
+                                _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__X] += _word_width;
+                                ++_j;
+                            }
+                        }
                     }
                     else if (_wrap_per_char || (_glyph_bidi != _word_bidi))
                     {
