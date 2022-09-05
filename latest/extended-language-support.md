@@ -20,6 +20,8 @@ Below is a table with the standard glyph range for some common alphabetic script
 |Cyrillic                     |`1024 -> 1279`               |
 |Hebrew                       |`1424 -> 1535`               |
 
+Greek has some slightly different rules when it comes to punctuation. There are no question marks and instead semicolons are used instead. Additionally, Greek and French tend to use « and » (Unicode `171` and `187`) respectively for quotation marks. French also typically uses non-breaking spaces before punctuation.
+
 &nbsp;
 
 ## Chinese, Japanese, and Korean
@@ -36,7 +38,9 @@ CJK text has the additional property where words can be split in the middle when
 
 Arabic script represents a significant technical challenging owing to both its right-to-left ordering and the heavy use of ligatures to produce cursive text with a strong, unbroken base line. Scribble currently supports Arabic as a beta feature, pending testing and finessing. As with all non-Latin languages, you will need to pay attention to the font you're using and the character range you have set up. All fonts that contain the requisite glyphs should render Arabic properly. Arabic and non-Arabic text can be mixed as you see fit. Scribble does not automatically subsitute Indo-Arabic numerals in place of Western numerals.
 
-?> There are a handful of Arabic glyph ranges. Scribble requires that "Arabic Presentation Forms B" is available, which lies from `65136 -> 65279` (decimal). You may also want to add the "Arabic" range too (`1536 -> 1791`), especially `1536 -> 1567` which is used for Arabic punctuation. `8216,8217` are also used as quotation marks in Arabic text. Arabic text renderers, including Scribble, will not generally use glyphs from the "Arabic Presentation Forms A" range unless those glyphs are specifically present in the input text.
+?> There are a handful of Arabic glyph ranges. Scribble requires that "Arabic Presentation Forms B" is available, which lies from `65136 -> 65279` (decimal). You may should also add the "Arabic" range too (`1536 -> 1791`), especially `1536 -> 1567` which is used for Arabic punctuation. Unicode characters `8216` and `8217` are used as quotation marks in Arabic text.
+
+Arabic text renderers, including Scribble, will not generally use glyphs from the "Arabic Presentation Forms A" range unless those glyphs are specifically present in the input text.
 
 &nbsp;
 
