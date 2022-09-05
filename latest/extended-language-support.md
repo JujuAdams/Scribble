@@ -20,7 +20,7 @@ Below is a table with the standard glyph range for some common alphabetic script
 |Cyrillic                     |`1024 -> 1279`               |
 |Hebrew                       |`1424 -> 1535`               |
 
-Greek has some slightly different rules when it comes to punctuation. There are no question marks and instead semicolons are used instead. Additionally, Greek and French tend to use « and » (Unicode `171` and `187`) respectively for quotation marks. French also typically uses non-breaking spaces before punctuation.
+Greek has some slightly different rules when it comes to punctuation. There are no question marks and instead semicolons are used instead. Additionally, Greek tends to use « and » (Unicode `171` and `187`) respectively for quotation marks, and you may see this style of quotation mark in French text also.
 
 &nbsp;
 
