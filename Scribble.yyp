@@ -202,6 +202,7 @@
     {"id":{"name":"obj_test_gradient","path":"objects/obj_test_gradient/obj_test_gradient.yy",},"order":3,},
     {"id":{"name":"scribble_font_combine","path":"scripts/scribble_font_combine/scribble_font_combine.yy",},"order":4,},
     {"id":{"name":"__scribble_gen_1_model_limits_and_bezier_curves","path":"scripts/__scribble_gen_1_model_limits_and_bezier_curves/__scribble_gen_1_model_limits_and_bezier_curves.yy",},"order":1,},
+    {"id":{"name":"obj_test_devangari_sprites","path":"objects/obj_test_devangari_sprites/obj_test_devangari_sprites.yy",},"order":2,},
     {"id":{"name":"scribble_font_force_bilinear_filtering","path":"scripts/scribble_font_force_bilinear_filtering/scribble_font_force_bilinear_filtering.yy",},"order":14,},
     {"id":{"name":"obj_test_escaped_newlines","path":"objects/obj_test_escaped_newlines/obj_test_escaped_newlines.yy",},"order":1,},
     {"id":{"name":"obj_test_arabic","path":"objects/obj_test_arabic/obj_test_arabic.yy",},"order":0,},
