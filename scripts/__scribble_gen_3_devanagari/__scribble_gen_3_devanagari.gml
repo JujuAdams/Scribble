@@ -323,8 +323,8 @@ function __scribble_gen_3_devanagari()
     {
         _oneChar   = _twoChar   >> 16;
         _twoChar   = _threeChar >> 16;
-        _threeChar = _fourChar  >> 16;
-        _fourChar  = _threeChar | ((max(0, _glyph_grid[# _i+3, __SCRIBBLE_GEN_GLYPH.__UNICODE]) & 0xFFFF) << 48);
+        _threeChar = (_fourChar & 0x7FFFFFFFFFFFFFFF) >> 16; //Ensure the top bit is 0 so we get zeroes across the LHS
+        _fourChar  = _threeChar | ((_glyph_grid[# _i+3, __SCRIBBLE_GEN_GLYPH.__UNICODE] & 0xFFFF) << 48);
         
         //Try to find a matching substring
         var _foundLength = 4;
