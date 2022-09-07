@@ -3,3 +3,6 @@ scribble(testVectorArray[index].unicode).draw(10, 50);
 
 draw_set_font(fnt_krutidev);
 draw_text(10, 200, UnicodeToKrutidev(testVectorArray[index].unicode));
+
+draw_set_font(-1);
+draw_text(10, 300, UnicodeToKrutidev(testVectorArray[index].unicode));

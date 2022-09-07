@@ -1,6 +1,6 @@
 scribble_font_set_default("fnt_krutidev");
 
-index = 0;
+index = 36;
 
 testVectorArray = [
 /*  0 */    { unicode: "गया", expected: "x;k" },
@@ -39,4 +39,5 @@ testVectorArray = [
 /* 33 */    { unicode: " शेखवारा", expected: " 'ks[kokjk" },
 /* 34 */    { unicode: "न0 पंचायत", expected: "u0 iapk;r" },
 /* 35 */    { unicode: "रिक्त", expected: "fjDr" },
+/* 36 */    { unicode: "जुड़ता", expected: "tqM+rk" }, 
 ];
