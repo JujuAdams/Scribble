@@ -1,6 +1,6 @@
 #macro __SCRIBBLE_GEN_WORD_START  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__GLYPH_START] = _word_glyph_start;\
                                   _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI_RAW   ] = _word_bidi;\
-                                  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI       ] = ((_word_bidi == __SCRIBBLE_BIDI.ISOLATED) || (_word_bidi == __SCRIBBLE_BIDI.ISOLATED_CJ))? __SCRIBBLE_BIDI.L2R : _word_bidi; //CJK isolated characters are written L2R
+                                  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI       ] = ((_word_bidi == __SCRIBBLE_BIDI.ISOLATED) || (_word_bidi == __SCRIBBLE_BIDI.ISOLATED_CJK))? __SCRIBBLE_BIDI.L2R : _word_bidi; //CJK isolated characters are written L2R
 
 
 #macro __SCRIBBLE_GEN_WORD_END  _word_glyph_end = _i-1;\
@@ -122,7 +122,7 @@ function __scribble_gen_4_build_words()
                     _glyph_prev_whitespace = false;
                 break;
                 
-                case __SCRIBBLE_BIDI.ISOLATED_CJ:
+                case __SCRIBBLE_BIDI.ISOLATED_CJK:
                     if (_glyph_prev_whitespace)
                     {
                         __SCRIBBLE_GEN_WORD_NEW;

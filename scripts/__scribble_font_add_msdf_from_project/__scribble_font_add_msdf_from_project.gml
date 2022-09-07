@@ -148,7 +148,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
         }
         else if ((_unicode >= 0x4E00) && (_unicode <= 0x9FFF)) //CJK Unified ideographs block
         {
-            var _bidi = __SCRIBBLE_BIDI.ISOLATED_CJ;
+            var _bidi = __SCRIBBLE_BIDI.ISOLATED_CJK;
         }
         else if ((_unicode >= 0xFF00) && (_unicode <= 0xFF0F)) //Fullwidth symbols
         {
