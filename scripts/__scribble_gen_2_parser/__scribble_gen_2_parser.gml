@@ -152,15 +152,8 @@ function __scribble_gen_2_parser()
                 }
             }
             
-            if ((_glyph_ord >= 0x4E00) && (_glyph_ord <= 0x9FFF)) //CJK Unified ideographs block
-            {
-                var _bidi = __SCRIBBLE_BIDI.ISOLATED;
-            }
-            else
-            {
-                var _bidi = _global_glyph_bidi_map[? _glyph_ord];
-                if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
-            }
+            var _bidi = _global_glyph_bidi_map[? _glyph_ord];
+            if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
             
             if (_bidi == __SCRIBBLE_BIDI.L2R)
             {
