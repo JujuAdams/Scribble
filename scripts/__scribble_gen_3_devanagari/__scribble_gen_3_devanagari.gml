@@ -122,8 +122,8 @@ global.__scribble_krutidev_matra_lookup_map[? 2380] = true;
                                        ++_i;\
                                        ++_glyph_count;\
                                        ;\
-                                       _glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x093C;\ //Nukta
-                                       _glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
+                                       _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x093C;\ //Nukta
+                                       _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
 
 
 function __scribble_gen_3_devanagari()
