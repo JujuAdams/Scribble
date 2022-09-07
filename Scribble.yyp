@@ -58,6 +58,7 @@
     {"id":{"name":"__scribble_gen_2_parser","path":"scripts/__scribble_gen_2_parser/__scribble_gen_2_parser.yy",},"order":3,},
     {"id":{"name":"obj_test_alpha","path":"objects/obj_test_alpha/obj_test_alpha.yy",},"order":2,},
     {"id":{"name":"obj_test_font_outline_8dir_2px","path":"objects/obj_test_font_outline_8dir_2px/obj_test_font_outline_8dir_2px.yy",},"order":8,},
+    {"id":{"name":"obj_test_chinese","path":"objects/obj_test_chinese/obj_test_chinese.yy",},"order":0,},
     {"id":{"name":"obj_test_typewriter","path":"objects/obj_test_typewriter/obj_test_typewriter.yy",},"order":1,},
     {"id":{"name":"__shd_scribble_bake_outline_8dir","path":"shaders/__shd_scribble_bake_outline_8dir/__shd_scribble_bake_outline_8dir.yy",},"order":3,},
     {"id":{"name":"scribble_super_glyph_copy","path":"scripts/scribble_super_glyph_copy/scribble_super_glyph_copy.yy",},"order":1,},
@@ -352,6 +353,7 @@
     {"folderPath":"folders/Fonts/Mallangche.yy","order":23,"resourceVersion":"1.0","name":"Mallangche","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Test Cases/Language Support/Devanagari.yy","order":8,"resourceVersion":"1.0","name":"Devanagari","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Scribble/Quick Functions.yy","order":3,"resourceVersion":"1.0","name":"Quick Functions","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Test Cases/Language Support/Chinese.yy","order":9,"resourceVersion":"1.0","name":"Chinese","tags":[],"resourceType":"GMFolder",},
   ],
   "AudioGroups": [
     {"targets":-1,"resourceVersion":"1.3","name":"audiogroup_default","resourceType":"GMAudioGroup",},
