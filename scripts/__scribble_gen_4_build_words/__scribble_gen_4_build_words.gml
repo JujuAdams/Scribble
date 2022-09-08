@@ -1,6 +1,6 @@
 #macro __SCRIBBLE_GEN_WORD_START  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__GLYPH_START] = _word_glyph_start;\
                                   _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI_RAW   ] = _word_bidi;\
-                                  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI       ] = (_word_bidi == __SCRIBBLE_BIDI.ISOLATED)? __SCRIBBLE_BIDI.L2R : _word_bidi; //CJK isolated characters are written L2R
+                                  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI       ] = ((_word_bidi == __SCRIBBLE_BIDI.ISOLATED) || (_word_bidi == __SCRIBBLE_BIDI.ISOLATED_CJK))? __SCRIBBLE_BIDI.L2R : _word_bidi; //CJK isolated characters are written L2R
 
 
 #macro __SCRIBBLE_GEN_WORD_END  _word_glyph_end = _i-1;\
@@ -109,7 +109,6 @@ function __scribble_gen_4_build_words()
                     else if (_glyph_prev_whitespace)
                     {
                         __SCRIBBLE_GEN_WORD_NEW;
-                        
                         _glyph_prev_whitespace = false;
                     }
                     else if (_glyph_bidi != _word_bidi)
@@ -120,6 +119,26 @@ function __scribble_gen_4_build_words()
                 
                 case __SCRIBBLE_BIDI.ISOLATED:
                     __SCRIBBLE_GEN_WORD_NEW;
+                    _glyph_prev_whitespace = false;
+                break;
+                
+                case __SCRIBBLE_BIDI.ISOLATED_CJK:
+                    if (_glyph_prev_whitespace)
+                    {
+                        __SCRIBBLE_GEN_WORD_NEW;
+                        _glyph_prev_whitespace = false;
+                    }
+                    else if (_word_bidi == __SCRIBBLE_BIDI.SYMBOL) // If the current word has a neutral direction, inherit the direction of the next L2R or R2L glyph
+                    {
+                        // When (if) we find an L2R/R2L glyph then copy that glyph state back into the word itself
+                        _word_bidi = _glyph_bidi;
+                        _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI_RAW] = _glyph_bidi;
+                        _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI    ] = _glyph_bidi;
+                    }
+                    else
+                    {
+                        __SCRIBBLE_GEN_WORD_NEW;
+                    }
                 break;
                 
                 case __SCRIBBLE_BIDI.L2R:
@@ -138,6 +157,20 @@ function __scribble_gen_4_build_words()
                         _word_bidi = _glyph_bidi;
                         _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI_RAW] = _glyph_bidi;
                         _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI    ] = _glyph_bidi;
+                        
+                        //Fix symbol positioning when transitioning to R2L text
+                        if (_word_bidi >= __SCRIBBLE_BIDI.R2L)
+                        {
+                            _word_width = 0;
+                            var _j = _word_glyph_start;
+                            repeat(_i - _j)
+                            {
+                                _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__X] += _word_width;
+                                _word_width -= _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__SEPARATION];
+                                _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__X] += _word_width;
+                                ++_j;
+                            }
+                        }
                     }
                     else if (_wrap_per_char || (_glyph_bidi != _word_bidi))
                     {

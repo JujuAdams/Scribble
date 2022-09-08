@@ -33,7 +33,11 @@
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  ;\//Pull info out of the font's data structures
                                       var _data_index = _font_glyphs_map[? _glyph_write];\
                                       ;\//If our glyph is missing, choose the missing character glyph instead!
-                                      if (_data_index == undefined) _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
+                                      if (_data_index == undefined)\
+                                      {\
+                                          __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");\
+                                          _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
+                                      }\
                                       if (_data_index == undefined)\
                                       {\
                                           ;\//This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
@@ -152,15 +156,8 @@ function __scribble_gen_2_parser()
                 }
             }
             
-            if ((_glyph_ord >= 0x4E00) && (_glyph_ord <= 0x9FFF)) //CJK Unified ideographs block
-            {
-                var _bidi = __SCRIBBLE_BIDI.ISOLATED;
-            }
-            else
-            {
-                var _bidi = _global_glyph_bidi_map[? _glyph_ord];
-                if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
-            }
+            var _bidi = _global_glyph_bidi_map[? _glyph_ord];
+            if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
             
             if (_bidi == __SCRIBBLE_BIDI.L2R)
             {

@@ -5,7 +5,7 @@ function __scribble_class_element(_string, _unique_id) constructor
 {
     __text       = _string;
     __unique_id  = _unique_id;
-    __cache_name = _string + ":" + _unique_id;
+    __cache_name = _string + ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (":" + string(_unique_id)));
     
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + __cache_name + "\"");
     
@@ -63,6 +63,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     __wrap_no_pages   = false;
     __wrap_max_scale  = 1;
     
+    __scale_to_box_dirty      = true;
     __scale_to_box_max_width  = 0;
     __scale_to_box_max_height = 0;
     __scale_to_box_scale      = undefined;
@@ -187,7 +188,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         //...aaaand set the matrix
         var _old_matrix = matrix_get(matrix_world);
-        var _matrix = matrix_multiply(__update_matrix(_x, _y), _old_matrix);
+        var _matrix = matrix_multiply(__update_matrix(_model, _x, _y), _old_matrix);
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
@@ -335,7 +336,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         if ((__origin_x != _x) || (__origin_y != _y))
         {
             __matrix_dirty = true;
-            __bbox_dirty = true;
+            __bbox_dirty   = true;
             
             __origin_x = _x;
             __origin_y = _y;
@@ -352,7 +353,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         if ((__xscale != _xscale) || (__yscale != _yscale) || (__angle != _angle))
         {
             __matrix_dirty = true;
-            __bbox_dirty = true;
+            __bbox_dirty   = true;
             
             __xscale = _xscale;
             __yscale = _yscale;
@@ -374,8 +375,15 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param maxHeight
     static scale_to_box = function(_max_width, _max_height)
     {
-        __scale_to_box_max_width  = ((_max_width  == undefined) || (_max_width  < 0))? 0 : _max_width;
-        __scale_to_box_max_height = ((_max_height == undefined) || (_max_height < 0))? 0 : _max_height;
+        _max_width  = ((_max_width  == undefined) || (_max_width  < 0))? 0 : _max_width;
+        _max_height = ((_max_height == undefined) || (_max_height < 0))? 0 : _max_height;
+        
+        if ((_max_width != __scale_to_box_max_width) || (_max_height != __scale_to_box_max_height))
+        {
+            __scale_to_box_max_width  = _max_width;
+            __scale_to_box_max_height = _max_height;
+            __scale_to_box_dirty      = true;
+        }
         
         return self;
     }
@@ -392,7 +400,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         ||  (__wrap_max_scale != 1))
         {
             __model_cache_name_dirty = true;
-            __bbox_dirty = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
             
             __wrap_max_width  = _wrap_max_width;
             __wrap_max_height = _wrap_max_height;
@@ -417,8 +426,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         ||  (_wrap_max_scale  != __wrap_max_scale))
         {
             __model_cache_name_dirty = true;
-            __matrix_dirty = true;
-            __bbox_dirty = true;
+            __matrix_dirty           = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
             
             __wrap_max_width  = _wrap_max_width;
             __wrap_max_height = _wrap_max_height;
@@ -466,8 +476,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         if ((_l != __padding_l) || (_t != __padding_t) || (_r != __padding_r) || (_b != __padding_b))
         {
             __model_cache_name_dirty = true;
-            __matrix_dirty = true;
-            __bbox_dirty = true;
+            __matrix_dirty           = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
             
             __padding_l = _l;
             __padding_t = _t;
@@ -562,7 +573,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _page         = _model.__pages_array[__page];
         var _region_array = _page.__region_array;
         
-        var _matrix = __update_matrix(_element_x, _element_y);
+        var _matrix = __update_matrix(_model, _element_x, _element_y);
         if (__matrix_inverse == undefined) __matrix_inverse = __scribble_matrix_inverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
         var _vector = matrix_transform_vertex(__matrix_inverse, _pointer_x, _pointer_y, 0);
         var _x = _vector[0];
@@ -1327,6 +1338,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             if (__model_cache_name_dirty)
             {
                 __model_cache_name_dirty = false;
+                __scale_to_box_dirty     = true; //The dimensions of the text element might change as a result of a model change
                 
                 buffer_seek(global.__scribble_buffer, buffer_seek_start, 0);
                 buffer_write(global.__scribble_buffer, buffer_text, string(__text           ));     buffer_write(global.__scribble_buffer, buffer_u8,  0x3A); //colon
@@ -1380,31 +1392,48 @@ function __scribble_class_element(_string, _unique_id) constructor
         shader_set_uniform_f(global.__scribble_u_fTime, __animation_time);
         
         //TODO - Optimise
-        shader_set_uniform_f(global.__scribble_u_vColourBlend, colour_get_red(  __blend_colour)/255,
-                                                               colour_get_green(__blend_colour)/255,
-                                                               colour_get_blue( __blend_colour)/255,
+        var _blend_colour = __blend_colour;
+        shader_set_uniform_f(global.__scribble_u_vColourBlend, colour_get_red(  _blend_colour)/255,
+                                                               colour_get_green(_blend_colour)/255,
+                                                               colour_get_blue( _blend_colour)/255,
                                                                __blend_alpha);
         
-        shader_set_uniform_f(global.__scribble_u_vGradient, colour_get_red(  __gradient_colour)/255,
-                                                            colour_get_green(__gradient_colour)/255,
-                                                            colour_get_blue( __gradient_colour)/255,
-                                                            __gradient_alpha);
-        
-        shader_set_uniform_f(global.__scribble_u_vSkew, __skew_x, __skew_y);
-        
-        shader_set_uniform_f(global.__scribble_u_vFlash, colour_get_red(  __flash_colour)/255,
-                                                         colour_get_green(__flash_colour)/255,
-                                                         colour_get_blue( __flash_colour)/255,
-                                                         __flash_alpha);
-        
-        shader_set_uniform_f(global.__scribble_u_vRegionActive, __region_glyph_start, __region_glyph_end);
-        
-        shader_set_uniform_f(global.__scribble_u_vRegionColour, colour_get_red(  __region_colour)/255,
-                                                                colour_get_green(__region_colour)/255,
-                                                                colour_get_blue( __region_colour)/255,
-                                                                __region_blend);
-        
         shader_set_uniform_f(global.__scribble_u_fBlinkState, __animation_blink_state);
+        
+        if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0))
+        {
+            global.__scribble_standard_shader_uniforms_dirty = true;
+            
+            shader_set_uniform_f(global.__scribble_u_vGradient, colour_get_red(  __gradient_colour)/255,
+                                                                colour_get_green(__gradient_colour)/255,
+                                                                colour_get_blue( __gradient_colour)/255,
+                                                                __gradient_alpha);
+            
+            shader_set_uniform_f(global.__scribble_u_vSkew, __skew_x, __skew_y);
+            
+            shader_set_uniform_f(global.__scribble_u_vFlash, colour_get_red(  __flash_colour)/255,
+                                                             colour_get_green(__flash_colour)/255,
+                                                             colour_get_blue( __flash_colour)/255,
+                                                             __flash_alpha);
+            
+            shader_set_uniform_f(global.__scribble_u_vRegionActive, __region_glyph_start, __region_glyph_end);
+            
+            shader_set_uniform_f(global.__scribble_u_vRegionColour, colour_get_red(  __region_colour)/255,
+                                                                    colour_get_green(__region_colour)/255,
+                                                                    colour_get_blue( __region_colour)/255,
+                                                                    __region_blend);
+            
+        }
+        else if (global.__scribble_standard_shader_uniforms_dirty)
+        {
+            global.__scribble_standard_shader_uniforms_dirty = false;
+            
+            shader_set_uniform_f(global.__scribble_u_vGradient, 0, 0, 0, 0);
+            shader_set_uniform_f(global.__scribble_u_vSkew, 0, 0);
+            shader_set_uniform_f(global.__scribble_u_vFlash, 0, 0, 0, 0);
+            shader_set_uniform_f(global.__scribble_u_vRegionActive, 0, 0);
+            shader_set_uniform_f(global.__scribble_u_vRegionColour, 0, 0, 0, 0);
+        }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
         if (global.__scribble_anim_shader_desync)
@@ -1468,26 +1497,41 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                                     colour_get_blue( __blend_colour)/255,
                                                                     __blend_alpha);
         
-        shader_set_uniform_f(global.__scribble_msdf_u_vGradient, colour_get_red(  __gradient_colour)/255,
-                                                                 colour_get_green(__gradient_colour)/255,
-                                                                 colour_get_blue( __gradient_colour)/255,
-                                                                 __gradient_alpha);
-        
-        shader_set_uniform_f(global.__scribble_msdf_u_vSkew, __skew_x, __skew_y);
-        
-        shader_set_uniform_f(global.__scribble_msdf_u_vFlash, colour_get_red(  __flash_colour)/255,
-                                                              colour_get_green(__flash_colour)/255,
-                                                              colour_get_blue( __flash_colour)/255,
-                                                              __flash_alpha);
-        
-        shader_set_uniform_f(global.__scribble_msdf_u_vRegionActive, __region_glyph_start, __region_glyph_end);
-        
-        shader_set_uniform_f(global.__scribble_msdf_u_vRegionColour, colour_get_red(  __region_colour)/255,
-                                                                     colour_get_green(__region_colour)/255,
-                                                                     colour_get_blue( __region_colour)/255,
-                                                                     __region_blend);
-        
         shader_set_uniform_f(global.__scribble_msdf_u_fBlinkState, __animation_blink_state);
+        
+        if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0))
+        {
+            global.__scribble_msdf_shader_uniforms_dirty = true;
+            
+            shader_set_uniform_f(global.__scribble_msdf_u_vGradient, colour_get_red(  __gradient_colour)/255,
+                                                                     colour_get_green(__gradient_colour)/255,
+                                                                     colour_get_blue( __gradient_colour)/255,
+                                                                     __gradient_alpha);
+            
+            shader_set_uniform_f(global.__scribble_msdf_u_vSkew, __skew_x, __skew_y);
+            
+            shader_set_uniform_f(global.__scribble_msdf_u_vFlash, colour_get_red(  __flash_colour)/255,
+                                                                  colour_get_green(__flash_colour)/255,
+                                                                  colour_get_blue( __flash_colour)/255,
+                                                                  __flash_alpha);
+            
+            shader_set_uniform_f(global.__scribble_msdf_u_vRegionActive, __region_glyph_start, __region_glyph_end);
+            
+            shader_set_uniform_f(global.__scribble_msdf_u_vRegionColour, colour_get_red(  __region_colour)/255,
+                                                                         colour_get_green(__region_colour)/255,
+                                                                         colour_get_blue( __region_colour)/255,
+                                                                         __region_blend);
+        }
+        else if (global.__scribble_msdf_shader_uniforms_dirty)
+        {
+            global.__scribble_msdf_shader_uniforms_dirty = false;
+            
+            shader_set_uniform_f(global.__scribble_msdf_u_vGradient, 0, 0, 0, 0);
+            shader_set_uniform_f(global.__scribble_msdf_u_vSkew, 0, 0);
+            shader_set_uniform_f(global.__scribble_msdf_u_vFlash, 0, 0, 0, 0);
+            shader_set_uniform_f(global.__scribble_msdf_u_vRegionActive, 0, 0);
+            shader_set_uniform_f(global.__scribble_msdf_u_vRegionColour, 0, 0, 0, 0);
+        }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
         if (global.__scribble_anim_shader_msdf_desync)
@@ -1569,12 +1613,13 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static __update_scale_to_box_scale = function()
     {
-        //FIXME - Only update scales and such if and when the scaling dimensions change
+        if (!__scale_to_box_dirty) return;
+        __scale_to_box_dirty = false;
+        
         var _model = __get_model(true);
         
         var _xscale = 1.0;
         var _yscale = 1.0;
-        
         if (__scale_to_box_max_width  > 0) _xscale = __scale_to_box_max_width  / (_model.__get_width()  + __padding_l + __padding_r);
         if (__scale_to_box_max_height > 0) _yscale = __scale_to_box_max_height / (_model.__get_height() + __padding_t + __padding_b);
         
@@ -1583,15 +1628,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (__scale_to_box_scale != _previous_scale_to_box_scale)
         {
             __matrix_dirty = true;
-            __bbox_dirty = true;
+            __bbox_dirty   = true;
         }
     }
     
-    static __update_matrix = function(_x, _y)
+    static __update_matrix = function(_model, _x, _y)
     {
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return;
-        
         __update_scale_to_box_scale();
         
         if (__matrix_dirty || (__matrix_x != _x) || (__matrix_y != _y))

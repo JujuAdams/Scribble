@@ -1,6 +1,11 @@
-scribble_font_set_default("fnt_krutidev");
+scribble_super_create("devanagari test");
+scribble_super_glyph_copy_all("devanagari test", "fnt_krutidev", true);
+scribble_super_glyph_copy_all("devanagari test", "fnt_noto_latin", false);
+scribble_font_set_default("devanagari test");
 
-index = 0;
+
+
+index = 37;
 
 testVectorArray = [
 /*  0 */    { unicode: "गया", expected: "x;k" },
@@ -39,4 +44,6 @@ testVectorArray = [
 /* 33 */    { unicode: " शेखवारा", expected: " 'ks[kokjk" },
 /* 34 */    { unicode: "न0 पंचायत", expected: "u0 iapk;r" },
 /* 35 */    { unicode: "रिक्त", expected: "fjDr" },
+/* 36 */    { unicode: "जुड़ता", expected: "tqM+rk" },
+/* 37 */    { unicode: "फॉक्स BS30", expected: "Q‚Dl BS30" }, 
 ];

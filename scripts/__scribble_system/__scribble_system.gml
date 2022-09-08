@@ -1,6 +1,6 @@
 // @jujuadams
-#macro __SCRIBBLE_VERSION           "8.0.6"
-#macro __SCRIBBLE_DATE              "2022-09-03"
+#macro __SCRIBBLE_VERSION           "8.0.8"
+#macro __SCRIBBLE_DATE              "2022-09-08"
 #macro __SCRIBBLE_DEBUG             false
 #macro __SCRIBBLE_VERBOSE_GC        false
 #macro SCRIBBLE_LOAD_FONTS_ON_BOOT  true
@@ -285,6 +285,9 @@ global.__scribble_anim_shader_default = false;
 global.__scribble_anim_shader_msdf_desync = false;
 global.__scribble_anim_shader_msdf_desync_to_default = false;
 global.__scribble_anim_shader_msdf_default = false;
+
+global.__scribble_standard_shader_uniforms_dirty = true;
+global.__scribble_msdf_shader_uniforms_dirty = true;
 
 global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE);
 scribble_anim_reset();
@@ -876,7 +879,7 @@ enum __SCRIBBLE_GEN_LINE
 #macro __SCRIBBLE_CACHE_TIMEOUT        120 //How long to wait (in milliseconds) before the text element cache automatically cleans up unused data
 #macro __SCRIBBLE_AUDIO_COMMAND_TAG    "__scribble_audio_playback__"
 
-#macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF
+#macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This probably won't work for any other value
 
 #macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. This constant must match the corresponding values in __shd_scribble and __shd_scribble_msdf
 

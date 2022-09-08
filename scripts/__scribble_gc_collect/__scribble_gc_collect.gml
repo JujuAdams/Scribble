@@ -8,8 +8,10 @@ function __scribble_gc_collect()
     {
         global.__scribble_os_is_paused = os_is_paused();
         
-        global.__scribble_anim_shader_desync      = true;
-        global.__scribble_anim_shader_msdf_desync = true;
+        global.__scribble_anim_shader_desync             = true;
+        global.__scribble_anim_shader_msdf_desync        = true;
+        global.__scribble_standard_shader_uniforms_dirty = true;
+        global.__scribble_msdf_shader_uniforms_dirty     = true;
     }
     
     
