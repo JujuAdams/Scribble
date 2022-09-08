@@ -879,7 +879,7 @@ enum __SCRIBBLE_GEN_LINE
 #macro __SCRIBBLE_CACHE_TIMEOUT        120 //How long to wait (in milliseconds) before the text element cache automatically cleans up unused data
 #macro __SCRIBBLE_AUDIO_COMMAND_TAG    "__scribble_audio_playback__"
 
-#macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF
+#macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This probably won't work for any other value
 
 #macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. This constant must match the corresponding values in __shd_scribble and __shd_scribble_msdf
 
