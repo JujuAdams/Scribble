@@ -1,6 +1,6 @@
 // @jujuadams
-#macro __SCRIBBLE_VERSION           "8.0.7"
-#macro __SCRIBBLE_DATE              "2022-09-04"
+#macro __SCRIBBLE_VERSION           "8.0.8"
+#macro __SCRIBBLE_DATE              "2022-09-08"
 #macro __SCRIBBLE_DEBUG             false
 #macro __SCRIBBLE_VERBOSE_GC        false
 #macro SCRIBBLE_LOAD_FONTS_ON_BOOT  true
