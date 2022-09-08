@@ -154,6 +154,10 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             {
                 var _bidi = __SCRIBBLE_BIDI.SYMBOL;
             }
+            else if ((_unicode >= 0x3040) && (_unicode <= 0x30FF)) //Hiragana and Katakana
+            {
+                var _bidi = __SCRIBBLE_BIDI.ISOLATED_CJK;
+            }
             else if ((_unicode >= 0x4E00) && (_unicode <= 0x9FFF)) //CJK Unified ideographs block
             {
                 var _bidi = __SCRIBBLE_BIDI.ISOLATED_CJK;
