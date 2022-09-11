@@ -83,7 +83,7 @@ function __scribble_gen_6_build_lines()
     var _fit_to_box_iterations = 0;
     var _lower_limit = undefined;
     var _upper_limit = undefined;
-    repeat(SCRIBBLE_FIT_TO_BOX_ITERATIONS)
+    repeat(max(1, SCRIBBLE_FIT_TO_BOX_ITERATIONS))
     {
         var _line_max_y                 = 0;
         var _simulated_model_max_width  = _model_max_width  / __fit_scale;
