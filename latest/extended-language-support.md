@@ -38,7 +38,7 @@ CJK text has the additional property where words can be split in the middle when
 
 Arabic script represents a significant technical challenging owing to both its right-to-left ordering and the heavy use of ligatures to produce cursive text with a strong, unbroken base line. Scribble currently supports Arabic as a beta feature, pending testing and finessing. As with all non-Latin languages, you will need to pay attention to the font you're using and the character range you have set up. All fonts that contain the requisite glyphs should render Arabic properly. Arabic and non-Arabic text can be mixed as you see fit. Scribble does not automatically subsitute Indo-Arabic numerals in place of Western numerals.
 
-?> There are a handful of Arabic glyph ranges. Scribble requires that "Arabic Presentation Forms B" is available, which lies from `65136 -> 65279` (decimal). You may should also add the "Arabic" range too (`1536 -> 1791`), especially `1536 -> 1567` which is used for Arabic punctuation. Unicode characters `8216` and `8217` are used as quotation marks in Arabic text.
+?> There are a handful of Arabic glyph ranges. Scribble requires that "Arabic Presentation Forms B" is available, which lies from `65136 -> 65279` (decimal). You should also add the "Arabic" range too (`1536 -> 1791`), especially `1536 -> 1567` which is used for Arabic punctuation. Unicode characters `8216` and `8217` are used as quotation marks in Arabic text.
 
 Arabic text renderers, including Scribble, will not generally use glyphs from the "Arabic Presentation Forms A" range unless those glyphs are specifically present in the input text.
 
