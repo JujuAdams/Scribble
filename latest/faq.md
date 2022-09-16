@@ -64,7 +64,7 @@ Efficient text parsing is hard work in any language, but GML makes it even more 
 
 ## How do I adjust the height of a line break?
 
-All line breaks in Scribble - either forced line breaks using `\n` or natural line breaks caused by [wrapping text](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) - derive their height from the "height" of the space character in the font currently being used. You can adjust the height of a line break by using [`scribble_glyph_set()`](font-modification?id=scribble_glyph_setfontname-character-property-value-relative) and targeting the space character (`" "`).
+All line breaks in Scribble - either forced line breaks using `\n` or natural line breaks caused by [wrapping text](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator) - derive their height from the "height" of the space character in the font currently being used. You can adjust the height of a line break by using [`scribble_glyph_set()`](fonts?id=scribble_glyph_setfontname-character-property-value-relative) and targeting the space character (`" "`).
 
 If you'd only like to adjust the line spacing for a single text element, use the [`.line_height()`](scribble-methods?id=line_heightmin-max-regenerator) method instead.
 
