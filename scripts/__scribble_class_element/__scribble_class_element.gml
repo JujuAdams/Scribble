@@ -1338,6 +1338,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             if (__model_cache_name_dirty)
             {
                 __model_cache_name_dirty = false;
+                __bbox_dirty             = true;
                 __scale_to_box_dirty     = true; //The dimensions of the text element might change as a result of a model change
                 
                 buffer_seek(global.__scribble_buffer, buffer_seek_start, 0);
