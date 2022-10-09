@@ -123,6 +123,7 @@ function __scribble_class_page() constructor
                 top:     __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__TOP ],
                 right:   __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT],
                 bottom:  __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__TOP ],
+                line:    __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LINE],
             };
         }
         else if (_index <= __glyph_count)
@@ -133,6 +134,7 @@ function __scribble_class_page() constructor
                 top:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__TOP    ],
                 right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT  ],
                 bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM ],
+                line:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__LINE   ],
             };
         }
         else
@@ -144,6 +146,7 @@ function __scribble_class_page() constructor
                 top:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM],
                 right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT ],
                 bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM],
+                line:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__LINE  ],
             };
         }
     }

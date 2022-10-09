@@ -71,6 +71,8 @@ function __scribble_gen_9_write_vbuffs()
     }
     
     var _glyph_grid     = global.__scribble_glyph_grid;
+    var _word_grid      = global.__scribble_word_grid;
+    var _line_grid      = global.__scribble_line_grid;
     var _control_grid   = global.__scribble_control_grid;
     var _vbuff_pos_grid = global.__scribble_vbuff_pos_grid;
     
@@ -141,6 +143,19 @@ function __scribble_gen_9_write_vbuffs()
                 __glyph_grid = ds_grid_create(__glyph_count, __SCRIBBLE_GLYPH_LAYOUT.__SIZE);
                 ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH.__UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH.__UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE);
                 ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyph_start, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT);
+                
+                var _line = __line_start;
+                repeat(1 + __line_end - __line_start)
+                {
+                    var _line_start_word  = _line_grid[# _line,            __SCRIBBLE_GEN_LINE.__WORD_START ];
+                    var _line_end_word    = _line_grid[# _line,            __SCRIBBLE_GEN_LINE.__WORD_END   ];
+                    var _line_start_glyph = _word_grid[# _line_start_word, __SCRIBBLE_GEN_WORD.__GLYPH_START];
+                    var _line_end_glyph   = _word_grid[# _line_end_word,   __SCRIBBLE_GEN_WORD.__GLYPH_END  ];
+                    
+                    ds_grid_set_region(__glyph_grid, _line_start_glyph - __glyph_start, __SCRIBBLE_GLYPH_LAYOUT.__LINE, _line_end_glyph - __glyph_start, __SCRIBBLE_GLYPH_LAYOUT.__LINE, _line - __line_start);
+                    
+                    ++_line;
+                }
             }
         }
         

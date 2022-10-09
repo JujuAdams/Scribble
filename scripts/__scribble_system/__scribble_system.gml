@@ -715,7 +715,8 @@ enum __SCRIBBLE_GLYPH_LAYOUT
     __TOP,     // 2
     __RIGHT,   // 3
     __BOTTOM,  // 4
-    __SIZE,    // 5
+    __LINE,    // 5
+    __SIZE,    // 6
 }
 
 enum __SCRIBBLE_VERTEX_BUFFER
