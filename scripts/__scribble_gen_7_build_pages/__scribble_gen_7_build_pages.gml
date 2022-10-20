@@ -75,5 +75,27 @@ function __scribble_gen_7_build_pages()
     
     __SCRIBBLE_GEN_PAGE_POP;
     
+    var _p = 0;
+    repeat(__pages)
+    {
+        with(__pages_array[_p])
+        {
+            var _line = __line_start;
+            repeat(1 + __line_end - __line_start)
+            {
+                var _line_start_word  = _line_grid[# _line,            __SCRIBBLE_GEN_LINE.__WORD_START ];
+                var _line_end_word    = _line_grid[# _line,            __SCRIBBLE_GEN_LINE.__WORD_END   ];
+                var _line_start_glyph = _word_grid[# _line_start_word, __SCRIBBLE_GEN_WORD.__GLYPH_START];
+                var _line_end_glyph   = _word_grid[# _line_end_word,   __SCRIBBLE_GEN_WORD.__GLYPH_END  ];
+                
+                ds_grid_add_region(_glyph_grid, _line_start_glyph, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _line_end_glyph, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, __SCRIBBLE_MAX_CHARACTERS*(_line - __line_start));
+                
+                ++_line;
+            }
+        }
+        
+        ++_p;
+    }
+    
     __height = _model_height;
 }

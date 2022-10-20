@@ -16,9 +16,6 @@ function __scribble_gen_8_position_glyphs()
         var _glyph_count     = __glyph_count;
     }
     
-    //Transform the animation index into a proper packed index
-    ds_grid_multiply_region(_glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, __SCRIBBLE_MAX_LINES);
-    
     var _model_min_x =  infinity;
     var _model_min_y =  infinity;
     var _model_max_x = -infinity;

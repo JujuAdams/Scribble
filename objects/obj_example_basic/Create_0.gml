@@ -9,5 +9,5 @@ scribble_font_force_bilinear_filtering("spr_sprite_font", false);
 
 //Create a "typist" which holds typewriter state
 typist = scribble_typist();
-typist.in(0.8, 60);
+typist.in(0.08, 60);
 typist.ease(SCRIBBLE_EASE.ELASTIC, 0, -25, 1, 1, 0, 0.1);

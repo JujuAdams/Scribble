@@ -56,7 +56,7 @@ const int EASE_METHOD_COUNT = 15;
 #define EASE_CUSTOM_2    13
 #define EASE_CUSTOM_3    14
 
-const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
+const float MAX_CHARACTERS = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
 
 const int WINDOW_COUNT = 3;
 
@@ -90,7 +90,7 @@ uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
 
 uniform int   u_iTypewriterMethod;                      //1
-uniform int   u_iTypewriterCharMax;                     //1
+uniform int   u_iTypewriterFadeMax;                     //1
 uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //6
 uniform float u_fTypewriterSmoothness;                  //1
 uniform vec2  u_vTypewriterStartPos;                    //2
@@ -401,8 +401,8 @@ void main()
     
     
     //Unpack character/line index
-    float characterIndex = floor(in_Position.z / MAX_LINES);
-    float lineIndex      = in_Position.z - characterIndex*MAX_LINES;
+    float characterIndex = mod(in_Position.z, MAX_CHARACTERS);
+    float lineIndex      = floor(in_Position.z / MAX_CHARACTERS);
     
     //MAX_EFFECTS = 10
     float flagValue = in_Normal.z;
@@ -497,7 +497,7 @@ void main()
     if (easeMethod > EASE_NONE)
     {
         float fadeIndex = characterIndex + 1.0;
-        if (u_iTypewriterCharMax > 0) fadeIndex = float(u_iTypewriterCharMax) - fadeIndex;
+        if (u_iTypewriterFadeMax > 0) fadeIndex = float(u_iTypewriterFadeMax) - fadeIndex;
         
         float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, fadeIndex, fadeOut);
         
