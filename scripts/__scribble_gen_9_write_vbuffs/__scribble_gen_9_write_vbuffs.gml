@@ -19,7 +19,11 @@
 #macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_glyph_texture != _last_glyph_texture)\
                                      {\
                                          _last_glyph_texture = _glyph_texture;\
-                                         _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE], _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BILINEAR], self);\
+                                         _vbuff = _page_data.__get_vertex_buffer(_glyph_texture,\
+                                                                                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE],\
+                                                                                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MSDF_THICKNESS_OFFSET],\
+                                                                                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BILINEAR],\
+                                                                                 self);\
                                      }\
                                      if (_bezier_do)\
                                      {\

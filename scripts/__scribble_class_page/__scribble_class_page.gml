@@ -58,6 +58,7 @@ function __scribble_class_page() constructor
                 //Set shader uniforms unique to the MSDF shader
                 shader_set_uniform_f(global.__scribble_msdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
                 shader_set_uniform_f(global.__scribble_msdf_u_fMSDFRange, _msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE]);
+                shader_set_uniform_f(global.__scribble_msdf_u_fMSDFThicknessOffset, global.__scribble_msdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET]);
                 
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
                 
@@ -148,7 +149,7 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_texture, _pxrange, _bilinear, _model_struct)
+    static __get_vertex_buffer = function(_texture, _pxrange, _thickness_offset, _bilinear, _model_struct)
     {
         var _pointer_string = string(_texture);
         
@@ -191,13 +192,14 @@ function __scribble_class_page() constructor
             __scribble_gc_add_vbuff(self, _vbuff);
             
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER] = _vbuff;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE      ] = _texture;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE   ] = _pxrange;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH  ] = texture_get_texel_width(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT ] = texture_get_texel_height(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SHADER       ] = _shader;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR     ] = _bilinear;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER        ] = _vbuff;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE              ] = _texture;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE           ] = _pxrange;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET] = _thickness_offset;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH          ] = texture_get_texel_width(_texture);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT         ] = texture_get_texel_height(_texture);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SHADER               ] = _shader;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR             ] = _bilinear;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;
             if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;
