@@ -73,8 +73,8 @@ Sets the starting font and text colour for your text. The values that are set wi
 
 |Name    |Datatype                                                                                                                  |Purpose                                                                                               |
 |--------|--------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
-|`halign`|[halign constant](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/draw_set_halign.html)|Starting horizontal alignment of **each line** of text. Accepts `fa_left`, `fa_right`, and `fa_center`|
-|`valign`|[valign constant](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/draw_set_valign.html)|Starting vertical alignment of the **entire textbox**. Accepts `fa_top`, `fa_bottom`, and `fa_middle` |
+|`halign`|[halign constant](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_set_halign.htm)|Starting horizontal alignment of **each line** of text. Accepts `fa_left`, `fa_right`, and `fa_center`|
+|`valign`|[valign constant](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_set_valign.htm)|Starting vertical alignment of the **entire textbox**. Accepts `fa_top`, `fa_bottom`, and `fa_middle` |
 
 Sets the starting horizontal and vertical alignment for your text. You can change alignment using in-line [command tags](Text-Formatting) as well, though do note there are some limitations when doing so.
 
@@ -89,7 +89,7 @@ Sets the starting horizontal and vertical alignment for your text. You can chang
 |`colour`|integer |Blend colour used when drawing text, applied multiplicatively                   |
 |`alpha` |real    |Alpha used when drawing text, 0 being fully transparent and 1 being fully opaque|
 
-Sets the blend colour/alpha, which is applied at the end of the drawing pipeline. This is a little different to the interaction between [`draw_set_color()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/colour/draw_set_colour.html) and [`draw_text()` functions](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/). Scribble's blend colour is instead similar to [`draw_sprite_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/sprites_and_tiles/draw_sprite_ext.html)'s behaviour: The blend colour/alpha is applied multiplicatively with the source colour, in this case the source colour is whatever colour has been set using formatting tags in the input text string.
+Sets the blend colour/alpha, which is applied at the end of the drawing pipeline. This is a little different to the interaction between [`draw_set_color()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Colour_And_Alpha/draw_set_colour.htm) and [`draw_text()` functions](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/Text.htm). Scribble's blend colour is instead similar to [`draw_sprite_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Sprites_And_Tiles/draw_sprite_ext.htm)'s behaviour: The blend colour/alpha is applied multiplicatively with the source colour, in this case the source colour is whatever colour has been set using formatting tags in the input text string.
 
 &nbsp;
 
@@ -136,7 +136,7 @@ Rotates and scales a text element relative to the origin (set by [`.origin()`](s
 |`[maxHeight]`    |integer |Maximum height for the whole textbox. Use a negative number (the default) for no limit                                                          |
 |`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for tight textboxes and some East Asian languages|
 
-Instructs Scribble to fit text inside a box by automatically inserting line breaks and page breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/draw_text_ext.html). If text exceeds the horizontal maximum width then text will be pushed onto the next line. If text exceeds the maximum height of the textbox then a new page will be created (see [`.page()`](scribble-methods?id=pagepage) and [`.get_page()`](scribble-methods?id=get_page)). Very long sequences of glyphs without spaces will be split across multiple lines.
+Instructs Scribble to fit text inside a box by automatically inserting line breaks and page breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text_ext.htm). If text exceeds the horizontal maximum width then text will be pushed onto the next line. If text exceeds the maximum height of the textbox then a new page will be created (see [`.page()`](scribble-methods?id=pagepage) and [`.get_page()`](scribble-methods?id=get_page)). Very long sequences of glyphs without spaces will be split across multiple lines.
 
 &nbsp;
 
@@ -432,7 +432,7 @@ Unpauses the typewriter effect. This is helpful when combined with the [`[pause]
 
 |Name        |Datatype                                                                                      |Purpose                                                                                                             |
 |------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-|`soundArray`|array of [sounds](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|Array of audio assets that can be used for playback                                                                 |
+|`soundArray`|array of [sounds](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|Array of audio assets that can be used for playback                                                                 |
 |`overlap`   |real                                                                                          |Amount of overlap between sound effect playback, in milliseconds                                                    |
 |`pitchMin`  |real                                                                                          |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc. |
 |`pitchMax`  |real                                                                                          |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.|
@@ -449,7 +449,7 @@ Setting the `overlap` value to `0` will ensure that sound effects never overlap 
 
 |Name        |Datatype                                                                                      |Purpose                                                                                                             |
 |------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-|`soundArray`|array of [sounds](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|Array of audio assets that can be used for playback                                                                 |
+|`soundArray`|array of [sounds](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|Array of audio assets that can be used for playback                                                                 |
 |`pitchMin`  |real                                                                                          |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc. |
 |`pitchMax`  |real                                                                                          |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.|
 

@@ -75,7 +75,7 @@ Here, `callbackRumble()` will fetch the parameter from the array and use it to v
 
 |Name     |Datatype                                                                            |Purpose                                                       |
 |---------|------------------------------------------------------------------------------------|--------------------------------------------------------------|
-|`soundID`|[sound](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|The sound to target                                           |
+|`soundID`|[sound](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|The sound to target                                           |
 |`alias`  |string                                                                              |A string to use to refer to the sound ID in Scribble functions|
 
 Adds a sound that can be referenced in Scribble functions using the given alias. This is intended for use with externally added sounds via `audio_create_stream()` or `audio_create_buffer_sound()`.

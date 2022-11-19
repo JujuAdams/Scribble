@@ -2,7 +2,7 @@
 
 &nbsp;
 
-Scribble is a comprehensive text rendering library designed to replace GameMaker's native [`draw_text()` functions](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/) without adding unnecessary complexity. Scribble's design should feel familiar and intuitive for GameMaker users.
+Scribble is a comprehensive text rendering library designed to replace GameMaker's native [`draw_text()` functions](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/Text.htm) without adding unnecessary complexity. Scribble's design should feel familiar and intuitive for GameMaker users.
 
 There are a multitude of very useful features available:
 - In-line colour and font swapping
@@ -23,7 +23,7 @@ Scroll down to read more about each feature.
 
 ## In-line Text Formatting & Sprites
 
-One of the biggest problems with GameMaker's native [`draw_text()` function](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/) is the clumsy and limited text formatting options. Draw state can only ever be applied to entire strings and splitting strings up to apply certain effects to specific parts is tedious and, more importantly, hard to do efficiently.
+One of the biggest problems with GameMaker's native [`draw_text()` function](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text.htm) is the clumsy and limited text formatting options. Draw state can only ever be applied to entire strings and splitting strings up to apply certain effects to specific parts is tedious and, more importantly, hard to do efficiently.
 
 Scribble offers flexible in-line formatting. Using a BBCode-like syntax for its in-line formatting, Scribble allows you to change colour, alignment, and font easily. In addition to in-line formatting, Scribble also has a selection of GameMaker-like [drawing options](scribble-methods) that affect the entire textbox.
 

@@ -178,7 +178,7 @@ Unpauses the typewriter effect. This is helpful when combined with the [`[pause]
 
 |Name        |Datatype                                                                                      |Purpose                                                                                                             |
 |------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-|`soundArray`|array of [sounds](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|Array of audio assets that can be used for playback                                                                 |
+|`soundArray`|array of [sounds](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|Array of audio assets that can be used for playback                                                                 |
 |`overlap`   |real                                                                                          |Amount of overlap between sound effect playback, in milliseconds                                                    |
 |`pitchMin`  |real                                                                                          |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc. |
 |`pitchMax`  |real                                                                                          |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.|
@@ -195,7 +195,7 @@ Setting the `overlap` value to `0` will ensure that sound effects never overlap 
 
 |Name        |Datatype                                                                                      |Purpose                                                                                                             |
 |------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-|`soundArray`|array of [sounds](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|Array of audio assets that can be used for playback                                                                 |
+|`soundArray`|array of [sounds](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|Array of audio assets that can be used for playback                                                                 |
 |`pitchMin`  |real                                                                                          |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc. |
 |`pitchMax`  |real                                                                                          |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.|
 

@@ -12,7 +12,7 @@
 
 `[spaceWidth]` can be given the value `undefined` to indicate that the default value should be used.
 
-`scribble_add_spritefont()` emulates the behaviour of [`font_add_sprite_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/fonts/font_add_sprite_ext.html). For more information on the behaviour of [`font_add_sprite_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/fonts/font_add_sprite_ext.html), please refer to the GameMaker Studio 2 documentation.
+`scribble_add_spritefont()` emulates the behaviour of [`font_add_sprite_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Fonts/font_add_sprite_ext.htm). For more information on the behaviour of [`font_add_sprite_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Fonts/font_add_sprite_ext.htm), please refer to the GameMaker Studio 2 documentation.
 
 Sprites used for spritefonts have specific requirements that must be met for Scribble to render them properly:
 1) Collision mask mode set to **Automatic**
