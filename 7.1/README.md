@@ -20,7 +20,7 @@ There are a multitude of very useful features available:
 - Automatic [pagination](https://en.wikipedia.org/wiki/Pagination)
 - High performance caching
 - Font effect baking
-- Resolution-independent [MSDF fonts](MSDF-Fonts)
+- Resolution-independent [MSDF fonts](msdf-fonts)
 
 &nbsp;
 
