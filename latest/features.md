@@ -45,7 +45,7 @@ A common use case for Scribble, though by no means its only use, is to draw dial
 
 Setting up a typewriter effect is simple - Precache the string you're using with a single call to [`scribble()`](scribble-methods), then create a typist with [`scribble_typist()`](typist-methods). Call [`.in()`](typist-methods?id=inspeed-smoothness) on the typist. Now when you call [`scribble_draw()`](scribble-methods?id=drawx-y) you can specify the typist and you'll see the text slowly revealling itself.
 
-Sometimes you'll want to execute code, such as triggering a screenshake or changing a character's portrait, in the middle of revealing text. [`scribble_typewriter_add_event()`](misc-functions?id=scribble_typewriter_add_eventname-function) lets you define your own custom event which you can insert anywhere in a string. When Scribble reaches that point as it reveals text, it'll execute the function. This is an extremely powerful feature!
+Sometimes you'll want to execute code, such as triggering a screenshake or changing a character's portrait, in the middle of revealing text. [`scribble_typist_add_event()`](misc-functions?id=scribble_typists_add_eventname-function) lets you define your own custom event which you can insert anywhere in a string. When Scribble reaches that point as it reveals text, it'll execute the function. This is an extremely powerful feature!
 
 ## High Performance Caching
 

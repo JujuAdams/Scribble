@@ -38,7 +38,7 @@ Note that we called the `.in()` method. This is analogous to the old `.typewrite
 
 The `smoothness` argument offers some customisation for how text fades in. A high value will cause text to be smoothly faded in whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades in.
 
-[Events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) (in-line scripts) will be executed as text fades in. This is a powerful tool and can be used to achieve many things, including triggering sound effects, changing character portraits, starting movement of instances, starting weather effects, giving the player items, and so on.
+[Events](Functions-(Miscellaneous)#scribble_typist_add_eventname-function) (in-line scripts) will be executed as text fades in. This is a powerful tool and can be used to achieve many things, including triggering sound effects, changing character portraits, starting movement of instances, starting weather effects, giving the player items, and so on.
 
 &nbsp;
 
@@ -54,7 +54,7 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 
 The `smoothness` argument offers some customisation for how text fades out. A high value will cause text to be smoothly faded out whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades out.
 
-?> [Events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) will **not** be executed as text fades out.
+?> [Events](Functions-(Miscellaneous)#scribble_typist_add_eventname-function) will **not** be executed as text fades out.
 
 &nbsp;
 

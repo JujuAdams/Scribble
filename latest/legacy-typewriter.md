@@ -10,7 +10,7 @@
 |----|--------|-------|
 |None|        |       |
 
-Turns off the typewriter effect and displays all text. [Typewriter events](misc-functions?id=scribble_typewriter_add_eventname-function) will **not** be executed.
+Turns off the typewriter effect and displays all text. [Typewriter events](misc-functions?id=scribble_typist_add_eventname-function) will **not** be executed.
 
 &nbsp;
 
@@ -37,7 +37,7 @@ Resets the position of the typewriter animation for the current page.
 
 The `smoothness` argument offers some customisation for how text fades in. A high value will cause text to be smoothly faded in whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades in.
 
-[Events](misc-functions?id=scribble_typewriter_add_eventname-function) (in-line functions) will be executed as text fades in. This is a powerful tool and can be used to achieve many things, including triggering sound effects, changing character portraits, starting movement of instances, starting weather effects, giving the player items, and so on.
+[Events](misc-functions?id=scribble_typist_add_eventname-function) (in-line functions) will be executed as text fades in. This is a powerful tool and can be used to achieve many things, including triggering sound effects, changing character portraits, starting movement of instances, starting weather effects, giving the player items, and so on.
 
 &nbsp;
 
@@ -53,7 +53,7 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 
 The `smoothness` argument offers some customisation for how text fades out. A high value will cause text to be smoothly faded out whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades out.
 
-[Events](misc-functions?id=scribble_typewriter_add_eventname-function) will **not** be executed as text fades out.
+[Events](misc-functions?id=scribble_typist_add_eventname-function) will **not** be executed as text fades out.
 
 &nbsp;
 
