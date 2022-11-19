@@ -10,7 +10,7 @@ Once added to your project, Scribble will automatically initialise its core func
 
 Unlike in previous versions, using standard fonts with Scribble is totally automatic and no additional code is needed.
 
-By default, Scribble will use the first added font as the default font to use for text elements. The default font can be changed by using [`scribble_font_set_default()`](font-setup?id=scribble_font_set_defaultfontname).
+By default, Scribble will use the first added font as the default font to use for text elements. The default font can be changed by using [`scribble_font_set_default()`](fonts?id=scribble_font_set_defaultfontname).
 
 ## What next?
 
