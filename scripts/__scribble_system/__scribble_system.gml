@@ -118,52 +118,54 @@ global.__scribble_typewriter_events[? "/speed"] = undefined;
 
 //Hashtable to accelerate command tag lookup
 var _map = ds_map_create();
-_map[? ""          ] =  0;
-_map[? "/"         ] =  0;
-_map[? "/font"     ] =  1;
-_map[? "/f"        ] =  1;
-_map[? "/colour"   ] =  2;
-_map[? "/color"    ] =  2;
-_map[? "/c"        ] =  2;
-_map[? "/alpha"    ] =  3;
-_map[? "/a"        ] =  3;
-_map[? "/scale"    ] =  4;
-_map[? "/s"        ] =  4;
+_map[? ""                  ] =  0;
+_map[? "/"                 ] =  0;
+_map[? "/font"             ] =  1;
+_map[? "/f"                ] =  1;
+_map[? "/colour"           ] =  2;
+_map[? "/color"            ] =  2;
+_map[? "/c"                ] =  2;
+_map[? "/alpha"            ] =  3;
+_map[? "/a"                ] =  3;
+_map[? "/scale"            ] =  4;
+_map[? "/s"                ] =  4;
 //5 is unused
-_map[? "/page"     ] =  6;
-_map[? "scale"     ] =  7;
-_map[? "scaleStack"] =  8;
+_map[? "/page"             ] =  6;
+_map[? "scale"             ] =  7;
+_map[? "scaleStack"        ] =  8;
 //9 is unused
-_map[? "alpha"     ] = 10;
-_map[? "fa_left"   ] = 11;
-_map[? "fa_center" ] = 12;
-_map[? "fa_centre" ] = 12;
-_map[? "fa_right"  ] = 13;
-_map[? "fa_top"    ] = 14;
-_map[? "fa_middle" ] = 15;
-_map[? "fa_bottom" ] = 16;
-_map[? "pin_left"  ] = 17;
-_map[? "pin_center"] = 18;
-_map[? "pin_centre"] = 18;
-_map[? "pin_right" ] = 19;
-_map[? "fa_justify"] = 20;
-_map[? "nbsp"      ] = 21;
-_map[? "&nbsp"     ] = 21;
-_map[? "nbsp;"     ] = 21;
-_map[? "&nbsp;"    ] = 21;
-_map[? "cycle"     ] = 22;
-_map[? "/cycle"    ] = 23;
-_map[? "r"         ] = 24;
-_map[? "/b"        ] = 24;
-_map[? "/i"        ] = 24;
-_map[? "/bi"       ] = 24;
-_map[? "b"         ] = 25;
-_map[? "i"         ] = 26;
-_map[? "bi"        ] = 27;
-_map[? "surface"   ] = 28;
-_map[? "region"    ] = 29;
-_map[? "/region"   ] = 30;
-_map[? "zwsp"      ] = 31;
+_map[? "alpha"             ] = 10;
+_map[? "fa_left"           ] = 11;
+_map[? "fa_center"         ] = 12;
+_map[? "fa_centre"         ] = 12;
+_map[? "fa_right"          ] = 13;
+_map[? "fa_top"            ] = 14;
+_map[? "fa_middle"         ] = 15;
+_map[? "fa_bottom"         ] = 16;
+_map[? "pin_left"          ] = 17;
+_map[? "pin_center"        ] = 18;
+_map[? "pin_centre"        ] = 18;
+_map[? "pin_right"         ] = 19;
+_map[? "fa_justify"        ] = 20;
+_map[? "nbsp"              ] = 21;
+_map[? "&nbsp"             ] = 21;
+_map[? "nbsp;"             ] = 21;
+_map[? "&nbsp;"            ] = 21;
+_map[? "cycle"             ] = 22;
+_map[? "/cycle"            ] = 23;
+_map[? "r"                 ] = 24;
+_map[? "/b"                ] = 24;
+_map[? "/i"                ] = 24;
+_map[? "/bi"               ] = 24;
+_map[? "b"                 ] = 25;
+_map[? "i"                 ] = 26;
+_map[? "bi"                ] = 27;
+_map[? "surface"           ] = 28;
+_map[? "region"            ] = 29;
+_map[? "/region"           ] = 30;
+_map[? "zwsp"              ] = 31;
+_map[? "typistSound"       ] = 32;
+_map[? "typistSoundPerChar"] = 33;
 global.__scribble_command_tag_lookup_accelerator = _map;
 
 //Add bindings for default effect names
@@ -880,7 +882,10 @@ enum __SCRIBBLE_GEN_LINE
 #macro __SCRIBBLE_WINDOW_COUNT         3
 #macro __SCRIBBLE_GC_STEP_SIZE         3
 #macro __SCRIBBLE_CACHE_TIMEOUT        120 //How long to wait (in milliseconds) before the text element cache automatically cleans up unused data
-#macro __SCRIBBLE_AUDIO_COMMAND_TAG    "__scribble_audio_playback__"
+
+#macro __SCRIBBLE_AUDIO_COMMAND_TAG                    "__scribble_audio_playback__"
+#macro __SCRIBBLE_TYPIST_SOUND_COMMAND_TAG             "__scribble_typist_sound__"
+#macro __SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG    "__scribble_typist_sound_per_char__"
 
 #macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This probably won't work for any other value
 
