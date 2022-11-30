@@ -38,7 +38,7 @@ Note that we called the `.in()` method. This is analogous to the old `.typewrite
 
 The `smoothness` argument offers some customisation for how text fades in. A high value will cause text to be smoothly faded in whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades in.
 
-[Events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) (in-line scripts) will be executed as text fades in. This is a powerful tool and can be used to achieve many things, including triggering sound effects, changing character portraits, starting movement of instances, starting weather effects, giving the player items, and so on.
+[Events](Functions-(Miscellaneous)#scribble_typists_add_eventname-function) (in-line scripts) will be executed as text fades in. This is a powerful tool and can be used to achieve many things, including triggering sound effects, changing character portraits, starting movement of instances, starting weather effects, giving the player items, and so on.
 
 &nbsp;
 
@@ -54,7 +54,7 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 
 The `smoothness` argument offers some customisation for how text fades out. A high value will cause text to be smoothly faded out whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades out.
 
-?> [Events](Functions-(Miscellaneous)#scribble_typewriter_add_eventname-function) will **not** be executed as text fades out.
+?> [Events](Functions-(Miscellaneous)#scribble_typists_add_eventname-function) will **not** be executed as text fades out.
 
 &nbsp;
 
@@ -262,7 +262,7 @@ Clears all per-character delays that have been set for this typist.
 
 |Name        |Datatype                                                                                      |Purpose                                                                                                             |
 |------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-|`soundArray`|array of [sounds](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|Array of audio assets that can be used for playback                                                                 |
+|`soundArray`|array of [sounds](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|Array of audio assets that can be used for playback                                                                 |
 |`overlap`   |real                                                                                          |Amount of overlap between sound effect playback, in milliseconds                                                    |
 |`pitchMin`  |real                                                                                          |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc. |
 |`pitchMax`  |real                                                                                          |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.|
@@ -279,7 +279,7 @@ Setting the `overlap` value to `0` will ensure that sound effects never overlap 
 
 |Name               |Datatype                                                                                      |Purpose                                                                                                                                  |
 |-------------------|----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-|`soundArray`       |array of [sounds](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/sounds.html)|Array of audio assets that can be used for playback                                                                                      |
+|`soundArray`       |array of [sounds](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|Array of audio assets that can be used for playback                                                                                      |
 |`pitchMin`         |real                                                                                          |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc.                      |
 |`pitchMax`         |real                                                                                          |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.                     |
 |`[exceptionString]`|real                                                                                          |String of characters for whom a sound should **not** be played. If no string is specified, all characters will play a sound when revealed|

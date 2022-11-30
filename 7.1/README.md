@@ -9,7 +9,7 @@
 
 ## Features
 
-Scribble is a comprehensive text rendering library designed to replace GameMaker's native [`draw_text()` functions](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/) without adding unnecessary complexity. Scribble's design should feel familiar and intuitive for GameMaker users.
+Scribble is a comprehensive text rendering library designed to replace GameMaker's native [`draw_text()` functions](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/Text.htm) without adding unnecessary complexity. Scribble's design should feel familiar and intuitive for GameMaker users.
 
 There are a multitude of very useful features available:
 - In-line colour and font swapping
@@ -20,7 +20,7 @@ There are a multitude of very useful features available:
 - Automatic [pagination](https://en.wikipedia.org/wiki/Pagination)
 - High performance caching
 - Font effect baking
-- Resolution-independent [MSDF fonts](MSDF-Fonts)
+- Resolution-independent [MSDF fonts](msdf-fonts)
 
 &nbsp;
 

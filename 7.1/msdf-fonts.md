@@ -46,7 +46,7 @@ In addition to `msdf-atlas-gen.exe`, we'll need two other source files in the di
 
 1. TrueType Font (.ttf) file for your font
 
-2. UTF-8 encoded text file that contains all the characters that you want to use with the font. This is similar to the "mapstring" for [`scribble_font_add_from_sprite()`](font-setup?id=scribble_font_add_from_spritefontname-mapstring-separation-spacewidth-proportional) or [`font_add_sprite_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/fonts/font_add_sprite_ext.html). **Remember to include a space character in your `charset.txt`!**
+2. UTF-8 encoded text file that contains all the characters that you want to use with the font. This is similar to the "mapstring" for [`scribble_font_add_from_sprite()`](font-setup?id=scribble_font_add_from_spritefontname-mapstring-separation-spacewidth-proportional) or [`font_add_sprite_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Fonts/font_add_sprite_ext.htm). **Remember to include a space character in your `charset.txt`!**
 
 Let's assume our font file is called `font.ttf` and our character textfile is called `charset.txt`.
 This means your directory should contain `msdf-atlas-gen.exe`, `font.ttf`, and `charset.txt`.
@@ -105,7 +105,7 @@ needs a line of code to tie the two resources together.
 2. Add the .json file as an Included File. We'll call this file `font.json`
 
 3. During your game's initialisation flow, call [`scribble_font_add_msdf()`](font-setup?id=scribble_font_add_msdffontname-sprite-jsonname).
-   If you're not sure where/when to call the function, then call it in the same place that you'd call [`scribble_font_add_from_sprite()`](font-setup?id=scribble_font_add_from_spritefontname-mapstring-separation-spacewidth-proportional) or [`font_add_sprite_ext()`](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/fonts/font_add_sprite_ext.html)
+   If you're not sure where/when to call the function, then call it in the same place that you'd call [`scribble_font_add_from_sprite()`](font-setup?id=scribble_font_add_from_spritefontname-mapstring-separation-spacewidth-proportional) or [`font_add_sprite_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Fonts/font_add_sprite_ext.htm)
    
    For our example, the code to execute would be:
    `scribble_font_add_msdf("MSDF font", spr_msdf_font, "font.json");`

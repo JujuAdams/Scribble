@@ -132,7 +132,7 @@ Three properties are available:
 |-----------------|--------|-----------------------------------------------------------------------------------|
 |`sourceFontName` |string  |Name, as a string, of the font to use as a basis for the effect                    |
 |`newFontName`    |string  |Name of the new font to create, as a string                                        |
-|`shader`         |[shader](https://docs2.yoyogames.com/source/_build/2_interface/1_editors/shaders.html)   |Shader to use                                                                      |
+|`shader`         |[shader](https://manual.yoyogames.com/The_Asset_Editors/Shaders.htm)   |Shader to use                                                                      |
 |`emptyBorderSize`|integer |Border around the outside of every output glyph, in pixels. A value of 2 is typical|
 |`leftPad`        |integer |Left padding around the outside of every glyph. Positive values give more space. e.g. For a shader that adds a border of 2px around the entire glyph, **all** padding arguments should be set to `2`|
 |`topPad`         |integer |Top padding                                                                        |

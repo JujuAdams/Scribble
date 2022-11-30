@@ -2,7 +2,7 @@
 
 &nbsp;
 
-Scribble is a comprehensive text rendering library designed to replace GameMaker's native [`draw_text()` functions](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/) without adding unnecessary complexity. Scribble's design should feel familiar and intuitive for GameMaker users.
+Scribble is a comprehensive text rendering library designed to replace GameMaker's native [`draw_text()` functions](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/Text.htm) without adding unnecessary complexity. Scribble's design should feel familiar and intuitive for GameMaker users.
 
 There are a multitude of very useful features available:
 - In-line colour and font swapping
@@ -13,7 +13,7 @@ There are a multitude of very useful features available:
 - Automatic [pagination](https://en.wikipedia.org/wiki/Pagination)
 - High performance caching
 - Font effect baking
-- Resolution-independent [MSDF fonts](MSDF-Fonts)
+- Resolution-independent [MSDF fonts](msdf-fonts)
 
 Scribble supports all GameMaker export modules, including consoles, Opera GX, and HTML5.
 
@@ -21,7 +21,7 @@ Scroll down to read more about each feature.
 
 ## In-line Text Formatting & Sprites
 
-One of the biggest problems with GameMaker's native [`draw_text()` function](https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/drawing/text/) is the clumsy and limited text formatting options. Draw state can only ever be applied to entire strings and splitting strings up to apply certain effects to specific parts is tedious and, more importantly, hard to do efficiently.
+One of the biggest problems with GameMaker's native [`draw_text()` function](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text.htm) is the clumsy and limited text formatting options. Draw state can only ever be applied to entire strings and splitting strings up to apply certain effects to specific parts is tedious and, more importantly, hard to do efficiently.
 
 Scribble offers flexible in-line formatting. Using a BBCode-like syntax for its in-line formatting, Scribble allows you to change colour, alignment, and font easily. In addition to in-line formatting, Scribble also has a selection of GameMaker-like [drawing options](scribble-methods) that affect the entire textbox.
 
@@ -45,7 +45,7 @@ A common use case for Scribble, though by no means its only use, is to draw dial
 
 Setting up a typewriter effect is simple - Precache the string you're using with a single call to [`scribble()`](scribble-methods), then create a typist with [`scribble_typist()`](typist-methods). Call [`.in()`](typist-methods?id=inspeed-smoothness) on the typist. Now when you call [`scribble_draw()`](scribble-methods?id=drawx-y) you can specify the typist and you'll see the text slowly revealling itself.
 
-Sometimes you'll want to execute code, such as triggering a screenshake or changing a character's portrait, in the middle of revealing text. [`scribble_typewriter_add_event()`](misc-functions?id=scribble_typewriter_add_eventname-function) lets you define your own custom event which you can insert anywhere in a string. When Scribble reaches that point as it reveals text, it'll execute the function. This is an extremely powerful feature!
+Sometimes you'll want to execute code, such as triggering a screenshake or changing a character's portrait, in the middle of revealing text. [`scribble_typist_add_event()`](misc-functions?id=scribble_typists_add_eventname-function) lets you define your own custom event which you can insert anywhere in a string. When Scribble reaches that point as it reveals text, it'll execute the function. This is an extremely powerful feature!
 
 ## High Performance Caching
 
