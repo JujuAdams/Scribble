@@ -1136,7 +1136,8 @@ function __scribble_gen_2_parser()
             {
                 #region Add a standard glyph
                 
-                var _glyph_write = _glyph_ord;
+                var _glyph_write  = _glyph_ord;
+                var _glyph_joiner = _glyph_ord;
                 
                 if ((_glyph_write >= 0x0600) && (_glyph_write <= 0x06FF)) // Arabic Unicode block
                 {
@@ -1161,7 +1162,8 @@ function __scribble_gen_2_parser()
                         
                         if (_glyph_replacement != undefined)
                         {
-                            _glyph_write = _glyph_replacement;
+                            _glyph_write  = _glyph_replacement;
+                            _glyph_joiner = _glyph_replacement;
                             
                             // Skip over the next glyph entirely
                             // The size of an Alef, no matter what form, is only 2 bytes
@@ -1209,7 +1211,7 @@ function __scribble_gen_2_parser()
                     // If this glyph isn't tashkil then update the previous glyph state
                     if ((_glyph_ord < 0x064B) || (_glyph_ord > 0x0652))
                     {
-                        _glyph_prev_arabic_join_next = _arabic_join_next_map[? _glyph_ord];
+                        _glyph_prev_arabic_join_next = _arabic_join_next_map[? _glyph_joiner];
                     }
                     
                     #endregion
