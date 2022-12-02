@@ -33,16 +33,17 @@
 #macro SCRIBBLE_INCREMENTAL_FREEZE             true       //Whether text models should freeze their vertex buffers one frame after the text model is created. This leads to increased performance, especially with large amounts of text
 #macro SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN       false      //Set to <true> to ignore a sprite origin's contribution to its spritefont glyph x/y offsets
 #macro SCRIBBLE_SPRITEFONT_LEGACY_HEIGHT       false      //Version 8 uses GameMaker's native spritefont dimensions. Older versions used the tight bounding box leading to narrower lines. Set this macro to <true> to use the tighter legacy behaviour
-#macro SCRIBBLE_MSDF_BORDER_TRIM               0          //
-#macro SCRIBBLE_ALWAYS_DOUBLE_DRAW             false
+#macro SCRIBBLE_MSDF_BORDER_TRIM               0          //Edge trimming around the bounding box for MSDF glyphs (in pixels). This is useful for tidying up any glitches when scaling
+#macro SCRIBBLE_ALWAYS_DOUBLE_DRAW             false      //Whether to force double-draw behaviour. This is useful for fixing problems with MSDF glyph border overlap
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT      ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
-#macro SCRIBBLE_DRAW_RETURNS_SELF         false    // Whether the .draw() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
-#macro SCRIBBLE_BUILD_RETURNS_SELF        false    // Whether the .build() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
+#macro SCRIBBLE_DRAW_RETURNS_SELF         false    //Whether the .draw() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
+#macro SCRIBBLE_BUILD_RETURNS_SELF        false    //Whether the .build() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
 #macro SCRIBBLE_SHOW_WRAP_BOUNDARY        false    //Controls the drawing of a rectangle that indicates the boundaries of the .wrap(), .fit_to_box(), and .scale_to_box() methods
+#macro SCRIBBLE_ATTEMPT_FONT_SCALING_FIX  true     //Whether to try to fix font scaling due to the font texture being too big for the texture page
 
 #endregion
 
