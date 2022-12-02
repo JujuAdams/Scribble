@@ -1,7 +1,10 @@
 {
+  "resourceType": "GMWindowsOptions",
+  "resourceVersion": "1.1",
+  "name": "Windows",
   "option_windows_display_name": "Scribble",
   "option_windows_executable_name": "${project_name}",
-  "option_windows_version": "8.0.9.0",
+  "option_windows_version": "8.1.0.0",
   "option_windows_company_info": "@jujuadams",
   "option_windows_product_info": "Scribble",
   "option_windows_copyright_info": "@jujuadams (c) 2022",
@@ -28,9 +31,4 @@
   "option_windows_enable_steam": false,
   "option_windows_disable_sandbox": false,
   "option_windows_steam_use_alternative_launcher": false,
-  "option_windows_use_x64": false,
-  "resourceVersion": "1.1",
-  "name": "Windows",
-  "tags": [],
-  "resourceType": "GMWindowsOptions",
 }
