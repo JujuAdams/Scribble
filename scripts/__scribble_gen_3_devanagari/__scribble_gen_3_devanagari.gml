@@ -450,7 +450,11 @@ function __scribble_gen_3_devanagari()
         }
         
         var _found_glyph = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
-        if (_found_glyph > 0) //Don't transform sprites or surfaces
+        if (_found_glyph == 0xFFFF)
+        {
+            __scribble_trace("Warning! Devanagari parser extended beyond the end of the available characters");
+        }
+        else if (_found_glyph >= 32) //Don't transform sprite, surfaces, or stuff that's non-printable
         {
             //Pull info out of the font's data structures
             var _glyph_write = _found_glyph;
@@ -469,7 +473,7 @@ function __scribble_gen_3_devanagari()
                 //This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
                 __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");
             }
-            else
+            else if (_font_glyph_data_grid[# _data_index, SCRIBBLE_GLYPH.BIDI] != __SCRIBBLE_BIDI.WHITESPACE) //Don't transform whitespace
             {
                 //Add this glyph to our grid by copying from the font's own glyph data grid
                 ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.UNICODE, _data_index, SCRIBBLE_GLYPH.BILINEAR, _i, __SCRIBBLE_GEN_GLYPH.__UNICODE);
