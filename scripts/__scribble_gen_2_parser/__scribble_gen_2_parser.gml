@@ -717,6 +717,36 @@ function __scribble_gen_2_parser()
                     
                     #endregion
                     
+                    #region Typist .sound() and .sound_per_char() equivalents
+                    
+                    case 32:
+                        if (array_length(_tag_parameters) != 5)
+                        {
+                            __scribble_error("[typistSound] tags must use the same arguments as .sound()");
+                        }
+                        else
+                        {
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EVENT;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_TYPIST_SOUND_COMMAND_TAG, _tag_parameters);
+                            ++_control_count;
+                        }
+                    break;
+                    
+                    case 33:
+                        if ((array_length(_tag_parameters) != 4) && (array_length(_tag_parameters) != 5))
+                        {
+                            __scribble_error("[typistSoundPerChar] tags must use the same arguments as .sound_per_char()");
+                        }
+                        else
+                        {
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EVENT;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG, _tag_parameters);
+                            ++_control_count;
+                        }
+                    break;
+                    
+                    #endregion
+                    
                     default: //TODO - Optimize
                         if (ds_map_exists(global.__scribble_effects, _tag_command_name)) //Set an effect
                         {
@@ -1106,7 +1136,8 @@ function __scribble_gen_2_parser()
             {
                 #region Add a standard glyph
                 
-                var _glyph_write = _glyph_ord;
+                var _glyph_write  = _glyph_ord;
+                var _glyph_joiner = _glyph_ord;
                 
                 if ((_glyph_write >= 0x0600) && (_glyph_write <= 0x06FF)) // Arabic Unicode block
                 {
@@ -1131,7 +1162,8 @@ function __scribble_gen_2_parser()
                         
                         if (_glyph_replacement != undefined)
                         {
-                            _glyph_write = _glyph_replacement;
+                            _glyph_write  = _glyph_replacement;
+                            _glyph_joiner = _glyph_replacement;
                             
                             // Skip over the next glyph entirely
                             // The size of an Alef, no matter what form, is only 2 bytes
@@ -1179,7 +1211,7 @@ function __scribble_gen_2_parser()
                     // If this glyph isn't tashkil then update the previous glyph state
                     if ((_glyph_ord < 0x064B) || (_glyph_ord > 0x0652))
                     {
-                        _glyph_prev_arabic_join_next = _arabic_join_next_map[? _glyph_ord];
+                        _glyph_prev_arabic_join_next = _arabic_join_next_map[? _glyph_joiner];
                     }
                     
                     #endregion
@@ -1322,7 +1354,7 @@ function __scribble_gen_2_parser()
     
     //Create a null terminator so we correctly handle the last character in the string
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x00; //ASCII line break (dec = 10)
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = _overall_bidi;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = 0;
