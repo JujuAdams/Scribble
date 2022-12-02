@@ -22,15 +22,14 @@ function scribble_glyph_add_space(_font, _width)
         return;
     }
     
-    var _index = _map[? 0x20];
-    if (_index != undefined)
+    //Ensure a space character exists
+    var _index = _map[? 32];
+    if (_index == undefined)
     {
-        __scribble_error("Font \"", _font, "\" already has a space character");
-        return;
+        var _index = ds_grid_width(_grid);
+        ds_grid_resize(_grid, ds_grid_width(_grid)+1, ds_grid_height(_grid));
+        _map[? 32] = _index;
     }
-    
-    var _index = ds_grid_width(_grid);
-    _map[? _index] = _index;
     
     _grid[# _index, SCRIBBLE_GLYPH.CHARACTER            ] = " ";
     

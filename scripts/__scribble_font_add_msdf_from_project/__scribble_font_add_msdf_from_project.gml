@@ -210,17 +210,18 @@ function __scribble_font_add_msdf_from_project(_sprite)
         ++_i;
     }
     
-    //Now handle the space character
+    //Guarantee we have a space character
     var _space_index = _font_glyphs_map[? 32];
     if (_space_index == undefined)
     {
-        __scribble_error("Space character not found in character string for MSDF font \"", _name, "\"");
+        __scribble_trace("Warning! Space character not found in character set for MSDF font \"", _name, "\"");
+        scribble_glyph_add_space(_name, floor(0.5*_json_line_height));
     }
-    else
-    {
-        _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.WIDTH ] = _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.SEPARATION];
-        _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.HEIGHT] = _json_line_height;
-    }
+    
+    //And guarantee the space character is set up
+    var _space_index = _font_glyphs_map[? 32];
+    _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.WIDTH ] = _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.SEPARATION];
+    _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.HEIGHT] = _json_line_height;
     
     ds_map_destroy(_json);
     
