@@ -284,7 +284,6 @@
     {"id":{"name":"obj_test_stress_lots_of_text","path":"objects/obj_test_stress_lots_of_text/obj_test_stress_lots_of_text.yy",},"order":3,},
     {"id":{"name":"obj_test_line_spacing","path":"objects/obj_test_line_spacing/obj_test_line_spacing.yy",},"order":7,},
     {"id":{"name":"scribble_font_bake_outline_8dir_2px","path":"scripts/scribble_font_bake_outline_8dir_2px/scribble_font_bake_outline_8dir_2px.yy",},"order":12,},
-    {"id":{"name":"scribble_glyph_add_space","path":"scripts/scribble_glyph_add_space/scribble_glyph_add_space.yy",},"order":8,},
     {"id":{"name":"obj_test_world_matrix","path":"objects/obj_test_world_matrix/obj_test_world_matrix.yy",},"order":7,},
     {"id":{"name":"__scribble_gen_5_finalize_bidi","path":"scripts/__scribble_gen_5_finalize_bidi/__scribble_gen_5_finalize_bidi.yy",},"order":6,},
     {"id":{"name":"obj_test_alignment","path":"objects/obj_test_alignment/obj_test_alignment.yy",},"order":14,},

@@ -215,7 +215,34 @@ function __scribble_font_add_msdf_from_project(_sprite)
     if (_space_index == undefined)
     {
         __scribble_trace("Warning! Space character not found in character set for MSDF font \"", _name, "\"");
-        scribble_glyph_add_space(_name, floor(0.5*_json_line_height));
+        
+        var _i = _size;
+        ds_grid_resize(_font_glyph_data_grid, _i+1, SCRIBBLE_GLYPH.__SIZE);
+        _font_glyphs_map[? 32] = _i;
+        
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER            ] = " ";
+        
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE              ] = 0x20;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI                 ] = __SCRIBBLE_BIDI.WHITESPACE;
+        
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET             ] = 0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET             ] = 0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH                ] = 0.5*_json_line_height;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT               ] = _json_line_height;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT          ] = _json_line_height;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION           ] = 0.5*_json_line_height;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.LEFT_OFFSET          ] = 0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE           ] = 1;
+        
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE              ] = _texture;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0                   ] = 0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V0                   ] = 0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U1                   ] = 0;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1                   ] = 0;
+        
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE         ] = undefined;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_THICKNESS_OFFSET] = undefined;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BILINEAR             ] = undefined;
     }
     
     //And guarantee the space character is set up
