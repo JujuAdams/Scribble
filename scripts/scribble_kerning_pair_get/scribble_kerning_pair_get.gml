@@ -5,7 +5,7 @@
 /// @param firstChar          First character in the pair, as a string
 /// @param secondChar         Second character in the pair, as a string
 
-function scribble_kerning_pair_set(_font, _first_char, _second_char, _value, _relative = false)
+function scribble_kerning_pair_get(_font, _first_char, _second_char)
 {
     if (!ds_map_exists(global.__scribble_font_data, _font))
     {
