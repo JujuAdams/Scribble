@@ -124,7 +124,8 @@ function __scribble_font_add_from_project(_font)
                     var _j = 0;
                     repeat(array_length(_kerning_array) div 2)
                     {
-                        _font_kerning_map[? ((_unicode & 0xFFFF) << 16) | (_kerning_array[_j] & 0xFFFF)] = _kerning_array[_j+1];
+                        var _first = _kerning_array[_j];
+                        if (_first > 0) _font_kerning_map[? ((_unicode & 0xFFFF) << 16) | (_first & 0xFFFF)] = _kerning_array[_j+1];
                         _j += 2;
                     }
                 }

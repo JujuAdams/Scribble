@@ -49,6 +49,12 @@
                                           ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.UNICODE, _data_index, SCRIBBLE_GLYPH.BILINEAR, _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE);\
                                           _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;\
                                           ;\
+                                          if (SCRIBBLE_USE_KERNING)\
+                                          {\
+                                              var _kerning = _font_kerning_map[? ((_glyph_write & 0xFFFF) << 16) | (_glyph_prev & 0xFFFF)];\
+                                              if (_kerning != undefined) _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__SEPARATION] += _kerning;\
+                                          }\
+                                          ;\
                                           __SCRIBBLE_PARSER_NEXT_GLYPH\
                                       }
 
@@ -196,9 +202,9 @@ function __scribble_gen_2_parser()
     var _tag_command_name    = "";
     
     var _glyph_count                 = 0;
-    var _glyph_ord                   = 0x0000;
-    var _glyph_prev                  = undefined;
-    var _glyph_prev_prev             = undefined;
+    var _glyph_ord                   = 0x00;
+    var _glyph_prev                  = 0x00;
+    var _glyph_prev_prev             = 0x00;
     var _glyph_prev_arabic_join_next = false;
     
     var _control_count = 0;
@@ -1334,6 +1340,7 @@ function __scribble_gen_2_parser()
                         }
                         
                         //TODO - Ligature transform here
+                        
                         __SCRIBBLE_PARSER_WRITE_GLYPH
                     }
                 }
