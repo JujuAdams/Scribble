@@ -51,6 +51,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
     var _metrics_map     = _json[? "metrics"];
     var _json_glyph_list = _json[? "glyphs" ];
     var _atlas_map       = _json[? "atlas"  ];
+    var _kerning_list    = _json[? "kerning"];
     
     var _em_size      = _atlas_map[? "size"         ];
     var _msdf_pxrange = _atlas_map[? "distanceRange"];
@@ -65,6 +66,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
     
     var _font_glyphs_map      = _font_data.__glyphs_map;
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
+    var _font_kerning_map     = _font_data.__kerning_map;
     if (_is_krutidev) _font_data.__is_krutidev = true;
     _font_data.__msdf_pxrange = _msdf_pxrange;
     
@@ -249,6 +251,18 @@ function __scribble_font_add_msdf_from_project(_sprite)
     var _space_index = _font_glyphs_map[? 32];
     _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.WIDTH ] = _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.SEPARATION];
     _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.HEIGHT] = _json_line_height;
+    
+    if (SCRIBBLE_USE_KERNING)
+    {
+        var _i = 0;
+        repeat(ds_list_size(_kerning_list))
+        {
+            var _kerning_pair = _kerning_list[| _i];
+            var _offset = round(_em_size*_kerning_pair[? "advance"]);
+            _font_kerning_map[? ((_kerning_pair[? "unicode2"] & 0xFFFF) << 16) | (_kerning_pair[? "unicode1"] & 0xFFFF)] = _offset;
+            ++_i;
+        }
+    }
     
     ds_map_destroy(_json);
     
