@@ -298,7 +298,7 @@ function __scribble_gen_6_build_lines()
             {
                 __SCRIBBLE_GEN_LINE_END;
                 _line_y += _line_height;
-                __scribble_trace("Warning! Model generator found hanging line data");
+                //__scribble_trace("Warning! Model generator found hanging line data");
             }
         }
         
