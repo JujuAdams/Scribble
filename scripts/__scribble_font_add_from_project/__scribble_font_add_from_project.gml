@@ -68,6 +68,7 @@ function __scribble_font_add_from_project(_font)
         var _font_data = new __scribble_class_font(_name, _size, false);
         var _font_glyphs_map      = _font_data.__glyphs_map;
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;
+        var _font_kerning_map     = _font_data.__kerning_map;
         if (_is_krutidev) _font_data.__is_krutidev = true;
         
         var _i = 0;
@@ -112,6 +113,20 @@ function __scribble_font_add_from_project(_font)
                 {
                     _bidi = __SCRIBBLE_BIDI.L2R_DEVANAGARI;
                     _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
+                }
+            }
+            
+            if (SCRIBBLE_USE_KERNING)
+            {
+                var _kerning_array = _glyph_dict[$ "kerning"];
+                if (is_array(_kerning_array))
+                {
+                    var _j = 0;
+                    repeat(array_length(_kerning_array) div 2)
+                    {
+                        _font_kerning_map[? ((_unicode & 0xFFFF) << 16) | (_kerning_array[_j] & 0xFFFF)] = _kerning_array[_j+1];
+                        _j += 2;
+                    }
                 }
             }
             
