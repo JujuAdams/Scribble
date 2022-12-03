@@ -64,6 +64,7 @@
                                     if (_font_data.__is_krutidev) __has_devanagari = true;\
                                     var _font_glyph_data_grid = _font_data.__glyph_data_grid;\
                                     var _font_glyphs_map      = _font_data.__glyphs_map;\
+                                    var _font_kerning_map     = _font_data.__kerning_map;\
                                     var _space_data_index     = _font_glyphs_map[? 32];\
                                     if (_space_data_index == undefined)\
                                     {\
