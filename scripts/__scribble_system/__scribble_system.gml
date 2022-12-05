@@ -171,6 +171,8 @@ function __scribble_initialize()
     _map[? "zwsp"              ] = 31;
     _map[? "typistSound"       ] = 32;
     _map[? "typistSoundPerChar"] = 33;
+    _map[? "indent"            ] = 34;
+    _map[? "/indent"           ] = 35;
     global.__scribble_command_tag_lookup_accelerator = _map;
 
     //Add bindings for default effect names
@@ -821,6 +823,7 @@ enum __SCRIBBLE_GEN_CONTROL_TYPE
     __CYCLE,  //4
     __REGION, //5
     __FONT,   //6
+    __INDENT, //7
 }
 
 //These can be used for ORD
