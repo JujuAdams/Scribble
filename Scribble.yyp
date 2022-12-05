@@ -252,6 +252,7 @@
     {"id":{"name":"obj_test_typewriter_events","path":"objects/obj_test_typewriter_events/obj_test_typewriter_events.yy",},"order":2,},
     {"id":{"name":"obj_test_scale_tags","path":"objects/obj_test_scale_tags/obj_test_scale_tags.yy",},"order":11,},
     {"id":{"name":"obj_test_superfont","path":"objects/obj_test_superfont/obj_test_superfont.yy",},"order":1,},
+    {"id":{"name":"obj_test_macros","path":"objects/obj_test_macros/obj_test_macros.yy",},"order":20,},
     {"id":{"name":"obj_test_linewrap_multi_vbuff","path":"objects/obj_test_linewrap_multi_vbuff/obj_test_linewrap_multi_vbuff.yy",},"order":5,},
     {"id":{"name":"obj_test_typewriter_delay_plus_sound","path":"objects/obj_test_typewriter_delay_plus_sound/obj_test_typewriter_delay_plus_sound.yy",},"order":12,},
     {"id":{"name":"obj_test_nbsp_repeat","path":"objects/obj_test_nbsp_repeat/obj_test_nbsp_repeat.yy",},"order":10,},
