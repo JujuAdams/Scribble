@@ -71,7 +71,7 @@ function __scribble_gen_9_write_vbuffs()
 {
     if (SCRIBBLE_ALLOW_TEXT_GETTER)
     {
-        var _string_buffer = global.__scribble_buffer;
+        var _string_buffer = global.__scribble_buffer_a;
     }
     
     var _glyph_grid     = global.__scribble_glyph_grid;

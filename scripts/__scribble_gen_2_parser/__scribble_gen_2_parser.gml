@@ -82,7 +82,9 @@
 function __scribble_gen_2_parser()
 {
     //Cache globals locally for a performance boost
-    var _string_buffer  = global.__scribble_buffer;
+    var _string_buffer       = global.__scribble_buffer_a;
+    var _other_string_buffer = global.__scribble_buffer_b;
+    
     var _glyph_grid     = global.__scribble_glyph_grid;
     var _word_grid      = global.__scribble_word_grid;
     var _control_grid   = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
@@ -121,6 +123,7 @@ function __scribble_gen_2_parser()
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     buffer_write(_string_buffer, buffer_string, _element_text);
     buffer_write(_string_buffer, buffer_u64, 0x0); //Add some extra null characters to avoid errors where we're reading outside the buffer
+    var _buffer_length = buffer_tell(_string_buffer);
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     
     #region Determine the overall bidi direction for the string
@@ -229,9 +232,8 @@ function __scribble_gen_2_parser()
     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
     ++_control_count;
     
-    //Repeat a fixed number of times. This prevents infinite loops and generally is more stable...
-    //...though we do still check for a null terminator
-    repeat(string_byte_length(_element_text))
+    //Keep going until we hit a null
+    while(true)
     {
         // In-lined __scribble_buffer_read_unicode() for speed
         var _glyph_ord  = buffer_read(_string_buffer, buffer_u8); //Assume 0xxxxxxx
@@ -792,6 +794,49 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(_tag_command_name, _tag_parameters);
                             ++_control_count;
                         }
+                        else if (ds_map_exists(global.__scribble_macros, _tag_command_name)) //Macros
+                        {
+                            var _function = global.__scribble_macros[? _tag_command_name];
+                            
+                            var _macro_result = "";
+                            switch(_tag_parameter_count)
+                            {
+                                case 1: _macro_result = _function(); break;
+                                case 2: _macro_result = _function(_tag_parameters[1]); break;
+                                case 3: _macro_result = _function(_tag_parameters[1], _tag_parameters[2]); break;
+                                case 4: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3]); break;
+                                case 5: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4]); break;
+                                case 6: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5]); break;
+                                case 7: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6]); break;
+                                case 8: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6], _tag_parameters[7]); break;
+                                case 9: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6], _tag_parameters[7], _tag_parameters[8]); break;
+                                
+                                default:
+                                    __scribble_error("Macro argument count ", _tag_parameter_count, " unsupported");
+                                break;
+                            }
+                            
+                            _macro_result = string(_macro_result);
+                            
+                            //Figure out how much we need to copy and if we need to resize the target buffer
+                            _buffer_length = string_byte_length(_other_string_buffer);
+                            var _copy_size = _buffer_length - buffer_tell(_string_buffer);
+                            _buffer_length += _copy_size;
+                            
+                            if (_buffer_length > buffer_get_size(_other_string_buffer)) buffer_resize(_other_string_buffer, _buffer_length);
+                            
+                            //Write the new string to the other buffer, and then copy the remainder of the data in the old buffer
+                            buffer_seek(_other_string_buffer, buffer_seek_start, 0);
+                            buffer_write(_other_string_buffer, buffer_text, _macro_result);
+                            buffer_copy(_string_buffer, buffer_tell(_string_buffer), _copy_size, _other_string_buffer, buffer_tell(_other_string_buffer));
+                            buffer_seek(_other_string_buffer, buffer_seek_start, 0);
+                            
+                            //Swap the two buffers over
+                            var _temp = _string_buffer;
+                            _string_buffer = _other_string_buffer;
+                            _other_string_buffer = _temp;
+                            
+                        }                        
                         else if (ds_map_exists(global.__scribble_font_data, _tag_command_name)) //Change font
                         {
                             _font_name = _tag_command_name;

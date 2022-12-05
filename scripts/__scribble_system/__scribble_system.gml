@@ -78,7 +78,8 @@ function __scribble_initialize()
     global.__scribble_external_sound_map   = ds_map_create();
     global.__scribble_tex_index_lookup_map = ds_map_create();
     global.__scribble_default_font         = "scribble_fallback_font";
-    global.__scribble_buffer               = buffer_create(1024, buffer_grow, 1);
+    global.__scribble_buffer_a             = buffer_create(1024, buffer_grow, 1);
+    global.__scribble_buffer_b             = buffer_create(1024, buffer_grow, 1);
     global.__scribble_glyph_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
     global.__scribble_control_grid         = ds_grid_create(1000, __SCRIBBLE_GEN_CONTROL.__SIZE);
     global.__scribble_word_grid            = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE);
