@@ -1,15 +1,13 @@
-/// Defines an event - a script that can be executed (with parameters) by an in-line command tag
-/// 
-/// @param name              Name of the new formatting tag to add e.g. portrait adds the tag [portrait] for use
-/// @param function/method   Function or method to execute
+/// @param name
+/// @param function
 
-function scribble_typists_add_event(_name, _function)
+function scribble_add_macro(_name, _function)
 {
     __scribble_initialize();
     
     if (!is_string(_name))
     {
-        __scribble_error("Event names should be strings.\n(Input to script was \"", _name, "\")");
+        __scribble_error("Macro names should be strings.\n(Input to script was \"", _name, "\")");
         exit;
     }
     
@@ -32,23 +30,23 @@ function scribble_typists_add_event(_name, _function)
     
     if (ds_map_exists(global.__scribble_colours, _name))
     {
-        __scribble_trace("Warning! Event name \"" + _name + "\" has already been defined as a colour");
+        __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as a colour");
         exit;
     }
     
     if (ds_map_exists(global.__scribble_effects, _name))
     {
-        __scribble_trace("Warning! Event name \"" + _name + "\" has already been defined as an effect");
+        __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as an effect");
         exit;
     }
     
-    if (ds_map_exists(global.__scribble_macros, _name))
+    if (ds_map_exists(global.__scribble_typewriter_events, _name))
     {
-        __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as a macro");
+        __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as a typist event");
         exit;
     }
     
-    var _old_function = global.__scribble_typewriter_events[? _name];
+    var _old_function = global.__scribble_macros[? _name];
     if (!is_undefined(_old_function))
     {
         if (is_numeric(_old_function) and (_old_function < 0))
@@ -61,6 +59,6 @@ function scribble_typists_add_event(_name, _function)
         }
     }
     
-    global.__scribble_typewriter_events[? _name] = _function;
-    if (SCRIBBLE_VERBOSE) __scribble_trace("Tying event [" + _name + "] to \"" + (is_method(_function)? string(_function) : script_get_name(_function)) + "\"");
+    global.__scribble_macros[? _name] = _function;
+    if (SCRIBBLE_VERBOSE) __scribble_trace("Tying macro [" + _name + "] to \"" + (is_method(_function)? string(_function) : script_get_name(_function)) + "\"");
 }

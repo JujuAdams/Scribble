@@ -7,301 +7,302 @@
 
 
 
-#region Pre-Initialization Checks
-
-var _font_directory = SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY;
-
-//If we've already initialized, don't try to do it again
-if (variable_global_exists("__scribble_lcg")) return undefined;
-
-__scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
-
-if (SCRIBBLE_VERBOSE)
-{
-    __scribble_trace("Verbose mode is on");
-}
-else
-{
-    __scribble_trace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
-}
-
-__scribble_system_glyph_data();
-
-if (__SCRIBBLE_ON_MOBILE)
-{
-    if (_font_directory != "")
-    {
-        __scribble_error("GameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files");
-        exit;
-    }
-}
-else if (__SCRIBBLE_ON_WEB)
-{
-    if (_font_directory != "")
-    {
-        __scribble_trace("Using folders inside Included Files might not work properly on HTML5. If you're having trouble, try using an empty string for the font directory and place fonts in the root of Included Files.");
-    }
-}
-    
-if (_font_directory != "")
-{
-    //Fix the font directory name if it's weird
-    var _char = string_char_at(_font_directory, string_length(_font_directory));
-    if (_char != "\\") && (_char != "/") _font_directory += "\\";
-    
-    __scribble_trace("Using font directory \"", _font_directory, "\"");
-}
-    
-if (!__SCRIBBLE_ON_WEB)
-{
-    //Check if the directory exists
-    if ((_font_directory != "") && !directory_exists(_font_directory))
-    {
-        __scribble_trace("Warning! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
-    }
-}
-
-#endregion
-
-
-
-#region Initialization
-    
-//Declare global variables
-global.__scribble_lcg                  = date_current_datetime()*100;
-global.__scribble_font_directory       = _font_directory;
-global.__scribble_font_data            = ds_map_create();  //Stores a data array for each font defined inside Scribble
-global.__scribble_effects              = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_effects_slash        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-global.__scribble_external_sound_map   = ds_map_create();
-global.__scribble_tex_index_lookup_map = ds_map_create();
-global.__scribble_default_font         = "scribble_fallback_font";
-global.__scribble_buffer               = buffer_create(1024, buffer_grow, 1);
-global.__scribble_glyph_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
-global.__scribble_control_grid         = ds_grid_create(1000, __SCRIBBLE_GEN_CONTROL.__SIZE);
-global.__scribble_word_grid            = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE);
-global.__scribble_line_grid            = ds_grid_create(__SCRIBBLE_MAX_LINES, __SCRIBBLE_GEN_LINE.__SIZE);
-global.__scribble_stretch_grid         = ds_grid_create(1000, __SCRIBBLE_GEN_STRETCH.__SIZE);
-global.__scribble_temp_grid            = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE); //For some reason, changing the width of this grid causes GM to crash
-global.__scribble_temp2_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
-global.__scribble_vbuff_pos_grid       = ds_grid_create(1000, __SCRIBBLE_GEN_VBUFF_POS.__SIZE);
-
-//Give us 1 second breathing room when booting up before trying to garbage collect
-global.__scribble_cache_check_time = current_time + 1000;
-
-global.__scribble_null_element = new __scribble_class_null_element();
-
-global.__scribble_mcache_dict       = {};
-global.__scribble_mcache_name_array = [];
-global.__scribble_mcache_name_index = 0;
-
-global.__scribble_ecache_dict       = {};
-global.__scribble_ecache_array      = [];
-global.__scribble_ecache_list_index = 0;
-global.__scribble_ecache_name_array = [];
-global.__scribble_ecache_name_index = 0;
-
-global.__scribble_gc_vbuff_index = 0;
-global.__scribble_gc_vbuff_refs  = [];
-global.__scribble_gc_vbuff_ids   = [];
-
-global.__scribble_generator_state = {};
-if (__SCRIBBLE_ON_WEB) global.__scribble_html5_sprite_height_workaround = {};
-
-if (!variable_global_exists("__scribble_colours")) __scribble_config_colours();
-
-if (!variable_global_exists("__scribble_typewriter_events")) global.__scribble_typewriter_events = ds_map_create();
-global.__scribble_typewriter_events[? "pause" ] = undefined;
-global.__scribble_typewriter_events[? "delay" ] = undefined;
-global.__scribble_typewriter_events[? "speed" ] = undefined;
-global.__scribble_typewriter_events[? "/speed"] = undefined;
-
-//Hashtable to accelerate command tag lookup
-var _map = ds_map_create();
-_map[? ""                  ] =  0;
-_map[? "/"                 ] =  0;
-_map[? "/font"             ] =  1;
-_map[? "/f"                ] =  1;
-_map[? "/colour"           ] =  2;
-_map[? "/color"            ] =  2;
-_map[? "/c"                ] =  2;
-_map[? "/alpha"            ] =  3;
-_map[? "/a"                ] =  3;
-_map[? "/scale"            ] =  4;
-_map[? "/s"                ] =  4;
-//5 is unused
-_map[? "/page"             ] =  6;
-_map[? "scale"             ] =  7;
-_map[? "scaleStack"        ] =  8;
-//9 is unused
-_map[? "alpha"             ] = 10;
-_map[? "fa_left"           ] = 11;
-_map[? "fa_center"         ] = 12;
-_map[? "fa_centre"         ] = 12;
-_map[? "fa_right"          ] = 13;
-_map[? "fa_top"            ] = 14;
-_map[? "fa_middle"         ] = 15;
-_map[? "fa_bottom"         ] = 16;
-_map[? "pin_left"          ] = 17;
-_map[? "pin_center"        ] = 18;
-_map[? "pin_centre"        ] = 18;
-_map[? "pin_right"         ] = 19;
-_map[? "fa_justify"        ] = 20;
-_map[? "nbsp"              ] = 21;
-_map[? "&nbsp"             ] = 21;
-_map[? "nbsp;"             ] = 21;
-_map[? "&nbsp;"            ] = 21;
-_map[? "cycle"             ] = 22;
-_map[? "/cycle"            ] = 23;
-_map[? "r"                 ] = 24;
-_map[? "/b"                ] = 24;
-_map[? "/i"                ] = 24;
-_map[? "/bi"               ] = 24;
-_map[? "b"                 ] = 25;
-_map[? "i"                 ] = 26;
-_map[? "bi"                ] = 27;
-_map[? "surface"           ] = 28;
-_map[? "region"            ] = 29;
-_map[? "/region"           ] = 30;
-_map[? "zwsp"              ] = 31;
-_map[? "typistSound"       ] = 32;
-_map[? "typistSoundPerChar"] = 33;
-global.__scribble_command_tag_lookup_accelerator = _map;
-
-//Add bindings for default effect names
-//Effect index 0 is reversed for sprites
-global.__scribble_effects[?       "wave"    ] = 1;
-global.__scribble_effects[?       "shake"   ] = 2;
-global.__scribble_effects[?       "rainbow" ] = 3;
-global.__scribble_effects[?       "wobble"  ] = 4;
-global.__scribble_effects[?       "pulse"   ] = 5;
-global.__scribble_effects[?       "wheel"   ] = 6;
-global.__scribble_effects[?       "cycle"   ] = 7;
-global.__scribble_effects[?       "jitter"  ] = 8;
-global.__scribble_effects[?       "blink"   ] = 9;
-global.__scribble_effects[?       "slant"   ] = 10;
-global.__scribble_effects_slash[? "/wave"   ] = 1;
-global.__scribble_effects_slash[? "/shake"  ] = 2;
-global.__scribble_effects_slash[? "/rainbow"] = 3;
-global.__scribble_effects_slash[? "/wobble" ] = 4;
-global.__scribble_effects_slash[? "/pulse"  ] = 5;
-global.__scribble_effects_slash[? "/wheel"  ] = 6;
-global.__scribble_effects_slash[? "/cycle"  ] = 7;
-global.__scribble_effects_slash[? "/jitter" ] = 8;
-global.__scribble_effects_slash[? "/blink"  ] = 9;
-global.__scribble_effects_slash[? "/slant"  ] = 10;
-
-global.__scribble_effects[?       "WAVE"    ] = 1;
-global.__scribble_effects[?       "SHAKE"   ] = 2;
-global.__scribble_effects[?       "RAINBOW" ] = 3;
-global.__scribble_effects[?       "WOBBLE"  ] = 4;
-global.__scribble_effects[?       "PULSE"   ] = 5;
-global.__scribble_effects[?       "WHEEL"   ] = 6;
-global.__scribble_effects[?       "CYCLE"   ] = 7;
-global.__scribble_effects[?       "JITTER"  ] = 8;
-global.__scribble_effects[?       "BLINK"   ] = 9;
-global.__scribble_effects[?       "SLANT"   ] = 10;
-global.__scribble_effects_slash[? "/WAVE"   ] = 1;
-global.__scribble_effects_slash[? "/SHAKE"  ] = 2;
-global.__scribble_effects_slash[? "/RAINBOW"] = 3;
-global.__scribble_effects_slash[? "/WOBBLE" ] = 4;
-global.__scribble_effects_slash[? "/PULSE"  ] = 5;
-global.__scribble_effects_slash[? "/WHEEL"  ] = 6;
-global.__scribble_effects_slash[? "/CYCLE"  ] = 7;
-global.__scribble_effects_slash[? "/JITTER" ] = 8;
-global.__scribble_effects_slash[? "/BLINK"  ] = 9;
-global.__scribble_effects_slash[? "/SLANT"  ] = 10;
-
-//Create a vertex format for our text
-vertex_format_begin();
-vertex_format_add_position_3d();                                  //12 bytes
-vertex_format_add_normal();                                       //12 bytes
-vertex_format_add_colour();                                       // 4 bytes
-vertex_format_add_texcoord();                                     // 8 bytes
-vertex_format_add_custom(vertex_type_float2, vertex_usage_color); // 8 bytes
-global.__scribble_vertex_format = vertex_format_end();            //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
-
-vertex_format_begin();
-vertex_format_add_position(); //12 bytes
-vertex_format_add_color();    // 4 bytes
-vertex_format_add_texcoord(); // 8 bytes
-global.__scribble_passthrough_vertex_format = vertex_format_end();
-    
-//Cache uniform indexes
-global.__scribble_u_fTime                    = shader_get_uniform(__shd_scribble, "u_fTime"                   );
-global.__scribble_u_vColourBlend             = shader_get_uniform(__shd_scribble, "u_vColourBlend"            );
-global.__scribble_u_vGradient                = shader_get_uniform(__shd_scribble, "u_vGradient"               );
-global.__scribble_u_vSkew                    = shader_get_uniform(__shd_scribble, "u_vSkew"                   );
-global.__scribble_u_vFlash                   = shader_get_uniform(__shd_scribble, "u_vFlash"                  );
-global.__scribble_u_vRegionActive            = shader_get_uniform(__shd_scribble, "u_vRegionActive"           );
-global.__scribble_u_vRegionColour            = shader_get_uniform(__shd_scribble, "u_vRegionColour"           );
-global.__scribble_u_aDataFields              = shader_get_uniform(__shd_scribble, "u_aDataFields"             );
-global.__scribble_u_aBezier                  = shader_get_uniform(__shd_scribble, "u_aBezier"                 );
-global.__scribble_u_fBlinkState              = shader_get_uniform(__shd_scribble, "u_fBlinkState"             );
-global.__scribble_u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
-global.__scribble_u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
-global.__scribble_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
-global.__scribble_u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"   );
-global.__scribble_u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"     );
-global.__scribble_u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"   );
-global.__scribble_u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation");
-global.__scribble_u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration");
-
-global.__scribble_msdf_u_fTime                    = shader_get_uniform(__shd_scribble_msdf, "u_fTime"                   );
-global.__scribble_msdf_u_vColourBlend             = shader_get_uniform(__shd_scribble_msdf, "u_vColourBlend"            );
-global.__scribble_msdf_u_vGradient                = shader_get_uniform(__shd_scribble_msdf, "u_vGradient"               );
-global.__scribble_msdf_u_vSkew                    = shader_get_uniform(__shd_scribble_msdf, "u_vSkew"                   );
-global.__scribble_msdf_u_vFlash                   = shader_get_uniform(__shd_scribble_msdf, "u_vFlash"                  );
-global.__scribble_msdf_u_vRegionActive            = shader_get_uniform(__shd_scribble_msdf, "u_vRegionActive"           );
-global.__scribble_msdf_u_vRegionColour            = shader_get_uniform(__shd_scribble_msdf, "u_vRegionColour"           );
-global.__scribble_msdf_u_aDataFields              = shader_get_uniform(__shd_scribble_msdf, "u_aDataFields"             );
-global.__scribble_msdf_u_aBezier                  = shader_get_uniform(__shd_scribble_msdf, "u_aBezier"                 );
-global.__scribble_msdf_u_fBlinkState              = shader_get_uniform(__shd_scribble_msdf, "u_fBlinkState"             );
-global.__scribble_msdf_u_vTexel                   = shader_get_uniform(__shd_scribble_msdf, "u_vTexel"                  );
-global.__scribble_msdf_u_fMSDFRange               = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFRange"              );
-global.__scribble_msdf_u_iTypewriterMethod        = shader_get_uniform(__shd_scribble_msdf, "u_iTypewriterMethod"       );
-global.__scribble_msdf_u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble_msdf, "u_iTypewriterCharMax"      );
-global.__scribble_msdf_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterWindowArray"  );
-global.__scribble_msdf_u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterSmoothness"   );
-global.__scribble_msdf_u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble_msdf, "u_vTypewriterStartPos"     );
-global.__scribble_msdf_u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble_msdf, "u_vTypewriterStartScale"   );
-global.__scribble_msdf_u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterStartRotation");
-global.__scribble_msdf_u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterAlphaDuration");
-global.__scribble_msdf_u_vShadowColour            = shader_get_uniform(__shd_scribble_msdf, "u_vShadowColour"           );
-global.__scribble_msdf_u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble_msdf, "u_vShadowOffsetAndSoftness");
-global.__scribble_msdf_u_vBorderColour            = shader_get_uniform(__shd_scribble_msdf, "u_vBorderColour"           );
-global.__scribble_msdf_u_fBorderThickness         = shader_get_uniform(__shd_scribble_msdf, "u_fBorderThickness"        );
-global.__scribble_msdf_u_vOutputSize              = shader_get_uniform(__shd_scribble_msdf, "u_vOutputSize"             );
-global.__scribble_msdf_u_fMSDFThicknessOffset     = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFThicknessOffset"    );
-global.__scribble_msdf_u_fSecondDraw              = shader_get_uniform(__shd_scribble_msdf, "u_fSecondDraw"             );
-
-scribble_msdf_thickness_offset(0);
-
-//Set up animation properties
-global.__scribble_os_is_paused = false;
-
-global.__scribble_anim_shader_desync = false;
-global.__scribble_anim_shader_desync_to_default = false;
-global.__scribble_anim_shader_default = false;
-
-global.__scribble_anim_shader_msdf_desync = false;
-global.__scribble_anim_shader_msdf_desync_to_default = false;
-global.__scribble_anim_shader_msdf_default = false;
-
-global.__scribble_standard_shader_uniforms_dirty = true;
-global.__scribble_msdf_shader_uniforms_dirty = true;
-
-global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE);
-scribble_anim_reset();
-
-//Bezier curve state
-global.__scribble_bezier_using      = false;
-global.__scribble_bezier_msdf_using = false;
-global.__scribble_bezier_null_array = array_create(6, 0);
-
+__scribble_initialize();
 if (SCRIBBLE_LOAD_FONTS_ON_BOOT) __scribble_font_add_all_from_project();
 
-#endregion
+
+
+function __scribble_initialize()
+{
+    static _initialized = false;
+    if (_initialized) return;
+    _initialized = true;
+    
+    __scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
+    
+    if (SCRIBBLE_VERBOSE)
+    {
+        __scribble_trace("Verbose mode is on");
+    }
+    else
+    {
+        __scribble_trace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
+    }
+    
+    __scribble_system_glyph_data();
+    
+    var _font_directory = SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY;
+    
+    if (__SCRIBBLE_ON_MOBILE)
+    {
+        if (_font_directory != "")
+        {
+            __scribble_error("GameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files");
+            exit;
+        }
+    }
+    else if (__SCRIBBLE_ON_WEB)
+    {
+        if (_font_directory != "")
+        {
+            __scribble_trace("Using folders inside Included Files might not work properly on HTML5. If you're having trouble, try using an empty string for the font directory and place fonts in the root of Included Files.");
+        }
+    }
+    
+    if (_font_directory != "")
+    {
+        //Fix the font directory name if it's weird
+        var _char = string_char_at(_font_directory, string_length(_font_directory));
+        if (_char != "\\") && (_char != "/") _font_directory += "\\";
+    
+        __scribble_trace("Using font directory \"", _font_directory, "\"");
+    }
+    
+    if (!__SCRIBBLE_ON_WEB)
+    {
+        //Check if the directory exists
+        if ((_font_directory != "") && !directory_exists(_font_directory))
+        {
+            __scribble_trace("Warning! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
+        }
+    }
+    
+    
+    
+    //Declare global variables
+    global.__scribble_lcg                  = date_current_datetime()*100;
+    global.__scribble_font_directory       = _font_directory;
+    global.__scribble_font_data            = ds_map_create();  //Stores a data array for each font defined inside Scribble
+    global.__scribble_effects              = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+    global.__scribble_effects_slash        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+    global.__scribble_external_sound_map   = ds_map_create();
+    global.__scribble_tex_index_lookup_map = ds_map_create();
+    global.__scribble_default_font         = "scribble_fallback_font";
+    global.__scribble_buffer               = buffer_create(1024, buffer_grow, 1);
+    global.__scribble_glyph_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
+    global.__scribble_control_grid         = ds_grid_create(1000, __SCRIBBLE_GEN_CONTROL.__SIZE);
+    global.__scribble_word_grid            = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE);
+    global.__scribble_line_grid            = ds_grid_create(__SCRIBBLE_MAX_LINES, __SCRIBBLE_GEN_LINE.__SIZE);
+    global.__scribble_stretch_grid         = ds_grid_create(1000, __SCRIBBLE_GEN_STRETCH.__SIZE);
+    global.__scribble_temp_grid            = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE); //For some reason, changing the width of this grid causes GM to crash
+    global.__scribble_temp2_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
+    global.__scribble_vbuff_pos_grid       = ds_grid_create(1000, __SCRIBBLE_GEN_VBUFF_POS.__SIZE);
+
+    //Give us 1 second breathing room when booting up before trying to garbage collect
+    global.__scribble_cache_check_time = current_time + 1000;
+
+    global.__scribble_null_element = new __scribble_class_null_element();
+
+    global.__scribble_mcache_dict       = {};
+    global.__scribble_mcache_name_array = [];
+    global.__scribble_mcache_name_index = 0;
+
+    global.__scribble_ecache_dict       = {};
+    global.__scribble_ecache_array      = [];
+    global.__scribble_ecache_list_index = 0;
+    global.__scribble_ecache_name_array = [];
+    global.__scribble_ecache_name_index = 0;
+
+    global.__scribble_gc_vbuff_index = 0;
+    global.__scribble_gc_vbuff_refs  = [];
+    global.__scribble_gc_vbuff_ids   = [];
+
+    global.__scribble_generator_state = {};
+    if (__SCRIBBLE_ON_WEB) global.__scribble_html5_sprite_height_workaround = {};
+
+    __scribble_config_colours();
+
+    global.__scribble_typewriter_events = ds_map_create();
+    global.__scribble_typewriter_events[? "pause" ] = undefined;
+    global.__scribble_typewriter_events[? "delay" ] = undefined;
+    global.__scribble_typewriter_events[? "speed" ] = undefined;
+    global.__scribble_typewriter_events[? "/speed"] = undefined;
+    
+    global.__scribble_macros = ds_map_create();
+
+    //Hashtable to accelerate command tag lookup
+    var _map = ds_map_create();
+    _map[? ""                  ] =  0;
+    _map[? "/"                 ] =  0;
+    _map[? "/font"             ] =  1;
+    _map[? "/f"                ] =  1;
+    _map[? "/colour"           ] =  2;
+    _map[? "/color"            ] =  2;
+    _map[? "/c"                ] =  2;
+    _map[? "/alpha"            ] =  3;
+    _map[? "/a"                ] =  3;
+    _map[? "/scale"            ] =  4;
+    _map[? "/s"                ] =  4;
+    //5 is unused
+    _map[? "/page"             ] =  6;
+    _map[? "scale"             ] =  7;
+    _map[? "scaleStack"        ] =  8;
+    //9 is unused
+    _map[? "alpha"             ] = 10;
+    _map[? "fa_left"           ] = 11;
+    _map[? "fa_center"         ] = 12;
+    _map[? "fa_centre"         ] = 12;
+    _map[? "fa_right"          ] = 13;
+    _map[? "fa_top"            ] = 14;
+    _map[? "fa_middle"         ] = 15;
+    _map[? "fa_bottom"         ] = 16;
+    _map[? "pin_left"          ] = 17;
+    _map[? "pin_center"        ] = 18;
+    _map[? "pin_centre"        ] = 18;
+    _map[? "pin_right"         ] = 19;
+    _map[? "fa_justify"        ] = 20;
+    _map[? "nbsp"              ] = 21;
+    _map[? "&nbsp"             ] = 21;
+    _map[? "nbsp;"             ] = 21;
+    _map[? "&nbsp;"            ] = 21;
+    _map[? "cycle"             ] = 22;
+    _map[? "/cycle"            ] = 23;
+    _map[? "r"                 ] = 24;
+    _map[? "/b"                ] = 24;
+    _map[? "/i"                ] = 24;
+    _map[? "/bi"               ] = 24;
+    _map[? "b"                 ] = 25;
+    _map[? "i"                 ] = 26;
+    _map[? "bi"                ] = 27;
+    _map[? "surface"           ] = 28;
+    _map[? "region"            ] = 29;
+    _map[? "/region"           ] = 30;
+    _map[? "zwsp"              ] = 31;
+    _map[? "typistSound"       ] = 32;
+    _map[? "typistSoundPerChar"] = 33;
+    global.__scribble_command_tag_lookup_accelerator = _map;
+
+    //Add bindings for default effect names
+    //Effect index 0 is reversed for sprites
+    global.__scribble_effects[?       "wave"    ] = 1;
+    global.__scribble_effects[?       "shake"   ] = 2;
+    global.__scribble_effects[?       "rainbow" ] = 3;
+    global.__scribble_effects[?       "wobble"  ] = 4;
+    global.__scribble_effects[?       "pulse"   ] = 5;
+    global.__scribble_effects[?       "wheel"   ] = 6;
+    global.__scribble_effects[?       "cycle"   ] = 7;
+    global.__scribble_effects[?       "jitter"  ] = 8;
+    global.__scribble_effects[?       "blink"   ] = 9;
+    global.__scribble_effects[?       "slant"   ] = 10;
+    global.__scribble_effects_slash[? "/wave"   ] = 1;
+    global.__scribble_effects_slash[? "/shake"  ] = 2;
+    global.__scribble_effects_slash[? "/rainbow"] = 3;
+    global.__scribble_effects_slash[? "/wobble" ] = 4;
+    global.__scribble_effects_slash[? "/pulse"  ] = 5;
+    global.__scribble_effects_slash[? "/wheel"  ] = 6;
+    global.__scribble_effects_slash[? "/cycle"  ] = 7;
+    global.__scribble_effects_slash[? "/jitter" ] = 8;
+    global.__scribble_effects_slash[? "/blink"  ] = 9;
+    global.__scribble_effects_slash[? "/slant"  ] = 10;
+
+    global.__scribble_effects[?       "WAVE"    ] = 1;
+    global.__scribble_effects[?       "SHAKE"   ] = 2;
+    global.__scribble_effects[?       "RAINBOW" ] = 3;
+    global.__scribble_effects[?       "WOBBLE"  ] = 4;
+    global.__scribble_effects[?       "PULSE"   ] = 5;
+    global.__scribble_effects[?       "WHEEL"   ] = 6;
+    global.__scribble_effects[?       "CYCLE"   ] = 7;
+    global.__scribble_effects[?       "JITTER"  ] = 8;
+    global.__scribble_effects[?       "BLINK"   ] = 9;
+    global.__scribble_effects[?       "SLANT"   ] = 10;
+    global.__scribble_effects_slash[? "/WAVE"   ] = 1;
+    global.__scribble_effects_slash[? "/SHAKE"  ] = 2;
+    global.__scribble_effects_slash[? "/RAINBOW"] = 3;
+    global.__scribble_effects_slash[? "/WOBBLE" ] = 4;
+    global.__scribble_effects_slash[? "/PULSE"  ] = 5;
+    global.__scribble_effects_slash[? "/WHEEL"  ] = 6;
+    global.__scribble_effects_slash[? "/CYCLE"  ] = 7;
+    global.__scribble_effects_slash[? "/JITTER" ] = 8;
+    global.__scribble_effects_slash[? "/BLINK"  ] = 9;
+    global.__scribble_effects_slash[? "/SLANT"  ] = 10;
+
+    //Create a vertex format for our text
+    vertex_format_begin();
+    vertex_format_add_position_3d();                                  //12 bytes
+    vertex_format_add_normal();                                       //12 bytes
+    vertex_format_add_colour();                                       // 4 bytes
+    vertex_format_add_texcoord();                                     // 8 bytes
+    vertex_format_add_custom(vertex_type_float2, vertex_usage_color); // 8 bytes
+    global.__scribble_vertex_format = vertex_format_end();            //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
+
+    vertex_format_begin();
+    vertex_format_add_position(); //12 bytes
+    vertex_format_add_color();    // 4 bytes
+    vertex_format_add_texcoord(); // 8 bytes
+    global.__scribble_passthrough_vertex_format = vertex_format_end();
+    
+    //Cache uniform indexes
+    global.__scribble_u_fTime                    = shader_get_uniform(__shd_scribble, "u_fTime"                   );
+    global.__scribble_u_vColourBlend             = shader_get_uniform(__shd_scribble, "u_vColourBlend"            );
+    global.__scribble_u_vGradient                = shader_get_uniform(__shd_scribble, "u_vGradient"               );
+    global.__scribble_u_vSkew                    = shader_get_uniform(__shd_scribble, "u_vSkew"                   );
+    global.__scribble_u_vFlash                   = shader_get_uniform(__shd_scribble, "u_vFlash"                  );
+    global.__scribble_u_vRegionActive            = shader_get_uniform(__shd_scribble, "u_vRegionActive"           );
+    global.__scribble_u_vRegionColour            = shader_get_uniform(__shd_scribble, "u_vRegionColour"           );
+    global.__scribble_u_aDataFields              = shader_get_uniform(__shd_scribble, "u_aDataFields"             );
+    global.__scribble_u_aBezier                  = shader_get_uniform(__shd_scribble, "u_aBezier"                 );
+    global.__scribble_u_fBlinkState              = shader_get_uniform(__shd_scribble, "u_fBlinkState"             );
+    global.__scribble_u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
+    global.__scribble_u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
+    global.__scribble_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
+    global.__scribble_u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"   );
+    global.__scribble_u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"     );
+    global.__scribble_u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"   );
+    global.__scribble_u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation");
+    global.__scribble_u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration");
+
+    global.__scribble_msdf_u_fTime                    = shader_get_uniform(__shd_scribble_msdf, "u_fTime"                   );
+    global.__scribble_msdf_u_vColourBlend             = shader_get_uniform(__shd_scribble_msdf, "u_vColourBlend"            );
+    global.__scribble_msdf_u_vGradient                = shader_get_uniform(__shd_scribble_msdf, "u_vGradient"               );
+    global.__scribble_msdf_u_vSkew                    = shader_get_uniform(__shd_scribble_msdf, "u_vSkew"                   );
+    global.__scribble_msdf_u_vFlash                   = shader_get_uniform(__shd_scribble_msdf, "u_vFlash"                  );
+    global.__scribble_msdf_u_vRegionActive            = shader_get_uniform(__shd_scribble_msdf, "u_vRegionActive"           );
+    global.__scribble_msdf_u_vRegionColour            = shader_get_uniform(__shd_scribble_msdf, "u_vRegionColour"           );
+    global.__scribble_msdf_u_aDataFields              = shader_get_uniform(__shd_scribble_msdf, "u_aDataFields"             );
+    global.__scribble_msdf_u_aBezier                  = shader_get_uniform(__shd_scribble_msdf, "u_aBezier"                 );
+    global.__scribble_msdf_u_fBlinkState              = shader_get_uniform(__shd_scribble_msdf, "u_fBlinkState"             );
+    global.__scribble_msdf_u_vTexel                   = shader_get_uniform(__shd_scribble_msdf, "u_vTexel"                  );
+    global.__scribble_msdf_u_fMSDFRange               = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFRange"              );
+    global.__scribble_msdf_u_iTypewriterMethod        = shader_get_uniform(__shd_scribble_msdf, "u_iTypewriterMethod"       );
+    global.__scribble_msdf_u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble_msdf, "u_iTypewriterCharMax"      );
+    global.__scribble_msdf_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterWindowArray"  );
+    global.__scribble_msdf_u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterSmoothness"   );
+    global.__scribble_msdf_u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble_msdf, "u_vTypewriterStartPos"     );
+    global.__scribble_msdf_u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble_msdf, "u_vTypewriterStartScale"   );
+    global.__scribble_msdf_u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterStartRotation");
+    global.__scribble_msdf_u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterAlphaDuration");
+    global.__scribble_msdf_u_vShadowColour            = shader_get_uniform(__shd_scribble_msdf, "u_vShadowColour"           );
+    global.__scribble_msdf_u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble_msdf, "u_vShadowOffsetAndSoftness");
+    global.__scribble_msdf_u_vBorderColour            = shader_get_uniform(__shd_scribble_msdf, "u_vBorderColour"           );
+    global.__scribble_msdf_u_fBorderThickness         = shader_get_uniform(__shd_scribble_msdf, "u_fBorderThickness"        );
+    global.__scribble_msdf_u_vOutputSize              = shader_get_uniform(__shd_scribble_msdf, "u_vOutputSize"             );
+    global.__scribble_msdf_u_fMSDFThicknessOffset     = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFThicknessOffset"    );
+    global.__scribble_msdf_u_fSecondDraw              = shader_get_uniform(__shd_scribble_msdf, "u_fSecondDraw"             );
+
+    scribble_msdf_thickness_offset(0);
+
+    //Set up animation properties
+    global.__scribble_os_is_paused = false;
+
+    global.__scribble_anim_shader_desync = false;
+    global.__scribble_anim_shader_desync_to_default = false;
+    global.__scribble_anim_shader_default = false;
+
+    global.__scribble_anim_shader_msdf_desync = false;
+    global.__scribble_anim_shader_msdf_desync_to_default = false;
+    global.__scribble_anim_shader_msdf_default = false;
+
+    global.__scribble_standard_shader_uniforms_dirty = true;
+    global.__scribble_msdf_shader_uniforms_dirty = true;
+
+    global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE);
+    scribble_anim_reset();
+
+    //Bezier curve state
+    global.__scribble_bezier_using      = false;
+    global.__scribble_bezier_msdf_using = false;
+    global.__scribble_bezier_null_array = array_create(6, 0);
+}
 
 
 
