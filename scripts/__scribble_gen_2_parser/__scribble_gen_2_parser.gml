@@ -484,25 +484,7 @@ function __scribble_gen_2_parser()
                     break;
                             
                     #endregion
-                    
-                    #region Identation
-                    
-                    // [indent]
-                    case 34:
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__INDENT;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = real(_tag_parameters[1]);
-                        ++_control_count;
-                    break;
-                    
-                    // [/indent]
-                    case 35:
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__INDENT;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = 0;
-                        ++_control_count;
-                    break;
-                    
-                    #endregion
-                    
+                            
                     #region Non-breaking space emulation
                     
                     // [nbsp]
