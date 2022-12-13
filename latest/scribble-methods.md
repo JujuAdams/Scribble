@@ -69,7 +69,7 @@ Sets the starting font and text colour for your text. The values that are set wi
 |`halign`|[halign constant](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_set_halign.htm)|Starting horizontal alignment of **each line** of text. Accepts `fa_left`, `fa_right`, and `fa_center`|
 |`valign`|[valign constant](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_set_valign.htm)|Starting vertical alignment of the **entire textbox**. Accepts `fa_top`, `fa_bottom`, and `fa_middle` |
 
-Sets the starting horizontal and vertical alignment for your text. You can change alignment using in-line [command tags](Text-Formatting) as well, though do note there are some limitations when doing so.
+Sets the starting horizontal and vertical alignment for your text. You can change alignment using in-line [command tags](text-formatting) as well, though do note there are some limitations when doing so.
 
 &nbsp;
 
