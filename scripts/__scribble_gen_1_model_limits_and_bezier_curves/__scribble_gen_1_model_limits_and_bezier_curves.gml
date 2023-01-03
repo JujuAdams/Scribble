@@ -54,7 +54,7 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
             ++_i;
         }
         
-        if (_model_max_width >= 0) __scribble_trace("Warning! Maximum width set by scribble_set_wrap() (" + string(_model_max_width) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
+        if ((_model_max_width >= 0) && !is_infinity(_model_max_width)) __scribble_trace("Warning! Maximum width (" + string(_model_max_width) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
         _model_max_width = _dist;
         
         global.__scribble_generator_state.__bezier_lengths_array = _bezier_lengths;
