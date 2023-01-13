@@ -52,13 +52,12 @@ function __scribble_initialize()
     __scribble_get_generator_state();
     __scribble_get_buffer_a();
     __scribble_get_buffer_b();
-    
+    __scribble_get_anim_properties();
+    __scribble_effects_maps_initialize();
     
     
     //Declare global variables
     global.__scribble_font_data          = ds_map_create();  //Stores a data array for each font defined inside Scribble
-    global.__scribble_effects            = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-    global.__scribble_effects_slash      = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
     global.__scribble_external_sound_map = ds_map_create();
     global.__scribble_default_font       = "scribble_fallback_font";
     
@@ -80,68 +79,27 @@ function __scribble_initialize()
     
     global.__scribble_macros = ds_map_create();
     
-    //Add bindings for default effect names
-    //Effect index 0 is reversed for sprites
-    global.__scribble_effects[?       "wave"    ] = 1;
-    global.__scribble_effects[?       "shake"   ] = 2;
-    global.__scribble_effects[?       "rainbow" ] = 3;
-    global.__scribble_effects[?       "wobble"  ] = 4;
-    global.__scribble_effects[?       "pulse"   ] = 5;
-    global.__scribble_effects[?       "wheel"   ] = 6;
-    global.__scribble_effects[?       "cycle"   ] = 7;
-    global.__scribble_effects[?       "jitter"  ] = 8;
-    global.__scribble_effects[?       "blink"   ] = 9;
-    global.__scribble_effects[?       "slant"   ] = 10;
-    global.__scribble_effects_slash[? "/wave"   ] = 1;
-    global.__scribble_effects_slash[? "/shake"  ] = 2;
-    global.__scribble_effects_slash[? "/rainbow"] = 3;
-    global.__scribble_effects_slash[? "/wobble" ] = 4;
-    global.__scribble_effects_slash[? "/pulse"  ] = 5;
-    global.__scribble_effects_slash[? "/wheel"  ] = 6;
-    global.__scribble_effects_slash[? "/cycle"  ] = 7;
-    global.__scribble_effects_slash[? "/jitter" ] = 8;
-    global.__scribble_effects_slash[? "/blink"  ] = 9;
-    global.__scribble_effects_slash[? "/slant"  ] = 10;
-
-    global.__scribble_effects[?       "WAVE"    ] = 1;
-    global.__scribble_effects[?       "SHAKE"   ] = 2;
-    global.__scribble_effects[?       "RAINBOW" ] = 3;
-    global.__scribble_effects[?       "WOBBLE"  ] = 4;
-    global.__scribble_effects[?       "PULSE"   ] = 5;
-    global.__scribble_effects[?       "WHEEL"   ] = 6;
-    global.__scribble_effects[?       "CYCLE"   ] = 7;
-    global.__scribble_effects[?       "JITTER"  ] = 8;
-    global.__scribble_effects[?       "BLINK"   ] = 9;
-    global.__scribble_effects[?       "SLANT"   ] = 10;
-    global.__scribble_effects_slash[? "/WAVE"   ] = 1;
-    global.__scribble_effects_slash[? "/SHAKE"  ] = 2;
-    global.__scribble_effects_slash[? "/RAINBOW"] = 3;
-    global.__scribble_effects_slash[? "/WOBBLE" ] = 4;
-    global.__scribble_effects_slash[? "/PULSE"  ] = 5;
-    global.__scribble_effects_slash[? "/WHEEL"  ] = 6;
-    global.__scribble_effects_slash[? "/CYCLE"  ] = 7;
-    global.__scribble_effects_slash[? "/JITTER" ] = 8;
-    global.__scribble_effects_slash[? "/BLINK"  ] = 9;
-    global.__scribble_effects_slash[? "/SLANT"  ] = 10;
-    
     scribble_msdf_thickness_offset(0);
-
-    //Set up animation properties
+    
+    
+    
+    //Set up animation property state tracking
     global.__scribble_anim_shader_desync            = false;
     global.__scribble_anim_shader_desync_to_default = false;
     global.__scribble_anim_shader_default           = false;
-
+    
     global.__scribble_anim_shader_msdf_desync            = false;
     global.__scribble_anim_shader_msdf_desync_to_default = false;
     global.__scribble_anim_shader_msdf_default           = false;
-
+    
     global.__scribble_standard_shader_uniforms_dirty = true;
     global.__scribble_msdf_shader_uniforms_dirty     = true;
-
-    __scribble_get_anim_properties();
+    
     scribble_anim_reset();
-
-    //Bezier curve state
+    
+    
+    
+    //Bezier curve shader state tracking
     global.__scribble_bezier_using      = false;
     global.__scribble_bezier_msdf_using = false;
     global.__scribble_bezier_null_array = array_create(6, 0);

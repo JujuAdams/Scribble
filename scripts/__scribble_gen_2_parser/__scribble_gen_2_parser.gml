@@ -81,10 +81,11 @@
 
 function __scribble_gen_2_parser()
 {
+    #region Hashtable to accelerate command tag lookup
+    
     static _command_tag_lookup_accelerator_map = undefined;
     if (_command_tag_lookup_accelerator_map == undefined)
     {
-        //Hashtable to accelerate command tag lookup
         _command_tag_lookup_accelerator_map = ds_map_create();
         _command_tag_lookup_accelerator_map[? ""                  ] =  0;
         _command_tag_lookup_accelerator_map[? "/"                 ] =  0;
@@ -135,6 +136,11 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "typistSound"       ] = 32;
         _command_tag_lookup_accelerator_map[? "typistSoundPerChar"] = 33;
     }
+    
+    #endregion
+    
+    var _effects_map       = __scribble_get_effect_map();
+    var _effects_slash_map = __scribble_get_effect_slash_map();
     
     var _generator_state = __scribble_get_generator_state();
     
@@ -606,7 +612,7 @@ function __scribble_gen_2_parser()
                         var _cycle_b = (_tag_parameter_count > 3)? max(1, real(_tag_parameters[3])) : 0;
                         var _cycle_a = (_tag_parameter_count > 4)? max(1, real(_tag_parameters[4])) : 0;
                         
-                        _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? "cycle"]);
+                        _state_effect_flags = _state_effect_flags | (1 << _effects_map[? "cycle"]);
                         
                         //Add an effect flag control
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
@@ -623,7 +629,7 @@ function __scribble_gen_2_parser()
                     
                     // [/cycle]
                     case 23:
-                        _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? "/cycle"]));
+                        _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_map[? "/cycle"]));
                         
                         //Add an effect flag control
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
@@ -817,9 +823,9 @@ function __scribble_gen_2_parser()
                     #endregion
                     
                     default: //TODO - Optimize
-                        if (ds_map_exists(global.__scribble_effects, _tag_command_name)) //Set an effect
+                        if (ds_map_exists(_effects_map, _tag_command_name)) //Set an effect
                         {
-                            _state_effect_flags = _state_effect_flags | (1 << global.__scribble_effects[? _tag_command_name]);
+                            _state_effect_flags = _state_effect_flags | (1 << _effects_map[? _tag_command_name]);
                             
                             //Add an effect flag control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
@@ -828,9 +834,9 @@ function __scribble_gen_2_parser()
                             
                             __has_animation = true;
                         }
-                        else if (ds_map_exists(global.__scribble_effects_slash, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
+                        else if (ds_map_exists(_effects_slash_map, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
                         {
-                            _state_effect_flags = ~((~_state_effect_flags) | (1 << global.__scribble_effects_slash[? _tag_command_name]));
+                            _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_map[? _tag_command_name]));
                             
                             //Add an effect flag control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;

@@ -74,6 +74,8 @@ function __scribble_gen_9_write_vbuffs()
         var _string_buffer = __scribble_get_buffer_a();
     }
     
+    var _effects_map = __scribble_get_effects_map();
+    
     var _generator_state = __scribble_get_generator_state();
     with(_generator_state)
     {
@@ -271,8 +273,8 @@ function __scribble_gen_9_write_vbuffs()
                     _write_colour = _glyph_colour | 0xFFFFFF; //Make sure we use the general glyph alpha
                     
                     _glyph_effect_flags = ~_glyph_effect_flags;
-                    _glyph_effect_flags |= (1 << global.__scribble_effects[? "rainbow"]);
-                    _glyph_effect_flags |= (1 << global.__scribble_effects[? "cycle"  ]);
+                    _glyph_effect_flags |= (1 << _effects_map[? "rainbow"]);
+                    _glyph_effect_flags |= (1 << _effects_map[? "cycle"  ]);
                     _glyph_effect_flags = ~_glyph_effect_flags;
                 }
                 
@@ -373,8 +375,8 @@ function __scribble_gen_9_write_vbuffs()
                     _write_colour = _write_colour | 0xFFFFFF;
                     
                     _glyph_effect_flags = ~_glyph_effect_flags;
-                    _glyph_effect_flags |= (1 << global.__scribble_effects[? "rainbow"]);
-                    _glyph_effect_flags |= (1 << global.__scribble_effects[? "cycle"  ]);
+                    _glyph_effect_flags |= (1 << _effects_map[? "rainbow"]);
+                    _glyph_effect_flags |= (1 << _effects_map[? "cycle"  ]);
                     _glyph_effect_flags = ~_glyph_effect_flags;
                 }
                 

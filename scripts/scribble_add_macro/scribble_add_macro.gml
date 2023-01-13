@@ -34,7 +34,7 @@ function scribble_add_macro(_name, _function)
         exit;
     }
     
-    if (ds_map_exists(global.__scribble_effects, _name))
+    if (ds_map_exists(__scribble_get_effects_map(), _name))
     {
         __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as an effect");
         exit;
