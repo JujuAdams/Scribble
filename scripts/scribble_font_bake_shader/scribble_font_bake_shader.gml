@@ -32,7 +32,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         return undefined;
     }
 
-    var _src_font_data = __scribble_get_font_data_map()[? _source_font_name];
+    var _font_data_map = __scribble_get_font_data_map();
+    var _src_font_data = _font_data_map[? _source_font_name];
     if (!is_struct(_src_font_data))
     {
         __scribble_error("Source font \"", _source_font_name, "\" not found\n\"", _new_font_name, "\" will not be available");

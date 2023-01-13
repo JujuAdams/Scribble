@@ -1,6 +1,7 @@
 function scribble_super_glyph_delete(_target)
 {
-    var _font_data = __scribble_get_font_data_map()[? _target];
+    var _font_data_map = __scribble_get_font_data_map();
+    var _font_data = _font_data_map[? _target];
     if (_font_data == undefined) __scribble_error("Font \"", _font_data, "\" not found");
     
     var _glyphs_map = _font_data.__glyphs_map;

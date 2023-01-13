@@ -48,7 +48,7 @@ function __scribble_initialize()
     __scribble_get_font_directory();
     
     //Initialize data structures before they need to be used
-    __scribble_get_font_data();
+    __scribble_get_font_data_map();
     __scribble_config_colours();
     __scribble_get_generator_state();
     __scribble_get_buffer_a();
@@ -217,12 +217,9 @@ function __scribble_get_font_directory()
 
 function __scribble_get_font_data(_name)
 {
-    var _data = __scribble_get_font_data_map()[? _name];
-    if (_data == undefined)
-    {
-        __scribble_error("Font \"", _name, "\" not recognised");
-    }
-    
+    var _font_data_map = __scribble_get_font_data_map();
+    var _data = _font_data_map[? _name];
+    if (_data == undefined) __scribble_error("Font \"", _name, "\" not recognised");
     return _data;
 }
 

@@ -5,7 +5,9 @@
 function __scribble_class_font(_name, _glyph_count, _msdf) constructor
 {
     __name = _name;
-    __scribble_get_font_data_map()[? _name] = self;
+    
+    var _font_data_map = __scribble_get_font_data_map();
+    _font_data_map[? _name] = self;
     
     __glyph_data_grid = ds_grid_create(_glyph_count, SCRIBBLE_GLYPH.__SIZE);
     __glyphs_map = ds_map_create();
