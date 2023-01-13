@@ -29,6 +29,6 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Basic",
-    "path": "folders/Test Cases/Text Element Methods/Basic.yy",
+    "path": "folders/Test Cases/Basic.yy",
   },
 }
