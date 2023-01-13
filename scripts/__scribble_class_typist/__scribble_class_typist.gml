@@ -47,7 +47,7 @@ function __scribble_class_typist() constructor
         __last_character       = 0;
         __last_audio_character = 0;
         
-        __last_tick_time = -infinity;
+        __last_tick_frame = -infinity;
         
         __window_index     = 0;
         __window_array     = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
@@ -550,8 +550,8 @@ function __scribble_class_typist() constructor
         if (__skip) __drawn_since_skip = true;
         
         //Don't tick if it's been less than a frame since we were last updated
-        if (current_time - __last_tick_time < __SCRIBBLE_EXPECTED_FRAME_TIME) return undefined;
-        __last_tick_time = current_time;
+        if (__last_tick_frame < global.__scribble_frames) return undefined;
+        __last_tick_frame = global.__scribble_frames;
         
         //If __in hasn't been set yet (.in() / .out() haven't been set) then just nope out
         if (__in == undefined) return undefined;
