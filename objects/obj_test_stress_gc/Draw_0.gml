@@ -12,9 +12,9 @@ if (toggle)
 }
 
 draw_set_font(scribble_fallback_font);
-draw_text(10,  10, "models cached = " + string(variable_struct_names_count(global.__scribble_mcache_dict)));
-draw_text(10,  30, "elements cached = " + string(array_length(global.__scribble_ecache_array)) + "/" + string(variable_struct_names_count(global.__scribble_ecache_dict)));
-draw_text(10,  50, "vertex buffers cached = " + string(array_length(global.__scribble_gc_vbuff_refs)) + "/" + string(array_length(global.__scribble_gc_vbuff_ids)));
+draw_text(10,  10, "models cached = " + string(variable_struct_names_count(__scribble_get_cache_state().__mcache_dict)));
+draw_text(10,  30, "elements cached = " + string(array_length(__scribble_get_cache_state().__ecache_array)) + "/" + string(variable_struct_names_count(__scribble_get_cache_state().__ecache_dict)));
+draw_text(10,  50, "vertex buffers cached = " + string(array_length(__scribble_get_cache_state().__gc_vbuff_refs)) + "/" + string(array_length(__scribble_get_cache_state().__gc_vbuff_ids)));
 draw_text(10,  70, "counter = " + string(counter));
                
 draw_text(10, 110, "time taken = " + string(smoothed_time));
