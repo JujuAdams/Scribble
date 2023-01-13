@@ -103,17 +103,13 @@ function __scribble_initialize()
 
     global.__scribble_mcache_dict       = {};
     global.__scribble_mcache_name_array = [];
-    global.__scribble_mcache_name_index = 0;
 
     global.__scribble_ecache_dict       = {};
     global.__scribble_ecache_array      = [];
-    global.__scribble_ecache_list_index = 0;
     global.__scribble_ecache_name_array = [];
-    global.__scribble_ecache_name_index = 0;
 
-    global.__scribble_gc_vbuff_index = 0;
-    global.__scribble_gc_vbuff_refs  = [];
-    global.__scribble_gc_vbuff_ids   = [];
+    global.__scribble_gc_vbuff_refs = [];
+    global.__scribble_gc_vbuff_ids  = [];
 
     global.__scribble_generator_state = {};
     if (__SCRIBBLE_ON_WEB) global.__scribble_html5_sprite_height_workaround = {};
