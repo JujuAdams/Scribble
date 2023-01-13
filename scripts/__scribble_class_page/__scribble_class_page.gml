@@ -192,8 +192,20 @@ function __scribble_class_page() constructor
                 var _shader = __shd_scribble_msdf;
             }
             
+            static _vertex_format = undefined;
+            if (_vertex_format == undefined)
+            {
+                vertex_format_begin();
+                vertex_format_add_position_3d();                                  //12 bytes
+                vertex_format_add_normal();                                       //12 bytes
+                vertex_format_add_colour();                                       // 4 bytes
+                vertex_format_add_texcoord();                                     // 8 bytes
+                vertex_format_add_custom(vertex_type_float2, vertex_usage_color); // 8 bytes
+                _vertex_format = vertex_format_end();            //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
+            }
+            
             var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version
-            vertex_begin(_vbuff, global.__scribble_vertex_format);
+            vertex_begin(_vbuff, _vertex_format);
             
             if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding vertex buffer ", _vbuff, " to tracking");
             array_push(global.__scribble_gc_vbuff_refs, weak_ref_create(self));

@@ -183,21 +183,6 @@ function __scribble_initialize()
     global.__scribble_effects_slash[? "/JITTER" ] = 8;
     global.__scribble_effects_slash[? "/BLINK"  ] = 9;
     global.__scribble_effects_slash[? "/SLANT"  ] = 10;
-
-    //Create a vertex format for our text
-    vertex_format_begin();
-    vertex_format_add_position_3d();                                  //12 bytes
-    vertex_format_add_normal();                                       //12 bytes
-    vertex_format_add_colour();                                       // 4 bytes
-    vertex_format_add_texcoord();                                     // 8 bytes
-    vertex_format_add_custom(vertex_type_float2, vertex_usage_color); // 8 bytes
-    global.__scribble_vertex_format = vertex_format_end();            //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
-
-    vertex_format_begin();
-    vertex_format_add_position(); //12 bytes
-    vertex_format_add_color();    // 4 bytes
-    vertex_format_add_texcoord(); // 8 bytes
-    global.__scribble_passthrough_vertex_format = vertex_format_end();
     
     scribble_msdf_thickness_offset(0);
 
