@@ -148,8 +148,8 @@ function __scribble_gen_2_parser()
     }
     
     //Cache globals locally for a performance boost
-    var _string_buffer       = global.__scribble_buffer_a;
-    var _other_string_buffer = global.__scribble_buffer_b;
+    var _string_buffer       = __scribble_get_buffer_a();
+    var _other_string_buffer = __scribble_get_buffer_b();
     
     //Arabic look-up tables
     var _arabic_join_next_map = global.__scribble_glyph_data.__arabic_join_next_map;

@@ -1357,7 +1357,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 __bbox_dirty             = true;
                 __scale_to_box_dirty     = true; //The dimensions of the text element might change as a result of a model change
                 
-                var _buffer = global.__scribble_buffer_a;
+                var _buffer = __scribble_get_buffer_a();
                 buffer_seek(_buffer, buffer_seek_start, 0);
                 buffer_write(_buffer, buffer_text, string(__text           ));     buffer_write(_buffer, buffer_u8,  0x3A); //colon
                 buffer_write(_buffer, buffer_text, string(__starting_font  ));     buffer_write(_buffer, buffer_u8,  0x3A); //colon

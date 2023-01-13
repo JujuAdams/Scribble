@@ -47,16 +47,19 @@ function __scribble_initialize()
     __scribble_system_glyph_data();
     __scribble_get_font_directory();
     
+    //Initialize data structures before they need to be used
+    __scribble_get_generator_state();
+    __scribble_get_buffer_a();
+    __scribble_get_buffer_b();
+    
     
     
     //Declare global variables
-    global.__scribble_font_data            = ds_map_create();  //Stores a data array for each font defined inside Scribble
-    global.__scribble_effects              = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-    global.__scribble_effects_slash        = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
-    global.__scribble_external_sound_map   = ds_map_create();
-    global.__scribble_default_font         = "scribble_fallback_font";
-    global.__scribble_buffer_a             = buffer_create(1024, buffer_grow, 1);
-    global.__scribble_buffer_b             = buffer_create(1024, buffer_grow, 1);
+    global.__scribble_font_data          = ds_map_create();  //Stores a data array for each font defined inside Scribble
+    global.__scribble_effects            = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+    global.__scribble_effects_slash      = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
+    global.__scribble_external_sound_map = ds_map_create();
+    global.__scribble_default_font       = "scribble_fallback_font";
     
     global.__scribble_mcache_dict       = {};
     global.__scribble_mcache_name_array = [];
