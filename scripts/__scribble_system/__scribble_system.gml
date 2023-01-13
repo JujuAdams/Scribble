@@ -44,12 +44,11 @@ function __scribble_initialize()
         __scribble_error("Versions earlier than GameMaker 2022 LTS are not supported");
     }
     
-    __scribble_system_glyph_data();
+    //Initialize statics on boot before they need to be used
     __scribble_get_font_directory();
-    
-    //Initialize data structures before they need to be used
     __scribble_get_state();
     __scribble_get_generator_state();
+    __scribble_glyph_data_initialize();
     __scribble_get_font_data_map();
     __scribble_config_colours();
     __scribble_get_buffer_a();
