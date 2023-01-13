@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__scribble_gc_collect",
+  "name": "__scribble_tick",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {

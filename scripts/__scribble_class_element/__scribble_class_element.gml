@@ -28,7 +28,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     __model_cache_name = undefined;
     __model = undefined;
     
-    __last_drawn = current_time;
+    __last_drawn = global.__scribble_frames;
     __freeze = false;
     
     
@@ -165,13 +165,13 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (!is_struct(_model)) return undefined;
         
         //If enough time has elapsed since we drew this element then update our animation time
-        if (current_time - __last_drawn > __SCRIBBLE_EXPECTED_FRAME_TIME)
+        if (__last_drawn < global.__scribble_frames)
         {
             __animation_time += __animation_speed*SCRIBBLE_TICK_SIZE;
             if (SCRIBBLE_SAFELY_WRAP_TIME) __animation_time = __animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
-        __last_drawn = current_time;
+        __last_drawn = global.__scribble_frames;
         
         //Update the blink state
         if (global.__scribble_anim_blink_on_duration + global.__scribble_anim_blink_off_duration > 0)
@@ -196,9 +196,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);
-        
-        //Run the garbage collecter
-        __scribble_gc_collect();
         
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
         

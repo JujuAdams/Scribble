@@ -1,7 +1,8 @@
-function __scribble_gc_collect()
+function __scribble_tick()
 {
-    if (current_time - global.__scribble_cache_check_time < __SCRIBBLE_EXPECTED_FRAME_TIME) exit;
-    global.__scribble_cache_check_time = current_time;
+    ++global.__scribble_frames;
+    
+    
     
     //If there's been a change in os_is_paused() state then force a refresh of shader uniforms
     if (os_is_paused() != global.__scribble_os_is_paused)
@@ -42,9 +43,9 @@ function __scribble_gc_collect()
         
         //Only flush if we want to garbage collect this text element and it hasn't been drawn for a while
         var _element = _array[_index];
-        if (_element.__last_drawn + __SCRIBBLE_CACHE_TIMEOUT < current_time)
+        if (_element.__last_drawn + __SCRIBBLE_CACHE_TIMEOUT < global.__scribble_frames)
         {
-            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("\"", _element.__cache_name, "\" has timed out (", current_time, " > ", _element.__last_drawn, " + ", __SCRIBBLE_CACHE_TIMEOUT, ")");
+            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("\"", _element.__cache_name, "\" has timed out (", global.__scribble_frames, " > ", _element.__last_drawn, " + ", __SCRIBBLE_CACHE_TIMEOUT, ")");
             array_delete(_array, _index, 1);
             variable_struct_remove(global.__scribble_ecache_dict, _element.__cache_name);
         }
@@ -156,22 +157,4 @@ function __scribble_gc_collect()
     global.__scribble_gc_vbuff_index = _index;
     
     #endregion
-}
-
-function __scribble_gc_add_vbuff(_struct, _vbuff)
-{
-    if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding vertex buffer ", _vbuff, " to tracking");
-    array_push(global.__scribble_gc_vbuff_refs, weak_ref_create(_struct));
-    array_push(global.__scribble_gc_vbuff_ids, _vbuff);
-}
-
-function __scribble_gc_remove_vbuff(_vbuff)
-{
-    var _index = __scribble_array_find_index(global.__scribble_gc_vbuff_ids, _vbuff);
-    if (_index >= 0)
-    {
-        if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Manually removing vertex buffer ", _vbuff, " from tracking");
-        array_delete(global.__scribble_gc_vbuff_refs, _index, 1);
-        array_delete(global.__scribble_gc_vbuff_ids,  _index, 1);
-    }
 }

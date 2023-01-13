@@ -29,6 +29,16 @@ function __scribble_initialize()
         __scribble_trace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
     }
     
+    try
+    {
+        global.__scribble_frames = 0;
+        time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, __scribble_tick, [], -1));
+    }
+    catch(_error)
+    {
+        __scribble_error("Versions earlier than GameMaker 2022 LTS are not supported");
+    }
+    
     __scribble_system_glyph_data();
     
     var _font_directory = SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY;
@@ -88,10 +98,7 @@ function __scribble_initialize()
     global.__scribble_temp_grid            = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE); //For some reason, changing the width of this grid causes GM to crash
     global.__scribble_temp2_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
     global.__scribble_vbuff_pos_grid       = ds_grid_create(1000, __SCRIBBLE_GEN_VBUFF_POS.__SIZE);
-
-    //Give us 1 second breathing room when booting up before trying to garbage collect
-    global.__scribble_cache_check_time = current_time + 1000;
-
+    
     global.__scribble_null_element = new __scribble_class_null_element();
 
     global.__scribble_mcache_dict       = {};
@@ -883,7 +890,7 @@ enum __SCRIBBLE_GEN_LINE
 #macro __SCRIBBLE_FA_JUSTIFY           6
 #macro __SCRIBBLE_WINDOW_COUNT         3
 #macro __SCRIBBLE_GC_STEP_SIZE         3
-#macro __SCRIBBLE_CACHE_TIMEOUT        120 //How long to wait (in milliseconds) before the text element cache automatically cleans up unused data
+#macro __SCRIBBLE_CACHE_TIMEOUT        10 //How long to wait (in frames) before the text element cache automatically cleans up unused data
 
 #macro __SCRIBBLE_AUDIO_COMMAND_TAG                    "__scribble_audio_playback__"
 #macro __SCRIBBLE_TYPIST_SOUND_COMMAND_TAG             "__scribble_typist_sound__"

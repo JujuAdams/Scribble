@@ -189,7 +189,10 @@ function __scribble_class_page() constructor
             
             var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version
             vertex_begin(_vbuff, global.__scribble_vertex_format);
-            __scribble_gc_add_vbuff(self, _vbuff);
+            
+            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding vertex buffer ", _vbuff, " to tracking");
+            array_push(global.__scribble_gc_vbuff_refs, weak_ref_create(self));
+            array_push(global.__scribble_gc_vbuff_ids, _vbuff);
             
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER        ] = _vbuff;
@@ -234,7 +237,14 @@ function __scribble_class_page() constructor
         {
             var _vbuff = __vertex_buffer_array[_i][__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER];
             vertex_delete_buffer(_vbuff);
-            __scribble_gc_remove_vbuff(_vbuff);
+            
+            var _index = __scribble_array_find_index(global.__scribble_gc_vbuff_ids, _vbuff);
+            if (_index >= 0)
+            {
+                if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Manually removing vertex buffer ", _vbuff, " from tracking");
+                array_delete(global.__scribble_gc_vbuff_refs, _index, 1);
+                array_delete(global.__scribble_gc_vbuff_ids,  _index, 1);
+            }
             
             ++_i;
         }
