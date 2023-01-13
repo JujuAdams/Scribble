@@ -1,6 +1,7 @@
 function __scribble_gen_8_position_glyphs()
 {
-    with(__scribble_get_generator_state())
+    static _generator_state = __scribble_get_generator_state();
+    with(_generator_state)
     {
         var _glyph_grid      = __glyph_grid;
         var _word_grid       = __word_grid;

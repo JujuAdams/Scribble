@@ -76,7 +76,7 @@ function __scribble_gen_9_write_vbuffs()
     
     var _effects_map = __scribble_get_effects_map();
     
-    var _generator_state = __scribble_get_generator_state();
+    static _generator_state = __scribble_get_generator_state();
     with(_generator_state)
     {
         var _glyph_grid     = __glyph_grid;

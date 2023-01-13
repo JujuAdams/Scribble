@@ -149,7 +149,7 @@ function __scribble_gen_2_parser()
     var _other_string_buffer   = __scribble_get_buffer_b();
     var _colors_struct         = __scribble_config_colours();
     
-    var _generator_state = __scribble_get_generator_state();
+    static _generator_state = __scribble_get_generator_state();
     with(_generator_state)
     {
         var _glyph_grid     = __glyph_grid;
