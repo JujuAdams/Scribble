@@ -78,8 +78,9 @@ function __scribble_gen_9_write_vbuffs()
     var _control_grid   = global.__scribble_control_grid;
     var _vbuff_pos_grid = global.__scribble_vbuff_pos_grid;
     
-    var _element     = global.__scribble_generator_state.__element;
-    var _glyph_count = global.__scribble_generator_state.__glyph_count;
+    var _generator_state = __scribble_get_generator_state();
+    var _element     = _generator_state.__element;
+    var _glyph_count = _generator_state.__glyph_count;
     
     
     
@@ -94,11 +95,11 @@ function __scribble_gen_9_write_vbuffs()
     
     
     
-    if (is_array(global.__scribble_generator_state.__bezier_lengths_array))
+    if (is_array(_generator_state.__bezier_lengths_array))
     {
         //Prep for Bezier curve shenanigans if necessary
         var _bezier_do              = true;
-        var _bezier_lengths         = global.__scribble_generator_state.__bezier_lengths_array;
+        var _bezier_lengths         = _generator_state.__bezier_lengths_array;
         var _bezier_search_index    = 0;
         var _bezier_search_d0       = 0;
         var _bezier_search_d1       = _bezier_lengths[1];

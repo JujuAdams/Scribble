@@ -294,26 +294,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         }
     }
     
-    
-    
-    with(global.__scribble_generator_state)
+    with(__scribble_get_generator_state())
     {
-        __element          = _element;
-        __glyph_count      = 0;
-        __control_count    = 0;
-        __word_count       = 0;
-        __line_count       = 0;
-        __line_height_min  = 0;
-        __line_height_max  = 0;
-        __model_max_width  = 0;
-        __model_max_height = 0;
-        __overall_bidi     = _element.__bidi_hint;
+        __Reset();
         
-        __uses_halign_left   = false;
-        __uses_halign_center = false;
-        __uses_halign_right  = false;
-        
-        __bezier_lengths_array = undefined;
+        __element      = _element;
+        __overall_bidi = _element.__bidi_hint;
     };
     
     __scribble_gen_1_model_limits_and_bezier_curves();

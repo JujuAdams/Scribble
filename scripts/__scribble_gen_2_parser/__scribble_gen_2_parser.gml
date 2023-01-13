@@ -81,6 +81,8 @@
 
 function __scribble_gen_2_parser()
 {
+    var _generator_state = __scribble_get_generator_state();
+    
     //Cache globals locally for a performance boost
     var _string_buffer       = global.__scribble_buffer_a;
     var _other_string_buffer = global.__scribble_buffer_b;
@@ -107,7 +109,7 @@ function __scribble_gen_2_parser()
     var _thai_upper_map          = global.__scribble_glyph_data.__thai_upper_map;
     
     //Cache element properties locally
-    var _element         = global.__scribble_generator_state.__element;
+    var _element         = _generator_state.__element;
     var _element_text    = _element.__text;
     var _starting_colour = _element.__starting_colour;
     var _starting_halign = _element.__starting_halign;
@@ -130,7 +132,7 @@ function __scribble_gen_2_parser()
     
     //TODO - Is it faster to scan for the overall bidi post-hoc?
     
-    var _overall_bidi = global.__scribble_generator_state.__overall_bidi;
+    var _overall_bidi = _generator_state.__overall_bidi;
     if ((_overall_bidi != __SCRIBBLE_BIDI.L2R) && (_overall_bidi != __SCRIBBLE_BIDI.R2L))
     {
         var _global_glyph_bidi_map = global.__scribble_glyph_data.__bidi_map;
@@ -188,7 +190,7 @@ function __scribble_gen_2_parser()
         // We didn't find a glyph with a direction, default to L2R
         if ((_overall_bidi != __SCRIBBLE_BIDI.L2R) && (_overall_bidi != __SCRIBBLE_BIDI.R2L)) _overall_bidi = __SCRIBBLE_BIDI.L2R;
         
-        global.__scribble_generator_state.__overall_bidi = _overall_bidi;
+        _generator_state.__overall_bidi = _overall_bidi;
     }
     
     #endregion
@@ -1419,9 +1421,9 @@ function __scribble_gen_2_parser()
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count; //Make sure we collect controls at the end of a string
     
-    with(global.__scribble_generator_state)
+    with(_generator_state)
     {
-        __glyph_count = _glyph_count+1;
+        __glyph_count   = _glyph_count+1;
         __control_count = _control_count;
     }
 }

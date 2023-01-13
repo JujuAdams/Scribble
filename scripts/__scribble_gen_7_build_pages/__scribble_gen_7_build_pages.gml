@@ -21,7 +21,7 @@ function __scribble_gen_7_build_pages()
     var _word_grid  = global.__scribble_word_grid;
     var _line_grid  = global.__scribble_line_grid;
     
-    with(global.__scribble_generator_state)
+    with(__scribble_get_generator_state())
     {
         var _element               = __element;
         var _model_max_height      = __model_max_height;

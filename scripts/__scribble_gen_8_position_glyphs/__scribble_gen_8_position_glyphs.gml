@@ -8,7 +8,7 @@ function __scribble_gen_8_position_glyphs()
     
     ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
     
-    with(global.__scribble_generator_state)
+    with(__scribble_get_generator_state())
     {
         var _line_count      = __line_count;
         var _overall_bidi    = __overall_bidi;

@@ -66,7 +66,8 @@ function __scribble_gen_6_build_lines()
     var _control_grid = global.__scribble_control_grid;
     var _temp_grid    = global.__scribble_temp_grid;
     
-    with(global.__scribble_generator_state)
+    var _generator_state = __scribble_get_generator_state();
+    with(_generator_state)
     {
         var _element               = __element;
         var _word_count            = __word_count;
@@ -138,9 +139,9 @@ function __scribble_gen_6_build_lines()
                 //This ensures we don't mark alignments as used if no text is rendered for that alignment
                 switch(_state_halign)
                 {
-                    case fa_left:   global.__scribble_generator_state.__uses_halign_left   = true; break;
-                    case fa_center: global.__scribble_generator_state.__uses_halign_center = true; break;
-                    case fa_right:  global.__scribble_generator_state.__uses_halign_right  = true; break;
+                    case fa_left:   _generator_state.__uses_halign_left   = true; break;
+                    case fa_center: _generator_state.__uses_halign_center = true; break;
+                    case fa_right:  _generator_state.__uses_halign_right  = true; break;
                 }
                 
                 if (_word_x + _word_width > _simulated_model_max_width)
@@ -369,7 +370,7 @@ function __scribble_gen_6_build_lines()
     
     __width = ds_grid_get_max(_line_grid, 0, __SCRIBBLE_GEN_LINE.__WIDTH, _line_count - 1, __SCRIBBLE_GEN_LINE.__WIDTH);
     
-    with(global.__scribble_generator_state)
+    with(_generator_state)
     {
         __word_count = _word_count;
         __line_count = _line_count;

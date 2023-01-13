@@ -1,6 +1,6 @@
 function __scribble_gen_10_set_padding_flags()
 {
-    with(global.__scribble_generator_state)
+    with(__scribble_get_generator_state())
     {
         var _uses_halign_left   = __uses_halign_left;
         var _uses_halign_center = __uses_halign_center;

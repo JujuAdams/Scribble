@@ -134,7 +134,9 @@ function __scribble_gen_3_devanagari()
     var _glyph_grid   = global.__scribble_glyph_grid;
     var _control_grid = global.__scribble_control_grid;
     var _temp_grid    = global.__scribble_temp2_grid;
-    var _glyph_count  = global.__scribble_generator_state.__glyph_count;
+    
+    var _generator_state = __scribble_get_generator_state();
+    var _glyph_count = _generator_state.__glyph_count;
     
     //Glyph count includes the terminating null. We don't need that for Krutidev conversion
     --_glyph_count;
@@ -494,7 +496,7 @@ function __scribble_gen_3_devanagari()
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT]; //Make sure we collect controls at the end of a string
     
-    global.__scribble_generator_state.__glyph_count = _glyph_count+1;
+    _generator_state.__glyph_count = _glyph_count+1;
     
     #endregion
 }

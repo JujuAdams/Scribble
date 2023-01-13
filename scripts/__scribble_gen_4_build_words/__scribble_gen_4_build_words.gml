@@ -46,7 +46,8 @@ function __scribble_gen_4_build_words()
     var _glyph_grid = global.__scribble_glyph_grid;
     var _word_grid  = global.__scribble_word_grid;
     
-    with(global.__scribble_generator_state)
+    var _generator_state = __scribble_get_generator_state();
+    with(_generator_state)
     {
         var _element       = __element;
         var _glyph_count   = __glyph_count;
@@ -207,7 +208,7 @@ function __scribble_gen_4_build_words()
     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI_RAW   ] = __SCRIBBLE_BIDI.SYMBOL;
     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI       ] = __SCRIBBLE_BIDI.SYMBOL;
     
-    with(global.__scribble_generator_state)
+    with(_generator_state)
     {
         __word_count = _word_count;
     }
