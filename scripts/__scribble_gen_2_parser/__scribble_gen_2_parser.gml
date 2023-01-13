@@ -940,6 +940,7 @@ function __scribble_gen_2_parser()
                                     }
                                     catch(_error)
                                     {
+                                        __scribble_trace(_error);
                                         __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a hexcode");
                                         _decoded_colour = _starting_colour;
                                     }
@@ -1002,6 +1003,7 @@ function __scribble_gen_2_parser()
                                     }
                                     catch(_error)
                                     {
+                                        __scribble_trace(_error);
                                         __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a decimal");
                                         _decoded_colour = _starting_colour;
                                     }

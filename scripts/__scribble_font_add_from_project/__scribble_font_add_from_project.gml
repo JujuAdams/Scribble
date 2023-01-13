@@ -192,6 +192,7 @@ function __scribble_font_add_from_project(_font)
     }
     catch(_error)
     {
+        __scribble_trace(_error);
         __scribble_error("There was an error whilst reading \"", _name, "\"\nPlease reimport the font into GameMaker and reset character ranges\nIf this issue persists, please report it");
     }
 }

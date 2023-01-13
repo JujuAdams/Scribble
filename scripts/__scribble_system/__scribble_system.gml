@@ -40,6 +40,7 @@ function __scribble_initialize()
     }
     catch(_error)
     {
+        __scribble_trace(_error);
         __scribble_error("Versions earlier than GameMaker 2022 LTS are not supported");
     }
     
