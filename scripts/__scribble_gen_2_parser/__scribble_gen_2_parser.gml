@@ -1254,8 +1254,57 @@ function __scribble_gen_2_parser()
                 
                 #endregion
             }
+            else if (SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS && (_glyph_ord == 0x2026)) //Replace ellipsis … with three full stops (periods)
+            {
+                //Figure out how much we need to copy and if we need to resize the target buffer
+                var _copy_size = _buffer_length - buffer_tell(_string_buffer);
+                
+                _buffer_length = 3 + _copy_size;
+                if (_buffer_length > buffer_get_size(_other_string_buffer)) buffer_resize(_other_string_buffer, _buffer_length);
+                
+                //Write the new string to the other buffer, and then copy the remainder of the data in the old buffer
+                buffer_seek(_other_string_buffer, buffer_seek_start, 0);
+                buffer_write(_other_string_buffer, buffer_text, "...");
+                buffer_copy(_string_buffer, buffer_tell(_string_buffer), _copy_size, _other_string_buffer, 3);
+                buffer_seek(_other_string_buffer, buffer_seek_start, 0);
+                
+                //Swap the two buffers over
+                var _temp = _string_buffer;
+                _string_buffer = _other_string_buffer;
+                _other_string_buffer = _temp;
+            }
             else if (_glyph_ord > 0x20) //Only write glyphs that aren't system control characters
             {
+                if (SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS)
+                { 
+                    if ((_glyph_ord == 0x2013)  //En dash –
+                    ||  (_glyph_ord == 0x2014)  //Em dash —
+                    ||  (_glyph_ord == 0x2015)) //Horizontal bar ―
+                    {
+                        //Replace with hyphen -
+                        _glyph_ord = 0x002D;
+                    }
+                    else if ((_glyph_ord == 0x2018)  //Start single quote ‘
+                         ||  (_glyph_ord == 0x2019)) //End single quote ’
+                    {
+                        //Replace with single quote '
+                        _glyph_ord = 0x0027;
+                    }
+                    else if ((_glyph_ord == 0x201C)  //Start double quote “
+                         ||  (_glyph_ord == 0x201D)  //End double quote ”
+                         ||  (_glyph_ord == 0x201E)  //Low double quote „
+                         ||  (_glyph_ord == 0x201F)) //High double quote ‟
+                    {
+                        //Replace with double quote "
+                        _glyph_ord = 0x0022;
+                    }
+                    else if (_glyph_ord == 0x037E) //Greek question mark ;
+                    {
+                        //Replace with semicolon
+                        _glyph_ord = 0x003B;
+                    }
+                }
+                
                 #region Add a standard glyph
                 
                 var _glyph_write  = _glyph_ord;
