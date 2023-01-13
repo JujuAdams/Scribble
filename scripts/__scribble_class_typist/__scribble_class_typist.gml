@@ -769,10 +769,19 @@ function __scribble_class_typist() constructor
     
     static __set_msdf_shader_uniforms = function()
     {
+        static _msdf_u_iTypewriterMethod        = shader_get_uniform(__shd_scribble_msdf, "u_iTypewriterMethod"       );
+        static _msdf_u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble_msdf, "u_iTypewriterCharMax"      );
+        static _msdf_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterWindowArray"  );
+        static _msdf_u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterSmoothness"   );
+        static _msdf_u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble_msdf, "u_vTypewriterStartPos"     );
+        static _msdf_u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble_msdf, "u_vTypewriterStartScale"   );
+        static _msdf_u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterStartRotation");
+        static _msdf_u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterAlphaDuration");
+        
         //If __in hasn't been set yet (.in() / .out() haven't been set) then just nope out
         if (__in == undefined)
         {
-            shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
+            shader_set_uniform_i(_msdf_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
             return undefined;
         }
         
@@ -797,14 +806,14 @@ function __scribble_class_typist() constructor
             }
         }
         
-        shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterMethod,            _method);
-        shader_set_uniform_i(global.__scribble_msdf_u_iTypewriterCharMax,           _char_max);
-        shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterSmoothness,        __smoothness);
-        shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartPos,          __ease_dx, __ease_dy);
-        shader_set_uniform_f(global.__scribble_msdf_u_vTypewriterStartScale,        __ease_xscale, __ease_yscale);
-        shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterStartRotation,     __ease_rotation);
-        shader_set_uniform_f(global.__scribble_msdf_u_fTypewriterAlphaDuration,     __ease_alpha_duration);
-        shader_set_uniform_f_array(global.__scribble_msdf_u_fTypewriterWindowArray, __window_array);
+        shader_set_uniform_i(_msdf_u_iTypewriterMethod,            _method);
+        shader_set_uniform_i(_msdf_u_iTypewriterCharMax,           _char_max);
+        shader_set_uniform_f(_msdf_u_fTypewriterSmoothness,        __smoothness);
+        shader_set_uniform_f(_msdf_u_vTypewriterStartPos,          __ease_dx, __ease_dy);
+        shader_set_uniform_f(_msdf_u_vTypewriterStartScale,        __ease_xscale, __ease_yscale);
+        shader_set_uniform_f(_msdf_u_fTypewriterStartRotation,     __ease_rotation);
+        shader_set_uniform_f(_msdf_u_fTypewriterAlphaDuration,     __ease_alpha_duration);
+        shader_set_uniform_f_array(_msdf_u_fTypewriterWindowArray, __window_array);
     }
     
     #endregion
