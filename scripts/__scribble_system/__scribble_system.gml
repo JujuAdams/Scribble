@@ -76,8 +76,6 @@ function __scribble_initialize()
     global.__scribble_gc_vbuff_refs = [];
     global.__scribble_gc_vbuff_ids  = [];
     
-    if (__SCRIBBLE_ON_WEB) global.__scribble_html5_sprite_height_workaround = {};
-
     __scribble_config_colours();
 
     global.__scribble_typewriter_events = ds_map_create();
