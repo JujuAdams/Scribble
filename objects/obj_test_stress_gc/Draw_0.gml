@@ -10,10 +10,6 @@ if (toggle)
     counter++;
     smoothed_time = lerp(smoothed_time, _t, 0.01);
 }
-else
-{
-    __scribble_gc_collect();
-}
 
 draw_set_font(scribble_fallback_font);
 draw_text(10,  10, "models cached = " + string(variable_struct_names_count(global.__scribble_mcache_dict)));

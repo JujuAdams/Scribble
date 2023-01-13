@@ -7,5 +7,4 @@ if (keyboard_check(ord("F")))
     }
     
     gc_collect();
-    __scribble_gc_collect();
 }
