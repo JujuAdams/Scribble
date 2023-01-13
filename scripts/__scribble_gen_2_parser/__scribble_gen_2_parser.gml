@@ -141,7 +141,7 @@ function __scribble_gen_2_parser()
     
     var _effects_map           = __scribble_get_effects_map();
     var _effects_slash_map     = __scribble_get_effects_slash_map();
-    var _typewriter_events_map = __scribble_get_typewrite_events_map();
+    var _typewriter_events_map = __scribble_get_typewriter_events_map();
     
     var _generator_state = __scribble_get_generator_state();
     
