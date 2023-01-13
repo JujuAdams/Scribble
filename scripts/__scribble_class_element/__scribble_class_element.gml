@@ -3,6 +3,8 @@
 
 function __scribble_class_element(_string, _unique_id) constructor
 {
+    static _scribble_state = __scribble_get_state();
+    
     __text       = _string;
     __unique_id  = _unique_id;
     __cache_name = _string + ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (":" + string(_unique_id)));
@@ -33,7 +35,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     
     
-    __starting_font   = global.__scribble_default_font;
+    __starting_font   = _scribble_state.__default_font;
     __starting_colour = __scribble_process_colour(SCRIBBLE_DEFAULT_COLOR);
     __starting_halign = SCRIBBLE_DEFAULT_HALIGN;
     __starting_valign = SCRIBBLE_DEFAULT_VALIGN;

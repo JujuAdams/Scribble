@@ -18,8 +18,10 @@
 
 function draw_text_scribble_ext(_x, _y, _string, _width, _reveal = undefined)
 {
+    static _scribble_state = __scribble_get_state();
+    
     var _font = draw_get_font();
-    _font = !font_exists(_font)? global.__scribble_default_font : font_get_name(_font);
+    _font = !font_exists(_font)? _scribble_state.__default_font : font_get_name(_font);
     
     var _element = scribble(_string)
     .align(draw_get_halign(), draw_get_valign())

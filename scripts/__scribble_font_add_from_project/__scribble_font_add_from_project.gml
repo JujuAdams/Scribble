@@ -13,10 +13,11 @@ function __scribble_font_add_from_project(_font)
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", _name, "\" as standard font");
     
-    if (global.__scribble_default_font == undefined)
+    var _scribble_state = __scribble_get_state();
+    if (_scribble_state.__default_font == undefined)
     {
         if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_name) + "\"");
-        global.__scribble_default_font = _name;
+        _scribble_state.__default_font = _name;
     }
     
     try

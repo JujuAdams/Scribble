@@ -7,8 +7,10 @@
 
 function string_height_scribble_ext(_string, _width)
 {
+    static _scribble_state = __scribble_get_state();
+    
     var _font = draw_get_font();
-    _font = !font_exists(_font)? global.__scribble_default_font : font_get_name(_font);
+    _font = !font_exists(_font)? _scribble_state.__default_font : font_get_name(_font);
     
     return scribble(_string).starting_format(_font, c_white).wrap(_width).get_height();
 }

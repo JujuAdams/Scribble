@@ -34,10 +34,11 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _is_krutidev = __scribble_asset_is_krutidev(_sprite, asset_sprite);
     var _global_glyph_bidi_map = global.__scribble_glyph_data.__bidi_map;
     
-    if (global.__scribble_default_font == undefined)
+    var _scribble_state = __scribble_get_state();
+    if (_scribble_state.__default_font == undefined)
     {
         if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_sprite_name) + "\"");
-        global.__scribble_default_font = _sprite_name;
+        _scribble_state.__default_font = _sprite_name;
     }
     
     var _sprite_width  = sprite_get_width(_sprite);

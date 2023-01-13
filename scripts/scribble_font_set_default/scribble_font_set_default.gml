@@ -14,10 +14,7 @@ function scribble_font_set_default(_font)
         return undefined;
     }
     
-    if (SCRIBBLE_VERBOSE && (global.__scribble_default_font == undefined))
-    {
-        __scribble_trace("Setting default font to \"" + string(_font) + "\"");
-    }
-    
-    global.__scribble_default_font = _font;
+    static _scribble_state = __scribble_get_state();
+    if (SCRIBBLE_VERBOSE && (_scribble_state.__default_font == undefined)) __scribble_trace("Setting default font to \"" + string(_font) + "\"");
+    _scribble_state.__default_font = _font;
 }
