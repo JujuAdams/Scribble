@@ -55,6 +55,7 @@ function __scribble_initialize()
     __scribble_get_buffer_b();
     __scribble_get_anim_properties();
     __scribble_effects_maps_initialize();
+    __scribble_typewrite_events_map_initialize();
     
     
     //Declare global variables
@@ -70,12 +71,6 @@ function __scribble_initialize()
 
     global.__scribble_gc_vbuff_refs = [];
     global.__scribble_gc_vbuff_ids  = [];
-    
-    global.__scribble_typewriter_events = ds_map_create();
-    global.__scribble_typewriter_events[? "pause" ] = undefined;
-    global.__scribble_typewriter_events[? "delay" ] = undefined;
-    global.__scribble_typewriter_events[? "speed" ] = undefined;
-    global.__scribble_typewriter_events[? "/speed"] = undefined;
     
     global.__scribble_macros = ds_map_create();
     

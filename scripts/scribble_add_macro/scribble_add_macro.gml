@@ -40,7 +40,7 @@ function scribble_add_macro(_name, _function)
         exit;
     }
     
-    if (ds_map_exists(global.__scribble_typewriter_events, _name))
+    if (ds_map_exists(__scribble_get_typewrite_events_map(), _name))
     {
         __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as a typist event");
         exit;

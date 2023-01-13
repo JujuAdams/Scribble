@@ -48,7 +48,8 @@ function scribble_typists_add_event(_name, _function)
         exit;
     }
     
-    var _old_function = global.__scribble_typewriter_events[? _name];
+    var _typewriter_events_map = __scribble_get_typewriter_events_map();
+    var _old_function = _typewriter_events_map[? _name];
     if (!is_undefined(_old_function))
     {
         if (is_numeric(_old_function) and (_old_function < 0))
@@ -61,6 +62,6 @@ function scribble_typists_add_event(_name, _function)
         }
     }
     
-    global.__scribble_typewriter_events[? _name] = _function;
+    _typewriter_events_map[? _name] = _function;
     if (SCRIBBLE_VERBOSE) __scribble_trace("Tying event [" + _name + "] to \"" + (is_method(_function)? string(_function) : script_get_name(_function)) + "\"");
 }

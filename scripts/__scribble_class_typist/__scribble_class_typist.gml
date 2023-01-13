@@ -463,7 +463,8 @@ function __scribble_class_typist() constructor
                 //Porbably a current event
                 default:
                     //Otherwise try to find a custom event
-                    var _function = global.__scribble_typewriter_events[? _event_name];
+                    var _typewriter_events_map = __scribble_get_typewrite_events_map();
+                    var _function = _typewriter_events_map[? _event_name];
                     if (is_method(_function))
                     {
                         with(_function_scope) _function(_target_element, _event_data, _event_position);

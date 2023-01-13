@@ -139,8 +139,9 @@ function __scribble_gen_2_parser()
     
     #endregion
     
-    var _effects_map       = __scribble_get_effects_map();
-    var _effects_slash_map = __scribble_get_effects_slash_map();
+    var _effects_map           = __scribble_get_effects_map();
+    var _effects_slash_map     = __scribble_get_effects_slash_map();
+    var _typewriter_events_map = __scribble_get_typewrite_events_map();
     
     var _generator_state = __scribble_get_generator_state();
     
@@ -852,7 +853,7 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                             ++_control_count;
                         }
-                        else if (ds_map_exists(global.__scribble_typewriter_events, _tag_command_name)) //Events
+                        else if (ds_map_exists(_typewriter_events_map, _tag_command_name)) //Events
                         {
                             array_delete(_tag_parameters, 0, 1);
                             
