@@ -1233,7 +1233,7 @@ function __scribble_gen_2_parser()
                 
                 #endregion
             }
-            else if (_glyph_ord == 0x200B) //Zero-width space
+            else if ((_glyph_ord == 0x200B) || (SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP && __has_thai && (_glyph_ord == 0x60))) //Zero-width space, or a Thai grave accent
             {
                 #region Add a zero-width space glyph to our grid
                 

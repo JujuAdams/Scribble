@@ -47,6 +47,8 @@
 #macro SCRIBBLE_SHOW_WRAP_BOUNDARY        false    //Controls the drawing of a rectangle that indicates the boundaries of the .wrap(), .fit_to_box(), and .scale_to_box() methods
 #macro SCRIBBLE_ATTEMPT_FONT_SCALING_FIX  true     //Whether to try to fix font scaling due to the font texture being too big for the texture page
 
+#macro SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP  true  //Whether to replace a grave accent (` U+0060, decimal=96) with a zero-width space for Thai text
+
 #endregion
 
 
