@@ -3,7 +3,7 @@
 
 function scribble_anim_pulse(_scale, _speed)
 {
-    var _array = __scribble_get_anim_properties();
+    static _array = __scribble_get_anim_properties();
     
     if ((_scale != _array[__SCRIBBLE_ANIM.__PULSE_SCALE])
     ||  (_speed != _array[__SCRIBBLE_ANIM.__PULSE_SPEED]))

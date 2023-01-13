@@ -4,7 +4,7 @@
 
 function scribble_anim_jitter(_min_scale, _max_scale, _speed)
 {
-    var _array = __scribble_get_anim_properties();
+    static _array = __scribble_get_anim_properties();
     
     if ((_min_scale != _array[__SCRIBBLE_ANIM.__JITTER_MINIMUM])
     ||  (_max_scale != _array[__SCRIBBLE_ANIM.__JITTER_MAXIMUM])

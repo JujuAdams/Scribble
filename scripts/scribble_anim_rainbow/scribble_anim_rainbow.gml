@@ -3,7 +3,7 @@
 
 function scribble_anim_rainbow(_weight, _speed)
 {
-    var _array = __scribble_get_anim_properties();
+    static _array = __scribble_get_anim_properties();
     
     if ((_weight != _array[__SCRIBBLE_ANIM.__RAINBOW_WEIGHT])
     ||  (_speed  != _array[__SCRIBBLE_ANIM.__RAINBOW_SPEED ]))

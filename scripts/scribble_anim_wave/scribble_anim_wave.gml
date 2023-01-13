@@ -4,7 +4,7 @@
 
 function scribble_anim_wave(_size, _frequency, _speed)
 {
-    var _array = __scribble_get_anim_properties();
+    static _array = __scribble_get_anim_properties();
     
     if ((_size      != _array[__SCRIBBLE_ANIM.__WAVE_SIZE ])
     ||  (_frequency != _array[__SCRIBBLE_ANIM.__WAVE_FREQ ])

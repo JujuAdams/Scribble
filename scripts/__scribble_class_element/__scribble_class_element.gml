@@ -1363,7 +1363,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 __bbox_dirty             = true;
                 __scale_to_box_dirty     = true; //The dimensions of the text element might change as a result of a model change
                 
-                var _buffer = __scribble_get_buffer_a();
+                static _buffer = __scribble_get_buffer_a();
                 buffer_seek(_buffer, buffer_seek_start, 0);
                 buffer_write(_buffer, buffer_text, string(__text           ));     buffer_write(_buffer, buffer_u8,  0x3A); //colon
                 buffer_write(_buffer, buffer_text, string(__starting_font  ));     buffer_write(_buffer, buffer_u8,  0x3A); //colon
@@ -1388,6 +1388,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 buffer_write(_buffer, buffer_text, string(__ignore_command_tags)); buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_u8, 0x00);
                 buffer_seek(_buffer, buffer_seek_start, 0);
+                
                 __model_cache_name = buffer_read(_buffer, buffer_string);
             }
             
@@ -1484,7 +1485,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             global.__scribble_anim_shader_desync = false;
             global.__scribble_anim_shader_default = global.__scribble_anim_shader_desync_to_default;
-            shader_set_uniform_f_array(_u_aDataFields, __scribble_get_anim_properties());
+            
+            static _anim_properties_array = __scribble_get_anim_properties();
+            shader_set_uniform_f_array(_u_aDataFields, _anim_properties_array);
         }
         
         if (__bezier_using)
@@ -1609,7 +1612,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             global.__scribble_anim_shader_msdf_desync = false;
             global.__scribble_anim_shader_msdf_default = global.__scribble_anim_shader_msdf_desync_to_default;
-            shader_set_uniform_f_array(_msdf_u_aDataFields, __scribble_get_anim_properties());
+            
+            static _anim_properties_array = __scribble_get_anim_properties();
+            shader_set_uniform_f_array(_msdf_u_aDataFields, _anim_properties_array);
         }
         
         if (__bezier_using)

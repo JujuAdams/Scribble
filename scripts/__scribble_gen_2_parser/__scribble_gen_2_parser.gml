@@ -139,19 +139,17 @@ function __scribble_gen_2_parser()
     
     #endregion
     
-    //Cache globals locally for a performance boost
-    var _effects_map           = __scribble_get_effects_map();
-    var _effects_slash_map     = __scribble_get_effects_slash_map();
-    var _typewriter_events_map = __scribble_get_typewriter_events_map();
-    var _external_sound_map    = __scribble_get_external_sound_map();
-    var _macros_map            = __scribble_get_macros_map();
-    var _string_buffer         = __scribble_get_buffer_a();
-    var _other_string_buffer   = __scribble_get_buffer_b();
-    var _colors_struct         = __scribble_config_colours();
+    static _effects_map           = __scribble_get_effects_map();
+    static _effects_slash_map     = __scribble_get_effects_slash_map();
+    static _typewriter_events_map = __scribble_get_typewriter_events_map();
+    static _external_sound_map    = __scribble_get_external_sound_map();
+    static _macros_map            = __scribble_get_macros_map();
+    static _string_buffer         = __scribble_get_buffer_a();
+    static _other_string_buffer   = __scribble_get_buffer_b();
+    static _colors_struct         = __scribble_config_colours();
+    static _font_data_map         = __scribble_get_font_data_map();
+    static _generator_state       = __scribble_get_generator_state();
     
-    static _font_data_map = __scribble_get_font_data_map();
-    
-    static _generator_state = __scribble_get_generator_state();
     with(_generator_state)
     {
         var _glyph_grid     = __glyph_grid;
