@@ -1497,7 +1497,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             //If we're *not* using a Bezier curve but we have a previous Bezier curve cached, reset the curve in the shader
             global.__scribble_bezier_using = false;
-            shader_set_uniform_f_array(_u_aBezier, global.__scribble_bezier_null_array);
+            static _null_array = array_create(6, 0);
+            shader_set_uniform_f_array(_u_aBezier, _null_array);
         }
         
         if (_typist != undefined)
@@ -1621,7 +1622,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             //If we're *not* using a Bezier curve but we have a previous Bezier curve cached, reset the curve in the shader
             global.__scribble_bezier_msdf_using = false;
-            shader_set_uniform_f_array(_msdf_u_aBezier, global.__scribble_bezier_null_array);
+            static _null_array = array_create(6, 0);
+            shader_set_uniform_f_array(_msdf_u_aBezier, _null_array);
         }
         
         if (_typist != undefined)

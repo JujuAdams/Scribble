@@ -94,7 +94,6 @@ function __scribble_initialize()
     //Bezier curve shader state tracking
     global.__scribble_bezier_using      = false;
     global.__scribble_bezier_msdf_using = false;
-    global.__scribble_bezier_null_array = array_create(6, 0);
 }
 
 
