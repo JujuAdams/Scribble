@@ -41,7 +41,7 @@
                                       if (_data_index == undefined)\
                                       {\
                                           ;\//This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
-                                          __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");\
+                                          __scribble_trace("Couldn't find \"missing character\" glyph data, character code " + string(ord(SCRIBBLE_MISSING_CHARACTER)) + " (" + string(SCRIBBLE_MISSING_CHARACTER) + ") in font \"" + string(_font_name) + "\"");\
                                       }\
                                       else\
                                       {\
