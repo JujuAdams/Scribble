@@ -56,7 +56,8 @@ function __scribble_initialize()
     __scribble_get_anim_properties();
     __scribble_effects_maps_initialize();
     __scribble_typewrite_events_map_initialize();
-    
+    __scribble_krutidev_lookup_map_initialize();
+    __scribble_krutidev_matra_lookup_map_initialize()
     
     //Declare global variables
     global.__scribble_default_font = "scribble_fallback_font";
