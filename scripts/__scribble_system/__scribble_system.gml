@@ -32,7 +32,11 @@ function __scribble_initialize()
     try
     {
         global.__scribble_frames = 0;
-        time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, __scribble_tick, [], -1));
+        time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
+        {
+            //We use an anonymous function here because directly calling __scribble_tick() fails on HTML5
+            __scribble_tick()
+        }, [], -1));
     }
     catch(_error)
     {
