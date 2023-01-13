@@ -153,6 +153,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [typist]
     static draw = function(_x, _y, _typist = undefined)
     {
+        static _scribble_state = __scribble_get_state();
+        
         var _function_scope = other;
         
         if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
@@ -174,9 +176,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         __last_drawn = global.__scribble_frames;
         
         //Update the blink state
-        if (global.__scribble_anim_blink_on_duration + global.__scribble_anim_blink_off_duration > 0)
+        if (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration > 0)
         {
-            __animation_blink_state = (((__animation_time + global.__scribble_anim_blink_time_offset) mod (global.__scribble_anim_blink_on_duration + global.__scribble_anim_blink_off_duration)) < global.__scribble_anim_blink_on_duration);
+            __animation_blink_state = (((__animation_time + _scribble_state.__blink_time_offset) mod (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration)) < _scribble_state.__blink_on_duration);
         }
         else
         {
