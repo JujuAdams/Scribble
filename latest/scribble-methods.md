@@ -428,24 +428,26 @@ This functions returns the **transformed** width and height of the text element.
 
 The struct returned by `.get_bbox()` contains the following member variables:
 
-|Variable        |Purpose                                |
-|----------------|---------------------------------------|
-|**Axis-aligned**|                                       |
-|`left`          |Axis-aligned lefthand boundary         |
-|`top`           |Axis-aligned top boundary              |
-|`right`         |Axis-aligned righthand boundary        |
-|`bottom`        |Axis-aligned bottom boundary           |
-|`width`         |Axis-aligned width of the bounding box |
-|`height`        |Axis-aligned height of the bounding box|
-|**Oriented**    |                                       |
-|`x0`            |x position of the top-left corner      |
-|`y0`            |y position of the top-left corner      |
-|`x1`            |x position of the top-right corner     |
-|`y1`            |y position of the top-right corner     |
-|`x2`            |x position of the bottom-left corner   |
-|`y2`            |y position of the bottom-left corner   |
-|`x3`            |x position of the bottom-right corner  |
-|`y3`            |y position of the bottom-right corner  |
+|Variable        |Purpose                                      |
+|----------------|---------------------------------------------|
+|`x`             |x position passed into the `.get_bbox()` call|
+|`y`             |y position passed into the `.get_bbox()` call|
+|**Axis-aligned**|                                             |
+|`left`          |Axis-aligned lefthand boundary               |
+|`top`           |Axis-aligned top boundary                    |
+|`right`         |Axis-aligned righthand boundary              |
+|`bottom`        |Axis-aligned bottom boundary                 |
+|`width`         |Axis-aligned width of the bounding box       |
+|`height`        |Axis-aligned height of the bounding box      |
+|**Oriented**    |                                             |
+|`x0`            |x position of the top-left corner            |
+|`y0`            |y position of the top-left corner            |
+|`x1`            |x position of the top-right corner           |
+|`y1`            |y position of the top-right corner           |
+|`x2`            |x position of the bottom-left corner         |
+|`y2`            |y position of the bottom-left corner         |
+|`x3`            |x position of the bottom-right corner        |
+|`y3`            |y position of the bottom-right corner        |
 
 &nbsp;
 
