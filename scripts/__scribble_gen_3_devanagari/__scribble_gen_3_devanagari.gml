@@ -1,121 +1,3 @@
-#region Build find-replace lookup table
-
-//TODO - Precalculate the lookup table
-//TODO - Move this to __scribble_system_glyph_data()
-var _unicode_source_array = [
-    "‘",   "’",   "“",   "”",   "(",    ")",   "{",    "}",   "=", "।",  "?",  "-",  "µ", "॰", ",", ".",
-	"०",  "१",  "२",  "३",     "४",   "५",  "६",   "७",   "८",   "९", "x", 
-
-	"फ़्",  "क़",  "ख़",  "ग़", "ज़्", "ज़",  "ड़",  "ढ़",   "फ़",  "य़",  "ऱ",  "ऩ",  
-	"त्त्",   "त्त",     "क्त",  "दृ",  "कृ",
-
-	"ह्न",  "ह्य",  "हृ",  "ह्म",  "ह्र",  "ह्",   "द्द",  "क्ष्", "क्ष", "त्र्", "त्र","ज्ञ",
-	"छ्य",  "ट्य",  "ठ्य",  "ड्य",  "ढ्य", "द्य","द्व",
-	"श्र",  "ट्र",    "ड्र",    "ढ्र",    "छ्र",   "क्र",  "फ्र",  "द्र",   "प्र",   "ग्र", "रु",  "रू",
-	"्र",
-
-	"ओ",  "औ",  "आ",   "अ",   "ई",   "इ",  "उ",   "ऊ",  "ऐ",  "ए", "ऋ",
-
-	"क्",  "क",  "क्क",  "ख्",   "ख",    "ग्",   "ग",  "घ्",  "घ",    "ङ",
-	"चै",   "च्",   "च",   "छ",  "ज्", "ज",   "झ्",  "झ",   "ञ",
-
-	"ट्ट",   "ट्ठ",   "ट",   "ठ",   "ड्ड",   "ड्ढ",  "ड",   "ढ",  "ण्", "ण",  
-	"त्",  "त",  "थ्", "थ",  "द्ध",  "द", "ध्", "ध",  "न्",  "न",  
-
-	"प्",  "प",  "फ्", "फ",  "ब्",  "ब", "भ्",  "भ",  "म्",  "म",
-	"य्",  "य",  "र",  "ल्", "ल",  "ळ",  "व्",  "व", 
-	"श्", "श",  "ष्", "ष",  "स्",   "स",   "ह",     
-
-	"ऑ",   "ॉ",  "ो",   "ौ",   "ा",   "ी",   "ु",   "ू",   "ृ",   "े",   "ै",
-	"ं",   "ँ",   "ः",   "ॅ",    "ऽ", chr(0x94D), //virama
-];
-    
-var _krutidev_source_array = [
-    "^", "*",  "Þ", "ß", "¼", "½", "¿", "À", "¾", "A", "\\", "&", "&", "Œ", "]","-", 
-	"å",  "ƒ",  "„",   "…",   "†",   "‡",   "ˆ",   "‰",   "Š",   "‹","Û",
-
-	"¶",   "d",    "[k",  "x",  "T",  "t",   "M+", "<+", "Q",  ";",    "j",   "u",
-	"Ù",   "Ùk",   "Dr",    "–",   "—",       
-
-	"à",   "á",    "â",   "ã",   "ºz",  "º",   "í", "{", "{k",  "«", "=","K", 
-	"Nî",   "Vî",    "Bî",   "Mî",   "<î", "|","}",
-	"J",   "Vª",   "Mª",  "<ªª",  "Nª",   "Ø",  "Ý",   "æ", "ç", "xz", "#", ":",
-	"z",
-
-	"vks",  "vkS",  "vk",    "v",   "bZ",  "b",  "m",  "Å",  ",s",  ",",   "_",
-
-	"D",  "d",    "ô",     "[",     "[k",    "X",   "x",  "?",    "?k",   "³", 
-	"pkS",  "P",    "p",  "N",   "T",    "t",   "÷",  ">",   "¥",
-
-	"ê",      "ë",      "V",  "B",   "ì",       "ï",     "M",  "<",  ".", ".k",   
-	"R",  "r",   "F", "Fk",  ")",    "n", "/",  "/k",  "U", "u",   
-
-	"I",  "i",   "¶", "Q",   "C",  "c",  "H",  "Hk", "E",   "e",
-	"¸",   ";",    "j",  "Y",   "y",  "G",  "O",  "o",
-	"'", "'k",  "\"", "\"k", "L",   "l",   "g",      
-
-	"v‚",    "‚",    "ks",   "kS",   "k",     "h",    "q",   "w",   "`",    "s",    "S",
-	"a",    "¡",    "%",     "W",   "·", "~",
-];
-
-//Use a ds_map rather than a struct since our keys will be integers
-global.__scribble_krutidev_lookup_map = ds_map_create();
-    
-var _i = 0;
-repeat(array_length(_unicode_source_array))
-{
-    var _string = _unicode_source_array[_i];
-        
-    var _searchInteger = 0;
-    var _j = string_length(_string);
-    repeat(_j)
-    {
-        _searchInteger = (_searchInteger << 16) | ord(string_char_at(_string, _j));
-        --_j;
-    }
-        
-    var _string = _krutidev_source_array[_i];
-    var _writeArray = [];
-    var _j = 1;
-    repeat(string_length(_string))
-    {
-        array_push(_writeArray, ord(string_char_at(_string, _j)));
-        ++_j;
-    }
-        
-    global.__scribble_krutidev_lookup_map[? _searchInteger] = _writeArray;
-        
-    ++_i;
-}
-    
-#endregion
-
-
-
-#region Build matra lookup table
-
-//Use a ds_map rather than a struct since our keys are integers
-//TODO - Convert these to hex and add comments
-global.__scribble_krutidev_matra_lookup_map = ds_map_create();
-global.__scribble_krutidev_matra_lookup_map[?   58] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2305] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2306] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2366] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2367] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2368] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2369] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2370] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2371] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2373] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2375] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2376] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2379] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2380] = true;
-    
-#endregion
-
-
-
 #macro __SCRIBBLE_PARSER_INSERT_NUKTA  ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+1, 0, _glyph_count+3, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);\
                                        ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count+3 - _i, __SCRIBBLE_GEN_GLYPH.__SIZE, _i+2, 0);\
                                        ;\
@@ -130,6 +12,134 @@ function __scribble_gen_3_devanagari()
 {
     //Avoid this mess if we can
     if (!__has_devanagari) exit;
+    
+    
+    
+    static _krutidev_lookup_map = undefined;
+    if (_krutidev_lookup_map == undefined)
+    {
+        #region Build find-replace lookup table
+        
+        //We use a ds_map rather than a struct since our keys will be integers
+        _krutidev_lookup_map = ds_map_create();
+        
+        //TODO - Precalculate the lookup table
+        //TODO - Move this to __scribble_system_glyph_data()
+        var _unicode_source_array = [
+            "‘",   "’",   "“",   "”",   "(",    ")",   "{",    "}",   "=", "।",  "?",  "-",  "µ", "॰", ",", ".",
+        	"०",  "१",  "२",  "३",     "४",   "५",  "६",   "७",   "८",   "९", "x", 
+            
+        	"फ़्",  "क़",  "ख़",  "ग़", "ज़्", "ज़",  "ड़",  "ढ़",   "फ़",  "य़",  "ऱ",  "ऩ",  
+        	"त्त्",   "त्त",     "क्त",  "दृ",  "कृ",
+            
+        	"ह्न",  "ह्य",  "हृ",  "ह्म",  "ह्र",  "ह्",   "द्द",  "क्ष्", "क्ष", "त्र्", "त्र","ज्ञ",
+        	"छ्य",  "ट्य",  "ठ्य",  "ड्य",  "ढ्य", "द्य","द्व",
+        	"श्र",  "ट्र",    "ड्र",    "ढ्र",    "छ्र",   "क्र",  "फ्र",  "द्र",   "प्र",   "ग्र", "रु",  "रू",
+        	"्र",
+            
+        	"ओ",  "औ",  "आ",   "अ",   "ई",   "इ",  "उ",   "ऊ",  "ऐ",  "ए", "ऋ",
+            
+        	"क्",  "क",  "क्क",  "ख्",   "ख",    "ग्",   "ग",  "घ्",  "घ",    "ङ",
+        	"चै",   "च्",   "च",   "छ",  "ज्", "ज",   "झ्",  "झ",   "ञ",
+            
+        	"ट्ट",   "ट्ठ",   "ट",   "ठ",   "ड्ड",   "ड्ढ",  "ड",   "ढ",  "ण्", "ण",  
+        	"त्",  "त",  "थ्", "थ",  "द्ध",  "द", "ध्", "ध",  "न्",  "न",  
+            
+        	"प्",  "प",  "फ्", "फ",  "ब्",  "ब", "भ्",  "भ",  "म्",  "म",
+        	"य्",  "य",  "र",  "ल्", "ल",  "ळ",  "व्",  "व", 
+        	"श्", "श",  "ष्", "ष",  "स्",   "स",   "ह",     
+            
+        	"ऑ",   "ॉ",  "ो",   "ौ",   "ा",   "ी",   "ु",   "ू",   "ृ",   "े",   "ै",
+        	"ं",   "ँ",   "ः",   "ॅ",    "ऽ", chr(0x94D), //virama
+        ];
+        
+        var _krutidev_source_array = [
+            "^", "*",  "Þ", "ß", "¼", "½", "¿", "À", "¾", "A", "\\", "&", "&", "Œ", "]","-", 
+        	"å",  "ƒ",  "„",   "…",   "†",   "‡",   "ˆ",   "‰",   "Š",   "‹","Û",
+            
+        	"¶",   "d",    "[k",  "x",  "T",  "t",   "M+", "<+", "Q",  ";",    "j",   "u",
+        	"Ù",   "Ùk",   "Dr",    "–",   "—",       
+            
+        	"à",   "á",    "â",   "ã",   "ºz",  "º",   "í", "{", "{k",  "«", "=","K", 
+        	"Nî",   "Vî",    "Bî",   "Mî",   "<î", "|","}",
+        	"J",   "Vª",   "Mª",  "<ªª",  "Nª",   "Ø",  "Ý",   "æ", "ç", "xz", "#", ":",
+        	"z",
+            
+        	"vks",  "vkS",  "vk",    "v",   "bZ",  "b",  "m",  "Å",  ",s",  ",",   "_",
+            
+        	"D",  "d",    "ô",     "[",     "[k",    "X",   "x",  "?",    "?k",   "³", 
+        	"pkS",  "P",    "p",  "N",   "T",    "t",   "÷",  ">",   "¥",
+            
+        	"ê",      "ë",      "V",  "B",   "ì",       "ï",     "M",  "<",  ".", ".k",   
+        	"R",  "r",   "F", "Fk",  ")",    "n", "/",  "/k",  "U", "u",   
+            
+        	"I",  "i",   "¶", "Q",   "C",  "c",  "H",  "Hk", "E",   "e",
+        	"¸",   ";",    "j",  "Y",   "y",  "G",  "O",  "o",
+        	"'", "'k",  "\"", "\"k", "L",   "l",   "g",      
+            
+        	"v‚",    "‚",    "ks",   "kS",   "k",     "h",    "q",   "w",   "`",    "s",    "S",
+        	"a",    "¡",    "%",     "W",   "·", "~",
+        ];
+        
+        var _i = 0;
+        repeat(array_length(_unicode_source_array))
+        {
+            var _string = _unicode_source_array[_i];
+            
+            var _searchInteger = 0;
+            var _j = string_length(_string);
+            repeat(_j)
+            {
+                _searchInteger = (_searchInteger << 16) | ord(string_char_at(_string, _j));
+                --_j;
+            }
+            
+            var _string = _krutidev_source_array[_i];
+            var _writeArray = [];
+            var _j = 1;
+            repeat(string_length(_string))
+            {
+                array_push(_writeArray, ord(string_char_at(_string, _j)));
+                ++_j;
+            }
+            
+            _krutidev_lookup_map[? _searchInteger] = _writeArray;
+            
+            ++_i;
+        }
+        
+        #endregion
+    }
+    
+    static _krutidev_matra_lookup_map = undefined;
+    if (_krutidev_lookup_map == undefined)
+    {
+        #region Build matra lookup table
+        
+        //We use a ds_map rather than a struct since our keys are integers
+        _krutidev_lookup_map = ds_map_create();
+        
+        //TODO - Convert these to hex and add comments
+        _krutidev_matra_lookup_map = ds_map_create();
+        _krutidev_matra_lookup_map[?   58] = true;
+        _krutidev_matra_lookup_map[? 2305] = true;
+        _krutidev_matra_lookup_map[? 2306] = true;
+        _krutidev_matra_lookup_map[? 2366] = true;
+        _krutidev_matra_lookup_map[? 2367] = true;
+        _krutidev_matra_lookup_map[? 2368] = true;
+        _krutidev_matra_lookup_map[? 2369] = true;
+        _krutidev_matra_lookup_map[? 2370] = true;
+        _krutidev_matra_lookup_map[? 2371] = true;
+        _krutidev_matra_lookup_map[? 2373] = true;
+        _krutidev_matra_lookup_map[? 2375] = true;
+        _krutidev_matra_lookup_map[? 2376] = true;
+        _krutidev_matra_lookup_map[? 2379] = true;
+        _krutidev_matra_lookup_map[? 2380] = true;
+        
+        #endregion
+    }
+    
+    
     
     var _generator_state = __scribble_get_generator_state();
     with(_generator_state)
@@ -267,8 +277,6 @@ function __scribble_gen_3_devanagari()
     
     #region Move र् (ra + virama) after matras
     
-    var _matraLookupMap = global.__scribble_krutidev_matra_lookup_map;
-    
     //Using a for-loop here as _glyph_count may change
     for(var _i = 0; _i < _glyph_count; ++_i)
     {
@@ -279,7 +287,7 @@ function __scribble_gen_3_devanagari()
             
             //If the character after the probable position for ra+virama is a matra, keep searching right
             var _charRight = _glyph_grid[# _newPosition+1, __SCRIBBLE_GEN_GLYPH.__UNICODE];
-            while(ds_map_exists(_matraLookupMap, _charRight))
+            while(ds_map_exists(_krutidev_matra_lookup_map, _charRight))
             {
                 _newPosition++;
                 _charRight = _glyph_grid[# _newPosition+1, __SCRIBBLE_GEN_GLYPH.__UNICODE];
@@ -313,8 +321,6 @@ function __scribble_gen_3_devanagari()
     
     #region Perform bulk find-replace
     
-    var _lookupMap = global.__scribble_krutidev_lookup_map;
-    
     //Create a 64-bit minibuffer
     //Fortunately all the characters we're looking for fit into 16 bits and we only need to look for 4 at a time
     var _oneChar   = 0x0000;
@@ -332,22 +338,22 @@ function __scribble_gen_3_devanagari()
         
         //Try to find a matching substring
         var _foundLength = 4;
-        var _replacementArray = _lookupMap[? _fourChar];
+        var _replacementArray = _krutidev_lookup_map[? _fourChar];
         
         if (_replacementArray == undefined)
         {
             _foundLength = 3;
-            _replacementArray = _lookupMap[? _threeChar];
+            _replacementArray = _krutidev_lookup_map[? _threeChar];
             
             if (_replacementArray == undefined)
             {
                 _foundLength = 2;
-                _replacementArray = _lookupMap[? _twoChar];
+                _replacementArray = _krutidev_lookup_map[? _twoChar];
                 
                 if (_replacementArray == undefined)
                 {
                     _foundLength = 1;
-                    _replacementArray = _lookupMap[? _oneChar];
+                    _replacementArray = _krutidev_lookup_map[? _oneChar];
                 }
             }
         }
