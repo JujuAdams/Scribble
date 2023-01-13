@@ -12,6 +12,8 @@ function __scribble_get_state()
         __msdf_anim_desync:            false,
         __msdf_anim_desync_to_default: false,
         __msdf_anim_default:           false,
+        
+        __msdf_thickness_offset: 0,
     };
     
     return _struct;

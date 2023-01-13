@@ -31,6 +31,8 @@ function __scribble_class_page() constructor
     
     static __submit = function(_msdf_feather_thickness, _double_draw)
     {
+        static _scribble_state = __scribble_get_state();
+        
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < global.__scribble_frames)) __freeze();
         
         var _shader = undefined;
@@ -63,7 +65,7 @@ function __scribble_class_page() constructor
                 //Set shader uniforms unique to the MSDF shader
                 shader_set_uniform_f(_msdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
                 shader_set_uniform_f(_msdf_u_fMSDFRange, _msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE]);
-                shader_set_uniform_f(_msdf_u_fMSDFThicknessOffset, global.__scribble_msdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET]);
+                shader_set_uniform_f(_msdf_u_fMSDFThicknessOffset, _scribble_state.__msdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET]);
                 
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
                 
