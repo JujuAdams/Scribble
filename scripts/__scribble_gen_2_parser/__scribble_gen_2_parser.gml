@@ -888,7 +888,7 @@ function __scribble_gen_2_parser()
                             _macro_result = string(_macro_result);
                             
                             //Figure out how much we need to copy and if we need to resize the target buffer
-                            _buffer_length = string_byte_length(_other_string_buffer);
+                            _buffer_length = string_byte_length(_macro_result);
                             var _copy_size = _buffer_length - buffer_tell(_string_buffer);
                             _buffer_length += _copy_size;
                             
