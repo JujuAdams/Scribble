@@ -4,13 +4,15 @@
 
 function scribble_anim_jitter(_min_scale, _max_scale, _speed)
 {
-    if ((_min_scale != global.__scribble_anim_properties[__SCRIBBLE_ANIM.__JITTER_MINIMUM])
-    ||  (_max_scale != global.__scribble_anim_properties[__SCRIBBLE_ANIM.__JITTER_MAXIMUM])
-    ||  (_speed     != global.__scribble_anim_properties[__SCRIBBLE_ANIM.__JITTER_SPEED  ]))
+    var _array = __scribble_get_anim_properties();
+    
+    if ((_min_scale != _array[__SCRIBBLE_ANIM.__JITTER_MINIMUM])
+    ||  (_max_scale != _array[__SCRIBBLE_ANIM.__JITTER_MAXIMUM])
+    ||  (_speed     != _array[__SCRIBBLE_ANIM.__JITTER_SPEED  ]))
     {
-        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.__JITTER_MINIMUM] = _min_scale;
-        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.__JITTER_MAXIMUM] = _max_scale;
-        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.__JITTER_SPEED  ] = _speed;
+        _array[@ __SCRIBBLE_ANIM.__JITTER_MINIMUM] = _min_scale;
+        _array[@ __SCRIBBLE_ANIM.__JITTER_MAXIMUM] = _max_scale;
+        _array[@ __SCRIBBLE_ANIM.__JITTER_SPEED  ] = _speed;
         
         global.__scribble_anim_shader_desync                 = true;
         global.__scribble_anim_shader_desync_to_default      = false;

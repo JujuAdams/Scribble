@@ -3,11 +3,13 @@
 
 function scribble_anim_shake(_size, _speed)
 {
-    if ((_size  != global.__scribble_anim_properties[__SCRIBBLE_ANIM.__SHAKE_SIZE ])
-    ||  (_speed != global.__scribble_anim_properties[__SCRIBBLE_ANIM.__SHAKE_SPEED]))
+    var _array = __scribble_get_anim_properties();
+    
+    if ((_size  != _array[__SCRIBBLE_ANIM.__SHAKE_SIZE ])
+    ||  (_speed != _array[__SCRIBBLE_ANIM.__SHAKE_SPEED]))
     {
-        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.__SHAKE_SIZE ] = _size;
-        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.__SHAKE_SPEED] = _speed;
+        _array[@ __SCRIBBLE_ANIM.__SHAKE_SIZE ] = _size;
+        _array[@ __SCRIBBLE_ANIM.__SHAKE_SPEED] = _speed;
         
         global.__scribble_anim_shader_desync                 = true;
         global.__scribble_anim_shader_desync_to_default      = false;

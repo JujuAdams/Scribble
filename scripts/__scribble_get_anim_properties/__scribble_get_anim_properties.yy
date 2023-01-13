@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__scribble_get_buffer_b",
+  "name": "__scribble_get_anim_properties",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {

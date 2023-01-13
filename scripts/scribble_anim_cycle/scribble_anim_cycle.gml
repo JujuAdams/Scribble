@@ -4,13 +4,15 @@
 
 function scribble_anim_cycle(_speed, _saturation, _value)
 {
-    if ((_speed      != global.__scribble_anim_properties[__SCRIBBLE_ANIM.__CYCLE_SPEED     ])
-    ||  (_saturation != global.__scribble_anim_properties[__SCRIBBLE_ANIM.__CYCLE_SATURATION])
-    ||  (_value      != global.__scribble_anim_properties[__SCRIBBLE_ANIM.__CYCLE_VALUE     ]))
+    var _array = __scribble_get_anim_properties();
+    
+    if ((_speed      != _array[__SCRIBBLE_ANIM.__CYCLE_SPEED     ])
+    ||  (_saturation != _array[__SCRIBBLE_ANIM.__CYCLE_SATURATION])
+    ||  (_value      != _array[__SCRIBBLE_ANIM.__CYCLE_VALUE     ]))
     {
-        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.__CYCLE_SPEED     ] = _speed;
-        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.__CYCLE_SATURATION] = _saturation;
-        global.__scribble_anim_properties[@ __SCRIBBLE_ANIM.__CYCLE_VALUE     ] = _value;
+        _array[@ __SCRIBBLE_ANIM.__CYCLE_SPEED     ] = _speed;
+        _array[@ __SCRIBBLE_ANIM.__CYCLE_SATURATION] = _saturation;
+        _array[@ __SCRIBBLE_ANIM.__CYCLE_VALUE     ] = _value;
         
         global.__scribble_anim_shader_desync                 = true;
         global.__scribble_anim_shader_desync_to_default      = false;

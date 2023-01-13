@@ -1478,7 +1478,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             global.__scribble_anim_shader_desync = false;
             global.__scribble_anim_shader_default = global.__scribble_anim_shader_desync_to_default;
-            shader_set_uniform_f_array(_u_aDataFields, global.__scribble_anim_properties);
+            shader_set_uniform_f_array(_u_aDataFields, __scribble_get_anim_properties());
         }
         
         if (__bezier_using)
@@ -1602,7 +1602,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             global.__scribble_anim_shader_msdf_desync = false;
             global.__scribble_anim_shader_msdf_default = global.__scribble_anim_shader_msdf_desync_to_default;
-            shader_set_uniform_f_array(_msdf_u_aDataFields, global.__scribble_anim_properties);
+            shader_set_uniform_f_array(_msdf_u_aDataFields, __scribble_get_anim_properties());
         }
         
         if (__bezier_using)

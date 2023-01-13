@@ -48,6 +48,7 @@ function __scribble_initialize()
     __scribble_get_font_directory();
     
     //Initialize data structures before they need to be used
+    __scribble_config_colours();
     __scribble_get_generator_state();
     __scribble_get_buffer_a();
     __scribble_get_buffer_b();
@@ -71,8 +72,6 @@ function __scribble_initialize()
     global.__scribble_gc_vbuff_refs = [];
     global.__scribble_gc_vbuff_ids  = [];
     
-    __scribble_config_colours();
-
     global.__scribble_typewriter_events = ds_map_create();
     global.__scribble_typewriter_events[? "pause" ] = undefined;
     global.__scribble_typewriter_events[? "delay" ] = undefined;
@@ -128,18 +127,18 @@ function __scribble_initialize()
     scribble_msdf_thickness_offset(0);
 
     //Set up animation properties
-    global.__scribble_anim_shader_desync = false;
+    global.__scribble_anim_shader_desync            = false;
     global.__scribble_anim_shader_desync_to_default = false;
-    global.__scribble_anim_shader_default = false;
+    global.__scribble_anim_shader_default           = false;
 
-    global.__scribble_anim_shader_msdf_desync = false;
+    global.__scribble_anim_shader_msdf_desync            = false;
     global.__scribble_anim_shader_msdf_desync_to_default = false;
-    global.__scribble_anim_shader_msdf_default = false;
+    global.__scribble_anim_shader_msdf_default           = false;
 
     global.__scribble_standard_shader_uniforms_dirty = true;
-    global.__scribble_msdf_shader_uniforms_dirty = true;
+    global.__scribble_msdf_shader_uniforms_dirty     = true;
 
-    global.__scribble_anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE);
+    __scribble_get_anim_properties();
     scribble_anim_reset();
 
     //Bezier curve state
