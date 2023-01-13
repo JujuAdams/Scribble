@@ -175,7 +175,6 @@
     {"id":{"name":"scribble_font_bake_shader","path":"scripts/scribble_font_bake_shader/scribble_font_bake_shader.yy",},"order":15,},
     {"id":{"name":"scribble_font_add_msdf","path":"scripts/scribble_font_add_msdf/scribble_font_add_msdf.yy",},"order":3,},
     {"id":{"name":"__scribble_class_typist","path":"scripts/__scribble_class_typist/__scribble_class_typist.yy",},"order":4,},
-    {"id":{"name":"__scribble_system_glyph_data","path":"scripts/__scribble_system_glyph_data/__scribble_system_glyph_data.yy",},"order":2,},
     {"id":{"name":"obj_test_anim_blink","path":"objects/obj_test_anim_blink/obj_test_anim_blink.yy",},"order":9,},
     {"id":{"name":"obj_test_padding_scale_to_box","path":"objects/obj_test_padding_scale_to_box/obj_test_padding_scale_to_box.yy",},"order":2,},
     {"id":{"name":"spr_msdf_font_awesome","path":"sprites/spr_msdf_font_awesome/spr_msdf_font_awesome.yy",},"order":22,},
