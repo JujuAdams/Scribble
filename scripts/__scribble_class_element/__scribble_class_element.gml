@@ -199,7 +199,15 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
         
-        return SCRIBBLE_DRAW_RETURNS_SELF? self : global.__scribble_null_element;
+        if (SCRIBBLE_DRAW_RETURNS_SELF)
+        {
+            return self;
+        }
+        else
+        {
+            static _null = new __scribble_class_null_element();
+            return _null;
+        }
     }
     
     /// @param fontName
@@ -1141,7 +1149,15 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         __get_model(true);
         
-        return SCRIBBLE_BUILD_RETURNS_SELF? self : global.__scribble_null_element;
+        if (SCRIBBLE_BUILD_RETURNS_SELF)
+        {
+            return self;
+        }
+        else
+        {
+            static _null = new __scribble_class_null_element();
+            return _null;
+        }
     }
     
     static flush = function()

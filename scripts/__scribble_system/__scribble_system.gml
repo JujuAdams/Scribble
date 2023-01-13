@@ -99,8 +99,6 @@ function __scribble_initialize()
     global.__scribble_temp2_grid           = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
     global.__scribble_vbuff_pos_grid       = ds_grid_create(1000, __SCRIBBLE_GEN_VBUFF_POS.__SIZE);
     
-    global.__scribble_null_element = new __scribble_class_null_element();
-
     global.__scribble_mcache_dict       = {};
     global.__scribble_mcache_name_array = [];
 
