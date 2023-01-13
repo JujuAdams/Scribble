@@ -3,6 +3,9 @@
 
 function __scribble_class_model(_element, _model_cache_name) constructor
 {
+    static __mcache_dict       = __scribble_get_cache_state().__mcache_dict;
+    static __mcache_name_array = __scribble_get_cache_state().__mcache_name_array;
+    
     //Record the start time so we can get a duration later
     if (SCRIBBLE_VERBOSE) var _timer_total = get_timer();
     
@@ -13,7 +16,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching model \"", __cache_name, "\"");
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-    var _weak = global.__scribble_mcache_dict[$ __cache_name];
+    var _weak = __mcache_dict[$ __cache_name];
     if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
     {
         __scribble_trace("Warning! Rebuilding model \"", __cache_name, "\"");
@@ -21,8 +24,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     //Add this model to the global cache
-    global.__scribble_mcache_dict[$ __cache_name] = weak_ref_create(self);
-    array_push(global.__scribble_mcache_name_array, __cache_name);
+    __mcache_dict[$ __cache_name] = weak_ref_create(self);
+    array_push(__mcache_name_array, __cache_name);
     
     __last_drawn = global.__scribble_frames;
     __frozen     = undefined;
@@ -90,7 +93,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         __reset();
         
         //Remove reference from cache
-        variable_struct_remove(global.__scribble_mcache_dict, __cache_name);
+        variable_struct_remove(__mcache_dict, __cache_name);
         
         //Set as __flushed
         __flushed = true;

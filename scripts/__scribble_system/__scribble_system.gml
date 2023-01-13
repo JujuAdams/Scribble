@@ -59,19 +59,6 @@ function __scribble_initialize()
     __scribble_krutidev_lookup_map_initialize();
     __scribble_krutidev_matra_lookup_map_initialize();
     scribble_anim_reset();
-    
-    
-    
-    //Declare global variables
-    global.__scribble_mcache_dict       = {};
-    global.__scribble_mcache_name_array = [];
-
-    global.__scribble_ecache_dict       = {};
-    global.__scribble_ecache_array      = [];
-    global.__scribble_ecache_name_array = [];
-
-    global.__scribble_gc_vbuff_refs = [];
-    global.__scribble_gc_vbuff_ids  = [];
 }
 
 

@@ -12,7 +12,9 @@ function scribble(_string, _unique_id = undefined)
         return;
     }
     
-    var _weak = global.__scribble_ecache_dict[$ string(_string) + ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (":" + string(_unique_id)))];
+    static _ecache_dict = __scribble_get_cache_state().__ecache_dict;
+    
+    var _weak = _ecache_dict[$ string(_string) + ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (":" + string(_unique_id)))];
     if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.__flushed)
     {
         return new __scribble_class_element(string(_string), _unique_id);

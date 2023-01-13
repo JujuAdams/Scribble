@@ -3,7 +3,10 @@
 
 function __scribble_class_element(_string, _unique_id) constructor
 {
-    static _scribble_state = __scribble_get_state();
+    static __scribble_state    = __scribble_get_state();
+    static __ecache_array      = __scribble_get_cache_state().__ecache_array;
+    static __ecache_dict       = __scribble_get_cache_state().__ecache_dict;
+    static __ecache_name_array = __scribble_get_cache_state().__ecache_name_array;
     
     __text       = _string;
     __unique_id  = _unique_id;
@@ -12,7 +15,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + __cache_name + "\"");
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-    var _weak = global.__scribble_ecache_dict[$ __cache_name];
+    var _weak = __ecache_dict[$ __cache_name];
     if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
     {
         __scribble_trace("Warning! Flushing element \"", __cache_name, "\" due to cache name collision");
@@ -20,9 +23,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     }
     
     //Add this text element to the global cache
-    global.__scribble_ecache_dict[$ __cache_name] = weak_ref_create(self);
-    array_push(global.__scribble_ecache_array, self);
-    array_push(global.__scribble_ecache_name_array, __cache_name);
+    __ecache_dict[$ __cache_name] = weak_ref_create(self);
+    array_push(__ecache_array, self);
+    array_push(__ecache_name_array, __cache_name);
     
     __flushed = false;
     
@@ -35,7 +38,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     
     
-    __starting_font   = _scribble_state.__default_font;
+    __starting_font   = __scribble_state.__default_font;
     __starting_colour = __scribble_process_colour(SCRIBBLE_DEFAULT_COLOR);
     __starting_halign = SCRIBBLE_DEFAULT_HALIGN;
     __starting_valign = SCRIBBLE_DEFAULT_VALIGN;
@@ -1179,9 +1182,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(__cache_name) + "\"");
         
         //Remove reference from cache
-        variable_struct_remove(global.__scribble_ecache_dict, __cache_name);
+        variable_struct_remove(__ecache_dict, __cache_name);
         
-        var _array = global.__scribble_ecache_array;
+        var _array = __ecache_array;
         var _i = 0;
         repeat(array_length(_array))
         {
@@ -1302,7 +1305,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             __model_cache_name_dirty = true;
             __cache_name = _new_cache_name;
             
-            var _weak = global.__scribble_ecache_dict[$ __cache_name];
+            var _weak = __ecache_dict[$ __cache_name];
             if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
             {
                 __scribble_trace("Warning! Flushing element \"", __cache_name, "\" due to cache name collision (try choosing a different unique ID)");
@@ -1310,9 +1313,9 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
             
             //Add this text element to the global cache
-            global.__scribble_ecache_dict[$ __cache_name] = weak_ref_create(self);
-            array_push(global.__scribble_ecache_array, self);
-            array_push(global.__scribble_ecache_name_array, __cache_name);
+            __ecache_dict[$ __cache_name] = weak_ref_create(self);
+            array_push(__ecache_array, self);
+            array_push(__ecache_name_array, __cache_name);
         }
         
         return self;
@@ -1355,6 +1358,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static __get_model = function(_allow_create)
     {
+        static _mcache_dict = __scribble_get_cache_state().__mcache_dict;
+        
         if (__flushed || (__text == ""))
         {
             __model = undefined;
@@ -1396,7 +1401,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 __model_cache_name = buffer_read(_buffer, buffer_string);
             }
             
-            var _weak = global.__scribble_mcache_dict[$ __model_cache_name];
+            var _weak = _mcache_dict[$ __model_cache_name];
             if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
             {
                 __model = _weak.ref;

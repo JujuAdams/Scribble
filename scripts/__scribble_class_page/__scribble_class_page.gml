@@ -1,5 +1,9 @@
 function __scribble_class_page() constructor
 {
+    static __scribble_state = __scribble_get_state();
+    static __gc_vbuff_refs  = __scribble_get_cache_state().__gc_vbuff_refs;
+    static __gc_vbuff_ids   = __scribble_get_cache_state().__gc_vbuff_ids;
+    
     __text = "";
     __glyph_grid = undefined;
     
@@ -31,7 +35,6 @@ function __scribble_class_page() constructor
     
     static __submit = function(_msdf_feather_thickness, _double_draw)
     {
-        static _scribble_state = __scribble_get_state();
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < global.__scribble_frames)) __freeze();
         
@@ -65,7 +68,7 @@ function __scribble_class_page() constructor
                 //Set shader uniforms unique to the MSDF shader
                 shader_set_uniform_f(_msdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
                 shader_set_uniform_f(_msdf_u_fMSDFRange, _msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE]);
-                shader_set_uniform_f(_msdf_u_fMSDFThicknessOffset, _scribble_state.__msdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET]);
+                shader_set_uniform_f(_msdf_u_fMSDFThicknessOffset, __scribble_state.__msdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET]);
                 
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
                 
@@ -210,8 +213,8 @@ function __scribble_class_page() constructor
             vertex_begin(_vbuff, _vertex_format);
             
             if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding vertex buffer ", _vbuff, " to tracking");
-            array_push(global.__scribble_gc_vbuff_refs, weak_ref_create(self));
-            array_push(global.__scribble_gc_vbuff_ids, _vbuff);
+            array_push(__gc_vbuff_refs, weak_ref_create(self));
+            array_push(__gc_vbuff_ids, _vbuff);
             
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER        ] = _vbuff;
@@ -257,12 +260,12 @@ function __scribble_class_page() constructor
             var _vbuff = __vertex_buffer_array[_i][__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER];
             vertex_delete_buffer(_vbuff);
             
-            var _index = __scribble_array_find_index(global.__scribble_gc_vbuff_ids, _vbuff);
+            var _index = __scribble_array_find_index(__gc_vbuff_ids, _vbuff);
             if (_index >= 0)
             {
                 if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Manually removing vertex buffer ", _vbuff, " from tracking");
-                array_delete(global.__scribble_gc_vbuff_refs, _index, 1);
-                array_delete(global.__scribble_gc_vbuff_ids,  _index, 1);
+                array_delete(__gc_vbuff_refs, _index, 1);
+                array_delete(__gc_vbuff_ids,  _index, 1);
             }
             
             ++_i;
