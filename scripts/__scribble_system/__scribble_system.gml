@@ -80,7 +80,6 @@ function __scribble_initialize()
     
     
     //Declare global variables
-    global.__scribble_lcg                  = date_current_datetime()*100;
     global.__scribble_font_directory       = _font_directory;
     global.__scribble_font_data            = ds_map_create();  //Stores a data array for each font defined inside Scribble
     global.__scribble_effects              = ds_map_create();  //Bidirectional lookup - stores name:index as well as index:name
@@ -351,8 +350,9 @@ function __scribble_process_colour(_value)
 
 function __scribble_random()
 {
-    global.__scribble_lcg = (48271*global.__scribble_lcg) mod 2147483647; //Lehmer
-    return global.__scribble_lcg / 2147483648;
+    static _lcg = date_current_datetime()*100;
+    _lcg = (48271*_lcg) mod 2147483647; //Lehmer
+    return _lcg / 2147483648;
 }
 
 function __scribble_array_find_index(_array, _value)
