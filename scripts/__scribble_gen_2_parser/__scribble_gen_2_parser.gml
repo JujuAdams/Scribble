@@ -81,6 +81,61 @@
 
 function __scribble_gen_2_parser()
 {
+    static _command_tag_lookup_accelerator_map = undefined;
+    if (_command_tag_lookup_accelerator_map == undefined)
+    {
+        //Hashtable to accelerate command tag lookup
+        _command_tag_lookup_accelerator_map = ds_map_create();
+        _command_tag_lookup_accelerator_map[? ""                  ] =  0;
+        _command_tag_lookup_accelerator_map[? "/"                 ] =  0;
+        _command_tag_lookup_accelerator_map[? "/font"             ] =  1;
+        _command_tag_lookup_accelerator_map[? "/f"                ] =  1;
+        _command_tag_lookup_accelerator_map[? "/colour"           ] =  2;
+        _command_tag_lookup_accelerator_map[? "/color"            ] =  2;
+        _command_tag_lookup_accelerator_map[? "/c"                ] =  2;
+        _command_tag_lookup_accelerator_map[? "/alpha"            ] =  3;
+        _command_tag_lookup_accelerator_map[? "/a"                ] =  3;
+        _command_tag_lookup_accelerator_map[? "/scale"            ] =  4;
+        _command_tag_lookup_accelerator_map[? "/s"                ] =  4;
+        //5 is unused
+        _command_tag_lookup_accelerator_map[? "/page"             ] =  6;
+        _command_tag_lookup_accelerator_map[? "scale"             ] =  7;
+        _command_tag_lookup_accelerator_map[? "scaleStack"        ] =  8;
+        //9 is unused
+        _command_tag_lookup_accelerator_map[? "alpha"             ] = 10;
+        _command_tag_lookup_accelerator_map[? "fa_left"           ] = 11;
+        _command_tag_lookup_accelerator_map[? "fa_center"         ] = 12;
+        _command_tag_lookup_accelerator_map[? "fa_centre"         ] = 12;
+        _command_tag_lookup_accelerator_map[? "fa_right"          ] = 13;
+        _command_tag_lookup_accelerator_map[? "fa_top"            ] = 14;
+        _command_tag_lookup_accelerator_map[? "fa_middle"         ] = 15;
+        _command_tag_lookup_accelerator_map[? "fa_bottom"         ] = 16;
+        _command_tag_lookup_accelerator_map[? "pin_left"          ] = 17;
+        _command_tag_lookup_accelerator_map[? "pin_center"        ] = 18;
+        _command_tag_lookup_accelerator_map[? "pin_centre"        ] = 18;
+        _command_tag_lookup_accelerator_map[? "pin_right"         ] = 19;
+        _command_tag_lookup_accelerator_map[? "fa_justify"        ] = 20;
+        _command_tag_lookup_accelerator_map[? "nbsp"              ] = 21;
+        _command_tag_lookup_accelerator_map[? "&nbsp"             ] = 21;
+        _command_tag_lookup_accelerator_map[? "nbsp;"             ] = 21;
+        _command_tag_lookup_accelerator_map[? "&nbsp;"            ] = 21;
+        _command_tag_lookup_accelerator_map[? "cycle"             ] = 22;
+        _command_tag_lookup_accelerator_map[? "/cycle"            ] = 23;
+        _command_tag_lookup_accelerator_map[? "r"                 ] = 24;
+        _command_tag_lookup_accelerator_map[? "/b"                ] = 24;
+        _command_tag_lookup_accelerator_map[? "/i"                ] = 24;
+        _command_tag_lookup_accelerator_map[? "/bi"               ] = 24;
+        _command_tag_lookup_accelerator_map[? "b"                 ] = 25;
+        _command_tag_lookup_accelerator_map[? "i"                 ] = 26;
+        _command_tag_lookup_accelerator_map[? "bi"                ] = 27;
+        _command_tag_lookup_accelerator_map[? "surface"           ] = 28;
+        _command_tag_lookup_accelerator_map[? "region"            ] = 29;
+        _command_tag_lookup_accelerator_map[? "/region"           ] = 30;
+        _command_tag_lookup_accelerator_map[? "zwsp"              ] = 31;
+        _command_tag_lookup_accelerator_map[? "typistSound"       ] = 32;
+        _command_tag_lookup_accelerator_map[? "typistSoundPerChar"] = 33;
+    }
+    
     var _generator_state = __scribble_get_generator_state();
     
     //Cache globals locally for a performance boost
@@ -292,7 +347,7 @@ function __scribble_gen_2_parser()
                 var _new_halign = undefined;
                 var _new_valign = undefined;
                 
-                switch(global.__scribble_command_tag_lookup_accelerator[? _tag_command_name])
+                switch(_command_tag_lookup_accelerator_map[? _tag_command_name])
                 {
                     #region Reset formatting
                     
