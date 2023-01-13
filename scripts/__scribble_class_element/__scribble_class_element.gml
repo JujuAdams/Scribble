@@ -1433,6 +1433,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         static _u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation");
         static _u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration");
         
+        static _scribble_state        = __scribble_get_state();
+        static _anim_properties_array = __scribble_get_anim_properties();
+        
+        static _shader_uniforms_dirty    = true;
+        static _shader_set_to_use_bezier = false;
+        
         shader_set(__shd_scribble);
         shader_set_uniform_f(_u_fTime, __animation_time);
         
@@ -1447,7 +1453,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0))
         {
-            global.__scribble_standard_shader_uniforms_dirty = true;
+            _shader_uniforms_dirty = true;
             
             shader_set_uniform_f(_u_vGradient, colour_get_red(  __gradient_colour)/255,
                                                colour_get_green(__gradient_colour)/255,
@@ -1469,9 +1475,9 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                    __region_blend);
             
         }
-        else if (global.__scribble_standard_shader_uniforms_dirty)
+        else if (_shader_uniforms_dirty)
         {
-            global.__scribble_standard_shader_uniforms_dirty = false;
+            _shader_uniforms_dirty = false;
             
             shader_set_uniform_f(_u_vGradient, 0, 0, 0, 0);
             shader_set_uniform_f(_u_vSkew, 0, 0);
@@ -1481,25 +1487,28 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
-        if (global.__scribble_anim_shader_desync)
+        if (_scribble_state.__standard_anim_desync)
         {
-            global.__scribble_anim_shader_desync = false;
-            global.__scribble_anim_shader_default = global.__scribble_anim_shader_desync_to_default;
+            with(_scribble_state)
+            {
+                __standard_anim_desync  = false;
+                __standard_anim_default = __standard_anim_desync_to_default;
+            }
             
-            static _anim_properties_array = __scribble_get_anim_properties();
             shader_set_uniform_f_array(_u_aDataFields, _anim_properties_array);
         }
         
         if (__bezier_using)
         {
             //If we're using a Bezier curve for this element, push that value into the shader
-            global.__scribble_bezier_using = true;
+            _shader_set_to_use_bezier = true;
             shader_set_uniform_f_array(_u_aBezier, __bezier_array);
         }
-        else if (global.__scribble_bezier_using)
+        else if (_shader_set_to_use_bezier)
         {
             //If we're *not* using a Bezier curve but we have a previous Bezier curve cached, reset the curve in the shader
-            global.__scribble_bezier_using = false;
+            _shader_set_to_use_bezier = false;
+            
             static _null_array = array_create(6, 0);
             shader_set_uniform_f_array(_u_aBezier, _null_array);
         }
@@ -1562,6 +1571,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         static _msdf_u_fBorderThickness         = shader_get_uniform(__shd_scribble_msdf, "u_fBorderThickness"        );
         static _msdf_u_vOutputSize              = shader_get_uniform(__shd_scribble_msdf, "u_vOutputSize"             );
         
+        static _scribble_state        = __scribble_get_state();
+        static _anim_properties_array = __scribble_get_anim_properties();
+        
+        static _shader_uniforms_dirty    = true;
+        static _shader_set_to_use_bezier = false;
+        
         shader_set(__shd_scribble_msdf);
         shader_set_uniform_f(_msdf_u_fTime, __animation_time);
         
@@ -1575,7 +1590,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0))
         {
-            global.__scribble_msdf_shader_uniforms_dirty = true;
+            _shader_uniforms_dirty = true;
             
             shader_set_uniform_f(_msdf_u_vGradient, colour_get_red(  __gradient_colour)/255,
                                                     colour_get_green(__gradient_colour)/255,
@@ -1596,9 +1611,9 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                         colour_get_blue( __region_colour)/255,
                                                         __region_blend);
         }
-        else if (global.__scribble_msdf_shader_uniforms_dirty)
+        else if (_shader_uniforms_dirty)
         {
-            global.__scribble_msdf_shader_uniforms_dirty = false;
+            _shader_uniforms_dirty = false;
             
             shader_set_uniform_f(_msdf_u_vGradient, 0, 0, 0, 0);
             shader_set_uniform_f(_msdf_u_vSkew, 0, 0);
@@ -1608,25 +1623,28 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
-        if (global.__scribble_anim_shader_msdf_desync)
+        if (_scribble_state.__msdf_anim_desync)
         {
-            global.__scribble_anim_shader_msdf_desync = false;
-            global.__scribble_anim_shader_msdf_default = global.__scribble_anim_shader_msdf_desync_to_default;
+            with(_scribble_state)
+            {
+                __msdf_anim_desync  = false;
+                __msdf_anim_default = __msdf_anim_desync_to_default;
+            }
             
-            static _anim_properties_array = __scribble_get_anim_properties();
             shader_set_uniform_f_array(_msdf_u_aDataFields, _anim_properties_array);
         }
         
         if (__bezier_using)
         {
             //If we're using a Bezier curve for this element, push that value into the shader
-            global.__scribble_bezier_msdf_using = true;
+            _shader_set_to_use_bezier = true;
             shader_set_uniform_f_array(_msdf_u_aBezier, __bezier_array);
         }
-        else if (global.__scribble_bezier_msdf_using)
+        else if (_shader_set_to_use_bezier)
         {
             //If we're *not* using a Bezier curve but we have a previous Bezier curve cached, reset the curve in the shader
-            global.__scribble_bezier_msdf_using = false;
+            _shader_set_to_use_bezier = false;
+            
             static _null_array = array_create(6, 0);
             shader_set_uniform_f_array(_msdf_u_aBezier, _null_array);
         }

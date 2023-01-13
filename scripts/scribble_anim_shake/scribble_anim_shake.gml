@@ -11,9 +11,13 @@ function scribble_anim_shake(_size, _speed)
         _array[@ __SCRIBBLE_ANIM.__SHAKE_SIZE ] = _size;
         _array[@ __SCRIBBLE_ANIM.__SHAKE_SPEED] = _speed;
         
-        global.__scribble_anim_shader_desync                 = true;
-        global.__scribble_anim_shader_desync_to_default      = false;
-        global.__scribble_anim_shader_msdf_desync            = true;
-        global.__scribble_anim_shader_msdf_desync_to_default = false;
+        static _scribble_state = __scribble_get_state();
+        with(_scribble_state)
+        {
+            __standard_anim_desync            = true;
+            __standard_anim_desync_to_default = false;
+            __msdf_anim_desync                = true;
+            __msdf_anim_desync_to_default     = false;
+        }
     }
 }

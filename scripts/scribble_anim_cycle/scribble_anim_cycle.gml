@@ -14,9 +14,13 @@ function scribble_anim_cycle(_speed, _saturation, _value)
         _array[@ __SCRIBBLE_ANIM.__CYCLE_SATURATION] = _saturation;
         _array[@ __SCRIBBLE_ANIM.__CYCLE_VALUE     ] = _value;
         
-        global.__scribble_anim_shader_desync                 = true;
-        global.__scribble_anim_shader_desync_to_default      = false;
-        global.__scribble_anim_shader_msdf_desync            = true;
-        global.__scribble_anim_shader_msdf_desync_to_default = false;
+        static _scribble_state = __scribble_get_state();
+        with(_scribble_state)
+        {
+            __standard_anim_desync            = true;
+            __standard_anim_desync_to_default = false;
+            __msdf_anim_desync                = true;
+            __msdf_anim_desync_to_default     = false;
+        }
     }
 }

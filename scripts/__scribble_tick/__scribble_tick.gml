@@ -10,10 +10,14 @@ function __scribble_tick()
     {
         _os_is_paused = os_is_paused();
         
-        global.__scribble_anim_shader_desync             = true;
-        global.__scribble_anim_shader_msdf_desync        = true;
-        global.__scribble_standard_shader_uniforms_dirty = true;
-        global.__scribble_msdf_shader_uniforms_dirty     = true;
+        static _scribble_state = __scribble_get_state();
+        with(_scribble_state)
+        {
+            __standard_anim_desync            = true;
+            __standard_anim_desync_to_default = true;
+            __msdf_anim_desync                = true;
+            __msdf_anim_desync_to_default     = true;
+        }
     }
     
     
