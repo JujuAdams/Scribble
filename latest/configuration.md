@@ -34,6 +34,7 @@ This script holds a number of macros that customise the behaviour of Scribble. `
 |`SCRIBBLE_ALLOW_GLYPH_DATA_GETTER`      |`false`      |Set to `true` to enable the `.get_glyph_data()` method on text elements (and a few other features too). This will apply to all text elements and carries a performance penalty             |
 |`SCRIBBLE_AUTOFIT_INLINE_SPRITES`       |`false`      |Whether to automatically scale sprites to fit into the line of text. This is based on the font height of the current font                                                                  |
 |`SCRIBBLE_AUTOFIT_INLINE_SURFACES`      |`false`      |Whether to automatically scale surfaces to fit into the line of text. This is based on the font height of the current font                                                                 |
+|`SCRIBBLE_USE_KERNING`                  |`true`       |Whether to adjust the horizontal distance between glyphs depending on special per-font rules. Set to `false` for legacy pre-8.2 behaviour                                                  |
 |**Advanced Features**                   |             |                                                                                                                                                                                           |
 |`SCRIBBLE_TICK_SIZE`                    |`1`          |Animation tick size per step. The default value for this macro (`delta_time / 16666`) ensures that animations are smooth and consistent at all framerates                                  |
 |`SCRIBBLE_DEFAULT_UNIQUE_ID`            |`"default"`  |Default value to use for text element unique IDs. This is used when no unique ID is specified                                                                                              |
@@ -52,10 +53,28 @@ This script holds a number of macros that customise the behaviour of Scribble. `
 |`SCRIBBLE_COMMAND_TAG_OPEN`             |`ord("[")`   |Character used to open a command tag. First 127 ASCII chars only                                                                                                                           |
 |`SCRIBBLE_COMMAND_TAG_CLOSE`            |`ord("]")`   |Character used to close a command tag. First 127 ASCII chars only                                                                                                                          |
 |`SCRIBBLE_COMMAND_TAG_ARGUMENT`         |`ord(",")`   |Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only                                                                                             |
-|`SCRIBBLE_DRAW_RETURNS_SELF`            |`false`      |Whether the `.draw()` method for text element returns <self>. This defaults to <false> to avoid unintentional misuse                                                                       |
-|`SCRIBBLE_BUILD_RETURNS_SELF`           |`false`      |Whether the `.build()` method for text element returns <self>. This defaults to <false> to avoid unintentional misuse                                                                      |
+|`SCRIBBLE_DRAW_RETURNS_SELF`            |`false`      |Whether the `.draw()` method for text element returns `self`. This defaults to `false` to avoid unintentional misuse                                                                       |
+|`SCRIBBLE_BUILD_RETURNS_SELF`           |`false`      |Whether the `.build()` method for text element returns `self`. This defaults to `false` to avoid unintentional misuse                                                                      |
 |`SCRIBBLE_SHOW_WRAP_BOUNDARY`           |`false`      |Set to `true` to call `.debug_draw_bbox()` for all text elements. This is useful for debugging wrapping boundaries                                                                         |
 |`SCRIBBLE_ATTEMPT_FONT_SCALING_FIX `    |`true`       |Whether to try to fix font scaling due to the font texture being too big for the texture page                                                                                              |
+|`SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP`  |`false`      |Whether to replace grave accents with zero-width spaces when drawing Thai characters                                                                                                       |
+|`SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS`   |`false`      |Whether to undo common aesthetic Unicode substitutions. See below for more detail                                                                                                          |
+
+The following table describes the reverse substitutions that Scribble will perform if `SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS` is set to `true`:
+
+|Input               |   |Input hex code|Output          |   |Output hex code|             
+|--------------------|---|--------------|----------------|---|---------------|
+|Ellipsis            |`…`|`2026`        |Three full stops|`.`|`002E`         |
+|En dash             |`–`|`2013`        |Hyphen          |`-`|`002D`         |
+|Em dash             |`—`|`2014`        |Hyphen          |`-`|`002D`         |
+|Horizontal bar      |`―`|`2015`        |Hyphen          |`-`|`002D`         |
+|Start single quote  |`‘`|`2018`        |Single quote    |`'`|`0027`         |
+|End single quote    |`’`|`2018`        |Single quote    |`'`|`0027`         |
+|Start double quote  |`“`|`201C`        |Double quote    |`"`|`0022`         |
+|End double quote    |`”`|`201D`        |Double quote    |`"`|`0022`         |
+|Low double quote    |`„`|`201E`        |Double quote    |`"`|`0022`         |
+|High double quote   |`‟`|`201F`        |Double quote    |`"`|`0022`         |
+|Greek question mark |`;`|`037E`        |Semicolon       |`;`|`003B`         |
 
 &nbsp;
 
