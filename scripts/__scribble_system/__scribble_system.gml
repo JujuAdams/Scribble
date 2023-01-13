@@ -209,7 +209,7 @@ function __scribble_get_font_directory()
 
 function __scribble_get_font_data(_name)
 {
-    var _font_data_map = __scribble_get_font_data_map();
+    static _font_data_map = __scribble_get_font_data_map();
     var _data = _font_data_map[? _name];
     if (_data == undefined) __scribble_error("Font \"", _name, "\" not recognised");
     return _data;

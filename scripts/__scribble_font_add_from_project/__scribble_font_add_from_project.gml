@@ -4,7 +4,7 @@ function __scribble_font_add_from_project(_font)
 {
     var _name = font_get_name(_font);
     
-    var _font_data_map = __scribble_get_font_data_map();
+    static _font_data_map = __scribble_get_font_data_map();
     if (ds_map_exists(_font_data_map, _name))
     {
         __scribble_trace("Warning! A font for \"", _name, "\" has already been added. Destroying the old font and creating a new one");

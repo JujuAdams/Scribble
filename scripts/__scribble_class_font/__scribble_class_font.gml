@@ -6,7 +6,7 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
 {
     __name = _name;
     
-    var _font_data_map = __scribble_get_font_data_map();
+    static _font_data_map = __scribble_get_font_data_map();
     _font_data_map[? _name] = self;
     
     __glyph_data_grid = ds_grid_create(_glyph_count, SCRIBBLE_GLYPH.__SIZE);
@@ -77,7 +77,9 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
         
         ds_map_destroy(__glyphs_map);
         ds_grid_destroy(__glyph_data_grid);
-        ds_map_delete(__scribble_get_font_data_map(), __name);
+        
+        static _font_data_map = __scribble_get_font_data_map();
+        ds_map_delete(_font_data_map, __name);
         
         if (__source_sprite != undefined)
         {

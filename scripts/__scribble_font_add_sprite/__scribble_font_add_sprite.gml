@@ -22,9 +22,9 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     __scribble_initialize();
     
     var _font_info = font_get_info(_spritefont);
-    
     var _sprite_name = sprite_get_name(_sprite);
-    var _font_data_map = __scribble_get_font_data_map();
+    
+    static _font_data_map = __scribble_get_font_data_map();
     if (ds_map_exists(_font_data_map, _sprite_name))
     {
         __scribble_trace("Warning! A spritefont for \"", _sprite_name, "\" has already been added. Destroying the old spritefont and creating a new one");
