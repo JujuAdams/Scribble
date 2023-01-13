@@ -10,7 +10,9 @@ function scribble_font_bake_outline_4dir(_source_font_name, _new_font_name, _out
 {
     if (is_string(_outline_color))
     {
-        var _found = global.__scribble_colours[$ _outline_color];
+        var _colors_struct = __scribble_config_colours();
+        
+        var _found = _colors_struct[$ _outline_color];
         if (_outline_color == undefined)
         {
             __scribble_error("Colour \"", _outline_color, "\" not recognised");

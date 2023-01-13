@@ -30,7 +30,7 @@ function scribble_typists_add_event(_name, _function)
         }
     }
     
-    if (ds_map_exists(global.__scribble_colours, _name))
+    if (ds_map_exists(__scribble_config_colours(), _name))
     {
         __scribble_trace("Warning! Event name \"" + _name + "\" has already been defined as a colour");
         exit;

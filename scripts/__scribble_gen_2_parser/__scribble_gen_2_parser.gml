@@ -147,6 +147,7 @@ function __scribble_gen_2_parser()
     var _macros_map            = __scribble_get_macros_map();
     var _string_buffer         = __scribble_get_buffer_a();
     var _other_string_buffer   = __scribble_get_buffer_b();
+    var _colors_struct         = __scribble_config_colours();
     
     var _generator_state = __scribble_get_generator_state();
     with(_generator_state)
@@ -844,9 +845,9 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
                             ++_control_count;
                         }
-                        else if (variable_struct_exists(global.__scribble_colours, _tag_command_name)) //Set a pre-defined colour
+                        else if (variable_struct_exists(_colors_struct, _tag_command_name)) //Set a pre-defined colour
                         {
-                            _state_colour = (_state_colour & 0xFF000000) | (global.__scribble_colours[$ _tag_command_name] & 0x00FFFFFF);
+                            _state_colour = (_state_colour & 0xFF000000) | (_colors_struct[$ _tag_command_name] & 0x00FFFFFF);
                             
                             //Add a colour control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__COLOUR;
