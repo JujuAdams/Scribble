@@ -48,7 +48,7 @@
 #macro SCRIBBLE_ATTEMPT_FONT_SCALING_FIX  true     //Whether to try to fix font scaling due to the font texture being too big for the texture page
 
 //Whether to replace a grave accent (` U+0060, decimal=96) with a zero-width space for Thai text
-#macro SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP  true
+#macro SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP  false
 
 //Whether to perform the following Unicode substitutions to fix copy-pasted text from e.g. Google Docs:
 // Ellipsis            … U+2026   ->   Three full stops . U+002E
@@ -62,8 +62,7 @@
 // Low double quote    „ U+201E   ->   Double quote     " U+0022
 // High double quote   ‟ U+201F   ->   Double quote     " U+0022
 // Greek question mark ; U+037E   ->   Semicolon        ; U+003B
-
-#macro SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS  true
+#macro SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS  false
 
 #endregion
 

@@ -308,6 +308,7 @@
     {"id":{"name":"spr_large_coin","path":"sprites/spr_large_coin/spr_large_coin.yy",},"order":1,},
     {"id":{"name":"spr_mallangche","path":"sprites/spr_mallangche/spr_mallangche.yy",},"order":1,},
     {"id":{"name":"spr_msdf_font_awesome","path":"sprites/spr_msdf_font_awesome/spr_msdf_font_awesome.yy",},"order":21,},
+    {"id":{"name":"obj_test_unicode_substitutions","path":"objects/obj_test_unicode_substitutions/obj_test_unicode_substitutions.yy",},"order":11,},
     {"id":{"name":"spr_msdf_industrydemi","path":"sprites/spr_msdf_industrydemi/spr_msdf_industrydemi.yy",},"order":22,},
     {"id":{"name":"spr_msdf_notoarabic","path":"sprites/spr_msdf_notoarabic/spr_msdf_notoarabic.yy",},"order":23,},
     {"id":{"name":"spr_msdf_openhuninn","path":"sprites/spr_msdf_openhuninn/spr_msdf_openhuninn.yy",},"order":24,},
@@ -342,8 +343,8 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
+    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
   ],
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Examples","folderPath":"folders/Examples.yy","order":2,},
