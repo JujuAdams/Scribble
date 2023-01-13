@@ -6,18 +6,8 @@
 
 function scribble_super_glyph_copy(_target, _source, _overwrite)
 {
-    var _target_font_data = global.__scribble_font_data[? _target];
-    var _source_font_data = global.__scribble_font_data[? _source];
-    
-    if (_target_font_data == undefined)
-    {
-        __scribble_error("Font \"", _target, "\" not found");
-    }
-    
-    if (_source_font_data == undefined)
-    {
-        __scribble_error("Font \"", _source, "\" not found");
-    }
+    var _target_font_data = __scribble_get_font_data(_target);
+    var _source_font_data = __scribble_get_font_data(_source);
     
     //Verify that the two fonts can be used together
     __scribble_super_glyph_copy_common(_target_font_data, _source_font_data);

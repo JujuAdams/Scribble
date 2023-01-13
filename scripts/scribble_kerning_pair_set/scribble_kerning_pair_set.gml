@@ -9,16 +9,10 @@
 
 function scribble_kerning_pair_set(_font, _first_char, _second_char, _value, _relative = false)
 {
-    if (!ds_map_exists(global.__scribble_font_data, _font))
-    {
-        __scribble_error("Font \"", _font, "\" not found");
-        exit;
-    }
-    
     var  _first_unicode = is_real( _first_char)?  _first_char : ord( _first_char);
     var _second_unicode = is_real(_second_char)? _second_char : ord(_second_char);
     
-    var _font_data = global.__scribble_font_data[? _font];
+    var _font_data = __scribble_get_font_data(_font);
     var _kerning_map = _font_data.__kerning_map;
     
     var _lookup = ((_second_unicode & 0xFFFF) << 16) | (_first_unicode & 0xFFFF);

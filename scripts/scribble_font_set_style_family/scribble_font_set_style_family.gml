@@ -17,7 +17,7 @@ function scribble_font_set_style_family(_r_font, _b_font, _i_font, _bi_font)
     var _i = 0;
     repeat(4)
     {
-        var _struct = global.__scribble_font_data[? _font_names[_i]];
+        var _struct = __scribble_get_font_data_map()[? _font_names[_i]];
         if (is_struct(_struct))
         {
             with(_struct)

@@ -4,10 +4,11 @@ function __scribble_font_add_from_project(_font)
 {
     var _name = font_get_name(_font);
     
-    if (ds_map_exists(global.__scribble_font_data, _name))
+    var _font_data_map = __scribble_get_font_data_map();
+    if (ds_map_exists(_font_data_map, _name))
     {
         __scribble_trace("Warning! A font for \"", _name, "\" has already been added. Destroying the old font and creating a new one");
-        global.__scribble_font_data[? _name].__destroy();
+        _font_data_map[? _name].__destroy();
     }
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", _name, "\" as standard font");

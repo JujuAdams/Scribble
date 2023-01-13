@@ -203,6 +203,7 @@
     {"id":{"name":"scribble_anim_pulse","path":"scripts/scribble_anim_pulse/scribble_anim_pulse.yy",},"order":5,},
     {"id":{"name":"Mallangche License","path":"notes/Mallangche License/Mallangche License.yy",},"order":1,},
     {"id":{"name":"example_dialogue_set_portrait","path":"scripts/example_dialogue_set_portrait/example_dialogue_set_portrait.yy",},"order":4,},
+    {"id":{"name":"__scribble_get_font_data_map","path":"scripts/__scribble_get_font_data_map/__scribble_get_font_data_map.yy",},"order":7,},
     {"id":{"name":"obj_test_stress_multi","path":"objects/obj_test_stress_multi/obj_test_stress_multi.yy",},"order":1,},
     {"id":{"name":"__scribble_gen_6_build_lines","path":"scripts/__scribble_gen_6_build_lines/__scribble_gen_6_build_lines.yy",},"order":6,},
     {"id":{"name":"obj_test_typewriter_ignore_delay","path":"objects/obj_test_typewriter_ignore_delay/obj_test_typewriter_ignore_delay.yy",},"order":6,},

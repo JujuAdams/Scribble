@@ -24,10 +24,11 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _font_info = font_get_info(_spritefont);
     
     var _sprite_name = sprite_get_name(_sprite);
-    if (ds_map_exists(global.__scribble_font_data, _sprite_name))
+    var _font_data_map = __scribble_get_font_data_map();
+    if (ds_map_exists(_font_data_map, _sprite_name))
     {
         __scribble_trace("Warning! A spritefont for \"", _sprite_name, "\" has already been added. Destroying the old spritefont and creating a new one");
-        global.__scribble_font_data[? _sprite_name].__destroy();
+        _font_data_map[? _sprite_name].__destroy();
     }
     
     var _is_krutidev = __scribble_asset_is_krutidev(_sprite, asset_sprite);
@@ -72,7 +73,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     if (_is_krutidev) _font_data.__is_krutidev = true;
     
     //Also create a duplicate entry so that we can find this spritefont in draw_text_scribble()
-    global.__scribble_font_data[? font_get_name(_spritefont)] = _font_data;
+    _font_data_map[? font_get_name(_spritefont)] = _font_data;
     
     var _i = 0;
     repeat(_size)
