@@ -31,4 +31,7 @@
     "name": "Caching, Stress Testing",
     "path": "folders/Test Cases/Caching, Stress Testing.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

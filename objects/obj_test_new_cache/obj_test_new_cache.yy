@@ -32,4 +32,7 @@
     "name": "Basic",
     "path": "folders/Test Cases/Basic.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

@@ -32,4 +32,7 @@
     "name": "Devanagari",
     "path": "folders/Test Cases/Language Support/Devanagari.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

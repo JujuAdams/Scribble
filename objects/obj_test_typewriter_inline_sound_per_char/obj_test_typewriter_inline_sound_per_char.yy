@@ -31,4 +31,7 @@
     "name": "Typewriter",
     "path": "folders/Test Cases/Typewriter.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

@@ -30,4 +30,7 @@
     "name": "Getters",
     "path": "folders/Test Cases/Getters.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

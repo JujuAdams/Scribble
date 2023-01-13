@@ -31,4 +31,7 @@
     "name": "Thai",
     "path": "folders/Test Cases/Language Support/Thai.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

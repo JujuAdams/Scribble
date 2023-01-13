@@ -30,4 +30,7 @@
     "name": "Regions",
     "path": "folders/Test Cases/Regions.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

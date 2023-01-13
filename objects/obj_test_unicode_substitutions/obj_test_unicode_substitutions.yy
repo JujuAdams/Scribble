@@ -30,4 +30,7 @@
     "name": "Configurations",
     "path": "folders/Test Cases/Configurations.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

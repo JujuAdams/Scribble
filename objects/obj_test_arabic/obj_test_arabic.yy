@@ -32,4 +32,7 @@
     "name": "Arabic",
     "path": "folders/Test Cases/Language Support/Arabic.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

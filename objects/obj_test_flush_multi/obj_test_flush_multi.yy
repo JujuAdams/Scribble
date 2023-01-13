@@ -32,4 +32,7 @@
     "name": "Text Element Methods",
     "path": "folders/Test Cases/Text Element Methods.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

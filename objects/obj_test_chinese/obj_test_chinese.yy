@@ -32,4 +32,7 @@
     "name": "Chinese",
     "path": "folders/Test Cases/Language Support/Chinese.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

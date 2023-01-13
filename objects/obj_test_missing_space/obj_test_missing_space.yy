@@ -31,4 +31,7 @@
     "name": "Fonts",
     "path": "folders/Test Cases/Fonts.yy",
   },
+  "tags": [
+    "test cases",
+  ],
 }

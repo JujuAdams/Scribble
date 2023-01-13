@@ -1,7 +1,7 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_test_anim_blink",
+  "name": "obj_test_controller",
   "spriteId": null,
   "solid": false,
   "visible": true,
@@ -22,15 +22,12 @@
   "physicsKinematic": false,
   "physicsShapePoints": [],
   "eventList": [
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,},
   ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Animation",
-    "path": "folders/Test Cases/Animation.yy",
+    "name": "Test Cases",
+    "path": "folders/Test Cases.yy",
   },
-  "tags": [
-    "test cases",
-  ],
 }
