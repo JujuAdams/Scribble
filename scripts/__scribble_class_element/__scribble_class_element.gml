@@ -780,6 +780,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         __update_bbox_matrix();
         
         return {
+            x: _x,
+            y: _y,
+            
             left:   _x + __bbox_aabb_left,
             top:    _y + __bbox_aabb_top,
             right:  _x + __bbox_aabb_right,
