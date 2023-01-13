@@ -1,20 +1,19 @@
 function __scribble_gen_8_position_glyphs()
 {
-    var _glyph_grid   = global.__scribble_glyph_grid;
-    var _word_grid    = global.__scribble_word_grid;
-    var _stretch_grid = global.__scribble_stretch_grid;
-    var _line_grid    = global.__scribble_line_grid;
-    var _temp_grid    = global.__scribble_temp_grid;
-    
-    ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
-    
     with(__scribble_get_generator_state())
     {
+        var _glyph_grid      = __glyph_grid;
+        var _word_grid       = __word_grid;
+        var _stretch_grid    = __stretch_grid;
+        var _line_grid       = __line_grid;
+        var _temp_grid       = __temp_grid;
         var _line_count      = __line_count;
         var _overall_bidi    = __overall_bidi;
         var _model_max_width = __model_max_width;
         var _glyph_count     = __glyph_count;
     }
+    
+    ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
     
     //Transform the animation index into a proper packed index
     ds_grid_multiply_region(_glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, __SCRIBBLE_MAX_LINES);

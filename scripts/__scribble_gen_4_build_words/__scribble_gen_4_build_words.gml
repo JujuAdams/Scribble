@@ -42,18 +42,17 @@
 function __scribble_gen_4_build_words()
 {
     //Unpack generator state
-    //Cache globals locally for a performance boost
-    var _glyph_grid = global.__scribble_glyph_grid;
-    var _word_grid  = global.__scribble_word_grid;
-    
     var _generator_state = __scribble_get_generator_state();
     with(_generator_state)
     {
-        var _element       = __element;
-        var _glyph_count   = __glyph_count;
-        var _overall_bidi  = __overall_bidi;
-        var _wrap_per_char = _element.__wrap_per_char; //TODO - Optimize by checking outside the loop
+        var _glyph_grid   = __glyph_grid;
+        var _word_grid    = __word_grid;
+        var _element      = __element;
+        var _glyph_count  = __glyph_count;
+        var _overall_bidi = __overall_bidi;
     }
+    
+    var _wrap_per_char = _element.__wrap_per_char; //TODO - Optimize by checking outside the loop
     
     var _word_count            = 0;
     var _word_width            = 0;

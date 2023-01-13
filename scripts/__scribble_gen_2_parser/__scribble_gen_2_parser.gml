@@ -138,14 +138,18 @@ function __scribble_gen_2_parser()
     
     var _generator_state = __scribble_get_generator_state();
     
+    with(_generator_state)
+    {
+        var _glyph_grid     = __glyph_grid;
+        var _word_grid      = __word_grid;
+        var _control_grid   = __control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
+        var _vbuff_pos_grid = __vbuff_pos_grid;
+        var _element        = __element;
+    }
+    
     //Cache globals locally for a performance boost
     var _string_buffer       = global.__scribble_buffer_a;
     var _other_string_buffer = global.__scribble_buffer_b;
-    
-    var _glyph_grid     = global.__scribble_glyph_grid;
-    var _word_grid      = global.__scribble_word_grid;
-    var _control_grid   = global.__scribble_control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
-    var _vbuff_pos_grid = global.__scribble_vbuff_pos_grid;
     
     //Arabic look-up tables
     var _arabic_join_next_map = global.__scribble_glyph_data.__arabic_join_next_map;
@@ -164,7 +168,6 @@ function __scribble_gen_2_parser()
     var _thai_upper_map          = global.__scribble_glyph_data.__thai_upper_map;
     
     //Cache element properties locally
-    var _element         = _generator_state.__element;
     var _element_text    = _element.__text;
     var _starting_colour = _element.__starting_colour;
     var _starting_halign = _element.__starting_halign;

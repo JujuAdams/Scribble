@@ -131,12 +131,14 @@ function __scribble_gen_3_devanagari()
     //Avoid this mess if we can
     if (!__has_devanagari) exit;
     
-    var _glyph_grid   = global.__scribble_glyph_grid;
-    var _control_grid = global.__scribble_control_grid;
-    var _temp_grid    = global.__scribble_temp2_grid;
-    
     var _generator_state = __scribble_get_generator_state();
-    var _glyph_count = _generator_state.__glyph_count;
+    with(_generator_state)
+    {
+        var _glyph_grid   = __glyph_grid;
+        var _control_grid = __control_grid;
+        var _temp_grid    = __temp2_grid;
+        var _glyph_count = _generator_state.__glyph_count;
+    }
     
     //Glyph count includes the terminating null. We don't need that for Krutidev conversion
     --_glyph_count;

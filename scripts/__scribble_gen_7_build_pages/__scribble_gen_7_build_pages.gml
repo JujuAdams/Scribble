@@ -17,19 +17,19 @@
 
 function __scribble_gen_7_build_pages()
 {
-    var _glyph_grid = global.__scribble_glyph_grid;
-    var _word_grid  = global.__scribble_word_grid;
-    var _line_grid  = global.__scribble_line_grid;
-    
     with(__scribble_get_generator_state())
     {
+        var _glyph_grid            = __glyph_grid;
+        var _word_grid             = __word_grid;
+        var _line_grid             = __line_grid;
         var _element               = __element;
         var _model_max_height      = __model_max_height;
         var _line_count            = __line_count;
-        var _wrap_no_pages         = _element.__wrap_no_pages;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
     }
+    
+    var _wrap_no_pages = _element.__wrap_no_pages;
     
     var _simulated_model_height = _wrap_no_pages? infinity : (_model_max_height / __fit_scale);
     

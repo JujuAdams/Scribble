@@ -60,15 +60,14 @@
 
 function __scribble_gen_6_build_lines()
 {
-    var _glyph_grid   = global.__scribble_glyph_grid;
-    var _word_grid    = global.__scribble_word_grid;
-    var _line_grid    = global.__scribble_line_grid;
-    var _control_grid = global.__scribble_control_grid;
-    var _temp_grid    = global.__scribble_temp_grid;
-    
     var _generator_state = __scribble_get_generator_state();
     with(_generator_state)
     {
+        var _glyph_grid            = __glyph_grid;
+        var _word_grid             = __word_grid;
+        var _line_grid             = __line_grid;
+        var _control_grid          = __control_grid;
+        var _temp_grid             = __temp_grid;
         var _element               = __element;
         var _word_count            = __word_count;
         var _line_height_min       = __line_height_min;

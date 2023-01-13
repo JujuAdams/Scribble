@@ -74,13 +74,15 @@ function __scribble_gen_9_write_vbuffs()
         var _string_buffer = global.__scribble_buffer_a;
     }
     
-    var _glyph_grid     = global.__scribble_glyph_grid;
-    var _control_grid   = global.__scribble_control_grid;
-    var _vbuff_pos_grid = global.__scribble_vbuff_pos_grid;
-    
     var _generator_state = __scribble_get_generator_state();
-    var _element     = _generator_state.__element;
-    var _glyph_count = _generator_state.__glyph_count;
+    with(_generator_state)
+    {
+        var _glyph_grid     = __glyph_grid;
+        var _control_grid   = __control_grid;
+        var _vbuff_pos_grid = __vbuff_pos_grid;
+        var _element        = __element;
+        var _glyph_count    = __glyph_count;
+    }
     
     
     
@@ -110,8 +112,6 @@ function __scribble_gen_9_write_vbuffs()
     {
         _bezier_do = false;
     }
-    
-    var _vbuff_pos_grid = global.__scribble_vbuff_pos_grid;
     
     var _glyph_scale        = 1.0;
     var _glyph_colour       = 0xFFFFFFFF;

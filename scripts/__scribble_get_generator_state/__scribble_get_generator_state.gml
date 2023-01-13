@@ -6,6 +6,15 @@ function __scribble_get_generator_state()
 
 function __scribble_class_generator_state() constructor
 {
+    __glyph_grid     = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
+    __control_grid   = ds_grid_create(1000, __SCRIBBLE_GEN_CONTROL.__SIZE); //This grid is cleared at the bottom of __scribble_generate_model()
+    __word_grid      = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE);
+    __line_grid      = ds_grid_create(__SCRIBBLE_MAX_LINES, __SCRIBBLE_GEN_LINE.__SIZE);
+    __stretch_grid   = ds_grid_create(1000, __SCRIBBLE_GEN_STRETCH.__SIZE);
+    __temp_grid      = ds_grid_create(1000, __SCRIBBLE_GEN_WORD.__SIZE); //For some reason, changing the width of this grid causes GM to crash
+    __temp2_grid     = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH.__SIZE);
+    __vbuff_pos_grid = ds_grid_create(1000, __SCRIBBLE_GEN_VBUFF_POS.__SIZE);
+    
     __Reset();
     
     static __Reset = function()

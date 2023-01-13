@@ -2,11 +2,12 @@ function __scribble_gen_5_finalize_bidi()
 {
     if (!__has_r2l) exit;
     
-    var _word_grid    = global.__scribble_word_grid;
-    
-    var _generator_state = __scribble_get_generator_state();
-    var _word_count   = _generator_state.__word_count;
-    var _overall_bidi = _generator_state.__overall_bidi;
+    with(__scribble_get_generator_state())
+    {
+        var _word_grid    = __word_grid;
+        var _word_count   = __word_count;
+        var _overall_bidi = __overall_bidi;
+    }
     
     //TODO - Optimise this by storing where symbolic bidi words are
     //       This saves iterating over the whole text element
