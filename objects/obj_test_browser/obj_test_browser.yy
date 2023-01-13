@@ -1,7 +1,7 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_test_controller",
+  "name": "obj_test_browser",
   "spriteId": null,
   "solid": false,
   "visible": true,
