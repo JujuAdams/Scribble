@@ -112,7 +112,7 @@ var _krutidevSourceArray = [
 ];
 
 //Use a ds_map rather than a struct since our keys will be integers
-global.__scribble_krutidev_lookup_map = ds_map_create();
+global.__krutidev_lookup_map = ds_map_create();
     
 var _i = 0;
 repeat(array_length(_unicodeSourceArray))
@@ -136,7 +136,7 @@ repeat(array_length(_unicodeSourceArray))
         ++_j;
     }
         
-    global.__scribble_krutidev_lookup_map[? _searchInteger] = _writeArray;
+    global.__krutidev_lookup_map[? _searchInteger] = _writeArray;
         
     ++_i;
 }
@@ -148,21 +148,21 @@ repeat(array_length(_unicodeSourceArray))
 #region Build matra lookup table
 
 //Use a ds_map rather than a struct since our keys are integers
-global.__scribble_krutidev_matra_lookup_map = ds_map_create();
-global.__scribble_krutidev_matra_lookup_map[?   58] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2305] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2306] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2366] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2367] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2368] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2369] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2370] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2371] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2373] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2375] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2376] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2379] = true;
-global.__scribble_krutidev_matra_lookup_map[? 2380] = true;
+global.__krutidev_matra_lookup_map = ds_map_create();
+global.__krutidev_matra_lookup_map[?   58] = true;
+global.__krutidev_matra_lookup_map[? 2305] = true;
+global.__krutidev_matra_lookup_map[? 2306] = true;
+global.__krutidev_matra_lookup_map[? 2366] = true;
+global.__krutidev_matra_lookup_map[? 2367] = true;
+global.__krutidev_matra_lookup_map[? 2368] = true;
+global.__krutidev_matra_lookup_map[? 2369] = true;
+global.__krutidev_matra_lookup_map[? 2370] = true;
+global.__krutidev_matra_lookup_map[? 2371] = true;
+global.__krutidev_matra_lookup_map[? 2373] = true;
+global.__krutidev_matra_lookup_map[? 2375] = true;
+global.__krutidev_matra_lookup_map[? 2376] = true;
+global.__krutidev_matra_lookup_map[? 2379] = true;
+global.__krutidev_matra_lookup_map[? 2380] = true;
     
 #endregion
 
@@ -296,7 +296,7 @@ function UnicodeToKrutidev(_inString)
     
     #region Move र् (ra + virama) after matras
     
-    var _matraLookupMap = global.__scribble_krutidev_matra_lookup_map;
+    var _matraLookupMap = global.__krutidev_matra_lookup_map;
     
     //Using a for-loop here as _stringLength may change
     for(var _i = 0; _i < _stringLength; ++_i)
@@ -326,7 +326,7 @@ function UnicodeToKrutidev(_inString)
     
     #region Perform bulk find-replace
     
-    var _lookupMap = global.__scribble_krutidev_lookup_map;
+    var _lookupMap = global.__krutidev_lookup_map;
     
     //Create a 64-bit minibuffer
     //Fortunately all the characters we're looking for fit into 16 bits and we only need to look for 4 at a time
