@@ -134,6 +134,34 @@ Three properties are available:
 
 &nbsp;
 
+## `scribble_kerning_pair_set(fontName, firstChar, secondChar, value, [relative])`
+
+**Returns:** Number, the new kerning offset
+
+|Name        |Datatype|Purpose                                                                                                                                    |
+|------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------|
+|`fontName`  |string  |The target font, as a string                                                                                                               |
+|`firstChar` |string  |First character in the pair, as a string                                                                                                   |
+|`secondChar`|integer |Second character in the pair, as a string                                                                                                  |
+|`value`     |number  |The value to set (or add)                                                                                                                  |
+|`[relative]`|boolean |Whether to add the new value to the existing value, or to overwrite the existing value. Defaults to `false`, overwriting the existing value|
+
+&nbsp;
+
+## `scribble_kerning_pair_get(fontName, firstChar, secondChar)`
+
+**Returns:** Number, the kerning offset for the given pair of characters
+
+|Name        |Datatype|Purpose                                  |
+|------------|--------|-----------------------------------------|
+|`fontName`  |string  |The target font, as a string             |
+|`firstChar` |string  |First character in the pair, as a string |
+|`secondChar`|integer |Second character in the pair, as a string|
+
+If there is no kerning offset defined for the given pair of characters (either set automatically by the font or manually via `scribble_kerning_pair_set()`), a value of `0` is returned.
+
+&nbsp;
+
 ## `scribble_font_bake_outline_4dir(sourceFontName, newFontName, color, smooth)`
 
 **Returns:** N/A (`undefined`)
