@@ -11,7 +11,7 @@ function scribble_font_get_glyph_ranges(_name, _hex = false)
     }
     
     var _keys_array = ds_map_keys_to_array(_font_data.__glyphs_map);
-    array_sort(_keys_array, lb_sort_ascending);
+    array_sort(_keys_array, true);
     
     var _out_array = [];
     
