@@ -234,25 +234,6 @@ function __scribble_initialize()
     global.__scribble_passthrough_vertex_format = vertex_format_end();
     
     //Cache uniform indexes
-    global.__scribble_u_fTime                    = shader_get_uniform(__shd_scribble, "u_fTime"                   );
-    global.__scribble_u_vColourBlend             = shader_get_uniform(__shd_scribble, "u_vColourBlend"            );
-    global.__scribble_u_vGradient                = shader_get_uniform(__shd_scribble, "u_vGradient"               );
-    global.__scribble_u_vSkew                    = shader_get_uniform(__shd_scribble, "u_vSkew"                   );
-    global.__scribble_u_vFlash                   = shader_get_uniform(__shd_scribble, "u_vFlash"                  );
-    global.__scribble_u_vRegionActive            = shader_get_uniform(__shd_scribble, "u_vRegionActive"           );
-    global.__scribble_u_vRegionColour            = shader_get_uniform(__shd_scribble, "u_vRegionColour"           );
-    global.__scribble_u_aDataFields              = shader_get_uniform(__shd_scribble, "u_aDataFields"             );
-    global.__scribble_u_aBezier                  = shader_get_uniform(__shd_scribble, "u_aBezier"                 );
-    global.__scribble_u_fBlinkState              = shader_get_uniform(__shd_scribble, "u_fBlinkState"             );
-    global.__scribble_u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
-    global.__scribble_u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
-    global.__scribble_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
-    global.__scribble_u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"   );
-    global.__scribble_u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"     );
-    global.__scribble_u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"   );
-    global.__scribble_u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation");
-    global.__scribble_u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration");
-
     global.__scribble_msdf_u_fTime                    = shader_get_uniform(__shd_scribble_msdf, "u_fTime"                   );
     global.__scribble_msdf_u_vColourBlend             = shader_get_uniform(__shd_scribble_msdf, "u_vColourBlend"            );
     global.__scribble_msdf_u_vGradient                = shader_get_uniform(__shd_scribble_msdf, "u_vGradient"               );
