@@ -144,6 +144,7 @@ function __scribble_gen_2_parser()
     var _effects_slash_map     = __scribble_get_effects_slash_map();
     var _typewriter_events_map = __scribble_get_typewriter_events_map();
     var _external_sound_map    = __scribble_get_external_sound_map();
+    var _macros_map            = __scribble_get_macros_map();
     var _string_buffer         = __scribble_get_buffer_a();
     var _other_string_buffer   = __scribble_get_buffer_b();
     
@@ -860,9 +861,9 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(_tag_command_name, _tag_parameters);
                             ++_control_count;
                         }
-                        else if (ds_map_exists(global.__scribble_macros, _tag_command_name)) //Macros
+                        else if (ds_map_exists(_macros_map, _tag_command_name)) //Macros
                         {
-                            var _function = global.__scribble_macros[? _tag_command_name];
+                            var _function = _macros_map[? _tag_command_name];
                             
                             var _macro_result = "";
                             switch(_tag_parameter_count)

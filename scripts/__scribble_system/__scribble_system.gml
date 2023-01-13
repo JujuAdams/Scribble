@@ -71,8 +71,6 @@ function __scribble_initialize()
     global.__scribble_gc_vbuff_refs = [];
     global.__scribble_gc_vbuff_ids  = [];
     
-    global.__scribble_macros = ds_map_create();
-    
     scribble_msdf_thickness_offset(0);
     
     

@@ -46,7 +46,8 @@ function scribble_add_macro(_name, _function)
         exit;
     }
     
-    var _old_function = global.__scribble_macros[? _name];
+    var _macros_map = __scribble_get_macros_map();
+    var _old_function = _macros_map[? _name];
     if (!is_undefined(_old_function))
     {
         if (is_numeric(_old_function) and (_old_function < 0))
@@ -59,6 +60,6 @@ function scribble_add_macro(_name, _function)
         }
     }
     
-    global.__scribble_macros[? _name] = _function;
+    _macros_map[? _name] = _function;
     if (SCRIBBLE_VERBOSE) __scribble_trace("Tying macro [" + _name + "] to \"" + (is_method(_function)? string(_function) : script_get_name(_function)) + "\"");
 }

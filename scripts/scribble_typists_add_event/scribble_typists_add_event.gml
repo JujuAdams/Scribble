@@ -42,7 +42,7 @@ function scribble_typists_add_event(_name, _function)
         exit;
     }
     
-    if (ds_map_exists(global.__scribble_macros, _name))
+    if (ds_map_exists(__scribble_get_macros_map(), _name))
     {
         __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as a macro");
         exit;
