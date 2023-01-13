@@ -2,6 +2,6 @@
 
 function scribble_font_get_default()
 {
-    __scribble_system();
+    __scribble_initialize();
     return global.__scribble_default_font;
 }
