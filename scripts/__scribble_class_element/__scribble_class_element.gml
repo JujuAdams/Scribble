@@ -598,8 +598,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _y = _vector[1];
         
         var _found = undefined;
-        var _i = 0;
-        repeat(array_length(_region_array))
+        var _i = array_length(_region_array)-1;
+        repeat(_i+1)
         {
             var _region = _region_array[_i];
             var _bbox_array = _region.__bbox_array;
@@ -618,7 +618,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
             
             if (_found != undefined) break;
-            ++_i;
+            --_i;
         }
         
         return _found;
