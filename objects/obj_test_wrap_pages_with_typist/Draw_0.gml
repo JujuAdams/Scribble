@@ -1,3 +1,9 @@
+if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER)
+{
+    draw_text(10, 10, "SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> for this test case");
+    return;
+}
+
 var _bbox = element.get_bbox(room_width div 2, room_height div 2, 5, 5, 5, 5);
 draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, true);
 draw_primitive_begin(pr_trianglestrip);

@@ -1,6 +1,4 @@
-//Don't remove this scribble() call!
-//This call ensures that Scribble's garbage collector runs outside of the timers
-scribble("[fnt_test_0]Frozen vertex buffer test").draw(10, 10);
+draw_text(10, 10, "SCRIBBLE_INCREMENTAL_FREEZE = " + string(SCRIBBLE_INCREMENTAL_FREEZE));
 
 draw_set_font(scribble_fallback_font);
 draw_text(10, 30, frozen_smoothed);

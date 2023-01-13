@@ -1,3 +1,9 @@
+if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER)
+{
+    draw_text(10, 10, "SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> for this test case");
+    return;
+}
+
 var _text = "[fa_middle][c_red]Hi world\nHi world Hi world";
 var _element = scribble(_text);
 
