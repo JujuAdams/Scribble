@@ -5,9 +5,10 @@ function __scribble_tick()
     
     
     //If there's been a change in os_is_paused() state then force a refresh of shader uniforms
-    if (os_is_paused() != global.__scribble_os_is_paused)
+    static _os_is_paused = undefined;
+    if (os_is_paused() != _os_is_paused)
     {
-        global.__scribble_os_is_paused = os_is_paused();
+        _os_is_paused = os_is_paused();
         
         global.__scribble_anim_shader_desync             = true;
         global.__scribble_anim_shader_msdf_desync        = true;

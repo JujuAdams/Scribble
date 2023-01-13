@@ -290,8 +290,6 @@ function __scribble_initialize()
     scribble_msdf_thickness_offset(0);
 
     //Set up animation properties
-    global.__scribble_os_is_paused = false;
-
     global.__scribble_anim_shader_desync = false;
     global.__scribble_anim_shader_desync_to_default = false;
     global.__scribble_anim_shader_default = false;
