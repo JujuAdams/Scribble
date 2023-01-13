@@ -10,3 +10,5 @@ scribble(_test_text)
 .starting_format("fnt_segoe_ui_12", c_white)
 .align(fa_left, fa_middle)
 .draw((room_width div 2) + 60, room_height div 2);
+
+draw_line(0, room_height div 2, room_width, room_height div 2);

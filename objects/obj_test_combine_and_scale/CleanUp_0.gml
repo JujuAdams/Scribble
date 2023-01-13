@@ -1,0 +1,1 @@
+scribble_font_scale("fnt_test_1", 0.5);
