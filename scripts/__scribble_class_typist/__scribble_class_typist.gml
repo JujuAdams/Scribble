@@ -1,5 +1,7 @@
 function __scribble_class_typist() constructor
 {
+    static __scribble_state = __scribble_get_state();
+    
     __last_element = undefined;
     
     __speed      = 1;
@@ -556,8 +558,8 @@ function __scribble_class_typist() constructor
         if (__skip) __drawn_since_skip = true;
         
         //Don't tick if it's been less than a frame since we were last updated
-        if (global.__scribble_frames < __last_tick_frame) return undefined;
-        __last_tick_frame = global.__scribble_frames;
+        if (__scribble_state.__frames < __last_tick_frame) return undefined;
+        __last_tick_frame = __scribble_state.__frames;
         
         //If __in hasn't been set yet (.in() / .out() haven't been set) then just nope out
         if (__in == undefined) return undefined;

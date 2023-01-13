@@ -3,6 +3,7 @@
 
 function __scribble_class_model(_element, _model_cache_name) constructor
 {
+    static __scribble_state    = __scribble_get_state();
     static __mcache_dict       = __scribble_get_cache_state().__mcache_dict;
     static __mcache_name_array = __scribble_get_cache_state().__mcache_name_array;
     
@@ -27,7 +28,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __mcache_dict[$ __cache_name] = weak_ref_create(self);
     array_push(__mcache_name_array, __cache_name);
     
-    __last_drawn = global.__scribble_frames;
+    __last_drawn = __scribble_state.__frames;
     __frozen     = undefined;
     __flushed    = false;
     
@@ -65,7 +66,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if (__flushed) return undefined;
         
-        __last_drawn = global.__scribble_frames;
+        __last_drawn = __scribble_state.__frames;
         
         __pages_array[_page].__submit(_msdf_feather_thickness, (__has_arabic || __has_thai || SCRIBBLE_ALWAYS_DOUBLE_DRAW) && _double_draw);
     }

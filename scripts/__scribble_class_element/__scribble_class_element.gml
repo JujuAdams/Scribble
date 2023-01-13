@@ -33,7 +33,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     __model_cache_name = undefined;
     __model = undefined;
     
-    __last_drawn = global.__scribble_frames;
+    __last_drawn = __scribble_state.__frames;
     __freeze = false;
     
     
@@ -172,13 +172,13 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (!is_struct(_model)) return undefined;
         
         //If enough time has elapsed since we drew this element then update our animation time
-        if (__last_drawn < global.__scribble_frames)
+        if (__last_drawn < __scribble_state.__frames)
         {
             __animation_time += __animation_speed*SCRIBBLE_TICK_SIZE;
             if (SCRIBBLE_SAFELY_WRAP_TIME) __animation_time = __animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
-        __last_drawn = global.__scribble_frames;
+        __last_drawn = __scribble_state.__frames;
         
         //Update the blink state
         if (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration > 0)

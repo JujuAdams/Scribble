@@ -7,7 +7,7 @@ function __scribble_class_page() constructor
     __text = "";
     __glyph_grid = undefined;
     
-    __created_frame = global.__scribble_frames;
+    __created_frame = __scribble_state.__frames;
     __frozen = undefined;
     
     __character_count = 0;
@@ -36,7 +36,7 @@ function __scribble_class_page() constructor
     static __submit = function(_msdf_feather_thickness, _double_draw)
     {
         
-        if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < global.__scribble_frames)) __freeze();
+        if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
         var _shader = undefined;
         var _i = 0;

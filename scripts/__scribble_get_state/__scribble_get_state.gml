@@ -1,6 +1,8 @@
 function __scribble_get_state()
 {
     static _struct = {
+        __frames: 0,
+        
         __default_font: "scribble_fallback_font",
         
         __blink_on_duration:  SCRIBBLE_DEFAULT_BLINK_ON_DURATION,

@@ -1,5 +1,6 @@
 function __scribble_tick()
 {
+    static _scribble_state = __scribble_get_state();
     static _cache_state = __scribble_get_cache_state();
     
     static _ecache_list_index = 0;
@@ -16,8 +17,8 @@ function __scribble_tick()
     static _gc_vbuff_refs = _cache_state.__gc_vbuff_refs;
     static _gc_vbuff_ids  = _cache_state.__gc_vbuff_ids;
     
-    ++global.__scribble_frames;
-    var _frames = global.__scribble_frames;
+    _scribble_state.__frames++;
+    var _frames = _scribble_state.__frames;
     
     
     
