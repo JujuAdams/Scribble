@@ -139,12 +139,15 @@ function __scribble_gen_2_parser()
     
     #endregion
     
+    //Cache globals locally for a performance boost
     var _effects_map           = __scribble_get_effects_map();
     var _effects_slash_map     = __scribble_get_effects_slash_map();
     var _typewriter_events_map = __scribble_get_typewriter_events_map();
+    var _external_sound_map    = __scribble_get_external_sound_map();
+    var _string_buffer         = __scribble_get_buffer_a();
+    var _other_string_buffer   = __scribble_get_buffer_b();
     
     var _generator_state = __scribble_get_generator_state();
-    
     with(_generator_state)
     {
         var _glyph_grid     = __glyph_grid;
@@ -153,10 +156,6 @@ function __scribble_gen_2_parser()
         var _vbuff_pos_grid = __vbuff_pos_grid;
         var _element        = __element;
     }
-    
-    //Cache globals locally for a performance boost
-    var _string_buffer       = __scribble_get_buffer_a();
-    var _other_string_buffer = __scribble_get_buffer_b();
     
     //Arabic look-up tables
     var _arabic_join_next_map = global.__scribble_glyph_data.__arabic_join_next_map;
@@ -983,11 +982,11 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters);
                             ++_control_count;
                         }
-                        else if (ds_map_exists(global.__scribble_external_sound_map, _tag_command_name))
+                        else if (ds_map_exists(_external_sound_map, _tag_command_name))
                         {
                             //External audio added via scribble_external_sound_add()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EVENT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, [global.__scribble_external_sound_map[? _tag_command_name]]);
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, [_external_sound_map[? _tag_command_name]]);
                             ++_control_count;
                         }
                         else

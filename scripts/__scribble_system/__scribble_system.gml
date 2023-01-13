@@ -59,8 +59,7 @@ function __scribble_initialize()
     
     
     //Declare global variables
-    global.__scribble_external_sound_map = ds_map_create();
-    global.__scribble_default_font       = "scribble_fallback_font";
+    global.__scribble_default_font = "scribble_fallback_font";
     
     global.__scribble_mcache_dict       = {};
     global.__scribble_mcache_name_array = [];

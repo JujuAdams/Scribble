@@ -6,7 +6,9 @@ function scribble_external_sound_add(_soundID, _alias)
     //Ensure we're initialized
     __scribble_initialize();
     
-    if (ds_map_exists(global.__scribble_external_sound_map, _alias))
+    var _external_sound_map = __scribble_get_external_sound_map();
+    
+    if (ds_map_exists(_external_sound_map, _alias))
     {
         __scribble_error("External sound alias \"", _alias, "\" already exists");
     }
@@ -16,5 +18,5 @@ function scribble_external_sound_add(_soundID, _alias)
         __scribble_error("Audio asset ", _soundID, " could not be found");
     }
     
-    global.__scribble_external_sound_map[? _alias] = _soundID;
+    _external_sound_map[? _alias] = _soundID;
 }

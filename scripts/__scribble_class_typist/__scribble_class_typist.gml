@@ -515,7 +515,11 @@ function __scribble_class_typist() constructor
                 __last_audio_character = _head_pos;
                 
                 var _audio_asset = _sound_array[floor(__scribble_random()*array_length(_sound_array))];
-                if (is_string(_audio_asset)) _audio_asset = global.__scribble_external_sound_map[? _audio_asset];
+                if (is_string(_audio_asset))
+                {
+                    var _external_sound_map = __scribble_get_external_sound_map();
+                    _audio_asset = _external_sound_map[? _audio_asset];
+                }
                 
                 if (_audio_asset != undefined)
                 {
