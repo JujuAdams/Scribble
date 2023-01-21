@@ -60,15 +60,15 @@ function __scribble_class_page() constructor
             
             if (_shader == __shd_scribble_msdf)
             {
-                static _msdf_u_vTexel               = shader_get_uniform(__shd_scribble_msdf, "u_vTexel"              );
-                static _msdf_u_fMSDFRange           = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFRange"          );
-                static _msdf_u_fMSDFThicknessOffset = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFThicknessOffset");
-                static _msdf_u_fSecondDraw          = shader_get_uniform(__shd_scribble_msdf, "u_fSecondDraw"         );
+                static _msdf_u_vTexel              = shader_get_uniform(__shd_scribble_msdf, "u_vTexel"              );
+                static _msdf_u_fSDFRange           = shader_get_uniform(__shd_scribble_msdf, "u_fSDFRange"          );
+                static _msdf_u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble_msdf, "u_fSDFThicknessOffset");
+                static _msdf_u_fSecondDraw         = shader_get_uniform(__shd_scribble_msdf, "u_fSecondDraw"         );
                 
                 //Set shader uniforms unique to the MSDF shader
                 shader_set_uniform_f(_msdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
-                shader_set_uniform_f(_msdf_u_fMSDFRange, _msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE]);
-                shader_set_uniform_f(_msdf_u_fMSDFThicknessOffset, __scribble_state.__msdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET]);
+                shader_set_uniform_f(_msdf_u_fSDFRange, _msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE]);
+                shader_set_uniform_f(_msdf_u_fSDFThicknessOffset, __scribble_state.__msdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET]);
                 
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
                 
