@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMSwitchOptions",
+  "resourceVersion": "1.0",
+  "name": "Switch",
   "option_switch_project_nmeta": "${options_dir}/switch/application.nmeta",
   "option_switch_enable_nex_libraries": false,
   "option_switch_interpolate_pixels": true,
@@ -9,8 +12,4 @@
   "option_switch_splash_screen": "${base_options_dir}/switch/splash.png",
   "option_switch_use_splash": false,
   "option_switch_allow_debug_output": false,
-  "resourceVersion": "1.0",
-  "name": "Switch",
-  "tags": [],
-  "resourceType": "GMSwitchOptions",
 }

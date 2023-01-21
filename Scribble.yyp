@@ -318,22 +318,6 @@
     {"id":{"name":"spr_vertical_spacing","path":"sprites/spr_vertical_spacing/spr_vertical_spacing.yy",},"order":5,},
     {"id":{"name":"spr_white_coin","path":"sprites/spr_white_coin/spr_white_coin.yy",},"order":6,},
   ],
-  "Options": [
-    {"name":"Amazon Fire","path":"options/amazonfire/options_amazonfire.yy",},
-    {"name":"Android","path":"options/android/options_android.yy",},
-    {"name":"HTML5","path":"options/html5/options_html5.yy",},
-    {"name":"iOS","path":"options/ios/options_ios.yy",},
-    {"name":"Linux","path":"options/linux/options_linux.yy",},
-    {"name":"macOS","path":"options/mac/options_mac.yy",},
-    {"name":"Main","path":"options/main/options_main.yy",},
-    {"name":"operagx","path":"options/operagx/options_operagx.yy",},
-    {"name":"PlayStation 4","path":"options/ps4/options_ps4.yy",},
-    {"name":"PlayStation 5","path":"options/ps5/options_ps5.yy",},
-    {"name":"Switch","path":"options/switch/options_switch.yy",},
-    {"name":"tvOS","path":"options/tvos/options_tvos.yy",},
-    {"name":"Windows","path":"options/windows/options_windows.yy",},
-    {"name":"Xbox Series XS","path":"options/xboxseriesxs/options_xboxseriesxs.yy",},
-  ],
   "defaultScriptType": 1,
   "isEcma": false,
   "configs": {
@@ -402,6 +386,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"spr_sdf_riffic.json","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "MetaData": {
-    "IDEVersion": "2022.0.0.19",
+    "IDEVersion": "2023.100.0.269",
   },
 }
