@@ -396,7 +396,7 @@ void main()
     vec2 pixelScale = vec2(length(vec3(wvpMatrix[0][0], wvpMatrix[0][1], wvpMatrix[0][2])),
                            length(vec3(wvpMatrix[1][0], wvpMatrix[1][1], wvpMatrix[1][2])));
     pixelScale *= u_vOutputSize;
-    v_fPixelScale = 0.25*v_fTextScale*length(pixelScale);
+    v_fPixelScale = 0.125*v_fTextScale*length(pixelScale);
     
     
     //Unpack character/line index
