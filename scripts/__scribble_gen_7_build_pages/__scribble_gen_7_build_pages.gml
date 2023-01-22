@@ -9,9 +9,30 @@
                                 _page_data.__max_y       = (__valign == fa_middle)?  (_line_y div 2) : ((__valign == fa_bottom)?        0 : _line_y);\
                                 ;\// Set up the character indexes for the page, relative to the character index of the first glyph on the page
                                 var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];\
-                                ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, -_page_anim_start);\
-                                ;\// Set the character count for the page too
-                                _page_data.__character_count = 1 + _glyph_grid[# _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];
+                                var _page_anim_end   = _glyph_grid[# _page_data.__glyph_end,   __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];\
+                                _page_data.__character_count = 1 + _page_anim_end - _page_anim_start;\
+                                if (_randomize_animation)\
+                                {\
+                                    array_resize(_animation_randomize_array, _page_data.__character_count);\
+                                    var _i = 0;\
+                                    repeat(_page_data.__character_count)\
+                                    {\
+                                        _animation_randomize_array[@ _i] = _i;\
+                                        ++_i;\
+                                    }\
+                                    array_sort(_animation_randomize_array, function() { return choose(-1, 1); });\
+                                    var _glyph_start = _page_data.__glyph_start;\
+                                    var _i = 0;\
+                                    repeat(_page_data.__character_count)\
+                                    {\
+                                        _glyph_grid[# _glyph_start + _i, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX] = _animation_randomize_array[_i];\
+                                        ++_i;\
+                                    }\
+                                }\
+                                else\
+                                {\
+                                    ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, -_page_anim_start);\
+                                }
 
 
 
@@ -28,7 +49,10 @@ function __scribble_gen_7_build_pages()
         var _line_count            = __line_count;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
+        var _randomize_animation   = __element.__randomize_animation;
     }
+    
+    static _animation_randomize_array = [];
     
     var _wrap_no_pages = _element.__wrap_no_pages;
     

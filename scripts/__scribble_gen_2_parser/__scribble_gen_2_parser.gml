@@ -7,8 +7,8 @@
 
 
 #macro __SCRIBBLE_PARSER_NEXT_GLYPH  ++_glyph_count;\
-                                     _glyph_prev = _glyph_write;\
-                                     _glyph_prev_prev = _glyph_prev;
+                                     _glyph_prev_prev = _glyph_prev;\
+                                     _glyph_prev = _glyph_write;
 
 
 
@@ -25,8 +25,8 @@
                                         ;\
                                         ++_glyph_count;\
                                         _glyph_prev_arabic_join_next = false;\
-                                        _glyph_prev = 0x0A;\
-                                        _glyph_prev_prev = _glyph_prev;
+                                        _glyph_prev_prev = _glyph_prev;\
+                                        _glyph_prev = 0x0A;
 
 
 
@@ -135,6 +135,8 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "zwsp"              ] = 31;
         _command_tag_lookup_accelerator_map[? "typistSound"       ] = 32;
         _command_tag_lookup_accelerator_map[? "typistSoundPerChar"] = 33;
+        _command_tag_lookup_accelerator_map[? "r2l"               ] = 34;
+        _command_tag_lookup_accelerator_map[? "l2r"               ] = 35;
     }
     
     #endregion
@@ -184,6 +186,7 @@ function __scribble_gen_2_parser()
     var _starting_halign = _element.__starting_halign;
     var _starting_valign = _element.__starting_valign;
     var _ignore_commands = _element.__ignore_command_tags;
+    var _pre_scale       = _element.__pre_scale;
     
     var _starting_font = _element.__starting_font;
     if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
@@ -275,9 +278,9 @@ function __scribble_gen_2_parser()
     var _tag_command_name    = "";
     
     var _glyph_count                 = 0;
-    var _glyph_ord                   = 0x00;
-    var _glyph_prev                  = 0x00;
-    var _glyph_prev_prev             = 0x00;
+    var _glyph_ord                   = 0x0000;
+    var _glyph_prev                  = 0x0000;
+    var _glyph_prev_prev             = 0x0000;
     var _glyph_prev_arabic_join_next = false;
     
     var _control_count = 0;
@@ -290,7 +293,7 @@ function __scribble_gen_2_parser()
     var _state_halign               = _starting_halign;
     var _state_command_tag_flipflop = false;
     
-    var _state_scale             = 1.0;
+    var _state_scale             = _pre_scale;
     var _state_scale_start_glyph = 0;
     
     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__HALIGN;
@@ -382,7 +385,7 @@ function __scribble_gen_2_parser()
                         }
                         
                         _state_effect_flags = 0;
-                        _state_scale        = 1.0;
+                        _state_scale        = _pre_scale;
                         _state_colour       = 0xFF000000 | _starting_colour;
                         
                         //Add an effect flag control
@@ -433,7 +436,7 @@ function __scribble_gen_2_parser()
                     // [/s]
                     case 4:
                         __SCRIBBLE_PARSER_PUSH_SCALE;
-                        _state_scale = 1;
+                        _state_scale = _pre_scale;
                     break;
                     
                     #endregion
@@ -454,8 +457,8 @@ function __scribble_gen_2_parser()
                         
                         ++_glyph_count;
                         _glyph_prev_arabic_join_next = false;
-                        _glyph_prev = 0x00;
                         _glyph_prev_prev = _glyph_prev;
+                        _glyph_prev = 0x00;
                     break;
                     
                     #region Scale
@@ -469,7 +472,7 @@ function __scribble_gen_2_parser()
                         else
                         {
                             __SCRIBBLE_PARSER_PUSH_SCALE;
-                            _state_scale = real(_tag_parameters[1]);
+                            _state_scale = _pre_scale*real(_tag_parameters[1]);
                         }
                     break;
                     
@@ -576,8 +579,8 @@ function __scribble_gen_2_parser()
                             
                             ++_glyph_count;
                             _glyph_prev_arabic_join_next = false;
-                            _glyph_prev = 0xA0;
                             _glyph_prev_prev = _glyph_prev;
+                            _glyph_prev = 0xA0;
                         }
                     break;
                     
@@ -600,11 +603,49 @@ function __scribble_gen_2_parser()
                         
                         ++_glyph_count;
                         _glyph_prev_arabic_join_next = false;
-                        _glyph_prev = 0x200B;
                         _glyph_prev_prev = _glyph_prev;
+                        _glyph_prev = 0x200B;
                     break;
                     
                     #endregion
+                    
+                    // [r2l]
+                    case 34:
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x200F;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.R2L;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
+                        
+                        ++_glyph_count;
+                        _glyph_prev_arabic_join_next = false;
+                        _glyph_prev_prev = _glyph_prev;
+                        _glyph_prev = 0x200F;
+                    break;
+                    
+                    // [l2r]
+                    case 35:
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x200E;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.L2R;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
+                        
+                        ++_glyph_count;
+                        _glyph_prev_arabic_join_next = false;
+                        _glyph_prev_prev = _glyph_prev;
+                        _glyph_prev = 0x200E;
+                    break;
                     
                     #region Cycle
                     
@@ -771,8 +812,8 @@ function __scribble_gen_2_parser()
                         
                         ++_glyph_count;
                         _glyph_prev_arabic_join_next = false;
-                        _glyph_prev = __SCRIBBLE_GLYPH_SURFACE;
                         _glyph_prev_prev = _glyph_prev;
+                        _glyph_prev = __SCRIBBLE_GLYPH_SURFACE;
                     break;
                     
                     #endregion
@@ -973,8 +1014,8 @@ function __scribble_gen_2_parser()
                             
                             ++_glyph_count;
                             _glyph_prev_arabic_join_next = false;
-                            _glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
                             _glyph_prev_prev = _glyph_prev;
+                            _glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
                             
                             #endregion
                         }
@@ -1183,8 +1224,8 @@ function __scribble_gen_2_parser()
                 
                 ++_glyph_count;
                 _glyph_prev_arabic_join_next = false;
-                _glyph_prev = 0x09;
                 _glyph_prev_prev = _glyph_prev;
+                _glyph_prev = 0x09;
                 
                 #endregion
             }
@@ -1205,8 +1246,8 @@ function __scribble_gen_2_parser()
                 
                 ++_glyph_count;
                 _glyph_prev_arabic_join_next = false;
-                _glyph_prev = 0x20;
                 _glyph_prev_prev = _glyph_prev;
+                _glyph_prev = 0x20;
                 
                 #endregion
             }
@@ -1227,8 +1268,8 @@ function __scribble_gen_2_parser()
                 
                 ++_glyph_count;
                 _glyph_prev_arabic_join_next = false;
-                _glyph_prev = 0xA0;
                 _glyph_prev_prev = _glyph_prev;
+                _glyph_prev = 0xA0;
                 
                 #endregion
             }
@@ -1249,8 +1290,8 @@ function __scribble_gen_2_parser()
                 
                 ++_glyph_count;
                 _glyph_prev_arabic_join_next = false;
-                _glyph_prev = 0x200B;
                 _glyph_prev_prev = _glyph_prev;
+                _glyph_prev = 0x200B;
                 
                 #endregion
             }
