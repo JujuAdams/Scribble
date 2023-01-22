@@ -83,6 +83,8 @@ function __scribble_glyph_data_initialize()
     _map[? ord("-") ] = __SCRIBBLE_BIDI.SYMBOL;
     
     //More control characters
+    _map[? $200E] = __SCRIBBLE_BIDI.L2R; //Left-to-right mark
+    _map[? $200F] = __SCRIBBLE_BIDI.R2L; //Right-to-left mark
     _map[? $2066] = __SCRIBBLE_BIDI.WHITESPACE;
     _map[? $2067] = __SCRIBBLE_BIDI.WHITESPACE;
     _map[? $2068] = __SCRIBBLE_BIDI.WHITESPACE;
