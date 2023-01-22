@@ -35,7 +35,7 @@ function __scribble_font_add_all_from_project()
         ++_i;
     }
     
-    //Find every sprite asset with the "scribble msdf" tag
+    //Find every sprite asset with the "scribble sdf" tag
     //We check variations on the tag because they're case sensitive and people might spell it differently despite what documentation says
     var _assets = [];
     

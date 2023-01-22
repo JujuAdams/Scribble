@@ -56,8 +56,8 @@ function __scribble_font_add_sdf_from_project(_sprite)
     var _atlas_map       = _json[? "atlas"  ];
     var _kerning_list    = _json[? "kerning"];
     
-    var _em_size      = _atlas_map[? "size"         ];
-    var _msdf_pxrange = _atlas_map[? "distanceRange"];
+    var _em_size     = _atlas_map[? "size"         ];
+    var _sdf_pxrange = _atlas_map[? "distanceRange"];
     
     var _json_line_height = _em_size*_metrics_map[? "lineHeight"];
     
@@ -71,7 +71,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
     var _font_kerning_map     = _font_data.__kerning_map;
     if (_is_krutidev) _font_data.__is_krutidev = true;
-    _font_data.__sdf_pxrange = _msdf_pxrange;
+    _font_data.__sdf_pxrange = _sdf_pxrange;
     
     var _i = 0;
     repeat(_size)
@@ -107,7 +107,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
         {
             var _xoffset  = _em_size*_plane_map[? "left"];
             var _yoffset  = _em_size - _em_size*_plane_map[? "top"]; //So, so weird
-            var _xadvance = round(_em_size*_json_glyph_map[? "advance"]); //_w - _msdf_pxrange - round(_em_size*_plane_map[? "left"]);
+            var _xadvance = round(_em_size*_json_glyph_map[? "advance"]); //_w - _sdf_pxrange - round(_em_size*_plane_map[? "left"]);
         }
         else
         {
@@ -197,7 +197,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT              ] = _h;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT         ] = _json_line_height;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION          ] = _xadvance;
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.LEFT_OFFSET         ] = 1 - _xoffset - 0.5*_msdf_pxrange;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.LEFT_OFFSET         ] = 1 - _xoffset - 0.5*_sdf_pxrange;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE          ] = 1;
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE             ] = _texture;
@@ -206,7 +206,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U1                  ] = _u1;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1                  ] = _v1;
         
-        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SDF_PXRANGE         ] = _msdf_pxrange;
+        _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SDF_PXRANGE         ] = _sdf_pxrange;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SDF_THICKNESS_OFFSET] = 0;
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BILINEAR            ] = true;
         
