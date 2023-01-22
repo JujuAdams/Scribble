@@ -333,7 +333,7 @@ function __scribble_class_null_element() constructor
     
     
     
-    #region MSDF
+    #region SDF
     
     static sdf_shadow = function()
     {
