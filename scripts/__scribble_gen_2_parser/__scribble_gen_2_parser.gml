@@ -135,6 +135,8 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "zwsp"              ] = 31;
         _command_tag_lookup_accelerator_map[? "typistSound"       ] = 32;
         _command_tag_lookup_accelerator_map[? "typistSoundPerChar"] = 33;
+        _command_tag_lookup_accelerator_map[? "r2l"               ] = 34;
+        _command_tag_lookup_accelerator_map[? "l2r"               ] = 35;
     }
     
     #endregion
@@ -605,6 +607,44 @@ function __scribble_gen_2_parser()
                     break;
                     
                     #endregion
+                    
+                    // [r2l]
+                    case 34:
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x200F;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.R2L;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
+                        
+                        ++_glyph_count;
+                        _glyph_prev_arabic_join_next = false;
+                        _glyph_prev_prev = _glyph_prev;
+                        _glyph_prev = 0x200F;
+                    break;
+                    
+                    // [l2r]
+                    case 35:
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x200F;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.L2R;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _font_line_height;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
+                        
+                        ++_glyph_count;
+                        _glyph_prev_arabic_join_next = false;
+                        _glyph_prev_prev = _glyph_prev;
+                        _glyph_prev = 0x200E;
+                    break;
                     
                     #region Cycle
                     
