@@ -73,22 +73,12 @@ function __scribble_font_add_parse_from_file(_file_name, _font, _font_glyph_arra
         var _font_kerning_map     = _font_data.__kerning_map;
         
         var _i = 0;
-    
-        //Getting these, we can later ignore glyphs outside of these ranges
-        var _font_first_char = font_get_first(_font);
-        var _font_last_char = font_get_last(_font);
-        
         repeat(_size)
         {
             var _glyph_dict = _info_glyphs_array[_i];
             
             var _unicode = _glyph_dict.char;
-        
-            //Ignore glyphs outside the defined range.
-            if (_unicode < _font_first_char) or (_unicode > _font_last_char) {
-                _i++;
-                continue;
-            }
+
             if ((_unicode >= 0x3000) && (_unicode <= 0x303F)) //CJK Symbols and Punctuation
             {
                 var _bidi = __SCRIBBLE_BIDI.SYMBOL;
