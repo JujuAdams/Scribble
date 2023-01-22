@@ -58,7 +58,7 @@ function __scribble_class_page() constructor
             }
             
             //Set shader uniforms unique to the MSDF shader
-            shader_set_uniform_f(_u_fSDF, (_data[__SCRIBBLE_VERTEX_BUFFER.__SHADER] == __shd_scribble_msdf));
+            shader_set_uniform_f(_u_fSDF, _data[__SCRIBBLE_VERTEX_BUFFER.__SDF]);
             shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
             shader_set_uniform_f(_u_fSDFRange, _msdf_feather_thickness*(_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE] ?? 0));
             shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__msdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET] ?? 0));
@@ -176,12 +176,12 @@ function __scribble_class_page() constructor
             if (_pxrange == undefined)
             {
                 _model_struct.__uses_standard_font = true;
-                var _shader = __shd_scribble;
+                var _sdf = false;
             }
             else
             {
                 _model_struct.__uses_msdf_font = true;
-                var _shader = __shd_scribble_msdf;
+                var _sdf = true;
             }
             
             static _vertex_format = undefined;
@@ -210,7 +210,7 @@ function __scribble_class_page() constructor
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET] = _thickness_offset;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH          ] = texture_get_texel_width(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT         ] = texture_get_texel_height(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SHADER               ] = _shader;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                  ] = _sdf;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR             ] = _bilinear;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;

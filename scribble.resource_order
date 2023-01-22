@@ -264,7 +264,6 @@
     {"name":"__shd_scribble_bake_outline_8dir","path":"shaders/__shd_scribble_bake_outline_8dir/__shd_scribble_bake_outline_8dir.yy","order":3,},
     {"name":"__shd_scribble_bake_outline_8dir_2px","path":"shaders/__shd_scribble_bake_outline_8dir_2px/__shd_scribble_bake_outline_8dir_2px.yy","order":4,},
     {"name":"__shd_scribble_bake_shadow","path":"shaders/__shd_scribble_bake_shadow/__shd_scribble_bake_shadow.yy","order":5,},
-    {"name":"__shd_scribble_msdf","path":"shaders/__shd_scribble_msdf/__shd_scribble_msdf.yy","order":1,},
     {"name":"snd_switch","path":"sounds/snd_switch/snd_switch.yy","order":1,},
     {"name":"spr_large_coin","path":"sprites/spr_large_coin/spr_large_coin.yy","order":1,},
     {"name":"spr_mallangche","path":"sprites/spr_mallangche/spr_mallangche.yy","order":1,},

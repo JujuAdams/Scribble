@@ -303,7 +303,6 @@
     {"id":{"name":"__shd_scribble_bake_outline_8dir","path":"shaders/__shd_scribble_bake_outline_8dir/__shd_scribble_bake_outline_8dir.yy",},"order":3,},
     {"id":{"name":"__shd_scribble_bake_outline_8dir_2px","path":"shaders/__shd_scribble_bake_outline_8dir_2px/__shd_scribble_bake_outline_8dir_2px.yy",},"order":4,},
     {"id":{"name":"__shd_scribble_bake_shadow","path":"shaders/__shd_scribble_bake_shadow/__shd_scribble_bake_shadow.yy",},"order":5,},
-    {"id":{"name":"__shd_scribble_msdf","path":"shaders/__shd_scribble_msdf/__shd_scribble_msdf.yy",},"order":1,},
     {"id":{"name":"snd_crank","path":"sounds/snd_crank/snd_crank.yy",},"order":0,},
     {"id":{"name":"snd_switch","path":"sounds/snd_switch/snd_switch.yy",},"order":1,},
     {"id":{"name":"spr_coin","path":"sprites/spr_coin/spr_coin.yy",},"order":0,},
