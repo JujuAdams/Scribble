@@ -1499,12 +1499,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
-        if (_scribble_state.__msdf_anim_desync)
+        if (_scribble_state.__shader_anim_desync)
         {
             with(_scribble_state)
             {
-                __msdf_anim_desync  = false;
-                __msdf_anim_default = __msdf_anim_desync_to_default;
+                __shader_anim_desync  = false;
+                __shader_anim_default = __shader_anim_desync_to_default;
             }
             
             shader_set_uniform_f_array(_u_aDataFields, _anim_properties_array);

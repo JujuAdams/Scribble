@@ -62,7 +62,7 @@ function __scribble_class_page() constructor
                 shader_set_uniform_f(_u_fSDF, 1);
                 shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
                 shader_set_uniform_f(_u_fSDFRange, (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE] ?? 0));
-                shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__msdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] ?? 0));
+                shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] ?? 0));
             }
             else
             {
@@ -180,17 +180,6 @@ function __scribble_class_page() constructor
         
         if (_data == undefined)
         {
-            if (_pxrange == undefined)
-            {
-                _model_struct.__uses_standard_font = true;
-                var _sdf = false;
-            }
-            else
-            {
-                _model_struct.__uses_msdf_font = true;
-                var _sdf = true;
-            }
-            
             static _vertex_format = undefined;
             if (_vertex_format == undefined)
             {
@@ -200,7 +189,7 @@ function __scribble_class_page() constructor
                 vertex_format_add_colour();                                       // 4 bytes
                 vertex_format_add_texcoord();                                     // 8 bytes
                 vertex_format_add_custom(vertex_type_float2, vertex_usage_color); // 8 bytes
-                _vertex_format = vertex_format_end();            //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
+                _vertex_format = vertex_format_end();                             //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
             }
             
             var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version
@@ -213,7 +202,7 @@ function __scribble_class_page() constructor
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER       ] = _vbuff;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _texture;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                 ] = _sdf;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                 ] = (_pxrange != undefined); //We're using an SDF font if we have no defined SDF range
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE           ] = _pxrange;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thickness_offset;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture);

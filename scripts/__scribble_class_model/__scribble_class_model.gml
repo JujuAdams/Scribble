@@ -32,9 +32,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __frozen     = undefined;
     __flushed    = false;
     
-    __uses_standard_font = false;
-    __uses_msdf_font     = false;
-    
     __pages      = 0;
     __width      = 0;
     __height     = 0;
