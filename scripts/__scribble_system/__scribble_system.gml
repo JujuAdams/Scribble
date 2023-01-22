@@ -525,16 +525,16 @@ enum __SCRIBBLE_GLYPH_LAYOUT
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {
-    __VERTEX_BUFFER,         //0
-    __TEXTURE,               //1
-    __MSDF_RANGE,            //2
-    __MSDF_THICKNESS_OFFSET, //3
-    __TEXEL_WIDTH,           //4
-    __TEXEL_HEIGHT,          //5
-    __SDF,                   //6
-    __BUFFER,                //7
-    __BILINEAR,              //8
-    __SIZE                   //9
+    __VERTEX_BUFFER,        //0
+    __TEXTURE,              //1
+    __SDF,                  //2
+    __SDF_RANGE,            //3
+    __SDF_THICKNESS_OFFSET, //4
+    __TEXEL_WIDTH,          //5
+    __TEXEL_HEIGHT,         //6
+    __BUFFER,               //7
+    __BILINEAR,             //8
+    __SIZE                  //9
 }
 
 enum __SCRIBBLE_ANIM
@@ -571,36 +571,36 @@ enum __SCRIBBLE_ANIM
 
 enum __SCRIBBLE_GEN_GLYPH
 {
-    __UNICODE,               // 0  \   Can be negative, see below
-    __BIDI,                  // 1   |
-                             //     |
-    __X,                     // 2   |
-    __Y,                     // 3   |
-    __WIDTH,                 // 4   |
-    __HEIGHT,                // 5   |
-    __FONT_HEIGHT,           // 6   |
-    __SEPARATION,            // 7   |
-    __LEFT_OFFSET,           // 8   |
-    __SCALE,                 // 9   | This group of enums must not change order or be split
-                             //     |
-    __TEXTURE,               //10   |
-    __QUAD_U0,               //11   | Be careful of ordering!
-    __QUAD_U1,               //12   | scribble_font_bake_shader() relies on this
-    __QUAD_V0,               //13   |
-    __QUAD_V1,               //14   |
-                             //     |
-    __MSDF_PXRANGE,          //15   |
-    __MSDF_THICKNESS_OFFSET, //16   |
-    __BILINEAR,              //17  /
+    __UNICODE,              // 0  \   Can be negative, see below
+    __BIDI,                 // 1   |
+                            //     |
+    __X,                    // 2   |
+    __Y,                    // 3   |
+    __WIDTH,                // 4   |
+    __HEIGHT,               // 5   |
+    __FONT_HEIGHT,          // 6   |
+    __SEPARATION,           // 7   |
+    __LEFT_OFFSET,          // 8   |
+    __SCALE,                // 9   | This group of enums must not change order or be split
+                            //     |
+    __TEXTURE,              //10   |
+    __QUAD_U0,              //11   | Be careful of ordering!
+    __QUAD_U1,              //12   | scribble_font_bake_shader() relies on this
+    __QUAD_V0,              //13   |
+    __QUAD_V1,              //14   |
+                            //     |
+    __SDF_PXRANGE,          //15   |
+    __SDF_THICKNESS_OFFSET, //16   |
+    __BILINEAR,             //17  /
     
-    __CONTROL_COUNT,         //18
-    __ANIMATION_INDEX,       //19
+    __CONTROL_COUNT,        //18
+    __ANIMATION_INDEX,      //19
                       
-    __SPRITE_INDEX,          //20  \
-    __IMAGE_INDEX,           //21   | Only used for sprites
-    __IMAGE_SPEED,           //22  /
+    __SPRITE_INDEX,         //20  \
+    __IMAGE_INDEX,          //21   | Only used for sprites
+    __IMAGE_SPEED,          //22  /
                       
-    __SIZE,                   //23
+    __SIZE,                 //23
 }
 
 enum __SCRIBBLE_GEN_VBUFF_POS

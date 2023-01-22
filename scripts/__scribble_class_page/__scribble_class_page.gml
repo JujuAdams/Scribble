@@ -33,7 +33,7 @@ function __scribble_class_page() constructor
     __events = {};
     __region_array = [];
     
-    static __submit = function(_msdf_feather_thickness, _double_draw)
+    static __submit = function(_double_draw)
     {
         static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );
         static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );
@@ -52,16 +52,23 @@ function __scribble_class_page() constructor
             
             if (_bilinear != undefined)
             {
-                //Force texture filtering when using MSDF fonts
                 var _old_tex_filter = gpu_get_tex_filter();
                 gpu_set_tex_filter(_bilinear);
             }
             
-            //Set shader uniforms unique to the MSDF shader
-            shader_set_uniform_f(_u_fSDF, _data[__SCRIBBLE_VERTEX_BUFFER.__SDF]);
-            shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
-            shader_set_uniform_f(_u_fSDFRange, _msdf_feather_thickness*(_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE] ?? 0));
-            shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__msdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET] ?? 0));
+            if (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF])
+            {
+                //Set shader uniforms unique to the SDF shader
+                shader_set_uniform_f(_u_fSDF, 1);
+                shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
+                shader_set_uniform_f(_u_fSDFRange, (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE] ?? 0));
+                shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__msdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] ?? 0));
+            }
+            else
+            {
+                //TODO - Optimise
+                shader_set_uniform_f(_u_fSDF, 0);
+            }
             
             vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
             
@@ -204,14 +211,14 @@ function __scribble_class_page() constructor
             array_push(__gc_vbuff_ids, _vbuff);
             
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER        ] = _vbuff;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE              ] = _texture;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE           ] = _pxrange;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET] = _thickness_offset;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH          ] = texture_get_texel_width(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT         ] = texture_get_texel_height(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                  ] = _sdf;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR             ] = _bilinear;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER       ] = _vbuff;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _texture;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                 ] = _sdf;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE           ] = _pxrange;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thickness_offset;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_texture);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR            ] = _bilinear;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;
             if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;
