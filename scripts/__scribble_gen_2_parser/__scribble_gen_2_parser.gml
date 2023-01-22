@@ -278,8 +278,8 @@ function __scribble_gen_2_parser()
     
     var _glyph_count                 = 0;
     var _glyph_ord                   = 0x0000;
-    var _glyph_prev                  = undefined;
-    var _glyph_prev_prev             = undefined;
+    var _glyph_prev                  = 0x0000;
+    var _glyph_prev_prev             = 0x0000;
     var _glyph_prev_arabic_join_next = false;
     
     var _control_count = 0;
