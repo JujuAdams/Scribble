@@ -1,7 +1,7 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_test_msdf_superfont",
+  "name": "obj_test_sdf_drop_shadow",
   "spriteId": null,
   "solid": false,
   "visible": true,
@@ -28,8 +28,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "MSDF",
-    "path": "folders/Test Cases/MSDF.yy",
+    "name": "SDF",
+    "path": "folders/Test Cases/SDF.yy",
   },
   "tags": [
     "test cases",
