@@ -13,6 +13,6 @@ var _element = scribble("Text using a smaller font", 2);
 _element.starting_format("fnt_test_0", undefined).draw(_x, _y);
 _y += _element.get_height() + 10;
 
-var _element = scribble("Text using an MSDF font in lime green", 3);
+var _element = scribble("Text using an SDF font in lime green", 3);
 _element.starting_format("spr_msdf_openhuninn", c_lime).draw(_x, _y);
 _y += _element.get_height() + 10;

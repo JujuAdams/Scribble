@@ -19,7 +19,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
     var _is_krutidev = __scribble_asset_is_krutidev(_sprite, asset_sprite);
     var _global_glyph_bidi_map = __scribble_get_glyph_data().__bidi_map;
     
-    if (SCRIBBLE_VERBOSE) __scribble_trace("Defined \"" + _name + "\" as an MSDF font");
+    if (SCRIBBLE_VERBOSE) __scribble_trace("Defined \"" + _name + "\" as an SDF font");
     
     var _sprite_width  = sprite_get_width(_sprite);
     var _sprite_height = sprite_get_height(_sprite);
@@ -71,7 +71,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
     var _font_kerning_map     = _font_data.__kerning_map;
     if (_is_krutidev) _font_data.__is_krutidev = true;
-    _font_data.__msdf_pxrange = _msdf_pxrange;
+    _font_data.__sdf_pxrange = _msdf_pxrange;
     
     var _i = 0;
     repeat(_size)
@@ -116,18 +116,18 @@ function __scribble_font_add_sdf_from_project(_sprite)
             var _xadvance = round(_em_size*_json_glyph_map[? "advance"]);
         }
         
-        if (SCRIBBLE_MSDF_BORDER_TRIM > 0)
+        if (SCRIBBLE_SDF_BORDER_TRIM > 0)
         {
-            _tex_l += SCRIBBLE_MSDF_BORDER_TRIM;
-            _tex_t += SCRIBBLE_MSDF_BORDER_TRIM;
-            _tex_r -= SCRIBBLE_MSDF_BORDER_TRIM;
-            _tex_b -= SCRIBBLE_MSDF_BORDER_TRIM;
+            _tex_l += SCRIBBLE_SDF_BORDER_TRIM;
+            _tex_t += SCRIBBLE_SDF_BORDER_TRIM;
+            _tex_r -= SCRIBBLE_SDF_BORDER_TRIM;
+            _tex_b -= SCRIBBLE_SDF_BORDER_TRIM;
             
-            _w -= 2*SCRIBBLE_MSDF_BORDER_TRIM;
-            _h -= 2*SCRIBBLE_MSDF_BORDER_TRIM;
+            _w -= 2*SCRIBBLE_SDF_BORDER_TRIM;
+            _h -= 2*SCRIBBLE_SDF_BORDER_TRIM;
             
-            _xoffset += SCRIBBLE_MSDF_BORDER_TRIM;
-            _yoffset += SCRIBBLE_MSDF_BORDER_TRIM;
+            _xoffset += SCRIBBLE_SDF_BORDER_TRIM;
+            _yoffset += SCRIBBLE_SDF_BORDER_TRIM;
         }
         
         //if (_xoffset < 0) __scribble_trace("char = ", _char, ", offset = ", _xoffset);
@@ -219,7 +219,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
     var _space_index = _font_glyphs_map[? 32];
     if (_space_index == undefined)
     {
-        __scribble_trace("Warning! Space character not found in character set for MSDF font \"", _name, "\"");
+        __scribble_trace("Warning! Space character not found in character set for SDF font \"", _name, "\"");
         
         var _i = _size;
         ds_grid_resize(_font_glyph_data_grid, _i+1, SCRIBBLE_GLYPH.__SIZE);

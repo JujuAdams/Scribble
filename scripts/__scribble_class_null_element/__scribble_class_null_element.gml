@@ -335,6 +335,16 @@ function __scribble_class_null_element() constructor
     
     #region MSDF
     
+    static sdf_shadow = function()
+    {
+        __error();
+    }
+    
+    static sdf_border = function()
+    {
+        __error();
+    }
+    
     static msdf_shadow = function()
     {
         __error();
