@@ -117,7 +117,7 @@ function __scribble_class_page() constructor
             
             if (SCRIBBLE_VERBOSE)
             {
-                __scribble_trace("Incrementally froze page vertex buffers, time taken = ", (get_timer() - _t)/1000);
+                __scribble_trace("Incrementally froze page vertex buffers, time taken = ", (get_timer() - _t)/1000, "ms");
             }
         }
     }
