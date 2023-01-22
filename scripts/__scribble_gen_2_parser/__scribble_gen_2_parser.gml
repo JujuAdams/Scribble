@@ -186,6 +186,7 @@ function __scribble_gen_2_parser()
     var _starting_halign = _element.__starting_halign;
     var _starting_valign = _element.__starting_valign;
     var _ignore_commands = _element.__ignore_command_tags;
+    var _pre_scale       = _element.__pre_scale;
     
     var _starting_font = _element.__starting_font;
     if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
@@ -292,7 +293,7 @@ function __scribble_gen_2_parser()
     var _state_halign               = _starting_halign;
     var _state_command_tag_flipflop = false;
     
-    var _state_scale             = 1.0;
+    var _state_scale             = _pre_scale;
     var _state_scale_start_glyph = 0;
     
     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__HALIGN;
@@ -384,7 +385,7 @@ function __scribble_gen_2_parser()
                         }
                         
                         _state_effect_flags = 0;
-                        _state_scale        = 1.0;
+                        _state_scale        = _pre_scale;
                         _state_colour       = 0xFF000000 | _starting_colour;
                         
                         //Add an effect flag control
@@ -435,7 +436,7 @@ function __scribble_gen_2_parser()
                     // [/s]
                     case 4:
                         __SCRIBBLE_PARSER_PUSH_SCALE;
-                        _state_scale = 1;
+                        _state_scale = _pre_scale;
                     break;
                     
                     #endregion
@@ -471,7 +472,7 @@ function __scribble_gen_2_parser()
                         else
                         {
                             __SCRIBBLE_PARSER_PUSH_SCALE;
-                            _state_scale = real(_tag_parameters[1]);
+                            _state_scale = _pre_scale*real(_tag_parameters[1]);
                         }
                     break;
                     

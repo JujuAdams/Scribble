@@ -53,9 +53,13 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __origin_x       = 0.0;
     __origin_y       = 0.0;
-    __xscale         = 1.0;
-    __yscale         = 1.0;
-    __angle          = 0.0;
+    
+    __pre_scale      = 1.0;
+    
+    __post_xscale    = 1.0;
+    __post_yscale    = 1.0;
+    __post_angle     = 0.0;
+    
     __matrix_dirty   = true;
     __matrix         = undefined;
     __matrix_inverse = undefined;
@@ -368,14 +372,27 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [angle=0]
     static transform = function(_xscale, _yscale = _xscale, _angle = 0)
     {
-        if ((__xscale != _xscale) || (__yscale != _yscale) || (__angle != _angle))
+        if ((__post_xscale != _xscale) || (__post_yscale != _yscale) || (__post_angle != _angle))
         {
             __matrix_dirty = true;
             __bbox_dirty   = true;
             
-            __xscale = _xscale;
-            __yscale = _yscale;
-            __angle  = _angle;
+            __post_xscale = _xscale;
+            __post_yscale = _yscale;
+            __post_angle  = _angle;
+        }
+        
+        return self;
+    }
+    
+    /// @param scale
+    static scale = function(_scale)
+    {
+        if (__pre_scale != _scale)
+        {
+            __model_cache_name_dirty = true;
+            
+            __pre_scale = _scale;
         }
         
         return self;
@@ -698,8 +715,8 @@ function __scribble_class_element(_string, _unique_id) constructor
                 return;
             }
             
-            var _xscale = __scale_to_box_scale*_model.__fit_scale*__xscale;
-            var _yscale = __scale_to_box_scale*_model.__fit_scale*__yscale;
+            var _xscale = __scale_to_box_scale*_model.__fit_scale*__post_xscale;
+            var _yscale = __scale_to_box_scale*_model.__fit_scale*__post_yscale;
             
             //Left/top padding is baked into the model
             var _bbox = _model.__get_bbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __page : undefined, __padding_l, __padding_t, __padding_r, __padding_b);
@@ -707,7 +724,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             __bbox_raw_width  = 1 + _bbox.right - _bbox.left;
             __bbox_raw_height = 1 + _bbox.bottom - _bbox.top;
             
-            if ((_xscale == 1) && (_yscale == 1) && (__angle == 0))
+            if ((_xscale == 1) && (_yscale == 1) && (__post_angle == 0))
             {
                 __bbox_matrix = matrix_build(-__origin_x, -__origin_y, 0,    0,0,0,    1,1,1);
                 
@@ -727,7 +744,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 //TODO - Optimize this
                 __bbox_matrix = matrix_multiply(matrix_build(-__origin_x, -__origin_y, 0,    0, 0,       0,          1,       1, 1),
                                 matrix_multiply(matrix_build(          0,           0, 0,    0, 0,       0,    _xscale, _yscale, 1),
-                                                matrix_build(          0,           0, 0,    0, 0, __angle,          1,       1, 1)));
+                                                matrix_build(          0,           0, 0,    0, 0, __post_angle,          1,       1, 1)));
                 
                 var _l = _bbox.left;
                 var _t = _bbox.top;
@@ -852,10 +869,10 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         
         __update_bbox_matrix();
-        var _xscale = __scale_to_box_scale*_model.__fit_scale*__xscale;
-        var _yscale = __scale_to_box_scale*_model.__fit_scale*__yscale;
+        var _xscale = __scale_to_box_scale*_model.__fit_scale*__post_xscale;
+        var _yscale = __scale_to_box_scale*_model.__fit_scale*__post_yscale;
         
-        if ((_xscale == 1) && (_yscale == 1) && (__angle == 0))
+        if ((_xscale == 1) && (_yscale == 1) && (__post_angle == 0))
         {
             //Avoid using matrices if we can
             var _l = _x - __origin_x + _bbox.left;
@@ -1391,10 +1408,11 @@ function __scribble_class_element(_string, _unique_id) constructor
                 static _buffer = __scribble_get_buffer_a();
                 buffer_seek(_buffer, buffer_seek_start, 0);
                 buffer_write(_buffer, buffer_text, string(__text           ));     buffer_write(_buffer, buffer_u8,  0x3A); //colon
-                buffer_write(_buffer, buffer_text, string(__starting_font  ));     buffer_write(_buffer, buffer_u8,  0x3A); //colon
+                buffer_write(_buffer, buffer_text, string(__starting_font  ));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__starting_colour));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__starting_halign));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__starting_valign));     buffer_write(_buffer, buffer_u8,  0x3A);
+                buffer_write(_buffer, buffer_text, string(__pre_scale      ));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__line_height_min));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__line_height_max));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__line_spacing   ));     buffer_write(_buffer, buffer_u8,  0x3A);
@@ -1765,9 +1783,9 @@ function __scribble_class_element(_string, _unique_id) constructor
             
             var _x_offset = -__origin_x;
             var _y_offset = -__origin_y;
-            var _xscale   = __scale_to_box_scale*_model.__fit_scale*__xscale;
-            var _yscale   = __scale_to_box_scale*_model.__fit_scale*__yscale;
-            var _angle    = __angle;
+            var _xscale   = __scale_to_box_scale*_model.__fit_scale*__post_xscale;
+            var _yscale   = __scale_to_box_scale*_model.__fit_scale*__post_yscale;
+            var _angle    = __post_angle;
             
             if (!_model.__pad_bbox_l) _x_offset += __padding_l;
             if (!_model.__pad_bbox_t) _y_offset += __padding_t;
@@ -1785,7 +1803,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 //FIXME - Re-optimise
                 __matrix = matrix_multiply(matrix_build(_x_offset, _y_offset, 0,    0,0,0,          1,1,1),
                            matrix_multiply(matrix_build(0,0,0,                      0,0,0,          _xscale, _yscale, 1),
-                           matrix_multiply(matrix_build(0,0,0,                      0,0,__angle,    1,1,1),
+                           matrix_multiply(matrix_build(0,0,0,                      0,0,__post_angle,    1,1,1),
                                            matrix_build(_x, _y, __z,                0,0,0,          1,1,1))));
                 
                 //var _sin = dsin(_angle);
