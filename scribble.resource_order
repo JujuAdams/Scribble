@@ -1,6 +1,7 @@
 {
   "ResourceOrderSettings": [
     {"name":"fnt_hebrew","path":"fonts/fnt_hebrew/fnt_hebrew.yy","order":1,},
+    {"name":"__scribble_font_add_from_file","path":"scripts/__scribble_font_add_from_file/__scribble_font_add_from_file.yy","order":12,},
     {"name":"fnt_industrydemi","path":"fonts/fnt_industrydemi/fnt_industrydemi.yy","order":2,},
     {"name":"fnt_krutidev","path":"fonts/fnt_krutidev/fnt_krutidev.yy","order":3,},
     {"name":"fnt_monospace","path":"fonts/fnt_monospace/fnt_monospace.yy","order":4,},
@@ -53,7 +54,9 @@
     {"name":"obj_test_fit_to_box_plus_transformation","path":"objects/obj_test_fit_to_box_plus_transformation/obj_test_fit_to_box_plus_transformation.yy","order":3,},
     {"name":"obj_test_flash","path":"objects/obj_test_flash/obj_test_flash.yy","order":7,},
     {"name":"obj_test_flush","path":"objects/obj_test_flush/obj_test_flush.yy","order":4,},
+    {"name":"__scribble_font_add_parse_from_file","path":"scripts/__scribble_font_add_parse_from_file/__scribble_font_add_parse_from_file.yy","order":13,},
     {"name":"obj_test_flush_multi","path":"objects/obj_test_flush_multi/obj_test_flush_multi.yy","order":5,},
+    {"name":"__scribble_font_delete_from_file","path":"scripts/__scribble_font_delete_from_file/__scribble_font_delete_from_file.yy","order":14,},
     {"name":"obj_test_font_duplicate","path":"objects/obj_test_font_duplicate/obj_test_font_duplicate.yy","order":1,},
     {"name":"obj_test_font_height","path":"objects/obj_test_font_height/obj_test_font_height.yy","order":2,},
     {"name":"obj_test_font_outline_4dir","path":"objects/obj_test_font_outline_4dir/obj_test_font_outline_4dir.yy","order":3,},
@@ -100,6 +103,7 @@
     {"name":"obj_test_new_cache","path":"objects/obj_test_new_cache/obj_test_new_cache.yy","order":13,},
     {"name":"obj_test_origin","path":"objects/obj_test_origin/obj_test_origin.yy","order":11,},
     {"name":"obj_test_overwrite","path":"objects/obj_test_overwrite/obj_test_overwrite.yy","order":12,},
+    {"name":"obj_test_font_add_from_file","path":"objects/obj_test_font_add_from_file/obj_test_font_add_from_file.yy","order":15,},
     {"name":"obj_test_padding_fit_to_box","path":"objects/obj_test_padding_fit_to_box/obj_test_padding_fit_to_box.yy","order":1,},
     {"name":"obj_test_padding_scale_to_box","path":"objects/obj_test_padding_scale_to_box/obj_test_padding_scale_to_box.yy","order":2,},
     {"name":"obj_test_padding_wrap","path":"objects/obj_test_padding_wrap/obj_test_padding_wrap.yy","order":3,},

@@ -5,6 +5,7 @@
   "resources": [
     {"id":{"name":"fnt_dialogue_2","path":"fonts/fnt_dialogue_2/fnt_dialogue_2.yy",},"order":0,},
     {"id":{"name":"fnt_hebrew","path":"fonts/fnt_hebrew/fnt_hebrew.yy",},"order":1,},
+    {"id":{"name":"__scribble_font_add_from_file","path":"scripts/__scribble_font_add_from_file/__scribble_font_add_from_file.yy",},"order":0,},
     {"id":{"name":"fnt_industrydemi","path":"fonts/fnt_industrydemi/fnt_industrydemi.yy",},"order":2,},
     {"id":{"name":"fnt_krutidev","path":"fonts/fnt_krutidev/fnt_krutidev.yy",},"order":3,},
     {"id":{"name":"fnt_monospace","path":"fonts/fnt_monospace/fnt_monospace.yy",},"order":4,},
@@ -72,7 +73,9 @@
     {"id":{"name":"obj_test_fit_to_box_plus_transformation","path":"objects/obj_test_fit_to_box_plus_transformation/obj_test_fit_to_box_plus_transformation.yy",},"order":3,},
     {"id":{"name":"obj_test_flash","path":"objects/obj_test_flash/obj_test_flash.yy",},"order":7,},
     {"id":{"name":"obj_test_flush","path":"objects/obj_test_flush/obj_test_flush.yy",},"order":4,},
+    {"id":{"name":"__scribble_font_add_parse_from_file","path":"scripts/__scribble_font_add_parse_from_file/__scribble_font_add_parse_from_file.yy",},"order":0,},
     {"id":{"name":"obj_test_flush_multi","path":"objects/obj_test_flush_multi/obj_test_flush_multi.yy",},"order":5,},
+    {"id":{"name":"__scribble_font_delete_from_file","path":"scripts/__scribble_font_delete_from_file/__scribble_font_delete_from_file.yy",},"order":0,},
     {"id":{"name":"obj_test_font_duplicate","path":"objects/obj_test_font_duplicate/obj_test_font_duplicate.yy",},"order":1,},
     {"id":{"name":"obj_test_font_height","path":"objects/obj_test_font_height/obj_test_font_height.yy",},"order":2,},
     {"id":{"name":"obj_test_font_outline_4dir","path":"objects/obj_test_font_outline_4dir/obj_test_font_outline_4dir.yy",},"order":3,},
@@ -125,6 +128,7 @@
     {"id":{"name":"obj_test_origin","path":"objects/obj_test_origin/obj_test_origin.yy",},"order":12,},
     {"id":{"name":"obj_test_overwrite","path":"objects/obj_test_overwrite/obj_test_overwrite.yy",},"order":13,},
     {"id":{"name":"obj_test_padding","path":"objects/obj_test_padding/obj_test_padding.yy",},"order":0,},
+    {"id":{"name":"obj_test_font_add_from_file","path":"objects/obj_test_font_add_from_file/obj_test_font_add_from_file.yy",},"order":0,},
     {"id":{"name":"obj_test_padding_fit_to_box","path":"objects/obj_test_padding_fit_to_box/obj_test_padding_fit_to_box.yy",},"order":1,},
     {"id":{"name":"obj_test_padding_scale_to_box","path":"objects/obj_test_padding_scale_to_box/obj_test_padding_scale_to_box.yy",},"order":2,},
     {"id":{"name":"obj_test_padding_wrap","path":"objects/obj_test_padding_wrap/obj_test_padding_wrap.yy",},"order":3,},
@@ -381,6 +385,7 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"spr_msdf_font_awesome.json","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"blip.ogg","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"spr_sdf_riffic.json","CopyToMask":-1,"filePath":"datafiles",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"NotoSans-Regular.ttf","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "MetaData": {
     "IDEVersion": "2023.100.0.269",
