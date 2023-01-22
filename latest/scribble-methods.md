@@ -118,6 +118,16 @@ Forces the colour of all text (and sprites) to change to the given specified col
 
 # Layout
 
+## `.scale(factor)` *regenerator*
+
+**Returns**: The text element
+
+|Name    |Datatype|Purpose                                                                         |
+|--------|--------|--------------------------------------------------------------------------------|
+|`factor`|real    |Scaling factor to apply to the text element. `1.0` represents no change in scale|
+
+Adds a scaling factor to a text element. This is applied **before** text layout and multiplicatively with `[scale]` tags; as a result, setting a scale with the method will affect text wrapping (if enabled).
+
 ## `.origin(x, y)`
 
 **Returns**: The text element
@@ -142,6 +152,8 @@ Sets the origin relative to the top-left corner of the text element. You can thi
 |`angle` |real    |rotation angle of the text element|
 
 Rotates and scales a text element relative to the origin (set by [`.origin()`](scribble-methods?id=originx-y)).
+
+!> This transformation is applied **after** text layout and should be used to animate e.g. pop-in animations. If you'd like to apply a scaling factor before text layout, please use `.scale()`
 
 &nbsp;
 
@@ -197,7 +209,17 @@ Instructs Scribble to fit text inside a box by automatically inserting line brea
 
 Fits text to a box by inserting line breaks and scaling text but **will not** insert any page breaks. Text will take up as much space as possible without starting a new page. The macro `SCRIBBLE_FIT_TO_BOX_ITERATIONS` controls how many iterations to perform (higher is slower but more accurate).
 
-!> N.B. This function is very slow and should be used sparingly. It is recommended you manually cache text elements when using `.fit_to_box()`.
+!> N.B. This function is slow and should be used sparingly. It is recommended you manually cache text elements when using `.fit_to_box()`.
+
+&nbsp;
+
+## `.pin_guide_width(width)` *regenerator*
+
+**Returns**: The text element
+
+|Name   |Datatype|Purpose                                                                                                                         |
+|-------|--------|--------------------------------------------------------------------------------------------------------------------------------|
+|`width`|integer |Width to use for pin-type alignments. Use a negative number (the default) to use the width of the text instead of a fixed number|
 
 &nbsp;
 
@@ -725,7 +747,7 @@ Changes the softness/hardness of the MSDF font outline. You may find you have to
 |--------|--------|------------------------------------------|
 |`freeze`|boolean |Whether to freeze generated vertex buffers|
 
-Forces Scribble to build the text model for this text element. You should call this function if you're pre-caching text elements e.g. during a loading screen. Freezing vertex buffers will speed up rendering considerably but has a large up-front cost (Scribble generally defaults to **not** freezing vertex buffers to prevent hiccups when rendering text).
+Forces Scribble to build the text model for this text element. Calling this method twice will do nothing even if e.g. a macro command tag would return a different value (please use `.refresh()` instead). You should call this function if you're pre-caching (a.k.a. "stashing") text elements e.g. during a loading screen. Freezing vertex buffers will speed up rendering considerably but has a large up-front cost.
 
 As this function returns `undefined`, the intended use of this function is:
 
@@ -737,6 +759,16 @@ element.build(true); //Now build the text element
 ///Draw
 element.draw(x, y);
 ```
+
+## `.refresh()`
+
+**Returns**: N/A (`undefined`)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Forces Scribble to rebuild the text model for this text element. This is particularly useful for situations where a stashed text element needs to update e.g. a macro command tag would return a different value.
 
 &nbsp;
 
@@ -811,6 +843,18 @@ scribble("This text is red and will be wrapped inside a box that's 150px wide.")
 |`state`|boolean |Whether to ignore command tags|
 
 Directs Scribble to ignore all [command tags](text-formatting) in the string and instead render them as plaintext.
+
+&nbsp;
+
+## `.randomize_animation(state)` *regenerator*
+
+**Returns**: The text element
+
+|Name   |Datatype|Purpose                                                |
+|-------|--------|-------------------------------------------------------|
+|`state`|boolean |Whether to randomize the order that glyphs are animated|
+
+Setting this method to `true` will also randomize any and all effects. This includes typewriter effects achieved with typists or `.reveal()`, and also animated formatting via command tags such as `[shake]` `[rainbow]` etc.
 
 &nbsp;
 

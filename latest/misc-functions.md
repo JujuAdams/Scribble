@@ -147,6 +147,18 @@ Frees all memory that Scribble text elements and text models are currently using
 
 &nbsp;
 
+## `scribble_refresh_everything()`
+
+**Returns:** N/A (`undefined`)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Forces every Scribble text element to refresh their text model. This may be useful if some global property has changed, such as a change in default font or a macro has changed.
+
+&nbsp;
+
 ## `scribble_rgb_to_bgr(RGB)`
 
 **Returns:** GM-native BGR colour

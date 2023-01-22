@@ -292,9 +292,9 @@ It's quite common in games with typewriter-style text animations to have a sound
 
 **Returns**: `self`, the typist
 
-|Name      |Datatype|Purpose|
-|----------|--------|-------|
-|`function`|function|       |
+|Name      |Datatype|Purpose                                             |
+|----------|--------|----------------------------------------------------|
+|`function`|function|Function to execute when a new character is revealed|
 
 `.function_per_char()` allows you to define a function that will be executed once per character as that character is revealed. The function is passed three arguments:
 1. Text element that triggered the callback
@@ -326,13 +326,17 @@ typist.function_per_char(function(_element, _position, _typist)
 
 &nbsp;
 
-## `.get_text_element()`
+## `.function_on_complete(function)`
 
-**Returns**: The text element associated with the typist, or `undefined` if no text element is associated
+**Returns**: `self`, the typist
 
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
+|Name      |Datatype|Purpose                                             |
+|----------|--------|----------------------------------------------------|
+|`function`|function|Function to execute when a typist finishes animating|
+
+`.function_on_complete()` allows you to define a function that will be executed once when a typist finishes animating. The function is passed two arguments:
+1. Text element that triggered the callback
+2. Typist that triggered the callback
 
 &nbsp;
 
@@ -345,6 +349,16 @@ typist.function_per_char(function(_element, _position, _typist)
 |`scope`|instance/struct|The new scope to execution typist functions in|
 
 By default, a typist will execute functions in the scope of the instance/struct that called the `.draw()` method for the text element associated with the typist. `.execution_scope()` overrides this execution scope, setting it to a specific instance or struct. If you'd like to reset the execution scope, use `undefined` as the method argument.
+
+&nbsp;
+
+## `.get_text_element()`
+
+**Returns**: The text element associated with the typist, or `undefined` if no text element is associated
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
 
 &nbsp;
 
