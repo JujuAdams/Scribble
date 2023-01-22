@@ -65,12 +65,3 @@
 #macro SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS  false
 
 #endregion
-
-
-
-#region Warnings
-
-//Various warning messages. Please do not turn these off unless you have to!
-#macro SCRIBBLE_WARNING_LEGACY_TYPEWRITER  true
-
-#endregion
