@@ -672,6 +672,7 @@ function __scribble_class_typist() constructor
                         
                         //Get an array of events for this character from the text element
                         var _found_events = __last_element.ref.get_events(__last_character);
+                        var _found_size = array_length(_found_events);
                         
                         //Add a per-character delay if required
                         if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER && !__ignore_delay && __character_delay && (__last_character > 0))
@@ -689,14 +690,17 @@ function __scribble_class_typist() constructor
                                 _delay = max(_delay, _double_char_delay);
                             }
                             
-                            if (_delay > 0) array_push(_found_events, new __scribble_class_event("delay", [_delay]));
+                            if (_delay > 0)
+                            {
+                                array_insert(_found_events, 0, new __scribble_class_event("delay", [_delay]));
+                                ++_found_size;
+                            }
                         }
                         
                         //Move to the next character
                         __last_character++;
                         if (__last_character > 1) __execute_function_per_character(_target_element);
                         
-                        var _found_size = array_length(_found_events);
                         if (_found_size > 0)
                         {
                             //Copy our found array of events onto our stack
