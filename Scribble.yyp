@@ -284,6 +284,7 @@
     {"id":{"name":"__scribble_gen_8_position_glyphs","path":"scripts/__scribble_gen_8_position_glyphs/__scribble_gen_8_position_glyphs.yy",},"order":7,},
     {"id":{"name":"__scribble_gen_9_write_vbuffs","path":"scripts/__scribble_gen_9_write_vbuffs/__scribble_gen_9_write_vbuffs.yy",},"order":8,},
     {"id":{"name":"__scribble_get_anim_properties","path":"scripts/__scribble_get_anim_properties/__scribble_get_anim_properties.yy",},"order":5,},
+    {"id":{"name":"obj_test_scale_method","path":"objects/obj_test_scale_method/obj_test_scale_method.yy",},"order":18,},
     {"id":{"name":"__scribble_get_buffer_a","path":"scripts/__scribble_get_buffer_a/__scribble_get_buffer_a.yy",},"order":3,},
     {"id":{"name":"__scribble_get_buffer_b","path":"scripts/__scribble_get_buffer_b/__scribble_get_buffer_b.yy",},"order":4,},
     {"id":{"name":"__scribble_get_cache_state","path":"scripts/__scribble_get_cache_state/__scribble_get_cache_state.yy",},"order":1,},
