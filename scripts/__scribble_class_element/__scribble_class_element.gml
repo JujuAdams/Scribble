@@ -51,6 +51,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     __flash_colour    = c_white;
     __flash_alpha     = 0.0;
     
+    __randomize_animation = false;
+    
     __origin_x       = 0.0;
     __origin_y       = 0.0;
     
@@ -1310,6 +1312,17 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+    static randomize_animation = function(_state)
+    {
+        if (__randomize_animation != _state)
+        {
+            __model_cache_name_dirty = true;
+            __randomize_animation = _state;
+        }
+        
+        return self;
+    }
+    
     static z = function(_z)
     {
         __z = _z;
@@ -1429,6 +1442,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 buffer_write(_buffer, buffer_text, string(__bezier_array[5]));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__bidi_hint));           buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__ignore_command_tags)); buffer_write(_buffer, buffer_u8,  0x3A);
+                buffer_write(_buffer, buffer_text, string(__randomize_animation)); buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_u8, 0x00);
                 buffer_seek(_buffer, buffer_seek_start, 0);
                 
