@@ -68,6 +68,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     __matrix_x       = undefined;
     __matrix_y       = undefined;
     
+    __wrap_apply      = false;
     __wrap_max_width  = -1;
     __wrap_max_height = -1;
     __wrap_per_char   = false;
@@ -430,7 +431,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [characterWrap=false]
     static wrap = function(_wrap_max_width, _wrap_max_height = -1, _wrap_per_char = false)
     {
-        if ((_wrap_max_width  != __wrap_max_width)
+        if (!__wrap_apply
+        ||  (_wrap_max_width  != __wrap_max_width)
         ||  (_wrap_max_height != __wrap_max_height)
         ||  (_wrap_per_char   != __wrap_per_char)
         ||  __wrap_no_pages
@@ -440,6 +442,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
             
+            __wrap_apply      = ((_wrap_max_width >= 0) && !is_infinity(_wrap_max_width)); //Turn off wrapping logic if we have an invalid width
             __wrap_max_width  = _wrap_max_width;
             __wrap_max_height = _wrap_max_height;
             __wrap_per_char   = _wrap_per_char;
@@ -456,22 +459,48 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [maxScale=1]
     static fit_to_box = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false, _wrap_max_scale = 1)
     {
-        if ((_wrap_max_width  != __wrap_max_width)
+        if (!__wrap_apply
+        ||  (_wrap_max_width  != __wrap_max_width)
         ||  (_wrap_max_height != __wrap_max_height)
         ||  (_wrap_per_char   != __wrap_per_char)
         ||  !__wrap_no_pages
         ||  (_wrap_max_scale  != __wrap_max_scale))
         {
             __model_cache_name_dirty = true;
-            __matrix_dirty           = true;
+            __matrix_dirty           = true; //By changing the .fit_to_box() properties we'll very likely change the __fit_scale variable used to shape text in the world matrix
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
             
+            __wrap_apply      = ((_wrap_max_width >= 0) && !is_infinity(_wrap_max_width)); //Turn off wrapping logic if we have an invalid width
             __wrap_max_width  = _wrap_max_width;
             __wrap_max_height = _wrap_max_height;
             __wrap_per_char   = _wrap_per_char;
             __wrap_no_pages   = true;
             __wrap_max_scale  = _wrap_max_scale;
+        }
+        
+        return self;
+    }
+    
+    static pin_guide_width = function(_width)
+    {
+        if (__wrap_apply
+        ||  (__wrap_max_width != _width)
+        ||  (__wrap_max_height != -1)
+        ||  __wrap_per_char
+        ||  __wrap_no_pages
+        ||  (__wrap_max_scale != 1))
+        {
+            __model_cache_name_dirty = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
+            
+            __wrap_apply      = false; //Turn off wrapping entirely
+            __wrap_max_width  = _width;
+            __wrap_max_height = -1;
+            __wrap_per_char   = false;
+            __wrap_no_pages   = false;
+            __wrap_max_scale  = 1;
         }
         
         return self;
@@ -1429,6 +1458,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 buffer_write(_buffer, buffer_text, string(__line_height_min));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__line_height_max));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__line_spacing   ));     buffer_write(_buffer, buffer_u8,  0x3A);
+                buffer_write(_buffer, buffer_text, string(__wrap_apply     ));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__wrap_max_width  - (__padding_l + __padding_r))); buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__wrap_max_height - (__padding_t + __padding_b))); buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__wrap_per_char  ));     buffer_write(_buffer, buffer_u8,  0x3A);

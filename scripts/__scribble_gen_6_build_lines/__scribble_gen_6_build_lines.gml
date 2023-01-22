@@ -1,7 +1,6 @@
 #macro __SCRIBBLE_GEN_LINE_START  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_START        ] = _line_word_start;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HALIGN            ] = _state_halign;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__STARTS_MANUAL_PAGE] = false;\
-                                  ;\
                                   ;\ //Align the left-hand side of the word to the left-hand side of the line. This corrects visually unpleasant gaps and overlaps
                                   ;\ //TODO - Implement for R2L text
                                   if (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.__BIDI] < __SCRIBBLE_BIDI.R2L)\
@@ -17,12 +16,10 @@
                                           _word_grid[# _i, __SCRIBBLE_GEN_WORD.__WIDTH] += _left_correction;\
                                       }\
                                   }\
-                                  ;\
                                   _word_x = 0;
 
 
 #macro __SCRIBBLE_GEN_LINE_END  var _found_line_height = ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_GEN_WORD.__HEIGHT, _line_word_end, __SCRIBBLE_GEN_WORD.__HEIGHT);\
-                                ;\
                                 if (_found_line_height < _line_height_min)\ //Found line height is narrower than we want
                                 {\
                                     if (((_found_line_height/2) == (_found_line_height div 2)) == ((_line_height_min/2) == (_line_height_min div 2)))\
@@ -49,7 +46,6 @@
                                 {\
                                     var _line_height = _found_line_height;\ //Line height is fine, don't fiddle with anything
                                 }\
-                                ;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_END] = _line_word_end;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WIDTH   ] = _word_x;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HEIGHT  ] = _line_height;\
@@ -74,10 +70,11 @@ function __scribble_gen_6_build_lines()
         var _line_height_max       = __line_height_max;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
-        var _model_max_width       = __model_max_width;
-        var _model_max_height      = __model_max_height;
         var _wrap_no_pages         = _element.__wrap_no_pages;
         var _wrap_max_scale        = _element.__wrap_max_scale;
+        var _wrap_apply            = _element.__wrap_apply;
+        var _model_max_width       = (_wrap_apply? __model_max_width  : infinity);
+        var _model_max_height      = (_wrap_apply? __model_max_height : infinity);
     }
     
     var _fit_to_box_iterations = 0;
@@ -339,8 +336,8 @@ function __scribble_gen_6_build_lines()
     }
     
     //Trim the whitespace at the end of lines to fit into the desired width
-    //This helps the glyph position getter return more visually pleasing results by ensuring the RHS of the glypg doesn't exceed the wrapping width
-    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH)
+    //This helps the glyph position getter return more visually pleasing results by ensuring the RHS of the glyph doesn't exceed the wrapping width
+    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && _wrap_apply)
     {
         var _line = 0;
         repeat(_line_count)
