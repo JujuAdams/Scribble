@@ -15,7 +15,7 @@
     "path": "audiogroups/audiogroup_default",
   },
   "soundFile": "snd_crank",
-  "duration": 0.666333,
+  "duration": 0.661333,
   "parent": {
     "name": "Sounds",
     "path": "folders/Sounds.yy",
