@@ -35,21 +35,20 @@ function __scribble_class_page() constructor
     
     static __submit = function(_msdf_feather_thickness, _double_draw)
     {
+        static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );
+        static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );
+        static _u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble, "u_fSDFThicknessOffset");
+        static _u_fSecondDraw         = shader_get_uniform(__shd_scribble, "u_fSecondDraw"        );
+        static _u_fSDF                = shader_get_uniform(__shd_scribble, "u_fSDF"               );
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
-        var _shader = undefined;
+        shader_set(__shd_scribble);
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
         {
             var _data = __vertex_buffer_array[_i];
             var _bilinear = _data[__SCRIBBLE_VERTEX_BUFFER.__BILINEAR];
-            
-            if (_data[__SCRIBBLE_VERTEX_BUFFER.__SHADER] != _shader)
-            {
-                _shader = _data[__SCRIBBLE_VERTEX_BUFFER.__SHADER];
-                shader_set(_shader);
-            }
             
             if (_bilinear != undefined)
             {
@@ -58,31 +57,19 @@ function __scribble_class_page() constructor
                 gpu_set_tex_filter(_bilinear);
             }
             
-            if (_shader == __shd_scribble_msdf)
+            //Set shader uniforms unique to the MSDF shader
+            shader_set_uniform_f(_u_fSDF, (_data[__SCRIBBLE_VERTEX_BUFFER.__SHADER] == __shd_scribble_msdf));
+            shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
+            shader_set_uniform_f(_u_fSDFRange, _msdf_feather_thickness*(_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE] ?? 0));
+            shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__msdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET] ?? 0));
+            
+            vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
+            
+            if (_double_draw)
             {
-                static _msdf_u_vTexel              = shader_get_uniform(__shd_scribble_msdf, "u_vTexel"              );
-                static _msdf_u_fSDFRange           = shader_get_uniform(__shd_scribble_msdf, "u_fSDFRange"          );
-                static _msdf_u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble_msdf, "u_fSDFThicknessOffset");
-                static _msdf_u_fSecondDraw         = shader_get_uniform(__shd_scribble_msdf, "u_fSecondDraw"         );
-                
-                //Set shader uniforms unique to the MSDF shader
-                shader_set_uniform_f(_msdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
-                shader_set_uniform_f(_msdf_u_fSDFRange, _msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE]);
-                shader_set_uniform_f(_msdf_u_fSDFThicknessOffset, __scribble_state.__msdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET]);
-                
+                shader_set_uniform_f(_u_fSecondDraw, 1);
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
-                
-                if (_double_draw)
-                {
-                    shader_set_uniform_f(_msdf_u_fSecondDraw, 1);
-                    vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
-                    shader_set_uniform_f(_msdf_u_fSecondDraw, 0);
-                }
-            }
-            else
-            {
-                //Other shaders don't need extra work
-                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
+                shader_set_uniform_f(_u_fSecondDraw, 0);
             }
             
             if (_bilinear != undefined)

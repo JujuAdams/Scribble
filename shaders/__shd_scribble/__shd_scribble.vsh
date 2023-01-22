@@ -74,8 +74,8 @@ attribute vec4  in_Colour;       //Colour. This attribute is used for sprite dat
 attribute vec2  in_TextureCoord; //UVs
 attribute vec2  in_Colour2;      //{dX, dY}
 
-varying vec2 v_vTexcoord;
-varying vec4 v_vColour;
+varying vec2  v_vTexcoord;
+varying vec4  v_vColour;
 
 uniform vec4  u_vColourBlend;                           //4
 uniform vec4  u_vGradient;                              //4
