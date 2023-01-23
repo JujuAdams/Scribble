@@ -4,7 +4,7 @@ var _y = 40;
 var _angle = lerp(-10, 10, 0.5 + 0.5*dsin(current_time/50));
 var _scale = lerp(1, 1.5, 0.5 + 0.5*dsin(current_time/50));
 
-var _element = scribble("Origin set to bbox centre and middle", 0);
+var _element = scribble_unique(0, "Origin set to bbox centre and middle");
 _element.origin(_element.get_width()/2, _element.get_height()/2);
 _element.draw(_x, _y);
 draw_circle(_x, _y, 4, false);
