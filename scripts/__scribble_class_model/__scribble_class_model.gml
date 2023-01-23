@@ -18,7 +18,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
     var _weak = __mcache_dict[$ __cache_name];
-    if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
+    if ((_weak != undefined) && weak_ref_alive(_weak))
     {
         __scribble_trace("Warning! Rebuilding model \"", __cache_name, "\"");
         _weak.ref.__flush();

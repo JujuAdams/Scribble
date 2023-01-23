@@ -16,7 +16,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
     var _weak = __ecache_dict[$ __cache_name];
-    if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
+    if ((_weak != undefined) && weak_ref_alive(_weak))
     {
         __scribble_trace("Warning! Flushing element \"", __cache_name, "\" due to cache name collision");
         _weak.ref.flush();
@@ -1378,7 +1378,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __cache_name = _new_cache_name;
             
             var _weak = __ecache_dict[$ __cache_name];
-            if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
+            if ((_weak != undefined) && weak_ref_alive(_weak))
             {
                 __scribble_trace("Warning! Flushing element \"", __cache_name, "\" due to cache name collision (try choosing a different unique ID)");
                 _weak.ref.flush();
@@ -1477,7 +1477,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             }
             
             var _weak = _mcache_dict[$ __model_cache_name];
-            if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
+            if ((_weak != undefined) && weak_ref_alive(_weak))
             {
                 __model = _weak.ref;
             }

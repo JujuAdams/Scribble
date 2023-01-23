@@ -28,7 +28,7 @@ function scribble()
     
     static _ecache_dict = __scribble_get_cache_state().__ecache_dict;
     var _weak = _ecache_dict[$ _string];
-    if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.__flushed)
+    if ((_weak == undefined) || !weak_ref_alive(_weak))
     {
         return new __scribble_class_element(_string);
     }
