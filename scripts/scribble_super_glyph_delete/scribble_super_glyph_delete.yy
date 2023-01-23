@@ -5,7 +5,7 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Superfonts",
-    "path": "folders/Scribble/Superfonts.yy",
+    "name": "Deprecated",
+    "path": "folders/Scribble/(System - don't call these functions)/Deprecated.yy",
   },
 }
