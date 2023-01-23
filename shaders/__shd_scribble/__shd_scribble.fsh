@@ -2,6 +2,7 @@
 precision highp float;
 
 #define PREMULTIPLY_ALPHA false
+#define USE_ALPHA_FOR_DISTANCE false
 
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
@@ -22,7 +23,7 @@ uniform float u_fSecondDraw;
 float SDFValue(vec2 texcoord)
 {
     vec4 sample = texture2D(gm_BaseTexture, texcoord);
-    return max(sample.r, max(sample.g, sample.b));
+    return USE_ALPHA_FOR_DISTANCE? sample.a : max(sample.r, max(sample.g, sample.b));
 }
 
 void main()
