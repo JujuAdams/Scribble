@@ -23,6 +23,10 @@
 
 #region Advanced Features
 
+//Whether to use legacy behaviour for the scribble() function
+//This changes the parameters of the function to scribble(string, uniqueID) to match Scribble 8
+#macro SCRIBBLE_LEGACY_FUNCTION  false
+
 #macro SCRIBBLE_TICK_SIZE                      (delta_time / 16666) //Animation tick size per step. The default macro (delta_time / 16666) ensures that animations are smooth and consistent at all framerates
 #macro SCRIBBLE_VERBOSE                        false      //Enables verbose console output to aid with debugging
 #macro SCRIBBLE_BEZIER_ACCURACY                20         //Controls how accurately text fits Beziér curves. Higher is more accurate but slower

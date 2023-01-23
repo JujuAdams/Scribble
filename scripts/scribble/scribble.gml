@@ -6,6 +6,11 @@
 
 function scribble()
 {
+    if (SCRIBBLE_LEGACY_FUNCTION)
+    {
+        return scribble_unique(argument[1] ?? "::default", argument[0]);
+    }
+    
     if (argument_count == 1)
     {
         var _string = string(argument[0]);
