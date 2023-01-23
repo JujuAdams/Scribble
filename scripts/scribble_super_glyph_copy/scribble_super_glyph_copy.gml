@@ -71,45 +71,6 @@ function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data
     _target_font_data.__sdf_pxrange = _source_font_data.__sdf_pxrange;
 }
 
-function __scribble_prepare_super_work_array(_input_array)
-{
-    var _output_array = [];
-    
-    var _i = 0;
-    repeat(array_length(_input_array))
-    {
-        var _glyph_to_copy = _input_array[_i];
-        
-        if (is_string(_glyph_to_copy))
-        {
-            var _j = 1;
-            repeat(string_length(_glyph_to_copy))
-            {
-                //TODO - Make this more efficient by grouping contiguous glyphs together
-                var _unicode = ord(string_char_at(_glyph_to_copy, _j));
-                array_push(_output_array, [_unicode, _unicode]);
-                ++_j;
-            }
-            
-            _glyph_to_copy = undefined;
-        }
-        
-        if (is_numeric(_glyph_to_copy))
-        {
-            _glyph_to_copy = [_glyph_to_copy, _glyph_to_copy];
-        }
-        
-        if (is_array(_glyph_to_copy))
-        {
-            array_push(_output_array, _glyph_to_copy);
-        }
-        
-        ++_i;
-    }
-    
-    return _output_array;
-}
-
 function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _target_grid, _glyph, _overwrite)
 {
     var _source_x = _source_map[? _glyph];
