@@ -22,7 +22,7 @@ function __scribble_parse_glyph_range_root(_value, _font_name = undefined, _sort
     {
         if (_value > 0)
         {
-            array_push(_output_array, _value);
+            __scribble_parse_glyph_range_integer(_output_dict, _output_array, _value);
         }
         else if (_value == all)
         {
@@ -39,7 +39,9 @@ function __scribble_parse_glyph_range_root(_value, _font_name = undefined, _sort
     }
     else if (is_array(_value))
     {
-        if (array_length(_value) == 2)
+        if ((array_length(_value) == 2)
+        && (is_numeric(_value[0]) || (is_string(_value[0]) && (string_length(_value[0]) == 1)))
+        && (is_numeric(_value[1]) || (is_string(_value[1]) && (string_length(_value[1]) == 1))))
         {
             __scribble_parse_glyph_range_range(_output_dict, _output_array, _value);
         }
@@ -55,6 +57,24 @@ function __scribble_parse_glyph_range_root(_value, _font_name = undefined, _sort
     
     if (_sort) array_sort(_output_array, true);
     return _output_array;
+}
+
+function __scribble_parse_glyph_range_integer(_output_dict, _output_array, _value)
+{
+    if (!is_numeric(_value))
+    {
+        __scribble_error("Value is non-numeric (please report this error)");
+    }
+    
+    if (_value > 0)
+    {
+        var _character = chr(_value);
+        if (!variable_struct_exists(_output_dict, _character))
+        {
+            _output_dict[$ _character] = true;
+            array_push(_output_array, _value);
+        }
+    }
 }
 
 function __scribble_parse_glyph_range_all(_output_dict, _output_array, _font_name)
@@ -75,12 +95,7 @@ function __scribble_parse_glyph_range_all(_output_dict, _output_array, _font_nam
     repeat(array_length(_keys_array))
     {
         var _key = _keys_array[_i];
-        if (!variable_struct_exists(_output_dict, _key))
-        {
-            _output_dict[$ _key] = true;
-            array_push(_output_array, _key);
-        }
-        
+        __scribble_parse_glyph_range_integer(_output_dict, _output_array, _key);
         ++_i;
     }
 }
@@ -91,13 +106,7 @@ function __scribble_parse_glyph_range_string(_output_dict, _output_array, _strin
     var _i = 1;
     repeat(_size)
     {
-        var _value = string_char_at(_string, _i);
-        if (!variable_struct_exists(_output_dict, _value))
-        {
-            _output_dict[$ _value] = true;
-            array_push(_output_array, ord(_value));
-        }
-        
+        __scribble_parse_glyph_range_integer(_output_dict, _output_array, ord(string_char_at(_string, _i)));
         ++_i;
     }
 }
@@ -124,7 +133,7 @@ function __scribble_parse_glyph_range_array(_output_dict, _output_array, _array)
         {
             if (_value > 0)
             {
-                array_push(_output_array, _value);
+                __scribble_parse_glyph_range_integer(_output_dict, _output_array, _value);
             }
             else if (_value == all)
             {
@@ -166,12 +175,26 @@ function __scribble_parse_glyph_range_range(_output_dict, _output_array, _array)
     
     if (!is_numeric(_min))
     {
-        __scribble_error("Minimum glyph index for range must be a number (datatype=", typeof(_min), ")");
+        if (is_string(_min) && (string_length(_min) == 1))
+        {
+            _min = ord(_min);
+        }
+        else
+        {
+            __scribble_error("Minimum glyph index for range must be a number (datatype=", typeof(_min), ")");
+        }
     }
     
     if (!is_numeric(_max))
     {
-        __scribble_error("Maximum glyph index for range must be a number (datatype=", typeof(_max), ")");
+        if (is_string(_max) && (string_length(_max) == 1))
+        {
+            _max = ord(_max);
+        }
+        else
+        {
+            __scribble_error("Maximum glyph index for range must be a number (datatype=", typeof(_min), ")");
+        }
     }
     
     if (_min <= 0)
@@ -197,12 +220,7 @@ function __scribble_parse_glyph_range_range(_output_dict, _output_array, _array)
     var _i = _min;
     repeat(1 + _max - _min)
     {
-        if (!variable_struct_exists(_output_dict, _i))
-        {
-            _output_dict[$ _i] = true;
-            array_push(_output_array, _i);
-        }
-        
+        __scribble_parse_glyph_range_integer(_output_dict, _output_array, _i);
         ++_i;
     }
 }
