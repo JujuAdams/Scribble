@@ -5,7 +5,7 @@
 /// @param value        The string to parse and, eventually, draw
 /// @param ...
 
-function scribble()
+function scribble_unique()
 {
     var _unique_id = argument[0];
     if (_unique_id == undefined) _unique_id = irandom(0x7FFFFFFFFFFFFFFF);
