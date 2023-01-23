@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__scribble_parse_glyph_range",
+  "name": "__scribble_parse_glyph_range_root",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {

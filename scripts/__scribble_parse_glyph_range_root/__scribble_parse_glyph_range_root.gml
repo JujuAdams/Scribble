@@ -9,7 +9,14 @@ function __scribble_parse_glyph_range_root(_value, _font_name = undefined, _sort
     
     if (is_string(_value))
     {
-        __scribble_parse_glyph_range_string(_output_dict, _output_array, _value);
+        if (_value == "all")
+        {
+            __scribble_parse_glyph_range_all(_output_dict, _output_array, _font_name);
+        }
+        else
+        {
+            __scribble_parse_glyph_range_string(_output_dict, _output_array, _value);
+        }
     }
     else if (is_numeric(_value))
     {
@@ -19,30 +26,7 @@ function __scribble_parse_glyph_range_root(_value, _font_name = undefined, _sort
         }
         else if (_value == all)
         {
-            if (_font_name == undefined)
-            {
-                __scribble_error("The keyword <all> is not supported for this function");
-            }
-            
-            var _font_data = __scribble_get_font_data(_font_name);
-            if (!is_struct(_font_data))
-            {
-                __scribble_error("Font \"", _font_name, "\" was not recognised");
-            }
-            
-            var _keys_array = ds_map_keys_to_array(_font_data.__glyphs_map);
-            var _i = 0;
-            repeat(array_length(_keys_array))
-            {
-                var _key = _keys_array[_i];
-                if (!variable_struct_exists(_output_dict, _key))
-                {
-                    _output_dict[$ _key] = true;
-                    array_push(_output_array, _key);
-                }
-                
-                ++_i;
-            }
+            __scribble_parse_glyph_range_all(_output_dict, _output_array, _font_name);
         }
         else if (_value == 0)
         {
@@ -73,6 +57,34 @@ function __scribble_parse_glyph_range_root(_value, _font_name = undefined, _sort
     return _output_array;
 }
 
+function __scribble_parse_glyph_range_all(_output_dict, _output_array, _font_name)
+{
+    if (_font_name == undefined)
+    {
+        __scribble_error("The keyword <all> is not supported for this function");
+    }
+    
+    var _font_data = __scribble_get_font_data(_font_name);
+    if (!is_struct(_font_data))
+    {
+        __scribble_error("Font \"", _font_name, "\" was not recognised");
+    }
+    
+    var _keys_array = ds_map_keys_to_array(_font_data.__glyphs_map);
+    var _i = 0;
+    repeat(array_length(_keys_array))
+    {
+        var _key = _keys_array[_i];
+        if (!variable_struct_exists(_output_dict, _key))
+        {
+            _output_dict[$ _key] = true;
+            array_push(_output_array, _key);
+        }
+        
+        ++_i;
+    }
+}
+
 function __scribble_parse_glyph_range_string(_output_dict, _output_array, _string)
 {
     var _size = string_length(_string);
@@ -99,7 +111,14 @@ function __scribble_parse_glyph_range_array(_output_dict, _output_array, _array)
         
         if (is_string(_value))
         {
-            __scribble_parse_glyph_range_string(_output_dict, _output_array, _value);
+            if (_value == "all")
+            {
+                __scribble_error("Cannot use keyword <all> in nested arrays");
+            }
+            else
+            {
+                __scribble_parse_glyph_range_string(_output_dict, _output_array, _value);
+            }
         }
         else if (is_numeric(_value))
         {

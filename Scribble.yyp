@@ -18,7 +18,7 @@
     {"id":{"name":"fnt_style","path":"fonts/fnt_style/fnt_style.yy",},"order":11,},
     {"id":{"name":"fnt_style_b","path":"fonts/fnt_style_b/fnt_style_b.yy",},"order":12,},
     {"id":{"name":"fnt_style_bi","path":"fonts/fnt_style_bi/fnt_style_bi.yy",},"order":13,},
-    {"id":{"name":"__scribble_parse_glyph_range","path":"scripts/__scribble_parse_glyph_range/__scribble_parse_glyph_range.yy",},"order":12,},
+    {"id":{"name":"__scribble_parse_glyph_range_root","path":"scripts/__scribble_parse_glyph_range_root/__scribble_parse_glyph_range_root.yy",},"order":0,},
     {"id":{"name":"fnt_style_i","path":"fonts/fnt_style_i/fnt_style_i.yy",},"order":14,},
     {"id":{"name":"fnt_style_invalid","path":"fonts/fnt_style_invalid/fnt_style_invalid.yy",},"order":15,},
     {"id":{"name":"fnt_test_0","path":"fonts/fnt_test_0/fnt_test_0.yy",},"order":16,},
