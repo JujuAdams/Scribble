@@ -181,6 +181,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __animation_blink_state = true;
         }
         
+        shader_set(__shd_scribble);
+        
         __set_standard_uniforms(_typist, _function_scope);
         
         //...aaaand set the matrix
@@ -193,6 +195,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);
+        shader_reset();
         
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
         
@@ -1526,7 +1529,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;
         
-        shader_set(__shd_scribble);
         shader_set_uniform_f(_u_fTime, __animation_time);
         
         //TODO - Optimise
@@ -1637,8 +1639,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
                                                colour_get_blue( __sdf_border_colour)/255);
         
         shader_set_uniform_f(_u_fBorderThickness, __sdf_border_thickness);
-        
-        shader_reset();
     }
     
     static __update_scale_to_box_scale = function()

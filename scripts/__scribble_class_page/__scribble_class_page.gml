@@ -43,7 +43,6 @@ function __scribble_class_page() constructor
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
-        shader_set(__shd_scribble);
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
         {
@@ -87,8 +86,6 @@ function __scribble_class_page() constructor
             
             ++_i;
         }
-        
-        shader_reset();
     }
     
     static __freeze = function()
