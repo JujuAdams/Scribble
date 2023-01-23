@@ -23,7 +23,7 @@ uniform float u_fSecondDraw;
 float SDFValue(vec2 texcoord)
 {
     vec4 sample = texture2D(gm_BaseTexture, texcoord);
-    return USE_ALPHA_FOR_DISTANCE? sample.a : max(sample.r, max(sample.g, sample.b));
+    return (USE_ALPHA_FOR_DISTANCE? sample.a : max(sample.r, max(sample.g, sample.b))) + u_fSDFThicknessOffset;
 }
 
 void main()
