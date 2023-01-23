@@ -1,7 +1,7 @@
 /// @param string
-/// @param uniqueID
+/// @param [uniqueID=""]
 
-function __scribble_class_element(_string, _unique_id) constructor
+function __scribble_class_element(_string, _unique_id = "") constructor
 {
     static __scribble_state    = __scribble_get_state();
     static __ecache_array      = __scribble_get_cache_state().__ecache_array;
@@ -10,7 +10,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __text       = _string;
     __unique_id  = _unique_id;
-    __cache_name = _string + ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (":" + string(_unique_id)));
+    __cache_name = _string + _unique_id;
     
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + __cache_name + "\"");
     
@@ -1365,7 +1365,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         __text      = _text;
         __unique_id = _unique_id;
         
-        var _new_cache_name = __text + ":" + __unique_id;
+        var _new_cache_name = __text + __unique_id;
         if (__cache_name != _new_cache_name)
         {
             flush();

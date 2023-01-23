@@ -177,6 +177,7 @@
     {"id":{"name":"obj_test_typewriter_delay_plus_sound_per_char","path":"objects/obj_test_typewriter_delay_plus_sound_per_char/obj_test_typewriter_delay_plus_sound_per_char.yy",},"order":6,},
     {"id":{"name":"obj_test_typewriter_duplicate_draw","path":"objects/obj_test_typewriter_duplicate_draw/obj_test_typewriter_duplicate_draw.yy",},"order":7,},
     {"id":{"name":"obj_test_typewriter_events","path":"objects/obj_test_typewriter_events/obj_test_typewriter_events.yy",},"order":8,},
+    {"id":{"name":"scribble_unique","path":"scripts/scribble_unique/scribble_unique.yy",},"order":0,},
     {"id":{"name":"obj_test_typewriter_external_sound","path":"objects/obj_test_typewriter_external_sound/obj_test_typewriter_external_sound.yy",},"order":9,},
     {"id":{"name":"obj_test_typewriter_external_sound_per_char","path":"objects/obj_test_typewriter_external_sound_per_char/obj_test_typewriter_external_sound_per_char.yy",},"order":10,},
     {"id":{"name":"obj_test_typewriter_gc","path":"objects/obj_test_typewriter_gc/obj_test_typewriter_gc.yy",},"order":11,},
