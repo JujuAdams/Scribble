@@ -684,6 +684,7 @@ enum __SCRIBBLE_GEN_LINE
 #macro __SCRIBBLE_WINDOW_COUNT         3
 #macro __SCRIBBLE_GC_STEP_SIZE         3
 #macro __SCRIBBLE_CACHE_TIMEOUT        10 //How long to wait (in frames) before the text element cache automatically cleans up unused data
+#macro __SCRIBBLE_NATIVE_SDF_PXRANGE   16
 
 #macro __SCRIBBLE_AUDIO_COMMAND_TAG                    "__scribble_audio_playback__"
 #macro __SCRIBBLE_TYPIST_SOUND_COMMAND_TAG             "__scribble_typist_sound__"
