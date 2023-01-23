@@ -1638,20 +1638,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         shader_set_uniform_f(_u_fBorderThickness, __sdf_border_thickness);
         
-        var _surface = surface_get_target();
-        if (_surface >= 0)
-        {
-            var _surface_width  = surface_get_width( _surface);
-            var _surface_height = surface_get_height(_surface);
-        }
-        else
-        {
-            var _surface_width  = window_get_width();
-            var _surface_height = window_get_height();
-        }
-        
-        shader_set_uniform_f(_u_vOutputSize, _surface_width, _surface_height);
-        
         shader_reset();
     }
     
