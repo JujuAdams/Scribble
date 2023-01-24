@@ -18,6 +18,8 @@ function __scribble_get_state()
         __msdf_anim_default:           false,
         
         __msdf_thickness_offset: 0,
+        
+        __markdown_styles_struct: {},
     };
     
     return _struct;
