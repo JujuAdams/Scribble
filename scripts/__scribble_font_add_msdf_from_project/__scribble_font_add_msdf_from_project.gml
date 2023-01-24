@@ -262,7 +262,7 @@ function __scribble_font_add_msdf_from_project(_sprite)
         {
             var _kerning_pair = _kerning_list[| _i];
             var _offset = round(_em_size*_kerning_pair[? "advance"]);
-            _font_kerning_map[? ((_kerning_pair[? "unicode2"] & 0xFFFF) << 16) | (_kerning_pair[? "unicode1"] & 0xFFFF)] = _offset;
+            if (_offset != 0) _font_kerning_map[? ((_kerning_pair[? "unicode2"] & 0xFFFF) << 16) | (_kerning_pair[? "unicode1"] & 0xFFFF)] = _offset;
             ++_i;
         }
     }
