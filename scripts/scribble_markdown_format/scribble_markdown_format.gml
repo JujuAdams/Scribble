@@ -25,26 +25,19 @@ function scribble_markdown_format(_string)
         return _insert_size - _delete_size;
     }
     
-    static _func_character_ends_word = function(_value)
-    {
-        static _bidi_map = __scribble_get_glyph_data().__bidi_map;
-        var _bidi = _bidi_map[? _value];
-        return ((_bidi == __SCRIBBLE_BIDI.WHITESPACE) || (_bidi == __SCRIBBLE_BIDI.SYMBOL));
-    }
-    
     static _buffer = __scribble_get_buffer_a();
     
     static _markdown_styles_struct = __scribble_get_state().__markdown_styles_struct;
-    var _start_body         = ""; //"[fnt_body]";
-    var _start_header1      = "[fnt_header1]";
-    var _start_header2      = "[fnt_header2]";
-    var _start_header3      = "[fnt_header3]";
-    var _start_italic       = "[fnt_italic]";
-    var _start_bold         = "[fnt_bold]";
-    var _start_bold_italic  = "[fnt_bold_italic]";
-    var _start_bullet       = "[spr_image]" + _start_body;
-    var _start_quote        = "[indent]" + _start_body;
-    var _start_ordered_list = "---------|";
+    var _start_body         = _markdown_styles_struct[$ "body"       ] ?? "[/scale][/font]";
+    var _start_header1      = _markdown_styles_struct[$ "header1"    ] ?? "[scale,1.6]";
+    var _start_header2      = _markdown_styles_struct[$ "header2"    ] ?? "[scale,1.4]";
+    var _start_header3      = _markdown_styles_struct[$ "header3"    ] ?? "[scale,1.2]";
+    var _start_italic       = _markdown_styles_struct[$ "italic"     ] ?? "[i]";
+    var _start_bold         = _markdown_styles_struct[$ "bold"       ] ?? "[b]";
+    var _start_bold_italic  = _markdown_styles_struct[$ "bold_italic"] ?? "[bi]";
+    var _start_bullet       = _markdown_styles_struct[$ "bullet"     ] ?? "  - ";
+    var _start_quote        = _markdown_styles_struct[$ "quote"      ] ?? "  > ";
+    var _start_ordered_list = _markdown_styles_struct[$ "list"       ] ?? "    ";
     
     buffer_seek(_buffer, buffer_seek_start, 0);
     buffer_write(_buffer, buffer_text, _start_body); //Prefix the whole string with the body text
@@ -77,6 +70,9 @@ function scribble_markdown_format(_string)
             if (_quote)
             {
                 _quote = false;
+                
+                _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 0, _start_body);
+                __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
             }
             else if (_header_level > 0)
             {
@@ -98,6 +94,7 @@ function scribble_markdown_format(_string)
                 _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 2, _start_quote);
                 __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 
+                _quote  = true;
                 _italic = false;
                 _bold   = false;
                 
@@ -215,7 +212,7 @@ function scribble_markdown_format(_string)
         }
         
         //Parse text
-        if ((_value == ord("*")) && (_func_character_ends_word(_prev_value) || _func_character_ends_word(_next_value)))
+        if (_value == ord("*"))
         {
             if (_next_value == ord("*"))
             {
@@ -259,7 +256,7 @@ function scribble_markdown_format(_string)
                 }
             }
         }
-        else if ((_value == ord("_")) && (_func_character_ends_word(_prev_value) || _func_character_ends_word(_next_value)))
+        else if ((_value == ord("_")) && ((_prev_value <= 0x20) || (_next_value <= 0x20)))
         {
             _italic = !_italic;
             
@@ -306,6 +303,7 @@ function scribble_markdown_format(_string)
             
             //Delete \
             _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 1, "");
+            buffer_seek(_buffer, buffer_seek_relative, 1);
             __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
         }
         else
