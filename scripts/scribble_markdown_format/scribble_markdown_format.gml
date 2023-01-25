@@ -12,6 +12,10 @@ _string += "- list\n";
 _string += "### Header 3\n";
 _string += "\n";
 
+var _string = "";
+_string += "1. A\n";
+_string += "23. B\n";
+
 show_message(scribble_markdown_format(_string));
 
 function scribble_markdown_format(_string)
@@ -47,17 +51,17 @@ function scribble_markdown_format(_string)
     static _buffer = __scribble_get_buffer_a();
     
     static _markdown_styles_struct = __scribble_get_state().__markdown_styles_struct;
-    var _start_body        = "[fnt_body]";
-    var _start_header1     = "[fnt_header1]";
-    var _start_header2     = "[fnt_header2]";
-    var _start_header3     = "[fnt_header3]";
-    var _start_body        = "[fnt_body]";
-    var _start_italic      = "[fnt_italic]";
-    var _start_bold        = "[fnt_bold]";
-    var _start_bold_italic = "[fnt_bold_italic]";
-    var _start_bullet      = "[spr_image]" + _start_body;
-    var _start_quote       = "[indent]" + _start_body;
-    var _end_quote         = "[/indent]";
+    var _start_body         = "[fnt_body]";
+    var _start_header1      = "[fnt_header1]";
+    var _start_header2      = "[fnt_header2]";
+    var _start_header3      = "[fnt_header3]";
+    var _start_body         = "[fnt_body]";
+    var _start_italic       = "[fnt_italic]";
+    var _start_bold         = "[fnt_bold]";
+    var _start_bold_italic  = "[fnt_bold_italic]";
+    var _start_bullet       = "[spr_image]" + _start_body;
+    var _start_quote        = "[indent]" + _start_body;
+    var _start_ordered_list = "---------|";
     
     buffer_seek(_buffer, buffer_seek_start, 0);
     buffer_write(_buffer, buffer_text, _start_body); //Prefix the whole string with the body text
@@ -90,9 +94,6 @@ function scribble_markdown_format(_string)
             if (_quote)
             {
                 _quote = false;
-                
-                _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 0, _end_quote);
-                __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
             }
             else if (_header_level > 0)
             {
@@ -180,28 +181,32 @@ function scribble_markdown_format(_string)
             }
             else if ((_value >= 48) && (_value <= 57))
             {
-                var _is_ordered_list = false;
-                var _number_peek = buffer_tell(_buffer);
+                var _number_size = 1;
+                var _number_peek = buffer_tell(_buffer)-1;
                 
                 while(true)
                 {
                     var _number_next_value = buffer_peek(_buffer, _number_peek, buffer_u8);
                     if ((_number_next_value == ord(".")) || (_number_next_value == ord(")")))
                     {
-                        _is_ordered_list = true;
                         break;
                     }
                     else if ((_number_next_value < 48) || (_number_next_value > 57))
                     {
+                        _number_size = 0;
                         break;
                     }
                     
+                    ++_number_size;
                     ++_number_peek;
                 }
                 
-                if (_is_ordered_list)
+                if (_number_size > 0)
                 {
-                    //TODO - Insert ordered list indent
+                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 0, _start_ordered_list);
+                    buffer_seek(_buffer, buffer_seek_relative, _number_size+1);
+                    __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
+                    
                     _italic = false;
                     _bold   = false;
                 }
