@@ -2,22 +2,6 @@
 
 #macro __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE  _next_value = buffer_peek(_buffer, buffer_tell(_buffer)-1, buffer_u8);
 
-var _string = "";
-_string += "# Header\n";
-_string += "Some text\n";
-_string += "## Header 2\n";
-_string += "- list\n";
-_string += "- list\n";
-_string += "- list\n";
-_string += "### Header 3\n";
-_string += "\n";
-
-var _string = "";
-_string += "[A](B)\n";
-_string += "\n";
-
-show_message(scribble_markdown_format(_string));
-
 function scribble_markdown_format(_string)
 {
     __scribble_initialize();
@@ -55,7 +39,6 @@ function scribble_markdown_format(_string)
     var _start_header1      = "[fnt_header1]";
     var _start_header2      = "[fnt_header2]";
     var _start_header3      = "[fnt_header3]";
-    var _start_body         = "[fnt_body]";
     var _start_italic       = "[fnt_italic]";
     var _start_bold         = "[fnt_bold]";
     var _start_bold_italic  = "[fnt_bold_italic]";
@@ -329,9 +312,12 @@ function scribble_markdown_format(_string)
         {
             if (_value == ord("["))
             {
-                var _is_link   = false;
-                var _link_size = 1;
-                var _link_peek = buffer_tell(_buffer)-1;
+                // [text](region)
+                
+                var _is_link    = false;
+                var _link_size  = 1;
+                var _link_start = buffer_tell(_buffer)-2;
+                var _link_peek  = _link_start+1;
                 
                 while(true)
                 {
@@ -353,10 +339,28 @@ function scribble_markdown_format(_string)
                 
                 if (_is_link)
                 {
-                    //TODO
+                    var _region_start = _link_peek+1;
+                    var _region_end   = _region_start;
                     
-                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 1, "[region]");
-                    buffer_seek(_buffer, buffer_seek_relative, _number_size+1);
+                    while(true)
+                    {
+                        var _region_next_value = buffer_peek(_buffer, _region_end, buffer_u8);
+                        if ((_region_next_value == 0x00) || (_region_next_value == ord(")"))) break;
+                        ++_region_end;
+                    }
+                    
+                    buffer_poke(_buffer, _region_end, buffer_u8, 0x00);
+                    var _region_name = buffer_peek(_buffer, _region_start, buffer_string);
+                    
+                    var _delta = _func_modify_buffer(_buffer, _buffer_size, 3 + _region_end - _region_start, "[/region]", _region_start-2);
+                    _buffer_size += _delta;
+                    _region_end  += _delta;
+                    
+                    _delta = _func_modify_buffer(_buffer, _buffer_size, 0, "region," + _region_name + "]", _link_start+1);
+                    _buffer_size += _delta;
+                    _region_end  += _delta;
+                    
+                    buffer_seek(_buffer, buffer_seek_start, _region_end+2);
                     __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 }
                 else
