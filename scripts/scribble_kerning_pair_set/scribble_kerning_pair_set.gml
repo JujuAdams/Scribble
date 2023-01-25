@@ -16,7 +16,7 @@ function scribble_kerning_pair_set(_font, _first_char, _second_char, _value, _re
     var _kerning_map = _font_data.__kerning_map;
     
     var _lookup = ((_second_unicode & 0xFFFF) << 16) | (_first_unicode & 0xFFFF);
-    var _new_value = _relative? (_kerning_map[? _lookup] + _value) : _value;
+    var _new_value = _relative? ((_kerning_map[? _lookup] ?? 0) + _value) : _value;
     _kerning_map[? _lookup] = _new_value;
     
     return _new_value;
