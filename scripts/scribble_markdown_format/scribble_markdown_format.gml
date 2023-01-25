@@ -13,8 +13,8 @@ _string += "### Header 3\n";
 _string += "\n";
 
 var _string = "";
-_string += "1. A\n";
-_string += "23. B\n";
+_string += "[A](B)\n";
+_string += "\n";
 
 show_message(scribble_markdown_format(_string));
 
@@ -51,7 +51,7 @@ function scribble_markdown_format(_string)
     static _buffer = __scribble_get_buffer_a();
     
     static _markdown_styles_struct = __scribble_get_state().__markdown_styles_struct;
-    var _start_body         = "[fnt_body]";
+    var _start_body         = ""; //"[fnt_body]";
     var _start_header1      = "[fnt_header1]";
     var _start_header2      = "[fnt_header2]";
     var _start_header3      = "[fnt_header3]";
@@ -129,7 +129,12 @@ function scribble_markdown_format(_string)
                 while(true)
                 {
                     var _header_next_value = buffer_peek(_buffer, _header_peek, buffer_u8);
-                    if (_header_next_value == ord(" "))
+                    if (_header_next_value == 0x00)
+                    {
+                        _header_level = 0;
+                        break;
+                    }
+                    else if (_header_next_value == ord(" "))
                     {
                         break;
                     }
@@ -187,7 +192,12 @@ function scribble_markdown_format(_string)
                 while(true)
                 {
                     var _number_next_value = buffer_peek(_buffer, _number_peek, buffer_u8);
-                    if ((_number_next_value == ord(".")) || (_number_next_value == ord(")")))
+                    if (_number_next_value == 0x00)
+                    {
+                        _number_size = 0;
+                        break;
+                    }
+                    else if ((_number_next_value == ord(".")) || (_number_next_value == ord(")")))
                     {
                         break;
                     }
@@ -303,7 +313,9 @@ function scribble_markdown_format(_string)
         }
         else if ((_value == ord("!")) && (_next_value == ord("[")))
         {
-            //TODO - Insert image
+            //Delete !
+            _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 1, "");
+            __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
         }
         else if (_value == ord("\\"))
         {
@@ -317,13 +329,35 @@ function scribble_markdown_format(_string)
         {
             if (_value == ord("["))
             {
-                var _is_link = false;
+                var _is_link   = false;
+                var _link_size = 1;
+                var _link_peek = buffer_tell(_buffer)-1;
                 
-                //TODO - Check for region
+                while(true)
+                {
+                    var _link_next_value = buffer_peek(_buffer, _link_peek, buffer_u8);
+                    if (_link_next_value == 0x00)
+                    {
+                        break;
+                    }
+                    else if (_link_next_value == ord("]"))
+                    {
+                        ++_link_peek;
+                        if (buffer_peek(_buffer, _link_peek, buffer_u8) == ord("(")) _is_link = true;
+                        break;
+                    }
+                    
+                    ++_link_size;
+                    ++_link_peek;
+                }
                 
                 if (_is_link)
                 {
+                    //TODO
                     
+                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 1, "[region]");
+                    buffer_seek(_buffer, buffer_seek_relative, _number_size+1);
+                    __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 }
                 else
                 {
