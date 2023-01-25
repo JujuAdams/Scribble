@@ -12,12 +12,13 @@ _string += "- list\n";
 _string += "### Header 3\n";
 _string += "\n";
 
-show_message(scribble_markdown_format("## A\n### B\n- ABC"));
-game_end();
+show_message(scribble_markdown_format(_string));
 
 function scribble_markdown_format(_string)
 {
-    static _func_modify_buffer = function(_buffer_a, _buffer_size, _write_pos, _delete_size, _insert_string)
+    __scribble_initialize();
+    
+    static _func_modify_buffer = function(_buffer_a, _buffer_size, _delete_size, _insert_string, _write_pos = buffer_tell(_buffer_a)-2)
     {
         static _buffer_b = __scribble_get_buffer_b();
         
@@ -31,7 +32,16 @@ function scribble_markdown_format(_string)
         buffer_copy(_buffer_a, _copy_pos, _copy_size, _buffer_b, _insert_size);
         buffer_copy(_buffer_b, 0, _recopy_size, _buffer_a, _write_pos);
         
+        buffer_seek(_buffer_a, buffer_seek_relative, _insert_size-1);
+        
         return _insert_size - _delete_size;
+    }
+    
+    static _func_character_ends_word = function(_value)
+    {
+        static _bidi_map = __scribble_get_glyph_data().__bidi_map;
+        var _bidi = _bidi_map[? _value];
+        return ((_bidi == __SCRIBBLE_BIDI.WHITESPACE) || (_bidi == __SCRIBBLE_BIDI.SYMBOL));
     }
     
     static _buffer = __scribble_get_buffer_a();
@@ -55,9 +65,6 @@ function scribble_markdown_format(_string)
     var _buffer_size = buffer_tell(_buffer);
     buffer_seek(_buffer, buffer_seek_start, string_byte_length(_start_body));
     
-    var _delta = 0;
-    
-    var _first_line   = true;
     var _newline      = true;
     var _italic       = false;
     var _bold         = false;
@@ -75,6 +82,7 @@ function scribble_markdown_format(_string)
         _value = _next_value;
         var _next_value = buffer_read(_buffer, buffer_u8);
         
+        //Newline
         if ((_value == 10) || (_value == 13))
         {
             _newline = true;
@@ -83,30 +91,34 @@ function scribble_markdown_format(_string)
             {
                 _quote = false;
                 
-                _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, 0, _end_quote);
-                buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_end_quote)-1);
+                _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 0, _end_quote);
                 __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
             }
             else if (_header_level > 0)
             {
                 _header_level = 0;
                 
-                _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, 0, _start_body);
-                buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_start_body)-1);
+                _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 0, _start_body);
                 __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
             }
+            
+            continue;
         }
-        else if (_newline)
+        
+        //Searching for the first character on a line
+        if (_newline)
         {
             if ((_value == ord(">")) && (_next_value == 0x20))
             {
                 //Insert quote block
-                _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, 2, _start_quote);
-                buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_start_quote)-1);
+                _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 2, _start_quote);
                 __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 
                 _italic = false;
                 _bold   = false;
+                
+                _newline = false;
+                continue;
             }
             else if (_value == ord("#"))
             {
@@ -134,35 +146,37 @@ function scribble_markdown_format(_string)
                 {
                     if (_header_level == 1)
                     {
-                        _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, 2, _start_header1);
-                        buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_start_header1)-1);
+                        _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 2, _start_header1);
                     }
                     else if (_header_level == 2)
                     {
-                        _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, 3, _start_header2);
-                        buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_start_header2)-1);
+                        _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 3, _start_header2);
                     }
                     else if (_header_level >= 3)
                     {
-                        _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, 4, _start_header3);
-                        buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_start_header3)-1);
+                        _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 4, _start_header3);
                     }
                     
                     __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                     
                     _italic = false;
                     _bold   = false;
+                    
+                    _newline = false;
+                    continue;
                 }
             }
             else if ((_value == ord("-")) && (_next_value == 0x20))
             {
                 //Insert unordered list indent
-                _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, 1, _start_bullet);
-                buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_start_bullet)-1);
+                _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 1, _start_bullet);
                 __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 
                 _italic = false;
                 _bold   = false;
+                
+                _newline = false;
+                continue;
             }
             else if ((_value >= 48) && (_value <= 57))
             {
@@ -191,13 +205,21 @@ function scribble_markdown_format(_string)
                     _italic = false;
                     _bold   = false;
                 }
+                
+                _newline = false;
+                continue;
             }
             
-            if (_value > 0x20) _newline = false;
+            if (_value <= 0x20) continue;
+            
+            _newline = false;
+            //Fall through to parse the first character
         }
-        else if (((_value == ord("*")) || (_value == ord("_"))) && ((_prev_value <= 0x20) || (_next_value == 0x20) || (_next_value == _value)))
+        
+        //Parse text
+        if ((_value == ord("*")) && (_func_character_ends_word(_prev_value) || _func_character_ends_word(_next_value)))
         {
-            if (_next_value == _value)
+            if (_next_value == ord("*"))
             {
                 _bold = !_bold;
                 var _delete_size = 2;
@@ -213,15 +235,13 @@ function scribble_markdown_format(_string)
                 if (_bold)
                 {
                     //Insert [bi] tag
-                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, _delete_size, _start_bold_italic);
-                    buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_start_bold_italic)-1);
+                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, _delete_size, _start_bold_italic);
                     __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 }
                 else
                 {
                     //Insert [i] tag
-                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, _delete_size, _start_italic);
-                    buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_start_italic)-1);
+                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, _delete_size, _start_italic);
                     __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 }
             }
@@ -230,15 +250,48 @@ function scribble_markdown_format(_string)
                 if (_bold)
                 {
                     //Insert [b] tag
-                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, _delete_size, _start_bold);
-                    buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_start_bold)-1);
+                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, _delete_size, _start_bold);
                     __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 }
                 else
                 {
                     //Insert [/b] tag
-                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, _delete_size, _start_body);
-                    buffer_seek(_buffer, buffer_seek_relative, string_byte_length(_start_body)-1);
+                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, _delete_size, _start_body);
+                    __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
+                }
+            }
+        }
+        else if ((_value == ord("_")) && (_func_character_ends_word(_prev_value) || _func_character_ends_word(_next_value)))
+        {
+            _italic = !_italic;
+            
+            if (_italic)
+            {
+                if (_bold)
+                {
+                    //Insert [bi] tag
+                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 1, _start_bold_italic);
+                    __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
+                }
+                else
+                {
+                    //Insert [i] tag
+                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 1, _start_italic);
+                    __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
+                }
+            }
+            else
+            {
+                if (_bold)
+                {
+                    //Insert [b] tag
+                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 1, _start_bold);
+                    __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
+                }
+                else
+                {
+                    //Insert [/b] tag
+                    _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 1, _start_body);
                     __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 }
             }
@@ -252,8 +305,7 @@ function scribble_markdown_format(_string)
             if (_next_value == 0) return;
             
             //Delete \
-            _buffer_size += _func_modify_buffer(_buffer, _buffer_size, buffer_tell(_buffer)-2, 1, "");
-            buffer_seek(_buffer, buffer_seek_relative, -1);
+            _buffer_size += _func_modify_buffer(_buffer, _buffer_size, 1, "");
             __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
         }
         else
