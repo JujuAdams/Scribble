@@ -11,21 +11,9 @@ text += "1. _**Lorem Ipsum**_ has been the industry's \\*standard dummy\\* text 
 text += "2. [An unknown printer](url) took a galley of type and scrambled it to make a type specimen book.\n";
 text += "> It has survived not only five centuries, but also the leap into electronic typesetting, remaining [spr_coin] [rainbow]essentially unchanged[/rainbow] ![spr_coin].\n";
 
-//scribble_markdown_set_styles({
-//    body:        "[c_white][fnt_style]",
-//    header1:     "[fnt_style_header1]",
-//    header2:     "[fnt_style_header2]",
-//    header3:     "[fnt_style_header3]",
-//    bold:        "[fnt_style_b]",
-//    italic:      "[fnt_style_i]",
-//    bold_italic: "[fnt_style_bi]",
-//    bullet:      "[spr_coin,1]",
-//    quote:       "        [fnt_style_i][c_ltgray]> ",
-//    list:        "    ",
-//});
+scribble_markdown_set_styles({});
 
 text = scribble_markdown_format(text);
-show_message(text);
 
 element = scribble(text)
 .align(fa_left, fa_middle)
