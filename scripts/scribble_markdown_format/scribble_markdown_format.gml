@@ -97,8 +97,6 @@
                                           ;\
                                           _buffer_size += _func_insert_buffer(_buffer, _buffer_size, _insert_string);\
                                           ;\
-                                          __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE\
-                                          ;\
                                           _old_style = _new_style;\
                                       }
 
@@ -221,7 +219,12 @@ function scribble_markdown_format(_string)
             if ((_value == ord(">")) && (_next_value == 0x20)) //Quote
             {
                 _new_style = "quote";
-                if (_old_style != _new_style) _write_style = true;
+                if (_old_style != _new_style)
+                {
+                    _write_style = true;
+                    __SCRIBBLE_MARKDOWN_SET_STYLE
+                    buffer_seek(_buffer, buffer_seek_relative, 1);
+                }
                 
                 if (_indent)
                 {
@@ -312,6 +315,7 @@ function scribble_markdown_format(_string)
                     _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, (_bullet_sprite == undefined)? "- [indent]" : "[" + sprite_get_name(_bullet_sprite) + "] [indent]");
                 }
                 
+                buffer_seek(_buffer, buffer_seek_relative, 1);
                 __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 
                 _newline = false;
@@ -354,7 +358,7 @@ function scribble_markdown_format(_string)
                         buffer_seek(_buffer, buffer_seek_relative, 1);
                     }
                     
-                    buffer_seek(_buffer, buffer_seek_relative, _number_size+1);
+                    buffer_seek(_buffer, buffer_seek_relative, _number_size+2);
                     
                     if (_indent)
                     {
@@ -367,8 +371,7 @@ function scribble_markdown_format(_string)
                     }
                     
                     __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
-                    
-                    _indent = true;
+                    _prev_value = 0x20; //Force the previous value to a space
                 }
                 
                 _newline = false;
@@ -499,6 +502,7 @@ function scribble_markdown_format(_string)
             if (_value > 0x20)
             {
                 __SCRIBBLE_MARKDOWN_SET_STYLE
+                __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
             }
         }
     }

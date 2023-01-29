@@ -43,6 +43,7 @@ function __scribble_get_state()
                 color:  #E7E7E7,
                 italic: true,
                 scale:  0.9,
+                prefix: "  ",
             },
             
             bold: {
