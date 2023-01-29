@@ -137,6 +137,8 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "typistSoundPerChar"] = 33;
         _command_tag_lookup_accelerator_map[? "r2l"               ] = 34;
         _command_tag_lookup_accelerator_map[? "l2r"               ] = 35;
+        _command_tag_lookup_accelerator_map[? "indent"            ] = 36;
+        _command_tag_lookup_accelerator_map[? "/indent"           ] = 37;
     }
     
     #endregion
@@ -820,6 +822,7 @@ function __scribble_gen_2_parser()
                     
                     #region Regions
                     
+                    // [region,]
                     case 29:
                         if (array_length(_tag_parameters) != 2) __scribble_error("[region] tags must contain a name e.g. [region,This is a region]");
                         
@@ -828,6 +831,7 @@ function __scribble_gen_2_parser()
                         ++_control_count;
                     break;
                     
+                    // [/region]
                     case 30:
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__REGION;
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = undefined;
@@ -862,6 +866,22 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG, _tag_parameters);
                             ++_control_count;
                         }
+                    break;
+                    
+                    #endregion
+                    
+                    #region Indent
+                    
+                    case 36: // [indent]
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__INDENT_START;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = undefined;
+                        ++_control_count;
+                    break;
+                    
+                    case 37: // [/indent]
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__INDENT_STOP;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = undefined;
+                        ++_control_count;
                     break;
                     
                     #endregion

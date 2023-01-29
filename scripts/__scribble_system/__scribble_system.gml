@@ -614,13 +614,15 @@ enum __SCRIBBLE_GEN_VBUFF_POS
 
 enum __SCRIBBLE_GEN_CONTROL_TYPE
 {
-    __EVENT,  //0
-    __HALIGN, //1
-    __COLOUR, //2
-    __EFFECT, //3
-    __CYCLE,  //4
-    __REGION, //5
-    __FONT,   //6
+    __EVENT,        //0
+    __HALIGN,       //1
+    __COLOUR,       //2
+    __EFFECT,       //3
+    __CYCLE,        //4
+    __REGION,       //5
+    __FONT,         //6
+    __INDENT_START, //7
+    __INDENT_STOP,  //8
 }
 
 //These can be used for ORD
