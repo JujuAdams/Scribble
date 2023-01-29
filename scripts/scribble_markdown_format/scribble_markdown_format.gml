@@ -196,7 +196,7 @@ function scribble_markdown_format(_string, _insert_macros = false)
             
             quote: {
                 italic: true,
-                scale:  1.1,
+                scale:  0.9,
             },
             
             bold: {
@@ -274,7 +274,7 @@ function scribble_markdown_format(_string, _insert_macros = false)
         //Searching for the first character on a line
         if (_newline)
         {
-            if ((_value == ord(">")) && (_next_value == 0x20))
+            if ((_value == ord(">")) && (_next_value == 0x20)) //Quote
             {
                 _new_style = "quote";
                 if (_old_style != _new_style) _write_style = true;
@@ -295,7 +295,7 @@ function scribble_markdown_format(_string, _insert_macros = false)
                 _newline = false;
                 continue;
             }
-            else if (_value == ord("#"))
+            else if (_value == ord("#")) //Header
             {
                 var _header_level = 1;
                 var _header_peek = buffer_tell(_buffer)-1;
@@ -346,7 +346,7 @@ function scribble_markdown_format(_string, _insert_macros = false)
                     continue;
                 }
             }
-            else if ((_value == ord("-")) && (_next_value == 0x20))
+            else if (((_value == ord("-")) || (_value == ord("*"))) && (_next_value == 0x20)) //Unordered list
             {
                 _new_style = "body";
                 if (_old_style != _new_style)
@@ -374,7 +374,7 @@ function scribble_markdown_format(_string, _insert_macros = false)
                 _newline = false;
                 continue;
             }
-            else if ((_value >= 48) && (_value <= 57))
+            else if ((_value >= 48) && (_value <= 57)) //Ordered list
             {
                 var _number_size = 1;
                 var _number_peek = buffer_tell(_buffer)-1;
@@ -438,8 +438,10 @@ function scribble_markdown_format(_string, _insert_macros = false)
             //Fall through to parse the first character
         }
         
-        //Parse text
-        if (_value == ord("*"))
+        
+        
+        //Parse body
+        if (_value == ord("*")) //Bold + italic
         {
             if (_next_value == ord("*"))
             {
@@ -455,20 +457,20 @@ function scribble_markdown_format(_string, _insert_macros = false)
             _buffer_size += _func_delete_buffer(_buffer, _buffer_size, _delete_size);
             __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
         }
-        else if ((_value == ord("_")) && ((_prev_value <= 0x20) || (_next_value <= 0x20)))
+        else if ((_value == ord("_")) && ((_prev_value <= 0x20) || (_next_value <= 0x20))) //Italic only
         {
             __SCRIBBLE_MARKDOWN_TOGGLE_ITALIC
             
             _buffer_size += _func_delete_buffer(_buffer, _buffer_size, 1);
             __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
         }
-        else if ((_value == ord("!")) && (_next_value == ord("[")))
+        else if ((_value == ord("!")) && (_next_value == ord("["))) //Image
         {
             //Delete !
             _buffer_size += _func_delete_buffer(_buffer, _buffer_size, 1);
             __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
         }
-        else if (_value == ord("\\"))
+        else if (_value == ord("\\")) //Escape character
         {
             if (_next_value == 0) return;
             
@@ -479,7 +481,7 @@ function scribble_markdown_format(_string, _insert_macros = false)
         }
         else
         {
-            if (_value == ord("["))
+            if (_value == ord("[")) //Links
             {
                 #region [text](region)
                 /*
