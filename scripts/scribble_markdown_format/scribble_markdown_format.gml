@@ -1,5 +1,4 @@
 /// @param string
-/// @param [insertMacros=false]
 
 #macro __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE  _next_value = buffer_peek(_buffer, buffer_tell(_buffer)-1, buffer_u8);
 
@@ -44,66 +43,59 @@
                                       {\
                                           _write_style = false;\
                                           ;\
-                                          if (_insert_macros)\
+                                          var _old_style_struct = (_old_style == undefined)? {} : (_markdown_styles_struct[$ _old_style] ?? _fallback_styles_struct[$ _old_style]);\
+                                          var _new_style_struct = _markdown_styles_struct[$ _new_style] ?? _fallback_styles_struct[$ _new_style];\
+                                          ;\
+                                          var _insert_string = _old_style_struct[$ "suffix"] ?? "";\
+                                          ;\
+                                          var _old_value = _old_style_struct[$ "font"];\
+                                          var _new_value = _new_style_struct[$ "font"];\
+                                          if (_old_value != _new_value) _insert_string += (_new_value == undefined)? "[/font]" : ("[" + _new_value + "]");\
+                                          ;\
+                                          _old_value = _old_style_struct[$ "scale"] ?? 1;\
+                                          _new_value = _new_style_struct[$ "scale"] ?? 1;\
+                                          if (_old_value != _new_value) _insert_string += (_new_value == 1)? "[/scale]" : ("[scale," + string(_new_value) + "]");\
+                                          ;\
+                                          _old_value = _old_style_struct[$ "color"];\
+                                          _new_value = _new_style_struct[$ "color"];\
+                                          if (_old_value != _new_value) _insert_string += (_new_value == undefined)? "[/color]" : ("[d#" + string(_new_value) + "]");\
+                                          ;\
+                                          _old_value = (_old_style_struct[$ "italic"] ?? 0) | (2*(_old_style_struct[$ "bold"] ?? 0));\
+                                          _new_value = (_new_style_struct[$ "italic"] ?? 0) | (2*(_new_style_struct[$ "bold"] ?? 0));\
+                                          if (_old_value != _new_value)\
                                           {\
-                                              _buffer_size += _func_insert_buffer(_buffer, _buffer_size, ((_old_style == undefined)? "" : "[/" + string(_old_style) + "]") + "[" + string(_new_style) + "]");\
-                                          }\
-                                          else\
-                                          {\
-                                              var _old_style_struct = (_old_style == undefined)? {} : (_markdown_styles_struct[$ _old_style] ?? _fallback_styles_struct[$ _old_style]);\
-                                              var _new_style_struct = _markdown_styles_struct[$ _new_style] ?? _fallback_styles_struct[$ _new_style];\
-                                              ;\
-                                              var _insert_string = _old_style_struct[$ "suffix"] ?? "";\
-                                              ;\
-                                              var _old_value = _old_style_struct[$ "font"];\
-                                              var _new_value = _new_style_struct[$ "font"];\
-                                              if (_old_value != _new_value) _insert_string += (_new_value == undefined)? "[/font]" : ("[" + _new_value + "]");\
-                                              ;\
-                                              _old_value = _old_style_struct[$ "scale"] ?? 1;\
-                                              _new_value = _new_style_struct[$ "scale"] ?? 1;\
-                                              if (_old_value != _new_value) _insert_string += (_new_value == 1)? "[/scale]" : ("[scale," + string(_new_value) + "]");\
-                                              ;\
-                                              _old_value = _old_style_struct[$ "color"];\
-                                              _new_value = _new_style_struct[$ "color"];\
-                                              if (_old_value != _new_value) _insert_string += (_new_value == undefined)? "[/color]" : ("[d#" + _new_value + "]");\
-                                              ;\
-                                              _old_value = (_old_style_struct[$ "italic"] ?? 0) | (2*(_old_style_struct[$ "bold"] ?? 0));\
-                                              _new_value = (_new_style_struct[$ "italic"] ?? 0) | (2*(_new_style_struct[$ "bold"] ?? 0));\
-                                              if (_old_value != _new_value)\
+                                              if (_new_value == 0)\
                                               {\
-                                                  if (_new_value == 0)\
+                                                  if (_old_value == 1)\
                                                   {\
-                                                      if (_old_value == 1)\
-                                                      {\
-                                                          _insert_string += "[/i]";\
-                                                      }\
-                                                      else if (_old_value == 2)\
-                                                      {\
-                                                          _insert_string += "[/b]";\
-                                                      }\
-                                                      else if (_old_value == 3)\
-                                                      {\
-                                                          _insert_string += "[/bi]";\
-                                                      }\
+                                                      _insert_string += "[/i]";\
                                                   }\
-                                                  else if (_new_value == 1)\
+                                                  else if (_old_value == 2)\
                                                   {\
-                                                      _insert_string += "[i]";\
+                                                      _insert_string += "[/b]";\
                                                   }\
-                                                  else if (_new_value == 2)\
+                                                  else if (_old_value == 3)\
                                                   {\
-                                                      _insert_string += "[b]";\
-                                                  }\
-                                                  else if (_new_value == 3)\
-                                                  {\
-                                                      _insert_string += "[bi]";\
+                                                      _insert_string += "[/bi]";\
                                                   }\
                                               }\
-                                              ;\
-                                              _insert_string += _new_style_struct[$ "prefix"] ?? "";\
-                                              ;\
-                                              _buffer_size += _func_insert_buffer(_buffer, _buffer_size, _insert_string);\
+                                              else if (_new_value == 1)\
+                                              {\
+                                                  _insert_string += "[i]";\
+                                              }\
+                                              else if (_new_value == 2)\
+                                              {\
+                                                  _insert_string += "[b]";\
+                                              }\
+                                              else if (_new_value == 3)\
+                                              {\
+                                                  _insert_string += "[bi]";\
+                                              }\
                                           }\
+                                          ;\
+                                          _insert_string += _new_style_struct[$ "prefix"] ?? "";\
+                                          ;\
+                                          _buffer_size += _func_insert_buffer(_buffer, _buffer_size, _insert_string);\
                                           ;\
                                           __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE\
                                           ;\
@@ -112,7 +104,7 @@
 
 
 
-function scribble_markdown_format(_string, _insert_macros = false)
+function scribble_markdown_format(_string)
 {
     __scribble_initialize();
     
@@ -195,6 +187,7 @@ function scribble_markdown_format(_string, _insert_macros = false)
             },
             
             quote: {
+                color:  c_ltgray,
                 italic: true,
                 scale:  0.9,
             },
@@ -215,7 +208,6 @@ function scribble_markdown_format(_string, _insert_macros = false)
             bullet_sprite: spr_coin,
             
             link: {
-                bold:  true,
                 color: c_blue,
             },
         };
@@ -234,6 +226,7 @@ function scribble_markdown_format(_string, _insert_macros = false)
     
     var _newline = true;
     var _indent  = false;
+    var _in_link = false;
     
     var _prev_value = 0;
     var _value      = 0;
@@ -361,12 +354,12 @@ function scribble_markdown_format(_string, _insert_macros = false)
                 if (_indent)
                 {
                     __scribble_trace("Warning! Found stacked indentation");
-                    _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, (_bullet_sprite == undefined)? "" : "[" + sprite_get_name(_bullet_sprite) + "]");
+                    _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, (_bullet_sprite == undefined)? "" : "[" + sprite_get_name(_bullet_sprite) + "] ");
                 }
                 else
                 {
                     _indent = true;
-                    _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, (_bullet_sprite == undefined)? "[indent]" : "[" + sprite_get_name(_bullet_sprite) + "][indent]");
+                    _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, (_bullet_sprite == undefined)? "[indent]" : "[" + sprite_get_name(_bullet_sprite) + "] [indent]");
                 }
                 
                 __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
@@ -479,12 +472,24 @@ function scribble_markdown_format(_string, _insert_macros = false)
             buffer_seek(_buffer, buffer_seek_relative, 1); //Skip the next character
             __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
         }
+        else if (_in_link && (_value == ord("]")) && (_next_value == ord("(")))
+        {
+            //Delete ](
+            _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, "[/region]");
+            __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
+            
+            _new_style = "body";
+            if (_old_style != _new_style) _write_style = true;
+            
+            _in_link = false;
+        }
         else
         {
             if (_value == ord("[")) //Links
             {
                 #region [text](region)
-                /*
+                
+                //Look for the end of the link
                 var _is_link    = false;
                 var _link_size  = 1;
                 var _link_start = buffer_tell(_buffer)-2;
@@ -510,6 +515,7 @@ function scribble_markdown_format(_string, _insert_macros = false)
                 
                 if (_is_link)
                 {
+                    //Look for the name of the region (which would otherwise be a URL in markdown)
                     var _region_start = _link_peek+1;
                     var _region_end   = _region_start;
                     
@@ -523,20 +529,18 @@ function scribble_markdown_format(_string, _insert_macros = false)
                     buffer_poke(_buffer, _region_end, buffer_u8, 0x00);
                     var _region_name = buffer_peek(_buffer, _region_start, buffer_string);
                     
-                    var _delta = _func_modify_buffer(_buffer, _buffer_size, 3 + _region_end - _region_start, "[/region]", _region_start-2);
-                    _buffer_size += _delta;
-                    _region_end  += _delta;
-                    
-                    _delta = _func_modify_buffer(_buffer, _buffer_size, 0, "region," + _region_name + "]", _link_start+1);
-                    _buffer_size += _delta;
-                    _region_end  += _delta;
-                    
-                    buffer_seek(_buffer, buffer_seek_start, _region_end+2);
+                    _buffer_size += _func_delete_buffer(_buffer, _buffer_size, 1 + _region_end - _region_start, _region_start);
+                    _buffer_size += _func_insert_buffer(_buffer, _buffer_size, "region," + _region_name + "]", _link_start+1);
+                    buffer_seek(_buffer, buffer_seek_relative, 2);
                     __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
+                    
+                    _in_link = true;
+                    _new_style = "link";
+                    if (_old_style != _new_style) _write_style = true;
                     
                     continue;
                 }
-                */
+                
                 #endregion
             }
             
