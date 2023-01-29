@@ -43,8 +43,8 @@
                                       {\
                                           _write_style = false;\
                                           ;\
-                                          var _old_style_struct = (_old_style == undefined)? {} : (_markdown_styles_struct[$ _old_style] ?? _fallback_styles_struct[$ _old_style]);\
-                                          var _new_style_struct = _markdown_styles_struct[$ _new_style] ?? _fallback_styles_struct[$ _new_style];\
+                                          var _old_style_struct = (_old_style == undefined)? _empty_struct : (_markdown_styles_struct[$ _old_style] ?? _empty_struct);\
+                                          var _new_style_struct = _markdown_styles_struct[$ _new_style] ?? _empty_struct;\
                                           ;\
                                           var _insert_string = _old_style_struct[$ "suffix"] ?? "";\
                                           ;\
@@ -161,8 +161,7 @@ function scribble_markdown_format(_string)
         return _insert_size - _delete_size;
     }
     
-    static _markdown_styles_struct = __scribble_get_state().__markdown_styles_struct;
-    
+    static _empty_struct = {};
     static _fallback_styles_struct = undefined;
     if (_fallback_styles_struct == undefined)
     {
@@ -212,6 +211,8 @@ function scribble_markdown_format(_string)
             },
         };
     }
+    
+    var _markdown_styles_struct = (__scribble_get_state().__markdown_styles_struct) ?? _fallback_styles_struct;
     
     static _buffer = __scribble_get_buffer_a();
     
@@ -346,20 +347,18 @@ function scribble_markdown_format(_string)
                 {
                     _write_style = true;
                     __SCRIBBLE_MARKDOWN_SET_STYLE
-                    buffer_seek(_buffer, buffer_seek_relative, 1);
                 }
                 
-                var _bullet_sprite = _markdown_styles_struct[$ "bullet_sprite"] ?? _fallback_styles_struct[$ "bullet_sprite"];
-                
+                var _bullet_sprite = _markdown_styles_struct[$ "bullet_sprite"];
                 if (_indent)
                 {
                     __scribble_trace("Warning! Found stacked indentation");
-                    _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, (_bullet_sprite == undefined)? "" : "[" + sprite_get_name(_bullet_sprite) + "] ");
+                    _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, (_bullet_sprite == undefined)? "- " : "[" + sprite_get_name(_bullet_sprite) + "] ");
                 }
                 else
                 {
                     _indent = true;
-                    _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, (_bullet_sprite == undefined)? "[indent]" : "[" + sprite_get_name(_bullet_sprite) + "] [indent]");
+                    _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, (_bullet_sprite == undefined)? "- [indent]" : "[" + sprite_get_name(_bullet_sprite) + "] [indent]");
                 }
                 
                 __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
