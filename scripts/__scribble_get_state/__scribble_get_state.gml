@@ -19,53 +19,7 @@ function __scribble_get_state()
         
         __msdf_thickness_offset: 0,
         
-        __markdown_styles_struct: {
-            body: {
-            },
-            
-            header1: {
-                bold:   true,
-                italic: true,
-                scale:  1.6,
-            },
-            
-            header2: {
-                bold:  true,
-                scale: 1.4,
-            },
-            
-            header3: {
-                italic: true,
-                scale:  1.2,
-            },
-            
-            quote: {
-                color:  #E7E7E7,
-                italic: true,
-                scale:  0.9,
-                prefix: "  ",
-            },
-            
-            bold: {
-                bold: true,
-            },
-            
-            italic: {
-                italic: true,
-            },
-            
-            bold_italic: {
-                bold:   true,
-                italic: true,
-            },
-            
-            bullet_sprite: scribble_fallback_bulletpoint,
-            
-            link: {
-                bold:  true,
-                color: #DF9FFF,
-            },
-        },
+        __markdown_styles_struct: {},
     };
     
     return _struct;

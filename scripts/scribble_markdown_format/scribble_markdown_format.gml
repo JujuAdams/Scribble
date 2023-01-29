@@ -43,8 +43,8 @@
                                       {\
                                           _write_style = false;\
                                           ;\
-                                          var _old_style_struct = (_old_style == undefined)? _empty_struct : (_markdown_styles_struct[$ _old_style] ?? _empty_struct);\
-                                          var _new_style_struct = _markdown_styles_struct[$ _new_style] ?? _empty_struct;\
+                                          var _old_style_struct = (_old_style == undefined)? _empty_struct : (_markdown_styles_struct[$ _old_style] ?? _fallback_styles_struct[$ _old_style]);\
+                                          var _new_style_struct = _markdown_styles_struct[$ _new_style] ?? _fallback_styles_struct[$ _new_style];\
                                           ;\
                                           var _insert_string = _old_style_struct[$ "suffix"] ?? "";\
                                           ;\
@@ -160,7 +160,56 @@ function scribble_markdown_format(_string)
     }
     
     static _empty_struct = {};
-    static _markdown_styles_struct = __scribble_get_state().__markdown_styles_struct;
+    
+    var _fallback_styles_struct = {
+        body: {
+        },
+        
+        header1: {
+            bold:   true,
+            italic: true,
+            scale:  1.6,
+        },
+        
+        header2: {
+            bold:  true,
+            scale: 1.4,
+        },
+        
+        header3: {
+            italic: true,
+            scale:  1.2,
+        },
+        
+        quote: {
+            color:  #E7E7E7,
+            italic: true,
+            scale:  0.9,
+            prefix: "  ",
+        },
+        
+        bold: {
+            bold: true,
+        },
+        
+        italic: {
+            italic: true,
+        },
+        
+        bold_italic: {
+            bold:   true,
+            italic: true,
+        },
+        
+        bullet_sprite: scribble_fallback_bulletpoint,
+        
+        link: {
+            bold:  true,
+            color: #DF9FFF,
+        },
+    };
+    
+    var _markdown_styles_struct = __scribble_get_state().__markdown_styles_struct;
     
     static _buffer = __scribble_get_buffer_a();
     
@@ -315,7 +364,6 @@ function scribble_markdown_format(_string)
                     _buffer_size += _func_delete_and_insert_buffer(_buffer, _buffer_size, 2, (_bullet_sprite == undefined)? "- [indent]" : "[" + sprite_get_name(_bullet_sprite) + "] [indent]");
                 }
                 
-                buffer_seek(_buffer, buffer_seek_relative, 1);
                 __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                 
                 _newline = false;
