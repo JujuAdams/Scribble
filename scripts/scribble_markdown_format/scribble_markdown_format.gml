@@ -162,57 +162,7 @@ function scribble_markdown_format(_string)
     }
     
     static _empty_struct = {};
-    static _fallback_styles_struct = undefined;
-    if (_fallback_styles_struct == undefined)
-    {
-        _fallback_styles_struct = {
-            body: {
-            },
-            
-            header1: {
-                bold:   true,
-                italic: true,
-                scale:  1.6,
-            },
-            
-            header2: {
-                bold:  true,
-                scale: 1.4,
-            },
-            
-            header3: {
-                italic: true,
-                scale:  1.2,
-            },
-            
-            quote: {
-                color:  c_ltgray,
-                italic: true,
-                scale:  0.9,
-            },
-            
-            bold: {
-                bold: true,
-            },
-            
-            italic: {
-                italic: true,
-            },
-            
-            bold_italic: {
-                bold:   true,
-                italic: true,
-            },
-            
-            bullet_sprite: spr_coin,
-            
-            link: {
-                color: c_blue,
-            },
-        };
-    }
-    
-    var _markdown_styles_struct = (__scribble_get_state().__markdown_styles_struct) ?? _fallback_styles_struct;
+    static _markdown_styles_struct = __scribble_get_state().__markdown_styles_struct;
     
     static _buffer = __scribble_get_buffer_a();
     
@@ -347,6 +297,7 @@ function scribble_markdown_format(_string)
                 {
                     _write_style = true;
                     __SCRIBBLE_MARKDOWN_SET_STYLE
+                    buffer_seek(_buffer, buffer_seek_relative, 1);
                 }
                 
                 var _bullet_sprite = _markdown_styles_struct[$ "bullet_sprite"];

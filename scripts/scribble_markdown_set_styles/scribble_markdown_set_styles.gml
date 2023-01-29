@@ -117,14 +117,6 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
                                 {
                                     //Allowed
                                 }
-                                else if (is_numeric(_child_value))
-                                {
-                                    if (!scribble_font_exists(font_get_name(_child_value)))
-                                    {
-                                        __scribble_error("\"font\" property ", _child_value, " does not exist as a font (style=\"", _root_name, "\")");
-                                        return false;
-                                    }
-                                }
                                 else if (is_string(_child_value))
                                 {
                                     if (!scribble_font_exists(_child_value))
@@ -135,7 +127,7 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
                                 }
                                 else
                                 {
-                                    __scribble_error("Child struct property \"font\" must be a sprite index or the name of a sprite (datatype=", typeof(_child_value), ", style=\"", _root_name, "\")");
+                                    __scribble_error("Child struct property \"font\" must be the name of a font as a string (datatype=", typeof(_child_value), ", style=\"", _root_name, "\")");
                                     return false;
                                 }
                             }
