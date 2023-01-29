@@ -486,7 +486,7 @@ function scribble_markdown_format(_string)
         }
         else
         {
-            if (_value == ord("[")) //Links
+            if (!_in_link && (_value == ord("["))) //Links
             {
                 #region [text](region)
                 
@@ -506,16 +506,26 @@ function scribble_markdown_format(_string)
                     else if (_link_next_value == ord("]"))
                     {
                         ++_link_peek;
-                        if (buffer_peek(_buffer, _link_peek, buffer_u8) == ord("(")) _is_link = true;
-                        break;
+                        
+                        if (buffer_peek(_buffer, _link_peek, buffer_u8) == ord("("))
+                        {
+                            _is_link = true;
+                            break;
+                        }
+                        
+                        ++_link_size;
                     }
-                    
-                    ++_link_size;
-                    ++_link_peek;
+                    else
+                    {
+                        ++_link_size;
+                        ++_link_peek;
+                    }
                 }
                 
                 if (_is_link)
                 {
+                    _is_link = false;
+                    
                     //Look for the name of the region (which would otherwise be a URL in markdown)
                     var _region_start = _link_peek+1;
                     var _region_end   = _region_start;
