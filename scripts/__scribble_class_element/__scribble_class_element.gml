@@ -1274,18 +1274,15 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Miscellaneous
     
-    static get_events = function()
+    static get_events = function(_position, _page_index = __page, _use_lines = false)
     {
         static _empty_array = [];
-        
-        var _position = argument[0];
-        var _page     = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : __page;
         
         var _model = __get_model(true);
         if (!is_struct(_model)) return _empty_array;
         
-        var _page = _model.__pages_array[_page];
-        var _event_struct = true? _page.__line_events : _page.__char_events;
+        var _page = _model.__pages_array[_page_index];
+        var _event_struct = _use_lines? _page.__line_events : _page.__char_events;
         
         var _events = _event_struct[$ _position];
         if (!is_array(_events)) return _empty_array;

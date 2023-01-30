@@ -408,7 +408,7 @@ function __scribble_class_typist() constructor
             
             //Collect data from the struct
             //This data is set in __scribble_generate_model() via the .__new_event() method on the model class
-            var _event_position = _event_struct.character_index;
+            var _event_position = __use_lines? _event_struct.line_index : _event_struct.character_index;
             var _event_name     = _event_struct.name;
             var _event_data     = _event_struct.data;
             
@@ -474,7 +474,7 @@ function __scribble_class_typist() constructor
                     }
                 break;
                 
-                //Porbably a current event
+                //Probably a current event
                 default:
                     //Otherwise try to find a custom event
                     var _function = _typewriter_events_map[? _event_name];
@@ -673,7 +673,7 @@ function __scribble_class_typist() constructor
                         _play_sound = true;
                         
                         //Get an array of events for this character from the text element
-                        var _found_events = __last_element.ref.get_events(__last_character);
+                        var _found_events = __last_element.ref.get_events(__last_character, undefined, __use_lines);
                         var _found_size = array_length(_found_events);
                         
                         //Add a per-character delay if required
