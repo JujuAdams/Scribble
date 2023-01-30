@@ -38,6 +38,8 @@ function __scribble_class_typist() constructor
     __character_delay      = false;
     __character_delay_dict = {};
     
+    __use_lines = false;
+    
     reset();
     
     
@@ -309,7 +311,7 @@ function __scribble_class_typist() constructor
         if (array_length(_pages_array) <= __last_page) return 1.0;
         var _page_data = _pages_array[__last_page];
         
-        var _max = _page_data.__character_count;
+        var _max = __use_lines? _page_data.__line_count : _page_data.__character_count;
         if (_max <= 0) return 1.0;
         
         var _t = clamp((__window_array[__window_index] + max(0, __window_array[__window_index+1] + __smoothness - _max)) / (_max + __smoothness), 0, 1);
@@ -406,7 +408,7 @@ function __scribble_class_typist() constructor
             
             //Collect data from the struct
             //This data is set in __scribble_generate_model() via the .__new_event() method on the model class
-            var _event_position = _event_struct.position;
+            var _event_position = _event_struct.character_index;
             var _event_name     = _event_struct.name;
             var _event_data     = _event_struct.data;
             
@@ -601,7 +603,7 @@ function __scribble_class_typist() constructor
         var _pages_array = _model.__get_page_array();
         if (array_length(_pages_array) == 0) return undefined;
         var _page_data = _pages_array[__last_page];
-        var _page_character_count = _page_data.__character_count;
+        var _page_character_count = __use_lines? _page_data.__line_count : _page_data.__character_count;
         
         if (!__in)
         {
@@ -765,6 +767,7 @@ function __scribble_class_typist() constructor
     
     static __set_shader_uniforms = function()
     {
+        static _u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble, "u_iTypewriterUseLines"     );
         static _u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
         static _u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
         static _u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
@@ -794,7 +797,7 @@ function __scribble_class_typist() constructor
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];
-                _char_max = _page_data.__character_count;
+                _char_max = __use_lines? _page_data.__line_count : _page_data.__character_count;
             }
             else
             {
@@ -802,6 +805,7 @@ function __scribble_class_typist() constructor
             }
         }
         
+        shader_set_uniform_i(_u_iTypewriterUseLines,          __use_lines);
         shader_set_uniform_i(_u_iTypewriterMethod,            _method);
         shader_set_uniform_i(_u_iTypewriterCharMax,           _char_max);
         shader_set_uniform_f(_u_fTypewriterSmoothness,        __smoothness);
@@ -814,6 +818,7 @@ function __scribble_class_typist() constructor
     
     static __set_msdf_shader_uniforms = function()
     {
+        static _msdf_u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble_msdf, "u_iTypewriterUseLines"     );
         static _msdf_u_iTypewriterMethod        = shader_get_uniform(__shd_scribble_msdf, "u_iTypewriterMethod"       );
         static _msdf_u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble_msdf, "u_iTypewriterCharMax"      );
         static _msdf_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble_msdf, "u_fTypewriterWindowArray"  );
@@ -843,7 +848,7 @@ function __scribble_class_typist() constructor
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];
-                _char_max = _page_data.__character_count;
+                _char_max = __use_lines? _page_data.__line_count : _page_data.__character_count;
             }
             else
             {
@@ -851,6 +856,7 @@ function __scribble_class_typist() constructor
             }
         }
         
+        shader_set_uniform_i(_msdf_u_iTypewriterUseLines,          __use_lines);
         shader_set_uniform_i(_msdf_u_iTypewriterMethod,            _method);
         shader_set_uniform_i(_msdf_u_iTypewriterCharMax,           _char_max);
         shader_set_uniform_f(_msdf_u_fTypewriterSmoothness,        __smoothness);

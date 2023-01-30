@@ -30,7 +30,8 @@ function __scribble_class_page() constructor
     __vertex_buffer_array = [];
     if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict = {}; //FIXME - Workaround for pointers not being stringified properly on HTML5
     
-    __events = {};
+    __char_events  = {};
+    __line_events  = {};
     __region_array = [];
     
     static __submit = function(_msdf_feather_thickness, _double_draw)
