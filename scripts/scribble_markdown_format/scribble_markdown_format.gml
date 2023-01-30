@@ -106,6 +106,14 @@ function scribble_markdown_format(_string)
 {
     __scribble_initialize();
     
+    if ((SCRIBBLE_COMMAND_TAG_OPEN     != ord("["))
+    ||  (SCRIBBLE_COMMAND_TAG_CLOSE    != ord("]"))
+    ||  (SCRIBBLE_COMMAND_TAG_ARGUMENT != ord(",")))
+    {
+        __scribble_error("scribble_markdown_format() is not supported with non-standard command tag open/close/argument delimiters\nPlease request this feature if you need it");
+        return _string;
+    }
+    
     static _func_delete_buffer = function(_buffer_a, _buffer_size, _delete_size, _pos = buffer_tell(_buffer_a)-2)
     {
         static _buffer_b = __scribble_get_buffer_b();
