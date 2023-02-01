@@ -31,7 +31,8 @@
 
 
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  ;\//Pull info out of the font's data structures
-                                      var _data_index = _font_glyphs_map[? _glyph_write];\
+									  ;\//We floor this value to work around floating point issues on HTML5
+                                      var _data_index = _font_glyphs_map[? floor(_glyph_write)];\
                                       ;\//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined)\
                                       {\
@@ -311,6 +312,7 @@ function __scribble_gen_2_parser()
     {
         // In-lined __scribble_buffer_read_unicode() for speed
         var _glyph_ord  = buffer_read(_string_buffer, buffer_u8); //Assume 0xxxxxxx
+        var _glyph_ord = buffer_read(_string_buffer, buffer_u8); //Assume 0xxxxxxx
         
         // Break out if we hit a null terminator
         if (_glyph_ord == 0x00) break;
