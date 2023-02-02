@@ -513,4 +513,22 @@ function __scribble_gen_3_devanagari()
     global.__scribble_generator_state.__glyph_count = _glyph_count+1;
     
     #endregion
+function __scribble_debug_krutidev(_glyph_grid)
+{
+    var _string = "";
+    
+    var _i = 0;
+    while(true)
+    {
+        var _unicode = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
+        if (_unicode >= __SCRIBBLE_DEVANAGARI_OFFSET) _unicode -= __SCRIBBLE_DEVANAGARI_OFFSET;
+        
+        if (_unicode <= 0) break;
+        
+        _string += chr(_unicode);
+        
+        ++_i;
+    }
+    
+    return _string;
 }
