@@ -276,10 +276,24 @@ function UnicodeToKrutidev(_inString)
         {
             var _fPosition = _i;
             
-            //If we find a virama behind us keep tracking backwards
-            //We go two indexes backwards because virama (should) always follows another character
             var _j = _i - 1;
-            while((_j >= 0) && (_charArray[_j] == 0x094D)) _j -= 2;
+            while(_j >= 0)
+            {
+                if (_charArray[_j] == 0x094D)
+                {
+                    //If we find a virama behind us keep tracking backwards
+                    //We go two indexes backwards because virama (should) always follows another character
+                    _j -= 2;
+                }
+                else if (_charArray[_j] == 0x093C) //Nukta
+                {
+                    _j -= 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
             
             array_delete(_charArray, _fPosition, 1);
             array_insert(_charArray, _j, ord("f"));
