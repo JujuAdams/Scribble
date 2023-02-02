@@ -1,7 +1,4 @@
-scribble_super_create("devanagari test");
-scribble_super_glyph_copy_all("devanagari test", "fnt_krutidev", true);
-scribble_super_glyph_copy_all("devanagari test", "fnt_noto_latin", false);
-scribble_font_set_default("devanagari test");
+scribble_font_set_default("fnt_krutidev");
 
 
 
@@ -45,5 +42,7 @@ testVectorArray = [
 /* 34 */    { unicode: "न0 पंचायत", expected: "u0 iapk;r" },
 /* 35 */    { unicode: "रिक्त", expected: "fjDr" },
 /* 36 */    { unicode: "जुड़ता", expected: "tqM+rk" },
-/* 37 */    { unicode: "फॉक्स BS30", expected: "Q‚Dl BS30" }, 
+/* 37 */    { unicode: "फॉक्स BS30", expected: "Q‚Dl BS30" },
+/* 38 */    { unicode: "फ़िफ्टी", expected: "vkg! rks ;g QSDVj fQ¶Vh gS---" },
+/* 39 */    { unicode: "और", expected: "vkSj" },
 ];
