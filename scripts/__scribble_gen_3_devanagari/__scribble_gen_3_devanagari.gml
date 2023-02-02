@@ -287,7 +287,7 @@ function __scribble_gen_3_devanagari()
                     
                     var _insertPos = _i + _copyCount;
                     ds_grid_set_grid_region(_temp_grid, _glyph_grid, _insertPos, 0, _glyph_count, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
-                    ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - _insertPos, __SCRIBBLE_GEN_GLYPH.__SIZE, _insertPos+1, 0);
+                    ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - _insertPos, __SCRIBBLE_GEN_GLYPH.__SIZE, _insertPos + (_replacementLength - _foundLength), 0);
                     
                     if (_replacementLength - _foundLength == 1)
                     {
