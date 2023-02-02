@@ -454,3 +454,15 @@ function UnicodeToKrutidev(_inString)
     
     return _outString;
 }
+function UnicodeToKrutidevDebug(_array)
+{
+    var _outString = "";
+    var _i = 0;
+    repeat(array_length(_array))
+    {
+        _outString += chr(_array[_i]);
+        ++_i;
+    }
+    
+    return _outString;
+}
