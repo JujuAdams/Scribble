@@ -75,10 +75,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     __wrap_no_pages   = false;
     __wrap_max_scale  = 1;
     
-    __scale_to_box_dirty      = true;
-    __scale_to_box_max_width  = 0;
-    __scale_to_box_max_height = 0;
-    __scale_to_box_scale      = undefined;
+    __scale_to_box_dirty    = true;
+    __scale_to_box_width    = 0;
+    __scale_to_box_height   = 0;
+    __scale_to_box_maximise = false;
+    __scale_to_box_scale    = undefined;
     
     __line_height_min = -1;
     __line_height_max = -1;
@@ -411,16 +412,18 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param maxWidth
     /// @param maxHeight
-    static scale_to_box = function(_max_width, _max_height)
+    /// @param [maximise=false]
+    static scale_to_box = function(_max_width, _max_height, _maximise = false)
     {
         _max_width  = ((_max_width  == undefined) || (_max_width  < 0))? 0 : _max_width;
         _max_height = ((_max_height == undefined) || (_max_height < 0))? 0 : _max_height;
         
-        if ((_max_width != __scale_to_box_max_width) || (_max_height != __scale_to_box_max_height))
+        if ((_max_width != __scale_to_box_width) || (_max_height != __scale_to_box_height) || (_maximise != __scale_to_box_maximise))
         {
-            __scale_to_box_max_width  = _max_width;
-            __scale_to_box_max_height = _max_height;
-            __scale_to_box_dirty      = true;
+            __scale_to_box_width    = _max_width;
+            __scale_to_box_height   = _max_height;
+            __scale_to_box_maximise = _maximise;
+            __scale_to_box_dirty    = true;
         }
         
         return self;
@@ -1806,11 +1809,13 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         var _xscale = 1.0;
         var _yscale = 1.0;
-        if (__scale_to_box_max_width  > 0) _xscale = __scale_to_box_max_width  / (_model.__get_width()  + __padding_l + __padding_r);
-        if (__scale_to_box_max_height > 0) _yscale = __scale_to_box_max_height / (_model.__get_height() + __padding_t + __padding_b);
+        if (__scale_to_box_width  > 0) _xscale = __scale_to_box_width  / (_model.__get_width()  + __padding_l + __padding_r);
+        if (__scale_to_box_height > 0) _yscale = __scale_to_box_height / (_model.__get_height() + __padding_t + __padding_b);
         
         var _previous_scale_to_box_scale = __scale_to_box_scale;
-        __scale_to_box_scale = min(1.0, _xscale, _yscale);
+        __scale_to_box_scale = min(_xscale, _yscale);
+        if (!__scale_to_box_maximise) __scale_to_box_scale = min(1, __scale_to_box_scale);
+        
         if (__scale_to_box_scale != _previous_scale_to_box_scale)
         {
             __matrix_dirty = true;
