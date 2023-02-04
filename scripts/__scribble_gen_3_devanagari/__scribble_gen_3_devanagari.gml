@@ -398,6 +398,8 @@ function __scribble_gen_3_devanagari()
     _generator_state.__glyph_count = _glyph_count+1;
     
     #endregion
+}
+
 function __scribble_debug_krutidev(_glyph_grid)
 {
     var _string = "";
