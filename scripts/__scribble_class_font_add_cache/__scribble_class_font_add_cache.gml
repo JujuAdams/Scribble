@@ -56,8 +56,8 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
         ++_unicode;
     }
     
-    __cell_width  = _cell_width;
-    __cell_height = _cell_height;
+    __cell_width  = 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN + _cell_width;
+    __cell_height = 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN + _cell_height;
     
     __cells_x = max(1, floor(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE / __cell_width ));
     __cells_y = max(1, floor(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE / __cell_height));
@@ -144,7 +144,7 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
         draw_rectangle(_x, _y, _x + __cell_width, _y + __cell_height, false);
         draw_set_alpha(1);
         
-        draw_text(_x, _y, _character);
+        draw_text(_x + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN, _y + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN, _character);
         surface_reset_target();
         
         draw_set_colour(_old_colour);
@@ -161,8 +161,8 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
         var _info_glyphs_dict = _font_info.glyphs;
         var _glyph_dict = _info_glyphs_dict[$ _character];
         
-        var _w = string_width( _character);
-        var _h = string_height(_character);
+        var _w = string_width( _character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
+        var _h = string_height(_character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
         
         var _u0 = _x/SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
         var _v0 = _y/SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
@@ -174,8 +174,8 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.UNICODE             ] = _unicode;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.BIDI                ] = __scribble_unicode_get_bidi(_unicode);
         
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.X_OFFSET            ] = 0;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.Y_OFFSET            ] = 0;
+        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.X_OFFSET            ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
+        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.Y_OFFSET            ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.WIDTH               ] = _w;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.HEIGHT              ] = _h;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.FONT_HEIGHT         ] = _h;
