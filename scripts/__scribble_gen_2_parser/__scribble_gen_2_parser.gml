@@ -1450,6 +1450,17 @@ function __scribble_gen_2_parser()
                     #endregion
                     
                     __SCRIBBLE_PARSER_WRITE_GLYPH
+                    
+                    //Adjust height of shadda after lam
+                    if ((_glyph_prev == 0x0651)
+                    &&  ((_glyph_prev_prev == 0x0644)
+                      || (_glyph_prev_prev == 0xFEDD)
+                      || (_glyph_prev_prev == 0xFEDE)
+                      || (_glyph_prev_prev == 0xFEE0)
+                      || (_glyph_prev_prev == 0xFEDF)))
+                    {
+                        _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y] -= 0.17*_glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT];
+                    }
                 }
                 else
                 {
