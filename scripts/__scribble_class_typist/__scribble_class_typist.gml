@@ -486,7 +486,7 @@ function __scribble_class_typist() constructor
                 
                 //Audio playback synchronisation
                 case "sync":
-                    if (!__skip)
+                    if (!__skip && __sync_started)
                     {
                         __sync_paused    = true;
                         __sync_pause_end = real(_event_data[0]);
