@@ -29,6 +29,10 @@ function __scribble_class_font(_name, _glyph_count, _sdf) constructor
     __style_italic      = undefined;
     __style_bold_italic = undefined;
     
+    __font_add_cache = undefined;
+    
+     
+    
     static __copy_to = function(_target, _copy_styles)
     {
         var _names = variable_struct_get_names(self);
@@ -55,7 +59,7 @@ function __scribble_class_font(_name, _glyph_count, _sdf) constructor
     
     static __calculate_font_height = function()
     {
-        __height = __glyph_data_grid[# __glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT];
+        __height = __glyph_data_grid[# (__glyphs_map[? 32] ?? 0), SCRIBBLE_GLYPH.HEIGHT];
         return __height;
     }
     
@@ -85,6 +89,12 @@ function __scribble_class_font(_name, _glyph_count, _sdf) constructor
         {
             sprite_delete(__source_sprite);
             __source_sprite = undefined;
+        }
+        
+        if (__font_add_cache != undefined)
+        {
+            __font_add_cache.__destroy();
+            __font_add_cache = undefined;
         }
     }
 }

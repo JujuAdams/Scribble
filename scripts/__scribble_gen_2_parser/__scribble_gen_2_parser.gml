@@ -36,8 +36,15 @@
                                       ;\//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined)\
                                       {\
-                                          __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");\
-                                          _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
+                                          if (_font_add_cache == undefined)\
+                                          {\
+                                              __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");\
+                                              _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
+                                          }\
+                                          else\
+                                          {\
+                                              _data_index = _font_add_cache.__fetch_unknown(_glyph_write);\
+                                          }\
                                       }\
                                       if (_data_index == undefined)\
                                       {\
@@ -66,6 +73,8 @@
                                     var _font_glyph_data_grid = _font_data.__glyph_data_grid;\
                                     var _font_glyphs_map      = _font_data.__glyphs_map;\
                                     var _font_kerning_map     = _font_data.__kerning_map;\
+                                    var _font_add_cache       = _font_data.__font_add_cache;\
+                                    if (_font_add_cache != undefined) _font_add_cache.__add_model(self);\
                                     var _space_data_index     = _font_glyphs_map[? 32];\
                                     if (_space_data_index == undefined)\
                                     {\

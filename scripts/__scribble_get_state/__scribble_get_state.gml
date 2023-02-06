@@ -16,6 +16,8 @@ function __scribble_get_state()
         __sdf_thickness_offset: 0,
 
         __markdown_styles_struct: {},
+        
+        __font_add_cache_array: [],
     };
     
     return _struct;

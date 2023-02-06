@@ -5,6 +5,25 @@ function __scribble_tick()
     
     
     
+    //Ensure all of our font_add() caches are still alive and well
+    static _font_add_cache_array = _scribble_state.__font_add_cache_array;
+    var _i = 0;
+    repeat(array_length(_font_add_cache_array))
+    {
+        var _weak_ref = _font_add_cache_array[_i];
+        if (!weak_ref_alive(_weak_ref))
+        {
+            array_delete(_font_add_cache_array, _i, 1);
+        }
+        else
+        {
+            _weak_ref.ref.__tick();
+            ++_i;
+        }
+    }
+    
+    
+    
     static _ecache_list_index = 0;
     static _ecache_name_index = 0;
     static _ecache_array      = _cache_state.__ecache_array;
