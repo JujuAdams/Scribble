@@ -156,7 +156,7 @@ The input struct must be laid out in a specific way. You can see an example belo
 |`.bold`        |Bold text                |`**embiggens the smallest man**`           |
 |`.italic`      |Italic text              |`*woah*` or `_woah_`                       |
 |`.bold_italic` |Bold & italic combined   |`***mandatory***` or `_**mandatory**_` etc.|
-|`.quote`       |Quotation                |`> 'taw brillig'`                          |
+|`.quote`       |Quotation                |`> 'twas brillig'`                         |
 |`.link`        |Embedded URL link        |`[Text for link](region name)`             |
 
 In addition to these top-level member variables, you may also specify a bulletpoint sprite for unordered lists. This sprite is defined using the `.bullet_sprite` member variable and should be set to a sprite index (_not_ a sprite name as a string).
