@@ -368,9 +368,14 @@ function __scribble_class_typist() constructor
     
     static sync_to_sound = function(_instance)
     {
+        if (_instance < 400000)
+        {
+            __scribble_error("Cannot synchronise to a sound asset. Please provide a sound instance (as returned by audio_play_sound())");
+        }
+        
         if (!audio_is_playing(_instance))
         {
-            
+            __scribble_error("Sound instance ", _instance, " is not playing\nCannot sync to a stopped sound instance");
         }
         
         __paused       = false;
@@ -379,6 +384,8 @@ function __scribble_class_typist() constructor
         __sync_reset();
         __sync_started  = true;
         __sync_instance = _instance;
+        
+        return self;
     }
     
     static __sync_reset = function()
