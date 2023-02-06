@@ -133,6 +133,8 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
         draw_set_font(  __font );
         draw_set_halign(fa_left);
         draw_set_valign(fa_top );
+        
+        shader_set(__shd_scribble_passthrough);
         gpu_set_blendmode_ext(bm_one, bm_zero);
         gpu_set_colorwriteenable(false, false, false, true);
         
@@ -150,6 +152,8 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
         draw_set_font(  _old_font  );
         draw_set_halign(_old_halign);
         draw_set_valign(_old_valign);
+        
+        shader_reset();
         gpu_set_blendmode(bm_normal);
         gpu_set_colorwriteenable(true, true, true, true);
         

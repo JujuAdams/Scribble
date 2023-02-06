@@ -265,6 +265,7 @@
     {"id":{"name":"scribble_super_glyph_copy_all","path":"scripts/scribble_super_glyph_copy_all/scribble_super_glyph_copy_all.yy",},"order":2,},
     {"id":{"name":"scribble_super_glyph_delete","path":"scripts/scribble_super_glyph_delete/scribble_super_glyph_delete.yy",},"order":3,},
     {"id":{"name":"scribble_typist","path":"scripts/scribble_typist/scribble_typist.yy",},"order":1,},
+    {"id":{"name":"__shd_scribble_passthrough","path":"shaders/__shd_scribble_passthrough/__shd_scribble_passthrough.yy",},"order":0,},
     {"id":{"name":"scribble_typists_add_event","path":"scripts/scribble_typists_add_event/scribble_typists_add_event.yy",},"order":2,},
     {"id":{"name":"string_height_scribble","path":"scripts/string_height_scribble/string_height_scribble.yy",},"order":3,},
     {"id":{"name":"obj_font_add_text_comparison","path":"objects/obj_font_add_text_comparison/obj_font_add_text_comparison.yy",},"order":0,},

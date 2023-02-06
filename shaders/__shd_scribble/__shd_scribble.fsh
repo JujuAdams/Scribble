@@ -2,7 +2,7 @@
 precision highp float;
 
 #define PREMULTIPLY_ALPHA false
-#define USE_ALPHA_FOR_DISTANCE false
+#define USE_ALPHA_FOR_DISTANCE true
 
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
@@ -42,7 +42,7 @@ void main()
     else
     {
         //SDF rendering
-        float smoothness = 0.5;
+        float smoothness = 1.0;
         
         float baseDist = SDFValue(v_vTexcoord);
         float spread = max(fwidth(baseDist), 0.001);    

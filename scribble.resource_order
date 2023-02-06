@@ -219,6 +219,7 @@
     {"name":"scribble_super_glyph_copy_all","path":"scripts/scribble_super_glyph_copy_all/scribble_super_glyph_copy_all.yy","order":2,},
     {"name":"scribble_super_glyph_delete","path":"scripts/scribble_super_glyph_delete/scribble_super_glyph_delete.yy","order":1,},
     {"name":"scribble_typist","path":"scripts/scribble_typist/scribble_typist.yy","order":1,},
+    {"name":"__shd_scribble_passthrough","path":"shaders/__shd_scribble_passthrough/__shd_scribble_passthrough.yy","order":6,},
     {"name":"scribble_typists_add_event","path":"scripts/scribble_typists_add_event/scribble_typists_add_event.yy","order":1,},
     {"name":"string_height_scribble","path":"scripts/string_height_scribble/string_height_scribble.yy","order":3,},
     {"name":"obj_font_add_text_comparison","path":"objects/obj_font_add_text_comparison/obj_font_add_text_comparison.yy","order":3,},
