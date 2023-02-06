@@ -1,6 +1,34 @@
 function __scribble_font_add_parse_from_file(_file_name, _font, _font_glyph_array)
 {
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    __scribble_error("See __scribble_font_add_from_file()");
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //We set this font as active so string_height will return the height of this font's glyphs.
     var _old_font = draw_get_font();
     draw_set_font(_font);
