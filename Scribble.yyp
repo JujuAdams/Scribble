@@ -301,6 +301,7 @@
     {"id":{"name":"__scribble_get_buffer_b","path":"scripts/__scribble_get_buffer_b/__scribble_get_buffer_b.yy",},"order":4,},
     {"id":{"name":"__scribble_get_cache_state","path":"scripts/__scribble_get_cache_state/__scribble_get_cache_state.yy",},"order":1,},
     {"id":{"name":"__scribble_get_effects_map","path":"scripts/__scribble_get_effects_map/__scribble_get_effects_map.yy",},"order":6,},
+    {"id":{"name":"obj_test_typewriter_per_line","path":"objects/obj_test_typewriter_per_line/obj_test_typewriter_per_line.yy",},"order":24,},
     {"id":{"name":"__scribble_get_effects_slash_map","path":"scripts/__scribble_get_effects_slash_map/__scribble_get_effects_slash_map.yy",},"order":7,},
     {"id":{"name":"__scribble_get_external_sound_map","path":"scripts/__scribble_get_external_sound_map/__scribble_get_external_sound_map.yy",},"order":11,},
     {"id":{"name":"__scribble_get_font_data_map","path":"scripts/__scribble_get_font_data_map/__scribble_get_font_data_map.yy",},"order":9,},
