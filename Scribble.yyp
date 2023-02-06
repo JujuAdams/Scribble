@@ -352,6 +352,7 @@
   ],
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Examples","folderPath":"folders/Examples.yy","order":2,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"font_add Testing","folderPath":"folders/font_add Testing.yy","order":0,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Fonts","folderPath":"folders/Fonts.yy","order":1,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Mallangche","folderPath":"folders/Fonts/Mallangche.yy","order":23,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Scribble","folderPath":"folders/Scribble.yy","order":0,},
@@ -392,7 +393,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Typewriter","folderPath":"folders/Test Cases/Typewriter.yy","order":10,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Legacy","folderPath":"folders/Test Cases/Typewriter/Legacy.yy","order":0,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Wrapping","folderPath":"folders/Test Cases/Wrapping.yy","order":4,},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"font_add Testing","folderPath":"folders/font_add Testing.yy","order":0,},
   ],
   "AudioGroups": [
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},

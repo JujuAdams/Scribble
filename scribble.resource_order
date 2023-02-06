@@ -286,6 +286,7 @@
   ],
   "FolderOrderSettings": [
     {"name":"Examples","path":"folders/Examples.yy","order":2,},
+    {"name":"font_add Testing","path":"folders/font_add Testing.yy","order":6,},
     {"name":"Fonts","path":"folders/Fonts.yy","order":1,},
     {"name":"Mallangche","path":"folders/Fonts/Mallangche.yy","order":20,},
     {"name":"(System - don't call these functions)","path":"folders/Scribble/(System - don't call these functions).yy","order":9,},
@@ -323,6 +324,5 @@
     {"name":"Text Element Methods","path":"folders/Test Cases/Text Element Methods.yy","order":9,},
     {"name":"Typewriter","path":"folders/Test Cases/Typewriter.yy","order":10,},
     {"name":"Wrapping","path":"folders/Test Cases/Wrapping.yy","order":3,},
-    {"name":"font_add Testing","path":"folders/font_add Testing.yy","order":6,},
   ],
 }
