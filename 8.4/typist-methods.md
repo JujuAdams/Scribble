@@ -2,13 +2,13 @@
 
 &nbsp;
 
-## `scribble_typist()`
+## `scribble_typist([perLine])`
 
 **Returns:** Struct, an instance of `__scribble_class_typist`
 
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
+|Name       |Datatype|Purpose                                                                            |
+|-----------|--------|-----------------------------------------------------------------------------------|
+|`[perLine]`|boolean |Whether to reveal text per line. Defaults to `false`, revealling text per character|
 
 Typewriter behaviour is controlled using a "typist". A typist is a unique (non-cached) machine that controls how your text is revealed and how events are executed as text is revealed. For example, you should create one typist per textbox. Typists are created by calling `scribble_typist()` and are garbage collected automatically. Typists can be used with a text element by targetting the typist with the text element's `.draw()` method. For example:
 
