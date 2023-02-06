@@ -39,6 +39,11 @@ function __scribble_class_typist() constructor
     __character_delay_dict = {};
     
     __use_lines = false;
+
+    __sync_started   = false;
+    __sync_instance  = undefined;
+    __sync_paused    = false;
+    __sync_pause_end = infinity;
     
     reset();
     
@@ -359,6 +364,35 @@ function __scribble_class_typist() constructor
     
     
     
+    #region Sybc
+    
+    static sync_to_sound = function(_instance)
+    {
+        if (!audio_is_playing(_instance))
+        {
+            
+        }
+        
+        __paused       = false;
+        __delay_paused = false;
+        
+        __sync_reset();
+        __sync_started  = true;
+        __sync_instance = _instance;
+    }
+    
+    static __sync_reset = function()
+    {
+        __sync_started   = false;
+        __sync_instance  = undefined;
+        __sync_paused    = false;
+        __sync_pause_end = infinity;
+    }
+    
+    #endregion
+    
+    
+    
     #region Private Methods
     
     static __associate = function(_text_element)
@@ -416,7 +450,7 @@ function __scribble_class_typist() constructor
             {
                 //Simple pause
                 case "pause":
-                    if (!__skip)
+                    if (!__skip && !__sync_started)
                     {
                         if (SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK && (__last_character >= _character_count) && (array_length(__event_stack) <= 0))
                         {
@@ -433,12 +467,22 @@ function __scribble_class_typist() constructor
                 
                 //Time-related delay
                 case "delay":
-                    if (!__skip && !__ignore_delay)
+                    if (!__skip && !__ignore_delay && !__sync_started)
                     {
                         var _duration = (array_length(_event_data) >= 1)? real(_event_data[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
                         __delay_paused = true;
                         __delay_end    = current_time + _duration;
                         
+                        return false;
+                    }
+                break;
+                
+                //Audio playback synchronisation
+                case "sync":
+                    if (!__skip)
+                    {
+                        __sync_paused    = true;
+                        __sync_pause_end = real(_event_data[0]);
                         return false;
                     }
                 break;
@@ -587,6 +631,12 @@ function __scribble_class_typist() constructor
         //If __in hasn't been set yet (.in() / .out() haven't been set) then just nope out
         if (__in == undefined) return undefined;
         
+        //Ensure we unhook synchronisation if the audio instance stops playing
+        if (__sync_started)
+        {
+            if ((__sync_instance == undefined) || !audio_is_playing(__sync_instance)) __sync_reset();
+        }
+        
         //Calculate our speed based on our set typewriter speed, any in-line [speed] tags, and the overall tick size
         //We set inline speed in __process_event_stack()
         var _speed = __speed*__inline_speed*SCRIBBLE_TICK_SIZE;
@@ -630,7 +680,7 @@ function __scribble_class_typist() constructor
                 {
                     //We've waited long enough, start showing more text
                     __delay_paused = false;
-                
+                    
                     //Increment the window index
                     __window_index = (__window_index + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
                     __window_array[@ __window_index  ] = _head_pos;
@@ -639,6 +689,30 @@ function __scribble_class_typist() constructor
                 else
                 {
                     _paused = true;
+                }
+            }
+            else if (__sync_started)
+            {
+                if (audio_is_paused(__sync_instance))
+                {
+                    _paused = true;
+                }
+                else if (__sync_paused)
+                {
+                    if (audio_sound_get_track_position(__sync_instance) > __sync_pause_end)
+                    {
+                        //If enough of the source audio has been played, start showing more text
+                        __sync_paused = false;
+                        
+                        //Increment the window index
+                        __window_index = (__window_index + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
+                        __window_array[@ __window_index  ] = _head_pos;
+                        __window_array[@ __window_index+1] = _head_pos - __smoothness;
+                    }
+                    else
+                    {
+                        _paused = true;
+                    }
                 }
             }
             
