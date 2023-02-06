@@ -1,4 +1,4 @@
-var _string = @"[fa_center][fa_middle][fnt_test_2][rainbow][wave][spr_sdf_riffic]Welcome to Scribble v8![/]
+var _string = @"[fa_center][fa_middle][fnt_test_2][rainbow][wave][spr_sdf_riffic]Welcome to Scribble 8![/]
 
 Scribble is a multi-effects text engine designed to be fast, easy, and fun.
 

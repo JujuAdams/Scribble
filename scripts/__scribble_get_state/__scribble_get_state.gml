@@ -14,6 +14,8 @@ function __scribble_get_state()
         __shader_anim_default:           false,
         
         __sdf_thickness_offset: 0,
+
+        __markdown_styles_struct: {},
     };
     
     return _struct;

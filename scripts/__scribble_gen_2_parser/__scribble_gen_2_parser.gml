@@ -31,7 +31,8 @@
 
 
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  ;\//Pull info out of the font's data structures
-                                      var _data_index = _font_glyphs_map[? _glyph_write];\
+									  ;\//We floor this value to work around floating point issues on HTML5
+                                      var _data_index = _font_glyphs_map[? floor(_glyph_write)];\
                                       ;\//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined)\
                                       {\
@@ -137,6 +138,8 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "typistSoundPerChar"] = 33;
         _command_tag_lookup_accelerator_map[? "r2l"               ] = 34;
         _command_tag_lookup_accelerator_map[? "l2r"               ] = 35;
+        _command_tag_lookup_accelerator_map[? "indent"            ] = 36;
+        _command_tag_lookup_accelerator_map[? "/indent"           ] = 37;
     }
     
     #endregion
@@ -820,6 +823,7 @@ function __scribble_gen_2_parser()
                     
                     #region Regions
                     
+                    // [region,]
                     case 29:
                         if (array_length(_tag_parameters) != 2) __scribble_error("[region] tags must contain a name e.g. [region,This is a region]");
                         
@@ -828,6 +832,7 @@ function __scribble_gen_2_parser()
                         ++_control_count;
                     break;
                     
+                    // [/region]
                     case 30:
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__REGION;
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = undefined;
@@ -862,6 +867,22 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG, _tag_parameters);
                             ++_control_count;
                         }
+                    break;
+                    
+                    #endregion
+                    
+                    #region Indent
+                    
+                    case 36: // [indent]
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__INDENT_START;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = undefined;
+                        ++_control_count;
+                    break;
+                    
+                    case 37: // [/indent]
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__INDENT_STOP;
+                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = undefined;
+                        ++_control_count;
                     break;
                     
                     #endregion
@@ -1429,6 +1450,17 @@ function __scribble_gen_2_parser()
                     #endregion
                     
                     __SCRIBBLE_PARSER_WRITE_GLYPH
+                    
+                    //Adjust height of shadda after lam
+                    if ((_glyph_prev == 0x0651)
+                    &&  ((_glyph_prev_prev == 0x0644)
+                      || (_glyph_prev_prev == 0xFEDD)
+                      || (_glyph_prev_prev == 0xFEDE)
+                      || (_glyph_prev_prev == 0xFEE0)
+                      || (_glyph_prev_prev == 0xFEDF)))
+                    {
+                        _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y] -= 0.17*_glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT];
+                    }
                 }
                 else
                 {

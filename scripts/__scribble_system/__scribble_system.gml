@@ -1,6 +1,6 @@
 // @jujuadams
-#macro __SCRIBBLE_VERSION           "8.3.0"
-#macro __SCRIBBLE_DATE              "2023-01-13"
+#macro __SCRIBBLE_VERSION           "8.4.1"
+#macro __SCRIBBLE_DATE              "2023-02-06"
 #macro __SCRIBBLE_DEBUG             false
 #macro __SCRIBBLE_VERBOSE_GC        false
 #macro SCRIBBLE_LOAD_FONTS_ON_BOOT  true
@@ -614,13 +614,15 @@ enum __SCRIBBLE_GEN_VBUFF_POS
 
 enum __SCRIBBLE_GEN_CONTROL_TYPE
 {
-    __EVENT,  //0
-    __HALIGN, //1
-    __COLOUR, //2
-    __EFFECT, //3
-    __CYCLE,  //4
-    __REGION, //5
-    __FONT,   //6
+    __EVENT,        //0
+    __HALIGN,       //1
+    __COLOUR,       //2
+    __EFFECT,       //3
+    __CYCLE,        //4
+    __REGION,       //5
+    __FONT,         //6
+    __INDENT_START, //7
+    __INDENT_STOP,  //8
 }
 
 //These can be used for ORD
@@ -655,14 +657,15 @@ enum __SCRIBBLE_GEN_STRETCH
 
 enum __SCRIBBLE_GEN_LINE
 {
-    __Y,                  //0
-    __WORD_START,         //1
-    __WORD_END,           //2
-    __WIDTH,              //3
-    __HEIGHT,             //4
-    __HALIGN,             //5
-    __STARTS_MANUAL_PAGE, //6
-    __SIZE,               //7
+    __X,                  //0
+    __Y,                  //1
+    __WORD_START,         //2
+    __WORD_END,           //3
+    __WIDTH,              //4
+    __HEIGHT,             //5
+    __HALIGN,             //6
+    __STARTS_MANUAL_PAGE, //7
+    __SIZE,               //8
 }
 
 #endregion

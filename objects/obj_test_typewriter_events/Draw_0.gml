@@ -1,4 +1,4 @@
-var _element = scribble("[sdm,first]abc[sdm,end]");
+var _element = scribble("[delay,2000][sdm,first]abc[sdm,end]");
 _element.draw(10, 50, typist);
 
 draw_set_font(scribble_fallback_font);

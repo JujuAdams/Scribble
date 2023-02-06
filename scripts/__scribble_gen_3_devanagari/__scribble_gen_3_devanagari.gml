@@ -127,10 +127,26 @@ function __scribble_gen_3_devanagari()
         var _char = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
         if (_char == ord("ि"))
         {
-            //If we find a virama behind us keep tracking backwards
-            //We go two indexes backwards because virama (should) always follows another character
             var _j = _i - 1;
-            while((_j >= 0) && (_glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__UNICODE] == 0x094D)) _j -= 2;
+            while(_j >= 0)
+            {
+                var _prev_char = _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__UNICODE];
+                if (_prev_char == 0x094D)
+                {
+                    //If we find a virama behind us keep tracking backwards
+                    //We go two indexes backwards because virama (should) always follows another character
+                    _j -= 2;
+                }
+                else if (_prev_char == 0x093C) 
+                {
+                    //Move behind a nukta too
+                    _j -= 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
             
             //Copy everything from the start of the subtring (where ि  will go) to the end (which is where ि  currently is)
             ds_grid_set_grid_region(_temp_grid, _glyph_grid, _j, 0, _i-1, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
@@ -271,7 +287,7 @@ function __scribble_gen_3_devanagari()
                     
                     var _insertPos = _i + _copyCount;
                     ds_grid_set_grid_region(_temp_grid, _glyph_grid, _insertPos, 0, _glyph_count, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
-                    ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - _insertPos, __SCRIBBLE_GEN_GLYPH.__SIZE, _insertPos+1, 0);
+                    ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - _insertPos, __SCRIBBLE_GEN_GLYPH.__SIZE, _insertPos + (_replacementLength - _foundLength), 0);
                     
                     if (_replacementLength - _foundLength == 1)
                     {
@@ -382,4 +398,24 @@ function __scribble_gen_3_devanagari()
     _generator_state.__glyph_count = _glyph_count+1;
     
     #endregion
+}
+
+function __scribble_debug_krutidev(_glyph_grid)
+{
+    var _string = "";
+    
+    var _i = 0;
+    while(true)
+    {
+        var _unicode = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
+        if (_unicode >= __SCRIBBLE_DEVANAGARI_OFFSET) _unicode -= __SCRIBBLE_DEVANAGARI_OFFSET;
+        
+        if (_unicode <= 0) break;
+        
+        _string += chr(_unicode);
+        
+        ++_i;
+    }
+    
+    return _string;
 }

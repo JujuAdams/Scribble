@@ -21,9 +21,17 @@ function draw_text_scribble_ext(_x, _y, _string, _width, _reveal = undefined)
     static _scribble_state = __scribble_get_state();
     
     var _font = draw_get_font();
-    _font = !font_exists(_font)? _scribble_state.__default_font : font_get_name(_font);
+    if (is_numeric(_font) && (_font >= 0) && font_exists(_font))
+    {
+        _font = font_get_name(_font);
+        if (!scribble_font_exists(_font)) __scribble_error("Font \"", _font, "\" does not exist in Scribble\n(Fonts added with font_add() are not supported)");
+    }
+    else
+    {
+        _font = _scribble_state.__default_font;
+    }
     
-    var _element = scribble(_string)
+    var _element = scribble(_string, "__draw_text_scribble__")
     .align(draw_get_halign(), draw_get_valign())
     .starting_format(_font, c_white)
     .blend(draw_get_color(), draw_get_alpha())
