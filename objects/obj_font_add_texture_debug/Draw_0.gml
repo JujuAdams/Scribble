@@ -1,6 +1,6 @@
-draw_text(10, 10, "abcdefghijklmnopq");
-
 glyph = 32 + ((glyph + 1 - 32) mod (127-32));
+
+draw_text(10, 10, "abcdefghijklmnopq");
 draw_text(10, 50, chr(glyph));
 
 draw_primitive_begin_texture(pr_trianglestrip, font_get_texture(global.font_add_font));

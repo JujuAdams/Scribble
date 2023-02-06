@@ -267,6 +267,7 @@
     {"id":{"name":"scribble_typist","path":"scripts/scribble_typist/scribble_typist.yy",},"order":1,},
     {"id":{"name":"scribble_typists_add_event","path":"scripts/scribble_typists_add_event/scribble_typists_add_event.yy",},"order":2,},
     {"id":{"name":"string_height_scribble","path":"scripts/string_height_scribble/string_height_scribble.yy",},"order":3,},
+    {"id":{"name":"obj_font_add_text_comparison","path":"objects/obj_font_add_text_comparison/obj_font_add_text_comparison.yy",},"order":0,},
     {"id":{"name":"spr_sdf_riffic","path":"sprites/spr_sdf_riffic/spr_sdf_riffic.yy",},"order":24,},
     {"id":{"name":"string_height_scribble_ext","path":"scripts/string_height_scribble_ext/string_height_scribble_ext.yy",},"order":5,},
     {"id":{"name":"string_width_scribble","path":"scripts/string_width_scribble/string_width_scribble.yy",},"order":2,},
