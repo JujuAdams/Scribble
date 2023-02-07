@@ -5,6 +5,8 @@
 
 function __scribble_font_add_from_file(_filename, _point_size, _bold, _italic, _first, _last) 
 {
+    __scribble_initialize();
+    
     if (SCRIBBLE_VERBOSE) __scribble_trace("Called font_add(\"" + _filename + "\", ", _point_size, ", ", _bold, ", ", _italic, ", ", _first, ", ", _last, ")");
     
     if (font_texture_page_size != SCRIBBLE_GAMEMAKER_FONT_ADD_CACHE_SIZE)
@@ -71,6 +73,9 @@ function __scribble_font_add_from_file_internal(_asset, _filename, _point_size, 
             }
         }
         
+        var _is_krutidev = __scribble_asset_is_krutidev(_asset, asset_font);
+        if (_is_krutidev) _font_data.__is_krutidev = true;
+        
         //Finalise the font_add() cache so we have enough information for recaching
         var _font_info = font_get_info(_asset);
         var _info_glyphs_dict = _font_info.glyphs;
@@ -78,10 +83,9 @@ function __scribble_font_add_from_file_internal(_asset, _filename, _point_size, 
         
         with(_font_cache)
         {
-            __glyph_data_grid = _font_data.__glyph_data_grid;
-            __glyphs_map      = _font_data.__glyphs_map;
-            __space_width     = _space_struct.shift;
-            __space_height    = string_height(" ");
+            __font_data    = _font_data;
+            __space_width  = _space_struct.shift;
+            __space_height = string_height(" ");
         }
         
         //Pre-emptively fill in data grid so we have to do less work later

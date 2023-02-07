@@ -16,9 +16,6 @@ function __scribble_font_add_from_project(_font)
     
     try
     {
-        var _is_krutidev = __scribble_asset_is_krutidev(_font, asset_font);
-        var _global_glyph_bidi_map = __scribble_get_glyph_data().__bidi_map;
-        
         //Get font info from the runtime
         var _font_info = font_get_info(_font);
         var _info_glyphs_dict = _font_info.glyphs;
@@ -65,6 +62,8 @@ function __scribble_font_add_from_project(_font)
         var _font_glyphs_map      = _font_data.__glyphs_map;
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;
         var _font_kerning_map     = _font_data.__kerning_map;
+        
+        var _is_krutidev = __scribble_asset_is_krutidev(_font, asset_font);
         if (_is_krutidev) _font_data.__is_krutidev = true;
         
         var _i = 0;
@@ -77,11 +76,7 @@ function __scribble_font_add_from_project(_font)
             
             if (_is_krutidev)
             {
-                if (_bidi != __SCRIBBLE_BIDI.WHITESPACE)
-                {
-                    _bidi = __SCRIBBLE_BIDI.L2R_DEVANAGARI;
-                    _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
-                }
+                __SCRIBBLE_KRUTIDEV_HACK
             }
             
             if (SCRIBBLE_USE_KERNING)

@@ -9,9 +9,6 @@ function __scribble_font_add_sdf_from_project(_sprite)
         _scribble_state.__default_font = _name;
     }
     
-    var _is_krutidev = __scribble_asset_is_krutidev(_sprite, asset_sprite);
-    var _global_glyph_bidi_map = __scribble_get_glyph_data().__bidi_map;
-    
     if (SCRIBBLE_VERBOSE) __scribble_trace("Defined \"" + _name + "\" as an SDF font");
     
     var _sprite_width  = sprite_get_width(_sprite);
@@ -63,7 +60,10 @@ function __scribble_font_add_sdf_from_project(_sprite)
     var _font_glyphs_map      = _font_data.__glyphs_map;
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
     var _font_kerning_map     = _font_data.__kerning_map;
+    
+    var _is_krutidev = __scribble_asset_is_krutidev(_sprite, asset_sprite);
     if (_is_krutidev) _font_data.__is_krutidev = true;
+    
     _font_data.__sdf_pxrange = _sdf_pxrange;
     
     var _i = 0;
@@ -144,11 +144,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
         
         if (_is_krutidev)
         {
-            if (_bidi != __SCRIBBLE_BIDI.WHITESPACE)
-            {
-                _bidi = __SCRIBBLE_BIDI.L2R_DEVANAGARI;
-                _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
-            }
+            __SCRIBBLE_KRUTIDEV_HACK
         }
         
         _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER           ] = _char;

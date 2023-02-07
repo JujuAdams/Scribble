@@ -27,10 +27,9 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
     __model_array = [];
     
     //These get copied over from the font in __scribble_font_add_from_file()
-    __glyph_data_grid = undefined;
-    __glyphs_map      = undefined;
-    __space_width     = 0;
-    __space_height    = 0;
+    __font_data    = undefined;
+    __space_width  = 0;
+    __space_height = 0;
     
     __scribble_trace("Creating font_add() cache (size=", SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE, ")");
     
@@ -105,8 +104,8 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
     {
         var _character = chr(_unicode);
         
-        var _font_glyph_grid = __glyph_data_grid;
-        var _font_glyph_map  = __glyphs_map;
+        var _font_glyph_grid = __font_data.__glyph_data_grid;
+        var _font_glyph_map  = __font_data.__glyphs_map;
         
         var _index = __next_index;
         _font_glyph_map[? _unicode] = _index;
@@ -169,10 +168,16 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
         var _u1 = _u0 + _w/SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
         var _v1 = _v0 + _h/SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
         
+        var _bidi = __scribble_unicode_get_bidi(_unicode);
+        if (__font_data.__is_krutidev)
+        {
+            __SCRIBBLE_KRUTIDEV_HACK
+        }
+        
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.CHARACTER           ] = _character;
         
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.UNICODE             ] = _unicode;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.BIDI                ] = __scribble_unicode_get_bidi(_unicode);
+        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.BIDI                ] = _bidi;
         
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.X_OFFSET            ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.Y_OFFSET            ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
@@ -260,8 +265,8 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
     
     static __clear_glyph_map = function()
     {
-        var _font_glyph_grid = __glyph_data_grid;
-        var _font_glyph_map  = __glyphs_map;
+        var _font_glyph_grid = __font_data.__glyph_data_grid;
+        var _font_glyph_map  = __font_data.__glyphs_map;
         
         ds_map_clear(_font_glyph_map);
         

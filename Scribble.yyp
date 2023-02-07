@@ -30,6 +30,7 @@
     {"id":{"name":"__scribble_draw_texture_flush","path":"scripts/__scribble_draw_texture_flush/__scribble_draw_texture_flush.yy",},"order":0,},
     {"id":{"name":"scribble_fallback_font","path":"fonts/scribble_fallback_font/scribble_fallback_font.yy",},"order":0,},
     {"id":{"name":"Mallangche License","path":"notes/Mallangche License/Mallangche License.yy",},"order":0,},
+    {"id":{"name":"__scribble_krutidev_hack","path":"scripts/__scribble_krutidev_hack/__scribble_krutidev_hack.yy",},"order":0,},
     {"id":{"name":"obj_example_basic","path":"objects/obj_example_basic/obj_example_basic.yy",},"order":0,},
     {"id":{"name":"obj_example_big_textbox","path":"objects/obj_example_big_textbox/obj_example_big_textbox.yy",},"order":1,},
     {"id":{"name":"scribble_markdown_format","path":"scripts/scribble_markdown_format/scribble_markdown_format.yy",},"order":11,},

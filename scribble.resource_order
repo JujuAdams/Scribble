@@ -24,6 +24,7 @@
     {"name":"fnt_test_2","path":"fonts/fnt_test_2/fnt_test_2.yy","order":18,},
     {"name":"fnt_thai","path":"fonts/fnt_thai/fnt_thai.yy","order":19,},
     {"name":"__scribble_draw_texture_flush","path":"scripts/__scribble_draw_texture_flush/__scribble_draw_texture_flush.yy","order":7,},
+    {"name":"__scribble_krutidev_hack","path":"scripts/__scribble_krutidev_hack/__scribble_krutidev_hack.yy","order":4,},
     {"name":"obj_example_big_textbox","path":"objects/obj_example_big_textbox/obj_example_big_textbox.yy","order":1,},
     {"name":"shd_passthrough","path":"shaders/shd_passthrough/shd_passthrough.yy","order":17,},
     {"name":"obj_test_alignment_changes","path":"objects/obj_test_alignment_changes/obj_test_alignment_changes.yy","order":1,},

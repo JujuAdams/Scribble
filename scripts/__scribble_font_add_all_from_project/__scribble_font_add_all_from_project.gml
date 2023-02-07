@@ -21,11 +21,9 @@ function __scribble_font_add_all_from_project()
             ++_j;
         }
         
+        //Don't scan fonts created at runtime (e.g. by font_add_sprite())
         var _name = font_get_name(_i);
-        if (string_copy(_name, 1, 9) == "__newfont") //Don't scan fonts created at runtime (e.g. by font_add_sprite())
-        {
-            _skip = true;
-        }
+        if (string_copy(_name, 1, 9) == "__newfont") _skip = true;
         
         if (!_skip)
         {
