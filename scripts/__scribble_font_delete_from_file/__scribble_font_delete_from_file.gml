@@ -37,7 +37,7 @@ function __scribble_font_delete_from_file(_font) {
     
     
     
-    static _font_data_map = __scribble_get_font_data_map();
+    static _font_data_map = __scribble_get_state().__font_data_map;
     
     if (!font_exists(_font)) || (!ds_map_exists(_font_data_map, font_get_name(_font))) {
         __scribble_error("font " + string(_font) + " doesn't exist!");

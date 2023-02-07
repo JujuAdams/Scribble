@@ -2,7 +2,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
 {
     var _name = sprite_get_name(_sprite);
     
-    static _font_data_map = __scribble_get_font_data_map();
+    static _font_data_map = __scribble_get_state().__font_data_map;
     if (ds_map_exists(_font_data_map, _name))
     {
         __scribble_trace("Warning! An SDF font for \"", _name, "\" has already been added. Destroying the old SDF font and creating a new one");

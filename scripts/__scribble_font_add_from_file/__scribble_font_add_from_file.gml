@@ -5,7 +5,7 @@
 
 function __scribble_font_add_from_file(_filename, _point_size, _bold, _italic, _first, _last) 
 {
-    static _font_data_map = __scribble_get_font_data_map();
+    static _font_data_map = __scribble_get_state().__font_data_map;
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Called font_add(\"" + _filename + "\", ", _point_size, ", ", _bold, ", ", _italic, ", ", _first, ", ", _last, ")");
     

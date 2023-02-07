@@ -18,6 +18,8 @@ function __scribble_get_state()
         __markdown_styles_struct: {},
         
         __font_add_cache_array: [],
+        
+        __font_data_map: ds_map_create(), //TODO - Could we do this with a struct?
     };
     
     return _struct;
