@@ -5,8 +5,6 @@
 
 function __scribble_font_add_from_file(_filename, _point_size, _bold, _italic, _first, _last) 
 {
-    static _font_original_name_dict = __scribble_get_state().__font_original_name_dict;
-    
     if (SCRIBBLE_VERBOSE) __scribble_trace("Called font_add(\"" + _filename + "\", ", _point_size, ", ", _bold, ", ", _italic, ", ", _first, ", ", _last, ")");
     
     if (font_texture_page_size != SCRIBBLE_GAMEMAKER_FONT_ADD_CACHE_SIZE)
@@ -17,13 +15,22 @@ function __scribble_font_add_from_file(_filename, _point_size, _bold, _italic, _
     
     var _asset = __font_add__(_filename, _point_size, _bold, _italic, _first, _last);
     if (!font_exists(_asset)) __scribble_error("Failed to load \"", _filename, "\"");
+    
+    __scribble_font_add_from_file_internal(_asset, _filename, _point_size, _bold, _italic, _first, _last);
+    
+	// We return the font ID provided by font_add()
+    return _asset;
+}
+
+function __scribble_font_add_from_file_internal(_asset, _filename, _point_size, _bold, _italic, _first, _last)
+{
+    static _font_original_name_dict = __scribble_get_state().__font_original_name_dict;
+    
     var _asset_name = font_get_name(_asset);
     
     //Make an extra check
     __scribble_font_check_name_conflicts(_asset_name);
     
-    //Test code:
-    //font_enable_sdf(_asset, true);
     var _sdf = font_get_sdf_enabled(_asset);
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", _filename, "\" as a font_add() font", (_sdf? " as SDF" : ""));
@@ -47,8 +54,22 @@ function __scribble_font_add_from_file(_filename, _point_size, _bold, _italic, _
         var _font_data = new __scribble_class_font(_asset_name, _filename, _size, font_get_sdf_enabled(_asset));
         _font_original_name_dict[$ _asset_name] = _font_data;
         
-        //Bind the font_add() cache to the font struct
-        _font_data.__font_add_cache = _font_cache;
+        with(_font_data)
+        {
+            //Bind the font_add() cache to the font struct
+            __font_add_cache = _font_cache;
+            
+            //We use this data to reconstruct a font when font_enable_sdf() is called
+            with(__font_add_data)
+            {
+                __filename   = _filename;
+                __point_size = _point_size;
+                __bold       = _bold;
+                __italic     = _italic;
+                __first      = _first;
+                __last       = _last;
+            }
+        }
         
         //Finalise the font_add() cache so we have enough information for recaching
         var _font_info = font_get_info(_asset);
@@ -84,7 +105,4 @@ function __scribble_font_add_from_file(_filename, _point_size, _bold, _italic, _
         __scribble_trace(_error);
         __scribble_error("There was an error whilst reading \"", _filename, "\"\nPlease ensure that the font file exists before using font_add()\nIf this issue persists, please report it");
     }
-    
-	// We return the font ID provided by font_add
-	return _asset;
 }

@@ -38,6 +38,17 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count, _sdf) 
     
     __font_add_cache = undefined;
     
+    //Set in __scribble_font_add_from_file()
+    //We use this to reconstruct a font when font_enable_sdf() is called
+    __font_add_data = {
+        __filename:   undefined,
+        __point_size: undefined,
+        __bold:       undefined,
+        __italic:     undefined,
+        __first:      undefined,
+        __last:       undefined,
+    };
+    
      
     
     static __copy_to = function(_target, _copy_styles)

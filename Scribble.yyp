@@ -218,6 +218,7 @@
     {"id":{"name":"draw_text_scribble_ext","path":"scripts/draw_text_scribble_ext/draw_text_scribble_ext.yy",},"order":1,},
     {"id":{"name":"example_dialogue_set_name","path":"scripts/example_dialogue_set_name/example_dialogue_set_name.yy",},"order":3,},
     {"id":{"name":"example_dialogue_set_portrait","path":"scripts/example_dialogue_set_portrait/example_dialogue_set_portrait.yy",},"order":4,},
+    {"id":{"name":"__scribble_font_enable_sdf","path":"scripts/__scribble_font_enable_sdf/__scribble_font_enable_sdf.yy",},"order":0,},
     {"id":{"name":"scribble","path":"scripts/scribble/scribble.yy",},"order":0,},
     {"id":{"name":"scribble_add_macro","path":"scripts/scribble_add_macro/scribble_add_macro.yy",},"order":3,},
     {"id":{"name":"scribble_anim_blink","path":"scripts/scribble_anim_blink/scribble_anim_blink.yy",},"order":9,},
