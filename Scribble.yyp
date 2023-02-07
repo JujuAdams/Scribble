@@ -80,7 +80,6 @@
     {"id":{"name":"obj_test_fit_to_box_plus_transformation","path":"objects/obj_test_fit_to_box_plus_transformation/obj_test_fit_to_box_plus_transformation.yy",},"order":3,},
     {"id":{"name":"obj_test_flash","path":"objects/obj_test_flash/obj_test_flash.yy",},"order":7,},
     {"id":{"name":"obj_test_flush","path":"objects/obj_test_flush/obj_test_flush.yy",},"order":4,},
-    {"id":{"name":"__scribble_font_add_parse_from_file","path":"scripts/__scribble_font_add_parse_from_file/__scribble_font_add_parse_from_file.yy",},"order":0,},
     {"id":{"name":"obj_test_flush_multi","path":"objects/obj_test_flush_multi/obj_test_flush_multi.yy",},"order":5,},
     {"id":{"name":"__scribble_font_delete_from_file","path":"scripts/__scribble_font_delete_from_file/__scribble_font_delete_from_file.yy",},"order":0,},
     {"id":{"name":"obj_test_font_duplicate","path":"objects/obj_test_font_duplicate/obj_test_font_duplicate.yy",},"order":1,},
