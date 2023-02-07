@@ -1,17 +1,24 @@
-/// @param fontName
+/// @param assetName
+/// @param friendlyName
 /// @param glyphCount
 /// @param isSDF
 
-function __scribble_class_font(_name, _glyph_count, _sdf) constructor
+function __scribble_class_font(_asset_name, _friendly_name, _glyph_count, _sdf) constructor
 {
-    __name = _name;
+    __asset_name = _asset_name;
+    __name       = _friendly_name;
     
+    
+    
+    __scribble_font_check_name_conflicts(__name);
     static _font_data_map = __scribble_get_state().__font_data_map;
-    _font_data_map[? _name] = self;
+    _font_data_map[? __name] = self;
     
-    __glyph_data_grid = ds_grid_create(_glyph_count, SCRIBBLE_GLYPH.__SIZE);
-    __glyphs_map = ds_map_create();
-    __kerning_map = ds_map_create();
+    
+    
+    __glyph_data_grid = ds_grid_create(_glyph_count, SCRIBBLE_GLYPH.__SIZE); //We use a grid here to allow us to copy data more quickly during parsing
+    __glyphs_map      = ds_map_create(); //We use a map here because our keys are numbers and I don't trust struct performance
+    __kerning_map     = ds_map_create(); //We use a map here because our keys are numbers and I don't trust struct performance
     
     __is_krutidev = false;
     
@@ -82,8 +89,11 @@ function __scribble_class_font(_name, _glyph_count, _sdf) constructor
         ds_map_destroy(__glyphs_map);
         ds_grid_destroy(__glyph_data_grid);
         
-        static _font_data_map = __scribble_get_state().__font_data_map;
+        static _font_data_map           = __scribble_get_state().__font_data_map;
+        static _font_original_name_dict = __scribble_get_state().__font_original_name_dict;
+        
         ds_map_delete(_font_data_map, __name);
+        variable_struct_remove(_font_original_name_dict, __asset_name);
         
         if (__source_sprite != undefined)
         {

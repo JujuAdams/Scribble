@@ -5,7 +5,7 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "font_add",
-    "path": "folders/Scribble/(System - don't call these functions)/font_add.yy",
+    "name": "Font Creators",
+    "path": "folders/Scribble/(System - don't call these functions)/Font Creators.yy",
   },
 }

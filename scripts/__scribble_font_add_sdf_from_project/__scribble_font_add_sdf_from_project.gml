@@ -2,13 +2,6 @@ function __scribble_font_add_sdf_from_project(_sprite)
 {
     var _name = sprite_get_name(_sprite);
     
-    static _font_data_map = __scribble_get_state().__font_data_map;
-    if (ds_map_exists(_font_data_map, _name))
-    {
-        __scribble_trace("Warning! An SDF font for \"", _name, "\" has already been added. Destroying the old SDF font and creating a new one");
-        _font_data_map[? _name].__destroy();
-    }
-    
     var _scribble_state = __scribble_get_state();
     if (_scribble_state.__default_font == undefined)
     {
@@ -64,7 +57,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
     var _size = ds_list_size(_json_glyph_list);
     if (SCRIBBLE_VERBOSE) __scribble_trace("\"" + _name + "\" has " + string(_size) + " characters");
     
-    var _font_data = new __scribble_class_font(_name, _size, true);
+    var _font_data = new __scribble_class_font(_name, _name, _size, true);
     _font_data.__runtime = true;
     
     var _font_glyphs_map      = _font_data.__glyphs_map;

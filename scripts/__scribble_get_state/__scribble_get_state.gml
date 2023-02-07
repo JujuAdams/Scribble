@@ -19,6 +19,7 @@ function __scribble_get_state()
         
         __font_add_cache_array: [],
         
+        __font_original_name_dict: {},
         __font_data_map: ds_map_create(), //TODO - Could we do this with a struct?
     };
     

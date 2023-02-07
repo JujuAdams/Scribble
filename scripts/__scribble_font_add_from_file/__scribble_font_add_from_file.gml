@@ -5,7 +5,7 @@
 
 function __scribble_font_add_from_file(_filename, _point_size, _bold, _italic, _first, _last) 
 {
-    static _font_data_map = __scribble_get_state().__font_data_map;
+    static _font_original_name_dict = __scribble_get_state().__font_original_name_dict;
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Called font_add(\"" + _filename + "\", ", _point_size, ", ", _bold, ", ", _italic, ", ", _first, ", ", _last, ")");
     
@@ -17,17 +17,14 @@ function __scribble_font_add_from_file(_filename, _point_size, _bold, _italic, _
     
     var _asset = __font_add__(_filename, _point_size, _bold, _italic, _first, _last);
     if (!font_exists(_asset)) __scribble_error("Failed to load \"", _filename, "\"");
+    var _asset_name = font_get_name(_asset);
+    
+    //Make an extra check
+    __scribble_font_check_name_conflicts(_asset_name);
     
     //Test code:
     //font_enable_sdf(_asset, true);
-    
     var _sdf = font_get_sdf_enabled(_asset);
-    
-    if (ds_map_exists(_font_data_map, _filename))
-    {
-        __scribble_trace("Warning! A font for \"", _filename, "\" has already been added. Destroying the old font and creating a new one");
-        _font_data_map[? _filename].__destroy();
-    }
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", _filename, "\" as a font_add() font", (_sdf? " as SDF" : ""));
     
@@ -47,7 +44,8 @@ function __scribble_font_add_from_file(_filename, _point_size, _bold, _italic, _
         var _size = _font_cache.__get_max_glyph_count();
         
         //Create a font representation we can use for interaction with other Scribble font functions
-        var _font_data = new __scribble_class_font(_filename, _size, font_get_sdf_enabled(_asset));
+        var _font_data = new __scribble_class_font(_asset_name, _filename, _size, font_get_sdf_enabled(_asset));
+        _font_original_name_dict[$ _asset_name] = _font_data;
         
         //Bind the font_add() cache to the font struct
         _font_data.__font_add_cache = _font_cache;

@@ -1,50 +1,23 @@
-#macro __font_delete__ font_delete
-#macro font_delete __scribble_font_delete_from_file
+#macro __font_delete__  font_delete
+#macro font_delete      __scribble_font_delete_from_file
 
-function __scribble_font_delete_from_file(_font) {
+function __scribble_font_delete_from_file(_font)
+{
+    var _name = font_get_name(_font);
     
+    //Delete after getting the name otherwise we get <undefined>
+    var _result = __font_delete__(_font);
     
+    var _font_original_name_dict = __scribble_get_state().__font_original_name_dict;
+    var _font_struct = _font_original_name_dict[$ _name];
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    __scribble_error("TODO");
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    static _font_data_map = __scribble_get_state().__font_data_map;
-    
-    if (!font_exists(_font)) || (!ds_map_exists(_font_data_map, font_get_name(_font))) {
-        __scribble_error("font " + string(_font) + " doesn't exist!");
+    if (!is_struct(_font_struct))
+    {
+        __scribble_trace("Warning! Trying to delete font \"", font_get_name(_font), "\" but it could not be found");
+        return;
     }
     
-    var _name = font_get_name(_font);
-    _font_data_map[? _name].__destroy();
-    ds_map_delete(_font_data_map, _name);
-    __font_delete__(_font);
+    _font_struct.__destroy();
+    
+    return _result;
 }

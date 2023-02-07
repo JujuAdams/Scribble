@@ -4,12 +4,6 @@ function __scribble_font_add_from_project(_font)
 {
     var _name = font_get_name(_font);
     
-    static _font_data_map = __scribble_get_state().__font_data_map;
-    if (ds_map_exists(_font_data_map, _name))
-    {
-        __scribble_trace("Warning! A font for \"", _name, "\" has already been added. Destroying the old font and creating a new one");
-        _font_data_map[? _name].__destroy();
-    }
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", _name, "\" as standard font");
     
@@ -67,7 +61,7 @@ function __scribble_font_add_from_project(_font)
                              + " -> " + string_format(_texture_uvs[2], 1, 10) + "," + string_format(_texture_uvs[3], 1, 10));
         }
         
-        var _font_data = new __scribble_class_font(_name, _size, false);
+        var _font_data = new __scribble_class_font(_name, _name, _size, false);
         var _font_glyphs_map      = _font_data.__glyphs_map;
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;
         var _font_kerning_map     = _font_data.__kerning_map;

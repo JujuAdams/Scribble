@@ -50,7 +50,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _glyph_count = ds_grid_width(_src_glyph_grid);
     
     //Create a new font
-    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, false);
+    var _new_font_data = new __scribble_class_font(_new_font_name, _new_font_name, _glyph_count, false);
     _new_font_data.__runtime = true;
     var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
     

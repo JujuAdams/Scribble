@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__scribble_font_add_all_from_project",
+  "name": "__scribble_font_check_name_conflicts",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
