@@ -88,13 +88,16 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
             {
                 array_delete(__model_array, _i, 1);
             }
-            else if (_found_model.ref == _new_model)
+            else
             {
-                //Model already registered as in use
-                return;
+                if (_found_model.ref == _new_model)
+                {
+                    //Model already registered as in use
+                    return;
+                }
+                
+                ++_i;
             }
-            
-            ++_i;
         }
         
         array_push(__model_array, weak_ref_create(_new_model));
