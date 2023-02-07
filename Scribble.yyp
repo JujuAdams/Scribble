@@ -27,6 +27,7 @@
     {"id":{"name":"fnt_test_1","path":"fonts/fnt_test_1/fnt_test_1.yy",},"order":20,},
     {"id":{"name":"fnt_test_2","path":"fonts/fnt_test_2/fnt_test_2.yy",},"order":21,},
     {"id":{"name":"fnt_thai","path":"fonts/fnt_thai/fnt_thai.yy",},"order":22,},
+    {"id":{"name":"__scribble_draw_texture_flush","path":"scripts/__scribble_draw_texture_flush/__scribble_draw_texture_flush.yy",},"order":0,},
     {"id":{"name":"scribble_fallback_font","path":"fonts/scribble_fallback_font/scribble_fallback_font.yy",},"order":0,},
     {"id":{"name":"Mallangche License","path":"notes/Mallangche License/Mallangche License.yy",},"order":0,},
     {"id":{"name":"obj_example_basic","path":"objects/obj_example_basic/obj_example_basic.yy",},"order":0,},

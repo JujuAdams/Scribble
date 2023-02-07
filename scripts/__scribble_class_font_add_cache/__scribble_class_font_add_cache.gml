@@ -253,9 +253,8 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
             else
             {
                 _weak_ref.ref.__flush();
+                ++_i;
             }
-            
-            ++_i;
         }
     }
     
@@ -299,16 +298,18 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
         __invalidate();
     }
     
+    static __rebuild_surface = function()
+    {
+        if (__surface != undefined) __clear_glyph_map();
+        if ((__surface == undefined) || !surface_exists(__surface)) __surface = surface_create(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE, SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE);
+        
+        surface_set_target(__surface);
+        draw_clear_alpha(c_white, 0);
+        surface_reset_target();
+    }
+    
     static __tick = function()
     {
-        if (__in_use && ((__surface == undefined) || !surface_exists(__surface)))
-        {
-            if (__surface != undefined) __clear_glyph_map();
-            
-            __surface = surface_create(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE, SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE);
-            surface_set_target(__surface);
-            draw_clear_alpha(c_white, 0);
-            surface_reset_target();
-        }
+        if (__in_use && ((__surface == undefined) || !surface_exists(__surface))) __rebuild_surface();
     }
 }
