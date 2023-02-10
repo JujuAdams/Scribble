@@ -8,6 +8,12 @@ Everything! You might run into edge cases on platforms that I don't regularly te
 
 &nbsp;
 
+**What versions of GameMaker does Scribble support?**
+
+Version 8 of Scribble primarily supports GameMaker LTS 2022, and in theory supports every version of GameMaker later than that. Later versions of GameMaker may change functionality in a way that Scribble is not forwards-compatible with, but Scribble uses only native GameMaker functions so is in the best possible position for long-term compatibility.
+
+&nbsp;
+
 ## What kinds of fonts can Scribble draw?
 
 Anything that GameMaker natively supports as a font resource, including spritefonts. Scribble additionally supports [MSDF fonts](msdf-fonts) which are very useful for mobile games or any game which might have a wide variety of text sizes. Scribble unfortunately doesn't (yet) support fonts added via `font_add()`.
