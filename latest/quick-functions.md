@@ -79,3 +79,13 @@ Draws a string to the screen, much like GameMaker's native `draw_text_ext()`, bu
 |--------|--------|----------------------------------------------------------------------------------------------|
 |`string`|string  |String to target                                                                              |
 |`width` |number  |Maximum width of the string. Any text that exceeds this width is wrapped down to the next line|
+
+&nbsp;
+
+## `string_length_scribble(string)`
+
+**Returns**: Number, length of the string
+
+|Name    |Datatype|Purpose         |
+|--------|--------|----------------|
+|`string`|string  |String to target|

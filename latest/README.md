@@ -1,5 +1,5 @@
 <img src="https://raw.githubusercontent.com/JujuAdams/scribble/master/LOGO.png" width="50%" style="display: block; margin: auto;" />
-<h1 align="center">Scribble 8.4</h1>
+<h1 align="center">Scribble 8.5</h1>
 <p align="center">A modern text renderer for GameMaker 2022 LTS by <a href="https://twitter.com/jujuadams" target="_blank">Juju Adams</a></p>
 
 <p align="center"><a href="https://github.com/JujuAdams/scribble/releases/">Download the .yymps</a></p>
