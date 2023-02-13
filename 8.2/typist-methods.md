@@ -70,18 +70,6 @@ Skips the current typist animation, be it typing in or typing out. If text is ty
 
 &nbsp;
 
-## `.skip_to_pause(state)`
-
-**Returns**: `self`, the typist
-
-|Name   |Datatype|Purpose                                                |
-|-------|--------|-------------------------------------------------------|
-|`state`|boolean |Whether the typist should skip the typewriter animation|
-
-As `.skip()` but the typist will wait at `[pause]` tags.
-
-&nbsp;
-
 ## `.get_skip()`
 
 **Returns**: Boolean, whether the typist is skipping typewriter animation
