@@ -191,16 +191,6 @@ If no typewriter animation has been started, this function will return `1`.
 
 &nbsp;
 
-## `.get_skip()`
-
-**Returns:** Boolean, whether the typist is set to skip text typing
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-&nbsp;
-
 ## `.pause()`
 
 **Returns**: `self`, the typist
