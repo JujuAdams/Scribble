@@ -24,4 +24,3 @@
 -   [Fonts](fonts)
 -   [Superfont Functions](superfont-functions)
 -   [Misc Functions](misc-functions)
--   [*Legacy Typewriter*](legacy-typewriter)
