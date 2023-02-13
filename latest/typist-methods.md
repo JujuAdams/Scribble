@@ -2,13 +2,13 @@
 
 &nbsp;
 
-## `scribble_typist()`
+## `scribble_typist([perLine])`
 
 **Returns:** Struct, an instance of `__scribble_class_typist`
 
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
+|Name       |Datatype|Purpose                                                                            |
+|-----------|--------|-----------------------------------------------------------------------------------|
+|`[perLine]`|boolean |Whether to reveal text per line. Defaults to `false`, revealling text per character|
 
 Typewriter behaviour is controlled using a "typist". A typist is a unique (non-cached) machine that controls how your text is revealed and how events are executed as text is revealed. For example, you should create one typist per textbox. Typists are created by calling `scribble_typist()` and are garbage collected automatically. Typists can be used with a text element by targetting the typist with the text element's `.draw()` method. For example:
 
@@ -220,6 +220,24 @@ Unpauses the typewriter effect. This is helpful when combined with the [`[pause]
 |Name|Datatype|Purpose|
 |----|--------|-------|
 |None|        |       |
+
+&nbsp;
+
+## `.sync_to_sound(soundInstance)`
+
+**Returns:** `self`, the typist
+
+|Name           |Datatype                                                                                                                   |Purpose                                               |
+|---------------|---------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+|`soundInstance`|[sound instance](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Audio/audio_play_sound.htm)|Sound instance to use as the basis for synchronisation|
+
+Sets up a typist to synchronise to an audio source whilst typing in. Calling `.sync_to_sound()` will enable the use of `[sync,<seconds>]` tags. These tags act in a similar way to `[delay]` tags insofar that they wait for a particular amount of time to elapse before the typist resumes. Insert `[sync,<seconds>]` tags where you'd like the typist to wait during sound playback, and set the `<seconds>` argument in the tag to the position in the audio file that you'd like to resume playback. The `<seconds>` argument should be specified in seconds.
+
+!> Do not use `.sync_to_sound()` with looping audio. Sound synchronisation is only supported when typing in.
+
+If the provided sound instance is paused, the typist will be paused as well and will wait until playback is resumed to contineu typing (this is a different pause state to the `.pause()` function above). If the sound instance stops, either because it has reached the end of playback or the sound instance was stopped manually, the typist will fall back to standard behaviour. Any remaining text that has not been typed will be typed out without pausing.
+
+?> When synchronising to audio, `[delay]` and `[pause]` tags will be ignored. To pace the display of text, use `[sync]` tags as described above.
 
 &nbsp;
 

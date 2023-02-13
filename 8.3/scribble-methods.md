@@ -170,15 +170,14 @@ Skews glyph positions relative to the origin (set by [`.origin()`](scribble-meth
 
 &nbsp;
 
-## `.scale_to_box(maxWidth, maxHeight, [maximise])`
+## `.scale_to_box(maxWidth, maxHeight)`
 
 **Returns**: The text element
 
-|Name        |Datatype|Purpose                                                                                                  |
-|------------|--------|---------------------------------------------------------------------------------------------------------|
-|`maxWidth`  |real    |Maximum width of the bounding box to fit the text into. Use a negative number (the default) for no limit |
-|`maxHeight` |real    |Maximum height of the bounding box to fit the text into. Use a negative number (the default) for no limit|
-|`[maximise]`|boolean |Allows the scaling algorithm to increase the scale as well as decreasing. Defaults to `false`            |
+|Name       |Datatype|Purpose                                                                                                  |
+|-----------|--------|---------------------------------------------------------------------------------------------------------|
+|`maxWidth` |real    |Maximum width of the bounding box to fit the text into. Use a negative number (the default) for no limit |
+|`maxHeight`|real    |Maximum height of the bounding box to fit the text into. Use a negative number (the default) for no limit|
 
 Scales the text element such that it always fits inside the maximum width and height specified. Scaling is equal in both the x and y axes. This behaviour does not recalculate text wrapping so will not re-flow text. `.scale_to_box()` is a simple scaling operation therefore, and one that is best used for single lines of text (e.g. for buttons).
 
