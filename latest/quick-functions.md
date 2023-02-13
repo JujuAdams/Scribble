@@ -50,7 +50,7 @@ Draws a string to the screen, much like GameMaker's native `draw_text_ext()`, bu
 
 ## `string_height_scribble(string)`
 
-**Returns**: Number, width of the string
+**Returns**: Number, height of the string
 
 |Name    |Datatype|Purpose         |
 |--------|--------|----------------|
@@ -58,27 +58,25 @@ Draws a string to the screen, much like GameMaker's native `draw_text_ext()`, bu
 
 &nbsp;
 
-## `string_width_scribble_ext(string)`
+## `string_width_scribble_ext(string, maxWidth)`
 
-**Returns**: Number, width of the string
+**Returns**: Number, width of the string after text wrapping
 
-
-|Name    |Datatype|Purpose                                                                                       |
-|--------|--------|----------------------------------------------------------------------------------------------|
-|`string`|string  |String to target                                                                              |
-|`width` |number  |Maximum width of the string. Any text that exceeds this width is wrapped down to the next line|
+|Name      |Datatype|Purpose                                                                                       |
+|----------|--------|----------------------------------------------------------------------------------------------|
+|`string`  |string  |String to target                                                                              |
+|`maxWidth`|number  |Maximum width of the string. Any text that exceeds this width is wrapped down to the next line|
 
 &nbsp;
 
-## `string_height_scribble_ext(string)`
+## `string_height_scribble_ext(string, maxWidth)`
 
-**Returns**: Number, width of the string
+**Returns**: Number, height of the string after text wrapping
 
-
-|Name    |Datatype|Purpose                                                                                       |
-|--------|--------|----------------------------------------------------------------------------------------------|
-|`string`|string  |String to target                                                                              |
-|`width` |number  |Maximum width of the string. Any text that exceeds this width is wrapped down to the next line|
+|Name      |Datatype|Purpose                                                                                       |
+|----------|--------|----------------------------------------------------------------------------------------------|
+|`string`  |string  |String to target                                                                              |
+|`maxWidth`|number  |Maximum width of the string. Any text that exceeds this width is wrapped down to the next line|
 
 &nbsp;
 
