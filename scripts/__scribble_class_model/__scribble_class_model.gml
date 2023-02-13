@@ -224,26 +224,26 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         return __pages;
     }
-	
-	/// @param page
-	static __get_text = function(_page)
-	{
+    
+    /// @param page
+    static __get_text = function(_page)
+    {
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-		
+        
         if (!SCRIBBLE_ALLOW_TEXT_GETTER) __scribble_error("Cannot get text, SCRIBBLE_ALLOW_TEXT_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_TEXT_GETTER to <true> to get text");
         
-		return __pages_array[_page].__text;
-	}
-	
-	/// @param page
-	static __get_glyph_data = function(_index, _page)
-	{
+        return __pages_array[_page].__text;
+    }
+    
+    /// @param page
+    static __get_glyph_data = function(_index, _page)
+    {
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-		
-		return __pages_array[_page].__get_glyph_data(_index);
-	}
+        
+        return __pages_array[_page].__get_glyph_data(_index);
+    }
     
     static __get_wrapped = function()
     {

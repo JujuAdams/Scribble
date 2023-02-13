@@ -113,13 +113,13 @@ function __scribble_class_typist(_per_line) constructor
     static skip = function(_state = true)
     {
         __skip = _state;
-		__skip_paused = true;
+        __skip_paused = true;
         __drawn_since_skip = false;
         
         return self;
     }
-	
-	static skip_to_pause = function(_state = true)
+    
+    static skip_to_pause = function(_state = true)
     {
         __skip = _state;
         __skip_paused = false;

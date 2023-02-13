@@ -1027,14 +1027,14 @@ function __scribble_class_element(_string, _unique_id) constructor
         return _model.__get_wrapped();
     }
     
-	/// @param [page]
+    /// @param [page]
     static get_text = function()
     {
-		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
-		
+        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+        
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-		return _model.__get_text(_page);
+        return _model.__get_text(_page);
     }
     
     /// @param [page]
