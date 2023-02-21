@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "scribble_rgb_to_bgr",
+  "name": "scribble_color_set",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
