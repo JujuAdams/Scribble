@@ -411,6 +411,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Legacy","folderPath":"folders/Test Cases/Typewriter/Legacy.yy","order":0,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Wrapping","folderPath":"folders/Test Cases/Wrapping.yy","order":4,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Colours","folderPath":"folders/Scribble/Colours.yy","order":7,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"External Assets","folderPath":"folders/Scribble/External Assets.yy","order":8,},
   ],
   "AudioGroups": [
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},
