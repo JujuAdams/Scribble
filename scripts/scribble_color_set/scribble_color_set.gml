@@ -1,6 +1,6 @@
 /// Adds a colour name for use with Scribble's text formatting tags
 /// 
-/// For example, adding a colour called "banana" will allow the use of the [banana] formatting
+/// For example, adding a colour called "c_banana" will allow the use of the [c_banana] formatting
 /// tag in text throughout your game
 /// 
 /// Setting a colour to <undefined> will delete the colour from Scribble
