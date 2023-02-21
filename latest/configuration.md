@@ -134,6 +134,6 @@ This script holds a number of macros that customise the default text animation p
 |----|--------|-------|
 |None|        |       |
 
-This script holds custom colours that you can reference by name for many Scribble functions. `__scribble_config_colours()` never needs to be directly called in your code.
+This script holds custom colours that you can reference by name for many Scribble functions. `__scribble_config_colours()` should never be directly called in your code. If you'd like to modify colours at runtime, use [`scribble_color_set()`](colour-functions).
 
 ?> This function is called on boot to initialise the library, and you should edit this script to customise Scribble for your own purposes.
