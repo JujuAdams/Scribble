@@ -377,7 +377,7 @@ function __scribble_class_typist(_per_line) constructor
     
     
     
-    #region Sybc
+    #region Sync
     
     static sync_to_sound = function(_instance)
     {
