@@ -1246,7 +1246,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     static refresh = function()
     {
         var _model = __get_model(false);
-        if (_model != undefined) _model.__flush();
+        if (_model != undefined)
+        {
+            _model.__flush();
+            __get_model(true);
+        }
         
         return self;
     }
