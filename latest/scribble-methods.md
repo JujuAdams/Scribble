@@ -892,3 +892,17 @@ Controls the z coordinate to draw the text element at. This is largely irrelevan
 Replaces the string in an existing text element.
 
 !> This function may cause a recaching of the underlying text model so should be used sparingly. Do not be surprised if this method resets associated typists, invalidates text element state, or causes outright crashes.
+
+&nbsp;
+
+## `.pre_update_typist(typist)`
+
+**Returns**: The text element
+
+|Name     |Datatype|Purpose                                                                                                     |
+|---------|--------|------------------------------------------------------------------------------------------------------------|
+|`[typist]`|typist |Typist being used to render the text element. See [`scribble_typist()`](typist-methods) for more information|
+
+Updates a typist associated with the text element. You will typically not need to call this method, but it is occasionally useful for resolving order-of-execution issues.
+
+&nbsp;
