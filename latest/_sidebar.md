@@ -22,4 +22,6 @@
 -   [Animation Properties](animation-properties)
 -   [Fonts](fonts)
 -   [Superfont Functions](superfont-functions)
+-   [Colour Functions](colour-functions)
+-   [External Assets](external-assets)
 -   [Misc Functions](misc-functions)

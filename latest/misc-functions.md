@@ -284,18 +284,6 @@ Forces every Scribble text element to refresh their text model. This may be usef
 
 &nbsp;
 
-## `scribble_rgb_to_bgr(RGB)`
-
-**Returns:** GM-native BGR colour
-
-|Name |Datatype|Purpose                                        |
-|-----|--------|-----------------------------------------------|
-|`RGB`|integer |Industry standard (`#RRGGBB`) 24-bit RGB colour|
-
-Converts an RGB colour code (the industry standard) to GameMaker's native BGR format.
-
-&nbsp;
-
 ## `scribble_msdf_thickness_offset(offset)`
 
 **Returns:** N/A (`undefined`)
