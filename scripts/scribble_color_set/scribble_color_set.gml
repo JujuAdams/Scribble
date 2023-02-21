@@ -5,10 +5,10 @@
 /// 
 /// Setting a colour to <undefined> will delete the colour from Scribble
 /// 
-/// N.B. Changing colour formatting tags will trigger a refreshing of all text elements to keep
-///      colours up to date. This carries a performance penalty. As a result, you should not
-///      change colours frequently and this function should typically be used at the start of
-///      the game or on loading screens etc.
+/// N.B. Changing colours with this function will trigger a refreshing of all text elements to keep
+///      colours up to date. This carries a performance penalty. As a result, you should not change
+///      colours frequently, and this function should typically be used at the start of the game or
+///      on loading screens etc.
 /// 
 /// @param name
 /// @param colour

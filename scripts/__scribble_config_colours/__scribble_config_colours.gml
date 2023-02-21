@@ -1,7 +1,9 @@
 /// Creates a collection of colour names that map to 24-bit BGR colours
 /// Use scribble_rgb_to_bgr() to convert from industry standard RGB colour codes to GM's native BGR format
-///
-/// N.B. That this script is executed on boot. You never need to run this script yourself!
+/// 
+/// To add or change colours at runtime, use scribble_color_set()
+/// 
+/// N.B. That this function is executed on boot. You should never execute this function yourself!
 
 function __scribble_config_colours()
 {
