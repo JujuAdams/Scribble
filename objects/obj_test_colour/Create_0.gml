@@ -1,0 +1,1 @@
+scribble_color_set("banana", #FAE7B5);
