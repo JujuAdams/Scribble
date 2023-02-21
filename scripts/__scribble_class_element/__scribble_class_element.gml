@@ -1013,14 +1013,14 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return _model.__get_wrapped();
     }
     
-	/// @param [page]
+    /// @param [page]
     static get_text = function()
     {
-		var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
-		
+        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+        
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-		return _model.__get_text(_page);
+        return _model.__get_text(_page);
     }
     
     /// @param [page]
@@ -1059,6 +1059,22 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     
     #region Typewriter
+    
+    static pre_update_typist = function(_typist)
+    {
+        var _function_scope = other;
+        
+        if (is_struct(_typist))
+        {
+            with(_typist)
+            {
+                //Tick over the typist
+                __tick(other, _function_scope);
+            }
+        }
+        
+        return self;
+    }
     
     static reveal = function(_character)
     {

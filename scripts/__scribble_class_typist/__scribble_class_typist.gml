@@ -12,6 +12,7 @@ function __scribble_class_typist(_per_line) constructor
     __backwards  = false;
     
     __skip = false;
+    __skip_paused = false;
     __drawn_since_skip = false;
     
     __sound_array                   = undefined;
@@ -112,6 +113,16 @@ function __scribble_class_typist(_per_line) constructor
     static skip = function(_state = true)
     {
         __skip = _state;
+        __skip_paused = true;
+        __drawn_since_skip = false;
+        
+        return self;
+    }
+    
+    static skip_to_pause = function(_state = true)
+    {
+        __skip = _state;
+        __skip_paused = false;
         __drawn_since_skip = false;
         
         return self;
@@ -217,7 +228,7 @@ function __scribble_class_typist(_per_line) constructor
             __window_array[@ __window_index  ] = _head_pos;
             __window_array[@ __window_index+1] = _head_pos - __smoothness;
         }
-        
+        __skip = false;
         __paused = false;
         
         return self;
@@ -366,7 +377,7 @@ function __scribble_class_typist(_per_line) constructor
     
     
     
-    #region Sybc
+    #region Sync
     
     static sync_to_sound = function(_instance)
     {
@@ -459,7 +470,7 @@ function __scribble_class_typist(_per_line) constructor
             {
                 //Simple pause
                 case "pause":
-                    if (!__skip && !__sync_started)
+                    if (!__skip && !__sync_started) || (!__skip_paused)
                     {
                         if (SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK && (__last_character >= _character_count) && (array_length(__event_stack) <= 0))
                         {

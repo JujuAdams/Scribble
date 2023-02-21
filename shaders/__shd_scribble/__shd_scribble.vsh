@@ -302,22 +302,22 @@ vec2 bezierDerivative(float t, vec2 p1, vec2 p2, vec2 p3)
 
 float easeQuad(float time)
 {
-	return time*time;
+    return time*time;
 }
 
 float easeCubic(float time)
 {
-	return time*time*time;
+    return time*time*time;
 }
 
 float easeQuart(float time)
 {
-	return time*time*time*time;
+    return time*time*time*time;
 }
 
 float easeQuint(float time)
 {
-	return time*time*time*time*time;
+    return time*time*time*time*time;
 }
 
 float easeSine(float time)
@@ -339,7 +339,7 @@ float easeCirc(float time)
 float easeBack(float time)
 {
     float param = 1.70158;
-	return time*time*((param + 1.0)*time - param);
+    return time*time*((param + 1.0)*time - param);
 }
 
 float easeElastic(float time)
@@ -351,30 +351,30 @@ float easeElastic(float time)
 
 float easeBounce(float time)
 {
-	float n1 = 7.5625;
-	float d1 = 2.75;
+    float n1 = 7.5625;
+    float d1 = 2.75;
     
     time = 1.0 - time;
     
-	if (time < 1.0 / d1)
+    if (time < 1.0 / d1)
     {
-		return 1.0 - n1*time*time;
-	}
+        return 1.0 - n1*time*time;
+    }
     else if (time < 2.0 / d1)
     {
         time -= 1.5/d1;
-		return 1.0 - (n1*time*time + 0.75);
-	}
+        return 1.0 - (n1*time*time + 0.75);
+    }
     else if (time < 2.5 / d1)
     {
         time -= 2.25/d1;
-		return 1.0 - (n1*time*time + 0.9375);
-	}
+        return 1.0 - (n1*time*time + 0.9375);
+    }
     else
     {
         time -= 2.625/d1;
-		return 1.0 - (n1*time*time + 0.984375);
-	}
+        return 1.0 - (n1*time*time + 0.984375);
+    }
 }
 
 

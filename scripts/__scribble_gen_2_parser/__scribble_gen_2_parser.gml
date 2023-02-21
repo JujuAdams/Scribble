@@ -31,7 +31,7 @@
 
 
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  ;\//Pull info out of the font's data structures
-									  ;\//We floor this value to work around floating point issues on HTML5
+                                      ;\//We floor this value to work around floating point issues on HTML5
                                       var _data_index = _font_glyphs_map[? floor(_glyph_write)];\
                                       ;\//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined)\

@@ -127,6 +127,7 @@
     {"id":{"name":"obj_test_sdf_border_thickness","path":"objects/obj_test_sdf_border_thickness/obj_test_sdf_border_thickness.yy",},"order":0,},
     {"id":{"name":"obj_test_msdf_border_thickness_arabic","path":"objects/obj_test_msdf_border_thickness_arabic/obj_test_msdf_border_thickness_arabic.yy",},"order":4,},
     {"id":{"name":"obj_test_sdf_comparison","path":"objects/obj_test_sdf_comparison/obj_test_sdf_comparison.yy",},"order":0,},
+    {"id":{"name":"obj_test_typewriter_skip_to_pause","path":"objects/obj_test_typewriter_skip_to_pause/obj_test_typewriter_skip_to_pause.yy",},"order":25,},
     {"id":{"name":"obj_test_browser","path":"objects/obj_test_browser/obj_test_browser.yy",},"order":1,},
     {"id":{"name":"obj_font_add_scribble_debug","path":"objects/obj_font_add_scribble_debug/obj_font_add_scribble_debug.yy",},"order":0,},
     {"id":{"name":"obj_test_sdf_drop_shadow","path":"objects/obj_test_sdf_drop_shadow/obj_test_sdf_drop_shadow.yy",},"order":0,},
