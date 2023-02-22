@@ -382,7 +382,9 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Global Static Getters","folderPath":"folders/Scribble/(System - don't call these functions)/Global Static Getters.yy","order":8,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Shaders","folderPath":"folders/Scribble/(System - don't call these functions)/Shaders.yy","order":12,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Animation","folderPath":"folders/Scribble/Animation.yy","order":6,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Colours","folderPath":"folders/Scribble/Colours.yy","order":7,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Configuration - Please edit these!","folderPath":"folders/Scribble/Configuration - Please edit these!.yy","order":2,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"External Assets","folderPath":"folders/Scribble/External Assets.yy","order":8,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Fonts","folderPath":"folders/Scribble/Fonts.yy","order":4,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Miscellaneous","folderPath":"folders/Scribble/Miscellaneous.yy","order":9,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Quick Functions","folderPath":"folders/Scribble/Quick Functions.yy","order":3,},
@@ -411,8 +413,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Typewriter","folderPath":"folders/Test Cases/Typewriter.yy","order":11,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Legacy","folderPath":"folders/Test Cases/Typewriter/Legacy.yy","order":0,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Wrapping","folderPath":"folders/Test Cases/Wrapping.yy","order":4,},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Colours","folderPath":"folders/Scribble/Colours.yy","order":7,},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"External Assets","folderPath":"folders/Scribble/External Assets.yy","order":8,},
   ],
   "AudioGroups": [
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},
