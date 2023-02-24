@@ -127,7 +127,7 @@ function __scribble_class_page() constructor
     {
         if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Cannot get glyph data, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to <true> to get glyph data");
         
-        if (_index < 1)
+        if (_index < 0)
         {
             return {
                 unicode: 0,
@@ -137,25 +137,16 @@ function __scribble_class_page() constructor
                 bottom:  __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__TOP ],
             };
         }
-        else if (_index <= __glyph_count)
+        else
         {
+            _index = min(_index, __glyph_count-1);
+            
             return {
                 unicode: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE],
                 left:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__LEFT   ],
                 top:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__TOP    ],
                 right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT  ],
                 bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM ],
-            };
-        }
-        else
-        {
-            _index = __glyph_count-1;
-            return {
-                unicode: 0,
-                left:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT ],
-                top:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM],
-                right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT ],
-                bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM],
             };
         }
     }
