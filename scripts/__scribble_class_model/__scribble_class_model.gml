@@ -1,6 +1,7 @@
+// Feather ignore all
+
 /// @param element
 /// @param modelCacheName
-
 function __scribble_class_model(_element, _model_cache_name) constructor
 {
     static __scribble_state    = __scribble_get_state();
@@ -242,7 +243,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
-        return __pages_array[_page].__get_glyph_data(_index);
+        return (__get_page(_page) ).__get_glyph_data(_index);
     }
     
     static __get_wrapped = function()
@@ -281,13 +282,19 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     static __new_page = function()
     {
-        var _page_data = new __scribble_class_page();
+        var _page_data = (new __scribble_class_page() );
         array_push(__pages_array, _page_data);
         __pages++;
         
         return _page_data;
     }
     
+    /// @return {struct.__scribble_class_page}
+    static __get_page = function(_page)
+    {
+        return __pages_array[_page];
+    }
+
     static __finalize_vertex_buffers = function(_freeze)
     {
         var _i = 0;
