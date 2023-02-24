@@ -778,6 +778,7 @@ function __scribble_class_typist(_per_line) constructor
                         &&  ((__last_character < _page_character_count-1) || (_found_size > 0)))
                         {
                             var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
+                            
                             var _delay = __character_delay_dict[$ _glyph_ord];
                             _delay = (_delay == undefined)? 0 : _delay;
                             
@@ -790,11 +791,7 @@ function __scribble_class_typist(_per_line) constructor
                                 _delay = max(_delay, _double_char_delay);
                             }
                             
-                            if (_delay > 0)
-                            {
-                                array_insert(_found_events, 0, new __scribble_class_event("delay", [_delay]));
-                                ++_found_size;
-                            }
+                            if (_delay > 0) array_push(__event_stack, new __scribble_class_event("delay", [_delay]));
                         }
                         
                         //Move to the next character
@@ -807,14 +804,14 @@ function __scribble_class_typist(_per_line) constructor
                             var _old_stack_size = array_length(__event_stack);
                             array_resize(__event_stack, _old_stack_size + _found_size);
                             array_copy(__event_stack, _old_stack_size, _found_events, 0, _found_size);
-                            
-                            //Process the stack
-                            //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
-                            if (!__process_event_stack(_page_character_count, _target_element, _function_scope))
-                            {
-                                _head_pos = __last_character - 1; //Lock our head position so we don't overstep
-                                break;
-                            }
+                        }
+                        
+                        //Process the stack
+                        //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
+                        if (!__process_event_stack(_page_character_count, _target_element, _function_scope))
+                        {
+                            _head_pos = __last_character-1; //Lock our head position so we don't overstep
+                            break;
                         }
                     }
                 }

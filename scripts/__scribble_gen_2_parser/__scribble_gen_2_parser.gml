@@ -811,6 +811,7 @@ function __scribble_gen_2_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _surface_h;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = _surface_w;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
                         
                         //TODO - Add a way to force a regeneration of every text element that contains a given surface
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__TEXTURE      ] = surface_get_texture(_surface);
@@ -820,6 +821,7 @@ function __scribble_gen_2_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V1      ] = 1;
                         
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE  ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
                         
                         ++_glyph_count;
@@ -1034,8 +1036,10 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _sprite_h;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = _sprite_w;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
-                        
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
+                            
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE  ] = undefined;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
                             
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SPRITE_INDEX ] = _sprite_index;
