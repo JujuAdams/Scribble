@@ -100,7 +100,7 @@ Scales every glyph in a font (including the space character) by the given factor
 
 Fonts can often be tricky to render correctly, and this script allows you to change certain properties. Properties can be adjusted at any time, but existing and cached Scribble text elements will not be updated to match new properties.
 
-Three properties are available:
+The following properties are available for modification:
 
 |Macro                      | Property                                   |
 |---------------------------|--------------------------------------------|
