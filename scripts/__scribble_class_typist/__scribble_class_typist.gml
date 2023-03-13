@@ -775,7 +775,7 @@ function __scribble_class_typist(_per_line) constructor
                         &&  !__ignore_delay
                         &&  __character_delay
                         &&  (__last_character >= 1) //Don't check character delay until we're on the first character (index=1)
-                        &&  ((__last_character < _page_character_count-1) || (_found_size > 0)))
+                        &&  ((__last_character < (SCRIBBLE_DELAY_LAST_CHARACTER? _page_character_count : (_page_character_count-1))) || (_found_size > 0)))
                         {
                             var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
                             
