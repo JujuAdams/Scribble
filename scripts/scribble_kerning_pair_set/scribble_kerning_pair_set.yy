@@ -2,10 +2,10 @@
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
   "name": "scribble_kerning_pair_set",
-  "isDnD": false,
   "isCompatibility": false,
+  "isDnD": false,
   "parent": {
-    "name": "Fonts",
-    "path": "folders/Scribble/Fonts.yy",
+    "name": "Glyph Adjustment",
+    "path": "folders/Scribble/Glyph Adjustment.yy",
   },
 }
