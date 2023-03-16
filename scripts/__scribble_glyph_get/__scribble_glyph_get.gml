@@ -9,7 +9,7 @@
 /// SCRIBBLE_GLYPH.SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
 ///                            left edge of the next glyph. This can be a negative value!
 
-function scribble_glyph_get(_font, _character, _property)
+function __scribble_glyph_get(_font, _character, _property)
 {
     var _font_data = __scribble_get_font_data(_font);
 
