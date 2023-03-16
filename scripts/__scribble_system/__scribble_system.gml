@@ -550,6 +550,13 @@ enum __SCRIBBLE_ANIM
     __SIZE,             //21
 }
 
+enum __SCRIBBLE_COMMAND_TAG
+{
+    ENABLE, //0  Full operation
+    HIDE,   //1  Command tags do nothing but are hidden
+    IGNORE, //2  Command tags do nothing and are shown in plaintext
+}
+
 #endregion
 
 
