@@ -19,6 +19,7 @@ function __scribble_class_typist(_per_line) constructor
     __sound_overlap                 = 0;
     __sound_pitch_min               = 1;
     __sound_pitch_max               = 1;
+    __sound_gain                    = 1;
     __sound_per_char                = false;
     __sound_finish_time             = current_time;
     __sound_per_char_exception      = false;
@@ -139,7 +140,8 @@ function __scribble_class_typist(_per_line) constructor
     /// @param overlap
     /// @param pitchMin
     /// @param pitchMax
-    static sound = function(_in_sound_array, _overlap, _pitch_min, _pitch_max)
+    /// @param [gain=1]
+    static sound = function(_in_sound_array, _overlap, _pitch_min, _pitch_max, _gain = 1)
     {
         var _sound_array = _in_sound_array;
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
@@ -148,6 +150,7 @@ function __scribble_class_typist(_per_line) constructor
         __sound_overlap   = _overlap;
         __sound_pitch_min = _pitch_min;
         __sound_pitch_max = _pitch_max;
+        __sound_gain      = _gain;
         __sound_per_char  = false;
         
         return self;
@@ -157,7 +160,8 @@ function __scribble_class_typist(_per_line) constructor
     /// @param pitchMin
     /// @param pitchMax
     /// @param [exceptionString]
-    static sound_per_char = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string)
+    /// @param [gain=1]
+    static sound_per_char = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string, _gain = 1)
     {
         var _sound_array = _in_sound_array;
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
@@ -165,6 +169,7 @@ function __scribble_class_typist(_per_line) constructor
         __sound_array     = _sound_array;
         __sound_pitch_min = _pitch_min;
         __sound_pitch_max = _pitch_max;
+        __sound_gain      = _gain;
         __sound_per_char  = true;
         
         if (is_string(_exception_string))
@@ -602,6 +607,7 @@ function __scribble_class_typist(_per_line) constructor
                 {
                     var _inst = audio_play_sound(_audio_asset, 0, false);
                     audio_sound_pitch(_inst, lerp(__sound_pitch_min, __sound_pitch_max, __scribble_random()));
+                    audio_sound_gain(_inst, __sound_gain, 0);
                     __sound_finish_time = current_time + 1000*audio_sound_length(_inst) - __sound_overlap;
                 }
             }
@@ -775,7 +781,7 @@ function __scribble_class_typist(_per_line) constructor
                         &&  !__ignore_delay
                         &&  __character_delay
                         &&  (__last_character >= 1) //Don't check character delay until we're on the first character (index=1)
-                        &&  ((__last_character < _page_character_count-1) || (_found_size > 0)))
+                        &&  ((__last_character < (SCRIBBLE_DELAY_LAST_CHARACTER? _page_character_count : (_page_character_count-1))) || (_found_size > 0)))
                         {
                             var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
                             

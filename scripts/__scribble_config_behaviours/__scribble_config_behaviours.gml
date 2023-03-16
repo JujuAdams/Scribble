@@ -19,6 +19,7 @@
 #macro SCRIBBLE_AUTOFIT_INLINE_SURFACES       false  //Whether to automatically scale surfaces to fit into the line of text. This is based on the font height of the current font
 #macro SCRIBBLE_USE_KERNING                   true
 #macro SCRIBBLE_SPRITE_BILINEAR_FILTERING     undefined
+#macro SCRIBBLE_DELAY_LAST_CHARACTER          false
 
 
 
