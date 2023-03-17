@@ -171,6 +171,10 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
         draw_set_halign(fa_left);
         draw_set_valign(fa_top );
         
+        //Grab the glyph width/height before we reset the font
+        var _w = string_width( _character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
+        var _h = string_height(_character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
+        
         shader_set(__shd_scribble_passthrough);
         gpu_set_blendmode_ext(bm_one, bm_zero);
         gpu_set_colorwriteenable(false, false, false, true);
@@ -193,9 +197,6 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
         shader_reset();
         gpu_set_blendmode(bm_normal);
         gpu_set_colorwriteenable(true, true, true, true);
-        
-        var _w = string_width( _character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
-        var _h = string_height(_character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
         
         var _u0 = _x/SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
         var _v0 = _y/SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
