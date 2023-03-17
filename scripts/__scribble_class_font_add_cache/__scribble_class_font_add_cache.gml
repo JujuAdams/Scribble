@@ -43,8 +43,11 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
         var _glyph = _info_glyphs_array[_i];
         var _glyph_data = _info_glyphs_dict[$ _glyph];
         
-         __shift_dict[$ _glyph] = _glyph_data.shift;
-        __offset_dict[$ _glyph] = _glyph_data.offset;
+        if (_glyph_data != undefined)
+        {
+             __shift_dict[$ _glyph] = _glyph_data.shift;
+            __offset_dict[$ _glyph] = _glyph_data.offset;
+        }
         
         ++_i;
     }
