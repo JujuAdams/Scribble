@@ -72,7 +72,7 @@ function __scribble_glyph_set(_font, _glyph_range, _property, _value, _relative 
             var _glyph_index = _map[? _unicode];
             if (_glyph_index == undefined)
             {
-                __scribble_trace("Warning! Glyph ", _unicode, " not found for font \"", _font, "\"");
+                __scribble_trace("Warning! Glyph ", __scribble_unicode_u(_unicode), " (", _unicode, ") not found for font \"", _font, "\"");
             }
             else
             {
