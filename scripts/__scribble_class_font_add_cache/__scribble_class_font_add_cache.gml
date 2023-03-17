@@ -1,18 +1,15 @@
 /// @param fontAsset
 /// @param fontName
-/// @param minGlyph
-/// @param maxGlyph
+/// @param glyphArray
 /// @param spread
 
-function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_glyph, _spread) constructor
+function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _spread) constructor
 {
     var _font_add_cache_array = __scribble_get_state().__font_add_cache_array;
     array_push(_font_add_cache_array, weak_ref_create(self));
     
     __font      = _font;
     __font_name = _font_name;
-    __min_glyph = _min_glyph;
-    __max_glyph = _max_glyph;
     
     __in_use      = true;
     __surface     = undefined;
@@ -52,9 +49,11 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
     }
     
     //Determine the grid we'll use to store glyphs
-    var _unicode = _min_glyph;
-    repeat(1 + _max_glyph - _min_glyph)
+    var _i = 0;
+    repeat(array_length(_glyph_array))
     {
+        var _unicode = _glyph_array[_i];
+        
         var _glyph_dict = _info_glyphs_dict[$ chr(_unicode)];
         if (_glyph_dict != undefined)
         {
@@ -62,7 +61,7 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
             _cell_height = max(_cell_height, _glyph_dict.h);
         }
         
-        ++_unicode;
+        ++_i
     }
     
     __cell_width  = 2*(_spread + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN) + _cell_width;

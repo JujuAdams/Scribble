@@ -1,14 +1,13 @@
 /// @param name
 /// @param filename
 /// @param size
-/// @param startChar
-/// @param endChar
+/// @param glyphRange
 /// @param SDF
 /// @param [spread]
 /// @param [bold=false]
 /// @param [italic=false]
 
-function scribble_font_add(_name, _filename, _point_size, _startChar, _endChar, _sdf, _spread = undefined, _bold = false, _italic = false)
+function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _spread = undefined, _bold = false, _italic = false)
 {
     static _font_original_name_dict = __scribble_get_state().__font_original_name_dict;
     
@@ -18,14 +17,16 @@ function scribble_font_add(_name, _filename, _point_size, _startChar, _endChar, 
     {
         __scribble_trace("Adding \"", _filename, "\" as \"", _name, "\"");
         __scribble_trace("|-- size = ", _point_size);
-        __scribble_trace("|-- characters = ", _startChar, " -> ", _endChar);
+        __scribble_trace("|-- range = ", _glyph_range);
         __scribble_trace("|-- SDF = ", _sdf);
         __scribble_trace("|-- spread = ", _spread);
         __scribble_trace("|-- bold = ", _bold);
         __scribble_trace("\\-- italic = ", _italic);
     }
     
-    var _asset = font_add(_filename, _point_size, _bold, _italic, _startChar, _endChar);
+    var _glyph_array = __scribble_parse_glyph_range_root(_glyph_range, undefined, true);
+    
+    var _asset = font_add(_filename, _point_size, _bold, _italic, _glyph_array[0], _glyph_array[array_length(_glyph_array)-1]);
     if (!font_exists(_asset)) __scribble_error("Failed to load \"", _filename, "\"");
     font_enable_sdf(_asset, _sdf);
     if (_sdf && (_spread != undefined)) font_sdf_spread(_asset, _spread);
@@ -45,7 +46,7 @@ function scribble_font_add(_name, _filename, _point_size, _startChar, _endChar, 
     try
     {
         //Create a glyph cache
-        var _font_cache = new __scribble_class_font_add_cache(_asset, _name, _startChar, _endChar, _sdf? font_get_sdf_spread(_asset) : 0);
+        var _font_cache = new __scribble_class_font_add_cache(_asset, _name, _glyph_array, _sdf? font_get_sdf_spread(_asset) : 0);
         
         //Find out how many glyphs we can store at once
         var _size = _font_cache.__get_max_glyph_count();
@@ -96,7 +97,7 @@ function scribble_font_add(_name, _filename, _point_size, _startChar, _endChar, 
         _font_data.__calculate_font_height();
         
         //Prefetch as much of our initial range as possible
-        if (SCRIBBLE_FETCH_RANGE_ON_ADD) scribble_font_fetch(_name, [_startChar, _endChar]);
+        if (SCRIBBLE_FETCH_RANGE_ON_ADD) scribble_font_fetch(_name, _glyph_array);
     }
     catch(_error)
     {
