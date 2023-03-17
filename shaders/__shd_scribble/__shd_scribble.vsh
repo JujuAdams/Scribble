@@ -2,6 +2,7 @@
 precision highp float;
 
 #define BLEND_SPRITES true
+#define ANIM_INDEX  in_Normal.x
 
 const int MAX_EFFECTS = 11;
 #define SPRITE_FLAG   flagArray[ 0]
@@ -136,15 +137,15 @@ vec2 scale(vec2 position, vec2 centre, vec2 scale)
 }
 
 //Oscillate the character
-vec2 wave(vec2 position, float characterIndex)
+vec2 wave(vec2 position, float animIndex)
 {
-    return vec2(position.x, position.y + WAVE_FLAG*WAVE_AMPLITUDE*sin(WAVE_FREQUENCY*characterIndex + WAVE_SPEED*u_fTime));
+    return vec2(position.x, position.y + WAVE_FLAG*WAVE_AMPLITUDE*sin(WAVE_FREQUENCY*animIndex + WAVE_SPEED*u_fTime));
 }
 
 //Wheel the character around
-vec2 wheel(vec2 position, float characterIndex)
+vec2 wheel(vec2 position, float animIndex)
 {
-    float time = WHEEL_FREQUENCY*characterIndex + WHEEL_SPEED*u_fTime;
+    float time = WHEEL_FREQUENCY*animIndex + WHEEL_SPEED*u_fTime;
     return position.xy + WHEEL_FLAG*WHEEL_AMPLITUDE*vec2(cos(time), -sin(time));
 }
 
@@ -155,35 +156,35 @@ vec2 wobble(vec2 position, vec2 centre)
 }
 
 //Pulse the character by scaling it up and down
-vec2 pulse(vec2 position, vec2 centre, float characterIndex)
+vec2 pulse(vec2 position, vec2 centre, float animIndex)
 {
-    float adjustedScale = 1.0 +  PULSE_FLAG*PULSE_SCALE*(0.5 + 0.5*sin(PULSE_SPEED*(250.0*characterIndex + u_fTime)));
+    float adjustedScale = 1.0 +  PULSE_FLAG*PULSE_SCALE*(0.5 + 0.5*sin(PULSE_SPEED*(250.0*animIndex + u_fTime)));
     return scale(position, centre, adjustedScale);
 }
 
 //Shake the character along the x/y axes
 //We use integer time steps so that at low speeds characters don't jump around too much
 //Lots of magic numbers in here to try to get a nice-looking shake
-vec2 shake(vec2 position, float characterIndex)
+vec2 shake(vec2 position, float animIndex)
 {
     float time = SHAKE_SPEED*u_fTime + 0.5;
     float floorTime = floor(time);
     float merge = 1.0 - abs(2.0*(time - floorTime) - 1.0);
     
     //Use some misc prime numbers to try to get a varied-looking shake
-    vec2 delta = vec2(rand(vec2(characterIndex/149.0 + floorTime/13.0, characterIndex/727.0 - floorTime/331.0)),
-                      rand(vec2(characterIndex/501.0 - floorTime/19.0, characterIndex/701.0 + floorTime/317.0)));
+    vec2 delta = vec2(rand(vec2(animIndex/149.0 + floorTime/13.0, animIndex/727.0 - floorTime/331.0)),
+                      rand(vec2(animIndex/501.0 - floorTime/19.0, animIndex/701.0 + floorTime/317.0)));
     
     return position + SHAKE_FLAG*SHAKE_AMPLITUDE*merge*(2.0*delta - 1.0);
 }
 
 //Jitter the character scale, using a similar method to above
-vec2 jitter(vec2 position, vec2 centre, float characterIndex)
+vec2 jitter(vec2 position, vec2 centre, float animIndex)
 {
     float floorTime = floor(JITTER_SPEED*u_fTime + 0.5);
     
     //Use some misc prime numbers to try to get a varied-looking jitter
-    float delta = rand(vec2(characterIndex/149.0 + floorTime/13.0, characterIndex/727.0 - floorTime/331.0));
+    float delta = rand(vec2(animIndex/149.0 + floorTime/13.0, animIndex/727.0 - floorTime/331.0));
     
     return scale(position, centre, mix(JITTER_MINIMUM, JITTER_MAXIMUM, delta));
 }
@@ -207,13 +208,13 @@ vec3 hsv2rgb(vec3 c)
 }
 
 //Colour cycling for the rainbow effect
-vec4 rainbow(float characterIndex, vec4 colour)
+vec4 rainbow(float animIndex, vec4 colour)
 {
-    return vec4(mix(colour.rgb, hsv2rgb(vec3(0.02*characterIndex + RAINBOW_SPEED*u_fTime, 1.0, 1.0)), RAINBOW_FLAG*RAINBOW_WEIGHT), colour.a);
+    return vec4(mix(colour.rgb, hsv2rgb(vec3(0.02*animIndex + RAINBOW_SPEED*u_fTime, 1.0, 1.0)), RAINBOW_FLAG*RAINBOW_WEIGHT), colour.a);
 }
                            
 //Colour cycling through a defined palette
-vec4 cycle(float characterIndex, vec4 colour)
+vec4 cycle(float animIndex, vec4 colour)
 {
     float max_h = 4.0; //Default to a 4-colour cycle
     
@@ -223,7 +224,7 @@ vec4 cycle(float characterIndex, vec4 colour)
     if (colour.a < 0.003) max_h = 3.0; //3-colour cycle
     if (colour.b < 0.003) max_h = 2.0; //2-colour cycle
     
-    float h = abs(mod((CYCLE_SPEED*u_fTime - characterIndex)/10.0, max_h));
+    float h = abs(mod((CYCLE_SPEED*u_fTime - animIndex)/10.0, max_h));
     
     //vec3 rgbA = hsv2rgb(vec3(colour[int(h)], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
     //vec3 rgbB = hsv2rgb(vec3(colour[int(mod(h + 1.0, max_h))], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
@@ -442,8 +443,8 @@ void main()
     //Colour
     v_vColour = in_Colour;
     
-    if (CYCLE_FLAG > 0.5) v_vColour = cycle(characterIndex, v_vColour); //Cycle colours through the defined palette
-    v_vColour = rainbow(characterIndex, v_vColour); //Cycle colours for the rainbow effect
+    if (CYCLE_FLAG > 0.5) v_vColour = cycle(ANIM_INDEX, v_vColour); //Cycle colours through the defined palette
+    v_vColour = rainbow(ANIM_INDEX, v_vColour); //Cycle colours for the rainbow effect
     
     //Apply the gradient effect
     if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
@@ -469,8 +470,8 @@ void main()
     
     //Vertex animation
     pos.xy = wobble(pos, centre);
-    pos.xy = pulse( pos, centre, characterIndex);
-    if (JITTER_FLAG > 0.5) pos.xy = jitter(pos, centre, characterIndex); //Apply the jitter effect
+    pos.xy = pulse( pos, centre, ANIM_INDEX);
+    if (JITTER_FLAG > 0.5) pos.xy = jitter(pos, centre, ANIM_INDEX); //Apply the jitter effect
     
     
     
@@ -516,9 +517,9 @@ void main()
     
     
     //Vertex
-    pos.xy = wave( pos, characterIndex); //Apply the wave effect
-    pos.xy = wheel(pos, characterIndex); //Apply the wheel effect
-    pos.xy = shake(pos, characterIndex); //Apply the shake effect
+    pos.xy = wave( pos, ANIM_INDEX); //Apply the wave effect
+    pos.xy = wheel(pos, ANIM_INDEX); //Apply the wheel effect
+    pos.xy = shake(pos, ANIM_INDEX); //Apply the shake effect
     
     
     
