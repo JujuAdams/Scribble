@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Fonts",
-    "path": "folders/Scribble/Fonts.yy",
+    "name": "External Assets",
+    "path": "folders/Scribble/External Assets.yy",
   },
 }
