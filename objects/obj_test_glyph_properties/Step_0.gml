@@ -15,6 +15,6 @@ if (keyboard_check_pressed(vk_anykey))
     if (keyboard_check_pressed(ord("9"))) _range = [["a", "c"], ["e", "g"], ["i", "l"]];
     if (keyboard_check_pressed(ord("0"))) _range = "";
     
-    scribble_glyph_set("target_font", _range, SCRIBBLE_GLYPH.Y_OFFSET, 5, true);
+    scribble_glyph_y_offset_set("target_font", _range, 5, true);
     scribble_refresh_everything();
 }
