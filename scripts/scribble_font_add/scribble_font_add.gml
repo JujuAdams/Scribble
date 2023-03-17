@@ -81,14 +81,14 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
         
         //Pre-emptively fill in data grid so we have to do less work later
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__CHARACTER,   _size-1, __SCRIBBLE_GLYPH.__CHARACTER,   ""                         );
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__TEXTURE,     _size-1, __SCRIBBLE_GLYPH.__TEXTURE,     _font_cache.__get_texture());
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__FONT_SCALE,  _size-1, __SCRIBBLE_GLYPH.__FONT_SCALE,  1                          );
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__BILINEAR,    _size-1, __SCRIBBLE_GLYPH.__BILINEAR,    __SCRIBBLE_BIDI.SYMBOL     );
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__CHARACTER,  _size-1, __SCRIBBLE_GLYPH.__CHARACTER,  ""                         );
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__TEXTURE,    _size-1, __SCRIBBLE_GLYPH.__TEXTURE,    _font_cache.__get_texture());
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__FONT_SCALE, _size-1, __SCRIBBLE_GLYPH.__FONT_SCALE, 1                          );
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__BIDI,       _size-1, __SCRIBBLE_GLYPH.__BIDI,       __SCRIBBLE_BIDI.SYMBOL     );
         
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__SDF_PXRANGE,           _size-1, __SCRIBBLE_GLYPH.__SDF_PXRANGE,           font_get_sdf_enabled(_asset)? __SCRIBBLE_NATIVE_SDF_PXRANGE : undefined);
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET,  _size-1, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET,  font_get_sdf_enabled(_asset)? 0                             : undefined);
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__BILINEAR ,             _size-1, __SCRIBBLE_GLYPH.__BILINEAR,              font_get_sdf_enabled(_asset)? true                          : undefined);
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__SDF_PXRANGE,          _size-1, __SCRIBBLE_GLYPH.__SDF_PXRANGE,          _sdf? 2*_spread : undefined);
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET, _size-1, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET, _sdf? 0         : undefined);
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__BILINEAR,             _size-1, __SCRIBBLE_GLYPH.__BILINEAR,             _sdf? true      : undefined);
         
         //Clear the glyph map. This function also sets up the space character in index 0 which is necessary for other bits of Scribble to work
         _font_cache.__clear_glyph_map();
