@@ -99,8 +99,12 @@ function scribble_font_add(_name, _filename, _point_size, _startChar, _endChar, 
         
         //Clear the glyph map. This function also sets up the space character in index 0 which is necessary for other bits of Scribble to work
         _font_cache.__clear_glyph_map();
+        _font_cache.__invalidate();
         
         _font_data.__calculate_font_height();
+        
+        //Prefetch as much of our initial range as possible
+        scribble_font_fetch(_name, [_startChar, _endChar]);
     }
     catch(_error)
     {
