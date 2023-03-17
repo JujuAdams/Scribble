@@ -183,7 +183,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
         __scribble_trace("Warning! Space character not found in character set for SDF font \"", _name, "\"");
         
         var _i = _size;
-        ds_grid_resize(_font_glyph_data_grid, _i+1, __SCRIBBLE_GLYPH.____SIZE);
+        ds_grid_resize(_font_glyph_data_grid, _i+1, __SCRIBBLE_GLYPH.__SIZE);
         _font_glyphs_map[? 32] = _i;
         
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__CHARACTER           ] = " ";

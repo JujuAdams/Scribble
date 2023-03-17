@@ -86,7 +86,7 @@ function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _tar
         //Create a new column in the grid to store this glyph's data
         var _target_x = ds_grid_width(_target_grid);
         _target_map[? _glyph] = _target_x;
-        ds_grid_resize(_target_grid, _target_x+1, __SCRIBBLE_GLYPH.____SIZE);
+        ds_grid_resize(_target_grid, _target_x+1, __SCRIBBLE_GLYPH.__SIZE);
     }
     else
     {
@@ -100,5 +100,5 @@ function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _tar
     }
     
     //Do the actual copying
-    ds_grid_set_grid_region(_target_grid, _source_grid, _source_x, 0, _source_x, __SCRIBBLE_GLYPH.____SIZE, _target_x, 0);
+    ds_grid_set_grid_region(_target_grid, _source_grid, _source_x, 0, _source_x, __SCRIBBLE_GLYPH.__SIZE, _target_x, 0);
 }
