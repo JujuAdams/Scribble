@@ -10,8 +10,10 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
     
     var _spread = font_get_sdf_spread(_font);
     
-    __in_use  = true;
-    __surface = undefined;
+    __in_use      = true;
+    __surface     = undefined;
+    __shift_dict  = {};
+    __offset_dict = {};
     
     __min_glyph = 0;
     __max_glyph = 0;
@@ -21,8 +23,6 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
     __cell_width  = SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
     __cell_height = SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
     __cell_count  = 1;
-    
-    __map = undefined;
     
     __next_index = 0;
     
@@ -45,6 +45,21 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
     var _font_info = font_get_info(__font);
     var _info_glyphs_dict = _font_info.glyphs;
     
+    //Cache the shift and offset values for faster access later
+    var _info_glyphs_array = variable_struct_get_names(_info_glyphs_dict);
+    var _i = 0;
+    repeat(array_length(_info_glyphs_array))
+    {
+        var _glyph = _info_glyphs_array[_i];
+        var _glyph_data = _info_glyphs_dict[$ _glyph];
+        
+         __shift_dict[$ _glyph] = _glyph_data.shift;
+        __offset_dict[$ _glyph] = _glyph_data.offset;
+        
+        ++_i;
+    }
+    
+    //Determine the grid we'll use to store glyphs
     var _unicode = _min_glyph;
     repeat(1 + _max_glyph - _min_glyph)
     {
@@ -70,7 +85,6 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
     __scribble_trace("|-- grid = ", __cells_x, " x ", __cells_y);
     __scribble_trace("\\-- max glyphs = ", __cell_count);
     
-    __map = ds_map_create();
     __next_index = 0;
     
     __tick();
@@ -116,11 +130,10 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
     {
         var _character = chr(_unicode);
         
-        var _font_info = font_get_info(__font);
-        var _info_glyphs_dict = _font_info.glyphs;
-        var _glyph_dict = _info_glyphs_dict[$ _character];
+        var _shift  =  __shift_dict[$ _character];
+        var _offset = __offset_dict[$ _character];
         
-        if (_glyph_dict == undefined)
+        if ((_shift == undefined) || (_offset == undefined))
         {
             __scribble_trace("Warning! ", __scribble_unicode_u(_unicode), " (", _unicode, ") not supported by font \"", __font_name, "\"");
             return;
@@ -202,8 +215,8 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.WIDTH               ] = _w;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.HEIGHT              ] = _h;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.FONT_HEIGHT         ] = _h;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.SEPARATION          ] = _glyph_dict.shift;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.LEFT_OFFSET         ] = -_glyph_dict.offset;
+        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.SEPARATION          ] = _shift;
+        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.LEFT_OFFSET         ] = -_offset;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.FONT_SCALE          ] = 1;
         
         //Set on create (or reset when regenerating the surface)
