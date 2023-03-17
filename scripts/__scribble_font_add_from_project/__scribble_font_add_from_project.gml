@@ -114,29 +114,29 @@ function __scribble_font_add_from_project(_font)
             var _u1 = _u0 + _w*_texture_tw;
             var _v1 = _v0 + _h*_texture_th;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.CHARACTER           ] = _char;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__CHARACTER           ] = _char;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.UNICODE             ] = _unicode;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI                ] = _bidi;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__UNICODE             ] = _unicode;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BIDI                ] = _bidi;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET            ] = _glyph_dict.offset;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET            ] = 0;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH               ] = _w;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT              ] = _h;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT         ] = _h;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION          ] = _glyph_dict.shift;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.LEFT_OFFSET         ] = -_glyph_dict.offset;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE          ] = 1;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__X_OFFSET            ] = _glyph_dict.offset;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__Y_OFFSET            ] = 0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__WIDTH               ] = _w;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__HEIGHT              ] = _h;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_HEIGHT         ] = _h;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION          ] = _glyph_dict.shift;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET         ] = -_glyph_dict.offset;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_SCALE          ] = 1;
                                                          
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE             ] = _texture;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0                  ] = _u0;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U1                  ] = _u1;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V0                  ] = _v0;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1                  ] = _v1;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__TEXTURE             ] = _texture;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0                  ] = _u0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1                  ] = _u1;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0                  ] = _v0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V1                  ] = _v1;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SDF_PXRANGE         ] = undefined;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SDF_THICKNESS_OFFSET] = undefined;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BILINEAR            ] = undefined;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
             
             _font_glyphs_map[? _unicode] = _i;
             
@@ -146,10 +146,10 @@ function __scribble_font_add_from_project(_font)
         _font_data.__calculate_font_height();
         
         //Check to see if this texture has been resized during compile
-        var _GM_scaling = _font_info.size / _font_glyph_data_grid[# _font_glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT];
+        var _GM_scaling = _font_info.size / _font_glyph_data_grid[# _font_glyphs_map[? 32], __SCRIBBLE_GLYPH.__HEIGHT];
         if (_GM_scaling > 1)
         {
-            __scribble_trace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyph_data_grid[# _font_glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT], ", scaling factor = ", _GM_scaling, "). Check that the font is rendering correctly. If it is not, try setting SCRIBBLE_ATTEMPT_FONT_SCALING_FIX to <false>");
+            __scribble_trace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyph_data_grid[# _font_glyphs_map[? 32], __SCRIBBLE_GLYPH.__HEIGHT], ", scaling factor = ", _GM_scaling, "). Check that the font is rendering correctly. If it is not, try setting SCRIBBLE_ATTEMPT_FONT_SCALING_FIX to <false>");
             if (SCRIBBLE_ATTEMPT_FONT_SCALING_FIX) scribble_font_scale(_name, ceil(_GM_scaling));
         }
     }

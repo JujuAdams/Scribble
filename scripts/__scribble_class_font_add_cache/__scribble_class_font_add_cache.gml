@@ -200,32 +200,32 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
             __SCRIBBLE_KRUTIDEV_HACK
         }
         
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.CHARACTER  ] = _character;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__CHARACTER  ] = _character;
         
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.UNICODE    ] = _unicode;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.BIDI       ] = _bidi;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__UNICODE    ] = _unicode;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__BIDI       ] = _bidi;
         
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.X_OFFSET   ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN + _offset;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.Y_OFFSET   ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.WIDTH      ] = _w;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.HEIGHT     ] = _h;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.FONT_HEIGHT] = _h;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.SEPARATION ] = _shift;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.LEFT_OFFSET] = -_offset;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.FONT_SCALE ] = 1;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__X_OFFSET   ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN + _offset;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__Y_OFFSET   ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__WIDTH      ] = _w;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__HEIGHT     ] = _h;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__FONT_HEIGHT] = _h;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SEPARATION ] = _shift;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = -_offset;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__FONT_SCALE ] = 1;
         
         //Set on create (or reset when regenerating the surface)
-        //_font_glyph_grid[# _index, SCRIBBLE_GLYPH.TEXTURE] = _texture;
+        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__TEXTURE] = _texture;
         
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.U0] = _u0;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.U1] = _u1;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.V0] = _v0;
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.V1] = _v1;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__U0] = _u0;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__U1] = _u1;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__V0] = _v0;
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__V1] = _v1;
         
         //These are set on create, or are modified elsewhere
-        //_font_glyph_grid[# _index, SCRIBBLE_GLYPH.SDF_PXRANGE         ] = undefined;
-        //_font_glyph_grid[# _index, SCRIBBLE_GLYPH.SDF_THICKNESS_OFFSET] = undefined;
-        //_font_glyph_grid[# _index, SCRIBBLE_GLYPH.BILINEAR            ] = undefined;
+        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
+        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
+        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
         
         return _index;
     }
@@ -298,32 +298,32 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
         
         _font_glyph_map[? 32] = 0;
         
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.CHARACTER  ] = " ";
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__CHARACTER  ] = " ";
         
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.UNICODE    ] = 0x20;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.BIDI       ] = __SCRIBBLE_BIDI.WHITESPACE;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__UNICODE    ] = 0x20;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__BIDI       ] = __SCRIBBLE_BIDI.WHITESPACE;
         
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.X_OFFSET   ] = 0;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.Y_OFFSET   ] = 0;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.WIDTH      ] = __space_width;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.HEIGHT     ] = __space_height;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.FONT_HEIGHT] = __space_height;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.SEPARATION ] = __space_width;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.LEFT_OFFSET] = 0;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.FONT_SCALE ] = 1;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__X_OFFSET   ] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__Y_OFFSET   ] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__WIDTH      ] = __space_width;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__HEIGHT     ] = __space_height;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT] = __space_height;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__SEPARATION ] = __space_width;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__FONT_SCALE ] = 1;
         
         //Set on create (or reset when regenerating the surface)
-        //_font_glyph_grid[# 0, SCRIBBLE_GLYPH.TEXTURE] = _texture;
+        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__TEXTURE] = _texture;
         
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.U0] = 0;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.V0] = 0;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.U1] = 0;
-        _font_glyph_grid[# 0, SCRIBBLE_GLYPH.V1] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__U0] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__V0] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__U1] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__V1] = 0;
         
         //These are set on create, or are modified elsewhere
-        //_font_glyph_grid[# _index, SCRIBBLE_GLYPH.SDF_PXRANGE         ] = undefined;
-        //_font_glyph_grid[# _index, SCRIBBLE_GLYPH.SDF_THICKNESS_OFFSET] = undefined;
-        //_font_glyph_grid[# _index, SCRIBBLE_GLYPH.BILINEAR            ] = undefined;
+        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
+        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
+        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
         
         __next_index = 1;
         __invalidate();

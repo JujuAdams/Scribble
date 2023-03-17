@@ -10,5 +10,5 @@
 
 function scribble_glyph_x_offset_set(_font, _glyph_range, _value, _relative = false)
 {
-    return __scribble_glyph_set(_font, _glyph_range, SCRIBBLE_GLYPH.X_OFFSET, _value, _relative);
+    return __scribble_glyph_set(_font, _glyph_range, __SCRIBBLE_GLYPH.__X_OFFSET, _value, _relative);
 }

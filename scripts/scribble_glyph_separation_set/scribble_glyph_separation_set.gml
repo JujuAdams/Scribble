@@ -10,5 +10,5 @@
 
 function scribble_glyph_separation_set(_font, _glyph_range, _value, _relative = false)
 {
-    return __scribble_glyph_set(_font, _glyph_range, SCRIBBLE_GLYPH.SEPARATION, _value, _relative);
+    return __scribble_glyph_set(_font, _glyph_range, __SCRIBBLE_GLYPH.__SEPARATION, _value, _relative);
 }

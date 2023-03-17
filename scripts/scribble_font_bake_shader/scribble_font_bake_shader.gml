@@ -8,7 +8,7 @@
 /// @param topPad               "
 /// @param rightPad             "
 /// @param bottomPad            "
-/// @param separationDelta      Change in every glyph's SCRIBBLE_GLYPH.SEPARATION value. For a shader that adds a border of 2px around the entire glyph, this value should be 4px
+/// @param separationDelta      Change in every glyph's __SCRIBBLE_GLYPH.__SEPARATION value. For a shader that adds a border of 2px around the entire glyph, this value should be 4px
 /// @param smooth               Set to <true> to turn on linear interpolation
 /// @param [surfaceSize=2048]   Size of the surface to use. Defaults to 2048x2048
 
@@ -69,13 +69,13 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _i = 0;
     repeat(_glyph_count)
     {
-        var _texture = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.TEXTURE];
-        var _width   = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.WIDTH  ];
-        var _height  = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.HEIGHT ];
-        var _u0      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U0     ];
-        var _v0      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V0     ];
-        var _u1      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U1     ];
-        var _v1      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V1     ];
+        var _texture = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__TEXTURE];
+        var _width   = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__WIDTH  ];
+        var _height  = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__HEIGHT ];
+        var _u0      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__U0     ];
+        var _v0      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__V0     ];
+        var _u1      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__U1     ];
+        var _v1      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__V1     ];
         
         //Ignore any glyphs with invalid textures
         //Due to HTML5 being dogshit, we can't use is_ptr()
@@ -146,10 +146,10 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         vertex_position(_vbuff, _r, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
         vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
             
-        _new_glyphs_grid[# _i, SCRIBBLE_GLYPH.U0] = _line_x;
-        _new_glyphs_grid[# _i, SCRIBBLE_GLYPH.V0] = _line_y;
-        _new_glyphs_grid[# _i, SCRIBBLE_GLYPH.U1] = _line_x + _width  + _l_pad + _r_pad;;
-        _new_glyphs_grid[# _i, SCRIBBLE_GLYPH.V1] = _line_y + _height + _t_pad + _b_pad;;
+        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH.__U0] = _line_x;
+        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH.__V0] = _line_y;
+        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH.__U1] = _line_x + _width  + _l_pad + _r_pad;;
+        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH.__V1] = _line_y + _height + _t_pad + _b_pad;;
         
         _line_x += _width_ext;
         _line_height = max(_line_height, _height_ext);
@@ -215,14 +215,14 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
     
     //Make bulk corrections to various glyph properties based on the input parameters
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.X_OFFSET,    _glyph_count-1, SCRIBBLE_GLYPH.X_OFFSET,    -_l_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.Y_OFFSET,    _glyph_count-1, SCRIBBLE_GLYPH.Y_OFFSET,    -_t_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.WIDTH,       _glyph_count-1, SCRIBBLE_GLYPH.WIDTH,       _l_pad + _r_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.HEIGHT,      _glyph_count-1, SCRIBBLE_GLYPH.HEIGHT,      _t_pad + _b_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, _glyph_count-1, SCRIBBLE_GLYPH.FONT_HEIGHT, _t_pad + _b_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.SEPARATION,  _glyph_count-1, SCRIBBLE_GLYPH.SEPARATION,  _separation);
-    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.TEXTURE,     _glyph_count-1, SCRIBBLE_GLYPH.TEXTURE,     sprite_get_texture(_sprite, 0));
-    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.BILINEAR,    _glyph_count-1, SCRIBBLE_GLYPH.BILINEAR,    _smooth);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__X_OFFSET,    _glyph_count-1, __SCRIBBLE_GLYPH.__X_OFFSET,    -_l_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__Y_OFFSET,    _glyph_count-1, __SCRIBBLE_GLYPH.__Y_OFFSET,    -_t_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__WIDTH,       _glyph_count-1, __SCRIBBLE_GLYPH.__WIDTH,       _l_pad + _r_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__HEIGHT,      _glyph_count-1, __SCRIBBLE_GLYPH.__HEIGHT,      _t_pad + _b_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT, _glyph_count-1, __SCRIBBLE_GLYPH.__FONT_HEIGHT, _t_pad + _b_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__SEPARATION,  _glyph_count-1, __SCRIBBLE_GLYPH.__SEPARATION,  _separation);
+    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__TEXTURE,     _glyph_count-1, __SCRIBBLE_GLYPH.__TEXTURE,     sprite_get_texture(_sprite, 0));
+    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__BILINEAR,    _glyph_count-1, __SCRIBBLE_GLYPH.__BILINEAR,    _smooth);
     
     //Figure out the new UVs using some bulk commands
     var _sprite_uvs = sprite_get_uvs(_sprite, 0);
@@ -231,9 +231,9 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _sprite_u1 = _sprite_uvs[2];
     var _sprite_v1 = _sprite_uvs[3];
     
-    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.V1, 1/_texture_size);
-    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.U1, _sprite_u1 - _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
-    ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V0, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_v1 - _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.U1, _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
-    ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V0, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
+    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__U0, _glyph_count-1, __SCRIBBLE_GLYPH.__V1, 1/_texture_size);
+    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__U0, _glyph_count-1, __SCRIBBLE_GLYPH.__U1, _sprite_u1 - _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
+    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__V0, _glyph_count-1, __SCRIBBLE_GLYPH.__V1, _sprite_v1 - _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__U0, _glyph_count-1, __SCRIBBLE_GLYPH.__U1, _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__V0, _glyph_count-1, __SCRIBBLE_GLYPH.__V1, _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
 }

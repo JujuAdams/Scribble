@@ -451,33 +451,35 @@ function __scribble_matrix_inverse(_matrix)
 
 #region Enums
 
-enum SCRIBBLE_GLYPH
+enum __SCRIBBLE_GLYPH
 {
-    CHARACTER,            // 0
+    __CHARACTER,            // 0
                    
-    UNICODE,              // 1 \
-    BIDI,                 // 2  |
-                          //    |
-    X_OFFSET,             // 3  |
-    Y_OFFSET,             // 4  |
-    WIDTH,                // 5  |
-    HEIGHT,               // 6  |
-    FONT_HEIGHT,          // 7  |
-    SEPARATION,           // 8  |
-    LEFT_OFFSET,          // 9  | This group of enums must not change order or be split
-    FONT_SCALE,           //10  |
-                          //    |
-    TEXTURE,              //11  |
-    U0,                   //12  | Be careful of ordering!
-    U1,                   //13  | scribble_font_bake_shader() relies on this
-    V0,                   //14  |
-    V1,                   //15  |
-                          //    |
-    SDF_PXRANGE,          //16  |
-    SDF_THICKNESS_OFFSET, //17  |
-    BILINEAR,             //18 /
+    __UNICODE,              // 1 \
+    __BIDI,                 // 2  |
+                            //    |
+    __X_OFFSET,             // 3  |
+    __Y_OFFSET,             // 4  |
+    __WIDTH,                // 5  |
+    __HEIGHT,               // 6  |
+    __FONT_HEIGHT,          // 7  |
+    __SEPARATION,           // 8  |
+    __LEFT_OFFSET,          // 9  | This group of enums must not change order or be split
+    __FONT_SCALE,           //10  |
+                            //    |
+    __TEXTURE,              //11  |
+    __U0,                   //12  | Be careful of ordering!
+    __U1,                   //13  | scribble_font_bake_shader() relies on this
+    __V0,                   //14  |
+    __V1,                   //15  |
+                            //    |
+    __SDF_PXRANGE,          //16  |
+    __SDF_THICKNESS_OFFSET, //17  |
+    __BILINEAR,             //18  |
+                            //    |
+    __LAST_USED,            //19 /
     
-    __SIZE                //19
+    __SIZE                  //20
 }
 
 enum SCRIBBLE_EASE

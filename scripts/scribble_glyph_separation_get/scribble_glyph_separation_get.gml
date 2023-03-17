@@ -4,5 +4,5 @@
 
 function scribble_glyph_separation_get(_font, _character)
 {
-    return __scribble_glyph_get(_font, _character, SCRIBBLE_GLYPH.SEPARATION);
+    return __scribble_glyph_get(_font, _character, __SCRIBBLE_GLYPH.__SEPARATION);
 }

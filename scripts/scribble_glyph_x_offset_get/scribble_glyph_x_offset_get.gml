@@ -4,5 +4,5 @@
 
 function scribble_glyph_x_offset_get(_font, _character)
 {
-    return __scribble_glyph_get(_font, _character, SCRIBBLE_GLYPH.X_OFFSET);
+    return __scribble_glyph_get(_font, _character, __SCRIBBLE_GLYPH.__X_OFFSET);
 }

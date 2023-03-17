@@ -54,7 +54,7 @@
                                       else\
                                       {\
                                           ;\//Add this glyph to our grid by copying from the font's own glyph data grid
-                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.UNICODE, _data_index, SCRIBBLE_GLYPH.BILINEAR, _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE);\
+                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH.__UNICODE, _data_index, __SCRIBBLE_GLYPH.__BILINEAR, _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE);\
                                           _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;\
                                           ;\
                                           if (SCRIBBLE_USE_KERNING)\
@@ -81,8 +81,8 @@
                                         __scribble_error("The space character is missing from font definition for \"", _font_name, "\"");\
                                         return false;\
                                     }\
-                                    var _font_space_width = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.WIDTH      ];\
-                                    var _font_line_height = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.FONT_HEIGHT];\
+                                    var _font_space_width = _font_glyph_data_grid[# _space_data_index, __SCRIBBLE_GLYPH.__WIDTH      ];\
+                                    var _font_line_height = _font_glyph_data_grid[# _space_data_index, __SCRIBBLE_GLYPH.__FONT_HEIGHT];\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__FONT;\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _font_name;\
                                     ++_control_count;

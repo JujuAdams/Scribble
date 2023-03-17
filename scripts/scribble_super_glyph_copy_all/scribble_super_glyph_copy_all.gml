@@ -24,5 +24,5 @@ function scribble_super_glyph_copy_all(_target, _source, _overwrite)
     }
     
     _target_font_data.__height = max(_target_font_data.__height, _source_font_data.__height)
-    ds_grid_set_region(_target_glyph_data_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), SCRIBBLE_GLYPH.FONT_HEIGHT, _target_font_data.__height);
+    ds_grid_set_region(_target_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), __SCRIBBLE_GLYPH.__FONT_HEIGHT, _target_font_data.__height);
 }

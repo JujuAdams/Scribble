@@ -11,9 +11,9 @@
 /// Properties can be adjusted at any time, but existing/cached Scribble text will not be updated to match new properties.
 /// 
 /// Three properties are suggested for modification:
-/// SCRIBBLE_GLYPH.X_OFFSET:   The relative x-offset to draw the glyph
-/// SCRIBBLE_GLYPH.Y_OFFSET:   The relative y-offset to draw the glyph
-/// SCRIBBLE_GLYPH.SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
+/// __SCRIBBLE_GLYPH.__X_OFFSET:   The relative x-offset to draw the glyph
+/// __SCRIBBLE_GLYPH.__Y_OFFSET:   The relative y-offset to draw the glyph
+/// __SCRIBBLE_GLYPH.__SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
 ///                            left edge of the next glyph. This can be a negative value!
 
 function __scribble_glyph_set(_font, _glyph_range, _property, _value, _relative = false)
@@ -44,17 +44,17 @@ function __scribble_glyph_set(_font, _glyph_range, _property, _value, _relative 
         }
         
         //Changing the width of the space character also changes the separation
-        if (_property == SCRIBBLE_GLYPH.SEPARATION) _grid[# _glyph_index, SCRIBBLE_GLYPH.WIDTH     ] = _grid[# _glyph_index, SCRIBBLE_GLYPH.SEPARATION];
-        if (_property == SCRIBBLE_GLYPH.WIDTH     ) _grid[# _glyph_index, SCRIBBLE_GLYPH.SEPARATION] = _grid[# _glyph_index, SCRIBBLE_GLYPH.WIDTH     ];
+        if (_property == __SCRIBBLE_GLYPH.__SEPARATION) _grid[# _glyph_index, __SCRIBBLE_GLYPH.__WIDTH     ] = _grid[# _glyph_index, __SCRIBBLE_GLYPH.__SEPARATION];
+        if (_property == __SCRIBBLE_GLYPH.__WIDTH     ) _grid[# _glyph_index, __SCRIBBLE_GLYPH.__SEPARATION] = _grid[# _glyph_index, __SCRIBBLE_GLYPH.__WIDTH     ];
         
         //Changing the height of the space character also changes its font height
-        if (_property == SCRIBBLE_GLYPH.HEIGHT     ) _grid[# _glyph_index, SCRIBBLE_GLYPH.FONT_HEIGHT] = _grid[# _glyph_index, SCRIBBLE_GLYPH.HEIGHT     ];
-        if (_property == SCRIBBLE_GLYPH.FONT_HEIGHT) _grid[# _glyph_index, SCRIBBLE_GLYPH.HEIGHT     ] = _grid[# _glyph_index, SCRIBBLE_GLYPH.FONT_HEIGHT];
+        if (_property == __SCRIBBLE_GLYPH.__HEIGHT     ) _grid[# _glyph_index, __SCRIBBLE_GLYPH.__FONT_HEIGHT] = _grid[# _glyph_index, __SCRIBBLE_GLYPH.__HEIGHT     ];
+        if (_property == __SCRIBBLE_GLYPH.__FONT_HEIGHT) _grid[# _glyph_index, __SCRIBBLE_GLYPH.__HEIGHT     ] = _grid[# _glyph_index, __SCRIBBLE_GLYPH.__FONT_HEIGHT];
         
         //Ensure that a change to the height of a space character also sets the font height for the whole font
-        if ((_property == SCRIBBLE_GLYPH.HEIGHT) || (_property == SCRIBBLE_GLYPH.FONT_HEIGHT))
+        if ((_property == __SCRIBBLE_GLYPH.__HEIGHT) || (_property == __SCRIBBLE_GLYPH.__FONT_HEIGHT))
         {
-            ds_grid_set_region(_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, ds_grid_width(_grid)-1, SCRIBBLE_GLYPH.FONT_HEIGHT, _grid[# _glyph_index, SCRIBBLE_GLYPH.FONT_HEIGHT]);
+            ds_grid_set_region(_grid, 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT, ds_grid_width(_grid)-1, __SCRIBBLE_GLYPH.__FONT_HEIGHT, _grid[# _glyph_index, __SCRIBBLE_GLYPH.__FONT_HEIGHT]);
             _font_data.__calculate_font_height();
         }
     }
@@ -82,17 +82,17 @@ function __scribble_glyph_set(_font, _glyph_range, _property, _value, _relative 
                 if (_unicode == 0x20) //Space character separation and width should always be the same
                 {
                     //Changing the width of the space character also changes the separation
-                    if (_property == SCRIBBLE_GLYPH.SEPARATION) _grid[# _glyph_index, SCRIBBLE_GLYPH.WIDTH     ] = _new_value;
-                    if (_property == SCRIBBLE_GLYPH.WIDTH     ) _grid[# _glyph_index, SCRIBBLE_GLYPH.SEPARATION] = _new_value;
+                    if (_property == __SCRIBBLE_GLYPH.__SEPARATION) _grid[# _glyph_index, __SCRIBBLE_GLYPH.__WIDTH     ] = _new_value;
+                    if (_property == __SCRIBBLE_GLYPH.__WIDTH     ) _grid[# _glyph_index, __SCRIBBLE_GLYPH.__SEPARATION] = _new_value;
                     
                     //Changing the height of the space character also changes its font height
-                    if (_property == SCRIBBLE_GLYPH.HEIGHT     ) _grid[# _glyph_index, SCRIBBLE_GLYPH.FONT_HEIGHT] = _new_value;
-                    if (_property == SCRIBBLE_GLYPH.FONT_HEIGHT) _grid[# _glyph_index, SCRIBBLE_GLYPH.HEIGHT     ] = _new_value;
+                    if (_property == __SCRIBBLE_GLYPH.__HEIGHT     ) _grid[# _glyph_index, __SCRIBBLE_GLYPH.__FONT_HEIGHT] = _new_value;
+                    if (_property == __SCRIBBLE_GLYPH.__FONT_HEIGHT) _grid[# _glyph_index, __SCRIBBLE_GLYPH.__HEIGHT     ] = _new_value;
                     
                     //Ensure that a change to the height of a space character also sets the font height for the whole font
-                    if ((_property == SCRIBBLE_GLYPH.HEIGHT) || (_property == SCRIBBLE_GLYPH.FONT_HEIGHT))
+                    if ((_property == __SCRIBBLE_GLYPH.__HEIGHT) || (_property == __SCRIBBLE_GLYPH.__FONT_HEIGHT))
                     {
-                        ds_grid_set_region(_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, ds_grid_width(_grid)-1, SCRIBBLE_GLYPH.FONT_HEIGHT, _new_value);
+                        ds_grid_set_region(_grid, 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT, ds_grid_width(_grid)-1, __SCRIBBLE_GLYPH.__FONT_HEIGHT, _new_value);
                         _font_data.__calculate_font_height();
                     }
                 }
