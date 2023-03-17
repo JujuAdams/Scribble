@@ -323,7 +323,7 @@ function __scribble_gen_2_parser()
     while(true)
     {
         // In-lined __scribble_buffer_read_unicode() for speed
-        var _glyph_ord  = buffer_read(_string_buffer, buffer_u8); //Assume 0xxxxxxx
+        var _glyph_ord = buffer_read(_string_buffer, buffer_u8); //Assume 0xxxxxxx
         
         // Break out if we hit a null terminator
         if (_glyph_ord == 0x00) break;
