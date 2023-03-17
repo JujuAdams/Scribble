@@ -1,7 +1,9 @@
 var _text = chr(glyph);
 draw_text(10, 10, _text);
-scribble(_text).draw(10, 40);
-draw_text(10, 70, "font_texture_page_size = " + string(font_texture_page_size));
+draw_text(10, 40, "Hello world!");
+scribble(_text).draw(10, 70);
+scribble("Hello world!").draw(10, 110);
+draw_text(10, 150, "font_texture_page_size = " + string(font_texture_page_size));
 
 var _x = 512;
 
