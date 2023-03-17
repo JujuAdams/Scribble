@@ -142,6 +142,7 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
         if (__next_index >= __cell_count)
         {
             if (SCRIBBLE_VERBOSE) __scribble_trace("Warning! Ran out of space for glyphs");
+            __clear_glyph_map();
             __invalidate();
             __next_index = 0;
         }
