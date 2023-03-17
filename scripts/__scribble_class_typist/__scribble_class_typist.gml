@@ -370,7 +370,7 @@ function __scribble_class_typist(_per_line) constructor
     
     static get_text_element = function()
     {
-        return __last_element;
+        return weak_ref_alive(__last_element)? __last_element.ref : undefined;
     }
     
     static get_execution_scope = function()
