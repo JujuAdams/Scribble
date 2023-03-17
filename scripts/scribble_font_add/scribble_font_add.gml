@@ -59,16 +59,8 @@ function scribble_font_add(_name, _filename, _point_size, _startChar, _endChar, 
             //Bind the font_add() cache to the font struct
             __font_add_cache = _font_cache;
             
-            //We use this data to reconstruct a font when font_enable_sdf() is called
-            with(__font_add_data)
-            {
-                __filename   = _filename;
-                __point_size = _point_size;
-                __bold       = _bold;
-                __italic     = _italic;
-                __first      = _startChar;
-                __last       = _endChar;
-            }
+            //Used to detect if the font is krutidev or not
+            __filename = _filename;
         }
         
         var _is_krutidev = __scribble_asset_is_krutidev(_asset, asset_font);

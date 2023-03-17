@@ -14,7 +14,7 @@ function __scribble_asset_is_krutidev(_asset, _asset_type)
             return false;
         }
         
-        return (string_pos("krutidev", string_lower(string(_font_data.__font_add_data.__filename))) > 0);
+        return (string_pos("krutidev", string_lower(string(_font_data.__filename))) > 0);
     }
     
     //Other types of asset can be tagged so let's check for that
