@@ -17,7 +17,7 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count, _sdf) 
     
     
     
-    __glyph_data_grid = ds_grid_create(_glyph_count, SCRIBBLE_GLYPH.__SIZE); //We use a grid here to allow us to copy data more quickly during parsing
+    __glyph_data_grid = ds_grid_create(_glyph_count, __SCRIBBLE_GLYPH.____SIZE); //We use a grid here to allow us to copy data more quickly during parsing
     __glyphs_map      = ds_map_create(); //We use a map here because our keys are numbers and I don't trust struct performance
     __kerning_map     = ds_map_create(); //We use a map here because our keys are numbers and I don't trust struct performance
     
@@ -67,7 +67,7 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count, _sdf) 
     
     static __calculate_font_height = function()
     {
-        __height = __glyph_data_grid[# (__glyphs_map[? 32] ?? 0), SCRIBBLE_GLYPH.HEIGHT];
+        __height = __glyph_data_grid[# (__glyphs_map[? 32] ?? 0), __SCRIBBLE_GLYPH.__HEIGHT];
         return __height;
     }
     
