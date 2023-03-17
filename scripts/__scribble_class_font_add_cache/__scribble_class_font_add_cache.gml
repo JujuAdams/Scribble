@@ -128,6 +128,9 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
     
     static __fetch_unknown = function(_unicode)
     {
+        //Ignore non-printable characters
+        if (_unicode <= 32) return;
+        
         var _character = chr(_unicode);
         
         var _shift  =  __shift_dict[$ _character];
