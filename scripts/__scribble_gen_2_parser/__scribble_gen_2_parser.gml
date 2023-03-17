@@ -928,8 +928,8 @@ function __scribble_gen_2_parser()
                             }
                             
                             _offset_start = _glyph_count;
-                            _offset_x     = _tag_parameters[0];
-                            _offset_y     = _tag_parameters[1];
+                            _offset_x     = real(_tag_parameters[1]);
+                            _offset_y     = real(_tag_parameters[2]);
                         break;
                         
                         case 39: // [/offset]
