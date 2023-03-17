@@ -131,10 +131,10 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
         
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__X_OFFSET   ] = 0;
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__Y_OFFSET   ] = 0;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__WIDTH      ] = __shift_dict[$ 32];
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__WIDTH      ] = __shift_dict[$ " "];
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__HEIGHT     ] = _height;
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT] = _height;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__SEPARATION ] = __shift_dict[$ 32];
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__SEPARATION ] = __shift_dict[$ " "];
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = 0;
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__FONT_SCALE ] = 1;
         
@@ -323,8 +323,6 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
     
     static __invalidate = function(_current_model)
     {
-        if (SCRIBBLE_VERBOSE) __scribble_trace("Invalidating font_add() glyph cache");
-        
         //Flush all models that use this font cache
         var _i = 0;
         repeat(array_length(__model_array))
