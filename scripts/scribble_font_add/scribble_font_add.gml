@@ -96,7 +96,7 @@ function scribble_font_add(_name, _filename, _point_size, _startChar, _endChar, 
         _font_data.__calculate_font_height();
         
         //Prefetch as much of our initial range as possible
-        scribble_font_fetch(_name, [_startChar, _endChar]);
+        if (SCRIBBLE_FETCH_RANGE_ON_ADD) scribble_font_fetch(_name, [_startChar, _endChar]);
     }
     catch(_error)
     {
