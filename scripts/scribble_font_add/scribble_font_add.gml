@@ -45,7 +45,7 @@ function scribble_font_add(_name, _filename, _point_size, _startChar, _endChar, 
     try
     {
         //Create a glyph cache
-        var _font_cache = new __scribble_class_font_add_cache(_asset, _name);
+        var _font_cache = new __scribble_class_font_add_cache(_asset, _name, _startChar, _endChar);
         
         //Find out how many glyphs we can store at once
         var _size = _font_cache.__get_max_glyph_count();

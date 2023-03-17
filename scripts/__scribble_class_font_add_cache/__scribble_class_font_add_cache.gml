@@ -1,7 +1,9 @@
 /// @param fontAsset
 /// @param fontName
+/// @param minGlyph
+/// @param maxGlyph
 
-function __scribble_class_font_add_cache(_font, _font_name) constructor
+function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_glyph) constructor
 {
     var _font_add_cache_array = __scribble_get_state().__font_add_cache_array;
     array_push(_font_add_cache_array, weak_ref_create(self));
@@ -10,6 +12,8 @@ function __scribble_class_font_add_cache(_font, _font_name) constructor
     
     __font      = _font;
     __font_name = _font_name;
+    __min_glyph = _min_glyph;
+    __max_glyph = _max_glyph;
     
     __in_use      = true;
     __surface     = undefined;
