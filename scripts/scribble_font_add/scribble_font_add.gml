@@ -28,7 +28,7 @@ function scribble_font_add(_name, _filename, _point_size, _startChar, _endChar, 
     var _asset = font_add(_filename, _point_size, _bold, _italic, _startChar, _endChar);
     if (!font_exists(_asset)) __scribble_error("Failed to load \"", _filename, "\"");
     font_enable_sdf(_asset, _sdf);
-    if (_spread != undefined) font_sdf_spread(_asset, _spread);
+    if (_sdf && (_spread != undefined)) font_sdf_spread(_asset, _spread);
     
     var _asset_name = font_get_name(_asset);
     
@@ -45,7 +45,7 @@ function scribble_font_add(_name, _filename, _point_size, _startChar, _endChar, 
     try
     {
         //Create a glyph cache
-        var _font_cache = new __scribble_class_font_add_cache(_asset, _name, _startChar, _endChar);
+        var _font_cache = new __scribble_class_font_add_cache(_asset, _name, _startChar, _endChar, _sdf? font_get_sdf_spread(_asset) : 0);
         
         //Find out how many glyphs we can store at once
         var _size = _font_cache.__get_max_glyph_count();

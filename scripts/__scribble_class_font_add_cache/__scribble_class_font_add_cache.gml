@@ -2,13 +2,12 @@
 /// @param fontName
 /// @param minGlyph
 /// @param maxGlyph
+/// @param spread
 
-function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_glyph) constructor
+function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_glyph, _spread) constructor
 {
     var _font_add_cache_array = __scribble_get_state().__font_add_cache_array;
     array_push(_font_add_cache_array, weak_ref_create(self));
-    
-    var _spread = font_get_sdf_spread(_font);
     
     __font      = _font;
     __font_name = _font_name;
