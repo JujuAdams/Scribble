@@ -7,6 +7,8 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
     var _font_add_cache_array = __scribble_get_state().__font_add_cache_array;
     array_push(_font_add_cache_array, weak_ref_create(self));
     
+    var _spread = font_get_sdf_spread(_font);
+    
     __in_use  = true;
     __surface = undefined;
     
@@ -51,12 +53,12 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
             _cell_width  = max(_cell_width,  _glyph_dict.w);
             _cell_height = max(_cell_height, _glyph_dict.h);
         }
-         
+        
         ++_unicode;
     }
     
-    __cell_width  = 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN + _cell_width;
-    __cell_height = 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN + _cell_height;
+    __cell_width  = 2*(_spread + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN) + _cell_width;
+    __cell_height = 2*(_spread + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN) + _cell_height;
     
     __cells_x = max(1, floor(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE / __cell_width ));
     __cells_y = max(1, floor(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE / __cell_height));
