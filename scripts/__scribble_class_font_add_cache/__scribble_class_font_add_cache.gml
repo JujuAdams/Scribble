@@ -1,8 +1,9 @@
 /// @param fontAsset
+/// @param fontName
 /// @param minGlyph
 /// @param maxGlyph
 
-function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) constructor
+function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_glyph) constructor
 {
     var _font_add_cache_array = __scribble_get_state().__font_add_cache_array;
     array_push(_font_add_cache_array, weak_ref_create(self));
@@ -19,12 +20,14 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
     __cells_y     = 1;
     __cell_width  = SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
     __cell_height = SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
+    __cell_count  = 1;
     
     __map = undefined;
     
     __next_index = 0;
     
-    __font = _font;
+    __font      = _font;
+    __font_name = _font_name;
     
     __model_array = [];
     
@@ -32,8 +35,6 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
     __font_data    = undefined;
     __space_width  = 0;
     __space_height = 0;
-    
-    __scribble_trace("Creating font_add() cache (size=", SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE, ")");
     
     __min_glyph = _min_glyph;
     __max_glyph = _max_glyph;
@@ -60,8 +61,14 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
     __cell_width  = 2*(_spread + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN) + _cell_width;
     __cell_height = 2*(_spread + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN) + _cell_height;
     
-    __cells_x = max(1, floor(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE / __cell_width ));
-    __cells_y = max(1, floor(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE / __cell_height));
+    __cells_x    = max(1, floor(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE / __cell_width ));
+    __cells_y    = max(1, floor(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE / __cell_height));
+    __cell_count = __cells_x*__cells_y;
+    
+    __scribble_trace("Cache initialized for font \"", __font_name, "\"");
+    __scribble_trace("|-- cell = ", __cell_width, " x ", __cell_height);
+    __scribble_trace("|-- grid = ", __cells_x, " x ", __cells_y);
+    __scribble_trace("\\-- max glyphs = ", __cell_count);
     
     __map = ds_map_create();
     __next_index = 0;
@@ -109,6 +116,16 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
     {
         var _character = chr(_unicode);
         
+        var _font_info = font_get_info(__font);
+        var _info_glyphs_dict = _font_info.glyphs;
+        var _glyph_dict = _info_glyphs_dict[$ _character];
+        
+        if (_glyph_dict == undefined)
+        {
+            __scribble_trace("Warning! ", __scribble_unicode_u(_unicode), " (", _unicode, ") not supported by font \"", __font_name, "\"");
+            return;
+        }
+        
         var _font_glyph_grid = __font_data.__glyph_data_grid;
         var _font_glyph_map  = __font_data.__glyphs_map;
         
@@ -116,7 +133,7 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
         _font_glyph_map[? _unicode] = _index;
         
         ++__next_index;
-        if (__next_index >= __cells_x*__cells_y)
+        if (__next_index >= __cell_count)
         {
             if (SCRIBBLE_VERBOSE) __scribble_trace("Warning! Ran out of space for glyphs");
             __invalidate();
@@ -160,10 +177,6 @@ function __scribble_class_font_add_cache(_font, _min_glyph, _max_glyph) construc
         shader_reset();
         gpu_set_blendmode(bm_normal);
         gpu_set_colorwriteenable(true, true, true, true);
-        
-        var _font_info = font_get_info(__font);
-        var _info_glyphs_dict = _font_info.glyphs;
-        var _glyph_dict = _info_glyphs_dict[$ _character];
         
         var _w = string_width( _character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
         var _h = string_height(_character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
