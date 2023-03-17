@@ -241,6 +241,7 @@
     {"id":{"name":"obj_test_sprite_autofit","path":"objects/obj_test_sprite_autofit/obj_test_sprite_autofit.yy",},},
     {"id":{"name":"obj_test_sprite_blend","path":"objects/obj_test_sprite_blend/obj_test_sprite_blend.yy",},},
     {"id":{"name":"obj_test_sprite_colouring","path":"objects/obj_test_sprite_colouring/obj_test_sprite_colouring.yy",},},
+    {"id":{"name":"scribble_font_fetch","path":"scripts/scribble_font_fetch/scribble_font_fetch.yy",},},
     {"id":{"name":"obj_test_sprite_colourization","path":"objects/obj_test_sprite_colourization/obj_test_sprite_colourization.yy",},},
     {"id":{"name":"obj_test_sprite_origins","path":"objects/obj_test_sprite_origins/obj_test_sprite_origins.yy",},},
     {"id":{"name":"obj_test_starting_format","path":"objects/obj_test_starting_format/obj_test_starting_format.yy",},},
