@@ -28,6 +28,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Configuration - Please edit these!","folderPath":"folders/Scribble/Configuration - Please edit these!.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"External Assets","folderPath":"folders/Scribble/External Assets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Fonts","folderPath":"folders/Scribble/Fonts.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Glyph Adjustment","folderPath":"folders/Scribble/Glyph Adjustment.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Miscellaneous","folderPath":"folders/Scribble/Miscellaneous.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Quick Functions","folderPath":"folders/Scribble/Quick Functions.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Superfonts","folderPath":"folders/Scribble/Superfonts.yy",},
@@ -55,7 +56,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Typewriter","folderPath":"folders/Test Cases/Typewriter.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Legacy","folderPath":"folders/Test Cases/Typewriter/Legacy.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Wrapping","folderPath":"folders/Test Cases/Wrapping.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Glyph Adjustment","folderPath":"folders/Scribble/Glyph Adjustment.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"blip.ogg","CopyToMask":-1,"filePath":"datafiles",},

@@ -16,6 +16,7 @@
     {"name":"Configuration - Please edit these!","order":5,"path":"folders/Scribble/Configuration - Please edit these!.yy",},
     {"name":"External Assets","order":2,"path":"folders/Scribble/External Assets.yy",},
     {"name":"Fonts","order":7,"path":"folders/Scribble/Fonts.yy",},
+    {"name":"Glyph Adjustment","order":8,"path":"folders/Scribble/Glyph Adjustment.yy",},
     {"name":"Miscellaneous","order":11,"path":"folders/Scribble/Miscellaneous.yy",},
     {"name":"Quick Functions","order":6,"path":"folders/Scribble/Quick Functions.yy",},
     {"name":"Superfonts","order":9,"path":"folders/Scribble/Superfonts.yy",},
@@ -41,7 +42,6 @@
     {"name":"Text Element Methods","order":9,"path":"folders/Test Cases/Text Element Methods.yy",},
     {"name":"Typewriter","order":10,"path":"folders/Test Cases/Typewriter.yy",},
     {"name":"Wrapping","order":3,"path":"folders/Test Cases/Wrapping.yy",},
-    {"name":"Glyph Adjustment","order":8,"path":"folders/Scribble/Glyph Adjustment.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"fnt_hebrew","order":1,"path":"fonts/fnt_hebrew/fnt_hebrew.yy",},
