@@ -163,7 +163,7 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
         draw_set_valign(fa_top );
         
         //Grab the glyph width/height before we reset the font
-        var _w = string_width( _character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
+        var _w = string_width( _character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN - _offset;
         var _h = string_height(_character) + 2*SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
         
         shader_set(__shd_scribble_passthrough);
@@ -176,7 +176,7 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
         draw_rectangle(_x, _y, _x + __cell_width, _y + __cell_height, false);
         draw_set_alpha(1);
         
-        draw_text(_x + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN, _y + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN, _character);
+        draw_text(_x + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN - _offset, _y + SCRIBBLE_INTERNAL_FONT_ADD_MARGIN, _character);
         surface_reset_target();
         
         draw_set_colour(_old_colour);
@@ -205,7 +205,7 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.UNICODE             ] = _unicode;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.BIDI                ] = _bidi;
         
-        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.X_OFFSET            ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
+        _font_glyph_grid[# _index, SCRIBBLE_GLYPH.X_OFFSET            ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN + _offset;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.Y_OFFSET            ] = -SCRIBBLE_INTERNAL_FONT_ADD_MARGIN;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.WIDTH               ] = _w;
         _font_glyph_grid[# _index, SCRIBBLE_GLYPH.HEIGHT              ] = _h;
