@@ -391,20 +391,31 @@ void main()
     float lineIndex      = in_Position.z - characterIndex*MAX_LINES;
     
     //MAX_EFFECTS = 11
-    float flagValue = in_Normal.z;
-    float edge;
-    edge = step(1024.0, flagValue); flagArray[10] = edge; flagValue -= 1024.0*edge;
-    edge = step( 512.0, flagValue); flagArray[ 9] = edge; flagValue -=  512.0*edge;
-    edge = step( 256.0, flagValue); flagArray[ 8] = edge; flagValue -=  256.0*edge;
-    edge = step( 128.0, flagValue); flagArray[ 7] = edge; flagValue -=  128.0*edge;
-    edge = step(  64.0, flagValue); flagArray[ 6] = edge; flagValue -=   64.0*edge;
-    edge = step(  32.0, flagValue); flagArray[ 5] = edge; flagValue -=   32.0*edge;
-    edge = step(  16.0, flagValue); flagArray[ 4] = edge; flagValue -=   16.0*edge;
-    edge = step(   8.0, flagValue); flagArray[ 3] = edge; flagValue -=    8.0*edge;
-    edge = step(   4.0, flagValue); flagArray[ 2] = edge; flagValue -=    4.0*edge;
-    edge = step(   2.0, flagValue); flagArray[ 1] = edge; flagValue -=    2.0*edge;
-    edge = step(   1.0, flagValue); flagArray[ 0] = edge; flagValue -=    1.0*edge;
+    //float flagValue = in_Normal.z;
+    //float edge;
+    //edge = step(1024.0, flagValue); flagArray[10] = edge; flagValue -= 1024.0*edge;
+    //edge = step( 512.0, flagValue); flagArray[ 9] = edge; flagValue -=  512.0*edge;
+    //edge = step( 256.0, flagValue); flagArray[ 8] = edge; flagValue -=  256.0*edge;
+    //edge = step( 128.0, flagValue); flagArray[ 7] = edge; flagValue -=  128.0*edge;
+    //edge = step(  64.0, flagValue); flagArray[ 6] = edge; flagValue -=   64.0*edge;
+    //edge = step(  32.0, flagValue); flagArray[ 5] = edge; flagValue -=   32.0*edge;
+    //edge = step(  16.0, flagValue); flagArray[ 4] = edge; flagValue -=   16.0*edge;
+    //edge = step(   8.0, flagValue); flagArray[ 3] = edge; flagValue -=    8.0*edge;
+    //edge = step(   4.0, flagValue); flagArray[ 2] = edge; flagValue -=    4.0*edge;
+    //edge = step(   2.0, flagValue); flagArray[ 1] = edge; flagValue -=    2.0*edge;
+    //edge = step(   1.0, flagValue); flagArray[ 0] = edge; flagValue -=    1.0*edge;
     
+    flagArray[ 0] = step(mod(in_Normal.z/   1.0, 2.0), 0.0001);
+    flagArray[ 1] = step(mod(in_Normal.z/   2.0, 2.0), 0.0001);
+    flagArray[ 2] = step(mod(in_Normal.z/   4.0, 2.0), 0.0001);
+    flagArray[ 3] = step(mod(in_Normal.z/   8.0, 2.0), 0.0001);
+    flagArray[ 4] = step(mod(in_Normal.z/  16.0, 2.0), 0.0001);
+    flagArray[ 5] = step(mod(in_Normal.z/  32.0, 2.0), 0.0001);
+    flagArray[ 6] = step(mod(in_Normal.z/  64.0, 2.0), 0.0001);
+    flagArray[ 7] = step(mod(in_Normal.z/ 128.0, 2.0), 0.0001);
+    flagArray[ 8] = step(mod(in_Normal.z/ 256.0, 2.0), 0.0001);
+    flagArray[ 9] = step(mod(in_Normal.z/ 512.0, 2.0), 0.0001);
+    flagArray[10] = step(mod(in_Normal.z/1024.0, 2.0), 0.0001);
     
     
     //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
@@ -476,11 +487,10 @@ void main()
     
     
     //Apply fade (if we're given a method)
-    int easeMethod = u_iTypewriterMethod;
-    bool fadeOut = (easeMethod >= EASE_METHOD_COUNT);
-    if (fadeOut) easeMethod -= EASE_METHOD_COUNT;
+    bool fadeOut = (u_iTypewriterMethod >= EASE_METHOD_COUNT);
+    if (fadeOut) u_iTypewriterMethod -= EASE_METHOD_COUNT;
     
-    if (easeMethod > EASE_NONE)
+    if (u_iTypewriterMethod > EASE_NONE)
     {
         float fadeIndex = ((u_iTypewriterUseLines > 0)? lineIndex : characterIndex) + 1.0;
         if (u_iTypewriterCharMax > 0) fadeIndex = float(u_iTypewriterCharMax) - fadeIndex;
@@ -495,19 +505,19 @@ void main()
         {
             v_vColour.a *= clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
         }
-             if (easeMethod == EASE_QUADRATIC  ) { time = 1.0 - easeQuad(   1.0 - time); }
-        else if (easeMethod == EASE_CUBIC      ) { time = 1.0 - easeCubic(  1.0 - time); }
-        else if (easeMethod == EASE_QUARTIC    ) { time = 1.0 - easeQuart(  1.0 - time); }
-        else if (easeMethod == EASE_QUINTIC    ) { time = 1.0 - easeQuint(  1.0 - time); }
-        else if (easeMethod == EASE_SINE       ) { time = 1.0 - easeSine(   1.0 - time); }
-        else if (easeMethod == EASE_EXPONENTIAL) { time = 1.0 - easeExpo(   1.0 - time); }
-        else if (easeMethod == EASE_CIRCULAR   ) { time = 1.0 - easeCirc(   1.0 - time); }
-        else if (easeMethod == EASE_BACK       ) { time = 1.0 - easeBack(   1.0 - time); }
-        else if (easeMethod == EASE_ELASTIC    ) { time = 1.0 - easeElastic(1.0 - time); }
-        else if (easeMethod == EASE_BOUNCE     ) { time = 1.0 - easeBounce( 1.0 - time); }
-        else if (easeMethod == EASE_CUSTOM_1   ) { /*Custom ease slot 1*/ }
-        else if (easeMethod == EASE_CUSTOM_2   ) { /*Custom ease slot 2*/ }
-        else if (easeMethod == EASE_CUSTOM_3   ) { /*Custom ease slot 3*/ }
+             if (u_iTypewriterMethod == EASE_QUADRATIC  ) { time = 1.0 - easeQuad(   1.0 - time); }
+        else if (u_iTypewriterMethod == EASE_CUBIC      ) { time = 1.0 - easeCubic(  1.0 - time); }
+        else if (u_iTypewriterMethod == EASE_QUARTIC    ) { time = 1.0 - easeQuart(  1.0 - time); }
+        else if (u_iTypewriterMethod == EASE_QUINTIC    ) { time = 1.0 - easeQuint(  1.0 - time); }
+        else if (u_iTypewriterMethod == EASE_SINE       ) { time = 1.0 - easeSine(   1.0 - time); }
+        else if (u_iTypewriterMethod == EASE_EXPONENTIAL) { time = 1.0 - easeExpo(   1.0 - time); }
+        else if (u_iTypewriterMethod == EASE_CIRCULAR   ) { time = 1.0 - easeCirc(   1.0 - time); }
+        else if (u_iTypewriterMethod == EASE_BACK       ) { time = 1.0 - easeBack(   1.0 - time); }
+        else if (u_iTypewriterMethod == EASE_ELASTIC    ) { time = 1.0 - easeElastic(1.0 - time); }
+        else if (u_iTypewriterMethod == EASE_BOUNCE     ) { time = 1.0 - easeBounce( 1.0 - time); }
+        else if (u_iTypewriterMethod == EASE_CUSTOM_1   ) { /*Custom ease slot 1*/ }
+        else if (u_iTypewriterMethod == EASE_CUSTOM_2   ) { /*Custom ease slot 2*/ }
+        else if (u_iTypewriterMethod == EASE_CUSTOM_3   ) { /*Custom ease slot 3*/ }
         
         pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
         pos = rotate(pos, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
