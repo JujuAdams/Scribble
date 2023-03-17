@@ -150,6 +150,8 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "l2r"               ] = 35;
         _command_tag_lookup_accelerator_map[? "indent"            ] = 36;
         _command_tag_lookup_accelerator_map[? "/indent"           ] = 37;
+        _command_tag_lookup_accelerator_map[? "offset"            ] = 38;
+        _command_tag_lookup_accelerator_map[? "/offset"           ] = 39;
     }
     
     #endregion
@@ -297,6 +299,10 @@ function __scribble_gen_2_parser()
     var _glyph_prev                  = 0x0000;
     var _glyph_prev_prev             = 0x0000;
     var _glyph_prev_arabic_join_next = false;
+    
+    var _offset_start = undefined;
+    var _offset_x     = 0;
+    var _offset_y     = 0;
     
     var _control_count = 0;
     var _skip_write    = false;
@@ -631,6 +637,8 @@ function __scribble_gen_2_parser()
                     
                         #endregion
                     
+                        #region Bidi control
+                        
                         // [r2l]
                         case 34:
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x200F;
@@ -668,6 +676,8 @@ function __scribble_gen_2_parser()
                             _glyph_prev_prev = _glyph_prev;
                             _glyph_prev = 0x200E;
                         break;
+                        
+                        #endregion
                     
                         #region Cycle
                     
@@ -907,7 +917,35 @@ function __scribble_gen_2_parser()
                         break;
                     
                         #endregion
-                    
+                        
+                        #region Offset
+                        
+                        case 38: // [offset,x,y]
+                            if ((_offset_start != undefined) && (_offset_start < _glyph_count-1))
+                            {
+                                ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH.__X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__X, _offset_x);
+                                ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH.__Y, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y, _offset_y);
+                            }
+                            
+                            _offset_start = _glyph_count;
+                            _offset_x     = _tag_parameters[0];
+                            _offset_y     = _tag_parameters[1];
+                        break;
+                        
+                        case 39: // [/offset]
+                            if (_offset_start != undefined)
+                            {
+                                ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH.__X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__X, _offset_x);
+                                ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH.__Y, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y, _offset_y);
+                            }
+                            
+                            _offset_start = undefined;
+                            _offset_x     = 0;
+                            _offset_y     = 0;
+                        break;
+                        
+                        #endregion
+                        
                         default: //TODO - Optimize
                             if (ds_map_exists(_effects_map, _tag_command_name)) //Set an effect
                             {
@@ -1612,6 +1650,13 @@ function __scribble_gen_2_parser()
                 #endregion
             }
         }
+    }
+    
+    //Finalize [offset] tags
+    if ((_offset_start != undefined) && (_offset_start < _glyph_count-1))
+    {
+        ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH.__X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__X, _offset_x);
+        ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH.__Y, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y, _offset_y);
     }
     
     __SCRIBBLE_PARSER_PUSH_SCALE;
