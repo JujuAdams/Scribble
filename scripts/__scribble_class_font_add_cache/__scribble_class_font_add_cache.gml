@@ -10,24 +10,17 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
     
     var _spread = font_get_sdf_spread(_font);
     
+    __font      = _font;
+    __font_name = _font_name;
+    __min_glyph = _min_glyph;
+    __max_glyph = _max_glyph;
+    
     __in_use      = true;
     __surface     = undefined;
     __shift_dict  = {};
     __offset_dict = {};
     
-    __min_glyph = 0;
-    __max_glyph = 0;
-    
-    __cells_x     = 1;
-    __cells_y     = 1;
-    __cell_width  = SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
-    __cell_height = SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
-    __cell_count  = 1;
-    
     __next_index = 0;
-    
-    __font      = _font;
-    __font_name = _font_name;
     
     __model_array = [];
     
@@ -35,9 +28,6 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
     __font_data    = undefined;
     __space_width  = 0;
     __space_height = 0;
-    
-    __min_glyph = _min_glyph;
-    __max_glyph = _max_glyph;
     
     var _cell_width  = 1;
     var _cell_height = 1;
@@ -84,8 +74,6 @@ function __scribble_class_font_add_cache(_font, _font_name, _min_glyph, _max_gly
     __scribble_trace("|-- cell = ", __cell_width, " x ", __cell_height);
     __scribble_trace("|-- grid = ", __cells_x, " x ", __cells_y);
     __scribble_trace("\\-- max glyphs = ", __cell_count);
-    
-    __next_index = 0;
     
     __tick();
     
