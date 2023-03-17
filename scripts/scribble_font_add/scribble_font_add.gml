@@ -29,7 +29,18 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
     var _asset = font_add(_filename, _point_size, _bold, _italic, _glyph_array[0], _glyph_array[array_length(_glyph_array)-1]);
     if (!font_exists(_asset)) __scribble_error("Failed to load \"", _filename, "\"");
     font_enable_sdf(_asset, _sdf);
-    if (_sdf && (_spread != undefined)) font_sdf_spread(_asset, _spread);
+    
+    if (_sdf)
+    {
+        if (_spread != undefined)
+        {
+            font_sdf_spread(_asset, _spread);
+        }
+        else
+        {
+            _spread = font_get_sdf_spread(_asset);
+        }
+    }
     
     var _asset_name = font_get_name(_asset);
     
