@@ -43,7 +43,7 @@
                                           }\
                                           else\
                                           {\
-                                              _data_index = _font_add_cache.__fetch_unknown(_glyph_write);\
+                                              _data_index = _font_add_cache.__fetch_unknown(_glyph_write, self);\
                                           }\
                                       }\
                                       if (_data_index == undefined)\
@@ -56,6 +56,7 @@
                                           ;\//Add this glyph to our grid by copying from the font's own glyph data grid
                                           ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH.__UNICODE, _data_index, __SCRIBBLE_GLYPH.__BILINEAR, _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE);\
                                           _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;\
+                                          _font_glyph_data_grid[# _data_index, __SCRIBBLE_GLYPH.__LAST_USED] = _frames;\
                                           ;\
                                           if (SCRIBBLE_USE_KERNING)\
                                           {\
@@ -153,6 +154,7 @@ function __scribble_gen_2_parser()
     
     #endregion
     
+    static _scribble_state        = __scribble_get_state();
     static _effects_map           = __scribble_get_effects_map();
     static _effects_slash_map     = __scribble_get_effects_slash_map();
     static _typewriter_events_map = __scribble_get_typewriter_events_map();
@@ -161,7 +163,7 @@ function __scribble_gen_2_parser()
     static _string_buffer         = __scribble_get_buffer_a();
     static _other_string_buffer   = __scribble_get_buffer_b();
     static _colors_struct         = __scribble_config_colours();
-    static _font_data_map         = __scribble_get_state().__font_data_map;
+    static _font_data_map         = _scribble_state.__font_data_map;
     static _generator_state       = __scribble_get_generator_state();
     
     with(_generator_state)
@@ -204,6 +206,7 @@ function __scribble_gen_2_parser()
     if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
     
     var _font_name = _starting_font;
+    var _frames = _scribble_state.__frames;
     
     //Place our input string into a buffer for quicker reading
     buffer_seek(_string_buffer, buffer_seek_start, 0);

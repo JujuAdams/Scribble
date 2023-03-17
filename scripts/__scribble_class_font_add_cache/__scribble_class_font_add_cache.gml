@@ -5,8 +5,9 @@
 
 function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _spread) constructor
 {
-    var _font_add_cache_array = __scribble_get_state().__font_add_cache_array;
-    array_push(_font_add_cache_array, weak_ref_create(self));
+    static __scribble_state = __scribble_get_state();
+    
+    array_push(__scribble_state.__font_add_cache_array, weak_ref_create(self));
     
     __font      = _font;
     __font_name = _font_name;
@@ -16,14 +17,10 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
     __shift_dict  = {};
     __offset_dict = {};
     
-    __next_index = 0;
-    
     __model_array = [];
     
     //These get copied over from the font in __scribble_font_add_from_file()
-    __font_data    = undefined;
-    __space_width  = 0;
-    __space_height = 0;
+    __font_data = undefined;
     
     var _cell_width  = 1;
     var _cell_height = 1;
@@ -115,13 +112,54 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
         array_push(__model_array, weak_ref_create(_new_model));
     }
     
-    static __fetch_unknown = function(_unicode)
+    static __set_space_glyph = function()
+    {
+        var _font_glyph_grid = __font_data.__glyph_data_grid;
+        var _font_glyph_map  = __font_data.__glyphs_map;
+        
+        var _old_font = draw_get_font();
+        draw_set_font(__font);
+        var _height = string_height(" ");
+        draw_set_font(_old_font);
+        
+        _font_glyph_map[? 32] = 0;
+        
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__CHARACTER  ] = " ";
+        
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__UNICODE    ] = 0x20;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__BIDI       ] = __SCRIBBLE_BIDI.WHITESPACE;
+        
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__X_OFFSET   ] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__Y_OFFSET   ] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__WIDTH      ] = __shift_dict[$ 32];
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__HEIGHT     ] = _height;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT] = _height;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__SEPARATION ] = __shift_dict[$ 32];
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__FONT_SCALE ] = 1;
+        
+        //Set on create (or reset when regenerating the surface)
+        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__TEXTURE] = _texture;
+        
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__U0] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__V0] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__U1] = 0;
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__V1] = 0;
+        
+        //These are set on create, or are modified elsewhere
+        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
+        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
+        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
+        
+        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__LAST_USED] = infinity; //Never replace space
+    }
+    
+    static __fetch_unknown = function(_unicode, _current_model)
     {
         //Ignore non-printable characters
         if (_unicode <= 32) return;
         
         var _character = chr(_unicode);
-        
         var _shift  =  __shift_dict[$ _character];
         var _offset = __offset_dict[$ _character];
         
@@ -131,21 +169,32 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
             return;
         }
         
+        
+        
+        //TODO - Invalidating on every new character seems undesirable
+        __invalidate(_current_model);
+        
+        
+        
+        //Sort out the link between the look-up map and the glyph grid
         var _font_glyph_grid = __font_data.__glyph_data_grid;
         var _font_glyph_map  = __font_data.__glyphs_map;
         
-        var _index = __next_index;
+        //Find the minimum "last used" value i.e. the glyph that was generated the longest time ago
+        var _min = ds_grid_get_min(_font_glyph_grid, 0, __SCRIBBLE_GLYPH.__LAST_USED, ds_grid_width(_font_glyph_grid), __SCRIBBLE_GLYPH.__LAST_USED);
+        //Use the minimum value to find the index we want to replace
+        var _index = ds_grid_value_x(_font_glyph_grid, 0, __SCRIBBLE_GLYPH.__LAST_USED, ds_grid_width(_font_glyph_grid), __SCRIBBLE_GLYPH.__LAST_USED, _min);
+        
+        //Remove the old glyph from our map
+        var _old_unicode = _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__UNICODE];
+        ds_map_delete(_font_glyph_map, _old_unicode);
+        
+        //And set up our new glyph
         _font_glyph_map[? _unicode] = _index;
         
-        ++__next_index;
-        if (__next_index >= __cell_count)
-        {
-            if (SCRIBBLE_VERBOSE) __scribble_trace("Warning! Ran out of space for glyphs");
-            __clear_glyph_map();
-            __invalidate();
-            __next_index = 0;
-        }
         
+        
+        //Update the surface
         var _x = __cell_width  * (_index mod __cells_x);
         var _y = __cell_height * (_index div __cells_x);
         
@@ -188,6 +237,9 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
         gpu_set_blendmode(bm_normal);
         gpu_set_colorwriteenable(true, true, true, true);
         
+        
+        
+        //Now push the glyph data into the grid ready for use
         var _u0 = _x/SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
         var _v0 = _y/SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
         var _u1 = _u0 + _w/SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE;
@@ -225,6 +277,8 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
         //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
         //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
         //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
+        
+        _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__LAST_USED] = __scribble_state.__frames;
         
         return _index;
     }
@@ -267,7 +321,7 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
         }
     }
     
-    static __invalidate = function()
+    static __invalidate = function(_current_model)
     {
         if (SCRIBBLE_VERBOSE) __scribble_trace("Invalidating font_add() glyph cache");
         
@@ -282,55 +336,22 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
             }
             else
             {
-                _weak_ref.ref.__flush();
+                if (_weak_ref.ref != _current_model) _weak_ref.ref.__flush();
                 ++_i;
             }
         }
     }
     
-    static __clear_glyph_map = function()
-    {
-        var _font_glyph_grid = __font_data.__glyph_data_grid;
-        var _font_glyph_map  = __font_data.__glyphs_map;
-        
-        ds_map_clear(_font_glyph_map);
-        
-        _font_glyph_map[? 32] = 0;
-        
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__CHARACTER  ] = " ";
-        
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__UNICODE    ] = 0x20;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__BIDI       ] = __SCRIBBLE_BIDI.WHITESPACE;
-        
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__X_OFFSET   ] = 0;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__Y_OFFSET   ] = 0;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__WIDTH      ] = __space_width;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__HEIGHT     ] = __space_height;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT] = __space_height;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__SEPARATION ] = __space_width;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = 0;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__FONT_SCALE ] = 1;
-        
-        //Set on create (or reset when regenerating the surface)
-        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__TEXTURE] = _texture;
-        
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__U0] = 0;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__V0] = 0;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__U1] = 0;
-        _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__V1] = 0;
-        
-        //These are set on create, or are modified elsewhere
-        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
-        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
-        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
-        
-        __next_index = 1;
-        __invalidate();
-    }
-    
     static __rebuild_surface = function()
     {
-        if (__surface != undefined) __clear_glyph_map();
+        if (__surface != undefined)
+        {
+            var _font_glyph_map  = __font_data.__glyphs_map;
+            ds_map_clear(_font_glyph_map);
+            __set_space_glyph();
+            __invalidate();
+        }
+        
         if ((__surface == undefined) || !surface_exists(__surface)) __surface = surface_create(SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE, SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE);
         
         surface_set_target(__surface);

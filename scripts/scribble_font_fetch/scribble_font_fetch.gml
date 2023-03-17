@@ -25,7 +25,7 @@ function scribble_font_fetch(_font, _glyph_range)
     var _i = 0;
     repeat(_count)
     {
-        _font_add_cache.__fetch_unknown(_glyph_array[_i]);
+        _font_add_cache.__fetch_unknown(_glyph_array[_i], undefined);
         ++_i;
     }
 }
