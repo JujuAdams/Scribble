@@ -1550,7 +1550,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
         static _u_vBorderColour            = shader_get_uniform(__shd_scribble, "u_vBorderColour"           );
         static _u_fBorderThickness         = shader_get_uniform(__shd_scribble, "u_fBorderThickness"        );
-        static _u_vOutputSize              = shader_get_uniform(__shd_scribble, "u_vOutputSize"             );
         
         static _scribble_state        = __scribble_get_state();
         static _anim_properties_array = __scribble_get_anim_properties();
