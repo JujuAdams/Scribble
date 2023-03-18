@@ -180,6 +180,7 @@
     {"id":{"name":"obj_test_get_events","path":"objects/obj_test_get_events/obj_test_get_events.yy",},},
     {"id":{"name":"obj_test_get_glyph_data","path":"objects/obj_test_get_glyph_data/obj_test_get_glyph_data.yy",},},
     {"id":{"name":"obj_test_get_text","path":"objects/obj_test_get_text/obj_test_get_text.yy",},},
+    {"id":{"name":"obj_test_crop","path":"objects/obj_test_crop/obj_test_crop.yy",},},
     {"id":{"name":"obj_test_glyph_properties","path":"objects/obj_test_glyph_properties/obj_test_glyph_properties.yy",},},
     {"id":{"name":"obj_test_gradient","path":"objects/obj_test_gradient/obj_test_gradient.yy",},},
     {"id":{"name":"obj_test_hash_to_newline","path":"objects/obj_test_hash_to_newline/obj_test_hash_to_newline.yy",},},
