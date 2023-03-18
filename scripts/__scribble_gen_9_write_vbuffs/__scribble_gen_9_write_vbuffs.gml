@@ -300,17 +300,6 @@ function __scribble_gen_9_write_vbuffs()
                 
                 var _old_glyph_effect_flags = _glyph_effect_flags;
                 
-                if (!SCRIBBLE_COLORIZE_SPRITES)
-                {
-                    var _old_write_colour = _write_colour;
-                    _write_colour = _glyph_colour | 0xFFFFFF; //Make sure we use the general glyph alpha
-                    
-                    _glyph_effect_flags = ~_glyph_effect_flags;
-                    _glyph_effect_flags |= (1 << _effects_map[? "rainbow"]);
-                    _glyph_effect_flags |= (1 << _effects_map[? "cycle"  ]);
-                    _glyph_effect_flags = ~_glyph_effect_flags;
-                }
-                
                 if (_image_speed > 0) _glyph_effect_flags |= 0x01; //Set the sprite flag bit
                 
                 if (SCRIBBLE_ADD_SPRITE_ORIGINS)
@@ -385,7 +374,6 @@ function __scribble_gen_9_write_vbuffs()
                     ++_glyph_sprite_data;
                 }
                 
-                if (!SCRIBBLE_COLORIZE_SPRITES) _write_colour = _old_write_colour;
                 _glyph_effect_flags = _old_glyph_effect_flags;
                 _glyph_sprite_data = 0; //Reset this because every other type of glyph doesn't use this
                 
@@ -399,27 +387,7 @@ function __scribble_gen_9_write_vbuffs()
                 }
                 
                 __SCRIBBLE_VBUFF_READ_GLYPH;
-                
-                if (!SCRIBBLE_COLORIZE_SPRITES)
-                {
-                    var _old_write_colour       = _write_colour;
-                    var _old_glyph_effect_flags = _glyph_effect_flags;
-                    
-                    _write_colour = _write_colour | 0xFFFFFF;
-                    
-                    _glyph_effect_flags = ~_glyph_effect_flags;
-                    _glyph_effect_flags |= (1 << _effects_map[? "rainbow"]);
-                    _glyph_effect_flags |= (1 << _effects_map[? "cycle"  ]);
-                    _glyph_effect_flags = ~_glyph_effect_flags;
-                }
-                
                 __SCRIBBLE_VBUFF_WRITE_GLYPH;
-                
-                if (!SCRIBBLE_COLORIZE_SPRITES)
-                {
-                    _write_colour       = _old_write_colour;
-                    _glyph_effect_flags = _old_glyph_effect_flags;
-                }
             }
             else //Writing a standard glyph
             {

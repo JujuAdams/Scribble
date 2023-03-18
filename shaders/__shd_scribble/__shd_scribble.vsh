@@ -1,7 +1,6 @@
 //   @jujuadams   v8.0.0   2021-12-15
 precision highp float;
 
-#define BLEND_SPRITES true
 #define ANIM_INDEX  in_Normal.x
 
 const int MAX_EFFECTS = 11;
@@ -442,23 +441,23 @@ void main()
     
     
     
-    //Colour
-    v_vColour = in_Colour;
-    
-    if (CYCLE_FLAG > 0.5) v_vColour = cycle(ANIM_INDEX, v_vColour); //Cycle colours through the defined palette
-    v_vColour = rainbow(ANIM_INDEX, v_vColour); //Cycle colours for the rainbow effect
-    
-    //Apply the gradient effect
-    if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
-    
     //Second bit of u_fRenderFlags indicates if sprites should be RGB blended
     if ((mod(u_fRenderFlags/2.0, 2.0) < 1.0) && (SPRITE_FLAG > 0.5))
     {
         //If we're not RGB blending sprites but this *is* a sprite then only modify the alpha channel
-        v_vColour.a *= u_vColourBlend.a;
+        v_vColour = vec4(1.0, 1.0, 1.0, u_vColourBlend.a);
     }
     else
     {
+        //Colour
+        v_vColour = in_Colour;
+        
+        if (CYCLE_FLAG > 0.5) v_vColour = cycle(ANIM_INDEX, v_vColour); //Cycle colours through the defined palette
+        v_vColour = rainbow(ANIM_INDEX, v_vColour); //Cycle colours for the rainbow effect
+        
+        //Apply the gradient effect
+        if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
+        
         //And then blend with the blend colour/alpha
         v_vColour *= u_vColourBlend;
     }
