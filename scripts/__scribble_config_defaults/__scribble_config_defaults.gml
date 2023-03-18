@@ -33,8 +33,7 @@
 #macro SCRIBBLE_DEFAULT_CYCLE_SATURATION    180      //Default cycle colour saturation, from 0 to 255. Colour cycles using the HSV model to create colours
 #macro SCRIBBLE_DEFAULT_CYCLE_VALUE         255      //Default cycle colour value, from 0 to 255. Colour cycles using the HSV model to create colours
 
-#macro SCRIBBLE_DEFAULT_JITTER_MIN_SCALE    0.7      //Default jitter minimum scale. Unlike SCRIBBLE_DEFAULT_PULSE_SCALE this is not an offset
-#macro SCRIBBLE_DEFAULT_JITTER_MAX_SCALE    1.2      //Default jitter maximum scale. Unlike SCRIBBLE_DEFAULT_PULSE_SCALE this is not an offset
+#macro SCRIBBLE_DEFAULT_JITTER_SCALE        0.3      //Default jitter scale. A value of 0 will cause no visible scaling changes for a glyph
 #macro SCRIBBLE_DEFAULT_JITTER_SPEED        0.4      //Default jitter speed. Larger values cause glyph scales to fluctuate faster
 
 #macro SCRIBBLE_DEFAULT_BLINK_ON_DURATION   50       //Default duration that blinking text should stay on for, in milliseconds

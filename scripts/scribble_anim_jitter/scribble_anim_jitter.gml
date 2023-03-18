@@ -1,18 +1,15 @@
-/// @param minScale  Jitter minimum scale. Unlike SCRIBBLE_DEFAULT_PULSE_SCALE this is not an offset
-/// @param maxScale  Jitter maximum scale. Unlike SCRIBBLE_DEFAULT_PULSE_SCALE this is not an offset
-/// @param speed     Jitter speed. Larger values cause glyph scales to fluctuate faster
+/// @param scale  Jitter scale. A value of 0 will cause no visible scaling changes for a glyph
+/// @param speed  Jitter speed. Larger values cause glyph scales to fluctuate faster
 
-function scribble_anim_jitter(_min_scale, _max_scale, _speed)
+function scribble_anim_jitter(_scale, _speed)
 {
     static _array = __scribble_get_anim_properties();
     
-    if ((_min_scale != _array[__SCRIBBLE_ANIM.__JITTER_MINIMUM])
-    ||  (_max_scale != _array[__SCRIBBLE_ANIM.__JITTER_MAXIMUM])
-    ||  (_speed     != _array[__SCRIBBLE_ANIM.__JITTER_SPEED  ]))
+    if ((_scale != _array[__SCRIBBLE_ANIM.__JITTER_SCALE])
+    ||  (_speed != _array[__SCRIBBLE_ANIM.__JITTER_SPEED]))
     {
-        _array[@ __SCRIBBLE_ANIM.__JITTER_MINIMUM] = _min_scale;
-        _array[@ __SCRIBBLE_ANIM.__JITTER_MAXIMUM] = _max_scale;
-        _array[@ __SCRIBBLE_ANIM.__JITTER_SPEED  ] = _speed;
+        _array[@ __SCRIBBLE_ANIM.__JITTER_SCALE] = _scale;
+        _array[@ __SCRIBBLE_ANIM.__JITTER_SPEED] = _speed;
         
         static _scribble_state = __scribble_get_state();
         with(_scribble_state)

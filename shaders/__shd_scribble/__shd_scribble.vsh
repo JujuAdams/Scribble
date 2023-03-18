@@ -17,7 +17,7 @@ const int MAX_EFFECTS = 11;
 #define BLINK_FLAG    flagArray[ 9]
 #define SLANT_FLAG    flagArray[10]
 
-const int MAX_ANIM_FIELDS = 21;
+const int MAX_ANIM_FIELDS = 20;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
 #define WAVE_FREQUENCY    u_aDataFields[ 1]
 #define WAVE_SPEED        u_aDataFields[ 2]
@@ -35,10 +35,9 @@ const int MAX_ANIM_FIELDS = 21;
 #define CYCLE_SPEED       u_aDataFields[14]
 #define CYCLE_SATURATION  u_aDataFields[15]
 #define CYCLE_VALUE       u_aDataFields[16]
-#define JITTER_MINIMUM    u_aDataFields[17]
-#define JITTER_MAXIMUM    u_aDataFields[18]
-#define JITTER_SPEED      u_aDataFields[19]
-#define SLANT_GRADIENT    u_aDataFields[20]
+#define JITTER_SCALE      u_aDataFields[17]
+#define JITTER_SPEED      u_aDataFields[18]
+#define SLANT_GRADIENT    u_aDataFields[19]
 
 const int EASE_METHOD_COUNT = 15;
 #define EASE_NONE         0
@@ -186,7 +185,7 @@ vec2 jitter(vec2 position, vec2 centre, float animIndex)
     //Use some misc prime numbers to try to get a varied-looking jitter
     float delta = rand(vec2(animIndex/149.0 + floorTime/13.0, animIndex/727.0 - floorTime/331.0));
     
-    return scale(position, centre, mix(JITTER_MINIMUM, JITTER_MAXIMUM, delta));
+    return scale(position, centre, 1.0 + JITTER_SCALE*(2.0*delta - 1.0));
 }
 
 float filterSprite(float spriteData)
