@@ -1532,6 +1532,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _u_vRegionActive = shader_get_uniform(__shd_scribble, "u_vRegionActive");
         static _u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour");
         static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
+        static _u_fRenderFlags  = shader_get_uniform(__shd_scribble, "u_fRenderFlags" );
         static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
         
         static _u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble, "u_iTypewriterUseLines"     );
@@ -1601,15 +1602,20 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
-        if (_scribble_state.__shader_anim_desync)
+        with(_scribble_state)
         {
-            with(_scribble_state)
+            if (__shader_anim_desync)
             {
                 __shader_anim_desync  = false;
                 __shader_anim_default = __shader_anim_desync_to_default;
+                shader_set_uniform_f_array(_u_aDataFields, _anim_properties_array);
             }
             
-            shader_set_uniform_f_array(_u_aDataFields, _anim_properties_array);
+            if (__render_flag_desync)
+            {
+                __render_flag_desync = false;
+                shader_set_uniform_f(_u_fRenderFlags, __render_flag_value);
+            }
         }
         
         if (__bezier_using)

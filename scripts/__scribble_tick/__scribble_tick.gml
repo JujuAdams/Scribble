@@ -54,6 +54,7 @@ function __scribble_tick()
         {
             __shader_anim_desync            = true;
             __shader_anim_desync_to_default = true;
+            __render_flag_desync            = true;
         }
     }
     

@@ -17,7 +17,7 @@ const int MAX_EFFECTS = 11;
 #define BLINK_FLAG    flagArray[ 9]
 #define SLANT_FLAG    flagArray[10]
 
-const int MAX_ANIM_FIELDS = 20;
+const int MAX_DATA_FIELDS = 20;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
 #define WAVE_FREQUENCY    u_aDataFields[ 1]
 #define WAVE_SPEED        u_aDataFields[ 2]
@@ -76,6 +76,9 @@ attribute vec2  in_Colour2;      //{dX, dY}
 
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
+varying float v_fPremultiplyAlpha;
+
+uniform float u_fRenderFlags;                           //1
 
 uniform vec4  u_vColourBlend;                           //4
 uniform vec4  u_vGradient;                              //4
@@ -83,7 +86,7 @@ uniform vec2  u_vSkew;                                  //2
 uniform vec2  u_vRegionActive;                          //2
 uniform vec4  u_vRegionColour;                          //4
 uniform float u_fTime;                                  //1
-uniform float u_aDataFields[MAX_ANIM_FIELDS];           //21
+uniform float u_aDataFields[MAX_DATA_FIELDS];           //21
 uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
 
@@ -448,9 +451,10 @@ void main()
     //Apply the gradient effect
     if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
     
-    if (!BLEND_SPRITES && (SPRITE_FLAG > 0.5))
+    //Second bit of u_fRenderFlags indicates if sprites should be RGB blended
+    if ((mod(u_fRenderFlags/2.0, 2.0) < 1.0) && (SPRITE_FLAG > 0.5))
     {
-        //If we're not RGB blending sprites and this *is* a sprite then only modify the alpha channel
+        //If we're not RGB blending sprites but this *is* a sprite then only modify the alpha channel
         v_vColour.a *= u_vColourBlend.a;
     }
     else
@@ -529,4 +533,10 @@ void main()
     
     //Texture
     v_vTexcoord = in_TextureCoord;
+    
+    
+    
+    //Premultiplied Alpha
+    //First bit of u_fRenderFlags indicates if text should be PMA'd
+    v_fPremultiplyAlpha = mod(u_fRenderFlags, 2.0);
 }

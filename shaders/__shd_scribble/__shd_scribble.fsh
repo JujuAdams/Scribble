@@ -1,11 +1,11 @@
 //   @jujuadams   v8.0.0   2020-03-16
 precision highp float;
 
-#define PREMULTIPLY_ALPHA false
 #define USE_ALPHA_FOR_DISTANCE true
 
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
+varying float v_fPremultiplyAlpha;
 
 uniform float u_fSDF;
 uniform vec4  u_vFlash;
@@ -33,11 +33,6 @@ void main()
         //Standard rendering (standard fonts, spritefonts, sprites, surfaces)
         gl_FragColor = v_vColour*texture2D(gm_BaseTexture, v_vTexcoord);
         gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFlash.rgb, u_vFlash.a);
-        
-        if (PREMULTIPLY_ALPHA)
-        {
-            gl_FragColor.rgb *= gl_FragColor.a;
-        }
     }
     else
     {
@@ -72,10 +67,8 @@ void main()
         
         gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFlash.rgb, u_vFlash.a);
         gl_FragColor.a *= v_vColour.a;
-        
-        if (PREMULTIPLY_ALPHA)
-        {
-            gl_FragColor.rgb *= gl_FragColor.a;
-        }
     }
+    
+    //Apply premultiply alpha if necessary
+    gl_FragColor.rgb *= 1.0 - v_fPremultiplyAlpha*(1.0 + gl_FragColor.a);
 }
