@@ -1,0 +1,1 @@
+if (mouse_check_button(mb_left)) scroll_y = mouse_y - room_height/2;

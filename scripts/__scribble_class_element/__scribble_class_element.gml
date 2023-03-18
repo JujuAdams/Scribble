@@ -110,6 +110,10 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __crop_r = 0;
     __crop_b = 0;
     
+    __scroll_using = false;
+    __scroll_h = 0;
+    __scroll_y = 0;
+    
     __sdf_shadow_colour   = c_black;
     __sdf_shadow_alpha    = 0.0;
     __sdf_shadow_xoffset  = 0;
@@ -1102,6 +1106,50 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     
     
+    #region Cropping and Scrolling
+    
+    static crop = function(_left, _top, _right, _bottom)
+    {
+        __crop_using = true;
+        
+        __crop_l = _left;
+        __crop_t = _top;
+        __crop_r = _right;
+        __crop_b = _bottom;
+        
+        return self;
+    }
+    
+    static crop_reset = function()
+    {
+        __crop_using = false;
+        
+        __crop_l = 0;
+        __crop_t = 0;
+        __crop_r = 0;
+        __crop_b = 0;
+        
+        return self;
+    }
+    
+    static scroll = function(_offset, _height)
+    {
+        __scroll_using = true;
+        __scroll_h = _height;
+        
+        if (__scroll_y != _offset)
+        {
+            __scroll_y = _offset;
+            __matrix_dirty = true;
+        }
+        
+        return self;
+    }
+    
+    #endregion
+    
+    
+    
     #region Animation
     
     static animation_tick_speed = function()
@@ -1314,30 +1362,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         if (!is_array(_events)) return _empty_array;
         
         return _events;
-    }
-    
-    static crop = function(_left, _top, _right, _bottom)
-    {
-        __crop_using = true;
-        
-        __crop_l = _left;
-        __crop_t = _top;
-        __crop_r = _right;
-        __crop_b = _bottom;
-        
-        return self;
-    }
-    
-    static crop_reset = function()
-    {
-        __crop_using = false;
-        
-        __crop_l = 0;
-        __crop_t = 0;
-        __crop_r = 0;
-        __crop_b = 0;
-        
-        return self;
     }
     
     /// @param templateFunction/Array
@@ -1562,6 +1586,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _u_vRegionActive = shader_get_uniform(__shd_scribble, "u_vRegionActive");
         static _u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour");
         static _u_vCrop         = shader_get_uniform(__shd_scribble, "u_vCrop"        );
+        static _u_vScrollCrop   = shader_get_uniform(__shd_scribble, "u_vScrollCrop"  );
         static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
         static _u_fRenderFlags  = shader_get_uniform(__shd_scribble, "u_fRenderFlags" );
         static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
@@ -1597,7 +1622,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         shader_set_uniform_f(_u_fBlinkState, __animation_blink_state);
         
-        if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0) || __crop_using)
+        if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0) || __crop_using || __scroll_using)
         {
             _shader_uniforms_dirty = true;
             
@@ -1621,6 +1646,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
                                                    __region_blend);
             
             shader_set_uniform_f(_u_vCrop, __crop_l, __crop_t, __crop_r, __crop_b);
+            
+            var _model = __get_model(false);
+            shader_set_uniform_f(_u_vScrollCrop, _model.__min_y + __scroll_y - __scroll_h, _model.__min_y + __scroll_y);
         }
         else if (_shader_uniforms_dirty)
         {
@@ -1632,6 +1660,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             shader_set_uniform_f(_u_vRegionActive, 0, 0);
             shader_set_uniform_f(_u_vRegionColour, 0, 0, 0, 0);
             shader_set_uniform_f(_u_vCrop, 0, 0, 0, 0);
+            shader_set_uniform_f(_u_vScrollCrop, 0, 0);
         }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
@@ -1743,7 +1772,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __matrix_y       = _y;
             
             var _x_offset = -__origin_x;
-            var _y_offset = -__origin_y;
+            var _y_offset = -__origin_y - __scroll_y + __scroll_h;
             var _xscale   = __scale_to_box_scale*_model.__fit_scale*__post_xscale;
             var _yscale   = __scale_to_box_scale*_model.__fit_scale*__post_yscale;
             var _angle    = __post_angle;

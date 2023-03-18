@@ -4,6 +4,7 @@ precision highp float;
 #define USE_ALPHA_FOR_DISTANCE true
 
 varying vec2  v_vPosition;
+varying float v_fObjectY;
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
 varying float v_fPremultiplyAlpha;
@@ -11,6 +12,7 @@ varying float v_fPremultiplyAlpha;
 uniform float u_fSDF;
 uniform vec4  u_vFlash;
 uniform vec4  u_vCrop;
+uniform vec2  u_vScrollCrop;
 
 //SDF-only
 uniform vec2  u_vTexel;
@@ -30,7 +32,8 @@ float SDFValue(vec2 texcoord)
 
 void main()
 {
-    if ((length(u_vCrop) > 0.0) && ((v_vPosition.x < u_vCrop.x) || (v_vPosition.y < u_vCrop.y) || (v_vPosition.x > u_vCrop.z) || (v_vPosition.y > u_vCrop.w)))
+    if (((length(u_vCrop) > 0.0) && ((v_vPosition.x < u_vCrop.x) || (v_vPosition.y < u_vCrop.y) || (v_vPosition.x > u_vCrop.z) || (v_vPosition.y > u_vCrop.w)))
+    ||  ((length(u_vScrollCrop) > 0.0) && ((v_fObjectY < u_vScrollCrop.x) || (v_fObjectY > u_vScrollCrop.y))))
     {
         gl_FragColor = vec4(0.0);
     }

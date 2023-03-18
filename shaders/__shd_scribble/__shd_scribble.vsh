@@ -74,6 +74,7 @@ attribute vec2  in_TextureCoord; //UVs
 attribute vec2  in_Colour2;      //{dX, dY}
 
 varying vec2  v_vPosition;
+varying float v_fObjectY;
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
 varying float v_fPremultiplyAlpha;
@@ -526,6 +527,7 @@ void main()
     
     
     //Final positioning
+    v_fObjectY = pos.y;
     vec4 wsPos = gm_Matrices[MATRIX_WORLD]*vec4(pos, 0.0, 1.0);
     v_vPosition = wsPos.xy;
     gl_Position = gm_Matrices[MATRIX_PROJECTION]*gm_Matrices[MATRIX_VIEW]*wsPos;
