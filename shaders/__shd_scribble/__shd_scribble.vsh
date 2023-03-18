@@ -73,6 +73,7 @@ attribute vec4  in_Colour;       //Colour. This attribute is used for sprite dat
 attribute vec2  in_TextureCoord; //UVs
 attribute vec2  in_Colour2;      //{dX, dY}
 
+varying vec2  v_vPosition;
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
 varying float v_fPremultiplyAlpha;
@@ -85,7 +86,7 @@ uniform vec2  u_vSkew;                                  //2
 uniform vec2  u_vRegionActive;                          //2
 uniform vec4  u_vRegionColour;                          //4
 uniform float u_fTime;                                  //1
-uniform float u_aDataFields[MAX_DATA_FIELDS];           //21
+uniform float u_aDataFields[MAX_DATA_FIELDS];           //20
 uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
 
@@ -525,7 +526,9 @@ void main()
     
     
     //Final positioning
-    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(pos, 0.0, 1.0);
+    vec4 wsPos = gm_Matrices[MATRIX_WORLD]*vec4(pos, 0.0, 1.0);
+    v_vPosition = wsPos.xy;
+    gl_Position = gm_Matrices[MATRIX_PROJECTION]*gm_Matrices[MATRIX_VIEW]*wsPos;
     
     
     

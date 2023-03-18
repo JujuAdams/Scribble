@@ -1529,6 +1529,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _u_vGradient     = shader_get_uniform(__shd_scribble, "u_vGradient"    );
         static _u_vSkew         = shader_get_uniform(__shd_scribble, "u_vSkew"        );
         static _u_vFlash        = shader_get_uniform(__shd_scribble, "u_vFlash"       );
+        static _u_vClip         = shader_get_uniform(__shd_scribble, "u_vClip"        );
         static _u_vRegionActive = shader_get_uniform(__shd_scribble, "u_vRegionActive");
         static _u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour");
         static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
@@ -1600,6 +1601,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             shader_set_uniform_f(_u_vRegionActive, 0, 0);
             shader_set_uniform_f(_u_vRegionColour, 0, 0, 0, 0);
         }
+        
+        shader_set_uniform_f(_u_vClip, 20, 20, mouse_x, mouse_y);
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
         with(_scribble_state)
