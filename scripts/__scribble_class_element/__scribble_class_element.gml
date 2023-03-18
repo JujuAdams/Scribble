@@ -104,6 +104,12 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __padding_r = 0;
     __padding_b = 0;
     
+    __crop_using = false;
+    __crop_l = 0;
+    __crop_t = 0;
+    __crop_r = 0;
+    __crop_b = 0;
+    
     __sdf_shadow_colour   = c_black;
     __sdf_shadow_alpha    = 0.0;
     __sdf_shadow_xoffset  = 0;
@@ -1310,6 +1316,30 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return _events;
     }
     
+    static crop = function(_left, _top, _right, _bottom)
+    {
+        __crop_using = true;
+        
+        __crop_l = _left;
+        __crop_t = _top;
+        __crop_r = _right;
+        __crop_b = _bottom;
+        
+        return self;
+    }
+    
+    static crop_reset = function()
+    {
+        __crop_using = false;
+        
+        __crop_l = 0;
+        __crop_t = 0;
+        __crop_r = 0;
+        __crop_b = 0;
+        
+        return self;
+    }
+    
     /// @param templateFunction/Array
     /// @param [executeOnlyOnChange=true]
     static template = function(_template, _on_change = true)
@@ -1529,9 +1559,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _u_vGradient     = shader_get_uniform(__shd_scribble, "u_vGradient"    );
         static _u_vSkew         = shader_get_uniform(__shd_scribble, "u_vSkew"        );
         static _u_vFlash        = shader_get_uniform(__shd_scribble, "u_vFlash"       );
-        static _u_vClip         = shader_get_uniform(__shd_scribble, "u_vClip"        );
         static _u_vRegionActive = shader_get_uniform(__shd_scribble, "u_vRegionActive");
         static _u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour");
+        static _u_vCrop         = shader_get_uniform(__shd_scribble, "u_vCrop"        );
         static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
         static _u_fRenderFlags  = shader_get_uniform(__shd_scribble, "u_fRenderFlags" );
         static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
@@ -1567,7 +1597,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         shader_set_uniform_f(_u_fBlinkState, __animation_blink_state);
         
-        if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0))
+        if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0) || __crop_using)
         {
             _shader_uniforms_dirty = true;
             
@@ -1589,6 +1619,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
                                                    colour_get_green(__region_colour)/255,
                                                    colour_get_blue( __region_colour)/255,
                                                    __region_blend);
+            
+            shader_set_uniform_f(_u_vCrop, __crop_l, __crop_t, __crop_r, __crop_b);
         }
         else if (_shader_uniforms_dirty)
         {
@@ -1599,9 +1631,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             shader_set_uniform_f(_u_vFlash, 0, 0, 0, 0);
             shader_set_uniform_f(_u_vRegionActive, 0, 0);
             shader_set_uniform_f(_u_vRegionColour, 0, 0, 0, 0);
+            shader_set_uniform_f(_u_vCrop, 0, 0, 0, 0);
         }
-        
-        shader_set_uniform_f(_u_vClip, 20, 20, mouse_x, mouse_y);
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
         with(_scribble_state)

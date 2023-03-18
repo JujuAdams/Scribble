@@ -10,7 +10,7 @@ varying float v_fPremultiplyAlpha;
 
 uniform float u_fSDF;
 uniform vec4  u_vFlash;
-uniform vec4  u_vClip;
+uniform vec4  u_vCrop;
 
 //SDF-only
 uniform vec2  u_vTexel;
@@ -30,7 +30,7 @@ float SDFValue(vec2 texcoord)
 
 void main()
 {
-    if ((length(u_vClip) > 0.0) && ((v_vPosition.x < u_vClip.x) || (v_vPosition.y < u_vClip.y) || (v_vPosition.x > u_vClip.z) || (v_vPosition.y > u_vClip.w)))
+    if ((length(u_vCrop) > 0.0) && ((v_vPosition.x < u_vCrop.x) || (v_vPosition.y < u_vCrop.y) || (v_vPosition.x > u_vCrop.z) || (v_vPosition.y > u_vCrop.w)))
     {
         gl_FragColor = vec4(0.0);
     }
