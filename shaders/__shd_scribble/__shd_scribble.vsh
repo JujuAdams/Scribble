@@ -391,20 +391,19 @@ void main()
     float characterIndex = floor(in_Position.z / MAX_LINES);
     float lineIndex      = in_Position.z - characterIndex*MAX_LINES;
     
-    //MAX_EFFECTS = 11
-    float flagValue = in_Normal.z;
-    float edge;
-    edge = step(1024.0, flagValue); flagArray[10] = edge; flagValue -= 1024.0*edge;
-    edge = step( 512.0, flagValue); flagArray[ 9] = edge; flagValue -=  512.0*edge;
-    edge = step( 256.0, flagValue); flagArray[ 8] = edge; flagValue -=  256.0*edge;
-    edge = step( 128.0, flagValue); flagArray[ 7] = edge; flagValue -=  128.0*edge;
-    edge = step(  64.0, flagValue); flagArray[ 6] = edge; flagValue -=   64.0*edge;
-    edge = step(  32.0, flagValue); flagArray[ 5] = edge; flagValue -=   32.0*edge;
-    edge = step(  16.0, flagValue); flagArray[ 4] = edge; flagValue -=   16.0*edge;
-    edge = step(   8.0, flagValue); flagArray[ 3] = edge; flagValue -=    8.0*edge;
-    edge = step(   4.0, flagValue); flagArray[ 2] = edge; flagValue -=    4.0*edge;
-    edge = step(   2.0, flagValue); flagArray[ 1] = edge; flagValue -=    2.0*edge;
-    edge = step(   1.0, flagValue); flagArray[ 0] = edge; flagValue -=    1.0*edge;
+    ////MAX_EFFECTS = 11
+    //Unpack the effect flag value into an array of floats
+    flagArray[ 0] = step(1.0, mod(in_Normal.z,          2.0));
+    flagArray[ 1] = step(1.0, mod(in_Normal.z /    2.0, 2.0));
+    flagArray[ 2] = step(1.0, mod(in_Normal.z /    4.0, 2.0));
+    flagArray[ 3] = step(1.0, mod(in_Normal.z /    8.0, 2.0));
+    flagArray[ 4] = step(1.0, mod(in_Normal.z /   16.0, 2.0));
+    flagArray[ 5] = step(1.0, mod(in_Normal.z /   32.0, 2.0));
+    flagArray[ 6] = step(1.0, mod(in_Normal.z /   64.0, 2.0));
+    flagArray[ 7] = step(1.0, mod(in_Normal.z /  128.0, 2.0));
+    flagArray[ 8] = step(1.0, mod(in_Normal.z /  256.0, 2.0));
+    flagArray[ 9] = step(1.0, mod(in_Normal.z /  512.0, 2.0));
+    flagArray[10] = step(1.0, mod(in_Normal.z / 1024.0, 2.0));
     
     
     
