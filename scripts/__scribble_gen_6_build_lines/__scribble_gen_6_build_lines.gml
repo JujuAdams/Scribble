@@ -69,11 +69,17 @@ function __scribble_gen_6_build_lines()
         var _line_height_max       = __line_height_max;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
-        var _wrap_no_pages         = _element.__wrap_no_pages;
-        var _wrap_max_scale        = _element.__wrap_max_scale;
-        var _wrap_apply            = _element.__wrap_apply;
-        var _model_max_width       = (_wrap_apply? __model_max_width  : infinity);
-        var _model_max_height      = (_wrap_apply? __model_max_height : infinity);
+        var _wrap_no_pages         = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT);
+        var _wrap_max_scale        = _element.__layout_max_scale;
+        var _wrap_apply            = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__WRAP);
+        
+        if ((_element.__layout_width >= 0) && !is_infinity(_element.__layout_width)) //Turn off wrapping logic if we have an invalid width;
+        {
+            _wrap_apply = false;
+        }
+        
+        var _model_max_width  = (_wrap_apply? __model_max_width  : infinity);
+        var _model_max_height = (_wrap_apply? __model_max_height : infinity);
     }
     
     var _fit_to_box_iterations = 0;

@@ -451,6 +451,16 @@ function __scribble_matrix_inverse(_matrix)
 
 #region Enums
 
+enum __SCRIBBLE_LAYOUT
+{
+    __FREE,
+    __GUIDE,
+    __SCALE,
+    __WRAP,
+    __SCROLLABLE,
+    __FIT,
+}
+
 enum __SCRIBBLE_GLYPH
 {
     __CHARACTER,            // 0

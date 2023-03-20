@@ -68,12 +68,11 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __matrix_x       = undefined;
     __matrix_y       = undefined;
     
-    __wrap_apply      = false;
-    __wrap_max_width  = -1;
-    __wrap_max_height = -1;
-    __wrap_per_char   = false;
-    __wrap_no_pages   = false;
-    __wrap_max_scale  = 1;
+    __layout_type           = __SCRIBBLE_LAYOUT.__FREE;
+    __layout_width          = infinity;
+    __layout_height         = infinity;
+    __layout_character_wrap = false;
+    __layout_max_scale      = 1;
     
     __scale_to_box_dirty    = true;
     __scale_to_box_width    = 0;
@@ -406,11 +405,68 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
+    static layout_free = function()
+    {
+        if (__layout_type != __SCRIBBLE_LAYOUT.__FREE)
+        {
+            __layout_type = __SCRIBBLE_LAYOUT.__FREE;
+            
+            __model_cache_name_dirty = true;
+            __matrix_dirty           = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
+        }
+        
+        return self;
+    }
+    
+    /// @param width
+    static layout_guide = function(_width)
+    {
+        if (__layout_type != __SCRIBBLE_LAYOUT.__GUIDE)
+        {
+            __layout_type = __SCRIBBLE_LAYOUT.__GUIDE;
+            __model_cache_name_dirty = true;
+            __matrix_dirty           = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
+        }
+        
+        if ((__layout_width != _width)
+        ||  (__layout_height != -1)
+        ||  __layout_character_wrap
+        ||  (__layout_max_scale != 1))
+        {
+            __model_cache_name_dirty = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
+            
+            __layout_width  = _width;
+            __layout_height = -1;
+            __layout_character_wrap   = false;
+            __layout_max_scale  = 1;
+        }
+        
+        return self;
+        
+        return self;
+    }
+    
     /// @param maxWidth
     /// @param maxHeight
     /// @param [maximise=false]
-    static scale_to_box = function(_max_width, _max_height, _maximise = false)
+    static layout_scale = function(_max_width, _max_height, _maximise = false)
     {
+        if (__layout_type != __SCRIBBLE_LAYOUT.__SCALE)
+        {
+            __layout_type = __SCRIBBLE_LAYOUT.__SCALE;
+            
+            __model_cache_name_dirty = true;
+            __matrix_dirty           = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
+        }
+        
         _max_width  = ((_max_width  == undefined) || (_max_width  < 0))? 0 : _max_width;
         _max_height = ((_max_height == undefined) || (_max_height < 0))? 0 : _max_height;
         
@@ -428,25 +484,31 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param maxWidth
     /// @param [maxHeight=-1]
     /// @param [characterWrap=false]
-    static wrap = function(_wrap_max_width, _wrap_max_height = -1, _wrap_per_char = false)
+    static layout_wrap = function(_wrap_max_width, _wrap_max_height = -1, _wrap_per_char = false)
     {
-        if (!__wrap_apply
-        ||  (_wrap_max_width  != __wrap_max_width)
-        ||  (_wrap_max_height != __wrap_max_height)
-        ||  (_wrap_per_char   != __wrap_per_char)
-        ||  __wrap_no_pages
-        ||  (__wrap_max_scale != 1))
+        if (__layout_type != __SCRIBBLE_LAYOUT.__WRAP)
+        {
+            __layout_type = __SCRIBBLE_LAYOUT.__WRAP;
+            
+            __model_cache_name_dirty = true;
+            __matrix_dirty           = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
+        }
+        
+        if ((_wrap_max_width  != __layout_width)
+        ||  (_wrap_max_height != __layout_height)
+        ||  (_wrap_per_char   != __layout_character_wrap)
+        ||  (__layout_max_scale != 1))
         {
             __model_cache_name_dirty = true;
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
             
-            __wrap_apply      = ((_wrap_max_width >= 0) && !is_infinity(_wrap_max_width)); //Turn off wrapping logic if we have an invalid width
-            __wrap_max_width  = _wrap_max_width;
-            __wrap_max_height = _wrap_max_height;
-            __wrap_per_char   = _wrap_per_char;
-            __wrap_no_pages   = false;
-            __wrap_max_scale  = 1;
+            __layout_width          = _wrap_max_width;
+            __layout_height         = _wrap_max_height;
+            __layout_character_wrap = _wrap_per_char;
+            __layout_max_scale      = 1;
         }
         
         return self;
@@ -456,53 +518,89 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param maxHeight
     /// @param [characterWrap=false]
     /// @param [maxScale=1]
-    static fit_to_box = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false, _wrap_max_scale = 1)
+    static layout_fit = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false, _wrap_max_scale = 1)
     {
-        if (!__wrap_apply
-        ||  (_wrap_max_width  != __wrap_max_width)
-        ||  (_wrap_max_height != __wrap_max_height)
-        ||  (_wrap_per_char   != __wrap_per_char)
-        ||  !__wrap_no_pages
-        ||  (_wrap_max_scale  != __wrap_max_scale))
+        if (__layout_type != __SCRIBBLE_LAYOUT.__FIT)
+        {
+            __layout_type = __SCRIBBLE_LAYOUT.__FIT;
+            
+            __model_cache_name_dirty = true;
+            __matrix_dirty           = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
+        }
+        
+        if ((_wrap_max_width  != __layout_width)
+        ||  (_wrap_max_height != __layout_height)
+        ||  (_wrap_per_char   != __layout_character_wrap)
+        ||  (_wrap_max_scale  != __layout_max_scale))
         {
             __model_cache_name_dirty = true;
             __matrix_dirty           = true; //By changing the .fit_to_box() properties we'll very likely change the __fit_scale variable used to shape text in the world matrix
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
             
-            __wrap_apply      = ((_wrap_max_width >= 0) && !is_infinity(_wrap_max_width)); //Turn off wrapping logic if we have an invalid width
-            __wrap_max_width  = _wrap_max_width;
-            __wrap_max_height = _wrap_max_height;
-            __wrap_per_char   = _wrap_per_char;
-            __wrap_no_pages   = true;
-            __wrap_max_scale  = _wrap_max_scale;
+            __layout_width          = _wrap_max_width;
+            __layout_height         = _wrap_max_height;
+            __layout_character_wrap = _wrap_per_char;
+            __layout_max_scale      = _wrap_max_scale;
         }
         
         return self;
     }
     
-    static pin_guide_width = function(_width)
+    /// @param maxWidth
+    /// @param maxHeight
+    /// @param [characterWrap=false]
+    static layout_scrollable = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false)
     {
-        if (__wrap_apply
-        ||  (__wrap_max_width != _width)
-        ||  (__wrap_max_height != -1)
-        ||  __wrap_per_char
-        ||  __wrap_no_pages
-        ||  (__wrap_max_scale != 1))
+        if (__layout_type != __SCRIBBLE_LAYOUT.__SCROLLABLE)
+        {
+            __layout_type = __SCRIBBLE_LAYOUT.__SCROLLABLE;
+            
+            __model_cache_name_dirty = true;
+            __matrix_dirty           = true;
+            __bbox_dirty             = true;
+            __scale_to_box_dirty     = true;
+        }
+        
+        if ((_wrap_max_width  != __layout_width)
+        ||  (_wrap_max_height != __layout_height)
+        ||  (_wrap_per_char   != __layout_character_wrap)
+        ||  (__layout_max_scale != 1))
         {
             __model_cache_name_dirty = true;
+            __matrix_dirty           = true; //By changing the .fit_to_box() properties we'll very likely change the __fit_scale variable used to shape text in the world matrix
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
             
-            __wrap_apply      = false; //Turn off wrapping entirely
-            __wrap_max_width  = _width;
-            __wrap_max_height = -1;
-            __wrap_per_char   = false;
-            __wrap_no_pages   = false;
-            __wrap_max_scale  = 1;
+            __layout_width          = _wrap_max_width;
+            __layout_height         = _wrap_max_height;
+            __layout_character_wrap = _wrap_per_char;
+            __layout_max_scale      = 1;
         }
         
         return self;
+    }
+    
+    static scale_to_box = function()
+    {
+        __scribble_error(".scale_to_box() has been replaced by .layout_scale()");
+    }
+    
+    static wrap = function()
+    {
+        __scribble_error(".scale_to_box() has been replaced by .layout_wrap()");
+    }
+    
+    static fit_to_box = function()
+    {
+        __scribble_error(".fit_to_box() has been replaced by .layout_fit()");
+    }
+    
+    static pin_guide_width = function()
+    {
+        __scribble_error(".pin_guide_width() has been replaced by .layout_guide()");
     }
     
     /// @param min
@@ -1483,19 +1581,19 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         switch(__starting_halign)
         {
             case fa_left:                             break;
-            case fa_center: _x -= __wrap_max_width/2; break;
-            case fa_right:  _x -= __wrap_max_width;   break;
+            case fa_center: _x -= __layout_width/2; break;
+            case fa_right:  _x -= __layout_width;   break;
         }
         
         switch(__starting_valign)
         {
             case fa_top:                               break;
-            case fa_middle: _y -= __wrap_max_height/2; break;
-            case fa_bottom: _y -= __wrap_max_height;   break;
+            case fa_middle: _y -= __layout_height/2; break;
+            case fa_bottom: _y -= __layout_height;   break;
         }
         
-        draw_rectangle(_x, _y, _x + __wrap_max_width, _y + __wrap_max_height, true);
-        draw_rectangle(_x+1, _y+1, _x-1 + __wrap_max_width, _y-1 + __wrap_max_height, true);
+        draw_rectangle(_x, _y, _x + __layout_width, _y + __layout_height, true);
+        draw_rectangle(_x+1, _y+1, _x-1 + __layout_width, _y-1 + __layout_height, true);
         
         draw_set_colour(_oldColour);
         
@@ -1535,12 +1633,11 @@ function __scribble_class_element(_string, _unique_id = "") constructor
                 buffer_write(_buffer, buffer_text, string(__line_height_min));       buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__line_height_max));       buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__line_spacing   ));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_apply     ));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_max_width  - (__padding_l + __padding_r))); buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_max_height - (__padding_t + __padding_b))); buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_per_char  ));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_no_pages  ));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_max_scale ));       buffer_write(_buffer, buffer_u8,  0x3A);
+                buffer_write(_buffer, buffer_text, string(__layout_type    ));       buffer_write(_buffer, buffer_u8,  0x3A);
+                buffer_write(_buffer, buffer_text, string(__layout_width  - (__padding_l + __padding_r))); buffer_write(_buffer, buffer_u8,  0x3A);
+                buffer_write(_buffer, buffer_text, string(__layout_height - (__padding_t + __padding_b))); buffer_write(_buffer, buffer_u8,  0x3A);
+                buffer_write(_buffer, buffer_text, string(__layout_character_wrap)); buffer_write(_buffer, buffer_u8,  0x3A);
+                buffer_write(_buffer, buffer_text, string(__layout_max_scale ));     buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__bezier_array[0]));       buffer_write(_buffer, buffer_u8,  0x2C); //comma
                 buffer_write(_buffer, buffer_text, string(__bezier_array[1]));       buffer_write(_buffer, buffer_u8,  0x2C);
                 buffer_write(_buffer, buffer_text, string(__bezier_array[2]));       buffer_write(_buffer, buffer_u8,  0x2C);

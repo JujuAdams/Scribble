@@ -52,7 +52,7 @@ function __scribble_gen_4_build_words()
         var _overall_bidi = __overall_bidi;
     }
     
-    var _wrap_per_char = _element.__wrap_per_char; //TODO - Optimize by checking outside the loop
+    var _wrap_per_char = _element.__layout_character_wrap; //TODO - Optimize by checking outside the loop
     
     var _word_count            = 0;
     var _word_width            = 0;
