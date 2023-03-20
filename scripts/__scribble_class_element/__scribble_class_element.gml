@@ -522,10 +522,10 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __matrix_dirty           = true; //By changing the .fit_to_box() properties we'll very likely change the __fit_scale variable used to shape text in the world matrix
             __bbox_dirty             = true;
             
-            __layout_width          = _wrap_max_width;
-            __layout_height         = _wrap_max_height;
-            __layout_character_wrap = _wrap_per_char;
-            __layout_max_scale      = _wrap_max_scale;
+            __layout_width          = _max_width;
+            __layout_height         = _max_height;
+            __layout_character_wrap = _character_wrap;
+            __layout_max_scale      = _max_scale;
         }
         
         return self;
@@ -534,12 +534,12 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param maxWidth
     /// @param maxHeight
     /// @param [characterWrap=false]
-    static layout_scrollable = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false)
+    static layout_scrollable = function(_max_width, _max_height, _character_wrap = false)
     {
         if ((__layout_type != __SCRIBBLE_LAYOUT.__SCROLLABLE)
-        ||  (_wrap_max_width  != __layout_width)
-        ||  (_wrap_max_height != __layout_height)
-        ||  (_wrap_per_char   != __layout_character_wrap)
+        ||  (_max_width      != __layout_width)
+        ||  (_max_height     != __layout_height)
+        ||  (_character_wrap != __layout_character_wrap)
         ||  (__layout_max_scale != 1))
         {
             if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
@@ -549,9 +549,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __model_cache_name_dirty = true;
             __bbox_dirty             = true;
             
-            __layout_width          = _wrap_max_width;
-            __layout_height         = _wrap_max_height;
-            __layout_character_wrap = _wrap_per_char;
+            __layout_width          = _max_width;
+            __layout_height         = _max_height;
+            __layout_character_wrap = _character_wrap;
             __layout_max_scale      = 1;
         }
         
