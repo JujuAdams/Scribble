@@ -1250,56 +1250,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return _model.__has_animation;
     }
     
-    static animation_sync = function()
-    {
-        __scribble_error(".animation_sync() has been removed\nPlease get in touch if this feature is essential for your project");
-    }
-    
-    static animation_wave = function()
-    {
-        __scribble_error(".animation_wave() has been replaced by scribble_anim_wave()");
-    }
-    
-    static animation_shake = function()
-    {
-        __scribble_error(".animation_wave() has been replaced by scribble_anim_shake()");
-    }
-    
-    static animation_rainbow = function()
-    {
-        __scribble_error(".animation_rainbow() has been replaced by scribble_anim_rainbow()");
-    }
-    
-    static animation_wobble = function()
-    {
-        __scribble_error(".animation_wobble() has been replaced by scribble_anim_wobble()");
-    }
-    
-    static animation_pulse = function()
-    {
-        __scribble_error(".animation_pulse() has been replaced by scribble_anim_pulse()");
-    }
-    
-    static animation_wheel = function()
-    {
-        __scribble_error(".animation_wheel() has been replaced by scribble_anim_wheel()");
-    }
-    
-    static animation_cycle = function()
-    {
-        __scribble_error(".animation_cycle() has been replaced by scribble_anim_cycle()");
-    }
-    
-    static animation_jitter = function()
-    {
-        __scribble_error(".animation_jitter() has been replaced by scribble_anim_jitter()");
-    }
-    
-    static animation_blink = function()
-    {
-        __scribble_error(".animation_blink() has been replaced by scribble_anim_blink()");
-    }
-    
     #endregion
     
     
