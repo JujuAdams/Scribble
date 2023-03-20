@@ -73,12 +73,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __layout_height         = infinity;
     __layout_character_wrap = false;
     __layout_max_scale      = 1;
-    
-    __scale_to_box_dirty    = true;
-    __scale_to_box_width    = 0;
-    __scale_to_box_height   = 0;
-    __scale_to_box_maximise = false;
-    __scale_to_box_scale    = undefined;
+    __layout_scale_dirty    = true;
+    __layout_scale          = undefined;
     
     __line_height_min = -1;
     __line_height_max = -1;
@@ -409,12 +405,17 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     {
         if (__layout_type != __SCRIBBLE_LAYOUT.__FREE)
         {
+            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
+            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
             __layout_type = __SCRIBBLE_LAYOUT.__FREE;
             
             __model_cache_name_dirty = true;
-            __matrix_dirty           = true;
             __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
+            
+            __layout_width          = infinity;
+            __layout_height         = infinity;
+            __layout_character_wrap = false;
+            __layout_max_scale      = 1;
         }
         
         return self;
@@ -423,59 +424,53 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param width
     static layout_guide = function(_width)
     {
-        if (__layout_type != __SCRIBBLE_LAYOUT.__GUIDE)
-        {
-            __layout_type = __SCRIBBLE_LAYOUT.__GUIDE;
-            __model_cache_name_dirty = true;
-            __matrix_dirty           = true;
-            __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
-        }
-        
-        if ((__layout_width != _width)
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__GUIDE)
+        ||  (__layout_width != _width)
         ||  (__layout_height != -1)
         ||  __layout_character_wrap
         ||  (__layout_max_scale != 1))
         {
+            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
+            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
+            __layout_type = __SCRIBBLE_LAYOUT.__GUIDE;
+            
             __model_cache_name_dirty = true;
             __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
             
-            __layout_width  = _width;
-            __layout_height = -1;
-            __layout_character_wrap   = false;
-            __layout_max_scale  = 1;
+            __layout_width          = _width;
+            __layout_height         = infinity;
+            __layout_character_wrap = false;
+            __layout_max_scale      = 1;
         }
-        
-        return self;
         
         return self;
     }
     
     /// @param maxWidth
     /// @param maxHeight
-    /// @param [maximise=false]
-    static layout_scale = function(_max_width, _max_height, _maximise = false)
+    /// @param [maxScale=1]
+    static layout_scale = function(_max_width = 1, _max_height = 1, _max_scale = 1)
     {
-        if (__layout_type != __SCRIBBLE_LAYOUT.__SCALE)
+        _max_width  = max(1, _max_width );
+        _max_height = max(1, _max_height);
+        
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__SCALE)
+        ||  (_max_width  != __layout_width)
+        ||  (_max_height != __layout_height)
+        ||  __layout_character_wrap
+        ||  (_max_scale  != __layout_max_scale))
         {
+            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT) __matrix_dirty = true;
             __layout_type = __SCRIBBLE_LAYOUT.__SCALE;
             
             __model_cache_name_dirty = true;
-            __matrix_dirty           = true;
             __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
-        }
-        
-        _max_width  = ((_max_width  == undefined) || (_max_width  < 0))? 0 : _max_width;
-        _max_height = ((_max_height == undefined) || (_max_height < 0))? 0 : _max_height;
-        
-        if ((_max_width != __scale_to_box_width) || (_max_height != __scale_to_box_height) || (_maximise != __scale_to_box_maximise))
-        {
-            __scale_to_box_width    = _max_width;
-            __scale_to_box_height   = _max_height;
-            __scale_to_box_maximise = _maximise;
-            __scale_to_box_dirty    = true;
+            __layout_scale_dirty     = true;
+            
+            __layout_width          = _max_width;
+            __layout_height         = _max_height;
+            __layout_character_wrap = false;
+            __layout_max_scale      = _max_scale;
         }
         
         return self;
@@ -484,30 +479,24 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param maxWidth
     /// @param [maxHeight=-1]
     /// @param [characterWrap=false]
-    static layout_wrap = function(_wrap_max_width, _wrap_max_height = -1, _wrap_per_char = false)
+    static layout_wrap = function(_max_width, _max_height = -1, _character_wrap = false)
     {
-        if (__layout_type != __SCRIBBLE_LAYOUT.__WRAP)
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__WRAP)
+        ||  (_max_width         != __layout_width)
+        ||  (_max_height        != __layout_height)
+        ||  (_character_wrap    != __layout_character_wrap)
+        ||  (__layout_max_scale != 1))
         {
+            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
+            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
             __layout_type = __SCRIBBLE_LAYOUT.__WRAP;
             
             __model_cache_name_dirty = true;
-            __matrix_dirty           = true;
             __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
-        }
-        
-        if ((_wrap_max_width  != __layout_width)
-        ||  (_wrap_max_height != __layout_height)
-        ||  (_wrap_per_char   != __layout_character_wrap)
-        ||  (__layout_max_scale != 1))
-        {
-            __model_cache_name_dirty = true;
-            __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
             
-            __layout_width          = _wrap_max_width;
-            __layout_height         = _wrap_max_height;
-            __layout_character_wrap = _wrap_per_char;
+            __layout_width          = _max_width;
+            __layout_height         = _max_height;
+            __layout_character_wrap = _character_wrap;
             __layout_max_scale      = 1;
         }
         
@@ -518,27 +507,20 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param maxHeight
     /// @param [characterWrap=false]
     /// @param [maxScale=1]
-    static layout_fit = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false, _wrap_max_scale = 1)
+    static layout_fit = function(_max_width, _max_height, _character_wrap = false, _max_scale = 1)
     {
-        if (__layout_type != __SCRIBBLE_LAYOUT.__FIT)
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__FIT)
+        ||  (_max_width      != __layout_width)
+        ||  (_max_height     != __layout_height)
+        ||  (_character_wrap != __layout_character_wrap)
+        ||  (_max_scale      != __layout_max_scale))
         {
+            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
             __layout_type = __SCRIBBLE_LAYOUT.__FIT;
             
             __model_cache_name_dirty = true;
-            __matrix_dirty           = true;
-            __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
-        }
-        
-        if ((_wrap_max_width  != __layout_width)
-        ||  (_wrap_max_height != __layout_height)
-        ||  (_wrap_per_char   != __layout_character_wrap)
-        ||  (_wrap_max_scale  != __layout_max_scale))
-        {
-            __model_cache_name_dirty = true;
             __matrix_dirty           = true; //By changing the .fit_to_box() properties we'll very likely change the __fit_scale variable used to shape text in the world matrix
             __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
             
             __layout_width          = _wrap_max_width;
             __layout_height         = _wrap_max_height;
@@ -554,25 +536,18 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param [characterWrap=false]
     static layout_scrollable = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false)
     {
-        if (__layout_type != __SCRIBBLE_LAYOUT.__SCROLLABLE)
-        {
-            __layout_type = __SCRIBBLE_LAYOUT.__SCROLLABLE;
-            
-            __model_cache_name_dirty = true;
-            __matrix_dirty           = true;
-            __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
-        }
-        
-        if ((_wrap_max_width  != __layout_width)
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__SCROLLABLE)
+        ||  (_wrap_max_width  != __layout_width)
         ||  (_wrap_max_height != __layout_height)
         ||  (_wrap_per_char   != __layout_character_wrap)
         ||  (__layout_max_scale != 1))
         {
+            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
+            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
+            __layout_type = __SCRIBBLE_LAYOUT.__SCROLLABLE;
+            
             __model_cache_name_dirty = true;
-            __matrix_dirty           = true; //By changing the .fit_to_box() properties we'll very likely change the __fit_scale variable used to shape text in the world matrix
             __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
             
             __layout_width          = _wrap_max_width;
             __layout_height         = _wrap_max_height;
@@ -641,7 +616,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __model_cache_name_dirty = true;
             __matrix_dirty           = true;
             __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
+            __layout_scale_dirty     = true;
             
             __padding_l = _l;
             __padding_t = _t;
@@ -843,8 +818,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
                 return;
             }
             
-            var _xscale = __scale_to_box_scale*_model.__fit_scale*__post_xscale;
-            var _yscale = __scale_to_box_scale*_model.__fit_scale*__post_yscale;
+            var _xscale = __layout_scale*_model.__fit_scale*__post_xscale;
+            var _yscale = __layout_scale*_model.__fit_scale*__post_yscale;
             
             //Left/top padding is baked into the model
             var _bbox = _model.__get_bbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __page : undefined, __padding_l, __padding_t, __padding_r, __padding_b);
@@ -997,8 +972,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         }
         
         __update_bbox_matrix();
-        var _xscale = __scale_to_box_scale*_model.__fit_scale*__post_xscale;
-        var _yscale = __scale_to_box_scale*_model.__fit_scale*__post_yscale;
+        var _xscale = __layout_scale*_model.__fit_scale*__post_xscale;
+        var _yscale = __layout_scale*_model.__fit_scale*__post_yscale;
         
         if ((_xscale == 1) && (_yscale == 1) && (__post_angle == 0))
         {
@@ -1620,7 +1595,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             {
                 __model_cache_name_dirty = false;
                 __bbox_dirty             = true;
-                __scale_to_box_dirty     = true; //The dimensions of the text element might change as a result of a model change
+                __layout_scale_dirty     = true; //The dimensions of the text element might change as a result of a model change
                 
                 static _buffer = __scribble_get_buffer_a();
                 buffer_seek(_buffer, buffer_seek_start, 0);
@@ -1836,21 +1811,28 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     static __update_scale_to_box_scale = function()
     {
-        if (!__scale_to_box_dirty) return;
-        __scale_to_box_dirty = false;
+        if (!__layout_scale_dirty) return;
+        __layout_scale_dirty = false;
         
+        var _previous_scale_to_box_scale = __layout_scale;
         var _model = __get_model(true);
         
         var _xscale = 1.0;
         var _yscale = 1.0;
-        if (__scale_to_box_width  > 0) _xscale = __scale_to_box_width  / (_model.__get_width()  + __padding_l + __padding_r);
-        if (__scale_to_box_height > 0) _yscale = __scale_to_box_height / (_model.__get_height() + __padding_t + __padding_b);
         
-        var _previous_scale_to_box_scale = __scale_to_box_scale;
-        __scale_to_box_scale = min(_xscale, _yscale);
-        if (!__scale_to_box_maximise) __scale_to_box_scale = min(1, __scale_to_box_scale);
+        if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE)
+        {
+            if (__layout_width  > 0) _xscale = __layout_width  / (_model.__get_width()  + __padding_l + __padding_r);
+            if (__layout_height > 0) _yscale = __layout_height / (_model.__get_height() + __padding_t + __padding_b);
+            
+            __layout_scale = min(__layout_max_scale, _xscale, _yscale);
+        }
+        else
+        {
+            __layout_scale = 1;
+        }
         
-        if (__scale_to_box_scale != _previous_scale_to_box_scale)
+        if (__layout_scale != _previous_scale_to_box_scale)
         {
             __matrix_dirty = true;
             __bbox_dirty   = true;
@@ -1870,8 +1852,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             
             var _x_offset = -__origin_x;
             var _y_offset = -__origin_y - __scroll_y + __scroll_h;
-            var _xscale   = __scale_to_box_scale*_model.__fit_scale*__post_xscale;
-            var _yscale   = __scale_to_box_scale*_model.__fit_scale*__post_yscale;
+            var _xscale   = __layout_scale*_model.__fit_scale*__post_xscale;
+            var _yscale   = __layout_scale*_model.__fit_scale*__post_yscale;
             var _angle    = __post_angle;
             
             if (!_model.__pad_bbox_l) _x_offset += __padding_l;
