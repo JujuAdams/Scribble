@@ -30,9 +30,7 @@ function __scribble_gen_7_build_pages()
         var _line_spacing_multiply = __line_spacing_multiply;
     }
     
-    var _wrap_no_pages = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT);
-    
-    var _simulated_model_height = _wrap_no_pages? infinity : (_model_max_height / __fit_scale);
+    var _simulated_model_height = (_element.__layout_type != __SCRIBBLE_LAYOUT.__FIT)? infinity : (_model_max_height / __fit_scale);
     
     var _model_height = 0;
     

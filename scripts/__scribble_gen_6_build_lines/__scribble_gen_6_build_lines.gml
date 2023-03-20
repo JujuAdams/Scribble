@@ -58,28 +58,30 @@ function __scribble_gen_6_build_lines()
     static _generator_state = __scribble_get_generator_state();
     with(_generator_state)
     {
-        var _glyph_grid            = __glyph_grid;
-        var _word_grid             = __word_grid;
-        var _line_grid             = __line_grid;
-        var _control_grid          = __control_grid;
-        var _temp_grid             = __temp_grid;
-        var _element               = __element;
-        var _word_count            = __word_count;
-        var _line_height_min       = __line_height_min;
-        var _line_height_max       = __line_height_max;
-        var _line_spacing_add      = __line_spacing_add;
-        var _line_spacing_multiply = __line_spacing_multiply;
-        var _wrap_no_pages         = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT);
-        var _wrap_max_scale        = _element.__layout_max_scale;
-        var _wrap_apply            = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__WRAP);
+        var _glyph_grid             = __glyph_grid;
+        var _word_grid              = __word_grid;
+        var _line_grid              = __line_grid;
+        var _control_grid           = __control_grid;
+        var _temp_grid              = __temp_grid;
+        var _element                = __element;
+        var _word_count             = __word_count;
+        var _line_height_min        = __line_height_min;
+        var _line_height_max        = __line_height_max;
+        var _line_spacing_add       = __line_spacing_add;
+        var _line_spacing_multiply  = __line_spacing_multiply;
+        var _layout_fit             = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT);
+        var _layout_max_scale       = _element.__layout_max_scale;
+        var _layout_apply           = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__WRAP);
+        var _layout_page_separation = _element.__layout_page_separation;
+        var _layout_scrollable      = (_element.__layout_type == __SCRIBBLE_LAYOUT.__SCROLLABLE);
         
         if ((_element.__layout_width >= 0) && !is_infinity(_element.__layout_width)) //Turn off wrapping logic if we have an invalid width;
         {
-            _wrap_apply = false;
+            _layout_apply = false;
         }
         
-        var _model_max_width  = (_wrap_apply? __model_max_width  : infinity);
-        var _model_max_height = (_wrap_apply? __model_max_height : infinity);
+        var _model_max_width  = (_layout_apply? __model_max_width  : infinity);
+        var _model_max_height = (_layout_apply? __model_max_height : infinity);
     }
     
     var _fit_to_box_iterations = 0;
@@ -163,7 +165,7 @@ function __scribble_gen_6_build_lines()
                     if (_word_width >= _simulated_model_max_width)
                     {
                         _word_broken = true;
-                        if (_wrap_no_pages) break;
+                        if (_layout_fit) break;
                         
                         #region Emergency! We're going to have to retroactively implement per-glyph line wrapping
                         
@@ -291,7 +293,17 @@ function __scribble_gen_6_build_lines()
                         //Pagebreak after this word
                         var _line_word_end = _i;
                         __SCRIBBLE_GEN_LINE_END;
-                        _line_y = 0;
+                        
+                        //In scrollable mode, don't start new pages back at the top. Instead keep adding text downwards!
+                        if (_layout_scrollable)
+                        {
+                            _line_y += _layout_page_separation;
+                        }
+                        else
+                        {
+                            _line_y = 0;
+                        }
+                        
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
                         
@@ -315,7 +327,7 @@ function __scribble_gen_6_build_lines()
         }
         
         //If we're not running .fit_to_box() behaviour then escape now!
-        if (!_wrap_no_pages || (SCRIBBLE_FIT_TO_BOX_ITERATIONS <= 1)) break;
+        if (!_layout_fit || (SCRIBBLE_FIT_TO_BOX_ITERATIONS <= 1)) break;
         
         
         
@@ -324,7 +336,7 @@ function __scribble_gen_6_build_lines()
         if ((_line_max_y < _simulated_model_max_height) && !_word_broken)
         {
             //The text is already small enough to fit (and none of the words have been split in the middle)
-            if (__fit_scale >= _wrap_max_scale) break;
+            if (__fit_scale >= _layout_max_scale) break;
             var _lower_limit = __fit_scale;
         }
         else
@@ -343,7 +355,7 @@ function __scribble_gen_6_build_lines()
         }
         else if (_upper_limit == undefined)
         {
-            __fit_scale = min(_wrap_max_scale, 2*__fit_scale);
+            __fit_scale = min(_layout_max_scale, 2*__fit_scale);
         }
         else
         {
@@ -378,7 +390,7 @@ function __scribble_gen_6_build_lines()
     
     //Trim the whitespace at the end of lines to fit into the desired width
     //This helps the glyph position getter return more visually pleasing results by ensuring the RHS of the glyph doesn't exceed the wrapping width
-    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && _wrap_apply)
+    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && _layout_apply)
     {
         var _line = 0;
         repeat(_line_count)
