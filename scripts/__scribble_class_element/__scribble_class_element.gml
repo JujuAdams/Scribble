@@ -1225,11 +1225,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     #region Animation
     
-    static animation_tick_speed = function()
-    {
-        __scribble_error(".animation_tick_speed() has been replaced by .animation_speed()");
-    }
-    
     static animation_speed = function(_speed)
     {
         __animation_speed = _speed;
