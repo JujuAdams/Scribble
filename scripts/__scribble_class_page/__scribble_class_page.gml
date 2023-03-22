@@ -34,6 +34,11 @@ function __scribble_class_page() constructor
     __line_events  = {};
     __region_array = [];
     
+    __line_y    = [];
+    __section_y = [];
+    
+    
+    
     static __submit = function(_double_draw)
     {
         static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );

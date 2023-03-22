@@ -457,7 +457,7 @@ enum __SCRIBBLE_LAYOUT
     __GUIDE,
     __SCALE,
     __WRAP,
-    __SCROLLABLE,
+    __SECTION,
     __FIT,
 }
 
@@ -662,15 +662,15 @@ enum __SCRIBBLE_GEN_STRETCH
 
 enum __SCRIBBLE_GEN_LINE
 {
-    __X,                  //0
-    __Y,                  //1
-    __WORD_START,         //2
-    __WORD_END,           //3
-    __WIDTH,              //4
-    __HEIGHT,             //5
-    __HALIGN,             //6
-    __STARTS_MANUAL_PAGE, //7
-    __SIZE,               //8
+    __X,          //0
+    __Y,          //1
+    __WORD_START, //2
+    __WORD_END,   //3
+    __WIDTH,      //4
+    __HEIGHT,     //5
+    __HALIGN,     //6
+    __BREAK_TYPE, //7
+    __SIZE,       //8
 }
 
 #endregion

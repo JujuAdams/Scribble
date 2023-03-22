@@ -152,6 +152,7 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "/indent"           ] = 37;
         _command_tag_lookup_accelerator_map[? "offset"            ] = 38;
         _command_tag_lookup_accelerator_map[? "/offset"           ] = 39;
+        _command_tag_lookup_accelerator_map[? "/section"          ] = 40;
     }
     
     #endregion
@@ -468,11 +469,11 @@ function __scribble_gen_2_parser()
                         break;
                     
                         #endregion
-                    
+                        
                         // [/page]
                         case 6:
                             //Add a null glyph to our grid
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x00;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x01;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
@@ -482,11 +483,31 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
-                        
+                            
                             ++_glyph_count;
                             _glyph_prev_arabic_join_next = false;
                             _glyph_prev_prev = _glyph_prev;
-                            _glyph_prev = 0x00;
+                            _glyph_prev = 0x01;
+                        break;
+                        
+                        // [/section]
+                        case 40:
+                            //Add a null glyph to our grid
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x02;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = 0;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _font_line_height;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _font_line_height;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = 0;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
+                            
+                            ++_glyph_count;
+                            _glyph_prev_arabic_join_next = false;
+                            _glyph_prev_prev = _glyph_prev;
+                            _glyph_prev = 0x02;
                         break;
                     
                         #region Scale
@@ -950,7 +971,7 @@ function __scribble_gen_2_parser()
                             if (ds_map_exists(_effects_map, _tag_command_name)) //Set an effect
                             {
                                 _state_effect_flags = _state_effect_flags | (1 << _effects_map[? _tag_command_name]);
-                            
+                                
                                 //Add an effect flag control
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
@@ -961,7 +982,7 @@ function __scribble_gen_2_parser()
                             else if (ds_map_exists(_effects_slash_map, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
                             {
                                 _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_map[? _tag_command_name]));
-                            
+                                
                                 //Add an effect flag control
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
@@ -1233,7 +1254,7 @@ function __scribble_gen_2_parser()
                         if (_glyph_count > 0)
                         {
                             //Add a newline character if the previous character wasn't also a newline
-                            if ((_glyph_prev != 0x00) && (_glyph_prev != 0x0A))
+                            if ((_glyph_prev != 0x01) && (_glyph_prev != 0x02) && (_glyph_prev != 0x0A))
                             {
                                 __SCRIBBLE_PARSER_WRITE_NEWLINE;
                             }
@@ -1667,7 +1688,7 @@ function __scribble_gen_2_parser()
     if (__valign == undefined) __valign = _starting_valign;
     
     //Create a null terminator so we correctly handle the last character in the string
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x00; //ASCII line break (dec = 10)
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x00;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = _overall_bidi;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
