@@ -31,8 +31,8 @@ function __scribble_gen_7_build_pages()
         var _layout_sections       = (_element.__layout_type == __SCRIBBLE_LAYOUT.__SECTION);
     }
     
-    var _simulated_model_height = (_element.__layout_type != __SCRIBBLE_LAYOUT.__FIT)? infinity : (_model_max_height / __fit_scale);
-    
+    var _max_break_height = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__SECTION)? (_model_max_height / __fit_scale) : infinity;
+    var _simulated_model_height = _max_break_height;
     var _model_height = 0;
     
     // Set up a new page and set its starting glyph
@@ -62,6 +62,8 @@ function __scribble_gen_7_build_pages()
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = _line_y;
             if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
             _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
+            
+            _simulated_model_height += _max_break_height;
         }
         else
         {
@@ -77,6 +79,8 @@ function __scribble_gen_7_build_pages()
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = 0;
             if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
             _line_y = _line_spacing_add + _line_height*_line_spacing_multiply;
+            
+            _simulated_model_height = _max_break_height;
         }
         
         ++_i;
