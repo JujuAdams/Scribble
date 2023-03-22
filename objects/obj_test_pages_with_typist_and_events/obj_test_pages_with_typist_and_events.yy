@@ -9,8 +9,8 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Pages",
-    "path": "folders/Test Cases/Pages.yy",
+    "name": "Sections and Pages",
+    "path": "folders/Test Cases/Sections and Pages.yy",
   },
   "parentObjectId": null,
   "persistent": false,
