@@ -58,6 +58,9 @@ function __scribble_gen_7_build_pages()
         }
         else if ((_break_type == 1) || _layout_sections)
         {
+            //Make sure the top of our text doesn't poke through into the bottom of the previous box
+            _line_y = _simulated_model_height;
+            
             array_push(_page_data.__section_y, _line_y);
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = _line_y;
             if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
