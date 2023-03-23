@@ -477,33 +477,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     }
     
     /// @param maxWidth
-    /// @param [maxHeight=-1]
-    /// @param [characterWrap=false]
-    static layout_wrap = function(_max_width, _max_height = -1, _character_wrap = false)
-    {
-        if ((__layout_type != __SCRIBBLE_LAYOUT.__WRAP)
-        ||  (_max_width         != __layout_width)
-        ||  (_max_height        != __layout_height)
-        ||  (_character_wrap    != __layout_character_wrap)
-        ||  (__layout_max_scale != 1))
-        {
-            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
-            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
-            __layout_type = __SCRIBBLE_LAYOUT.__WRAP;
-            
-            __model_cache_name_dirty = true;
-            __bbox_dirty             = true;
-            
-            __layout_width          = _max_width;
-            __layout_height         = _max_height;
-            __layout_character_wrap = _character_wrap;
-            __layout_max_scale      = 1;
-        }
-        
-        return self;
-    }
-    
-    /// @param maxWidth
     /// @param maxHeight
     /// @param [characterWrap=false]
     /// @param [maxScale=1]
@@ -532,9 +505,61 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     }
     
     /// @param maxWidth
+    /// @param [characterWrap=false]
+    static layout_wrap = function(_max_width, _character_wrap = false)
+    {
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__WRAP)
+        ||  (_max_width         != __layout_width)
+        ||  (_character_wrap    != __layout_character_wrap)
+        ||  (__layout_max_scale != 1))
+        {
+            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
+            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
+            __layout_type = __SCRIBBLE_LAYOUT.__WRAP;
+            
+            __model_cache_name_dirty = true;
+            __bbox_dirty             = true;
+            
+            __layout_width          = _max_width;
+            __layout_height         = infinity;
+            __layout_character_wrap = _character_wrap;
+            __layout_max_scale      = 1;
+        }
+        
+        return self;
+    }
+    
+    /// @param maxWidth
     /// @param maxHeight
     /// @param [characterWrap=false]
-    static layout_scrollable = function(_max_width, _max_height, _character_wrap = false)
+    static layout_wrap_split_pages = function(_max_width, _max_height, _character_wrap = false)
+    {
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__WRAP)
+        ||  (_max_width         != __layout_width)
+        ||  (_max_height        != __layout_height)
+        ||  (_character_wrap    != __layout_character_wrap)
+        ||  (__layout_max_scale != 1))
+        {
+            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
+            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
+            __layout_type = __SCRIBBLE_LAYOUT.__WRAP;
+            
+            __model_cache_name_dirty = true;
+            __bbox_dirty             = true;
+            
+            __layout_width          = _max_width;
+            __layout_height         = _max_height;
+            __layout_character_wrap = _character_wrap;
+            __layout_max_scale      = 1;
+        }
+        
+        return self;
+    }
+    
+    /// @param maxWidth
+    /// @param maxHeight
+    /// @param [characterWrap=false]
+    static layout_scroll = function(_max_width, _max_height, _character_wrap = false)
     {
         if ((__layout_type != __SCRIBBLE_LAYOUT.__SCROLLABLE)
         ||  (_max_width      != __layout_width)
@@ -545,6 +570,33 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
             if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
             __layout_type = __SCRIBBLE_LAYOUT.__SCROLLABLE;
+            
+            __model_cache_name_dirty = true;
+            __bbox_dirty             = true;
+            
+            __layout_width          = _max_width;
+            __layout_height         = _max_height;
+            __layout_character_wrap = _character_wrap;
+            __layout_max_scale      = 1;
+        }
+        
+        return self;
+    }
+    
+    /// @param maxWidth
+    /// @param maxHeight
+    /// @param [characterWrap=false]
+    static layout_scroll_split_pages = function(_max_width, _max_height, _character_wrap = false)
+    {
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__SCROLLABLE_SPLIT_PAGES)
+        ||  (_max_width      != __layout_width)
+        ||  (_max_height     != __layout_height)
+        ||  (_character_wrap != __layout_character_wrap)
+        ||  (__layout_max_scale != 1))
+        {
+            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
+            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
+            __layout_type = __SCRIBBLE_LAYOUT.__SCROLLABLE_SPLIT_PAGES;
             
             __model_cache_name_dirty = true;
             __bbox_dirty             = true;

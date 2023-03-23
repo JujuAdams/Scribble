@@ -71,17 +71,17 @@ function __scribble_gen_6_build_lines()
         var _line_spacing_multiply  = __line_spacing_multiply;
         var _layout_fit             = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT);
         var _layout_max_scale       = _element.__layout_max_scale;
-        var _layout_apply           = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__WRAP);
+        var _layout_wrap            = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__WRAP);
         var _layout_page_separation = _element.__layout_page_separation;
         var _layout_scrollable      = (_element.__layout_type == __SCRIBBLE_LAYOUT.__SCROLLABLE);
         
         if ((_element.__layout_width <= 0) || is_infinity(_element.__layout_width)) //Turn off wrapping logic if we have an invalid width
         {
-            _layout_apply = false;
+            _layout_wrap = false;
         }
         
-        var _model_max_width  = (_layout_apply? __model_max_width  : infinity);
-        var _model_max_height = (_layout_apply? __model_max_height : infinity);
+        var _model_max_width  = (_layout_wrap? __model_max_width  : infinity);
+        var _model_max_height = (_layout_wrap? __model_max_height : infinity);
     }
     
     var _fit_to_box_iterations = 0;
@@ -390,7 +390,7 @@ function __scribble_gen_6_build_lines()
     
     //Trim the whitespace at the end of lines to fit into the desired width
     //This helps the glyph position getter return more visually pleasing results by ensuring the RHS of the glyph doesn't exceed the wrapping width
-    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && _layout_apply)
+    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && _layout_wrap)
     {
         var _line = 0;
         repeat(_line_count)
