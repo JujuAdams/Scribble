@@ -203,7 +203,6 @@
     {"id":{"name":"obj_test_linewrap_single_word","path":"objects/obj_test_linewrap_single_word/obj_test_linewrap_single_word.yy",},},
     {"id":{"name":"obj_test_line_height","path":"objects/obj_test_line_height/obj_test_line_height.yy",},},
     {"id":{"name":"fnt_style_header1","path":"fonts/fnt_style_header1/fnt_style_header1.yy",},},
-    {"id":{"name":"obj_test_sections","path":"objects/obj_test_sections/obj_test_sections.yy",},},
     {"id":{"name":"scribble_glyph_y_offset_get","path":"scripts/scribble_glyph_y_offset_get/scribble_glyph_y_offset_get.yy",},},
     {"id":{"name":"obj_test_line_spacing","path":"objects/obj_test_line_spacing/obj_test_line_spacing.yy",},},
     {"id":{"name":"obj_test_macros","path":"objects/obj_test_macros/obj_test_macros.yy",},},

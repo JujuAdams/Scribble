@@ -1,7 +1,7 @@
-#macro __SCRIBBLE_GEN_LINE_START  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__X         ] = _indent_x;\
-                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_START] = _line_word_start;\
-                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HALIGN    ] = _state_halign;\
-                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__BREAK_TYPE] = false;\
+#macro __SCRIBBLE_GEN_LINE_START  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__X                 ] = _indent_x;\
+                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_START        ] = _line_word_start;\
+                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HALIGN            ] = _state_halign;\
+                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__STARTS_MANUAL_PAGE] = false;\
                                   ;\ //Adjust the first word's width to account for visual tweaks
                                   ;\ //TODO - Implement for R2L text
                                   if ((SCRIBBLE_NEWLINES_PAD_LEFT_SPACE || SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE) && (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.__BIDI] < __SCRIBBLE_BIDI.R2L))\
@@ -58,29 +58,30 @@ function __scribble_gen_6_build_lines()
     static _generator_state = __scribble_get_generator_state();
     with(_generator_state)
     {
-        var _glyph_grid            = __glyph_grid;
-        var _word_grid             = __word_grid;
-        var _line_grid             = __line_grid;
-        var _control_grid          = __control_grid;
-        var _temp_grid             = __temp_grid;
-        var _element               = __element;
-        var _word_count            = __word_count;
-        var _line_height_min       = __line_height_min;
-        var _line_height_max       = __line_height_max;
-        var _line_spacing_add      = __line_spacing_add;
-        var _line_spacing_multiply = __line_spacing_multiply;
-        var _layout_fit            = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT);
-        var _layout_max_scale      = _element.__layout_max_scale;
-        var _layout_wrap           = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__WRAP);
-        var _layout_sections       = (_element.__layout_type == __SCRIBBLE_LAYOUT.__SECTION);
+        var _glyph_grid             = __glyph_grid;
+        var _word_grid              = __word_grid;
+        var _line_grid              = __line_grid;
+        var _control_grid           = __control_grid;
+        var _temp_grid              = __temp_grid;
+        var _element                = __element;
+        var _word_count             = __word_count;
+        var _line_height_min        = __line_height_min;
+        var _line_height_max        = __line_height_max;
+        var _line_spacing_add       = __line_spacing_add;
+        var _line_spacing_multiply  = __line_spacing_multiply;
+        var _layout_fit             = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT);
+        var _layout_max_scale       = _element.__layout_max_scale;
+        var _layout_apply           = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__WRAP);
+        var _layout_page_separation = _element.__layout_page_separation;
+        var _layout_scrollable      = (_element.__layout_type == __SCRIBBLE_LAYOUT.__SCROLLABLE);
         
         if ((_element.__layout_width <= 0) || is_infinity(_element.__layout_width)) //Turn off wrapping logic if we have an invalid width
         {
-            _layout_wrap = false;
+            _layout_apply = false;
         }
         
-        var _model_max_width  = (_layout_wrap? __model_max_width  : infinity);
-        var _model_max_height = (_layout_wrap? __model_max_height : infinity);
+        var _model_max_width  = (_layout_apply? __model_max_width  : infinity);
+        var _model_max_height = (_layout_apply? __model_max_height : infinity);
     }
     
     var _fit_to_box_iterations = 0;
@@ -287,28 +288,27 @@ function __scribble_gen_6_build_lines()
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
                     }
-                    else if (_glyph_start_ord == 0x02) //Indicates a new section
-                    {
-                        //Sectionbreak after this word
-                        var _line_word_end = _i;
-                        __SCRIBBLE_GEN_LINE_END;
-                        _line_word_start = _i+1;
-                        __SCRIBBLE_GEN_LINE_START;
-                        
-                        //Only mark the new line as beginning a new SECTION if this null *isn't* the last glyph for the input string
-                        if (_i < _word_count - 1) _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__BREAK_TYPE] = 1;
-                    }
-                    else if (_glyph_start_ord == 0x01) //Indicates a new page
+                    else if (_glyph_start_ord == 0x00) //Null, indicates a new page
                     {
                         //Pagebreak after this word
                         var _line_word_end = _i;
                         __SCRIBBLE_GEN_LINE_END;
-                        if (!_layout_sections) _line_y = 0;
+                        
+                        //In scrollable mode, don't start new pages back at the top. Instead keep adding text downwards!
+                        if (_layout_scrollable)
+                        {
+                            _line_y += _layout_page_separation;
+                        }
+                        else
+                        {
+                            _line_y = 0;
+                        }
+                        
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
                         
                         //Only mark the new line as beginning a new page if this null *isn't* the last glyph for the input string
-                        if (_i < _word_count - 1) _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__BREAK_TYPE] = 2;
+                        if (_i < _word_count - 1) _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__STARTS_MANUAL_PAGE] = true;
                     }
                 }
                 
@@ -317,6 +317,7 @@ function __scribble_gen_6_build_lines()
             }
             
             //Finalize the line we've already started
+            //Generally speaking this should never actually execute as 0x00 NULL will terminate a line and 0x00 always appears as the final glyph
             var _line_word_end = _i-1;
             if (_line_word_end >= _line_word_start) //Only generate a new line if we actually have glyphs on the final line
             {
@@ -389,7 +390,7 @@ function __scribble_gen_6_build_lines()
     
     //Trim the whitespace at the end of lines to fit into the desired width
     //This helps the glyph position getter return more visually pleasing results by ensuring the RHS of the glyph doesn't exceed the wrapping width
-    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && _layout_wrap)
+    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && _layout_apply)
     {
         var _line = 0;
         repeat(_line_count)

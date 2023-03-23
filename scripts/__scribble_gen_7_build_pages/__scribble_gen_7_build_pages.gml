@@ -28,7 +28,6 @@ function __scribble_gen_7_build_pages()
         var _line_count            = __line_count;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
-        var _layout_sections       = (_element.__layout_type == __SCRIBBLE_LAYOUT.__SECTION);
     }
     
     var _max_break_height = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__SECTION)? (_model_max_height / __fit_scale) : infinity;
@@ -40,33 +39,20 @@ function __scribble_gen_7_build_pages()
     var _page_data = __new_page();
     _page_data.__line_start  = 0;
     _page_data.__glyph_start = _word_grid[# _line_grid[# 0, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START];
-    array_push(_page_data.__section_y, 0);
     
     var _page_start_line = 0;
     var _line_y = 0;
     var _i = 0;
     repeat(_line_count)
     {
-        var _line_height = _line_grid[# _i, __SCRIBBLE_GEN_LINE.__HEIGHT    ];
-        var _break_type  = _line_grid[# _i, __SCRIBBLE_GEN_LINE.__BREAK_TYPE];
+        var _line_height        = _line_grid[# _i, __SCRIBBLE_GEN_LINE.__HEIGHT            ];
+        var _starts_manual_page = _line_grid[# _i, __SCRIBBLE_GEN_LINE.__STARTS_MANUAL_PAGE];
         
-        if ((_break_type == 0) && ((_line_y + _line_height < _simulated_model_height) || (_page_start_line >= _i)))
+        if (!_starts_manual_page && ((_line_y + _line_height < _simulated_model_height) || (_page_start_line >= _i)))
         {
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = _line_y;
             if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
             _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
-        }
-        else if ((_break_type == 1) || _layout_sections)
-        {
-            //Make sure the top of our text doesn't poke through into the bottom of the previous box
-            _line_y = _simulated_model_height;
-            
-            array_push(_page_data.__section_y, _line_y);
-            _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = _line_y;
-            if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
-            _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
-            
-            _simulated_model_height += _max_break_height;
         }
         else
         {
@@ -76,14 +62,11 @@ function __scribble_gen_7_build_pages()
             _page_data = __new_page();
             _page_data.__line_start  = _i;
             _page_data.__glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START];
-            array_push(_page_data.__section_y, 0);
             
             _page_start_line = _i;
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = 0;
             if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
             _line_y = _line_spacing_add + _line_height*_line_spacing_multiply;
-            
-            _simulated_model_height = _max_break_height;
         }
         
         ++_i;

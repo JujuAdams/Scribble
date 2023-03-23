@@ -396,11 +396,11 @@ function __scribble_gen_9_write_vbuffs()
                     __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
                 }
                 
-                if ((_glyph_ord == 0x01) || (_glyph_ord == 0x02) || (_glyph_ord == 0x0A))
+                if ((_glyph_ord == 0x00) || (_glyph_ord == 0x0A))
                 {
                     if (_region_name != undefined)
                     {
-                        var _region_end = (_glyph_ord == 0x01)? _i-1 : _i;
+                        var _region_end = (_glyph_ord == 0x00)? _i-1 : _i;
                         
                         if (_region_start <= _region_end)
                         {
