@@ -401,6 +401,133 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
+    /// @param min
+    /// @param max
+    static line_height = function(_min, _max)
+    {
+        if (_min != __line_height_min)
+        {
+            __model_cache_name_dirty = true;
+            __line_height_min = _min;
+        }
+        
+        if (_max != __line_height_max)
+        {
+            __model_cache_name_dirty = true;
+            __line_height_max = _max;
+        }
+        
+        return self;
+    }
+    
+    /// @param spacing
+    static line_spacing = function(_spacing)
+    {
+        if (_spacing != __line_spacing)
+        {
+            __model_cache_name_dirty = true;
+            __line_spacing = _spacing;
+        }
+        
+        return self;
+    }
+    
+    static padding = function(_l, _t, _r, _b)
+    {
+        if ((_l != __padding_l) || (_t != __padding_t) || (_r != __padding_r) || (_b != __padding_b))
+        {
+            __model_cache_name_dirty = true;
+            __matrix_dirty           = true;
+            __bbox_dirty             = true;
+            __layout_scale_dirty     = true;
+            
+            __padding_l = _l;
+            __padding_t = _t;
+            __padding_r = _r;
+            __padding_b = _b;
+        }
+        
+        return self;
+    }
+    
+    /// @param [x1=0]
+    /// @param [y1=0]
+    /// @param [x2=0]
+    /// @param [y2=0]
+    /// @param [x3=0]
+    /// @param [y3=0]
+    /// @param [x4=0]
+    /// @param [y4=0]
+    static bezier = function(_x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4)
+    {
+        if (argument_count <= 0)
+        {
+            var _bezier_array = array_create(6, 0.0);
+        }
+        else if (argument_count == 8)
+        {
+            if (!is_numeric(_x1) || !is_numeric(_y1)
+            ||  !is_numeric(_x2) || !is_numeric(_y2)
+            ||  !is_numeric(_x3) || !is_numeric(_y3)
+            ||  !is_numeric(_x4) || !is_numeric(_y4))
+            {
+                __scribble_trace("Warning! One or more Bezier parameters were not numeric (", _x1, ", ", _y1, ", ", _x2, ", ", _y2, ", ", _x3, ", ", _y3, ", ", _x4, ", ", _y4, ")");
+                
+                _x1 = 0;
+                _y1 = 0;
+                _x2 = 0;
+                _y2 = 0;
+                _x3 = 0;
+                _y3 = 0;
+                _x4 = 0;
+                _y4 = 0;
+            }
+        }
+        else
+        {
+            __scribble_error("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
+        }
+        
+        var _bezier_array = [_x2 - _x1, _y2 - _y1,
+                             _x3 - _x1, _y3 - _y1,
+                             _x4 - _x1, _y4 - _y1];
+        
+        if (!array_equals(__bezier_array, _bezier_array))
+        {
+            __model_cache_name_dirty = true;
+            __bezier_array = _bezier_array;
+            __bezier_using = true;
+        }
+        
+        return self;
+    }
+    
+    static right_to_left = function(_state)
+    {
+        if (_state == undefined)
+        {
+            var _new_bidi_hint = undefined;
+        }
+        else
+        {
+            var _new_bidi_hint = _state? __SCRIBBLE_BIDI.R2L : __SCRIBBLE_BIDI.L2R;
+        }
+        
+        if (__bidi_hint != _new_bidi_hint)
+        {
+            __model_cache_name_dirty = true;
+            __bidi_hint = _new_bidi_hint;
+        }
+        
+        return self;
+    }
+    
+    #endregion
+    
+    
+    
+    #region Layout Setters
+    
     static layout_free = function()
     {
         if (__layout_type != __SCRIBBLE_LAYOUT.__FREE)
@@ -628,127 +755,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     static pin_guide_width = function()
     {
         __scribble_error(".pin_guide_width() has been replaced by .layout_guide()");
-    }
-    
-    /// @param min
-    /// @param max
-    static line_height = function(_min, _max)
-    {
-        if (_min != __line_height_min)
-        {
-            __model_cache_name_dirty = true;
-            __line_height_min = _min;
-        }
-        
-        if (_max != __line_height_max)
-        {
-            __model_cache_name_dirty = true;
-            __line_height_max = _max;
-        }
-        
-        return self;
-    }
-    
-    /// @param spacing
-    static line_spacing = function(_spacing)
-    {
-        if (_spacing != __line_spacing)
-        {
-            __model_cache_name_dirty = true;
-            __line_spacing = _spacing;
-        }
-        
-        return self;
-    }
-    
-    static padding = function(_l, _t, _r, _b)
-    {
-        if ((_l != __padding_l) || (_t != __padding_t) || (_r != __padding_r) || (_b != __padding_b))
-        {
-            __model_cache_name_dirty = true;
-            __matrix_dirty           = true;
-            __bbox_dirty             = true;
-            __layout_scale_dirty     = true;
-            
-            __padding_l = _l;
-            __padding_t = _t;
-            __padding_r = _r;
-            __padding_b = _b;
-        }
-        
-        return self;
-    }
-    
-    /// @param [x1=0]
-    /// @param [y1=0]
-    /// @param [x2=0]
-    /// @param [y2=0]
-    /// @param [x3=0]
-    /// @param [y3=0]
-    /// @param [x4=0]
-    /// @param [y4=0]
-    static bezier = function(_x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4)
-    {
-        if (argument_count <= 0)
-        {
-            var _bezier_array = array_create(6, 0.0);
-        }
-        else if (argument_count == 8)
-        {
-            if (!is_numeric(_x1) || !is_numeric(_y1)
-            ||  !is_numeric(_x2) || !is_numeric(_y2)
-            ||  !is_numeric(_x3) || !is_numeric(_y3)
-            ||  !is_numeric(_x4) || !is_numeric(_y4))
-            {
-                __scribble_trace("Warning! One or more Bezier parameters were not numeric (", _x1, ", ", _y1, ", ", _x2, ", ", _y2, ", ", _x3, ", ", _y3, ", ", _x4, ", ", _y4, ")");
-                
-                _x1 = 0;
-                _y1 = 0;
-                _x2 = 0;
-                _y2 = 0;
-                _x3 = 0;
-                _y3 = 0;
-                _x4 = 0;
-                _y4 = 0;
-            }
-        }
-        else
-        {
-            __scribble_error("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
-        }
-        
-        var _bezier_array = [_x2 - _x1, _y2 - _y1,
-                             _x3 - _x1, _y3 - _y1,
-                             _x4 - _x1, _y4 - _y1];
-        
-        if (!array_equals(__bezier_array, _bezier_array))
-        {
-            __model_cache_name_dirty = true;
-            __bezier_array = _bezier_array;
-            __bezier_using = true;
-        }
-        
-        return self;
-    }
-    
-    static right_to_left = function(_state)
-    {
-        if (_state == undefined)
-        {
-            var _new_bidi_hint = undefined;
-        }
-        else
-        {
-            var _new_bidi_hint = _state? __SCRIBBLE_BIDI.R2L : __SCRIBBLE_BIDI.L2R;
-        }
-        
-        if (__bidi_hint != _new_bidi_hint)
-        {
-            __model_cache_name_dirty = true;
-            __bidi_hint = _new_bidi_hint;
-        }
-        
-        return self;
     }
     
     #endregion
