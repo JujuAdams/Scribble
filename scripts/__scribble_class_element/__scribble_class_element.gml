@@ -42,14 +42,13 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __starting_colour = __scribble_process_colour(SCRIBBLE_DEFAULT_COLOR);
     __starting_halign = SCRIBBLE_DEFAULT_HALIGN;
     __starting_valign = SCRIBBLE_DEFAULT_VALIGN;
-    __blend_colour    = c_white;
     __blend_alpha     = 1.0;
     __skew_x          = 0;
     __skew_y          = 0;
     __gradient_colour = c_black;
-    __gradient_alpha  = 0.0;
+    __gradient_mix    = 0.0;
     __flash_colour    = c_white;
-    __flash_alpha     = 0.0;
+    __flash_mix       = 0.0;
     
     __randomize_animation = false;
     
@@ -282,57 +281,17 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
-    /// @param colour
     /// @param alpha
-    static blend = function(_colour, _alpha)
+    static alpha = function(_alpha)
     {
-        static _colors_struct = __scribble_config_colours();
-        
-        if (is_string(_colour))
-        {
-            _colour = _colors_struct[$ _colour];
-            if (_colour == undefined)
-            {
-                __scribble_error("Colour name \"", _colour, "\" not recognised");
-                exit;
-            }
-        }
-        
-        if (_colour != undefined) __blend_colour = _colour & 0xFFFFFF;
-        if (_alpha  != undefined) __blend_alpha  = _alpha;
+        __blend_alpha = _alpha;
         
         return self;
     }
     
     /// @param colour
-    /// @param alpha
-    static gradient = function(_colour, _alpha)
-    {
-        static _colors_struct = __scribble_config_colours();
-        
-        if (is_string(_colour))
-        {
-            _colour = _colors_struct[$ _colour];
-            if (_colour == undefined)
-            {
-                __scribble_error("Colour name \"", _colour, "\" not recognised");
-                exit;
-            }
-        }
-        
-        __gradient_colour = _colour & 0xFFFFFF;
-        __gradient_alpha  = _alpha;
-        return self;
-    }
-    
-    static fog = function()
-    {
-        __scribble_error(".fog() has been replaced by .flash()");
-    }
-    
-    /// @param colour
-    /// @param alpha
-    static flash = function(_colour, _alpha)
+    /// @param mix
+    static flash = function(_colour, _mix)
     {
         static _colors_struct = __scribble_config_colours();
         
@@ -347,7 +306,29 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         }
         
         __flash_colour = _colour & 0xFFFFFF;
-        __flash_alpha  = _alpha;
+        __flash_mix    = _mix;
+        
+        return self;
+    }
+    
+    /// @param colour
+    /// @param mix
+    static gradient = function(_colour, _mix)
+    {
+        static _colors_struct = __scribble_config_colours();
+        
+        if (is_string(_colour))
+        {
+            _colour = _colors_struct[$ _colour];
+            if (_colour == undefined)
+            {
+                __scribble_error("Colour name \"", _colour, "\" not recognised");
+                exit;
+            }
+        }
+        
+        __gradient_colour = _colour & 0xFFFFFF;
+        __gradient_mix    = _mix;
         return self;
     }
     
@@ -1664,7 +1645,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     static __set_standard_uniforms = function(_typist, _function_scope)
     {
         static _u_fTime         = shader_get_uniform(__shd_scribble, "u_fTime"        );
-        static _u_vColourBlend  = shader_get_uniform(__shd_scribble, "u_vColourBlend" );
+        static _u_fAlpha        = shader_get_uniform(__shd_scribble, "u_fAlpha"       );
         static _u_fBlinkState   = shader_get_uniform(__shd_scribble, "u_fBlinkState"  );
         static _u_vGradient     = shader_get_uniform(__shd_scribble, "u_vGradient"    );
         static _u_vSkew         = shader_get_uniform(__shd_scribble, "u_vSkew"        );
@@ -1698,31 +1679,25 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;
         
-        shader_set_uniform_f(_u_fTime, __animation_time);
-        
-        //TODO - Optimise
-        shader_set_uniform_f(_u_vColourBlend, colour_get_red(  __blend_colour)/255,
-                                              colour_get_green(__blend_colour)/255,
-                                              colour_get_blue( __blend_colour)/255,
-                                              __blend_alpha);
-        
+        shader_set_uniform_f(_u_fTime,       __animation_time);
+        shader_set_uniform_f(_u_fAlpha,      __blend_alpha);
         shader_set_uniform_f(_u_fBlinkState, __animation_blink_state);
         
-        if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0) || __crop_using || __scroll_using)
+        if ((__gradient_mix != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_mix != 0) || (__region_blend != 0) || __crop_using || __scroll_using)
         {
             _shader_uniforms_dirty = true;
             
             shader_set_uniform_f(_u_vGradient, colour_get_red(  __gradient_colour)/255,
                                                colour_get_green(__gradient_colour)/255,
                                                colour_get_blue( __gradient_colour)/255,
-                                               __gradient_alpha);
+                                               __gradient_mix);
             
             shader_set_uniform_f(_u_vSkew, __skew_x, __skew_y);
             
             shader_set_uniform_f(_u_vFlash, colour_get_red(  __flash_colour)/255,
                                             colour_get_green(__flash_colour)/255,
                                             colour_get_blue( __flash_colour)/255,
-                                            __flash_alpha);
+                                            __flash_mix);
             
             shader_set_uniform_f(_u_vRegionActive, __region_glyph_start, __region_glyph_end);
             

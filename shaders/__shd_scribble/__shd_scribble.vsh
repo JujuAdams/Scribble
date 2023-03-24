@@ -81,7 +81,7 @@ varying float v_fPremultiplyAlpha;
 
 uniform float u_fRenderFlags;                           //1
 
-uniform vec4  u_vColourBlend;                           //4
+uniform vec4  u_fAlpha;                                 //1
 uniform vec4  u_vGradient;                              //4
 uniform vec2  u_vSkew;                                  //2
 uniform vec2  u_vRegionActive;                          //2
@@ -445,8 +445,7 @@ void main()
     //Second bit of u_fRenderFlags indicates if sprites should be RGB blended
     if ((mod(u_fRenderFlags/2.0, 2.0) < 1.0) && (SPRITE_FLAG > 0.5))
     {
-        //If we're not RGB blending sprites but this *is* a sprite then only modify the alpha channel
-        v_vColour = vec4(1.0, 1.0, 1.0, u_vColourBlend.a);
+        v_vColour = vec4(1.0);
     }
     else
     {
@@ -459,9 +458,10 @@ void main()
         //Apply the gradient effect
         if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
         
-        //And then blend with the blend colour/alpha
-        v_vColour *= u_vColourBlend;
     }
+    
+    //Apply alpha blend
+    v_vColour.a *= u_fAlpha;
     
     if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
     if ((BLINK_FLAG > 0.5) && (u_fBlinkState < 0.5)) v_vColour.a = 0.0;
