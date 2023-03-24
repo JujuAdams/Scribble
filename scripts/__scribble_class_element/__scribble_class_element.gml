@@ -251,7 +251,10 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     }
     
     /// @param colour
-    static color = colour;
+    static color = function(_in_colour)
+    {
+        return colour(_in_colour);
+    }
     
     /// @param halign
     /// @param valign
