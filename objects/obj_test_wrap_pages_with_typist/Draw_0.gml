@@ -13,4 +13,4 @@ draw_vertex_color(_bbox.x2, _bbox.y2, c_gray, 1.0);
 draw_vertex_color(_bbox.x3, _bbox.y3, c_gray, 1.0);
 draw_primitive_end();
 
-element.transform(1, 1, -15).draw(room_width div 2, room_height div 2, typist);
+element.post_transform(1, 1, -15).draw(room_width div 2, room_height div 2, typist);

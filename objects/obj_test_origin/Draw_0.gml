@@ -14,7 +14,7 @@ _y +=  70;
 
 var _element = scribble("Centre/middle origin with rotation");
 _element.origin(_element.get_width()/2, _element.get_height()/2);
-_element.transform(1, 1, _angle);
+_element.post_transform(1, 1, _angle);
 _element.draw(_x, _y);
 draw_circle(_x, _y, 4, false);
 
@@ -22,7 +22,7 @@ _x += 250;
 
 var _element = scribble("Left/middle origin with rotation");
 _element.origin(0, _element.get_height()/2);
-_element.transform(1, 1, _angle);
+_element.post_transform(1, 1, _angle);
 _element.draw(_x, _y);
 draw_circle(_x, _y, 4, false);
 
@@ -31,6 +31,6 @@ _y = 180;
 
 var _element = scribble("Centre/top origin with scale");
 _element.origin(_element.get_width()/2, 0);
-_element.transform(_scale, _scale, 0);
+_element.post_transform(_scale, _scale, 0);
 _element.draw(_x, _y);
 draw_circle(_x, _y, 4, false);

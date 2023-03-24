@@ -344,7 +344,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     
     
-    #region Layout
+    #region Positioning and Scaling
     
     /// @param xOffset
     /// @param yOffset
@@ -365,7 +365,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param xScale
     /// @param [yScale=xScale]
     /// @param [angle=0]
-    static transform = function(_xscale, _yscale = _xscale, _angle = 0)
+    static post_transform = function(_xscale, _yscale = _xscale, _angle = 0)
     {
         if ((__post_xscale != _xscale) || (__post_yscale != _yscale) || (__post_angle != _angle))
         {

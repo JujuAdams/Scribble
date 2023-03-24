@@ -3,7 +3,7 @@ var _y = room_height/2;
 
 var _element = scribble("Test text\nTest text\nTest text");
 _element.padding(20, 20, 20, 20);
-_element.transform(2, 2, 30);
+_element.post_transform(2, 2, 30);
 _element.origin(_element.get_width()/2, _element.get_height()/2);
 
 var _bbox = _element.get_bbox(_x, _y);
