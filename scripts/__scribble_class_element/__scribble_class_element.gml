@@ -217,8 +217,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     }
     
     /// @param fontName
-    /// @param colour
-    static starting_format = function(_font_name, _in_colour)
+    static font = function(_font_name)
     {
         if (is_string(_font_name))
         {
@@ -233,6 +232,12 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __scribble_error("Fonts should be specified using their name as a string\nUse <undefined> to not set a new font");
         }
         
+        return self;
+    }
+    
+    /// @param colour
+    static colour = function(_in_colour)
+    {
         if (_in_colour != undefined)
         {
             var _colour = __scribble_process_colour(_in_colour);
@@ -244,6 +249,12 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         }
         
         return self;
+    }
+    
+    /// @param colour
+    static color = function(_in_colour)
+    {
+        return colour(_in_colour);
     }
     
     /// @param halign
