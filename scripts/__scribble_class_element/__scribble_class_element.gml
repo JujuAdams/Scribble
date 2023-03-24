@@ -125,7 +125,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __region_glyph_start = 0;
     __region_glyph_end   = 0;
     __region_colour      = c_black;
-    __region_blend       = 0.0;
+    __region_mix         = 0.0;
     
     
     
@@ -802,7 +802,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __region_glyph_start = 0;
             __region_glyph_end   = 0;
             __region_colour      = c_black;
-            __region_blend       = 0.0;
+            __region_mix         = 0.0;
             return;
         }
         
@@ -820,7 +820,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
                 __region_glyph_start = _region.__start_glyph;
                 __region_glyph_end   = _region.__end_glyph;
                 __region_colour      = _colour;
-                __region_blend       = _blend_amount;
+                __region_mix         = _blend_amount;
                 return;
             }
             
@@ -1683,7 +1683,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         shader_set_uniform_f(_u_fAlpha,      __blend_alpha);
         shader_set_uniform_f(_u_fBlinkState, __animation_blink_state);
         
-        if ((__gradient_mix != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_mix != 0) || (__region_blend != 0) || __crop_using || __scroll_using)
+        if ((__gradient_mix != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_mix != 0) || (__region_mix != 0) || __crop_using || __scroll_using)
         {
             _shader_uniforms_dirty = true;
             
@@ -1704,7 +1704,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             shader_set_uniform_f(_u_vRegionColour, colour_get_red(  __region_colour)/255,
                                                    colour_get_green(__region_colour)/255,
                                                    colour_get_blue( __region_colour)/255,
-                                                   __region_blend);
+                                                   __region_mix);
             
             shader_set_uniform_f(_u_vCrop, __crop_l, __crop_t, __crop_r, __crop_b);
             
