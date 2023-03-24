@@ -1116,11 +1116,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return __page;
     }
     
-    static get_pages = function()
-    {
-        __scribble_error(".get_pages() has been replaced by .get_page_count()");
-    }
-    
     static get_page_count = function()
     {
         var _model = __get_model(true);
