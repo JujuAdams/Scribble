@@ -19,5 +19,5 @@ show_message(text);
 
 element = scribble(text)
 .align(fa_left, fa_middle)
-.fit_to_box(700, 500);
+.layout_fit(700, 500);
 element.origin(element.get_width()/2, 0)
