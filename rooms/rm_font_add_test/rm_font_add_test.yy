@@ -18,7 +18,7 @@
   ],
   "parent": {
     "name": "font_add Testing",
-    "path": "folders/font_add Testing.yy",
+    "path": "folders/Test Cases/font_add Testing.yy",
   },
   "parentRoom": null,
   "physicsSettings": {

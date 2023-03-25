@@ -12,7 +12,7 @@
   "defaultScriptType": 1,
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Examples","folderPath":"folders/Examples.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"font_add Testing","folderPath":"folders/font_add Testing.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"font_add Testing","folderPath":"folders/Test Cases/font_add Testing.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Fonts","folderPath":"folders/Fonts.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Mallangche","folderPath":"folders/Fonts/Mallangche.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Scribble","folderPath":"folders/Scribble.yy",},
@@ -337,7 +337,7 @@
     {"id":{"name":"scribble_flush_everything","path":"scripts/scribble_flush_everything/scribble_flush_everything.yy",},},
     {"id":{"name":"scribble_font_bake_outline_4dir","path":"scripts/scribble_font_bake_outline_4dir/scribble_font_bake_outline_4dir.yy",},},
     {"id":{"name":"scribble_font_bake_outline_8dir","path":"scripts/scribble_font_bake_outline_8dir/scribble_font_bake_outline_8dir.yy",},},
-    {"id":{"name":"obj_test_0900_markdown","path":"objects/obj_test_0900_markdown/obj_test_0900_markdown.yy",},},
+    {"id":{"name":"obj_test_3000_markdown","path":"objects/obj_test_3000_markdown/obj_test_3000_markdown.yy",},},
     {"id":{"name":"scribble_font_bake_outline_8dir_2px","path":"scripts/scribble_font_bake_outline_8dir_2px/scribble_font_bake_outline_8dir_2px.yy",},},
     {"id":{"name":"scribble_font_bake_shader","path":"scripts/scribble_font_bake_shader/scribble_font_bake_shader.yy",},},
     {"id":{"name":"scribble_font_bake_shadow","path":"scripts/scribble_font_bake_shadow/scribble_font_bake_shadow.yy",},},
