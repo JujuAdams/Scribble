@@ -1,4 +1,3 @@
-//   @jujuadams   v8.0.0   2020-03-16
 precision highp float;
 
 #define USE_ALPHA_FOR_DISTANCE true

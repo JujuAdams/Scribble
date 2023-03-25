@@ -1,4 +1,3 @@
-//   @jujuadams   v8.0.0   2021-12-15
 precision highp float;
 
 #define ANIM_INDEX  in_Normal.x
