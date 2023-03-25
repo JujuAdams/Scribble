@@ -27,3 +27,5 @@ if (index == undefined)
     index = 0;
     instance_create_depth(0, 0, 0, asset_get_index(object_array[index]));
 }
+
+//alarm[0] = 10;
