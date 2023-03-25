@@ -10,7 +10,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Legacy",
-    "path": "folders/Test Cases/Typewriter/Legacy.yy",
+    "path": "folders/Test Cases/0800 Typewriter/Legacy.yy",
   },
   "parentObjectId": null,
   "persistent": false,
