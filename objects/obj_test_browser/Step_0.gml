@@ -7,7 +7,7 @@ if (keyboard_check_pressed(219)) // [
     }
     
     index = (index - 1 + array_length(object_array)) mod array_length(object_array);
-    instance_create_depth(0, 0, 0, object_array[index]);
+    instance_create_depth(0, 0, 0, asset_get_index(object_array[index]));
 }
 
 if (keyboard_check_pressed(221)) // ]
@@ -19,5 +19,5 @@ if (keyboard_check_pressed(221)) // ]
     }
     
     index = (index + 1) mod array_length(object_array);
-    instance_create_depth(0, 0, 0, object_array[index]);
+    instance_create_depth(0, 0, 0, asset_get_index(object_array[index]));
 }
