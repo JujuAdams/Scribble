@@ -33,8 +33,9 @@ function draw_text_scribble_ext(_x, _y, _string, _width, _reveal = undefined)
     
     var _element = scribble(_string, "__draw_text_scribble__")
     .align(draw_get_halign(), draw_get_valign())
-    .starting_format(_font, c_white)
-    .blend(draw_get_color(), draw_get_alpha())
+    .font(_font)
+    .rgb_multiply(draw_get_color())
+    .alpha(draw_get_alpha())
     .wrap(_width);
     if (_reveal != undefined) _element.reveal(_reveal);
     _element.draw(_x, _y);
