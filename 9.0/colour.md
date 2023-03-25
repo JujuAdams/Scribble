@@ -4,7 +4,9 @@
 
 This page lists all the ways that you can colour text natively with Scribble. The features on this page are enumerated in reverse order of priority with the **highest priority** colourisation effects being at the **bottom** of the page e.g. `.rgb_lerp()` is applied after `[cycle]`.
 
-Unless otherwise stated, colours are applied multiplicatively with the result of the prior stage.
+There are, broadly, three types of functionality available in Scribble to adjust the colour of text. Firstly, there're **global functions** which affect the appearance of Scribble text everywhere. Then there's **text element methods** which can be used to adjust properties of a target text element. Finally, there are **command tags** which should be included in strings that you draw with Scribble and can control behaviour of individual characters.
+
+?> Unless otherwise stated, colours are applied multiplicatively with the result of the prior stage.
 
 &nbsp;
 
