@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Devanagari",
-    "path": "folders/Test Cases/Language Support/Devanagari.yy",
+    "name": "2200 Devanagari",
+    "path": "folders/Test Cases/2000 Language Support/2200 Devanagari.yy",
   },
 }
