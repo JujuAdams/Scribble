@@ -42,13 +42,23 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __starting_colour = __scribble_process_colour(SCRIBBLE_DEFAULT_COLOR);
     __starting_halign = SCRIBBLE_DEFAULT_HALIGN;
     __starting_valign = SCRIBBLE_DEFAULT_VALIGN;
-    __blend_alpha     = 1.0;
     __skew_x          = 0;
     __skew_y          = 0;
-    __gradient_colour = c_black;
-    __gradient_mix    = 0.0;
-    __flash_colour    = c_white;
-    __flash_mix       = 0.0;
+    
+    __colour_multiply_red   = 1.0;
+    __colour_multiply_green = 1.0;
+    __colour_multiply_blue  = 1.0;
+    __alpha                 = 1.0;
+        
+    __colour_lerp_red   = 1.0;
+    __colour_lerp_green = 1.0;
+    __colour_lerp_blue  = 1.0;
+    __colour_lerp_mix   = 0.0;
+    
+    __colour_gradient_red   = 0.0;
+    __colour_gradient_green = 0.0;
+    __colour_gradient_blue  = 0.0;
+    __colour_gradient_mix   = 0.0;
     
     __randomize_animation = false;
     
@@ -290,7 +300,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param alpha
     static alpha = function(_alpha)
     {
-        __blend_alpha = _alpha;
+        __alpha = _alpha;
         
         return self;
     }
@@ -310,7 +320,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             }
         }
         
-        __rgb_multiply_colour = _colour & 0xFFFFFF;
+        __colour_multiply_red   = (_colour & 0x0000FF) / 255;
+        __colour_multiply_green = (_colour & 0x00FF00) / (256*255);
+        __colour_multiply_blue  = (_colour & 0xFF0000) / (256*256*255);
         
         return self;
     }
@@ -331,8 +343,10 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             }
         }
         
-        __flash_colour = _colour & 0xFFFFFF;
-        __flash_mix    = _mix;
+        __colour_lerp_red   = (_colour & 0x0000FF) / 255;
+        __colour_lerp_green = (_colour & 0x00FF00) / (256*255);
+        __colour_lerp_blue  = (_colour & 0xFF0000) / (256*256*255);
+        __colour_lerp_mix   = _mix;
         
         return self;
     }
@@ -353,8 +367,11 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             }
         }
         
-        __gradient_colour = _colour & 0xFFFFFF;
-        __gradient_mix    = _mix;
+        __colour_gradient_red   = (_colour & 0x0000FF) / 255;
+        __colour_gradient_green = (_colour & 0x00FF00) / (256*255);
+        __colour_gradient_blue  = (_colour & 0xFF0000) / (256*256*255);
+        __colour_gradient_mix   = _mix;
+        
         return self;
     }
     
@@ -809,7 +826,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __region_glyph_end   = 0;
             __region_colour      = c_black;
             __region_mix         = 0.0;
-            return;
+            
+            return self;
         }
         
         var _model        = __get_model(true);
@@ -827,7 +845,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
                 __region_glyph_end   = _region.__end_glyph;
                 __region_colour      = _colour;
                 __region_mix         = _blend_amount;
-                return;
+                
+                return self;
             }
             
             ++_i;
@@ -1645,19 +1664,19 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     static __set_standard_uniforms = function(_typist, _function_scope)
     {
-        static _u_fTime         = shader_get_uniform(__shd_scribble, "u_fTime"        );
-        static _u_fAlpha        = shader_get_uniform(__shd_scribble, "u_fAlpha"       );
-        static _u_fBlinkState   = shader_get_uniform(__shd_scribble, "u_fBlinkState"  );
-        static _u_vGradient     = shader_get_uniform(__shd_scribble, "u_vGradient"    );
-        static _u_vSkew         = shader_get_uniform(__shd_scribble, "u_vSkew"        );
-        static _u_vFlash        = shader_get_uniform(__shd_scribble, "u_vFlash"       );
-        static _u_vRegionActive = shader_get_uniform(__shd_scribble, "u_vRegionActive");
-        static _u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour");
-        static _u_vCrop         = shader_get_uniform(__shd_scribble, "u_vCrop"        );
-        static _u_vScrollCrop   = shader_get_uniform(__shd_scribble, "u_vScrollCrop"  );
-        static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
-        static _u_fRenderFlags  = shader_get_uniform(__shd_scribble, "u_fRenderFlags" );
-        static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
+        static _u_fTime           = shader_get_uniform(__shd_scribble, "u_fTime"          );
+        static _u_vColourMultiply = shader_get_uniform(__shd_scribble, "u_vColourMultiply");
+        static _u_fBlinkState     = shader_get_uniform(__shd_scribble, "u_fBlinkState"    );
+        static _u_vGradient       = shader_get_uniform(__shd_scribble, "u_vGradient"      );
+        static _u_vSkew           = shader_get_uniform(__shd_scribble, "u_vSkew"          );
+        static _u_vColourLerp     = shader_get_uniform(__shd_scribble, "u_vColourLerp"    );
+        static _u_vRegionActive   = shader_get_uniform(__shd_scribble, "u_vRegionActive"  );
+        static _u_vRegionColour   = shader_get_uniform(__shd_scribble, "u_vRegionColour"  );
+        static _u_vCrop           = shader_get_uniform(__shd_scribble, "u_vCrop"          );
+        static _u_vScrollCrop     = shader_get_uniform(__shd_scribble, "u_vScrollCrop"    );
+        static _u_aDataFields     = shader_get_uniform(__shd_scribble, "u_aDataFields"    );
+        static _u_fRenderFlags    = shader_get_uniform(__shd_scribble, "u_fRenderFlags"   );
+        static _u_aBezier         = shader_get_uniform(__shd_scribble, "u_aBezier"        );
         
         static _u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble, "u_iTypewriterUseLines"     );
         static _u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
@@ -1681,24 +1700,28 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _shader_set_to_use_bezier = false;
         
         shader_set_uniform_f(_u_fTime,       __animation_time);
-        shader_set_uniform_f(_u_fAlpha,      __blend_alpha);
         shader_set_uniform_f(_u_fBlinkState, __animation_blink_state);
         
-        if ((__gradient_mix != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_mix != 0) || (__region_mix != 0) || __crop_using || __scroll_using)
+        shader_set_uniform_f(_u_vColourMultiply, __colour_multiply_red,
+                                                 __colour_multiply_green,
+                                                 __colour_multiply_blue,
+                                                 __alpha)
+        
+        if ((__colour_gradient_mix != 0) || (__skew_x != 0) || (__skew_y != 0) || (__colour_lerp_mix != 0) || (__region_mix != 0) || __crop_using || __scroll_using)
         {
             _shader_uniforms_dirty = true;
             
-            shader_set_uniform_f(_u_vGradient, colour_get_red(  __gradient_colour)/255,
-                                               colour_get_green(__gradient_colour)/255,
-                                               colour_get_blue( __gradient_colour)/255,
-                                               __gradient_mix);
+            shader_set_uniform_f(_u_vGradient, __colour_gradient_red,
+                                               __colour_gradient_green,
+                                               __colour_gradient_blue,
+                                               __colour_gradient_mix);
             
             shader_set_uniform_f(_u_vSkew, __skew_x, __skew_y);
             
-            shader_set_uniform_f(_u_vFlash, colour_get_red(  __flash_colour)/255,
-                                            colour_get_green(__flash_colour)/255,
-                                            colour_get_blue( __flash_colour)/255,
-                                            __flash_mix);
+            shader_set_uniform_f(_u_vColourLerp, __colour_lerp_red,
+                                                 __colour_lerp_green,
+                                                 __colour_lerp_blue,
+                                                 __colour_lerp_mix);
             
             shader_set_uniform_f(_u_vRegionActive, __region_glyph_start, __region_glyph_end);
             
@@ -1718,7 +1741,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             
             shader_set_uniform_f(_u_vGradient, 0, 0, 0, 0);
             shader_set_uniform_f(_u_vSkew, 0, 0);
-            shader_set_uniform_f(_u_vFlash, 0, 0, 0, 0);
+            shader_set_uniform_f(_u_vColourLerp, 0, 0, 0, 0);
             shader_set_uniform_f(_u_vRegionActive, 0, 0);
             shader_set_uniform_f(_u_vRegionColour, 0, 0, 0, 0);
             shader_set_uniform_f(_u_vCrop, 0, 0, 0, 0);

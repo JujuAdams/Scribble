@@ -10,7 +10,7 @@ varying vec4  v_vColour;
 varying float v_fPremultiplyAlpha;
 
 uniform float u_fSDF;
-uniform vec4  u_vFlash;
+uniform vec4  u_vColourLerp;
 uniform vec4  u_vCrop;
 uniform vec2  u_vScrollCrop;
 
@@ -43,7 +43,6 @@ void main()
         {
             //Standard rendering (standard fonts, spritefonts, sprites, surfaces)
             gl_FragColor = v_vColour*texture2D(gm_BaseTexture, v_vTexcoord);
-            gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFlash.rgb, u_vFlash.a);
         }
         else
         {
@@ -76,11 +75,10 @@ void main()
                 }
             }
             
-            gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFlash.rgb, u_vFlash.a);
             gl_FragColor.a *= v_vColour.a;
         }
         
-        //Apply premultiply alpha if necessary
-        gl_FragColor.rgb *= 1.0 - v_fPremultiplyAlpha*(1.0 + gl_FragColor.a);
+        //Apply colour lerp and premultiply alpha
+        gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vColourLerp.rgb, u_vColourLerp.a) * (1.0 - v_fPremultiplyAlpha*(1.0 + gl_FragColor.a));
     }
 }
