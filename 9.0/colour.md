@@ -87,7 +87,7 @@ Text colour in Scribble starts with the source texture being used. GameMaker's s
 
 &nbsp;
 
-## `.rgb_blend(colour)`
+## `.rgb_multiply(colour)`
 
 **Returns**: The text element
 
