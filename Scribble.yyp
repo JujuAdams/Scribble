@@ -165,7 +165,7 @@
     {"id":{"name":"obj_test_0109_fa_middle","path":"objects/obj_test_0109_fa_middle/obj_test_0109_fa_middle.yy",},},
     {"id":{"name":"obj_test_0402_fit_to_box","path":"objects/obj_test_0402_fit_to_box/obj_test_0402_fit_to_box.yy",},},
     {"id":{"name":"obj_test_0403_fit_to_box_plus_transformation","path":"objects/obj_test_0403_fit_to_box_plus_transformation/obj_test_0403_fit_to_box_plus_transformation.yy",},},
-    {"id":{"name":"obj_test_0110_flash","path":"objects/obj_test_0110_flash/obj_test_0110_flash.yy",},},
+    {"id":{"name":"obj_test_0110_rgb_lerp","path":"objects/obj_test_0110_rgb_lerp/obj_test_0110_rgb_lerp.yy",},},
     {"id":{"name":"obj_test_0704_flush","path":"objects/obj_test_0704_flush/obj_test_0704_flush.yy",},},
     {"id":{"name":"obj_test_0705_flush_multi","path":"objects/obj_test_0705_flush_multi/obj_test_0705_flush_multi.yy",},},
     {"id":{"name":"__scribble_font_delete_from_file","path":"scripts/__scribble_font_delete_from_file/__scribble_font_delete_from_file.yy",},},

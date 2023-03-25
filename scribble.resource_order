@@ -117,7 +117,7 @@
     {"name":"obj_test_0109_fa_middle","order":9,"path":"objects/obj_test_0109_fa_middle/obj_test_0109_fa_middle.yy",},
     {"name":"obj_test_0402_fit_to_box","order":2,"path":"objects/obj_test_0402_fit_to_box/obj_test_0402_fit_to_box.yy",},
     {"name":"obj_test_0403_fit_to_box_plus_transformation","order":3,"path":"objects/obj_test_0403_fit_to_box_plus_transformation/obj_test_0403_fit_to_box_plus_transformation.yy",},
-    {"name":"obj_test_0110_flash","order":10,"path":"objects/obj_test_0110_flash/obj_test_0110_flash.yy",},
+    {"name":"obj_test_0110_rgb_lerp","order":10,"path":"objects/obj_test_0110_rgb_lerp/obj_test_0110_rgb_lerp.yy",},
     {"name":"obj_test_0704_flush","order":4,"path":"objects/obj_test_0704_flush/obj_test_0704_flush.yy",},
     {"name":"obj_test_0705_flush_multi","order":5,"path":"objects/obj_test_0705_flush_multi/obj_test_0705_flush_multi.yy",},
     {"name":"__scribble_font_delete_from_file","order":5,"path":"scripts/__scribble_font_delete_from_file/__scribble_font_delete_from_file.yy",},
