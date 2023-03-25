@@ -77,13 +77,14 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __matrix_x       = undefined;
     __matrix_y       = undefined;
     
-    __layout_type           = __SCRIBBLE_LAYOUT.__FREE;
-    __layout_width          = infinity;
-    __layout_height         = infinity;
-    __layout_character_wrap = false;
-    __layout_max_scale      = 1;
-    __layout_scale_dirty    = true;
-    __layout_scale          = undefined;
+    __layout_type            = __SCRIBBLE_LAYOUT.__FREE;
+    __layout_width           = infinity;
+    __layout_height          = infinity;
+    __layout_character_wrap  = false;
+    __layout_max_scale       = 1;
+    __layout_scale_dirty     = true;
+    __layout_scale           = undefined;
+    __layout_page_separation = 0;
     
     __line_height_min = -1;
     __line_height_max = -1;
