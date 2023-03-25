@@ -1976,5 +1976,15 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return layout_guide(_width);
     }
     
+    static transform = function(_xscale, _yscale, _angle)
+    {
+        if (SCRIBBLE_DEPRECATION_WARNINGS)
+        {
+            __scribble_error(".transform() has been replaced by .post_transform()\n(Set SCRIBBLE_DEPRECATION_WARNINGS to <false> to turn off this warning)");
+        }
+        
+        return post_transform(_xscale, _yscale, _angle);
+    }
+    
     #endregion
 }
