@@ -655,7 +655,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __layout_type = __SCRIBBLE_LAYOUT.__FIT;
             
             __model_cache_name_dirty = true;
-            __matrix_dirty           = true; //By changing the .fit_to_box() properties we'll very likely change the __fit_scale variable used to shape text in the world matrix
+            __matrix_dirty           = true; //By changing the .layout_fit() properties we'll very likely change the __fit_scale variable used to shape text in the world matrix
             __bbox_dirty             = true;
             
             __layout_width          = _max_width;

@@ -34,7 +34,7 @@
 #macro SCRIBBLE_BEZIER_ACCURACY                20         //Controls how accurately text fits Beziér curves. Higher is more accurate but slower
 #macro SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE       false      //Whether to trim off empty left-hand space when moving a word to a new line. This can cause issues with spritefonts in some situations
 #macro SCRIBBLE_NEWLINES_PAD_LEFT_SPACE        true       //Whether to pad extra space left-hand space when moving a word to a new line
-#macro SCRIBBLE_FIT_TO_BOX_ITERATIONS          7          //Number of iterations to fit text when using the .fit_to_box() method. Higher values are slower but more accurate
+#macro SCRIBBLE_FIT_TO_BOX_ITERATIONS          7          //Number of iterations to fit text when using the .layout_fit() method. Higher values are slower but more accurate
 #macro SCRIBBLE_SAFELY_WRAP_TIME               true       //Whether to wrap the internal time value
 #macro SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK  true       //Disables [pause] events immediately before pagebreaks, though only if there are no other events between the pause and the pagebreak
 #macro SCRIBBLE_INCREMENTAL_FREEZE             true       //Whether text models should freeze their vertex buffers one frame after the text model is created. This leads to increased performance, especially with large amounts of text
@@ -51,7 +51,7 @@
 #macro SCRIBBLE_DRAW_RETURNS_SELF         false    //Whether the .draw() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
 #macro SCRIBBLE_BUILD_RETURNS_SELF        false    //Whether the .build() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
 #macro SCRIBBLE_FLUSH_RETURNS_SELF        false    //Whether the .flush() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
-#macro SCRIBBLE_SHOW_WRAP_BOUNDARY        false    //Controls the drawing of a rectangle that indicates the boundaries of the .layout_wrap(), .fit_to_box(), and .scale_to_box() methods
+#macro SCRIBBLE_SHOW_WRAP_BOUNDARY        false    //Controls the drawing of a rectangle that indicates the boundaries of the .layout_wrap(), .layout_fit(), and .layout_scale() methods
 #macro SCRIBBLE_ATTEMPT_FONT_SCALING_FIX  true     //Whether to try to fix font scaling due to the font texture being too big for the texture page
 
 //Whether to replace a grave accent (` U+0060, decimal=96) with a zero-width space for Thai text

@@ -1,4 +1,4 @@
-var _element = scribble("Test text Test text Test text").scale_to_box(mouse_x - x, mouse_y - y).padding(10, 10, 10, 10);
+var _element = scribble("Test text Test text Test text").layout_scale(mouse_x - x, mouse_y - y).padding(10, 10, 10, 10);
 
 var _bbox = _element.get_bbox(x, y);
 draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, true);

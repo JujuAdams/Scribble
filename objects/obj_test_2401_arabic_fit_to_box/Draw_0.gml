@@ -1,4 +1,4 @@
-var _element = scribble(test_animation).align(fa_center, fa_left).fit_to_box(width, height);
+var _element = scribble(test_animation).align(fa_center, fa_left).layout_fit(width, height);
 _element.draw(x + width/2, y);
 
 var _bbox = _element.get_bbox(x + width/2, y);

@@ -326,7 +326,7 @@ function __scribble_gen_6_build_lines()
             }
         }
         
-        //If we're not running .fit_to_box() behaviour then escape now!
+        //If we're not running .layout_fit() behaviour then escape now!
         if (!_layout_fit || (SCRIBBLE_FIT_TO_BOX_ITERATIONS <= 1)) break;
         
         
