@@ -1,7 +1,7 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_test_0116_new_cache",
+  "name": "obj_test_0904_new_cache",
   "eventList": [
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,},
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,},
@@ -10,8 +10,8 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "0100 Basic",
-    "path": "folders/Test Cases/0100 Basic.yy",
+    "name": "0900 Caching, Stress Testing",
+    "path": "folders/Test Cases/0900 Caching, Stress Testing.yy",
   },
   "parentObjectId": null,
   "persistent": false,
