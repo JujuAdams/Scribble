@@ -281,6 +281,12 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
+    #endregion
+    
+    
+    
+    #region Colouration
+    
     /// @param alpha
     static alpha = function(_alpha)
     {
@@ -290,8 +296,28 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     }
     
     /// @param colour
+    static rgb_multiply = function(_colour)
+    {
+        static _colors_struct = __scribble_config_colours();
+        
+        if (is_string(_colour))
+        {
+            _colour = _colors_struct[$ _colour];
+            if (_colour == undefined)
+            {
+                __scribble_error("Colour name \"", _colour, "\" not recognised");
+                exit;
+            }
+        }
+        
+        __rgb_multiply_colour = _colour & 0xFFFFFF;
+        
+        return self;
+    }
+    
+    /// @param colour
     /// @param mix
-    static flash = function(_colour, _mix)
+    static rgb_lerp = function(_colour, _mix)
     {
         static _colors_struct = __scribble_config_colours();
         
@@ -1862,7 +1888,29 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     #endregion
     
+    
+    
     #region Deprecated
+    
+    static flash = function(_colour, _mix)
+    {
+        if (SCRIBBLE_DEPRECATION_WARNINGS)
+        {
+            __scribble_error(".flash() has been replaced by .rgb_lerp()\n(Set SCRIBBLE_DEPRECATION_WARNINGS to <false> to turn off this warning)");
+        }
+        
+        return flash(_colour, _mix);
+    }
+    
+    static blend = function(_colour, _alpha)
+    {
+        if (SCRIBBLE_DEPRECATION_WARNINGS)
+        {
+            __scribble_error(".blend() has been replaced by .alpha() and .rgb_multiply()\n(Set SCRIBBLE_DEPRECATION_WARNINGS to <false> to turn off this warning)");
+        }
+        
+        return rgb_multiply(_colour).alpha(_alpha);
+    }
     
     static scale_to_box = function(_max_width, _max_height, _max_scale)
     {
