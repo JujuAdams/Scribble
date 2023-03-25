@@ -4,6 +4,8 @@
 
 This page lists all the ways that you can colour text natively with Scribble. The features on this page are enumerated in reverse order of priority with the **highest priority** colourisation effects being at the **bottom** of the page e.g. `.rgb_lerp()` is applied after `[cycle]`.
 
+Unless otherwise stated, colours are applied multiplicatively with the result of the prior stage.
+
 &nbsp;
 
 ## Texture Colour
