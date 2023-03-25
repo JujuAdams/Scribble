@@ -2,11 +2,15 @@
 
 &nbsp;
 
+This page lists all the ways that you can colour text natively with Scribble. The features on this page are enumerated in reverse order of priority with the **highest priority** colourisation effects being at the **bottom** of the page e.g. `.rgb_lerp()` is applied after `[cycle]`.
+
+&nbsp;
+
 ## Texture Colour
 
 Text colour in Scribble starts with the source texture being used. GameMaker's standard native fonts are stored as pure white text, and generally speaking all text should be created in a pure white colour. If you're using spritefonts (or you're including sprites in your text) take care when choosing your source colour.
 
-?> Scribble can bake text borders into standard fonts and spritefonts. These are calculated as modifications to the source texture. As a result, colourisation is applied to the border as well as the basic text.
+?> Scribble can bake text borders into standard fonts and spritefonts. These are calculated as modifications to the source texture. As a result, colourisation is applied to the border as well as the basic text. SDF fonts have their own border method `.sdf_border()` that is **not** affected by colourisation.
 
 ## Sprite Blending
 
@@ -53,6 +57,10 @@ Text element method. This function multiplies the current text colour with the i
 ## `.rgb_lerp()`
 
 Text element method. This function [lerps](https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/a-brief-introduction-to-lerp-r4954/) between the current text colour and the target colour. This allows you to force the RGB channel of text to a certain colour whilst leaving the alpha channel unchanged. This is useful for e.g. flashing text in a particular colour.
+
+## `.sdf_border()`
+
+Text element method. This function adds a coloured border around your text. This will only affect SDF fonts and won't affect standard or spritefonts, and it further won't affect in-line sprites. The coloured border will not be colourised or tinted due to the use of other functionality.
 
 ## `[alpha, ...]` `[/alpha]`
 
