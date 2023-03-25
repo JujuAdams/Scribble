@@ -1,4 +1,4 @@
-element.wrap(width, height);
+element.layout_wrap_split_pages(width, height);
 page = clamp(page, 0, element.get_page_count()-1);
 element.page(page);
 element.draw(x, y);

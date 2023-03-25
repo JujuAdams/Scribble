@@ -1,4 +1,4 @@
-var _element = scribble(test_string).wrap(width);
+var _element = scribble(test_string).layout_wrap(width);
 _element.draw(x, y);
 
 var _bbox = _element.get_bbox(x, y);

@@ -6,7 +6,7 @@ if (!SCRIBBLE_ALLOW_TEXT_GETTER)
 
 var _text = "[fa_middle][c_red]Hi world[/page]oijwagow\n\ngawoijgawj egonawegh";
 
-var _element = scribble(_text).wrap(50);
+var _element = scribble(_text).layout_wrap(50);
 if (keyboard_check_pressed(vk_up  )) _element.page(_element.get_page()-1);
 if (keyboard_check_pressed(vk_down)) _element.page(_element.get_page()+1);
 

@@ -36,7 +36,7 @@ function draw_text_scribble_ext(_x, _y, _string, _width, _reveal = undefined)
     .font(_font)
     .rgb_multiply(draw_get_color())
     .alpha(draw_get_alpha())
-    .wrap(_width);
+    .layout_wrap(_width);
     if (_reveal != undefined) _element.reveal(_reveal);
     _element.draw(_x, _y);
     return _element;

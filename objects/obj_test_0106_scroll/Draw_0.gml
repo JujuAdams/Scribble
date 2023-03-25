@@ -3,12 +3,12 @@ var _string = "Lorem ipsum dolor sit amet,\n\nconsectetur adipiscing elit, sed d
 scribble_unique(0, _string)
 .rgb_multiply(c_red)
 .alpha(0.5)
-.wrap(400)
+.layout_wrap(400)
 .align(fa_center, fa_top)
 .draw(room_width/2, room_height/2);
 
 scribble_unique(1, _string)
-.wrap(400)
+.layout_wrap(400)
 .align(fa_center, fa_top)
 .scroll(scroll_y, 100)
 .draw(room_width/2, 100);

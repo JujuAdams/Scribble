@@ -1,4 +1,4 @@
-var _element = scribble("Test text Test text Test text").wrap(mouse_x - 10).padding(10, 10, 10, 10);
+var _element = scribble("Test text Test text Test text").layout_wrap(mouse_x - 10).padding(10, 10, 10, 10);
 
 var _bbox = _element.get_bbox(10, 10);
 draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, true);

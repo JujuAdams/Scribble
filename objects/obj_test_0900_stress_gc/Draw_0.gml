@@ -4,7 +4,7 @@ if (toggle)
     repeat(1000) test_text += chr(choose(irandom_range(32, 90), irandom_range(94, 126)));
     
     var _t = get_timer();
-    scribble(test_text).wrap(500).draw(room_width div 2, room_height div 2);
+    scribble(test_text).layout_wrap(500).draw(room_width div 2, room_height div 2);
     _t = get_timer() - _t;
     
     counter++;

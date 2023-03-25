@@ -4,4 +4,4 @@ width  = 450;
 height = 150;
 
 page = 0;
-element = scribble(demo_string).wrap(width, height).page(page);
+element = scribble(demo_string).layout_wrap_split_pages(width, height).page(page);
