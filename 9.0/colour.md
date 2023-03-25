@@ -12,7 +12,7 @@ There are, broadly, three types of functionality available in Scribble to adjust
 
 ## Texture Colour
 
-Text colour in Scribble starts with the source texture being used. GameMaker's standard native fonts are stored as pure white text, and generally speaking all text should be created in a pure white colour. If you're using spritefonts (or you're including sprites in your text) take care when choosing your source colour.
+Text colour in Scribble starts with the source texture being used. GameMaker's standard native fonts are stored as pure white text, and generally speaking all text should be created in a pure white colour. If you're using spritefonts, or you're including sprites in your text, then any subsequent adjustments will be applied on top of the source texture colour.
 
 ?> Scribble can bake text borders into standard fonts and spritefonts. These are calculated as modifications to the source texture. As a result, colourisation is applied to the border as well as the basic text. SDF fonts have their own border method `.sdf_border()` that is **not** affected by colourisation.
 
