@@ -729,26 +729,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
-    static scale_to_box = function()
-    {
-        __scribble_error(".scale_to_box() has been replaced by .layout_scale()");
-    }
-    
-    static wrap = function()
-    {
-        __scribble_error(".wrap() has been replaced by .layout_wrap()");
-    }
-    
-    static fit_to_box = function()
-    {
-        __scribble_error(".fit_to_box() has been replaced by .layout_fit()");
-    }
-    
-    static pin_guide_width = function()
-    {
-        __scribble_error(".pin_guide_width() has been replaced by .layout_guide()");
-    }
-    
     #endregion
     
     
@@ -1878,6 +1858,50 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         }
         
         return __matrix;
+    }
+    
+    #endregion
+    
+    #region Deprecated
+    
+    static scale_to_box = function(_max_width, _max_height, _max_scale)
+    {
+        if (SCRIBBLE_DEPRECATION_WARNINGS)
+        {
+            __scribble_error(".scale_to_box() has been replaced by .layout_scale()\n(Set SCRIBBLE_DEPRECATION_WARNINGS to <false> to turn off this warning)");
+        }
+        
+        return layout_scale(_max_width, _max_height, _max_scale);
+    }
+    
+    static wrap = function(_max_width, _max_height, _character_wrap)
+    {
+        if (SCRIBBLE_DEPRECATION_WARNINGS)
+        {
+            __scribble_error(".wrap() has been replaced by .layout_wrap() and .layout_wrap_split_pages()\n(Set SCRIBBLE_DEPRECATION_WARNINGS to <false> to turn off this warning)");
+        }
+        
+        return layout_wrap_split_pages();
+    }
+    
+    static fit_to_box = function(_max_width, _max_height, _character_wrap, _max_scale)
+    {
+        if (SCRIBBLE_DEPRECATION_WARNINGS)
+        {
+            __scribble_error(".fit_to_box() has been replaced by .layout_fit()\n(Set SCRIBBLE_DEPRECATION_WARNINGS to <false> to turn off this warning)");
+        }
+        
+        return layout_fit(_max_width, _max_height, _character_wrap, _max_scale);
+    }
+    
+    static pin_guide_width = function(_width)
+    {
+        if (SCRIBBLE_DEPRECATION_WARNINGS)
+        {
+            __scribble_error(".pin_guide_width() has been replaced by .layout_guide()\n(Set SCRIBBLE_DEPRECATION_WARNINGS to <false> to turn off this warning)");
+        }
+        
+        return layout_guide(_width);
     }
     
     #endregion

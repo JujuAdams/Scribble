@@ -19,6 +19,7 @@
 #macro SCRIBBLE_USE_KERNING                   true
 #macro SCRIBBLE_SPRITE_BILINEAR_FILTERING     undefined
 #macro SCRIBBLE_DELAY_LAST_CHARACTER          false
+#macro SCRIBBLE_DEPRECATION_WARNINGS          true
 
 
 
