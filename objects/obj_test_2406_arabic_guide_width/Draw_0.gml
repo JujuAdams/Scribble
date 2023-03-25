@@ -1,4 +1,4 @@
-var _element = scribble(test_mode? test_l2r : test_r2l).pin_guide_width(width);
+var _element = scribble(test_mode? test_l2r : test_r2l).layout_guide(width);
 _element.draw(x, y);
 
 var _bbox = _element.get_bbox(x, y);
