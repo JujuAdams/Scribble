@@ -1,6 +1,5 @@
-var _element = scribble("[fa_center][fa_middle]Words words words\nMore words[/page]There was a manual page break!\nFurther words...\n...and the last words.")
-
-_element.starting_format("fnt_test_1", c_white).draw(room_width/2, room_height/2, typist);
+var _element = scribble("[fa_center][fa_middle]Words words words\nMore words[/page]There was a manual page break!\nFurther words...\n...and the last words.");
+_element.font("fnt_test_1").draw(room_width/2, room_height/2, typist);
 
 draw_line(room_width/2, 0, room_width/2, room_height);
 draw_line(0, room_height/2, room_width, room_height/2);

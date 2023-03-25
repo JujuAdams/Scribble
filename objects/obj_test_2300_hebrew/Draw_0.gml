@@ -1,4 +1,4 @@
-var _element = scribble("דג סקרן שט בים מאוכזב ולפתע מצא חברה").starting_format("fnt_hebrew", c_white).layout_wrap(width);
+var _element = scribble("דג סקרן שט בים מאוכזב ולפתע מצא חברה").font("fnt_hebrew").layout_wrap(width);
 _element.draw(x, y, typist);
 
 var _bbox = _element.get_bbox(x, y);

@@ -201,7 +201,7 @@
     {"name":"obj_test_0103_blend_sprite","order":3,"path":"objects/obj_test_0103_blend_sprite/obj_test_0103_blend_sprite.yy",},
     {"name":"scribble_font_fetch","order":4,"path":"scripts/scribble_font_fetch/scribble_font_fetch.yy",},
     {"name":"obj_test_1208_sprite_origins","order":9,"path":"objects/obj_test_1208_sprite_origins/obj_test_1208_sprite_origins.yy",},
-    {"name":"obj_test_0715_starting_format","order":14,"path":"objects/obj_test_0715_starting_format/obj_test_0715_starting_format.yy",},
+    {"name":"obj_test_0715_font","order":14,"path":"objects/obj_test_0715_font/obj_test_0715_font.yy",},
     {"name":"obj_test_0901_stress_lots_of_text","order":1,"path":"objects/obj_test_0901_stress_lots_of_text/obj_test_0901_stress_lots_of_text.yy",},
     {"name":"obj_test_0902_stress_multi","order":2,"path":"objects/obj_test_0902_stress_multi/obj_test_0902_stress_multi.yy",},
     {"name":"obj_test_0903_stress_stashed","order":3,"path":"objects/obj_test_0903_stress_stashed/obj_test_0903_stress_stashed.yy",},

@@ -11,5 +11,5 @@ function string_width_scribble(_string)
     var _font = draw_get_font();
     _font = !font_exists(_font)? _scribble_state.__default_font : font_get_name(_font);
     
-    return scribble(_string).starting_format(_font, c_white).get_width();
+    return scribble(_string).font(_font).get_width();
 }
