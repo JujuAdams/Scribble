@@ -101,7 +101,7 @@
     {"name":"obj_test_0701_bbox_getters","order":1,"path":"objects/obj_test_0701_bbox_getters/obj_test_0701_bbox_getters.yy",},
     {"name":"obj_test_0501_bbox_revealed","order":1,"path":"objects/obj_test_0501_bbox_revealed/obj_test_0501_bbox_revealed.yy",},
     {"name":"obj_test_2403_bezier_arabic","order":3,"path":"objects/obj_test_2403_bezier_arabic/obj_test_2403_bezier_arabic.yy",},
-    {"name":"obj_test_0702_blend","order":2,"path":"objects/obj_test_0702_blend/obj_test_0702_blend.yy",},
+    {"name":"obj_test_0702_rgb_multiply_and_alpha","order":2,"path":"objects/obj_test_0702_rgb_multiply_and_alpha/obj_test_0702_rgb_multiply_and_alpha.yy",},
     {"name":"obj_test_0703_build","order":3,"path":"objects/obj_test_0703_build/obj_test_0703_build.yy",},
     {"name":"scribble_msdf_thickness_offset","order":5,"path":"scripts/scribble_msdf_thickness_offset/scribble_msdf_thickness_offset.yy",},
     {"name":"obj_test_0104_colour","order":4,"path":"objects/obj_test_0104_colour/obj_test_0104_colour.yy",},
