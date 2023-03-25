@@ -16,6 +16,7 @@
 **API Reference**
 
 -   [Configuration](configuration)
+-   [Colour](Colour)
 -   [Quick Functions](quick-functions)
 -   [`scribble()`](scribble-methods)
 -   [`scribble_typist()`](typist-methods)
