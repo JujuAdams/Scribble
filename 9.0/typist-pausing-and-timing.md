@@ -1,0 +1,33 @@
+# Pausing and Timing
+
+&nbsp;
+
+## `[delay,<milliseconds>]`
+
+**Command tag.** Delay the typewriter by the given number of milliseconds. If no time value is given then the delay with defaults to [`SCRIBBLE_DEFAULT_DELAY_DURATION`](configuration).
+
+&nbsp;
+
+## `[pause]`
+
+**Command tag.** Pause the typewriter. The typewriter can be unpaused by calling [`.unpause()`](typist-methods?id=unpause).
+
+&nbsp;
+
+## `[sync,<seconds>]`
+
+**Command tag.** Timecode to wait for in sound playback. See [`.sync_to_sound()`](typist-methods?id=sync_to_sound).
+
+&nbsp;
+
+## `[speed,<factor>]`
+
+**Command tag.** Sets the speed of the typewriter by multiplying the value set by [`.in()`](typist-methods?id=inspeed-smoothness) by `<factor>`. A value of `2.0` will be twice as fast etc.
+
+&nbsp;
+
+## `[/speed]`
+
+**Command tag.** Resets the speed of the typewriter to the value set by [`.in()`](typist-methods?id=inspeed-smoothness).
+
+&nbsp;

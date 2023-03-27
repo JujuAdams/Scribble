@@ -1,4 +1,22 @@
-# External Assets
+# Audio
+
+&nbsp;
+
+## `[<name of sound>]`
+
+**Command tag.** Insert sound playback event. Sounds will only be played when using Scribble's typewriter feature.
+
+&nbsp;
+
+## `[typistSound,...]`
+
+**Command tag.** Sets the sound of the typewriter by replicating the behaviour of the [`.sound()`](typist-methods?id=soundsoundarray-overlap-pitchmin-pitchmax) typist.
+
+&nbsp;
+
+## `[typistSoundPerChar,...]`
+
+**Command tag.** Sets the sound of the typewriter by replicating the behaviour of the [`.sound_per_char()`](typist-methods?id=sound_per_charsoundarray-pitchmin-pitchmax-exceptionstring).
 
 &nbsp;
 

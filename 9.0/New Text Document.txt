@@ -1,0 +1,40 @@
+# Text Formatting
+
+&nbsp;
+
+Scribble supports many in-line commands that can be used inside a string. Here's a quick example:
+
+```
+scribble("This text is normal size. [scale,2]This text is twice as big.").draw(x, y);
+```
+
+This will draw a string with two differently sized substrings. Simple!
+
+Of course, because the `[` character is used to open a command tag, putting a single square bracket in a line will cause Scribble to try to interpret following characters as part of a command tag. If you want to include a `[` literal in your string then double up the character:
+
+```
+//This string will display as "Here's a square bracket [!"
+scribble("Here's a square bracket [[!");
+```
+
+You **don't** need to double up the closing bracket `]` to include one in your displayed text.
+
+&nbsp;
+
+**Please note** that text alignment follows the following rules:
+
+1. In-line vertical alignment affects the entire textbox and cannot be changed midway through text display
+2. Changing horizontal alignment in the middle of a line of text will add a line break
+3. Native GameMaker font alignment options (`fa_left`, `fa_center`, `fa_right`) are not intended to be used in conjunction with Scribble's own custom alignment options (`pin_left`, `pin_center`, `pin_right`)
+
+&nbsp;
+
+Scribble supports the following commands:
+
+|Formatting tag                       |Behaviour                                                                                                                                                                                                                       |
+|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`[/]`                                |Reset formatting to defaults                                                                                                                                                                                                    |
+|`[nbsp]`                             |Inserts a non-breaking space. Actual non-breaking space characters *are* natively supported but `[nbsp]` may be more convenient in some situations                                                                              |
+|`[zwsp]`                             |Inserts a zero-width space. Actual zero-width space characters *are* natively supported but `[zwsp]` may be more convenient in some situations                                                                                  |
+|`[l2r]`                              |Provides a hint at the direction of text. Useful at the start of strings or adjacent to punctuation to fix minor issues in text layout                                                                                          |
+|`[r2l]`                              |Provides a hint at the direction of text. Useful at the start of strings or adjacent to punctuation to fix minor issues in text layout                                                                                          |

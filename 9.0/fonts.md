@@ -2,18 +2,6 @@
 
 &nbsp;
 
-## `scribble_font_set_default(fontName)`
-
-**Returns:** N/A (`undefined`)
-
-|Name       |Datatype|Purpose                                                                                                                                                                                            |
-|-----------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`fontName` |string  |Name of the font to set as the default, as a string                                                                                                                                                |
-
-This function sets the default font to use for future [`scribble()`](scribble-methods) calls.
-
-&nbsp;
-
 ## `scribble_font_rename(oldName, newName)`
 
 **Returns:** N/A (`undefined`)

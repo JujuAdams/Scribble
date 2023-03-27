@@ -4,6 +4,32 @@
 
 &nbsp;
 
+## `.animation_speed(speed)`
+
+**Returns**: The text element
+
+|Name   |Datatype|Purpose                                                                                               |
+|-------|--------|------------------------------------------------------------------------------------------------------|
+|`speed`|number  |The animation speed multiplier where `1` is normal speed, `2` is double speed, and `0.5` is half speed|
+
+Setting the animation speed value to `0` will pause animation effects. This value can even be negative to play effects backwards!
+
+?> This setting does not impact [typists](typist-methods). Instead, please use the [`.pause()`](typist-methods?id=pause) typist method to pause typists.
+
+&nbsp;
+
+## `.get_animation_speed()`
+
+**Returns**: The current animation speed
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+The value returned from this function defaults to `1`.
+
+&nbsp;
+
 ## `scribble_anim_reset()`
 
 **Returns**: N/A (`undefined`)
