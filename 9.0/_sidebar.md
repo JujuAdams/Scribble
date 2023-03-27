@@ -17,12 +17,12 @@
 
 -   [Configuration](configuration)
 -   [Colour](Colour)
+-   [Custom Colours](custom-colour-functions)
 -   [Quick Functions](quick-functions)
 -   [`scribble()`](scribble-methods)
 -   [`scribble_typist()`](typist-methods)
 -   [Animation Properties](animation-properties)
 -   [Fonts](fonts)
 -   [Superfont Functions](superfont-functions)
--   [Colour Functions](colour-functions)
 -   [External Assets](external-assets)
 -   [Misc Functions](misc-functions)

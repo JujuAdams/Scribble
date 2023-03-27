@@ -1,4 +1,4 @@
-# Colour Functions 
+# Custom Colour Functions 
 
 &nbsp;
 
