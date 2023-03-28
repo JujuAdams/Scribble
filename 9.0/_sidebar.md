@@ -28,8 +28,8 @@
 
 -   [Configuration](configuration)
 -   [Text Wrapping and Layouts](text-wrapping-and-layouts)
--   [Colour](Colour)
--   [Custom Colours](custom-colour-functions)
+-   [Colour](colour)
+-   [Custom Colours](custom-colours)
 -   [Alignment](Alignment)
 -   [Animation](Animation)
 -   [Animation Properties](animation-properties)

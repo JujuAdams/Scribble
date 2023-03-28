@@ -8,8 +8,6 @@ For very simple use, you can use the stripped-back [`draw_text_scribble()` and `
 
 &nbsp;
 
------
-
 ## draw_set_font() / draw_set_halign() / draw_set_color() ###
 
 GameMaker:

@@ -32,7 +32,7 @@ Text colour in Scribble starts with the source texture being used. GameMaker's s
 |----------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |`colour`  |integer or string|Basic text colour as either:<br>- standard GameMaker 24-bit BGR format<br>- name of a GameMaker colour constant<br>- name of a colour added to `__scribble_config_colours()`<br>- name of a colour added by calling `scribble_color_set()`|
 
-**Text element method.** This method sets the basic text blend colour for the text element and can be overriden by `[#... ]` `[d# ...]` `[c_red]` etc.
+**Text element method.** This method sets the basic text blend colour for the text element and can be overriden by `[#...]` `[d#...]` `[c_red]` etc.
 
 !> This method is a *regenerator*. If the value is changed then the text element will be regenerated, potentially leading to degraded performance. Try not to change the colour of text using this method often.
 
