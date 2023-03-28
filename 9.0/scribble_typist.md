@@ -1,4 +1,4 @@
-# `scribble_typist()` Methods
+# `scribble_typist()`
 
 &nbsp;
 
