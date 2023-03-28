@@ -7,11 +7,11 @@
 
 &nbsp;
 
-## Features
+## What is Scribble?
 
-Scribble is a comprehensive text rendering library designed to replace GameMaker's native [`draw_text()` functions](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/Text.htm) without adding unnecessary complexity. Scribble's design should feel familiar and intuitive for GameMaker users.
+Scribble is a comprehensive text rendering library designed to replace GameMaker's native [`draw_text()` functions](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/Text.htm) without adding unnecessary complexity.
 
-There are a multitude of very useful features available:
+There are a multitude of useful features available:
 - Cross-platform, including Opera GX
 - In-line colour and font swapping
 - In-line sprites, including animation
@@ -21,17 +21,53 @@ There are a multitude of very useful features available:
 - Automatic [pagination](https://en.wikipedia.org/wiki/Pagination)
 - High performance caching
 - Font effect baking
-- Resolution-independent [MSDF fonts](msdf-fonts)
+- Resolution-independent [SDF fonts](font-sdf)
 - Arabic and Hebrew support, and limited Thai and Hindi (Devanagari) support
 
-## About & Support
+&nbsp;
 
-Scribble supports all GameMaker export modules, including consoles, mobile, and Opera GX. Scribble also works on HTML5 but YoYoGames' lacklustre support for this platform can make bug fixing hard if you run into anything. If you'd like to report a bug or suggest a feature, please use the repo's [Issues page](https://github.com/JujuAdams/scribble/issues). Scribble is constantly being maintained and upgraded; bugs are usually addressed within a few days of being reported.
+## What platforms does Scribble support?
+
+Everything! You might run into edge cases on platforms that I don't regularly test; please [report any bugs](https://github.com/JujuAdams/Scribble/issues) if and when you find them. Please note that diagnosing HTML5 bugs in particular can be frustrating due to the generally patchy nature of GameMaker's JS runtime.
+
+&nbsp;
+
+## What versions of GameMaker does Scribble support?
+
+Version 8 of Scribble primarily supports GameMaker LTS 2022, and in theory supports every version of GameMaker later than that. Later versions of GameMaker may change functionality in a way that Scribble is not forwards-compatible with, but Scribble uses only native GameMaker functions so is in the best possible position for long-term compatibility.
+
+&nbsp;
+
+## How is Scribble licensed? Can I use it for commercial projects?
+
+[Scribble is released under the MIT license](https://github.com/JujuAdams/Scribble/blob/master/LICENSE). This means you can use it for whatever purpose you want, including commercial projects. It'd mean a lot to me if you'd drop my name in your credits (Juju Adams) and/or say thanks, but you're under no obligation to do so.
+
+&nbsp;
+
+## What games are using Scribble?
+
+Scribble is being used in [Shovel Knight Pocket Dungeon](https://www.yachtclubgames.com/games/shovel-knight-pocket-dungeon), [Wally and the Fantastic Predators](https://store.steampowered.com/app/1077450/Wally_and_the_FANTASTIC_PREDATORS/), [Stargrove](https://twitter.com/FauxOperative), [Wizarducks](https://twitter.com/wizarducks1) and [many others](https://www.youtube.com/watch?v=KvakyfLhvfU). Scribble gets a lot of real world testing!
+
+&nbsp;
+
+## I think you're missing a useful feature and I'd like you to implement it!
+
+Great! Please make a [feature request](https://github.com/JujuAdams/scribble/issues). Feature requests make Scribble a more fun tool to use and gives me something to think about when I'm bored on public transport.
+
+&nbsp;
+
+## I found a bug, and it both scares and mildly annoys me. What is the best way to get the problem solved?
+
+Please make a [bug report](https://github.com/JujuAdams/scribble/issues). Juju checks GitHub every day and bug fixes usually go out a couple days after that. You can also grab me on the [Discord server](https://discord.gg/8krYCqr), but that's not a replacement for a nice clear bug report.
+
+&nbsp;
+
+## Who made Scribble?
 
 Scribble is built and maintained by [@jujuadams](https://twitter.com/jujuadams) who has a long history of fiddling with text engines. Juju's worked on a lot of [commercial GameMaker games](http://www.jujuadams.com/). Many, many other people have contributed bug reports and feature requests over the years, too many to list here. Scribble wouldn't exist without them and Juju is eternally grateful for their creativity and patience.
 
-This library will never truly be finished because contributions and suggestions from new users are always welcome. Scribble wouldn't be the same without [your](https://tenor.com/search/whos-awesome-gifs) input! Make a suggestion on the repo's [Issues page](https://github.com/JujuAdams/scribble/issues) if you'd like a feature to be added.
+&nbsp;
 
-## License
+## Can I send you donations? Are you going to start a Patreon?
 
-Scribble is licensed under the [MIT License](https://github.com/JujuAdams/Scribble/blob/master/LICENSE).
+Thank you for wanting to show your appreciation - it really does mean a lot to me personally - but I'm fortunate enough to have a stable income from gamedev. I'm not looking to join Patreon as a creator at this moment in time. If you'd like to support my work then drop me a credit in your game and/or gimme a shout-out on the social media platform of your choice.
