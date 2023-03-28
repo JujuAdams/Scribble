@@ -1,4 +1,4 @@
-# Superfont Functions
+# Superfonts
 
 &nbsp;
 
