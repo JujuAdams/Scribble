@@ -24,8 +24,6 @@ macros  <  global functions  <  methods  <  command tags
 
 ## Examples
 
-&nbsp;
-
 ### Configuration Macros
 
 `SCRIBBLE_DEFAULT_COLOR` can be found in `__scribble_config_behaviours()`:
