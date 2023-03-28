@@ -2,7 +2,6 @@
 -   [FAQ](faq)
 -   [Reading These Docs](reading-these-docs)
 -   [Coming from Native GM](coming-from-native-gm)
--   [Setting Up](setting-up)
 -   [Quick Functions](quick-functions)
 
 ---
