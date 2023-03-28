@@ -1,7 +1,4 @@
--   [Introduction](README)
-
----
-
+-   [Home](README)
 -   [FAQ](faq)
 -   [Reading These Docs](reading-these-docs)
 -   [Coming from Native GM](coming-from-native-gm)
