@@ -1,5 +1,4 @@
 -   [Home](README)
--   [FAQ](faq)
 -   [Reading These Docs](reading-these-docs)
 -   [Coming from Native GM](coming-from-native-gm)
 -   [Quick Functions](quick-functions)
