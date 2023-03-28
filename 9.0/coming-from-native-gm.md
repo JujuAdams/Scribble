@@ -2,7 +2,7 @@
 
 &nbsp;
 
-Scribble offers a [lot of advantages](features) over GameMaker's native text renderer. However, this library can take some time to get used to. This short article serves as a guide to implementing common GameMaker functions. Scribble has many more text formatting commands that you can use, check out the [Text Formatting](text-formatting) article.
+Scribble offers a [lot of advantages](features) over GameMaker's native text renderer. However, this library can take some time to get used to. This short article serves as a guide to implementing common GameMaker functions.
 
 For very simple use, you can use the stripped-back [`draw_text_scribble()` and `draw_text_scribble_ext()` functions](quick-functions). To achieve more complex effects, you'll need to use Scribble's method-based [fluent interface](scribble-methods) to draw text exactly how you want.
 

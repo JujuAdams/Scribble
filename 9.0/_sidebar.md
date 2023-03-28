@@ -1,4 +1,5 @@
 -   [Home](README)
+-   [Changes from Scribble 8](changes-from-v8)
 -   [Reading These Docs](reading-these-docs)
 -   [Coming from Native GM](coming-from-native-gm)
 -   [Quick Functions](quick-functions)
