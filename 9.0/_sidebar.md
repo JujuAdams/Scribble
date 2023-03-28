@@ -12,21 +12,24 @@
 
 **Fonts**
 
--   [Standard Fonts](standard-fonts)
--   [Spritefonts](spritefonts)
--   [SDF Fonts](sdf-fonts)
--   [Superfonts](superfont-functions)
+-   [Standard Fonts](font-standard)
+-   [Spritefonts](font-spritefont)
+-   [SDF Fonts](font-sdf)
+-   [Superfonts](font-superfont)
 -   [`font_add()`](font_add)
--   [Glyph Properties](glyph-properties)
--   [Kerning](kerning)
+-   [Glyph Properties](font-glyph-properties)
+-   [Kerning](font-kerning)
 -   [Font Borders](font-borders)
 -   [Extended Language Support](extended-language-support)
+-   [Font Management](font-management)
+-   [Miscellaneous](font-misc)
 
 ---
 
 **Features**
 
 -   [Configuration](configuration)
+-   [`scribble()`](scribble-methods)
 -   [Text Wrapping and Layouts](text-wrapping-and-layouts)
 -   [Colour](colour)
 -   [Custom Colours](custom-colours)
@@ -35,6 +38,7 @@
 -   [Animation Properties](animation-properties)
 -   [Sprites & Surfaces](sprites-and-surfaces)
 -   [Scaling & Transforms](scaling-and-transforms)
+-   [Bold & Italic](bold-and-italic)
 -   [Regions](regions)
 -   [Text Macros](text-macros)
 -   [Bezier Curves](bezier-curves)
@@ -48,15 +52,8 @@
 
 **Typists**
 
+-   [`scribble_typist()`](typist-methods)
 -   [Manual Text Reveal](manual-text-reveal)
 -   [Pausing & Timing](typist-pausing-and-timing)
 -   [Events](typist-events)
 -   [Audio](typist-audio)
-
----
-
-**API Reference**
-
--   [`scribble()`](scribble-methods)
--   [`scribble_typist()`](typist-methods)
--   [Fonts](fonts)

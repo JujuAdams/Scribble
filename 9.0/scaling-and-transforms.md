@@ -2,6 +2,21 @@
 
 &nbsp;
 
+## `scribble_font_scale(fontName, scale)`
+
+**Returns:** N/A (`undefined`)
+
+|Name      |Datatype|Purpose                                |
+|----------|--------|---------------------------------------|
+|`fontName`|string  |Name of the font to modify, as a string|
+|`scale`   |number  |Scaling factor to apply                |
+
+Scales every glyph in a font (including the space character) by the given factor. This directly modifies glyph properties for the font.
+
+?> Existing text elements that use the targetted font will not be immediately updated - you will need to refresh those text elements.
+
+&nbsp;
+
 ## `[scale,<factor>]`
 
 **Command tag.** Set text (and in-line sprite) scale.
