@@ -35,6 +35,12 @@
 
 &nbsp;
 
+## `[fa_justify]`
+
+**Command tag.** Increases the space between words in a line of text such that each lines fills the maximum width.
+
+&nbsp;
+
 ## `[fa_top]`
 
 **Command tag.** Vertically align **all text** to the top of the [`.draw()`](scribble-methods?id=drawx-y) coordinate.

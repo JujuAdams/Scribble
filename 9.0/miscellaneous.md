@@ -2,6 +2,24 @@
 
 &nbsp;
 
+## `[/]`
+
+**Command tag.** Resets the formatting for all effects, fonts, colours, etc.
+
+&nbsp;
+
+## `[nbsp]`
+
+**Command tag.** Inserts a non-breaking space. Actual non-breaking space characters *are* natively supported but `[nbsp]` may be more convenient in some situations.
+
+&nbsp;
+
+## `[zwsp]`
+
+**Command tag.** Inserts a zero-width space. Actual zero-width space characters *are* natively supported but `[zwsp]` may be more convenient in some situations.
+
+&nbsp;
+
 ## `scribble_is_text_element(value)`
 
 **Returns:** Boolean, whether the provided value is a Scribble text element
