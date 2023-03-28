@@ -4,14 +4,8 @@
 
 -   [FAQ](faq)
 -   [Reading These Docs](reading-these-docs)
--   [Features](features)
--   [Setting Up](setting-up)
 -   [Coming from Native GM](coming-from-native-gm)
--   [Text Formatting](text-formatting)
--   [Superfonts](superfont-functions)
--   [MSDF Fonts](msdf-fonts)
--   [Extended Language Support](extended-language-support)
--   [Configuration](configuration)
+-   [Setting Up](setting-up)
 -   [Quick Functions](quick-functions)
 
 ---
@@ -21,15 +15,18 @@
 -   [Standard Fonts](standard-fonts)
 -   [Spritefonts](spritefonts)
 -   [SDF Fonts](sdf-fonts)
+-   [Superfonts](superfont-functions)
 -   [`font_add()`](font_add)
 -   [Glyph Properties](glyph-properties)
 -   [Kerning](kerning)
 -   [Font Borders](font-borders)
+-   [Extended Language Support](extended-language-support)
 
 ---
 
 **Features**
 
+-   [Configuration](configuration)
 -   [Text Wrapping and Layouts](text-wrapping-and-layouts)
 -   [Colour](Colour)
 -   [Custom Colours](custom-colour-functions)
@@ -63,4 +60,3 @@
 -   [`scribble()`](scribble-methods)
 -   [`scribble_typist()`](typist-methods)
 -   [Fonts](fonts)
--   [Superfont Functions](superfont-functions)
