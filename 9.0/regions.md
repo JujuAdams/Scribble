@@ -2,7 +2,7 @@
 
 &nbsp;
 
-## `[region,<name>`
+## `[region,<name>]`
 
 **Command tag.** Creates a region of text that can be detected later. Useful for tooltips and hyperlinks.
 
