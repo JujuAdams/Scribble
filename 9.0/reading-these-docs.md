@@ -19,3 +19,49 @@ Generally speaking, global functions override configuration macros, text element
 ```
 macros < global functions < methods < command tags
 ```
+
+Here are some examples:
+
+&nbsp;
+
+### Configuration Macros
+
+`SCRIBBLE_DEFAULT_COLOR` can be found in `__scribble_config_behaviours()`:
+
+```gml
+#macro SCRIBBLE_DEFAULT_COLOR  c_white
+```
+
+This means that, by default, text drawing by Scribble will be white. Changing this macro to `c_black` will make text drawn by Scribble to be black by default.
+
+&nbsp;
+
+### Global Functions
+
+`scribble_anim_shake()` is a global function that sets the animation properties for the `[shake]` command tag. Executing this function with new values will immediately change the appearance of text that is set to shake.
+
+&nbsp;
+
+### Text Element Methods
+
+`.layout_wrap()` is a method that sets up automatic line wrapping for a text element.
+
+```gml
+var _element = scribble("Some text to draw inside a textbox and wrap around.");
+_element.layout_wrap(sprite_width-30);
+_element.draw(x, y);
+```
+
+By executing this function, the maximum width of the text element is set. This maximum width only applies to this specific text element.
+
+&nbsp;
+
+### Command Tags
+
+`[rainbow]` is a command tag that causes subsequent characters to take on an animated rainbow colour.
+
+```gml
+scribble("Here comes the [rainbow]RAINBOW TEXT[/rainbow]!").draw(x, y);
+```
+
+The rainbow effect only applies to characters after the command tag (and the `[/rainbow]` tag turns off the effect for the final piece of punctuation).
