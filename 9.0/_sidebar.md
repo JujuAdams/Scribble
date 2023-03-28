@@ -34,6 +34,7 @@
 -   [Animation](Animation)
 -   [Animation Properties](animation-properties)
 -   [Sprites & Surfaces](sprites-and-surfaces)
+-   [Manual Text Reveal](manual-text-reveal)
 -   [Scaling & Transforms](scaling-and-transforms)
 -   [Bold & Italic](bold-and-italic)
 -   [Regions](regions)
@@ -49,8 +50,12 @@
 
 **Typists**
 
--   [`scribble_typist()`](typist-methods)
--   [Manual Text Reveal](manual-text-reveal)
--   [Pausing & Timing](typist-pausing-and-timing)
--   [Events](typist-events)
+-   [`scribble_typist()`](scribble_typist)
+-   [Starting & Stopping](typist-starting-and-stopping)
+-   [Easing](typist-easing)
+-   [Skipping](typist-skipping)
 -   [Audio](typist-audio)
+-   [Pausing & Timing](typist-pausing-and-timing)
+-   [Per-character Delay](typist-per-character-delay)
+-   [Events](typist-events)
+-   [Callbacks](typist-callbacks)

@@ -31,3 +31,35 @@
 **Command tag.** Resets the speed of the typewriter to the value set by [`.in()`](typist-methods?id=inspeed-smoothness).
 
 &nbsp;
+
+## `.pause()`
+
+**Returns**: `self`, the typist
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Pauses the typewriter effect.
+
+&nbsp;
+
+## `.unpause()`
+
+**Returns**: `self`, the typist
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Unpauses the typewriter effect. This is helpful when combined with the [`[pause]` command tag](Text-Formatting) and [`.get_paused()`](scribble_typist#get_paused).
+
+&nbsp;
+
+## `.get_paused()`
+
+**Returns:** Boolean, whether the text element is currently paused due to encountering `[pause]` tag when typing out text
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
