@@ -17,7 +17,7 @@ Features can be interacted with in four ways:
 Generally speaking, global functions override configuration macros, text element methods override global functions, and command tags override text element methods.
 
 ```
-macros < global functions < methods < command tags
+macros  <  global functions  <  methods  <  command tags
 ```
 
 Here are some examples:
