@@ -1,6 +1,6 @@
 # FAQ
 
----
+&nbsp;
 
 ## What platforms does Scribble support?
 
