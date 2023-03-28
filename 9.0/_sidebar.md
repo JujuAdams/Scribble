@@ -26,7 +26,7 @@
 **Features**
 
 -   [Configuration](configuration)
--   [`scribble()`](scribble-methods)
+-   [`scribble()`](scribble)
 -   [Text Wrapping and Layouts](text-wrapping-and-layouts)
 -   [Colour](colour)
 -   [Custom Colours](custom-colours)
