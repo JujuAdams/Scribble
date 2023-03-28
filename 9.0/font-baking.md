@@ -1,4 +1,4 @@
-# Font Borders
+# Font Borders & Baked Effects
 
 &nbsp;
 

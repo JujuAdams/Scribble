@@ -15,7 +15,7 @@
 -   [`font_add()`](font_add)
 -   [Glyph Properties](font-glyph-properties)
 -   [Kerning](font-kerning)
--   [Font Borders](font-borders)
+-   [Borders & Baked Effects](font-baking)
 -   [Extended Language Support](extended-language-support)
 -   [Font Management](font-management)
 -   [Miscellaneous](font-misc)
