@@ -20,7 +20,9 @@ Generally speaking, global functions override configuration macros, text element
 macros  <  global functions  <  methods  <  command tags
 ```
 
-Here are some examples:
+&nbsp;
+
+## Examples
 
 &nbsp;
 
