@@ -12,7 +12,7 @@ Features can be interacted with in four ways:
 
 3. **Methods** are called by executing the named function on a struct returned by `scribble()`, `scribble_unique()`, or `scribble_typist()`. The impact of methods are limited to that struct.
 
-4. **Command tags** are instructions that are passed to Scribble by inserting them into a string that's being drawn. Any change in formatting via command tags is limited to subsequent characters in the string.
+4. **Command tags** are instructions that are passed to Scribble by inserting them into a string that's being drawn. Any change in formatting via command tags is limited to subsequent characters in the string. Command tags are formatted as a command inside `[squareBrackets]` in Scribble's documentation, the same text that you'll need to insert into strings to apply the command tag.
 
 Generally speaking, global functions override configuration macros, text element methods override global functions, and command tags override text element methods.
 
