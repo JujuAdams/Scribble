@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `.in(speed, smoothness)`
+## `.in()`
+
+**Typist Method:** `.in(speed, smoothness)`
 
 **Returns**: `self`, the typist
 
@@ -17,7 +19,9 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 
 &nbsp;
 
-## `.out(speed, smoothness, [backwards])`
+## `.out()`
+
+**Typist Method:** `.out(speed, smoothness, [backwards])`
 
 **Returns**: `self`, the typist
 
@@ -35,6 +39,8 @@ The `smoothness` argument offers some customisation for how text fades out. A hi
 
 ## `.reset()`
 
+**Typist Method:** `.reset()`
+
 **Returns**: `self`, the typist
 
 |Name|Datatype|Purpose|
@@ -47,6 +53,8 @@ Resets the typist entirely, resetting progress and deactivating any animation.
 
 ## `.get_position()`
 
+**Typist Method:** `.get_position()`
+
 **Returns**: Real, the position of the typist's "head", corresponding to the index of the most recently revealed glyph
 
 |Name|Datatype|Purpose|
@@ -58,6 +66,8 @@ This method will return a decimal value if the speed is a decimal value too.
 &nbsp;
 
 ## `.get_state()`
+
+**Typist Method:** `.get_state()`
 
 **Returns:** Real value from 0 to 2 (inclusive) that represents what proportion of text on the current page is visible
 
