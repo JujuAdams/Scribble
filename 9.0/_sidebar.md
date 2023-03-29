@@ -42,7 +42,7 @@
 -   [Animation Properties](animation-properties)
 -   [Sprites & Surfaces](sprites-and-surfaces)
 -   [Manual Text Reveal](manual-text-reveal)
--   [Scaling & Transforms](scaling-and-transforms)
+-   [Position, Scaling & Transforms](scaling-and-transforms)
 -   [Bold & Italic](bold-and-italic)
 -   [Regions](regions)
 -   [Text Macros](text-macros)
