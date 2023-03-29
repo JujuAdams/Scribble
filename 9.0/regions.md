@@ -4,17 +4,23 @@
 
 ## `[region,<name>]`
 
-**Command tag.** Creates a region of text that can be detected later. Useful for tooltips and hyperlinks.
+**Command tag.**
+
+Creates a region of text that can be detected later. Useful for tooltips and hyperlinks.
 
 &nbsp;
 
 ## `[/region]`
 
-**Command tag.** Ends a region.
+**Command tag.**
+
+Ends a region.
 
 &nbsp;
 
-## `.region_detect(elementX, elementY, pointerX, pointerY)`
+## `.region_detect()`
+
+**Text Element Method:** `.region_detect(elementX, elementY, pointerX, pointerY)`
 
 **Returns:** String, the name of the region that is being pointed to, or `undefined` if no region is being pointed to
 
@@ -31,7 +37,9 @@ This function returns the name of a region if one is being hovered over. You can
 
 &nbsp;
 
-## `.region_set_active(name, colour, blendAmount)`
+## `.region_set_active()`
+
+**Text Element Method:** `.region_set_active(name, colour, blendAmount)`
 
 **Returns:** N/A (`undefined`)
 
@@ -46,6 +54,8 @@ This function expects the name of a region that has been defined in your text us
 &nbsp;
 
 ## `.region_get_active()`
+
+**Text Element Method:** `.region_get_active()`
 
 **Returns:** String, the name of the active region, or `undefined` if no region is active
 
