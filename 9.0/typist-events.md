@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_typists_add_event(name, function)`
+## `scribble_typists_add_event()`
+
+**Global Function:** `scribble_typists_add_event(name, function)`
 
 **Returns:** N/A (`undefined`)
 
@@ -61,11 +63,15 @@ Here, `callbackRumble()` will fetch the parameter from the array and use it to v
 
 ## `[<event name>,<arg0>,<arg1>...]`
 
-**Command tag.** Trigger an event with the specified arguments (see [`scribble_typist_add_event()`](misc-functions?id=scribble_typists_add_eventname-function).
+**Command tag.**
+
+Trigger an event with the specified arguments. See `scribble_typist_add_event()` above.
 
 &nbsp;
 
-## `.get_events(position, [page])`
+## `.get_events()`
+
+**Typist Method:** `.get_events(position, [page])`
 
 **Returns**: An array containing structs that describe typewrite events for the given character
 
