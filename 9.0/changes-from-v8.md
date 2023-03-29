@@ -42,3 +42,6 @@ Scribble 9 introduces a number of new features alongside a small number of break
 - MSDF fonts have been removed and replaced by SDF fonts
 - `scribble_super_glyph_delete()` has been removed
 - All legacy v7 typewriter text element methods have been removed
+- Because Scribble no longer needs to load external files for MSDF fonts, `SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY` has been removed
+- `SCRIBBLE_SPRITEFONT_LEGACY_HEIGHT` has been removed
+- `SCRIBBLE_FLUSH_RETURNS_SELF` has been removed
