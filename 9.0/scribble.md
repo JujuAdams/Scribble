@@ -14,7 +14,9 @@ Don't worry about clearing up after yourself when you draw text - Scribble autom
 
 &nbsp;
 
-## `scribble(string, [uniqueID])`
+## `scribble()`
+
+**Global Function:** `scribble(string, [uniqueID])`
 
 **Returns:** A text element that contains the string (a struct, an instance of `__scribble_class_element`)
 
@@ -31,7 +33,9 @@ Text element methods are broken down into several categories. There's a lot here
 
 &nbsp;
 
-## `.draw(x, y)`
+## `.draw()`
+
+**Text Element Method:** `.draw(x, y)`
 
 **Returns**: N/A (`undefined`)
 
