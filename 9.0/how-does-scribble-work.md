@@ -58,7 +58,7 @@ scribble("[rainbow][wave]And we have some attractive text animations as well.").
 
 ## Cache Collisions
 
-This "vertex buffer caching" behaviour does have one noticeable downside: it's possible to pull the same text element out of the cache twice even though you intend to use it for two different purposes. This is uncommon but does come up every now and again so we'll discuss some solutions. Consider the following:
+This "vertex buffer caching" behaviour does have one noticeable downside: it's possible to pull the same exact text element out of the cache multiple times even though you intend to use it for two different purposes. If you execute a method on this text element in one place then you'll unintentionally affect the text element in another place. This is uncommon in practice, but does come up every now and again so we'll discuss some solutions. Consider the following:
 
 ```gml
 scribble("Hello").draw(10, 10);
