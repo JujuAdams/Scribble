@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_glyph_set(fontName, character, property, value, [relative])`
+## `scribble_glyph_set()`
+
+**Global Function:** `scribble_glyph_set(fontName, character, property, value, [relative])`
 
 **Returns:** N/A (`undefined`)
 
@@ -28,7 +30,9 @@ The following properties are available for modification:
 
 &nbsp;
 
-## `scribble_glyph_get(fontName, character, property)`
+## `scribble_glyph_get()`
+
+**Global Function:** `scribble_glyph_get(fontName, character, property)`
 
 **Returns:** Real-value for the specified property
 
