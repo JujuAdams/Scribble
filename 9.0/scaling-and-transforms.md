@@ -1,4 +1,4 @@
-# Position, Scaling, and Transforms
+# Position, Scaling & Transforms
 
 &nbsp;
 
