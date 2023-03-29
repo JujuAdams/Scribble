@@ -1,6 +1,6 @@
 -   [Home](README)
 -   [Reading These Docs](reading-these-docs)
--   [How does Scribble work?](how-dow-scribble-work)
+-   [How does Scribble work?](how-does-scribble-work)
 -   [Coming from Native GM](coming-from-native-gm)
 -   [Quick Functions](quick-functions)
 -   [Changes from Scribble 8](changes-from-v8)
