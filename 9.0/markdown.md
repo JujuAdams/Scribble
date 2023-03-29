@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_markdown_format(string)`
+## `scribble_markdown_format()`
+
+**Global Function:** `scribble_markdown_format(string)`
 
 **Returns:** String, the modified string containing Scribble formatting tags
 
@@ -26,7 +28,9 @@ This Markdown parser is not intended as a full or even accurate reformatter. Ins
 
 &nbsp;
 
-## `scribble_markdown_set_styles(struct, [fastMode])`
+## `scribble_markdown_set_styles()`
+
+**Global Function:** `scribble_markdown_set_styles(struct, [fastMode=true])`
 
 **Returns:** N/A (`undefined`)
 
@@ -56,7 +60,7 @@ The input struct must be laid out in a specific way. You can see an example belo
 |`.bold`        |Bold text                |`**embiggens the smallest man**`           |
 |`.italic`      |Italic text              |`*woah*` or `_woah_`                       |
 |`.bold_italic` |Bold & italic combined   |`***mandatory***` or `_**mandatory**_` etc.|
-|`.quote`       |Quotation                |`> 'twas brillig'`                         |
+|`.quote`       |Quotation                |`> 'twas brillig`                          |
 |`.link`        |Embedded URL link        |`[Text for link](region name)`             |
 
 In addition to these top-level member variables, you may also specify a bulletpoint sprite for unordered lists. This sprite is defined using the `.bullet_sprite` member variable and should be set to a sprite index (_not_ a sprite name as a string).
