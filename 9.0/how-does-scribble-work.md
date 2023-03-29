@@ -37,7 +37,7 @@ Most text element methods return the text element itself. This seems like a mino
 scribble("Hello").colour(c_lime).draw(10, 10);
 ```
 
-This "vertex buffer caching" behaviour does have one noticeable downside: it's possible to accidentally pull a vertex buffer out of the cache when you didn't mean to. Consider the following:
+This "vertex buffer caching" behaviour does have one noticeable downside: it's possible to pull the same text element out of the cache twice even though you intend to use it for two different purposes. This is uncommon but does come up every now and again so we'll discuss some solutions. Consider the following:
 
 ```gml
 scribble("Hello").draw(10, 10);
