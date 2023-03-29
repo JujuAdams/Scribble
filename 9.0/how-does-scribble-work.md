@@ -76,7 +76,7 @@ scribble_unique(2, "Hello").colour(c_lime).draw(10, 30);
 
 This code will draw the two lines of text in two different colours as we wanted.
 
-There is an alternative solution that may be useful in some other situations. Remembering that Scribble chooses text elements from the cache based on the string that is being drawn, if we change the `.colour()` text element method into a `[c_lime]` command tag then we will generate two different text elements.
+There is an alternative solution that may be useful in some other situations. Remembering that Scribble chooses text elements from the cache based on the string that is being drawn, if we change the `.colour()` text element method into a `[c_lime]` command tag for the second call to `scribble()` then we will generate two different text elements.
 
 ```gml
 scribble("Hello").draw(10, 10);
