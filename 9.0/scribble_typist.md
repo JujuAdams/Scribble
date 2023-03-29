@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_typist([perLine])`
+## `scribble_typist()`
+
+**Global Function:** `scribble_typist([perLine])`
 
 **Returns:** Struct, an instance of `__scribble_class_typist`
 
@@ -28,6 +30,8 @@ Note that we called the `.in()` method. This is analogous to the old `.typewrite
 &nbsp;
 
 ## `.get_text_element()`
+
+**Typist Method:** `.get_text_element()`
 
 **Returns**: The text element associated with the typist, or `undefined` if no text element is associated
 
