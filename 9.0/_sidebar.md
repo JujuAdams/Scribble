@@ -23,9 +23,16 @@
 
 ---
 
+**Configuration**
+
+-   [Default Properties](config-defaults)
+-   [Behaviours](config-behaviours)
+-   [Compatibility](config-compatibility)
+
+---
+
 **Features**
 
--   [Configuration](configuration)
 -   [`scribble()`](scribble)
 -   [Text Wrapping and Layouts](text-wrapping-and-layouts)
 -   [Colour](colour)
