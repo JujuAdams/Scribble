@@ -2,24 +2,24 @@
 
 &nbsp;
 
-# `SCRIBBLE_DEPRECATION_WARNINGS`
+## `SCRIBBLE_DEPRECATION_WARNINGS`
 
 *Typical value:* `false`
 
 &nbsp;
 
-# `SCRIBBLE_LEGACY_ANIMATION_SPEED`
+## `SCRIBBLE_LEGACY_ANIMATION_SPEED`
 
 *Typical value:* `false`
 
 &nbsp;
 
-# `SCRIBBLE_BGR_COLOR_HEX_CODES`
+## `SCRIBBLE_BGR_COLOR_HEX_CODES`
 
 *Typical value:* `false`
 
 &nbsp;
 
-# `SCRIBBLE_LEGACY_FUNCTION`
+## `SCRIBBLE_LEGACY_FUNCTION`
 
 *Typical value:* `false`
