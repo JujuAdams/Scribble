@@ -2,6 +2,8 @@
 
 &nbsp;
 
+?> The information on this page refers to using `scribble()`. For very new users, or those transitioning from GameMaker's native `draw_text()` functions, you may want to stick with the [quick functions](quick-functions) to take advantage of Scribble's power without getting into the weeds.
+
 Scribble isn't all that different to GameMaker's native text renderer. Every string is broken down into individual symbols, called "glyphs". You can think about a "glyph" as a generalisation of the concept of a "letter" - a glyph could be the letter `J`, or a sprite, or some punctuation, or individual components of the compound Thai character `นี`. Each glyph is drawn to the screen in the same way as a sprite: two triangles that form a rectangle where each corner is given some texture coordinates. The texture coordinates reference a font texture that GameMaker creates for us, effectively a spritesheet that contains all of the shapes we need. A word is a series of these glyphs organised in a row, a line of text is a few words separated by some horizontal spaces, and so on. There's a lot of variation between languages )(Thai doesn't put spaces between words in the same sentence) but the basic idea remains the same: A string is drawn as a collection of glyphs arranged to form lines of text.
 
 The way a GPU renders these collections of glyphs is by using something called a "vertex buffer". A vertex buffer is a way of storing the instructions for all the triangles we need to draw our string. The actual format of vertex buffers is beyond the scope of this lightweight discussion, but suffice to say that they contain a lot of information. Vertex buffers aren't *slow* to build per se, but they're not *free* either. When GameMaker draws text, it builds a vertex buffer that contains all of the required triangles, sends that off to the GPU for rendering, and then discards the vertex buffer. If we're drawing text every frame, this means GameMaker needs to rebuild the vertex buffer every frame. This is simple to build and reliable, but not especially efficient.
@@ -16,7 +18,7 @@ I'm skipping over a **lot** of implementation details. Scribble is complicated, 
 
 ## Using Scribble
 
-Scribble uses the string you're trying to draw as the primary means of pulling data out of the cache. Scribble wraps vertex buffers in a thing called a "text element" which is the main point of call for interacting with Scribble's renderer. We can pull a vertex buffer out of the cache by using the `scribble()` function like so:
+Scribble uses the string you're trying to draw as the primary means of pulling data out of the cache. Scribble stores information in the case by using a thing called a "text element". This will be your main point of call for interacting with Scribble's renderer. We can pull a vertex buffer out of the cache by using the `scribble()` function like so:
 
 ```gml
 var _element = scribble("Hello"); //Pull a text element out of the cache
