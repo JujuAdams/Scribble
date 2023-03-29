@@ -10,6 +10,10 @@ Scribble opts for a different approach using "vertex buffer caching". Instead of
 
 Since we're making our own vertex buffer, we can add in a bunch of additional data whilst we're building it. We use this data to embed information about each glyph in the block of text; for example, Scribble stores an index per glyph that indicates its position in the string. We use this value to more efficiently control how text is revealed when using a typewriter effect. Most of Scribble's animated effects are calculated in a vertex shader using this extra contextual data, leading to far more efficient rendering than would be possible if you were to handle the calculations yourself.
 
+&nbsp;
+
+## Using Scribble
+
 Scribble uses the string you're trying to draw as the primary means of pulling data out of the cache. Scribble wraps vertex buffers in a thing called a "text element" which is the main point of call for interacting with Scribble's renderer. We can pull a vertex buffer out of the cache by using the `scribble()` function like so:
 
 ```gml
@@ -36,6 +40,19 @@ Most text element methods return the text element itself. This seems like a mino
 ```gml
 scribble("Hello").colour(c_lime).draw(10, 10);
 ```
+
+There are a **ton** of methods that Scribble has available for use. These are organised by feature and can be found by clicking around on the sidebar. Scribble also has numerous **command tags** that can be used to insert and control text. Again, details on these can be found from the sidebar, but here are a few examples:
+
+```gml
+scribble("This text is [c_red]red[/c].").draw(10, 10);
+scribble("[c_center]Text can be aligned via command tags too.").draw(room_width/2, 30);
+scribble("Scribble can fake [slant]italics[/slant].").draw(10, 50);
+scribble("[rainbow][wave]And we have some attractive text animations as well.").draw(10, 70);
+```
+
+&nbsp;
+
+## Cache Collisions
 
 This "vertex buffer caching" behaviour does have one noticeable downside: it's possible to pull the same text element out of the cache twice even though you intend to use it for two different purposes. This is uncommon but does come up every now and again so we'll discuss some solutions. Consider the following:
 
