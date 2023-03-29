@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `.reveal(character)`
+## `.reveal()`
+
+**Text Element Method:** `.reveal(character)`
 
 **Returns:** The text element
 
@@ -13,6 +15,8 @@
 &nbsp;
 
 ## `.get_reveal()`
+
+**Text Element Method:** `.get_reveal()`
 
 **Returns:** Number, the amount of characters revealled, as set by `.reveal()`
 
