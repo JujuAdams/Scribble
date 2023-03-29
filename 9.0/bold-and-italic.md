@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_font_set_style_family(regular, bold, italic, boldItalic)`
+## `scribble_font_set_style_family()`
+
+**Global Function:** `scribble_font_set_style_family(regular, bold, italic, boldItalic)`
 
 **Returns:** N/A (`undefined`)
 
@@ -19,14 +21,22 @@ Associates four fonts together for use with `[r]` `[b]` `[i]` `[bi]` font tags. 
 
 ## `[r]`
 
+**Command tag.**
+
 &nbsp;
 
 ## `[b]`
+
+**Command tag.**
 
 &nbsp;
 
 ## `[i]`
 
+**Command tag.**
+
 &nbsp;
 
 ## `[bi]`
+
+**Command tag.**
