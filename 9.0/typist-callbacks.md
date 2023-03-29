@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `.function_per_char(function)`
+## `.function_per_char()`
+
+**Typist Method:** `.function_per_char(function)`
 
 **Returns**: `self`, the typist
 
@@ -40,7 +42,9 @@ typist.function_per_char(function(_element, _position, _typist)
 
 &nbsp;
 
-## `.function_on_complete(function)`
+## `.function_on_complete()`
+
+**Typist Method:** `.function_on_complete(function)`
 
 **Returns**: `self`, the typist
 
@@ -54,7 +58,9 @@ typist.function_per_char(function(_element, _position, _typist)
 
 &nbsp;
 
-## `.execution_scope(scope)`
+## `.execution_scope()`
+
+**Typist Method:** `.execution_scope(scope)`
 
 **Returns**: `self`, the typist
 
@@ -67,6 +73,8 @@ By default, a typist will execute functions in the scope of the instance/struct 
 &nbsp;
 
 ## `.get_execution_scope()`
+
+**Typist Method:** `.get_execution_scope()`
 
 **Returns**: The execution scope for this typist's function, or `undefined`
 
