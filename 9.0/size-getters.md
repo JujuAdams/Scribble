@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `.get_left(x)`
+## `.get_left()`
+
+**Global Function:** `.get_left(x)`
 
 **Returns:** Real, the left position of the text element's axis-aligned bounding box in the room
 
@@ -16,7 +18,9 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 &nbsp;
 
-## `.get_top(y)`
+## `.get_top()`
+
+**Global Function:** `.get_top(y)`
 
 **Returns:** Real, the top position of the text element's axis-aligned bounding box in the room
 
@@ -30,7 +34,9 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 &nbsp;
 
-## `.get_right(x)`
+## `.get_right()`
+
+**Global Function:** `.get_right(x)`
 
 **Returns:** Real, the right position of the text element's axis-aligned bounding box in the room
 
@@ -44,7 +50,9 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 &nbsp;
 
-## `.get_bottom(y)`
+## `.get_bottom()`
+
+**Global Function:** `.get_bottom(y)`
 
 **Returns:** Real, the bottom position of the text element's axis-aligned bounding box in the room
 
@@ -60,6 +68,8 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 ## `.get_width()`
 
+**Global Function:** `.get_width()`
+
 **Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
 
 |Name|Datatype|Purpose|
@@ -74,6 +84,8 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 ## `.get_height()`
 
+**Global Function:** `.get_height()`
+
 **Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
 
 |Name|Datatype|Purpose|
@@ -87,6 +99,8 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 &nbsp;
 
 ## `.get_bbox(x, y)`
+
+**Global Function:** `.get_bbox(x, y)`
 
 **Returns:** Struct containing the positions of the bounding box for a text element
 
@@ -122,7 +136,9 @@ The struct returned by `.get_bbox()` contains the following member variables:
 
 &nbsp;
 
-## `.get_bbox_revealed(x, y, [typist])`
+## `.get_bbox_revealed()`
+
+**Global Function:** `.get_bbox_revealed(x, y, [typist])`
 
 **Returns:** Struct containing the positions of the bounding box for a text element
 
