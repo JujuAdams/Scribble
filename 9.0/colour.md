@@ -24,7 +24,9 @@ Text colour in Scribble starts with the source texture being used. GameMaker's s
 
 &nbsp;
 
-## `.colour(colour)` `.color(color)`
+## `.colour()` `.color()`
+
+**Text Element Method:** `.colour(colour)` `.color(color)`
 
 **Returns**: The text element
 
@@ -74,7 +76,9 @@ Text colour in Scribble starts with the source texture being used. GameMaker's s
 
 &nbsp;
 
-## `.rgb_gradient(colour, mix)`
+## `.rgb_gradient()`
+
+**Text Element Method:** `.rgb_gradient(colour, mix)`
 
 **Returns**: The text element
 
@@ -87,7 +91,9 @@ Text colour in Scribble starts with the source texture being used. GameMaker's s
 
 &nbsp;
 
-## `.rgb_multiply(colour)`
+## `.rgb_multiply()`
+
+**Text Element Method:** `.rgb_multiply(colour)`
 
 **Returns**: The text element
 
@@ -99,7 +105,9 @@ Text colour in Scribble starts with the source texture being used. GameMaker's s
 
 &nbsp;
 
-## `.rgb_lerp(colour, mix)`
+## `.rgb_lerp()`
+
+**Text Element Method:** `.rgb_lerp(colour, mix)`
 
 **Returns**: The text element
 
@@ -109,19 +117,6 @@ Text colour in Scribble starts with the source texture being used. GameMaker's s
 |`mix`   |number           |Blending factor for the lerp, from `0` (no colour change) to `1` (text colour fully replaced by the specified lerp colour)                                                                                                                |
 
 **Text element method.** This function [lerps](https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/a-brief-introduction-to-lerp-r4954/) between the current text colour and the target colour. This allows you to force the RGB channels of text to a certain colour whilst leaving the alpha channel unchanged. This is useful for e.g. flashing text in a particular colour.
-
-&nbsp;
-
-## `.sdf_border(colour, thickness)`
-
-**Returns**: The text element
-
-|Name       |Datatype         |Purpose                                                                                                                                                                                                                                   |
-|-----------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`colour`   |integer or string|Basic text colour as either:<br>- standard GameMaker 24-bit BGR format<br>- name of a GameMaker colour constant<br>- name of a colour added to `__scribble_config_colours()`<br>- name of a colour added by calling `scribble_color_set()`|
-|`thickness`|number           |Thickness of the border, in pixels                                                                                                                                                                                                        |
-
-**Text element method.** This function adds a coloured border around your text. Setting the thickness to `0` will prevent the border from being drawn at all. This will only affect SDF fonts and won't affect standard or spritefonts, and it further won't affect in-line sprites. The coloured border will not be colourised or tinted due to the use of other functionality.
 
 &nbsp;
 
