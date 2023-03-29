@@ -4,7 +4,9 @@
 
 &nbsp;
 
-## `.animation_speed(speed)`
+## `.animation_speed()`
+
+**Global Function:** `.animation_speed(speed)`
 
 **Returns**: The text element
 
@@ -20,6 +22,8 @@ Setting the animation speed value to `0` will pause animation effects. This valu
 
 ## `.get_animation_speed()`
 
+**Global Function:** `.get_animation_speed()`
+
 **Returns**: The current animation speed
 
 |Name|Datatype|Purpose|
@@ -32,6 +36,8 @@ The value returned from this function defaults to `1`.
 
 ## `scribble_anim_reset()`
 
+**Global Function:** `scribble_anim_reset()`
+
 **Returns**: N/A (`undefined`)
 
 |Name|Datatype|Purpose|
@@ -42,7 +48,9 @@ Restores animation properties to the defaults set in [`__scribble_config_animati
 
 &nbsp;
 
-## `scribble_anim_wave(size, frequency, speed)`
+## `scribble_anim_wave())`
+
+**Global Function:** `scribble_anim_wave(size, frequency, speed)`
 
 **Returns**: The text element
 
@@ -56,7 +64,9 @@ This function controls behaviour of the `[wave]` effect across all future drawn 
 
 &nbsp;
 
-## `scribble_anim_shake(size, speed)`
+## `scribble_anim_shake()`
+
+**Global Function:** `scribble_anim_shake(size, speed)`
 
 **Returns**: The text element
 
@@ -69,7 +79,9 @@ This function controls behaviour of the `[shake]` effect across all future drawn
 
 &nbsp;
 
-## `scribble_anim_rainbow(weight, speed)`
+## `scribble_anim_rainbow()`
+
+**Global Function:** `scribble_anim_rainbow(weight, speed)`
 
 **Returns**: The text element
 
@@ -82,7 +94,9 @@ This function controls behaviour of the `[rainbow]` effect across all future dra
 
 &nbsp;
 
-## `scribble_anim_wobble(angle, frequency)`
+## `scribble_anim_wobble()`
+
+**Global Function:** `scribble_anim_wobble(angle, frequency)`
 
 **Returns**: The text element
 
@@ -95,7 +109,9 @@ This function controls behaviour of the `[wobble]` effect across all future draw
 
 &nbsp;
 
-## `scribble_anim_pulse(scale, speed)`
+## `scribble_anim_pulse()`
+
+**Global Function:** `scribble_anim_pulse(scale, speed)`
 
 **Returns**: The text element
 
@@ -108,7 +124,9 @@ This function controls behaviour of the `[pulse]` effect across all future drawn
 
 &nbsp;
 
-## `scribble_anim_wheel(size, frequency, speed)`
+## `scribble_anim_wheel()`
+
+**Global Function:** `scribble_anim_wheel(size, frequency, speed)`
 
 **Returns**: The text element
 
@@ -122,7 +140,9 @@ This function controls behaviour of the `[wheel]` effect across all future drawn
 
 &nbsp;
 
-## `scribble_anim_cycle(speed, saturation, value)`
+## `scribble_anim_cycle()`
+
+**Global Function:** `scribble_anim_cycle(speed, saturation, value)`
 
 **Returns**: The text element
 
@@ -136,7 +156,9 @@ This function controls behaviour of the `[cycle]` effect across future drawn tex
 
 &nbsp;
 
-## `scribble_anim_jitter(minScale, maxScale, speed)`
+## `scribble_anim_jitter()`
+
+**Global Function:** `scribble_anim_jitter(minScale, maxScale, speed)`
 
 **Returns**: The text element
 
@@ -150,7 +172,9 @@ This function controls behaviour of the `[jitter]` effect across future drawn te
 
 &nbsp;
 
-## `scribble_anim_blink(onDuration, offDuration, timeOffset)`
+## `scribble_anim_blink()`
+
+**Global Function:** `scribble_anim_blink(onDuration, offDuration, timeOffset)`
 
 **Returns**: The text element
 
