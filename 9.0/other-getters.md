@@ -4,6 +4,8 @@
 
 ## `.get_wrapped()`
 
+**Text Element Method:** `.get_wrapped()`
+
 **Returns:** Boolean, whether the text has wrapped onto a new line using the [`.wrap()` feature](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator)
 
 |Name|Datatype|Purpose|
@@ -14,7 +16,9 @@ Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwi
 
 &nbsp;
 
-## `.get_text([page])`
+## `.get_text()`
+
+**Text Element Method:** `.get_text([page])`
 
 **Returns:** String, the parsed string for the given page
 
@@ -26,7 +30,9 @@ The string that is returned is the raw text that is drawn i.e. all command tags 
 
 &nbsp;
 
-## `.get_glyph_data(glyphIndex, [page])`
+## `.get_glyph_data()`
+
+**Text Element Method:** `.get_glyph_data(glyphIndex, [page])`
 
 **Returns:** Struct, containing layout details for the glyph on the given page (see below)
 
@@ -47,7 +53,9 @@ The struct that is returned has the following member variables:
 
 &nbsp;
 
-## `.get_glyph_count([page])`
+## `.get_glyph_count()`
+
+**Text Element Method:** `.get_glyph_count([page])`
 
 **Returns:** Integer, the number of glyphs on the given page
 
@@ -57,7 +65,9 @@ The struct that is returned has the following member variables:
 
 &nbsp;
 
-## `.get_line_count([page])`
+## `.get_line_count()`
+
+**Text Element Method:** `.get_line_count([page])`
 
 **Returns:** Integer, how many lines of text are on the given page
 
