@@ -45,7 +45,7 @@ Version 9 of Scribble primarily supports GameMaker 2023.4, and in theory support
 
 ## What games are using Scribble?
 
-Scribble is being used in [Shovel Knight Pocket Dungeon](https://www.yachtclubgames.com/games/shovel-knight-pocket-dungeon), [Wally and the Fantastic Predators](https://store.steampowered.com/app/1077450/Wally_and_the_FANTASTIC_PREDATORS/), [Stargrove](https://twitter.com/FauxOperative), [Wizarducks](https://twitter.com/wizarducks1) and [many others](https://www.youtube.com/watch?v=KvakyfLhvfU). Scribble gets a lot of real world testing!
+Scribble is being used in [Skies Of Chaos](https://www.youtube.com/watch?v=dSyWXQv3HOY), [Poinpy](https://www.devolverdigital.com/games/poinpy), [Shovel Knight: Pocket Dungeon](https://www.yachtclubgames.com/games/shovel-knight-pocket-dungeon), [Wally and the Fantastic Predators](https://store.steampowered.com/app/1077450/Wally_and_the_FANTASTIC_PREDATORS/), and many others. Scribble gets a lot of real world testing!
 
 &nbsp;
 
