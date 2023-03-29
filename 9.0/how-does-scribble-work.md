@@ -39,7 +39,7 @@ _element.colour(c_lime);          //Makes the text bright green
 _element.draw(10, 10);            //Draw the text
 ```
 
-Most text element methods return the text element itself. This seems like a minor detail on the surface, but in reality this is massively useful as it allows us to chain methods together. This sort of design pattern is called a "fluent interface". The above three lines of code can be ompressed into a single line:
+Most text element methods return the text element itself. This seems like a minor detail on the surface, but in reality this is massively useful as it allows us to chain methods together. This sort of design pattern is called a "fluent interface". The above three lines of code can be compressed into a single line:
 
 ```gml
 scribble("Hello").colour(c_lime).draw(10, 10);
