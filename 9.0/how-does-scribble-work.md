@@ -20,20 +20,20 @@ I'm skipping over a **lot** of implementation details. Scribble is complicated o
 
 Scribble uses the string you're trying to draw as the primary means of pulling data out of the cache. Scribble stores information in the case by using a thing called a "text element". This will be your main point of call for interacting with Scribble's renderer. We can pull a vertex buffer out of the cache by using the `scribble()` function like so:
 
-```gml
+```js
 var _element = scribble("Hello"); //Pull a text element out of the cache
 ```
 
 Because the text element - what `scribble()` returns - is implemented as a struct, we can call methods on that struct. The most common method that you'll be calling is, naturally, the method that draws the text to the screen.
 
-```gml
+```js
 var _element = scribble("Hello"); //Pull a text element out of the cache
 _element.draw(10, 10);            //Draw the text
 ```
 
 We can call other text element methods, such as `.colour()`, by
 
-```gml
+```js
 var _element = scribble("Hello"); //Pull a text element out of the cache
 _element.colour(c_lime);          //Makes the text bright green
 _element.draw(10, 10);            //Draw the text
@@ -41,13 +41,13 @@ _element.draw(10, 10);            //Draw the text
 
 Most text element methods return the text element itself. This seems like a minor detail on the surface, but in reality this is massively useful as it allows us to chain methods together. This sort of design pattern is called a "fluent interface". The above three lines of code can be compressed into a single line:
 
-```gml
+```js
 scribble("Hello").colour(c_lime).draw(10, 10);
 ```
 
 There are a **ton** of methods that Scribble has available for use. These are organised by feature and can be found by clicking around on the sidebar. Scribble also has numerous **command tags** that can be used to insert and control text. Again, details on these can be found from the sidebar, but here are a few examples:
 
-```gml
+```js
 scribble("This text is [c_red]red[/c].").draw(10, 10);
 scribble("Scribble is free for commercial use [spr_money_bag] [spr_money_bag] [spr_money_bag]").draw(10, 30);
 scribble("Scribble can fake [slant]italics[/slant].").draw(10, 50);
@@ -60,7 +60,7 @@ scribble("[rainbow][wave]And we have some attractive text animations as well.").
 
 This "vertex buffer caching" behaviour does have one noticeable downside: it's possible to pull the same exact text element out of the cache multiple times even though you intend to use it for two different purposes. If you execute a method on this text element in one place then you'll unintentionally affect the text element in another place. This is uncommon in practice, but does come up every now and again so we'll discuss some solutions. Consider the following:
 
-```gml
+```js
 scribble("Hello").draw(10, 10);
 scribble("Hello").colour(c_lime).draw(10, 30);
 ```
@@ -69,7 +69,7 @@ This code should draw two lines of text, one in the default colour (white) and o
 
 The easiest solution is to use `scribble_unique()` instead of `scribble()`. This function operates in basically the same way as `scribble()`, only the first argument allows you to provide a "unique ID" to disambiguate different calls. The unique ID will not be visible when drawing text, it is purely an internal Scribble value.
 
-```gml
+```js
 scribble_unique(1, "Hello").draw(10, 10);
 scribble_unique(2, "Hello").colour(c_lime).draw(10, 30);
 ```
@@ -78,7 +78,7 @@ This code will draw the two lines of text in two different colours as we wanted.
 
 There is an alternative solution that may be useful in some other situations. Remembering that Scribble chooses text elements from the cache based on the string that is being drawn, if we change the `.colour()` text element method into a `[c_lime]` command tag for the second call to `scribble()` then we will generate two different text elements.
 
-```gml
+```js
 scribble("Hello").draw(10, 10);
 scribble("[c_lime]Hello").draw(10, 30);
 ```
