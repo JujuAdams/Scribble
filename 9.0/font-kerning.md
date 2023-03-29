@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_kerning_pair_set(fontName, firstChar, secondChar, value, [relative])`
+## `scribble_kerning_pair_set()`
+
+**Global Function:** `scribble_kerning_pair_set(fontName, firstChar, secondChar, value, [relative])`
 
 **Returns:** Number, the new kerning offset
 
@@ -16,7 +18,9 @@
 
 &nbsp;
 
-## `scribble_kerning_pair_get(fontName, firstChar, secondChar)`
+## `scribble_kerning_pair_get()`
+
+**Global Function:** `scribble_kerning_pair_get(fontName, firstChar, secondChar)`
 
 **Returns:** Number, the kerning offset for the given pair of characters
 
