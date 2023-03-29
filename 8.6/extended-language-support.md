@@ -1,6 +1,8 @@
 # Extended Lanuage Support
 
-Scribble fully supports Latin, Cyrillic, Simplified Chinese, Traditional Chinese, Japanese, Korean, and Hebrew scripts. Arabic support has been partially tested; Scribble aims to support it fully. Thai script is partially supported. Devanagari and Bengali scripts are not currently supported. Please continue reading for further details.
+&nbsp;
+
+Scribble fully supports Latin, Cyrillic, Simplified Chinese, Traditional Chinese, Japanese, Korean, and Hebrew scripts. Arabic support has been partially tested; Scribble aims to support it fully. Thai and Devanagari (Hindi) script is partially supported. Bengali script is not currently supported. Please continue reading for further details.
 
 &nbsp;
 
