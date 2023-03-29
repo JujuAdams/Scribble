@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_font_bake_outline_4dir(sourceFontName, newFontName, color, smooth)`
+## `scribble_font_bake_outline_4dir()`
+
+**Global Function:** `scribble_font_bake_outline_4dir(sourceFontName, newFontName, color, smooth)`
 
 **Returns:** N/A (`undefined`)
 
@@ -18,7 +20,9 @@
 
 &nbsp;
 
-## `scribble_font_bake_outline_8dir(sourceFontName, newFontName, color, smooth)`
+## `scribble_font_bake_outline_8dir()`
+
+**Global Function:** `scribble_font_bake_outline_8dir(sourceFontName, newFontName, color, smooth)`
 
 **Returns:** N/A (`undefined`)
 
@@ -34,7 +38,9 @@
 
 &nbsp;
 
-## `scribble_font_bake_outline_8dir_2px(sourceFontName, newFontName, color, smooth)`
+## `scribble_font_bake_outline_8dir_2px()`
+
+**Global Function:** `scribble_font_bake_outline_8dir_2px(sourceFontName, newFontName, color, smooth)`
 
 **Returns:** N/A (`undefined`)
 
@@ -50,7 +56,9 @@
 
 &nbsp;
 
-## `scribble_font_bake_shadow(sourceFontName, newFontName, dX, dY, shadowColor, shadowAlpha, separation, smooth)`
+## `scribble_font_bake_shadow()`
+
+**Global Function:** `scribble_font_bake_shadow(sourceFontName, newFontName, dX, dY, shadowColor, shadowAlpha, separation, smooth)`
 
 **Returns:** N/A (`undefined`)
 
@@ -69,7 +77,9 @@
 
 &nbsp;
 
-## `scribble_font_bake_shader(sourceFontName, newFontName, shader, leftPad, topPad, rightPad, bottomPad, separationDelta, smooth, [surfaceSize])`
+## `scribble_font_bake_shader()`
+
+**Global Function:** `scribble_font_bake_shader(sourceFontName, newFontName, shader, leftPad, topPad, rightPad, bottomPad, separationDelta, smooth, [surfaceSize])`
 
 **Returns:** N/A (`undefined`)
 
