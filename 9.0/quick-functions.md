@@ -4,7 +4,9 @@
 
 &nbsp;
 
-## `draw_text_scribble(x, y, string)`
+## `draw_text_scribble()`
+
+**Global Function:** `draw_text_scribble(x, y, string)`
 
 **Returns**: N/A (`undefined`)
 
@@ -20,7 +22,9 @@ Draws a string to the screen, much like GameMaker's native `draw_text_ext()`, bu
 
 &nbsp;
 
-## `draw_text_scribble_ext(x, y, string, width, [charCount])`
+## `draw_text_scribble_ext()`
+
+**Global Function:** `draw_text_scribble_ext(x, y, string, width, [charCount])`
 
 **Returns**: N/A (`undefined`)
 
@@ -38,7 +42,9 @@ Draws a string to the screen, much like GameMaker's native `draw_text_ext()`, bu
 
 &nbsp;
 
-## `string_width_scribble(string)`
+## `string_width_scribble()`
+
+**Global Function:** `string_width_scribble(string)`
 
 **Returns**: Number, width of the string
 
@@ -48,7 +54,9 @@ Draws a string to the screen, much like GameMaker's native `draw_text_ext()`, bu
 
 &nbsp;
 
-## `string_height_scribble(string)`
+## `string_height_scribble()`
+
+**Global Function:** `string_height_scribble(string)`
 
 **Returns**: Number, height of the string
 
@@ -58,7 +66,9 @@ Draws a string to the screen, much like GameMaker's native `draw_text_ext()`, bu
 
 &nbsp;
 
-## `string_width_scribble_ext(string, maxWidth)`
+## `string_width_scribble_ext()`
+
+**Global Function:** `string_width_scribble_ext(string, maxWidth)`
 
 **Returns**: Number, width of the string after text wrapping
 
@@ -69,7 +79,9 @@ Draws a string to the screen, much like GameMaker's native `draw_text_ext()`, bu
 
 &nbsp;
 
-## `string_height_scribble_ext(string, maxWidth)`
+## `string_height_scribble_ext()`
+
+**Global Function:** `string_height_scribble_ext(string, maxWidth)`
 
 **Returns**: Number, height of the string after text wrapping
 
@@ -80,7 +92,9 @@ Draws a string to the screen, much like GameMaker's native `draw_text_ext()`, bu
 
 &nbsp;
 
-## `string_length_scribble(string)`
+## `string_length_scribble()`
+
+**Global Function:** `string_length_scribble(string)`
 
 **Returns**: Number, length of the string
 
