@@ -10,6 +10,8 @@ Scribble opts for a different approach using "vertex buffer caching". Instead of
 
 Since we're making our own vertex buffer, we can add in a bunch of additional data whilst we're building it. We use this data to embed information about each glyph; for example, Scribble stores an index per glyph that indicates its position in the string. We use this value to efficiently control how text is revealed when using a typewriter effect. Most of Scribble's animated effects are calculated in a vertex shader using this extra contextual data, leading to far more efficient rendering than would be possible if you were to handle the calculations yourself.
 
+I'm skipping over a **lot** of implementation details. Scribble is complicated, but the bits that you need to learn to get up and running are simple. When you start to combine these individual bits of functionality together, you'll find that Scribble is very powerful and can support a wide variety of use cases.
+
 &nbsp;
 
 ## Using Scribble
