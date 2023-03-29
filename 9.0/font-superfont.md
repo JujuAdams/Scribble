@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_super_create(name)`
+## `scribble_super_create()`
+
+**Global Function:** `scribble_super_create(name)`
 
 **Returns:** N/A (`undefined`)
 
@@ -16,7 +18,9 @@ Creates a new superfont. The new font is totally blank and should not be used un
 
 &nbsp;
 
-## `scribble_super_glyph_copy(target, source, overwrite, glyphSet, ...)`
+## `scribble_super_glyph_copy()`
+
+**Global Function:** `scribble_super_glyph_copy(target, source, overwrite, glyphSet, ...)`
 
 **Returns:** N/A (`undefined`)
 
@@ -50,7 +54,9 @@ scribble_super_glyph_copy("targetFont", "sourceFont", true, [40, 41], [88, 90]);
 
 &nbsp;
 
-## `scribble_super_glyph_copy_all(target, source, overwrite)`
+## `scribble_super_glyph_copy_all()`
+
+**Global Function:** `scribble_super_glyph_copy_all(target, source, overwrite)`
 
 **Returns:** N/A (`undefined`)
 
@@ -66,7 +72,9 @@ Copies **all** glyphs from the source font into the target superfont. The target
 
 &nbsp;
 
-## `scribble_super_glyph_delete(target, glyphSet, ...)`
+## `scribble_super_glyph_delete()`
+
+**Global Function:** `scribble_super_glyph_delete(target, glyphSet, ...)`
 
 **Returns:** N/A (`undefined`)
 
@@ -80,7 +88,9 @@ Deletes a set of glyphs from the specified font. The font must be a superfont. F
 
 &nbsp;
 
-## `scribble_super_clear(target)`
+## `scribble_super_clear()`
+
+**Global Function:** `scribble_super_clear(target)`
 
 **Returns:** N/A (`undefined`)
 
