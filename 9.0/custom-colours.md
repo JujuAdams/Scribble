@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_color_set(name, color)`
+## `scribble_color_set()`
+
+**Global Function:** `scribble_color_set(name, color)`
 
 **Returns:** N/A (`undefined`)
 
@@ -19,7 +21,9 @@ If the colour is set to `undefined` then it will be deleted from Scribble.
 
 &nbsp;
 
-## `scribble_color_get(name)`
+## `scribble_color_get()`
+
+**Global Function:** `scribble_color_get(name)`
 
 **Returns:** GM-native BGR colour
 
@@ -31,7 +35,9 @@ Returns the 24-bit BGR value for the given colour.
 
 &nbsp;
 
-## `scribble_rgb_to_bgr(RGB)`
+## `scribble_rgb_to_bgr()`
+
+**Global Function:** `scribble_rgb_to_bgr(RGB)`
 
 **Returns:** GM-native BGR colour
 
