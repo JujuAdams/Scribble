@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_add_macro(name, function)`
+## `scribble_add_macro()`
+
+**Global Function:** `scribble_add_macro(name, function)`
 
 **Returns:** N/A (`undefined`)
 
