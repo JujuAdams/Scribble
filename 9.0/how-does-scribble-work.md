@@ -67,7 +67,7 @@ scribble("Hello").colour(c_lime).draw(10, 30);
 
 This code should draw two lines of text, one in the default colour (white) and one in a bright green colour just below it. However, Scribble can't differentiate between the two uses because the string `"Hello"` is the same for both. This means that on the first frame we get the expected result, but on the second frame (and all subsequent frames) the first line of text is drawn in a bright green colour. This is not what we want so we need to find a way to differentiate the two calls of `scribble("Hello")`.
 
-The easiest solution is to use `scribble_unique()` instead of `scribble()`. This function operates in basically the same way as `scribble()` only the first argument allows you to provide a "unique ID" to disambiguate different calls that would otherwise be identical. The unique ID will not be visible when drawing text, it is purely an internal Scribble value.
+The easiest solution is to use `scribble_unique()` instead of `scribble()`. This function operates in basically the same way as `scribble()`, only the first argument allows you to provide a "unique ID" to disambiguate different calls that would otherwise be identical. The unique ID will not be visible when drawing text, it is purely an internal Scribble value.
 
 ```gml
 scribble_unique(1, "Hello").draw(10, 10);
