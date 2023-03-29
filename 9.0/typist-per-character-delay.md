@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `.character_delay_add(character, delay)`
+## `.character_delay_add()`
+
+**Typist Method:** `.character_delay_add(character, delay)`
 
 **Returns:** `self`, the typist
 
@@ -13,7 +15,9 @@
 
 &nbsp;
 
-## `.character_delay_remove(character)`
+## `.character_delay_remove()`
+
+**Typist Method:** `.character_delay_remove(character)`
 
 **Returns:** `self`, the typist
 
@@ -24,6 +28,8 @@
 &nbsp;
 
 ## `.character_delay_clear()`
+
+**Typist Method:** `.character_delay_clear()`
 
 **Returns:** `self`, the typist
 
