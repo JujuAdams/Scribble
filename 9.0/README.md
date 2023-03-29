@@ -11,7 +11,6 @@
 
 Scribble is a comprehensive text rendering library designed to replace GameMaker's native [`draw_text()` functions](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/Text.htm) without adding unnecessary complexity.
 
-There are a multitude of useful features available:
 - Cross-platform, including Opera GX
 - In-line colour and font swapping
 - In-line sprites, including animation
