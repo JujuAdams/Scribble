@@ -2,13 +2,13 @@
 
 &nbsp;
 
-Scribble supports GameMaker's native spritefonts out of the box with no addition configuration required. Scribble aims to render text as close as possible to what GameMaker natively renders with `draw_text()`.
+Scribble supports GameMaker's native spritefonts out of the box with no addition configuration required. Scribble aims to render text as close as possible to what GameMaker natively renders with `draw_text()`. Standard fonts can also be used with [superfonts](font-superfont) and [baked effects](font-baking). Please see the relevant pages for information on these features.
 
-Standard fonts can also be used with [superfonts](font-superfont) and [baked effects](font-baking). Please see the relevant pages for information on these features.
-
-Scribble allows you to change font in two ways: via `.font()` and via a command tag. When specifying a font with Scribble's functions, you should **always** refer to a font by using the the **name of the sprite** as a **string**.
+?> When specifying a font for use with Scribble's functions, you should **always** refer to a font by using the the **name of the sprite** as a **string**.
 
 !> Do not try to use the retuned value from `font_sprite_add()` or `font_sprite_add_ext()` with Scribble, it won't work. Use the name of the sprite itself instead.
+
+Scribble allows you to change font in two ways: via `.font()` and via a command tag. Here's some examples of how to use a spritefont with those features:
 
 <!-- tabs:start -->
 
