@@ -49,7 +49,7 @@ There are a **ton** of methods that Scribble has available for use. These are or
 
 ```js
 scribble("This text is [c_red]red[/c].").draw(10, 10);
-scribble("Scribble is free for commercial use [spr_money_bag] [spr_money_bag] [spr_money_bag]").draw(10, 30);
+scribble("Scribble is free for commercial use [spr_money_bag]").draw(10, 30);
 scribble("Scribble can fake [slant]italics[/slant].").draw(10, 50);
 scribble("[rainbow][wave]And we have some attractive text animations as well.").draw(10, 70);
 ```
