@@ -44,4 +44,22 @@ scribble("Hello").draw(10, 10);
 scribble("Hello").colour(c_lime).draw(10, 30);
 ```
 
-This code should draw two lines of text, one in the default colour (white) and one in a bright green colour just below it. However, Scribble can't differentiate between the two uses because the string `"Hello"` is the same for both. This means that on the first frame we get the expected result. However, on the second frames and all subsequent frames, the first line of text is drawn in a bright green colour.
+This code should draw two lines of text, one in the default colour (white) and one in a bright green colour just below it. However, Scribble can't differentiate between the two uses because the string `"Hello"` is the same for both. This means that on the first frame we get the expected result. However, on the second frames and all subsequent frames, the first line of text is drawn in a bright green colour. This is not what we want so we need to find a way to differentiate the two calls of `scribble("Hello")`.
+
+The easiest solution is to use `scribble_unique()` instead of `scribble()`. This function operates in basically the same way as `scribble()` only the first argument allows you to provide a "unique ID" to disambiguate different calls that would otherwise be identical. The unique ID will not be visible when drawing text, it is purely an internal Scribble value.
+
+```gml
+scribble_unique(1, "Hello").draw(10, 10);
+scribble_unique(2, "Hello").colour(c_lime).draw(10, 30);
+```
+
+This code will draw the two lines of text in two different colours as we wanted.
+
+There is an alternative solution that may be useful in some other situations. Remembering that Scribble chooses text elements from the cache based on the string that is being drawn, if we change the `.colour()` text element method into a `[c_lime]` command tag then we will generate two different text elements.
+
+```gml
+scribble("Hello").draw(10, 10);
+scribble("[c_lime]Hello").draw(10, 30);
+```
+
+This is a more direct way of ensuring the two text elements are stored as two unique items in the cache, but you can hopefully see how this becomes impractical when there are a large number of properties, or you're calling methods on text elements that cannot be converted into command tags.
