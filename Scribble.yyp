@@ -23,7 +23,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Global Static Getters","folderPath":"folders/Scribble/(System - don't call these functions)/Global Static Getters.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Shaders","folderPath":"folders/Scribble/(System - don't call these functions)/Shaders.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Animation","folderPath":"folders/Scribble/Animation.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Colours","folderPath":"folders/Scribble/Colours.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Custom Colours","folderPath":"folders/Scribble/Custom Colours.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Configuration - Please edit these!","folderPath":"folders/Scribble/Configuration - Please edit these!.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"External Assets","folderPath":"folders/Scribble/External Assets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Fonts","folderPath":"folders/Scribble/Fonts.yy",},
