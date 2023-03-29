@@ -38,6 +38,7 @@ Scribble 9 introduces a number of new features alongside a small number of break
 
 ## Removed Features
 
+- `__scribble_config_colours()` has been removed. Please add custom colours using `scribble_color_set()`
 - `.starting_format()` has been removed and replaced by `.font()` and `.colour()`
 - MSDF fonts have been removed and replaced by SDF fonts
 - `scribble_super_glyph_delete()` has been removed
