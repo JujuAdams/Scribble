@@ -263,6 +263,7 @@
     {"id":{"name":"obj_test_0903_stress_stashed","path":"objects/obj_test_0903_stress_stashed/obj_test_0903_stress_stashed.yy",},},
     {"id":{"name":"obj_test_1013_style","path":"objects/obj_test_1013_style/obj_test_1013_style.yy",},},
     {"id":{"name":"obj_test_1014_superfont","path":"objects/obj_test_1014_superfont/obj_test_1014_superfont.yy",},},
+    {"id":{"name":"__scribble_config_compatibility","path":"scripts/__scribble_config_compatibility/__scribble_config_compatibility.yy",},},
     {"id":{"name":"obj_test_0122_surface","path":"objects/obj_test_0122_surface/obj_test_0122_surface.yy",},},
     {"id":{"name":"obj_test_0716_template","path":"objects/obj_test_0716_template/obj_test_0716_template.yy",},},
     {"id":{"name":"scribble_glyph_separation_set","path":"scripts/scribble_glyph_separation_set/scribble_glyph_separation_set.yy",},},

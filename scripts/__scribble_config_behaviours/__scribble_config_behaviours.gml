@@ -6,7 +6,6 @@
 #macro SCRIBBLE_FIX_ESCAPED_NEWLINES          false  //Replaces newline literals ("\\n") with an actual newline ("\n")
 #macro SCRIBBLE_ADD_SPRITE_ORIGINS            false  //Whether to use sprite origins. Setting this to <false> will vertically centre sprites on the line of text
 #macro SCRIBBLE_MISSING_CHARACTER             "?"    //Character to use when another character is missing from a font
-#macro SCRIBBLE_BGR_COLOR_HEX_CODES           false  //Set to <true> to use GameMaker's #BBGGRR format for in-line hex code colors. <false> uses the web standard #RRGGBB format
 #macro SCRIBBLE_BOUNDING_BOX_USES_PAGE        true   //Whether to use text element sizes (false) or page sizes (true) for bounding box calculations
 #macro SCRIBBLE_TAB_WIDTH                     4      //Width of a horizontal tab, as a number of spaces
 #macro SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH     true   //Controls if spaces and tabs have a fixed, unchanging size. Setting this to <false> will ensure that spaces are always the same size, which is useful for monospaced fonts
@@ -18,15 +17,10 @@
 #macro SCRIBBLE_USE_KERNING                   true
 #macro SCRIBBLE_SPRITE_BILINEAR_FILTERING     undefined
 #macro SCRIBBLE_DELAY_LAST_CHARACTER          false
-#macro SCRIBBLE_DEPRECATION_WARNINGS          true
 
 
 
 #region Advanced Features
-
-//Whether to use legacy behaviour for the scribble() function
-//This changes the parameters of the function to scribble(string, uniqueID) to match Scribble 8
-#macro SCRIBBLE_LEGACY_FUNCTION  false
 
 #macro SCRIBBLE_TICK_SIZE                      (delta_time / 16666) //Animation tick size per step. The default macro (delta_time / 16666) ensures that animations are smooth and consistent at all framerates
 #macro SCRIBBLE_VERBOSE                        false      //Enables verbose console output to aid with debugging
