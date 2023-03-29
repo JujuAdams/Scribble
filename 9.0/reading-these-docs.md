@@ -47,7 +47,7 @@ _element.layout_wrap(sprite_width-30);
 _element.draw(x, y);
 ```
 
-By executing this function, the maximum width of the text element is set. This maximum width only applies to this specific text element.
+By executing this function, the maximum width of the text element is set. Any text that exceeds this width will be put ("wrapped") on a new line. This maximum width only applies to this specific text element.
 
 &nbsp;
 
