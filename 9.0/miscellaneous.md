@@ -4,23 +4,31 @@
 
 ## `[/]`
 
-**Command tag.** Resets the formatting for all effects, fonts, colours, etc.
+**Command tag.**
+
+Resets the formatting for all effects, fonts, colours, etc.
 
 &nbsp;
 
 ## `[nbsp]`
 
-**Command tag.** Inserts a non-breaking space. Actual non-breaking space characters *are* natively supported but `[nbsp]` may be more convenient in some situations.
+**Command tag.**
+
+Inserts a non-breaking space. Actual non-breaking space characters *are* natively supported but `[nbsp]` may be more convenient in some situations.
 
 &nbsp;
 
 ## `[zwsp]`
 
-**Command tag.** Inserts a zero-width space. Actual zero-width space characters *are* natively supported but `[zwsp]` may be more convenient in some situations.
+**Command tag.**
+
+Inserts a zero-width space. Actual zero-width space characters *are* natively supported but `[zwsp]` may be more convenient in some situations.
 
 &nbsp;
 
-## `scribble_is_text_element(value)`
+## `scribble_is_text_element()`
+
+**Global Function:** `scribble_is_text_element(value)`
 
 **Returns:** Boolean, whether the provided value is a Scribble text element
 
@@ -30,7 +38,9 @@
 
 &nbsp;
 
-## `.template(function, [executeOnlyOnChange])`
+## `.template()`
+
+**Text Element Method:** `.template(function, [executeOnlyOnChange])`
 
 **Returns**: The text element
 
@@ -53,7 +63,9 @@ scribble("This text is red and will be wrapped inside a box that's 150px wide.")
 
 &nbsp;
 
-## `.ignore_command_tags(state)` *regenerator*
+## `.ignore_command_tags()`
+
+**Text Element Method:** `.ignore_command_tags(state)`
 
 **Returns**: The text element
 
@@ -63,9 +75,13 @@ scribble("This text is red and will be wrapped inside a box that's 150px wide.")
 
 Directs Scribble to ignore all [command tags](text-formatting) in the string and instead render them as plaintext.
 
+!> This method is a *regenerator*. If the value is changed then the text element will be regenerated, potentially leading to degraded performance.
+
 &nbsp;
 
-## `.z(z)`
+## `.z()`
+
+**Text Element Method:** `.z(z)`
 
 **Returns**: The text element
 
@@ -79,6 +95,8 @@ Controls the z coordinate to draw the text element at. This is largely irrelevan
 
 ## `.get_z()`
 
+**Text Element Method:** `.get_z()`
+
 **Returns**: Number, the z-position of the text element as set by `.z()`
 
 |Name|Datatype|Purpose|
@@ -87,7 +105,9 @@ Controls the z coordinate to draw the text element at. This is largely irrelevan
 
 &nbsp;
 
-## `.overwrite(string)` *regenerator*
+## `.overwrite()`
+
+**Text Element Method:** `.overwrite(string)`
 
 **Returns**: The text element
 
@@ -101,7 +121,9 @@ Replaces the string in an existing text element.
 
 &nbsp;
 
-## `.pre_update_typist(typist)`
+## `.pre_update_typist()`
+
+**Text Element Method:** `.pre_update_typist(typist)`
 
 **Returns**: The text element
 
