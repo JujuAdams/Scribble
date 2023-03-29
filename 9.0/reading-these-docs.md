@@ -33,7 +33,7 @@ This means that, by default, text drawing by Scribble will be white. Changing th
 
 ### Global Functions
 
-`scribble_anim_shake()` is a global function that sets the animation properties for the `[shake]` command tag. Executing this function with new values will immediately change the appearance of text that is set to shake.
+`scribble_anim_shake()` is a global function that sets the animation properties for the `[shake]` command tag. Executing this function with new values will change the appearance of text that is set to shake.
 
 ```js
 scribble_anim_shake(1, 0.3);
