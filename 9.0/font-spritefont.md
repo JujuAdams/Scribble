@@ -8,7 +8,7 @@ Standard fonts can also be used with [superfonts](font-superfont) and [baked eff
 
 Scribble allows you to change font in two ways: via `.font()` and via a command tag. When specifying a font with Scribble's functions, you should **always** refer to a font by using the the **name of the sprite** as a **string**.
 
-!> Do not try to use the retuned value from `font_sprite_add()` or `font_sprite_add_ext()` with Scribble, it won't work; use the name of the sprite instead.
+!> Do not try to use the retuned value from `font_sprite_add()` or `font_sprite_add_ext()` with Scribble, it won't work. Use the name of the sprite itself instead.
 
 <!-- tabs:start -->
 
