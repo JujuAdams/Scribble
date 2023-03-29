@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_font_has_character(fontName, character)`
+## `scribble_font_has_character()`
+
+**Global Function:** `scribble_font_has_character(fontName, character)`
 
 **Returns:** Boolean, indicating whether the given character is found in the font
 
@@ -13,7 +15,9 @@
 
 &nbsp;
 
-## `scribble_font_get_glyph_ranges(fontName, [hex])`
+## `scribble_font_get_glyph_ranges()`
+
+**Global Function:** `scribble_font_get_glyph_ranges(fontName, [hex])`
 
 **Returns:** Array of arrays, the ranges of glyphs available to the given font
 
@@ -26,7 +30,9 @@ Returns an array of arrays, the nested arrays being comprised of two elements. T
 
 &nbsp;
 
-## `scribble_font_force_bilinear_filtering(fontName, state)`
+## `scribble_font_force_bilinear_filtering()`
+
+**Global Function:** `scribble_font_force_bilinear_filtering(fontName, state)`
 
 **Returns:** N/A (`undefined`)
 
