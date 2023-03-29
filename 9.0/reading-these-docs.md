@@ -1,4 +1,4 @@
-# Reading These Docs
+# Reading these Docs
 
 &nbsp;
 
@@ -10,15 +10,10 @@ Features can be interacted with in four ways:
 
 2. **Global functions** are standard GameMaker functions that modifies Scribble's state everywhere. Global functions can typically be called anywhere at any time. Scribble's global functions fit the pattern `scribble_*()` and are formatted in `snake_case`.
 
-3. **Methods** are called by executing the named function on a struct returned by `scribble()`, `scribble_unique()`, or `scribble_typist()`. The impact of methods are limited to that struct.
+3. **Methods** are called by executing the named function on a struct returned by `scribble()`, `scribble_unique()`, or `scribble_typist()`. The impact of methods are limited to that struct. Methods include `.font()` and `.layout_wrap()` - they never start with `scribble`and always start with a dot `.`, and otherwise look like functions.
 
 4. **Command tags** are instructions that are passed to Scribble by inserting them into a string that's being drawn. Any change in formatting via command tags is limited to subsequent characters in the string. Command tags are formatted as a command inside `[squareBrackets]` in Scribble's documentation, the same text that you'll need to insert into strings to apply the command tag.
 
-Generally speaking, global functions override configuration macros, text element methods override global functions, and command tags override text element methods.
-
-```
-macros  <  global functions  <  methods  <  command tags
-```
 
 &nbsp;
 
