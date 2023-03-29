@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_font_rename(oldName, newName)`
+## `scribble_font_rename()`
+
+**Global Function:** `scribble_font_rename(oldName, newName)`
 
 **Returns:** N/A (`undefined`)
 
@@ -13,7 +15,9 @@
 
 &nbsp
 
-## `scribble_font_duplicate(fontName, newName)`
+## `scribble_font_duplicate()`
+
+**Global Function:** `scribble_font_duplicate(fontName, newName)`
 
 **Returns:** N/A (`undefined`)
 
@@ -24,7 +28,9 @@
 
 &nbsp;
 
-## `scribble_font_delete(fontName)`
+## `scribble_font_delete()`
+
+**Global Function:** `scribble_font_delete(fontName)`
 
 **Returns:** N/A (`undefined`)
 
@@ -34,7 +40,9 @@
 
 &nbsp;
 
-## `scribble_font_exists(fontName`
+## `scribble_font_exists()`
+
+**Global Function:** `scribble_font_exists(fontName)`
 
 **Returns:** Boolean, whether a Scribble font with the given name exists
 
