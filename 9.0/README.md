@@ -34,7 +34,7 @@ Everything! You might run into edge cases on platforms that I don't regularly te
 
 ## What versions of GameMaker does Scribble support?
 
-Version 8 of Scribble primarily supports GameMaker LTS 2022, and in theory supports every version of GameMaker later than that. Later versions of GameMaker may change functionality in a way that Scribble is not forwards-compatible with, but Scribble uses only native GameMaker functions so is in the best possible position for long-term compatibility.
+Version 9 of Scribble primarily supports GameMaker 2023.4, and in theory supports every version of GameMaker later than that. Later versions of GameMaker may change functionality in a way that Scribble is not forwards-compatible with, but Scribble uses only native GameMaker functions so is in the best possible position for long-term compatibility.
 
 &nbsp;
 
