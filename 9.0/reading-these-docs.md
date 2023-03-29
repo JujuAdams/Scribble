@@ -6,11 +6,11 @@ Scribble's documentation is written in a "feature first" style. The sidebar cont
 
 Features can be interacted with in four ways:
 
-1. **Configuration macros** are found in scripts called `__scribble_config_*`. Configuration macros are applied when the game is compiled and cannot be changed at runtime. Configuration macros affect the operation of Scribble throughout your game.
+1. **Configuration macros** are found in scripts that start with `__scribble_config_*`. Configuration macros are applied when the game is compiled and cannot be changed at runtime. Configuration macros affect the operation of Scribble throughout your game. Configuration macros start with `SCRIBBLE_*` and are formatted using `SCREAMING_SNAKE_CASE`.
 
-2. **Global functions** are standard GameMaker functions that modifies Scribble's state everywhere. Global functions can typically be called anywhere at any time.
+2. **Global functions** are standard GameMaker functions that modifies Scribble's state everywhere. Global functions can typically be called anywhere at any time. Scribble's global functions fit the pattern `scribble_*()` and are formatted in `snake_case`.
 
-3. **Text element methods** are called by executing the named function on a struct returned by `scribble()`. The impact of text element methods are limited to that text element.
+3. **Methods** are called by executing the named function on a struct returned by `scribble()`, `scribble_unique()`, or `scribble_typist()`. The impact of methods are limited to that struct.
 
 4. **Command tags** are instructions that are passed to Scribble by inserting them into a string that's being drawn. Any change in formatting via command tags is limited to subsequent characters in the string.
 
