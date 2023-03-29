@@ -14,7 +14,27 @@ Scribble uses the string you're trying to draw as the primary means of pulling d
 
 ```gml
 var _element = scribble("Hello"); //Pull a text element out of the cache
-_element.draw(10, 10);            //Draw the text element
+```
+
+Because the text element - what `scribble()` returns - is implemented as a struct, we can call methods on that struct. The most common method that you'll be calling is, naturally, the method that draws the text to the screen.
+
+```gml
+var _element = scribble("Hello"); //Pull a text element out of the cache
+_element.draw(10, 10);            //Draw the text
+```
+
+We can call other text element methods, such as `.colour()`, by
+
+```gml
+var _element = scribble("Hello"); //Pull a text element out of the cache
+_element.colour(c_lime);          //Makes the text bright green
+_element.draw(10, 10);            //Draw the text
+```
+
+Most text element methods return the text element itself. This seems like a minor detail on the surface, but in reality this is massively useful as it allows us to chain methods together. This sort of design pattern is called a "fluent interface". The above three lines of code can be ompressed into a single line:
+
+```gml
+scribble("Hello").colour(c_lime).draw(10, 10);
 ```
 
 This "vertex buffer caching" behaviour does have one noticeable downside: it's possible to accidentally pull a vertex buffer out of the cache when you didn't mean to. Consider the following:
