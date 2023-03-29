@@ -4,56 +4,15 @@
 
 ## `[<name of sound>]`
 
-**Command tag.** Insert sound playback event. Sounds will only be played when using Scribble's typewriter feature.
+**Command tag.**
+
+Insert sound playback event. Sounds will only be played when using Scribble's typist feature.
 
 &nbsp;
 
-## `[typistSound,...]`
+## `.sound()`
 
-**Command tag.** Sets the sound of the typewriter by replicating the behaviour of the [`.sound()`](typist-methods?id=soundsoundarray-overlap-pitchmin-pitchmax) typist.
-
-&nbsp;
-
-## `[typistSoundPerChar,...]`
-
-**Command tag.** Sets the sound of the typewriter by replicating the behaviour of the [`.sound_per_char()`](typist-methods?id=sound_per_charsoundarray-pitchmin-pitchmax-exceptionstring).
-
-&nbsp;
-
-## `scribble_external_sound_add(soundID, alias)`
-
-**Returns:** N/A (`undefined`)
-
-|Name     |Datatype                                                          |Purpose                                                       |
-|---------|------------------------------------------------------------------|--------------------------------------------------------------|
-|`soundID`|[sound](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|The sound to target                                           |
-|`alias`  |string                                                            |A string to use to refer to the sound ID in Scribble functions|
-
-Adds a sound that can be referenced in Scribble functions using the given alias. This is intended for use with externally added sounds via `audio_create_stream()` or `audio_create_buffer_sound()`.
-
-&nbsp;
-
-## `scribble_external_sound_remove(alias)`
-
-**Returns:** N/A (`undefined`)
-
-|Name     |Datatype|Purpose                                         |
-|---------|--------|------------------------------------------------|
-|`alias`  |string  |The external sound alias to remove from Scribble|
-
-&nbsp;
-
-## `scribble_external_sound_exists(alias)`
-
-**Returns:** Boolean, whether the alias has been added by `scribble_external_sound_add()`
-
-|Name     |Datatype|Purpose                              |
-|---------|--------|-------------------------------------|
-|`alias`  |string  |The external sound alias to check for|
-
-&nbsp;
-
-## `.sound(soundArray, overlap, pitchMin, pitchMax. [gain=1])`
+**Typist Method:** `.sound(soundArray, overlap, pitchMin, pitchMax. [gain=1])`
 
 **Returns**: `self`, the typist
 
@@ -71,7 +30,9 @@ Setting the `overlap` value to `0` will ensure that sound effects never overlap 
 
 &nbsp;
 
-## `.sound_per_char(soundArray, pitchMin, pitchMax, [exceptionString], [gain=1])`
+## `.sound_per_char()`
+
+**Typist Method:** `.sound_per_char(soundArray, pitchMin, pitchMax, [exceptionString], [gain=1])`
 
 **Returns**: `self`, the typist
 
@@ -87,7 +48,25 @@ It's quite common in games with typewriter-style text animations to have a sound
 
 &nbsp;
 
+## `[typistSound,...]`
+
+**Command tag.**
+
+Sets the sound of the typewriter by replicating the behaviour of the [`.sound()`](typist-methods?id=soundsoundarray-overlap-pitchmin-pitchmax) typist.
+
+&nbsp;
+
+## `[typistSoundPerChar,...]`
+
+**Command tag.**
+
+Sets the sound of the typewriter by replicating the behaviour of the [`.sound_per_char()`](typist-methods?id=sound_per_charsoundarray-pitchmin-pitchmax-exceptionstring).
+
+&nbsp;
+
 ## `.sync_to_sound(soundInstance)`
+
+**Typist Method:** `.sync_to_sound(soundInstance)`
 
 **Returns:** `self`, the typist
 
@@ -102,3 +81,50 @@ Sets up a typist to synchronise to an audio source whilst typing in. Calling `.s
 If the provided sound instance is paused, the typist will be paused as well and will wait until playback is resumed to contineu typing (this is a different pause state to the `.pause()` function above). If the sound instance stops, either because it has reached the end of playback or the sound instance was stopped manually, the typist will fall back to standard behaviour. Any remaining text that has not been typed will be typed out without pausing.
 
 ?> When synchronising to audio, `[delay]` and `[pause]` tags will be ignored. To pace the display of text, use `[sync]` tags as described above.
+
+&nbsp;
+
+## `[sync,...]`
+
+**Command tag.**
+
+Synchronisation point for `.sync_to_sound()`, see above.
+
+&nbsp;
+
+## `scribble_external_sound_add()`
+
+**Global Function:** `scribble_external_sound_add(soundID, alias)`
+
+**Returns:** N/A (`undefined`)
+
+|Name     |Datatype                                                          |Purpose                                                       |
+|---------|------------------------------------------------------------------|--------------------------------------------------------------|
+|`soundID`|[sound](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|The sound to target                                           |
+|`alias`  |string                                                            |A string to use to refer to the sound ID in Scribble functions|
+
+Adds a sound that can be referenced in Scribble functions using the given alias. This is intended for use with externally added sounds via `audio_create_stream()` or `audio_create_buffer_sound()`.
+
+&nbsp;
+
+## `scribble_external_sound_remove()`
+
+**Global Function:** `scribble_external_sound_remove(alias)`
+
+**Returns:** N/A (`undefined`)
+
+|Name     |Datatype|Purpose                                         |
+|---------|--------|------------------------------------------------|
+|`alias`  |string  |The external sound alias to remove from Scribble|
+
+&nbsp;
+
+## `scribble_external_sound_exists()`
+
+**Global Function:** `scribble_external_sound_exists(alias)`
+
+**Returns:** Boolean, whether the alias has been added by `scribble_external_sound_add()`
+
+|Name     |Datatype|Purpose                              |
+|---------|--------|-------------------------------------|
+|`alias`  |string  |The external sound alias to check for|
