@@ -2,13 +2,13 @@
 
 &nbsp;
 
-Scribble supports GameMaker's native `font_add()` function by wrapping it in some bespoke logic. To work around some limitations with GameMaker's internal font caching, Scribble operates its own internal cache. You can manually force a fetch of particular glyphs for a dynamic font by using `scribble_font_fetch()`.
+Scribble supports GameMaker's native `font_add()` function by wrapping it in some bespoke logic. To work around some limitations with GameMaker's internal font caching, Scribble operates its own internal cache. You can manually force a fetch of particular glyphs for a dynamic font by using `scribble_font_fetch()`. Dynamic fonts are **not compatible** with superfonts or effect baking.
 
-!> Scribble does not work out of the box with `font_add()`. To add dynamic fonts with Scribble, please use `scribble_font_add()`.
+!> Scribble does not support `font_add()` directly. To add dynamic fonts with Scribble, please use `scribble_font_add()`.
 
-?> When adding a dynamic font with `scribble_font_add()` you will need to specify a name. You should **always** use this name to refer to font when using Scribble's functions.
+?> When adding a dynamic font with `scribble_font_add()` you will need to specify a name. You should **always** use this name to refer to a dynamic font when using Scribble's functions.
 
-Scribble allows you to change font in two ways: via `.font()` and via a command tag. Here's some examples of how to use a spritefont with those features:
+Scribble allows you to change font in two ways: via `.font()` and via a command tag. Here's some examples of how to use a dynamic font with those features:
 
 <!-- tabs:start -->
 
