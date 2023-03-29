@@ -52,7 +52,7 @@ It's quite common in games with typewriter-style text animations to have a sound
 
 **Command tag.**
 
-Sets the sound of the typewriter by replicating the behaviour of the [`.sound()`](typist-methods?id=soundsoundarray-overlap-pitchmin-pitchmax) typist.
+Sets the sound of the typewriter by replicating the behaviour of the `.sound()` typist method (see above).
 
 &nbsp;
 
@@ -60,7 +60,7 @@ Sets the sound of the typewriter by replicating the behaviour of the [`.sound()`
 
 **Command tag.**
 
-Sets the sound of the typewriter by replicating the behaviour of the [`.sound_per_char()`](typist-methods?id=sound_per_charsoundarray-pitchmin-pitchmax-exceptionstring).
+Sets the sound of the typewriter by replicating the behaviour of the `.sound_per_char()` typist method (see above).
 
 &nbsp;
 
@@ -84,7 +84,7 @@ If the provided sound instance is paused, the typist will be paused as well and 
 
 &nbsp;
 
-## `[sync,...]`
+## `[sync,<seconds>]`
 
 **Command tag.**
 
