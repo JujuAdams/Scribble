@@ -11,9 +11,9 @@
 
 -   [Standard Fonts](font-standard)
 -   [Spritefonts](font-spritefont)
+-   [`font_add()`](font_add)
 -   [SDF Fonts](font-sdf)
 -   [Superfonts](font-superfont)
--   [`font_add()`](font_add)
 -   [Glyph Properties](font-glyph-properties)
 -   [Kerning](font-kerning)
 -   [Borders & Baked Effects](font-baking)
