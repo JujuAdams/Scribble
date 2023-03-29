@@ -11,11 +11,11 @@
 
 function scribble_font_bake_shadow(_source_font_name, _new_font_name, _dx, _dy, _shadow_color, _shadow_alpha, _separation, _smooth)
 {
+    static _colours_struct = __scribble_get_state().__custom_colour_struct;
+    
     if (is_string(_shadow_color))
     {
-        var _colors_struct = __scribble_config_colours();
-        
-        var _found = _colors_struct[$ _shadow_color];
+        var _found = _colours_struct[$ _shadow_color];
         if (_shadow_color == undefined)
         {
             __scribble_error("Colour \"", _shadow_color, "\" not recognised");

@@ -47,7 +47,6 @@ function __scribble_initialize()
     __scribble_get_state();
     __scribble_get_generator_state();
     __scribble_glyph_data_initialize();
-    __scribble_config_colours();
     __scribble_get_buffer_a();
     __scribble_get_buffer_b();
     __scribble_get_anim_properties();
@@ -134,16 +133,16 @@ function __scribble_get_font_data(_name)
 
 function __scribble_process_colour(_value)
 {
-    static _colors_struct = __scribble_config_colours();
+    static _colours_struct = __scribble_get_state().__custom_colour_struct;
     
     if (is_string(_value))
     {
-        if (!variable_struct_exists(_colors_struct, _value))
+        if (!variable_struct_exists(_colours_struct, _value))
         {
-            __scribble_error("Colour \"", _value, "\" not recognised. Please add it to __scribble_config_colours()");
+            __scribble_error("Colour \"", _value, "\" not recognised");
         }
         
-        return (_colors_struct[$ _value] & 0xFFFFFF);
+        return (_colours_struct[$ _value] & 0xFFFFFF);
     }
     else
     {

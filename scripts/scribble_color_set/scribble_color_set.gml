@@ -15,13 +15,13 @@
 
 function scribble_color_set(_name, _colour)
 {
-    static _colourDict = __scribble_config_colours();
+    static _colours_struct = __scribble_get_state().__custom_colour_struct;
     
     if (_colour == undefined)
     {
-        if (variable_struct_exists(_colourDict, _name))
+        if (variable_struct_exists(_colours_struct, _name))
         {
-            variable_struct_remove(_colourDict, _name);
+            variable_struct_remove(_colours_struct, _name);
             
             //Ensure that any custom colours that are in text elements are updated
             scribble_refresh_everything();
@@ -33,9 +33,9 @@ function scribble_color_set(_name, _colour)
     }
     else
     {
-        if (_colourDict[$ _name] != _colour)
+        if (_colours_struct[$ _name] != _colour)
         {
-            _colourDict[$ _name] = _colour;
+            _colours_struct[$ _name] = _colour;
             
             //Ensure that any custom colours that are in text elements are updated
             scribble_refresh_everything();

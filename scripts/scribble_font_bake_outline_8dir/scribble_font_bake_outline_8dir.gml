@@ -8,11 +8,11 @@
 
 function scribble_font_bake_outline_8dir(_source_font_name, _new_font_name, _outline_color, _smooth, _textureSize = undefined)
 {
+    static _colours_struct = __scribble_get_state().__custom_colour_struct;
+    
     if (is_string(_outline_color))
     {
-        var _colors_struct = __scribble_config_colours();
-        
-        var _found = _colors_struct[$ _outline_color];
+        var _found = _colours_struct[$ _outline_color];
         if (_outline_color == undefined)
         {
             __scribble_error("Colour \"", _outline_color, "\" not recognised");

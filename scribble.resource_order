@@ -325,7 +325,6 @@
     {"name":"__scribble_class_page","order":4,"path":"scripts/__scribble_class_page/__scribble_class_page.yy",},
     {"name":"__scribble_class_typist","order":5,"path":"scripts/__scribble_class_typist/__scribble_class_typist.yy",},
     {"name":"__scribble_config_behaviours","order":1,"path":"scripts/__scribble_config_behaviours/__scribble_config_behaviours.yy",},
-    {"name":"__scribble_config_colours","order":2,"path":"scripts/__scribble_config_colours/__scribble_config_colours.yy",},
     {"name":"__scribble_effects_maps_initialize","order":8,"path":"scripts/__scribble_effects_maps_initialize/__scribble_effects_maps_initialize.yy",},
     {"name":"__scribble_font_add_all_from_project","order":3,"path":"scripts/__scribble_font_add_all_from_project/__scribble_font_add_all_from_project.yy",},
     {"name":"__scribble_font_add_from_project","order":1,"path":"scripts/__scribble_font_add_from_project/__scribble_font_add_from_project.yy",},

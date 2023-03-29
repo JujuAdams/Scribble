@@ -6,6 +6,7 @@
 function scribble_typists_add_event(_name, _function)
 {
     __scribble_initialize();
+    static _colours_struct = __scribble_get_state().__custom_colour_struct;
     
     if (!is_string(_name))
     {
@@ -30,7 +31,7 @@ function scribble_typists_add_event(_name, _function)
         }
     }
     
-    if (ds_map_exists(__scribble_config_colours(), _name))
+    if (ds_map_exists(_colours_struct, _name))
     {
         __scribble_trace("Warning! Event name \"" + _name + "\" has already been defined as a colour");
         exit;

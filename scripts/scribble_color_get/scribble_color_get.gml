@@ -5,6 +5,6 @@
 
 function scribble_color_get(_name)
 {
-    static _colourDict = __scribble_config_colours();
-    return _colourDict[$ _name];
+    static _colours_struct = __scribble_get_state().__custom_colour_struct;
+    return _colours_struct[$ _name];
 }

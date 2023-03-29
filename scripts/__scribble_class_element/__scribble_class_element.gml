@@ -4,6 +4,7 @@
 function __scribble_class_element(_string, _unique_id = "") constructor
 {
     static __scribble_state    = __scribble_get_state();
+    static __colours_struct    = __scribble_state.__custom_colour_struct;
     static __ecache_array      = __scribble_get_cache_state().__ecache_array;
     static __ecache_dict       = __scribble_get_cache_state().__ecache_dict;
     static __ecache_name_array = __scribble_get_cache_state().__ecache_name_array;
@@ -309,11 +310,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param colour
     static rgb_multiply = function(_colour)
     {
-        static _colors_struct = __scribble_config_colours();
-        
         if (is_string(_colour))
         {
-            _colour = _colors_struct[$ _colour];
+            _colour = __colours_struct[$ _colour];
             if (_colour == undefined)
             {
                 __scribble_error("Colour name \"", _colour, "\" not recognised");
@@ -332,11 +331,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param mix
     static rgb_lerp = function(_colour, _mix)
     {
-        static _colors_struct = __scribble_config_colours();
-        
         if (is_string(_colour))
         {
-            _colour = _colors_struct[$ _colour];
+            _colour = __colours_struct[$ _colour];
             if (_colour == undefined)
             {
                 __scribble_error("Colour name \"", _colour, "\" not recognised");
@@ -356,11 +353,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param mix
     static gradient = function(_colour, _mix)
     {
-        static _colors_struct = __scribble_config_colours();
-        
         if (is_string(_colour))
         {
-            _colour = _colors_struct[$ _colour];
+            _colour = __colours_struct[$ _colour];
             if (_colour == undefined)
             {
                 __scribble_error("Colour name \"", _colour, "\" not recognised");
