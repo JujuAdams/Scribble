@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `.ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`
+## `.ease()`
+
+**Typist Method:** `.ease(easeMethod, dx, dy, xscale, yscale, rotation, alphaDuration)`
 
 **Returns**: `self`, the typist
 
