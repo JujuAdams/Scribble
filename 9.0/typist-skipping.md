@@ -4,6 +4,8 @@
 
 ## `.skip()`
 
+**Typist Method:** `.skip()`
+
 **Returns**: `self`, the typist
 
 |Name   |Datatype|Purpose                                                |
@@ -14,7 +16,9 @@ Skips the current typist animation, be it typing in or typing out. If text is ty
 
 &nbsp;
 
-## `.skip_to_pause(state)`
+## `.skip_to_pause()`
+
+**Typist Method:** `.skip_to_pause(state)`
 
 **Returns**: `self`, the typist
 
@@ -28,6 +32,8 @@ As `.skip()` but the typist will wait at `[pause]` tags.
 
 ## `.get_skip()`
 
+**Typist Method:** `.get_skip()`
+
 **Returns**: Boolean, whether the typist is skipping typewriter animation
 
 |Name|Datatype|Purpose|
@@ -36,7 +42,9 @@ As `.skip()` but the typist will wait at `[pause]` tags.
 
 &nbsp;
 
-## `.ignore_delay(state)`
+## `.ignore_delay()`
+
+**Typist Method:** `.ignore_delay(state)`
 
 **Returns**: `self`, the typist
 
@@ -49,6 +57,8 @@ Unlike the `.skip()` method above, this behaviour will still play the typewriter
 &nbsp;
 
 ## `.get_ignore_delay()`
+
+**Typist Method:** `.get_ignore_delay()`
 
 **Returns**: Boolean, whether the typist is ignoring per-character delay and `[delay]` tags
 
