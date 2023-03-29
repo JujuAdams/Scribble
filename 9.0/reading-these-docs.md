@@ -23,7 +23,7 @@ Features can be interacted with in four ways:
 
 `SCRIBBLE_DEFAULT_COLOR` can be found in `__scribble_config_behaviours()`:
 
-```gml
+```js
 #macro SCRIBBLE_DEFAULT_COLOR  c_white
 ```
 
@@ -41,7 +41,7 @@ This means that, by default, text drawing by Scribble will be white. Changing th
 
 `.layout_wrap()` is a method that sets up automatic line wrapping for a text element.
 
-```gml
+```js
 var _element = scribble("Some text to draw inside a textbox and wrap around.");
 _element.layout_wrap(sprite_width-30);
 _element.draw(x, y);
@@ -55,7 +55,7 @@ By executing this function, the maximum width of the text element is set. Any te
 
 `[rainbow]` is a command tag that causes subsequent characters to take on an animated rainbow colour.
 
-```gml
+```js
 scribble("Here comes the [rainbow]RAINBOW TEXT[/rainbow]!").draw(x, y);
 ```
 
