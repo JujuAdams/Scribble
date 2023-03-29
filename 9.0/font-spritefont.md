@@ -30,7 +30,7 @@ draw_set_font(-1);
 ///Game Start Event
 font_add_sprite_ext(spr_pixely, "0123456789+-*/=ABCDEFGHIJKLMNOPQRSTUVWXYZ", true, 2);
 
-//DRaw Event
+///Draw Event
 scribble("Hello world").font("spr_pixely").draw(10, 10);
 ```
 
