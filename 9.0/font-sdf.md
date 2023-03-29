@@ -2,7 +2,11 @@
 
 &nbsp;
 
-## `.msdf_shadow(colour, alpha, xoffset, yoffset, [softness])`
+Scribble supports SDF fonts via `scribble_font_add()`, a wrapper for GameMaker's native `font_add()` function. Scribble expands upon GameMaker's barebones SDF rendering by adding procedural borders and drop shadows.
+
+&nbsp;
+
+## `.sdf_shadow(colour, alpha, xoffset, yoffset, [softness])`
 
 **Returns**: The text element
 
@@ -14,42 +18,42 @@
 |`yoffset` |number  |y-coordinate of the shadow, relative to the parent glyph                                                 |
 |`softness`|number  |Optional. Larger values give a softer edge to the shadow. If not specified, this will default to `0.1` (which draws an antialiased but clean shadow edge)|
 
-Sets the colour, alpha, and offset for a procedural MSDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all. If you find that your shadow(s) are being clipped or cut off when using large offset values, [regenerate your MSDF fonts](msdf-fonts) using a larger `pxrange`.
+Sets the colour, alpha, and offset for a procedural SDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all.
 
-?> This method will only affect [MSDF fonts](msdf-fonts). If you'd like to add shadows to standard fonts or spritefonts, you may want to consider [baking this effect](fonts?id=scribble_font_bake_shadowsourcefontname-newfontname-dx-dy-shadowcolor-shadowalpha-separation-smooth).
+?> This method will only affect SDF fonts. If you'd like to add shadows to other types of fonts, you may want to consider using a border baking function.
 
 &nbsp;
 
-## `.msdf_border(colour, thickness)`
+## `.sdf_border(colour, thickness)`
 
 **Returns**: The text element
 
 |Name       |Datatype|Purpose                                                                |
 |-----------|--------|-----------------------------------------------------------------------|
 |`colour`   |integer |Colour of the glyph's border, as a standard GameMaker 24-bit BGR format|
-|`thickness`|real    |Thickness of the border, in pixels                                     |
+|`thickness`|number  |Thickness of the border, in pixels                                     |
 
-Sets the colour and thickness for a procedural MSDF border. Setting the thickness to `0` will prevent the border from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, [regenerate your MSDF fonts](msdf-fonts) using a larger `pxrange`.
+Sets the colour and thickness for a procedural SDF border. Setting the thickness to `0` will prevent the border from being drawn at all.
 
-?> This method will only affect [MSDF fonts](msdf-fonts). If you'd like to add outlines to standard fonts or spritefonts, you may want to consider [baking this effect](fonts?id=scribble_font_bake_outline_4dirsourcefontname-newfontname-color-smooth).
+?> This method will only affect SDF fonts. If you'd like to add outlines to standard fonts or spritefonts, you may want to consider using a shadow baking function.
 
 &nbsp;
 
-## `.msdf_feather(thickness)`
+## `.sdf_feather(thickness)`
 
 **Returns**: The text element
 
 |Name       |Datatype|Purpose                             |
 |-----------|--------|------------------------------------|
-|`thickness`|real    |Feather thickness, in pixels        |
+|`thickness`|number  |Feather thickness, in pixels        |
 
-Changes the softness/hardness of the MSDF font outline. You may find you have to fiddle with this number to correct for screen scaling but, normally, this feature will not be needed. The feather thickness defaults to `1.0`.
+Changes the softness/hardness of the SDF font outline. You may find you have to fiddle with this number to correct for screen scaling but, normally, this feature will not be needed. The feather thickness defaults to `1.0`.
 
-?> This method will only affect [MSDF fonts](msdf-fonts).
+?> This method will only affect SDF fonts.
 
 &nbsp;
 
-## `scribble_msdf_thickness_offset(offset)`
+## `scribble_sdf_thickness_offset(offset)`
 
 **Returns:** N/A (`undefined`)
 
@@ -57,4 +61,4 @@ Changes the softness/hardness of the MSDF font outline. You may find you have to
 |--------|--------|--------------------------------------------------------------------------------|
 |`offset`|number  |The global MSDF font thickness offset to apply. The default offset values is `0`|
 
-Applies a global thickness adjustment to MSDF fonts. An offset less than `0` will make MSDF glyphs thinner, an offset greater than `0` will make MSDF glyphs thicker. The offset value is very sensitive and values of `+/- 0.01` may make a significant difference to the appearance of glyphs.
+Applies a global thickness adjustment to SDF fonts. An offset less than `0` will make SDF glyphs thinner, an offset greater than `0` will make SDF glyphs thicker. The offset value is very sensitive and values of `+/- 0.01` may make a significant difference to the appearance of glyphs.
