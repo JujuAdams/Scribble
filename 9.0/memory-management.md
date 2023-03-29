@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `.build(freeze)`
+## `.build()`
+
+**Global Function:** `.build(freeze)`
 
 **Returns**: N/A (`undefined`)
 
@@ -25,6 +27,8 @@ element.draw(x, y);
 
 ## `.refresh()`
 
+**Global Function:** `.refresh()`
+
 **Returns**: N/A (`undefined`)
 
 |Name|Datatype|Purpose|
@@ -36,6 +40,8 @@ Forces Scribble to rebuild the text model for this text element. This is particu
 &nbsp;
 
 ## `.flush()`
+
+**Global Function:** `.flush()`
 
 **Returns**: N/A (`undefined`)
 
@@ -49,6 +55,8 @@ Forces Scribble to remove this text element from the internal cache, invalidatin
 
 ## `scribble_flush_everything()`
 
+**Global Function:** `scribble_flush_everything()`
+
 **Returns:** N/A (`undefined`)
 
 |Name|Datatype|Purpose|
@@ -60,6 +68,8 @@ Frees all memory that Scribble text elements and text models are currently using
 &nbsp;
 
 ## `scribble_refresh_everything()`
+
+**Global Function:** `scribble_refresh_everything()`
 
 **Returns:** N/A (`undefined`)
 
