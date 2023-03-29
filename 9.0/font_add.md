@@ -2,7 +2,7 @@
 
 &nbsp;
 
-Scribble supports GameMaker's native `font_add()` function by wrapping in some bespoke logic. To work around some limitations with GameMaker's internal font caching, Scribble operates its own internal cache. You can manually force a fetch of particular glyphs for a dynamic font by using `scribble_font_fetch()`.
+Scribble supports GameMaker's native `font_add()` function by wrapping it in some bespoke logic. To work around some limitations with GameMaker's internal font caching, Scribble operates its own internal cache. You can manually force a fetch of particular glyphs for a dynamic font by using `scribble_font_fetch()`.
 
 !> Scribble does not work out of the box with `font_add()`. To add dynamic fonts with Scribble, please use `scribble_font_add()`.
 
