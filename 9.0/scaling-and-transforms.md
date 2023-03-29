@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `scribble_font_scale(fontName, scale)`
+## `scribble_font_scale()`
+
+**Global Function:** `scribble_font_scale(fontName, scale)`
 
 **Returns:** N/A (`undefined`)
 
@@ -19,29 +21,39 @@ Scales every glyph in a font (including the space character) by the given factor
 
 ## `[scale,<factor>]`
 
-**Command tag.** Set text (and in-line sprite) scale.
+**Command tag.**
+
+Set text (and in-line sprite) scale.
 
 &nbsp;
 
 ## `[scaleStack,<factor>]`
 
-**Command tag.** Set text (and in-line sprite) scale.
+**Command tag.**
+
+Set text (and in-line sprite) scale.
 
 &nbsp;
 
 ## `[/scale]` `[/s]`
 
-**Command tag.** Reset scale to x1.
+**Command tag.**
+
+Reset scale to x1.
 
 &nbsp;
 
 ## `[slant]` `[/slant]`
 
-**Command tag.** Set/unset italic emulation. The size of the x offset is controlled by [`SCRIBBLE_SLANT_AMOUNT`](configuration).
+**Command tag.**
+
+Set/unset italic emulation. The size of the x offset is controlled by [`SCRIBBLE_SLANT_AMOUNT`](configuration).
 
 &nbsp;
 
-## `.scale(factor)`
+## `.scale()`
+
+**Text Element Method:** `.scale(factor)`
 
 **Returns**: The text element
 
@@ -51,11 +63,13 @@ Scales every glyph in a font (including the space character) by the given factor
 
 Adds a scaling factor to a text element. This is applied **before** text layout and multiplicatively with `[scale]` tags; as a result, setting a scale with the method will affect text wrapping (if enabled).
 
-!> This method is a *regenerator*. If the value is changed then the text element will be regenerated, potentially leading to degraded performance. Try not to change the colour of text using this method often.
+!> This method is a *regenerator*. If the value is changed then the text element will be regenerated, potentially leading to degraded performance.
 
 &nbsp;
 
-## `.post_transform(xscale, yscale, angle)`
+## `.post_transform()`
+
+**Text Element Method:** `.post_transform(xscale, yscale, angle)`
 
 **Returns**: The text element
 
@@ -71,7 +85,9 @@ Rotates and scales a text element relative to the origin (set by [`.origin()`](s
 
 &nbsp;
 
-## `.origin(x, y)`
+## `.origin()`
+
+**Text Element Method:** `.origin(x, y)`
 
 **Returns**: The text element
 
@@ -84,7 +100,9 @@ Sets the origin relative to the top-left corner of the text element. You can thi
 
 &nbsp;
 
-## `.padding(left, top, right, bottom)` *regenerator*
+## `.padding()`
+
+**Text Element Method:** `.padding(left, top, right, bottom)`
 
 **Returns**: The text element
 
@@ -95,9 +113,13 @@ Sets the origin relative to the top-left corner of the text element. You can thi
 |`right` |number  |Extra space on the right-hand side of the textbox. Positive values create more space|
 |`bottom`|number  |Extra space on the bottom of the textbox. Positive values create more space         |
 
+!> This method is a *regenerator*. If the value is changed then the text element will be regenerated, potentially leading to degraded performance.
+
 &nbsp;
 
-## `.skew(skewX, skewY)`
+## `.skew()`
+
+**Text Element Method:** `.skew(skewX, skewY)`
 
 **Returns**: The text element
 
@@ -110,7 +132,9 @@ Skews glyph positions relative to the origin (set by [`.origin()`](scribble-meth
 
 &nbsp;
 
-## `.line_height(min, max)` *regenerator*
+## `.line_height()`
+
+**Text Element Method:** `.line_height(min, max)`
 
 **Returns**: The text element
 
@@ -121,9 +145,13 @@ Skews glyph positions relative to the origin (set by [`.origin()`](scribble-meth
 
 Sets limits on the height of each line for the text element. This is useful when mixing and matching fonts that aren't necessarily perfectly sized to each other.
 
+!> This method is a *regenerator*. If the value is changed then the text element will be regenerated, potentially leading to degraded performance.
+
 &nbsp;
 
-## `.line_spacing(spacing)` *regenerator*
+## `.line_spacing()`
+
+**Text Element Method:** `.line_spacing(spacing)`
 
 **Returns**: The text element
 
@@ -135,4 +163,4 @@ If a number is passed to this method then a fixed line spacing is used. If a str
 
 ?> The term "spacing" is being used a little inaccurately here. The value that is being adjusted is more properly called ["leading"](https://99designs-blog.imgix.net/blog/wp-content/uploads/2014/06/Leading1.png?auto=format&q=60&fit=max&w=930) (as in the metal).
 
-&nbsp;
+!> This method is a *regenerator*. If the value is changed then the text element will be regenerated, potentially leading to degraded performance.
