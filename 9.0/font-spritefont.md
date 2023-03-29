@@ -19,7 +19,7 @@ Scribble allows you to change font in two ways: via `.font()` and via a command 
 global.font = font_add_sprite_ext(spr_pixely, "0123456789+-*/=ABCDEFGHIJKLMNOPQRSTUVWXYZ", true, 2);
 
 ///Draw Event
-draw_set_font(fnt_large);
+draw_set_font(global.font);
 draw_text(10, 10, "Hello world");
 draw_set_font(-1);
 ```
