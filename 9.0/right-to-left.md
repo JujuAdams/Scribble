@@ -2,7 +2,9 @@
 
 &nbsp;
 
-## `.right_to_left(state)` *regenerator*
+## `.right_to_left()`
+
+**Global Function:** `.right_to_left(state)`
 
 **Returns**: The text element
 
@@ -16,10 +18,14 @@ Hints to the text parser whether the overall text direction is right-to-left (`t
 
 ## `[l2r]`
 
-**Command tag.** Provides a hint at the direction of text. Useful at the start of strings or adjacent to punctuation to fix minor issues in text layout.
+**Command tag.**
+
+Provides a hint at the direction of text. Useful at the start of strings or adjacent to punctuation to fix minor issues in text layout.
 
 &nbsp;
 
 ## `[r2l]`
 
-**Command tag.** Provides a hint at the direction of text. Useful at the start of strings or adjacent to punctuation to fix minor issues in text layout.
+**Command tag.**
+
+Provides a hint at the direction of text. Useful at the start of strings or adjacent to punctuation to fix minor issues in text layout.
