@@ -1,4 +1,5 @@
-#macro __SCRIBBLE_GEN_PAGE_POP  var _page_end_line = _i - 1;\
+#macro __SCRIBBLE_GEN_PAGE_POP  _model_height = max(_model_height, _line_max_y);\
+                                var _page_end_line = _i - 1;\
                                 _page_data.__line_end    = _page_end_line;\
                                 _page_data.__line_count  = 1 + _page_data.__line_end - _page_data.__line_start;\
                                 _page_data.__glyph_end   = _word_grid[# _line_grid[# _page_end_line, __SCRIBBLE_GEN_LINE.__WORD_END], __SCRIBBLE_GEN_WORD.__GLYPH_END];\
@@ -91,7 +92,6 @@ function __scribble_gen_7_build_pages()
         if (!_starts_manual_page && ((_line_y + _line_height < _simulated_model_height) || (_page_start_line >= _i)))
         {
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = _line_y;
-            if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
             _line_max_y = _line_y + _line_height;
             _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
         }
@@ -106,7 +106,6 @@ function __scribble_gen_7_build_pages()
             
             _page_start_line = _i;
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = 0;
-            if (_line_y + _line_height > _model_height) _model_height = _line_y + _line_height;
             _line_max_y = _line_height;
             _line_y = _line_spacing_add + _line_height*_line_spacing_multiply;
         }
