@@ -2,7 +2,11 @@
 
 &nbsp;
 
-Scribble supports SDF fonts via `scribble_font_add()`, a wrapper for GameMaker's native `font_add()` function. Scribble expands upon GameMaker's barebones SDF rendering by adding procedural borders and drop shadows.
+Signed-Distance Field fonts, a.k.a. "SDF fonts", are a type of font that looks much nicer when scaled up and down. Normal fonts will typically look either blurry or unpleasantly pixellated when scaled. SDF fonts allow for text to be rendered at any size without needing to generate a unique font for each size. This effectively means SDF fonts are resolution-independent, making them useful for software UIs in general, but essential for mobile game development. SDFs reduce the texture memory usage of your game whilst also being easier to use and maintain. With Scribble, SDF fonts are rendered at the same speed as normal fonts. SDF fonts are supported for all of Scribble's target platforms.
+
+?> At the time of writing, GameMaker only supports SDF fonts via `font_add()`. Scribble therefore only supports SDF fonts via the [`scribble_font_add()` feature](font_add).
+
+Scribble expands upon GameMaker's barebones SDF rendering by adding procedural borders and drop shadows.
 
 &nbsp;
 
