@@ -18,7 +18,7 @@ I'm skipping over a **lot** of implementation details. Scribble is complicated o
 
 ## Using Scribble
 
-Scribble uses the string you're trying to draw as the primary means of pulling data out of the cache. Scribble stores information in the case by using a thing called a "text element". This will be your main point of call for interacting with Scribble's renderer. We can pull a vertex buffer out of the cache by using the `scribble()` function like so:
+Scribble uses the string you're trying to draw as the primary means of pulling data out of the cache. Scribble stores information in the cache by using a thing called a "text element". This will be your main point of call for interacting with Scribble's renderer. We can pull a vertex buffer out of the cache by using the `scribble()` function like so:
 
 ```js
 var _element = scribble("Hello"); //Pull a text element out of the cache
