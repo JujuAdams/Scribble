@@ -10,7 +10,7 @@ Spritefonts can also be used with [superfonts](font-superfont) and [baked effect
 
 !> Do not try to use the retuned value from `font_sprite_add()` or `font_sprite_add_ext()` with Scribble, it won't work. Use the name of the sprite itself instead.
 
-Scribble allows you to change font in two ways: via `.font()` and via a command tag. Here's some examples of how to use a spritefont with those features:
+Scribble allows you to change font in two ways: via `.font()`, and via a command tag. Here's some examples of how to use a spritefont with those features:
 
 <!-- tabs:start -->
 
@@ -26,7 +26,7 @@ draw_text(10, 10, "Hello world");
 draw_set_font(-1);
 ```
 
-#### **`.font()`**
+#### **`.font()` Method**
 
 ```js
 ///Game Start Event
@@ -36,7 +36,7 @@ font_add_sprite_ext(spr_pixely, "0123456789+-*/=ABCDEFGHIJKLMNOPQRSTUVWXYZ", tru
 scribble("Hello world").font("spr_pixely").draw(10, 10);
 ```
 
-#### **`Command Tag`**
+#### **Command Tag**
 
 ```js
 ///Game Start Event
