@@ -15,13 +15,15 @@
 |`italic`    |string  |Name of font to use for the italic style     |
 |`boldItalic`|string  |Name of font to use for the bold-italic style|
 
-Associates four fonts together for use with `[r]` `[b]` `[i]` `[bi]` font tags. Use `undefined` for any style you don't want to set a font for.
+Associates four fonts together for use with `[b]` `[i]` `[bi]` `[r]` font tags. Use `undefined` for any style you don't want to set a font for.
 
 &nbsp;
 
 ## `[r]`
 
-**Command tag.**
+**Command tag.** 
+
+Sets the regular font for the font family, as defined by `scribble_font_set_style_family()`.
 
 &nbsp;
 
@@ -29,14 +31,20 @@ Associates four fonts together for use with `[r]` `[b]` `[i]` `[bi]` font tags. 
 
 **Command tag.**
 
+Sets the bold font for the font family, as defined by `scribble_font_set_style_family()`.
+
 &nbsp;
 
 ## `[i]`
 
 **Command tag.**
 
+Sets the italic font for the font family, as defined by `scribble_font_set_style_family()`.
+
 &nbsp;
 
 ## `[bi]`
 
 **Command tag.**
+
+Sets the bold-italic font for the font family, as defined by `scribble_font_set_style_family()`.
