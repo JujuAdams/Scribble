@@ -9,13 +9,34 @@
 **Returns**: The text element
 
 |Name    |Datatype                                                                                                                  |Purpose                                                                                               |
-|--------|--------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
-|`halign`|[halign constant](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_set_halign.htm)|Starting horizontal alignment of **each line** of text. Accepts `fa_left`, `fa_right`, and `fa_center`|
-|`valign`|[valign constant](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_set_valign.htm)|Starting vertical alignment of the **entire textbox**. Accepts `fa_top`, `fa_bottom`, and `fa_middle` |
+|--------|---------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+|`halign`|[halign constant](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_set_halign.htm) or string|Starting horizontal alignment of **each line** of text. See below for a list of accepted values       |
+|`valign`|[valign constant](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_set_valign.htm)          |Starting vertical alignment of the **entire textbox**. Accepts `fa_top`, `fa_bottom`, and `fa_middle` |
 
-Sets the starting horizontal and vertical alignment for your text. You can change alignment using in-line [command tags](text-formatting) as well, though do note there are some limitations when doing so.
+Sets the starting horizontal and vertical alignment for your text. You can change alignment using in-line command tags as well, see below.
 
 !> This method is a *regenerator*. If the value is changed then the text element will be regenerated, potentially leading to degraded performance.
+
+The follow values are accepted as the `halign` argument:
+
+<table>
+    <tr>
+        <td><code>fa_left</code></td>
+    </tr>
+</table>
+
+|              |
+|--------------|
+|`fa_left`     |
+|`fa_center`   |
+|`fa_right`    |
+|`"fa_left"`   |
+|`"fa_center"` |
+|`"fa_right"`  |
+|`"fa_justify"`|
+|`"pin_left"`  |
+|`"pin_center"`|
+|`"pin_right"` |
 
 &nbsp;
 
@@ -23,7 +44,7 @@ Sets the starting horizontal and vertical alignment for your text. You can chang
 
 **Command tag.**
 
-Horizontally align this line of text to the left of the [`.draw()`](scribble-methods?id=drawx-y) coordinate.
+Horizontally align this line of text to the left of the [`.draw()`](scribble) coordinate.
 
 &nbsp;
 
@@ -31,7 +52,7 @@ Horizontally align this line of text to the left of the [`.draw()`](scribble-met
 
 **Command tag.**
 
-Horizontally align this line of text centrally at the [`.draw()`](scribble-methods?id=drawx-y) coordinate.
+Horizontally align this line of text centrally at the [`.draw()`](scribble) coordinate.
 
 &nbsp;
 
@@ -39,7 +60,7 @@ Horizontally align this line of text centrally at the [`.draw()`](scribble-metho
 
 **Command tag.**
 
-Horizontally align this line of text to the right of the [`.draw()`](scribble-methods?id=drawx-y) coordinate.
+Horizontally align this line of text to the right of the [`.draw()`](scribble) coordinate.
 
 &nbsp;
 
@@ -55,7 +76,7 @@ Increases the space between words in a line of text such that each lines fills t
 
 **Command tag.**
 
-Vertically align **all text** to the top of the [`.draw()`](scribble-methods?id=drawx-y) coordinate.
+Vertically align **all text** to the top of the [`.draw()`](scribble) coordinate.
 
 &nbsp;
 
@@ -63,7 +84,7 @@ Vertically align **all text** to the top of the [`.draw()`](scribble-methods?id=
 
 **Command tag.**
 
-Vertically align **all text** to the middle of the [`.draw()`](scribble-methods?id=drawx-y) coordinate.
+Vertically align **all text** to the middle of the [`.draw()`](scribble) coordinate.
 
 &nbsp;
 
@@ -71,7 +92,7 @@ Vertically align **all text** to the middle of the [`.draw()`](scribble-methods?
 
 **Command tag.**
 
-Vertically align **all text** to the bottom of the [`.draw()`](scribble-methods?id=drawx-y) coordinate.
+Vertically align **all text** to the bottom of the [`.draw()`](scribble) coordinate.
 
 &nbsp;
 
