@@ -16,7 +16,7 @@
 
 Setting the animation speed value to `0` will pause animation effects. This value can even be negative to play effects backwards!
 
-?> This setting does not impact [typists](typist-methods). Instead, please use the [`.pause()`](typist-methods?id=pause) typist method to pause typists.
+?> This setting does not impact typists. Instead, please use the `.pause()` typist method to pause typists.
 
 &nbsp;
 
@@ -44,7 +44,7 @@ The value returned from this function defaults to `1`.
 |----|--------|-------|
 |None|        |       |
 
-Restores animation properties to the defaults set in [`__scribble_config_animation()`](configuration).
+Restores animation properties to the defaults set in configuration.
 
 &nbsp;
 

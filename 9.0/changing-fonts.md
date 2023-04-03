@@ -6,11 +6,11 @@
 
 **Returns:** N/A (`undefined`)
 
-|Name       |Datatype|Purpose                                                                                                                                                                                            |
-|-----------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`fontName` |string  |Name of the font to set as the default, as a string                                                                                                                                                |
+|Name       |Datatype|Purpose                                            |
+|-----------|--------|---------------------------------------------------|
+|`fontName` |string  |Name of the font to set as the default, as a string|
 
-This function sets the default font to use for future [`scribble()`](scribble-methods) calls.
+This function sets the default font to use for future [`scribble()`](scribble) calls.
 
 &nbsp;
 
@@ -22,7 +22,7 @@ This function sets the default font to use for future [`scribble()`](scribble-me
 |----------|--------|----------------------------------------------------------------------------------------------------------------|
 |`fontName`|string  |Name of the starting font, as a string. This is the font that is set when `[/]` or `[/font]` is used in a string|
 
-Sets the starting font and text colour for your text. The values that are set with `.starting_format()` are applied if you use the [`[/] or [/f] or [/c]` command tags](text-formatting) to reset your text format.
+Sets the starting font and text colour for your text. The values that are set with `.starting_format()` are applied if you use the `[/] or [/f] or [/c]` command tags to reset your text format.
 
 &nbsp;
 
