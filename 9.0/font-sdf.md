@@ -41,7 +41,7 @@ Sets the colour, alpha, and offset for a procedural SDF shadow. Setting the alph
 |`colour`   |integer or string|Basic text colour as either:<br>- standard GameMaker 24-bit BGR format<br>- name of a GameMaker colour constant<br>- name of a colour added to `__scribble_config_colours()`<br>- name of a colour added by calling `scribble_color_set()`|
 |`thickness`|number           |Thickness of the border, in pixels                                                                                                                                                                                                        |
 
-**Text element method.** This function adds a coloured border around your text. Setting the thickness to `0` will prevent the border from being drawn at all. The coloured border will not be colourised or tinted due to the use of other functionality.
+This function adds a coloured border around your text. Setting the thickness to `0` will prevent the border from being drawn at all. The coloured border will not be colourised or tinted due to the use of other functionality.
 
 ?> This method will only affect SDF fonts. If you'd like to add outlines to standard fonts or spritefonts, you may want to consider using a shadow baking function.
 
