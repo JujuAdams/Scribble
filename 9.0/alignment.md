@@ -24,6 +24,7 @@ The follow values are accepted as the `halign` argument:
         <td><code>fa_left</code></td>
         <td><code>fa_center</code></td>
         <td><code>fa_right</code></td>
+        <td></td>
     </tr>
     <tr>
         <td><code>"fa_left"</code></td>
@@ -35,6 +36,7 @@ The follow values are accepted as the `halign` argument:
         <td><code>"pin_left"</code></td>
         <td><code>"pin_center"</code></td>
         <td><code>"pin_right"</code></td>
+        <td></td>
     </tr>
 </table>
 
