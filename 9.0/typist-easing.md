@@ -20,7 +20,7 @@
 
 The `alphaDuration` argument controls how glyphs fade in using alpha blending. A value of `0` will cause the glyph to "pop" into view with no fading, a value of `1` will cause the glyph to fade into view smoothly such that it reaches 100% alpha at the very end of the typewriter animation for the glyph.
 
-**N.B.** Alpha fading is always linear and is not affected by the easing method chosen.
+?> Alpha fading is always linear and is not affected by the easing method chosen.
 
 Scribble offers the following easing functions for typewriter behaviour. These are implemented using methods found in the widely used [easings.net](https://easings.net/) library.
 
