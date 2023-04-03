@@ -4,7 +4,7 @@
 
 ## `scribble_kerning_pair_set()`
 
-**Global Function:** `scribble_kerning_pair_set(fontName, firstChar, secondChar, value, [relative])`
+**Global Function:** `scribble_kerning_pair_set(fontName, firstChar, secondChar, value, [relative=false])`
 
 **Returns:** Number, the new kerning offset
 
