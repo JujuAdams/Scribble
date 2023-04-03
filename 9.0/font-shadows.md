@@ -28,10 +28,10 @@
 
 **Returns**: The text element
 
-|Name    |Datatype|Purpose                                                                    |
-|--------|--------|---------------------------------------------------------------------------|
-|`colour`|integer |The colour of the shadow, as a standard GameMaker 24-bit BGR format        |
-|`alpha` |number  |Opacity of the shadow, `0.0` being transparent and `1.0` being fully opaque|
+|Name    |Datatype         |Purpose                                                                                                                                                                                                                                   |
+|--------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`colour`|integer or string|Basic text colour as either:<br>- standard GameMaker 24-bit BGR format<br>- name of a GameMaker colour constant<br>- name of a colour added to `__scribble_config_colours()`<br>- name of a colour added by calling `scribble_color_set()`|
+|`alpha` |number           |Opacity of the shadow, `0.0` being transparent and `1.0` being fully opaque                                                                                                                                                               |
 
 Sets the colour, alpha, and offset for a procedural SDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all.
 
