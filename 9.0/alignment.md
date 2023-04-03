@@ -19,26 +19,18 @@ Sets the starting horizontal and vertical alignment for your text. You can chang
 
 The follow values are accepted as the `halign` argument:
 
-<table>
-    <tr>
-        <td><code>fa_left</code></td>
-        <td><code>fa_center</code></td>
-        <td><code>fa_right</code></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td><code>"fa_left"</code></td>
-        <td><code>"fa_center"</code></td>
-        <td><code>"fa_right"</code></td>
-        <td><code>"fa_justify"</code></td>
-    </tr>
-    <tr>
-        <td><code>"pin_left"</code></td>
-        <td><code>"pin_center"</code></td>
-        <td><code>"pin_right"</code></td>
-        <td></td>
-    </tr>
-</table>
+|Value         |Behaviour                                                                      |
+|--------------|-------------------------------------------------------------------------------|
+|`fa_left`     |                                                                               |
+|`fa_center`   |                                                                               |
+|`fa_right`    |                                                                               |
+|`"fa_left"`   |                                                                               |
+|`"fa_center"` |                                                                               |
+|`"fa_right"`  |                                                                               |
+|`"fa_justify"`|                                                                               |
+|`"pin_left"`  |                                                                               |
+|`"pin_center"`|                                                                               |
+|`"pin_right"` |                                                                               |
 
 &nbsp;
 
