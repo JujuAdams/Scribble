@@ -42,7 +42,7 @@
 -   [Sprites & Surfaces](sprites-and-surfaces)
 -   [Manual Text Reveal](manual-text-reveal)
 -   [Position, Scaling & Transforms](scaling-and-transforms)
--   [Borders](font-borders)
+-   [Outlines](font-outlines)
 -   [Shadows](font-shadows)
 -   [Bold & Italic](bold-and-italic)
 -   [Regions](regions)

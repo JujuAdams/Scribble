@@ -26,7 +26,7 @@ Scribble expands upon GameMaker's barebones SDF rendering by adding procedural b
 
 Sets the colour, alpha, and offset for a procedural SDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all.
 
-?> This method will only affect SDF fonts. If you'd like to add shadows to other types of fonts, you may want to consider using a border baking function.
+?> This method will only affect SDF fonts. If you'd like to add shadows to other types of fonts, you may want to consider using a outline baking function.
 
 &nbsp;
 

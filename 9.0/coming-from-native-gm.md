@@ -212,7 +212,7 @@ scribble("[fa_bottom]Hello world!").draw(10, room_height-10);
 
 &nbsp;
 
-## Text Borders ###
+## Textbox Borders ###
 
 <!-- tabs:start -->
 

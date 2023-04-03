@@ -16,7 +16,7 @@
 |`smooth`        |boolean |Whether or not to interpolate the outline. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
 |`[surfaceSize]` |integer |Size of the surface to use. Defaults to 2048x2048                                                              |
 
-`scribble_bake_outline_4dir()` creates a new font using a source font. The new font will include a one-pixel thick border in the 4 cardinal directions around each input glyph.
+`scribble_bake_outline_4dir()` creates a new font using a source font. The new font will include a one-pixel thick outline in the 4 cardinal directions around each input glyph.
 
 &nbsp;
 
@@ -34,7 +34,7 @@
 |`smooth`        |boolean |Whether or not to interpolate the outline. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
 |`[surfaceSize]` |integer |Size of the surface to use. Defaults to 2048x2048                                                              |
 
-`scribble_bake_outline_8dir()` creates a new font using a source font. The new font will include a 1-pixel thick border in the 8 compass directions around each input glyph. For a thicker variation on this shader, try `scribble_font_bake_outline_8dir_2px()`.
+`scribble_bake_outline_8dir()` creates a new font using a source font. The new font will include a 1-pixel thick outline in the 8 compass directions around each input glyph. For a thicker variation on this shader, try `scribble_font_bake_outline_8dir_2px()`.
 
 &nbsp;
 
@@ -52,7 +52,7 @@
 |`smooth`        |boolean |Whether or not to interpolate the outline. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
 |`[surfaceSize]` |integer |Size of the surface to use. Defaults to 2048x2048                                                              |
 
-`scribble_bake_outline_8dir()` creates a new font using a source font. The new font will include a 2-pixel thick border in the 8 compass directions around each input glyph. This is useful for more cartoony text, especially high resolution anti-aliased text.
+`scribble_bake_outline_8dir()` creates a new font using a source font. The new font will include a 2-pixel thick outline in the 8 compass directions around each input glyph. This is useful for more cartoony text, especially high resolution anti-aliased text.
 
 &nbsp;
 
