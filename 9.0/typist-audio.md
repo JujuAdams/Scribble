@@ -19,10 +19,10 @@ Insert sound playback event. Sounds will only be played when using Scribble's ty
 |Name        |Datatype                                                                    |Purpose                                                                                                             |
 |------------|----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
 |`soundArray`|array of [sounds](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|Array of audio assets that can be used for playback                                                                 |
-|`overlap`   |real                                                                        |Amount of overlap between sound effect playback, in milliseconds                                                    |
-|`pitchMin`  |real                                                                        |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc. |
-|`pitchMax`  |real                                                                        |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.|
-|`gain`      |real                                                                        |Gain to play the sound at, from `0.0` (silence) to `1.0` (full volume). Defaults to `1`                             |
+|`overlap`   |number                                                                      |Amount of overlap between sound effect playback, in milliseconds                                                    |
+|`pitchMin`  |number                                                                      |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc. |
+|`pitchMax`  |number                                                                      |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.|
+|`gain`      |number                                                                      |Gain to play the sound at, from `0.0` (silence) to `1.0` (full volume). Defaults to `1`                             |
 
 It's quite common in games with typewriter-style text animations to have a "mumble" or "gibberish" sound effect that plays whilst text is being revealed. This function allows you to define an array of sound effects that will be randomly played as text is revealed. The pitch of these sounds can be randomly modulated as well by selecting `pitchMin` and `pitchMax` values.
 
@@ -39,10 +39,10 @@ Setting the `overlap` value to `0` will ensure that sound effects never overlap 
 |Name               |Datatype                                                                    |Purpose                                                                                                                                  |
 |-------------------|----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 |`soundArray`       |array of [sounds](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|Array of audio assets that can be used for playback                                                                                      |
-|`pitchMin`         |real                                                                        |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc.                      |
-|`pitchMax`         |real                                                                        |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.                     |
-|`[exceptionString]`|real                                                                        |String of characters for whom a sound should **not** be played. If no string is specified, all characters will play a sound when revealed|
-|`[gain]`           |real                                                                        |Gain to play the sound at, from `0.0` (silence) to `1.0` (full volume). Defaults to `1`                                                  |
+|`pitchMin`         |number                                                                      |Minimum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `0.5` halves the pitch etc.                      |
+|`pitchMax`         |number                                                                      |Maximum pitch to play a sound at. A value of `1.0` gives no change in pitch, a value of `2.0` doubles the pitch etc.                     |
+|`[exceptionString]`|number                                                                      |String of characters for whom a sound should **not** be played. If no string is specified, all characters will play a sound when revealed|
+|`[gain]`           |number                                                                      |Gain to play the sound at, from `0.0` (silence) to `1.0` (full volume). Defaults to `1`                                                  |
 
 It's quite common in games with typewriter-style text animations to have a sound effect that plays as text shows up. This function allows you to define an array of sound effects that will be randomly played as **each character** is revealed. The pitch of these sounds can be randomly modulated as well by selecting `pitchMin` and `pitchMax` values.
 

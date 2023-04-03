@@ -34,7 +34,7 @@ The following properties are available for modification:
 
 **Global Function:** `scribble_glyph_get(fontName, character, property)`
 
-**Returns:** Real-value for the specified property
+**Returns:** Number, value for the specified property
 
 |Name       |Datatype|Purpose                      |
 |-----------|--------|-----------------------------|

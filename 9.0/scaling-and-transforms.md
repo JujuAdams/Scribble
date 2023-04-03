@@ -59,7 +59,7 @@ Set/unset italic emulation. The size of the x offset is controlled by [`SCRIBBLE
 
 |Name    |Datatype|Purpose                                                                         |
 |--------|--------|--------------------------------------------------------------------------------|
-|`factor`|real    |Scaling factor to apply to the text element. `1.0` represents no change in scale|
+|`factor`|number  |Scaling factor to apply to the text element. `1.0` represents no change in scale|
 
 Adds a scaling factor to a text element. This is applied **before** text layout and multiplicatively with `[scale]` tags; as a result, setting a scale with the method will affect text wrapping (if enabled).
 
@@ -75,9 +75,9 @@ Adds a scaling factor to a text element. This is applied **before** text layout 
 
 |Name    |Datatype|Purpose                           |
 |--------|--------|----------------------------------|
-|`xscale`|real    |x scale of the text element       |
-|`yscale`|real    |y scale of the text element       |
-|`angle` |real    |rotation angle of the text element|
+|`xscale`|number  |x scale of the text element       |
+|`yscale`|number  |y scale of the text element       |
+|`angle` |number  |rotation angle of the text element|
 
 Rotates and scales a text element relative to the origin (set by [`.origin()`](scribble-methods?id=originx-y)). This transformation is applied **after** text layout and should be used to animate e.g. pop-in animations. If you'd like to apply a scaling factor before text layout, please use `.scale()`.
 
@@ -93,8 +93,8 @@ Rotates and scales a text element relative to the origin (set by [`.origin()`](s
 
 |Name|Datatype|Purpose                                   |
 |----|--------|------------------------------------------|
-|`x` |real    |x-coordinate of the origin, in model space|
-|`y` |real    |y-coordinate of the origin, in model space|
+|`x` |number  |x-coordinate of the origin, in model space|
+|`y` |number  |y-coordinate of the origin, in model space|
 
 Sets the origin relative to the top-left corner of the text element. You can think of this similarly to a standard sprite's origin as set in the GameMaker IDE. Using this function with [`.get_width()`](scribble-methods?id=get_width) and [`.get_height()`](scribble-methods?id=get_height) will allow you to align the entire textbox as you see fit. Please note that this function may interact in unexpected ways with in-line alignment commands so some trial and error is necessary to get the effect you're looking for.
 
@@ -125,8 +125,8 @@ Sets the origin relative to the top-left corner of the text element. You can thi
 
 |Name   |Datatype|Purpose                                                                                                 |
 |-------|--------|--------------------------------------------------------------------------------------------------------|
-|`skewX`|real    |Skew factor contributed by x-coordinate of glyphs in the text element. A value is `0` confers no skewing|
-|`skewY`|real    |Skew factor contributed by y-coordinate of glyphs in the text element. A value of `0` confers no skewing|
+|`skewX`|number  |Skew factor contributed by x-coordinate of glyphs in the text element. A value is `0` confers no skewing|
+|`skewY`|number  |Skew factor contributed by y-coordinate of glyphs in the text element. A value of `0` confers no skewing|
 
 Skews glyph positions relative to the origin (set by [`.origin()`](scribble-methods?id=originx-y)).
 
@@ -155,9 +155,9 @@ Sets limits on the height of each line for the text element. This is useful when
 
 **Returns**: The text element
 
-|Name     |Datatype     |Purpose                                                                                             |
-|---------|-------------|----------------------------------------------------------------------------------------------------|
-|`spacing`|number/string|The spacing from one line of text to the next. Can be a number, or a percentage string e.g. `"100%"`|
+|Name     |Datatype        |Purpose                                                                                             |
+|---------|----------------|----------------------------------------------------------------------------------------------------|
+|`spacing`|string or number|The spacing from one line of text to the next. Can be a number, or a percentage string e.g. `"100%"`|
 
 If a number is passed to this method then a fixed line spacing is used. If a string is passed to this method then it must be a percentage string indication the fraction of the line height to use for spacing (`"100%"` being normal spacing, `"200%"` being double spacing). The default value is `"100%"`
 

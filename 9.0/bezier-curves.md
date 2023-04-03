@@ -10,14 +10,14 @@
 
 |Name|Datatype|Purpose                             |
 |----|--------|------------------------------------|
-|`x1`|real    |Parameter for the cubic Bézier curve|
-|`y1`|real    |"                                   |
-|`x2`|real    |"                                   |
-|`y2`|real    |"                                   |
-|`x3`|real    |"                                   |
-|`y3`|real    |"                                   |
-|`x4`|real    |"                                   |
-|`y4`|real    |"                                   |
+|`x1`|number  |Parameter for the cubic Bézier curve|
+|`y1`|number  |As above                            |
+|`x2`|number  |As above                            |
+|`y2`|number  |As above                            |
+|`x3`|number  |As above                            |
+|`y3`|number  |As above                            |
+|`x4`|number  |As above                            |
+|`y4`|number  |As above                            |
 
 This function defines a [cubic Bézier curve](https://en.wikipedia.org/wiki/B%C3%A9zier_curve) to shape text to. The four x/y coordinate pairs provide a smooth curve that Scribble uses as a guide to position and rotate glyphs.
 

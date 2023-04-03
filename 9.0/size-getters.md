@@ -6,11 +6,11 @@
 
 **Global Function:** `.get_left(x)`
 
-**Returns:** Real, the left position of the text element's axis-aligned bounding box in the room
+**Returns:** Number, the left position of the text element's axis-aligned bounding box in the room
 
 |Name|Datatype|Purpose                                   |
 |----|--------|------------------------------------------|
-|`x` |real    |x position of the text element in the room|
+|`x` |number  |x position of the text element in the room|
 
 This function takes into account the transformation and padding applied to the text element.
 
@@ -22,11 +22,11 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 **Global Function:** `.get_top(y)`
 
-**Returns:** Real, the top position of the text element's axis-aligned bounding box in the room
+**Returns:** Number, the top position of the text element's axis-aligned bounding box in the room
 
 |Name|Datatype|Purpose                                   |
 |----|--------|------------------------------------------|
-|`y` |real    |y position of the text element in the room|
+|`y` |number  |y position of the text element in the room|
 
 This function takes into account the transformation and padding applied to the text element.
 
@@ -38,11 +38,11 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 **Global Function:** `.get_right(x)`
 
-**Returns:** Real, the right position of the text element's axis-aligned bounding box in the room
+**Returns:** Number, the right position of the text element's axis-aligned bounding box in the room
 
 |Name|Datatype|Purpose                                   |
 |----|--------|------------------------------------------|
-|`x` |real    |x position of the text element in the room|
+|`x` |number  |x position of the text element in the room|
 
 This function takes into account the transformation and padding applied to the text element.
 
@@ -54,11 +54,11 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 **Global Function:** `.get_bottom(y)`
 
-**Returns:** Real, the bottom position of the text element's axis-aligned bounding box in the room
+**Returns:** Number, the bottom position of the text element's axis-aligned bounding box in the room
 
 |Name|Datatype|Purpose                                   |
 |----|--------|------------------------------------------|
-|`y` |real    |y position of the text element in the room|
+|`y` |number  |y position of the text element in the room|
 
 This function takes into account the transformation and padding applied to the text element.
 
@@ -70,7 +70,7 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 **Global Function:** `.get_width()`
 
-**Returns:** Real, width of the text element in pixels (ignoring rotation and scaling)
+**Returns:** Number, width of the text element in pixels (ignoring rotation and scaling)
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
@@ -86,7 +86,7 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 **Global Function:** `.get_height()`
 
-**Returns:** Real, height of the text element in pixels (ignoring rotation and scaling)
+**Returns:** Number, height of the text element in pixels (ignoring rotation and scaling)
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
@@ -106,8 +106,8 @@ If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current 
 
 |Name|Datatype|Purpose               |
 |----|--------|----------------------|
-|`x` |real    |x position in the room|
-|`y` |real    |y position in the room|
+|`x` |number  |x position in the room|
+|`y` |number  |y position in the room|
 
 This functions returns the **transformed** width and height of the text element. This **will** take into account rotation or scaling applied by the `.transform()` method as well as padding. If `SCRIBBLE_BOUNDING_BOX_USES_PAGE` is set to `true`, only text on the current page will be included in the bounding box.
 

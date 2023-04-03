@@ -20,10 +20,10 @@ Don't worry about clearing up after yourself when you draw text - Scribble autom
 
 **Returns:** A text element that contains the string (a struct, an instance of `__scribble_class_element`)
 
-|Name        |Datatype      |Purpose               |
-|------------|--------------|----------------------|
-|`string`    |string        |String to draw        |
-|`[uniqueID]`|string or real|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_UNIQUE_ID`](configuration)|
+|Name        |Datatype        |Purpose               |
+|------------|----------------|----------------------|
+|`string`    |string          |String to draw        |
+|`[uniqueID]`|string or number|ID to reference a specific unique occurrence of a text element. Defaults to [`SCRIBBLE_DEFAULT_UNIQUE_ID`](configuration)|
 
 Scribble allows for many kinds of inline formatting tags. Please read the [Text Formatting](text-formatting) article for more information.
 
@@ -41,8 +41,8 @@ Text element methods are broken down into several categories. There's a lot here
 
 |Name      |Datatype|Purpose                          |
 |----------|--------|---------------------------------|
-|`x`       |real    |x position in the room to draw at|
-|`y`       |real    |y position in the room to draw at|
+|`x`       |number  |x position in the room to draw at|
+|`y`       |number  |y position in the room to draw at|
 |`[typist]`|typist  |Optional. Typist being used to render the text element. See [`scribble_typist()`](typist-methods) for more information.|
 
 Draws your text! This function will automatically build the required text model if required. For very large amounts of text this may cause a slight hiccup in your framerate - to avoid this, split your text into smaller pieces or manually call the [`.build()`](scribble-methods?id=buildfreeze) method during a loading screen etc.

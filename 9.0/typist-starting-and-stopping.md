@@ -10,8 +10,8 @@
 
 |Name        |Datatype|Purpose                                                                                                                        |
 |------------|--------|-------------------------------------------------------------------------------------------------------------------------------|
-|`speed`     |real    |Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above|
-|`smoothness`|real    |How much text is visible during the fade. Higher numbers will allow more text to be visible as it fades in                     |
+|`speed`     |number  |Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above|
+|`smoothness`|number  |How much text is visible during the fade. Higher numbers will allow more text to be visible as it fades in                     |
 
 The `smoothness` argument offers some customisation for how text fades in. A high value will cause text to be smoothly faded in whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades in.
 
@@ -27,8 +27,8 @@ The `smoothness` argument offers some customisation for how text fades in. A hig
 
 |Name         |Datatype|Purpose                                                                                                                        |
 |-------------|--------|-------------------------------------------------------------------------------------------------------------------------------|
-|`speed`      |real    |Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above|
-|`smoothness` |real    |How much text is visible during the fade. Higher numbers will allow more text to be visible as it fades out                    |
+|`speed`      |number  |Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above|
+|`smoothness` |number  |How much text is visible during the fade. Higher numbers will allow more text to be visible as it fades out                    |
 |`[backwards]`|boolean |Whether to animate the typewriter backwards. Defaults to `false`                                                               |
 
 The `smoothness` argument offers some customisation for how text fades out. A high value will cause text to be smoothly faded out whereas a smoothness of `0` will cause text to instantly pop onto the screen. For advanced users, custom shader code can be easily combined with the `smoothness` value to animate text in unique ways as it fades out.
@@ -55,7 +55,7 @@ Resets the typist entirely, resetting progress and deactivating any animation.
 
 **Typist Method:** `.get_position()`
 
-**Returns**: Real, the position of the typist's "head", corresponding to the index of the most recently revealed glyph
+**Returns**: Number, the position of the typist's "head", corresponding to the index of the most recently revealed glyph
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
@@ -69,7 +69,7 @@ This method will return a decimal value if the speed is a decimal value too.
 
 **Typist Method:** `.get_state()`
 
-**Returns:** Real value from 0 to 2 (inclusive) that represents what proportion of text on the current page is visible
+**Returns:** Number, value from 0 to 2 (inclusive) that represents what proportion of text on the current page is visible
 
 |Name|Datatype|Purpose|
 |----|--------|-------|
