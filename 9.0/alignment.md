@@ -38,19 +38,6 @@ The follow values are accepted as the `halign` argument:
     </tr>
 </table>
 
-|              |
-|--------------|
-|`fa_left`     |
-|`fa_center`   |
-|`fa_right`    |
-|`"fa_left"`   |
-|`"fa_center"` |
-|`"fa_right"`  |
-|`"fa_justify"`|
-|`"pin_left"`  |
-|`"pin_center"`|
-|`"pin_right"` |
-
 &nbsp;
 
 ## `[fa_left]`
