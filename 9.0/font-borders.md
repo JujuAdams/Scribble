@@ -1,4 +1,4 @@
-# Font Borders & Baked Effects
+# Font Borders
 
 &nbsp;
 
@@ -56,45 +56,16 @@
 
 &nbsp;
 
-## `scribble_font_bake_shadow()`
+## `.border()`
 
-**Global Function:** `scribble_font_bake_shadow(sourceFontName, newFontName, dX, dY, shadowColor, shadowAlpha, separation, smooth)`
+**Text Element Method:** `.sdf_border(colour)`
 
-**Returns:** N/A (`undefined`)
+**Returns**: The text element
 
-|Name            |Datatype|Purpose                                                                                                       |
-|----------------|--------|--------------------------------------------------------------------------------------------------------------|
-|`sourceFontName`|string  |Name of the source font, as a string                                                                          |
-|`newFontName`   |string  |Name of the new font to create, as a string                                                                   |
-|`dX`            |number  |x-axis displacement for the shadow                                                                            |
-|`dY`            |number  |y-axis displacement for the shadow                                                                            |
-|`shadowColor`   |integer |Colour of the shadow                                                                                          |
-|`shadowAlpha`   |number  |Alpha of the shadow  from `0.0` to `1.0`                                                                      |
-|`separation`    |integer |Change in every glyph's [`SCRIBBLE_GLYPH.SEPARATION`](scribble_set_glyph_property) value                      |
-|`smooth`        |boolean |Whether or not to interpolate the shadow. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
+|Name       |Datatype         |Purpose                                                                                                                                                                                                                                   |
+|-----------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`colour`   |integer or string|Basic text colour as either:<br>- standard GameMaker 24-bit BGR format<br>- name of a GameMaker colour constant<br>- name of a colour added to `__scribble_config_colours()`<br>- name of a colour added by calling `scribble_color_set()`|
 
-`scribble_font_bake_shadow()` creates a new font using a source font. The new font will include a drop shadow with the given displacement, and using the given colour and alpha.
+This function adds a coloured border around your text. Setting the thickness to `0` will prevent the border from being drawn at all. The coloured border will not be colourised or tinted due to the use of other functionality.
 
-&nbsp;
-
-## `scribble_font_bake_shader()`
-
-**Global Function:** `scribble_font_bake_shader(sourceFontName, newFontName, shader, leftPad, topPad, rightPad, bottomPad, separationDelta, smooth, [surfaceSize])`
-
-**Returns:** N/A (`undefined`)
-
-|Name             |Datatype|Purpose                                                                            |
-|-----------------|--------|-----------------------------------------------------------------------------------|
-|`sourceFontName` |string  |Name, as a string, of the font to use as a basis for the effect                    |
-|`newFontName`    |string  |Name of the new font to create, as a string                                        |
-|`shader`         |[shader](https://manual.yoyogames.com/The_Asset_Editors/Shaders.htm)   |Shader to use                                                                      |
-|`emptyBorderSize`|integer |Border around the outside of every output glyph, in pixels. A value of 2 is typical|
-|`leftPad`        |integer |Left padding around the outside of every glyph. Positive values give more space. e.g. For a shader that adds a border of 2px around the entire glyph, **all** padding arguments should be set to `2`|
-|`topPad`         |integer |Top padding                                                                        |
-|`rightPad`       |integer |Right padding                                                                      |
-|`bottomPad`      |integer |Bottom padding                                                                     |
-|`separationDelta`|integer |Change in every glyph's [`SCRIBBLE_GLYPH.SEPARATION`](scribble_set_glyph_property) value. For a shader that adds a border of 2px around the entire glyph, this value should be 4px|
-|`smooth`         |boolean |Whether or not to interpolate the output texture. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
-|`[surfaceSize]`  |integer |Size of the surface to use. Defaults to 2048x2048                                  |
-
-`scribble_bake_shader()` creates a new font using a source font. The source font is rendered to a surface, then passed through the given shader using whatever uniforms that have been set for that shader.
+?> This method will only affect SDF fonts. If you'd like to add outlines to standard fonts or spritefonts, you may want to consider using a shadow baking function.
