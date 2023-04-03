@@ -4,7 +4,7 @@
 
 ## `scribble_font_bake_shadow()`
 
-**Global Function:** `scribble_font_bake_shadow(sourceFontName, newFontName, dX, dY, shadowColor, shadowAlpha, separation, smooth)`
+**Global Function:** `scribble_font_bake_shadow(sourceFontName, newFontName, dX, dY, smooth, separation, [surfaceSize=2048])`
 
 **Returns:** N/A (`undefined`)
 
@@ -14,10 +14,9 @@
 |`newFontName`   |string  |Name of the new font to create, as a string                                                                   |
 |`dX`            |number  |x-axis displacement for the shadow                                                                            |
 |`dY`            |number  |y-axis displacement for the shadow                                                                            |
-|`shadowColor`   |integer |Colour of the shadow                                                                                          |
-|`shadowAlpha`   |number  |Alpha of the shadow  from `0.0` to `1.0`                                                                      |
-|`separation`    |integer |Change in every glyph's [`SCRIBBLE_GLYPH.SEPARATION`](scribble_set_glyph_property) value                      |
 |`smooth`        |boolean |Whether or not to interpolate the shadow. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts|
+|`separation`    |integer |Change in every glyph's [`SCRIBBLE_GLYPH.SEPARATION`](scribble_set_glyph_property) value                      |
+|`[surfaceSize]` |integer |Size of the surface to use. Defaults to 2048x2048                                                              |
 
 `scribble_font_bake_shadow()` creates a new font using a source font. The new font will include a drop shadow with the given displacement, and using the given colour and alpha.
 
@@ -25,14 +24,14 @@
 
 ## `.shadow()`
 
-**Text Element Method:** `.sdf_shadow(colour, alpha)`
+**Text Element Method:** `.shadow(colour, alpha)`
 
 **Returns**: The text element
 
-|Name      |Datatype|Purpose                                                                                                  |
-|----------|--------|---------------------------------------------------------------------------------------------------------|
-|`colour`  |integer |The colour of the shadow, as a standard GameMaker 24-bit BGR format                                      |
-|`alpha`   |number  |Opacity of the shadow, `0.0` being transparent and `1.0` being fully opaque                              |
+|Name    |Datatype|Purpose                                                                    |
+|--------|--------|---------------------------------------------------------------------------|
+|`colour`|integer |The colour of the shadow, as a standard GameMaker 24-bit BGR format        |
+|`alpha` |number  |Opacity of the shadow, `0.0` being transparent and `1.0` being fully opaque|
 
 Sets the colour, alpha, and offset for a procedural SDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all.
 
