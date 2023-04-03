@@ -20,13 +20,13 @@ draw_text(10, 10, "Hello world");
 draw_set_font(-1);
 ```
 
-#### **`.font()`**
+#### **`.font()` Method**
 
 ```js
 scribble("Hello world").font("fnt_large").draw(10, 10);
 ```
 
-#### **`Command Tag`**
+#### **Command Tag**
 
 ```js
 scribble("[fnt_large]Hello world").draw(10, 10);
