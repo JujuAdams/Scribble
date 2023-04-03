@@ -8,7 +8,63 @@ For very simple use, you can use the stripped-back [`draw_text_scribble()` and `
 
 &nbsp;
 
-## draw_set_font() / draw_set_halign() / draw_set_color() ###
+## draw_set_font() ###
+
+<!-- tabs:start -->
+
+#### **GameMaker Native**
+
+```js
+draw_set_font(fnt_large);
+draw_text(10, 10, "Hello world!");
+draw_set_font(-1);
+```
+
+#### **`draw_text_scribble()`**
+
+```js
+draw_text_scribble(10, 10, "[fnt_large]Hello world!");
+```
+
+#### **`scribble()`**
+
+```js
+scribble("[fnt_large]Hello world!").draw(10, 10);
+```
+
+<!-- tabs:end -->
+
+&nbsp;
+
+## draw_set_halign() ###
+
+<!-- tabs:start -->
+
+#### **GameMaker Native**
+
+```js
+draw_set_halign(fa_center);
+draw_text(10, 10, "Hello world!");
+draw_set_halign(fa_left);
+```
+
+#### **`draw_text_scribble()`**
+
+```js
+draw_text_scribble(10, 10, "[fa_center]Hello world!");
+```
+
+#### **`scribble()`**
+
+```js
+scribble("[fa_center]Hello world!").draw(10, 10);
+```
+
+<!-- tabs:end -->
+
+&nbsp;
+
+## draw_set_color() ###
 
 <!-- tabs:start -->
 
@@ -16,24 +72,52 @@ For very simple use, you can use the stripped-back [`draw_text_scribble()` and `
 
 ```js
 draw_set_color(c_red);
-draw_set_halign(fa_center);
-draw_set_font(fnt_large);
 draw_text(10, 10, "Hello world!");
 draw_set_color(c_white);
-draw_set_halign(fa_left);
-draw_set_font(-1);
 ```
 
 #### **`draw_text_scribble()`**
 
 ```js
-draw_text_scribble(10, 10, "[fnt_large][c_red][fa_left]Hello world!");
+draw_text_scribble(10, 10, "[c_red]Hello world!");
 ```
 
 #### **`scribble()`**
 
 ```js
-scribble("[fnt_large][c_red][fa_left]Hello world!").draw(10, 10);
+scribble("[c_red]Hello world!").draw(10, 10);
+```
+
+<!-- tabs:end -->
+
+&nbsp;
+
+## draw_set_font() + draw_set_halign() + draw_set_color() ###
+
+<!-- tabs:start -->
+
+#### **GameMaker Native**
+
+```js
+draw_set_font(fnt_large);
+draw_set_halign(fa_center);
+draw_set_color(c_red);
+draw_text(10, 10, "Hello world!");
+draw_set_font(-1);
+draw_set_halign(fa_left);
+draw_set_color(c_white);
+```
+
+#### **`draw_text_scribble()`**
+
+```js
+draw_text_scribble(10, 10, "[fnt_large][fa_center][c_red]Hello world!");
+```
+
+#### **`scribble()`**
+
+```js
+scribble("[fnt_large][fa_center][c_red]Hello world!").draw(10, 10);
 ```
 
 <!-- tabs:end -->
@@ -135,12 +219,23 @@ scribble("[fa_bottom]Hello world!").draw(10, room_height-10);
 #### **GameMaker Native**
 
 ```js
-var _w = string_get_width("Hello world!");
-var _h = string_get_height("Hello world!");
+var _w = string_width("Hello world!");
+var _h = string_height("Hello world!");
 draw_set_color(c_white);
 draw_rectangle(5, 5, 15 + _w, 15 + _h, false); //5px border
 draw_set_color(c_black);
 draw_text(10, 10, "Hello world!");
+```
+
+#### **`draw_text_scribble()`**
+
+```js
+var _w = string_width_scribble("Hello world!");
+var _h = string_height_scribble("Hello world!");
+draw_set_color(c_white);
+draw_rectangle(5, 5, 15 + _w, 15 + _h, false); //5px border
+draw_set_color(c_black);
+draw_text_scribble(10, 10, "Hello world!");
 ```
 
 #### **`scribble()`**
