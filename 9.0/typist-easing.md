@@ -24,11 +24,17 @@ The `alphaDuration` argument controls how glyphs fade in using alpha blending. A
 
 Scribble offers the following easing functions for typewriter behaviour. These are implemented using methods found in the widely used [easings.net](https://easings.net/) library.
 
-|`SCRIBBLE_EASE` members|                       |
-|-----------------------|-----------------------|
-|`.NONE`                |`.LINEAR`              |
-|`.QUAD`                |`.CUBIC`               |
-|`.QUART`               |`.QUINT`               |
-|`.SINE`                |`.EXPO`                |
-|`.CIRC`                |`.BACK`                |
-|`.ELASTIC`             |`.BOUNCE`              |
+|`SCRIBBLE_EASE` members|
+|-----------------------|
+|`.NONE`                |
+|`.QUAD`                |
+|`.QUART`               |
+|`.SINE`                |
+|`.CIRC`                |
+|`.ELASTIC`             |
+|`.LINEAR`              |
+|`.CUBIC`               |
+|`.QUINT`               |
+|`.EXPO`                |
+|`.BACK`                |
+|`.BOUNCE`              |
