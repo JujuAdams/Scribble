@@ -10,7 +10,9 @@ Scribble expands upon GameMaker's barebones SDF rendering by adding procedural b
 
 &nbsp;
 
-## `.sdf_shadow(colour, alpha, xoffset, yoffset, [softness])`
+## `.sdf_shadow()`
+
+**Text Element Method:** `.sdf_shadow(colour, alpha, xoffset, yoffset, [softness=0.1])`
 
 **Returns**: The text element
 
@@ -45,7 +47,9 @@ Sets the colour, alpha, and offset for a procedural SDF shadow. Setting the alph
 
 &nbsp;
 
-## `.sdf_feather(thickness)`
+## `.sdf_feather()`
+
+**Text Element Method:** `.sdf_feather(thickness)`
 
 **Returns**: The text element
 
@@ -59,7 +63,9 @@ Changes the softness/hardness of the SDF font outline. You may find you have to 
 
 &nbsp;
 
-## `scribble_sdf_thickness_offset(offset)`
+## `scribble_sdf_thickness_offset()`
+
+**Global Function:** `scribble_sdf_thickness_offset(offset)`
 
 **Returns:** N/A (`undefined`)
 
