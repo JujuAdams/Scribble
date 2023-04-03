@@ -24,7 +24,7 @@ draw_text(10, 10, "всем привет");
 draw_set_font(-1);
 ```
 
-#### **`.font()`**
+#### **`.font()` method**
 
 ```js
 ///Game Start Event
@@ -34,7 +34,7 @@ scribble_font_add("fnt_cyrillic", "cyrillic.ttf", 24, [1024, 1279], false);
 scribble("всем привет").font("fnt_cyrillic").draw(10, 10);
 ```
 
-#### **`Command Tag`**
+#### **Command tag**
 
 ```js
 ///Game Start Event
