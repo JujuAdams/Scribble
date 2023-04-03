@@ -8,7 +8,7 @@ Standard fonts can also be used with [superfonts](font-superfont) and [baked eff
 
 ?> When specifying a font with Scribble's functions, you should **always** refer to a font by using the **name of the font** as a **string**.
 
-Scribble allows you to change font in two ways: via `.font()` and via a command tag. Here's some examples of how to use a spritefont with those features:
+Scribble allows you to change font in two ways: via `.font()`, and via a command tag. Here's some examples of how to use a spritefont with those features:
 
 <!-- tabs:start -->
 
