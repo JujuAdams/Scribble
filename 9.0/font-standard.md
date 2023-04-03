@@ -2,7 +2,7 @@
 
 &nbsp;
 
-Scribble supports GameMaker's native fonts out of the box with no additional configuration required. Scribble aims to render text as close as possible to what GameMaker natively renders with `draw_text()`. All the same rules and principles apply, including glyph ranges and other font rasterization settings.
+Scribble supports GameMaker's native fonts out of the box with no additional configuration required. Scribble aims to render text as close as possible to what GameMaker natively renders with `draw_text()`. All the same rules and principles apply, including glyph ranges and other font rasterization settings as set through the font editor in the GameMaker IDE.
 
 Standard fonts can also be used with [superfonts](font-superfont) and [baked effects](font-baking). Please see the relevant pages for information on these features.
 
