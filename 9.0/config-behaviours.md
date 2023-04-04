@@ -120,7 +120,7 @@ Whether to automatically scale surfaces to fit into the line of text. This is ba
 
 # Advanced
 
-## `#macro SCRIBBLE_TICK_SIZE`
+## `SCRIBBLE_TICK_SIZE`
 
 *Typical value:* `(delta_time / 16666)`
 
@@ -128,7 +128,7 @@ Animation tick size per step. The out-of-the-box value `(delta_time / 16666)` pr
 
 &nbsp;
 
-## `#macro SCRIBBLE_VERBOSE`
+## `SCRIBBLE_VERBOSE`
 
 *Typical value:* `false`
 
@@ -136,7 +136,7 @@ Enables verbose console output to aid with debugging.
 
 &nbsp;
 
-## `#macro SCRIBBLE_BEZIER_ACCURACY`
+## `SCRIBBLE_BEZIER_ACCURACY`
 
 *Typical value:* `20`
 
@@ -144,7 +144,7 @@ Controls how accurately text fits Beziér curves. Higher is more accurate but sl
 
 &nbsp;
 
-## `#macro SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE`
+## `SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE`
 
 *Typical value:* `false`
 
@@ -152,7 +152,7 @@ Whether to trim off empty left-hand space when moving a word to a new line. This
 
 &nbsp;
 
-## `#macro SCRIBBLE_NEWLINES_PAD_LEFT_SPACE`
+## `SCRIBBLE_NEWLINES_PAD_LEFT_SPACE`
 
 *Typical value:* `true`
 
@@ -160,7 +160,7 @@ Whether to pad extra space left-hand space when moving a word to a new line.
 
 &nbsp;
 
-## `#macro SCRIBBLE_FIT_TO_BOX_ITERATIONS`
+## `SCRIBBLE_FIT_TO_BOX_ITERATIONS`
 
 *Typical value:* `7`
 
@@ -168,7 +168,7 @@ Number of iterations to fit text when using the .layout_fit() method. Higher val
 
 &nbsp;
 
-## `#macro SCRIBBLE_SAFELY_WRAP_TIME`
+## `SCRIBBLE_SAFELY_WRAP_TIME`
 
 *Typical value:* `true`
 
@@ -176,7 +176,7 @@ Whether to wrap the internal time value.
 
 &nbsp;
 
-## `#macro SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK`
+## `SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK`
 
 *Typical value:* `true`
 
@@ -184,7 +184,7 @@ Disables `[pause]` events immediately before pagebreaks, though only if there ar
 
 &nbsp;
 
-## `#macro SCRIBBLE_INCREMENTAL_FREEZE`
+## `SCRIBBLE_INCREMENTAL_FREEZE`
 
 *Typical value:* `true`
 
@@ -192,7 +192,7 @@ Whether text models should freeze their vertex buffers one frame after the text 
 
 &nbsp;
 
-## `#macro SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN`
+## `SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN`
 
 *Typical value:* `false`
 
@@ -200,7 +200,7 @@ Set to <true> to ignore a sprite origin's contribution to its spritefont glyph x
 
 &nbsp;
 
-## `#macro SCRIBBLE_SDF_BORDER_TRIM`
+## `SCRIBBLE_SDF_BORDER_TRIM`
 
 *Typical value:* `0`
 
@@ -208,7 +208,7 @@ Edge trimming around the bounding box for SDF glyphs (in pixels). This is useful
 
 &nbsp;
 
-## `#macro SCRIBBLE_ALWAYS_DOUBLE_DRAW`
+## `SCRIBBLE_ALWAYS_DOUBLE_DRAW`
 
 *Typical value:* `false`
 
@@ -216,13 +216,13 @@ Whether to force double-draw behaviour. This is useful for fixing problems with 
 
 &nbsp;
 
-## `#macro SCRIBBLE_FETCH_RANGE_ON_ADD`
+## `SCRIBBLE_FETCH_RANGE_ON_ADD`
 
 *Typical value:* `false`
 
 
 
-## `#macro SCRIBBLE_COMMAND_TAG_OPEN`
+## `SCRIBBLE_COMMAND_TAG_OPEN`
 
 *Typical value:* `ord("[")`
 
@@ -230,7 +230,7 @@ Character used to open a command tag. First 127 ASCII chars only.
 
 &nbsp;
 
-## `#macro SCRIBBLE_COMMAND_TAG_CLOSE`
+## `SCRIBBLE_COMMAND_TAG_CLOSE`
 
 *Typical value:* `ord("]")`
 
@@ -238,7 +238,7 @@ Character used to close a command tag. First 127 ASCII chars only.
 
 &nbsp;
 
-## `#macro SCRIBBLE_COMMAND_TAG_ARGUMENT`
+## `SCRIBBLE_COMMAND_TAG_ARGUMENT`
 
 *Typical value:* `ord(",")`
 
@@ -247,7 +247,7 @@ Character used to delimit a command parameter inside a command tag. First 127 AS
 &nbsp;
 
 
-## `#macro SCRIBBLE_DRAW_RETURNS_SELF`
+## `SCRIBBLE_DRAW_RETURNS_SELF`
 
 *Typical value:* `false`
 
@@ -255,7 +255,7 @@ Whether the `.draw()` method for text element returns the text element itself. T
 
 &nbsp;
 
-## `#macro SCRIBBLE_BUILD_RETURNS_SELF`
+## `SCRIBBLE_BUILD_RETURNS_SELF`
 
 *Typical value:* `false`
 
@@ -263,7 +263,7 @@ Whether the `.build()` method for text element returns `self`. This defaults to 
 
 &nbsp;
 
-## `#macro SCRIBBLE_SHOW_WRAP_BOUNDARY`
+## `SCRIBBLE_SHOW_WRAP_BOUNDARY`
 
 *Typical value:* `false`
 
@@ -271,7 +271,7 @@ Controls the drawing of a rectangle that indicates the boundaries of the `.layou
 
 &nbsp;
 
-## `#macro SCRIBBLE_ATTEMPT_FONT_SCALING_FIX`
+## `SCRIBBLE_ATTEMPT_FONT_SCALING_FIX`
 
 *Typical value:* `true`
 
@@ -279,7 +279,7 @@ Whether to try to fix font scaling due to the font texture being too big for the
 
 &nbsp;
 
-## `#macro SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP`
+## `SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP`
 
 *Typical value:* `false`
 
@@ -287,7 +287,7 @@ Whether to replace a grave accent (\` U+0060, decimal=96) with a zero-width spac
 
 &nbsp;
 
-## `#macro SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS`
+## `SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS`
 
 *Typical value:* `false`
 
@@ -309,12 +309,12 @@ Whether to perform the following Unicode substitutions to fix copy-pasted text f
 
 &nbsp;
 
-## `#macro SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE`
+## `SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE`
 
 *Typical value:* `1024`
 
 &nbsp;
 
-## `#macro SCRIBBLE_INTERNAL_FONT_ADD_MARGIN`
+## `SCRIBBLE_INTERNAL_FONT_ADD_MARGIN`
 
 *Typical value:* `1`
