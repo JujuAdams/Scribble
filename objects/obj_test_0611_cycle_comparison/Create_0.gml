@@ -1,0 +1,1 @@
+scribble_cycle_create("test", c_red, [0.3, c_lime, 0.6, c_blue]);

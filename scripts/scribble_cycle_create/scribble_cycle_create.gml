@@ -5,6 +5,8 @@
 function scribble_cycle_create(_name, _start_colour, _gradient_array)
 {
     static _scribble_state = __scribble_get_state();
+    static _open_array = _scribble_state.__cycle_open_array;
+    static _cycle_dict = _scribble_state.__cycle_dict;
     
     var _surface = _scribble_state.__cycle_surface;
     if (!surface_exists(_surface))
@@ -19,11 +21,11 @@ function scribble_cycle_create(_name, _start_colour, _gradient_array)
         _scribble_state.__cycle_texture = surface_get_texture(_surface);
     }
     
-    var _open_array = _scribble_state.__cycle_open_array;
     if (array_length(_open_array) <= 0) __scribble_error("No room for new cycle definitions. Please increase SCRIBBLE_CYCLE_COUNT");
+    if (variable_struct_exists(_cycle_dict, _name)) __scribble_trace("Warning! Overwriting cycle \"", _name, "\"");
     
     var _y = array_pop(_open_array);
-    _scribble_state.__cycle_struct[$ _name] = {
+    _cycle_dict[$ _name] = {
         __name:         _name,
         __y:            _y,
         __v:            (_y+0.5) / (1+SCRIBBLE_CYCLE_COUNT),

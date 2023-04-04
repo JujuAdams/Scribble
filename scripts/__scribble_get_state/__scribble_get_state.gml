@@ -55,7 +55,7 @@ function __scribble_get_state()
         
         __cycle_texture:    undefined,
         __cycle_surface:    -1,
-        __cycle_struct:     {},
+        __cycle_dict:       {},
         __cycle_open_array: array_create(SCRIBBLE_CYCLE_COUNT),
     };
     

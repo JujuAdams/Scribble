@@ -166,7 +166,7 @@ function __scribble_gen_2_parser()
     static _other_string_buffer   = __scribble_get_buffer_b();
     static _colours_struct        = _scribble_state.__custom_colour_struct;
     static _font_data_map         = _scribble_state.__font_data_map;
-    static _cycle_struct          = _scribble_state.__cycle_struct;
+    static _cycle_struct          = _scribble_state.__cycle_dict;
     static _generator_state       = __scribble_get_generator_state();
     
     with(_generator_state)
