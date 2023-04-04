@@ -93,7 +93,6 @@ uniform float u_aDataFields[MAX_DATA_FIELDS];           //20
 uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
 
-uniform int   u_iTypewriterUseLines;                    //1
 uniform int   u_iTypewriterMethod;                      //1
 uniform int   u_iTypewriterCharMax;                     //1
 uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //6
@@ -490,7 +489,8 @@ void main()
     
     if (easeMethod > EASE_NONE)
     {
-        float fadeIndex = ((u_iTypewriterUseLines > 0)? lineIndex : characterIndex) + 1.0;
+        //Seventh bit of u_fRenderFlags indicates if the typist should use lines or characters
+        float fadeIndex = ((mod(u_fRenderFlags/64.0, 2.0) < 1.0)? characterIndex : lineIndex) + 1.0;
         if (u_iTypewriterCharMax > 0) fadeIndex = float(u_iTypewriterCharMax) - fadeIndex;
         
         float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, fadeIndex, fadeOut);

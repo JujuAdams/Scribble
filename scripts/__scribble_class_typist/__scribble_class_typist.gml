@@ -864,7 +864,6 @@ function __scribble_class_typist(_per_line) constructor
     
     static __set_shader_uniforms = function()
     {
-        static _u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble, "u_iTypewriterUseLines"     );
         static _u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
         static _u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
         static _u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
@@ -902,7 +901,9 @@ function __scribble_class_typist(_per_line) constructor
             }
         }
         
-        shader_set_uniform_i(_u_iTypewriterUseLines,          __per_line);
+        //Reset the "typist use lines" flag
+        __scribble_state.__render_flag_value = ((__scribble_state.__render_flag_value & (~(0x40))) | (__per_line << 6));
+        
         shader_set_uniform_i(_u_iTypewriterMethod,            _method);
         shader_set_uniform_i(_u_iTypewriterCharMax,           _char_max);
         shader_set_uniform_f(_u_fTypewriterSmoothness,        __smoothness);

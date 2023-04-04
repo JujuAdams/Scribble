@@ -1673,7 +1673,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _u_aDataFields     = shader_get_uniform(__shd_scribble, "u_aDataFields"    );
         static _u_aBezier         = shader_get_uniform(__shd_scribble, "u_aBezier"        );
         
-        static _u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble, "u_iTypewriterUseLines"     );
         static _u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
         static _u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
         static _u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
@@ -1781,7 +1780,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         }
         else if (__tw_reveal != undefined)
         {
-            shader_set_uniform_i(_u_iTypewriterUseLines,          0);
+            //Reset the "typist use lines" flag
+            __scribble_state.__render_flag_value = (__scribble_state.__render_flag_value & (~(0x40)));
+            
             shader_set_uniform_i(_u_iTypewriterMethod,            SCRIBBLE_EASE.LINEAR);
             shader_set_uniform_i(_u_iTypewriterCharMax,           0);
             shader_set_uniform_f(_u_fTypewriterSmoothness,        0);
