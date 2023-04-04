@@ -56,8 +56,6 @@ function __scribble_ensure_cycle_surface()
         
         shader_reset();
         surface_reset_target();
-        
-        _scribble_state.__cycle_texture = surface_get_texture(_surface);
     }
     
     return _surface;
