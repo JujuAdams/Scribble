@@ -432,17 +432,18 @@ enum __SCRIBBLE_GLYPH
                             //    |
     __TEXTURE,              //11  |
     __U0,                   //12  | Be careful of ordering!
-    __U1,                   //13  | scribble_font_bake_shader() relies on this
+    __U1,                   //13  | scribble_font_bake_effects() relies on this
     __V0,                   //14  |
     __V1,                   //15  |
                             //    |
     __SDF_PXRANGE,          //16  |
     __SDF_THICKNESS_OFFSET, //17  |
     __BILINEAR,             //18  |
+    __BAKED_EFFECTS,        //19  |
                             //    |
-    __LAST_USED,            //19 /
+    __LAST_USED,            //20 /
     
-    __SIZE                  //20
+    __SIZE                  //21
 }
 
 enum SCRIBBLE_EASE
@@ -477,16 +478,17 @@ enum __SCRIBBLE_GLYPH_LAYOUT
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {
-    __VERTEX_BUFFER,        //0
-    __TEXTURE,              //1
-    __SDF,                  //2
-    __SDF_RANGE,            //3
-    __SDF_THICKNESS_OFFSET, //4
-    __TEXEL_WIDTH,          //5
-    __TEXEL_HEIGHT,         //6
-    __BUFFER,               //7
-    __BILINEAR,             //8
-    __SIZE                  //9
+    __VERTEX_BUFFER,        // 0
+    __TEXTURE,              // 1
+    __SDF,                  // 2
+    __SDF_RANGE,            // 3
+    __SDF_THICKNESS_OFFSET, // 4
+    __TEXEL_WIDTH,          // 5
+    __TEXEL_HEIGHT,         // 6
+    __BUFFER,               // 7
+    __BILINEAR,             // 8
+    __BAKED_EFFECTS,        // 9
+    __SIZE                  //10
 }
 
 enum __SCRIBBLE_ANIM
@@ -543,22 +545,23 @@ enum __SCRIBBLE_GEN_GLYPH
                             //     |
     __TEXTURE,              //10   |
     __QUAD_U0,              //11   | Be careful of ordering!
-    __QUAD_U1,              //12   | scribble_font_bake_shader() relies on this
+    __QUAD_U1,              //12   | scribble_font_bake_effects() relies on this
     __QUAD_V0,              //13   |
     __QUAD_V1,              //14   |
                             //     |
     __SDF_PXRANGE,          //15   |
     __SDF_THICKNESS_OFFSET, //16   |
-    __BILINEAR,             //17  /
+    __BILINEAR,             //17   |
+    __BAKED_EFFECTS,        //18  /
     
-    __CONTROL_COUNT,        //18
-    __ANIMATION_INDEX,      //19
+    __CONTROL_COUNT,        //19
+    __ANIMATION_INDEX,      //20
                       
-    __SPRITE_INDEX,         //20  \
-    __IMAGE_INDEX,          //21   | Only used for sprites
-    __IMAGE_SPEED,          //22  /
+    __SPRITE_INDEX,         //21  \
+    __IMAGE_INDEX,          //22   | Only used for sprites
+    __IMAGE_SPEED,          //23  /
                       
-    __SIZE,                 //23
+    __SIZE,                 //24
 }
 
 enum __SCRIBBLE_GEN_VBUFF_POS

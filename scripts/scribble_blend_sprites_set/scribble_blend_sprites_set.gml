@@ -12,8 +12,8 @@ function scribble_blend_sprites_set(_state)
         {
             __blend_sprites = _state;
             
-            __render_flag_value  = ((__render_flag_value & (~(0x02))) | (_state << 1));
-            __render_flag_desync = true;
+            //Force the second bit
+            __render_flag_value = ((__render_flag_value & (~(0x02))) | (_state << 1));
         }
     }
 }

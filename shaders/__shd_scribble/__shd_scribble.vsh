@@ -77,6 +77,7 @@ varying float v_fObjectY;
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
 varying float v_fPremultiplyAlpha;
+varying float v_fBakedEffects;
 
 uniform float u_fRenderFlags;                           //1
 
@@ -541,4 +542,7 @@ void main()
     //Premultiplied Alpha
     //First bit of u_fRenderFlags indicates if text should be PMA'd
     v_fPremultiplyAlpha = mod(u_fRenderFlags, 2.0);
+    
+    //Third bit of u_fRenderFlags indicates if we're using a font with baked effects
+    v_fBakedEffects = mod(u_fRenderFlags/4.0, 2.0);
 }

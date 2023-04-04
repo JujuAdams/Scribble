@@ -23,6 +23,7 @@
                                                                                  _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE],\
                                                                                  _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__SDF_THICKNESS_OFFSET],\
                                                                                  _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BILINEAR],\
+                                                                                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BAKED_EFFECTS],\
                                                                                  self);\
                                      }\
                                      if (_bezier_do)\

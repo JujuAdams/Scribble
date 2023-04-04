@@ -36,13 +36,18 @@ function __scribble_class_page() constructor
     
     static __submit = function(_double_draw)
     {
+        static _scribble_state = __scribble_get_state();
+        
         static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );
         static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );
         static _u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble, "u_fSDFThicknessOffset");
         static _u_fSecondDraw         = shader_get_uniform(__shd_scribble, "u_fSecondDraw"        );
         static _u_fSDF                = shader_get_uniform(__shd_scribble, "u_fSDF"               );
+        static _u_fRenderFlags        = shader_get_uniform(__shd_scribble, "u_fRenderFlags"       );
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
+        
+        var _render_flag_value = _scribble_state.__render_flag_value;
         
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
@@ -69,6 +74,9 @@ function __scribble_class_page() constructor
                 //TODO - Optimise
                 shader_set_uniform_f(_u_fSDF, 0);
             }
+            
+            _render_flag_value = ((_render_flag_value & (~(0x04))) | (_data[__SCRIBBLE_VERTEX_BUFFER.__BAKED_EFFECTS] << 2));
+            shader_set_uniform_f(_u_fRenderFlags, _render_flag_value);
             
             vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
             
@@ -142,7 +150,7 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_texture, _pxrange, _thickness_offset, _bilinear, _model_struct)
+    static __get_vertex_buffer = function(_texture, _pxrange, _thickness_offset, _bilinear, _baked_effects, _model_struct)
     {
         var _pointer_string = string(_texture);
         
@@ -197,6 +205,7 @@ function __scribble_class_page() constructor
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR            ] = _bilinear;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BAKED_EFFECTS       ] = _baked_effects;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;
             if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;

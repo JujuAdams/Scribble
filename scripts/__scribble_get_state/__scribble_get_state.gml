@@ -20,7 +20,6 @@ function __scribble_get_state()
         __font_add_cache_array: [],
         
         __render_flag_value:  0x02,
-        __render_flag_desync: true,
         __premultiply_alpha:  false,
         __blend_sprites:      true,
         

@@ -12,8 +12,8 @@ function scribble_premultiply_alpha_set(_state)
         {
             __premultiply_alpha = _state;
             
-            __render_flag_value  = ((__render_flag_value & (~(0x01))) | _state);
-            __render_flag_desync = true;
+            //Force the first bit
+            __render_flag_value = ((__render_flag_value & (~(0x01))) | _state);
         }
     }
 }

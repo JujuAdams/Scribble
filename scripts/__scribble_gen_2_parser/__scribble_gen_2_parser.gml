@@ -54,7 +54,7 @@
                                       else\
                                       {\
                                           ;\//Add this glyph to our grid by copying from the font's own glyph data grid
-                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH.__UNICODE, _data_index, __SCRIBBLE_GLYPH.__BILINEAR, _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE);\
+                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH.__UNICODE, _data_index, __SCRIBBLE_GLYPH.__BAKED_EFFECTS, _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE);\
                                           _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;\
                                           _font_glyph_data_grid[# _data_index, __SCRIBBLE_GLYPH.__LAST_USED] = _frames;\
                                           ;\
@@ -842,6 +842,8 @@ function __scribble_gen_2_parser()
                         
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE  ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BAKED_EFFECTS] = false;
+                            
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
                         
                             ++_glyph_count;
@@ -1088,6 +1090,8 @@ function __scribble_gen_2_parser()
                             
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE  ] = undefined;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BAKED_EFFECTS] = false;
+                                
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
                             
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SPRITE_INDEX ] = _sprite_index;

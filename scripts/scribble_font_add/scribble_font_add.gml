@@ -86,6 +86,7 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
         ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__SDF_PXRANGE,          _size-1, __SCRIBBLE_GLYPH.__SDF_PXRANGE,          _sdf? 2*_spread : undefined);
         ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET, _size-1, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET, _sdf? 0         : undefined);
         ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__BILINEAR,             _size-1, __SCRIBBLE_GLYPH.__BILINEAR,             _sdf? true      : undefined);
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__BAKED_EFFECTS,        _size-1, __SCRIBBLE_GLYPH.__BAKED_EFFECTS,        false                      );
         
         //Set up the space character in index 0 which is necessary for other bits of Scribble to work
         _font_cache.__set_space_glyph();

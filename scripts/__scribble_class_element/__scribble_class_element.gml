@@ -1670,7 +1670,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _u_vCrop           = shader_get_uniform(__shd_scribble, "u_vCrop"          );
         static _u_vScrollCrop     = shader_get_uniform(__shd_scribble, "u_vScrollCrop"    );
         static _u_aDataFields     = shader_get_uniform(__shd_scribble, "u_aDataFields"    );
-        static _u_fRenderFlags    = shader_get_uniform(__shd_scribble, "u_fRenderFlags"   );
         static _u_aBezier         = shader_get_uniform(__shd_scribble, "u_aBezier"        );
         
         static _u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble, "u_iTypewriterUseLines"     );
@@ -1751,12 +1750,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
                 __shader_anim_desync  = false;
                 __shader_anim_default = __shader_anim_desync_to_default;
                 shader_set_uniform_f_array(_u_aDataFields, _anim_properties_array);
-            }
-            
-            if (__render_flag_desync)
-            {
-                __render_flag_desync = false;
-                shader_set_uniform_f(_u_fRenderFlags, __render_flag_value);
             }
         }
         

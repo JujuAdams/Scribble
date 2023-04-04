@@ -137,6 +137,7 @@ function __scribble_font_add_from_project(_font)
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BAKED_EFFECTS       ] = false;
             
             _font_glyphs_map[? _unicode] = _i;
             

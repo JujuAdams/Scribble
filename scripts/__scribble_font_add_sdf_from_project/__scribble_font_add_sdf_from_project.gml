@@ -169,6 +169,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = _sdf_pxrange;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = 0;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BILINEAR            ] = true;
+        _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BAKED_EFFECTS       ] = false;
         
         _font_glyphs_map[? _unicode] = _i;
         
@@ -208,6 +209,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = _sdf_pxrange;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = 0;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BILINEAR            ] = true;
+        _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BAKED_EFFECTS       ] = false;
     }
     
     //And guarantee the space character is set up
