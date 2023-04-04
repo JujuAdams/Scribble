@@ -258,7 +258,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     /// @param index
     /// @param page
-    static __get_line_y = function(_index,_page)
+    static __get_line_y = function(_index, _page)
     {
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
@@ -268,7 +268,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     /// @param index
     /// @param page
-    static __get_line_height = function(_index,_page)
+    static __get_line_height = function(_index, _page)
     {
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
