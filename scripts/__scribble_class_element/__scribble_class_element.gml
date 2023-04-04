@@ -116,7 +116,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __crop_b = 0;
     
     __scroll_using = false;
-    __scroll_h = 0;
     __scroll_y = 0;
     
     __shadow_colour       = c_black;
@@ -1248,10 +1247,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
-    static scroll = function(_offset, _height)
+    static scroll = function(_offset)
     {
         __scroll_using = true;
-        __scroll_h = _height;
         
         if (__scroll_y != _offset)
         {
@@ -1280,12 +1278,12 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return max(0, _model.__get_scroll_max(_page) - __scroll_h);
+        return max(0, _model.__get_scroll_max(_page) - __layout_height);
     }
     
     static get_scroll_min = function(_page = __page)
     {
-        return -__scroll_h;
+        return -__layout_height;
     }
     
     static get_scroll_max = function(_page = __page)
@@ -1763,7 +1761,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             shader_set_uniform_f(_u_vCrop, __crop_l, __crop_t, __crop_r, __crop_b);
             
             var _model = __get_model(false);
-            shader_set_uniform_f(_u_vScrollCrop, _model.__min_y + __scroll_y - __scroll_h, _model.__min_y + __scroll_y);
+            shader_set_uniform_f(_u_vScrollCrop, _model.__min_y + __scroll_y - __layout_height, _model.__min_y + __scroll_y);
         }
         else if (_shader_uniforms_dirty)
         {
@@ -1890,7 +1888,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __matrix_y       = _y;
             
             var _x_offset = -__origin_x;
-            var _y_offset = -__origin_y - __scroll_y + __scroll_h;
+            var _y_offset = -__origin_y - __scroll_y + __layout_height;
             var _xscale   = __layout_scale*_model.__fit_scale*__post_xscale;
             var _yscale   = __layout_scale*_model.__fit_scale*__post_yscale;
             var _angle    = __post_angle;
