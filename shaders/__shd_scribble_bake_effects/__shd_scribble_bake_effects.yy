@@ -1,7 +1,7 @@
 {
   "resourceType": "GMShader",
   "resourceVersion": "1.0",
-  "name": "__shd_scribble_bake_shadow",
+  "name": "__shd_scribble_bake_effects",
   "parent": {
     "name": "Shaders",
     "path": "folders/Scribble/(System - don't call these functions)/Shaders.yy",

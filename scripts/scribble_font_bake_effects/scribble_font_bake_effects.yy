@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "scribble_font_bake_shader",
+  "name": "scribble_font_bake_effects",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

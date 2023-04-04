@@ -2,17 +2,14 @@
 ///
 /// @param sourceFontName       Name, as a string, of the font to use as a basis for the effect
 /// @param newFontName          Name of the new font to create, as a string
-/// @param shader               Shader to use
-/// @param emptyBorderSize      Border around the outside of every output glyph, in pixels. A value of 2 is typical
-/// @param leftPad              Padding around the outside of every *input* glyph. Positive values give more space. e.g. For a shader that adds a border of 2px around the entire glyph, *all* padding arguments should be set to <2>
-/// @param topPad               "
-/// @param rightPad             "
-/// @param bottomPad            "
-/// @param separationDelta      Change in every glyph's __SCRIBBLE_GLYPH.__SEPARATION value. For a shader that adds a border of 2px around the entire glyph, this value should be 4px
+/// @param offsetThickness      a
+/// @param offsetSamples        a
+/// @param shadowDX             a
+/// @param shadowDY             a
 /// @param smooth               Set to <true> to turn on linear interpolation
 /// @param [surfaceSize=2048]   Size of the surface to use. Defaults to 2048x2048
 
-function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _border, _l_pad, _t_pad, _r_pad, _b_pad, _separation, _smooth, _texture_size = 2048)
+function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_thickness, _outline_samples, _shadow_dx, _shadow_dy, _smooth, _texture_size = 2048)
 {
     if (!is_string(_source_font_name))
     {
@@ -46,6 +43,15 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     	return undefined;
     }
     
+    var _border     = 2;
+    var _l_pad      = _outline_thickness + max(0, -_shadow_dx);
+    var _t_pad      = _outline_thickness + max(0, -_shadow_dy);
+    var _r_pad      = _outline_thickness + max(0,  _shadow_dx); 
+    var _b_pad      = _outline_thickness + max(0,  _shadow_dy);
+    var _separation = _outline_thickness;
+    
+    
+    
     var _src_glyph_grid = _src_font_data.__glyph_data_grid;
     var _glyph_count = ds_grid_width(_src_glyph_grid);
     
@@ -57,7 +63,16 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
     _src_font_data.__copy_to(_new_font_data, false);
     
-    
+    //Create a vertex buffer for use in this function
+    static _vertex_format = undefined;
+    if (_vertex_format == undefined)
+    {
+        vertex_format_begin();
+        vertex_format_add_position(); //12 bytes
+        vertex_format_add_color();    // 4 bytes
+        vertex_format_add_texcoord(); // 8 bytes
+        _vertex_format = vertex_format_end();
+    }
     
     //We spin up vertex buffers on demand based on what textures are being used
     var _vbuff_data_map = ds_map_create();
@@ -109,16 +124,6 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         var _vbuff_data = _vbuff_data_map[? string(_texture)];
         if (_vbuff_data == undefined)
         {
-            static _vertex_format = undefined;
-            if (_vertex_format == undefined)
-            {
-                vertex_format_begin();
-                vertex_format_add_position(); //12 bytes
-                vertex_format_add_color();    // 4 bytes
-                vertex_format_add_texcoord(); // 8 bytes
-                _vertex_format = vertex_format_end();
-            }
-            
             //If we don't have a vertex buffer for this texture, create a new one and store a reference to it
             var _vbuff = vertex_create_buffer();
             vertex_begin(_vbuff, _vertex_format);
@@ -138,13 +143,57 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         var _r = _l + _width;
         var _b = _t + _height;
         
-        vertex_position(_vbuff, _l, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
-        vertex_position(_vbuff, _r, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
-        vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+        //Base glyph
+        vertex_position(_vbuff, _l, _t); vertex_color(_vbuff, c_red, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
+        vertex_position(_vbuff, _r, _t); vertex_color(_vbuff, c_red, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+        vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_red, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
         
-        vertex_position(_vbuff, _r, _t); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
-        vertex_position(_vbuff, _r, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
-        vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+        vertex_position(_vbuff, _r, _t); vertex_color(_vbuff, c_red, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+        vertex_position(_vbuff, _r, _b); vertex_color(_vbuff, c_red, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
+        vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_red, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+        
+        //Outline
+        var _angle = 90;
+        repeat(_outline_samples)
+        {
+            var _radius = 1;
+            repeat(_outline_thickness)
+            {
+                var _dx =  dcos(_angle);
+                var _dy = -dsin(_angle);
+                
+                var _lo = _l + _dx;
+                var _to = _t + _dy;
+                var _ro = _r + _dx;
+                var _bo = _b + _dy;
+                
+                vertex_position(_vbuff, _lo, _to); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
+                vertex_position(_vbuff, _ro, _to); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+                vertex_position(_vbuff, _lo, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+                
+                vertex_position(_vbuff, _ro, _to); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+                vertex_position(_vbuff, _ro, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
+                vertex_position(_vbuff, _lo, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+                
+                ++_radius;
+            }
+            
+            _angle += 360 / _outline_samples;
+        }
+        
+        //Shadow
+        var _ls = _l + _shadow_dx;
+        var _ts = _t + _shadow_dy;
+        var _rs = _r + _shadow_dx;
+        var _bs = _b + _shadow_dy;
+        
+        vertex_position(_vbuff, _ls, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
+        vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+        vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+        
+        vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+        vertex_position(_vbuff, _rs, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
+        vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
             
         _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH.__U0] = _line_x;
         _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH.__V0] = _line_y;
@@ -158,12 +207,16 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     }
     
     //Draw the vertex buffers to a surface, then bake that surface into a sprite
-    var _surface_0 = surface_create(_texture_size, _texture_size);
+    var _surface = surface_create(_texture_size, _texture_size);
     
     //Draw the source glyphs to a surface
-    surface_set_target(_surface_0);
-    draw_clear_alpha(c_white, 0.0);
-    gpu_set_blendenable(false);
+    surface_set_target(_surface);
+    draw_clear_alpha(c_black, 0.0);
+    
+    var _old_filter = gpu_get_tex_filter();
+    gpu_set_tex_filter(_smooth);
+    gpu_set_blendmode_ext(bm_one, bm_one);
+    shader_set(__shd_scribble_bake_effects);
     
     //Iterate over all vertex buffers we created and draw those vertex buffers to the first surface
     var _vbuff_data_array = ds_map_values_to_array(_vbuff_data_map);
@@ -181,38 +234,16 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     }
     
     ds_map_destroy(_vbuff_data_map);
-    var _surface_1 = surface_create(_texture_size, _texture_size);
-    
-    gpu_set_blendenable(true);
-    surface_reset_target();
-    
-    var _texture = surface_get_texture(_surface_0);
-    
-    //Draw one surface to another using the shader
-    surface_set_target(_surface_1);
-    draw_clear_alpha(c_white, 0.0);
-    
-    var _old_filter = gpu_get_tex_filter();
-    gpu_set_tex_filter(_smooth);
-    gpu_set_blendenable(false);
-    
-    shader_set(_shader);
-    shader_set_uniform_f(shader_get_uniform(_shader, "u_vTexel"), texture_get_texel_width(_texture), texture_get_texel_height(_texture));
-    draw_surface(_surface_0, 0, 0);
-    shader_reset();
     
     gpu_set_tex_filter(_old_filter);
-    gpu_set_blendenable(true);
+    gpu_set_blendmode(bm_normal);
+    shader_reset();
     surface_reset_target();
     
-    surface_free(_surface_0);
-    
-    //Make a sprite from the effect surface to make the texture stick
-    var _sprite = sprite_create_from_surface(_surface_1, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
+    //Make a sprite from the surface to make the texture stick
+    var _sprite = sprite_create_from_surface(_surface, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
     _new_font_data.__source_sprite = _sprite;
-    surface_free(_surface_1);
-    
-    
+    surface_free(_surface);
     
     //Make bulk corrections to various glyph properties based on the input parameters
     ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__X_OFFSET,    _glyph_count-1, __SCRIBBLE_GLYPH.__X_OFFSET,    -_l_pad);
