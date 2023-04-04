@@ -465,8 +465,11 @@ void main()
         v_vColour *= u_vColourMultiply;
     }
     
-    if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
-    if ((BLINK_FLAG > 0.5) && (u_fBlinkState < 0.5)) v_vColour.a = 0.0;
+    //Use packed sprite data to filter out sprite frames that we don't want
+    if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(in_Normal.y);
+    
+    //Sixth bit of u_fRenderFlags indicates if the blink state is enabled
+    if ((BLINK_FLAG > 0.5) && (mod(u_fRenderFlags/32.0, 2.0) < 1.0)) v_vColour.a = 0.0;
     
     //Regions
     if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);

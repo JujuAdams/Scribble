@@ -187,14 +187,16 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         __last_drawn = __scribble_state.__frames;
         
-        //Update the blink state
+        //Update the blink state in our render flags
         if (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration > 0)
         {
-            __animation_blink_state = (((__animation_time + _scribble_state.__blink_time_offset) mod (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration)) < _scribble_state.__blink_on_duration);
+            var _blink_state = (((__animation_time + _scribble_state.__blink_time_offset) mod (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration)) < _scribble_state.__blink_on_duration);
+            __scribble_state.__render_flag_value = ((__scribble_state.__render_flag_value & (~(0x20))) | (_blink_state << 5));
         }
         else
         {
-            __animation_blink_state = true;
+            //If blink behaviour hasn't been set up, force the blink state on
+            __scribble_state.__render_flag_value = __scribble_state.__render_flag_value | 0x20;
         }
         
         shader_set(__shd_scribble);
@@ -1661,7 +1663,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     {
         static _u_fTime           = shader_get_uniform(__shd_scribble, "u_fTime"          );
         static _u_vColourMultiply = shader_get_uniform(__shd_scribble, "u_vColourMultiply");
-        static _u_fBlinkState     = shader_get_uniform(__shd_scribble, "u_fBlinkState"    );
         static _u_vGradient       = shader_get_uniform(__shd_scribble, "u_vGradient"      );
         static _u_vSkew           = shader_get_uniform(__shd_scribble, "u_vSkew"          );
         static _u_vColourLerp     = shader_get_uniform(__shd_scribble, "u_vColourLerp"    );
@@ -1693,8 +1694,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;
         
-        shader_set_uniform_f(_u_fTime,       __animation_time);
-        shader_set_uniform_f(_u_fBlinkState, __animation_blink_state);
+        shader_set_uniform_f(_u_fTime, __animation_time);
         
         shader_set_uniform_f(_u_vColourMultiply, __colour_multiply_red,
                                                  __colour_multiply_green,
