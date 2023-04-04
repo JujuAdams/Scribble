@@ -42,7 +42,6 @@ function __scribble_gen_7_build_pages()
         var _line_count            = __line_count;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
-        var _layout_scrollable     = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__SCROLL);
     }
     
     var _max_break_height = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT)? (_model_max_height / __fit_scale) : infinity;
