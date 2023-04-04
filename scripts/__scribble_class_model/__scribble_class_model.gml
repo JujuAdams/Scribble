@@ -256,6 +256,26 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         return __pages_array[_page].__line_count;
     }
     
+    /// @param index
+    /// @param page
+    static __get_line_y = function(_index,_page)
+    {
+        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
+        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        
+        return __pages_array[_page].__line_array[_index].__y;
+    }
+    
+    /// @param index
+    /// @param page
+    static __get_line_height = function(_index,_page)
+    {
+        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
+        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        
+        return __pages_array[_page].__line_array[_index].__height;
+    }
+    
     /// @param page
     static __get_glyph_count = function(_page)
     {

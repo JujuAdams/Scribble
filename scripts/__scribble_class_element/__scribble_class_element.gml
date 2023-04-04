@@ -1262,6 +1262,20 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
+    static get_line_y = function(_index, _page = unde__pagefined)
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.__get_line_y(_page);
+    }
+    
+    static get_line_height = function(_index, _page = __page)
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.__get_line_height(_page);
+    }
+    
     #endregion
     
     

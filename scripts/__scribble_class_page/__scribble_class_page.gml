@@ -20,6 +20,8 @@ function __scribble_class_page() constructor
     __line_end   = undefined;
     __line_count = 0;
     
+    __line_array = [];
+    
     __width  = 0;
     __height = 0;
     __min_x  = 0;

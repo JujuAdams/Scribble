@@ -89,7 +89,7 @@ uniform vec2  u_vSkew;                                  //2
 uniform vec2  u_vRegionActive;                          //2
 uniform vec4  u_vRegionColour;                          //4
 uniform float u_fTime;                                  //1
-uniform float u_aDataFields[MAX_DATA_FIELDS];           //20
+uniform float u_aDataFields[MAX_DATA_FIELDS];           //19
 uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
 

@@ -42,6 +42,7 @@ function __scribble_gen_7_build_pages()
         var _line_count            = __line_count;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
+        var _layout_scrollable     = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__SCROLL);
     }
     
     var _max_break_height = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT)? (_model_max_height / __fit_scale) : infinity;
@@ -53,6 +54,7 @@ function __scribble_gen_7_build_pages()
     var _page_data = __new_page();
     _page_data.__line_start  = 0;
     _page_data.__glyph_start = _word_grid[# _line_grid[# 0, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START];
+    var _page_line_array = _page_data.__line_array;
     
     var _page_start_line = 0;
     var _line_y = 0;
@@ -66,6 +68,12 @@ function __scribble_gen_7_build_pages()
         if (!_starts_manual_page && ((_line_y + _line_height < _simulated_model_height) || (_page_start_line >= _i)))
         {
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = _line_y;
+            
+            array_push(_page_line_array, {
+                __y:      _line_y,
+                __height: _line_height,
+            });
+            
             _line_max_y = _line_y + _line_height;
             _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
         }
@@ -77,9 +85,16 @@ function __scribble_gen_7_build_pages()
             _page_data = __new_page();
             _page_data.__line_start  = _i;
             _page_data.__glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START];
+            _page_line_array = _page_data.__line_array;
             
             _page_start_line = _i;
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = 0;
+            
+            array_push(_page_line_array, {
+                __y:      _line_y,
+                __height: _line_height,
+            });
+            
             _line_max_y = _line_height;
             _line_y = _line_spacing_add + _line_height*_line_spacing_multiply;
         }
