@@ -1697,7 +1697,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         shader_set_uniform_f(_u_fTime, __animation_time);
         
-        texture_set_stage(_u_sCycle, __scribble_state.__cycle_texture);
+        texture_set_stage(_u_sCycle, surface_get_texture(__scribble_ensure_cycle_surface()));
         
         shader_set_uniform_f(_u_vColourMultiply, __colour_multiply_red,
                                                  __colour_multiply_green,

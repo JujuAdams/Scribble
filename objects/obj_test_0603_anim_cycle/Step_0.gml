@@ -1,0 +1,1 @@
+if (keyboard_check_pressed(ord("1"))) scribble_cycle_destroy("test 1");

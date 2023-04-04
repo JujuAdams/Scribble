@@ -67,6 +67,6 @@
 #macro SCRIBBLE_INTERNAL_FONT_ADD_MARGIN       1
 
 #macro SCRIBBLE_CYCLE_ACCURACY  128  //Accuracy of cycles. A higher number will lead to more precise colour transitions
-#macro SCRIBBLE_CYCLE_COUNT       2  //Maximum number of cycles that can be defined
+#macro SCRIBBLE_CYCLE_COUNT      31  //Maximum number of cycles that can be defined
 
 #endregion
