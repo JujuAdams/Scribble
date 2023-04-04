@@ -1673,6 +1673,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _u_aDataFields     = shader_get_uniform(__shd_scribble, "u_aDataFields"    );
         static _u_aBezier         = shader_get_uniform(__shd_scribble, "u_aBezier"        );
         
+        static _u_sCycle = shader_get_sampler_index(__shd_scribble, "u_sCycle");
+        
         static _u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
         static _u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
         static _u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
@@ -1694,6 +1696,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _shader_set_to_use_bezier = false;
         
         shader_set_uniform_f(_u_fTime, __animation_time);
+        
+        texture_set_stage(_u_sCycle, __scribble_state.__cycle_texture);
         
         shader_set_uniform_f(_u_vColourMultiply, __colour_multiply_red,
                                                  __colour_multiply_green,

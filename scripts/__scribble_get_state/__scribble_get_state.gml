@@ -52,6 +52,11 @@ function __scribble_get_state()
             c_white:   c_white,
             c_yellow:  c_yellow,
         },
+        
+        __cycle_texture:    undefined,
+        __cycle_surface:    -1,
+        __cycle_struct:     {},
+        __cycle_open_array: array_create(SCRIBBLE_CYCLE_COUNT),
     };
     
     return _struct;

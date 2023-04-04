@@ -5,6 +5,7 @@ precision highp float;
 varying vec2  v_vPosition;
 varying float v_fObjectY;
 varying vec2  v_vTexcoord;
+varying vec2  v_vCycleTexcoord;
 varying vec4  v_vColour;
 varying float v_fPremultiplyAlpha;
 varying float v_fBakedEffects;
@@ -14,6 +15,8 @@ varying float v_fSecondDraw;
 uniform vec4  u_vColourLerp;
 uniform vec4  u_vCrop;
 uniform vec2  u_vScrollCrop;
+
+uniform sampler2D u_sCycle;
 
 //SDF-only
 uniform vec2  u_vTexel;
@@ -32,6 +35,9 @@ float SDFValue(vec2 texcoord)
 
 void main()
 {
+    vec4 vertexColour = v_vColour;
+    if (v_vCycleTexcoord.y > 0.0) vertexColour *= texture2D(u_sCycle, vec2(mod(v_vCycleTexcoord.x, 1.0), v_vCycleTexcoord.y));
+    
     if (((length(u_vCrop) > 0.0) && ((v_vPosition.x < u_vCrop.x) || (v_vPosition.y < u_vCrop.y) || (v_vPosition.x > u_vCrop.z) || (v_vPosition.y > u_vCrop.w)))
     ||  ((length(u_vScrollCrop) > 0.0) && ((v_fObjectY < u_vScrollCrop.x) || (v_fObjectY > u_vScrollCrop.y))))
     {
@@ -46,7 +52,7 @@ void main()
             
             if (v_fBakedEffects < 1.0)
             {
-                gl_FragColor *= v_vColour;
+                gl_FragColor *= vertexColour;
             }
             else
             {
@@ -69,7 +75,7 @@ void main()
                 }
                 
                 //Base
-                vec4 baseColour = v_vColour;
+                vec4 baseColour = vertexColour;
                 baseColour.a   *= sample.r;
                 baseColour.rgb *= baseColour.a;
                 gl_FragColor = mix(baseColour, gl_FragColor, 1.0 - baseColour.a);
@@ -84,7 +90,7 @@ void main()
             float spread = max(fwidth(baseDist), 0.001);    
             
             float alpha = smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist);   
-            gl_FragColor = vec4(v_vColour.rgb, alpha*v_vColour.a);
+            gl_FragColor = vec4(vertexColour.rgb, alpha*vertexColour.a);
             
             if (v_fSecondDraw < 1.0)
             {
@@ -106,7 +112,7 @@ void main()
                 }
             }
             
-            gl_FragColor.a *= v_vColour.a;
+            gl_FragColor.a *= vertexColour.a;
         }
         
         //Apply colour lerp and premultiply alpha

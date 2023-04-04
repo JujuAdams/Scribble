@@ -186,8 +186,8 @@ function __scribble_class_page() constructor
                 vertex_format_add_normal();                                       //12 bytes
                 vertex_format_add_colour();                                       // 4 bytes
                 vertex_format_add_texcoord();                                     // 8 bytes
-                vertex_format_add_custom(vertex_type_float2, vertex_usage_color); // 8 bytes
-                _vertex_format = vertex_format_end();                             //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
+                vertex_format_add_custom(vertex_type_float3, vertex_usage_color); //12 bytes
+                _vertex_format = vertex_format_end();                             //48 bytes per vertex, 144 bytes per tri, 288 bytes per glyph
             }
             
             var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version

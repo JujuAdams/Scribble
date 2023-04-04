@@ -1,6 +1,7 @@
 precision highp float;
 
-#define ANIM_INDEX  in_Normal.x
+#define ANIM_INDEX    in_Normal.x
+#define CENTRE_DELTA  in_Colour2.xy
 
 const int MAX_EFFECTS = 11;
 #define SPRITE_FLAG   flagArray[ 0]
@@ -67,14 +68,15 @@ const float PI = 3.14159265359;
 
 
 attribute vec3  in_Position;     //{X, Y, Packed character & line index}
-attribute vec3  in_Normal;       //{Unused, Sprite data, Bitpacked effect flags}
+attribute vec3  in_Normal;       //{Animation index, Sprite data, Bitpacked effect flags}
 attribute vec4  in_Colour;       //Colour
 attribute vec2  in_TextureCoord; //UVs
-attribute vec2  in_Colour2;      //{dX, dY}
+attribute vec3  in_Colour2;      //{dX, dY, Cycle V-coord}
 
 varying vec2  v_vPosition;
 varying float v_fObjectY;
 varying vec2  v_vTexcoord;
+varying vec2  v_vCycleTexcoord;
 varying vec4  v_vColour;
 varying float v_fPremultiplyAlpha;
 varying float v_fBakedEffects;
@@ -215,44 +217,6 @@ vec3 hsv2rgb(vec3 c)
 vec4 rainbow(float animIndex, vec4 colour)
 {
     return vec4(mix(colour.rgb, hsv2rgb(vec3(0.02*animIndex + RAINBOW_SPEED*u_fTime, 1.0, 1.0)), RAINBOW_FLAG*RAINBOW_WEIGHT), colour.a);
-}
-                           
-//Colour cycling through a defined palette
-vec4 cycle(float animIndex, vec4 colour)
-{
-    float max_h = 4.0; //Default to a 4-colour cycle
-    
-    //Special cases for 0- and 1-colour cycles
-    if (colour.r < 0.003) return colour;
-    if (colour.g < 0.003) return vec4(hsv2rgb(vec3(colour.r, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0)), 1.0);
-    if (colour.a < 0.003) max_h = 3.0; //3-colour cycle
-    if (colour.b < 0.003) max_h = 2.0; //2-colour cycle
-    
-    float h = abs(mod((CYCLE_SPEED*u_fTime - animIndex)/10.0, max_h));
-    
-    //vec3 rgbA = hsv2rgb(vec3(colour[int(h)], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
-    //vec3 rgbB = hsv2rgb(vec3(colour[int(mod(h + 1.0, max_h))], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
-    
-    // rgbA
-    int ih = int(h); // int h
-    float c1 = 0.0; // colour 1
-    if (ih == 0) c1 = colour[0];
-    else if (ih == 1) c1 = colour[1];
-    else if (ih == 2) c1 = colour[2];
-    else if (ih == 3) c1 = colour[3];
-    
-    // rgbB
-    int ih2 = int(mod(h + 1.0, max_h)); // int h 2
-    float c2 = 0.0; // colour 2
-    if (ih2 == 0) c2 = colour[0];
-    else if (ih2 == 1) c2 = colour[1];
-    else if (ih2 == 2) c2 = colour[2];
-    else if (ih2 == 3) c2 = colour[3];
-    
-    vec3 rgbA = hsv2rgb(vec3(c1, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
-    vec3 rgbB = hsv2rgb(vec3(c2, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
-    
-    return vec4(mix(rgbA, rgbB, fract(h)), 1.0);
 }
 
 //Fade effect for typewriter etc.
@@ -415,11 +379,6 @@ void main()
     
     
     
-    //Unpack the glyph centre
-    vec2 centreDelta = in_Colour2;
-    
-    
-    
     vec2 centre;
     
     //If we have a valid Bezier curve, apply it
@@ -428,18 +387,18 @@ void main()
         centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         
         vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        pos = rotate_by_vector(centre - centreDelta, centre, normalize(orientation));
+        pos = rotate_by_vector(centre - CENTRE_DELTA, centre, normalize(orientation));
         
         vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
         pos += in_Position.y*perpendicular;
     }
     else
     {
-        centre = pos + centreDelta;
+        centre = pos + CENTRE_DELTA;
     }
     
     pos += u_vSkew*centre.yx;
-    if (SLANT_FLAG > 0.5) pos.x += centreDelta.y*SLANT_GRADIENT;
+    if (SLANT_FLAG > 0.5) pos.x += in_Colour2.y*SLANT_GRADIENT;
     
     
     
@@ -453,8 +412,6 @@ void main()
     {
         //Colour
         v_vColour = in_Colour;
-        
-        if (CYCLE_FLAG > 0.5) v_vColour = cycle(ANIM_INDEX, v_vColour); //Cycle colours through the defined palette
         v_vColour = rainbow(ANIM_INDEX, v_vColour); //Cycle colours for the rainbow effect
         
         //Apply the gradient effect
@@ -542,7 +499,8 @@ void main()
     //Texture
     v_vTexcoord = in_TextureCoord;
     
-    
+    //Cycle
+    v_vCycleTexcoord = vec2((CYCLE_SPEED*u_fTime - ANIM_INDEX)/50.0, in_Colour2.z);
     
     //Premultiplied Alpha
     //First bit of u_fRenderFlags indicates if text should be PMA'd

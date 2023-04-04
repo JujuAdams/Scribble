@@ -44,7 +44,17 @@ function __scribble_initialize()
     }
     
     //Initialize statics on boot before they need to be used
-    __scribble_get_state();
+    var _state = __scribble_get_state();
+    
+    //Initialize cycle open array
+    var _open_array = _state.__cycle_open_array;
+    var _i = 1;
+    repeat(SCRIBBLE_CYCLE_COUNT)
+    {
+        _open_array[@ _i+1] = _i;
+        ++_i;
+    }
+    
     __scribble_get_generator_state();
     __scribble_glyph_data_initialize();
     __scribble_get_buffer_a();
