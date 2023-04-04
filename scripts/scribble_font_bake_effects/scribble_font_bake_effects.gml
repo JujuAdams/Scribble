@@ -153,47 +153,55 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
         vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_red, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
         
         //Outline
-        var _angle = 90;
-        repeat(_outline_samples)
+        if (_outline_thickness > 0)
         {
-            var _radius = 1;
-            repeat(_outline_thickness)
+            var _angle = 90;
+            repeat(_outline_samples)
             {
                 var _dx =  dcos(_angle);
                 var _dy = -dsin(_angle);
                 
-                var _lo = _l + _dx;
-                var _to = _t + _dy;
-                var _ro = _r + _dx;
-                var _bo = _b + _dy;
+                var _lo = _l;
+                var _to = _t;
+                var _ro = _r;
+                var _bo = _b;
                 
-                vertex_position(_vbuff, _lo, _to); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
-                vertex_position(_vbuff, _ro, _to); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
-                vertex_position(_vbuff, _lo, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+                repeat(_outline_thickness)
+                {
+                    _lo += _dx;
+                    _to += _dy;
+                    _ro += _dx;
+                    _bo += _dy;
+                    
+                    vertex_position(_vbuff, _lo, _to); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
+                    vertex_position(_vbuff, _ro, _to); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+                    vertex_position(_vbuff, _lo, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+                    
+                    vertex_position(_vbuff, _ro, _to); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+                    vertex_position(_vbuff, _ro, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
+                    vertex_position(_vbuff, _lo, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+                }
                 
-                vertex_position(_vbuff, _ro, _to); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
-                vertex_position(_vbuff, _ro, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
-                vertex_position(_vbuff, _lo, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
-                
-                ++_radius;
+                _angle += 360 / _outline_samples;
             }
-            
-            _angle += 360 / _outline_samples;
         }
         
         //Shadow
-        var _ls = _l + _shadow_dx;
-        var _ts = _t + _shadow_dy;
-        var _rs = _r + _shadow_dx;
-        var _bs = _b + _shadow_dy;
-        
-        vertex_position(_vbuff, _ls, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
-        vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
-        vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
-        
-        vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
-        vertex_position(_vbuff, _rs, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
-        vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+        if ((_shadow_dx != 0) || (_shadow_dy != 0))
+        {
+            var _ls = _l + _shadow_dx;
+            var _ts = _t + _shadow_dy;
+            var _rs = _r + _shadow_dx;
+            var _bs = _b + _shadow_dy;
+            
+            vertex_position(_vbuff, _ls, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
+            vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+            vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+            
+            vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+            vertex_position(_vbuff, _rs, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
+            vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+        }
             
         _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH.__U0] = _line_x;
         _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH.__V0] = _line_y;
