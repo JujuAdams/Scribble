@@ -45,15 +45,15 @@ A "guide" layout will not perform any text wrapping, but if text is determined t
 |`maxWidth`       |number  |Maximum width for the whole textbox. Use a negative number (the default) for no limit                                                           |
 |`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for tight textboxes and some East Asian languages|
 
-Instructs Scribble to fit text inside a box by automatically inserting line breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text_ext.htm). If text exceeds the horizontal maximum width then text will be pushed onto the next line. Very long sequences of glyphs without spaces will be split across multiple lines.
+Instructs Scribble to fit text inside a box by automatically inserting line breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text_ext.htm). If text exceeds the horizontal maximum width then text will be pushed onto the next line. Very long sequences of glyphs without spaces will be separated across multiple lines.
 
 !> This method is a regenerator. If the value is changed then the text element will be regenerated, potentially leading to degraded performance.
 
 &nbsp;
 
-## `.layout_wrap_split_pages()`
+## `.layout_wrap_split()`
 
-**Text Element Method:** `.layout_wrap_split_pages(maxWidth, [maxHeight], [characterWrap])`
+**Text Element Method:** `.layout_wrap_split(maxWidth, [maxHeight], [characterWrap])`
 
 **Returns**: The text element
 
@@ -63,7 +63,7 @@ Instructs Scribble to fit text inside a box by automatically inserting line brea
 |`maxHeight`      |number  |Maximum height for the whole textbox. Use a negative number (the default) for no limit                                                          |
 |`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for tight textboxes and some East Asian languages|
 
-Instructs Scribble to fit text inside a box by automatically inserting line breaks and page breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text_ext.htm). If text exceeds the horizontal maximum width then text will be pushed onto the next line. If text exceeds the maximum height of the textbox then a new page will be created (see [`.page()`](scribble-methods?id=pagepage) and [`.get_page()`](scribble-methods?id=get_page)). Very long sequences of glyphs without spaces will be split across multiple lines.
+Instructs Scribble to fit text inside a box by automatically inserting line breaks and page breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text_ext.htm). If text exceeds the horizontal maximum width then text will be pushed onto the next line. If text exceeds the maximum height of the textbox then a new page will be created (see [`.page()`](scribble-methods?id=pagepage) and [`.get_page()`](scribble-methods?id=get_page)). Very long sequences of glyphs without spaces will be separated across multiple lines.
 
 !> This method is a regenerator. If the value is changed then the text element will be regenerated, potentially leading to degraded performance.
 
@@ -118,7 +118,7 @@ Fits text to a box by inserting line breaks and scaling text but **will not** in
 |`maxHeight`      |number  |Maximum height for the whole textbox. Use a negative number (the default) for no limit                                                          |
 |`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for tight textboxes and some East Asian languages|
 
-Instructs Scribble to fit text inside a box by automatically inserting line breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text_ext.htm). If text exceeds the horizontal maximum width then text will be pushed onto the next line. Very long sequences of glyphs without spaces will be split across multiple lines.
+Instructs Scribble to fit text inside a box by automatically inserting line breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text_ext.htm). If text exceeds the horizontal maximum width then text will be pushed onto the next line. Very long sequences of glyphs without spaces will be separated across multiple lines.
 
 Unlike other layout methods, `.layout_scroll()` will not create a new page if the `[/page]` command tag is used. Instead, Scribble will append new pages underneath previous pages. Any text that overflows the maximum height of the textbox will be visually clipped. You can then scroll between pages using the relevant functions.
 
@@ -126,9 +126,9 @@ Unlike other layout methods, `.layout_scroll()` will not create a new page if th
 
 &nbsp;
 
-## `.layout_scroll_split_pages()`
+## `.layout_scroll_split()`
 
-**Text Element Method:** `.layout_scroll_split_pages(maxWidth, maxHeight, [characterWrap])`
+**Text Element Method:** `.layout_scroll_split(maxWidth, maxHeight, [characterWrap])`
 
 **Returns**: The text element
 
@@ -138,8 +138,8 @@ Unlike other layout methods, `.layout_scroll()` will not create a new page if th
 |`maxHeight`      |number  |Maximum height for the whole textbox. Use a negative number (the default) for no limit                                                          |
 |`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for tight textboxes and some East Asian languages|
 
-Instructs Scribble to fit text inside a box by automatically inserting line breaks and page breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text_ext.htm). If text exceeds the horizontal maximum width then text will be pushed onto the next line. Very long sequences of glyphs without spaces will be split across multiple lines.
+Instructs Scribble to fit text inside a box by automatically inserting line breaks and page breaks where necessary. Scribble's text wrapping operates in a very similar way to GameMaker's native [`draw_text_ext()`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Drawing/Text/draw_text_ext.htm). If text exceeds the horizontal maximum width then text will be pushed onto the next line. Very long sequences of glyphs without spaces will be separated across multiple lines.
 
-Unlike other layout methods, `.layout_scroll_split_pages()` will not create a new page if the `[/page]` command tag is used. Instead, Scribble will append new pages underneath previous pages. Any text that overflows the maximum height of the textbox will be visually clipped and marked as a new page as though you'd added a `[/page]` tag manually yourself. You can then scroll between pages using the relevant functions.
+Unlike other layout methods, `.layout_scroll_split()` will not create a new page if the `[/page]` command tag is used. Instead, Scribble will append new pages underneath previous pages. Any text that overflows the maximum height of the textbox will be visually clipped and marked as a new page as though you'd added a `[/page]` tag manually yourself. You can then scroll between pages using the relevant functions.
 
 !> This method is a regenerator. If the value is changed then the text element will be regenerated, potentially leading to degraded performance.
