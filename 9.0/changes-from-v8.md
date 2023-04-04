@@ -33,6 +33,7 @@ Scribble 9 introduces a number of new features alongside a small number of break
 - `scribble_msdf_thickness_offset()` has been replaced by `scribble_sdf_thickness_offset()` as part of the change away from MSDF fonts to SDF fonts
 - `.flash()` has been replaced by `.rgb_lerp()`
 - `.blend()` has been replaced by `.rgb_multiply()`
+- `scribble_font_bake_outline_4dir()`, `scribble_font_bake_outline_8dir()`, `scribble_font_bake_outline_8dir_2px()`, and `scribble_font_bake_shadow()` have been replaced by `scribble_font_bake_effects()`
 
 &nbsp;
 
@@ -46,3 +47,4 @@ Scribble 9 introduces a number of new features alongside a small number of break
 - Because Scribble no longer needs to load external files for MSDF fonts, `SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY` has been removed
 - `SCRIBBLE_SPRITEFONT_LEGACY_HEIGHT` has been removed
 - `SCRIBBLE_FLUSH_RETURNS_SELF` has been removed
+- `scribble_font_bake_shader()` has been removed
