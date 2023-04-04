@@ -41,7 +41,25 @@ void main()
         if (u_fSDF < 0.5)
         {
             //Standard rendering (standard fonts, spritefonts, sprites, surfaces)
-            gl_FragColor = v_vColour*texture2D(gm_BaseTexture, v_vTexcoord);
+            vec4 sample = texture2D(gm_BaseTexture, v_vTexcoord);
+            
+            //Shadow
+            vec4 shadowColour = u_vShadowColour;
+            shadowColour.a   *= sample.b;
+            shadowColour.rgb *= shadowColour.a;
+            gl_FragColor = mix(shadowColour, vec4(0.0), 1.0 - shadowColour.a);
+            
+            //Outline
+            vec4 outlineColour = vec4(u_vBorderColour, step(0.5, u_fBorderThickness));
+            outlineColour.a   *= sample.g;
+            outlineColour.rgb *= outlineColour.a;
+            gl_FragColor = mix(outlineColour, gl_FragColor, 1.0 - outlineColour.a);
+            
+            //Base
+            vec4 baseColour = v_vColour;
+            baseColour.a   *= sample.r;
+            baseColour.rgb *= baseColour.a;
+            gl_FragColor = mix(baseColour, gl_FragColor, 1.0 - baseColour.a);
         }
         else
         {

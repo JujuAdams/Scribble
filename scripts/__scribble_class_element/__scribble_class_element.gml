@@ -4,7 +4,6 @@
 function __scribble_class_element(_string, _unique_id = "") constructor
 {
     static __scribble_state    = __scribble_get_state();
-    static __colours_struct    = __scribble_state.__custom_colour_struct;
     static __ecache_array      = __scribble_get_cache_state().__ecache_array;
     static __ecache_dict       = __scribble_get_cache_state().__ecache_dict;
     static __ecache_name_array = __scribble_get_cache_state().__ecache_name_array;
@@ -120,14 +119,14 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __scroll_h = 0;
     __scroll_y = 0;
     
-    __sdf_shadow_colour   = c_black;
-    __sdf_shadow_alpha    = 0.0;
-    __sdf_shadow_xoffset  = 0;
-    __sdf_shadow_yoffset  = 0;
-    __sdf_shadow_softness = 0;
+    __shadow_colour       = c_black;
+    __shadow_alpha        = 0.0;
+    __shadow_sdf_xoffset  = 0;
+    __shadow_sdf_yoffset  = 0;
+    __shadow_sdf_softness = 0;
     
-    __sdf_border_colour    = c_black;
-    __sdf_border_thickness = 0.0;
+    __outline_colour    = c_black;
+    __outline_thickness = 0.0;
     
     __bidi_hint = undefined;
     
@@ -208,7 +207,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        _model.__submit(__page, (__sdf_border_thickness > 0) || (__sdf_shadow_alpha > 0));
+        _model.__submit(__page, (__outline_thickness > 0) || (__shadow_alpha > 0));
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);
@@ -310,15 +309,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param colour
     static rgb_multiply = function(_colour)
     {
-        if (is_string(_colour))
-        {
-            _colour = __colours_struct[$ _colour];
-            if (_colour == undefined)
-            {
-                __scribble_error("Colour name \"", _colour, "\" not recognised");
-                exit;
-            }
-        }
+        _colour = __scribble_resolve_colour(_colour);
         
         __colour_multiply_red   = (_colour & 0x0000FF) / 255;
         __colour_multiply_green = (_colour & 0x00FF00) / (256*255);
@@ -331,15 +322,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param mix
     static rgb_lerp = function(_colour, _mix)
     {
-        if (is_string(_colour))
-        {
-            _colour = __colours_struct[$ _colour];
-            if (_colour == undefined)
-            {
-                __scribble_error("Colour name \"", _colour, "\" not recognised");
-                exit;
-            }
-        }
+        _colour = __scribble_resolve_colour(_colour);
         
         __colour_lerp_red   = (_colour & 0x0000FF) / 255;
         __colour_lerp_green = (_colour & 0x00FF00) / (256*255);
@@ -353,15 +336,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param mix
     static gradient = function(_colour, _mix)
     {
-        if (is_string(_colour))
-        {
-            _colour = __colours_struct[$ _colour];
-            if (_colour == undefined)
-            {
-                __scribble_error("Colour name \"", _colour, "\" not recognised");
-                exit;
-            }
-        }
+        _colour = __scribble_resolve_colour(_colour);
         
         __colour_gradient_red   = (_colour & 0x0000FF) / 255;
         __colour_gradient_green = (_colour & 0x00FF00) / (256*255);
@@ -1317,21 +1292,52 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     #region SDF
     
+    static shadow = function(_colour, _alpha)
+    {
+        _colour = __scribble_resolve_colour(_colour);
+        
+        __shadow_colour       = _colour;
+        __shadow_alpha        = _alpha;
+        __shadow_sdf_xoffset  = 1;
+        __shadow_sdf_yoffset  = 1;
+        __shadow_sdf_softness = 0.25;
+        
+        return self;
+    }
+    
+    static outline = function(_colour)
+    {
+        if (_colour == undefined)
+        {
+            __outline_colour    = c_black;
+            __outline_thickness = 0;
+        }
+        else
+        {
+            _colour = __scribble_resolve_colour(_colour);
+            
+            __outline_colour    = _colour;
+            __outline_thickness = 1;
+        }
+        
+        return self;
+    }
+    
     static sdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.25)
     {
-        __sdf_shadow_colour   = _colour;
-        __sdf_shadow_alpha    = _alpha;
-        __sdf_shadow_xoffset  = _x_offset;
-        __sdf_shadow_yoffset  = _y_offset;
-        __sdf_shadow_softness = max(0, _softness);
+        __shadow_colour       = _colour;
+        __shadow_alpha        = _alpha;
+        __shadow_sdf_xoffset  = _x_offset;
+        __shadow_sdf_yoffset  = _y_offset;
+        __shadow_sdf_softness = max(0, _softness);
         
         return self;
     }
     
     static sdf_border = function(_colour, _thickness)
     {
-        __sdf_border_colour    = _colour;
-        __sdf_border_thickness = _thickness;
+        __outline_colour    = _colour;
+        __outline_thickness = _thickness;
         
         return self;
     }
@@ -1797,18 +1803,18 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             shader_set_uniform_i(_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
         }
         
-        shader_set_uniform_f(_u_vShadowOffsetAndSoftness, __sdf_shadow_xoffset, __sdf_shadow_yoffset, __sdf_shadow_softness);
+        shader_set_uniform_f(_u_vShadowOffsetAndSoftness, __shadow_sdf_xoffset, __shadow_sdf_yoffset, __shadow_sdf_softness);
         
-        shader_set_uniform_f(_u_vShadowColour, colour_get_red(  __sdf_shadow_colour)/255,
-                                               colour_get_green(__sdf_shadow_colour)/255,
-                                               colour_get_blue( __sdf_shadow_colour)/255,
-                                               __sdf_shadow_alpha);
+        shader_set_uniform_f(_u_vShadowColour, colour_get_red(  __shadow_colour)/255,
+                                               colour_get_green(__shadow_colour)/255,
+                                               colour_get_blue( __shadow_colour)/255,
+                                               __shadow_alpha);
         
-        shader_set_uniform_f(_u_vBorderColour, colour_get_red(  __sdf_border_colour)/255,
-                                               colour_get_green(__sdf_border_colour)/255,
-                                               colour_get_blue( __sdf_border_colour)/255);
+        shader_set_uniform_f(_u_vBorderColour, colour_get_red(  __outline_colour)/255,
+                                               colour_get_green(__outline_colour)/255,
+                                               colour_get_blue( __outline_colour)/255);
         
-        shader_set_uniform_f(_u_fBorderThickness, __sdf_border_thickness);
+        shader_set_uniform_f(_u_fBorderThickness, __outline_thickness);
     }
     
     static __update_scale_to_box_scale = function()

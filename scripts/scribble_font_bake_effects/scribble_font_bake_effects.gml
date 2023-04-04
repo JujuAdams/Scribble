@@ -180,27 +180,46 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
                     vertex_position(_vbuff, _ro, _to); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
                     vertex_position(_vbuff, _ro, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
                     vertex_position(_vbuff, _lo, _bo); vertex_color(_vbuff, c_lime, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+                    
+                    //Shadow
+                    if ((_shadow_dx != 0) || (_shadow_dy != 0))
+                    {
+                        var _ls = _lo + _shadow_dx;
+                        var _ts = _to + _shadow_dy;
+                        var _rs = _ro + _shadow_dx;
+                        var _bs = _bo + _shadow_dy;
+                        
+                        vertex_position(_vbuff, _ls, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
+                        vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+                        vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+                        
+                        vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+                        vertex_position(_vbuff, _rs, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
+                        vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+                    }
                 }
                 
                 _angle += 360 / _outline_samples;
             }
         }
-        
-        //Shadow
-        if ((_shadow_dx != 0) || (_shadow_dy != 0))
+        else
         {
-            var _ls = _l + _shadow_dx;
-            var _ts = _t + _shadow_dy;
-            var _rs = _r + _shadow_dx;
-            var _bs = _b + _shadow_dy;
-            
-            vertex_position(_vbuff, _ls, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
-            vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
-            vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
-            
-            vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
-            vertex_position(_vbuff, _rs, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
-            vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+            //Shadow
+            if ((_shadow_dx != 0) || (_shadow_dy != 0))
+            {
+                var _ls = _l + _shadow_dx;
+                var _ts = _t + _shadow_dy;
+                var _rs = _r + _shadow_dx;
+                var _bs = _b + _shadow_dy;
+                
+                vertex_position(_vbuff, _ls, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v0);
+                vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+                vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+                
+                vertex_position(_vbuff, _rs, _ts); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v0);
+                vertex_position(_vbuff, _rs, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
+                vertex_position(_vbuff, _ls, _bs); vertex_color(_vbuff, c_blue, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
+            }
         }
             
         _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH.__U0] = _line_x;
