@@ -2,10 +2,10 @@
 ///
 /// @param sourceFontName       Name, as a string, of the font to use as a basis for the effect
 /// @param newFontName          Name of the new font to create, as a string
-/// @param offsetThickness      a
-/// @param offsetSamples        a
-/// @param shadowDX             a
-/// @param shadowDY             a
+/// @param offsetThickness      Thickness of the outline effect
+/// @param offsetSamples        Number of samples to use for the outline effect for each “layer” of thickness. Higher values lead to a smoother outline
+/// @param shadowDX             x-axis displacement for the shadow effect
+/// @param shadowDY             y-axis displacement for the shadow effect
 /// @param smooth               Set to <true> to turn on linear interpolation
 /// @param [surfaceSize=2048]   Size of the surface to use. Defaults to 2048x2048
 
