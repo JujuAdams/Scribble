@@ -8,8 +8,9 @@ varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
 varying float v_fPremultiplyAlpha;
 varying float v_fBakedEffects;
+varying float v_fSDF;
+varying float v_fSecondDraw;
 
-uniform float u_fSDF;
 uniform vec4  u_vColourLerp;
 uniform vec4  u_vCrop;
 uniform vec2  u_vScrollCrop;
@@ -22,7 +23,6 @@ uniform vec4  u_vShadowColour;
 uniform vec3  u_vShadowOffsetAndSoftness;
 uniform vec3  u_vBorderColour;
 uniform float u_fBorderThickness;
-uniform float u_fSecondDraw;
 
 float SDFValue(vec2 texcoord)
 {
@@ -39,26 +39,29 @@ void main()
     }
     else
     {
-        if (u_fSDF < 0.5)
+        if (v_fSDF < 1.0)
         {
             //Standard rendering (standard fonts, spritefonts, sprites, surfaces)
             gl_FragColor = texture2D(gm_BaseTexture, v_vTexcoord);
             
-            if (v_fBakedEffects > 0.5)
+            if (v_fBakedEffects >= 1.0)
             {
                 vec4 sample = gl_FragColor;
                 
-                //Shadow
-                vec4 shadowColour = u_vShadowColour;
-                shadowColour.a   *= sample.b;
-                shadowColour.rgb *= shadowColour.a;
-                gl_FragColor = mix(shadowColour, vec4(0.0), 1.0 - shadowColour.a);
-                
-                //Outline
-                vec4 outlineColour = vec4(u_vBorderColour, step(0.5, u_fBorderThickness));
-                outlineColour.a   *= sample.g;
-                outlineColour.rgb *= outlineColour.a;
-                gl_FragColor = mix(outlineColour, gl_FragColor, 1.0 - outlineColour.a);
+                if (v_fSecondDraw < 1.0)
+                {
+                    //Shadow
+                    vec4 shadowColour = u_vShadowColour;
+                    shadowColour.a   *= sample.b;
+                    shadowColour.rgb *= shadowColour.a;
+                    gl_FragColor = mix(shadowColour, vec4(0.0), 1.0 - shadowColour.a);
+                    
+                    //Outline
+                    vec4 outlineColour = vec4(u_vBorderColour, step(0.5, u_fBorderThickness));
+                    outlineColour.a   *= sample.g;
+                    outlineColour.rgb *= outlineColour.a;
+                    gl_FragColor = mix(outlineColour, gl_FragColor, 1.0 - outlineColour.a);
+                }
                 
                 //Base
                 vec4 baseColour = v_vColour;
@@ -78,7 +81,7 @@ void main()
             float alpha = smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist);   
             gl_FragColor = vec4(v_vColour.rgb, alpha*v_vColour.a);
             
-            if (u_fSecondDraw < 0.5)
+            if (v_fSecondDraw < 1.0)
             {
                 float borderOffset = u_fBorderThickness*length(fwidth(v_vTexcoord)/u_vTexel)/(sqrt(2.0)*u_fSDFRange);
                 

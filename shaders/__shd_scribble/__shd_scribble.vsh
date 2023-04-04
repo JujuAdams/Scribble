@@ -78,6 +78,8 @@ varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
 varying float v_fPremultiplyAlpha;
 varying float v_fBakedEffects;
+varying float v_fSDF;
+varying float v_fSecondDraw;
 
 uniform float u_fRenderFlags;                           //1
 
@@ -545,4 +547,10 @@ void main()
     
     //Third bit of u_fRenderFlags indicates if we're using a font with baked effects
     v_fBakedEffects = mod(u_fRenderFlags/4.0, 2.0);
+    
+    //Fourth bit of u_fRenderFlags indicates if we're using a font with baked effects
+    v_fSDF = mod(u_fRenderFlags/8.0, 2.0);
+    
+    //Fifth bit of u_fRenderFlags indicates if we're using a font with baked effects
+    v_fSecondDraw = mod(u_fRenderFlags/16.0, 2.0);
 }

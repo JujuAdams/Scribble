@@ -38,12 +38,10 @@ function __scribble_class_page() constructor
     {
         static _scribble_state = __scribble_get_state();
         
+        static _u_fRenderFlags        = shader_get_uniform(__shd_scribble, "u_fRenderFlags"       );
         static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );
         static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );
         static _u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble, "u_fSDFThicknessOffset");
-        static _u_fSecondDraw         = shader_get_uniform(__shd_scribble, "u_fSecondDraw"        );
-        static _u_fSDF                = shader_get_uniform(__shd_scribble, "u_fSDF"               );
-        static _u_fRenderFlags        = shader_get_uniform(__shd_scribble, "u_fRenderFlags"       );
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
@@ -61,30 +59,39 @@ function __scribble_class_page() constructor
                 gpu_set_tex_filter(_bilinear);
             }
             
-            if (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF])
+            var _sdf = _data[__SCRIBBLE_VERTEX_BUFFER.__SDF];
+            if (_sdf)
             {
+                //Set the "SDF" render flag
+                _render_flag_value = ((_render_flag_value & (~(0x08))) | 0x08);
+                
                 //Set shader uniforms unique to the SDF shader
-                shader_set_uniform_f(_u_fSDF, 1);
                 shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
                 shader_set_uniform_f(_u_fSDFRange, (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE] ?? 0));
                 shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] ?? 0));
             }
             else
             {
-                //TODO - Optimise
-                shader_set_uniform_f(_u_fSDF, 0);
+                //Reset the "SDF" render flag
+                _render_flag_value = (_render_flag_value & (~(0x08)));
+                
+                //Set the "baked effects" render flag
+                _render_flag_value = ((_render_flag_value & (~(0x04))) | (_data[__SCRIBBLE_VERTEX_BUFFER.__BAKED_EFFECTS] << 2));
             }
             
-            _render_flag_value = ((_render_flag_value & (~(0x04))) | (_data[__SCRIBBLE_VERTEX_BUFFER.__BAKED_EFFECTS] << 2));
             shader_set_uniform_f(_u_fRenderFlags, _render_flag_value);
-            
             vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
             
-            if (_double_draw)
+            if (_sdf && _double_draw)
             {
-                shader_set_uniform_f(_u_fSecondDraw, 1);
+                //Set the "double draw" render flag
+                _render_flag_value = ((_render_flag_value & (~(0x10))) | 0x10);
+                
+                shader_set_uniform_f(_u_fRenderFlags, _render_flag_value);
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
-                shader_set_uniform_f(_u_fSecondDraw, 0);
+                
+                //Reset the "double draw" render flag
+                _render_flag_value = (_render_flag_value & (~(0x10)));
             }
             
             if (_bilinear != undefined)
