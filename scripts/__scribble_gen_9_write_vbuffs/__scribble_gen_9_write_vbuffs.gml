@@ -59,19 +59,18 @@
                                          _quad_b = _quad_cy;\
                                      }\
                                      ;\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float3(_vbuff,  _half_w,  _half_h, 1.5 / (SCRIBBLE_CYCLE_COUNT+1));\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float3(_vbuff, -_half_w, -_half_h, 1.5 / (SCRIBBLE_CYCLE_COUNT+1));\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_b, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float3(_vbuff,  _half_w, -_half_h, 1.5 / (SCRIBBLE_CYCLE_COUNT+1));\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float3(_vbuff, -_half_w, -_half_h, 1.5 / (SCRIBBLE_CYCLE_COUNT+1));\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float3(_vbuff,  _half_w,  _half_h, 1.5 / (SCRIBBLE_CYCLE_COUNT+1));\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_t, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float3(_vbuff, -_half_w,  _half_h, 1.5 / (SCRIBBLE_CYCLE_COUNT+1));
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float3(_vbuff,  _half_w,  _half_h, _glyph_cycle);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float3(_vbuff, -_half_w, -_half_h, _glyph_cycle);\
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_b, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float3(_vbuff,  _half_w, -_half_h, _glyph_cycle);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float3(_vbuff, -_half_w, -_half_h, _glyph_cycle);\
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float3(_vbuff,  _half_w,  _half_h, _glyph_cycle);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_t, _packed_indexes); vertex_normal(_vbuff, _animation_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float3(_vbuff, -_half_w,  _half_h, _glyph_cycle);
 
 
 
 function __scribble_gen_9_write_vbuffs()
 {
     static _string_buffer   = __scribble_get_buffer_a();
-    static _effects_map     = __scribble_get_effects_map();
     static _generator_state = __scribble_get_generator_state();
     
     with(_generator_state)
@@ -116,7 +115,7 @@ function __scribble_gen_9_write_vbuffs()
     }
     
     var _glyph_colour       = 0xFFFFFFFF;
-    var _glyph_cycle        = 0x00000000;
+    var _glyph_cycle        = 0.0;
     var _glyph_effect_flags = 0;
     var _glyph_sprite_data  = 0;
     var _write_colour       = 0xFFFFFFFF;
@@ -190,15 +189,6 @@ function __scribble_gen_9_write_vbuffs()
                     
                     case __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE:
                         _glyph_cycle = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
-                        
-                        if (_glyph_cycle == undefined)
-                        {
-                            _write_colour = (__SCRIBBLE_FIX_ARGB? scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
-                        }
-                        else
-                        {
-                            _write_colour = (__SCRIBBLE_FIX_ARGB? scribble_rgb_to_bgr(_glyph_cycle) : _glyph_cycle); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
-                        }
                     break;
                     
                     case __SCRIBBLE_GEN_CONTROL_TYPE.__EVENT:

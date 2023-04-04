@@ -3,20 +3,19 @@ precision highp float;
 #define ANIM_INDEX    in_Normal.x
 #define CENTRE_DELTA  in_Colour2.xy
 
-const int MAX_EFFECTS = 11;
-#define SPRITE_FLAG   flagArray[ 0]
-#define WAVE_FLAG     flagArray[ 1]
-#define SHAKE_FLAG    flagArray[ 2]
-#define RAINBOW_FLAG  flagArray[ 3]
-#define WOBBLE_FLAG   flagArray[ 4]
-#define PULSE_FLAG    flagArray[ 5]
-#define WHEEL_FLAG    flagArray[ 6]
-#define CYCLE_FLAG    flagArray[ 7]
-#define JITTER_FLAG   flagArray[ 8]
-#define BLINK_FLAG    flagArray[ 9]
-#define SLANT_FLAG    flagArray[10]
+const int MAX_EFFECTS = 10;
+#define SPRITE_FLAG   flagArray[0]
+#define WAVE_FLAG     flagArray[1]
+#define SHAKE_FLAG    flagArray[2]
+#define RAINBOW_FLAG  flagArray[3]
+#define WOBBLE_FLAG   flagArray[4]
+#define PULSE_FLAG    flagArray[5]
+#define WHEEL_FLAG    flagArray[6]
+#define JITTER_FLAG   flagArray[7]
+#define BLINK_FLAG    flagArray[8]
+#define SLANT_FLAG    flagArray[9]
 
-const int MAX_DATA_FIELDS = 20;
+const int MAX_DATA_FIELDS = 19;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
 #define WAVE_FREQUENCY    u_aDataFields[ 1]
 #define WAVE_SPEED        u_aDataFields[ 2]
@@ -32,11 +31,10 @@ const int MAX_DATA_FIELDS = 20;
 #define WHEEL_FREQUENCY   u_aDataFields[12]
 #define WHEEL_SPEED       u_aDataFields[13]
 #define CYCLE_SPEED       u_aDataFields[14]
-#define CYCLE_SATURATION  u_aDataFields[15]
-#define CYCLE_VALUE       u_aDataFields[16]
-#define JITTER_SCALE      u_aDataFields[17]
-#define JITTER_SPEED      u_aDataFields[18]
-#define SLANT_GRADIENT    u_aDataFields[19]
+#define CYCLE_FREQUENCY   u_aDataFields[15]
+#define JITTER_SCALE      u_aDataFields[16]
+#define JITTER_SPEED      u_aDataFields[17]
+#define SLANT_GRADIENT    u_aDataFields[18]
 
 const int EASE_METHOD_COUNT = 15;
 #define EASE_NONE         0
@@ -360,17 +358,16 @@ void main()
     
     ////MAX_EFFECTS = 11
     //Unpack the effect flag value into an array of floats
-    flagArray[ 0] = step(1.0, mod(in_Normal.z,          2.0));
-    flagArray[ 1] = step(1.0, mod(in_Normal.z /    2.0, 2.0));
-    flagArray[ 2] = step(1.0, mod(in_Normal.z /    4.0, 2.0));
-    flagArray[ 3] = step(1.0, mod(in_Normal.z /    8.0, 2.0));
-    flagArray[ 4] = step(1.0, mod(in_Normal.z /   16.0, 2.0));
-    flagArray[ 5] = step(1.0, mod(in_Normal.z /   32.0, 2.0));
-    flagArray[ 6] = step(1.0, mod(in_Normal.z /   64.0, 2.0));
-    flagArray[ 7] = step(1.0, mod(in_Normal.z /  128.0, 2.0));
-    flagArray[ 8] = step(1.0, mod(in_Normal.z /  256.0, 2.0));
-    flagArray[ 9] = step(1.0, mod(in_Normal.z /  512.0, 2.0));
-    flagArray[10] = step(1.0, mod(in_Normal.z / 1024.0, 2.0));
+    flagArray[ 0] = step(1.0, mod(in_Normal.z,         2.0));
+    flagArray[ 1] = step(1.0, mod(in_Normal.z /   2.0, 2.0));
+    flagArray[ 2] = step(1.0, mod(in_Normal.z /   4.0, 2.0));
+    flagArray[ 3] = step(1.0, mod(in_Normal.z /   8.0, 2.0));
+    flagArray[ 4] = step(1.0, mod(in_Normal.z /  16.0, 2.0));
+    flagArray[ 5] = step(1.0, mod(in_Normal.z /  32.0, 2.0));
+    flagArray[ 6] = step(1.0, mod(in_Normal.z /  64.0, 2.0));
+    flagArray[ 7] = step(1.0, mod(in_Normal.z / 128.0, 2.0));
+    flagArray[ 8] = step(1.0, mod(in_Normal.z / 256.0, 2.0));
+    flagArray[ 9] = step(1.0, mod(in_Normal.z / 512.0, 2.0));
     
     
     
@@ -500,7 +497,7 @@ void main()
     v_vTexcoord = in_TextureCoord;
     
     //Cycle
-    v_vCycleTexcoord = vec2((CYCLE_SPEED*u_fTime - ANIM_INDEX)/50.0, in_Colour2.z);
+    v_vCycleTexcoord = vec2(0.05*CYCLE_FREQUENCY*(CYCLE_SPEED*u_fTime - ANIM_INDEX), in_Colour2.z);
     
     //Premultiplied Alpha
     //First bit of u_fRenderFlags indicates if text should be PMA'd

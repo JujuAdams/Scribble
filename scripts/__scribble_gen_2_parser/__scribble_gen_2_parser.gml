@@ -166,6 +166,7 @@ function __scribble_gen_2_parser()
     static _other_string_buffer   = __scribble_get_buffer_b();
     static _colours_struct        = _scribble_state.__custom_colour_struct;
     static _font_data_map         = _scribble_state.__font_data_map;
+    static _cycle_struct          = _scribble_state.__cycle_struct;
     static _generator_state       = __scribble_get_generator_state();
     
     with(_generator_state)
@@ -681,40 +682,29 @@ function __scribble_gen_2_parser()
                     
                         #region Cycle
                     
-                        // [cycle]
+                        // [cycle,<name>]
                         case 22:
-                            var _cycle_r = (_tag_parameter_count > 1)? max(1, real(_tag_parameters[1])) : 0;
-                            var _cycle_g = (_tag_parameter_count > 2)? max(1, real(_tag_parameters[2])) : 0;
-                            var _cycle_b = (_tag_parameter_count > 3)? max(1, real(_tag_parameters[3])) : 0;
-                            var _cycle_a = (_tag_parameter_count > 4)? max(1, real(_tag_parameters[4])) : 0;
-                        
-                            _state_effect_flags = _state_effect_flags | (1 << _effects_map[? "cycle"]);
-                        
-                            //Add an effect flag control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
-                            ++_control_count;
-                        
-                            //Add a cycle control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
-                            ++_control_count;
-                        
-                            __has_animation = true;
+                            var _cycle_data = _cycle_struct[$ _tag_parameters[1]];
+                            if (!is_struct(_cycle_data))
+                            {
+                                __scribble_trace("Warning! Cycle \"", _tag_parameters[1], "\" not recognised");
+                            }
+                            else
+                            {
+                                //Add a cycle control
+                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;
+                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _cycle_data.__v;
+                                ++_control_count;
+                                
+                                __has_animation = true;
+                            }
                         break;
                     
                         // [/cycle]
                         case 23:
-                            _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_map[? "/cycle"]));
-                        
-                            //Add an effect flag control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
-                            ++_control_count;
-                        
                             //Add a cycle control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = undefined;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = 0;
                             ++_control_count;
                         break;
                             

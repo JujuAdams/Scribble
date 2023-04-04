@@ -29,8 +29,7 @@
 #macro SCRIBBLE_DEFAULT_WHEEL_SPEED         0.2      //Default wheel speed. Larger numbers cause characters to move up and down more rapidly
 
 #macro SCRIBBLE_DEFAULT_CYCLE_SPEED         0.5      //Default cycle speed. Larger numbers cause characters to change colour more rapidly
-#macro SCRIBBLE_DEFAULT_CYCLE_SATURATION    180      //Default cycle colour saturation, from 0 to 255. Colour cycles using the HSV model to create colours
-#macro SCRIBBLE_DEFAULT_CYCLE_VALUE         255      //Default cycle colour value, from 0 to 255. Colour cycles using the HSV model to create colours
+#macro SCRIBBLE_DEFAULT_CYCLE_FREQUENCY     1        //Default cycle frequency
 
 #macro SCRIBBLE_DEFAULT_JITTER_SCALE        0.3      //Default jitter scale. A value of 0 will cause no visible scaling changes for a glyph
 #macro SCRIBBLE_DEFAULT_JITTER_SPEED        0.4      //Default jitter speed. Larger values cause glyph scales to fluctuate faster

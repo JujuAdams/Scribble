@@ -518,12 +518,11 @@ enum __SCRIBBLE_ANIM
     __WHEEL_FREQ,       //12
     __WHEEL_SPEED,      //13
     __CYCLE_SPEED,      //14
-    __CYCLE_SATURATION, //15
-    __CYCLE_VALUE,      //16
-    __JITTER_SCALE,     //17
-    __JITTER_SPEED,     //18
-    __SLANT_GRADIENT,   //19
-    __SIZE,             //20
+    __CYCLE_FREQUENCY,  //15
+    __JITTER_SCALE,     //16
+    __JITTER_SPEED,     //17
+    __SLANT_GRADIENT,   //18
+    __SIZE,             //19
 }
 
 enum __SCRIBBLE_COMMAND_TAG
