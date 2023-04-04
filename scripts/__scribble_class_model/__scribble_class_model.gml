@@ -1,6 +1,9 @@
 /// @param element
 /// @param modelCacheName
 
+#macro __SCRIBBLE_MODEL_VALIDATE_PAGE  if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");\
+                                       if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+
 function __scribble_class_model(_element, _model_cache_name) constructor
 {
     static __scribble_state    = __scribble_get_state();
@@ -127,8 +130,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if (_page != undefined)
         {
-            if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-            if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+            __SCRIBBLE_MODEL_VALIDATE_PAGE
             
             var _page_data = __pages_array[_page];
             var _left   = _page_data.__min_x;
@@ -225,20 +227,15 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     /// @param page
     static __get_text = function(_page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-        
+        __SCRIBBLE_MODEL_VALIDATE_PAGE
         if (!SCRIBBLE_ALLOW_TEXT_GETTER) __scribble_error("Cannot get text, SCRIBBLE_ALLOW_TEXT_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_TEXT_GETTER to <true> to get text");
-        
         return __pages_array[_page].__text;
     }
     
     /// @param page
     static __get_glyph_data = function(_index, _page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-        
+        __SCRIBBLE_MODEL_VALIDATE_PAGE
         return __pages_array[_page].__get_glyph_data(_index);
     }
     
@@ -250,9 +247,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     /// @param page
     static __get_line_count = function(_page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-        
+        __SCRIBBLE_MODEL_VALIDATE_PAGE
         return __pages_array[_page].__line_count;
     }
     
@@ -260,27 +255,29 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     /// @param page
     static __get_line_y = function(_index, _page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-        
-        return __pages_array[_page].__line_array[_index].__y;
+        __SCRIBBLE_MODEL_VALIDATE_PAGE
+        return __pages_array[_page].__get_line_y(_index);
     }
     
     /// @param index
     /// @param page
     static __get_line_height = function(_index, _page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
-        
-        return __pages_array[_page].__line_array[_index].__height;
+        __SCRIBBLE_MODEL_VALIDATE_PAGE
+        return __pages_array[_page].__get_line_height(_index);
+    }
+    
+    /// @param page
+    static __get_scroll_max = function(_page = __page)
+    {
+        __SCRIBBLE_MODEL_VALIDATE_PAGE
+        return __pages_array[_page].__get_scroll_max();
     }
     
     /// @param page
     static __get_glyph_count = function(_page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        __SCRIBBLE_MODEL_VALIDATE_PAGE
         
         //N.B. Off by one since we consider the terminating null as a glyph for the purposes of typists
         return __pages_array[_page].__glyph_count - 1;
@@ -288,8 +285,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     static __get_glyph_data_grid = function(_page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        __SCRIBBLE_MODEL_VALIDATE_PAGE
         
         if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Getting glyph data requires SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to be set to <true>");
         

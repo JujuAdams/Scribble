@@ -1276,6 +1276,25 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return _model.__get_line_height(_index, _page);
     }
     
+    static get_scroll_height = function(_page = __page)
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return max(0, _model.__get_scroll_max(_page) - __scroll_h);
+    }
+    
+    static get_scroll_min = function(_page = __page)
+    {
+        return -__scroll_h;
+    }
+    
+    static get_scroll_max = function(_page = __page)
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.__get_scroll_max(_page);
+    }
+    
     #endregion
     
     

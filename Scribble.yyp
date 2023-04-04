@@ -150,6 +150,7 @@
     {"id":{"name":"rm_font_add_test","path":"rooms/rm_font_add_test/rm_font_add_test.yy",},},
     {"id":{"name":"obj_test_1200_bgr_colour","path":"objects/obj_test_1200_bgr_colour/obj_test_1200_bgr_colour.yy",},},
     {"id":{"name":"obj_test_0702_rgb_multiply_and_alpha","path":"objects/obj_test_0702_rgb_multiply_and_alpha/obj_test_0702_rgb_multiply_and_alpha.yy",},},
+    {"id":{"name":"obj_test_0505_lines","path":"objects/obj_test_0505_lines/obj_test_0505_lines.yy",},},
     {"id":{"name":"obj_test_0703_build","path":"objects/obj_test_0703_build/obj_test_0703_build.yy",},},
     {"id":{"name":"obj_test_2100_chinese","path":"objects/obj_test_2100_chinese/obj_test_2100_chinese.yy",},},
     {"id":{"name":"scribble_msdf_thickness_offset","path":"scripts/scribble_msdf_thickness_offset/scribble_msdf_thickness_offset.yy",},},

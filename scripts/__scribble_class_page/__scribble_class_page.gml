@@ -1,3 +1,7 @@
+#macro __SCRIBBLE_PAGE_VALIDATE_LINE_INDEX  if (_line_index < 0) __scribble_error("Line index ", _line_index, " doesn't exist. Minimum line index is 0");\
+                                            var _line_count = array_length(__line_array);\
+                                            if (_line_index >= _line_count) __scribble_error("Line index ", _line_index, " doesn't exist. Maximum line index is ", _line_count-1);
+
 function __scribble_class_page() constructor
 {
     static __scribble_state = __scribble_get_state();
@@ -125,6 +129,7 @@ function __scribble_class_page() constructor
         }
     }
     
+    /// @param glyphIndex
     static __get_glyph_data = function(_index)
     {
         if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Cannot get glyph data, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to <true> to get glyph data");
@@ -150,6 +155,31 @@ function __scribble_class_page() constructor
                 right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT  ],
                 bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM ],
             };
+        }
+    }
+    
+    /// @param lineIndex
+    static __get_line_y = function(_line_index)
+    {
+        __SCRIBBLE_PAGE_VALIDATE_LINE_INDEX
+        return __line_array[_line_index].__y;
+    }
+    
+    /// @param lineIndex
+    static __get_line_height = function(_line_index)
+    {
+        __SCRIBBLE_PAGE_VALIDATE_LINE_INDEX
+        return __line_array[_line_index].__height;
+    }
+    
+    static __get_scroll_max = function()
+    {
+        var _line_count = array_length(__line_array);
+        if (_line_count <= 0) return 0;
+        
+        with(__line_array[_line_count-1])
+        {
+            return __y + __height;
         }
     }
     
