@@ -25,6 +25,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Animation","folderPath":"folders/Scribble/Animation.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Configuration - Please edit these!","folderPath":"folders/Scribble/Configuration - Please edit these!.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Custom Colours","folderPath":"folders/Scribble/Custom Colours.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Cycles","folderPath":"folders/Scribble/Cycles.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"External Assets","folderPath":"folders/Scribble/External Assets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Fonts","folderPath":"folders/Scribble/Fonts.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Glyph Adjustment","folderPath":"folders/Scribble/Glyph Adjustment.yy",},
@@ -56,7 +57,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"2300 Hebrew","folderPath":"folders/Test Cases/2000 Language Support/2300 Hebrew.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"2400 Arabic","folderPath":"folders/Test Cases/2000 Language Support/2400 Arabic.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"font_add Testing","folderPath":"folders/Test Cases/font_add Testing.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Cycles","folderPath":"folders/Scribble/Cycles.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"blip.ogg","CopyToMask":-1,"filePath":"datafiles",},

@@ -9,7 +9,7 @@ draw_set_colour(c_white);
 //Get the text element for our current line of text
 //Note that we're setting "textbox_element" here
 textbox_element = scribble(textbox_conversation[textbox_conversation_index])
-.layout_wrap_split_pages(textbox_width, textbox_height);
+.layout_wrap_split(textbox_width, textbox_height);
 
 //Draw main text body
 textbox_element.draw(_x + 10, _y + 10, typist);

@@ -6,7 +6,7 @@ if (keyboard_check(vk_space))
     wrap_y = mouse_y;
 }
 
-var _element = scribble(_demo_string).layout_wrap_split_pages(wrap_x, wrap_y);
+var _element = scribble(_demo_string).layout_wrap_split(wrap_x, wrap_y);
 
 if (mouse_check_button_pressed(mb_left)) page++;
 if (mouse_check_button_pressed(mb_right)) page--;

@@ -73,7 +73,7 @@ function __scribble_gen_6_build_lines()
         var _layout_max_scale       = _element.__layout_max_scale;
         var _layout_wrap            = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__WRAP);
         var _layout_page_separation = _element.__layout_page_separation;
-        var _layout_scrollable      = (_element.__layout_type == __SCRIBBLE_LAYOUT.__SCROLLABLE);
+        var _layout_scrollable      = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__SCROLL);
         
         if ((_element.__layout_width <= 0) || is_infinity(_element.__layout_width)) //Turn off wrapping logic if we have an invalid width
         {
