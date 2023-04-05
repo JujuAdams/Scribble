@@ -100,25 +100,24 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
                 var _space_width = _sprite_width + _separation;
             }
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__CHARACTER           ] = _glyph;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__CHARACTER  ] = _glyph;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__UNICODE             ] = _unicode;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BIDI                ] = __SCRIBBLE_BIDI.WHITESPACE;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__UNICODE    ] = _unicode;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BIDI       ] = __SCRIBBLE_BIDI.WHITESPACE;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__X_OFFSET            ] = -_sprite_x_offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__Y_OFFSET            ] = -_sprite_y_offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__WIDTH               ] = _space_width;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__HEIGHT              ] = _sprite_height;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_HEIGHT         ] = _sprite_height;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION          ] = _space_width;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET         ] = 0;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_SCALE          ] = 1;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__X_OFFSET   ] = -_sprite_x_offset;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__Y_OFFSET   ] = -_sprite_y_offset;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__WIDTH      ] = _space_width;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__HEIGHT     ] = _sprite_height;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_HEIGHT] = _sprite_height;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION ] = _space_width;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = 0;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL            ] = _sprite_frames[0].texture; //Use the texture ID for the first image from the sprite
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0                  ] = 0;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0                  ] = 0;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1                  ] = 0;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V1                  ] = 0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _sprite_frames[0].texture; //Use the texture ID for the first image from the sprite
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0         ] = 0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0         ] = 0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1         ] = 0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V1         ] = 0;
             
             _font_glyphs_map[? _unicode] = _i;
         }
@@ -159,25 +158,24 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             var _h = _image_info.crop_height;
             
             //Build an array to store this glyph's properties
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__CHARACTER           ] = _glyph;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__CHARACTER  ] = _glyph;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__UNICODE             ] = _unicode;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BIDI                ] = _bidi;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__UNICODE    ] = _unicode;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BIDI       ] = _bidi;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__X_OFFSET            ] = _x_offset - _sprite_x_offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__Y_OFFSET            ] = _image_info.y_offset - _sprite_y_offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__WIDTH               ] = _w;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__HEIGHT              ] = _h;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_HEIGHT         ] = _sprite_height;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION          ] = _glyph_separation;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET         ] = -_x_offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_SCALE          ] = 1;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__X_OFFSET   ] = _x_offset - _sprite_x_offset;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__Y_OFFSET   ] = _image_info.y_offset - _sprite_y_offset;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__WIDTH      ] = _w;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__HEIGHT     ] = _h;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_HEIGHT] = _sprite_height;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION ] = _glyph_separation;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = -_x_offset;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL            ] = _texture;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0                  ] = _uvs[0];
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0                  ] = _uvs[1];
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1                  ] = _uvs[2];
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V1                  ] = _uvs[3];
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _texture;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0         ] = _uvs[0];
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0         ] = _uvs[1];
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1         ] = _uvs[2];
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V1         ] = _uvs[3];
             
             _font_glyphs_map[? _unicode] = _i;
         }

@@ -114,25 +114,24 @@ function __scribble_font_add_from_project(_font)
             var _u1 = _u0 + _w*_texture_tw;
             var _v1 = _v0 + _h*_texture_th;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__CHARACTER           ] = _char;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__CHARACTER  ] = _char;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__UNICODE             ] = _unicode;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BIDI                ] = _bidi;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__UNICODE    ] = _unicode;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BIDI       ] = _bidi;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__X_OFFSET            ] = _glyph_dict.offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__Y_OFFSET            ] = 0;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__WIDTH               ] = _w;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__HEIGHT              ] = _h;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_HEIGHT         ] = _h;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION          ] = _glyph_dict.shift;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET         ] = -_glyph_dict.offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_SCALE          ] = 1;
-                                                         
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL            ] = _texture;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0                  ] = _u0;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1                  ] = _u1;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0                  ] = _v0;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V1                  ] = _v1;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__X_OFFSET   ] = _glyph_dict.offset;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__Y_OFFSET   ] = 0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__WIDTH      ] = _w;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__HEIGHT     ] = _h;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_HEIGHT] = _h;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION ] = _glyph_dict.shift;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = -_glyph_dict.offset;
+            
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _texture;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0         ] = _u0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1         ] = _u1;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0         ] = _v0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V1         ] = _v1;
             
             _font_glyphs_map[? _unicode] = _i;
             

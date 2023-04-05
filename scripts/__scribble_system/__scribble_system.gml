@@ -439,17 +439,16 @@ enum __SCRIBBLE_GLYPH
     __FONT_HEIGHT,          // 7  |
     __SEPARATION,           // 8  |
     __LEFT_OFFSET,          // 9  | This group of enums must not change order or be split
-    __FONT_SCALE,           //10  |
                             //    |
-    __MATERIAL,             //11  |
-    __U0,                   //12  | Be careful of ordering!
-    __U1,                   //13  | scribble_font_bake_effects() relies on this
-    __V0,                   //14  |
-    __V1,                   //15  |
+    __MATERIAL,             //10  |
+    __U0,                   //11  | Be careful of ordering!
+    __U1,                   //12  | scribble_font_bake_effects() relies on this
+    __V0,                   //13  |
+    __V1,                   //14  |
                             //    |
-    __LAST_USED,            //16 /
+    __LAST_USED,            //15 /
     
-    __SIZE                  //17
+    __SIZE                  //16
 }
 
 enum SCRIBBLE_EASE
@@ -546,20 +545,19 @@ enum __SCRIBBLE_GEN_GLYPH
     __HEIGHT,               // 5   |
     __FONT_HEIGHT,          // 6   |
     __SEPARATION,           // 7   |
-    __LEFT_OFFSET,          // 8   |
-    __SCALE,                // 9   | This group of enums must not change order or be split
+    __LEFT_OFFSET,          // 8   | This group of enums must not change order or be split
                             //     |
-    __MATERIAL,             //10   |
-    __QUAD_U0,              //11   | Be careful of ordering!
-    __QUAD_U1,              //12   | scribble_font_bake_effects() relies on this
-    __QUAD_V0,              //13   |
-    __QUAD_V1,              //14  /
+    __MATERIAL,             // 9   |
+    __QUAD_U0,              //10   | Be careful of ordering!
+    __QUAD_U1,              //11   | scribble_font_bake_effects() relies on this
+    __QUAD_V0,              //12   |
+    __QUAD_V1,              //13  /
     
-    __CONTROL_COUNT,        //15
-    __ANIMATION_INDEX,      //16
-    __SPRITE_DATA,          //17     Only used for sprites and surfaces
+    __CONTROL_COUNT,        //14
+    __ANIMATION_INDEX,      //15
+    __SPRITE_DATA,          //16     Only used for sprites and surfaces
                       
-    __SIZE,                 //18
+    __SIZE,                 //17
     
     //__SDF_PXRANGE,          //15   |
     //__SDF_THICKNESS_OFFSET, //16   |
