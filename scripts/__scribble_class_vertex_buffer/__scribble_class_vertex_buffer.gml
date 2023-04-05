@@ -82,13 +82,13 @@ function __scribble_class_vertex_buffer(_material_alias) constructor
             }
             
             shader_set_uniform_f(_u_fRenderFlags, _render_flag_value);
-            vertex_submit(other.__vertex_buffer, pr_trianglelist, other.__texture);
+            vertex_submit(other.__vertex_buffer, pr_trianglelist, __texture);
             
             if (_double_draw && (__sdf || __baked_effects))
             {
                 //Set the "double draw" render flag
                 shader_set_uniform_f(_u_fRenderFlags, _render_flag_value | 0x10);
-                vertex_submit(other.__vertex_buffer, pr_trianglelist, other.__texture);
+                vertex_submit(other.__vertex_buffer, pr_trianglelist, __texture);
             }
         }
     }

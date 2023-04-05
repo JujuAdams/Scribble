@@ -32,7 +32,7 @@ function __scribble_class_page() constructor
     __max_y  = 0;
     
     __vertex_buffer_array = [];
-    if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict = {}; //FIXME - Workaround for pointers not being stringified properly on HTML5
+    if (!__SCRIBBLE_ON_WEB) __material_alias_to_vertex_buffer_dict = {}; //FIXME - Workaround for pointers not being stringified properly on HTML5
     
     __char_events  = {};
     __line_events  = {};
@@ -40,15 +40,9 @@ function __scribble_class_page() constructor
     
     static __submit = function(_double_draw)
     {
-        static _u_fRenderFlags        = shader_get_uniform(__shd_scribble, "u_fRenderFlags"       );
-        static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );
-        static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );
-        static _u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble, "u_fSDFThicknessOffset");
-        
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
         var _old_tex_filter = gpu_get_tex_filter();
-        gpu_set_tex_filter(_bilinear);
         
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
@@ -57,33 +51,23 @@ function __scribble_class_page() constructor
             ++_i;
         }
         
-        //Reset the texture filtering
         gpu_set_tex_filter(_old_tex_filter);
     }
     
     static __freeze = function()
     {
-        if (!__frozen)
+        if (SCRIBBLE_VERBOSE) var _t = get_timer();
+        
+        var _i = 0;
+        repeat(array_length(__vertex_buffer_array))
         {
-            if (SCRIBBLE_VERBOSE)
-            {
-                var _t = get_timer();
-            }
-            
-            var _i = 0;
-            repeat(array_length(__vertex_buffer_array))
-            {
-                vertex_freeze(__vertex_buffer_array[_i].__vertex_buffer);
-                ++_i;
-            }
-            
-            __frozen = true;
-            
-            if (SCRIBBLE_VERBOSE)
-            {
-                __scribble_trace("Incrementally froze page vertex buffers, time taken = ", (get_timer() - _t)/1000, "ms");
-            }
+            vertex_freeze(__vertex_buffer_array[_i].__vertex_buffer);
+            ++_i;
         }
+        
+        __frozen = true;
+            
+        if (SCRIBBLE_VERBOSE) __scribble_trace("Incrementally froze page vertex buffers, time taken = ", (get_timer() - _t)/1000, "ms");
     }
     
     /// @param glyphIndex
@@ -144,7 +128,7 @@ function __scribble_class_page() constructor
     {
         if (!__SCRIBBLE_ON_WEB)
         {
-            var _data = __texture_to_vertex_buffer_dict[$ string(_material_alias)];
+            var _data = __material_alias_to_vertex_buffer_dict[$ string(_material_alias)];
         }
         else //FIXME - Workaround for pointers not being stringified properly on HTML5
         {
@@ -167,7 +151,7 @@ function __scribble_class_page() constructor
         {
             var _data = new __scribble_class_vertex_buffer(_material_alias);
             array_push(__vertex_buffer_array, _data);
-            __texture_to_vertex_buffer_dict[$ string(_material_alias)] = _data;
+            __material_alias_to_vertex_buffer_dict[$ string(_material_alias)] = _data;
         }
         
         return _data.__vertex_buffer;
@@ -197,7 +181,7 @@ function __scribble_class_page() constructor
             ++_i;
         }
         
-        __texture_to_vertex_buffer_dict = {};
+        __material_alias_to_vertex_buffer_dict = {};
         array_resize(__vertex_buffer_array, 0);
     }
 }
