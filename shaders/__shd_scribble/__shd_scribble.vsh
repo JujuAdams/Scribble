@@ -76,10 +76,10 @@ varying float v_fObjectY;
 varying vec2  v_vTexcoord;
 varying vec2  v_vCycleTexcoord;
 varying vec4  v_vColour;
-varying float v_fPremultiplyAlpha;
-varying float v_fBakedEffects;
-varying float v_fSDF;
-varying float v_fSecondDraw;
+varying float v_fPremultiplyAlpha; //Boolean flag
+varying float v_fBakedEffects;     //Boolean flag
+varying float v_fSDF;              //Boolean flag
+varying float v_fSecondDraw;       //Boolean flag
 
 uniform float u_fRenderFlags;                           //1
 
