@@ -1,24 +1,514 @@
 precision highp float;
 
+#define ANIM_INDEX    in_Normal.x
+#define CENTRE_DELTA  in_Colour2.xy
+
+const int MAX_EFFECTS = 10;
+#define SPRITE_FLAG   flagArray[0]
+#define WAVE_FLAG     flagArray[1]
+#define SHAKE_FLAG    flagArray[2]
+#define RAINBOW_FLAG  flagArray[3]
+#define WOBBLE_FLAG   flagArray[4]
+#define PULSE_FLAG    flagArray[5]
+#define WHEEL_FLAG    flagArray[6]
+#define JITTER_FLAG   flagArray[7]
+#define BLINK_FLAG    flagArray[8]
+#define SLANT_FLAG    flagArray[9]
+
+const int MAX_DATA_FIELDS = 19;
+#define WAVE_AMPLITUDE    u_aDataFields[ 0]
+#define WAVE_FREQUENCY    u_aDataFields[ 1]
+#define WAVE_SPEED        u_aDataFields[ 2]
+#define SHAKE_AMPLITUDE   u_aDataFields[ 3]
+#define SHAKE_SPEED       u_aDataFields[ 4]
+#define RAINBOW_WEIGHT    u_aDataFields[ 5]
+#define RAINBOW_SPEED     u_aDataFields[ 6]
+#define WOBBLE_ANGLE      u_aDataFields[ 7]
+#define WOBBLE_FREQUENCY  u_aDataFields[ 8]
+#define PULSE_SCALE       u_aDataFields[ 9]
+#define PULSE_SPEED       u_aDataFields[10]
+#define WHEEL_AMPLITUDE   u_aDataFields[11]
+#define WHEEL_FREQUENCY   u_aDataFields[12]
+#define WHEEL_SPEED       u_aDataFields[13]
+#define CYCLE_SPEED       u_aDataFields[14]
+#define CYCLE_FREQUENCY   u_aDataFields[15]
+#define JITTER_SCALE      u_aDataFields[16]
+#define JITTER_SPEED      u_aDataFields[17]
+#define SLANT_GRADIENT    u_aDataFields[18]
+
+const int EASE_METHOD_COUNT = 15;
+#define EASE_NONE         0
+#define EASE_LINEAR       1
+#define EASE_QUADRATIC    2
+#define EASE_CUBIC        3
+#define EASE_QUARTIC      4
+#define EASE_QUINTIC      5
+#define EASE_SINE         6
+#define EASE_EXPONENTIAL  7
+#define EASE_CIRCULAR     8
+#define EASE_BACK         9
+#define EASE_ELASTIC     10
+#define EASE_BOUNCE      11
+#define EASE_CUSTOM_1    12
+#define EASE_CUSTOM_2    13
+#define EASE_CUSTOM_3    14
+
+const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
+
+const int WINDOW_COUNT = 3;
+
+const float PI = 3.14159265359;
+
+
+
+//--------------------------------------------------------------------------------------------------------
+// Attributes, Varyings, and Uniforms
+
+
 attribute vec3  in_Position;     //{X, Y, Packed character & line index}
 attribute vec3  in_Normal;       //{Animation index, Sprite data, Bitpacked effect flags}
 attribute vec4  in_Colour;       //Colour
 attribute vec2  in_TextureCoord; //UVs
 attribute vec3  in_Colour2;      //{dX, dY, Cycle V-coord}
 
-varying vec3  v_Position;    
-varying vec3  v_Normal;      
-varying vec4  v_Colour;      
-varying vec2  v_TextureCoord;
-varying vec3  v_Colour2;     
+varying vec2  v_vPosition;
+varying float v_fObjectY;
+varying vec2  v_vTexcoord;
+varying vec2  v_vCycleTexcoord;
+varying vec4  v_vColour;
+varying float v_fPremultiplyAlpha; //Boolean flag
+varying float v_fBakedEffects;     //Boolean flag
+varying float v_fSDF;              //Boolean flag
+varying float v_fSecondDraw;       //Boolean flag
+
+uniform float u_fRenderFlags;                           //1
+
+uniform vec4  u_vColourMultiply;                        //4
+uniform vec4  u_vGradient;                              //4
+uniform vec2  u_vSkew;                                  //2
+uniform vec2  u_vRegionActive;                          //2
+uniform vec4  u_vRegionColour;                          //4
+uniform float u_fTime;                                  //1
+uniform float u_aDataFields[MAX_DATA_FIELDS];           //19
+uniform vec2  u_aBezier[3];                             //6
+uniform float u_fBlinkState;                            //1
+
+uniform int   u_iTypewriterMethod;                      //1
+uniform int   u_iTypewriterCharMax;                     //1
+uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //6
+uniform float u_fTypewriterSmoothness;                  //1
+uniform vec2  u_vTypewriterStartPos;                    //2
+uniform vec2  u_vTypewriterStartScale;                  //2
+uniform float u_fTypewriterStartRotation;               //1
+uniform float u_fTypewriterAlphaDuration;               //1
+
+float flagArray[MAX_EFFECTS];
+
+//--------------------------------------------------------------------------------------------------------
+// Functions
+// Scroll all the way down to see the main() function for the vertex shader
+
+//*That* randomisation function.
+//I haven't found a better method yet, and this is sufficient for our purposes
+float rand(vec2 co)
+{
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+//Rotate by vector
+vec2 rotate_by_vector(vec2 position, vec2 centre, vec2 vector)
+{
+    //Normally I'd do this with a mat2() but for some reason this had issues cross-platform
+    vec2 delta = position - centre;
+    return centre + vec2(delta.x*vector.x - delta.y*vector.y, delta.x*vector.y + delta.y*vector.x);
+}
+
+//Rotate the character
+vec2 rotate(vec2 position, vec2 centre, float angle)
+{
+    return rotate_by_vector(position, centre, vec2(cos(0.00872664625*angle), -sin(0.00872664625*angle)));
+}
+
+//Scale the character
+vec2 scale(vec2 position, vec2 centre, float scale)
+{
+    return centre + scale*(position - centre);
+}
+
+vec2 scale(vec2 position, vec2 centre, vec2 scale)
+{
+    return centre + scale*(position - centre);
+}
+
+//Oscillate the character
+vec2 wave(vec2 position, float animIndex)
+{
+    return vec2(position.x, position.y + WAVE_FLAG*WAVE_AMPLITUDE*sin(WAVE_FREQUENCY*animIndex + WAVE_SPEED*u_fTime));
+}
+
+//Wheel the character around
+vec2 wheel(vec2 position, float animIndex)
+{
+    float time = WHEEL_FREQUENCY*animIndex + WHEEL_SPEED*u_fTime;
+    return position.xy + WHEEL_FLAG*WHEEL_AMPLITUDE*vec2(cos(time), -sin(time));
+}
+
+//Wobble the character by rotating around its central point
+vec2 wobble(vec2 position, vec2 centre)
+{
+    return rotate(position, centre, WOBBLE_FLAG*WOBBLE_ANGLE*sin(WOBBLE_FREQUENCY*u_fTime));
+}
+
+//Pulse the character by scaling it up and down
+vec2 pulse(vec2 position, vec2 centre, float animIndex)
+{
+    float adjustedScale = 1.0 +  PULSE_FLAG*PULSE_SCALE*(0.5 + 0.5*sin(PULSE_SPEED*(250.0*animIndex + u_fTime)));
+    return scale(position, centre, adjustedScale);
+}
+
+//Shake the character along the x/y axes
+//We use integer time steps so that at low speeds characters don't jump around too much
+//Lots of magic numbers in here to try to get a nice-looking shake
+vec2 shake(vec2 position, float animIndex)
+{
+    float time = SHAKE_SPEED*u_fTime + 0.5;
+    float floorTime = floor(time);
+    float merge = 1.0 - abs(2.0*(time - floorTime) - 1.0);
+    
+    //Use some misc prime numbers to try to get a varied-looking shake
+    vec2 delta = vec2(rand(vec2(animIndex/149.0 + floorTime/13.0, animIndex/727.0 - floorTime/331.0)),
+                      rand(vec2(animIndex/501.0 - floorTime/19.0, animIndex/701.0 + floorTime/317.0)));
+    
+    return position + SHAKE_FLAG*SHAKE_AMPLITUDE*merge*(2.0*delta - 1.0);
+}
+
+//Jitter the character scale, using a similar method to above
+vec2 jitter(vec2 position, vec2 centre, float animIndex)
+{
+    float floorTime = floor(JITTER_SPEED*u_fTime + 0.5);
+    
+    //Use some misc prime numbers to try to get a varied-looking jitter
+    float delta = rand(vec2(animIndex/149.0 + floorTime/13.0, animIndex/727.0 - floorTime/331.0));
+    
+    return scale(position, centre, 1.0 + JITTER_SCALE*(2.0*delta - 1.0));
+}
+
+float filterSprite(float spriteData)
+{
+    float imageSpeed = floor(spriteData / 4096.0);
+    float imageMax   = floor((spriteData - 4096.0*imageSpeed) / 64.0);
+    float image      = spriteData - (4096.0*imageSpeed + 64.0*imageMax);
+    
+    float displayImage = floor(mod(imageSpeed*u_fTime/1024.0, imageMax));
+    return ((abs(image-displayImage) < 1.0/255.0)? 1.0 : 0.0);
+}
+
+//HSV->RGB conversion function
+vec3 hsv2rgb(vec3 c)
+{
+    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+    vec3 P = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+    return c.z * mix(K.xxx, clamp(P - K.xxx, 0.0, 1.0), c.y);
+}
+
+//Colour cycling for the rainbow effect
+vec4 rainbow(float animIndex, vec4 colour)
+{
+    return vec4(mix(colour.rgb, hsv2rgb(vec3(0.02*animIndex + RAINBOW_SPEED*u_fTime, 1.0, 1.0)), RAINBOW_FLAG*RAINBOW_WEIGHT), colour.a);
+}
+
+//Fade effect for typewriter etc.
+float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index, bool invert)
+{
+    float result = 0.0;
+    float f      = 1.0;
+    float head   = 0.0;
+    float tail   = 0.0;
+    
+    for(int i = 0; i < 2*WINDOW_COUNT; i += 2)
+    {
+        head = windowArray[i  ];
+        tail = windowArray[i+1];
+        
+        if (u_fTypewriterSmoothness > 0.0)
+        {
+            f = 1.0 - min(max((index - tail) / smoothness, 0.0), 1.0);
+        }
+        else
+        {
+            f = 1.0;
+        }
+        
+        f *= step(index, head);
+        
+        result = max(f, result);
+    }
+    
+    if (invert) result = 1.0 - result;
+    
+    return result;
+}
+
+vec2 bezier(float t, vec2 p1, vec2 p2, vec2 p3)
+{
+    float inv_t = 1.0 - t;
+    return 3.0*inv_t*inv_t*t*p1 + 3.0*inv_t*t*t*p2 + t*t*t*p3;
+}
+
+vec2 bezierDerivative(float t, vec2 p1, vec2 p2, vec2 p3)
+{
+    float inv_t = 1.0 - t;
+    return 3.0*inv_t*inv_t*p1 + 6.0*inv_t*t*(p2 - p1) + 3.0*t*t*(p3 - p2);
+}
+
+
+
+//--------------------------------------------------------------------------------------------------------
+
+
+
+float easeQuad(float time)
+{
+    return time*time;
+}
+
+float easeCubic(float time)
+{
+    return time*time*time;
+}
+
+float easeQuart(float time)
+{
+    return time*time*time*time;
+}
+
+float easeQuint(float time)
+{
+    return time*time*time*time*time;
+}
+
+float easeSine(float time)
+{
+    return 1.0 - cos(0.5*(time*PI));
+}
+
+float easeExpo(float time)
+{
+    if (time == 0.0) return 0.0;
+    return pow(2.0, 10.0*time - 10.0);
+}
+
+float easeCirc(float time)
+{
+    return 1.0 - sqrt(1.0 - time*time);
+}
+
+float easeBack(float time)
+{
+    float param = 1.70158;
+    return time*time*((param + 1.0)*time - param);
+}
+
+float easeElastic(float time)
+{
+    if (time == 0.0) return 0.0;
+    if (time == 1.0) return 1.0;
+    return -pow(2.0, 10.0*time - 10.0) * sin((time*10.0 - 10.75) * (2.0*PI) / 3.0);
+}
+
+float easeBounce(float time)
+{
+    float n1 = 7.5625;
+    float d1 = 2.75;
+    
+    time = 1.0 - time;
+    
+    if (time < 1.0 / d1)
+    {
+        return 1.0 - n1*time*time;
+    }
+    else if (time < 2.0 / d1)
+    {
+        time -= 1.5/d1;
+        return 1.0 - (n1*time*time + 0.75);
+    }
+    else if (time < 2.5 / d1)
+    {
+        time -= 2.25/d1;
+        return 1.0 - (n1*time*time + 0.9375);
+    }
+    else
+    {
+        time -= 2.625/d1;
+        return 1.0 - (n1*time*time + 0.984375);
+    }
+}
+
+
+
+//--------------------------------------------------------------------------------------------------------
+
+
 
 void main()
 {
-    gl_Position = gm_Matrices[MATRIX_PROJECTION]*gm_Matrices[MATRIX_VIEW]*vec4(in_Position.xy, 0.0, 1.0);
+    //Unpack character/line index
+    float characterIndex = floor(in_Position.z / MAX_LINES);
+    float lineIndex      = in_Position.z - characterIndex*MAX_LINES;
     
-    v_Position     = in_Position;    
-    v_Normal       = in_Normal;      
-    v_Colour       = in_Colour;      
-    v_TextureCoord = in_TextureCoord;
-    v_Colour2      = in_Colour2;     
+    ////MAX_EFFECTS = 11
+    //Unpack the effect flag value into an array of floats
+    flagArray[ 0] = step(1.0, mod(in_Normal.z,         2.0));
+    flagArray[ 1] = step(1.0, mod(in_Normal.z /   2.0, 2.0));
+    flagArray[ 2] = step(1.0, mod(in_Normal.z /   4.0, 2.0));
+    flagArray[ 3] = step(1.0, mod(in_Normal.z /   8.0, 2.0));
+    flagArray[ 4] = step(1.0, mod(in_Normal.z /  16.0, 2.0));
+    flagArray[ 5] = step(1.0, mod(in_Normal.z /  32.0, 2.0));
+    flagArray[ 6] = step(1.0, mod(in_Normal.z /  64.0, 2.0));
+    flagArray[ 7] = step(1.0, mod(in_Normal.z / 128.0, 2.0));
+    flagArray[ 8] = step(1.0, mod(in_Normal.z / 256.0, 2.0));
+    flagArray[ 9] = step(1.0, mod(in_Normal.z / 512.0, 2.0));
+    
+    
+    
+    //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
+    vec2 pos = in_Position.xy;
+    
+    
+    
+    vec2 centre;
+    
+    //If we have a valid Bezier curve, apply it
+    if ((u_aBezier[2].x != 0.0) || (u_aBezier[2].y != 0.0))
+    {
+        centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+        
+        vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+        pos = rotate_by_vector(centre - CENTRE_DELTA, centre, normalize(orientation));
+        
+        vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
+        pos += in_Position.y*perpendicular;
+    }
+    else
+    {
+        centre = pos + CENTRE_DELTA;
+    }
+    
+    pos += u_vSkew*centre.yx;
+    if (SLANT_FLAG > 0.5) pos.x += in_Colour2.y*SLANT_GRADIENT;
+    
+    
+    
+    //Second bit of u_fRenderFlags indicates if sprites should be RGB blended
+    if ((mod(u_fRenderFlags/2.0, 2.0) < 1.0) && (SPRITE_FLAG > 0.5))
+    {
+        //If we're not RGB blending sprites but this *is* a sprite then only modify the alpha channel
+        v_vColour = vec4(1.0, 1.0, 1.0, u_vColourMultiply.a);
+    }
+    else
+    {
+        //Colour
+        v_vColour = in_Colour;
+        v_vColour = rainbow(ANIM_INDEX, v_vColour); //Cycle colours for the rainbow effect
+        
+        //Apply the gradient effect
+        if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
+        
+        //And then blend with the blend colour/alpha
+        v_vColour *= u_vColourMultiply;
+    }
+    
+    //Use packed sprite data to filter out sprite frames that we don't want
+    if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(in_Normal.y);
+    
+    //Sixth bit of u_fRenderFlags indicates if the blink state is enabled
+    if ((BLINK_FLAG > 0.5) && (mod(u_fRenderFlags/32.0, 2.0) < 1.0)) v_vColour.a = 0.0;
+    
+    //Regions
+    if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
+    
+    
+    
+    //Vertex animation
+    pos.xy = wobble(pos, centre);
+    pos.xy = pulse( pos, centre, ANIM_INDEX);
+    if (JITTER_FLAG > 0.5) pos.xy = jitter(pos, centre, ANIM_INDEX); //Apply the jitter effect
+    
+    
+    
+    //Apply fade (if we're given a method)
+    int easeMethod = u_iTypewriterMethod;
+    bool fadeOut = (easeMethod >= EASE_METHOD_COUNT);
+    if (fadeOut) easeMethod -= EASE_METHOD_COUNT;
+    
+    if (easeMethod > EASE_NONE)
+    {
+        //Seventh bit of u_fRenderFlags indicates if the typist should use lines or characters
+        float fadeIndex = ((mod(u_fRenderFlags/64.0, 2.0) < 1.0)? characterIndex : lineIndex) + 1.0;
+        if (u_iTypewriterCharMax > 0) fadeIndex = float(u_iTypewriterCharMax) - fadeIndex;
+        
+        float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, fadeIndex, fadeOut);
+        
+        if (u_fTypewriterAlphaDuration == 0.0)
+        {
+            if (time <= 0.0) v_vColour.a = 0.0;
+        }
+        else
+        {
+            v_vColour.a *= clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
+        }
+             if (easeMethod == EASE_QUADRATIC  ) { time = 1.0 - easeQuad(   1.0 - time); }
+        else if (easeMethod == EASE_CUBIC      ) { time = 1.0 - easeCubic(  1.0 - time); }
+        else if (easeMethod == EASE_QUARTIC    ) { time = 1.0 - easeQuart(  1.0 - time); }
+        else if (easeMethod == EASE_QUINTIC    ) { time = 1.0 - easeQuint(  1.0 - time); }
+        else if (easeMethod == EASE_SINE       ) { time = 1.0 - easeSine(   1.0 - time); }
+        else if (easeMethod == EASE_EXPONENTIAL) { time = 1.0 - easeExpo(   1.0 - time); }
+        else if (easeMethod == EASE_CIRCULAR   ) { time = 1.0 - easeCirc(   1.0 - time); }
+        else if (easeMethod == EASE_BACK       ) { time = 1.0 - easeBack(   1.0 - time); }
+        else if (easeMethod == EASE_ELASTIC    ) { time = 1.0 - easeElastic(1.0 - time); }
+        else if (easeMethod == EASE_BOUNCE     ) { time = 1.0 - easeBounce( 1.0 - time); }
+        else if (easeMethod == EASE_CUSTOM_1   ) { /*Custom ease slot 1*/ }
+        else if (easeMethod == EASE_CUSTOM_2   ) { /*Custom ease slot 2*/ }
+        else if (easeMethod == EASE_CUSTOM_3   ) { /*Custom ease slot 3*/ }
+        
+        pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
+        pos = rotate(pos, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
+        pos.xy += mix(u_vTypewriterStartPos, vec2(0.0), time);
+    }
+    
+    
+    
+    //Vertex
+    pos.xy = wave( pos, ANIM_INDEX); //Apply the wave effect
+    pos.xy = wheel(pos, ANIM_INDEX); //Apply the wheel effect
+    pos.xy = shake(pos, ANIM_INDEX); //Apply the shake effect
+    
+    
+    
+    //Final positioning
+    v_fObjectY = pos.y;
+    vec4 wsPos = gm_Matrices[MATRIX_WORLD]*vec4(pos, 0.0, 1.0);
+    v_vPosition = wsPos.xy;
+    gl_Position = gm_Matrices[MATRIX_PROJECTION]*gm_Matrices[MATRIX_VIEW]*wsPos;
+    
+    
+    
+    //Texture
+    v_vTexcoord = in_TextureCoord;
+    
+    //Cycle
+    v_vCycleTexcoord = vec2(0.05*CYCLE_FREQUENCY*(CYCLE_SPEED*u_fTime - ANIM_INDEX), in_Colour2.z);
+    
+    //Premultiplied Alpha
+    //First bit of u_fRenderFlags indicates if text should be PMA'd
+    v_fPremultiplyAlpha = mod(u_fRenderFlags, 2.0);
+    
+    //Third bit of u_fRenderFlags indicates if we're using a font with baked effects
+    v_fBakedEffects = mod(u_fRenderFlags/4.0, 2.0);
+    
+    //Fourth bit of u_fRenderFlags indicates if we're using a font with baked effects
+    v_fSDF = mod(u_fRenderFlags/8.0, 2.0);
+    
+    //Fifth bit of u_fRenderFlags indicates if we're using a font with baked effects
+    v_fSecondDraw = mod(u_fRenderFlags/16.0, 2.0);
 }

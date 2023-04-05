@@ -1888,7 +1888,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __matrix_y       = _y;
             
             var _x_offset = -__origin_x;
-            var _y_offset = -__origin_y - __scroll_y + __layout_height;
+            var _y_offset = -__origin_y - __scroll_y;// + __layout_height;
             var _xscale   = __layout_scale*_model.__fit_scale*__post_xscale;
             var _yscale   = __layout_scale*_model.__fit_scale*__post_yscale;
             var _angle    = __post_angle;

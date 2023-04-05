@@ -360,7 +360,7 @@
     {"name":"__scribble_get_typewriter_events_map","order":10,"path":"scripts/__scribble_get_typewriter_events_map/__scribble_get_typewriter_events_map.yy",},
     {"name":"__scribble_system","order":3,"path":"scripts/__scribble_system/__scribble_system.yy",},
     {"name":"__scribble_tick","order":4,"path":"scripts/__scribble_tick/__scribble_tick.yy",},
-    {"name":"__shd_scribble_actual","order":1,"path":"shaders/__shd_scribble_actual/__shd_scribble_actual.yy",},
+    {"name":"__shd_scribble","order":1,"path":"shaders/__shd_scribble/__shd_scribble.yy",},
     {"name":"snd_switch","order":1,"path":"sounds/snd_switch/snd_switch.yy",},
     {"name":"spr_large_coin","order":1,"path":"sprites/spr_large_coin/spr_large_coin.yy",},
     {"name":"spr_mallangche","order":1,"path":"sprites/spr_mallangche/spr_mallangche.yy",},
