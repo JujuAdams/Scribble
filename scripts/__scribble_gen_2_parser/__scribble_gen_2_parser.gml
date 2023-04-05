@@ -829,12 +829,9 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V0      ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U1      ] = 1;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V1      ] = 1;
-                        
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE  ] = undefined;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BAKED_EFFECTS] = false;
                             
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SPRITE_DATA  ] = { surface: _surface };
                         
                             ++_glyph_count;
                             _glyph_prev_arabic_join_next = false;
@@ -1077,17 +1074,10 @@ function __scribble_gen_2_parser()
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = _sprite_w;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
-                            
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE  ] = undefined;
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BAKED_EFFECTS] = false;
                                 
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
-                            
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SPRITE_INDEX ] = _sprite_index;
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__IMAGE_INDEX  ] = _image_index;
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__IMAGE_SPEED  ] = _image_speed;
-                            
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SPRITE_DATA  ] = { __sprite_index: _sprite_index, __image_index: _image_index, __image_speed: _image_speed };
+                                
                                 ++_glyph_count;
                                 _glyph_prev_arabic_join_next = false;
                                 _glyph_prev_prev = _glyph_prev;

@@ -119,11 +119,6 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0                  ] = 0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1                  ] = 0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V1                  ] = 0;
-        
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BAKED_EFFECTS       ] = false;
             
             _font_glyphs_map[? _unicode] = _i;
         }
@@ -183,11 +178,6 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0                  ] = _uvs[1];
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1                  ] = _uvs[2];
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V1                  ] = _uvs[3];
-            
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__BAKED_EFFECTS       ] = false;
             
             _font_glyphs_map[? _unicode] = _i;
         }

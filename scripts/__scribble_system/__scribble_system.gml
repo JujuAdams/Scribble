@@ -447,14 +447,9 @@ enum __SCRIBBLE_GLYPH
     __V0,                   //14  |
     __V1,                   //15  |
                             //    |
-    __SDF_PXRANGE,          //16  |
-    __SDF_THICKNESS_OFFSET, //17  |
-    __BILINEAR,             //18  |
-    __BAKED_EFFECTS,        //19  |
-                            //    |
-    __LAST_USED,            //20 /
+    __LAST_USED,            //16 /
     
-    __SIZE                  //21
+    __SIZE                  //17
 }
 
 enum SCRIBBLE_EASE
@@ -557,21 +552,22 @@ enum __SCRIBBLE_GEN_GLYPH
     __QUAD_U0,              //11   | Be careful of ordering!
     __QUAD_U1,              //12   | scribble_font_bake_effects() relies on this
     __QUAD_V0,              //13   |
-    __QUAD_V1,              //14   |
-                            //     |
-    __SDF_PXRANGE,          //15   |
-    __SDF_THICKNESS_OFFSET, //16   |
-    __BILINEAR,             //17   |
-    __BAKED_EFFECTS,        //18  /
+    __QUAD_V1,              //14  /
     
-    __CONTROL_COUNT,        //19
-    __ANIMATION_INDEX,      //20
+    __CONTROL_COUNT,        //15
+    __ANIMATION_INDEX,      //16
+    __SPRITE_DATA,          //17     Only used for sprites and surfaces
                       
-    __SPRITE_INDEX,         //21  \
-    __IMAGE_INDEX,          //22   | Only used for sprites
-    __IMAGE_SPEED,          //23  /
-                      
-    __SIZE,                 //24
+    __SIZE,                 //18
+    
+    //__SDF_PXRANGE,          //15   |
+    //__SDF_THICKNESS_OFFSET, //16   |
+    //__BILINEAR,             //17   |
+    //__BAKED_EFFECTS,        //18  /
+    //                  
+    //__SPRITE_INDEX,         //21  \
+    //__IMAGE_INDEX,          //22   | Only used for sprites
+    //__IMAGE_SPEED,          //23  /
 }
 
 enum __SCRIBBLE_GEN_VBUFF_POS

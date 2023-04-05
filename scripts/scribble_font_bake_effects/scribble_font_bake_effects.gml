@@ -280,8 +280,6 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
     ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT,   _glyph_count-1, __SCRIBBLE_GLYPH.__FONT_HEIGHT,   _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__SEPARATION,    _glyph_count-1, __SCRIBBLE_GLYPH.__SEPARATION,    _separation);
     ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__TEXTURE,       _glyph_count-1, __SCRIBBLE_GLYPH.__TEXTURE,       sprite_get_texture(_sprite, 0));
-    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__BILINEAR,      _glyph_count-1, __SCRIBBLE_GLYPH.__BILINEAR,      _smooth);
-    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__BAKED_EFFECTS, _glyph_count-1, __SCRIBBLE_GLYPH.__BAKED_EFFECTS, true);
     
     //Figure out the new UVs using some bulk commands
     var _sprite_uvs = sprite_get_uvs(_sprite, 0);

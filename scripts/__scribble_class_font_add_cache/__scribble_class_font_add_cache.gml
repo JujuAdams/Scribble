@@ -146,12 +146,6 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__U1] = 0;
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__V1] = 0;
         
-        //These are set on create, or are modified elsewhere
-        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
-        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
-        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
-        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__BAKED_EFFECTS       ] = false;
-        
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__LAST_USED] = infinity; //Never replace space
     }
     
@@ -273,12 +267,6 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
         _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__U1] = _u1;
         _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__V0] = _v0;
         _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__V1] = _v1;
-        
-        //These are set on create, or are modified elsewhere
-        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SDF_PXRANGE         ] = undefined;
-        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SDF_THICKNESS_OFFSET] = undefined;
-        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__BILINEAR            ] = undefined;
-        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__BAKED_EFFECTS       ] = false;
         
         _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__LAST_USED] = __scribble_state.__frames;
         
