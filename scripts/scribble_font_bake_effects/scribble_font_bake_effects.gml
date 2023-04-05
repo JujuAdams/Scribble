@@ -37,7 +37,7 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
         return undefined;
     }
     
-    if (_src_font_data.__sdf)
+    if (_src_font_data.__material.__sdf)
     {
     	__scribble_error("Source font cannot be an SDF font");
     	return undefined;
@@ -56,7 +56,10 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
     var _glyph_count = ds_grid_width(_src_glyph_grid);
     
     //Create a new font
-    var _new_font_data = new __scribble_class_font(_new_font_name, _new_font_name, _glyph_count, false);
+    var _new_font_data = new __scribble_class_font(_new_font_name, _new_font_name, _glyph_count);
+    _new_font_data.__material.__baked_effects = true;
+    //We set the texture a little further down after creating a sprite from the surface
+    
     _new_font_data.__runtime = true;
     var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
     
@@ -270,6 +273,7 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
     //Make a sprite from the surface to make the texture stick
     var _sprite = sprite_create_from_surface(_surface, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
     _new_font_data.__source_sprite = _sprite;
+    _new_font_data.__material.__set_texture(sprite_get_texture(_sprite, 0));
     surface_free(_surface);
     
     //Make bulk corrections to various glyph properties based on the input parameters
@@ -279,7 +283,7 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
     ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__HEIGHT,        _glyph_count-1, __SCRIBBLE_GLYPH.__HEIGHT,        _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT,   _glyph_count-1, __SCRIBBLE_GLYPH.__FONT_HEIGHT,   _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__SEPARATION,    _glyph_count-1, __SCRIBBLE_GLYPH.__SEPARATION,    _separation);
-    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__MATERIAL,      _glyph_count-1, __SCRIBBLE_GLYPH.__MATERIAL,      sprite_get_texture(_sprite, 0));
+    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__MATERIAL,      _glyph_count-1, __SCRIBBLE_GLYPH.__MATERIAL,      _new_font_name);
     
     //Figure out the new UVs using some bulk commands
     var _sprite_uvs = sprite_get_uvs(_sprite, 0);

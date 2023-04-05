@@ -481,22 +481,6 @@ enum __SCRIBBLE_GLYPH_LAYOUT
     __SIZE,    // 5
 }
 
-enum __SCRIBBLE_VERTEX_BUFFER
-{
-    __MATERIAL,             // 0
-    __VERTEX_BUFFER,        // 1
-    __TEXTURE,              // 2
-    __SDF,                  // 3
-    __SDF_RANGE,            // 4
-    __SDF_THICKNESS_OFFSET, // 5
-    __TEXEL_WIDTH,          // 6
-    __TEXEL_HEIGHT,         // 7
-    __BUFFER,               // 8
-    __BILINEAR,             // 9
-    __BAKED_EFFECTS,        //10
-    __SIZE                  //11
-}
-
 enum __SCRIBBLE_ANIM
 {
     __WAVE_SIZE,        // 0

@@ -1,9 +1,8 @@
 /// @param assetName
 /// @param friendlyName
 /// @param glyphCount
-/// @param isSDF
 
-function __scribble_class_font(_asset_name, _friendly_name, _glyph_count, _sdf) constructor
+function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constructor
 {
     __asset_name = _asset_name;
     __name       = _friendly_name;
@@ -23,14 +22,14 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count, _sdf) 
     
     __is_krutidev = false;
     
-    __sdf           = _sdf;
-    __sdf_pxrange   = undefined;
+    __material = new __scribble_class_material(__name);
+    
     __superfont     = false;
     __runtime       = false;
     __source_sprite = undefined;
     
     __scale  = 1.0;
-    __height = 0; //*Not* the raw height. This value is changed by scribble_font_scale()
+    __height = 0; //This is the effective height and *not* the raw height (i.e. this value is changed by scribble_font_scale())
     
     __style_regular     = undefined;
     __style_bold        = undefined;
@@ -71,14 +70,14 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count, _sdf) 
         return __height;
     }
     
-    static __clear = function()
+    static __superfont_clear = function()
     {
         if (!__superfont) __scribble_error("Cannot clear non-superfont fonts");
         
         ds_map_clear(__glyphs_map);
         
-        __sdf_pxrange = undefined;
-        __sdf         = undefined;
+        __material.__sdf         = undefined;
+        __material.__sdf_pxrange = undefined;
         
         __height = 0;
     }

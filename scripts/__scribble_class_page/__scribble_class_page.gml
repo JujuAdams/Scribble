@@ -4,10 +4,6 @@
 
 function __scribble_class_page() constructor
 {
-    static __scribble_state = __scribble_get_state();
-    static __gc_vbuff_refs  = __scribble_get_cache_state().__gc_vbuff_refs;
-    static __gc_vbuff_ids   = __scribble_get_cache_state().__gc_vbuff_ids;
-    
     __text = "";
     __glyph_grid = undefined;
     
@@ -49,59 +45,18 @@ function __scribble_class_page() constructor
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
-        var _render_flag_value = __scribble_state.__render_flag_value;
+        var _old_tex_filter = gpu_get_tex_filter();
+        gpu_set_tex_filter(_bilinear);
         
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
         {
-            var _data = __vertex_buffer_array[_i];
-            var _bilinear      = _data[__SCRIBBLE_VERTEX_BUFFER.__BILINEAR     ];
-            var _sdf           = _data[__SCRIBBLE_VERTEX_BUFFER.__SDF          ];
-            var _baked_effects = _data[__SCRIBBLE_VERTEX_BUFFER.__BAKED_EFFECTS];
-            
-            if (_bilinear != undefined)
-            {
-                var _old_tex_filter = gpu_get_tex_filter();
-                gpu_set_tex_filter(_bilinear);
-            }
-            
-            //Reset all render flags (baked effects, SDF, and double draw)
-            _render_flag_value = (_render_flag_value & (~(0x1C)));
-            
-            if (_sdf)
-            {
-                //Set the "SDF" render flag
-                _render_flag_value |= 0x08;
-                
-                //Set shader uniforms unique to the SDF shader
-                shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
-                shader_set_uniform_f(_u_fSDFRange, (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE] ?? 0));
-                shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] ?? 0));
-            }
-            else
-            {
-                //Set the "baked effects" render flag
-                _render_flag_value |= (_baked_effects << 2);
-            }
-            
-            shader_set_uniform_f(_u_fRenderFlags, _render_flag_value);
-            vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
-            
-            if (_double_draw && (_sdf || _baked_effects))
-            {
-                //Set the "double draw" render flag
-                shader_set_uniform_f(_u_fRenderFlags, _render_flag_value | 0x10);
-                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
-            }
-            
-            if (_bilinear != undefined)
-            {
-                //Reset the texture filtering
-                gpu_set_tex_filter(_old_tex_filter);
-            }
-            
+            __vertex_buffer_array[_i].__submit(_double_draw);
             ++_i;
         }
+        
+        //Reset the texture filtering
+        gpu_set_tex_filter(_old_tex_filter);
     }
     
     static __freeze = function()
@@ -116,7 +71,7 @@ function __scribble_class_page() constructor
             var _i = 0;
             repeat(array_length(__vertex_buffer_array))
             {
-                vertex_freeze(__vertex_buffer_array[_i][__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER]);
+                vertex_freeze(__vertex_buffer_array[_i].__vertex_buffer);
                 ++_i;
             }
             
@@ -183,15 +138,11 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_material, _model_struct)
+    static __get_vertex_buffer = function(_material_alias)
     {
-        //_pxrange, _thickness_offset, _bilinear, _baked_effects
-        
-        var _pointer_string = string(_material);
-        
         if (!__SCRIBBLE_ON_WEB)
         {
-            var _data = __texture_to_vertex_buffer_dict[$ _pointer_string];
+            var _data = __texture_to_vertex_buffer_dict[$ string(_material_alias)];
         }
         else //FIXME - Workaround for pointers not being stringified properly on HTML5
         {
@@ -200,7 +151,7 @@ function __scribble_class_page() constructor
             repeat(array_length(__vertex_buffer_array))
             {
                 var _vbuff_data = __vertex_buffer_array[_i];
-                if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE] == _texture)
+                if (_vbuff_data.__material_alias == _material_alias)
                 {
                     _data = _vbuff_data;
                     break;
@@ -212,46 +163,12 @@ function __scribble_class_page() constructor
         
         if (_data == undefined)
         {
-            static _vertex_format = undefined;
-            if (_vertex_format == undefined)
-            {
-                vertex_format_begin();
-                vertex_format_add_position_3d();                                  //12 bytes
-                vertex_format_add_normal();                                       //12 bytes
-                vertex_format_add_colour();                                       // 4 bytes
-                vertex_format_add_texcoord();                                     // 8 bytes
-                vertex_format_add_custom(vertex_type_float3, vertex_usage_color); //12 bytes
-                _vertex_format = vertex_format_end();                             //48 bytes per vertex, 144 bytes per tri, 288 bytes per glyph
-            }
-            
-            var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version
-            vertex_begin(_vbuff, _vertex_format);
-            
-            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding vertex buffer ", _vbuff, " to tracking");
-            array_push(__gc_vbuff_refs, weak_ref_create(self));
-            array_push(__gc_vbuff_ids, _vbuff);
-            
-            var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__MATERIAL            ] = _material;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER       ] = _vbuff;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _texture;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                 ] = (_pxrange != undefined); //We're using an SDF font if we have no defined SDF range
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE           ] = _pxrange;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thickness_offset;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR            ] = _bilinear;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BAKED_EFFECTS       ] = _baked_effects;
-            
-            __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;
-            if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;
-            
-            return _vbuff;
+            var _data = new __scribble_class_vertex_buffer(_material_alias);
+            array_push(__vertex_buffer_array, _data);
+            __texture_to_vertex_buffer_dict[$ string(_material_alias)] = _data;
         }
-        else
-        {
-            return _data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER];
-        }
+        
+        return _data.__vertex_buffer;
     }
     
     static __finalize_vertex_buffers = function(_freeze)
@@ -259,7 +176,7 @@ function __scribble_class_page() constructor
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
         {
-            var _vbuff = __vertex_buffer_array[_i][__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER];
+            var _vbuff = __vertex_buffer_array[_i].__vertex_buffer;
             vertex_end(_vbuff);
             if (_freeze) vertex_freeze(_vbuff);
             
@@ -274,17 +191,7 @@ function __scribble_class_page() constructor
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
         {
-            var _vbuff = __vertex_buffer_array[_i][__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER];
-            vertex_delete_buffer(_vbuff);
-            
-            var _index = __scribble_array_find_index(__gc_vbuff_ids, _vbuff);
-            if (_index >= 0)
-            {
-                if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Manually removing vertex buffer ", _vbuff, " from tracking");
-                array_delete(__gc_vbuff_refs, _index, 1);
-                array_delete(__gc_vbuff_ids,  _index, 1);
-            }
-            
+            __vertex_buffer_array[_i].__flush();
             ++_i;
         }
         

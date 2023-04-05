@@ -58,7 +58,9 @@ function __scribble_font_add_from_project(_font)
                              + " -> " + string_format(_texture_uvs[2], 1, 10) + "," + string_format(_texture_uvs[3], 1, 10));
         }
         
-        var _font_data = new __scribble_class_font(_name, _name, _size, false);
+        var _font_data = new __scribble_class_font(_name, _name, _size);
+        _font_data.__set_texture(_texture);
+        
         var _font_glyphs_map      = _font_data.__glyphs_map;
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;
         var _font_kerning_map     = _font_data.__kerning_map;
@@ -127,7 +129,7 @@ function __scribble_font_add_from_project(_font)
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION ] = _glyph_dict.shift;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = -_glyph_dict.offset;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _texture;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _name;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0         ] = _u0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1         ] = _u1;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0         ] = _v0;

@@ -36,39 +36,42 @@ function scribble_super_glyph_copy(_target, _source, _overwrite, _range)
 
 function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data)
 {
-    if (_source_font_data.__sdf == undefined)
+    var _trg_material = _target_font_data.__material;
+    var _src_material = _source_font_data.__material;
+    
+    if (_src_material.__sdf == undefined)
     {
         __scribble_error("Cannot determine if the source font is an SDF font. Please add glyphs to it");
     }
-    else if (_target_font_data.__sdf == undefined)
+    else if (_trg_material.__sdf == undefined)
     {
         //Target font hasn't had anything added to it yet
     }
-    else if (_target_font_data.__sdf || _source_font_data.__sdf)
+    else if (_trg_material.__sdf || _src_material.__sdf)
     {
-        if (_target_font_data.__sdf == false)
+        if (_trg_material.__sdf == false)
         {
             __scribble_error("Cannot mix standard/sprite fonts with SDF fonts (target is not an SDF font)");
         }
         
-        if (_source_font_data.__sdf == false)
+        if (_src_material.__sdf == false)
         {
             __scribble_error("Cannot mix standard/sprite fonts with SDF fonts (source is not an SDF font)");
         }
         
-        if (_source_font_data.__sdf_pxrange == undefined)
+        if (_src_material.__sdf_pxrange == undefined)
         {
             __scribble_error("Source font's SDF pxrange must be defined before copying glyphs");
         }
         
-        if ((_target_font_data.__sdf_pxrange != undefined) && (_target_font_data.__sdf_pxrange != _source_font_data.__sdf_pxrange))
+        if ((_trg_material.__sdf_pxrange != undefined) && (_trg_material.__sdf_pxrange != _src_material.__sdf_pxrange))
         {
-            __scribble_error("SDF font pxrange must match (target = ", _target_font_data.__sdf_pxrange, " vs. source = ", _source_font_data.__sdf_pxrange, ")");
+            __scribble_error("SDF font pxrange must match (target = ", _trg_material.__sdf_pxrange, " vs. source = ", _src_material.__sdf_pxrange, ")");
         }
     }
     
-    _target_font_data.__sdf = _source_font_data.__sdf;
-    _target_font_data.__sdf_pxrange = _source_font_data.__sdf_pxrange;
+    _trg_material.__sdf         = _src_material.__sdf;
+    _trg_material.__sdf_pxrange = _src_material.__sdf_pxrange;
 }
 
 function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _target_grid, _glyph, _overwrite)

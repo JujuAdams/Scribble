@@ -63,7 +63,11 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
         var _size = _font_cache.__get_max_glyph_count();
         
         //Create a font representation we can use for interaction with other Scribble font functions
-        var _font_data = new __scribble_class_font(_asset_name, _name, _size, font_get_sdf_enabled(_asset));
+        var _font_data = new __scribble_class_font(_asset_name, _name, _size);
+        _font_data.__set_texture(_font_cache.__get_texture());
+        _font_data.__material.__sdf         = font_get_sdf_enabled(_asset);
+        _font_data.__material.__sdf_pxrange = 2*_spread;
+        
         _font_original_name_dict[$ _asset_name] = _font_data;
         
         //Used to detect if the font is krutidev or not
@@ -76,13 +80,11 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
         var _is_krutidev = __scribble_asset_is_krutidev(_asset, asset_font);
         if (_is_krutidev) _font_data.__is_krutidev = true;
         
-        _font_data.__sdf_pxrange = 2*_spread;
-        
         //Pre-emptively fill in data grid so we have to do less work later
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__CHARACTER,  _size-1, __SCRIBBLE_GLYPH.__CHARACTER,  ""                         );
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__MATERIAL,   _size-1, __SCRIBBLE_GLYPH.__MATERIAL,   _font_cache.__get_texture());
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__BIDI,       _size-1, __SCRIBBLE_GLYPH.__BIDI,       __SCRIBBLE_BIDI.SYMBOL     );
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__CHARACTER,  _size-1, __SCRIBBLE_GLYPH.__CHARACTER,  ""                    );
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__MATERIAL,   _size-1, __SCRIBBLE_GLYPH.__MATERIAL,   _name                 );
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__BIDI,       _size-1, __SCRIBBLE_GLYPH.__BIDI,       __SCRIBBLE_BIDI.SYMBOL);
         
         //Set up the space character in index 0 which is necessary for other bits of Scribble to work
         _font_cache.__set_space_glyph();
