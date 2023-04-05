@@ -183,9 +183,11 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_texture, _pxrange, _thickness_offset, _bilinear, _baked_effects, _model_struct)
+    static __get_vertex_buffer = function(_material, _model_struct)
     {
-        var _pointer_string = string(_texture);
+        //_pxrange, _thickness_offset, _bilinear, _baked_effects
+        
+        var _pointer_string = string(_material);
         
         if (!__SCRIBBLE_ON_WEB)
         {
@@ -230,6 +232,7 @@ function __scribble_class_page() constructor
             array_push(__gc_vbuff_ids, _vbuff);
             
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__MATERIAL            ] = _material;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER       ] = _vbuff;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _texture;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                 ] = (_pxrange != undefined); //We're using an SDF font if we have no defined SDF range

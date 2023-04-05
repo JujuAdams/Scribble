@@ -441,7 +441,7 @@ enum __SCRIBBLE_GLYPH
     __LEFT_OFFSET,          // 9  | This group of enums must not change order or be split
     __FONT_SCALE,           //10  |
                             //    |
-    __TEXTURE,              //11  |
+    __MATERIAL,             //11  |
     __U0,                   //12  | Be careful of ordering!
     __U1,                   //13  | scribble_font_bake_effects() relies on this
     __V0,                   //14  |
@@ -484,17 +484,18 @@ enum __SCRIBBLE_GLYPH_LAYOUT
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {
-    __VERTEX_BUFFER,        // 0
-    __TEXTURE,              // 1
-    __SDF,                  // 2
-    __SDF_RANGE,            // 3
-    __SDF_THICKNESS_OFFSET, // 4
-    __TEXEL_WIDTH,          // 5
-    __TEXEL_HEIGHT,         // 6
-    __BUFFER,               // 7
-    __BILINEAR,             // 8
-    __BAKED_EFFECTS,        // 9
-    __SIZE                  //10
+    __MATERIAL,             // 0
+    __VERTEX_BUFFER,        // 1
+    __TEXTURE,              // 2
+    __SDF,                  // 3
+    __SDF_RANGE,            // 4
+    __SDF_THICKNESS_OFFSET, // 5
+    __TEXEL_WIDTH,          // 6
+    __TEXEL_HEIGHT,         // 7
+    __BUFFER,               // 8
+    __BILINEAR,             // 9
+    __BAKED_EFFECTS,        //10
+    __SIZE                  //11
 }
 
 enum __SCRIBBLE_ANIM
@@ -548,7 +549,7 @@ enum __SCRIBBLE_GEN_GLYPH
     __LEFT_OFFSET,          // 8   |
     __SCALE,                // 9   | This group of enums must not change order or be split
                             //     |
-    __TEXTURE,              //10   |
+    __MATERIAL,             //10   |
     __QUAD_U0,              //11   | Be careful of ordering!
     __QUAD_U1,              //12   | scribble_font_bake_effects() relies on this
     __QUAD_V0,              //13   |

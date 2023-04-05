@@ -84,13 +84,13 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
     var _i = 0;
     repeat(_glyph_count)
     {
-        var _texture = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__TEXTURE];
-        var _width   = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__WIDTH  ];
-        var _height  = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__HEIGHT ];
-        var _u0      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__U0     ];
-        var _v0      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__V0     ];
-        var _u1      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__U1     ];
-        var _v1      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__V1     ];
+        var _texture = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL];
+        var _width   = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__WIDTH   ];
+        var _height  = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__HEIGHT  ];
+        var _u0      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__U0      ];
+        var _v0      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__V0      ];
+        var _u1      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__U1      ];
+        var _v1      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__V1      ];
         
         //Ignore any glyphs with invalid textures
         //Due to HTML5 being dogshit, we can't use is_ptr()
@@ -279,7 +279,7 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
     ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__HEIGHT,        _glyph_count-1, __SCRIBBLE_GLYPH.__HEIGHT,        _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT,   _glyph_count-1, __SCRIBBLE_GLYPH.__FONT_HEIGHT,   _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__SEPARATION,    _glyph_count-1, __SCRIBBLE_GLYPH.__SEPARATION,    _separation);
-    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__TEXTURE,       _glyph_count-1, __SCRIBBLE_GLYPH.__TEXTURE,       sprite_get_texture(_sprite, 0));
+    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH.__MATERIAL,      _glyph_count-1, __SCRIBBLE_GLYPH.__MATERIAL,      sprite_get_texture(_sprite, 0));
     
     //Figure out the new UVs using some bulk commands
     var _sprite_uvs = sprite_get_uvs(_sprite, 0);

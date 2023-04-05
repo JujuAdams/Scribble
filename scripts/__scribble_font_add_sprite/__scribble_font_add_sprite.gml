@@ -114,7 +114,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET         ] = 0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_SCALE          ] = 1;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__TEXTURE             ] = _sprite_frames[0].texture; //Use the texture ID for the first image from the sprite
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL            ] = _sprite_frames[0].texture; //Use the texture ID for the first image from the sprite
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0                  ] = 0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0                  ] = 0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1                  ] = 0;
@@ -173,7 +173,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET         ] = -_x_offset;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_SCALE          ] = 1;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__TEXTURE             ] = _texture;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL            ] = _texture;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0                  ] = _uvs[0];
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0                  ] = _uvs[1];
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1                  ] = _uvs[2];

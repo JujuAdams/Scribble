@@ -160,7 +160,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET         ] = 1 - _xoffset - 0.5*_sdf_pxrange;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_SCALE          ] = 1;
         
-        _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__TEXTURE             ] = _texture;
+        _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL            ] = _texture;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0                  ] = _u0;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0                  ] = _v0;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1                  ] = _u1;
@@ -195,7 +195,7 @@ function __scribble_font_add_sdf_from_project(_sprite)
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET         ] = 0;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__FONT_SCALE          ] = 1;
         
-        _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__TEXTURE             ] = _texture;
+        _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL            ] = _texture;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0                  ] = 0;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0                  ] = 0;
         _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1                  ] = 0;

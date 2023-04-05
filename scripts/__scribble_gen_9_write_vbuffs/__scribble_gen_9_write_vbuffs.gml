@@ -3,11 +3,11 @@
                                     var _quad_r = _vbuff_pos_grid[# _i, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R];\
                                     var _quad_b = _vbuff_pos_grid[# _i, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B];\
                                     ;\
-                                    var _glyph_texture = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__TEXTURE];\
-                                    var _quad_u0       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_U0];\
-                                    var _quad_v0       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_V0];\
-                                    var _quad_u1       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_U1];\
-                                    var _quad_v1       = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_V1];\
+                                    var _glyph_material = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MATERIAL];\
+                                    var _quad_u0        = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_U0 ];\
+                                    var _quad_v0        = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_V0 ];\
+                                    var _quad_u1        = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_U1 ];\
+                                    var _quad_v1        = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__QUAD_V1 ];\
                                     ;\
                                     var _half_w = 0.5*_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__WIDTH ];\
                                     var _half_h = 0.5*_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__HEIGHT];\
@@ -16,10 +16,10 @@
 
 
 
-#macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_glyph_texture != _last_glyph_texture)\
+#macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_glyph_material != _last_glyph_material)\
                                      {\
-                                         _last_glyph_texture = _glyph_texture;\
-                                         _vbuff = _page_data.__get_vertex_buffer(_glyph_texture, self);\
+                                         _last_glyph_material = _glyph_material;\
+                                         _vbuff = _page_data.__get_vertex_buffer(_glyph_material, self);\
                                      }\
                                      if (_bezier_do)\
                                      {\
@@ -128,7 +128,7 @@ function __scribble_gen_9_write_vbuffs()
         var _page_char_events_dict = _page_data.__char_events;
         var _page_line_events_dict = _page_data.__line_events;
         var _vbuff                 = undefined;
-        var _last_glyph_texture    = undefined;
+        var _last_glyph_material   = undefined;
         var _packed_indexes        = 0;
         var _animation_index       = 0;
         
@@ -318,7 +318,7 @@ function __scribble_gen_9_write_vbuffs()
                 var _j = _image_index;
                 repeat((_image_speed > 0)? _sprite_number : 1) //Only draw one image if we have an image speed of 0 since we're not animating
                 {
-                    var _glyph_texture = sprite_get_texture(_sprite_index, _j);
+                    var _glyph_material = sprite_get_texture(_sprite_index, _j);
                     
                     var _uvs = sprite_get_uvs(_sprite_index, _j);
                     var _quad_u0 = _uvs[0];
