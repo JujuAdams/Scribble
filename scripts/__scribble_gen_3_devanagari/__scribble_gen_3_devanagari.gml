@@ -377,7 +377,7 @@ function __scribble_gen_3_devanagari()
             else if (_font_glyph_data_grid[# _data_index, __SCRIBBLE_GLYPH.__BIDI] != __SCRIBBLE_BIDI.WHITESPACE) //Don't transform whitespace
             {
                 //Add this glyph to our grid by copying from the font's own glyph data grid
-                ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH.__UNICODE, _data_index, __SCRIBBLE_GLYPH.__BAKED_EFFECTS, _i, __SCRIBBLE_GEN_GLYPH.__UNICODE);
+                ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH.__UNICODE, _data_index, __SCRIBBLE_GLYPH.__V1, _i, __SCRIBBLE_GEN_GLYPH.__UNICODE);
             }
         }
         

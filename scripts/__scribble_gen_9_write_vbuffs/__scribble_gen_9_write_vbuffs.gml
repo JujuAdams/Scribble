@@ -277,9 +277,10 @@ function __scribble_gen_9_write_vbuffs()
                 
                 var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];
                 
-                var _sprite_index   = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__SPRITE_INDEX   ];
-                var _image_index    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__IMAGE_INDEX    ];
-                var _image_speed    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__IMAGE_SPEED    ];
+                var _sprite_data  = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__SPRITE_DATA];
+                var _sprite_index = _sprite_data.__sprite_index;
+                var _image_index  = _sprite_data.__image_index;
+                var _image_speed  = _sprite_data.__image_speed;
                 
                 var _glyph_xscale = sprite_get_width( _sprite_index) / _glyph_width;
                 var _glyph_yscale = sprite_get_height(_sprite_index) / _glyph_height;

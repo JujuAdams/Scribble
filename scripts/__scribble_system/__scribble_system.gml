@@ -542,15 +542,6 @@ enum __SCRIBBLE_GEN_GLYPH
     __SPRITE_DATA,          //16     Only used for sprites and surfaces
                       
     __SIZE,                 //17
-    
-    //__SDF_PXRANGE,          //15   |
-    //__SDF_THICKNESS_OFFSET, //16   |
-    //__BILINEAR,             //17   |
-    //__BAKED_EFFECTS,        //18  /
-    //                  
-    //__SPRITE_INDEX,         //21  \
-    //__IMAGE_INDEX,          //22   | Only used for sprites
-    //__IMAGE_SPEED,          //23  /
 }
 
 enum __SCRIBBLE_GEN_VBUFF_POS
