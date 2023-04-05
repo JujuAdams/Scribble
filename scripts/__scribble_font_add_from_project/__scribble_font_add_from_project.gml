@@ -59,7 +59,7 @@ function __scribble_font_add_from_project(_font)
         }
         
         var _font_data = new __scribble_class_font(_name, _name, _size);
-        _font_data.__set_texture(_texture);
+        _font_data.__material.__set_texture(_texture);
         
         var _font_glyphs_map      = _font_data.__glyphs_map;
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;

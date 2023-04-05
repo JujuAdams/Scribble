@@ -19,7 +19,7 @@
 #macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_glyph_material != _last_glyph_material)\
                                      {\
                                          _last_glyph_material = _glyph_material;\
-                                         _vbuff = _page_data.__get_vertex_buffer(_glyph_material);\
+                                         _vbuff = _page_data.__ensure_vertex_buffer(_glyph_material);\
                                      }\
                                      if (_bezier_do)\
                                      {\

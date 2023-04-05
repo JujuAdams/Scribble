@@ -4,6 +4,8 @@
 
 function __scribble_class_page() constructor
 {
+    static __scribble_state = __scribble_get_state();
+    
     __text = "";
     __glyph_grid = undefined;
     
@@ -138,7 +140,7 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_material_alias)
+    static __ensure_vertex_buffer = function(_material_alias)
     {
         if (!__SCRIBBLE_ON_WEB)
         {
