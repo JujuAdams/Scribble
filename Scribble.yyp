@@ -396,7 +396,6 @@
     {"id":{"name":"__scribble_effects_maps_initialize","path":"scripts/__scribble_effects_maps_initialize/__scribble_effects_maps_initialize.yy",},},
     {"id":{"name":"__scribble_font_add_all_from_project","path":"scripts/__scribble_font_add_all_from_project/__scribble_font_add_all_from_project.yy",},},
     {"id":{"name":"__scribble_font_add_from_project","path":"scripts/__scribble_font_add_from_project/__scribble_font_add_from_project.yy",},},
-    {"id":{"name":"__scribble_font_add_sdf_from_project","path":"scripts/__scribble_font_add_sdf_from_project/__scribble_font_add_sdf_from_project.yy",},},
     {"id":{"name":"__scribble_font_add_sprite","path":"scripts/__scribble_font_add_sprite/__scribble_font_add_sprite.yy",},},
     {"id":{"name":"__scribble_gen_10_set_padding_flags","path":"scripts/__scribble_gen_10_set_padding_flags/__scribble_gen_10_set_padding_flags.yy",},},
     {"id":{"name":"__scribble_gen_1_model_limits_and_bezier_curves","path":"scripts/__scribble_gen_1_model_limits_and_bezier_curves/__scribble_gen_1_model_limits_and_bezier_curves.yy",},},
