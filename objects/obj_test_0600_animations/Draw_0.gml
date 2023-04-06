@@ -33,6 +33,6 @@ var _element = scribble("[rainbow]rainbow text rainbow text rainbow text");
 _element.draw(_x, _y);
 _y += _element.get_height() + 10;
 
-var _element = scribble("[cycle, 200, 140, 190, 150]cycling text cycling text cycling text");
+var _element = scribble("[cycle,test 0600]cycling text cycling text cycling text");
 _element.draw(_x, _y);
 _y += _element.get_height() + 10;
