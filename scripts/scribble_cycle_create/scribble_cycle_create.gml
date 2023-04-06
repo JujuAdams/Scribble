@@ -44,6 +44,7 @@ function __scribble_ensure_cycle_surface()
         surface_set_target(_surface);
         draw_clear(c_white);
         
+        var _old_shader = shader_current();
         shader_set(__shd_scribble_oklab_interpolate);
         
         var _names_array = variable_struct_get_names(_cycle_dict);
@@ -54,7 +55,15 @@ function __scribble_ensure_cycle_surface()
             ++_i;
         }
         
-        shader_reset();
+        if (_old_shader < 0)
+        {
+            shader_reset();
+        }
+        else
+        {
+            shader_set(_old_shader);
+        }
+        
         surface_reset_target();
     }
     
