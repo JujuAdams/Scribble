@@ -42,6 +42,9 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _sprite_info = sprite_get_info(_sprite);
     var _sprite_frames = _sprite_info.frames;
     
+    if (array_length(_sprite_frames) <= 0) __scribble_error(_sprite_name, " has no images");
+    var _expected_texture_page = _sprite_frames[0].texture;
+    
     var _sprite_x_offset = 0;
     var _sprite_y_offset = 0;
     
@@ -64,7 +67,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _size = array_length(_info_glyph_names);
     
     var _font_data = new __scribble_class_font(_sprite_name, _sprite_name, _size);
-    _font_data.__material.__set_texture(_sprite_frames[0].texture);
+    _font_data.__material.__set_texture(_expected_texture_page);
     
     var _font_glyphs_map      = _font_data.__glyphs_map;
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
@@ -128,14 +131,9 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             var _image_info = _sprite_frames[_image];
             
             //Convert the texture index to a texture pointer
-            var _texture_index = _image_info.texture;
-            
-            static _tex_index_lookup_map = ds_map_create();
-            var _texture = _tex_index_lookup_map[? _texture_index];
-            if (_texture == undefined)
+            if (_image_info.texture != _expected_texture_page)
             {
-                _texture = sprite_get_texture(_sprite, _image);
-                _tex_index_lookup_map[? _texture_index] = _texture;
+                __scribble_error(_sprite_name, " image ", _i, " is not on the same texture page as the rest of the sprite (expecting texture page ", _expected_texture_page, ", got ", _image_info.texture, ")");
             }
             
             if (_proportional)
@@ -173,7 +171,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION ] = _glyph_separation;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = -_x_offset;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _texture;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _sprite_name;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0         ] = _uvs[0];
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0         ] = _uvs[1];
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1         ] = _uvs[2];
