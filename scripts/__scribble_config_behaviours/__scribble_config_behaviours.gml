@@ -15,8 +15,9 @@
 #macro SCRIBBLE_AUTOFIT_INLINE_SPRITES        false  //Whether to automatically scale sprites to fit into the line of text. This is based on the font height of the current font
 #macro SCRIBBLE_AUTOFIT_INLINE_SURFACES       false  //Whether to automatically scale surfaces to fit into the line of text. This is based on the font height of the current font
 #macro SCRIBBLE_USE_KERNING                   true
-#macro SCRIBBLE_SPRITE_BILINEAR_FILTERING     undefined
 #macro SCRIBBLE_DELAY_LAST_CHARACTER          false
+#macro SCRIBBLE_DEFAULT_SPRITEFONT_BILINEAR   false  //Whether spritefonts should default to having bilinear texture filtering or not
+#macro SCRIBBLE_DEFAULT_STANDARD_BILINEAR     true   //Whether standard fonts should default to having bilinear texture filtering or not
 
 
 

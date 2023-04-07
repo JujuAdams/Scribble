@@ -67,7 +67,13 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _size = array_length(_info_glyph_names);
     
     var _font_data = new __scribble_class_font(_sprite_name, _sprite_name, _size);
+    _font_data.__type_sprite = true;
+    
+    //Set material properties
     _font_data.__material.__set_texture(_expected_texture_page);
+    
+    //Set the bilinear filtering state for the font after we set other properties
+    _font_data.__set_bilinear(undefined);
     
     var _font_glyphs_map      = _font_data.__glyphs_map;
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;

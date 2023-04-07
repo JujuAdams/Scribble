@@ -60,11 +60,14 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
     _new_font_data.__material.__baked_effects = true;
     //We set the texture a little further down after creating a sprite from the surface
     
-    _new_font_data.__runtime = true;
+    _new_font_data.__type_runtime = true;
     var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
     
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
     _src_font_data.__copy_to(_new_font_data, false);
+    
+    //Set the bilinear filtering state for the font after we set other properties
+    _new_font_data.__set_bilinear(undefined);
     
     //Create a vertex buffer for use in this function
     static _vertex_format = undefined;
@@ -272,8 +275,11 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
     
     //Make a sprite from the surface to make the texture stick
     var _sprite = sprite_create_from_surface(_surface, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
-    _new_font_data.__source_sprite = _sprite;
+    _new_font_data.__baked_effect_sprite = _sprite;
+    
+    //Set material properties using the new sprite
     _new_font_data.__material.__set_texture(sprite_get_texture(_sprite, 0));
+    
     surface_free(_surface);
     
     //Make bulk corrections to various glyph properties based on the input parameters

@@ -64,9 +64,17 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
         
         //Create a font representation we can use for interaction with other Scribble font functions
         var _font_data = new __scribble_class_font(_asset_name, _name, _size);
+        _font_data.__type_font_add = true;
+        _font_data.__type_sdf      = _sdf;
+        _font_data.__type_runtime  = true;
+        
+        //Set material properties
         _font_data.__material.__set_texture(_font_cache.__get_texture());
         _font_data.__material.__sdf         = font_get_sdf_enabled(_asset);
         _font_data.__material.__sdf_pxrange = 2*_spread;
+        
+        //Set the bilinear filtering state for the font after we set other properties
+        _font_data.__set_bilinear(undefined);
         
         _font_original_name_dict[$ _asset_name] = _font_data;
         

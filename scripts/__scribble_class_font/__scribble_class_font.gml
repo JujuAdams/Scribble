@@ -24,9 +24,14 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
     
     __material = new __scribble_class_material(__name);
     
-    __superfont     = false;
-    __runtime       = false;
-    __source_sprite = undefined;
+    __type_standard  = false; //Native GameMaker font. As of 2023-04-07 these can never be SDF fonts but this may change in the future
+    __type_sprite    = false; //Spritefont added via the native GameMaker function. Always a "runtime" font as well
+    __type_sdf       = false; //SDF font. At the moment, this type can only be added by scribble_font_add()
+    __type_font_add  = false; //Added by scribble_font_add(). Always a "runtime" font as well
+    __type_runtime   = false; //Added during runtime - effectively all this means is "when the font is destroyed, do we have stuff to clean up?"
+    __type_superfont = false; //Whether this font contains glyph cobbled together from multiple sources
+    
+    __baked_effect_sprite = undefined;
     
     __scale  = 1.0;
     __height = 0; //This is the effective height and *not* the raw height (i.e. this value is changed by scribble_font_scale())
@@ -38,7 +43,7 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
     
     __font_add_cache = undefined;
     
-     
+    
     
     static __copy_to = function(_target, _copy_styles)
     {
@@ -72,7 +77,7 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
     
     static __superfont_clear = function()
     {
-        if (!__superfont) __scribble_error("Cannot clear non-superfont fonts");
+        if (!__type_superfont) __scribble_error("Cannot clear non-superfont fonts");
         
         ds_map_clear(__glyphs_map);
         
@@ -80,6 +85,27 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
         __material.__sdf_pxrange = undefined;
         
         __height = 0;
+    }
+    
+    static __set_bilinear = function(_state)
+    {
+        if (_state == undefined)
+        {
+            if (__type_sdf)
+            {
+                _state = true;
+            }
+            else if (__type_sprite)
+            {
+                _state = SCRIBBLE_DEFAULT_SPRITEFONT_BILINEAR;
+            }
+            else
+            {
+                _state = SCRIBBLE_DEFAULT_STANDARD_BILINEAR;
+            }
+        }
+        
+        __material.__bilinear = _state;
     }
     
     static __destroy = function()
@@ -95,10 +121,10 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
         ds_map_delete(_font_data_map, __name);
         variable_struct_remove(_font_original_name_dict, __asset_name);
         
-        if (__source_sprite != undefined)
+        if (__baked_effect_sprite != undefined)
         {
-            sprite_delete(__source_sprite);
-            __source_sprite = undefined;
+            sprite_delete(__baked_effect_sprite);
+            __baked_effect_sprite = undefined;
         }
         
         if (__font_add_cache != undefined)
