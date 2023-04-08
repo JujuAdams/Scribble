@@ -52,7 +52,8 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
         repeat(array_length(_names))
         {
             var _name = _names[_i];
-            if (_name == "__glyphs_map")
+            if ((_name == "__glyphs_map")
+            ||  (_name == "__kerning_map"))
             {
                 ds_map_copy(_target.__glyphs_map, __glyphs_map);
             }
@@ -60,9 +61,13 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
             {
                 ds_grid_copy(_target.__glyph_data_grid, __glyph_data_grid);
             }
-            else if ((_name != "__name") && (_copy_styles || ((_name != "__style_regular") && (_name != "__style_bold") && (_name != "__style_italic") && (_name != "__style_bold_italic"))))
+            else if ((_name != "__asset_name")
+                 &&  (_name != "__name")
+                 &&  (_name != "__filename")
+                 &&  (_name != "__material")
+                 &&  (_copy_styles || ((_name != "__style_regular") && (_name != "__style_bold") && (_name != "__style_italic") && (_name != "__style_bold_italic"))))
             {
-                variable_struct_set(_target, _name, variable_struct_get(self, _name));
+                _target[$ _name] = self[$ _name];
             }
             
             ++_i;
