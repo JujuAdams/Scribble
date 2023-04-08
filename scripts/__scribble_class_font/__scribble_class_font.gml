@@ -85,6 +85,25 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
         if (!__type_superfont) __scribble_error("Cannot clear non-superfont fonts");
         
         ds_map_clear(__glyphs_map);
+        ds_map_clear(__kerning_map);
+        
+        __material = new __scribble_class_material(__name);
+        
+        __type_standard = false;
+        __type_sprite   = false;
+        __type_sdf      = false;
+        
+        __baked_effect_sprite = undefined;
+        
+        __scale  = 1.0;
+        __height = 0; //This is the effective height and *not* the raw height (i.e. this value is changed by scribble_font_scale())
+        
+        __style_regular     = undefined;
+        __style_bold        = undefined;
+        __style_italic      = undefined;
+        __style_bold_italic = undefined;
+        
+        __font_add_cache = undefined;
         
         __material.__sdf         = undefined;
         __material.__sdf_pxrange = undefined;
