@@ -287,6 +287,7 @@
     {"name":"scribble_font_get_glyph_ranges","order":16,"path":"scripts/scribble_font_get_glyph_ranges/scribble_font_get_glyph_ranges.yy",},
     {"name":"scribble_font_has_character","order":15,"path":"scripts/scribble_font_has_character/scribble_font_has_character.yy",},
     {"name":"__shd_scribble_oklab_interpolate","order":4,"path":"shaders/__shd_scribble_oklab_interpolate/__shd_scribble_oklab_interpolate.yy",},
+    {"name":"obj_test_1017_superfont_sprite","order":15,"path":"objects/obj_test_1017_superfont_sprite/obj_test_1017_superfont_sprite.yy",},
     {"name":"__scribble_glyph_get","order":9,"path":"scripts/__scribble_glyph_get/__scribble_glyph_get.yy",},
     {"name":"scribble_font_rename","order":2,"path":"scripts/scribble_font_rename/scribble_font_rename.yy",},
     {"name":"scribble_font_scale","order":13,"path":"scripts/scribble_font_scale/scribble_font_scale.yy",},
