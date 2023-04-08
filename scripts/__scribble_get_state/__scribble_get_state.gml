@@ -15,6 +15,9 @@ function __scribble_get_state()
         
         __sdf_thickness_offset: 0,
 
+        __effects_dict:           {},
+        __effects_slash_dict:     {},
+        __typewriter_events_dict: {},
         __markdown_styles_struct: {},
         
         __font_add_cache_array: [],

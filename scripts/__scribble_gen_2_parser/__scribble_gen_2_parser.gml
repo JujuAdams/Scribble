@@ -156,18 +156,18 @@ function __scribble_gen_2_parser()
     
     #endregion
     
-    static _scribble_state        = __scribble_get_state();
-    static _effects_map           = __scribble_get_effects_map();
-    static _effects_slash_map     = __scribble_get_effects_slash_map();
-    static _typewriter_events_map = __scribble_get_typewriter_events_map();
-    static _external_sound_map    = __scribble_get_external_sound_map();
-    static _macros_map            = __scribble_get_macros_map();
-    static _string_buffer         = __scribble_get_buffer_a();
-    static _other_string_buffer   = __scribble_get_buffer_b();
-    static _colours_struct        = _scribble_state.__custom_colour_struct;
-    static _font_data_map         = _scribble_state.__font_data_map;
-    static _cycle_struct          = _scribble_state.__cycle_dict;
-    static _generator_state       = __scribble_get_generator_state();
+    static _scribble_state      = __scribble_get_state();
+    static _effects_dict        = _scribble_state.__effects_dict;
+    static _effects_slash_dict  = _scribble_state.__effects_slash_dict;
+    static _typewriter_dict     = _scribble_state.__typewriter_events_dict;
+    static _external_sound_map  = __scribble_get_external_sound_map();
+    static _macros_map          = __scribble_get_macros_map();
+    static _string_buffer       = __scribble_get_buffer_a();
+    static _other_string_buffer = __scribble_get_buffer_b();
+    static _colours_struct      = _scribble_state.__custom_colour_struct;
+    static _font_data_map       = _scribble_state.__font_data_map;
+    static _cycle_struct        = _scribble_state.__cycle_dict;
+    static _generator_state     = __scribble_get_generator_state();
     
     with(_generator_state)
     {
@@ -934,9 +934,9 @@ function __scribble_gen_2_parser()
                         #endregion
                         
                         default: //TODO - Optimize
-                            if (ds_map_exists(_effects_map, _tag_command_name)) //Set an effect
+                            if (ds_map_exists(_effects_dict, _tag_command_name)) //Set an effect
                             {
-                                _state_effect_flags = _state_effect_flags | (1 << _effects_map[? _tag_command_name]);
+                                _state_effect_flags = _state_effect_flags | (1 << _effects_dict[? _tag_command_name]);
                             
                                 //Add an effect flag control
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
@@ -945,9 +945,9 @@ function __scribble_gen_2_parser()
                             
                                 __has_animation = true;
                             }
-                            else if (ds_map_exists(_effects_slash_map, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
+                            else if (ds_map_exists(_effects_slash_dict, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
                             {
-                                _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_map[? _tag_command_name]));
+                                _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_dict[? _tag_command_name]));
                             
                                 //Add an effect flag control
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
@@ -963,7 +963,7 @@ function __scribble_gen_2_parser()
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                                 ++_control_count;
                             }
-                            else if (ds_map_exists(_typewriter_events_map, _tag_command_name)) //Events
+                            else if (ds_map_exists(_typewriter_dict, _tag_command_name)) //Events
                             {
                                 array_delete(_tag_parameters, 0, 1);
                             

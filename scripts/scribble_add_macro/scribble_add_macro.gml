@@ -4,7 +4,9 @@
 function scribble_add_macro(_name, _function)
 {
     __scribble_initialize();
-    static _colours_struct = __scribble_get_state().__custom_colour_struct;
+    static _colours_struct  = __scribble_get_state().__custom_colour_struct;
+    static _effects_dict    = __scribble_get_state().__effects_dict;
+    static _typewriter_dict = __scribble_get_state().__typewriter_events_dict;
     
     if (!is_string(_name))
     {
@@ -29,19 +31,19 @@ function scribble_add_macro(_name, _function)
         }
     }
     
-    if (ds_map_exists(_colours_struct, _name))
+    if (variable_struct_exists(_colours_struct, _name))
     {
         __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as a colour");
         exit;
     }
     
-    if (ds_map_exists(__scribble_get_effects_map(), _name))
+    if (variable_struct_exists(_effects_dict, _name))
     {
         __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as an effect");
         exit;
     }
     
-    if (ds_map_exists(__scribble_get_typewriter_events_map(), _name))
+    if (variable_struct_exists(_typewriter_dict, _name))
     {
         __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as a typist event");
         exit;

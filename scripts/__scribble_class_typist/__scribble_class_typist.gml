@@ -453,7 +453,7 @@ function __scribble_class_typist(_per_line) constructor
     
     static __process_event_stack = function(_character_count, _target_element, _function_scope)
     {
-        static _typewriter_events_map = __scribble_get_typewriter_events_map();
+        static _typewriter_event_dict = __scribble_state.__typewriter_events_dict;
         
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
         //We return <true> if there have been no pausing behaviours called i.e. [pause] and [delay]
@@ -546,7 +546,7 @@ function __scribble_class_typist(_per_line) constructor
                 //Probably a current event
                 default:
                     //Otherwise try to find a custom event
-                    var _function = _typewriter_events_map[? _event_name];
+                    var _function = _typewriter_event_dict[$ _event_name];
                     if (is_method(_function))
                     {
                         with(_function_scope) _function(_target_element, _event_data, _event_position);

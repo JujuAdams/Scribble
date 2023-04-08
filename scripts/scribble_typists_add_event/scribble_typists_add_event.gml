@@ -6,7 +6,9 @@
 function scribble_typists_add_event(_name, _function)
 {
     __scribble_initialize();
-    static _colours_struct = __scribble_get_state().__custom_colour_struct;
+    static _colours_struct  = __scribble_get_state().__custom_colour_struct;
+    static _effects_dict    = __scribble_get_state().__effects_dict;
+    static _typewriter_dict = __scribble_get_state().__typewriter_events_dict;
     
     if (!is_string(_name))
     {
@@ -31,13 +33,13 @@ function scribble_typists_add_event(_name, _function)
         }
     }
     
-    if (ds_map_exists(_colours_struct, _name))
+    if (variable_struct_exists(_colours_struct, _name))
     {
         __scribble_trace("Warning! Event name \"" + _name + "\" has already been defined as a colour");
         exit;
     }
     
-    if (ds_map_exists(__scribble_get_effects_map(), _name))
+    if (variable_struct_exists(_effects_dict, _name))
     {
         __scribble_trace("Warning! Event name \"" + _name + "\" has already been defined as an effect");
         exit;
@@ -49,8 +51,7 @@ function scribble_typists_add_event(_name, _function)
         exit;
     }
     
-    var _typewriter_events_map = __scribble_get_typewriter_events_map();
-    var _old_function = _typewriter_events_map[? _name];
+    var _old_function = _typewriter_dict[$ _name];
     if (!is_undefined(_old_function))
     {
         if (is_numeric(_old_function) and (_old_function < 0))
@@ -63,6 +64,6 @@ function scribble_typists_add_event(_name, _function)
         }
     }
     
-    _typewriter_events_map[? _name] = _function;
+    _typewriter_dict[$ _name] = _function;
     if (SCRIBBLE_VERBOSE) __scribble_trace("Tying event [" + _name + "] to \"" + (is_method(_function)? string(_function) : script_get_name(_function)) + "\"");
 }

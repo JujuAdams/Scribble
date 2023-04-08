@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__scribble_get_typewriter_events_map",
+  "name": "__scribble_typewrite_events_map_initialize",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
