@@ -169,8 +169,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param [typist]
     static draw = function(_x, _y, _typist = undefined)
     {
-        static _scribble_state = __scribble_get_state();
-        
         var _function_scope = other;
         
         //Get our model, and create one if needed
@@ -187,9 +185,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         __last_drawn = __scribble_state.__frames;
         
         //Update the blink state in our render flags
-        if (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration > 0)
+        if (__scribble_state.__blink_on_duration + __scribble_state.__blink_off_duration > 0)
         {
-            var _blink_state = (((__animation_time + _scribble_state.__blink_time_offset) mod (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration)) < _scribble_state.__blink_on_duration);
+            var _blink_state = (((__animation_time + __scribble_state.__blink_time_offset) mod (__scribble_state.__blink_on_duration + __scribble_state.__blink_off_duration)) < __scribble_state.__blink_on_duration);
             __scribble_state.__render_flag_value = ((__scribble_state.__render_flag_value & (~(0x20))) | (_blink_state << 5));
         }
         else
@@ -1721,8 +1719,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _u_vBorderColour            = shader_get_uniform(__shd_scribble, "u_vBorderColour"           );
         static _u_fBorderThickness         = shader_get_uniform(__shd_scribble, "u_fBorderThickness"        );
         
-        static _scribble_state        = __scribble_get_state();
-        static _anim_properties_array = __scribble_get_anim_properties();
+        static _anim_properties_array = __scribble_state.__anim_property_array;
         
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;
@@ -1778,7 +1775,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
-        with(_scribble_state)
+        with(__scribble_state)
         {
             if (__shader_anim_desync)
             {

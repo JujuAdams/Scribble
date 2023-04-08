@@ -3,7 +3,8 @@
 
 function scribble_anim_wobble(_angle, _frequency)
 {
-    static _array = __scribble_get_anim_properties();
+    static _scribble_state = __scribble_get_state();
+    static _array = _scribble_state.__anim_property_array;
     
     if ((_angle     != _array[__SCRIBBLE_ANIM.__WOBBLE_ANGLE])
     ||  (_frequency != _array[__SCRIBBLE_ANIM.__WOBBLE_FREQ ]))
@@ -11,11 +12,7 @@ function scribble_anim_wobble(_angle, _frequency)
         _array[@ __SCRIBBLE_ANIM.__WOBBLE_ANGLE] = _angle;
         _array[@ __SCRIBBLE_ANIM.__WOBBLE_FREQ ] = _frequency;
         
-        static _scribble_state = __scribble_get_state();
-        with(_scribble_state)
-        {
-            __shader_anim_desync            = true;
-            __shader_anim_desync_to_default = false;
-        }
+        _scribble_state.__shader_anim_desync            = true;
+        _scribble_state.__shader_anim_desync_to_default = false;
     }
 }

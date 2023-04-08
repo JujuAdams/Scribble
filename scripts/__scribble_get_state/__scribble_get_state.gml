@@ -14,7 +14,8 @@ function __scribble_get_state()
         __shader_anim_default:           false,
         
         __sdf_thickness_offset: 0,
-
+        
+        __anim_property_array:    array_create(__SCRIBBLE_ANIM.__SIZE, undefined),
         __effects_dict:           {},
         __effects_slash_dict:     {},
         __typewriter_events_dict: {},

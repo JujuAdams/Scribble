@@ -412,7 +412,6 @@
     {"id":{"name":"scribble_super_glyph_add_sprite","path":"scripts/scribble_super_glyph_add_sprite/scribble_super_glyph_add_sprite.yy",},},
     {"id":{"name":"__scribble_gen_8_position_glyphs","path":"scripts/__scribble_gen_8_position_glyphs/__scribble_gen_8_position_glyphs.yy",},},
     {"id":{"name":"__scribble_gen_9_write_vbuffs","path":"scripts/__scribble_gen_9_write_vbuffs/__scribble_gen_9_write_vbuffs.yy",},},
-    {"id":{"name":"__scribble_get_anim_properties","path":"scripts/__scribble_get_anim_properties/__scribble_get_anim_properties.yy",},},
     {"id":{"name":"obj_test_0718_scale_method","path":"objects/obj_test_0718_scale_method/obj_test_0718_scale_method.yy",},},
     {"id":{"name":"__scribble_get_cache_state","path":"scripts/__scribble_get_cache_state/__scribble_get_cache_state.yy",},},
     {"id":{"name":"obj_test_0823_typewriter_per_line","path":"objects/obj_test_0823_typewriter_per_line/obj_test_0823_typewriter_per_line.yy",},},

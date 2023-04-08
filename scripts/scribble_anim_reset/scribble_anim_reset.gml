@@ -7,7 +7,7 @@ function scribble_anim_reset()
     {
         if (!__shader_anim_default)
         {
-            static _array = __scribble_get_anim_properties();
+            var _array = __anim_property_array;
             _array[@ __SCRIBBLE_ANIM.__WAVE_SIZE      ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
             _array[@ __SCRIBBLE_ANIM.__WAVE_FREQ      ] = SCRIBBLE_DEFAULT_WAVE_FREQUENCY;
             _array[@ __SCRIBBLE_ANIM.__WAVE_SPEED     ] = SCRIBBLE_DEFAULT_WAVE_SPEED;

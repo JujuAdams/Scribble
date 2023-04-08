@@ -57,7 +57,6 @@ function __scribble_initialize()
     
     __scribble_get_generator_state();
     __scribble_glyph_data_initialize();
-    __scribble_get_anim_properties();
     
     #region Initialize effects and typewriter events
     
