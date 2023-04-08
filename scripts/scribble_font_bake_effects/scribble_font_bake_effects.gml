@@ -37,9 +37,9 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
         return undefined;
     }
     
-    if (_src_font_data.__material.__sdf)
+    if (_src_font_data.__type_standard || _src_font_data.__type_sprite)
     {
-    	__scribble_error("Source font cannot be an SDF font");
+    	__scribble_error("Source font must be a standard font or spritefont");
     	return undefined;
     }
     
