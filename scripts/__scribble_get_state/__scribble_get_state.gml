@@ -28,6 +28,9 @@ function __scribble_get_state()
         __buffer_a: buffer_create(1024, buffer_grow, 1),
         __buffer_b: buffer_create(1024, buffer_grow, 1),
         
+        __krutidev_lookup_map:       ds_map_create(),
+        __krutidev_matra_lookup_map: ds_map_create(),
+        
         __render_flag_value:  0x02,
         __premultiply_alpha:  false,
         __blend_sprites:      true,

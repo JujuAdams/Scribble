@@ -1,12 +1,6 @@
-function __scribble_get_krutidev_lookup_map()
-{
-    static _map = ds_map_create();
-    return _map;
-}
-
 function __scribble_krutidev_lookup_map_initialize()
 {
-    var _lookup_map = __scribble_get_krutidev_lookup_map();
+    var _lookup_map = __scribble_get_state().__krutidev_lookup_map;
     
     //TODO - Precalculate the lookup table
     //TODO - Move this to __scribble_glyph_data_initialize()

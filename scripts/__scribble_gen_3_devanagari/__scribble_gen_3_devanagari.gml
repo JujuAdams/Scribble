@@ -13,8 +13,9 @@ function __scribble_gen_3_devanagari()
     //Avoid this mess if we can
     if (!__has_devanagari) exit;
     
-    static _krutidev_lookup_map       = __scribble_get_krutidev_lookup_map();
-    static _krutidev_matra_lookup_map = __scribble_get_krutidev_matra_lookup_map();
+    static _scribble_state            = __scribble_get_state();
+    static _krutidev_lookup_map       = _scribble_state.__krutidev_lookup_map;
+    static _krutidev_matra_lookup_map = _scribble_state.__krutidev_matra_lookup_map;
     
     static _generator_state = __scribble_get_generator_state();
     with(_generator_state)
