@@ -409,6 +409,7 @@
     {"id":{"name":"__scribble_gen_6_build_lines","path":"scripts/__scribble_gen_6_build_lines/__scribble_gen_6_build_lines.yy",},},
     {"id":{"name":"obj_test_0106_scroll","path":"objects/obj_test_0106_scroll/obj_test_0106_scroll.yy",},},
     {"id":{"name":"__scribble_gen_7_build_pages","path":"scripts/__scribble_gen_7_build_pages/__scribble_gen_7_build_pages.yy",},},
+    {"id":{"name":"scribble_super_glyph_add_sprite","path":"scripts/scribble_super_glyph_add_sprite/scribble_super_glyph_add_sprite.yy",},},
     {"id":{"name":"__scribble_gen_8_position_glyphs","path":"scripts/__scribble_gen_8_position_glyphs/__scribble_gen_8_position_glyphs.yy",},},
     {"id":{"name":"__scribble_gen_9_write_vbuffs","path":"scripts/__scribble_gen_9_write_vbuffs/__scribble_gen_9_write_vbuffs.yy",},},
     {"id":{"name":"__scribble_get_anim_properties","path":"scripts/__scribble_get_anim_properties/__scribble_get_anim_properties.yy",},},

@@ -339,6 +339,7 @@
     {"name":"__scribble_gen_6_build_lines","order":5,"path":"scripts/__scribble_gen_6_build_lines/__scribble_gen_6_build_lines.yy",},
     {"name":"obj_test_0106_scroll","order":6,"path":"objects/obj_test_0106_scroll/obj_test_0106_scroll.yy",},
     {"name":"__scribble_gen_7_build_pages","order":6,"path":"scripts/__scribble_gen_7_build_pages/__scribble_gen_7_build_pages.yy",},
+    {"name":"scribble_super_glyph_add_sprite","order":3,"path":"scripts/scribble_super_glyph_add_sprite/scribble_super_glyph_add_sprite.yy",},
     {"name":"__scribble_gen_8_position_glyphs","order":7,"path":"scripts/__scribble_gen_8_position_glyphs/__scribble_gen_8_position_glyphs.yy",},
     {"name":"__scribble_gen_9_write_vbuffs","order":8,"path":"scripts/__scribble_gen_9_write_vbuffs/__scribble_gen_9_write_vbuffs.yy",},
     {"name":"__scribble_get_anim_properties","order":5,"path":"scripts/__scribble_get_anim_properties/__scribble_get_anim_properties.yy",},
