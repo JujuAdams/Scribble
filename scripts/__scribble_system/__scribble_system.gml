@@ -57,8 +57,6 @@ function __scribble_initialize()
     
     __scribble_get_generator_state();
     __scribble_glyph_data_initialize();
-    __scribble_get_buffer_a();
-    __scribble_get_buffer_b();
     __scribble_get_anim_properties();
     __scribble_effects_maps_initialize();
     __scribble_typewrite_events_map_initialize();

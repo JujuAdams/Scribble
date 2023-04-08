@@ -9,6 +9,7 @@ function scribble_typists_add_event(_name, _function)
     static _colours_struct  = __scribble_get_state().__custom_colour_struct;
     static _effects_dict    = __scribble_get_state().__effects_dict;
     static _typewriter_dict = __scribble_get_state().__typewriter_events_dict;
+    static _macros_dict     = __scribble_get_state().__macros_dict;
     
     if (!is_string(_name))
     {
@@ -45,7 +46,7 @@ function scribble_typists_add_event(_name, _function)
         exit;
     }
     
-    if (ds_map_exists(__scribble_get_macros_map(), _name))
+    if (variable_struct_exists(_macros_dict, _name))
     {
         __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as a macro");
         exit;

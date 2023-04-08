@@ -18,9 +18,15 @@ function __scribble_get_state()
         __effects_dict:           {},
         __effects_slash_dict:     {},
         __typewriter_events_dict: {},
+        __macros_dict:            {},
         __markdown_styles_struct: {},
         
+        __external_sound_map: ds_map_create(),
+        
         __font_add_cache_array: [],
+        
+        __buffer_a: buffer_create(1024, buffer_grow, 1),
+        __buffer_b: buffer_create(1024, buffer_grow, 1),
         
         __render_flag_value:  0x02,
         __premultiply_alpha:  false,

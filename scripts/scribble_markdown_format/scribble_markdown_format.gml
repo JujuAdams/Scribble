@@ -116,7 +116,7 @@ function scribble_markdown_format(_string)
     
     static _func_delete_buffer = function(_buffer_a, _buffer_size, _delete_size, _pos = buffer_tell(_buffer_a)-2)
     {
-        static _buffer_b = __scribble_get_buffer_b();
+        static _buffer_b = __scribble_get_state().__buffer_b;
         
         var _copy_pos  = _pos + _delete_size;
         var _copy_size = _buffer_size - _copy_pos;
@@ -131,7 +131,7 @@ function scribble_markdown_format(_string)
     
     static _func_insert_buffer = function(_buffer_a, _buffer_size, _insert_string, _write_pos = buffer_tell(_buffer_a)-2)
     {
-        static _buffer_b = __scribble_get_buffer_b();
+        static _buffer_b = __scribble_get_state().__buffer_b;
         
         var _insert_size = string_byte_length(_insert_string);
         if (_insert_size <= 0) return 0;
@@ -150,7 +150,7 @@ function scribble_markdown_format(_string)
     
     static _func_delete_and_insert_buffer = function(_buffer_a, _buffer_size, _delete_size, _insert_string = "", _write_pos = buffer_tell(_buffer_a)-2)
     {
-        static _buffer_b = __scribble_get_buffer_b();
+        static _buffer_b = __scribble_get_state().__buffer_b;
         
         var _copy_pos  = _write_pos + _delete_size;
         var _copy_size = _buffer_size - _copy_pos;
@@ -219,7 +219,7 @@ function scribble_markdown_format(_string)
     
     var _markdown_styles_struct = __scribble_get_state().__markdown_styles_struct;
     
-    static _buffer = __scribble_get_buffer_a();
+    static _buffer = __scribble_get_state().__buffer_a;
     
     buffer_seek(_buffer, buffer_seek_start, 0);
     buffer_write(_buffer, buffer_string, _string);

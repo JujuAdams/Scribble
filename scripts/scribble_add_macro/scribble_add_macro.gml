@@ -7,6 +7,7 @@ function scribble_add_macro(_name, _function)
     static _colours_struct  = __scribble_get_state().__custom_colour_struct;
     static _effects_dict    = __scribble_get_state().__effects_dict;
     static _typewriter_dict = __scribble_get_state().__typewriter_events_dict;
+    static _macros_dict     = __scribble_get_state().__macros_dict;
     
     if (!is_string(_name))
     {
@@ -49,11 +50,10 @@ function scribble_add_macro(_name, _function)
         exit;
     }
     
-    var _macros_map = __scribble_get_macros_map();
-    var _old_function = _macros_map[? _name];
+    var _old_function = _macros_dict[$ _name];
     if (!is_undefined(_old_function))
     {
-        if (is_numeric(_old_function) and (_old_function < 0))
+        if (is_numeric(_old_function) && (_old_function < 0))
         {
             __scribble_trace("Warning! Overwriting event [" + _name + "] tied to <invalid script>");
         }
@@ -63,6 +63,6 @@ function scribble_add_macro(_name, _function)
         }
     }
     
-    _macros_map[? _name] = _function;
+    _macros_dict[$ _name] = _function;
     if (SCRIBBLE_VERBOSE) __scribble_trace("Tying macro [" + _name + "] to \"" + (is_method(_function)? string(_function) : script_get_name(_function)) + "\"");
 }

@@ -160,10 +160,10 @@ function __scribble_gen_2_parser()
     static _effects_dict        = _scribble_state.__effects_dict;
     static _effects_slash_dict  = _scribble_state.__effects_slash_dict;
     static _typewriter_dict     = _scribble_state.__typewriter_events_dict;
-    static _external_sound_map  = __scribble_get_external_sound_map();
-    static _macros_map          = __scribble_get_macros_map();
-    static _string_buffer       = __scribble_get_buffer_a();
-    static _other_string_buffer = __scribble_get_buffer_b();
+    static _macros_dict         = _scribble_state.__macros_dict;
+    static _external_sound_map  = _scribble_state.__external_sound_map;
+    static _string_buffer       = _scribble_state.__buffer_a;
+    static _other_string_buffer = _scribble_state.__buffer_b;
     static _colours_struct      = _scribble_state.__custom_colour_struct;
     static _font_data_map       = _scribble_state.__font_data_map;
     static _cycle_struct        = _scribble_state.__cycle_dict;
@@ -971,9 +971,9 @@ function __scribble_gen_2_parser()
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(_tag_command_name, _tag_parameters);
                                 ++_control_count;
                             }
-                            else if (ds_map_exists(_macros_map, _tag_command_name)) //Macros
+                            else if (variable_struct_exists(_macros_dict, _tag_command_name)) //Macros
                             {
-                                var _function = _macros_map[? _tag_command_name];
+                                var _function = _macros_dict[$ _tag_command_name];
                             
                                 var _macro_result = "";
                                 switch(_tag_parameter_count)
