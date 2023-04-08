@@ -137,6 +137,7 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
         if (__SCRIBBLE_DEBUG) __scribble_trace("Destroying font \"", __name, "\"");
         
         ds_map_destroy(__glyphs_map);
+        ds_map_destroy(__kerning_map);
         ds_grid_destroy(__glyph_data_grid);
         
         static _font_data_map           = __scribble_get_state().__font_data_map;
