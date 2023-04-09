@@ -41,6 +41,10 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
             _spread = font_get_sdf_spread(_asset);
         }
     }
+    else
+    {
+        _spread = 0;
+    }
     
     var _asset_name = font_get_name(_asset);
     
