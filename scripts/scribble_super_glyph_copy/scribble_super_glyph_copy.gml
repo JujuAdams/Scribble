@@ -59,19 +59,19 @@ function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data
             __scribble_error("Cannot mix standard/sprite fonts with SDF fonts (source is not an SDF font)");
         }
         
-        if (_src_material.__sdf_pxrange == undefined)
+        if (_src_material.__sdf_spread == undefined)
         {
-            __scribble_error("Source font's SDF pxrange must be defined before copying glyphs");
+            __scribble_error("Source font's SDF spread must be defined before copying glyphs");
         }
         
-        if ((_trg_material.__sdf_pxrange != undefined) && (_trg_material.__sdf_pxrange != _src_material.__sdf_pxrange))
+        if ((_trg_material.__sdf_spread != undefined) && (_trg_material.__sdf_spread != _src_material.__sdf_spread))
         {
-            __scribble_error("SDF font pxrange must match (target = ", _trg_material.__sdf_pxrange, " vs. source = ", _src_material.__sdf_pxrange, ")");
+            __scribble_error("SDF font spread must match (target = ", _trg_material.__sdf_spread, " vs. source = ", _src_material.__sdf_spread, ")");
         }
     }
     
     _trg_material.__sdf         = _src_material.__sdf;
-    _trg_material.__sdf_pxrange = _src_material.__sdf_pxrange;
+    _trg_material.__sdf_spread = _src_material.__sdf_spread;
 }
 
 function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _target_grid, _glyph, _overwrite)

@@ -105,8 +105,8 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
         
         __font_add_cache = undefined;
         
-        __material.__sdf         = undefined;
-        __material.__sdf_pxrange = undefined;
+        __material.__sdf        = undefined;
+        __material.__sdf_spread = undefined;
         
         __height = 0;
     }

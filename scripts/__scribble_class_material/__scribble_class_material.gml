@@ -16,7 +16,8 @@ function __scribble_class_material(_material_alias) constructor
     __baked_effects = false;
     
     __sdf                  = false;
-    __sdf_pxrange          = 0;
+    __sdf_spread           = 0;
+    __sdf_softness         = 1;
     __sdf_thickness_offset = 0;
     
     

@@ -53,7 +53,7 @@ function __scribble_class_vertex_buffer(_material_alias) constructor
     {
         static _u_fRenderFlags        = shader_get_uniform(__shd_scribble, "u_fRenderFlags"       );
         static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );
-        static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );
+        static _u_fSDFSpread          = shader_get_uniform(__shd_scribble, "u_fSDFSpread"         );
         static _u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble, "u_fSDFThicknessOffset");
         
         var _render_flag_value = __scribble_state.__render_flag_value;
@@ -72,7 +72,7 @@ function __scribble_class_vertex_buffer(_material_alias) constructor
             
                 //Set shader uniforms unique to the SDF shader
                 shader_set_uniform_f(_u_vTexel, __texel_width, __texel_height);
-                shader_set_uniform_f(_u_fSDFRange, __sdf_pxrange);
+                shader_set_uniform_f(_u_fSDFSpread, __sdf_spread, __sdf_softness);
                 shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + __sdf_thickness_offset);
             }
             else

@@ -120,6 +120,7 @@
     {"id":{"name":"obj_test_0102_alpha","path":"objects/obj_test_0102_alpha/obj_test_0102_alpha.yy",},},
     {"id":{"name":"scribble_glyph_y_offset_set","path":"scripts/scribble_glyph_y_offset_set/scribble_glyph_y_offset_set.yy",},},
     {"id":{"name":"obj_test_0600_animations","path":"objects/obj_test_0600_animations/obj_test_0600_animations.yy",},},
+    {"id":{"name":"scribble_font_sdf_softness","path":"scripts/scribble_font_sdf_softness/scribble_font_sdf_softness.yy",},},
     {"id":{"name":"obj_test_0601_animation_speed","path":"objects/obj_test_0601_animation_speed/obj_test_0601_animation_speed.yy",},},
     {"id":{"name":"obj_test_0602_anim_blink","path":"objects/obj_test_0602_anim_blink/obj_test_0602_anim_blink.yy",},},
     {"id":{"name":"obj_test_0603_anim_cycle","path":"objects/obj_test_0603_anim_cycle/obj_test_0603_anim_cycle.yy",},},
@@ -441,8 +442,8 @@
   ],
   "RoomOrderNodes": [
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
-    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_font_add_test","path":"rooms/rm_font_add_test/rm_font_add_test.yy",},},
+    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
   ],
   "TextureGroups": [
     {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"targets":-1,},

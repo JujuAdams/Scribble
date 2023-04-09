@@ -74,8 +74,8 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
         
         //Set material properties
         _font_data.__material.__set_texture(_font_cache.__get_texture());
-        _font_data.__material.__sdf         = font_get_sdf_enabled(_asset);
-        _font_data.__material.__sdf_pxrange = 2*_spread;
+        _font_data.__material.__sdf        = font_get_sdf_enabled(_asset);
+        _font_data.__material.__sdf_spread = 2*_spread;
         
         //Set the bilinear filtering state for the font after we set other properties
         _font_data.__set_bilinear(undefined);
