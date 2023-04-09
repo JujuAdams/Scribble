@@ -2,6 +2,10 @@
 
 function __scribble_class_material(_material_alias) constructor
 {
+    static __scribble_state = __scribble_get_state();
+    
+    
+    
     __material_alias = _material_alias;
     
     __texture      = undefined;
