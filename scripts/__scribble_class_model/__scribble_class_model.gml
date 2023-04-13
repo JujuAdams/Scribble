@@ -59,6 +59,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __has_animation  = false;
     
     __pages_array = []; //Stores each page of text
+    __scroll_page_y_array = [];
     
     
     
@@ -268,10 +269,17 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     /// @param page
-    static __get_scroll_max = function(_page = __page)
+    static __get_page_y = function(_page)
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
-        return __pages_array[_page].__get_scroll_max();
+        return __scroll_enabled? __scroll_page_y_array[_page] : 0;
+    }
+    
+    /// @param page
+    static __get_scroll_max = function()
+    {
+        __SCRIBBLE_MODEL_VALIDATE_PAGE
+        return __scroll_enabled? __pages_array[0].__get_scroll_max() : 0;
     }
     
     /// @param page

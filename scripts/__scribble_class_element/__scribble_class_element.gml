@@ -100,9 +100,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __tw_reveal              = undefined;
     __tw_reveal_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     
-    __animation_time        = current_time;
-    __animation_speed       = 1;
-    __animation_blink_state = true;
+    __animation_time  = current_time;
+    __animation_speed = 1;
     
     __padding_l = 0;
     __padding_t = 0;
@@ -116,7 +115,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __crop_b = 0;
     
     __scroll_using = false;
-    __scroll_y = 0;
+    __scroll_y     = 0;
     
     __shadow_colour       = c_black;
     __shadow_alpha        = 0.0;
@@ -531,7 +530,17 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     
     
-    #region Layout Setters
+    #region Layout
+    
+    static get_layout_width = function()
+    {
+        return __layout_width;
+    }
+    
+    static get_layout_height = function()
+    {
+        return __layout_height;
+    }
     
     static layout_free = function()
     {
@@ -1084,21 +1093,26 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             if (_page < 0)
             {
                 __scribble_trace("Warning! Cannot set a text element's page to less than 0");
-                __page = 0;
+                _page = 0;
             }
             else if (_page > _model.__get_page_count()-1)
             {
-                __page = _model.__get_page_count()-1;
+                _page = _model.__get_page_count()-1;
                 __scribble_trace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", __page, " (pages are 0-indexed)");
             }
-            else
+            
+            if ((__layout_type == __SCRIBBLE_LAYOUT.__SCROLL) || (__layout_type == __SCRIBBLE_LAYOUT.__SCROLL))
             {
-                __page = _page;
+                //If we're using a scroll layout, jump to the correct page y coordinate
+                manual_scroll(get_page_y(_page));
             }
+            
+            __page = _page;
         }
         else
         {
-            __page = 0;
+            __page     = 0;
+            __scroll_y = 0;
         }
         
         if (_old_page != __page) __bbox_dirty = true;
@@ -1245,13 +1259,13 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
-    static scroll = function(_offset)
+    static manual_scroll = function(_offset)
     {
         __scroll_using = true;
         
         if (__scroll_y != _offset)
         {
-            __scroll_y = _offset;
+            __scroll_y     = _offset;
             __matrix_dirty = true;
         }
         
@@ -1272,23 +1286,50 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return _model.__get_line_height(_index, _page);
     }
     
-    static get_scroll_height = function(_page = __page)
+    static get_page_y = function(_page)
     {
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__SCROLL) && (__layout_type != __SCRIBBLE_LAYOUT.__SCROLL_SPLIT))
+        {
+            return 0;
+        }
+        
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return max(0, _model.__get_scroll_max(_page) - __layout_height);
+        return _model.__get_page_y(_page);
     }
     
-    static get_scroll_min = function(_page = __page)
+    static get_scroll = function()
     {
+        return __scroll_y;
+    }
+    
+    static get_scroll_height = function()
+    {
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__SCROLL) && (__layout_type != __SCRIBBLE_LAYOUT.__SCROLL_SPLIT))
+        {
+            return 0;
+        }
+        
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return max(0, _model.__get_scroll_max() - __layout_height);
+    }
+    
+    static get_scroll_min = function()
+    {
+        if ((__layout_type != __SCRIBBLE_LAYOUT.__SCROLL) && (__layout_type != __SCRIBBLE_LAYOUT.__SCROLL_SPLIT))
+        {
+            return 0;
+        }
+        
         return -__layout_height;
     }
     
-    static get_scroll_max = function(_page = __page)
+    static get_scroll_max = function()
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return _model.__get_scroll_max(_page);
+        return _model.__get_scroll_max();
     }
     
     #endregion
