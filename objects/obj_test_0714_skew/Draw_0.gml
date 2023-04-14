@@ -7,7 +7,7 @@ _element.draw(_x, _y);
 
 _y = 2*room_height/4;
 
-var _element = scribble_unique(0, "x-skew\nx-skew\nx-skew");
+var _element = scribble("x-skew\nx-skew\nx-skew");
 _element.skew(0.5, 0);
 _element.draw(_x, _y);
 

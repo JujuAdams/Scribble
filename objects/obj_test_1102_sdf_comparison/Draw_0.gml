@@ -1,7 +1,7 @@
 var _string = "the quick brown fox jumped over the lazy dog. the quick brown fox jumped over the lazy dog\nSPHINX OF BLACK QUARTZ, JUDGE MY VOW";
 
-var _standard = scribble_unique(0, _string);
-var _sdf      = scribble_unique(1, _string);
+var _standard = scribble(_string, 0);
+var _sdf      = scribble(_string, 1);
 
 _standard.scale(0.85).font("fnt_noto_latin").layout_wrap(900).draw(10, 10);
 _sdf.scale(0.85).font("NotoSansSDF").layout_wrap(900).draw(10, _standard.get_bbox(10, 10).bottom + 10);
