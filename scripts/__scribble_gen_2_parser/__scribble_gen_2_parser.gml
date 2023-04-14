@@ -934,9 +934,9 @@ function __scribble_gen_2_parser()
                         #endregion
                         
                         default: //TODO - Optimize
-                            if (ds_map_exists(_effects_dict, _tag_command_name)) //Set an effect
+                            if (variable_struct_exists(_effects_dict, _tag_command_name)) //Set an effect
                             {
-                                _state_effect_flags = _state_effect_flags | (1 << _effects_dict[? _tag_command_name]);
+                                _state_effect_flags = _state_effect_flags | (1 << _effects_dict[$ _tag_command_name]);
                             
                                 //Add an effect flag control
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
@@ -945,9 +945,9 @@ function __scribble_gen_2_parser()
                             
                                 __has_animation = true;
                             }
-                            else if (ds_map_exists(_effects_slash_dict, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
+                            else if (variable_struct_exists(_effects_slash_dict, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
                             {
-                                _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_dict[? _tag_command_name]));
+                                _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_dict[$ _tag_command_name]));
                             
                                 //Add an effect flag control
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
@@ -963,7 +963,7 @@ function __scribble_gen_2_parser()
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                                 ++_control_count;
                             }
-                            else if (ds_map_exists(_typewriter_dict, _tag_command_name)) //Events
+                            else if (variable_struct_exists(_typewriter_dict, _tag_command_name)) //Events
                             {
                                 array_delete(_tag_parameters, 0, 1);
                             
