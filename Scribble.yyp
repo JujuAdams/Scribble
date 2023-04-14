@@ -75,7 +75,7 @@
   "isEcma": false,
   "LibraryEmitters": [],
   "MetaData": {
-    "IDEVersion": "2023.200.0.299",
+    "IDEVersion": "2023.400.0.317",
   },
   "resources": [
     {"id":{"name":"fnt_dialogue_2","path":"fonts/fnt_dialogue_2/fnt_dialogue_2.yy",},},
@@ -282,7 +282,6 @@
     {"id":{"name":"obj_test_0805_typewriter_delay_plus_sound_per_char","path":"objects/obj_test_0805_typewriter_delay_plus_sound_per_char/obj_test_0805_typewriter_delay_plus_sound_per_char.yy",},},
     {"id":{"name":"obj_test_0806_typewriter_duplicate_draw","path":"objects/obj_test_0806_typewriter_duplicate_draw/obj_test_0806_typewriter_duplicate_draw.yy",},},
     {"id":{"name":"obj_test_0807_typewriter_events","path":"objects/obj_test_0807_typewriter_events/obj_test_0807_typewriter_events.yy",},},
-    {"id":{"name":"scribble_unique","path":"scripts/scribble_unique/scribble_unique.yy",},},
     {"id":{"name":"obj_test_0808_typewriter_external_sound","path":"objects/obj_test_0808_typewriter_external_sound/obj_test_0808_typewriter_external_sound.yy",},},
     {"id":{"name":"obj_test_0809_typewriter_external_sound_per_char","path":"objects/obj_test_0809_typewriter_external_sound_per_char/obj_test_0809_typewriter_external_sound_per_char.yy",},},
     {"id":{"name":"obj_test_0810_typewriter_gc","path":"objects/obj_test_0810_typewriter_gc/obj_test_0810_typewriter_gc.yy",},},

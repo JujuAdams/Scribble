@@ -1,36 +1,23 @@
-/// Returns a Scribble text element corresponding to the concatenated stringified input values
-/// If a text element with the same input string has been cached, this function will return the cached text element
+/// Returns a Scribble text element corresponding to the input string
+/// If a text element with the same input string (and unique ID) has been cached, this function will return the cached text element
 /// 
-/// @param value  The string to parse and, eventually, draw
-/// @param ...
+/// @param string       The string to parse and, eventually, draw
+/// @param [uniqueID]   A unique identifier that can be used to distinguish this occurrence of the input string from other occurrences. Only necessary when you might be drawing the same string at the same time with different animation states
 
-function scribble()
+function scribble(_string, _unique_id = undefined)
 {
-    if (SCRIBBLE_LEGACY_FUNCTION)
+    if (is_struct(_string) && (instanceof(_string) == "__scribble_class_element"))
     {
-        return scribble_unique(argument[1] ?? "::default", argument[0]);
-    }
-    
-    if (argument_count == 1)
-    {
-        var _string = string(argument[0]);
-    }
-    else
-    {
-        var _string = "";
-        var _i = 0;
-        repeat(argument_count)
-        {
-            _string += string(argument[_i]);
-            ++_i;
-        }
+        __scribble_error("scribble() should not be used to access/draw text elements\nPlease instead call the .draw() method on a text element e.g. scribble(\"text\").draw(x, y);");
+        return;
     }
     
     static _ecache_dict = __scribble_get_cache_state().__ecache_dict;
-    var _weak = _ecache_dict[$ _string];
-    if ((_weak == undefined) || !weak_ref_alive(_weak))
+    
+    var _weak = _ecache_dict[$ string(_string) + ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (":" + string(_unique_id)))];
+    if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.__flushed)
     {
-        return new __scribble_class_element(_string);
+        return new __scribble_class_element(string(_string), _unique_id);
     }
     else
     {
