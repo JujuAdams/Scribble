@@ -1679,36 +1679,24 @@ function __scribble_class_element(_string, _unique_id = "") constructor
                 __bbox_dirty             = true;
                 __layout_scale_dirty     = true; //The dimensions of the text element might change as a result of a model change
                 
-                static _buffer = __scribble_state.__buffer_a;
-                
-                buffer_seek(_buffer, buffer_seek_start, 0);
-                buffer_write(_buffer, buffer_text, string(__text           ));       buffer_write(_buffer, buffer_u8,  0x3A); //colon
-                buffer_write(_buffer, buffer_text, string(__starting_font  ));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__starting_colour));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__starting_halign));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__starting_valign));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__pre_scale      ));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__line_height_min));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__line_height_max));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__line_spacing   ));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__layout_type    ));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__layout_width  - (__padding_l + __padding_r))); buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__layout_height - (__padding_t + __padding_b))); buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__layout_character_wrap)); buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__layout_max_scale ));     buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[0]));       buffer_write(_buffer, buffer_u8,  0x2C); //comma
-                buffer_write(_buffer, buffer_text, string(__bezier_array[1]));       buffer_write(_buffer, buffer_u8,  0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[2]));       buffer_write(_buffer, buffer_u8,  0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[3]));       buffer_write(_buffer, buffer_u8,  0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[4]));       buffer_write(_buffer, buffer_u8,  0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[5]));       buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__bidi_hint));             buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__command_tag_behaviour)); buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_text, string(__randomize_animation));   buffer_write(_buffer, buffer_u8,  0x3A);
-                buffer_write(_buffer, buffer_u8, 0x00);
-                buffer_seek(_buffer, buffer_seek_start, 0);
-                
-                __model_cache_name = buffer_read(_buffer, buffer_string);
+                __model_cache_name = string_concat(__text, ":",
+                                                   __starting_font, ":",
+                                                   __starting_colour, ":",
+                                                   __starting_halign, ":",
+                                                   __starting_valign, ":",
+                                                   __pre_scale, ":",
+                                                   __line_height_min, ":",
+                                                   __line_height_max, ":",
+                                                   __line_spacing, ":",
+                                                   __layout_type, ":",
+                                                   __layout_width  - (__padding_l + __padding_r), ":",
+                                                   __layout_height - (__padding_t + __padding_b), ":",
+                                                   __layout_character_wrap, ":",
+                                                   __layout_max_scale, ":",
+                                                   __bezier_array, ":",
+                                                   __bidi_hint, ":",
+                                                   __command_tag_behaviour, ":",
+                                                   __randomize_animation);
             }
             
             var _weak = _mcache_dict[$ __model_cache_name];
