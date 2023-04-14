@@ -3,7 +3,7 @@
 function __scribble_class_typist(_per_line) constructor
 {
     static __scribble_state = __scribble_get_state();
-    static __external_sound_map = __scribble_state._external_sound_map;
+    static __external_sound_map = __scribble_state.__external_sound_map;
     
     __last_element = undefined;
     
