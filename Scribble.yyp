@@ -357,6 +357,7 @@
     {"id":{"name":"scribble_font_scale","path":"scripts/scribble_font_scale/scribble_font_scale.yy",},},
     {"id":{"name":"scribble_font_set_default","path":"scripts/scribble_font_set_default/scribble_font_set_default.yy",},},
     {"id":{"name":"scribble_font_set_style_family","path":"scripts/scribble_font_set_style_family/scribble_font_set_style_family.yy",},},
+    {"id":{"name":"scribble_unique","path":"scripts/scribble_unique/scribble_unique.yy",},},
     {"id":{"name":"scribble_glyph_x_offset_get","path":"scripts/scribble_glyph_x_offset_get/scribble_glyph_x_offset_get.yy",},},
     {"id":{"name":"scribble_glyph_x_offset_set","path":"scripts/scribble_glyph_x_offset_set/scribble_glyph_x_offset_set.yy",},},
     {"id":{"name":"scribble_is_text_element","path":"scripts/scribble_is_text_element/scribble_is_text_element.yy",},},
@@ -440,8 +441,8 @@
     {"id":{"name":"spr_white_coin","path":"sprites/spr_white_coin/spr_white_coin.yy",},},
   ],
   "RoomOrderNodes": [
-    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
+    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_font_add_test","path":"rooms/rm_font_add_test/rm_font_add_test.yy",},},
   ],
   "TextureGroups": [
