@@ -2,8 +2,6 @@
 /// 
 /// @param string   The string to parse and, eventually, draw
 
-#macro scribble_unique  __scribble_unique(_GMFILE_ + _GMFUNCTION_ + string(_GMLINE_))
-
 function __scribble_unique(_location)
 {
     static _scribble_state = __scribble_get_state();
@@ -26,3 +24,5 @@ function __scribble_unique(_location)
         }
     }
 }
+
+#macro scribble_unique  __scribble_unique(_GMFILE_ + _GMFUNCTION_ + string(_GMLINE_))
