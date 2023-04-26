@@ -1,1 +1,0 @@
-element.draw(x, y);
