@@ -1,8 +1,10 @@
 precision highp float;
 
 #define USE_ALPHA_FOR_DISTANCE true
-#define SDF_SPREAD u_fSDFSpread.x
-#define SDF_SOFTNESS u_fSDFSpread.y
+
+#define SDF_SPREAD           u_fSDFData.x
+#define SDF_SOFTNESS         u_fSDFData.y
+#define SDF_THICKNESS_OFFSET u_fSDFData.z
 
 varying vec2  v_vPosition;
 varying float v_fObjectY;
@@ -22,8 +24,7 @@ uniform sampler2D u_sCycle;
 
 //SDF-only
 uniform vec2  u_vTexel;
-uniform vec2  u_fSDFSpread;
-uniform float u_fSDFThicknessOffset;
+uniform vec3  u_fSDFData;
 uniform vec4  u_vShadowColour;
 uniform vec3  u_vShadowOffsetAndSoftness;
 uniform vec3  u_vBorderColour;
@@ -32,7 +33,7 @@ uniform float u_fBorderThickness;
 float SDFValue(vec2 texcoord)
 {
     vec4 sample = texture2D(gm_BaseTexture, texcoord);
-    return (USE_ALPHA_FOR_DISTANCE? sample.a : max(sample.r, max(sample.g, sample.b))) + u_fSDFThicknessOffset;
+    return (USE_ALPHA_FOR_DISTANCE? sample.a : max(sample.r, max(sample.g, sample.b))) + SDF_THICKNESS_OFFSET;
 }
 
 void main()
