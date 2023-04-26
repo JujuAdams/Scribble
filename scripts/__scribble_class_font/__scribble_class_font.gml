@@ -45,6 +45,25 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
     
     
     
+    static __set_sdf_thickness_offset = function(_offset, _relative, _weak)
+    {
+        if (__type_sdf)
+        {
+            __material.__set_sdf_thickness_offset(_offset, _relative);
+        }
+        else
+        {
+            if (!_weak) __scribble_trace("Cannot set SDF range offset for font \"", __asset_name, "\", it's not an SDF font");
+        }
+        
+        return self;
+    }
+    
+    static __get_sdf_thickness_offset = function()
+    {
+        return __material.__get_sdf_thickness_offset();
+    }
+    
     static __copy_to = function(_target, _copy_styles)
     {
         var _names = variable_struct_get_names(self);

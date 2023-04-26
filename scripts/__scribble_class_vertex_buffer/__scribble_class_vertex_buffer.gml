@@ -73,7 +73,7 @@ function __scribble_class_vertex_buffer(_material_alias) constructor
                 //Set shader uniforms unique to the SDF shader
                 shader_set_uniform_f(_u_vTexel, __texel_width, __texel_height);
                 shader_set_uniform_f(_u_fSDFSpread, __sdf_spread, __sdf_softness);
-                shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + __sdf_thickness_offset);
+                shader_set_uniform_f(_u_fSDFThicknessOffset, __sdf_thickness_offset);
             }
             else
             {

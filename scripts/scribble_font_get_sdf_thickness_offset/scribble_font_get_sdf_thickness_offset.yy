@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "scribble_sdf_thickness_offset",
+  "name": "scribble_font_get_sdf_thickness_offset",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Miscellaneous",
-    "path": "folders/Scribble/Miscellaneous.yy",
+    "name": "Fonts",
+    "path": "folders/Scribble/Fonts.yy",
   },
 }
