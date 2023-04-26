@@ -95,8 +95,8 @@ void main()
             
             if (v_fSecondDraw < 1.0)
             {
-                float distanceScale = length(fwidth(v_vTexcoord) / u_vTexel) / (SDF_SPREAD*sqrt(2.0));
-                float borderOffset = u_fBorderThickness*distanceScale;
+                vec2 distanceScale = fwidth(v_vTexcoord);
+                float borderOffset = u_fBorderThickness*length(distanceScale / u_vTexel) / (SDF_SPREAD*sqrt(2.0));
                 
                 if (u_fBorderThickness > 0.0)
                 {
