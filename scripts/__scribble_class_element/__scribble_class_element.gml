@@ -114,8 +114,10 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __crop_r = 0;
     __crop_b = 0;
     
-    __scroll_using = false;
-    __scroll_y     = 0;
+    __scroll_using    = false;
+    __scroll_y        = 0;
+    __scroll_target_y = 0;
+    __scroll_speed    = infinity;
     
     __shadow_colour       = c_black;
     __shadow_alpha        = 0.0;
@@ -181,6 +183,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             if (SCRIBBLE_SAFELY_WRAP_TIME) __animation_time = __animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
+        //Scroll! Scroll as though your life depended on it!
+        __scroll_y += SCRIBBLE_TICK_SIZE*clamp(__scroll_target_y - __scroll_y, -__scroll_speed, __scroll_speed);
+        
         __last_drawn = __scribble_state.__frames;
         
         //Update the blink state in our render flags
@@ -205,7 +210,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        _model.__submit(__page, (__outline_thickness > 0) || (__shadow_alpha > 0));
+        _model.__submit(__page, (__outline_thickness > 0) || (__shadow_alpha > 0), __scroll_y);
+        _model.__submit(__page+1, (__outline_thickness > 0) || (__shadow_alpha > 0), __scroll_y);
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);
@@ -651,6 +657,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     {
         if ((__layout_type      != __SCRIBBLE_LAYOUT.__WRAP)
         ||  (_max_width         != __layout_width)
+        ||  (_max_height        != __layout_height)
         ||  (_character_wrap    != __layout_character_wrap)
         ||  (__layout_max_scale != 1))
         {
@@ -662,7 +669,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __bbox_dirty             = true;
             
             __layout_width          = _max_width;
-            __layout_height         = infinity;
+            __layout_height         = _max_height;
             __layout_character_wrap = _character_wrap;
             __layout_max_scale      = 1;
         }
@@ -684,60 +691,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
             if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
             __layout_type = __SCRIBBLE_LAYOUT.__WRAP_SPLIT;
-            
-            __model_cache_name_dirty = true;
-            __bbox_dirty             = true;
-            
-            __layout_width          = _max_width;
-            __layout_height         = _max_height;
-            __layout_character_wrap = _character_wrap;
-            __layout_max_scale      = 1;
-        }
-        
-        return self;
-    }
-    
-    /// @param maxWidth
-    /// @param maxHeight
-    /// @param [characterWrap=false]
-    static layout_scroll = function(_max_width, _max_height, _character_wrap = false)
-    {
-        if ((__layout_type      != __SCRIBBLE_LAYOUT.__SCROLL)
-        ||  (_max_width         != __layout_width)
-        ||  (_max_height        != __layout_height)
-        ||  (_character_wrap    != __layout_character_wrap)
-        ||  (__layout_max_scale != 1))
-        {
-            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
-            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
-            __layout_type = __SCRIBBLE_LAYOUT.__SCROLL;
-            
-            __model_cache_name_dirty = true;
-            __bbox_dirty             = true;
-            
-            __layout_width          = _max_width;
-            __layout_height         = _max_height;
-            __layout_character_wrap = _character_wrap;
-            __layout_max_scale      = 1;
-        }
-        
-        return self;
-    }
-    
-    /// @param maxWidth
-    /// @param maxHeight
-    /// @param [characterWrap=false]
-    static layout_scroll_split = function(_max_width, _max_height, _character_wrap = false)
-    {
-        if ((__layout_type      != __SCRIBBLE_LAYOUT.__SCROLL_SPLIT)
-        ||  (_max_width         != __layout_width)
-        ||  (_max_height        != __layout_height)
-        ||  (_character_wrap    != __layout_character_wrap)
-        ||  (__layout_max_scale != 1))
-        {
-            if (__layout_type == __SCRIBBLE_LAYOUT.__SCALE) __layout_scale_dirty = true;
-            if (__layout_type == __SCRIBBLE_LAYOUT.__FIT  ) __matrix_dirty       = true;
-            __layout_type = __SCRIBBLE_LAYOUT.__SCROLL_SPLIT;
             
             __model_cache_name_dirty = true;
             __bbox_dirty             = true;
@@ -1101,12 +1054,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
                 __scribble_trace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", __page, " (pages are 0-indexed)");
             }
             
-            if ((__layout_type == __SCRIBBLE_LAYOUT.__SCROLL) || (__layout_type == __SCRIBBLE_LAYOUT.__SCROLL))
-            {
-                //If we're using a scroll layout, jump to the correct page y coordinate
-                manual_scroll(get_page_y(_page));
-            }
-            
             __page = _page;
         }
         else
@@ -1259,19 +1206,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
-    static manual_scroll = function(_offset)
-    {
-        __scroll_using = true;
-        
-        if (__scroll_y != _offset)
-        {
-            __scroll_y     = _offset;
-            __matrix_dirty = true;
-        }
-        
-        return self;
-    }
-    
     static get_line_y = function(_index, _page = __page)
     {
         var _model = __get_model(true);
@@ -1286,13 +1220,26 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return _model.__get_line_height(_index, _page);
     }
     
+    static scroll_to_y = function(_y, _speed = SCRIBBLE_SCROLL_DEFAULT_SPEED)
+    {
+        __scroll_using    = true;
+        __scroll_target_y = _y;
+        __scroll_speed    = _speed;
+        
+        return self;
+    }
+    
+    static scroll_to_page = function(_page, _speed = SCRIBBLE_SCROLL_DEFAULT_SPEED)
+    {
+        __scroll_using    = true;
+        __scroll_target_y = get_page_y(_page);
+        __scroll_speed    = _speed;
+        
+        return self;
+    }
+    
     static get_page_y = function(_page)
     {
-        if ((__layout_type != __SCRIBBLE_LAYOUT.__SCROLL) && (__layout_type != __SCRIBBLE_LAYOUT.__SCROLL_SPLIT))
-        {
-            return 0;
-        }
-        
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
         return _model.__get_page_y(_page);
@@ -1303,25 +1250,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return __scroll_y;
     }
     
-    static get_scroll_height = function()
-    {
-        if ((__layout_type != __SCRIBBLE_LAYOUT.__SCROLL) && (__layout_type != __SCRIBBLE_LAYOUT.__SCROLL_SPLIT))
-        {
-            return 0;
-        }
-        
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
-        return max(0, _model.__get_scroll_max() - __layout_height);
-    }
-    
     static get_scroll_min = function()
     {
-        if ((__layout_type != __SCRIBBLE_LAYOUT.__SCROLL) && (__layout_type != __SCRIBBLE_LAYOUT.__SCROLL_SPLIT))
-        {
-            return 0;
-        }
-        
         return -__layout_height;
     }
     
@@ -1329,7 +1259,14 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return _model.__get_scroll_max();
+        return _model.__get_scroll_max() + __layout_height;
+    }
+    
+    static get_scroll_height = function()
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return max(0, get_scroll_max() - get_scroll_min());
     }
     
     #endregion
@@ -1637,14 +1574,14 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         switch(__starting_halign)
         {
-            case fa_left:                             break;
+            case fa_left:                           break;
             case fa_center: _x -= __layout_width/2; break;
             case fa_right:  _x -= __layout_width;   break;
         }
         
         switch(__starting_valign)
         {
-            case fa_top:                               break;
+            case fa_top:                             break;
             case fa_middle: _y -= __layout_height/2; break;
             case fa_bottom: _y -= __layout_height;   break;
         }
@@ -1788,7 +1725,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             shader_set_uniform_f(_u_vCrop, __crop_l, __crop_t, __crop_r, __crop_b);
             
             var _model = __get_model(false);
-            shader_set_uniform_f(_u_vScrollCrop, _model.__min_y + __scroll_y - __layout_height, _model.__min_y + __scroll_y);
+            shader_set_uniform_f(_u_vScrollCrop, _model.__min_y, _model.__max_y+1); //TODO - Check this off-by-one on different platforms
         }
         else if (_shader_uniforms_dirty)
         {
@@ -1915,7 +1852,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __matrix_y       = _y;
             
             var _x_offset = -__origin_x;
-            var _y_offset = -__origin_y - __scroll_y;// + __layout_height;
+            var _y_offset = -__origin_y;
             var _xscale   = __layout_scale*_model.__fit_scale*__post_xscale;
             var _yscale   = __layout_scale*_model.__fit_scale*__post_yscale;
             var _angle    = __post_angle;

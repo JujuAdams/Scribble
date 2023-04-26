@@ -58,22 +58,20 @@ function __scribble_gen_6_build_lines()
     static _generator_state = __scribble_get_generator_state();
     with(_generator_state)
     {
-        var _glyph_grid             = __glyph_grid;
-        var _word_grid              = __word_grid;
-        var _line_grid              = __line_grid;
-        var _control_grid           = __control_grid;
-        var _temp_grid              = __temp_grid;
-        var _element                = __element;
-        var _word_count             = __word_count;
-        var _line_height_min        = __line_height_min;
-        var _line_height_max        = __line_height_max;
-        var _line_spacing_add       = __line_spacing_add;
-        var _line_spacing_multiply  = __line_spacing_multiply;
-        var _layout_fit             = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT);
-        var _layout_max_scale       = _element.__layout_max_scale;
-        var _layout_wrap            = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__WRAP);
-        var _layout_page_separation = _element.__layout_page_separation;
-        var _layout_scrollable      = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__SCROLL);
+        var _glyph_grid            = __glyph_grid;
+        var _word_grid             = __word_grid;
+        var _line_grid             = __line_grid;
+        var _control_grid          = __control_grid;
+        var _temp_grid             = __temp_grid;
+        var _element               = __element;
+        var _word_count            = __word_count;
+        var _line_height_min       = __line_height_min;
+        var _line_height_max       = __line_height_max;
+        var _line_spacing_add      = __line_spacing_add;
+        var _line_spacing_multiply = __line_spacing_multiply;
+        var _layout_fit            = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT);
+        var _layout_max_scale      = _element.__layout_max_scale;
+        var _layout_wrap           = (_element.__layout_type >= __SCRIBBLE_LAYOUT.__WRAP);
         
         if ((_element.__layout_width <= 0) || is_infinity(_element.__layout_width)) //Turn off wrapping logic if we have an invalid width
         {
@@ -293,17 +291,7 @@ function __scribble_gen_6_build_lines()
                         //Pagebreak after this word
                         var _line_word_end = _i;
                         __SCRIBBLE_GEN_LINE_END;
-                        
-                        //In scrollable mode, don't start new pages back at the top. Instead keep adding text downwards!
-                        if (_layout_scrollable)
-                        {
-                            _line_y += _layout_page_separation;
-                        }
-                        else
-                        {
-                            _line_y = 0;
-                        }
-                        
+                        _line_y = 0;
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
                         

@@ -44,7 +44,7 @@ function __scribble_gen_7_build_pages()
         var _line_spacing_multiply = __line_spacing_multiply;
     }
     
-    var _max_break_height = (_element.__layout_type == __SCRIBBLE_LAYOUT.__FIT)? (_model_max_height / __fit_scale) : infinity;
+    var _max_break_height = (_element.__layout_type == __SCRIBBLE_LAYOUT.__WRAP_SPLIT)? (_model_max_height / __fit_scale) : infinity;
     var _simulated_model_height = _max_break_height;
     var _model_height = 0;
     
@@ -82,6 +82,7 @@ function __scribble_gen_7_build_pages()
             
             // Create a new page
             _page_data = __new_page();
+            _page_data.__y_offset    = max(_line_y, _model_max_height) + 30;
             _page_data.__line_start  = _i;
             _page_data.__glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START];
             _page_line_array = _page_data.__line_array;

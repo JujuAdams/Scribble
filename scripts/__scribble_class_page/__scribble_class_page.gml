@@ -31,6 +31,8 @@ function __scribble_class_page() constructor
     __max_x  = 0;
     __max_y  = 0;
     
+    __y_offset = 0;
+    
     __vertex_buffer_array = [];
     if (!__SCRIBBLE_ON_WEB) __material_alias_to_vertex_buffer_dict = {}; //FIXME - Workaround for pointers not being stringified properly on HTML5
     
@@ -38,9 +40,12 @@ function __scribble_class_page() constructor
     __line_events  = {};
     __region_array = [];
     
-    static __submit = function(_double_draw)
+    static __submit = function(_double_draw, _scroll_y)
     {
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
+        
+        static _u_fPageYOffset = shader_get_uniform(__shd_scribble, "u_fPageYOffset");
+        shader_set_uniform_f(_u_fPageYOffset, __y_offset - _scroll_y);
         
         var _old_tex_filter = gpu_get_tex_filter();
         
@@ -111,17 +116,6 @@ function __scribble_class_page() constructor
     {
         __SCRIBBLE_PAGE_VALIDATE_LINE_INDEX
         return __line_array[_line_index].__height;
-    }
-    
-    static __get_scroll_max = function()
-    {
-        var _line_count = array_length(__line_array);
-        if (_line_count <= 0) return 0;
-        
-        with(__line_array[_line_count-1])
-        {
-            return __y + __height;
-        }
     }
     
     static __ensure_vertex_buffer = function(_material_alias)

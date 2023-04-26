@@ -7,7 +7,7 @@ precision highp float;
 #define SDF_THICKNESS_OFFSET u_fSDFData.z
 
 varying vec2  v_vPosition;
-varying float v_fObjectY;
+varying float v_fObjectSpaceY;
 varying vec2  v_vTexcoord;
 varying vec2  v_vCycleTexcoord;
 varying vec4  v_vColour;
@@ -42,7 +42,7 @@ void main()
     if (v_vCycleTexcoord.y > 0.0) vertexColour *= texture2D(u_sCycle, vec2(mod(v_vCycleTexcoord.x, 1.0), v_vCycleTexcoord.y));
     
     if (((length(u_vCrop) > 0.0) && ((v_vPosition.x < u_vCrop.x) || (v_vPosition.y < u_vCrop.y) || (v_vPosition.x > u_vCrop.z) || (v_vPosition.y > u_vCrop.w)))
-    ||  ((length(u_vScrollCrop) > 0.0) && ((v_fObjectY < u_vScrollCrop.x) || (v_fObjectY > u_vScrollCrop.y))))
+    ||  ((length(u_vScrollCrop) > 0.0) && ((v_fObjectSpaceY < u_vScrollCrop.x) || (v_fObjectSpaceY > u_vScrollCrop.y))))
     {
         gl_FragColor = vec4(0.0);
     }

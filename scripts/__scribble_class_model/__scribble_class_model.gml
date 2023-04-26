@@ -59,17 +59,16 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __has_animation  = false;
     
     __pages_array = []; //Stores each page of text
-    __scroll_page_y_array = [];
     
     
     
-    static __submit = function(_page, _double_draw)
+    static __submit = function(_page, _double_draw, _scroll_y)
     {
         if (__flushed) return undefined;
         
         __last_drawn = __scribble_state.__frames;
         
-        __pages_array[_page].__submit((__has_arabic || __has_thai || SCRIBBLE_ALWAYS_DOUBLE_DRAW) && _double_draw);
+        __pages_array[_page].__submit((__has_arabic || __has_thai || SCRIBBLE_ALWAYS_DOUBLE_DRAW) && _double_draw, _scroll_y);
     }
     
     static __freeze = function()
@@ -272,14 +271,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     static __get_page_y = function(_page)
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
-        return __scroll_enabled? __scroll_page_y_array[_page] : 0;
+        return __pages_array[_page].__y_offset;
     }
     
-    /// @param page
     static __get_scroll_max = function()
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
-        return __scroll_enabled? __pages_array[0].__get_scroll_max() : 0;
+        return __pages_array[array_length(__pages_array)-1].__y_offset;
     }
     
     /// @param page

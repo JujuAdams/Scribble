@@ -10,7 +10,7 @@ scribble(_string, 0)
 scribble(_string, 1)
 .layout_wrap(400)
 .align(fa_center, fa_top)
-.manual_scroll(scroll_y, 100)
+.scroll_to_y(scroll_y, 100)
 .draw(room_width/2, 100);
 
 draw_line(0, scroll_y + room_height/2, 300, scroll_y + room_height/2);

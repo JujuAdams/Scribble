@@ -471,8 +471,6 @@ enum __SCRIBBLE_LAYOUT
     __SCALE,
     __WRAP,
     __WRAP_SPLIT,
-    __SCROLL,
-    __SCROLL_SPLIT,
     __FIT,
 }
 

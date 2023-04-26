@@ -72,7 +72,7 @@ attribute vec2  in_TextureCoord; //UVs
 attribute vec3  in_Colour2;      //{dX, dY, Cycle V-coord}
 
 varying vec2  v_vPosition;
-varying float v_fObjectY;
+varying float v_fObjectSpaceY;
 varying vec2  v_vTexcoord;
 varying vec2  v_vCycleTexcoord;
 varying vec4  v_vColour;
@@ -92,6 +92,7 @@ uniform float u_fTime;                                  //1
 uniform float u_aDataFields[MAX_DATA_FIELDS];           //19
 uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
+uniform float u_fPageYOffset;                           //1
 
 uniform int   u_iTypewriterMethod;                      //1
 uniform int   u_iTypewriterCharMax;                     //1
@@ -486,7 +487,8 @@ void main()
     
     
     //Final positioning
-    v_fObjectY = pos.y;
+    pos.y += u_fPageYOffset;
+    v_fObjectSpaceY = pos.y;
     vec4 wsPos = gm_Matrices[MATRIX_WORLD]*vec4(pos, 0.0, 1.0);
     v_vPosition = wsPos.xy;
     gl_Position = gm_Matrices[MATRIX_PROJECTION]*gm_Matrices[MATRIX_VIEW]*wsPos;
