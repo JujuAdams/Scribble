@@ -40,12 +40,18 @@ function __scribble_class_page() constructor
     __line_events  = {};
     __region_array = [];
     
-    static __submit = function(_double_draw, _scroll_y)
+    static __submit = function(_double_draw, _scroll_top, _scroll_bottom)
     {
+        if (_scroll_top > __y_offset + __max_y) || (_scroll_bottom < __y_offset + __min_y)
+        {
+            //Not visible
+            return;
+        }
+        
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
         static _u_fPageYOffset = shader_get_uniform(__shd_scribble, "u_fPageYOffset");
-        shader_set_uniform_f(_u_fPageYOffset, __y_offset - _scroll_y);
+        shader_set_uniform_f(_u_fPageYOffset, __y_offset - _scroll_top);
         
         var _old_tex_filter = gpu_get_tex_filter();
         

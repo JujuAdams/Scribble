@@ -210,8 +210,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        _model.__submit(__scroll_page, (__outline_thickness > 0) || (__shadow_alpha > 0), __scroll_y);
-        _model.__submit(__scroll_page+1, (__outline_thickness > 0) || (__shadow_alpha > 0), __scroll_y);
+        _model.__submit((__outline_thickness > 0) || (__shadow_alpha > 0), __scroll_y, __scroll_y + __layout_height);
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);

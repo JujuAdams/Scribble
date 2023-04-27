@@ -62,13 +62,18 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     
     
-    static __submit = function(_page, _double_draw, _scroll_y)
+    static __submit = function(_double_draw, _scroll_top, _scroll_bottom)
     {
         if (__flushed) return undefined;
         
         __last_drawn = __scribble_state.__frames;
         
-        __pages_array[_page].__submit((__has_arabic || __has_thai || SCRIBBLE_ALWAYS_DOUBLE_DRAW) && _double_draw, _scroll_y);
+        var _i = 0;
+        repeat(array_length(__pages_array))
+        {
+            __pages_array[_i].__submit((SCRIBBLE_ALWAYS_DOUBLE_DRAW || __has_arabic || __has_thai) && _double_draw, _scroll_top, _scroll_bottom);
+            ++_i;
+        }
     }
     
     static __freeze = function()

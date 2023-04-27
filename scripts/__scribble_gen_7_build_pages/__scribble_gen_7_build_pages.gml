@@ -6,6 +6,7 @@
                                 _page_data.__glyph_count = 1 + _page_data.__glyph_end - _page_data.__glyph_start;\
                                 _page_data.__width       = ds_grid_get_max(_line_grid, _page_start_line, __SCRIBBLE_GEN_LINE.__WIDTH, _page_end_line, __SCRIBBLE_GEN_LINE.__WIDTH);\
                                 _page_data.__height      = _line_max_y;\
+                                _page_data.__y_offset    = _page_y;\
                                 if (__valign == fa_middle)\
                                 {\
                                     _page_data.__min_y = -(_line_max_y div 2);\
@@ -42,6 +43,7 @@ function __scribble_gen_7_build_pages()
         var _line_count            = __line_count;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
+        var _page_separation       = __element.__layout_page_separation;
     }
     
     var _max_break_height = (_element.__layout_type == __SCRIBBLE_LAYOUT.__WRAP_SPLIT)? (_model_max_height / __fit_scale) : infinity;
@@ -56,6 +58,7 @@ function __scribble_gen_7_build_pages()
     var _page_line_array = _page_data.__line_array;
     
     var _page_start_line = 0;
+    var _page_y = 0;
     var _line_y = 0;
     var _line_max_y = 0;
     var _i = 0;
@@ -80,9 +83,11 @@ function __scribble_gen_7_build_pages()
         {
             __SCRIBBLE_GEN_PAGE_POP;
             
+            _page_y += _starts_manual_page? (max(_line_y, _model_max_height) + _page_separation) : _line_y;
+            _manual_start_page = _starts_manual_page;
+            
             // Create a new page
             _page_data = __new_page();
-            _page_data.__y_offset    = max(_line_y, _model_max_height) + 30;
             _page_data.__line_start  = _i;
             _page_data.__glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START];
             _page_line_array = _page_data.__line_array;
