@@ -1042,41 +1042,32 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     }
     
     /// @param [page]
-    static get_text = function()
+    static get_text = function(_page = __scroll_page)
     {
-        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __scroll_page;
-        
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
         return _model.__get_text(_page);
     }
     
+    /// @param index
     /// @param [page]
-    static get_glyph_data = function()
+    static get_glyph_data = function(_index, _page = __scroll_page)
     {
-        var _index = argument[0];
-        var _page  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : __scroll_page;
-        
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
         return _model.__get_glyph_data(_index, _page);
     }
     
     /// @param [page]
-    static get_glyph_count = function()
+    static get_glyph_count = function(_page = __scroll_page)
     {
-        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __scroll_page;
-        
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
         return _model.__get_glyph_count(_page);
     }
     
-    /// @param [page]
-    static get_line_count = function()
+    static get_line_count = function(_page = __scroll_page)
     {
-        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __scroll_page;
-        
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
         return _model.__get_line_count(_page);
