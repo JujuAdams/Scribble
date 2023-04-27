@@ -436,12 +436,12 @@ function __scribble_class_typist(_per_line) constructor
             reset();
             __last_element = weak_ref_create(_text_element);
         }
-        else if (__last_element.ref.__page != __last_page) //Page change
+        else if (__last_element.ref.__scroll_page != __last_page) //Page change
         {
             reset();
         }
         
-        __last_page = __last_element.ref.__page;
+        __last_page = __last_element.ref.__scroll_page;
         
         if (_carry_skip)
         {

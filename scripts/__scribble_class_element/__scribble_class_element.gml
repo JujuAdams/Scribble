@@ -90,7 +90,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __line_height_max = -1;
     __line_spacing    = "100%";
     
-    __page = 0;
     __command_tag_behaviour = __SCRIBBLE_COMMAND_TAG.ENABLE;
     __template = undefined;
     
@@ -115,6 +114,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __crop_b = 0;
     
     __scroll_using    = false;
+    __scroll_page     = undefined;
     __scroll_y        = 0;
     __scroll_target_y = 0;
     __scroll_speed    = infinity;
@@ -210,8 +210,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        _model.__submit(__page, (__outline_thickness > 0) || (__shadow_alpha > 0), __scroll_y);
-        _model.__submit(__page+1, (__outline_thickness > 0) || (__shadow_alpha > 0), __scroll_y);
+        _model.__submit(__scroll_page, (__outline_thickness > 0) || (__shadow_alpha > 0), __scroll_y);
+        _model.__submit(__scroll_page+1, (__outline_thickness > 0) || (__shadow_alpha > 0), __scroll_y);
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);
@@ -713,7 +713,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     static region_detect = function(_element_x, _element_y, _pointer_x, _pointer_y)
     {
         var _model        = __get_model(true);
-        var _page         = _model.__pages_array[__page];
+        var _page         = _model.__pages_array[__scroll_page];
         var _region_array = _page.__region_array;
         
         var _matrix = __update_matrix(_model, _element_x, _element_y);
@@ -763,7 +763,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         }
         
         var _model        = __get_model(true);
-        var _page         = _model.__pages_array[__page];
+        var _page         = _model.__pages_array[__scroll_page];
         var _region_array = _page.__region_array;
         
         var _i = 0;
@@ -829,7 +829,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             var _yscale = __layout_scale*_model.__fit_scale*__post_yscale;
             
             //Left/top padding is baked into the model
-            var _bbox = _model.__get_bbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __page : undefined, __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__get_bbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __scroll_page : undefined, __padding_l, __padding_t, __padding_r, __padding_b);
             
             __bbox_raw_width  = 1 + _bbox.right - _bbox.left;
             __bbox_raw_height = 1 + _bbox.bottom - _bbox.top;
@@ -971,11 +971,11 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         if (_typist != undefined)
         {
-            var _bbox = _model.__get_bbox_revealed(__page, 0, _typist.__window_array[_typist.__window_index], __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__get_bbox_revealed(__scroll_page, 0, _typist.__window_array[_typist.__window_index], __padding_l, __padding_t, __padding_r, __padding_b);
         }
         else if (__tw_reveal != undefined)
         {
-            var _bbox = _model.__get_bbox_revealed(__page, 0, __tw_reveal, __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__get_bbox_revealed(__scroll_page, 0, __tw_reveal, __padding_l, __padding_t, __padding_r, __padding_b);
         }
         
         __update_bbox_matrix();
@@ -1033,61 +1033,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     
     
-    #region Pages
-    
-    /// @param page
-    static page = function(_page)
-    {
-        var _old_page = __page;
-        
-        var _model = __get_model(false);
-        if (is_struct(_model))
-        {
-            if (_page < 0)
-            {
-                __scribble_trace("Warning! Cannot set a text element's page to less than 0");
-                _page = 0;
-            }
-            else if (_page > _model.__get_page_count()-1)
-            {
-                _page = _model.__get_page_count()-1;
-                __scribble_trace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", __page, " (pages are 0-indexed)");
-            }
-            
-            __page = _page;
-        }
-        else
-        {
-            __page     = 0;
-            __scroll_y = 0;
-        }
-        
-        if (_old_page != __page) __bbox_dirty = true;
-        
-        return self;
-    }
-    
-    static get_page = function()
-    {
-        return __page;
-    }
-    
-    static get_page_count = function()
-    {
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
-        return _model.__get_page_count();
-    }
-    
-    static on_last_page = function()
-    {
-        return (get_page() >= get_page_count() - 1);
-    }
-    
-    #endregion
-    
-    
-    
     #region Other Getters
     
     static get_wrapped = function()
@@ -1100,7 +1045,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param [page]
     static get_text = function()
     {
-        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __scroll_page;
         
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
@@ -1111,7 +1056,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     static get_glyph_data = function()
     {
         var _index = argument[0];
-        var _page  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : __page;
+        var _page  = ((argument_count > 1) && (argument[1] != undefined))? argument[1] : __scroll_page;
         
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
@@ -1121,7 +1066,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param [page]
     static get_glyph_count = function()
     {
-        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __scroll_page;
         
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
@@ -1131,7 +1076,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     /// @param [page]
     static get_line_count = function()
     {
-        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
+        var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __scroll_page;
         
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
@@ -1206,14 +1151,14 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
-    static get_line_y = function(_index, _page = __page)
+    static get_line_y = function(_index, _page = __scroll_page)
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
         return _model.__get_line_y(_index, _page);
     }
     
-    static get_line_height = function(_index, _page = __page)
+    static get_line_height = function(_index, _page = __scroll_page)
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
@@ -1223,6 +1168,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     static scroll_to_y = function(_y, _speed = SCRIBBLE_SCROLL_DEFAULT_SPEED)
     {
         __scroll_using    = true;
+        __scroll_page     = undefined;
         __scroll_target_y = _y;
         __scroll_speed    = _speed;
         
@@ -1231,23 +1177,51 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     static scroll_to_page = function(_page, _speed = SCRIBBLE_SCROLL_DEFAULT_SPEED)
     {
+        var _old_page = __scroll_page;
+        
+        var _model = __get_model(false);
+        if (is_struct(_model))
+        {
+            if (_page < 0)
+            {
+                __scribble_trace("Warning! Cannot set a text element's page to less than 0");
+                _page = 0;
+            }
+            else if (_page > _model.__get_page_count()-1)
+            {
+                __scribble_trace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", _model.__get_page_count()-1, " (pages are 0-indexed)");
+                _page = _model.__get_page_count()-1;
+            }
+        }
+        else
+        {
+            _page = 0;
+        }
+        
         __scroll_using    = true;
+        __scroll_page     = _page;
         __scroll_target_y = get_page_y(_page);
         __scroll_speed    = _speed;
+        
+        if (_old_page != _page) __bbox_dirty = true;
         
         return self;
     }
     
-    static get_page_y = function(_page)
+    /// @param page
+    static page = function(_page)
     {
-        var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
-        return _model.__get_page_y(_page);
+        return scroll_to_page(_page, infinity);
     }
     
-    static get_scroll = function()
+    static get_scroll_y = function()
     {
         return __scroll_y;
+    }
+    
+    static get_scroll_page = function()
+    {
+        return __scroll_page;
     }
     
     static get_scroll_min = function()
@@ -1267,6 +1241,30 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
         return max(0, get_scroll_max() - get_scroll_min());
+    }
+    
+    static get_page = function()
+    {
+        return __scroll_page;
+    }
+    
+    static get_page_y = function(_page)
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.__get_page_y(_page);
+    }
+    
+    static get_page_count = function()
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return 0;
+        return _model.__get_page_count();
+    }
+    
+    static on_last_page = function()
+    {
+        return (get_page() >= get_page_count() - 1);
     }
     
     #endregion
@@ -1440,7 +1438,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     #region Miscellaneous
     
-    static get_events = function(_position, _page_index = __page, _use_lines = false)
+    static get_events = function(_position, _page_index = __scroll_page, _use_lines = false)
     {
         static _empty_array = [];
         
