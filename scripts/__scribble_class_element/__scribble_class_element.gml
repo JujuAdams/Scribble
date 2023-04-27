@@ -1722,7 +1722,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             shader_set_uniform_f(_u_vCrop, __crop_l, __crop_t, __crop_r, __crop_b);
             
             var _model = __get_model(false);
-            shader_set_uniform_f(_u_vScrollCrop, _model.__min_y, _model.__max_y+1); //TODO - Check this off-by-one on different platforms
+            shader_set_uniform_f(_u_vScrollCrop, _model.__min_y, _model.__min_y + __layout_height + 1); //TODO - Check this off-by-one on different platforms
         }
         else if (_shader_uniforms_dirty)
         {
