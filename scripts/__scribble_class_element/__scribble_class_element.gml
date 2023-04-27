@@ -248,28 +248,6 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return self;
     }
     
-    /// @param colour
-    static colour = function(_in_colour)
-    {
-        if (_in_colour != undefined)
-        {
-            var _colour = __scribble_process_colour(_in_colour);
-            if ((_colour != undefined) && (_colour >= 0) && (_colour != __starting_colour))
-            {
-                __model_cache_name_dirty = true;
-                __starting_colour = _colour & 0xFFFFFF;
-            }
-        }
-        
-        return self;
-    }
-    
-    /// @param colour
-    static color = function(_in_colour)
-    {
-        return colour(_in_colour);
-    }
-    
     /// @param halign
     /// @param valign
     static align = function(_halign, _valign)
@@ -299,7 +277,29 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     
     
-    #region Colouration
+    #region Colourisation
+    
+    /// @param colour
+    static colour = function(_in_colour)
+    {
+        if (_in_colour != undefined)
+        {
+            var _colour = __scribble_process_colour(_in_colour);
+            if ((_colour != undefined) && (_colour >= 0) && (_colour != __starting_colour))
+            {
+                __model_cache_name_dirty = true;
+                __starting_colour = _colour & 0xFFFFFF;
+            }
+        }
+        
+        return self;
+    }
+    
+    /// @param colour
+    static color = function(_in_colour)
+    {
+        return colour(_in_colour);
+    }
     
     /// @param alpha
     static alpha = function(_alpha)
