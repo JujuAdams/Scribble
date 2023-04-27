@@ -276,13 +276,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     static __get_page_y = function(_page)
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
-        return __pages_array[_page].__y_offset;
+        return __pages_array[_page].__scroll_y;
     }
     
     static __get_scroll_max = function()
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
-        return __pages_array[array_length(__pages_array)-1].__y_offset;
+        return __pages_array[array_length(__pages_array)-1].__scroll_y;
     }
     
     /// @param page

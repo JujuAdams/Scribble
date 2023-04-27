@@ -7,6 +7,7 @@
                                 _page_data.__width       = ds_grid_get_max(_line_grid, _page_start_line, __SCRIBBLE_GEN_LINE.__WIDTH, _page_end_line, __SCRIBBLE_GEN_LINE.__WIDTH);\
                                 _page_data.__height      = _line_max_y;\
                                 _page_data.__y_offset    = _page_y;\
+                                _page_data.__scroll_y    = _page_y;\
                                 if (__valign == fa_middle)\
                                 {\
                                     _page_data.__min_y = -(_line_max_y div 2);\
@@ -61,6 +62,7 @@ function __scribble_gen_7_build_pages()
     var _page_y = 0;
     var _line_y = 0;
     var _line_max_y = 0;
+    var _manual_start_page = true;
     var _i = 0;
     repeat(_line_count)
     {
@@ -82,6 +84,7 @@ function __scribble_gen_7_build_pages()
         else
         {
             __SCRIBBLE_GEN_PAGE_POP;
+            if (!_manual_start_page) _page_data.__scroll_y -= _model_max_height - _page_data.__height;
             
             _page_y += _starts_manual_page? (max(_line_y, _model_max_height) + _page_separation) : _line_y;
             _manual_start_page = _starts_manual_page;
@@ -108,6 +111,7 @@ function __scribble_gen_7_build_pages()
     }
     
     __SCRIBBLE_GEN_PAGE_POP;
+    if (!_manual_start_page) _page_data.__scroll_y -= _model_max_height - _page_data.__height;
     
     __height = _model_height;
 }
