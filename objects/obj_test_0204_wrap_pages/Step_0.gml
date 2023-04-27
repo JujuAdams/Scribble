@@ -6,3 +6,5 @@ if (mouse_check_button(mb_left))
 
 if (keyboard_check_pressed(vk_up)) page++;
 if (keyboard_check_pressed(vk_down)) page--;
+
+page = clamp(page, 0, element.get_page_count()-1);
