@@ -1058,7 +1058,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return 0;
-        return _model.__get_glyph_data(_index, _page);
+        return _model.__get_glyph_data(_index, _page, __scroll_y);
     }
     
     /// @param [page]
