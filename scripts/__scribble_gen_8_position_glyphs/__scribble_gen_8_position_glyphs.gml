@@ -85,11 +85,6 @@ function __scribble_gen_8_position_glyphs()
             
             
             
-            //Correct for vertical alignment
-            if (_page_data.__min_y != 0) ds_grid_add_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH.__Y, _line_glyph_end, __SCRIBBLE_GEN_GLYPH.__Y, _page_data.__min_y);
-            
-            
-            
             #region Figure out what order words should come in
             
             // TODO - Do this whilst building lines

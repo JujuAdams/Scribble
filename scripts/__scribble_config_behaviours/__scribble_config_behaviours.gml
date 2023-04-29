@@ -18,6 +18,7 @@
 #macro SCRIBBLE_DELAY_LAST_CHARACTER          false
 #macro SCRIBBLE_DEFAULT_SPRITEFONT_BILINEAR   false  //Whether spritefonts should default to having bilinear texture filtering or not
 #macro SCRIBBLE_DEFAULT_STANDARD_BILINEAR     true   //Whether standard fonts should default to having bilinear texture filtering or not
+#macro SCRIBBLE_ALWAYS_USE_FULL_PAGE_HEIGHT   false
 
 
 

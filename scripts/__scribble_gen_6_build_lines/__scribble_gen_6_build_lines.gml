@@ -49,7 +49,7 @@
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WIDTH   ] = _word_x;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HEIGHT  ] = _line_height;\
                                 _line_count++;\
-                                if (_line_y + _line_height > _line_max_y) _line_max_y = _line_y + _line_height;\
+                                if (_line_y + _line_height > _line_page_y_max) _line_page_y_max = _line_y + _line_height;\
                                 _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
 
 
@@ -87,7 +87,7 @@ function __scribble_gen_6_build_lines()
     var _upper_limit = undefined;
     repeat(max(1, SCRIBBLE_FIT_TO_BOX_ITERATIONS))
     {
-        var _line_max_y                 = 0;
+        var _line_page_y_max            = 0;
         var _simulated_model_max_width  = _model_max_width  / __fit_scale;
         var _simulated_model_max_height = _model_max_height / __fit_scale;
         
@@ -321,7 +321,7 @@ function __scribble_gen_6_build_lines()
         
         _fit_to_box_iterations++;
         
-        if ((_line_max_y < _simulated_model_max_height) && !_word_broken)
+        if ((_line_page_y_max < _simulated_model_max_height) && !_word_broken)
         {
             //The text is already small enough to fit (and none of the words have been split in the middle)
             if (__fit_scale >= _layout_max_scale) break;

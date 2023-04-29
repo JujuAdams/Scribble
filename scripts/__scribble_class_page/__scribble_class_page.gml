@@ -31,8 +31,6 @@ function __scribble_class_page() constructor
     __max_x  = 0;
     __max_y  = 0;
     
-    __y_offset = 0;
-    
     __vertex_buffer_array = [];
     if (!__SCRIBBLE_ON_WEB) __material_alias_to_vertex_buffer_dict = {}; //FIXME - Workaround for pointers not being stringified properly on HTML5
     
@@ -42,7 +40,7 @@ function __scribble_class_page() constructor
     
     static __submit = function(_double_draw, _scroll_top, _scroll_bottom)
     {
-        if (_scroll_top > __y_offset + __max_y) || (_scroll_bottom < __y_offset + __min_y)
+        if (_scroll_top >= __max_y) || (_scroll_bottom <= __min_y)
         {
             //Not visible
             return;
@@ -51,7 +49,7 @@ function __scribble_class_page() constructor
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
         static _u_fPageYOffset = shader_get_uniform(__shd_scribble, "u_fPageYOffset");
-        shader_set_uniform_f(_u_fPageYOffset, __y_offset - _scroll_top);
+        shader_set_uniform_f(_u_fPageYOffset, -_scroll_top);
         
         var _old_tex_filter = gpu_get_tex_filter();
         
@@ -114,7 +112,7 @@ function __scribble_class_page() constructor
     static __get_line_y = function(_line_index)
     {
         __SCRIBBLE_PAGE_VALIDATE_LINE_INDEX
-        return __line_array[_line_index].__y;
+        return __line_array[_line_index].__model_y;
     }
     
     /// @param lineIndex
