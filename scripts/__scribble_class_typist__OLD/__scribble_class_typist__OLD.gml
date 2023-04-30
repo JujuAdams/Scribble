@@ -866,8 +866,8 @@ function __scribble_class_typist__OLD(_per_line) constructor
     {
         static _u_iTypistMethod        = shader_get_uniform(__shd_scribble, "u_iTypistMethod"       );
         static _u_iTypistCharMax       = shader_get_uniform(__shd_scribble, "u_iTypistCharMax"      );
-        static _u_fTypistWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypistWindowArray"  );
-        static _u_fTypistSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypistSmoothness"   );
+        static _u_fTypistMinArray      = shader_get_uniform(__shd_scribble, "u_fTypistMinArray"     );
+        static _u_fTypistMaxArray      = shader_get_uniform(__shd_scribble, "u_fTypistMaxArray"     );
         static _u_vTypistStartPos      = shader_get_uniform(__shd_scribble, "u_vTypistStartPos"     );
         static _u_vTypistStartScale    = shader_get_uniform(__shd_scribble, "u_vTypistStartScale"   );
         static _u_fTypistStartRotation = shader_get_uniform(__shd_scribble, "u_fTypistStartRotation");
@@ -904,14 +904,14 @@ function __scribble_class_typist__OLD(_per_line) constructor
         //Reset the "typist use lines" flag
         __scribble_state.__render_flag_value = ((__scribble_state.__render_flag_value & (~(0x40))) | (__per_line << 6));
         
-        shader_set_uniform_i(_u_iTypistMethod,            _method);
-        shader_set_uniform_i(_u_iTypistCharMax,           _char_max);
-        shader_set_uniform_f(_u_fTypistSmoothness,        __smoothness);
-        shader_set_uniform_f(_u_vTypistStartPos,          __ease_dx, __ease_dy);
-        shader_set_uniform_f(_u_vTypistStartScale,        __ease_xscale, __ease_yscale);
-        shader_set_uniform_f(_u_fTypistStartRotation,     __ease_rotation);
-        shader_set_uniform_f(_u_fTypistAlphaDuration,     __ease_alpha_duration);
-        shader_set_uniform_f_array(_u_fTypistWindowArray, __window_array);
+        shader_set_uniform_i(_u_iTypistMethod,         _method);
+        shader_set_uniform_i(_u_iTypistCharMax,        _char_max);
+        shader_set_uniform_f(_u_vTypistStartPos,       __ease_dx, __ease_dy);
+        shader_set_uniform_f(_u_vTypistStartScale,     __ease_xscale, __ease_yscale);
+        shader_set_uniform_f(_u_fTypistStartRotation,  __ease_rotation);
+        shader_set_uniform_f(_u_fTypistAlphaDuration,  __ease_alpha_duration);
+        shader_set_uniform_f_array(_u_fTypistMinArray, __window_min_array);
+        shader_set_uniform_f_array(_u_fTypistMaxArray, __window_max_array);
     }
     
     #endregion

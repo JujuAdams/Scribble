@@ -94,14 +94,14 @@ uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
 uniform float u_fPageYOffset;                           //1
 
-uniform int   u_iTypistMethod;                      //1
-uniform int   u_iTypistCharMax;                     //1
-uniform float u_fTypistWindowArray[2*WINDOW_COUNT]; //6
-uniform float u_fTypistSmoothness;                  //1
-uniform vec2  u_vTypistStartPos;                    //2
-uniform vec2  u_vTypistStartScale;                  //2
-uniform float u_fTypistStartRotation;               //1
-uniform float u_fTypistAlphaDuration;               //1
+uniform int   u_iTypistMethod;                 //1
+uniform int   u_iTypistCharMax;                //1
+uniform float u_fTypistMinArray[WINDOW_COUNT]; //3
+uniform float u_fTypistMaxArray[WINDOW_COUNT]; //3
+uniform vec2  u_vTypistStartPos;               //2
+uniform vec2  u_vTypistStartScale;             //2
+uniform float u_fTypistStartRotation;          //1
+uniform float u_fTypistAlphaDuration;          //1
 
 float flagArray[MAX_EFFECTS];
 
@@ -219,35 +219,20 @@ vec4 rainbow(float animIndex, vec4 colour)
 }
 
 //Fade effect for typewriter etc.
-float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index, bool invert)
+float fade(float minArray[WINDOW_COUNT], float maxArray[WINDOW_COUNT], float index, bool fadeOut)
 {
     float result = 0.0;
     float f      = 1.0;
-    float head   = 0.0;
-    float tail   = 0.0;
+    float mini   = 0.0;
+    float maxi   = 0.0;
     
-    for(int i = 0; i < 2*WINDOW_COUNT; i += 2)
+    for(int i = 0; i < WINDOW_COUNT; i += 1)
     {
-        head = windowArray[i  ];
-        tail = windowArray[i+1];
-        
-        if (u_fTypistSmoothness > 0.0)
-        {
-            f = 1.0 - min(max((index - tail) / smoothness, 0.0), 1.0);
-        }
-        else
-        {
-            f = 1.0;
-        }
-        
-        f *= step(index, head);
-        
-        result = max(f, result);
+        mini = minArray[i];
+        maxi = maxArray[i];
     }
     
-    if (invert) result = 1.0 - result;
-    
-    return result;
+    return fadeOut? (1.0 - result) : result;
 }
 
 vec2 bezier(float t, vec2 p1, vec2 p2, vec2 p3)
@@ -448,7 +433,7 @@ void main()
         float fadeIndex = ((mod(u_fRenderFlags/64.0, 2.0) < 1.0)? characterIndex : lineIndex) + 1.0;
         if (u_iTypistCharMax > 0) fadeIndex = float(u_iTypistCharMax) - fadeIndex;
         
-        float time = fade(u_fTypistWindowArray, u_fTypistSmoothness, fadeIndex, fadeOut);
+        float time = fade(u_fTypistMinArray, u_fTypistMaxArray, fadeIndex, fadeOut);
         
         if (u_fTypistAlphaDuration == 0.0)
         {
