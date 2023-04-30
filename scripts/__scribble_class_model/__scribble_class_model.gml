@@ -59,6 +59,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __has_animation  = false;
     
     __pages_array = []; //Stores each page of text
+    __lines_array = [];
     
     
     
@@ -217,6 +218,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     static __get_height = function(_page)
     {
         return __fit_scale*__height;
+    }
+    
+    static __get_line_array = function()
+    {
+        return __lines_array;
     }
     
     static __get_page_array = function()

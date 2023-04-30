@@ -1,6 +1,6 @@
 /// @param perLine
 
-function __scribble_class_typist(_per_line) constructor
+function __scribble_class_typist(_per_line) : __scribble_class_typist_public_functions() constructor
 {
     static __scribble_state = __scribble_get_state();
     static __external_sound_map = __scribble_state.__external_sound_map;
@@ -54,373 +54,6 @@ function __scribble_class_typist(_per_line) constructor
     
     
     
-    #region Setters
-    
-    static reset = function()
-    {
-        __last_page            = 0;
-        __last_character       = 0;
-        __last_audio_character = 0;
-        
-        __last_tick_frame = -infinity;
-        
-        __window_index     = 0;
-        __window_array     = array_create(2*__SCRIBBLE_WINDOW_COUNT, -__smoothness); __window_array[@ 0] = 0;
-        __paused           = false;
-        __delay_paused     = false;
-        __delay_end        = -1;
-        __inline_speed     = 1;
-        __event_stack      = [];
-        __skip             = false;
-        __drawn_since_skip = false;
-        
-        return self;
-    }
-    
-    /// @param speed
-    /// @param smoothness
-    static in = function(_speed, _smoothness)
-    {
-        var _old_in = __in;
-        
-        __in         = true;
-        __backwards  = false;
-        __speed      = _speed;
-        __smoothness = _smoothness;
-        __skip       = false;
-        
-        if ((_old_in == undefined) || !_old_in) reset();
-        
-        return self;
-    }
-    
-    /// @param speed
-    /// @param smoothness
-    /// @param [backwards=false]
-    static out = function(_speed, _smoothness, _backwards = false)
-    {
-        var _old_in = __in;
-        
-        __in         = false;
-        __backwards  = _backwards;
-        __speed      = _speed;
-        __smoothness = _smoothness;
-        __skip       = false;
-        
-        if ((_old_in == undefined) || _old_in) reset();
-        
-        return self;
-    }
-    
-    static skip = function(_state = true)
-    {
-        __skip = _state;
-        __skip_paused = true;
-        __drawn_since_skip = false;
-        
-        return self;
-    }
-    
-    static skip_to_pause = function(_state = true)
-    {
-        __skip = _state;
-        __skip_paused = false;
-        __drawn_since_skip = false;
-        
-        return self;
-    }
-    
-    static ignore_delay = function(_state = true)
-    {
-        __ignore_delay = _state;
-        
-        return self;
-    }
-    
-    /// @param soundArray
-    /// @param overlap
-    /// @param pitchMin
-    /// @param pitchMax
-    /// @param [gain=1]
-    static sound = function(_in_sound_array, _overlap, _pitch_min, _pitch_max, _gain = 1)
-    {
-        var _sound_array = _in_sound_array;
-        if (!is_array(_sound_array)) _sound_array = [_sound_array];
-        
-        __sound_array     = _sound_array;
-        __sound_overlap   = _overlap;
-        __sound_pitch_min = _pitch_min;
-        __sound_pitch_max = _pitch_max;
-        __sound_gain      = _gain;
-        __sound_per_char  = false;
-        
-        return self;
-    }
-    
-    /// @param soundArray
-    /// @param pitchMin
-    /// @param pitchMax
-    /// @param [exceptionString]
-    /// @param [gain=1]
-    static sound_per_char = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string, _gain = 1)
-    {
-        var _sound_array = _in_sound_array;
-        if (!is_array(_sound_array)) _sound_array = [_sound_array];
-        
-        __sound_array     = _sound_array;
-        __sound_pitch_min = _pitch_min;
-        __sound_pitch_max = _pitch_max;
-        __sound_gain      = _gain;
-        __sound_per_char  = true;
-        
-        if (is_string(_exception_string))
-        {
-            if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> to use sound-per-character exceptions");
-            
-            __sound_per_char_exception = true;
-            __sound_per_char_exception_dict = {};
-            
-            var _i = 1;
-            repeat(string_length(_exception_string))
-            {
-                __sound_per_char_exception_dict[$ ord(string_char_at(_exception_string, _i))] = true;
-                ++_i;
-            }
-        }
-        else
-        {
-            __sound_per_char_exception = false;
-        }
-        
-        return self;
-    }
-    
-    static function_per_char = function(_function)
-    {
-        __function_per_char = _function;
-        
-        return self;
-    }
-    
-    static function_on_complete = function(_function)
-    {
-        __function_on_complete = _function;
-        
-        return self;
-    }
-    
-    static execution_scope = function(_scope)
-    {
-        __function_scope = _scope;
-        
-        return self;
-    }
-    
-    static pause = function()
-    {
-        __paused = true;
-        
-        return self;
-    }
-    
-    static unpause = function()
-    {
-        if (__paused)
-        {
-            var _head_pos = __window_array[__window_index];
-            
-            //Increment the window index
-            __window_index = (__window_index + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
-            __window_array[@ __window_index  ] = _head_pos;
-            __window_array[@ __window_index+1] = _head_pos - __smoothness;
-        }
-        __skip = false;
-        __paused = false;
-        
-        return self;
-    }
-    
-    /// @param easeMethod
-    /// @param dx
-    /// @param dy
-    /// @param xscale
-    /// @param yscale
-    /// @param rotation
-    /// @param alphaDuration
-    static ease = function(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration)
-    {
-        __ease_method         = _ease_method;
-        __ease_dx             = _dx;
-        __ease_dy             = _dy;
-        __ease_xscale         = _xscale;
-        __ease_yscale         = _yscale;
-        __ease_rotation       = _rotation;
-        __ease_alpha_duration = _alpha_duration;
-        
-        return self;
-    }
-    
-    static character_delay_add = function(_character, _delay)
-    {
-        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> to use per-character delay");
-        
-        var _char_1 = _character;
-        var _char_2 = 0;
-        
-        if (is_string(_character))
-        {
-            _char_1 = ord(string_char_at(_character, 1));
-            if (string_length(_character) >= 2) _char_2 = ord(string_char_at(_character, 2));
-        }
-        
-        var _code = _char_1 | (_char_2 << 32);
-        __character_delay = true;
-        __character_delay_dict[$ _code] = _delay;
-        
-        return self;
-    }
-    
-    static character_delay_remove = function(_character)
-    {
-        var _char_1 = _character;
-        var _char_2 = 0;
-        
-        if (is_string(_character))
-        {
-            _char_1 = ord(string_char_at(_character, 1));
-            if (string_length(_character) >= 2) _char_2 = ord(string_char_at(_character, 2));
-        }
-        
-        var _code = _char_1 | (_char_2 << 32);
-        variable_struct_remove(__character_delay_dict, _code);
-        
-        return self;
-    }
-    
-    static character_delay_clear = function()
-    {
-        __character_delay = false;
-        __character_delay_dict = {};
-        
-        return self;
-    }
-    
-    #endregion
-    
-    
-    
-    #region Getters
-    
-    static get_skip = function()
-    {
-        return __skip;
-    }
-    
-    static get_ignore_delay = function()
-    {
-        return __ignore_delay;
-    }
-    
-    static get_state = function()
-    {
-        if ((__last_element == undefined) || (__last_page == undefined) || (__last_character == undefined)) return 0.0;
-        if (__in == undefined) return 1.0;
-        
-        if (!weak_ref_alive(__last_element)) return 2.0; //If there's no element then report that the element is totally faded out
-        
-        var _model = __last_element.ref.__get_model(true);
-        if (!is_struct(_model)) return 2.0; //If there's no model then report that the element is totally faded out
-        
-        var _pages_array = _model.__get_page_array();
-        if (array_length(_pages_array) <= __last_page) return 1.0;
-        var _page_data = _pages_array[__last_page];
-        
-        var _max = __per_line? _page_data.__line_count : _page_data.__character_count;
-        if (_max <= 0) return 1.0;
-        
-        var _t = clamp((__window_array[__window_index] + max(0, __window_array[__window_index+1] + __smoothness - _max)) / (_max + __smoothness), 0, 1);
-        
-        if (__in)
-        {
-            if (__delay_paused || (array_length(__event_stack) > 0))
-            {
-                //If we're waiting for a delay or there's something in our delay stack we need to process, limit our return value to just less than 1.0
-                return min(1 - 2*math_get_epsilon(), _t);
-            }
-            else
-            {
-                return _t;
-            }
-        }
-        else
-        {
-            return _t + 1;
-        }
-    }
-    
-    static get_paused = function()
-    {
-        return __paused;
-    }
-    
-    static get_position = function()
-    {
-        if (__in == undefined) return 0;
-        return __window_array[__window_index];
-    }
-    
-    static get_text_element = function()
-    {
-        return weak_ref_alive(__last_element)? __last_element.ref : undefined;
-    }
-    
-    static get_execution_scope = function()
-    {
-        return __function_scope;
-    }
-    
-    #endregion
-    
-    
-    
-    #region Sync
-    
-    static sync_to_sound = function(_instance)
-    {
-        if (_instance < 400000)
-        {
-            __scribble_error("Cannot synchronise to a sound asset. Please provide a sound instance (as returned by audio_play_sound())");
-        }
-        
-        if (!audio_is_playing(_instance))
-        {
-            __scribble_error("Sound instance ", _instance, " is not playing\nCannot sync to a stopped sound instance");
-        }
-        
-        __paused       = false;
-        __delay_paused = false;
-        
-        __sync_reset();
-        __sync_started  = true;
-        __sync_instance = _instance;
-        
-        return self;
-    }
-    
-    static __sync_reset = function()
-    {
-        __sync_started   = false;
-        __sync_instance  = undefined;
-        __sync_paused    = false;
-        __sync_pause_end = infinity;
-    }
-    
-    #endregion
-    
-    
-    
-    #region Private Methods
-    
     static __associate = function(_text_element)
     {
         var _carry_skip = __skip && ((__last_element == undefined) || !__drawn_since_skip);
@@ -436,12 +69,6 @@ function __scribble_class_typist(_per_line) constructor
             reset();
             __last_element = weak_ref_create(_text_element);
         }
-        else if (__last_element.ref.__scroll_page != __last_page) //Page change
-        {
-            reset();
-        }
-        
-        __last_page = __last_element.ref.__scroll_page;
         
         if (_carry_skip)
         {
@@ -667,197 +294,132 @@ function __scribble_class_typist(_per_line) constructor
         //We set inline speed in __process_event_stack()
         var _speed = __speed*__inline_speed*SCRIBBLE_TICK_SIZE;
         
-        //Find the leading edge of our windows
-        var _head_pos = __window_array[__window_index];
-        
         //Find the model from the last element
-        var _model = __last_element.ref.__get_model(true);
+        if (!weak_ref_alive(__last_element)) return undefined;
+        var _element = __last_element.ref;
+        
+        var _model = _element.__get_model(true);
         if (!is_struct(_model)) return undefined;
         
-        //Get page data
-        //We use this to set the maximum limit for the typewriter feature
+        //Get line and page data
+        var _lines_array = _model.__get_line_array();
         var _pages_array = _model.__get_page_array();
-        if (array_length(_pages_array) == 0) return undefined;
-        var _page_data = _pages_array[__last_page];
-        var _page_character_count = __per_line? _page_data.__line_count : _page_data.__character_count;
+        if ((array_length(_lines_array) == 0) || (array_length(_pages_array) == 0)) return undefined;
+        
+        //Don't animate or process anything if we're scrolling
+        if (_element.__scroll_y != _element.__scroll_target_y) return undefined;
+        
+        //Discover the range of lines that's on-screen
+        //TODO - Use binary search instead for faster behaviour
+        var _scroll_top    = _element.__scroll_y;
+        var _scroll_bottom = _scroll_top + _element.__layout_height;
+        
+        var _min_line =  infinity;
+        var _max_line = -infinity;
+        var _i = 0;
+        repeat(array_length(_lines_array))
+        {
+            var _line = _lines_array[_i];
+            var _line_top    = _line.__model_y;
+            var _line_bottom = _line_top + _line.__height;
+            
+            if ((_line_top >= _scroll_top) && (_line_bottom <= _scroll_bottom))
+            {
+                _min_line = min(_min_line, _i);
+                _max_line = max(_max_line, _i);
+            }
+            
+            ++_i;
+        }
+        
+        if (is_infinity(_min_line) || is_infinity(_max_line))
+        {
+            //Nothing's on screen I guess
+            return undefined;
+        }
+        
+        var _min_line_data = _lines_array[_min_line];
+        var _max_line_data = _lines_array[_max_line];
+        
+        var _min_target = _min_line_data.__glyph_start;
+        var _max_target = _max_line_data.__glyph_end;
         
         if (!__in)
         {
+            //Animating backwards
+            
+            //Force all windows to use be least at the maximum target
+            var _i = 0;
+            repeat(__SCRIBBLE_WINDOW_COUNT)
+            {
+                __window_min_array[@ _i] = min(__window_min_array[_i], _max_target);
+                __window_max_array[@ _i] = min(__window_max_array[_i], _max_target);
+                ++_i;
+            }
+            
             if (__skip)
             {
-                __window_array[@ __window_index] = _page_character_count;
+                __window_min_array[@   __window_index] = _min_target;
+                __window_max_array[@   __window_index] = _min_target;
+                __window_chase_array[@ __window_index] = false;
             }
             else
             {
-                __window_array[@ __window_index] = min(_page_character_count, _head_pos + _speed);
+                if (__window_chase_array[__window_index])
+                {
+                    //Maximum position chases minimum position
+                    __window_min_array[@ __window_index] = max(__window_min_array[__window_index] - _speed, _min_target);
+                    __window_max_array[@ __window_index] = max(__window_max_array[__window_index] - _speed, __window_min_array[__window_index]);
+                }
+                else
+                {
+                    //No chase happening yet
+                    __window_min_array[@ __window_index] = max(__window_min_array[__window_index] -_speed, _min_target);
+                    
+                    if (__window_max_array[__window_index] > __window_min_array[__window_index] - __smoothness)
+                    {
+                        __window_chase_array[@__window_index] = true;
+                    }
+                }
             }
         }
         else
         {
-            //Handle pausing
-            var _paused = false;
-            if (__paused)
-            {
-                _paused = true;
-            }
-            else if (__delay_paused)
-            {
-                if ((current_time > __delay_end) || __ignore_delay)
-                {
-                    //We've waited long enough, start showing more text
-                    __delay_paused = false;
-                    
-                    //Increment the window index
-                    __window_index = (__window_index + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
-                    __window_array[@ __window_index  ] = _head_pos;
-                    __window_array[@ __window_index+1] = _head_pos - __smoothness;
-                }
-                else
-                {
-                    _paused = true;
-                }
-            }
-            else if (__sync_started)
-            {
-                if (audio_is_paused(__sync_instance))
-                {
-                    _paused = true;
-                }
-                else if (__sync_paused)
-                {
-                    if (audio_sound_get_track_position(__sync_instance) > __sync_pause_end)
-                    {
-                        //If enough of the source audio has been played, start showing more text
-                        __sync_paused = false;
-                        
-                        //Increment the window index
-                        __window_index = (__window_index + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
-                        __window_array[@ __window_index  ] = _head_pos;
-                        __window_array[@ __window_index+1] = _head_pos - __smoothness;
-                    }
-                    else
-                    {
-                        _paused = true;
-                    }
-                }
-            }
+            //Animating forwards
             
-            //If we've still got stuff on the event stack, pop those off
-            if (!_paused && (array_length(__event_stack) > 0))
-            {
-                if (!__process_event_stack(_page_character_count, _target_element, _function_scope)) _paused = true;
-            }
-            
-            if (!_paused)
-            {
-                var _play_sound = false;
-                
-                if (__skip)
-                {
-                    var _remaining = _page_character_count - _head_pos;
-                }
-                else
-                {
-                    var _remaining = min(_page_character_count - _head_pos, _speed);
-                }
-                
-                while(_remaining > 0)
-                {
-                    //Scan for events one character at a time
-                    _head_pos += min(1, _remaining);
-                    _remaining -= 1;
-                    
-                    //Only scan for new events if we've moved onto a new character
-                    if (_head_pos >= __last_character)
-                    {
-                        _play_sound = true;
-                        
-                        //Get an array of events for this character from the text element
-                        var _found_events = __last_element.ref.get_events(__last_character, undefined, __per_line);
-                        var _found_size = array_length(_found_events);
-                        
-                        //Add a per-character delay if required
-                        if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER
-                        &&  !__ignore_delay
-                        &&  __character_delay
-                        &&  (__last_character >= 1) //Don't check character delay until we're on the first character (index=1)
-                        &&  ((__last_character < (SCRIBBLE_DELAY_LAST_CHARACTER? _page_character_count : (_page_character_count-1))) || (_found_size > 0)))
-                        {
-                            var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
-                            
-                            var _delay = __character_delay_dict[$ _glyph_ord];
-                            _delay = (_delay == undefined)? 0 : _delay;
-                            
-                            if (__last_character > 1)
-                            {
-                                _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
-                                var _double_char_delay = __character_delay_dict[$ _glyph_ord];
-                                _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
-                                
-                                _delay = max(_delay, _double_char_delay);
-                            }
-                            
-                            if (_delay > 0) array_push(__event_stack, new __scribble_class_event("delay", [_delay]));
-                        }
-                        
-                        //Move to the next character
-                        __last_character++;
-                        if (__last_character > 1) __execute_function_per_character(_target_element);
-                        
-                        if (_found_size > 0)
-                        {
-                            //Copy our found array of events onto our stack
-                            var _old_stack_size = array_length(__event_stack);
-                            array_resize(__event_stack, _old_stack_size + _found_size);
-                            array_copy(__event_stack, _old_stack_size, _found_events, 0, _found_size);
-                        }
-                        
-                        //Process the stack
-                        //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
-                        if (!__process_event_stack(_page_character_count, _target_element, _function_scope))
-                        {
-                            _head_pos = __last_character-1; //Lock our head position so we don't overstep
-                            break;
-                        }
-                    }
-                }
-                
-                if (_play_sound)
-                {
-                    if (__last_character <= _page_character_count)
-                    {
-                        //Only play sound once per frame if we're going reaaaally fast
-                        __play_sound(_head_pos, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER? (_page_data.__glyph_grid[# _head_pos-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE]) : 0);
-                    }
-                    else
-                    {
-                        //Execute our on-complete callback when we finish
-                        __execute_function_on_complete(_function_scope);
-                    }
-                }
-                
-                //Set the typewriter head
-                __window_array[@ __window_index] = _head_pos;
-            }
-        }
-        
-        //Move the typewriter tail
-        if (__skip)
-        {
+            //Force all windows to use be least at the minimum target
             var _i = 0;
             repeat(__SCRIBBLE_WINDOW_COUNT)
             {
-                __window_array[@ _i+1] = __window_array[_i];
-                _i += 2;
+                __window_min_array[@ _i] = max(__window_min_array[_i], _min_target);
+                __window_max_array[@ _i] = max(__window_max_array[_i], _min_target);
+                ++_i;
             }
-        }
-        else
-        {
-            var _i = 0;
-            repeat(__SCRIBBLE_WINDOW_COUNT)
+            
+            if (__skip)
             {
-                __window_array[@ _i+1] = min(__window_array[_i+1] + _speed, __window_array[_i]);
-                _i += 2;
+                __window_min_array[@   __window_index] = _max_target;
+                __window_max_array[@   __window_index] = _max_target;
+                __window_chase_array[@ __window_index] = false;
+            }
+            else
+            {
+                if (__window_chase_array[__window_index])
+                {
+                    //Minimum position chases maximum position
+                    __window_max_array[@ __window_index] = min(__window_max_array[__window_index] + _speed, _max_target);
+                    __window_min_array[@ __window_index] = min(__window_min_array[__window_index] + _speed, __window_max_array[__window_index]);
+                }
+                else
+                {
+                    //No chase happening yet
+                    __window_max_array[@ __window_index] = min(__window_max_array[__window_index] + _speed, _max_target);
+                    
+                    if (__window_max_array[__window_index] > __window_min_array[__window_index] + __smoothness)
+                    {
+                        __window_chase_array[@__window_index] = true;
+                    }
+                }
             }
         }
     }
@@ -913,6 +475,4 @@ function __scribble_class_typist(_per_line) constructor
         shader_set_uniform_f(_u_fTypewriterAlphaDuration,     __ease_alpha_duration);
         shader_set_uniform_f_array(_u_fTypewriterWindowArray, __window_array);
     }
-    
-    #endregion
 }

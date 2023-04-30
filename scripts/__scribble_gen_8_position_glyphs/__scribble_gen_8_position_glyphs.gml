@@ -67,10 +67,6 @@ function __scribble_gen_8_position_glyphs()
             
             
             
-            ds_grid_add_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _line_glyph_end, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _j - _page_start_line);
-            
-            
-            
             #region Centre all glyphs vertically on the line
             
             var _line_glyph_count = 1 + _line_glyph_end - _line_glyph_start;

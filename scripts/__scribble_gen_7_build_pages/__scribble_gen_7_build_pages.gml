@@ -1,4 +1,6 @@
-#macro __SCRIBBLE_GEN_PAGE_POP  _model_height = max(_model_height, _line_page_y_max);\
+#macro __SCRIBBLE_GEN_PAGE_POP  ++_page;\
+                                _model_height = max(_model_height, _line_page_y_max);\
+                                ;\
                                 var _page_end_line = _i - 1;\
                                 _page_data.__line_end    = _page_end_line;\
                                 _page_data.__line_count  = 1 + _page_data.__line_end - _page_data.__line_start;\
@@ -30,8 +32,22 @@
                                 ;\// Set up the character indexes for the page, relative to the character index of the first glyph on the page
                                 var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];\
                                 var _page_anim_end   = _glyph_grid[# _page_data.__glyph_end,   __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];\
-                                _page_data.__character_count = 1 + _page_anim_end - _page_anim_start;\
-                                ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX, -_page_anim_start);
+                                _page_data.__character_count = 1 + _page_anim_end - _page_anim_start;
+
+
+
+#macro __SCRIBBLE_GEN_PAGE_ADD_LINE  var _line_data = {\
+                                         __line:        _i,\
+                                         __page:        _page,\
+                                         __page_y:      _line_page_y,\
+                                         __model_y:     _line_model_y,\
+                                         __height:      _line_height,\
+                                         __glyph_start: _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START],\
+                                         __glyph_end:   _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_END  ], __SCRIBBLE_GEN_WORD.__GLYPH_END  ],\
+                                     };\
+                                     ;\
+                                     array_push(__lines_array, _line_data);\
+                                     array_push(_page_line_array, _line_data);
 
 
 
@@ -61,6 +77,7 @@ function __scribble_gen_7_build_pages()
     _page_data.__glyph_start = _word_grid[# _line_grid[# 0, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START];
     var _page_line_array = _page_data.__line_array;
     
+    var _page              = 0;
     var _page_start_line   = 0;
     var _page_model_y      = 0;
     var _line_model_y      = 0;
@@ -78,11 +95,7 @@ function __scribble_gen_7_build_pages()
         {
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = _line_model_y;
             
-            array_push(_page_line_array, {
-                __page_y:  _line_page_y,
-                __model_y: _line_model_y,
-                __height:  _line_height,
-            });
+            __SCRIBBLE_GEN_PAGE_ADD_LINE
             
             _line_page_y_max = _line_page_y + _line_height;
             
@@ -92,7 +105,7 @@ function __scribble_gen_7_build_pages()
         }
         else
         {
-            __SCRIBBLE_GEN_PAGE_POP;
+            __SCRIBBLE_GEN_PAGE_POP
             
             if (_manual_linebreak)
             {
@@ -120,11 +133,7 @@ function __scribble_gen_7_build_pages()
             
             _line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y] = _line_model_y;
             
-            array_push(_page_line_array, {
-                __page_y:  _line_page_y,
-                __model_y: _line_model_y,
-                __height:  _line_height,
-            });
+            __SCRIBBLE_GEN_PAGE_ADD_LINE
             
             _line_page_y_max = _line_height;
             
@@ -136,7 +145,7 @@ function __scribble_gen_7_build_pages()
         ++_i;
     }
     
-    __SCRIBBLE_GEN_PAGE_POP;
+    __SCRIBBLE_GEN_PAGE_POP
     
     if (!SCRIBBLE_ALWAYS_USE_FULL_PAGE_HEIGHT && (array_length(__pages_array) > 1))
     {
