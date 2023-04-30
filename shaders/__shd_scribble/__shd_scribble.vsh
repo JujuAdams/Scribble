@@ -95,7 +95,6 @@ uniform float u_fBlinkState;                            //1
 uniform float u_fPageYOffset;                           //1
 
 uniform int   u_iTypistMethod;                 //1
-uniform int   u_iTypistCharMax;                //1
 uniform float u_fTypistMinArray[WINDOW_COUNT]; //3
 uniform float u_fTypistMaxArray[WINDOW_COUNT]; //3
 uniform vec2  u_vTypistStartPos;               //2
@@ -221,18 +220,27 @@ vec4 rainbow(float animIndex, vec4 colour)
 //Fade effect for typewriter etc.
 float fade(float minArray[WINDOW_COUNT], float maxArray[WINDOW_COUNT], float index, bool fadeOut)
 {
-    float result = 0.0;
-    float f      = 1.0;
-    float mini   = 0.0;
-    float maxi   = 0.0;
+    float inverseResult = 0.0;
+    
+    float mini = 0.0;
+    float maxi = 0.0;
     
     for(int i = 0; i < WINDOW_COUNT; i += 1)
     {
         mini = minArray[i];
         maxi = maxArray[i];
+        
+        if (maxi - mini >= 0)
+        {
+            inverseResult = max(inverseResult, step(maxi, index));
+        }
+        else
+        {
+            inverseResult = max(inverseResult, (index - maxi) / (mini - maxi));
+        }
     }
     
-    return fadeOut? (1.0 - result) : result;
+    return fadeOut? inverseResult : (1.0 - inverseResult);
 }
 
 vec2 bezier(float t, vec2 p1, vec2 p2, vec2 p3)
@@ -431,7 +439,6 @@ void main()
     {
         //Seventh bit of u_fRenderFlags indicates if the typist should use lines or characters
         float fadeIndex = ((mod(u_fRenderFlags/64.0, 2.0) < 1.0)? characterIndex : lineIndex) + 1.0;
-        if (u_iTypistCharMax > 0) fadeIndex = float(u_iTypistCharMax) - fadeIndex;
         
         float time = fade(u_fTypistMinArray, u_fTypistMaxArray, fadeIndex, fadeOut);
         
@@ -443,6 +450,7 @@ void main()
         {
             v_vColour.a *= clamp(time / u_fTypistAlphaDuration, 0.0, 1.0);
         }
+        
              if (easeMethod == EASE_QUADRATIC  ) { time = 1.0 - easeQuad(   1.0 - time); }
         else if (easeMethod == EASE_CUBIC      ) { time = 1.0 - easeCubic(  1.0 - time); }
         else if (easeMethod == EASE_QUARTIC    ) { time = 1.0 - easeQuart(  1.0 - time); }

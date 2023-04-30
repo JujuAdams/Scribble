@@ -427,7 +427,6 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
     static __set_shader_uniforms = function()
     {
         static _u_iTypistMethod        = shader_get_uniform(__shd_scribble, "u_iTypistMethod"       );
-        static _u_iTypistCharMax       = shader_get_uniform(__shd_scribble, "u_iTypistCharMax"      );
         static _u_fTypistMinArray      = shader_get_uniform(__shd_scribble, "u_fTypistMinArray"     );
         static _u_fTypistMaxArray      = shader_get_uniform(__shd_scribble, "u_fTypistMaxArray"     );
         static _u_vTypistStartPos      = shader_get_uniform(__shd_scribble, "u_vTypistStartPos"     );
@@ -442,32 +441,10 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
             return undefined;
         }
         
-        var _method = __ease_method;
-        if (!__in) _method += SCRIBBLE_EASE.__SIZE;
-        
-        var _char_max = 0;
-        if (__backwards)
-        {
-            var _model = __last_element.ref.__get_model(true);
-            if (!is_struct(_model)) return undefined;
-            
-            var _pages_array = _model.__get_page_array();
-            if (array_length(_pages_array) > __last_page)
-            {
-                var _page_data = _pages_array[__last_page];
-                _char_max = __per_line? _page_data.__line_count : _page_data.__character_count;
-            }
-            else
-            {
-                __scribble_trace("Warning! Typist page (", __last_page, ") exceeds text element page count (", array_length(_pages_array), ")");
-            }
-        }
-        
         //Reset the "typist use lines" flag
         __scribble_state.__render_flag_value = ((__scribble_state.__render_flag_value & (~(0x40))) | (__per_line << 6));
         
-        shader_set_uniform_i(_u_iTypistMethod,         _method);
-        shader_set_uniform_i(_u_iTypistCharMax,        _char_max);
+        shader_set_uniform_i(_u_iTypistMethod,         __in? __ease_method : (__ease_method + SCRIBBLE_EASE.__SIZE));
         shader_set_uniform_f(_u_vTypistStartPos,       __ease_dx, __ease_dy);
         shader_set_uniform_f(_u_vTypistStartScale,     __ease_xscale, __ease_yscale);
         shader_set_uniform_f(_u_fTypistStartRotation,  __ease_rotation);
