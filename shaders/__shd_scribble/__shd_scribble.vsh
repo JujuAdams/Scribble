@@ -94,14 +94,14 @@ uniform vec2  u_aBezier[3];                             //6
 uniform float u_fBlinkState;                            //1
 uniform float u_fPageYOffset;                           //1
 
-uniform int   u_iTypewriterMethod;                      //1
-uniform int   u_iTypewriterCharMax;                     //1
-uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //6
-uniform float u_fTypewriterSmoothness;                  //1
-uniform vec2  u_vTypewriterStartPos;                    //2
-uniform vec2  u_vTypewriterStartScale;                  //2
-uniform float u_fTypewriterStartRotation;               //1
-uniform float u_fTypewriterAlphaDuration;               //1
+uniform int   u_iTypistMethod;                      //1
+uniform int   u_iTypistCharMax;                     //1
+uniform float u_fTypistWindowArray[2*WINDOW_COUNT]; //6
+uniform float u_fTypistSmoothness;                  //1
+uniform vec2  u_vTypistStartPos;                    //2
+uniform vec2  u_vTypistStartScale;                  //2
+uniform float u_fTypistStartRotation;               //1
+uniform float u_fTypistAlphaDuration;               //1
 
 float flagArray[MAX_EFFECTS];
 
@@ -231,7 +231,7 @@ float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index, boo
         head = windowArray[i  ];
         tail = windowArray[i+1];
         
-        if (u_fTypewriterSmoothness > 0.0)
+        if (u_fTypistSmoothness > 0.0)
         {
             f = 1.0 - min(max((index - tail) / smoothness, 0.0), 1.0);
         }
@@ -438,7 +438,7 @@ void main()
     
     
     //Apply fade (if we're given a method)
-    int easeMethod = u_iTypewriterMethod;
+    int easeMethod = u_iTypistMethod;
     bool fadeOut = (easeMethod >= EASE_METHOD_COUNT);
     if (fadeOut) easeMethod -= EASE_METHOD_COUNT;
     
@@ -446,17 +446,17 @@ void main()
     {
         //Seventh bit of u_fRenderFlags indicates if the typist should use lines or characters
         float fadeIndex = ((mod(u_fRenderFlags/64.0, 2.0) < 1.0)? characterIndex : lineIndex) + 1.0;
-        if (u_iTypewriterCharMax > 0) fadeIndex = float(u_iTypewriterCharMax) - fadeIndex;
+        if (u_iTypistCharMax > 0) fadeIndex = float(u_iTypistCharMax) - fadeIndex;
         
-        float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, fadeIndex, fadeOut);
+        float time = fade(u_fTypistWindowArray, u_fTypistSmoothness, fadeIndex, fadeOut);
         
-        if (u_fTypewriterAlphaDuration == 0.0)
+        if (u_fTypistAlphaDuration == 0.0)
         {
             if (time <= 0.0) v_vColour.a = 0.0;
         }
         else
         {
-            v_vColour.a *= clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
+            v_vColour.a *= clamp(time / u_fTypistAlphaDuration, 0.0, 1.0);
         }
              if (easeMethod == EASE_QUADRATIC  ) { time = 1.0 - easeQuad(   1.0 - time); }
         else if (easeMethod == EASE_CUBIC      ) { time = 1.0 - easeCubic(  1.0 - time); }
@@ -472,9 +472,9 @@ void main()
         else if (easeMethod == EASE_CUSTOM_2   ) { /*Custom ease slot 2*/ }
         else if (easeMethod == EASE_CUSTOM_3   ) { /*Custom ease slot 3*/ }
         
-        pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
-        pos = rotate(pos, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
-        pos.xy += mix(u_vTypewriterStartPos, vec2(0.0), time);
+        pos = scale(pos, centre, mix(u_vTypistStartScale, vec2(1.0), time));
+        pos = rotate(pos, centre, mix(-u_fTypistStartRotation, 0.0, time));
+        pos.xy += mix(u_vTypistStartPos, vec2(0.0), time);
     }
     
     

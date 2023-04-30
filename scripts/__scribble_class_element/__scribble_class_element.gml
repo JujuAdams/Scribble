@@ -1662,14 +1662,14 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         static _u_sCycle = shader_get_sampler_index(__shd_scribble, "u_sCycle");
         
-        static _u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
-        static _u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
-        static _u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
-        static _u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"   );
-        static _u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"     );
-        static _u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"   );
-        static _u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation");
-        static _u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration");
+        static _u_iTypistMethod        = shader_get_uniform(__shd_scribble, "u_iTypistMethod"       );
+        static _u_iTypistCharMax       = shader_get_uniform(__shd_scribble, "u_iTypistCharMax"      );
+        static _u_fTypistWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypistWindowArray"  );
+        static _u_fTypistSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypistSmoothness"   );
+        static _u_vTypistStartPos      = shader_get_uniform(__shd_scribble, "u_vTypistStartPos"     );
+        static _u_vTypistStartScale    = shader_get_uniform(__shd_scribble, "u_vTypistStartScale"   );
+        static _u_fTypistStartRotation = shader_get_uniform(__shd_scribble, "u_fTypistStartRotation");
+        static _u_fTypistAlphaDuration = shader_get_uniform(__shd_scribble, "u_fTypistAlphaDuration");
     
         static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
@@ -1773,18 +1773,18 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             //Reset the "typist use lines" flag
             __scribble_state.__render_flag_value = (__scribble_state.__render_flag_value & (~(0x40)));
             
-            shader_set_uniform_i(_u_iTypewriterMethod,            SCRIBBLE_EASE.LINEAR);
-            shader_set_uniform_i(_u_iTypewriterCharMax,           0);
-            shader_set_uniform_f(_u_fTypewriterSmoothness,        0);
-            shader_set_uniform_f(_u_vTypewriterStartPos,          0, 0);
-            shader_set_uniform_f(_u_vTypewriterStartScale,        1, 1);
-            shader_set_uniform_f(_u_fTypewriterStartRotation,     0);
-            shader_set_uniform_f(_u_fTypewriterAlphaDuration,     1.0);
-            shader_set_uniform_f_array(_u_fTypewriterWindowArray, __tw_reveal_window_array);
+            shader_set_uniform_i(_u_iTypistMethod,            SCRIBBLE_EASE.LINEAR);
+            shader_set_uniform_i(_u_iTypistCharMax,           0);
+            shader_set_uniform_f(_u_fTypistSmoothness,        0);
+            shader_set_uniform_f(_u_vTypistStartPos,          0, 0);
+            shader_set_uniform_f(_u_vTypistStartScale,        1, 1);
+            shader_set_uniform_f(_u_fTypistStartRotation,     0);
+            shader_set_uniform_f(_u_fTypistAlphaDuration,     1.0);
+            shader_set_uniform_f_array(_u_fTypistWindowArray, __tw_reveal_window_array);
         }
         else
         {
-            shader_set_uniform_i(_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
+            shader_set_uniform_i(_u_iTypistMethod, SCRIBBLE_EASE.NONE);
         }
         
         shader_set_uniform_f(_u_vShadowOffsetAndSoftness, __shadow_sdf_xoffset, __shadow_sdf_yoffset, __shadow_sdf_softness);
