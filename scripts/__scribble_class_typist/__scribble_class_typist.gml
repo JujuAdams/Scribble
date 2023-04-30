@@ -12,8 +12,8 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
     __in         = undefined;
     __backwards  = false;
     
-    __skip = false;
-    __skip_paused = false;
+    __skip             = false;
+    __skip_paused      = false;
     __drawn_since_skip = false;
     
     __sound_array                   = undefined;
@@ -72,7 +72,7 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
         
         if (_carry_skip)
         {
-            __skip = true;
+            __skip             = true;
             __drawn_since_skip = false;
         }
         
@@ -344,46 +344,7 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
         var _min_target = _min_line_data.__glyph_start;
         var _max_target = _max_line_data.__glyph_end;
         
-        if (!__in)
-        {
-            //Animating backwards
-            
-            //Force all windows to use be least at the maximum target
-            var _i = 0;
-            repeat(__SCRIBBLE_WINDOW_COUNT)
-            {
-                __window_min_array[@ _i] = min(__window_min_array[_i], _max_target);
-                __window_max_array[@ _i] = min(__window_max_array[_i], _max_target);
-                ++_i;
-            }
-            
-            if (__skip)
-            {
-                __window_min_array[@   __window_index] = _min_target;
-                __window_max_array[@   __window_index] = _min_target;
-                __window_chase_array[@ __window_index] = false;
-            }
-            else
-            {
-                if (__window_chase_array[__window_index])
-                {
-                    //Maximum position chases minimum position
-                    __window_min_array[@ __window_index] = max(__window_min_array[__window_index] - _speed, _min_target);
-                    __window_max_array[@ __window_index] = max(__window_max_array[__window_index] - _speed, __window_min_array[__window_index]);
-                }
-                else
-                {
-                    //No chase happening yet
-                    __window_min_array[@ __window_index] = max(__window_min_array[__window_index] -_speed, _min_target);
-                    
-                    if (__window_max_array[__window_index] > __window_min_array[__window_index] - __smoothness)
-                    {
-                        __window_chase_array[@__window_index] = true;
-                    }
-                }
-            }
-        }
-        else
+        if (__in)
         {
             //Animating forwards
             
@@ -391,35 +352,44 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
             var _i = 0;
             repeat(__SCRIBBLE_WINDOW_COUNT)
             {
-                __window_min_array[@ _i] = max(__window_min_array[_i], _min_target);
-                __window_max_array[@ _i] = max(__window_max_array[_i], _min_target);
+                __window_head_array[@ _i] = max(__window_head_array[_i], _min_target);
+                __window_max_array[@  _i] = max(__window_max_array[ _i], _min_target);
                 ++_i;
             }
             
+            __window_max_array[@ __window_index] = _max_target;
+            
             if (__skip)
             {
-                __window_min_array[@   __window_index] = _max_target;
-                __window_max_array[@   __window_index] = _max_target;
-                __window_chase_array[@ __window_index] = false;
+                __window_head_array[@ __window_index] = _max_target + __smoothness;
             }
             else
             {
-                if (__window_chase_array[__window_index])
-                {
-                    //Minimum position chases maximum position
-                    __window_max_array[@ __window_index] = min(__window_max_array[__window_index] + _speed, _max_target);
-                    __window_min_array[@ __window_index] = min(__window_min_array[__window_index] + _speed, __window_max_array[__window_index]);
-                }
-                else
-                {
-                    //No chase happening yet
-                    __window_max_array[@ __window_index] = min(__window_max_array[__window_index] + _speed, _max_target);
-                    
-                    if (__window_max_array[__window_index] > __window_min_array[__window_index] + __smoothness)
-                    {
-                        __window_chase_array[@__window_index] = true;
-                    }
-                }
+                __window_head_array[@ __window_index] = min(__window_head_array[__window_index] + _speed, _max_target + __smoothness);
+            }
+        }
+        else
+        {
+            //Animating backwards
+            
+            //Force all windows to use be least at the minimum target
+            var _i = 0;
+            repeat(__SCRIBBLE_WINDOW_COUNT)
+            {
+                __window_head_array[@ _i] = min(__window_head_array[_i], _max_target);
+                __window_max_array[@  _i] = min(__window_max_array[ _i], _max_target);
+                ++_i;
+            }
+            
+            __window_max_array[@ __window_index] = _min_target;
+            
+            if (__skip)
+            {
+                __window_head_array[@ __window_index] = _min_target;
+            }
+            else
+            {
+                __window_head_array[@ __window_index] = max(__window_head_array[__window_index] - _speed, _min_target);
             }
         }
     }
@@ -427,7 +397,8 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
     static __set_shader_uniforms = function()
     {
         static _u_iTypistMethod        = shader_get_uniform(__shd_scribble, "u_iTypistMethod"       );
-        static _u_fTypistMinArray      = shader_get_uniform(__shd_scribble, "u_fTypistMinArray"     );
+        static _u_fTypistSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypistSmoothness"   );
+        static _u_fTypistHeadArray     = shader_get_uniform(__shd_scribble, "u_fTypistHeadArray"    );
         static _u_fTypistMaxArray      = shader_get_uniform(__shd_scribble, "u_fTypistMaxArray"     );
         static _u_vTypistStartPos      = shader_get_uniform(__shd_scribble, "u_vTypistStartPos"     );
         static _u_vTypistStartScale    = shader_get_uniform(__shd_scribble, "u_vTypistStartScale"   );
@@ -444,12 +415,13 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
         //Reset the "typist use lines" flag
         __scribble_state.__render_flag_value = ((__scribble_state.__render_flag_value & (~(0x40))) | (__per_line << 6));
         
-        shader_set_uniform_i(_u_iTypistMethod,         __in? __ease_method : (__ease_method + SCRIBBLE_EASE.__SIZE));
-        shader_set_uniform_f(_u_vTypistStartPos,       __ease_dx, __ease_dy);
-        shader_set_uniform_f(_u_vTypistStartScale,     __ease_xscale, __ease_yscale);
-        shader_set_uniform_f(_u_fTypistStartRotation,  __ease_rotation);
-        shader_set_uniform_f(_u_fTypistAlphaDuration,  __ease_alpha_duration);
-        shader_set_uniform_f_array(_u_fTypistMinArray, __window_min_array);
-        shader_set_uniform_f_array(_u_fTypistMaxArray, __window_max_array);
+        shader_set_uniform_i(_u_iTypistMethod,          __in? __ease_method : (__ease_method + SCRIBBLE_EASE.__SIZE));
+        shader_set_uniform_f(_u_fTypistSmoothness,      __smoothness);
+        shader_set_uniform_f(_u_vTypistStartPos,        __ease_dx, __ease_dy);
+        shader_set_uniform_f(_u_vTypistStartScale,      __ease_xscale, __ease_yscale);
+        shader_set_uniform_f(_u_fTypistStartRotation,   __ease_rotation);
+        shader_set_uniform_f(_u_fTypistAlphaDuration,   __ease_alpha_duration);
+        shader_set_uniform_f_array(_u_fTypistHeadArray, __window_head_array);
+        shader_set_uniform_f_array(_u_fTypistMaxArray,  __window_max_array);
     }
 }

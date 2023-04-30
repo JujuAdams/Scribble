@@ -1663,7 +1663,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         static _u_sCycle = shader_get_sampler_index(__shd_scribble, "u_sCycle");
         
         static _u_iTypistMethod        = shader_get_uniform(__shd_scribble, "u_iTypistMethod"       );
-        static _u_fTypistMinArray      = shader_get_uniform(__shd_scribble, "u_fTypistMinArray"     );
+        static _u_fTypistSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypistSmoothness"   );
+        static _u_fTypistHeadArray     = shader_get_uniform(__shd_scribble, "u_fTypistHeadArray"    );
         static _u_fTypistMaxArray      = shader_get_uniform(__shd_scribble, "u_fTypistMaxArray"     );
         static _u_vTypistStartPos      = shader_get_uniform(__shd_scribble, "u_vTypistStartPos"     );
         static _u_vTypistStartScale    = shader_get_uniform(__shd_scribble, "u_vTypistStartScale"   );
@@ -1773,12 +1774,13 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             __scribble_state.__render_flag_value = (__scribble_state.__render_flag_value & (~(0x40)));
             
             shader_set_uniform_i(_u_iTypistMethod,         SCRIBBLE_EASE.LINEAR);
+            shader_set_uniform_f(_u_fTypistSmoothness,     0);
             shader_set_uniform_f(_u_vTypistStartPos,       0, 0);
             shader_set_uniform_f(_u_vTypistStartScale,     1, 1);
             shader_set_uniform_f(_u_fTypistStartRotation,  0);
             shader_set_uniform_f(_u_fTypistAlphaDuration,  1.0);
-            shader_set_uniform_f_array(_u_fTypistMinArray, __tw_reveal_window_array);
-            shader_set_uniform_f_array(_u_fTypistMaxArray, __tw_reveal_window_array);
+            shader_set_uniform_f_array(_u_fTypistHeadArray, __tw_reveal_window_array);
+            shader_set_uniform_f_array(_u_fTypistMaxArray,  __tw_reveal_window_array);
         }
         else
         {

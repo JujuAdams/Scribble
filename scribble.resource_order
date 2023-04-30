@@ -145,7 +145,6 @@
     {"name":"obj_test_0504_is_animated","order":4,"path":"objects/obj_test_0504_is_animated/obj_test_0504_is_animated.yy",},
     {"name":"obj_font_add_texture_debug","order":1,"path":"objects/obj_font_add_texture_debug/obj_font_add_texture_debug.yy",},
     {"name":"obj_test_1010_kerning","order":8,"path":"objects/obj_test_1010_kerning/obj_test_1010_kerning.yy",},
-    {"name":"__scribble_class_typist__OLD","order":11,"path":"scripts/__scribble_class_typist__OLD/__scribble_class_typist__OLD.yy",},
     {"name":"obj_test_0201_linewrap_single_word","order":1,"path":"objects/obj_test_0201_linewrap_single_word/obj_test_0201_linewrap_single_word.yy",},
     {"name":"obj_test_0710_line_height","order":9,"path":"objects/obj_test_0710_line_height/obj_test_0710_line_height.yy",},
     {"name":"fnt_style_header1","order":15,"path":"fonts/fnt_style_header1/fnt_style_header1.yy",},

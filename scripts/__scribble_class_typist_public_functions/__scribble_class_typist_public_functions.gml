@@ -13,9 +13,8 @@ function __scribble_class_typist_public_functions() constructor
         __last_tick_frame = -infinity;
         
         __window_index       = 0;
-        __window_min_array   = array_create(__SCRIBBLE_WINDOW_COUNT, 0);
+        __window_head_array  = array_create(__SCRIBBLE_WINDOW_COUNT, 0);
         __window_max_array   = array_create(__SCRIBBLE_WINDOW_COUNT, 0);
-        __window_chase_array = array_create(__SCRIBBLE_WINDOW_COUNT, false);
         __paused             = false;
         __delay_paused       = false;
         __delay_end          = -1;
@@ -64,8 +63,8 @@ function __scribble_class_typist_public_functions() constructor
     
     static skip = function(_state = true)
     {
-        __skip = _state;
-        __skip_paused = true;
+        __skip             = _state;
+        __skip_paused      = true;
         __drawn_since_skip = false;
         
         return self;
@@ -73,8 +72,8 @@ function __scribble_class_typist_public_functions() constructor
     
     static skip_to_pause = function(_state = true)
     {
-        __skip = _state;
-        __skip_paused = false;
+        __skip             = _state;
+        __skip_paused      = false;
         __drawn_since_skip = false;
         
         return self;
@@ -184,7 +183,8 @@ function __scribble_class_typist_public_functions() constructor
             __window_array[@ __window_index  ] = _head_pos;
             __window_array[@ __window_index+1] = _head_pos - __smoothness;
         }
-        __skip = false;
+        
+        __skip   = false;
         __paused = false;
         
         return self;
