@@ -153,7 +153,7 @@ function __scribble_font_add_from_project(_font)
         if (_GM_scaling > 1)
         {
             __scribble_trace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyph_data_grid[# _font_glyphs_map[? 32], __SCRIBBLE_GLYPH.__HEIGHT], ", scaling factor = ", _GM_scaling, "). Check that the font is rendering correctly. If it is not, try setting SCRIBBLE_ATTEMPT_FONT_SCALING_FIX to <false>");
-            if (SCRIBBLE_ATTEMPT_FONT_SCALING_FIX) scribble_font_scale(_name, ceil(_GM_scaling));
+            if (SCRIBBLE_ATTEMPT_FONT_SCALING_FIX) scribble_font_set_scale(_name, ceil(_GM_scaling));
         }
     }
     catch(_error)
