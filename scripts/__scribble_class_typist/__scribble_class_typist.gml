@@ -294,6 +294,9 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
         //We set inline speed in __process_event_stack()
         var _speed = __speed*__inline_speed*SCRIBBLE_TICK_SIZE;
         
+        //Find the leading edge of our windows
+        var _head_pos = __window_head_array[__window_index];
+        
         //Find the model from the last element
         if (!weak_ref_alive(__last_element)) return undefined;
         var _element = __last_element.ref;
@@ -344,53 +347,172 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
         var _min_target = _min_line_data.__glyph_start;
         var _max_target = _max_line_data.__glyph_end;
         
-        if (__in)
+        if (!__in)
         {
-            //Animating forwards
             
-            //Force all windows to use be least at the minimum target
-            var _i = 0;
-            repeat(__SCRIBBLE_WINDOW_COUNT)
-            {
-                __window_head_array[@ _i] = max(__window_head_array[_i], _min_target);
-                __window_max_array[@  _i] = max(__window_max_array[ _i], _min_target);
-                ++_i;
-            }
-            
-            __window_max_array[@ __window_index] = _max_target;
-            
-            if (__skip)
-            {
-                __window_head_array[@ __window_index] = _max_target + __smoothness;
-            }
-            else
-            {
-                __window_head_array[@ __window_index] = min(__window_head_array[__window_index] + _speed, _max_target + __smoothness);
-            }
         }
         else
         {
-            //Animating backwards
+            //Handle pausing
+            var _paused = false;
             
-            //Force all windows to use be least at the minimum target
-            var _i = 0;
-            repeat(__SCRIBBLE_WINDOW_COUNT)
+            if (__paused)
             {
-                __window_head_array[@ _i] = min(__window_head_array[_i], _max_target);
-                __window_max_array[@  _i] = min(__window_max_array[ _i], _max_target);
-                ++_i;
+                _paused = true;
+            }
+            else if (__delay_paused)
+            {
+                if ((current_time > __delay_end) || __ignore_delay)
+                {
+                    //We've waited long enough, start showing more text
+                    __delay_paused = false;
+                    
+                    //Increment the window index
+                    __window_index = (__window_index + 1) mod __SCRIBBLE_WINDOW_COUNT;
+                    __window_head_array[@ __window_index] = _head_pos;
+                }
+                else
+                {
+                    _paused = true;
+                }
+            }
+            else if (__sync_started)
+            {
+                if (audio_is_paused(__sync_instance))
+                {
+                    _paused = true;
+                }
+                else if (__sync_paused)
+                {
+                    if (audio_sound_get_track_position(__sync_instance) > __sync_pause_end)
+                    {
+                        //If enough of the source audio has been played, start showing more text
+                        __sync_paused = false;
+                        
+                        //Increment the window index
+                        __window_index = (__window_index + 1) mod __SCRIBBLE_WINDOW_COUNT;
+                        __window_head_array[@ __window_index] = _head_pos;
+                    }
+                    else
+                    {
+                        _paused = true;
+                    }
+                }
             }
             
-            __window_max_array[@ __window_index] = _min_target;
+            //If we've still got stuff on the event stack, pop those off
+            if (!_paused && (array_length(__event_stack) > 0))
+            {
+                if (!__process_event_stack(infinity, _target_element, _function_scope)) _paused = true;
+            }
             
-            if (__skip)
+            if (!_paused)
             {
-                __window_head_array[@ __window_index] = _min_target;
+                var _play_sound = false;
+                
+                //Force all windows to use be least at the minimum target
+                var _i = 0;
+                repeat(__SCRIBBLE_WINDOW_COUNT)
+                {
+                    __window_head_array[@ _i] = max(__window_head_array[_i], _min_target);
+                    __window_max_array[@  _i] = max(__window_max_array[ _i], _min_target);
+                    ++_i;
+                }
+                
+                __window_max_array[@ __window_index] = _max_target;
+                
+                if (__skip)
+                {
+                    __window_head_array[@ __window_index] = _max_target + __smoothness;
+                }
+                else
+                {
+                    __window_head_array[@ __window_index] = min(__window_head_array[__window_index] + _speed, _max_target + __smoothness);
+                }
+                
+                var _remaining = (_max_target + __smoothness) - _head_pos;
+                if (not __skip) _remaining = min(_remaining, _speed);
+                
+                while(_remaining > 0)
+                {
+                    //Scan for events one character at a time
+                    _head_pos += min(1, _remaining);
+                    _remaining -= 1;
+                    
+                    //Only scan for new events if we've moved onto a new character
+                    if (_head_pos >= __last_character)
+                    {
+                        _play_sound = true;
+                        
+                        //Get an array of events for this character from the text element
+                        var _found_events = __last_element.ref.get_events(__last_character, undefined, __per_line);
+                        var _found_size = array_length(_found_events);
+                        
+                        //Add a per-character delay if required
+                        if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER
+                        &&  !__ignore_delay
+                        &&  __character_delay
+                        &&  (__last_character >= 1) //Don't check character delay until we're on the first character (index=1)
+                        &&  ((__last_character < (SCRIBBLE_DELAY_LAST_CHARACTER? _page_character_count : (_page_character_count-1))) || (_found_size > 0)))
+                        {
+                            var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
+                            
+                            var _delay = __character_delay_dict[$ _glyph_ord];
+                            _delay = (_delay == undefined)? 0 : _delay;
+                            
+                            if (__last_character > 1)
+                            {
+                                _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
+                                var _double_char_delay = __character_delay_dict[$ _glyph_ord];
+                                _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
+                                
+                                _delay = max(_delay, _double_char_delay);
+                            }
+                            
+                            if (_delay > 0) array_push(__event_stack, new __scribble_class_event("delay", [_delay]));
+                        }
+                        
+                        //Move to the next character
+                        __last_character++;
+                        if (__last_character > 1) __execute_function_per_character(_target_element);
+                        
+                        if (_found_size > 0)
+                        {
+                            //Copy our found array of events onto our stack
+                            var _old_stack_size = array_length(__event_stack);
+                            array_resize(__event_stack, _old_stack_size + _found_size);
+                            array_copy(__event_stack, _old_stack_size, _found_events, 0, _found_size);
+                        }
+                        
+                        //Process the stack
+                        //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
+                        if (!__process_event_stack(_page_character_count, _target_element, _function_scope))
+                        {
+                            _head_pos = __last_character-1; //Lock our head position so we don't overstep
+                            break;
+                        }
+                    }
+                }
+                
+                if (_play_sound)
+                {
+                    if (__last_character <= _max_target)
+                    {
+                        //Only play sound once per frame if we're going reaaaally fast
+                        __play_sound(_head_pos, 0);
+                    }
+                    else
+                    {
+                        //Execute our on-complete callback when we finish
+                        __execute_function_on_complete(_function_scope);
+                    }
+                }
+                
+                //Set the typewriter head
+                __window_head_array[@ __window_index] = _head_pos;
             }
-            else
-            {
-                __window_head_array[@ __window_index] = max(__window_head_array[__window_index] - _speed, _min_target);
-            }
+            
+            __scribble_trace(__window_head_array);
         }
     }
     
