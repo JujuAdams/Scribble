@@ -113,6 +113,8 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
                         {
                             __paused = true;
                             
+                            __window_max_array[@ __window_index] = __last_character-1;
+                            
                             return false;
                         }
                     }
@@ -126,6 +128,8 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
                         __delay_paused = true;
                         __delay_end    = current_time + _duration;
                         
+                        __window_max_array[@ __window_index] = __last_character-1;
+                        
                         return false;
                     }
                 break;
@@ -136,6 +140,9 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
                     {
                         __sync_paused    = true;
                         __sync_pause_end = real(_event_data[0]);
+                        
+                        __window_max_array[@ __window_index] = __last_character-1;
+                        
                         return false;
                     }
                 break;
@@ -368,6 +375,7 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
                     __delay_paused = false;
                     
                     //Increment the window index
+                    var _head_pos = __window_max_array[__window_index];
                     __window_index = (__window_index + 1) mod __SCRIBBLE_WINDOW_COUNT;
                     __window_head_array[@ __window_index] = _head_pos;
                 }
@@ -390,6 +398,7 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
                         __sync_paused = false;
                         
                         //Increment the window index
+                        var _head_pos = __window_max_array[__window_index];
                         __window_index = (__window_index + 1) mod __SCRIBBLE_WINDOW_COUNT;
                         __window_head_array[@ __window_index] = _head_pos;
                     }
@@ -406,29 +415,16 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
                 if (!__process_event_stack(infinity, _target_element, _function_scope)) _paused = true;
             }
             
-            if (!_paused)
+            if (_paused)
+            {
+                __window_head_array[@ __window_index] = min(__window_head_array[__window_index] + _speed, __window_max_array[__window_index] + __smoothness);
+            }
+            else
             {
                 var _play_sound = false;
                 
-                //Force all windows to use be least at the minimum target
-                var _i = 0;
-                repeat(__SCRIBBLE_WINDOW_COUNT)
-                {
-                    __window_head_array[@ _i] = max(__window_head_array[_i], _min_target);
-                    __window_max_array[@  _i] = max(__window_max_array[ _i], _min_target);
-                    ++_i;
-                }
-                
-                __window_max_array[@ __window_index] = _max_target;
-                
-                if (__skip)
-                {
-                    __window_head_array[@ __window_index] = _max_target + __smoothness;
-                }
-                else
-                {
-                    __window_head_array[@ __window_index] = min(__window_head_array[__window_index] + _speed, _max_target + __smoothness);
-                }
+                __window_head_array[@ __window_index] = max(__window_head_array[__window_index], _min_target);
+                __window_max_array[@  __window_index] = _max_target;
                 
                 var _remaining = (_max_target + __smoothness) - _head_pos;
                 if (not __skip) _remaining = min(_remaining, _speed);
@@ -453,16 +449,16 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
                         &&  !__ignore_delay
                         &&  __character_delay
                         &&  (__last_character >= 1) //Don't check character delay until we're on the first character (index=1)
-                        &&  ((__last_character < (SCRIBBLE_DELAY_LAST_CHARACTER? _page_character_count : (_page_character_count-1))) || (_found_size > 0)))
+                        &&  ((__last_character < (SCRIBBLE_DELAY_LAST_CHARACTER? _max_target : (_max_target-1))) || (_found_size > 0)))
                         {
-                            var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
+                            var _glyph_ord = _model.__glyph_data_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
                             
                             var _delay = __character_delay_dict[$ _glyph_ord];
                             _delay = (_delay == undefined)? 0 : _delay;
                             
                             if (__last_character > 1)
                             {
-                                _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
+                                _glyph_ord = (_glyph_ord << 32) | _model.__glyph_data_grid[# __last_character-2, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
                                 var _double_char_delay = __character_delay_dict[$ _glyph_ord];
                                 _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
                                 
@@ -486,7 +482,7 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
                         
                         //Process the stack
                         //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
-                        if (!__process_event_stack(_page_character_count, _target_element, _function_scope))
+                        if (!__process_event_stack(_max_target, _target_element, _function_scope))
                         {
                             _head_pos = __last_character-1; //Lock our head position so we don't overstep
                             break;
@@ -512,7 +508,7 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
                 __window_head_array[@ __window_index] = _head_pos;
             }
             
-            __scribble_trace(__window_head_array);
+            __scribble_trace(__window_head_array, " -> ", __window_max_array);
         }
     }
     

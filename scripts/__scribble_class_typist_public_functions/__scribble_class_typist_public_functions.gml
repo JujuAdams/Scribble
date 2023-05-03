@@ -176,12 +176,11 @@ function __scribble_class_typist_public_functions() constructor
     {
         if (__paused)
         {
-            var _head_pos = __window_array[__window_index];
+            var _head_pos = __window_max_array[__window_index];
             
             //Increment the window index
-            __window_index = (__window_index + 2) mod (2*__SCRIBBLE_WINDOW_COUNT);
-            __window_array[@ __window_index  ] = _head_pos;
-            __window_array[@ __window_index+1] = _head_pos - __smoothness;
+            __window_index = (__window_index + 1) mod __SCRIBBLE_WINDOW_COUNT;
+            __window_head_array[@ __window_index] = _head_pos;
         }
         
         __skip   = false;
@@ -288,7 +287,7 @@ function __scribble_class_typist_public_functions() constructor
         var _max = __per_line? _page_data.__line_count : _page_data.__character_count;
         if (_max <= 0) return 1.0;
         
-        var _t = clamp((__window_array[__window_index] + max(0, __window_array[__window_index+1] + __smoothness - _max)) / (_max + __smoothness), 0, 1);
+        var _t = clamp((__window_head_array[__window_index] + max(0, __window_max_array[__window_index] + __smoothness - _max)) / (_max + __smoothness), 0, 1);
         
         if (__in)
         {
@@ -316,7 +315,7 @@ function __scribble_class_typist_public_functions() constructor
     static get_position = function()
     {
         if (__in == undefined) return 0;
-        return __window_array[__window_index];
+        return __window_head_array[__window_index];
     }
     
     static get_text_element = function()
