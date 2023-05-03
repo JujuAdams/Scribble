@@ -221,29 +221,32 @@ vec4 rainbow(float animIndex, vec4 colour)
 //Fade effect for typewriter etc.
 float fade(float headArray[WINDOW_COUNT], float maxArray[WINDOW_COUNT], float smoothness, float index, bool fadeOut)
 {
-    float result = 0.0;
+    //step(edge, x)   =  (edge < x)? 1.0 : 0.0;
+    //
+    //if (x >= edge)
+    
+    float inverseResult = 1.0;
     
     if (smoothness <= 0.0)
     {
         for(int i = 0; i < WINDOW_COUNT; i += 1)
         {
-            result = max(result, step(index, headArray[i]));
+            inverseResult *= step(min(headArray[i], maxArray[i]), index);
         }
     }
     else
     {
-        float head;
-        float maxi;
-        
+        int i = 0;
         for(int i = 0; i < WINDOW_COUNT; i += 1)
         {
-            head = headArray[i];
-            maxi = maxArray[i];
-            result = max(result, clamp((head - index) / smoothness, 0.0, 1.0));
+            if (index <= maxArray[i])
+            {
+                inverseResult *= clamp(1.0 + (index - headArray[i]) / smoothness, 0.0, 1.0);
+            }
         }
     }
     
-    return result;
+    return fadeOut? inverseResult : (1.0 - inverseResult);
 }
 
 vec2 bezier(float t, vec2 p1, vec2 p2, vec2 p3)
@@ -445,7 +448,7 @@ void main()
         
         float time = fade(u_fTypistHeadArray, u_fTypistMaxArray, u_fTypistSmoothness, fadeIndex, fadeOut);
         
-        if (u_fTypistAlphaDuration == 0.0)
+        if (u_fTypistAlphaDuration <= 0.0)
         {
             if (time <= 0.0) v_vColour.a = 0.0;
         }
