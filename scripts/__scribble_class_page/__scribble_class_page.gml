@@ -7,7 +7,6 @@ function __scribble_class_page() constructor
     static __scribble_state = __scribble_get_state();
     
     __text = "";
-    __glyph_grid = undefined;
     
     __created_frame = __scribble_state.__frames;
     __frozen = undefined;
@@ -33,10 +32,6 @@ function __scribble_class_page() constructor
     
     __vertex_buffer_array = [];
     if (!__SCRIBBLE_ON_WEB) __material_alias_to_vertex_buffer_dict = {}; //FIXME - Workaround for pointers not being stringified properly on HTML5
-    
-    __char_events  = {};
-    __line_events  = {};
-    __region_array = [];
     
     static __submit = function(_double_draw, _scroll_top, _scroll_bottom)
     {
@@ -77,35 +72,6 @@ function __scribble_class_page() constructor
         __frozen = true;
             
         if (SCRIBBLE_VERBOSE) __scribble_trace("Incrementally froze page vertex buffers, time taken = ", (get_timer() - _t)/1000, "ms");
-    }
-    
-    /// @param glyphIndex
-    static __get_glyph_data = function(_index, _scroll_y)
-    {
-        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Cannot get glyph data, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to <true> to get glyph data");
-        
-        if (_index < 0)
-        {
-            return {
-                unicode: 0,
-                left:    __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT  ],
-                top:     __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__TOP   ] - _scroll_y,
-                right:   __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT  ],
-                bottom:  __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM] - _scroll_y,
-            };
-        }
-        else
-        {
-            _index = min(_index, __glyph_count-1);
-            
-            return {
-                unicode: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE],
-                left:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__LEFT   ],
-                top:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__TOP    ] - _scroll_y,
-                right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT  ],
-                bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM ] - _scroll_y,
-            };
-        }
     }
     
     /// @param lineIndex

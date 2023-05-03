@@ -61,6 +61,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __pages_array = []; //Stores each page of text
     __lines_array = [];
     
+    __char_events = {};
+    __line_events = {};
+    
+    __region_array = [];
+    
     
     
     static __submit = function(_double_draw, _scroll_top, _scroll_bottom)
@@ -300,13 +305,42 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         return __pages_array[_page].__glyph_count - 1;
     }
     
-    static __get_glyph_data_grid = function(_page)
+    static __get_glyph_data_grid = function()
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
         
         if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Getting glyph data requires SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to be set to <true>");
         
-        return __pages_array[_page].__glyph_grid;
+        return __glyph_data_grid;
+    }
+    
+    /// @param glyphIndex
+    static __get_glyph_data = function(_index, _scroll_y)
+    {
+        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Cannot get glyph data, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to <true> to get glyph data");
+        
+        if (_index < 0)
+        {
+            return {
+                unicode: 0,
+                left:    __glyph_data_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT  ],
+                top:     __glyph_data_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__TOP   ] - _scroll_y,
+                right:   __glyph_data_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT  ],
+                bottom:  __glyph_data_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM] - _scroll_y,
+            };
+        }
+        else
+        {
+            _index = min(_index, __glyph_count-1);
+            
+            return {
+                unicode: __glyph_data_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE],
+                left:    __glyph_data_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__LEFT   ],
+                top:     __glyph_data_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__TOP    ] - _scroll_y,
+                right:   __glyph_data_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT  ],
+                bottom:  __glyph_data_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM ] - _scroll_y,
+            };
+        }
     }
     
     static __new_page = function()

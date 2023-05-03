@@ -712,8 +712,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     static region_detect = function(_element_x, _element_y, _pointer_x, _pointer_y)
     {
         var _model        = __get_model(true);
-        var _page         = _model.__pages_array[__scroll_page];
-        var _region_array = _page.__region_array;
+        var _region_array = _model.__region_array;
         
         var _matrix = __update_matrix(_model, _element_x, _element_y);
         if (__matrix_inverse == undefined) __matrix_inverse = __scribble_matrix_inverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
@@ -762,8 +761,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         }
         
         var _model        = __get_model(true);
-        var _page         = _model.__pages_array[__scroll_page];
-        var _region_array = _page.__region_array;
+        var _region_array = _model.__region_array;
         
         var _i = 0;
         repeat(array_length(_region_array))
@@ -973,7 +971,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         if (_typist != undefined)
         {
-            var _bbox = _model.__get_bbox_revealed(__scroll_page, 0, _typist.__window_array[_typist.__window_index], __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__get_bbox_revealed(__scroll_page, 0, _typist.__window_head_array[_typist.__window_index], __padding_l, __padding_t, __padding_r, __padding_b);
         }
         else if (__tw_reveal != undefined)
         {
@@ -1431,20 +1429,17 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     #region Miscellaneous
     
-    static get_events = function(_position, _page_index = __scroll_page, _use_lines = false)
+    static get_events = function(_position, _use_lines = false)
     {
         static _empty_array = [];
         
         var _model = __get_model(true);
         if (!is_struct(_model)) return _empty_array;
         
-        var _page = _model.__pages_array[_page_index];
-        var _event_struct = _use_lines? _page.__line_events : _page.__char_events;
-        
+        var _event_struct = _use_lines? _model.__line_events : _model.__char_events;
         var _events = _event_struct[$ _position];
-        if (!is_array(_events)) return _empty_array;
         
-        return _events;
+        return is_array(_events)? _events : _empty_array;
     }
     
     /// @param templateFunction/Array

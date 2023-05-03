@@ -121,30 +121,27 @@ function __scribble_gen_9_write_vbuffs()
     var _region_bbox_start = undefined;
     var _region_bbox_array = undefined;
     
+    if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER)
+    {
+        __glyph_data_grid = ds_grid_create(_glyph_count, __SCRIBBLE_GLYPH_LAYOUT.__SIZE);
+        ds_grid_set_grid_region(__glyph_data_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__UNICODE, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE);
+        ds_grid_set_grid_region(__glyph_data_grid, _vbuff_pos_grid, 0, 0, _glyph_count-1, __SCRIBBLE_GEN_VBUFF_POS.__SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT);
+    }
+    
     var _p = 0;
     repeat(__pages)
     {
-        var _page_data             = __pages_array[_p];
-        var _page_char_events_dict = _page_data.__char_events;
-        var _page_line_events_dict = _page_data.__line_events;
-        var _vbuff                 = undefined;
-        var _last_glyph_material   = undefined;
-        var _packed_indexes        = 0;
-        var _animation_index       = 0;
+        var _page_data           = __pages_array[_p];
+        var _char_events_dict    = __char_events;
+        var _line_events_dict    = __line_events;
+        var _vbuff               = undefined;
+        var _last_glyph_material = undefined;
+        var _packed_indexes      = 0;
+        var _animation_index     = 0;
         
         if (SCRIBBLE_ALLOW_TEXT_GETTER)
         {
             buffer_seek(_string_buffer, buffer_seek_start, 0);
-        }
-        
-        if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER)
-        {
-            with(_page_data)
-            {
-                __glyph_grid = ds_grid_create(__glyph_count, __SCRIBBLE_GLYPH_LAYOUT.__SIZE);
-                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH.__UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH.__UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE);
-                ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyph_start, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT);
-            }
         }
         
         if (_randomize_animation)
@@ -197,23 +194,23 @@ function __scribble_gen_9_write_vbuffs()
                         
                         
                         
-                        var _event_array = _page_char_events_dict[$ _character_index]; //Find the correct event array in the dictionary, creating a new one if needed
+                        var _event_array = _char_events_dict[$ _character_index]; //Find the correct event array in the dictionary, creating a new one if needed
                         
                         if (!is_array(_event_array))
                         {
                             var _event_array = [];
-                            _page_char_events_dict[$ _character_index] = _event_array;
+                            _char_events_dict[$ _character_index] = _event_array;
                         }
                         
                         array_push(_event_array, _event);
                         
                         
                         
-                        var _event_array = _page_line_events_dict[$ _line_index]; //Find the correct event array in the dictionary, creating a new one if needed
+                        var _event_array = _line_events_dict[$ _line_index]; //Find the correct event array in the dictionary, creating a new one if needed
                         if (!is_array(_event_array))
                         {
                             var _event_array = [];
-                            _page_line_events_dict[$ _line_index] = _event_array;
+                            _line_events_dict[$ _line_index] = _event_array;
                         }
                         
                         array_push(_event_array, _event);
@@ -234,7 +231,7 @@ function __scribble_gen_9_write_vbuffs()
                                 });
                                 
                                 //Only store a region that actually covers a glyph
-                                array_push(_page_data.__region_array, {
+                                array_push(__region_array, {
                                     __name        : _region_name,
                                     __bbox_array  : _region_bbox_array,
                                     __start_glyph : _region_start - _page_data.__glyph_start,
@@ -428,7 +425,7 @@ function __scribble_gen_9_write_vbuffs()
                 });
                 
                 //Only store a region that actually covers a glyph
-                array_push(_page_data.__region_array, {
+                array_push(__region_array, {
                     __name        : _region_name,
                     __bbox_array  : _region_bbox_array,
                     __start_glyph : _region_start - _page_data.__glyph_start,
@@ -469,24 +466,24 @@ function __scribble_gen_9_write_vbuffs()
             
             
             
-            var _event_array = _page_char_events_dict[$ _character_index]; //Find the correct event array in the diciontary, creating a new one if needed
+            var _event_array = _char_events_dict[$ _character_index]; //Find the correct event array in the diciontary, creating a new one if needed
             
             if (!is_array(_event_array))
             {
                 var _event_array = [];
-                _page_char_events_dict[$ _character_index] = _event_array;
+                _char_events_dict[$ _character_index] = _event_array;
             }
             
             array_push(_event_array, _event);
             
             
             
-            var _event_array = _page_line_events_dict[$ _line_index]; //Find the correct event array in the diciontary, creating a new one if needed
+            var _event_array = _line_events_dict[$ _line_index]; //Find the correct event array in the diciontary, creating a new one if needed
             
             if (!is_array(_event_array))
             {
                 var _event_array = [];
-                _page_line_events_dict[$ _line_index] = _event_array;
+                _line_events_dict[$ _line_index] = _event_array;
             }
             
             array_push(_event_array, _event);
