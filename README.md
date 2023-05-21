@@ -10,4 +10,5 @@
 - ### [Download the .yymps](https://github.com/JujuAdams/scribble/releases/)
 - ### Read the [documentation](http://jujuadams.github.io/Scribble)
 - ### Talk about Scribble on the [Discord server](https://discord.gg/8krYCqr)
+- ### You may also like [Scripture](https://pixelatedpope.itch.io/scripture), [diest’s text engine](http://michaelvandiest.com/advanced-dialogue-box/), and [gmdialogue](https://github.com/danielpancake/gmdialogue)
 - ### Learn how to manage your game's dialogue and narrative flow with [Chatterbox](https://github.com/JujuAdams/Scribblebox)
