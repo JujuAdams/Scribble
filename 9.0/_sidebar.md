@@ -1,4 +1,5 @@
 -   [Home](README)
+-   [Alternatives](Alternatives)
 -   [How does Scribble work?](how-does-scribble-work)
 -   [Reading these Docs](reading-these-docs)
 -   [Coming from Native GM](coming-from-native-gm)
