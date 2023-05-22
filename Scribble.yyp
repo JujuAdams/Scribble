@@ -51,6 +51,7 @@
     {"id":{"name":"obj_test_refresh","path":"objects/obj_test_refresh/obj_test_refresh.yy",},"order":6,},
     {"id":{"name":"obj_test_arabic_sprite","path":"objects/obj_test_arabic_sprite/obj_test_arabic_sprite.yy",},"order":2,},
     {"id":{"name":"obj_test_bbox","path":"objects/obj_test_bbox/obj_test_bbox.yy",},"order":0,},
+    {"id":{"name":"obj_test_hebrew_kerning","path":"objects/obj_test_hebrew_kerning/obj_test_hebrew_kerning.yy",},"order":2,},
     {"id":{"name":"fnt_teko","path":"fonts/fnt_teko/fnt_teko.yy",},"order":30,},
     {"id":{"name":"obj_test_bbox_getters","path":"objects/obj_test_bbox_getters/obj_test_bbox_getters.yy",},"order":1,},
     {"id":{"name":"obj_test_bbox_revealed","path":"objects/obj_test_bbox_revealed/obj_test_bbox_revealed.yy",},"order":1,},
@@ -368,8 +369,8 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
+    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
   ],
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Examples","folderPath":"folders/Examples.yy","order":2,},
