@@ -1803,6 +1803,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         var _previous_scale_to_box_scale = __layout_scale;
         var _model = __get_model(true);
+        if (!is_struct(_model)) return undefined;
         
         var _xscale = 1.0;
         var _yscale = 1.0;
