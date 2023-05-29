@@ -86,7 +86,7 @@ The following example shows how to use a macro to insert a series of sprites int
 scribble_add_macro("coin_gen", function(_count)
 {
     var _string = "";
-    repeat(_count) _string += "[spr_coin]";
+    repeat(real(_count)) _string += "[spr_coin]";
     return _string;
 });
 
