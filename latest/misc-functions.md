@@ -78,7 +78,7 @@ Here, `callbackRumble()` will fetch the parameter from the array and use it to v
 |`name`    |string  |Name of the macro command tag               |
 |`function`|function|Function to execute when the macro is parsed|
 
-Macros are a way to inject text into the Scribble parser as an input string is being parsed. The function attached to a macro must return a string. The macro tag, when parsed, will be replaced by the string returned by the function. Macro functions can take arguments in a similar fashion to custom typist events or formatting tags.
+Macros are a way to inject text into the Scribble parser as an input string is being parsed. The function attached to a macro must return a string. The macro tag, when parsed, will be replaced by the string returned by the function. Macro functions can take arguments in a similar fashion to custom typist events or formatting tags. Macro arguments are always passed to the function as strings.
 
 The following example shows how to use a macro to insert a series of sprites into a string:
 ```gml
@@ -86,7 +86,7 @@ The following example shows how to use a macro to insert a series of sprites int
 scribble_add_macro("coin_gen", function(_count)
 {
     var _string = "";
-    repeat(_count) _string += "[spr_coin]";
+    repeat(real(_count)) _string += "[spr_coin]";
     return _string;
 });
 
