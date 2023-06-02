@@ -31,7 +31,7 @@ function draw_text_scribble_ext(_x, _y, _string, _width, _reveal = undefined)
         _font = _scribble_state.__default_font;
     }
     
-    var _element = scribble(_string, "__draw_text_scribble__")
+    var _element = scribble_unique(_string)
     .align(draw_get_halign(), draw_get_valign())
     .font(_font)
     .rgb_multiply(draw_get_color())
