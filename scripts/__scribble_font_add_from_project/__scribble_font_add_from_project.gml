@@ -4,7 +4,6 @@ function __scribble_font_add_from_project(_font)
 {
     var _name = font_get_name(_font);
     
-    
     if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", _name, "\" as standard font");
     
     var _scribble_state = __scribble_get_state();
@@ -58,11 +57,16 @@ function __scribble_font_add_from_project(_font)
                              + " -> " + string_format(_texture_uvs[2], 1, 10) + "," + string_format(_texture_uvs[3], 1, 10));
         }
         
+        var _sdf = string_pos("sdf", string_lower(_name));
+        
         var _font_data = new __scribble_class_font(_name, _name, _size);
-        _font_data.__type_standard = true;
+        _font_data.__type_standard = not _sdf;
+        _font_data.__type_sdf      = _sdf;
         
         //Set material properties
         _font_data.__material.__set_texture(_texture);
+        _font_data.__material.__sdf = _sdf;
+        if (_sdf) _font_data.__material.__sdf_spread = 2*__SCRIBBLE_DEFAULT_SDF_SPREAD;
         
         //Set the bilinear filtering state for the font after we set other properties
         _font_data.__set_bilinear(undefined);
