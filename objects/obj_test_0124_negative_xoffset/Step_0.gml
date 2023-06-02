@@ -1,0 +1,1 @@
+if (mouse_check_button(mb_left)) wrap_x = mouse_x - x;
