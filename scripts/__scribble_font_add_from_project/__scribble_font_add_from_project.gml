@@ -57,7 +57,7 @@ function __scribble_font_add_from_project(_font)
                              + " -> " + string_format(_texture_uvs[2], 1, 10) + "," + string_format(_texture_uvs[3], 1, 10));
         }
         
-        var _sdf = string_pos("sdf", string_lower(_name));
+        var _sdf = _font_info.sdfEnabled;
         
         var _font_data = new __scribble_class_font(_name, _name, _size);
         _font_data.__type_standard = not _sdf;
@@ -66,7 +66,7 @@ function __scribble_font_add_from_project(_font)
         //Set material properties
         _font_data.__material.__set_texture(_texture);
         _font_data.__material.__sdf = _sdf;
-        if (_sdf) _font_data.__material.__sdf_spread = 2*__SCRIBBLE_DEFAULT_SDF_SPREAD;
+        if (_sdf) _font_data.__material.__sdf_spread = 2*_font_info.sdfSpread;
         
         //Set the bilinear filtering state for the font after we set other properties
         _font_data.__set_bilinear(undefined);
