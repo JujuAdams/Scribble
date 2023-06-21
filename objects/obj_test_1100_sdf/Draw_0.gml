@@ -1,11 +1,8 @@
-var _element = scribble("[fa_center][fa_middle]the quick brown [scale,2]fox[/scale] jumped over the lazy dog") //\n\nSPHINX OF BLACK QUARTZ, JUDGE MY VOW")
-.sdf_border(c_navy, 5*mouse_y/room_height)
-.sdf_shadow(c_black, 0.3, 2, 2)
-.layout_wrap(551)
+var _scale = lerp(1, 7, mouse_x / room_width);
 
-_element.draw(room_width div 2, room_height div 2);
+draw_set_font(fnt_industrydemi);
+draw_text_transformed(10, 10, "Hello world", _scale, _scale, 0);
 
-var _bbox = _element.get_bbox(room_width div 2, room_height div 2);
-draw_rectangle(_bbox.x0, _bbox.y0, _bbox.x3, _bbox.y3, true);
+scribble("Hello world").post_transform(_scale).draw(10, 10 + _scale*string_height("Hello world"));
 
-draw_line(_bbox.x0, _bbox.y0 - 30, _bbox.x0 + _element.get_width(), _bbox.y0 - 30);
+draw_set_font(-1);
