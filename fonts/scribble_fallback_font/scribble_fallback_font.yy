@@ -116,6 +116,7 @@
   "italic": false,
   "kerningPairs": [],
   "last": 0,
+  "lineHeight": 0,
   "maintainGms1Font": false,
   "parent": {
     "name": "(System - don't call these functions)",
@@ -128,6 +129,7 @@
   ],
   "regenerateBitmap": false,
   "sampleText": "Hello!",
+  "sdfSpread": 8,
   "size": 11.0,
   "styleName": "Regular",
   "textureGroupId": {
@@ -135,4 +137,5 @@
     "path": "texturegroups/Default",
   },
   "TTFName": "",
+  "usesSDF": false,
 }

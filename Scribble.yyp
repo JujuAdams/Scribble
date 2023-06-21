@@ -74,7 +74,7 @@
   "isEcma": false,
   "LibraryEmitters": [],
   "MetaData": {
-    "IDEVersion": "2023.400.0.317",
+    "IDEVersion": "2023.600.0.368",
   },
   "resources": [
     {"id":{"name":"fnt_dialogue_2","path":"fonts/fnt_dialogue_2/fnt_dialogue_2.yy",},},
