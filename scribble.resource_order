@@ -271,6 +271,7 @@
     {"name":"scribble_color_get","order":2,"path":"scripts/scribble_color_get/scribble_color_get.yy",},
     {"name":"scribble_glyph_height_get","order":9,"path":"scripts/scribble_glyph_height_get/scribble_glyph_height_get.yy",},
     {"name":"fnt_style_header3","order":17,"path":"fonts/fnt_style_header3/fnt_style_header3.yy",},
+    {"name":"__scribble_config_advanced","order":4,"path":"scripts/__scribble_config_advanced/__scribble_config_advanced.yy",},
     {"name":"scribble_external_sound_exists","order":2,"path":"scripts/scribble_external_sound_exists/scribble_external_sound_exists.yy",},
     {"name":"scribble_external_sound_remove","order":1,"path":"scripts/scribble_external_sound_remove/scribble_external_sound_remove.yy",},
     {"name":"obj_test_3000_markdown","order":18,"path":"objects/obj_test_3000_markdown/obj_test_3000_markdown.yy",},

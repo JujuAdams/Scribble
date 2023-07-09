@@ -326,6 +326,7 @@
     {"id":{"name":"scribble_color_get","path":"scripts/scribble_color_get/scribble_color_get.yy",},},
     {"id":{"name":"scribble_glyph_height_get","path":"scripts/scribble_glyph_height_get/scribble_glyph_height_get.yy",},},
     {"id":{"name":"fnt_style_header3","path":"fonts/fnt_style_header3/fnt_style_header3.yy",},},
+    {"id":{"name":"__scribble_config_advanced","path":"scripts/__scribble_config_advanced/__scribble_config_advanced.yy",},},
     {"id":{"name":"scribble_external_sound_exists","path":"scripts/scribble_external_sound_exists/scribble_external_sound_exists.yy",},},
     {"id":{"name":"scribble_external_sound_remove","path":"scripts/scribble_external_sound_remove/scribble_external_sound_remove.yy",},},
     {"id":{"name":"scribble_flush_everything","path":"scripts/scribble_flush_everything/scribble_flush_everything.yy",},},
