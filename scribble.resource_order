@@ -309,7 +309,6 @@
     {"name":"scribble_typists_add_event","order":1,"path":"scripts/scribble_typists_add_event/scribble_typists_add_event.yy",},
     {"name":"string_height_scribble","order":3,"path":"scripts/string_height_scribble/string_height_scribble.yy",},
     {"name":"obj_font_add_text_comparison","order":3,"path":"objects/obj_font_add_text_comparison/obj_font_add_text_comparison.yy",},
-    {"name":"spr_sdf_riffic","order":24,"path":"sprites/spr_sdf_riffic/spr_sdf_riffic.yy",},
     {"name":"scribble_font_add","order":3,"path":"scripts/scribble_font_add/scribble_font_add.yy",},
     {"name":"__scribble_class_typist_public_functions","order":7,"path":"scripts/__scribble_class_typist_public_functions/__scribble_class_typist_public_functions.yy",},
     {"name":"string_height_scribble_ext","order":5,"path":"scripts/string_height_scribble_ext/string_height_scribble_ext.yy",},
