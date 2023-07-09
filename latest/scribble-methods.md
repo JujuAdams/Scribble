@@ -33,7 +33,7 @@ Text element methods are broken down into several categories. There's a lot here
 
 # Basics
 
-## `.draw(x, y)`
+## `.draw(x, y, [typist])`
 
 **Returns**: N/A (`undefined`)
 
