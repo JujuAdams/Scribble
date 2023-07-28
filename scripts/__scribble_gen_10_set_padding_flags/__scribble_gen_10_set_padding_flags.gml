@@ -1,3 +1,4 @@
+// Feather disable all
 function __scribble_gen_10_set_padding_flags()
 {
     static _generator_state = __scribble_get_generator_state();

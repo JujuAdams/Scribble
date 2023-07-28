@@ -1,3 +1,4 @@
+// Feather disable all
 /// Associates four fonts together for use with [r] [b] [i] [bi] font tags
 /// Use <undefined> for any style you don't want to set a font for
 /// 

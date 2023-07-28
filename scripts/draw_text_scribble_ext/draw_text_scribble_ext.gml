@@ -1,3 +1,4 @@
+// Feather disable all
 /// Emulation of draw_text_ext(), but using Scribble for rendering
 /// 
 /// **Please do not use this function in conjunction with string_copy()**

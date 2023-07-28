@@ -1,3 +1,4 @@
+// Feather disable all
 /// Scribble's macros, used to customise and control behaviour throughout the library
 ///
 /// N.B. You never need to run this script yourself! All of these macros are handled automatically when Scribble is compiled into your project

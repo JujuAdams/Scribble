@@ -1,3 +1,4 @@
+// Feather disable all
 function __scribble_get_krutidev_matra_lookup_map()
 {
     static _map = ds_map_create();

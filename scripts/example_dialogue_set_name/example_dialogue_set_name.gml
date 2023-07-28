@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param   textElement
 /// @param   eventData{array}
 /// @param   characterIndex

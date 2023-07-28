@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param size       Wheel amplitude, in pixels
 /// @param frequency  Wheel frequency. Larger values create more "humps" over a certain number of characters
 /// @param speed      Wheel speed. Larger numbers cause characters to move up and down more rapidly

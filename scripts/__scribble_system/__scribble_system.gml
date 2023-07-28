@@ -1,3 +1,4 @@
+// Feather disable all
 // @jujuadams
 #macro __SCRIBBLE_VERSION           "8.7.0"
 #macro __SCRIBBLE_DATE              "2023-03-13"

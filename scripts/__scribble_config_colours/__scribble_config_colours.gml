@@ -1,3 +1,4 @@
+// Feather disable all
 /// Creates a collection of colour names that map to 24-bit BGR colours
 /// Use scribble_rgb_to_bgr() to convert from industry standard RGB colour codes to GM's native BGR format
 /// 

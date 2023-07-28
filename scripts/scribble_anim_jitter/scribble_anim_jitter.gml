@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param minScale  Jitter minimum scale. Unlike SCRIBBLE_DEFAULT_PULSE_SCALE this is not an offset
 /// @param maxScale  Jitter maximum scale. Unlike SCRIBBLE_DEFAULT_PULSE_SCALE this is not an offset
 /// @param speed     Jitter speed. Larger values cause glyph scales to fluctuate faster

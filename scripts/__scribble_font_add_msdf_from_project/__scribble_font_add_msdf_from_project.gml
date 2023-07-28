@@ -1,3 +1,4 @@
+// Feather disable all
 function __scribble_font_add_msdf_from_project(_sprite)
 {
     var _name = sprite_get_name(_sprite);

@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param fontName
 /// @param glyphCount
 /// @param isMSDF

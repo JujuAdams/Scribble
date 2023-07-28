@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param font
 
 function __scribble_font_add_from_project(_font)

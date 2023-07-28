@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param size       Wave amplitude, in pixels
 /// @param frequency  Wave frequency. Larger values create more "humps" over a certain number of characters
 /// @param speed      Wave speed. Larger numbers cause characters to move up and down more rapidly

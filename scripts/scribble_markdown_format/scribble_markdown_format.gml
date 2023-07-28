@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param string
 
 #macro __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE  _next_value = buffer_peek(_buffer, buffer_tell(_buffer)-1, buffer_u8);

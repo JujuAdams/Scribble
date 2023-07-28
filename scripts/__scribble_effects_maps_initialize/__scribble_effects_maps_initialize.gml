@@ -1,3 +1,4 @@
+// Feather disable all
 function __scribble_effects_maps_initialize()
 {
     var _map       = __scribble_get_effects_map();

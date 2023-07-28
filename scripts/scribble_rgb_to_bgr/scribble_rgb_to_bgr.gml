@@ -1,3 +1,4 @@
+// Feather disable all
 /// Converts an RGB colour code (the industry standard) to GameMaker's native BGR format
 /// 
 /// @param RGB   24-bit industry standard RGB colour integer

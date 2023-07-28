@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param perLine
 
 function __scribble_class_typist(_per_line) constructor
