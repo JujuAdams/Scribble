@@ -559,6 +559,7 @@ function __scribble_class_typist(_per_line) constructor
                     {
                         __scribble_trace("Warning! Event [", _event_name, "] not recognised");
                     }
+                    if (__paused) return false;
                 break;
             }
         }
