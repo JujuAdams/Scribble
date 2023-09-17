@@ -8,7 +8,6 @@
 -   [Setting Up](setting-up)
 -   [Coming from Native GM](coming-from-native-gm)
 -   [Text Formatting](text-formatting)
--   [Superfonts](superfont-functions)
 -   [MSDF Fonts](msdf-fonts)
 -   [Extended Language Support](extended-language-support)
 

@@ -8,4 +8,4 @@ Scribble might not be the perfect fit for your game. The GameMaker community has
 
 - [diest's text engine](http://michaelvandiest.com/advanced-dialogue-box/)
 
-- [gmdalogue](https://github.com/danielpancake/gmdialogue)
+- [gmdialogue](https://github.com/danielpancake/gmdialogue)
