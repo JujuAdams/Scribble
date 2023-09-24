@@ -108,7 +108,8 @@ The following properties are available for modification:
 |`SCRIBBLE_GLYPH.HEIGHT`    |Height of the glyph, in pixels. Changing this value will visually stretch the glyph|
 |`SCRIBBLE_GLYPH.X_OFFSET`  |x-coordinate offset to draw the glyph       |
 |`SCRIBBLE_GLYPH.Y_OFFSET`  |y-coordinate offset to draw the glyph       |
-|`SCRIBBLE_GLYPH.SEPARATION`|Distance between this glyph's right edge and the left edge of the next glyph<br>**N.B.** This can be a negative value|
+|`SCRIBBLE_GLYPH.SEPARATION`|Horizontal distance between this glyph's right edge and the left edge of the next glyph<br>**N.B.** This can be a negative value|
+|`SCRIBBLE_GLYPH.FONT_HEIGHT`|Vertical distance between lines of text|
 
 &nbsp;
 
