@@ -18,7 +18,7 @@ Restores animation properties to the defaults set in [`__scribble_config_animati
 
 ## `scribble_anim_wave(size, frequency, speed)`
 
-**Returns**: The text element
+**Returns**: N/A (`undefined`)
 
 |Name       |Datatype|Purpose                                                                                             |
 |-----------|--------|----------------------------------------------------------------------------------------------------|
@@ -32,7 +32,7 @@ This function controls behaviour of the `[wave]` effect across all future drawn 
 
 ## `scribble_anim_shake(size, speed)`
 
-**Returns**: The text element
+**Returns**: N/A (`undefined`)
 
 |Name       |Datatype|Purpose                                                          |
 |-----------|--------|-----------------------------------------------------------------|
@@ -45,7 +45,7 @@ This function controls behaviour of the `[shake]` effect across all future drawn
 
 ## `scribble_anim_rainbow(weight, speed)`
 
-**Returns**: The text element
+**Returns**: N/A (`undefined`)
 
 |Name    |Datatype|Purpose                                                                                                                   |
 |--------|--------|--------------------------------------------------------------------------------------------------------------------------|
@@ -58,7 +58,7 @@ This function controls behaviour of the `[rainbow]` effect across all future dra
 
 ## `scribble_anim_wobble(angle, frequency)`
 
-**Returns**: The text element
+**Returns**: N/A (`undefined`)
 
 |Name       |Datatype|Purpose                                                              |
 |-----------|--------|---------------------------------------------------------------------|
@@ -71,7 +71,7 @@ This function controls behaviour of the `[wobble]` effect across all future draw
 
 ## `scribble_anim_pulse(scale, speed)`
 
-**Returns**: The text element
+**Returns**: N/A (`undefined`)
 
 |Name   |Datatype|Purpose                                                                        |
 |-------|--------|-------------------------------------------------------------------------------|
@@ -84,7 +84,7 @@ This function controls behaviour of the `[pulse]` effect across all future drawn
 
 ## `scribble_anim_wheel(size, frequency, speed)`
 
-**Returns**: The text element
+**Returns**: N/A (`undefined`)
 
 |Name       |Datatype|Purpose                                                                  |
 |-----------|--------|-------------------------------------------------------------------------|
@@ -98,7 +98,7 @@ This function controls behaviour of the `[wheel]` effect across all future drawn
 
 ## `scribble_anim_cycle(speed, saturation, value)`
 
-**Returns**: The text element
+**Returns**: N/A (`undefined`)
 
 |Name        |Datatype|Purpose                                                                                                                                                                                                                                                             |
 |------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -112,7 +112,7 @@ This function controls behaviour of the `[cycle]` effect across future drawn tex
 
 ## `scribble_anim_jitter(minScale, maxScale, speed)`
 
-**Returns**: The text element
+**Returns**: N/A (`undefined`)
 
 |Name      |Datatype|Purpose                                                          |
 |----------|--------|-----------------------------------------------------------------|
@@ -126,7 +126,7 @@ This function controls behaviour of the `[jitter]` effect across future drawn te
 
 ## `scribble_anim_blink(onDuration, offDuration, timeOffset)`
 
-**Returns**: The text element
+**Returns**: N/A (`undefined`)
 
 |Name         |Datatype|Purpose                                         |
 |-------------|--------|------------------------------------------------|
