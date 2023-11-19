@@ -27,7 +27,7 @@ It is possible to send parameters into an executed script from your text. **Para
 
 &nbsp;
 
-Event scripts are executed with two arguments:
+Event scripts are executed with three arguments:
 
 |Argument|Name            |Purpose                                                                        |
 |--------|----------------|-------------------------------------------------------------------------------|
