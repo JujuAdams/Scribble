@@ -11,8 +11,10 @@ void main()
 {
     vec4 outlineColor = vec4(u_vOutlineColor, 1.0);
 	
-	const vec2 offset = vec2(1, 0);
-	//Sample in right, up, left and down
+	//Pre-compute offset values
+	const vec2 offset = vec2(1.0, 0.0);
+	
+	//Sample in 4 directions (90 degree increments)
 	outlineColor.a *= texture2D(gm_BaseTexture, v_vTexcoord + u_vTexel * offset.xy).a;
 	outlineColor.a *= texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel * offset.yx).a;
 	outlineColor.a *= texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel * offset.xy).a;

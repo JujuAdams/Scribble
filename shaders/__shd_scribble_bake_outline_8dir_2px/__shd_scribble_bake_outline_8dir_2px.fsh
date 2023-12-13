@@ -19,9 +19,9 @@ void main()
 	//Increment through radii
 	for(float radius = 1.0; radius<MAX_RADIUS; radius++)
 	{
-		//Compute offsets
+		//Pre-compute offset values
 		vec4 offset = radius * vec4(1.0, 0.0, HALF_ROOT, -HALF_ROOT);
-		
+	
 		//Sample in 8 directions (45 degree increments)
 	    outlineColor.a *= texture2D(gm_BaseTexture, v_vTexcoord + u_vTexel * offset.xy).a;
 		outlineColor.a *= texture2D(gm_BaseTexture, v_vTexcoord + u_vTexel * offset.zw).a;

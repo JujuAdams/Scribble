@@ -1,7 +1,7 @@
 //   @jujuadams   v8.0.0   2021-12-15
 precision highp float;
 
-////Pre-computed sqrt(0.5)
+//Pre-computed sqrt(0.5)
 #define HALF_ROOT 0.70710678
 
 varying vec2 v_vTexcoord;
@@ -14,7 +14,7 @@ void main()
 {
     vec4 outlineColor = vec4(u_vOutlineColor, 1.0);
 	
-	//Precompute offsets
+	//Pre-compute offset values
 	const vec4 offset = vec4(1.0, 0.0, HALF_ROOT, -HALF_ROOT);
 	
 	//Sample in 8 directions (45 degree increments)
