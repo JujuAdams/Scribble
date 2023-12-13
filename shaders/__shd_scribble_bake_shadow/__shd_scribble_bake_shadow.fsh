@@ -1,8 +1,6 @@
 //   @jujuadams   v8.0.0   2021-12-15
 precision highp float;
 
-const float PI = 3.14159265359;
-
 varying vec2 v_vTexcoord;
 varying vec4 v_vColor;
 
