@@ -15,4 +15,5 @@ void main()
     vec4 newColor = vec4(u_vShadowColor.rgb, u_vShadowColor.a*texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel*u_vShadowDelta).a);
     vec4 sample = texture2D(gm_BaseTexture, v_vTexcoord);
     gl_FragColor = v_vColor*mix(newColor, sample, sample.a);
+    gl_FragColor.a = max(newColor.a,sample.a);
 }
