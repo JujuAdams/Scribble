@@ -1,7 +1,7 @@
 /// @param name
 /// @param filename
 /// @param size
-/// @param fontGroup
+/// @param fontGroupOrArray
 /// @param SDF
 /// @param [spread]
 /// @param [bold=false]
@@ -14,7 +14,6 @@ function scribble_font_add(_name, _filename, _point_size, _font_group_array, _sd
     __scribble_initialize();
     
     if (not is_array(_font_group_array)) _font_group_array = [_font_group_array];
-    
     var _glyph_range = [];
     var _i = 0;
     repeat(array_length(_font_group_array))

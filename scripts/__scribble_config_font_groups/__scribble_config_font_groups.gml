@@ -5,11 +5,11 @@ enum SCRIBBLE_FONT_GROUP
     EXTENDED_LATIN,
     GREEK,
     CYRILLIC,
-    CHINESE_SIMPLIFIED,
-    CHINESE_TRADITIONAL,
-    KOREAN,
-    JAPANESE,
     HEBREW,
+    CJK_SYMBOLS,
+    CJK_IDEOGRAPHS,
+    JAPANESE,
+    KOREAN,
     ARABIC,
     THAI_C90,
     KRUTIDEV,
@@ -42,6 +42,27 @@ function __scribble_config_glyph_index_to_font_group(_glyph_index)
     if ((_glyph_index >= 1424) && (_glyph_index <= 1535)) //Hebrew
     {
         return SCRIBBLE_FONT_GROUP.HEBREW;
+    }
+    
+    if ((_glyph_index >= 0x3000) && (_glyph_index <= 0x303F)) //CJK Symbols and Punctuation
+    {
+        return SCRIBBLE_FONT_GROUP.CJK_SYMBOLS;
+    }
+    
+    if ((_glyph_index >= 0x4E00) && (_glyph_index <= 0x9FFF)) //CJK Unified Ideographs (including Kanji)
+    {
+        return SCRIBBLE_FONT_GROUP.CJK_IDEOGRAPHS;
+    }
+    
+    if (((_glyph_index >= 0x3041) && (_glyph_index <= 0x3096))  //Hiragana
+    ||  ((_glyph_index >= 0x30A0) && (_glyph_index <= 0x30FF))) //Katakana
+    {
+        return SCRIBBLE_FONT_GROUP.JAPANESE;
+    }
+    
+    if ((_glyph_index >= 0xAC00) && (_glyph_index <= 0xD7A3)) //Hangul Syllables
+    {
+        return SCRIBBLE_FONT_GROUP.KOREAN;
     }
     
     if (((_glyph_index >=  1536) && (_glyph_index <=  1791))  //Arabic
@@ -86,18 +107,18 @@ function __scribble_config_font_group_to_glyph_range(_fontGroup)
 {
     switch(_fontGroup)
     {
-        case SCRIBBLE_FONT_GROUP.BASIC_LATIN:         return [  32,  127]; break;
-        case SCRIBBLE_FONT_GROUP.EXTENDED_LATIN:      return [ 128,  591]; break;
-        case SCRIBBLE_FONT_GROUP.GREEK:               return [ 880, 1023]; break;
-        case SCRIBBLE_FONT_GROUP.CYRILLIC:            return [1024, 1279]; break;
-        case SCRIBBLE_FONT_GROUP.HEBREW:              return [1424, 1535]; break;
-        case SCRIBBLE_FONT_GROUP.CHINESE_SIMPLIFIED:  break;
-        case SCRIBBLE_FONT_GROUP.CHINESE_TRADITIONAL: break;
-        case SCRIBBLE_FONT_GROUP.KOREAN:              break;
-        case SCRIBBLE_FONT_GROUP.JAPANESE:            break;
-        case SCRIBBLE_FONT_GROUP.ARABIC:              return [[1536, 1791], [8216, 8217], [65136, 65279]]; break;
-        case SCRIBBLE_FONT_GROUP.THAI_C90:            return [[3584, 3711], [63232, 63258]]; break;
-        case SCRIBBLE_FONT_GROUP.KRUTIDEV:            return [[32, 255], 338, 362, 402, 710, 8211, 8212, 8218, 8222, 8224, 8225, 8230, 8240, 8249]; break;
+        case SCRIBBLE_FONT_GROUP.BASIC_LATIN:    return [  32,  127]; break;
+        case SCRIBBLE_FONT_GROUP.EXTENDED_LATIN: return [ 128,  591]; break;
+        case SCRIBBLE_FONT_GROUP.GREEK:          return [ 880, 1023]; break;
+        case SCRIBBLE_FONT_GROUP.CYRILLIC:       return [1024, 1279]; break;
+        case SCRIBBLE_FONT_GROUP.HEBREW:         return [1424, 1535]; break;
+        case SCRIBBLE_FONT_GROUP.CJK_SYMBOLS:    return [0x3000, 0x303F]; break;
+        case SCRIBBLE_FONT_GROUP.CJK_IDEOGRAPHS: return [0x4E00, 0x9FFF]; break;
+        case SCRIBBLE_FONT_GROUP.JAPANESE:       return [[0x3041, 0x3096], [0x30A0, 0x30FF]]; break;
+        case SCRIBBLE_FONT_GROUP.KOREAN:         return [0xAC00, 0xD7A3]; break;
+        case SCRIBBLE_FONT_GROUP.ARABIC:         return [[1536, 1791], [8216, 8217], [65136, 65279]]; break;
+        case SCRIBBLE_FONT_GROUP.THAI_C90:       return [[3584, 3711], [63232, 63258]]; break;
+        case SCRIBBLE_FONT_GROUP.KRUTIDEV:       return [[32, 255], 338, 362, 402, 710, 8211, 8212, 8218, 8222, 8224, 8225, 8230, 8240, 8249]; break;
     }
     
     return [];
