@@ -45,6 +45,11 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
     
     
     
+    static toString = function()
+    {
+        return __asset_name;
+    }
+    
     static __set_sdf_thickness_offset = function(_offset, _relative, _weak)
     {
         if (__type_sdf)

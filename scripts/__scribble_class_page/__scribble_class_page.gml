@@ -31,7 +31,7 @@ function __scribble_class_page() constructor
     __max_y  = 0;
     
     __vertex_buffer_array = [];
-    __material_alias_to_vertex_buffer_dict = {};
+    __material_to_vertex_buffer_dict = {};
     
     static __submit = function(_double_draw, _scroll_top, _scroll_bottom)
     {
@@ -88,14 +88,14 @@ function __scribble_class_page() constructor
         return __line_array[_line_index].__height;
     }
     
-    static __ensure_vertex_buffer = function(_material_alias)
+    static __ensure_vertex_buffer = function(_material)
     {
-        var _data = __material_alias_to_vertex_buffer_dict[$ string(_material_alias)];
+        var _data = __material_to_vertex_buffer_dict[$ string(_material)];
         if (_data == undefined)
         {
-            var _data = new __scribble_class_vertex_buffer(_material_alias);
+            var _data = new __scribble_class_vertex_buffer(_material);
             array_push(__vertex_buffer_array, _data);
-            __material_alias_to_vertex_buffer_dict[$ string(_material_alias)] = _data;
+            __material_to_vertex_buffer_dict[$ string(_material)] = _data;
         }
         
         return _data.__vertex_buffer;
@@ -125,7 +125,7 @@ function __scribble_class_page() constructor
             ++_i;
         }
         
-        __material_alias_to_vertex_buffer_dict = {};
+        __material_to_vertex_buffer_dict = {};
         array_resize(__vertex_buffer_array, 0);
     }
 }

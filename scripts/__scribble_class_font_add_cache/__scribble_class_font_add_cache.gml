@@ -142,8 +142,8 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__SEPARATION ] = __shift_dict[$ " "];
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = 0;
         
-        //Set on create (or reset when regenerating the surface)
-        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__MATERIAL] = _texture;
+        //Set when creating the font (or reset when regenerating the surface)
+        //_font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__MATERIAL]
         
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__U0] = 0;
         _font_glyph_grid[# 0, __SCRIBBLE_GLYPH.__V0] = 0;
@@ -274,8 +274,8 @@ function __scribble_class_font_add_cache(_font, _font_name, _glyph_array, _sprea
         _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__SEPARATION ] = _shift;
         _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = -_offset;
         
-        //Set on create (or reset when regenerating the surface)
-        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__MATERIAL] = _texture;
+        //Set when creating the font (or reset when regenerating the surface)
+        //_font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__MATERIAL]
         
         _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__U0] = _u0;
         _font_glyph_grid[# _index, __SCRIBBLE_GLYPH.__U1] = _u1;

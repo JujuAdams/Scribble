@@ -1,6 +1,6 @@
 /// @param materialAlias
 
-function __scribble_class_vertex_buffer(_material_alias) constructor
+function __scribble_class_vertex_buffer(_material) constructor
 {
     static __scribble_state = __scribble_get_state();
     static __gc_vbuff_refs  = __scribble_get_cache_state().__gc_vbuff_refs;
@@ -18,26 +18,22 @@ function __scribble_class_vertex_buffer(_material_alias) constructor
         __vertex_format = vertex_format_end();                             //48 bytes per vertex, 144 bytes per tri, 288 bytes per glyph
     }
     
-    __material_alias = _material_alias;
-    
     //Try to use the material as a font name
-    var _font_data = __scribble_state.__font_data_map[? _material_alias];
-    if (_font_data != undefined)
+    if (is_struct(_material))
     {
-        __material = _font_data.__material;
+        __material = _material;
     }
     else
     {
         //If we can't find a font using this material alias then presume the alias is a texture pointer
-        
-        if (!is_ptr(_material_alias))
+        if (!is_ptr(_material))
         {
-            __scribble_error("Fallback material name must be a pointer (typeof=", typeof(_material_alias), ")");
+            __scribble_error("Fallback material name must be a pointer (typeof=", typeof(_material), ")");
         }
         
         //Create a new placeholder material for this particular texture
-        __material = new __scribble_class_material(_material_alias);
-        __material.__set_texture(_material_alias);
+        __material = new __scribble_class_material(_material);
+        __material.__set_texture(_material);
     }
     
     __vertex_buffer = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version

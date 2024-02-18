@@ -73,9 +73,10 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
         _font_data.__type_runtime  = true;
         
         //Set material properties
-        _font_data.__material.__set_texture(_font_cache.__get_texture());
-        _font_data.__material.__sdf        = font_get_sdf_enabled(_asset);
-        _font_data.__material.__sdf_spread = 2*_spread;
+        var _material = _font_data.__material;
+        _material.__set_texture(_font_cache.__get_texture());
+        _material.__sdf        = font_get_sdf_enabled(_asset);
+        _material.__sdf_spread = 2*_spread;
         
         //Set the bilinear filtering state for the font after we set other properties
         _font_data.__set_bilinear(undefined);
@@ -94,9 +95,9 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
         
         //Pre-emptively fill in data grid so we have to do less work later
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__CHARACTER,  _size-1, __SCRIBBLE_GLYPH.__CHARACTER,  ""                    );
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__MATERIAL,   _size-1, __SCRIBBLE_GLYPH.__MATERIAL,   _name                 );
-        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__BIDI,       _size-1, __SCRIBBLE_GLYPH.__BIDI,       __SCRIBBLE_BIDI.SYMBOL);
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__CHARACTER,  _size-1, __SCRIBBLE_GLYPH.__CHARACTER, ""                    );
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__MATERIAL,   _size-1, __SCRIBBLE_GLYPH.__MATERIAL,  _material             );
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__BIDI,       _size-1, __SCRIBBLE_GLYPH.__BIDI,      __SCRIBBLE_BIDI.SYMBOL);
         
         //Set up the space character in index 0 which is necessary for other bits of Scribble to work
         _font_cache.__set_space_glyph();

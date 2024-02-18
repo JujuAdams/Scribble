@@ -70,7 +70,8 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     _font_data.__type_sprite = true;
     
     //Set material properties
-    _font_data.__material.__set_texture(_expected_texture_page);
+    var _material = _font_data.__material;
+    _material.__set_texture(_expected_texture_page);
     
     //Set the bilinear filtering state for the font after we set other properties
     _font_data.__set_bilinear(undefined);
@@ -124,7 +125,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION ] = _space_width;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = 0;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _sprite_name;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _material;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0         ] = 0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0         ] = 0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1         ] = 0;
@@ -177,7 +178,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION ] = _glyph_separation;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = -_x_offset;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _sprite_name;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _material;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0         ] = _uvs[0];
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0         ] = _uvs[1];
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1         ] = _uvs[2];

@@ -64,9 +64,10 @@ function __scribble_font_add_from_project(_font)
         _font_data.__type_sdf      = _sdf;
         
         //Set material properties
-        _font_data.__material.__set_texture(_texture);
-        _font_data.__material.__sdf = _sdf;
-        if (_sdf) _font_data.__material.__sdf_spread = 2*_font_info.sdfSpread;
+        var _material = _font_data.__material;
+        _material.__set_texture(_texture);
+        _material.__sdf = _sdf;
+        if (_sdf) _material.__sdf_spread = 2*_font_info.sdfSpread;
         
         //Set the bilinear filtering state for the font after we set other properties
         _font_data.__set_bilinear(undefined);
@@ -131,7 +132,7 @@ function __scribble_font_add_from_project(_font)
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__SEPARATION ] = _glyph_dict.shift;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__LEFT_OFFSET] = -_glyph_dict.offset;
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _name;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__MATERIAL   ] = _material;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U0         ] = _u0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__U1         ] = _u1;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH.__V0         ] = _v0;
