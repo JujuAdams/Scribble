@@ -28,6 +28,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     array_push(__ecache_name_array, __cache_name);
     
     __flushed = false;
+    __typist = undefined;
     
     __model_cache_name_dirty = true;
     __model_cache_name = undefined;
@@ -167,8 +168,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     /// @param x
     /// @param y
-    /// @param [typist]
-    static draw = function(_x, _y, _typist = undefined)
+    static draw = function(_x, _y)
     {
         var _function_scope = other;
         
@@ -202,7 +202,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         shader_set(__shd_scribble);
         
-        __set_standard_uniforms(_typist, _function_scope);
+        __set_standard_uniforms(_function_scope);
         
         //...aaaand set the matrix
         var _old_matrix = matrix_get(matrix_world);
@@ -942,11 +942,10 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     /// @param x
     /// @param y
-    /// @param [typist]
-    static get_bbox_revealed = function(_x, _y, _typist)
+    static get_bbox_revealed = function(_x, _y)
     {
         //No typist set up, return the whole bounding box
-        if ((_typist == undefined) && (__tw_reveal == undefined))
+        if ((__typist == undefined) && (__tw_reveal == undefined))
         {
             return get_bbox(_x, _y);
         }
@@ -971,9 +970,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             };
         }
         
-        if (_typist != undefined)
+        if (__typist != undefined)
         {
-            var _bbox = _model.__get_bbox_revealed(__scroll_page, 0, _typist.__window_head_array[_typist.__window_index], __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__get_bbox_revealed(__scroll_page, 0, __typist.__window_head_array[__typist.__window_index], __padding_l, __padding_t, __padding_r, __padding_b);
         }
         else if (__tw_reveal != undefined)
         {
@@ -1082,17 +1081,14 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     #region Typewriter
     
-    static pre_update_typist = function(_typist)
+    static pre_update_typist = function()
     {
         var _function_scope = other;
         
-        if (is_struct(_typist))
+        with(__typist)
         {
-            with(_typist)
-            {
-                //Tick over the typist
-                __tick(other, _function_scope);
-            }
+            //Tick over the typist
+            __tick(other, _function_scope);
         }
         
         return self;
@@ -1643,7 +1639,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         return __model;
     }
     
-    static __set_standard_uniforms = function(_typist, _function_scope)
+    static __set_standard_uniforms = function(_function_scope)
     {
         static _u_fTime           = shader_get_uniform(__shd_scribble, "u_fTime"          );
         static _u_vColourMultiply = shader_get_uniform(__shd_scribble, "u_vColourMultiply");
@@ -1754,9 +1750,9 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             shader_set_uniform_f_array(_u_aBezier, _null_array);
         }
         
-        if (_typist != undefined)
+        if (__typist != undefined)
         {
-            with(_typist)
+            with(__typist)
             {
                 //Tick over the typist
                 __tick(other, _function_scope);
