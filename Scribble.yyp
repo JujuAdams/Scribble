@@ -299,6 +299,7 @@
     {"id":{"name":"scribble_font_bake_effects","path":"scripts/scribble_font_bake_effects/scribble_font_bake_effects.yy",},},
     {"id":{"name":"scribble_color_set","path":"scripts/scribble_color_set/scribble_color_set.yy",},},
     {"id":{"name":"obj_test_0207_wrap_zwsp","path":"objects/obj_test_0207_wrap_zwsp/obj_test_0207_wrap_zwsp.yy",},},
+    {"id":{"name":"obj_example_glyph_position","path":"objects/obj_example_glyph_position/obj_example_glyph_position.yy",},},
     {"id":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"id":{"name":"scribble_glyph_width_set","path":"scripts/scribble_glyph_width_set/scribble_glyph_width_set.yy",},},
