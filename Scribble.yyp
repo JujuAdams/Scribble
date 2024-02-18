@@ -246,6 +246,7 @@
     {"id":{"name":"obj_test_0103_blend_sprite","path":"objects/obj_test_0103_blend_sprite/obj_test_0103_blend_sprite.yy",},},
     {"id":{"name":"scribble_font_fetch","path":"scripts/scribble_font_fetch/scribble_font_fetch.yy",},},
     {"id":{"name":"obj_test_1208_sprite_origins","path":"objects/obj_test_1208_sprite_origins/obj_test_1208_sprite_origins.yy",},},
+    {"id":{"name":"fnt_openhuninn","path":"fonts/fnt_openhuninn/fnt_openhuninn.yy",},},
     {"id":{"name":"obj_test_0715_font","path":"objects/obj_test_0715_font/obj_test_0715_font.yy",},},
     {"id":{"name":"scribble_font_set_sdf_thickness_offset","path":"scripts/scribble_font_set_sdf_thickness_offset/scribble_font_set_sdf_thickness_offset.yy",},},
     {"id":{"name":"obj_test_0900_stress_gc","path":"objects/obj_test_0900_stress_gc/obj_test_0900_stress_gc.yy",},},
