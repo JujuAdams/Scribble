@@ -391,14 +391,14 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         __typ_paused       = false;
         __typ_delay_paused = false;
         
-        __sync_reset();
+        __TypistSyncReset();
         __typ_sync_started  = true;
         __typ_sync_instance = _instance;
         
         return self;
     }
     
-    static __sync_reset = function()
+    static __TypistSyncReset = function()
     {
         __typ_sync_started   = false;
         __typ_sync_instance  = undefined;
@@ -410,7 +410,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     
     
     
-    static __process_event_stack = function(_character_count, _target_element, _function_scope)
+    static __TypistProcessEventStack = function(_character_count, _target_element, _function_scope)
     {
         static _typewriter_event_dict = __scribble_state.__typewriter_events_dict;
         
@@ -534,7 +534,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         return true;
     }
     
-    static __play_sound = function(_head_pos, _character)
+    static __TypistPlaySound = function(_head_pos, _character)
     {
         var _sound_array = __typ_sound_array;
         if (is_array(_sound_array) && (array_length(_sound_array) > 0))
@@ -581,7 +581,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         }
     }
     
-    static __execute_function_per_character = function(_function_scope)
+    static __TypistExecuteFunctionOnCharacter = function(_function_scope)
     {
         //Execute function per character
         if (is_method(__typ_function_per_char))
@@ -594,7 +594,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         }
     }
     
-    static __execute_function_on_complete = function(_function_scope)
+    static __TypistExecuteFunctionOnComplete = function(_function_scope)
     {
         //Execute function per character
         if (is_method(__typ_function_on_complete))
@@ -623,11 +623,11 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         //Ensure we unhook synchronisation if the audio instance stops playing
         if (__typ_sync_started)
         {
-            if ((__typ_sync_instance == undefined) || !audio_is_playing(__typ_sync_instance)) __sync_reset();
+            if ((__typ_sync_instance == undefined) || !audio_is_playing(__typ_sync_instance)) __TypistSyncReset();
         }
         
         //Calculate our speed based on our set typewriter speed, any in-line [speed] tags, and the overall tick size
-        //We set inline speed in __process_event_stack()
+        //We set inline speed in __TypistProcessEventStack()
         var _speed = __typ_speed*__typ_inline_speed*SCRIBBLE_TICK_SIZE;
         
         //Find the leading edge of our windows
@@ -733,7 +733,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
             //If we've still got stuff on the event stack, pop those off
             if (!_paused && (array_length(__typ_event_stack) > 0))
             {
-                if (!__process_event_stack(infinity, _target_element, _function_scope)) _paused = true;
+                if (!__TypistProcessEventStack(infinity, _target_element, _function_scope)) _paused = true;
             }
             
             if (_paused)
@@ -791,7 +791,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
                         
                         //Move to the next character
                         __typ_last_character++;
-                        if (__typ_last_character > 1) __execute_function_per_character(_target_element);
+                        if (__typ_last_character > 1) __TypistExecuteFunctionOnCharacter(_target_element);
                         
                         if (_found_size > 0)
                         {
@@ -803,7 +803,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
                         
                         //Process the stack
                         //If we hit a [pause] or [delay] tag then the function returns <false> and we break out of the loop
-                        if (!__process_event_stack(_max_target, _target_element, _function_scope))
+                        if (!__TypistProcessEventStack(_max_target, _target_element, _function_scope))
                         {
                             _head_pos = __typ_last_character-1; //Lock our head position so we don't overstep
                             break;
@@ -816,12 +816,12 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
                     if (__typ_last_character <= _max_target)
                     {
                         //Only play sound once per frame if we're going reaaaally fast
-                        __play_sound(_head_pos, 0);
+                        __TypistPlaySound(_head_pos, 0);
                     }
                     else
                     {
                         //Execute our on-complete callback when we finish
-                        __execute_function_on_complete(_function_scope);
+                        __TypistExecuteFunctionOnComplete(_function_scope);
                     }
                 }
                 
