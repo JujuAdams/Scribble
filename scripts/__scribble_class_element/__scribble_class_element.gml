@@ -711,7 +711,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     static region_detect = function(_element_x, _element_y, _pointer_x, _pointer_y)
     {
-        var _model        = __get_model(true);
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return undefined;
         var _region_array = _model.__region_array;
         
         var _matrix = __update_matrix(_model, _element_x, _element_y);
@@ -760,7 +761,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             return self;
         }
         
-        var _model        = __get_model(true);
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return undefined;
         var _region_array = _model.__region_array;
         
         var _i = 0;
