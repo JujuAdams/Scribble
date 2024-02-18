@@ -148,7 +148,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
             var _top    = _page_data.__min_y;
             var _right  = _page_data.__max_x;
             var _bottom = _page_data.__max_y;
-            
         }
         else
         {
@@ -254,7 +253,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     /// @param page
-    static __get_line_count = function(_page)
+    static __get_line_count = function(_page = 0)
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
         return __pages_array[_page].__line_count;
@@ -262,7 +261,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     /// @param index
     /// @param page
-    static __get_line_y = function(_index, _page)
+    static __get_line_y = function(_index, _page = 0)
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
         return __pages_array[_page].__get_line_y(_index);
@@ -270,14 +269,14 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     /// @param index
     /// @param page
-    static __get_line_height = function(_index, _page)
+    static __get_line_height = function(_index, _page = 0)
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
         return __pages_array[_page].__get_line_height(_index);
     }
     
     /// @param page
-    static __get_page_y = function(_page)
+    static __get_page_y = function(_page = 0)
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
         return __pages_array[_page].__scroll_y;
@@ -290,7 +289,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     }
     
     /// @param page
-    static __get_glyph_count = function(_page)
+    static __get_glyph_count = function(_page = 0)
     {
         __SCRIBBLE_MODEL_VALIDATE_PAGE
         
