@@ -14,9 +14,6 @@ function scribble_super_glyph_copy(_target, _source, _overwrite, _range)
     var _target_font_data = __scribble_get_font_data(_target);
     var _source_font_data = __scribble_get_font_data(_source);
     
-    //Verify that the two fonts can be used together
-    __scribble_super_glyph_copy_common(_target_font_data, _source_font_data);
-    
     var _target_glyphs_map       = _target_font_data.__glyphs_map;
     var _target_glyph_data_grid  = _target_font_data.__glyph_data_grid;
     var _source_glyphs_map       = _source_font_data.__glyphs_map;
@@ -30,48 +27,8 @@ function scribble_super_glyph_copy(_target, _source, _overwrite, _range)
         ++_i;
     }
     
-    ds_grid_set_region(_target_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), __SCRIBBLE_GLYPH.__FONT_HEIGHT,
-                       max(_target_font_data.__height, _source_font_data.__height));
-}
-
-function __scribble_super_glyph_copy_common(_target_font_data, _source_font_data)
-{
-    var _trg_material = _target_font_data.__material;
-    var _src_material = _source_font_data.__material;
-    
-    if (_src_material.__sdf == undefined)
-    {
-        __scribble_error("Cannot determine if the source font is an SDF font. Please add glyphs to it");
-    }
-    else if (_trg_material.__sdf == undefined)
-    {
-        //Target font hasn't had anything added to it yet
-    }
-    else if (_trg_material.__sdf || _src_material.__sdf)
-    {
-        if (_trg_material.__sdf == false)
-        {
-            __scribble_error("Cannot mix standard/sprite fonts with SDF fonts (target is not an SDF font)");
-        }
-        
-        if (_src_material.__sdf == false)
-        {
-            __scribble_error("Cannot mix standard/sprite fonts with SDF fonts (source is not an SDF font)");
-        }
-        
-        if (_src_material.__sdf_spread == undefined)
-        {
-            __scribble_error("Source font's SDF spread must be defined before copying glyphs");
-        }
-        
-        if ((_trg_material.__sdf_spread != undefined) && (_trg_material.__sdf_spread != _src_material.__sdf_spread))
-        {
-            __scribble_error("SDF font spread must match (target = ", _trg_material.__sdf_spread, " vs. source = ", _src_material.__sdf_spread, ")");
-        }
-    }
-    
-    _trg_material.__sdf         = _src_material.__sdf;
-    _trg_material.__sdf_spread = _src_material.__sdf_spread;
+    _target_font_data.__height = max(_target_font_data.__height, _source_font_data.__height);
+    ds_grid_set_region(_target_glyph_data_grid, 0, __SCRIBBLE_GLYPH.__FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), __SCRIBBLE_GLYPH.__FONT_HEIGHT, _target_font_data.__height);
 }
 
 function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _target_grid, _glyph, _overwrite)
