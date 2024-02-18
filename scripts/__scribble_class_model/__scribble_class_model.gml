@@ -248,13 +248,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         return __pages_array[_page].__text;
     }
     
-    /// @param page
-    static __get_glyph_data = function(_index, _page, _scroll_y)
-    {
-        __SCRIBBLE_MODEL_VALIDATE_PAGE
-        return __pages_array[_page].__get_glyph_data(_index, _scroll_y);
-    }
-    
     static __get_wrapped = function()
     {
         return __wrapped;
