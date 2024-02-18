@@ -60,7 +60,7 @@
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"blip.ogg","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Garuda-Bold.ttf","CopyToMask":-1,"filePath":"datafiles",},
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"jf-openhuninn-1.1.ttf","CopyToMask":-1,"filePath":"datafiles",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"jf-openhuninn-2.0.ttf","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Kruti_Dev_040__Bold.ttf","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"NotoSans-Regular.ttf","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"NotoSansHebrew-Bold.ttf","CopyToMask":-1,"filePath":"datafiles",},
@@ -436,9 +436,9 @@
     {"id":{"name":"spr_white_coin","path":"sprites/spr_white_coin/spr_white_coin.yy",},},
   ],
   "RoomOrderNodes": [
+    {"roomId":{"name":"rm_font_add_test","path":"rooms/rm_font_add_test/rm_font_add_test.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
-    {"roomId":{"name":"rm_font_add_test","path":"rooms/rm_font_add_test/rm_font_add_test.yy",},},
   ],
   "templateType": null,
   "TextureGroups": [

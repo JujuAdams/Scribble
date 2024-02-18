@@ -1,9 +1,18 @@
-var _text = chr(glyph);
+var _text = string_char_at(source, glyph+1);
+
 draw_text(10, 10, _text);
+draw_line(0, 10, room_width, 10);
 draw_text(10, 40, "Hello world!");
-scribble(_text).draw(10, 70);
-scribble("Hello world!").draw(10, 110);
-draw_text(10, 150, "font_texture_page_size = " + string(font_texture_page_size));
+draw_line(0, 40, room_width, 40);
+
+scribble(_text).draw(10, 210);
+draw_line(0, 210, room_width, 210);
+scribble("Hello world!").draw(10, 240);
+draw_line(0, 240, room_width, 240);
+
+draw_line(10, 0, 10, room_height);
+
+//draw_text(10, 150, "font_texture_page_size = " + string(font_texture_page_size));
 
 var _x = 512;
 
@@ -21,7 +30,7 @@ draw_rectangle(_x, 0, _x + font_texture_page_size, font_texture_page_size, true)
 _x += font_texture_page_size;
 
 shader_set(shd_alpha_to_colour);
-__scribble_get_font_data("NotoSans").__font_add_cache.__draw_debug(
+__scribble_get_font_data("OpenHuninn").__font_add_cache.__draw_debug(
     _x, 0,
     _x + SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE, SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE
 );
