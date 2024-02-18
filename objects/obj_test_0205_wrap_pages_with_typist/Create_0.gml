@@ -9,6 +9,6 @@ element.origin(element.get_width()/2, element.get_height()/2);
 //Create a "typist" which holds typewriter state
 typist = scribble_typist_legacy();
 typist.TypeIn(1, 0);
-typist.character_delay_add(",", 300);
+typist.TypeCharacterDelayAdd(",", 300);
 
 skip = false;

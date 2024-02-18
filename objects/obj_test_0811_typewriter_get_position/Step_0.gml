@@ -1,20 +1,20 @@
 if (keyboard_check_pressed(vk_space))
 {
-    if (typist.get_paused())
+    if (typist.GetTypePaused())
     {
-        typist.unpause();
+        typist.TypeUnpause();
     }
     else
     {
-        if (typist.get_state() == 1)
+        if (typist.GetTypeState() == 1)
         {
             typist.TypeOut(0.3, 10, true);
-            typist.ease(SCRIBBLE_EASE.BACK, 0, 30, 1, 1, 0, 0.3);
+            typist.TypeEase(SCRIBBLE_EASE.BACK, 0, 30, 1, 1, 0, 0.3);
         }
-        else if (typist.get_state() == 2)
+        else if (typist.GetTypeState() == 2)
         {
             typist.TypeIn(0.3, 10);
-            typist.ease(SCRIBBLE_EASE.BOUNCE, 0, -40, 1, 1, 0, 0.1);
+            typist.TypeEase(SCRIBBLE_EASE.BOUNCE, 0, -40, 1, 1, 0, 0.1);
         }
         else
         {

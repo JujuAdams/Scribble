@@ -17,7 +17,7 @@ if (keyboard_check_pressed(vk_up  )) _element.page(_element.get_page()-1);
 if (keyboard_check_pressed(vk_down)) _element.page(_element.get_page()+1);
 _element.draw(_x, _y, typist);
 
-if (typist.get_state() == 1)
+if (typist.GetTypeState() == 1)
 {
     var _last_glyph_data = _element.get_glyph_data(_element.get_glyph_count()-1);
     if (is_struct(_last_glyph_data))

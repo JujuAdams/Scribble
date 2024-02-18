@@ -1,11 +1,11 @@
 if (keyboard_check_pressed(vk_space) && scribble_is_text_element(textbox_element))
 {
-    if (typist.get_paused())
+    if (typist.GetTypePaused())
     {
         //If we're paused, unpause!
-        typist.unpause();
+        typist.TypeUnpause();
     }
-    else if (typist.get_state() >= 1)
+    else if (typist.GetTypeState() >= 1)
     {
         if (textbox_element.get_page() < textbox_element.get_page_count() - 1)
         {

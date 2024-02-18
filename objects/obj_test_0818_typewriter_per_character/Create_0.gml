@@ -1,13 +1,13 @@
 typist = scribble_typist_legacy();
 typist.TypeIn(0.1, 0);
-typist.function_per_char(function(_element, _position, _typist)
+typist.TypeFunctionPerChar(function(_element, _position, _typist)
 {
     //Example function to manually control text sound playback behaviour
     
     show_debug_message(_position);
     
     //Don't play any sound if the typist is set to skip typing
-    if (!_typist.get_skip())
+    if (!_typist.GetTypeSkip())
     {
         //Modulate our pitch on a sine curve
         var _pitch = lerp(0.8, 1.2, 0.5 + 0.5*dsin(36*_position));

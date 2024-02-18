@@ -2,12 +2,12 @@ if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) return;
 
 if (keyboard_check_pressed(vk_space))
 {
-    if (typist.get_paused())
+    if (typist.GetTypePaused())
     {
         //If we're paused, unpause!
-        element.unpause(false);
+        element.TypeUnpause(false);
     }
-    else if (typist.get_state() >= 1)
+    else if (typist.GetTypeState() >= 1)
     {
         if (element.get_page() >= element.get_page_count() - 1)
         {

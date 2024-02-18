@@ -2,6 +2,6 @@ if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DA
 
 typist = scribble_typist_legacy();
 typist.TypeIn(0.1, 3);
-typist.character_delay_add(".", 1000);
+typist.TypeCharacterDelayAdd(".", 1000);
 
 test_string = "Abc. Abcdefghijklmnop. Qrstuvwxyz... Abc.Def.Ghi.Jkl.Mno.";

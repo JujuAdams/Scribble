@@ -140,7 +140,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     /// @param pitchMin
     /// @param pitchMax
     /// @param [gain=1]
-    static sound = function(_in_sound_array, _overlap, _pitch_min, _pitch_max, _gain = 1)
+    static TypeSound = function(_in_sound_array, _overlap, _pitch_min, _pitch_max, _gain = 1)
     {
         var _sound_array = _in_sound_array;
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
@@ -160,7 +160,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     /// @param pitchMax
     /// @param [exceptionString]
     /// @param [gain=1]
-    static sound_per_char = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string, _gain = 1)
+    static TypeSoundPerChar = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string, _gain = 1)
     {
         var _sound_array = _in_sound_array;
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
@@ -193,35 +193,35 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         return self;
     }
     
-    static function_per_char = function(_function)
+    static TypeFunctionPerChar = function(_function)
     {
         __typ_function_per_char = _function;
         
         return self;
     }
     
-    static function_on_complete = function(_function)
+    static TypeFunctionOnComplete = function(_function)
     {
         __typ_function_on_complete = _function;
         
         return self;
     }
     
-    static execution_scope = function(_scope)
+    static TypeExecutionScope = function(_scope)
     {
         __typ_function_scope = _scope;
         
         return self;
     }
     
-    static pause = function()
+    static TypePause = function()
     {
         __typ_paused = true;
         
         return self;
     }
     
-    static unpause = function()
+    static TypeUnpause = function()
     {
         if (__typ_paused)
         {
@@ -245,7 +245,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     /// @param yscale
     /// @param rotation
     /// @param alphaDuration
-    static ease = function(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration)
+    static TypeEase = function(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration)
     {
         __typ_ease_method         = _ease_method;
         __typ_ease_dx             = _dx;
@@ -258,7 +258,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         return self;
     }
     
-    static character_delay_add = function(_character, _delay)
+    static TypeCharacterDelayAdd = function(_character, _delay)
     {
         if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> to use per-character delay");
         
@@ -278,7 +278,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         return self;
     }
     
-    static character_delay_remove = function(_character)
+    static TypeCharacterDelayRemove = function(_character)
     {
         var _char_1 = _character;
         var _char_2 = 0;
@@ -295,7 +295,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         return self;
     }
     
-    static character_delay_clear = function()
+    static TypeCharacterDelayClear = function()
     {
         __typ_character_delay = false;
         __typ_character_delay_dict = {};
@@ -309,17 +309,17 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     
     #region Getters
     
-    static get_skip = function()
+    static GetTypeSkip = function()
     {
         return __typ_skip;
     }
     
-    static get_ignore_delay = function()
+    static GetTypeIgnoreDelay = function()
     {
         return __typ_ignore_delay;
     }
     
-    static get_state = function()
+    static GetTypeState = function()
     {
         if ((__typ_last_page == undefined) || (__typ_last_character == undefined)) return 0.0;
         if (__typ_in == undefined) return 1.0;
@@ -354,18 +354,18 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         }
     }
     
-    static get_paused = function()
+    static GetTypePaused = function()
     {
         return __typ_paused;
     }
     
-    static get_position = function()
+    static GetTypePosition = function()
     {
         if (__typ_in == undefined) return 0;
         return __typ_window_head_array[__typ_window_index];
     }
     
-    static get_execution_scope = function()
+    static GetTypeExecutionScope = function()
     {
         return __typ_function_scope;
     }
@@ -376,7 +376,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     
     #region Sync
     
-    static sync_to_sound = function(_instance)
+    static TypeSyncToSound = function(_instance)
     {
         if (_instance < 400000)
         {
@@ -498,14 +498,14 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
                 break;
                 
                 case __SCRIBBLE_TYPIST_SOUND_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
-                    sound(asset_get_index(_event_data[1]), real(_event_data[2]), real(_event_data[3]), real(_event_data[4]));
+                    TypeSound(asset_get_index(_event_data[1]), real(_event_data[2]), real(_event_data[3]), real(_event_data[4]));
                 break;
                 
                 case __SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
                     switch(array_length(_event_data))
                     {
-                        case 4: sound_per_char(asset_get_index(_event_data[1]), real(_event_data[2]), real(_event_data[3])); break;
-                        case 5: sound_per_char(asset_get_index(_event_data[1]), real(_event_data[2]), real(_event_data[3]), _event_data[4]); break;
+                        case 4: TypeSoundPerChar(asset_get_index(_event_data[1]), real(_event_data[2]), real(_event_data[3])); break;
+                        case 5: TypeSoundPerChar(asset_get_index(_event_data[1]), real(_event_data[2]), real(_event_data[3]), _event_data[4]); break;
                     }
                 break;
                 

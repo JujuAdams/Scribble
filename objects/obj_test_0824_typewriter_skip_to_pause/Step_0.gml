@@ -1,8 +1,8 @@
 if (keyboard_check_pressed(vk_space))
 {
-    if (typist.get_paused())
+    if (typist.GetTypePaused())
     {
-        typist.unpause();    
+        typist.TypeUnpause();    
     }
     else
     {

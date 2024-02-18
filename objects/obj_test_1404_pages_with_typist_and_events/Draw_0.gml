@@ -12,5 +12,5 @@ if (keyboard_check_pressed(ord("2")))
 }
 
 draw_set_font(scribble_fallback_font);
-draw_text(10, 10, typist.get_position());
-draw_text(10, 30, typist.get_state());
+draw_text(10, 10, typist.GetTypePosition());
+draw_text(10, 30, typist.GetTypeState());

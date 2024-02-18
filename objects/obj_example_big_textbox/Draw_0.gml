@@ -25,7 +25,7 @@ if (sprite_exists(textbox_portrait))
 }
 
 //Draw a little icon once the text has finished displaying, or if text display is paused
-if ((typist.get_state() >= 1) || typist.get_paused())
+if ((typist.GetTypeState() >= 1) || typist.GetTypePaused())
 {
     draw_sprite(spr_white_coin, 0, _x + textbox_width + 20, _y + textbox_height + 20);
 }
