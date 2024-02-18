@@ -27,8 +27,8 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     array_push(__ecache_array, self);
     array_push(__ecache_name_array, __cache_name);
     
-    __flushed = false;
-    __typist = undefined;
+    __flushed  = false;
+    __isTypist = false;
     
     __model_cache_name_dirty = true;
     __model_cache_name = undefined;
@@ -97,7 +97,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     __bezier_array = array_create(6, 0.0);
     __bezier_using = false;
     
-    __tw_reveal              = undefined;
+    __typReveal              = undefined;
     __tw_reveal_window_array = array_create(__SCRIBBLE_WINDOW_COUNT, 0);
     
     __animation_time  = current_time;
@@ -945,7 +945,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     static get_bbox_revealed = function(_x, _y)
     {
         //No typist set up, return the whole bounding box
-        if ((__typist == undefined) && (__tw_reveal == undefined))
+        if ((not __isTypist) && (__typReveal == undefined))
         {
             return get_bbox(_x, _y);
         }
@@ -970,13 +970,13 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             };
         }
         
-        if (__typist != undefined)
+        if (__isTypist)
         {
-            var _bbox = _model.__get_bbox_revealed(__scroll_page, 0, __typist.__window_head_array[__typist.__window_index], __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__get_bbox_revealed(__scroll_page, 0, __typ_window_head_array[__typ_window_index], __padding_l, __padding_t, __padding_r, __padding_b);
         }
-        else if (__tw_reveal != undefined)
+        else if (__typReveal != undefined)
         {
-            var _bbox = _model.__get_bbox_revealed(__scroll_page, 0, __tw_reveal, __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__get_bbox_revealed(__scroll_page, 0, __typReveal, __padding_l, __padding_t, __padding_r, __padding_b);
         }
         
         __update_bbox_matrix();
@@ -1083,22 +1083,16 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     static pre_update_typist = function()
     {
-        var _function_scope = other;
-        
-        with(__typist)
-        {
-            //Tick over the typist
-            __tick(other, _function_scope);
-        }
+        __TypistTick(self, _function_scope);
         
         return self;
     }
     
     static reveal = function(_character)
     {
-        if (__tw_reveal != _character)
+        if (__typReveal != _character)
         {
-            __tw_reveal = _character;
+            __typReveal = _character;
             __tw_reveal_window_array[@ 0] = _character;
         }
         
@@ -1107,7 +1101,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     static get_reveal = function()
     {
-        return __tw_reveal;
+        return __typReveal;
     }
     
     #endregion
@@ -1750,18 +1744,14 @@ function __scribble_class_element(_string, _unique_id = "") constructor
             shader_set_uniform_f_array(_u_aBezier, _null_array);
         }
         
-        if (__typist != undefined)
+        if (__isTypist)
         {
-            with(__typist)
-            {
-                //Tick over the typist
-                __tick(other, _function_scope);
-                
-                //Let the typist set the shader uniforms
-                __set_shader_uniforms();
-            }
+            __TypistTick(self, _function_scope);
+            
+            //Let the typist set the shader uniforms
+            __TypistSetShaderUniforms();
         }
-        else if (__tw_reveal != undefined)
+        else if (__typReveal != undefined)
         {
             //Reset the "typist use lines" flag
             __scribble_state.__render_flag_value = (__scribble_state.__render_flag_value & (~(0x40)));

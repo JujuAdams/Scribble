@@ -350,6 +350,7 @@
     {"id":{"name":"__scribble_glyph_get","path":"scripts/__scribble_glyph_get/__scribble_glyph_get.yy",},},
     {"id":{"name":"scribble_font_rename","path":"scripts/scribble_font_rename/scribble_font_rename.yy",},},
     {"id":{"name":"scribble_font_get_scale","path":"scripts/scribble_font_get_scale/scribble_font_get_scale.yy",},},
+    {"id":{"name":"__scribble_class_element_typist","path":"scripts/__scribble_class_element_typist/__scribble_class_element_typist.yy",},},
     {"id":{"name":"fnt_hanoded_hand","path":"fonts/fnt_hanoded_hand/fnt_hanoded_hand.yy",},},
     {"id":{"name":"scribble_font_set_default","path":"scripts/scribble_font_set_default/scribble_font_set_default.yy",},},
     {"id":{"name":"scribble_font_set_style_family","path":"scripts/scribble_font_set_style_family/scribble_font_set_style_family.yy",},},
