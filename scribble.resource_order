@@ -107,6 +107,7 @@
     {"name":"obj_test_0701_bbox_getters","order":1,"path":"objects/obj_test_0701_bbox_getters/obj_test_0701_bbox_getters.yy",},
     {"name":"scribble_font_get_sdf_thickness_offset","order":15,"path":"scripts/scribble_font_get_sdf_thickness_offset/scribble_font_get_sdf_thickness_offset.yy",},
     {"name":"obj_test_0501_bbox_revealed","order":1,"path":"objects/obj_test_0501_bbox_revealed/obj_test_0501_bbox_revealed.yy",},
+    {"name":"obj_font_add_overload","order":11,"path":"objects/obj_font_add_overload/obj_font_add_overload.yy",},
     {"name":"obj_test_2403_bezier_arabic","order":3,"path":"objects/obj_test_2403_bezier_arabic/obj_test_2403_bezier_arabic.yy",},
     {"name":"obj_test_0702_rgb_multiply_and_alpha","order":2,"path":"objects/obj_test_0702_rgb_multiply_and_alpha/obj_test_0702_rgb_multiply_and_alpha.yy",},
     {"name":"obj_test_0505_lines","order":5,"path":"objects/obj_test_0505_lines/obj_test_0505_lines.yy",},

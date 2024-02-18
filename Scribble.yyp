@@ -142,6 +142,7 @@
     {"id":{"name":"obj_test_0701_bbox_getters","path":"objects/obj_test_0701_bbox_getters/obj_test_0701_bbox_getters.yy",},},
     {"id":{"name":"scribble_font_get_sdf_thickness_offset","path":"scripts/scribble_font_get_sdf_thickness_offset/scribble_font_get_sdf_thickness_offset.yy",},},
     {"id":{"name":"obj_test_0501_bbox_revealed","path":"objects/obj_test_0501_bbox_revealed/obj_test_0501_bbox_revealed.yy",},},
+    {"id":{"name":"obj_font_add_overload","path":"objects/obj_font_add_overload/obj_font_add_overload.yy",},},
     {"id":{"name":"obj_test_0400_bezier","path":"objects/obj_test_0400_bezier/obj_test_0400_bezier.yy",},},
     {"id":{"name":"obj_test_2403_bezier_arabic","path":"objects/obj_test_2403_bezier_arabic/obj_test_2403_bezier_arabic.yy",},},
     {"id":{"name":"rm_font_add_test","path":"rooms/rm_font_add_test/rm_font_add_test.yy",},},
@@ -435,8 +436,8 @@
     {"id":{"name":"spr_white_coin","path":"sprites/spr_white_coin/spr_white_coin.yy",},},
   ],
   "RoomOrderNodes": [
-    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_font_add_test","path":"rooms/rm_font_add_test/rm_font_add_test.yy",},},
+    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
   ],
   "templateType": null,
