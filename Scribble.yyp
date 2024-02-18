@@ -274,6 +274,7 @@
     {"id":{"name":"obj_test_0808_typewriter_external_sound","path":"objects/obj_test_0808_typewriter_external_sound/obj_test_0808_typewriter_external_sound.yy",},},
     {"id":{"name":"obj_test_0809_typewriter_external_sound_per_char","path":"objects/obj_test_0809_typewriter_external_sound_per_char/obj_test_0809_typewriter_external_sound_per_char.yy",},},
     {"id":{"name":"obj_test_0810_typewriter_gc","path":"objects/obj_test_0810_typewriter_gc/obj_test_0810_typewriter_gc.yy",},},
+    {"id":{"name":"obj_test_2302_hebrew_kerning","path":"objects/obj_test_2302_hebrew_kerning/obj_test_2302_hebrew_kerning.yy",},},
     {"id":{"name":"__shd_scribble_bake_effects","path":"shaders/__shd_scribble_bake_effects/__shd_scribble_bake_effects.yy",},},
     {"id":{"name":"obj_test_0811_typewriter_get_position","path":"objects/obj_test_0811_typewriter_get_position/obj_test_0811_typewriter_get_position.yy",},},
     {"id":{"name":"obj_test_0812_typewriter_get_state","path":"objects/obj_test_0812_typewriter_get_state/obj_test_0812_typewriter_get_state.yy",},},

@@ -224,6 +224,7 @@
     {"name":"obj_test_0808_typewriter_external_sound","order":9,"path":"objects/obj_test_0808_typewriter_external_sound/obj_test_0808_typewriter_external_sound.yy",},
     {"name":"obj_test_0809_typewriter_external_sound_per_char","order":10,"path":"objects/obj_test_0809_typewriter_external_sound_per_char/obj_test_0809_typewriter_external_sound_per_char.yy",},
     {"name":"obj_test_0810_typewriter_gc","order":11,"path":"objects/obj_test_0810_typewriter_gc/obj_test_0810_typewriter_gc.yy",},
+    {"name":"obj_test_2302_hebrew_kerning","order":2,"path":"objects/obj_test_2302_hebrew_kerning/obj_test_2302_hebrew_kerning.yy",},
     {"name":"__shd_scribble_bake_effects","order":2,"path":"shaders/__shd_scribble_bake_effects/__shd_scribble_bake_effects.yy",},
     {"name":"obj_test_0811_typewriter_get_position","order":12,"path":"objects/obj_test_0811_typewriter_get_position/obj_test_0811_typewriter_get_position.yy",},
     {"name":"obj_test_0812_typewriter_get_state","order":13,"path":"objects/obj_test_0812_typewriter_get_state/obj_test_0812_typewriter_get_state.yy",},
