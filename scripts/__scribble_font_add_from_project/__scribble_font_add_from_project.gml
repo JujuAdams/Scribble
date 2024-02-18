@@ -108,18 +108,10 @@ function __scribble_font_add_from_project(_font)
             
             var _char = chr(_unicode);
             
-            //FIXME - Workaround for HTML5 in GMS2.3.7.606 and above
-            //        This doesn't seem to be needed in 2022.3.0.497
-            var _x = _glyph_dict[$ "x"];
-            var _y = _glyph_dict[$ "y"];
+            var _x = _glyph_dict.x;
+            var _y = _glyph_dict.y;
             var _w = _glyph_dict.w;
             var _h = _glyph_dict.h;
-            
-            if (__SCRIBBLE_ON_WEB)
-            {
-                _x += _texture_l;
-                _y += _texture_t;
-            }
             
             var _u0 = _x*_texture_tw;
             var _v0 = _y*_texture_th;

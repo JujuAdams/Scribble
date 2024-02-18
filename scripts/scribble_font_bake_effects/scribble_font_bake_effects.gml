@@ -99,8 +99,7 @@ function scribble_font_bake_effects(_source_font_name, _new_font_name, _outline_
         var _v1      = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH.__V1      ];
         
         //Ignore any glyphs with invalid textures
-        //Due to HTML5 being dogshit, we can't use is_ptr()
-        if (is_numeric(_texture) || is_undefined(_texture))
+        if (not is_ptr(_texture))
         {
             ++_i;
             continue;

@@ -31,7 +31,7 @@ function __scribble_class_page() constructor
     __max_y  = 0;
     
     __vertex_buffer_array = [];
-    if (!__SCRIBBLE_ON_WEB) __material_alias_to_vertex_buffer_dict = {}; //FIXME - Workaround for pointers not being stringified properly on HTML5
+    __material_alias_to_vertex_buffer_dict = {};
     
     static __submit = function(_double_draw, _scroll_top, _scroll_bottom)
     {
@@ -90,27 +90,7 @@ function __scribble_class_page() constructor
     
     static __ensure_vertex_buffer = function(_material_alias)
     {
-        if (!__SCRIBBLE_ON_WEB)
-        {
-            var _data = __material_alias_to_vertex_buffer_dict[$ string(_material_alias)];
-        }
-        else //FIXME - Workaround for pointers not being stringified properly on HTML5
-        {
-            var _data = undefined;
-            var _i = 0;
-            repeat(array_length(__vertex_buffer_array))
-            {
-                var _vbuff_data = __vertex_buffer_array[_i];
-                if (_vbuff_data.__material_alias == _material_alias)
-                {
-                    _data = _vbuff_data;
-                    break;
-                }
-                
-                ++_i;
-            }
-        }
-        
+        var _data = __material_alias_to_vertex_buffer_dict[$ string(_material_alias)];
         if (_data == undefined)
         {
             var _data = new __scribble_class_vertex_buffer(_material_alias);
