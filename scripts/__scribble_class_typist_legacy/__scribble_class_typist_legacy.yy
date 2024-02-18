@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__scribble_class_typist",
+  "name": "__scribble_class_typist_legacy",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

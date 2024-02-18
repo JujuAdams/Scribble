@@ -15,7 +15,7 @@ function __scribble_typist(_location)
         if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.__flushed)
         {
             var _element = new __scribble_class_element(string(_string), _scribble_state.__unique_location);
-            _element.__typist = new __scribble_class_typist(false);
+            _element.__typist = new __scribble_class_typist_legacy(false);
             return _element;
         }
         else
