@@ -194,6 +194,8 @@ function __scribble_class_typist(_per_line) : __scribble_class_typist_public_fun
                     {
                         __scribble_trace("Warning! Event [", _event_name, "] not recognised");
                     }
+                    
+                    if (__paused) return false;
                 break;
             }
         }
