@@ -34,5 +34,5 @@ textbox_name               = undefined;
 textbox_conversation_index = 0;
 textbox_element            = undefined;
 
-typist = scribble_typist();
+typist = scribble_typist_legacy();
 typist.in(1, 0);

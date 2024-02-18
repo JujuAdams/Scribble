@@ -1,4 +1,4 @@
-typist = scribble_typist(true);
+typist = scribble_typist_legacy(true);
 typist.in(0.02, 1);
 
 scribble_typists_add_event("sdm", function(_element, _parameters)
