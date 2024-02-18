@@ -8,12 +8,9 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     
     __isTypist = true;
     
-    __typ_last_element = undefined;
-    
     __typ_speed      = 1;
     __typ_smoothness = 0;
     __typ_in         = undefined;
-    __typ_backwards  = false;
     
     __typ_skip             = false;
     __typ_skip_paused      = false;
@@ -88,7 +85,6 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         var _old_in = __typ_in;
         
         __typ_in         = true;
-        __typ_backwards  = false;
         __typ_speed      = _speed;
         __typ_smoothness = _smoothness;
         __typ_skip       = false;
@@ -100,13 +96,11 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     
     /// @param speed
     /// @param smoothness
-    /// @param [backwards=false]
-    static out = function(_speed, _smoothness, _backwards = false)
+    static out = function(_speed, _smoothness)
     {
         var _old_in = __typ_in;
         
         __typ_in         = false;
-        __typ_backwards  = _backwards;
         __typ_speed      = _speed;
         __typ_smoothness = _smoothness;
         __typ_skip       = false;
@@ -327,12 +321,10 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     
     static get_state = function()
     {
-        if ((__typ_last_element == undefined) || (__typ_last_page == undefined) || (__typ_last_character == undefined)) return 0.0;
+        if ((__typ_last_page == undefined) || (__typ_last_character == undefined)) return 0.0;
         if (__typ_in == undefined) return 1.0;
         
-        if (!weak_ref_alive(__typ_last_element)) return 2.0; //If there's no element then report that the element is totally faded out
-        
-        var _model = __typ_last_element.ref.__get_model(true);
+        var _model = __get_model(true);
         if (!is_struct(_model)) return 2.0; //If there's no model then report that the element is totally faded out
         
         var _pages_array = _model.__get_page_array();
@@ -371,11 +363,6 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     {
         if (__typ_in == undefined) return 0;
         return __typ_window_head_array[__typ_window_index];
-    }
-    
-    static get_text_element = function()
-    {
-        return weak_ref_alive(__typ_last_element)? __typ_last_element.ref : undefined;
     }
     
     static get_execution_scope = function()
@@ -422,31 +409,6 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     #endregion
     
     
-    
-    static __associate = function(_text_element)
-    {
-        var _carry_skip = __typ_skip && ((__typ_last_element == undefined) || !__typ_drawn_since_skip);
-        
-        if ((__typ_last_element == undefined) || !weak_ref_alive(__typ_last_element) || (__typ_last_element.ref != _text_element)) //We didn't have an element defined, or we swapped to a different element
-        {
-            reset();
-            __typ_last_element = weak_ref_create(_text_element);
-        }
-        else if (!weak_ref_alive(__typ_last_element)) //Our associated element got GC'd for some reason and we didn't
-        {
-            __scribble_trace("Warning! Typist's target text element has been garbage collected");
-            reset();
-            __typ_last_element = weak_ref_create(_text_element);
-        }
-        
-        if (_carry_skip)
-        {
-            __typ_skip             = true;
-            __typ_drawn_since_skip = false;
-        }
-        
-        return self;
-    }
     
     static __process_event_stack = function(_character_count, _target_element, _function_scope)
     {
@@ -649,10 +611,6 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
     {
         var _function_scope = (__typ_function_scope != undefined)? __typ_function_scope : _in_function_scope;
         
-        //Associate the typist with the target element so that we're pulling data from the correct place
-        //This saves the user from doing it themselves
-        __associate(_target_element);
-        
         if (__typ_skip) __typ_drawn_since_skip = true;
         
         //Don't tick if it's been less than a frame since we were last updated
@@ -675,11 +633,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         //Find the leading edge of our windows
         var _head_pos = __typ_window_head_array[__typ_window_index];
         
-        //Find the model from the last element
-        if (!weak_ref_alive(__typ_last_element)) return undefined;
-        var _element = __typ_last_element.ref;
-        
-        var _model = _element.__get_model(true);
+        var _model = __get_model(true);
         if (!is_struct(_model)) return undefined;
         
         //Get line and page data
@@ -688,12 +642,12 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         if ((array_length(_lines_array) == 0) || (array_length(_pages_array) == 0)) return undefined;
         
         //Don't animate or process anything if we're scrolling
-        if (_element.__scroll_y != _element.__scroll_target_y) return undefined;
+        if (__scroll_y != __scroll_target_y) return undefined;
         
         //Discover the range of lines that's on-screen
         //TODO - Use binary search instead for faster behaviour
-        var _scroll_top    = _element.__scroll_y;
-        var _scroll_bottom = _scroll_top + _element.__layout_height;
+        var _scroll_top    = __scroll_y;
+        var _scroll_bottom = _scroll_top + __layout_height;
         
         var _min_line =  infinity;
         var _max_line = -infinity;
@@ -725,11 +679,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
         var _min_target = _min_line_data.__glyph_start;
         var _max_target = _max_line_data.__glyph_end;
         
-        if (!__typ_in)
-        {
-            
-        }
-        else
+        if (__typ_in)
         {
             //Handle pausing
             var _paused = false;
@@ -812,7 +762,7 @@ function __scribble_class_element_typist(_string, _unique_id) : __scribble_class
                         _play_sound = true;
                         
                         //Get an array of events for this character from the text element
-                        var _found_events = __typ_last_element.ref.get_events(__typ_last_character, undefined, __typ_per_line);
+                        var _found_events = get_events(__typ_last_character, undefined, __typ_per_line);
                         var _found_size = array_length(_found_events);
                         
                         //Add a per-character delay if required
