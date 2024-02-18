@@ -387,6 +387,7 @@
     {"id":{"name":"__scribble_class_model","path":"scripts/__scribble_class_model/__scribble_class_model.yy",},},
     {"id":{"name":"__scribble_class_null_element","path":"scripts/__scribble_class_null_element/__scribble_class_null_element.yy",},},
     {"id":{"name":"fnt_style_header2","path":"fonts/fnt_style_header2/fnt_style_header2.yy",},},
+    {"id":{"name":"__scribble_config_font_groups","path":"scripts/__scribble_config_font_groups/__scribble_config_font_groups.yy",},},
     {"id":{"name":"scribble_blend_sprites_get","path":"scripts/scribble_blend_sprites_get/scribble_blend_sprites_get.yy",},},
     {"id":{"name":"__scribble_class_page","path":"scripts/__scribble_class_page/__scribble_class_page.yy",},},
     {"id":{"name":"__scribble_config_behaviours","path":"scripts/__scribble_config_behaviours/__scribble_config_behaviours.yy",},},

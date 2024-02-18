@@ -1,10 +1,10 @@
 font_texture_page_size = 512;
 
-//global.font_add_font = scribble_font_add("NotoSans", "NotoSans-Regular.ttf", 20, [32, 127], true);
+//global.font_add_font = scribble_font_add("NotoSans", "NotoSans-Regular.ttf", 20, SCRIBBLE_FONT_GROUP.BASIC_LATIN, true);
 //draw_set_font(global.font_add_font);
 //scribble_font_set_default("NotoSans");
 
-global.font_add_font = scribble_font_add("OpenHuninn", "jf-openhuninn-2.0.ttf", 30, [32, 127], true);
+global.font_add_font = scribble_font_add("OpenHuninn", "jf-openhuninn-2.0.ttf", 30, SCRIBBLE_FONT_GROUP.BASIC_LATIN, true);
 draw_set_font(global.font_add_font);
 scribble_font_set_default("OpenHuninn");
 

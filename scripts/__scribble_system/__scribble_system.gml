@@ -579,7 +579,7 @@ enum __SCRIBBLE_GEN_LINE
 #macro __SCRIBBLE_TYPIST_SOUND_COMMAND_TAG             "__scribble_typist_sound__"
 #macro __SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG    "__scribble_typist_sound_per_char__"
 
-#macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This probably won't work for any other value
+#macro SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This probably won't work for any other value
 
 #macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. This constant must match the corresponding values in __shd_scribble
 

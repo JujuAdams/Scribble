@@ -30,7 +30,9 @@ draw_rectangle(_x, 0, _x + font_texture_page_size, font_texture_page_size, true)
 _x += font_texture_page_size;
 
 shader_set(shd_alpha_to_colour);
-__scribble_get_font_data("OpenHuninn").__font_add_cache.__draw_debug(
+__scribble_get_font_data("OpenHuninn")
+.__font_add_cache_array[SCRIBBLE_FONT_GROUP.FALLBACK]
+.__draw_debug(
     _x, 0,
     _x + SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE, SCRIBBLE_INTERNAL_FONT_ADD_CACHE_SIZE
 );

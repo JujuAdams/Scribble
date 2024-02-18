@@ -1,23 +1,34 @@
 /// @param name
 /// @param filename
 /// @param size
-/// @param glyphRange
+/// @param fontGroup
 /// @param SDF
 /// @param [spread]
 /// @param [bold=false]
 /// @param [italic=false]
 
-function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _spread = undefined, _bold = false, _italic = false)
+function scribble_font_add(_name, _filename, _point_size, _font_group_array, _sdf, _spread = undefined, _bold = false, _italic = false)
 {
     static _font_original_name_dict = __scribble_get_state().__font_original_name_dict;
     
     __scribble_initialize();
     
+    if (not is_array(_font_group_array)) _font_group_array = [_font_group_array];
+    
+    var _glyph_range = [];
+    var _i = 0;
+    repeat(array_length(_font_group_array))
+    {
+        array_push(_glyph_range, __scribble_config_font_group_to_glyph_range(_font_group_array[_i]));
+        ++_i;
+    }
+    
     if (SCRIBBLE_VERBOSE)
     {
         __scribble_trace("Adding \"", _filename, "\" as \"", _name, "\"");
         __scribble_trace("|-- size = ", _point_size);
-        __scribble_trace("|-- range = ", _glyph_range);
+        __scribble_trace("|-- font group = ", _font_group_array);
+        __scribble_trace("|-- glyph range = ", _glyph_range);
         __scribble_trace("|-- SDF = ", _sdf);
         __scribble_trace("|-- spread = ", _spread);
         __scribble_trace("|-- bold = ", _bold);
@@ -88,7 +99,20 @@ function scribble_font_add(_name, _filename, _point_size, _glyph_range, _sdf, _s
         
         //Link the font data and font cache together
         _font_cache.__font_data = _font_data;
-        _font_data.__font_add_cache = _font_cache;
+        
+        //Set up font_add cache groups
+        var _i = 0;
+        repeat(array_length(_font_group_array))
+        {
+            var _font_group = _font_group_array[_i];
+            _font_data.__font_add_cache_array[_font_group] = _font_cache;
+        }
+        
+        //If we don't have a fallback cache set up, do that now
+        if (_font_data.__font_add_cache_array[SCRIBBLE_FONT_GROUP.FALLBACK] == undefined)
+        {
+            _font_data.__font_add_cache_array[SCRIBBLE_FONT_GROUP.FALLBACK] = _font_cache;
+        }
         
         var _is_krutidev = __scribble_asset_is_krutidev(_asset, asset_font);
         if (_is_krutidev) _font_data.__is_krutidev = true;

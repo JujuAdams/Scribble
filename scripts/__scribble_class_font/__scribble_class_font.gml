@@ -41,7 +41,7 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
     __style_italic      = undefined;
     __style_bold_italic = undefined;
     
-    __font_add_cache = undefined;
+    __font_add_cache_array = array_create(SCRIBBLE_FONT_GROUP.__SIZE, undefined);
     
     
     
@@ -127,7 +127,7 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
         __style_italic      = undefined;
         __style_bold_italic = undefined;
         
-        __font_add_cache = undefined;
+        __font_add_cache_array = undefined;
         
         __material.__sdf        = undefined;
         __material.__sdf_spread = undefined;
@@ -176,10 +176,18 @@ function __scribble_class_font(_asset_name, _friendly_name, _glyph_count) constr
             __baked_effect_sprite = undefined;
         }
         
-        if (__font_add_cache != undefined)
+        if (__font_add_cache_array != undefined)
         {
-            __font_add_cache.__destroy();
-            __font_add_cache = undefined;
+            //Destroy font_add caches
+            var _i = 0;
+            repeat(array_length(__font_add_cache_array))
+            {
+                var _font_add_cache = __font_add_cache_array[_i];
+                if (_font_add_cache != undefined) _font_add_cache.__destroy();
+                ++_i;
+            }
+            
+            __font_add_cache_array = undefined;
         }
     }
 }

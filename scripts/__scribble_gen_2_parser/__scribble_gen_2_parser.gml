@@ -35,6 +35,7 @@
                                       ;\//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined)\
                                       {\
+                                          var _font_add_cache = (_font_add_cache_array == undefined)? undefined : _font_add_cache_array[__scribble_config_glyph_index_to_font_group(_glyph_write)];\
                                           if (_font_add_cache == undefined)\
                                           {\
                                               __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");\
@@ -73,14 +74,27 @@
                                     var _font_glyph_data_grid = _font_data.__glyph_data_grid;\
                                     var _font_glyphs_map      = _font_data.__glyphs_map;\
                                     var _font_kerning_map     = _font_data.__kerning_map;\
-                                    var _font_add_cache       = _font_data.__font_add_cache;\
-                                    if (_font_add_cache != undefined) _font_add_cache.__add_model(self);\
-                                    var _space_data_index     = _font_glyphs_map[? 32];\
+                                    ;\
+                                    ;\ //Bind this text element to every font_add cache
+                                    var _font_add_cache_array = _font_data.__font_add_cache_array;\
+                                    if (_font_add_cache_array != undefined)\
+                                    {\
+                                        var _i = 0;\
+                                        repeat(array_length(_font_add_cache_array))\
+                                        {\
+                                            var _font_group = _font_add_cache_array[_i];\
+                                            if (_font_group != undefined) _font_group.__add_model(self);\
+                                            ++_i;\
+                                        }\
+                                    }\
+                                    ;\
+                                    var _space_data_index = _font_glyphs_map[? 32];\
                                     if (_space_data_index == undefined)\
                                     {\
                                         __scribble_error("The space character is missing from font definition for \"", _font_name, "\"");\
                                         return false;\
                                     }\
+                                    ;\
                                     var _font_space_width = _font_glyph_data_grid[# _space_data_index, __SCRIBBLE_GLYPH.__WIDTH      ];\
                                     var _font_line_height = _font_glyph_data_grid[# _space_data_index, __SCRIBBLE_GLYPH.__FONT_HEIGHT];\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__FONT;\

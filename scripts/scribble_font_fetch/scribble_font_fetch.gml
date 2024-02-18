@@ -4,9 +4,9 @@
 function scribble_font_fetch(_font, _glyph_range)
 {
     var _font_data = __scribble_get_font_data(_font);
-    var _font_add_cache = _font_data.__font_add_cache;
+    var _font_add_cache_array = _font_data.__font_add_cache_array;
     
-    if (_font_add_cache == undefined)
+    if (_font_add_cache_array == undefined)
     {
         __scribble_trace("Warning! Font \"", _font, "\" was not created with scribble_font_add(), cannot fetch any glyphs");
         return;
@@ -14,18 +14,13 @@ function scribble_font_fetch(_font, _glyph_range)
     
     //Build an array of glyphs to adjust
     var _glyph_array = __scribble_parse_glyph_range_root(_glyph_range, _font);
-    
-    var _count = array_length(_glyph_array);
-    if (_count > _font_add_cache.__cell_count)
-    {
-        __scribble_trace("Warning! Attempting to fetch ", _count, " glyphs but font cache for \"", _font, "\" has a maximum cache of ", _font_add_cache.__cell_count, " glyphs");
-        _count = _font_add_cache.__cell_count;
-    }
-    
     var _i = 0;
-    repeat(_count)
+    repeat(array_length(_glyph_array))
     {
-        _font_add_cache.__fetch_unknown(_glyph_array[_i], undefined);
+        var _glyph = _glyph_array[_i];
+        var _font_group = __scribble_config_glyph_index_to_font_group(_glyph);
+        var _font_add_cache = _font_add_cache_array[_font_group];
+        if (_font_add_cache != undefined) _font_add_cache.__fetch_unknown(_glyph, undefined);
         ++_i;
     }
 }
