@@ -289,6 +289,7 @@
     {"name":"__shd_scribble_oklab_interpolate","order":4,"path":"shaders/__shd_scribble_oklab_interpolate/__shd_scribble_oklab_interpolate.yy",},
     {"name":"obj_test_1017_superfont_sprite","order":15,"path":"objects/obj_test_1017_superfont_sprite/obj_test_1017_superfont_sprite.yy",},
     {"name":"__scribble_glyph_get","order":9,"path":"scripts/__scribble_glyph_get/__scribble_glyph_get.yy",},
+    {"name":"__scribble_enums_and_grid_layouts","order":4,"path":"scripts/__scribble_enums_and_grid_layouts/__scribble_enums_and_grid_layouts.yy",},
     {"name":"scribble_font_rename","order":2,"path":"scripts/scribble_font_rename/scribble_font_rename.yy",},
     {"name":"scribble_font_get_scale","order":9,"path":"scripts/scribble_font_get_scale/scribble_font_get_scale.yy",},
     {"name":"fnt_hanoded_hand","order":25,"path":"fonts/fnt_hanoded_hand/fnt_hanoded_hand.yy",},

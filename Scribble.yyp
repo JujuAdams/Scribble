@@ -344,6 +344,7 @@
     {"id":{"name":"scribble_font_has_character","path":"scripts/scribble_font_has_character/scribble_font_has_character.yy",},},
     {"id":{"name":"__shd_scribble_oklab_interpolate","path":"shaders/__shd_scribble_oklab_interpolate/__shd_scribble_oklab_interpolate.yy",},},
     {"id":{"name":"obj_test_1017_superfont_sprite","path":"objects/obj_test_1017_superfont_sprite/obj_test_1017_superfont_sprite.yy",},},
+    {"id":{"name":"__scribble_enums_and_grid_layouts","path":"scripts/__scribble_enums_and_grid_layouts/__scribble_enums_and_grid_layouts.yy",},},
     {"id":{"name":"__scribble_glyph_get","path":"scripts/__scribble_glyph_get/__scribble_glyph_get.yy",},},
     {"id":{"name":"scribble_font_rename","path":"scripts/scribble_font_rename/scribble_font_rename.yy",},},
     {"id":{"name":"scribble_font_get_scale","path":"scripts/scribble_font_get_scale/scribble_font_get_scale.yy",},},
