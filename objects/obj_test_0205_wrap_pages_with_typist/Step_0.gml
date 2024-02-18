@@ -22,6 +22,6 @@ if (keyboard_check_pressed(vk_space))
     }
     else
     {
-        typist.skip();
+        typist.TypeSkip();
     }
 }

@@ -20,6 +20,6 @@ if (keyboard_check_pressed(vk_space) && scribble_is_text_element(textbox_element
     }
     else
     {
-        typist.skip();
+        typist.TypeSkip();
     }
 }

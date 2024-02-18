@@ -1083,7 +1083,7 @@ function __scribble_class_element(_string, _unique_id = "") constructor
     
     static pre_update_typist = function()
     {
-        __TypistTick(self, _function_scope);
+        __TypeTick(self, _function_scope);
         
         return self;
     }
@@ -1746,10 +1746,10 @@ function __scribble_class_element(_string, _unique_id = "") constructor
         
         if (__isTypist)
         {
-            __TypistTick(self, _function_scope);
+            __TypeTick(self, _function_scope);
             
             //Let the typist set the shader uniforms
-            __TypistSetShaderUniforms();
+            __TypeSetShaderUniforms();
         }
         else if (__typReveal != undefined)
         {

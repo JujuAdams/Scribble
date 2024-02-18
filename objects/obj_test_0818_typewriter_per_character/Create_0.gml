@@ -1,5 +1,5 @@
 typist = scribble_typist_legacy();
-typist.in(0.1, 0);
+typist.TypeIn(0.1, 0);
 typist.function_per_char(function(_element, _position, _typist)
 {
     //Example function to manually control text sound playback behaviour

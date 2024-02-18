@@ -6,6 +6,6 @@ if (keyboard_check_pressed(vk_space))
     }
     else
     {
-        typist.skip_to_pause();    
+        typist.TypeSkipToPause();    
     }
 }
