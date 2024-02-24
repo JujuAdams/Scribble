@@ -280,7 +280,7 @@ function __ScribbleClassVertexBuilder(_string, _hAlign, _vAlign, _font, _scale, 
     if (__vertexFormat == undefined)
     {
         vertex_format_begin();
-        vertex_format_add_position_3d();
+        vertex_format_add_custom(vertex_type_float2, vertex_usage_position);
         vertex_format_add_texcoord();
         __vertexFormat = vertex_format_end();
     }
@@ -310,9 +310,9 @@ function __ScribbleClassVertexBuilder(_string, _hAlign, _vAlign, _font, _scale, 
         
     __vertexBuffer = vertex_create_buffer();
     vertex_begin(__vertexBuffer, __vertexFormat);
-    vertex_position_3d(__vertexBuffer, 0, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
-    vertex_position_3d(__vertexBuffer, 0, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
-    vertex_position_3d(__vertexBuffer, 0, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
+    vertex_float2(__vertexBuffer, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
+    vertex_float2(__vertexBuffer, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
+    vertex_float2(__vertexBuffer, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
     
     __glyph = 0;
     __glyphCount = string_length(__string);
@@ -403,12 +403,12 @@ function __ScribbleClassVertexBuilder(_string, _hAlign, _vAlign, _font, _scale, 
                     var _glyphR = _glyphL + _glyphData.w;
                     var _glyphB = _glyphT + _glyphData.h;
                     
-                    vertex_position_3d(__vertexBuffer, _glyphL, _glyphT, 0); vertex_texcoord(__vertexBuffer, _texL, _texT);
-                    vertex_position_3d(__vertexBuffer, _glyphR, _glyphT, 0); vertex_texcoord(__vertexBuffer, _texR, _texT);
-                    vertex_position_3d(__vertexBuffer, _glyphL, _glyphB, 0); vertex_texcoord(__vertexBuffer, _texL, _texB);
-                    vertex_position_3d(__vertexBuffer, _glyphR, _glyphT, 0); vertex_texcoord(__vertexBuffer, _texR, _texT);
-                    vertex_position_3d(__vertexBuffer, _glyphR, _glyphB, 0); vertex_texcoord(__vertexBuffer, _texR, _texB);
-                    vertex_position_3d(__vertexBuffer, _glyphL, _glyphB, 0); vertex_texcoord(__vertexBuffer, _texL, _texB);
+                    vertex_float2(__vertexBuffer, _glyphL, _glyphT); vertex_texcoord(__vertexBuffer, _texL, _texT);
+                    vertex_float2(__vertexBuffer, _glyphR, _glyphT); vertex_texcoord(__vertexBuffer, _texR, _texT);
+                    vertex_float2(__vertexBuffer, _glyphL, _glyphB); vertex_texcoord(__vertexBuffer, _texL, _texB);
+                    vertex_float2(__vertexBuffer, _glyphR, _glyphT); vertex_texcoord(__vertexBuffer, _texR, _texT);
+                    vertex_float2(__vertexBuffer, _glyphR, _glyphB); vertex_texcoord(__vertexBuffer, _texR, _texB);
+                    vertex_float2(__vertexBuffer, _glyphL, _glyphB); vertex_texcoord(__vertexBuffer, _texL, _texB);
                     
                     __glyphX += _glyphData.shift;
                 }
