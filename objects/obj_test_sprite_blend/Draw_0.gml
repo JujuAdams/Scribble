@@ -1,1 +1,0 @@
-scribble("[spr_white_coin] <-- red coin![/]").blend(c_red, 1.0).draw(x, y);

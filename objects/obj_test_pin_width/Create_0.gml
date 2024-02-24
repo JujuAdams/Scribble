@@ -1,1 +1,0 @@
-width = room_width - 20;

@@ -1,0 +1,19 @@
+{
+  "FolderOrderSettings": [
+    {"name":"Scribble","order":13,"path":"folders/Scribble.yy",},
+  ],
+  "ResourceOrderSettings": [
+    {"name":"__shdScribbleFastSDF","order":6,"path":"shaders/__shdScribbleFastSDF/__shdScribbleFastSDF.yy",},
+    {"name":"Note1","order":11,"path":"notes/Note1/Note1.yy",},
+    {"name":"__Misc","order":2,"path":"scripts/__Misc/__Misc.yy",},
+    {"name":"__shdScribbleFast","order":5,"path":"shaders/__shdScribbleFast/__shdScribbleFast.yy",},
+    {"name":"__ScribbleFastSystem","order":3,"path":"scripts/__ScribbleFastSystem/__ScribbleFastSystem.yy",},
+    {"name":"ScribbleFast","order":1,"path":"scripts/ScribbleFast/ScribbleFast.yy",},
+    {"name":"fntTest","order":5,"path":"fonts/fntTest/fntTest.yy",},
+    {"name":"oTest","order":1,"path":"objects/oTest/oTest.yy",},
+    {"name":"Trace","order":3,"path":"scripts/Trace/Trace.yy",},
+    {"name":"__ScribbleClassFast","order":4,"path":"scripts/__ScribbleClassFast/__ScribbleClassFast.yy",},
+    {"name":"Concat","order":4,"path":"scripts/Concat/Concat.yy",},
+    {"name":"ScribbleFastTest","order":2,"path":"scripts/ScribbleFastTest/ScribbleFastTest.yy",},
+  ],
+}

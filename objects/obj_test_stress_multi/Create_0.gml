@@ -1,1 +1,0 @@
-draw_count = 0;

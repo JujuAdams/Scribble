@@ -1,1 +1,0 @@
-animation_speed = 1;

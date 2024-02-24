@@ -1,1 +1,0 @@
-scribble(test_string).draw(x, y, typist).flash(c_white, 1);

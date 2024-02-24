@@ -1,1 +1,0 @@
-limit_x = room_width;

@@ -1,1 +1,0 @@
-scribble(">   <\n>[nbsp][nbsp][nbsp]<\n>[nbsp,3]<").draw(10, 10);
