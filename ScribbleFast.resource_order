@@ -11,6 +11,7 @@
     {"name":"__Misc","order":2,"path":"scripts/__Misc/__Misc.yy",},
     {"name":"__shdScribbleFastAB","order":9,"path":"shaders/__shdScribbleFastAB/__shdScribbleFastAB.yy",},
     {"name":"__ScribbleFastSystem","order":7,"path":"scripts/__ScribbleFastSystem/__ScribbleFastSystem.yy",},
+    {"name":"ScribbleFastD","order":5,"path":"scripts/ScribbleFastD/ScribbleFastD.yy",},
     {"name":"fntTest","order":5,"path":"fonts/fntTest/fntTest.yy",},
     {"name":"ScribbleFastC","order":4,"path":"scripts/ScribbleFastC/ScribbleFastC.yy",},
     {"name":"ScribbleFontDrawState","order":13,"path":"scripts/ScribbleFontDrawState/ScribbleFontDrawState.yy",},

@@ -122,7 +122,7 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale, _max
             {
                 //Bias scale search very slighty to be larger
                 //This usually finds the global maxima rather than narrowing down on a local maxima
-                var _tryScale = 0.51*(_lowerScale + _upperScale);
+                var _tryScale = lerp(_lowerScale, _upperScale, 0.51);
                 
                 var _adjustedWidth  = _maxWidth/_tryScale;
                 var _adjustedHeight = _maxHeight/_tryScale;

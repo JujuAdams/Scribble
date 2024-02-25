@@ -1,5 +1,5 @@
-width  = 247; //room_width - x;
-height = 120; //room_height - y;
+width  = 188; //room_width - x;
+height = 169; //room_height - y;
 
 testString = 2*"Sphinx of black quartz, hear my vow! ";
 
