@@ -83,10 +83,8 @@ function ScribbleFastBReflow(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
 
 function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
 {
-    static _system        = __ScribbleFastSystem();
-    static _colourDict    = _system.__colourDict;
-    static _fitSafeMode   = true;
-    static _fitIterations = 6;
+    static _system     = __ScribbleFastSystem();
+    static _colourDict = _system.__colourDict;
     
     __string    = _string;
     __hAlign    = _hAlign;
@@ -234,10 +232,10 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     var _lowerScale = 0;
     
     var _iterations = 0;
-    repeat(_fitIterations)
+    repeat(SCRIBBLE_FIT_ITERATIONS)
     {
         //TODO - Set up special "last iteration" loop
-        var _lastIteration = (_iterations >= _fitIterations-1);
+        var _lastIteration = (_iterations >= SCRIBBLE_FIT_ITERATIONS-1);
         
         //Bias scale search very slighty to be larger
         //This usually finds the global maxima rather than narrowing down on a local maxima
@@ -338,7 +336,7 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
             ++_i;
         }
         
-        if (_iterations == _fitIterations-1)
+        if (_iterations == SCRIBBLE_FIT_ITERATIONS-1)
         {
             //Sort out the horizontal alignment for the last line (only on the last iteration though)
             if ((_hAlign == fa_center) || (_hAlign == fa_right))
@@ -365,7 +363,7 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         }
         
         //Ensure the final iteration causes a valid scale
-        if (_iterations >= _fitIterations-2) _upperScale = _lowerScale;
+        if (_iterations >= SCRIBBLE_FIT_ITERATIONS-2) _upperScale = _lowerScale;
         ++_iterations;
     }
     

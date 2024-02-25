@@ -57,9 +57,7 @@ function ScribbleFastAReflow(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
 
 function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
 {
-    static _system        = __ScribbleFastSystem();
-    static _fitSafeMode   = true;
-    static _fitIterations = 6;
+    static _system = __ScribbleFastSystem();
     
     __string    = _string;
     __hAlign    = _hAlign;
@@ -122,7 +120,7 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
             var _lowerScale = 0;
             
             //Perform a binary search to find the best fit
-            repeat(_fitIterations)
+            repeat(SCRIBBLE_FIT_ITERATIONS)
             {
                 //Bias scale search very slighty to be larger
                 //This usually finds the global maxima rather than narrowing down on a local maxima
@@ -131,7 +129,7 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
                 var _adjustedWidth  = _maxWidth/_tryScale;
                 var _adjustedHeight = _maxHeight/_tryScale;
                 
-                if (_fitSafeMode)
+                if (SCRIBBLE_FIT_SAFE)
                 {
                     //Subtract 1 here to fix on off-by-one in GameMaker's text layout
                     var _width  = string_width_ext( _string, -1, _adjustedWidth-1);
