@@ -235,6 +235,8 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     var _iterations = 0;
     repeat(_fitIterations)
     {
+        var _lastIteration = (_iterations >= _fitIterations-1);
+        
         //Bias scale search very slighty to be larger
         //This usually finds the global maxima rather than narrowing down on a local maxima
         var _tryScale = lerp(_lowerScale, _upperScale, 0.51);
@@ -255,80 +257,97 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         {
             var _fragment = _layoutArray[_i];
             
-            _fragment.__x = _stretchWidth + _fragment.__xOffset;
+            if (_lastIteration)
+            {
+                _fragment.__x = _stretchWidth + _fragment.__xOffset;
+            }
+            
             _stretchWidth += _fragment.__width;
             
             if (_fragment.__whitespaceFollows)
             {
                 if ((_cursorX + _stretchWidth > _adjustedWidth) && (_cursorX != 0))
                 {
-                    //Sort out the horizontal alignment for the current line
-                    if (_hAlign == fa_center)
+                    if (_lastIteration)
                     {
-                        var _j = _lineStart;
-                        repeat(_stretchStart - _lineStart)
+                        //Sort out the horizontal alignment for the current line
+                        if (_hAlign == fa_center)
+                        {
+                            var _j = _lineStart;
+                            repeat(_stretchStart - _lineStart)
+                            {
+                                with(_layoutArray[_j])
+                                {
+                                    __x -= _cursorX/2;
+                                }
+                                
+                                ++_j;
+                            }
+                        }
+                        else if (_hAlign == fa_right)
+                        {
+                            var _j = _lineStart;
+                            repeat(_stretchStart - _lineStart)
+                            {
+                                with(_layoutArray[_j]) __x -= _cursorX;
+                                ++_j;
+                            }
+                        }
+                        
+                        _lineStart  = _stretchStart;
+                    }
+                    
+                    _cursorX  = 0;
+                    _cursorY += _lineHeight;
+                    
+                    if (_lastIteration)
+                    {
+                        var _j = _stretchStart;
+                        repeat(1 + _i - _stretchStart)
+                        {
+                            with(_layoutArray[_j]) __y = _cursorY + __yOffset;
+                            ++_j;
+                        }
+                    }
+                }
+                else //Stretch fits on the same line
+                {
+                    if (_lastIteration)
+                    {
+                        var _j = _stretchStart;
+                        repeat(1 + _i - _stretchStart)
                         {
                             with(_layoutArray[_j])
                             {
-                                __x -= _cursorX/2;
+                                __x += _cursorX;
+                                __y  = _cursorY + __yOffset;
                             }
                             
                             ++_j;
                         }
                     }
-                    else if (_hAlign == fa_right)
-                    {
-                        var _j = _lineStart;
-                        repeat(_stretchStart - _lineStart)
-                        {
-                            with(_layoutArray[_j]) __x -= _cursorX;
-                            ++_j;
-                        }
-                    }
-                    
-                    _lineStart  = _stretchStart;
-                    _cursorX    = 0;
-                    _cursorY   += _lineHeight;
-                    
-                    var _j = _stretchStart;
-                    repeat(1 + _i - _stretchStart)
-                    {
-                        with(_layoutArray[_j]) __y = _cursorY + __yOffset;
-                        ++_j;
-                    }
-                }
-                else
-                {
-                    var _j = _stretchStart;
-                    repeat(1 + _i - _stretchStart)
-                    {
-                        with(_layoutArray[_j])
-                        {
-                            __x += _cursorX;
-                            __y  = _cursorY + __yOffset;
-                        }
-                        
-                        ++_j;
-                    }
                 }
                 
-                _cursorX += _stretchWidth + _spaceWidth;
-                _stretchWidth = 0;
-                _stretchStart = _i+1;
+                _cursorX      += _stretchWidth + _spaceWidth;
+                _stretchWidth  = 0;
+                _stretchStart  = _i+1;
             }
             
             ++_i;
         }
         
-        //Sort out the horizontal alignment for the last line
-        if ((_hAlign == fa_center) || (_hAlign == fa_right))
+        if (_iterations == _fitIterations-1)
         {
-            var _offset = (_hAlign == fa_center)? (_cursorX/2) : _cursorX;
-            var _j = _lineStart;
-            repeat(_stretchStart - _lineStart)
+            //Sort out the horizontal alignment for the last line (only on the last iteration though)
+            if ((_hAlign == fa_center) || (_hAlign == fa_right))
             {
-                with(_layoutArray[_j]) __x -= _offset;
-                ++_j;
+                var _offset = (_hAlign == fa_center)? (_cursorX/2) : _cursorX;
+                var _j = _lineStart;
+                repeat(_stretchStart - _lineStart)
+                {
+                    with(_layoutArray[_j]) __x -= _offset;
+                    ++_j;
+                }
             }
         }
         
