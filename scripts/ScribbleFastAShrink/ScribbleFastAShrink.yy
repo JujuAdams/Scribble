@@ -1,10 +1,11 @@
 {
-  "resourceType": "GMShader",
+  "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__shdScribbleFastCD",
+  "name": "ScribbleFastAShrink",
+  "isCompatibility": false,
+  "isDnD": false,
   "parent": {
     "name": "Scribble",
     "path": "folders/Scribble.yy",
   },
-  "type": 1,
 }

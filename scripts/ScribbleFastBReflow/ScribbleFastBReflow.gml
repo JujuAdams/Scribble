@@ -1,5 +1,34 @@
 // Feather disable all
 
+/// Draws plain text with limited formatting. The text is shrunk down to within the given maximum
+/// width and height by reflowing the text at a smaller size. Text will appear immediately
+/// using GameMaker's native text rendering. Over a few frames and in the  background, Scribble
+/// will build a vertex buffer in the background that replaces the native text rendering and is
+/// faster to draw.
+/// 
+/// Two types of formatting command are supported:
+/// 
+/// 1. Partial Text Colouring
+///     "This is [c_orange]orange[/c] text."
+///     Tags that contain the name of a colour constant will colour subsequent characters in the
+///     string. [/c] [/color] [/colour] can be used to reset the colour to the default colour for
+///     the function call.
+/// 
+/// 2. In-line Sprites
+///     "You need [sprCoin]100 to buy this bomb."
+///     Sprites can be inserted by using the name of the sprite in between two square brackets.
+///     Inserted sprites cannot be animated and show only one image at a time. By default, image 0
+///     is shown.
+///     
+///     "You've found [sprFairy,0][sprFairy,1][sprFairy,2]"
+///     By adding a second parameter to that tag, a different subimage in a sprite can be inserted.
+///     
+///     "Wow, magical! [sprSparke,0,0,4][sprSparke,0,0,0][sprSparke,0,0,-4]"
+///     You may also specify a third and fourth parameter which acts as an x/y offset for the
+///     sprite image. In this case, three images are displayed in a diagonal line from bottom to
+///     top, going left to right. This feature is helpful for adjusting sprite positions to line
+///     up better with text.
+/// 
 /// @param x
 /// @param y
 /// @param string
@@ -12,7 +41,7 @@
 /// @param [width]
 /// @param [height]
 
-function ScribbleFastD(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
+function ScribbleFastBReflow(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
 {
     static _system = __ScribbleFastSystem();
     static _cache  = _system.__cacheTest;
@@ -32,14 +61,14 @@ function ScribbleFastD(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign =
     var _struct = _cache[$ _key];
     if (_struct == undefined)
     {
-        _struct = new __ScribbleClassFastD(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
+        _struct = new __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
         _cache[$ _key] = _struct;
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
 }
 
-function __ScribbleClassFastD(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
+function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
 {
     static _colourDict    = __ScribbleFastSystem().__colourDict;
     static _fitSafeMode   = true;
@@ -57,7 +86,7 @@ function __ScribbleClassFastD(_string, _hAlign, _vAlign, _font, _fontScale, _max
     __fragArray     = [];
     __spriteArray   = [];
     __vertexBuffer  = undefined;
-    __vertexBuilder = new __ScribbleClassFastCBuilder(__fragArray, _font);
+    __vertexBuilder = new __ScribbleClassFastBuilderB(__fragArray, _font);
     __fontTexture   = font_get_texture(_font);
     
     var _layoutArray = [];
@@ -275,7 +304,7 @@ function __ScribbleClassFastD(_string, _hAlign, _vAlign, _font, _fontScale, _max
     
     __vertexBuffer  = undefined;
     __fontTexture   = font_get_texture(_font);
-    __vertexBuilder = new __ScribbleClassFastDBuilder(__fragArray, _font);
+    __vertexBuilder = new __ScribbleClassFastBuilderBReflow(__fragArray, _font);
     
     
     
@@ -339,12 +368,12 @@ function __ScribbleClassFastD(_string, _hAlign, _vAlign, _font, _fontScale, _max
     
     static __DrawVertexBuffer = function(_x, _y, _colour, _alpha)
     {
-        static _shdScribbleFastCD_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastCD, "u_vPositionAlphaScale");
-        static _shdScribbleFastCD_u_iColour = shader_get_uniform(__shdScribbleFastCD, "u_iColour");
+        static _shdScribbleFastB_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastB, "u_vPositionAlphaScale");
+        static _shdScribbleFastB_u_iColour = shader_get_uniform(__shdScribbleFastB, "u_iColour");
         
-        shader_set(__shdScribbleFastCD);
-        shader_set_uniform_f(_shdScribbleFastCD_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
-        shader_set_uniform_i(_shdScribbleFastCD_u_iColour, _colour);
+        shader_set(__shdScribbleFastB);
+        shader_set_uniform_f(_shdScribbleFastB_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
+        shader_set_uniform_i(_shdScribbleFastB_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
         
@@ -354,152 +383,16 @@ function __ScribbleClassFastD(_string, _hAlign, _vAlign, _font, _fontScale, _max
     
     static __DrawVertexBufferSDF = function(_x, _y, _colour, _alpha)
     {
-        static _shdScribbleFastCD_SDF_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastCD_SDF, "u_vPositionAlphaScale");
-        static _shdScribbleFastCD_SDF_u_iColour = shader_get_uniform(__shdScribbleFastCD_SDF, "u_iColour");
+        static _shdScribbleFastB_SDF_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastB_SDF, "u_vPositionAlphaScale");
+        static _shdScribbleFastB_SDF_u_iColour = shader_get_uniform(__shdScribbleFastB_SDF, "u_iColour");
         
-        shader_set(__shdScribbleFastCD_SDF);
-        shader_set_uniform_f(_shdScribbleFastCD_SDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
-        shader_set_uniform_i(_shdScribbleFastCD_SDF_u_iColour, _colour);
+        shader_set(__shdScribbleFastB_SDF);
+        shader_set_uniform_f(_shdScribbleFastB_SDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
+        shader_set_uniform_i(_shdScribbleFastB_SDF_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
         
         //Lean into GameMaker's native renderer for sprites
         __DrawSprites(_x, _y, _alpha);
-    }
-}
-
-function __ScribbleClassFastDBuilder(_fragArray, _font) constructor
-{
-    static __vertexFormat = undefined;
-    if (__vertexFormat == undefined)
-    {
-        vertex_format_begin();
-        vertex_format_add_custom(vertex_type_float2, vertex_usage_position);
-        vertex_format_add_color();
-        vertex_format_add_texcoord();
-        __vertexFormat = vertex_format_end();
-    }
-    
-    __fragArray = _fragArray;
-    
-    __tickMethod = __DecomposeFragment;
-    
-    var _fontInfo = __ScribbleGetFontInfo(_font);
-    __fontGlyphStruct = _fontInfo.glyphs;
-    __fontSDFSpread   = _fontInfo.sdfEnabled? _fontInfo.sdfSpread : undefined;
-    
-    draw_set_font(_font);
-    //I'd love to pull this out of the glyph data but the values we get are inaccurate
-    var _spaceWidth  = string_width(" ");
-    var _spaceHeight = string_height(" ");
-    __spaceWidth  = _spaceWidth;
-    __spaceHeight = _spaceHeight;
-    
-    var _fontTexture = font_get_texture(_font);
-    __texTexelW = texture_get_texel_width(_fontTexture);
-    __texTexelH = texture_get_texel_height(_fontTexture);
-        
-    __vertexBuffer = vertex_create_buffer();
-    vertex_begin(__vertexBuffer, __vertexFormat);
-    vertex_float2(__vertexBuffer, 0, 0); vertex_colour(__vertexBuffer, c_black, 0); vertex_texcoord(__vertexBuffer, 0, 0);
-    vertex_float2(__vertexBuffer, 0, 0); vertex_colour(__vertexBuffer, c_black, 0); vertex_texcoord(__vertexBuffer, 0, 0);
-    vertex_float2(__vertexBuffer, 0, 0); vertex_colour(__vertexBuffer, c_black, 0); vertex_texcoord(__vertexBuffer, 0, 0);
-    
-    __fragment    = 0;
-    __stringArray = undefined;
-    __glyphX      = 0;
-    __glyphY      = 0;
-    
-    static __DecomposeFragment = function()
-    {
-        var _fragmentData   = __fragArray[__fragment];
-        var _fragmentString = _fragmentData.__string;
-        __glyph       = 0;
-        __glyphCount  = string_length(_fragmentString);
-        __glyphX      = _fragmentData.__x;
-        __glyphY      = _fragmentData.__y;
-        __glyphColour = _fragmentData.__colour;
-        
-        //GameMaker needs a function to decompose a string into glyphs
-        __stringArray = array_create(__glyphCount);
-        string_foreach(_fragmentString, method({
-            __array: __stringArray,
-        }, function(_character, _position)
-        {
-            __array[_position-1] = _character;
-        }));
-        
-        __tickMethod = __Tick;
-        return false;
-    }
-    
-    static __Tick = function()
-    {
-        var _fontSDFSpread = __fontSDFSpread ?? 0;
-        var _glyphColour = __glyphColour;
-        var _glyphAlpha  = (__glyphColour >= 0);
-        
-        repeat(1)
-        {
-            var _char = __stringArray[__glyph];
-            if (_char == " ")
-            {
-                __glyphX += __spaceWidth;
-            }
-            else
-            {
-                var _glyphData = __fontGlyphStruct[$ _char];
-                if (_glyphData == undefined)
-                {
-                    //Oh dear
-                }
-                else
-                {
-                    var _texL = _glyphData.x*__texTexelW;
-                    var _texT = _glyphData.y*__texTexelH;
-                    var _texR = _texL + _glyphData.w*__texTexelW;
-                    var _texB = _texT + _glyphData.h*__texTexelH;
-                    
-                    var _glyphL = __glyphX + _glyphData.offset - _fontSDFSpread;
-                    var _glyphT = __glyphY - _fontSDFSpread;
-                    var _glyphR = _glyphL + _glyphData.w;
-                    var _glyphB = _glyphT + _glyphData.h;
-                    
-                    vertex_float2(__vertexBuffer, _glyphL, _glyphT); vertex_colour(__vertexBuffer, _glyphColour, _glyphAlpha); vertex_texcoord(__vertexBuffer, _texL, _texT);
-                    vertex_float2(__vertexBuffer, _glyphR, _glyphT); vertex_colour(__vertexBuffer, _glyphColour, _glyphAlpha); vertex_texcoord(__vertexBuffer, _texR, _texT);
-                    vertex_float2(__vertexBuffer, _glyphL, _glyphB); vertex_colour(__vertexBuffer, _glyphColour, _glyphAlpha); vertex_texcoord(__vertexBuffer, _texL, _texB);
-                    vertex_float2(__vertexBuffer, _glyphR, _glyphT); vertex_colour(__vertexBuffer, _glyphColour, _glyphAlpha); vertex_texcoord(__vertexBuffer, _texR, _texT);
-                    vertex_float2(__vertexBuffer, _glyphR, _glyphB); vertex_colour(__vertexBuffer, _glyphColour, _glyphAlpha); vertex_texcoord(__vertexBuffer, _texR, _texB);
-                    vertex_float2(__vertexBuffer, _glyphL, _glyphB); vertex_colour(__vertexBuffer, _glyphColour, _glyphAlpha); vertex_texcoord(__vertexBuffer, _texL, _texB);
-                    
-                    __glyphX += _glyphData.shift;
-                }
-            }
-            
-            __glyph++;
-            if (__glyph >= __glyphCount)
-            {
-                __fragment++;
-                if (__fragment < array_length(__fragArray))
-                {
-                    __tickMethod = __DecomposeFragment;
-                    break;
-                }
-                else
-                {
-                    vertex_end(__vertexBuffer);
-                    __tickMethod = __Freeze;
-                    return false;
-                }
-            }
-        }
-        
-        return false;
-    }
-    
-    static __Freeze = function()
-    {
-        vertex_freeze(__vertexBuffer);
-        return true;
     }
 }

@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbleFastD",
+  "name": "ScribbleResetFontState",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

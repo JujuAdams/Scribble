@@ -20,6 +20,17 @@ function __ScribbleFastSystem()
         __colourDict[$ "/c"     ] = -1;
         __colourDict[$ "/color" ] = -1;
         __colourDict[$ "/colour"] = -1;
+        
+        vertex_format_begin();
+        vertex_format_add_custom(vertex_type_float2, vertex_usage_position);
+        vertex_format_add_texcoord();
+        __vertexFormatA = vertex_format_end();
+        
+        vertex_format_begin();
+        vertex_format_add_custom(vertex_type_float2, vertex_usage_position);
+        vertex_format_add_color();
+        vertex_format_add_texcoord();
+        __vertexFormatB = vertex_format_end();
     }
     
     return _system;

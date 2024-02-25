@@ -27,7 +27,7 @@ switch(mode)
     case 3:
         repeat(stressCount)
         {
-            ScribbleFastB(x, y, testString, un, un, un, un, fntTest, un, _limitWidth, height);
+            ScribbleFastAShrink(x, y, testString, un, un, un, un, fntTest, un, _limitWidth, height);
         }
     break;
     
@@ -35,9 +35,7 @@ switch(mode)
         draw_circle(x, y, 20, true);
         repeat(stressCount)
         {
-            ScribbleFastD(x, y, 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ", un, un, un, un, fntTest, 2, _limitWidth, height);
+            ScribbleImmediate(x, y, 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ", un, un, un, un, fntTest, 2, _limitWidth, height);
         }
     break;
 }
-
-ScribbleFontDrawState();

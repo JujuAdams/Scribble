@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__ScribbleGetFontInfo",
+  "name": "__ScribbleClassFastBuilderBReflow",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

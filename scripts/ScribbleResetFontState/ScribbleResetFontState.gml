@@ -1,6 +1,8 @@
 // Feather disable all
 
-function ScribbleFontDrawState()
+/// Convenience function to reset GameMaker's native draw state.
+
+function ScribbleResetFontState()
 {
     draw_set_font(-1);
     draw_set_colour(c_white);

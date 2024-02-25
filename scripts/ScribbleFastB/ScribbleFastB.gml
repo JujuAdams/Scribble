@@ -1,5 +1,33 @@
 // Feather disable all
 
+/// Draws plain text with limited formatting but without text wrapping. Text will appear
+/// immediately using GameMaker's native text rendering. Over a few frames and in the
+/// background, Scribble will build a vertex buffer in the background that replaces the native
+/// text rendering and is faster to draw.
+/// 
+/// Two types of formatting command are supported:
+/// 
+/// 1. Partial Text Colouring
+///     "This is [c_orange]orange[/c] text."
+///     Tags that contain the name of a colour constant will colour subsequent characters in the
+///     string. [/c] [/color] [/colour] can be used to reset the colour to the default colour for
+///     the function call.
+/// 
+/// 2. In-line Sprites
+///     "You need [sprCoin]100 to buy this bomb."
+///     Sprites can be inserted by using the name of the sprite in between two square brackets.
+///     Inserted sprites cannot be animated and show only one image at a time. By default, image 0
+///     is shown.
+///     
+///     "You've found [sprFairy,0][sprFairy,1][sprFairy,2]"
+///     By adding a second parameter to that tag, a different subimage in a sprite can be inserted.
+///     
+///     "Wow, magical! [sprSparke,0,0,4][sprSparke,0,0,0][sprSparke,0,0,-4]"
+///     You may also specify a third and fourth parameter which acts as an x/y offset for the
+///     sprite image. In this case, three images are displayed in a diagonal line from bottom to
+///     top, going left to right. This feature is helpful for adjusting sprite positions to line
+///     up better with text.
+/// 
 /// @param x
 /// @param y
 /// @param string
@@ -9,167 +37,208 @@
 /// @param [vAlign=top]
 /// @param [font]
 /// @param [fontScale=1]
-/// @param [width]
-/// @param [height]
-/// @param [scaleToBox=false]
 
-function ScribbleFastB(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity, _scaleToBox = false)
+function ScribbleFastB(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
 {
     static _system = __ScribbleFastSystem();
     static _cache  = _system.__cacheTest;
     
     if (_font == undefined) _font = _system.__defaultFont;
     
-    _maxWidth  = max(0, _maxWidth);
-    _maxHeight = max(0, _maxHeight);
-    
     var _key = string_concat(_string, ":",
-                             _hAlign + 3*_vAlign + 9*_scaleToBox, //Pack these flags together
+                             _hAlign + 3*_vAlign, //Pack these flags together
                              _font,
-                             _fontScale, ":",
-                             _maxWidth, ":",
-                             _maxHeight);
+                             _fontScale);
     
     var _struct = _cache[$ _key];
     if (_struct == undefined)
     {
-        _struct = new __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight, _scaleToBox);
+        _struct = new __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale);
         _cache[$ _key] = _struct;
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
 }
 
-function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight, _scaleToBox) constructor
+function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) constructor
 {
-    static _fitSafeMode   = true;
-    static _fitIterations = 6;
+    static _colourDict = __ScribbleFastSystem().__colourDict;
     
-    __string    = _string;
-    __hAlign    = _hAlign;
-    __vAlign    = _vAlign;
-    __font      = _font;
-    __wrapWidth = undefined;
+    __string = _string;
+    __hAlign = _hAlign;
+    __vAlign = _vAlign;
+    __font   = _font;
+    __scale  = _fontScale;
     
-    __drawMethod = __Draw;
-    
-    if (is_infinity(_maxWidth))
-    {
-        //No limits!
-        __scale = _fontScale;
-        if (_fontScale != 1) __drawMethod = __DrawScale;
-    }
-    else if (_scaleToBox)
-    {
-        //Scale down as appropriate
-        var _width = string_width(_string);
-        if (is_infinity(_maxHeight))
-        {
-            __scale = min(_fontScale, _maxWidth / _width);
-        }
-        else
-        {
-            var _height = string_height(_string);
-            __scale = min(_fontScale, _maxWidth / _width, _maxHeight / _height);
-        }
+    __fontSDFSpread = undefined;
+    __drawMethod    = __DrawNative;
         
-        __drawMethod = __DrawScale;
-    }
-    else if (is_infinity(_maxHeight))
+    __spriteArray   = [];
+    __fragArray     = [];
+    __vertexBuffer  = undefined;
+    __vertexBuilder = new __ScribbleClassFastBuilderB(__fragArray, _font);
+    __fontTexture   = font_get_texture(_font);
+    
+    var _substringArray = string_split(__string, "[");
+    if (array_length(_substringArray) <= 1)
     {
-        //No height limit, just draw wrapped as usual
-        
+        //No square brackets, fall back on simple rendering
         if (_fontScale == 1)
         {
-            __scale      = 1;
-            __wrapWidth  = _maxWidth;
-            __drawMethod = __DrawWrap;
+            __drawMethod = __DrawSimple;
         }
         else
         {
-            __scale      = _fontScale;
-            __wrapWidth  = _maxWidth/_fontScale;
-            __drawMethod = __DrawFit;
+            __drawMethod = __DrawSimpleScaled;
+        }
+        
+        array_push(__fragArray, {
+            __colour: -1,
+            __string: __string,
+            __x: 0,
+        });
+        
+        switch(__hAlign)
+        {
+            case fa_left:   __xOffset = 0;                         break;
+            case fa_center: __xOffset = -string_width(__string)/2; break;
+            case fa_right:  __xOffset = -string_width(__string);   break;
+        }
+        
+        switch(__vAlign)
+        {
+            case fa_top:    __yOffset = 0;                          break;
+            case fa_middle: __yOffset = -string_height(__string)/2; break;
+            case fa_bottom: __yOffset = -string_height(__string);   break;
         }
     }
     else
     {
-        var _height = _fontScale*string_height_ext(_string, -1, _maxWidth/_fontScale);
-        if (_height <= _maxHeight)
-        {
-            //Height limit is enough, just draw wrapped as usual
+        var _lineHeight = string_height(" ");
         
-            if (_fontScale == 1)
-            {
-                __scale      = 1;
-                __wrapWidth  = _maxWidth;
-                __drawMethod = __DrawWrap;
-            }
-            else
-            {
-                __scale      = _fontScale;
-                __wrapWidth  = _maxWidth/_fontScale;
-                __drawMethod = __DrawFit;
-            }
+        //Handle the first text fragment
+        var _textString = _substringArray[0];
+        if (_textString != "")
+        {
+            array_push(__fragArray, {
+                __colour: -1,
+                __string: _textString,
+                __x: 0,
+            });
+            
+            var _x = __scale*string_width(_textString);
         }
         else
         {
-            var _upperScale = _fontScale;
-            var _lowerScale = 0;
-            
-            //Perform a binary search to find the best fit
-            repeat(_fitIterations)
+            var _x = 0;
+        }
+        
+        var _colour = -1;
+        
+        //Then iterate other command tag + text fragment combos, splitting as necessary
+        var _i = 1;
+        repeat(array_length(_substringArray)-1)
+        {
+            var _tagSplitArray = string_split(_substringArray[_i], "]", false, 1);
+            if (array_length(_tagSplitArray) == 2)
             {
-                //Bias scale search very slighty to be larger
-                //This usually finds the global maxima rather than narrowing down on a local maxima
-                var _tryScale = lerp(_lowerScale, _upperScale, 0.51);
+                //Handle the contents of the tag
+                var _tagString = _tagSplitArray[0];
                 
-                var _adjustedWidth  = _maxWidth/_tryScale;
-                var _adjustedHeight = _maxHeight/_tryScale;
-                
-                if (_fitSafeMode)
+                //First we try to find the colour state
+                var _foundColour = _colourDict[$ _tagString];
+                if (_foundColour != undefined)
                 {
-                    var _width  = string_width_ext( _string, -1, _adjustedWidth);
-                    var _height = string_height_ext(_string, -1, _adjustedWidth-1);
-                    if ((_width > _adjustedWidth) || (_height > _adjustedHeight))
-                    {
-                        _upperScale = _tryScale;
-                    }
-                    else
-                    {
-                        _lowerScale = _tryScale;
-                    }
+                    _colour = _foundColour;
                 }
                 else
                 {
-                    //Subtract 1 here to fix on off-by-one in GameMaker's text layout
-                    var _height = string_height_ext(_string, -1, _adjustedWidth-1);
-                    if (_height > _adjustedHeight)
+                    var _spriteSplitArray = string_split(_tagString, ",");
+                    
+                    //Then we try to find a sprite using the command tag
+                    var _sprite = asset_get_index(_spriteSplitArray[0]);
+                    if (sprite_exists(_sprite))
                     {
-                        _upperScale = _tryScale;
+                        //Decode sprite arguments
+                        switch(array_length(_spriteSplitArray))
+                        {
+                            case 1:
+                                var _spriteImage = 0;
+                                var _spriteX     = 0;
+                                var _spriteY     = 0;
+                            break;
+                            
+                            case 2:
+                                var _spriteImage = real(_spriteSplitArray[1]);
+                                var _spriteX     = 0;
+                                var _spriteY     = 0;
+                            break;
+                            
+                            case 3:
+                                var _spriteImage = real(_spriteSplitArray[1]);
+                                var _spriteX     = real(_spriteSplitArray[2]);
+                                var _spriteY     = 0;
+                            break;
+                            
+                            case 4:
+                                var _spriteImage = real(_spriteSplitArray[1]);
+                                var _spriteX     = real(_spriteSplitArray[2]);
+                                var _spriteY     = real(_spriteSplitArray[3]);
+                            break;
+                        }
+                        
+                        array_push(__spriteArray, {
+                            __sprite: _sprite,
+                            __image: _spriteImage,
+                            __x: _spriteX + _x + sprite_get_xoffset(_sprite),
+                            __y: _spriteY + 0.5*(__scale*_lineHeight - sprite_get_height(_sprite)) + sprite_get_yoffset(_sprite),
+                        });
+                        
+                        _x += sprite_get_width(_sprite);
                     }
                     else
                     {
-                        _lowerScale = _tryScale;
+                        Trace("Command tag \"", _tagString, "\" not recognised");
                     }
+                }
+                
+                //Then we handle the next text fragment
+                var _textString = _tagSplitArray[1];
+                if (_textString != "")
+                {
+                    array_push(__fragArray, {
+                        __colour: _colour,
+                        __string: _tagSplitArray[1],
+                        __x: _x,
+                    });
+                    
+                    _x += __scale*string_width(_textString);
                 }
             }
             
-            __scale      = _lowerScale;
-            __wrapWidth  = _maxWidth/_lowerScale;
-            __drawMethod = __DrawFit;
+            ++_i;
+        }
+        
+        switch(__hAlign)
+        {
+            case fa_left:   __xOffset = 0;     break;
+            case fa_center: __xOffset = -_x/2; break;
+            case fa_right:  __xOffset = -_x;   break;
+        }
+        
+        switch(__vAlign)
+        {
+            case fa_top:    __yOffset = 0;              break;
+            case fa_middle: __yOffset = -_lineHeight/2; break;
+            case fa_bottom: __yOffset = -_lineHeight;   break;
         }
     }
     
-    __vertexBuffer  = undefined;
-    __fontTexture   = font_get_texture(_font);
-    __vertexBuilder = new __ScribbleClassFastBBuilder(__string, __hAlign, __vAlign, _font, __wrapWidth);
     
     
     
     
-    
-    static __Draw = function(_x, _y, _colour, _alpha)
+    static __DrawSimple = function(_x, _y, _colour, _alpha)
     {
         draw_set_font(__font);
         draw_set_colour(_colour);
@@ -181,7 +250,7 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale, _max
         __BuildVertexBuffer();
     }
     
-    static __DrawScale = function(_x, _y, _colour, _alpha)
+    static __DrawSimpleScaled = function(_x, _y, _colour, _alpha)
     {
         draw_set_font(__font);
         draw_set_colour(_colour);
@@ -193,258 +262,89 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale, _max
         __BuildVertexBuffer();
     }
     
-    static __DrawWrap = function(_x, _y, _colour, _alpha)
+    static __DrawNative = function(_x, _y, _colour, _alpha)
     {
         draw_set_font(__font);
-        draw_set_colour(_colour);
         draw_set_alpha(_alpha);
-        draw_set_halign(__hAlign);
-        draw_set_valign(__vAlign);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
         
-        draw_text_ext(_x, _y, __string, -1, __wrapWidth);
+        var _scale = __scale;
+        _x += __xOffset;
+        _y += __yOffset;
+        
+        var _i = 0;
+        repeat(array_length(__fragArray))
+        {
+            with(__fragArray[_i])
+            {
+                draw_set_colour((__colour >= 0)? __colour : _colour);
+                draw_text_transformed(_x + __x, _y, __string, _scale, _scale, 0);
+            }
+            
+            ++_i;
+        }
+        
+        __DrawSprites(_x, _y, _alpha);
+        
         __BuildVertexBuffer();
     }
     
-    static __DrawFit = function(_x, _y, _colour, _alpha)
+    static __DrawSprites = function(_x, _y, _alpha)
     {
-        draw_set_font(__font);
-        draw_set_colour(_colour);
-        draw_set_alpha(_alpha);
-        draw_set_halign(__hAlign);
-        draw_set_valign(__vAlign);
-        
-        draw_text_ext_transformed(_x, _y, __string, -1, __wrapWidth, __scale, __scale, 0);
-        __BuildVertexBuffer();
+        var _i = 0;
+        repeat(array_length(__spriteArray))
+        {
+            with(__spriteArray[_i])
+            {
+                draw_sprite_ext(__sprite, __image, _x + __x, _y + __y, 1, 1, 0, c_white, _alpha);
+            }
+            
+            ++_i;
+        }
     }
+    
+    
+    
+    
     
     static __BuildVertexBuffer = function()
     {
         if (__vertexBuilder.__tickMethod())
         {
             __vertexBuffer  = __vertexBuilder.__vertexBuffer;
-            __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
+            __drawMethod    = (__vertexBuilder.__fontSDFSpread != undefined)? __DrawVertexBufferSDF : __DrawVertexBuffer;
             __vertexBuilder = undefined;
         }
     }
     
     static __DrawVertexBuffer = function(_x, _y, _colour, _alpha)
     {
-        static _shdScribbleFast_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastAB, "u_vPositionAlphaScale");
-        static _shdScribbleFast_u_iColour = shader_get_uniform(__shdScribbleFastAB, "u_iColour");
+        static _shdScribbleFastB_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastB, "u_vPositionAlphaScale");
+        static _shdScribbleFastB_u_iColour = shader_get_uniform(__shdScribbleFastB, "u_iColour");
         
-        shader_set(__shdScribbleFastAB);
-        shader_set_uniform_f(_shdScribbleFast_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
-        shader_set_uniform_i(_shdScribbleFast_u_iColour, _colour);
+        shader_set(__shdScribbleFastB);
+        shader_set_uniform_f(_shdScribbleFastB_u_vPositionAlphaScale, _x, _y, _alpha, 1);
+        shader_set_uniform_i(_shdScribbleFastB_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
+        
+        //Lean into GameMaker's native renderer for sprites
+        __DrawSprites(_x, _y, _alpha);
     }
     
     static __DrawVertexBufferSDF = function(_x, _y, _colour, _alpha)
     {
-        static _shdScribbleFastSDF_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastAB_SDF, "u_vPositionAlphaScale");
-        static _shdScribbleFastSDF_u_iColour = shader_get_uniform(__shdScribbleFastAB_SDF, "u_iColour");
+        static _shdScribbleFastB_SDF_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastB_SDF, "u_vPositionAlphaScale");
+        static _shdScribbleFastB_SDF_u_iColour = shader_get_uniform(__shdScribbleFastB_SDF, "u_iColour");
         
-        shader_set(__shdScribbleFastAB_SDF);
-        shader_set_uniform_f(_shdScribbleFastSDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
-        shader_set_uniform_i(_shdScribbleFastSDF_u_iColour, _colour);
+        shader_set(__shdScribbleFastB_SDF);
+        shader_set_uniform_f(_shdScribbleFastB_SDF_u_vPositionAlphaScale, _x, _y, _alpha, 1);
+        shader_set_uniform_i(_shdScribbleFastB_SDF_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
-    }
-}
-
-function __ScribbleClassFastBBuilder(_string, _hAlign, _vAlign, _font, _wrapWidth) constructor
-{
-    static __vertexFormat = undefined;
-    if (__vertexFormat == undefined)
-    {
-        vertex_format_begin();
-        vertex_format_add_custom(vertex_type_float2, vertex_usage_position);
-        vertex_format_add_texcoord();
-        __vertexFormat = vertex_format_end();
-    }
-    
-    __string    = _string;
-    __hAlign    = _hAlign;
-    __vAlign    = _vAlign;
-    __font      = _font;
-    __wrapWidth = _wrapWidth;
-    
-    __stringArray    = undefined;
-    __nextLineBreak  = infinity;
-    __lineBreakIndex = 0;
-    __lineWidthArray = undefined;
-    __lineBreakArray = undefined;
-    __tickMethod     = __Decompose;
-    
-    var _fontInfo = __ScribbleGetFontInfo(_font);
-    __fontGlyphStruct = _fontInfo.glyphs;
-    __fontSDFSpread   = _fontInfo.sdfEnabled? _fontInfo.sdfSpread : undefined;
-    __spaceWidth      = undefined;
-    __spaceHeight     = undefined;
-    
-    var _fontTexture = font_get_texture(_font);
-    __texTexelW = texture_get_texel_width(_fontTexture);
-    __texTexelH = texture_get_texel_height(_fontTexture);
         
-    __vertexBuffer = vertex_create_buffer();
-    vertex_begin(__vertexBuffer, __vertexFormat);
-    vertex_float2(__vertexBuffer, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
-    vertex_float2(__vertexBuffer, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
-    vertex_float2(__vertexBuffer, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
-    
-    __glyph = 0;
-    __glyphCount = string_length(__string);
-    __glyphX = 0;
-    __glyphY = 0;
-    
-    static __Decompose = function()
-    {
-        //GameMaker needs a function to decompose a string into glyphs
-        __stringArray = array_create(__glyphCount);
-        string_foreach(__string, method({
-            __array: __stringArray,
-        }, function(_character, _position)
-        {
-            __array[_position-1] = _character;
-        }));
-        
-        __tickMethod = __Layout;
-        return false;
-    }
-    
-    static __Layout = function()
-    {
-        var _wrapWidth = __wrapWidth;
-        draw_set_font(__font);
-        
-        //I'd love to pull this out of the glyph data but the values we get are inaccurate
-        var _spaceWidth  = string_width(" ");
-        var _spaceHeight = string_height(" ");
-        __spaceWidth  = _spaceWidth;
-        __spaceHeight = _spaceHeight;
-        
-        var _wordArray   = string_split(__string, " ");
-        
-        __lineWidthArray = [];
-        __lineBreakArray = [];
-        
-        var _x = 0;
-        var _y = 0;
-        var _index = 0;
-        var _i = 0;
-        repeat(array_length(_wordArray))
-        {
-            var _word = _wordArray[_i];
-            
-            var _width = string_width(_word);
-            if (_x + _width > _wrapWidth)
-            {
-                array_push(__lineWidthArray, _x - _spaceWidth);
-                array_push(__lineBreakArray, _index);
-                
-                _x = 0;
-                _y += _spaceHeight;
-            }
-            
-            _index += string_length(_word) + 1;
-            _x += _width + _spaceWidth;
-            ++_i;
-        }
-        
-        array_push(__lineWidthArray, _x);
-        array_push(__lineBreakArray, infinity);
-        __nextLineBreak = __lineBreakArray[0];
-        
-        switch(__hAlign)
-        {
-            case fa_left:   __glyphX = 0;                      break;
-            case fa_center: __glyphX = -__lineWidthArray[0]/2; break;
-            case fa_right:  __glyphX = -__lineWidthArray[0];   break;
-        }
-        
-        switch(__vAlign)
-        {
-            case fa_top:    __glyphY = 0;     break;
-            case fa_middle: __glyphY = -_y/2; break;
-            case fa_bottom: __glyphY = -_y;   break;
-        }
-        
-        __tickMethod = __Tick;
-    }
-    
-    static __Tick = function()
-    {
-        var _fontSDFSpread = __fontSDFSpread ?? 0;
-        
-        repeat(1)
-        {
-            var _char = __stringArray[__glyph];
-            if (_char == " ")
-            {
-                __glyphX += __spaceWidth;
-            }
-            else
-            {
-                var _glyphData = __fontGlyphStruct[$ _char];
-                if (_glyphData == undefined)
-                {
-                    //Oh dear
-                }
-                else
-                {
-                    var _texL = _glyphData.x*__texTexelW;
-                    var _texT = _glyphData.y*__texTexelH;
-                    var _texR = _texL + _glyphData.w*__texTexelW;
-                    var _texB = _texT + _glyphData.h*__texTexelH;
-                    
-                    var _glyphL = __glyphX + _glyphData.offset - _fontSDFSpread;
-                    var _glyphT = __glyphY - _fontSDFSpread;
-                    var _glyphR = _glyphL + _glyphData.w;
-                    var _glyphB = _glyphT + _glyphData.h;
-                    
-                    vertex_float2(__vertexBuffer, _glyphL, _glyphT); vertex_texcoord(__vertexBuffer, _texL, _texT);
-                    vertex_float2(__vertexBuffer, _glyphR, _glyphT); vertex_texcoord(__vertexBuffer, _texR, _texT);
-                    vertex_float2(__vertexBuffer, _glyphL, _glyphB); vertex_texcoord(__vertexBuffer, _texL, _texB);
-                    vertex_float2(__vertexBuffer, _glyphR, _glyphT); vertex_texcoord(__vertexBuffer, _texR, _texT);
-                    vertex_float2(__vertexBuffer, _glyphR, _glyphB); vertex_texcoord(__vertexBuffer, _texR, _texB);
-                    vertex_float2(__vertexBuffer, _glyphL, _glyphB); vertex_texcoord(__vertexBuffer, _texL, _texB);
-                    
-                    __glyphX += _glyphData.shift;
-                }
-            }
-            
-            __glyph++;
-            
-            if (__glyph == __nextLineBreak)
-            {
-                __lineBreakIndex++;
-                
-                switch(__hAlign)
-                {
-                    case fa_left:   __glyphX = 0;                                     break;
-                    case fa_center: __glyphX = -__lineWidthArray[__lineBreakIndex]/2; break;
-                    case fa_right:  __glyphX = -__lineWidthArray[__lineBreakIndex];   break;
-                }
-                
-                __nextLineBreak = __lineBreakArray[__lineBreakIndex];
-                
-                __glyphY += __spaceHeight;
-            }
-            
-            if (__glyph >= __glyphCount)
-            {
-                vertex_end(__vertexBuffer);
-                __tickMethod = __Freeze;
-                return false;
-            }
-        }
-        
-        return false;
-    }
-    
-    static __Freeze = function()
-    {
-        vertex_freeze(__vertexBuffer);
-        return true;
+        //Lean into GameMaker's native renderer for sprites
+        __DrawSprites(_x, _y, _alpha);
     }
 }
