@@ -94,9 +94,6 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     __scale     = _fontScale;
     __fontScale = _fontScale;
     
-    __xOffset = 0;
-    __yOffset = 0;
-    
     __fragArray     = [];
     __spriteArray   = [];
     __vertexBuffer  = undefined;
@@ -248,6 +245,8 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         var _cursorX = 0;
         var _cursorY = 0;
         
+        var _lineStart = 0;
+        
         var _stretchStart = 0;
         var _stretchWidth = 0;
         
@@ -261,19 +260,40 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
             
             if (_fragment.__whitespaceFollows)
             {
-                if ((_stretchWidth + _cursorX > _adjustedWidth) && (_cursorX != 0))
+                if ((_cursorX + _stretchWidth > _adjustedWidth) && (_cursorX != 0))
                 {
-                    _cursorX  = 0;
-                    _cursorY += _lineHeight;
+                    //Sort out the horizontal alignment for the current line
+                    if (_hAlign == fa_center)
+                    {
+                        var _j = _lineStart;
+                        repeat(_stretchStart - _lineStart)
+                        {
+                            with(_layoutArray[_j])
+                            {
+                                __x -= _cursorX/2;
+                            }
+                            
+                            ++_j;
+                        }
+                    }
+                    else if (_hAlign == fa_right)
+                    {
+                        var _j = _lineStart;
+                        repeat(_stretchStart - _lineStart)
+                        {
+                            with(_layoutArray[_j]) __x -= _cursorX;
+                            ++_j;
+                        }
+                    }
+                    
+                    _lineStart  = _stretchStart;
+                    _cursorX    = 0;
+                    _cursorY   += _lineHeight;
                     
                     var _j = _stretchStart;
                     repeat(1 + _i - _stretchStart)
                     {
-                        with(_layoutArray[_j])
-                        {
-                            __y = _cursorY + __yOffset;
-                        }
-                        
+                        with(_layoutArray[_j]) __y = _cursorY + __yOffset;
                         ++_j;
                     }
                 }
@@ -300,7 +320,20 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
             ++_i;
         }
         
-        if (_cursorY + _lineHeight >= _adjustedHeight)
+        //Sort out the horizontal alignment for the last line
+        if ((_hAlign == fa_center) || (_hAlign == fa_right))
+        {
+            var _offset = (_hAlign == fa_center)? (_cursorX/2) : _cursorX;
+            var _j = _lineStart;
+            repeat(_stretchStart - _lineStart)
+            {
+                with(_layoutArray[_j]) __x -= _offset;
+                ++_j;
+            }
+        }
+        
+        var _height = _cursorY + _lineHeight;
+        if (_height >= _adjustedHeight)
         {
             _upperScale = _tryScale;
         }
@@ -314,7 +347,21 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         if (_iterations >= _fitIterations-1) _upperScale = _lowerScale;
     }
     
+    if ((_vAlign == fa_middle) || (_vAlign == fa_bottom))
+    {
+        var _offset = (_vAlign == fa_middle)? (_height/2) : _height;
+        var _i = 0;
+        repeat(array_length(_layoutArray))
+        {
+            with(_layoutArray[_i]) __y -= _offset;
+            ++_i;
+        }
+    }
+    
     __scale = _lowerScale;
+    
+    __xOffset = 0;
+    __yOffset = 0;
     
     __vertexBuffer  = undefined;
     __fontTexture   = font_get_texture(_font);
@@ -332,8 +379,6 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         draw_set_valign(fa_top);
         
         var _scale = __scale;
-        _x += __xOffset;
-        _y += __yOffset;
         
         var _i = 0;
         repeat(array_length(__fragArray))

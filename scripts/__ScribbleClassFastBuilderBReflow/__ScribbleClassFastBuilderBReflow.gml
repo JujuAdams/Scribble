@@ -1,6 +1,5 @@
 /// @param fragArray
 /// @param font
-
 function __ScribbleClassFastBuilderBReflow(_fragArray, _font) constructor
 {
     static __vertexFormat = undefined;
