@@ -1,10 +1,10 @@
 /// @param string
+/// @param font
 /// @param hAlign
 /// @param vAlign
-/// @param font
 /// @param wrapWidth
 
-function __ScribbleClassFastBuilderAReflow(_string, _hAlign, _vAlign, _font, _wrapWidth) constructor
+function __ScribbleClassFastBuilderAReflow(_string, _font, _hAlign, _vAlign, _wrapWidth) constructor
 {
     static __vertexFormat = __ScribbleFastSystem().__vertexFormatA;
     

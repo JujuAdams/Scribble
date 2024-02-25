@@ -7,6 +7,15 @@
 /// 
 /// N.B. Manual line breaks ("newlines") are not supported.
 /// 
+/// This function relies on internal caching for performance gains. If you change any of the
+/// following arguments, Scribble will have to do extra work to recache the new text data. Try to
+/// limit how often you change these variables to get the best performance.
+///     - string
+///     - hAlign
+///     - vAlign
+///     - font
+///     - fontScale
+/// 
 /// Two types of formatting command are supported:
 /// 
 /// 1. Partial Text Colouring
@@ -245,6 +254,8 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
         
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawSimpleScaled = function(_x, _y, _colour, _alpha)
@@ -257,6 +268,8 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
         
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawNative = function(_x, _y, _colour, _alpha)
@@ -285,6 +298,8 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
         __DrawSprites(_x, _y, _alpha);
         
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawSprites = function(_x, _y, _alpha)

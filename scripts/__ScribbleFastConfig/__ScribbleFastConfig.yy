@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__ScribbleClassFast",
+  "name": "__ScribbleFastConfig",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "ScribbleFast",
-    "path": "ScribbleFast.yyp",
+    "name": "Scribble",
+    "path": "folders/Scribble.yy",
   },
 }

@@ -30,4 +30,6 @@ function ScribbleDirect(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign 
     draw_set_valign(_vAlign);
     
     draw_text_transformed(_x, _y, _string, _fontScale, _fontScale, 0);
+    
+    if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
 }

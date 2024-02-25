@@ -4,6 +4,15 @@
 /// native text rendering. Over a few frames and in the background, Scribble will build a vertex
 /// buffer in the background that replaces the native text rendering and is faster to draw.
 /// 
+/// This function relies on internal caching for performance gains. If you change any of the
+/// following arguments, Scribble will have to do extra work to recache the new text data. Try to
+/// limit how often you change these variables to get the best performance.
+///     - string
+///     - hAlign
+///     - vAlign
+///     - font
+///     - fontScale
+/// 
 /// N.B. This function should not be used for extremely fast changing text such as a stopwatch.
 ///      You should use ScribbleDirect() instead if you plan for the drawn text to only show for
 ///      a few frames at a time.
@@ -55,7 +64,7 @@ function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) cons
     
     __vertexBuffer  = undefined;
     __fontTexture   = font_get_texture(_font);
-    __vertexBuilder = new __ScribbleClassFastBuilderA(__string, __hAlign, __vAlign, _font);
+    __vertexBuilder = new __ScribbleClassFastBuilderA(__string, _font);
     
     //Cache string width/height to handle alignment positioning
     switch(_hAlign)
@@ -106,6 +115,8 @@ function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) cons
         
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawScale = function(_x, _y, _colour, _alpha)
@@ -118,6 +129,8 @@ function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) cons
         
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     

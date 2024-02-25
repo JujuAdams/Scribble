@@ -1,15 +1,11 @@
 /// @param string
-/// @param hAlign
-/// @param vAlign
 /// @param font
 
-function __ScribbleClassFastBuilderA(_string, _hAlign, _vAlign, _font) constructor
+function __ScribbleClassFastBuilderA(_string, _font) constructor
 {
     static __vertexFormat = __ScribbleFastSystem().__vertexFormatA;
     
     __string = _string;
-    __hAlign = _hAlign;
-    __vAlign = _vAlign;
     __font   = _font;
     
     __tickMethod = __Decompose;

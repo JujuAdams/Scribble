@@ -28,6 +28,7 @@
     {"id":{"name":"__ScribbleClassFastBuilderB","path":"scripts/__ScribbleClassFastBuilderB/__ScribbleClassFastBuilderB.yy",},},
     {"id":{"name":"ScribbleFastA","path":"scripts/ScribbleFastA/ScribbleFastA.yy",},},
     {"id":{"name":"__Misc","path":"scripts/__Misc/__Misc.yy",},},
+    {"id":{"name":"__ScribbleFastConfig","path":"scripts/__ScribbleFastConfig/__ScribbleFastConfig.yy",},},
     {"id":{"name":"__shdScribbleFastA","path":"shaders/__shdScribbleFastA/__shdScribbleFastA.yy",},},
     {"id":{"name":"__ScribbleFastSystem","path":"scripts/__ScribbleFastSystem/__ScribbleFastSystem.yy",},},
     {"id":{"name":"ScribbleFastAReflow","path":"scripts/ScribbleFastAReflow/ScribbleFastAReflow.yy",},},

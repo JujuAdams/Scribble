@@ -1,0 +1,1 @@
+#macro SCRIBBLE_RESET_DRAW_STATE  true

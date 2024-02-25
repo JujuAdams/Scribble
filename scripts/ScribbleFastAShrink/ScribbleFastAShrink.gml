@@ -5,6 +5,17 @@
 /// rendering. Over a few frames and in the background, Scribble will build a vertex buffer in the
 /// background that replaces the native text rendering and is faster to draw.
 /// 
+/// This function relies on internal caching for performance gains. If you change any of the
+/// following arguments, Scribble will have to do extra work to recache the new text data. Try to
+/// limit how often you change these variables to get the best performance.
+///     - string
+///     - hAlign
+///     - vAlign
+///     - font
+///     - fontScale
+///     - maxWidth
+///     - maxHeight
+/// 
 /// @param x
 /// @param y
 /// @param string
@@ -82,11 +93,46 @@ function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale
         }
         
         if (__scale != 1) __drawMethod = __DrawScale;
+    
+        //Cache string width/height to handle alignment positioning
+        switch(_hAlign)
+        {
+            case fa_left:
+                __xOffset = 0;
+            break;
+            
+            case fa_center:
+                draw_set_font(_font);
+                __xOffset = -__scale*string_width(_string)/2;
+            break;
+            
+            case fa_right:
+                draw_set_font(_font);
+                __xOffset = -__scale*string_width(_string);
+            break;
+        }
+        
+        switch(_vAlign)
+        {
+            case fa_top:
+                __yOffset = 0;
+            break;
+            
+            case fa_middle:
+                draw_set_font(_font);
+                __yOffset = -__scale*string_height(_string)/2;
+            break;
+            
+            case fa_bottom:
+                draw_set_font(_font);
+                __yOffset = -__scale*string_height(_string);
+            break;
+        }
     }
     
     __vertexBuffer  = undefined;
     __fontTexture   = font_get_texture(_font);
-    __vertexBuilder = new __ScribbleClassFastBuilderA(__string, __hAlign, __vAlign, _font);
+    __vertexBuilder = new __ScribbleClassFastBuilderA(__string, _font);
     
     
     
@@ -102,6 +148,8 @@ function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale
         
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawScale = function(_x, _y, _colour, _alpha)
@@ -114,6 +162,8 @@ function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale
         
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __BuildVertexBuffer = function()
@@ -136,7 +186,7 @@ function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale
         static _shdScribbleFast_u_iColour = shader_get_uniform(__shdScribbleFastA, "u_iColour");
         
         shader_set(__shdScribbleFastA);
-        shader_set_uniform_f(_shdScribbleFast_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
+        shader_set_uniform_f(_shdScribbleFast_u_vPositionAlphaScale, _x + __xOffset, _y + __yOffset, _alpha, __scale);
         shader_set_uniform_i(_shdScribbleFast_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
@@ -148,7 +198,7 @@ function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale
         static _shdScribbleFastSDF_u_iColour = shader_get_uniform(__shdScribbleFastA_SDF, "u_iColour");
         
         shader_set(__shdScribbleFastA_SDF);
-        shader_set_uniform_f(_shdScribbleFastSDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
+        shader_set_uniform_f(_shdScribbleFastSDF_u_vPositionAlphaScale, _x + __xOffset, _y + __yOffset, _alpha, __scale);
         shader_set_uniform_i(_shdScribbleFastSDF_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();

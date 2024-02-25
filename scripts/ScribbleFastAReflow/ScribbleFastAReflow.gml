@@ -5,6 +5,17 @@
 /// GameMaker's native text rendering. Over a few frames and in the background, Scribble will build
 /// a vertex buffer in the background that replaces the native text rendering and is faster to draw.
 /// 
+/// This function relies on internal caching for performance gains. If you change any of the
+/// following arguments, Scribble will have to do extra work to recache the new text data. Try to
+/// limit how often you change these variables to get the best performance.
+///     - string
+///     - hAlign
+///     - vAlign
+///     - font
+///     - fontScale
+///     - maxWidth
+///     - maxHeight
+/// 
 /// @param x
 /// @param y
 /// @param string
@@ -157,7 +168,7 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
     
     __vertexBuffer  = undefined;
     __fontTexture   = font_get_texture(_font);
-    __vertexBuilder = new __ScribbleClassFastBuilderAReflow(__string, __hAlign, __vAlign, _font, __wrapWidth);
+    __vertexBuilder = new __ScribbleClassFastBuilderAReflow(__string, _font, __hAlign, __vAlign, __wrapWidth);
     
     
     
@@ -173,6 +184,8 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
         
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawScale = function(_x, _y, _colour, _alpha)
@@ -185,6 +198,8 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
         
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawWrap = function(_x, _y, _colour, _alpha)
@@ -197,6 +212,8 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
         
         draw_text_ext(_x, _y, __string, -1, __wrapWidth);
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawReflow = function(_x, _y, _colour, _alpha)
@@ -209,6 +226,8 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
         
         draw_text_ext_transformed(_x, _y, __string, -1, __wrapWidth, __scale, __scale, 0);
         __BuildVertexBuffer();
+        
+        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     

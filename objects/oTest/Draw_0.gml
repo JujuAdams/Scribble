@@ -35,7 +35,7 @@ switch(mode)
         draw_circle(x, y, 20, true);
         repeat(stressCount)
         {
-            ScribbleFastBReflow(x, y, 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ", un, un, un, un, fntTest, 1, _limitWidth, height);
+            ScribbleFastAReflow(x, y, 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ", un, un, fa_center, fa_middle, fntTest, 1, _limitWidth, height);
         }
     break;
 }
