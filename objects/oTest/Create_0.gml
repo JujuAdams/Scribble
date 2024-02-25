@@ -1,7 +1,7 @@
 width  = 247; //room_width - x;
 height = 120; //room_height - y;
 
-testString = 6*"Sphinx of black quartz, hear my vow! ";
+testString = 2*"Sphinx of black quartz, hear my vow! ";
 
 vertex_format_begin();
 vertex_format_add_position_3d();

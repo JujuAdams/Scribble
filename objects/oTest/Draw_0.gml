@@ -20,14 +20,21 @@ switch(mode)
     case 2:
         repeat(stressCount)
         {
-            ScribbleFast(x, y, testString, un, un, un, un, fntTest, un, _limitWidth, height);
+            ScribbleFastTest(x, y, testString, un, un, un, un, fntTest, un, _limitWidth, height);
         }
     break;
     
     case 3:
         repeat(stressCount)
         {
-            ScribbleFastTest(x, y, testString, un, un, un, un, fntTest, un, _limitWidth, height);
+            ScribbleFastB(x, y, testString, un, un, un, un, fntTest, un, _limitWidth, height);
+        }
+    break;
+    
+    case 4:
+        repeat(stressCount)
+        {
+            ScribbleFastC(x, y, "a[sTestShape][c_red]c[/c][sTestShape]e", un, un, un, un, un, un);
         }
     break;
 }

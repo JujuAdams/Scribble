@@ -1,10 +1,11 @@
 attribute vec2 in_Position;
+attribute vec4 in_Colour;
 attribute vec2 in_TextureCoord;
 
 varying vec4 v_vColour;
 varying vec2 v_vTexcoord;
 
-uniform vec4 u_vPositionAlphaScale;
+uniform vec3 u_vPositionAlpha;
 uniform int  u_iColour;
 
 void main()
@@ -16,8 +17,11 @@ void main()
     int colourR = u_iColour - colourB*256*256 - colourG*256;
     
     v_vColour.rgb = vec3(colourR, colourG, colourB) / 255.0;
-    v_vColour.a = u_vPositionAlphaScale.z;
+    v_vColour.a = u_vPositionAlpha.z;
     
-    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(in_Position.xy*u_vPositionAlphaScale.w + u_vPositionAlphaScale.xy, 0.0, 1.0);
+    //Prefer vertex colour
+    v_vColour.rgb = mix(v_vColour.rgb, in_Colour.rgb, in_Colour.a);
+    
+    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(in_Position + u_vPositionAlpha.xy, 0.0, 1.0);
     v_vTexcoord = in_TextureCoord;
 }

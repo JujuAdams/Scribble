@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Scribble",
-    "path": "Scribble.yyp",
+    "name": "ScribbleFast",
+    "path": "ScribbleFast.yyp",
   },
 }

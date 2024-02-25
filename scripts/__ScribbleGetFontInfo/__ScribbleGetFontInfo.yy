@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbleFast",
+  "name": "__ScribbleGetFontInfo",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

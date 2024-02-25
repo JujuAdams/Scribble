@@ -10,8 +10,8 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Scribble",
-    "path": "Scribble.yyp",
+    "name": "ScribbleFast",
+    "path": "ScribbleFast.yyp",
   },
   "parentObjectId": null,
   "persistent": false,
