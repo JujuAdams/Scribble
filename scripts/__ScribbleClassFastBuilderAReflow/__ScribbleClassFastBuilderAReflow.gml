@@ -72,7 +72,24 @@ function __ScribbleClassFastBuilderAReflow(_string, _font, _hAlign, _vAlign, _wr
         __spaceWidth  = _spaceWidth;
         __spaceHeight = _spaceHeight;
         
-        var _wordArray   = string_split(__string, " ");
+        var _wordArray = string_split(__string, " ");
+        var _wordCount = array_length(_wordArray);
+        
+        //Remove trailing whitespace
+        var _i = _wordCount-1;
+        repeat(_wordCount)
+        {
+            if (_wordArray[_i] == "")
+            {
+                array_delete(_wordArray, _i, 1);
+            }
+            else
+            {
+                break;
+            }
+            
+            --_i;
+        }
         
         __lineWidthArray = [];
         __lineBreakArray = [];
@@ -84,25 +101,34 @@ function __ScribbleClassFastBuilderAReflow(_string, _font, _hAlign, _vAlign, _wr
         repeat(array_length(_wordArray))
         {
             var _word = _wordArray[_i];
-            
-            var _width = string_width(_word);
-            if (_x + _width > _wrapWidth)
+            if (_word != "")
             {
-                array_push(__lineWidthArray, _x - _spaceWidth);
-                array_push(__lineBreakArray, _index);
+                var _width = string_width(_word);
+                if (_x + _width > _wrapWidth)
+                {
+                    array_push(__lineWidthArray, _x - _spaceWidth);
+                    array_push(__lineBreakArray, _index);
+                    
+                    _x = 0;
+                    _y += _spaceHeight;
+                }
                 
-                _x = 0;
-                _y += _spaceHeight;
+                _index += string_length(_word) + 1;
+            }
+            else
+            {
+                var _width = 0;
             }
             
-            _index += string_length(_word) + 1;
             _x += _width + _spaceWidth;
             ++_i;
         }
         
-        array_push(__lineWidthArray, _x);
+        array_push(__lineWidthArray, _x - _spaceWidth);
         array_push(__lineBreakArray, infinity);
         __nextLineBreak = __lineBreakArray[0];
+        
+        var _height = _y + _spaceHeight;
         
         switch(__hAlign)
         {
@@ -113,9 +139,9 @@ function __ScribbleClassFastBuilderAReflow(_string, _font, _hAlign, _vAlign, _wr
         
         switch(__vAlign)
         {
-            case fa_top:    __glyphY = 0;     break;
-            case fa_middle: __glyphY = -_y/2; break;
-            case fa_bottom: __glyphY = -_y;   break;
+            case fa_top:    __glyphY = 0;          break;
+            case fa_middle: __glyphY = -_height/2; break;
+            case fa_bottom: __glyphY = -_height;   break;
         }
         
         __tickMethod = __Tick;

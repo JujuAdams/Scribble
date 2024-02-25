@@ -4,7 +4,7 @@ if (mouse_check_button(mb_left))
     height = mouse_y - y;
 }
 
-if (keyboard_check_pressed(vk_space)) global.compile = true;
+if (keyboard_check_pressed(vk_space)) global.compile = not global.compile;
 
 if (keyboard_check_pressed(vk_left)) width--;
 if (keyboard_check_pressed(vk_right)) width++;
