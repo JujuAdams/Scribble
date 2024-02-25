@@ -1,10 +1,9 @@
 // Feather disable all
 
-/// Draws plain text with limited formatting. The text is shrunk down to within the given maximum
-/// width and height by reflowing the text at a smaller size. Text will appear immediately
-/// using GameMaker's native text rendering. Over a few frames and in the  background, Scribble
-/// will build a vertex buffer in the background that replaces the native text rendering and is
-/// faster to draw.
+/// Draws plain text with limited formatting but without text wrapping. Text will appear
+/// immediately using GameMaker's native text rendering. Over a few frames and in the
+/// background, Scribble will build a vertex buffer in the background that replaces the native
+/// text rendering and is faster to draw.
 /// 
 /// N.B. Manual line breaks ("newlines") are not supported.
 /// 
@@ -43,15 +42,12 @@
 /// @param [width]
 /// @param [height]
 
-function ScribbleFastBReflow(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
+function ScribbleFastBShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
 {
     static _system = __ScribbleFastSystem();
     static _cache  = _system.__cacheTest;
     
     if (_font == undefined) _font = _system.__defaultFont;
-    
-    _maxWidth  = max(0, _maxWidth);
-    _maxHeight = max(0, _maxHeight);
     
     var _key = string_concat(_string, ":",
                              _hAlign + 3*_vAlign, //Pack these flags together
@@ -63,18 +59,16 @@ function ScribbleFastBReflow(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
     var _struct = _cache[$ _key];
     if (_struct == undefined)
     {
-        _struct = new __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
+        _struct = new __ScribbleClassFastBShrink(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
         _cache[$ _key] = _struct;
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
 }
 
-function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
+function __ScribbleClassFastBShrink(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
 {
-    static _colourDict    = __ScribbleFastSystem().__colourDict;
-    static _fitSafeMode   = true;
-    static _fitIterations = 6;
+    static _colourDict = __ScribbleFastSystem().__colourDict;
     
     __string    = _string;
     __hAlign    = _hAlign;
@@ -83,44 +77,80 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     __scale     = _fontScale;
     __fontScale = _fontScale;
     
-    __xOffset = 0;
-    __yOffset = 0;
-    
-    __fragArray     = [];
+    __fontSDFSpread = undefined;
+    __drawMethod    = __DrawNative;
+        
     __spriteArray   = [];
+    __fragArray     = [];
     __vertexBuffer  = undefined;
     __vertexBuilder = new __ScribbleClassFastBuilderB(__fragArray, _font);
     __fontTexture   = font_get_texture(_font);
     
-    var _layoutArray = [];
-    
-    __drawMethod = __DrawNative;
-    
-    draw_set_font(_font);
-    var _spaceWidth = string_width(" ");
-    var _lineHeight = string_height(" ");
     var _substringArray = string_split(__string, "[");
-    
-    _substringArray[0] = "]" + _substringArray[0];
-    
-    var _colour = -1;
-    
-    var _cursorX = 0;
-    var _cursorY = 0;
-    
-    //Then iterate other command tag + text fragment combos, splitting as necessary
-    var _i = 0;
-    repeat(array_length(_substringArray))
+    if (array_length(_substringArray) <= 1) 
     {
-        var _tagSplitArray = string_split(_substringArray[_i], "]", false, 1);
-        if (array_length(_tagSplitArray) == 2)
+        //No square brackets, fall back on simple rendering
+        
+        var _width  = string_width(__string);
+        var _height = string_height(__string);
+        __scale = min(1, _maxWidth/_width, _maxHeight/_height);
+        
+        switch(__hAlign)
         {
-            //Handle the contents of the tag
-            var _tagString  = _tagSplitArray[0];
-            var _textString = _tagSplitArray[1];
+            case fa_left:   __xOffset = 0;                 break;
+            case fa_center: __xOffset = -__scale*_width/2; break;
+            case fa_right:  __xOffset = -__scale*_width;   break;
+        }
+        
+        switch(__vAlign)
+        {
+            case fa_top:    __yOffset = 0;                  break;
+            case fa_middle: __yOffset = -__scale*_height/2; break;
+            case fa_bottom: __yOffset = -__scale*_height;   break;
+        }
+        
+        __drawMethod = (__scale == 1)? __DrawSimple : __DrawSimpleScaled;
+        
+        //Add a spoofed fragment so the vertex buffer builder has something to work on
+        array_push(__fragArray, {
+            __colour: -1,
+            __string: __string,
+            __x: 0,
+        });
+    }
+    else
+    {
+        var _lineHeight = string_height(" ");
+        
+        //Handle the first text fragment
+        var _textString = _substringArray[0];
+        if (_textString != "")
+        {
+            array_push(__fragArray, {
+                __colour: -1,
+                __string: _textString,
+                __x: 0,
+            });
             
-            if (_tagString != "")
+            var _x = string_width(_textString);
+        }
+        else
+        {
+            var _x = 0;
+        }
+        
+        var _colour = -1;
+        
+        //Then iterate other command tag + text fragment combos, splitting as necessary
+        var _i = 1;
+        repeat(array_length(_substringArray)-1)
+        {
+            var _tagSplitArray = string_split(_substringArray[_i], "]", false, 1);
+            if (array_length(_tagSplitArray) == 2)
             {
+                //Handle the contents of the tag
+                var _tagString = _tagSplitArray[0];
+                
                 //First we try to find the colour state
                 var _foundColour = _colourDict[$ _tagString];
                 if (_foundColour != undefined)
@@ -163,155 +193,84 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
                             break;
                         }
                         
-                        var _fragment = {
+                        array_push(__spriteArray, {
                             __sprite: _sprite,
                             __image: _spriteImage,
-                            __x: undefined,
-                            __y: undefined,
-                            __xOffset: _spriteX + sprite_get_xoffset(_sprite)/_fontScale,
-                            __yOffset: _spriteY + 0.5*(_lineHeight - sprite_get_height(_sprite)/_fontScale) + sprite_get_yoffset(_sprite)/_fontScale,
-                            __width: sprite_get_width(_sprite)/_fontScale,
-                            __whitespaceFollows: string_starts_with(_textString, " "),
-                            __scale: 1/_fontScale,
-                        };
+                            __x: _spriteX + _x + sprite_get_xoffset(_sprite)/_fontScale,
+                            __y: _spriteY + 0.5*(_lineHeight - sprite_get_height(_sprite)/_fontScale) + sprite_get_yoffset(_sprite)/_fontScale,
+                        });
                         
-                        array_push(_layoutArray, _fragment);
-                        array_push(__spriteArray, _fragment);
+                        _x += sprite_get_width(_sprite);
                     }
                     else
                     {
                         Trace("Command tag \"", _tagString, "\" not recognised");
                     }
                 }
-            }
-            
-            //Then we handle the next text fragment
-            if (_textString != "")
-            {
-                var _splitArray = string_split(_textString, " ");
-                var _splitCount = array_length(_splitArray);
-                var _j = 0;
-                repeat(_splitCount)
-                {
-                    var _substring = _splitArray[_j];
-                    if (_substring != "")
-                    {
-                        var _fragment = {
-                            __colour: _colour,
-                            __string: _substring,
-                            __x: undefined,
-                            __y: undefined,
-                            __xOffset: 0,
-                            __yOffset: 0,
-                            __width: string_width(_substring),
-                            __whitespaceFollows: (_j < _splitCount-1),
-                        };
-                        
-                        array_push(_layoutArray, _fragment);
-                        array_push(__fragArray, _fragment);
-                    }
-                    
-                    ++_j;
-                }
-            }
-        }
-        
-        ++_i;
-    }
-    
-    _layoutArray[array_length(_layoutArray)-1].__whitespaceFollows = true;
-    
-    var _upperScale = _fontScale;
-    var _lowerScale = 0;
-    
-    var _iterations = 0;
-    repeat(_fitIterations)
-    {
-        //Bias scale search very slighty to be larger
-        //This usually finds the global maxima rather than narrowing down on a local maxima
-        var _tryScale = lerp(_lowerScale, _upperScale, 0.51);
-        
-        var _adjustedWidth  = _maxWidth/_tryScale;
-        var _adjustedHeight = _maxHeight/_tryScale;
-        
-        var _cursorX = 0;
-        var _cursorY = 0;
-        
-        var _stretchStart = 0;
-        var _stretchWidth = 0;
-        
-        var _i = 0;
-        repeat(array_length(_layoutArray))
-        {
-            var _fragment = _layoutArray[_i];
-            
-            _fragment.__x = _stretchWidth + _fragment.__xOffset;
-            _stretchWidth += _fragment.__width;
-            
-            if (_fragment.__whitespaceFollows)
-            {
-                if ((_stretchWidth + _cursorX > _adjustedWidth) && (_cursorX != 0))
-                {
-                    _cursorX  = 0;
-                    _cursorY += _lineHeight;
-                    
-                    var _j = _stretchStart;
-                    repeat(1 + _i - _stretchStart)
-                    {
-                        with(_layoutArray[_j])
-                        {
-                            __y = _cursorY + __yOffset;
-                        }
-                        
-                        ++_j;
-                    }
-                }
-                else
-                {
-                    var _j = _stretchStart;
-                    repeat(1 + _i - _stretchStart)
-                    {
-                        with(_layoutArray[_j])
-                        {
-                            __x += _cursorX;
-                            __y  = _cursorY + __yOffset;
-                        }
-                        
-                        ++_j;
-                    }
-                }
                 
-                _cursorX += _stretchWidth + _spaceWidth;
-                _stretchWidth = 0;
-                _stretchStart = _i+1;
+                //Then we handle the next text fragment
+                var _textString = _tagSplitArray[1];
+                if (_textString != "")
+                {
+                    array_push(__fragArray, {
+                        __colour: _colour,
+                        __string: _tagSplitArray[1],
+                        __x: _x,
+                    });
+                    
+                    _x += string_width(_textString);
+                }
             }
             
             ++_i;
         }
         
-        if (_cursorY + _lineHeight >= _adjustedHeight)
+        var _width  = _x;
+        var _height = _lineHeight;
+        __scale = min(1, _maxWidth/_width, _maxHeight/_height);
+        
+        switch(__hAlign)
         {
-            _upperScale = _tryScale;
-        }
-        else
-        {
-            _lowerScale = _tryScale;
+            case fa_left:   __xOffset = 0;                 break;
+            case fa_center: __xOffset = -__scale*_width/2; break;
+            case fa_right:  __xOffset = -__scale*_width;   break;
         }
         
-        //Ensure the final iteration causes a valid scale
-        ++_iterations;
-        if (_iterations >= _fitIterations-1) _upperScale = _lowerScale;
+        switch(__vAlign)
+        {
+            case fa_top:    __yOffset = 0;                  break;
+            case fa_middle: __yOffset = -__scale*_height/2; break;
+            case fa_bottom: __yOffset = -__scale*_height;   break;
+        }
     }
     
-    __scale = _lowerScale;
-    
-    __vertexBuffer  = undefined;
-    __fontTexture   = font_get_texture(_font);
-    __vertexBuilder = new __ScribbleClassFastBuilderBReflow(__fragArray, _font);
     
     
     
     
+    static __DrawSimple = function(_x, _y, _colour, _alpha)
+    {
+        draw_set_font(__font);
+        draw_set_colour(_colour);
+        draw_set_alpha(_alpha);
+        draw_set_halign(__hAlign);
+        draw_set_valign(__vAlign);
+        
+        draw_text(_x, _y, __string);
+        __BuildVertexBuffer();
+    }
+    
+    static __DrawSimpleScaled = function(_x, _y, _colour, _alpha)
+    {
+        draw_set_font(__font);
+        draw_set_colour(_colour);
+        draw_set_alpha(_alpha);
+        draw_set_halign(__hAlign);
+        draw_set_valign(__vAlign);
+        
+        draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
+        __BuildVertexBuffer();
+    }
     
     static __DrawNative = function(_x, _y, _colour, _alpha)
     {
@@ -330,7 +289,7 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
             with(__fragArray[_i])
             {
                 draw_set_colour((__colour >= 0)? __colour : _colour);
-                draw_text_transformed(_x + _scale*__x, _y + _scale*__y, __string, _scale, _scale, 0);
+                draw_text_transformed(_x + _scale*__x, _y, __string, _scale, _scale, 0);
             }
             
             ++_i;
@@ -358,14 +317,16 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         }
     }
     
+    
+    
+    
+    
     static __BuildVertexBuffer = function()
     {
-        if (not global.compile) return;
-        
         if (__vertexBuilder.__tickMethod())
         {
             __vertexBuffer  = __vertexBuilder.__vertexBuffer;
-            __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
+            __drawMethod    = (__vertexBuilder.__fontSDFSpread != undefined)? __DrawVertexBufferSDF : __DrawVertexBuffer;
             __vertexBuilder = undefined;
         }
     }
@@ -374,6 +335,9 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     {
         static _shdScribbleFastB_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastB, "u_vPositionAlphaScale");
         static _shdScribbleFastB_u_iColour = shader_get_uniform(__shdScribbleFastB, "u_iColour");
+        
+        _x += __xOffset;
+        _y += __yOffset;
         
         shader_set(__shdScribbleFastB);
         shader_set_uniform_f(_shdScribbleFastB_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
@@ -389,6 +353,9 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     {
         static _shdScribbleFastB_SDF_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastB_SDF, "u_vPositionAlphaScale");
         static _shdScribbleFastB_SDF_u_iColour = shader_get_uniform(__shdScribbleFastB_SDF, "u_iColour");
+        
+        _x += __xOffset;
+        _y += __yOffset;
         
         shader_set(__shdScribbleFastB_SDF);
         shader_set_uniform_f(_shdScribbleFastB_SDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale);

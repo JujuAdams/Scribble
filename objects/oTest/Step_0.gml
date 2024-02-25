@@ -42,4 +42,6 @@ if (current_time - startTime > 2000)
             stressCount -= 0.25;
         }
     }
+    
+    stressCount = max(1, stressCount);
 }

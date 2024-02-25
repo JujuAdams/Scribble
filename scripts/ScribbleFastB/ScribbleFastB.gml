@@ -5,6 +5,8 @@
 /// background, Scribble will build a vertex buffer in the background that replaces the native
 /// text rendering and is faster to draw.
 /// 
+/// N.B. Manual line breaks ("newlines") are not supported.
+/// 
 /// Two types of formatting command are supported:
 /// 
 /// 1. Partial Text Colouring
@@ -83,34 +85,29 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
     if (array_length(_substringArray) <= 1)
     {
         //No square brackets, fall back on simple rendering
-        if (_fontScale == 1)
+        
+        switch(__hAlign)
         {
-            __drawMethod = __DrawSimple;
-        }
-        else
-        {
-            __drawMethod = __DrawSimpleScaled;
+            case fa_left:   __xOffset = 0;                                 break;
+            case fa_center: __xOffset = -__scale*string_width(__string)/2; break;
+            case fa_right:  __xOffset = -__scale*string_width(__string);   break;
         }
         
+        switch(__vAlign)
+        {
+            case fa_top:    __yOffset = 0;                                  break;
+            case fa_middle: __yOffset = -__scale*string_height(__string)/2; break;
+            case fa_bottom: __yOffset = -__scale*string_height(__string);   break;
+        }
+        
+        __drawMethod = (__scale == 1)? __DrawSimple : __DrawSimpleScaled;
+        
+        //Add a spoofed fragment so the vertex buffer builder has something to work on
         array_push(__fragArray, {
             __colour: -1,
             __string: __string,
             __x: 0,
         });
-        
-        switch(__hAlign)
-        {
-            case fa_left:   __xOffset = 0;                         break;
-            case fa_center: __xOffset = -string_width(__string)/2; break;
-            case fa_right:  __xOffset = -string_width(__string);   break;
-        }
-        
-        switch(__vAlign)
-        {
-            case fa_top:    __yOffset = 0;                          break;
-            case fa_middle: __yOffset = -string_height(__string)/2; break;
-            case fa_bottom: __yOffset = -string_height(__string);   break;
-        }
     }
     else
     {
@@ -126,7 +123,7 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
                 __x: 0,
             });
             
-            var _x = __scale*string_width(_textString);
+            var _x = string_width(_textString);
         }
         else
         {
@@ -191,7 +188,7 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
                             __sprite: _sprite,
                             __image: _spriteImage,
                             __x: _spriteX + _x + sprite_get_xoffset(_sprite),
-                            __y: _spriteY + 0.5*(__scale*_lineHeight - sprite_get_height(_sprite)) + sprite_get_yoffset(_sprite),
+                            __y: _spriteY + 0.5*(_lineHeight - sprite_get_height(_sprite)) + sprite_get_yoffset(_sprite),
                         });
                         
                         _x += sprite_get_width(_sprite);
@@ -212,7 +209,7 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
                         __x: _x,
                     });
                     
-                    _x += __scale*string_width(_textString);
+                    _x += string_width(_textString);
                 }
             }
             
@@ -221,16 +218,16 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
         
         switch(__hAlign)
         {
-            case fa_left:   __xOffset = 0;     break;
-            case fa_center: __xOffset = -_x/2; break;
-            case fa_right:  __xOffset = -_x;   break;
+            case fa_left:   __xOffset = 0;             break;
+            case fa_center: __xOffset = -__scale*_x/2; break;
+            case fa_right:  __xOffset = -__scale*_x;   break;
         }
         
         switch(__vAlign)
         {
-            case fa_top:    __yOffset = 0;              break;
-            case fa_middle: __yOffset = -_lineHeight/2; break;
-            case fa_bottom: __yOffset = -_lineHeight;   break;
+            case fa_top:    __yOffset = 0;                      break;
+            case fa_middle: __yOffset = -__scale*_lineHeight/2; break;
+            case fa_bottom: __yOffset = -__scale*_lineHeight;   break;
         }
     }
     
@@ -292,12 +289,14 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
     
     static __DrawSprites = function(_x, _y, _alpha)
     {
+        var _scale = __scale;
+        
         var _i = 0;
         repeat(array_length(__spriteArray))
         {
             with(__spriteArray[_i])
             {
-                draw_sprite_ext(__sprite, __image, _x + __x, _y + __y, 1, 1, 0, c_white, _alpha);
+                draw_sprite_ext(__sprite, __image, _x + _scale*__x, _y + _scale*__y, _scale, _scale, 0, c_white, _alpha);
             }
             
             ++_i;
@@ -323,8 +322,11 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
         static _shdScribbleFastB_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastB, "u_vPositionAlphaScale");
         static _shdScribbleFastB_u_iColour = shader_get_uniform(__shdScribbleFastB, "u_iColour");
         
+        _x += __xOffset;
+        _y += __yOffset;
+        
         shader_set(__shdScribbleFastB);
-        shader_set_uniform_f(_shdScribbleFastB_u_vPositionAlphaScale, _x, _y, _alpha, 1);
+        shader_set_uniform_f(_shdScribbleFastB_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
         shader_set_uniform_i(_shdScribbleFastB_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
@@ -338,8 +340,11 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale) cons
         static _shdScribbleFastB_SDF_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastB_SDF, "u_vPositionAlphaScale");
         static _shdScribbleFastB_SDF_u_iColour = shader_get_uniform(__shdScribbleFastB_SDF, "u_iColour");
         
+        _x += __xOffset;
+        _y += __yOffset;
+        
         shader_set(__shdScribbleFastB_SDF);
-        shader_set_uniform_f(_shdScribbleFastB_SDF_u_vPositionAlphaScale, _x, _y, _alpha, 1);
+        shader_set_uniform_f(_shdScribbleFastB_SDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
         shader_set_uniform_i(_shdScribbleFastB_SDF_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();

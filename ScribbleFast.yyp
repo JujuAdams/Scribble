@@ -35,6 +35,7 @@
     {"id":{"name":"__ScribbleClassFastBuilderAReflow","path":"scripts/__ScribbleClassFastBuilderAReflow/__ScribbleClassFastBuilderAReflow.yy",},},
     {"id":{"name":"fntTest","path":"fonts/fntTest/fntTest.yy",},},
     {"id":{"name":"ScribbleFastB","path":"scripts/ScribbleFastB/ScribbleFastB.yy",},},
+    {"id":{"name":"ScribbleFastBShrink","path":"scripts/ScribbleFastBShrink/ScribbleFastBShrink.yy",},},
     {"id":{"name":"__ScribbleClassFastBuilderA","path":"scripts/__ScribbleClassFastBuilderA/__ScribbleClassFastBuilderA.yy",},},
     {"id":{"name":"ScribbleResetFontState","path":"scripts/ScribbleResetFontState/ScribbleResetFontState.yy",},},
     {"id":{"name":"__ScribbleGetFontInfo","path":"scripts/__ScribbleGetFontInfo/__ScribbleGetFontInfo.yy",},},
