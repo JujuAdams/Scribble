@@ -83,7 +83,8 @@ function ScribbleFastBReflow(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
 
 function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
 {
-    static _colourDict    = __ScribbleFastSystem().__colourDict;
+    static _system        = __ScribbleFastSystem();
+    static _colourDict    = _system.__colourDict;
     static _fitSafeMode   = true;
     static _fitIterations = 6;
     
@@ -439,7 +440,7 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     
     static __BuildVertexBuffer = function()
     {
-        if (not global.compile) return;
+        if (not _system.__compile) return;
         
         if (__vertexBuilder.__tickMethod())
         {

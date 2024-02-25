@@ -1,7 +1,7 @@
 {
   "FolderOrderSettings": [
     {"name":"Scribble","order":12,"path":"folders/Scribble.yy",},
-    {"name":"(System)","order":9,"path":"folders/Scribble/(System).yy",},
+    {"name":"(System)","order":11,"path":"folders/Scribble/(System).yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"__shdScribbleFastA_SDF","order":5,"path":"shaders/__shdScribbleFastA_SDF/__shdScribbleFastA_SDF.yy",},
@@ -20,13 +20,15 @@
     {"name":"ScribbleFastB","order":5,"path":"scripts/ScribbleFastB/ScribbleFastB.yy",},
     {"name":"ScribbleFastBShrink","order":6,"path":"scripts/ScribbleFastBShrink/ScribbleFastBShrink.yy",},
     {"name":"__ScribbleClassFastBuilderA","order":7,"path":"scripts/__ScribbleClassFastBuilderA/__ScribbleClassFastBuilderA.yy",},
-    {"name":"ScribbleResetFontState","order":8,"path":"scripts/ScribbleResetFontState/ScribbleResetFontState.yy",},
+    {"name":"ScribbleResetFontState","order":10,"path":"scripts/ScribbleResetFontState/ScribbleResetFontState.yy",},
     {"name":"__ScribbleClassFastBuilderBReflow","order":10,"path":"scripts/__ScribbleClassFastBuilderBReflow/__ScribbleClassFastBuilderBReflow.yy",},
     {"name":"ScribbleDirect","order":1,"path":"scripts/ScribbleDirect/ScribbleDirect.yy",},
     {"name":"ScribbleFastRaw","order":9,"path":"scripts/ScribbleFastRaw/ScribbleFastRaw.yy",},
     {"name":"ScribbleFastTest","order":10,"path":"scripts/ScribbleFastTest/ScribbleFastTest.yy",},
     {"name":"fntTestSDF","order":6,"path":"fonts/fntTestSDF/fntTestSDF.yy",},
     {"name":"oTest","order":1,"path":"objects/oTest/oTest.yy",},
+    {"name":"ScribbleGetCompile","order":9,"path":"scripts/ScribbleGetCompile/ScribbleGetCompile.yy",},
+    {"name":"ScribbleSetCompile","order":8,"path":"scripts/ScribbleSetCompile/ScribbleSetCompile.yy",},
     {"name":"Trace","order":3,"path":"scripts/Trace/Trace.yy",},
     {"name":"ScribbleFastAShrink","order":3,"path":"scripts/ScribbleFastAShrink/ScribbleFastAShrink.yy",},
     {"name":"__ScribbleClassFast","order":11,"path":"scripts/__ScribbleClassFast/__ScribbleClassFast.yy",},

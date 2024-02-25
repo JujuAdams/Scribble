@@ -57,8 +57,7 @@ function ScribbleFastAShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
 
 function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
 {
-    static _fitSafeMode   = true;
-    static _fitIterations = 6;
+    static _system = __ScribbleFastSystem();
     
     __string    = _string;
     __hAlign    = _hAlign;
@@ -168,6 +167,8 @@ function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale
     
     static __BuildVertexBuffer = function()
     {
+        if (not _system.__compile) return;
+        
         if (__vertexBuilder.__tickMethod())
         {
             __vertexBuffer  = __vertexBuilder.__vertexBuffer;

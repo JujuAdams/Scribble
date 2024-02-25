@@ -57,6 +57,7 @@ function ScribbleFastAReflow(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
 
 function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
 {
+    static _system        = __ScribbleFastSystem();
     static _fitSafeMode   = true;
     static _fitIterations = 6;
     
@@ -236,6 +237,8 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
     
     static __BuildVertexBuffer = function()
     {
+        if (not _system.__compile) return;
+        
         if (__vertexBuilder.__tickMethod())
         {
             __vertexBuffer  = __vertexBuilder.__vertexBuffer;

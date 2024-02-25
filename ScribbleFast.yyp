@@ -46,6 +46,8 @@
     {"id":{"name":"ScribbleFastTest","path":"scripts/ScribbleFastTest/ScribbleFastTest.yy",},},
     {"id":{"name":"fntTestSDF","path":"fonts/fntTestSDF/fntTestSDF.yy",},},
     {"id":{"name":"oTest","path":"objects/oTest/oTest.yy",},},
+    {"id":{"name":"ScribbleGetCompile","path":"scripts/ScribbleGetCompile/ScribbleGetCompile.yy",},},
+    {"id":{"name":"ScribbleSetCompile","path":"scripts/ScribbleSetCompile/ScribbleSetCompile.yy",},},
     {"id":{"name":"Trace","path":"scripts/Trace/Trace.yy",},},
     {"id":{"name":"ScribbleFastAShrink","path":"scripts/ScribbleFastAShrink/ScribbleFastAShrink.yy",},},
     {"id":{"name":"__ScribbleClassFast","path":"scripts/__ScribbleClassFast/__ScribbleClassFast.yy",},},

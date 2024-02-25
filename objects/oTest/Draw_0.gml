@@ -1,6 +1,6 @@
 draw_set_font(fntTest);
 
-draw_text(0, 0, Concat("mode=", mode, ", compile=", global.compile));
+draw_text(0, 0, Concat("mode=", mode, ", compile=", ScribbleGetCompile()));
 draw_text(0, 30, Concat(floor(stressCount), "/", fps));
 draw_text(0, 90, string(width) + " x " + string(height));
 draw_line(width + x, 0, width + x, room_height);
@@ -35,7 +35,7 @@ switch(mode)
         draw_circle(x, y, 20, true);
         repeat(stressCount)
         {
-            ScribbleFastBReflow(x, y, 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ", un, un, fa_right, fa_middle, fntTest, un, _limitWidth, height);
+            ScribbleFastBReflow(x, y, 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ", un, un, un, un, un, un, _limitWidth, height);
         }
     break;
 }

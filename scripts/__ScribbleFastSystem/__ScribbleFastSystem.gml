@@ -8,9 +8,12 @@ function __ScribbleFastSystem()
     _system = {};
     with(_system)
     {
-        __cache = {};
-        __cacheTest = {};
+        __cache         = {};
+        __cacheTest     = {};
         __cacheFontInfo = {};
+        
+        __compile = true;
+        
         __defaultFont = fntTest;
         
         __colourDict = {};

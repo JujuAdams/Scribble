@@ -51,8 +51,7 @@ function ScribbleFastA(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign =
 
 function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) constructor
 {
-    static _fitSafeMode   = true;
-    static _fitIterations = 6;
+    static _system = __ScribbleFastSystem();
     
     __string = _string;
     __hAlign = _hAlign;
@@ -139,7 +138,7 @@ function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) cons
     
     static __BuildVertexBuffer = function()
     {
-        return;
+        if (not _system.__compile) return;
         
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
