@@ -1,6 +1,6 @@
 draw_set_font(fntTest);
 
-draw_text(0, 0, Concat("mode=", mode));
+draw_text(0, 0, Concat("mode=", mode, ", compile=", global.compile));
 draw_text(0, 30, Concat(floor(stressCount), "/", fps));
 draw_text(0, 90, string(width) + " x " + string(height));
 draw_line(width + x, 0, width + x, room_height);
@@ -32,9 +32,12 @@ switch(mode)
     break;
     
     case 4:
+        draw_circle(x, y, 20, true);
         repeat(stressCount)
         {
-            ScribbleFastC(x, y, "a[sTestShape][c_red]c[/c][sTestShape]e", un, un, un, un, un, un);
+            ScribbleFastC(x, y, testString, un, un, fa_right, fa_bottom, fntTestSDF, un, _limitWidth, height);
         }
     break;
 }
+
+ScribbleFontDrawState();

@@ -16,6 +16,7 @@ function __ScribbleFastSystem()
         __colourDict = {};
         __colourDict[$ "c_red"  ] = c_red;
         __colourDict[$ "c_blue" ] = c_blue;
+        __colourDict[$ "c_lime" ] = c_lime;
         __colourDict[$ "/c"     ] = -1;
         __colourDict[$ "/color" ] = -1;
         __colourDict[$ "/colour"] = -1;

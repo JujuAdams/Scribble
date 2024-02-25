@@ -8,60 +8,39 @@
 /// @param [hAlign=left]
 /// @param [vAlign=top]
 /// @param [font]
-/// @param [preScale=1]
+/// @param [fontScale=1]
 /// @param [width]
 /// @param [height]
 /// @param [scaleToBox=false]
 
-function ScribbleFastB(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _preScale = 1, _maxWidth = infinity, _maxHeight = infinity, _scaleToBox = false)
+function ScribbleFastB(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity, _scaleToBox = false)
 {
     static _system = __ScribbleFastSystem();
     static _cache  = _system.__cacheTest;
     
     if (_font == undefined) _font = _system.__defaultFont;
     
-    if (is_infinity(_maxWidth) || ((not _scaleToBox) && is_infinity(_maxHeight)))
+    _maxWidth  = max(0, _maxWidth);
+    _maxHeight = max(0, _maxHeight);
+    
+    var _key = string_concat(_string, ":",
+                             _hAlign + 3*_vAlign + 9*_scaleToBox, //Pack these flags together
+                             _font,
+                             _fontScale, ":",
+                             _maxWidth, ":",
+                             _maxHeight);
+    
+    var _struct = _cache[$ _key];
+    if (_struct == undefined)
     {
-        draw_set_font(_font);
-        draw_set_colour(_colour);
-        draw_set_alpha(_alpha);
-        draw_set_halign(_hAlign);
-        draw_set_valign(_vAlign);
-        draw_text_transformed(_x, _y, _string, _preScale, _preScale, 0);
+        _struct = new __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight, _scaleToBox);
+        _cache[$ _key] = _struct;
     }
-    else
-    {
-        _maxWidth  = max(0, _maxWidth);
-        _maxHeight = max(0, _maxHeight);
-        
-        var _key = _string + ":"
-                 + string(_hAlign + 3*_vAlign + 9*_scaleToBox) //Pack these flags together
-                 + string(_font)
-                 + string(_preScale) + ":"
-                 + string(_maxWidth) + ":"
-                 + string(_maxHeight);
-        
-        var _struct = _cache[$ _key];
-        if (_struct == undefined)
-        {
-            _struct = new __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _preScale, _maxWidth, _maxHeight, _scaleToBox);
-            _cache[$ _key] = _struct;
-        }
-        
-        if (_struct.__usingNative)
-        {
-            draw_set_font(_font);
-            draw_set_colour(_colour);
-            draw_set_alpha(_alpha);
-            draw_set_halign(_hAlign);
-            draw_set_valign(_vAlign);
-        }
-        
-        _struct.__drawMethod(_x, _y, _colour, _alpha);
-    }
+    
+    _struct.__drawMethod(_x, _y, _colour, _alpha);
 }
 
-function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _preScale, _maxWidth, _maxHeight, _scaleToBox) constructor
+function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight, _scaleToBox) constructor
 {
     static _fitSafeMode   = true;
     static _fitIterations = 6;
@@ -69,22 +48,16 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _preScale, _maxW
     __string    = _string;
     __hAlign    = _hAlign;
     __vAlign    = _vAlign;
-    __scale     = 1;
+    __font      = _font;
     __wrapWidth = undefined;
     
-    __usingNative   = true;
-    __fontSDFSpread = undefined;
-    __drawMethod    = __Draw;
+    __drawMethod = __Draw;
     
     if (is_infinity(_maxWidth))
     {
         //No limits!
-        
-        if (_preScale != 1)
-        {
-            __scale = _preScale;
-            __drawMethod = __DrawScale;
-        }
+        __scale = _fontScale;
+        if (_fontScale != 1) __drawMethod = __DrawScale;
     }
     else if (_scaleToBox)
     {
@@ -92,12 +65,12 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _preScale, _maxW
         var _width = string_width(_string);
         if (is_infinity(_maxHeight))
         {
-            __scale = min(_preScale, _maxWidth / _width);
+            __scale = min(_fontScale, _maxWidth / _width);
         }
         else
         {
             var _height = string_height(_string);
-            __scale = min(_preScale, _maxWidth / _width, _maxHeight / _height);
+            __scale = min(_fontScale, _maxWidth / _width, _maxHeight / _height);
         }
         
         __drawMethod = __DrawScale;
@@ -106,40 +79,42 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _preScale, _maxW
     {
         //No height limit, just draw wrapped as usual
         
-        if (_preScale == 1)
+        if (_fontScale == 1)
         {
+            __scale      = 1;
             __wrapWidth  = _maxWidth;
             __drawMethod = __DrawWrap;
         }
         else
         {
-            __scale      = _preScale;
-            __wrapWidth  = _maxWidth/_preScale;
+            __scale      = _fontScale;
+            __wrapWidth  = _maxWidth/_fontScale;
             __drawMethod = __DrawFit;
         }
     }
     else
     {
-        var _height = _preScale*string_height_ext(_string, -1, _maxWidth/_preScale);
+        var _height = _fontScale*string_height_ext(_string, -1, _maxWidth/_fontScale);
         if (_height <= _maxHeight)
         {
             //Height limit is enough, just draw wrapped as usual
         
-            if (_preScale == 1)
+            if (_fontScale == 1)
             {
+                __scale      = 1;
                 __wrapWidth  = _maxWidth;
                 __drawMethod = __DrawWrap;
             }
             else
             {
-                __scale      = _preScale;
-                __wrapWidth  = _maxWidth/_preScale;
+                __scale      = _fontScale;
+                __wrapWidth  = _maxWidth/_fontScale;
                 __drawMethod = __DrawFit;
             }
         }
         else
         {
-            var _upperScale = _preScale;
+            var _upperScale = _fontScale;
             var _lowerScale = 0;
             
             //Perform a binary search to find the best fit
@@ -187,33 +162,57 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _preScale, _maxW
     }
     
     __vertexBuffer  = undefined;
-    __vertexBuilder = new __ScribbleClassFastBBuilder(__string, __hAlign, __vAlign, _font, __scale, __wrapWidth);
     __fontTexture   = font_get_texture(_font);
+    __vertexBuilder = new __ScribbleClassFastBBuilder(__string, __hAlign, __vAlign, _font, __wrapWidth);
     
     
     
     
     
-    static __Draw = function(_x, _y)
+    static __Draw = function(_x, _y, _colour, _alpha)
     {
+        draw_set_font(__font);
+        draw_set_colour(_colour);
+        draw_set_alpha(_alpha);
+        draw_set_halign(__hAlign);
+        draw_set_valign(__vAlign);
+        
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
     }
     
-    static __DrawScale = function(_x, _y)
+    static __DrawScale = function(_x, _y, _colour, _alpha)
     {
+        draw_set_font(__font);
+        draw_set_colour(_colour);
+        draw_set_alpha(_alpha);
+        draw_set_halign(__hAlign);
+        draw_set_valign(__vAlign);
+        
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
     }
     
-    static __DrawWrap = function(_x, _y)
+    static __DrawWrap = function(_x, _y, _colour, _alpha)
     {
+        draw_set_font(__font);
+        draw_set_colour(_colour);
+        draw_set_alpha(_alpha);
+        draw_set_halign(__hAlign);
+        draw_set_valign(__vAlign);
+        
         draw_text_ext(_x, _y, __string, -1, __wrapWidth);
         __BuildVertexBuffer();
     }
     
-    static __DrawFit = function(_x, _y)
+    static __DrawFit = function(_x, _y, _colour, _alpha)
     {
+        draw_set_font(__font);
+        draw_set_colour(_colour);
+        draw_set_alpha(_alpha);
+        draw_set_halign(__hAlign);
+        draw_set_valign(__vAlign);
+        
         draw_text_ext_transformed(_x, _y, __string, -1, __wrapWidth, __scale, __scale, 0);
         __BuildVertexBuffer();
     }
@@ -223,9 +222,7 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _preScale, _maxW
         if (__vertexBuilder.__tickMethod())
         {
             __vertexBuffer  = __vertexBuilder.__vertexBuffer;
-            __fontSDFSpread = __vertexBuilder.__fontSDFSpread;
-            __usingNative   = false;
-            __drawMethod    = __DrawVertexBuffer;
+            __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;
         }
     }
@@ -235,29 +232,27 @@ function __ScribbleClassFastB(_string, _hAlign, _vAlign, _font, _preScale, _maxW
         static _shdScribbleFast_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastAB, "u_vPositionAlphaScale");
         static _shdScribbleFast_u_iColour = shader_get_uniform(__shdScribbleFastAB, "u_iColour");
         
+        shader_set(__shdScribbleFastAB);
+        shader_set_uniform_f(_shdScribbleFast_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
+        shader_set_uniform_i(_shdScribbleFast_u_iColour, _colour);
+        vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
+        shader_reset();
+    }
+    
+    static __DrawVertexBufferSDF = function(_x, _y, _colour, _alpha)
+    {
         static _shdScribbleFastSDF_u_vPositionAlphaScale = shader_get_uniform(__shdScribbleFastAB_SDF, "u_vPositionAlphaScale");
         static _shdScribbleFastSDF_u_iColour = shader_get_uniform(__shdScribbleFastAB_SDF, "u_iColour");
         
-        if (__fontSDFSpread == undefined) //TODO - Optimise
-        {
-            shader_set(__shdScribbleFastAB);
-            shader_set_uniform_f(_shdScribbleFast_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
-            shader_set_uniform_i(_shdScribbleFast_u_iColour, _colour);
-            vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
-            shader_reset();
-        }
-        else
-        {
-            shader_set(__shdScribbleFastAB_SDF);
-            shader_set_uniform_f(_shdScribbleFastSDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
-            shader_set_uniform_i(_shdScribbleFastSDF_u_iColour, _colour);
-            vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
-            shader_reset();
-        }
+        shader_set(__shdScribbleFastAB_SDF);
+        shader_set_uniform_f(_shdScribbleFastSDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
+        shader_set_uniform_i(_shdScribbleFastSDF_u_iColour, _colour);
+        vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
+        shader_reset();
     }
 }
 
-function __ScribbleClassFastBBuilder(_string, _hAlign, _vAlign, _font, _scale, _wrapWidth) constructor
+function __ScribbleClassFastBBuilder(_string, _hAlign, _vAlign, _font, _wrapWidth) constructor
 {
     static __vertexFormat = undefined;
     if (__vertexFormat == undefined)
@@ -272,20 +267,20 @@ function __ScribbleClassFastBBuilder(_string, _hAlign, _vAlign, _font, _scale, _
     __hAlign    = _hAlign;
     __vAlign    = _vAlign;
     __font      = _font;
-    __scale     = _scale;
     __wrapWidth = _wrapWidth;
     
-    __spaceWidth     = undefined;
-    __spaceHeight    = undefined;
     __stringArray    = undefined;
     __nextLineBreak  = infinity;
     __lineBreakIndex = 0;
+    __lineWidthArray = undefined;
     __lineBreakArray = undefined;
     __tickMethod     = __Decompose;
     
     var _fontInfo = __ScribbleGetFontInfo(_font);
     __fontGlyphStruct = _fontInfo.glyphs;
     __fontSDFSpread   = _fontInfo.sdfEnabled? _fontInfo.sdfSpread : undefined;
+    __spaceWidth      = undefined;
+    __spaceHeight     = undefined;
     
     var _fontTexture = font_get_texture(_font);
     __texTexelW = texture_get_texel_width(_fontTexture);
@@ -322,12 +317,15 @@ function __ScribbleClassFastBBuilder(_string, _hAlign, _vAlign, _font, _scale, _
         var _wrapWidth = __wrapWidth;
         draw_set_font(__font);
         
-        var _wordArray   = string_split(__string, " ");
+        //I'd love to pull this out of the glyph data but the values we get are inaccurate
         var _spaceWidth  = string_width(" ");
         var _spaceHeight = string_height(" ");
+        __spaceWidth  = _spaceWidth;
+        __spaceHeight = _spaceHeight;
         
-        __spaceWidth     = _spaceWidth;
-        __spaceHeight    = _spaceHeight;
+        var _wordArray   = string_split(__string, " ");
+        
+        __lineWidthArray = [];
         __lineBreakArray = [];
         
         var _x = 0;
@@ -341,10 +339,11 @@ function __ScribbleClassFastBBuilder(_string, _hAlign, _vAlign, _font, _scale, _
             var _width = string_width(_word);
             if (_x + _width > _wrapWidth)
             {
+                array_push(__lineWidthArray, _x - _spaceWidth);
+                array_push(__lineBreakArray, _index);
+                
                 _x = 0;
                 _y += _spaceHeight;
-                
-                array_push(__lineBreakArray, _index);
             }
             
             _index += string_length(_word) + 1;
@@ -352,8 +351,23 @@ function __ScribbleClassFastBBuilder(_string, _hAlign, _vAlign, _font, _scale, _
             ++_i;
         }
         
+        array_push(__lineWidthArray, _x);
         array_push(__lineBreakArray, infinity);
         __nextLineBreak = __lineBreakArray[0];
+        
+        switch(__hAlign)
+        {
+            case fa_left:   __glyphX = 0;                      break;
+            case fa_center: __glyphX = -__lineWidthArray[0]/2; break;
+            case fa_right:  __glyphX = -__lineWidthArray[0];   break;
+        }
+        
+        switch(__vAlign)
+        {
+            case fa_top:    __glyphY = 0;     break;
+            case fa_middle: __glyphY = -_y/2; break;
+            case fa_bottom: __glyphY = -_y;   break;
+        }
         
         __tickMethod = __Tick;
     }
@@ -403,17 +417,23 @@ function __ScribbleClassFastBBuilder(_string, _hAlign, _vAlign, _font, _scale, _
             
             if (__glyph == __nextLineBreak)
             {
-                __glyphX  = 0;
-                __glyphY += __spaceHeight;
-                
                 __lineBreakIndex++;
+                
+                switch(__hAlign)
+                {
+                    case fa_left:   __glyphX = 0;                                     break;
+                    case fa_center: __glyphX = -__lineWidthArray[__lineBreakIndex]/2; break;
+                    case fa_right:  __glyphX = -__lineWidthArray[__lineBreakIndex];   break;
+                }
+                
                 __nextLineBreak = __lineBreakArray[__lineBreakIndex];
+                
+                __glyphY += __spaceHeight;
             }
             
-            if (__glyph >= __glyphCount-1)
+            if (__glyph >= __glyphCount)
             {
                 vertex_end(__vertexBuffer);
-                
                 __tickMethod = __Freeze;
                 return false;
             }

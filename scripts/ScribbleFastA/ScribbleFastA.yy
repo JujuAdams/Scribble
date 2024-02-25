@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbleFastD",
+  "name": "ScribbleFastA",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

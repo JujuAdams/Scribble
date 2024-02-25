@@ -8,12 +8,12 @@
 /// @param [hAlign=left]
 /// @param [vAlign=top]
 /// @param [font]
-/// @param [preScale=1]
+/// @param [fontScale=1]
 /// @param [width]
 /// @param [height]
 /// @param [scaleToBox=false]
 
-function ScribbleFastTest(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _preScale = 1, _maxWidth = infinity, _maxHeight = infinity, _scaleToBox = false)
+function ScribbleFastTest(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity, _scaleToBox = false)
 {
     static _system = __ScribbleFastSystem();
     static _cache  = _system.__cache;
@@ -27,18 +27,18 @@ function ScribbleFastTest(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlig
     
     if (is_infinity(_maxWidth) || ((not _scaleToBox) && is_infinity(_maxHeight)))
     {
-        draw_text_transformed(_x, _y, _string, _preScale, _preScale, 0);
+        draw_text_transformed(_x, _y, _string, _fontScale, _fontScale, 0);
     }
     else
     {
         _maxWidth  = max(0, _maxWidth);
         _maxHeight = max(0, _maxHeight);
         
-        var _key = _string + ":" + string(_font) + ":" + string(_preScale) + (_scaleToBox? "s" : "f") + string(_maxWidth) + ":" + string(_maxHeight);
+        var _key = _string + ":" + string(_font) + ":" + string(_fontScale) + (_scaleToBox? "s" : "f") + string(_maxWidth) + ":" + string(_maxHeight);
         var _struct = _cache[$ _key];
         if (_struct == undefined)
         {
-            _struct = new __ScribbleClassFast(_string, _font, _preScale, _maxWidth, _maxHeight, _scaleToBox);
+            _struct = new __ScribbleClassFast(_string, _font, _fontScale, _maxWidth, _maxHeight, _scaleToBox);
             _cache[$ _key] = _struct;
         }
         

@@ -17,24 +17,16 @@ function ScribbleFastC(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign =
     
     if (_font == undefined) _font = _system.__defaultFont;
     
-    var _key = _string + ":"
-                + string(_hAlign + 3*_vAlign) //Pack these flags together
-                + string(_font)
-                + string(_fontScale);
+    var _key = string_concat(_string, ":",
+                             _hAlign + 3*_vAlign, //Pack these flags together
+                             _font,
+                             _fontScale);
     
     var _struct = _cache[$ _key];
     if (_struct == undefined)
     {
         _struct = new __ScribbleClassFastC(_string, _hAlign, _vAlign, _font, _fontScale);
         _cache[$ _key] = _struct;
-    }
-    
-    if (_struct.__usingNative)
-    {
-        draw_set_font(_font);
-        draw_set_alpha(_alpha);
-        draw_set_halign(fa_left);
-        draw_set_valign(fa_top);
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
@@ -50,30 +42,54 @@ function __ScribbleClassFastC(_string, _hAlign, _vAlign, _font, _fontScale) cons
     __string    = _string;
     __hAlign    = _hAlign;
     __vAlign    = _vAlign;
+    __font      = _font;
     __scale     = _fontScale;
     __wrapWidth = undefined;
     
-    __usingNative   = true;
     __fontSDFSpread = undefined;
     __drawMethod    = __DrawNative;
+        
+    __spriteArray   = [];
+    __fragArray     = [];
+    __vertexBuffer  = undefined;
+    __vertexBuilder = new __ScribbleClassFastCBuilder(__fragArray, _font);
+    __fontTexture   = font_get_texture(_font);
     
     var _substringArray = string_split(__string, "[");
     if (array_length(_substringArray) <= 1)
     {
         //No square brackets, fall back on simple rendering
-        __drawMethod = __DrawSimple;
+        if (_fontScale == 1)
+        {
+            __drawMethod = __DrawSimple;
+        }
+        else
+        {
+            __drawMethod = __DrawSimpleScaled;
+        }
+        
+        array_push(__fragArray, {
+            __colour: -1,
+            __string: __string,
+            __x: 0,
+        });
+        
+        switch(__hAlign)
+        {
+            case fa_left:   __xOffset = 0;                         break;
+            case fa_center: __xOffset = -string_width(__string)/2; break;
+            case fa_right:  __xOffset = -string_width(__string);   break;
+        }
+        
+        switch(__vAlign)
+        {
+            case fa_top:    __yOffset = 0;                          break;
+            case fa_middle: __yOffset = -string_height(__string)/2; break;
+            case fa_bottom: __yOffset = -string_height(__string);   break;
+        }
     }
     else
     {
-        __fragArray   = [];
-        __spriteArray = [];
-        __xOffset = 0;
-        __yOffset = 0;
-        
-        __vertexBuffer  = undefined;
-        __vertexBuilder = new __ScribbleClassFastCBuilder(__fragArray, _font, __scale);
-        __fontTexture   = font_get_texture(_font);
-        
         var _lineHeight = string_height(" ");
         
         //Handle the first text fragment
@@ -179,28 +195,57 @@ function __ScribbleClassFastC(_string, _hAlign, _vAlign, _font, _fontScale) cons
             ++_i;
         }
         
-        if (__hAlign == fa_center) __xOffset = -_x/2;
-        if (__hAlign == fa_right ) __xOffset = -_x;
-        if (__vAlign == fa_middle) __yOffset = -_lineHeight/2;
-        if (__vAlign == fa_bottom) __yOffset = -_lineHeight;
+        switch(__hAlign)
+        {
+            case fa_left:   __xOffset = 0;     break;
+            case fa_center: __xOffset = -_x/2; break;
+            case fa_right:  __xOffset = -_x;   break;
+        }
+        
+        switch(__vAlign)
+        {
+            case fa_top:    __yOffset = 0;              break;
+            case fa_middle: __yOffset = -_lineHeight/2; break;
+            case fa_bottom: __yOffset = -_lineHeight;   break;
+        }
     }
     
     
     
     
     
-    static __DrawSimple = function(_x, _y)
+    static __DrawSimple = function(_x, _y, _colour, _alpha)
     {
+        draw_set_font(__font);
+        draw_set_colour(_colour);
+        draw_set_alpha(_alpha);
         draw_set_halign(__hAlign);
         draw_set_valign(__vAlign);
+        
         draw_text(_x, _y, __string);
-        //__BuildVertexBuffer();
+        __BuildVertexBuffer();
     }
     
-    static __DrawNative = function(_x, _y, _colour)
+    static __DrawSimpleScaled = function(_x, _y, _colour, _alpha)
     {
-        var _scale = __scale;
+        draw_set_font(__font);
+        draw_set_colour(_colour);
+        draw_set_alpha(_alpha);
+        draw_set_halign(__hAlign);
+        draw_set_valign(__vAlign);
         
+        draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
+        __BuildVertexBuffer();
+    }
+    
+    static __DrawNative = function(_x, _y, _colour, _alpha)
+    {
+        draw_set_font(__font);
+        draw_set_alpha(_alpha);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        
+        var _scale = __scale;
         _x += __xOffset;
         _y += __yOffset;
         
@@ -216,19 +261,19 @@ function __ScribbleClassFastC(_string, _hAlign, _vAlign, _font, _fontScale) cons
             ++_i;
         }
         
-        __DrawSprites(_x, _y);
+        __DrawSprites(_x, _y, _alpha);
         
         __BuildVertexBuffer();
     }
     
-    static __DrawSprites = function(_x, _y)
+    static __DrawSprites = function(_x, _y, _alpha)
     {
         var _i = 0;
         repeat(array_length(__spriteArray))
         {
             with(__spriteArray[_i])
             {
-                draw_sprite(__sprite, __image, _x + __x, _y + __y);
+                draw_sprite_ext(__sprite, __image, _x + __x, _y + __y, 1, 1, 0, c_white, _alpha);
             }
             
             ++_i;
@@ -237,54 +282,54 @@ function __ScribbleClassFastC(_string, _hAlign, _vAlign, _font, _fontScale) cons
     
     static __BuildVertexBuffer = function()
     {
+        if (not global.compile) return;
+        
         if (__vertexBuilder.__tickMethod())
         {
             __vertexBuffer  = __vertexBuilder.__vertexBuffer;
-            __fontSDFSpread = __vertexBuilder.__fontSDFSpread;
-            __usingNative   = false;
-            __drawMethod    = (__fontSDFSpread != undefined)? __DrawVertexBufferSDF : __DrawVertexBuffer;
+            __drawMethod    = (__vertexBuilder.__fontSDFSpread != undefined)? __DrawVertexBufferSDF : __DrawVertexBuffer;
             __vertexBuilder = undefined;
         }
     }
     
     static __DrawVertexBuffer = function(_x, _y, _colour, _alpha)
     {
-        static _shdScribbleFastC_u_vPositionAlpha = shader_get_uniform(__shdScribbleFastC, "u_vPositionAlpha");
-        static _shdScribbleFastC_u_iColour = shader_get_uniform(__shdScribbleFastC, "u_iColour");
+        static _shdScribbleFastC_u_vPositionAlpha = shader_get_uniform(__shdScribbleFastCD, "u_vPositionAlpha");
+        static _shdScribbleFastC_u_iColour = shader_get_uniform(__shdScribbleFastCD, "u_iColour");
         
         _x += __xOffset;
         _y += __yOffset;
         
-        shader_set(__shdScribbleFastC);
+        shader_set(__shdScribbleFastCD);
         shader_set_uniform_f(_shdScribbleFastC_u_vPositionAlpha, _x, _y, _alpha);
         shader_set_uniform_i(_shdScribbleFastC_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
         
         //Lean into GameMaker's native renderer for sprites
-        __DrawSprites(_x, _y);
+        __DrawSprites(_x, _y, _alpha);
     }
     
     static __DrawVertexBufferSDF = function(_x, _y, _colour, _alpha)
     {
-        static _shdScribbleFastCSDF_u_vPositionAlpha = shader_get_uniform(__shdScribbleFastC_SDF, "u_vPositionAlpha");
-        static _shdScribbleFastCSDF_u_iColour = shader_get_uniform(__shdScribbleFastC_SDF, "u_iColour");
+        static _shdScribbleFastCSDF_u_vPositionAlpha = shader_get_uniform(__shdScribbleFastCD_SDF, "u_vPositionAlpha");
+        static _shdScribbleFastCSDF_u_iColour = shader_get_uniform(__shdScribbleFastCD_SDF, "u_iColour");
         
         _x += __xOffset;
         _y += __yOffset;
         
-        shader_set(__shdScribbleFastC_SDF);
+        shader_set(__shdScribbleFastCD_SDF);
         shader_set_uniform_f(_shdScribbleFastCSDF_u_vPositionAlpha, _x, _y, _alpha);
         shader_set_uniform_i(_shdScribbleFastCSDF_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
         
         //Lean into GameMaker's native renderer for sprites
-        __DrawSprites(_x, _y);
+        __DrawSprites(_x, _y, _alpha);
     }
 }
 
-function __ScribbleClassFastCBuilder(_fragArray, _font, _scale) constructor
+function __ScribbleClassFastCBuilder(_fragArray, _font) constructor
 {
     static __vertexFormat = undefined;
     if (__vertexFormat == undefined)
@@ -297,16 +342,19 @@ function __ScribbleClassFastCBuilder(_fragArray, _font, _scale) constructor
     }
     
     __fragArray = _fragArray;
-    __font      = _font;
-    __scale     = _scale;
     
-    __spaceWidth  = undefined;
-    __spaceHeight = undefined;
-    __tickMethod  = __DecomposeFragment;
+    __tickMethod = __DecomposeFragment;
     
     var _fontInfo = __ScribbleGetFontInfo(_font);
     __fontGlyphStruct = _fontInfo.glyphs;
     __fontSDFSpread   = _fontInfo.sdfEnabled? _fontInfo.sdfSpread : undefined;
+    
+    draw_set_font(_font);
+    //I'd love to pull this out of the glyph data but the values we get are inaccurate
+    var _spaceWidth  = string_width(" ");
+    var _spaceHeight = string_height(" ");
+    __spaceWidth  = _spaceWidth;
+    __spaceHeight = _spaceHeight;
     
     var _fontTexture = font_get_texture(_font);
     __texTexelW = texture_get_texel_width(_fontTexture);
@@ -388,7 +436,7 @@ function __ScribbleClassFastCBuilder(_fragArray, _font, _scale) constructor
             }
             
             __glyph++;
-            if (__glyph >= __glyphCount-1)
+            if (__glyph >= __glyphCount)
             {
                 __fragment++;
                 if (__fragment < array_length(__fragArray))

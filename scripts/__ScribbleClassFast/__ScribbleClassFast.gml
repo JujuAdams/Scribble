@@ -5,7 +5,7 @@
 /// @param maxHeight
 /// @param scaleToBox
 
-function __ScribbleClassFast(_string, _font, _preScale, _maxWidth, _maxHeight, _scaleToBox) constructor
+function __ScribbleClassFast(_string, _font, _fontScale, _maxWidth, _maxHeight, _scaleToBox) constructor
 {
     static _fitSafeMode   = true;
     static _fitIterations = 6;
@@ -39,9 +39,9 @@ function __ScribbleClassFast(_string, _font, _preScale, _maxWidth, _maxHeight, _
     {
         //No limits!
         
-        if (_preScale != 1)
+        if (_fontScale != 1)
         {
-            __scale = _preScale;
+            __scale = _fontScale;
             __drawMethod = __DrawScale;
         }
     }
@@ -51,12 +51,12 @@ function __ScribbleClassFast(_string, _font, _preScale, _maxWidth, _maxHeight, _
         var _width = string_width(_string);
         if (is_infinity(_maxHeight))
         {
-            __scale = min(_preScale, _maxWidth / _width);
+            __scale = min(_fontScale, _maxWidth / _width);
         }
         else
         {
             var _height = string_height(_string);
-            __scale = min(_preScale, _maxWidth / _width, _maxHeight / _height);
+            __scale = min(_fontScale, _maxWidth / _width, _maxHeight / _height);
         }
         
         __drawMethod = __DrawScale;
@@ -65,40 +65,40 @@ function __ScribbleClassFast(_string, _font, _preScale, _maxWidth, _maxHeight, _
     {
         //No height limit, just draw wrapped as usual
         
-        if (_preScale == 1)
+        if (_fontScale == 1)
         {
             __wrapWidth  = _maxWidth;
             __drawMethod = __DrawWrap;
         }
         else
         {
-            __scale      = _preScale;
-            __wrapWidth  = _maxWidth/_preScale;
+            __scale      = _fontScale;
+            __wrapWidth  = _maxWidth/_fontScale;
             __drawMethod = __DrawFit;
         }
     }
     else
     {
-        var _height = _preScale*string_height_ext(_string, -1, _maxWidth/_preScale);
+        var _height = _fontScale*string_height_ext(_string, -1, _maxWidth/_fontScale);
         if (_height <= _maxHeight)
         {
             //Height limit is enough, just draw wrapped as usual
         
-            if (_preScale == 1)
+            if (_fontScale == 1)
             {
                 __wrapWidth  = _maxWidth;
                 __drawMethod = __DrawWrap;
             }
             else
             {
-                __scale      = _preScale;
-                __wrapWidth  = _maxWidth/_preScale;
+                __scale      = _fontScale;
+                __wrapWidth  = _maxWidth/_fontScale;
                 __drawMethod = __DrawFit;
             }
         }
         else
         {
-            var _upperScale = _preScale;
+            var _upperScale = _fontScale;
             var _lowerScale = 0;
             
             //Perform a binary search to find the best fit

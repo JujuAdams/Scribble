@@ -29,5 +29,7 @@ vertex_end(vertexBuffer);
 vertex_freeze(vertexBuffer);
 
 stressCount = 1000;
-initialTimer = 0;
-mode = 1;
+startTime = current_time;
+mode = 4;
+
+global.compile = false;
