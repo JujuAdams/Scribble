@@ -235,6 +235,7 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     var _iterations = 0;
     repeat(_fitIterations)
     {
+        //TODO - Set up special "last iteration" loop
         var _lastIteration = (_iterations >= _fitIterations-1);
         
         //Bias scale search very slighty to be larger
@@ -355,6 +356,7 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         if (_height >= _adjustedHeight)
         {
             _upperScale = _tryScale;
+            
         }
         else
         {
@@ -362,8 +364,8 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         }
         
         //Ensure the final iteration causes a valid scale
+        if (_iterations >= _fitIterations-2) _upperScale = _lowerScale;
         ++_iterations;
-        if (_iterations >= _fitIterations-1) _upperScale = _lowerScale;
     }
     
     if ((_vAlign == fa_middle) || (_vAlign == fa_bottom))
