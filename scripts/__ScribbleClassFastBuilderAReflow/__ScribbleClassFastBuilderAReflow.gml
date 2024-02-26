@@ -6,7 +6,8 @@
 
 function __ScribbleClassFastBuilderAReflow(_string, _font, _hAlign, _vAlign, _wrapWidth) constructor
 {
-    static __vertexFormat = __ScribbleFastSystem().__vertexFormatA;
+    static _system       = __ScribbleFastSystem();
+    static _vertexFormat = _system.__vertexFormatA;
     
     __string    = _string;
     __hAlign    = _hAlign;
@@ -32,7 +33,7 @@ function __ScribbleClassFastBuilderAReflow(_string, _font, _hAlign, _vAlign, _wr
     __texTexelH = texture_get_texel_height(_fontTexture);
         
     __vertexBuffer = vertex_create_buffer();
-    vertex_begin(__vertexBuffer, __vertexFormat);
+    vertex_begin(__vertexBuffer, _vertexFormat);
     vertex_float2(__vertexBuffer, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
     vertex_float2(__vertexBuffer, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
     vertex_float2(__vertexBuffer, 0, 0); vertex_texcoord(__vertexBuffer, 0, 0);
@@ -219,7 +220,14 @@ function __ScribbleClassFastBuilderAReflow(_string, _font, _hAlign, _vAlign, _wr
     
     static __Freeze = function()
     {
-        vertex_freeze(__vertexBuffer);
-        return true;
+        if ((_system.__budget - _system.__budgetUsed > 500) || (_system.__budgetUsed == 0))
+        {
+            vertex_freeze(__vertexBuffer);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

@@ -436,16 +436,23 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         }
     }
     
+    
+    
+    
+    
     static __BuildVertexBuffer = function()
     {
-        if (not _system.__compile) return;
+        if (_system.__budgetUsed >= _system.__budget) return;
+        var _timer = get_timer();
         
-        if (__vertexBuilder.__tickMethod())
+        if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
             __vertexBuffer  = __vertexBuilder.__vertexBuffer;
             __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;
         }
+        
+        _system.__budgetUsed += get_timer() - _timer;
     }
     
     static __DrawVertexBuffer = function(_x, _y, _colour, _alpha)

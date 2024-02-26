@@ -2,15 +2,8 @@
 /// @param font
 function __ScribbleClassFastBuilderBReflow(_fragArray, _font) constructor
 {
-    static __vertexFormat = undefined;
-    if (__vertexFormat == undefined)
-    {
-        vertex_format_begin();
-        vertex_format_add_custom(vertex_type_float2, vertex_usage_position);
-        vertex_format_add_color();
-        vertex_format_add_texcoord();
-        __vertexFormat = vertex_format_end();
-    }
+    static _system       = __ScribbleFastSystem();
+    static _vertexFormat = _system.__vertexFormatB;
     
     __fragArray = _fragArray;
     
@@ -32,7 +25,7 @@ function __ScribbleClassFastBuilderBReflow(_fragArray, _font) constructor
     __texTexelH = texture_get_texel_height(_fontTexture);
         
     __vertexBuffer = vertex_create_buffer();
-    vertex_begin(__vertexBuffer, __vertexFormat);
+    vertex_begin(__vertexBuffer, _vertexFormat);
     vertex_float2(__vertexBuffer, 0, 0); vertex_colour(__vertexBuffer, c_black, 0); vertex_texcoord(__vertexBuffer, 0, 0);
     vertex_float2(__vertexBuffer, 0, 0); vertex_colour(__vertexBuffer, c_black, 0); vertex_texcoord(__vertexBuffer, 0, 0);
     vertex_float2(__vertexBuffer, 0, 0); vertex_colour(__vertexBuffer, c_black, 0); vertex_texcoord(__vertexBuffer, 0, 0);
@@ -131,7 +124,14 @@ function __ScribbleClassFastBuilderBReflow(_fragArray, _font) constructor
     
     static __Freeze = function()
     {
-        vertex_freeze(__vertexBuffer);
-        return true;
+        if ((_system.__budget - _system.__budgetUsed > 500) || (_system.__budgetUsed == 0))
+        {
+            vertex_freeze(__vertexBuffer);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbleGetCompile",
+  "name": "ScribbleSetBudget",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

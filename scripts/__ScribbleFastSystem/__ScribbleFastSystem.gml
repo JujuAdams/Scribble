@@ -12,7 +12,8 @@ function __ScribbleFastSystem()
         __cacheTest     = {};
         __cacheFontInfo = {};
         
-        __compile = true;
+        __budget     = 1000;
+        __budgetUsed = 0;
         
         __defaultFont = fntTest;
         
@@ -35,6 +36,13 @@ function __ScribbleFastSystem()
         vertex_format_add_texcoord();
         __vertexFormatB = vertex_format_end();
     }
+    
+    time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
+    {
+        static _system = __ScribbleFastSystem();
+        _system.__budgetUsed = 0;
+    },
+    [], -1));
     
     return _system;
 }

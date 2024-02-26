@@ -138,7 +138,8 @@ function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) cons
     
     static __BuildVertexBuffer = function()
     {
-        if (not _system.__compile) return;
+        if (_system.__budgetUsed >= _system.__budget) return;
+        var _timer = get_timer();
         
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
@@ -146,6 +147,8 @@ function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) cons
             __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;
         }
+        
+        _system.__budgetUsed += get_timer() - _timer;
     }
     
     static __DrawVertexBuffer = function(_x, _y, _colour, _alpha)

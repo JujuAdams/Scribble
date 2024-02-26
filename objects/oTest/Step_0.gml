@@ -4,7 +4,7 @@ if (mouse_check_button(mb_left))
     height = mouse_y - y;
 }
 
-if (keyboard_check_pressed(vk_space)) ScribbleSetCompile(not ScribbleGetCompile());
+if (keyboard_check_pressed(vk_space)) ScribbleSetBudget((ScribbleGetBudget() < 0)? 1000 : -1);
 
 if (keyboard_check_pressed(vk_left)) width--;
 if (keyboard_check_pressed(vk_right)) width++;

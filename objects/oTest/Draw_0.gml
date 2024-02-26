@@ -1,6 +1,6 @@
 draw_set_font(fntTest);
 
-draw_text(0, 0, Concat("mode=", mode, ", compile=", ScribbleGetCompile()));
+draw_text(0, 0, Concat("mode=", mode, ", budget=", ScribbleGetBudget()));
 draw_text(0, 30, Concat(floor(stressCount), "/", fps));
 draw_text(0, 90, string(width) + " x " + string(height));
 draw_line(width + x, 0, width + x, room_height);
@@ -27,7 +27,7 @@ switch(mode)
     case 3:
         repeat(stressCount)
         {
-            ScribbleFastAShrink(x, y, testString, un, un, un, un, fntTest, un, _limitWidth, height);
+            ScribbleFastBReflow(x, y, testString, un, un, un, un, fntTest, un, _limitWidth, height);
         }
     break;
     
