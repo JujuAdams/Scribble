@@ -63,7 +63,7 @@ function __ScribbleClassFastBuilderB(_fragArray, _font) constructor
         var _glyphColour = __glyphColour;
         var _glyphAlpha  = (__glyphColour >= 0);
         
-        repeat(1)
+        repeat(SCRIBBLE_FAST_GLYPH_ITERATIONS)
         {
             var _char = __stringArray[__glyph];
             if (_char == " ")

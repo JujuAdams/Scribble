@@ -133,6 +133,8 @@ function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale
     __fontTexture   = font_get_texture(_font);
     __vertexBuilder = new __ScribbleClassFastBuilderA(__string, _font);
     
+    if (SCRIBBLE_FAST_VERBOSE) Trace("Created ", self);
+    
     
     
     
@@ -148,7 +150,7 @@ function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
         
-        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
+        if (SCRIBBLE_FAST_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawScale = function(_x, _y, _colour, _alpha)
@@ -162,7 +164,7 @@ function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
         
-        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
+        if (SCRIBBLE_FAST_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     
@@ -176,6 +178,7 @@ function __ScribbleClassFastAShrink(_string, _hAlign, _vAlign, _font, _fontScale
         
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
+            if (SCRIBBLE_FAST_VERBOSE) Trace("Compiled ", self);
             __vertexBuffer  = __vertexBuilder.__vertexBuffer;
             __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;

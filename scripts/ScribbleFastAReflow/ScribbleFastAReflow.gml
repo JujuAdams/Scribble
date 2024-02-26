@@ -120,7 +120,7 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
             var _lowerScale = 0;
             
             //Perform a binary search to find the best fit
-            repeat(SCRIBBLE_FIT_ITERATIONS)
+            repeat(SCRIBBLE_FAST_FIT_ITERATIONS)
             {
                 //Bias scale search very slighty to be larger
                 //This usually finds the global maxima rather than narrowing down on a local maxima
@@ -129,7 +129,7 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
                 var _adjustedWidth  = _maxWidth/_tryScale;
                 var _adjustedHeight = _maxHeight/_tryScale;
                 
-                if (SCRIBBLE_FIT_SAFE)
+                if (SCRIBBLE_FAST_FIT_SAFE)
                 {
                     //Subtract 1 here to fix on off-by-one in GameMaker's text layout
                     var _width  = string_width_ext( _string, -1, _adjustedWidth-1);
@@ -169,6 +169,8 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
     __fontTexture   = font_get_texture(_font);
     __vertexBuilder = new __ScribbleClassFastBuilderAReflow(__string, _font, __hAlign, __vAlign, __wrapWidth);
     
+    if (SCRIBBLE_FAST_VERBOSE) Trace("Created ", self);
+    
     
     
     
@@ -184,7 +186,7 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
         
-        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
+        if (SCRIBBLE_FAST_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawScale = function(_x, _y, _colour, _alpha)
@@ -198,7 +200,7 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
         
-        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
+        if (SCRIBBLE_FAST_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawWrap = function(_x, _y, _colour, _alpha)
@@ -212,7 +214,7 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
         draw_text_ext(_x, _y, __string, -1, __wrapWidth);
         __BuildVertexBuffer();
         
-        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
+        if (SCRIBBLE_FAST_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawReflow = function(_x, _y, _colour, _alpha)
@@ -226,7 +228,7 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
         draw_text_ext_transformed(_x, _y, __string, -1, __wrapWidth, __scale, __scale, 0);
         __BuildVertexBuffer();
         
-        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
+        if (SCRIBBLE_FAST_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     
@@ -240,6 +242,7 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
         
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
+            if (SCRIBBLE_FAST_VERBOSE) Trace("Compiled ", self);
             __vertexBuffer  = __vertexBuilder.__vertexBuffer;
             __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;

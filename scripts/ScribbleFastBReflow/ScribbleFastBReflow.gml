@@ -232,10 +232,10 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     var _lowerScale = 0;
     
     var _iterations = 0;
-    repeat(SCRIBBLE_FIT_ITERATIONS)
+    repeat(SCRIBBLE_FAST_FIT_ITERATIONS)
     {
         //TODO - Set up special "last iteration" loop
-        var _lastIteration = (_iterations >= SCRIBBLE_FIT_ITERATIONS-1);
+        var _lastIteration = (_iterations >= SCRIBBLE_FAST_FIT_ITERATIONS-1);
         
         //Bias scale search very slighty to be larger
         //This usually finds the global maxima rather than narrowing down on a local maxima
@@ -336,7 +336,7 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
             ++_i;
         }
         
-        if (_iterations == SCRIBBLE_FIT_ITERATIONS-1)
+        if (_iterations == SCRIBBLE_FAST_FIT_ITERATIONS-1)
         {
             //Sort out the horizontal alignment for the last line (only on the last iteration though)
             if ((_hAlign == fa_center) || (_hAlign == fa_right))
@@ -363,7 +363,7 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         }
         
         //Ensure the final iteration causes a valid scale
-        if (_iterations >= SCRIBBLE_FIT_ITERATIONS-2) _upperScale = _lowerScale;
+        if (_iterations >= SCRIBBLE_FAST_FIT_ITERATIONS-2) _upperScale = _lowerScale;
         ++_iterations;
     }
     
@@ -386,6 +386,8 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     __vertexBuffer  = undefined;
     __fontTexture   = font_get_texture(_font);
     __vertexBuilder = new __ScribbleClassFastBuilderBReflow(__fragArray, _font);
+    
+    if (SCRIBBLE_FAST_VERBOSE) Trace("Created ", self);
     
     
     
@@ -416,7 +418,7 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         
         __BuildVertexBuffer();
         
-        if (SCRIBBLE_RESET_DRAW_STATE) ScribbleResetFontState();
+        if (SCRIBBLE_FAST_RESET_DRAW_STATE) ScribbleResetFontState();
     }
     
     static __DrawSprites = function(_x, _y, _alpha)
@@ -447,6 +449,7 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
+            if (SCRIBBLE_FAST_VERBOSE) Trace("Compiled ", self);
             __vertexBuffer  = __vertexBuilder.__vertexBuffer;
             __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;

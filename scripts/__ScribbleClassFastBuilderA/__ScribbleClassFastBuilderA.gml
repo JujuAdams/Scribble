@@ -57,7 +57,7 @@ function __ScribbleClassFastBuilderA(_string, _font) constructor
     {
         var _fontSDFSpread = __fontSDFSpread ?? 0;
         
-        repeat(1)
+        repeat(SCRIBBLE_FAST_GLYPH_ITERATIONS)
         {
             var _char = __stringArray[__glyph];
             if (_char == " ")
