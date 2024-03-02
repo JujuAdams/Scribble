@@ -4,7 +4,7 @@
 /// GameMaker's native text drawing. Nothing special!
 /// 
 /// N.B. This function should only be used for extremely fast changing text such as a stopwatch.
-///      You should use ScribbletDraw() instead if you plan for the drawn text to persist for
+///      You should use Scribblet() instead if you plan for the drawn text to persist for
 ///      around a second or more.
 /// 
 /// @param x
@@ -17,7 +17,7 @@
 /// @param [font]
 /// @param [fontScale=1]
 
-function ScribbletDrawNative(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
+function ScribbletNative(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
 {
     static _system = __ScribbletSystem();
     

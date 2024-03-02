@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbletWidthExtFit",
+  "name": "ScribbletFitExt",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Getters",
-    "path": "folders/Scribblet (Mini Scribble)/Getters.yy",
+    "name": "Drawing",
+    "path": "folders/Scribblet (Mini Scribble)/Drawing.yy",
   },
 }

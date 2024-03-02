@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbletDrawFit",
+  "name": "ScribbletExt",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

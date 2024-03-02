@@ -40,40 +40,34 @@
 ///     top, going left to right. This feature is helpful for adjusting sprite positions to line
 ///     up better with text.
 /// 
-/// @param x
-/// @param y
 /// @param string
-/// @param [colour=white]
-/// @param [alpha=1]
 /// @param [hAlign=left]
 /// @param [vAlign=top]
 /// @param [font]
 /// @param [fontScale=1]
-/// @param [forceNative=false]
 
-#macro __SCRIBBLET_EXT_GET  static _system = __ScribbletSystem();\
-                            static _cache  = _system.__elementsCache;\
-                            static _array  = _system.__elementsArray;\
-                            ;\
-                            if (_font == undefined) _font = _system.__defaultFont;\
-                            var _key = string_concat(_string, ":",\
-                                                     _hAlign + 3*_vAlign, ":",\ //Pack these flags together
-                                                     _font, ":",\
-                                                     _fontScale, ":D");\
-                            ;\
-                            var _struct = _cache[$ _key];\
-                            if (_struct == undefined)\
-                            {\
-                                _struct = new __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale);\
-                                _cache[$ _key] = _struct;\
-                                array_push(_array, _struct);\
-                            }\
-                            ;\
-                            _struct.__lastUse = current_time;
-
-function ScribbletDrawExt(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
+function ScribbletExt(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
 {
+    static _system = __ScribbletSystem();
+    static _cache  = _system.__elementsCache;
+    static _array  = _system.__elementsArray;
+    
     if (_string == "") return;
-    __SCRIBBLET_EXT_GET
-    _struct.__drawMethod(_x, _y, _colour, _alpha, _forceNative);
+    if (_font == undefined) _font = _system.__defaultFont;
+    
+    var _key = string_concat(_string, ":",
+                             _hAlign + 3*_vAlign, ":", //Pack these flags together
+                             _font, ":",
+                             _fontScale, ":D");
+    
+    var _struct = _cache[$ _key];
+    if (_struct == undefined)
+    {
+        _struct = new __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale);
+        _cache[$ _key] = _struct;
+        array_push(_array, _struct);
+    }
+    
+    _struct.__lastUse = current_time;
+    return _struct;
 }

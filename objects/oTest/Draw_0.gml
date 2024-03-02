@@ -31,74 +31,74 @@ switch(mode)
     case 1:
         repeat(stressCount)
         {
-            ScribbletDrawNative(x, y, testString, un, un, hAlign, vAlign, font, fontScale);
+            ScribbletNative(x, y, testString, un, un, hAlign, vAlign, font, fontScale);
         }
     break;
     
     case 2:
         repeat(stressCount)
         {
-            draw_rectangle_color(x, y,
-                                 x + ScribbletWidth(testString, hAlign, vAlign, font, fontScale),
-                                 y + ScribbletHeight(testString, hAlign, vAlign, font, fontScale),
-                                 c_lime, c_lime, c_lime, c_lime, true);
-            ScribbletDraw(x, y, testString, un, un, hAlign, vAlign, font, fontScale);
+            var _element = Scribblet(testString, hAlign, vAlign, font, fontScale);
+            _element.Draw(x, y, un, un);
         }
+        
+        draw_rectangle_color(x, y, x + _element.GetWidth(), y + _element.GetHeight(),
+                             c_lime, c_lime, c_lime, c_lime, true);
     break;
     
     case 3:
         repeat(stressCount)
         {
-            draw_rectangle_color(x, y,
-                                 x + ScribbletWidthShrink(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 y + ScribbletHeightShrink(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 c_lime, c_lime, c_lime, c_lime, true);
-            ScribbletDrawShrink(x, y, testString, un, un, hAlign, vAlign, font, fontScale, _limitWidth, height);
+            var _element = ScribbletShrink(testString, hAlign, vAlign, font, fontScale, _limitWidth, height);
+            _element.Draw(x, y, un, un);
         }
+        
+        draw_rectangle_color(x, y, x + _element.GetWidth(), y + _element.GetHeight(),
+                             c_lime, c_lime, c_lime, c_lime, true);
     break;
     
     case 4:
         repeat(stressCount)
         {
-            draw_rectangle_color(x, y,
-                                 x + ScribbletWidthFit(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 y + ScribbletHeightFit(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 c_lime, c_lime, c_lime, c_lime, true);
-            ScribbletDrawFit(x, y, testString, un, un, hAlign, vAlign, font, fontScale, _limitWidth, height);
+            var _element = ScribbletFit(testString, hAlign, vAlign, font, fontScale, _limitWidth, height);
+            _element.Draw(x, y, un, un);
         }
+        
+        draw_rectangle_color(x, y, x + _element.GetWidth(), y + _element.GetHeight(),
+                             c_lime, c_lime, c_lime, c_lime, true);
     break;
     
     case 5:
         repeat(stressCount)
         {
-            draw_rectangle_color(x, y,
-                                 x + ScribbletWidthExt(testString, hAlign, vAlign, font, fontScale),
-                                 y + ScribbletHeightExt(testString, hAlign, vAlign, font, fontScale),
-                                 c_lime, c_lime, c_lime, c_lime, true);
-            ScribbletDrawExt(x, y, testStringColor, un, un, hAlign, vAlign, font, fontScale);
+            var _element = ScribbletExt(testStringColor, hAlign, vAlign, font, fontScale);
+            _element.Draw(x, y, un, un);
         }
+        
+        draw_rectangle_color(x, y, x + _element.GetWidth(), y + _element.GetHeight(),
+                             c_lime, c_lime, c_lime, c_lime, true);
     break;
     
     case 6:
         repeat(stressCount)
         {
-            draw_rectangle_color(x, y,
-                                 x + ScribbletWidthExtShrink(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 y + ScribbletHeightExtShrink(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 c_lime, c_lime, c_lime, c_lime, true);
-            ScribbletDrawExtShrink(x, y, testStringColor, un, un, hAlign, vAlign, font, fontScale, _limitWidth, height);
+            var _element = ScribbletShrinkExt(testStringColor, hAlign, vAlign, font, fontScale, _limitWidth, height);
+            _element.Draw(x, y, un, un);
         }
+        
+        draw_rectangle_color(x, y, x + _element.GetWidth(), y + _element.GetHeight(),
+                             c_lime, c_lime, c_lime, c_lime, true);
     break;
     
     case 7:
         repeat(stressCount)
         {
-            draw_rectangle_color(x, y,
-                                 x + ScribbletWidthExtFit(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 y + ScribbletHeightExtFit(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 c_lime, c_lime, c_lime, c_lime, true);
-            ScribbletDrawExtFit(x, y, testStringColor, un, un, hAlign, vAlign, font, fontScale, _limitWidth, height);
+            var _element = ScribbletFitExt(testStringColor, hAlign, vAlign, font, fontScale, _limitWidth, height);
+            _element.Draw(x, y, un, un);
         }
+        
+        draw_rectangle_color(x, y, x + _element.GetWidth(), y + _element.GetHeight(),
+                             c_lime, c_lime, c_lime, c_lime, true);
     break;
 }
 

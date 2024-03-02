@@ -6,7 +6,7 @@
 /// text rendering and is faster to draw.
 /// 
 /// This function scales text without adding newlines. If you want to scale down text whilst adding
-/// newlines (a.k.a. "reflowing"), albeit at a performance penality, then use ScribbletDrawExtFit().
+/// newlines (a.k.a. "reflowing"), albeit at a performance penality, then use ScribbletFitExt().
 /// 
 /// N.B. Manual line breaks ("newlines") are not supported.
 /// 
@@ -45,44 +45,38 @@
 ///     top, going left to right. This feature is helpful for adjusting sprite positions to line
 ///     up better with text.
 /// 
-/// @param x
-/// @param y
 /// @param string
-/// @param [colour=white]
-/// @param [alpha=1]
 /// @param [hAlign=left]
 /// @param [vAlign=top]
 /// @param [font]
 /// @param [fontScale=1]
 /// @param [width]
 /// @param [height]
-/// @param [forceNative=false]
 
-#macro __SCRIBBLET_EXT_SHRINK_GET  static _system = __ScribbletSystem();\
-                                   static _cache  = _system.__elementsCache;\
-                                   static _array  = _system.__elementsArray;\
-                                   ;\
-                                   if (_font == undefined) _font = _system.__defaultFont;\
-                                   var _key = string_concat(_string, ":",\
-                                                            _hAlign + 3*_vAlign, ":",\ //Pack these flags together
-                                                            _font, ":",\
-                                                            _fontScale, ":",\
-                                                            _maxWidth, ":",\
-                                                            _maxHeight, ":F");\
-                                   ;\
-                                   var _struct = _cache[$ _key];\
-                                   if (_struct == undefined)\
-                                   {\
-                                       _struct = new __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);\
-                                       _cache[$ _key] = _struct;\
-                                       array_push(_array, _struct);\
-                                   }\
-                                   ;\
-                                   _struct.__lastUse = current_time;
-
-function ScribbletDrawExtShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
+function ScribbletShrinkExt(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
 {
+    static _system = __ScribbletSystem();
+    static _cache  = _system.__elementsCache;
+    static _array  = _system.__elementsArray;
+    
     if ((_string == "") || (_maxWidth < 0) || (_maxHeight < 0)) return;
-    __SCRIBBLET_EXT_SHRINK_GET
-    _struct.__drawMethod(_x, _y, _colour, _alpha, _forceNative);
+    if (_font == undefined) _font = _system.__defaultFont;
+    
+    var _key = string_concat(_string, ":",
+                            _hAlign + 3*_vAlign, ":", //Pack these flags together
+                            _font, ":",
+                            _fontScale, ":",
+                            _maxWidth, ":",
+                            _maxHeight, ":F");
+    
+    var _struct = _cache[$ _key];
+    if (_struct == undefined)
+    {
+        _struct = new __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
+        _cache[$ _key] = _struct;
+        array_push(_array, _struct);
+    }
+    
+    _struct.__lastUse = current_time;
+    return _struct;
 }

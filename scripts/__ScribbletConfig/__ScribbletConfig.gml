@@ -3,7 +3,7 @@
 #macro SCRIBBLET_RESET_DRAW_STATE  true
 
 //How many iterations to perform when fitting text inside the bounding box. This only applies to
-//ScribbletDrawFit() and ScribbletDrawExtFit(). Higher numbers are more accurate but slower.
+//ScribbletFit() and ScribbletFitExt(). Higher numbers are more accurate but slower.
 #macro SCRIBBLET_FIT_ITERATIONS  6
 
 //Whether to progressively build vertex buffers. This distributes the up-front cost of building

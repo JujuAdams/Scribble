@@ -18,7 +18,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     __font      = _font;
     __wrapWidth = undefined;
     
-    __drawMethod = __Draw;
+    Draw = __Draw;
     
     __wrapped = true;
     __width   = undefined;
@@ -33,7 +33,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         //No limits!
         __wrapped = false;
         __scale = _fontScale;
-        if (_fontScale != 1) __drawMethod = __DrawScale;
+        if (_fontScale != 1) Draw = __DrawScale;
     }
     else if (is_infinity(_maxHeight))
     {
@@ -42,13 +42,13 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         {
             __scale      = 1;
             __wrapWidth  = _maxWidth;
-            __drawMethod = __DrawWrap;
+            Draw = __DrawWrap;
         }
         else
         {
             __scale      = _fontScale;
             __wrapWidth  = _maxWidth/_fontScale;
-            __drawMethod = __DrawFit;
+            Draw = __DrawFit;
         }
     }
     else
@@ -64,13 +64,13 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
             {
                 __scale      = 1;
                 __wrapWidth  = _maxWidth;
-                __drawMethod = __DrawWrap;
+                Draw = __DrawWrap;
             }
             else
             {
                 __scale      = _fontScale;
                 __wrapWidth  = _maxWidth/_fontScale;
-                __drawMethod = __DrawFit;
+                Draw = __DrawFit;
             }
         }
         else
@@ -103,7 +103,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
             __height     = _height;
             __scale      = _lowerScale;
             __wrapWidth  = _maxWidth/_lowerScale;
-            __drawMethod = __DrawFit;
+            Draw = __DrawFit;
         }
         
         if (SCRIBBLET_RESET_DRAW_STATE) draw_set_font(_oldFont);
@@ -120,7 +120,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     
     
     
-    static __GetWidth = function()
+    static GetWidth = function()
     {
         if (__width == undefined)
         {
@@ -143,7 +143,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         return __width;
     }
     
-    static __GetHeight = function()
+    static GetHeight = function()
     {
         if (__height == undefined)
         {
@@ -170,7 +170,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     
     
     
-    static __Draw = function(_x, _y, _colour, _alpha, _forceNative)
+    static __Draw = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
     {
         draw_set_font(__font);
         draw_set_colour(_colour);
@@ -184,7 +184,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDraw();
     }
     
-    static __DrawScale = function(_x, _y, _colour, _alpha, _forceNative)
+    static __DrawScale = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
     {
         draw_set_font(__font);
         draw_set_colour(_colour);
@@ -198,7 +198,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDraw();
     }
     
-    static __DrawWrap = function(_x, _y, _colour, _alpha, _forceNative)
+    static __DrawWrap = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
     {
         draw_set_font(__font);
         draw_set_colour(_colour);
@@ -212,7 +212,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDraw();
     }
     
-    static __DrawFit = function(_x, _y, _colour, _alpha, _forceNative)
+    static __DrawFit = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
     {
         draw_set_font(__font);
         draw_set_colour(_colour);
@@ -243,13 +243,13 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
             if (SCRIBBLET_VERBOSE) __ScribbletTrace("Compiled ", self);
-            __vertexBuffer  = __vertexBuilder.__vertexBuffer;
-            __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
+            __vertexBuffer = __vertexBuilder.__vertexBuffer;
+            Draw = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;
         }
     }
     
-    static __DrawVertexBuffer = function(_x, _y, _colour, _alpha, _forceNative)
+    static __DrawVertexBuffer = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative_UNUSED)
     {
         static _shdScribblet_u_vPositionAlphaScale = shader_get_uniform(__shdScribblet, "u_vPositionAlphaScale");
         static _shdScribblet_u_iColour = shader_get_uniform(__shdScribblet, "u_iColour");
@@ -261,7 +261,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         shader_reset();
     }
     
-    static __DrawVertexBufferSDF = function(_x, _y, _colour, _alpha, _forceNative)
+    static __DrawVertexBufferSDF = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative_UNUSED)
     {
         static _shdScribbletSDF_u_vPositionAlphaScale = shader_get_uniform(__shdScribbletSDF, "u_vPositionAlphaScale");
         static _shdScribbletSDF_u_iColour = shader_get_uniform(__shdScribbletSDF, "u_iColour");

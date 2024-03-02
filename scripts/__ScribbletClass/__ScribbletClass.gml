@@ -16,7 +16,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
     __font   = _font;
     __scale  = _fontScale;
     
-    __drawMethod = (_fontScale == 1)? __Draw : __DrawScale;
+    Draw = (_fontScale == 1)? __Draw : __DrawScale;
     
     __vertexBuffer  = undefined;
     __fontTexture   = font_get_texture(_font);
@@ -72,7 +72,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
     
     
     
-    static __GetWidth = function()
+    static GetWidth = function()
     {
         if (__width == undefined)
         {
@@ -85,7 +85,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
         return __width;
     }
     
-    static __GetHeight = function()
+    static GetHeight = function()
     {
         if (__height == undefined)
         {
@@ -102,7 +102,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
     
     
     
-    static __Draw = function(_x, _y, _colour, _alpha, _forceNative)
+    static __Draw = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
     {
         draw_set_font(__font);
         draw_set_colour(_colour);
@@ -116,7 +116,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
         if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDraw();
     }
     
-    static __DrawScale = function(_x, _y, _colour, _alpha, _forceNative)
+    static __DrawScale = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
     {
         draw_set_font(__font);
         draw_set_colour(_colour);
@@ -147,13 +147,13 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
             if (SCRIBBLET_VERBOSE) __ScribbletTrace("Compiled ", self);
-            __vertexBuffer  = __vertexBuilder.__vertexBuffer;
-            __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
+            __vertexBuffer = __vertexBuilder.__vertexBuffer;
+            Draw = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;
         }
     }
     
-    static __DrawVertexBuffer = function(_x, _y, _colour, _alpha, _forceNative)
+    static __DrawVertexBuffer = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative_UNUSED)
     {
         static _shdScribblet_u_vPositionAlphaScale = shader_get_uniform(__shdScribblet, "u_vPositionAlphaScale");
         static _shdScribblet_u_iColour = shader_get_uniform(__shdScribblet, "u_iColour");
@@ -165,7 +165,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
         shader_reset();
     }
     
-    static __DrawVertexBufferSDF = function(_x, _y, _colour, _alpha, _forceNative)
+    static __DrawVertexBufferSDF = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative_UNUSED)
     {
         static _shdScribbletSDF_u_vPositionAlphaScale = shader_get_uniform(__shdScribbletSDF, "u_vPositionAlphaScale");
         static _shdScribbletSDF_u_iColour = shader_get_uniform(__shdScribbletSDF, "u_iColour");
