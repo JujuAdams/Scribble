@@ -3,7 +3,8 @@
 #macro __SCRIBBLET_VERSION  "1.0.0"
 #macro __SCRIBBLET_DATE     "2024-03-02"
 
-#macro __SCRIBBLET_TIMEOUT  1000
+#macro __SCRIBBLET_TIMEOUT        1000 //milliseconds
+#macro __SCRIBBLET_BUDGET_OFFSET  30  //microseconds
 
 function __ScribbletSystem()
 {
