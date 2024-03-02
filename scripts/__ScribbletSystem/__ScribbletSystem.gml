@@ -86,7 +86,7 @@ function __ScribbletSystem()
                 _index = (_index + 1) mod array_length(_array);
                 
                 var _element = _array[_index];
-                if (current_time > _element.__lastDraw + __SCRIBBLET_TIMEOUT)
+                if (current_time > _element.__lastUse + __SCRIBBLET_TIMEOUT)
                 {
                     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Freeing ", _element.__key);
                     

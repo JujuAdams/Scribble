@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__ScribbletClassBuilderExt",
+  "name": "__ScribbletClassExtShrink",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
