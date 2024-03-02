@@ -58,7 +58,7 @@
 /// @param [height]
 /// @param [forceNative=false]
 
-#macro __SCRIBBLET_SHRINK_EXT_GET  static _system = __ScribbletSystem();\
+#macro __SCRIBBLET_EXT_SHRINK_GET  static _system = __ScribbletSystem();\
                                    static _cache  = _system.__elementsCache;\
                                    static _array  = _system.__elementsArray;\
                                    ;\
@@ -83,6 +83,6 @@
 function ScribbletDrawExtShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
 {
     if ((_string == "") || (_maxWidth < 0) || (_maxHeight < 0)) return;
-    __SCRIBBLET_SHRINK_EXT_GET
+    __SCRIBBLET_EXT_SHRINK_GET
     _struct.__drawMethod(_x, _y, _colour, _alpha, _forceNative);
 }
