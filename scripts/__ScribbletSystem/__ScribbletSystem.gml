@@ -15,7 +15,7 @@ function __ScribbletSystem()
     _system = {};
     with(_system)
     {
-        __elementsCache     = {};
+        __wrappersCache     = {};
         __elementsArray     = [];
         __elementSweepIndex = 0;
         
@@ -72,7 +72,7 @@ function __ScribbletSystem()
     time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
     {
         static _system = __ScribbletSystem();
-        static _cache  = _system.__elementsCache;
+        static _cache  = _system.__wrappersCache;
         static _array  = _system.__elementsArray;
         
         with(_system)
@@ -86,7 +86,7 @@ function __ScribbletSystem()
                 _index = (_index + 1) mod array_length(_array);
                 
                 var _element = _array[_index];
-                if (current_time > _element.__lastUse + __SCRIBBLET_TIMEOUT)
+                if ((not weak_ref_alive(_element.__wrapper)) && (current_time > _element.__lastDraw + __SCRIBBLET_TIMEOUT))
                 {
                     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Freeing ", _element.__key);
                     

@@ -9,6 +9,8 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
 {
     static _system = __ScribbletSystem();
     
+    __wrapper = undefined;
+    
     __key    = _key;
     __string = _string;
     __hAlign = _hAlign;
@@ -71,6 +73,11 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
     
     
     
+    
+    static toString = function()
+    {
+        return __key;
+    }
     
     static GetWidth = function()
     {

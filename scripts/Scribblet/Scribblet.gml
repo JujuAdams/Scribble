@@ -26,25 +26,27 @@
 function Scribblet(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
 {
     static _system = __ScribbletSystem();
-    static _cache  = _system.__elementsCache;
+    static _cache  = _system.__wrappersCache;
     static _array  = _system.__elementsArray;
     
     if (_string == "") return;
     if (_font == undefined) _font = _system.__defaultFont;
     
     var _key = string_concat(_string, ":",
-                                _hAlign + 3*_vAlign, ":", //Pack these flags together
-                                _font, ":",
-                                _fontScale, ":A");
+                             _hAlign + 3*_vAlign, ":", //Pack these flags together
+                             _font, ":",
+                             _fontScale, ":A");
     
-    var _struct = _cache[$ _key];
-    if (_struct == undefined)
+    var _wrapper = _cache[$ _key];
+    if (_wrapper == undefined)
     {
-        _struct = new __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale);
-        _cache[$ _key] = _struct;
-        array_push(_array, _struct);
+        var _element = new __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale);
+        var _wrapper = new __ScribbletClassWrapper(_element);
+        _element.__wrapper = _wrapper;
+        
+        _cache[$ _key] = _wrapper;
+        array_push(_array, _element);
     }
     
-    _struct.__lastUse = current_time;
-    return _struct;
+    return _wrapper;
 }

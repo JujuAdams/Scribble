@@ -49,7 +49,7 @@
 function ScribbletExt(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
 {
     static _system = __ScribbletSystem();
-    static _cache  = _system.__elementsCache;
+    static _cache  = _system.__wrappersCache;
     static _array  = _system.__elementsArray;
     
     if (_string == "") return;
@@ -60,14 +60,16 @@ function ScribbletExt(_string, _hAlign = fa_left, _vAlign = fa_top, _font = unde
                              _font, ":",
                              _fontScale, ":D");
     
-    var _struct = _cache[$ _key];
-    if (_struct == undefined)
+    var _wrapper = _cache[$ _key];
+    if (_wrapper == undefined)
     {
-        _struct = new __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale);
-        _cache[$ _key] = _struct;
-        array_push(_array, _struct);
+        var _element = new __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale);
+        var _wrapper = new __ScribbletClassWrapper(_element);
+        _element.__wrapper = _wrapper;
+        
+        _cache[$ _key] = _wrapper;
+        array_push(_array, _element);
     }
     
-    _struct.__lastUse = current_time;
-    return _struct;
+    return _wrapper;
 }

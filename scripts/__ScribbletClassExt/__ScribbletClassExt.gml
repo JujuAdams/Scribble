@@ -10,6 +10,8 @@ function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale)
     static _system     = __ScribbletSystem();
     static _colourDict = _system.__colourDict;
     
+    __wrapper = undefined;
+    
     __key    = _key;
     __string = _string;
     __hAlign = _hAlign;
@@ -214,6 +216,11 @@ function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale)
     
     
     
+    
+    static toString = function()
+    {
+        return __key;
+    }
     
     static GetWidth = function()
     {
