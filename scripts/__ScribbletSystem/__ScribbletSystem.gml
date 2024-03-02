@@ -17,8 +17,9 @@ function __ScribbletSystem()
         __cacheSpaceWidth  = {};
         __cacheSpaceHeight = {};
         
-        __budget     = SCRIBBLET_BUDGET;
-        __budgetUsed = 0;
+        __budget         = SCRIBBLET_BUDGET;
+        __budgetUsed     = 0;
+        __budgetUsedPrev = 0;
         
         __defaultFont = fntTest;
         
@@ -45,7 +46,11 @@ function __ScribbletSystem()
     time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
     {
         static _system = __ScribbletSystem();
-        _system.__budgetUsed = 0;
+        with(_system)
+        {
+            __budgetUsedPrev = __budgetUsed;
+            __budgetUsed = 0;
+        }
     },
     [], -1));
     

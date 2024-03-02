@@ -5,5 +5,5 @@
 function ScribbletGetBudgetUsed()
 {
     static _system = __ScribbletSystem();
-    return _system.__budgetUsed;
+    return _system.__budgetUsedPrev;
 }
