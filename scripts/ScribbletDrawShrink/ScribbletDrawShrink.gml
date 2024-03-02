@@ -27,8 +27,9 @@
 /// @param [fontScale=1]
 /// @param [width]
 /// @param [height]
+/// @param [forceNative=false]
 
-function ScribbletDrawShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
+function ScribbletDrawShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
 {
     static _system = __ScribbletSystem();
     static _cache  = _system.__elementsCache;
@@ -52,7 +53,7 @@ function ScribbletDrawShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
         array_push(_array, _struct);
     }
     
-    _struct.__drawMethod(_x, _y, _colour, _alpha);
+    _struct.__drawMethod(_x, _y, _colour, _alpha, _forceNative);
     _struct.__lastDraw = current_time;
     return _struct;
 }
@@ -163,7 +164,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
     
     
     
-    static __Draw = function(_x, _y, _colour, _alpha)
+    static __Draw = function(_x, _y, _colour, _alpha, _forceNative)
     {
         draw_set_font(__font);
         draw_set_colour(_colour);
@@ -172,12 +173,12 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
         draw_set_valign(__vAlign);
         
         draw_text(_x, _y, __string);
-        __BuildVertexBuffer();
+        if (not _forceNative) __BuildVertexBuffer();
         
         if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
-    static __DrawScale = function(_x, _y, _colour, _alpha)
+    static __DrawScale = function(_x, _y, _colour, _alpha, _forceNative)
     {
         draw_set_font(__font);
         draw_set_colour(_colour);
@@ -186,7 +187,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
         draw_set_valign(__vAlign);
         
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
-        __BuildVertexBuffer();
+        if (not _forceNative) __BuildVertexBuffer();
         
         if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
@@ -211,7 +212,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
         _system.__budgetUsed += get_timer() - _timer;
     }
     
-    static __DrawVertexBuffer = function(_x, _y, _colour, _alpha)
+    static __DrawVertexBuffer = function(_x, _y, _colour, _alpha, _forceNative)
     {
         static _shdScribblet_u_vPositionAlphaScale = shader_get_uniform(__shdScribblet, "u_vPositionAlphaScale");
         static _shdScribblet_u_iColour = shader_get_uniform(__shdScribblet, "u_iColour");
@@ -223,7 +224,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
         shader_reset();
     }
     
-    static __DrawVertexBufferSDF = function(_x, _y, _colour, _alpha)
+    static __DrawVertexBufferSDF = function(_x, _y, _colour, _alpha, _forceNative)
     {
         static _shdScribbletSDF_u_vPositionAlphaScale = shader_get_uniform(__shdScribbletSDF, "u_vPositionAlphaScale");
         static _shdScribbletSDF_u_iColour = shader_get_uniform(__shdScribbletSDF, "u_iColour");
