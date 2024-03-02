@@ -4,7 +4,7 @@ if (mouse_check_button(mb_left))
     height = mouse_y - y;
 }
 
-if (keyboard_check_pressed(vk_space)) ScribbleSetBudget((ScribbleGetBudget() < 0)? 1000 : -1);
+if (keyboard_check_pressed(vk_space)) ScribbletSetBudget((ScribbletGetBudget() < 0)? 1000 : -1);
 
 if (keyboard_check_pressed(vk_left)) width--;
 if (keyboard_check_pressed(vk_right)) width++;
@@ -13,6 +13,9 @@ if (keyboard_check_pressed(ord("1"))) mode = 1;
 if (keyboard_check_pressed(ord("2"))) mode = 2;
 if (keyboard_check_pressed(ord("3"))) mode = 3;
 if (keyboard_check_pressed(ord("4"))) mode = 4;
+if (keyboard_check_pressed(ord("5"))) mode = 5;
+if (keyboard_check_pressed(ord("6"))) mode = 6;
+if (keyboard_check_pressed(ord("7"))) mode = 7;
 
 if (current_time - startTime > 2000)
 {

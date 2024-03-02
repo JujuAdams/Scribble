@@ -2,6 +2,7 @@ width  = 314; //room_width - x;
 height = 43; //room_height - y;
 
 testString = 2*"Sphinx of black quartz, hear my vow! ";
+testStringColor = 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ";
 
 vertex_format_begin();
 vertex_format_add_position_3d();
@@ -30,4 +31,4 @@ vertex_freeze(vertexBuffer);
 
 stressCount = 1000;
 startTime = current_time;
-mode = 4;
+mode = 7;

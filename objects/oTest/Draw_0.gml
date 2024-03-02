@@ -1,8 +1,12 @@
 draw_set_font(fntTest);
 
-draw_text(0, 0, Concat("mode=", mode, ", budget=", ScribbleGetBudget()));
-draw_text(0, 30, Concat(floor(stressCount), "/", fps));
+stressCount = 1;
+
+draw_text(0, 0, Concat("test mode=", mode));
+draw_text(0, 60, Concat(floor(stressCount), "/", fps));
 draw_text(0, 90, string(width) + " x " + string(height));
+draw_line(x, y, x + width, y);
+draw_line(x, y, x, y + height);
 draw_line(width + x, 0, width + x, room_height);
 draw_line(0, height + y, room_width, height + y);
 
@@ -13,29 +17,51 @@ switch(mode)
     case 1:
         repeat(stressCount)
         {
-            ScribbleFastRaw(x, y, testString, _limitWidth, height);
+            ScribbletDrawNative(x, y, testString, un, un, un, un, un, un);
         }
     break;
     
     case 2:
         repeat(stressCount)
         {
-            ScribbleFastTest(x, y, testString, un, un, un, un, fntTest, un, _limitWidth, height);
+            ScribbletDraw(x, y, testString, un, un, un, un, un, un);
         }
     break;
     
     case 3:
         repeat(stressCount)
         {
-            ScribbleFastBReflow(x, y, testString, un, un, un, un, fntTest, un, _limitWidth, height);
+            ScribbletDrawShrink(x, y, testString, un, un, un, un, un, un, _limitWidth, height);
         }
     break;
     
     case 4:
-        draw_circle(x, y, 20, true);
         repeat(stressCount)
         {
-            ScribbleFastAReflow(x, y, 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ", un, un, un, un, un, un, _limitWidth, height);
+            ScribbletDrawFit(x, y, testString, un, un, un, un, fntTestSDF, un, _limitWidth, height);
+        }
+    break;
+    
+    case 5:
+        repeat(stressCount)
+        {
+            ScribbletDrawExt(x, y, testString, un, un, un, un, un, un);
+        }
+    break;
+    
+    case 6:
+        repeat(stressCount)
+        {
+            ScribbletDrawExtShrink(x, y, testStringColor, un, un, un, un, un, un, _limitWidth, height);
+        }
+    break;
+    
+    case 7:
+        repeat(stressCount)
+        {
+            ScribbletDrawExtFit(x, y, testStringColor, un, un, un, un, un, un, _limitWidth, height);
         }
     break;
 }
+
+draw_text(0, 30, Concat(ScribbletGetBudget(), "us, used=", ScribbletGetBudgetUsed(), "us"));
