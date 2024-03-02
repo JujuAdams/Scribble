@@ -1,7 +1,5 @@
 draw_set_font(fntTest);
 
-stressCount = 1;
-
 draw_text(0, 0, Concat("test mode=", mode));
 draw_text(0, 60, Concat(floor(stressCount), "/", fps));
 draw_text(0, 90, string(width) + " x " + string(height));
@@ -17,49 +15,49 @@ switch(mode)
     case 1:
         repeat(stressCount)
         {
-            ScribbletDrawNative(x, y, testString, un, un, un, un, un, un);
+            ScribbletDrawNative(x, y, testString, un, un, hAlign, vAlign, font, un);
         }
     break;
     
     case 2:
         repeat(stressCount)
         {
-            ScribbletDraw(x, y, testString, un, un, un, un, un, un);
+            ScribbletDraw(x, y, testString, un, un, hAlign, vAlign, font, un);
         }
     break;
     
     case 3:
         repeat(stressCount)
         {
-            ScribbletDrawShrink(x, y, testString, un, un, un, un, un, un, _limitWidth, height);
+            ScribbletDrawShrink(x, y, testString, un, un, hAlign, vAlign, font, un, _limitWidth, height);
         }
     break;
     
     case 4:
         repeat(stressCount)
         {
-            ScribbletDrawFit(x, y, testString, un, un, un, un, fntTestSDF, un, _limitWidth, height);
+            ScribbletDrawFit(x, y, testString, un, un, hAlign, vAlign, font, un, _limitWidth, height);
         }
     break;
     
     case 5:
         repeat(stressCount)
         {
-            ScribbletDrawExt(x, y, testString, un, un, un, un, un, un);
+            ScribbletDrawExt(x, y, testString, un, un, hAlign, vAlign, font, un);
         }
     break;
     
     case 6:
         repeat(stressCount)
         {
-            ScribbletDrawExtShrink(x, y, testStringColor, un, un, un, un, un, un, _limitWidth, height);
+            ScribbletDrawExtShrink(x, y, testStringColor, un, un, hAlign, vAlign, font, un, _limitWidth, height);
         }
     break;
     
     case 7:
         repeat(stressCount)
         {
-            ScribbletDrawExtFit(x, y, testStringColor, un, un, un, un, un, un, _limitWidth, height);
+            ScribbletDrawExtFit(x, y, testStringColor, un, un, hAlign, vAlign, font, un, _limitWidth, height);
         }
     break;
 }

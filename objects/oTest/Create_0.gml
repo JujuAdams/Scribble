@@ -1,6 +1,11 @@
 width  = 314; //room_width - x;
 height = 43; //room_height - y;
 
+hAlign = fa_left;
+vAlign = fa_top;
+
+font = fntTest;
+
 testString = 2*"Sphinx of black quartz, hear my vow! ";
 testStringColor = 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ";
 

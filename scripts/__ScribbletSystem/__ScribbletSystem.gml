@@ -17,7 +17,7 @@ function __ScribbletSystem()
         __cacheSpaceWidth  = {};
         __cacheSpaceHeight = {};
         
-        __budget     = 1000;
+        __budget     = SCRIBBLET_BUDGET;
         __budgetUsed = 0;
         
         __defaultFont = fntTest;
