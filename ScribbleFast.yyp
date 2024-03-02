@@ -14,6 +14,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Scribblet (Mini Scribble)","folderPath":"folders/Scribblet (Mini Scribble).yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"(System)","folderPath":"folders/Scribblet (Mini Scribble)/(System).yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Drawing","folderPath":"folders/Scribblet (Mini Scribble)/Drawing.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Setup","folderPath":"folders/Scribblet (Mini Scribble)/Setup.yy",},
   ],
   "IncludedFiles": [],
   "isEcma": false,

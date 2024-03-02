@@ -103,6 +103,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     }
     else
     {
+        if (SCRIBBLET_RESET_DRAW_STATE) var _oldFont = draw_get_font();
         draw_set_font(__font);
         
         var _height = _fontScale*string_height_ext(_string, -1, _maxWidth/_fontScale);
@@ -174,6 +175,8 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
             __wrapWidth  = _maxWidth/_lowerScale;
             __drawMethod = __DrawReflow;
         }
+        
+        if (SCRIBBLET_RESET_DRAW_STATE) draw_set_font(_oldFont);
     }
     
     __vertexBuffer  = undefined;
@@ -247,7 +250,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     static __DrawScale = function(_x, _y, _colour, _alpha)
@@ -261,7 +264,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     static __DrawWrap = function(_x, _y, _colour, _alpha)
@@ -275,7 +278,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         draw_text_ext(_x, _y, __string, -1, __wrapWidth);
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     static __DrawReflow = function(_x, _y, _colour, _alpha)
@@ -289,7 +292,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         draw_text_ext_transformed(_x, _y, __string, -1, __wrapWidth, __scale, __scale, 0);
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     

@@ -109,7 +109,9 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
     
     __drawMethod = __DrawNative;
     
+    if (SCRIBBLET_RESET_DRAW_STATE) var _oldFont = draw_get_font();
     draw_set_font(_font);
+    
     var _spaceWidth = __ScribbletGetSpaceWidth(_font);
     var _lineHeight = __ScribbletGetSpaceHeight(_font);
     var _substringArray = string_split(__string, "[");
@@ -411,6 +413,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
     __fontTexture   = font_get_texture(_font);
     __vertexBuilder = new __ScribbletClassBuilderExtFit(__fragArray, _font);
     
+    if (SCRIBBLET_RESET_DRAW_STATE) draw_set_font(_oldFont);
     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Created ", self);
     
     
@@ -456,7 +459,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
         
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     static __DrawSprites = function(_x, _y, _alpha)

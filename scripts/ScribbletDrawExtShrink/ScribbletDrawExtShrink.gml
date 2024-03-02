@@ -104,6 +104,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
     __vertexBuilder = new __ScribbletClassBuilderExt(__fragArray, _font);
     __fontTexture   = font_get_texture(_font);
     
+    if (SCRIBBLET_RESET_DRAW_STATE) var _oldFont = draw_get_font();
     draw_set_font(__font);
     
     var _substringArray = string_split(__string, "[");
@@ -268,6 +269,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         }
     }
     
+    if (SCRIBBLET_RESET_DRAW_STATE) draw_set_font(_oldFont);
     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Created ", self);
     
     
@@ -299,7 +301,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     static __DrawSimpleScaled = function(_x, _y, _colour, _alpha)
@@ -313,7 +315,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     static __DrawNative = function(_x, _y, _colour, _alpha)
@@ -343,7 +345,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     static __DrawSprites = function(_x, _y, _alpha)

@@ -84,6 +84,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
     }
     else
     {
+        if (SCRIBBLET_RESET_DRAW_STATE) var _oldFont = draw_get_font();
         draw_set_font(__font);
         
         //Scale down as appropriate
@@ -118,9 +119,9 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
             case fa_middle: __yOffset = -__width/2; break;
             case fa_bottom: __yOffset = -__height;  break;
         }
+        
+        if (SCRIBBLET_RESET_DRAW_STATE) draw_set_font(_oldFont);
     }
-    
-    draw_set_font(_font);
     
     __vertexBuffer  = undefined;
     __fontTexture   = font_get_texture(_font);
@@ -173,7 +174,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     static __DrawScale = function(_x, _y, _colour, _alpha)
@@ -187,7 +188,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     

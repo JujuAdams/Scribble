@@ -83,6 +83,8 @@ function __ScribbletClassBuilderFit(_string, _font, _hAlign, _vAlign, _wrapWidth
     static __Layout = function()
     {
         var _wrapWidth = __wrapWidth;
+        
+        if (SCRIBBLET_RESET_DRAW_STATE) var _oldFont = draw_get_font();
         draw_set_font(__font);
         
         //I'd love to pull this out of the glyph data but the values we get are inaccurate
@@ -164,6 +166,8 @@ function __ScribbletClassBuilderFit(_string, _font, _hAlign, _vAlign, _wrapWidth
         }
         
         __tickMethod = __Tick;
+        
+        if (SCRIBBLET_RESET_DRAW_STATE) draw_set_font(_oldFont);
     }
     
     static __Tick = function()

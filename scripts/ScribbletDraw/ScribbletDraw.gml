@@ -71,12 +71,11 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
     __fontTexture   = font_get_texture(_font);
     __vertexBuilder = new __ScribbletClassBuilder(__string, _font);
     
-    draw_set_font(_font);
     __width  = undefined;
     __height = undefined;
     
     
-    
+    if (SCRIBBLET_RESET_DRAW_STATE) var _oldFont = draw_get_font();
     draw_set_font(__font);
     
     //Cache string width/height to handle alignment positioning
@@ -114,6 +113,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
         break;
     }
     
+    if (SCRIBBLET_RESET_DRAW_STATE) draw_set_font(_oldFont);
     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Created ", self);
     
     
@@ -161,7 +161,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
         draw_text(_x, _y, __string);
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     static __DrawScale = function(_x, _y, _colour, _alpha)
@@ -175,7 +175,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         __BuildVertexBuffer();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
     }
     
     
