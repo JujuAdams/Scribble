@@ -78,6 +78,7 @@ function ScribbleFastBShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
+    return _struct;
 }
 
 function __ScribbleClassFastBShrink(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
@@ -101,27 +102,31 @@ function __ScribbleClassFastBShrink(_string, _hAlign, _vAlign, _font, _fontScale
     __vertexBuilder = new __ScribbleClassFastBuilderB(__fragArray, _font);
     __fontTexture   = font_get_texture(_font);
     
+    draw_set_font(__font);
+    
     var _substringArray = string_split(__string, "[");
     if (array_length(_substringArray) <= 1) 
     {
         //No square brackets, fall back on simple rendering
         
-        var _width  = string_width(__string);
-        var _height = string_height(__string);
-        __scale = min(1, _maxWidth/_width, _maxHeight/_height);
+        __width   = string_width(__string);
+        __height  = string_height(__string);
+        __scale   = min(1, _maxWidth/_width, _maxHeight/_height);
+        __width  *= __scale;
+        __height *= __scale;
         
         switch(__hAlign)
         {
-            case fa_left:   __xOffset = 0;                 break;
-            case fa_center: __xOffset = -__scale*_width/2; break;
-            case fa_right:  __xOffset = -__scale*_width;   break;
+            case fa_left:   __xOffset = 0;          break;
+            case fa_center: __xOffset = -__width/2; break;
+            case fa_right:  __xOffset = -__width;   break;
         }
         
         switch(__vAlign)
         {
-            case fa_top:    __yOffset = 0;                  break;
-            case fa_middle: __yOffset = -__scale*_height/2; break;
-            case fa_bottom: __yOffset = -__scale*_height;   break;
+            case fa_top:    __yOffset = 0;           break;
+            case fa_middle: __yOffset = -__height/2; break;
+            case fa_bottom: __yOffset = -__height;   break;
         }
         
         __drawMethod = (__scale == 1)? __DrawSimple : __DrawSimpleScaled;
@@ -240,26 +245,42 @@ function __ScribbleClassFastBShrink(_string, _hAlign, _vAlign, _font, _fontScale
             ++_i;
         }
         
-        var _width  = _x;
-        var _height = _lineHeight;
-        __scale = min(1, _maxWidth/_width, _maxHeight/_height);
+        __width   = _x;
+        __height  = _lineHeight;
+        __scale   = min(1, _maxWidth/_width, _maxHeight/_height);
+        __width  *= __scale;
+        __height *= __scale;
         
         switch(__hAlign)
         {
-            case fa_left:   __xOffset = 0;                 break;
-            case fa_center: __xOffset = -__scale*_width/2; break;
-            case fa_right:  __xOffset = -__scale*_width;   break;
+            case fa_left:   __xOffset = 0;          break;
+            case fa_center: __xOffset = -__width/2; break;
+            case fa_right:  __xOffset = -__width;   break;
         }
         
         switch(__vAlign)
         {
-            case fa_top:    __yOffset = 0;                  break;
-            case fa_middle: __yOffset = -__scale*_height/2; break;
-            case fa_bottom: __yOffset = -__scale*_height;   break;
+            case fa_top:    __yOffset = 0;           break;
+            case fa_middle: __yOffset = -__height/2; break;
+            case fa_bottom: __yOffset = -__height;   break;
         }
     }
     
     if (SCRIBBLE_FAST_VERBOSE) Trace("Created ", self);
+    
+    
+    
+    
+    
+    static GetWidth = function()
+    {
+        return __width;
+    }
+    
+    static GetHeight = function()
+    {
+        return __height;
+    }
     
     
     

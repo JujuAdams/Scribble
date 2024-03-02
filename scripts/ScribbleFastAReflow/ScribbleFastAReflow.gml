@@ -53,6 +53,7 @@ function ScribbleFastAReflow(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
+    return _struct;
 }
 
 function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
@@ -67,6 +68,10 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
     
     __drawMethod = __Draw;
     
+    __wrapped = true;
+    __width   = undefined;
+    __height  = undefined;
+    
     
     
     
@@ -74,13 +79,13 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
     if (is_infinity(_maxWidth))
     {
         //No limits!
+        __wrapped = false;
         __scale = _fontScale;
         if (_fontScale != 1) __drawMethod = __DrawScale;
     }
     else if (is_infinity(_maxHeight))
     {
         //No height limit, just draw wrapped as usual
-        
         if (_fontScale == 1)
         {
             __scale      = 1;
@@ -96,11 +101,12 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
     }
     else
     {
+        draw_set_font(__font);
+        
         var _height = _fontScale*string_height_ext(_string, -1, _maxWidth/_fontScale);
         if (_height <= _maxHeight)
         {
             //Height limit is enough, just draw wrapped as usual
-        
             if (_fontScale == 1)
             {
                 __scale      = 1;
@@ -159,6 +165,9 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
                 }
             }
             
+            __width  = _width;
+            __height = _height;
+            
             __scale      = _lowerScale;
             __wrapWidth  = _maxWidth/_lowerScale;
             __drawMethod = __DrawReflow;
@@ -170,6 +179,56 @@ function __ScribbleClassFastAReflow(_string, _hAlign, _vAlign, _font, _fontScale
     __vertexBuilder = new __ScribbleClassFastBuilderAReflow(__string, _font, __hAlign, __vAlign, __wrapWidth);
     
     if (SCRIBBLE_FAST_VERBOSE) Trace("Created ", self);
+    
+    
+    
+    
+    
+    static GetWidth = function()
+    {
+        if (__width == undefined)
+        {
+            var _oldFont = draw_get_font();
+            draw_set_font(__font);
+            
+            if (__wrapped)
+            {
+                //Subtract 1 here to fix on off-by-one in GameMaker's text layout
+                __width = __scale*string_width_ext(__string, -1, __wrapWidth);
+            }
+            else
+            {
+                __width = __scale*string_width(__string);
+            }
+            
+            draw_set_font(_oldFont);
+        }
+       
+        return __width;
+    }
+    
+    static GetHeight = function()
+    {
+        if (__height == undefined)
+        {
+            var _oldFont = draw_get_font();
+            draw_set_font(__font);
+            
+            if (__wrapped)
+            {
+                //Subtract 1 here to fix on off-by-one in GameMaker's text layout
+                __height = __scale*string_height_ext(__string, -1, __wrapWidth);
+            }
+            else
+            {
+                __height = __scale*string_height(__string);
+            }
+            
+            draw_set_font(_oldFont);
+        }
+       
+        return __height;
+    }
     
     
     

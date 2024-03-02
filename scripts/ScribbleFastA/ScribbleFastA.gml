@@ -47,6 +47,7 @@ function ScribbleFastA(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign =
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
+    return _struct;
 }
 
 function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) constructor
@@ -65,6 +66,14 @@ function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) cons
     __fontTexture   = font_get_texture(_font);
     __vertexBuilder = new __ScribbleClassFastBuilderA(__string, _font);
     
+    draw_set_font(_font);
+    __width  = undefined;
+    __height = undefined;
+    
+    
+    
+    draw_set_font(__font);
+    
     //Cache string width/height to handle alignment positioning
     switch(_hAlign)
     {
@@ -73,13 +82,13 @@ function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) cons
         break;
         
         case fa_center:
-            draw_set_font(_font);
-            __xOffset = -__scale*string_width(_string)/2;
+            __width = __scale*string_width(_string);
+            __xOffset = -__width/2;
         break;
         
         case fa_right:
-            draw_set_font(_font);
-            __xOffset = -__scale*string_width(_string);
+            __width = __scale*string_width(_string);
+            __xOffset = -__width;
         break;
     }
     
@@ -90,17 +99,47 @@ function __ScribbleClassFastA(_string, _hAlign, _vAlign, _font, _fontScale) cons
         break;
         
         case fa_middle:
-            draw_set_font(_font);
-            __yOffset = -__scale*string_height(_string)/2;
+            __height = __scale*string_height(_string);
+            __yOffset = -__height/2;
         break;
         
         case fa_bottom:
-            draw_set_font(_font);
-            __yOffset = -__scale*string_height(_string);
+            __height = __scale*string_height(_string);
+            __yOffset = -__height;
         break;
     }
     
     if (SCRIBBLE_FAST_VERBOSE) Trace("Created ", self);
+    
+    
+    
+    
+    
+    static GetWidth = function()
+    {
+        if (__width == undefined)
+        {
+            var _oldFont = draw_get_font();
+            draw_set_font(__font);
+            __width = __scale*string_width(__string);
+            draw_set_font(_oldFont);
+        }
+       
+        return __width;
+    }
+    
+    static GetHeight = function()
+    {
+        if (__height == undefined)
+        {
+            var _oldFont = draw_get_font();
+            draw_set_font(__font);
+            __height = __scale*string_height(__string);
+            draw_set_font(_oldFont);
+        }
+       
+        return __height;
+    }
     
     
     

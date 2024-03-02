@@ -79,6 +79,7 @@ function ScribbleFastBReflow(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
+    return _struct;
 }
 
 function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
@@ -100,6 +101,9 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     __fontTexture   = font_get_texture(_font);
     
     var _layoutArray = [];
+    
+    __width  = undefined;
+    __height = undefined;
     
     __drawMethod = __DrawNative;
     
@@ -228,18 +232,17 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     
     _layoutArray[array_length(_layoutArray)-1].__whitespaceFollows = true;
     
+    var _overallWidth = 0;
+    
     var _upperScale = _fontScale;
     var _lowerScale = 0;
+    var _tryScale   = _upperScale;
     
     var _iterations = 0;
-    repeat(SCRIBBLE_FAST_FIT_ITERATIONS)
+    while(_iterations < SCRIBBLE_FAST_FIT_ITERATIONS)
     {
         //TODO - Set up special "last iteration" loop
         var _lastIteration = (_iterations >= SCRIBBLE_FAST_FIT_ITERATIONS-1);
-        
-        //Bias scale search very slighty to be larger
-        //This usually finds the global maxima rather than narrowing down on a local maxima
-        var _tryScale = lerp(_lowerScale, _upperScale, 0.51);
         
         var _adjustedWidth  = _maxWidth/_tryScale;
         var _adjustedHeight = _maxHeight/_tryScale;
@@ -270,17 +273,15 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
                 {
                     if (_lastIteration)
                     {
+                        _overallWidth = max(_overallWidth, _cursorX - _spaceWidth);
+                        
                         //Sort out the horizontal alignment for the current line
                         if (_hAlign == fa_center)
                         {
                             var _j = _lineStart;
                             repeat(_stretchStart - _lineStart)
                             {
-                                with(_layoutArray[_j])
-                                {
-                                    __x -= _cursorX/2;
-                                }
-                                
+                                with(_layoutArray[_j]) __x -= _cursorX/2;
                                 ++_j;
                             }
                         }
@@ -336,12 +337,14 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
             ++_i;
         }
         
-        if (_iterations == SCRIBBLE_FAST_FIT_ITERATIONS-1)
+        if (_iterations >= SCRIBBLE_FAST_FIT_ITERATIONS-1)
         {
+            _overallWidth = max(_overallWidth, _cursorX - (_fragment.__whitespaceFollows? _spaceWidth : 0));
+            
             //Sort out the horizontal alignment for the last line (only on the last iteration though)
             if ((_hAlign == fa_center) || (_hAlign == fa_right))
             {
-                var _offset = (_hAlign == fa_center)? (_cursorX/2) : _cursorX;
+                var _offset = (_hAlign == fa_center)? (_overallWidth/2) : _overallWidth;
                 var _j = _lineStart;
                 repeat(_stretchStart - _lineStart)
                 {
@@ -351,8 +354,10 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
             }
         }
         
+        //Determine if this iteration should be the new upper or lower bound based on whether we
+        //exceeded the height limit
         var _height = _cursorY + _lineHeight;
-        if (_height >= _adjustedHeight)
+        if (_height > _adjustedHeight)
         {
             _upperScale = _tryScale;
             
@@ -360,13 +365,28 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         else
         {
             _lowerScale = _tryScale;
+            
+            //We start at the base starting scale in the first (0th) iteration. If we already fit
+            //into the bounding box then we can skip a lot of iterations
+            if (_iterations == 0) _iterations = SCRIBBLE_FAST_FIT_ITERATIONS-2;
         }
         
-        //Ensure the final iteration causes a valid scale
-        if (_iterations >= SCRIBBLE_FAST_FIT_ITERATIONS-2) _upperScale = _lowerScale;
+        //Ensure the final iteration uses a valid scale
+        if (_iterations >= SCRIBBLE_FAST_FIT_ITERATIONS-2)
+        {
+            _tryScale = _lowerScale;
+        }
+        else
+        {
+            //Bias scale search very slighty to be larger
+            //This usually finds the global maxima rather than narrowing down on a local maxima
+            _tryScale = lerp(_lowerScale, _upperScale, 0.51);
+        }
+        
         ++_iterations;
     }
     
+    //Adjust for vertical alignment
     if ((_vAlign == fa_middle) || (_vAlign == fa_bottom))
     {
         var _offset = (_vAlign == fa_middle)? (_height/2) : _height;
@@ -378,7 +398,9 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
         }
     }
     
-    __scale = _lowerScale;
+    __scale  = _lowerScale;
+    __width  = __scale*_overallWidth;
+    __height = __scale*_height;
     
     __xOffset = 0;
     __yOffset = 0;
@@ -388,6 +410,20 @@ function __ScribbleClassFastBReflow(_string, _hAlign, _vAlign, _font, _fontScale
     __vertexBuilder = new __ScribbleClassFastBuilderBReflow(__fragArray, _font);
     
     if (SCRIBBLE_FAST_VERBOSE) Trace("Created ", self);
+    
+    
+    
+    
+    
+    static GetWidth = function()
+    {
+        return __width;
+    }
+    
+    static GetHeight = function()
+    {
+        return __height;
+    }
     
     
     

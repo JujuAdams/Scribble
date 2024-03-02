@@ -43,6 +43,12 @@ function __ScribbleClassFastBuilderAReflow(_string, _font, _hAlign, _vAlign, _wr
     __glyphX = 0;
     __glyphY = 0;
     
+    if (__string == "")
+    {
+        vertex_end(__vertexBuffer);
+        __tickMethod = __Freeze;
+    }
+    
     
     
     
