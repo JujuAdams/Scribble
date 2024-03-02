@@ -199,7 +199,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
     
     static __BuildVertexBufferTimed = function()
     {
-        if (_system.__budgetUsed >= _system.__budget - __SCRIBBLET_BUDGET_OFFSET return;
+        if (_system.__budgetUsed >= _system.__budget) return;
         var _timer = get_timer();
         __BuildVertexBuffer();
         _system.__budgetUsed += get_timer() - _timer;
