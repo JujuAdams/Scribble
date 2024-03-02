@@ -49,7 +49,7 @@ function ScribbletDrawFit(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlig
     var _struct = _cache[$ _key];
     if (_struct == undefined)
     {
-        _struct = new __ScribbletClassAReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
+        _struct = new __ScribbletClassFit(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
         _cache[$ _key] = _struct;
     }
     
@@ -57,7 +57,7 @@ function ScribbletDrawFit(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlig
     return _struct;
 }
 
-function __ScribbletClassAReflow(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
+function __ScribbletClassFit(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
 {
     static _system = __ScribbletSystem();
     

@@ -13,6 +13,7 @@
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Scribblet (Mini Scribble)","folderPath":"folders/Scribblet (Mini Scribble).yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"(System)","folderPath":"folders/Scribblet (Mini Scribble)/(System).yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Drawing","folderPath":"folders/Scribblet (Mini Scribble)/Drawing.yy",},
   ],
   "IncludedFiles": [],
   "isEcma": false,
@@ -31,6 +32,7 @@
     {"id":{"name":"__ScribbletTrace","path":"scripts/__ScribbletTrace/__ScribbletTrace.yy",},},
     {"id":{"name":"ScribbletDrawExtFit","path":"scripts/ScribbletDrawExtFit/ScribbletDrawExtFit.yy",},},
     {"id":{"name":"ScribbletResetFontState","path":"scripts/ScribbletResetFontState/ScribbletResetFontState.yy",},},
+    {"id":{"name":"ScribbletSetColor","path":"scripts/ScribbletSetColor/ScribbletSetColor.yy",},},
     {"id":{"name":"sTestShape","path":"sprites/sTestShape/sTestShape.yy",},},
     {"id":{"name":"__Misc","path":"scripts/__Misc/__Misc.yy",},},
     {"id":{"name":"__shdScribblet","path":"shaders/__shdScribblet/__shdScribblet.yy",},},
@@ -49,6 +51,7 @@
     {"id":{"name":"ScribbletGetBudgetUsed","path":"scripts/ScribbletGetBudgetUsed/ScribbletGetBudgetUsed.yy",},},
     {"id":{"name":"__shdScribbletColor","path":"shaders/__shdScribbletColor/__shdScribbletColor.yy",},},
     {"id":{"name":"__shdScribbletSDF","path":"shaders/__shdScribbletSDF/__shdScribbletSDF.yy",},},
+    {"id":{"name":"ScribbletGetColor","path":"scripts/ScribbletGetColor/ScribbletGetColor.yy",},},
     {"id":{"name":"ScribbletDrawFit","path":"scripts/ScribbletDrawFit/ScribbletDrawFit.yy",},},
     {"id":{"name":"__ScribbletGetSpaceHeight","path":"scripts/__ScribbletGetSpaceHeight/__ScribbletGetSpaceHeight.yy",},},
     {"id":{"name":"ScribbletDrawNative","path":"scripts/ScribbletDrawNative/ScribbletDrawNative.yy",},},

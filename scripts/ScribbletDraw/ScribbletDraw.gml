@@ -43,7 +43,7 @@ function ScribbletDraw(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign =
     var _struct = _cache[$ _key];
     if (_struct == undefined)
     {
-        _struct = new __ScribbletClassA(_string, _hAlign, _vAlign, _font, _fontScale);
+        _struct = new __ScribbletClass(_string, _hAlign, _vAlign, _font, _fontScale);
         _cache[$ _key] = _struct;
     }
     
@@ -51,7 +51,7 @@ function ScribbletDraw(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign =
     return _struct;
 }
 
-function __ScribbletClassA(_string, _hAlign, _vAlign, _font, _fontScale) constructor
+function __ScribbletClass(_string, _hAlign, _vAlign, _font, _fontScale) constructor
 {
     static _system = __ScribbletSystem();
     

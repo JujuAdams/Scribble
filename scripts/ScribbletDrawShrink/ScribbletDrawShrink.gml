@@ -49,7 +49,7 @@ function ScribbletDrawShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
     var _struct = _cache[$ _key];
     if (_struct == undefined)
     {
-        _struct = new __ScribbletClassAShrink(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
+        _struct = new __ScribbletClassShrink(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
         _cache[$ _key] = _struct;
     }
     
@@ -57,7 +57,7 @@ function ScribbletDrawShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
     return _struct;
 }
 
-function __ScribbletClassAShrink(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
+function __ScribbletClassShrink(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
 {
     static _system = __ScribbletSystem();
     

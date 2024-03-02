@@ -59,7 +59,7 @@ switch(mode)
     case 5:
         repeat(stressCount)
         {
-            ScribbletDrawExt(x, y, testString, un, un, hAlign, vAlign, font, fontScale);
+            ScribbletDrawExt(x, y, testStringColor, un, un, hAlign, vAlign, font, fontScale);
         }
     break;
     
