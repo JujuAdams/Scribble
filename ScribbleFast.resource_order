@@ -1,7 +1,7 @@
 {
   "FolderOrderSettings": [
     {"name":"Scribblet (Mini Scribble)","order":8,"path":"folders/Scribblet (Mini Scribble).yy",},
-    {"name":"Drawing","order":10,"path":"folders/Scribblet (Mini Scribble)/Drawing.yy",},
+    {"name":"Drawing","order":11,"path":"folders/Scribblet (Mini Scribble)/Drawing.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"__ScribbletClassBuilder","order":1,"path":"scripts/__ScribbletClassBuilder/__ScribbletClassBuilder.yy",},
@@ -14,12 +14,13 @@
     {"name":"__ScribbletTrace","order":12,"path":"scripts/__ScribbletTrace/__ScribbletTrace.yy",},
     {"name":"ScribbletGetDefaultFont","order":9,"path":"scripts/ScribbletGetDefaultFont/ScribbletGetDefaultFont.yy",},
     {"name":"ScribbletDrawExtFit","order":5,"path":"scripts/ScribbletDrawExtFit/ScribbletDrawExtFit.yy",},
-    {"name":"ScribbletResetFontState","order":5,"path":"scripts/ScribbletResetFontState/ScribbletResetFontState.yy",},
-    {"name":"ScribbletSetColor","order":6,"path":"scripts/ScribbletSetColor/ScribbletSetColor.yy",},
+    {"name":"ScribbletResetFontState","order":10,"path":"scripts/ScribbletResetFontState/ScribbletResetFontState.yy",},
+    {"name":"ScribbletAddColor","order":5,"path":"scripts/ScribbletAddColor/ScribbletAddColor.yy",},
     {"name":"sTestShape","order":7,"path":"sprites/sTestShape/sTestShape.yy",},
     {"name":"__Misc","order":2,"path":"scripts/__Misc/__Misc.yy",},
     {"name":"__shdScribblet","order":8,"path":"shaders/__shdScribblet/__shdScribblet.yy",},
     {"name":"__ScribbletError","order":13,"path":"scripts/__ScribbletError/__ScribbletError.yy",},
+    {"name":"ScribbletDeleteColor","order":7,"path":"scripts/ScribbletDeleteColor/ScribbletDeleteColor.yy",},
     {"name":"fntTest","order":5,"path":"fonts/fntTest/fntTest.yy",},
     {"name":"fntTestSDF","order":6,"path":"fonts/fntTestSDF/fntTestSDF.yy",},
     {"name":"oTest","order":1,"path":"objects/oTest/oTest.yy",},
@@ -34,7 +35,7 @@
     {"name":"__shdScribbletColor","order":10,"path":"shaders/__shdScribbletColor/__shdScribbletColor.yy",},
     {"name":"__shdScribbletSDF","order":9,"path":"shaders/__shdScribbletSDF/__shdScribbletSDF.yy",},
     {"name":"ScribbletSetDefaultFont","order":8,"path":"scripts/ScribbletSetDefaultFont/ScribbletSetDefaultFont.yy",},
-    {"name":"ScribbletGetColor","order":7,"path":"scripts/ScribbletGetColor/ScribbletGetColor.yy",},
+    {"name":"ScribbletGetColor","order":6,"path":"scripts/ScribbletGetColor/ScribbletGetColor.yy",},
     {"name":"ScribbletDrawFit","order":2,"path":"scripts/ScribbletDrawFit/ScribbletDrawFit.yy",},
     {"name":"__ScribbletGetSpaceHeight","order":7,"path":"scripts/__ScribbletGetSpaceHeight/__ScribbletGetSpaceHeight.yy",},
     {"name":"ScribbletDrawShrink","order":3,"path":"scripts/ScribbletDrawShrink/ScribbletDrawShrink.yy",},

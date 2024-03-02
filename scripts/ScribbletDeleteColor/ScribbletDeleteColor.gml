@@ -1,10 +1,9 @@
 // Feather disable all
 
 /// @param name
-/// @param color
 
-function ScribbletSetColor(_name, _color)
+function ScribbletDeleteColor(_name)
 {
     static _colourDict = __ScribbletSystem().__colourDict;
-    _colourDict[$ _name] = _color;
+    variable_struct_remove(_colourDict, _name);
 }

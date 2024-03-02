@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbletSetColor",
+  "name": "ScribbletDeleteColor",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
