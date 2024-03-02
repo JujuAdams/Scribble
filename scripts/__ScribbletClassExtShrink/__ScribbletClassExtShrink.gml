@@ -13,6 +13,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
     static _colourDict = _system.__colourDict;
     
     __wrapper = undefined;
+    __lastDraw = current_time;
     
     __key       = _key;
     __string    = _string;

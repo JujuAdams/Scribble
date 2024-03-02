@@ -12,6 +12,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
     static _system = __ScribbletSystem();
     
     __wrapper = undefined;
+    __lastDraw = current_time;
     
     __key       = _key;
     __string    = _string;

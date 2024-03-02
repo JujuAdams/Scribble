@@ -11,6 +11,7 @@ function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale)
     static _colourDict = _system.__colourDict;
     
     __wrapper = undefined;
+    __lastDraw = current_time;
     
     __key    = _key;
     __string = _string;
