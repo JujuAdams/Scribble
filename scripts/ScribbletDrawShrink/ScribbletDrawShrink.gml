@@ -109,16 +109,16 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
         //Cache string width/height to handle alignment positioning
         switch(_hAlign)
         {
-            case fa_left:   __xOffset = 0;           break;
-            case fa_center: __xOffset = -__height/2; break;
-            case fa_right:  __xOffset = -__height;   break;
+            case fa_left:   __xOffset = 0;          break;
+            case fa_center: __xOffset = -__width/2; break;
+            case fa_right:  __xOffset = -__width;   break;
         }
         
         switch(_vAlign)
         { 
-            case fa_top:    __yOffset = 0;          break;
-            case fa_middle: __yOffset = -__width/2; break;
-            case fa_bottom: __yOffset = -__height;  break;
+            case fa_top:    __yOffset = 0;           break;
+            case fa_middle: __yOffset = -__height/2; break;
+            case fa_bottom: __yOffset = -__height;   break;
         }
         
         if (SCRIBBLET_RESET_DRAW_STATE) draw_set_font(_oldFont);
