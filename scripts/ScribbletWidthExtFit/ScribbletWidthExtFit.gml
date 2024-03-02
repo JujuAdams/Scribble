@@ -10,9 +10,9 @@
 /// @param [width]
 /// @param [height]
 
-function ScribbletShrinkHeight(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
+function ScribbletWidthExtFit(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
 {
     if (_string == "") return 0;
-    __SCRIBBLET_SHRINK_GET
-    return _struct.__GetHeight();
+    __SCRIBBLET_EXT_FIT_GET
+    return _struct.__GetWidth();
 }

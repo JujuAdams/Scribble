@@ -50,8 +50,8 @@ switch(mode)
         repeat(stressCount)
         {
             draw_rectangle_color(x, y,
-                                 x + ScribbletShrinkWidth(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 y + ScribbletShrinkHeight(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
+                                 x + ScribbletWidthShrink(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
+                                 y + ScribbletHeightShrink(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
                                  c_lime, c_lime, c_lime, c_lime, true);
             ScribbletDrawShrink(x, y, testString, un, un, hAlign, vAlign, font, fontScale, _limitWidth, height);
         }
@@ -61,8 +61,8 @@ switch(mode)
         repeat(stressCount)
         {
             draw_rectangle_color(x, y,
-                                 x + ScribbletFitWidth(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 y + ScribbletFitHeight(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
+                                 x + ScribbletWidthFit(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
+                                 y + ScribbletHeightFit(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
                                  c_lime, c_lime, c_lime, c_lime, true);
             ScribbletDrawFit(x, y, testString, un, un, hAlign, vAlign, font, fontScale, _limitWidth, height);
         }
@@ -72,8 +72,8 @@ switch(mode)
         repeat(stressCount)
         {
             draw_rectangle_color(x, y,
-                                 x + ScribbletExtWidth(testString, hAlign, vAlign, font, fontScale),
-                                 y + ScribbletExtHeight(testString, hAlign, vAlign, font, fontScale),
+                                 x + ScribbletWidthExt(testString, hAlign, vAlign, font, fontScale),
+                                 y + ScribbletHeightExt(testString, hAlign, vAlign, font, fontScale),
                                  c_lime, c_lime, c_lime, c_lime, true);
             ScribbletDrawExt(x, y, testStringColor, un, un, hAlign, vAlign, font, fontScale);
         }
@@ -83,8 +83,8 @@ switch(mode)
         repeat(stressCount)
         {
             draw_rectangle_color(x, y,
-                                 x + ScribbletExtShrinkWidth(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 y + ScribbletExtShrinkHeight(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
+                                 x + ScribbletWidthExtShrink(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
+                                 y + ScribbletHeightExtShrink(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
                                  c_lime, c_lime, c_lime, c_lime, true);
             ScribbletDrawExtShrink(x, y, testStringColor, un, un, hAlign, vAlign, font, fontScale, _limitWidth, height);
         }
@@ -94,8 +94,8 @@ switch(mode)
         repeat(stressCount)
         {
             draw_rectangle_color(x, y,
-                                 x + ScribbletExtFitWidth(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
-                                 y + ScribbletExtFitHeight(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
+                                 x + ScribbletWidthExtFit(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
+                                 y + ScribbletHeightExtFit(testString, hAlign, vAlign, font, fontScale, _limitWidth, height),
                                  c_lime, c_lime, c_lime, c_lime, true);
             ScribbletDrawExtFit(x, y, testStringColor, un, un, hAlign, vAlign, font, fontScale, _limitWidth, height);
         }

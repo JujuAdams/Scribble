@@ -8,7 +8,7 @@
 /// @param [font]
 /// @param [fontScale=1]
 
-function ScribbletExtHeight(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
+function ScribbletHeightExt(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
 {
     if (_string == "") return 0;
     __SCRIBBLET_EXT_GET

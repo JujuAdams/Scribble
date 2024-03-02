@@ -10,7 +10,7 @@
 /// @param [width]
 /// @param [height]
 
-function ScribbletFitWidth(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
+function ScribbletWidthFit(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
 {
     if (_string == "") return 0;
     __SCRIBBLET_FIT_GET

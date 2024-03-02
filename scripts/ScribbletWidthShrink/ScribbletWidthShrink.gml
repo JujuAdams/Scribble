@@ -10,7 +10,7 @@
 /// @param [width]
 /// @param [height]
 
-function ScribbletShrinkWidth(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
+function ScribbletWidthShrink(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
 {
     if (_string == "") return 0;
     __SCRIBBLET_SHRINK_GET

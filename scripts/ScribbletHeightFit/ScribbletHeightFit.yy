@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbletExtHeight",
+  "name": "ScribbletHeightFit",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

@@ -8,7 +8,7 @@
 /// @param [font]
 /// @param [fontScale=1]
 
-function ScribbletExtWidth(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
+function ScribbletWidthExt(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
 {
     if (_string == "") return 0;
     __SCRIBBLET_EXT_GET

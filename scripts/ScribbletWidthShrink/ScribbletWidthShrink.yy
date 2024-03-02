@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbletFitWidth",
+  "name": "ScribbletWidthShrink",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
