@@ -5,7 +5,7 @@ fontScale = 1;
 width     = 314; //room_width - x;
 height    = 43;  //room_height - y;
 
-showHelp = false;
+showHelp = true;
 
 testString = 2*"Sphinx of black quartz, hear my vow! ";
 testStringColor = 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ";
@@ -35,6 +35,7 @@ repeat(string_length(testString))
 vertex_end(vertexBuffer);
 vertex_freeze(vertexBuffer);
 
-stressCount = 1000;
+stressCount = 1;
 startTime = current_time;
+fpsRealSmoothed = 1000;
 mode = 7;

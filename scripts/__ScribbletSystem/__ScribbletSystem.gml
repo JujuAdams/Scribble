@@ -8,10 +8,11 @@ function __ScribbletSystem()
     static _system = undefined;
     if (is_struct(_system)) return _system;
     
+    __ScribbletTrace("Welcome to Scribblet by Juju Adams! This is version ", __SCRIBBLET_VERSION, ", ", __SCRIBBLET_DATE);
+    
     _system = {};
     with(_system)
     {
-        __cache            = {};
         __cacheTest        = {};
         __cacheFontInfo    = {};
         __cacheSpaceWidth  = {};
