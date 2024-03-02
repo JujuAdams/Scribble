@@ -22,7 +22,8 @@
 ///     "This is [c_orange]orange[/c] text."
 ///     Tags that contain the name of a colour constant will colour subsequent characters in the
 ///     string. [/c] [/color] [/colour] can be used to reset the colour to the default colour for
-///     the function call.
+///     the function call. New colours can be added with ScribbletAddColor(). Hash codes aren't
+///     parsed automatically but hash codes can be added via ScribbletAddColor().
 /// 
 /// 2. In-line Sprites
 ///     "You need [sprCoin]100 to buy this bomb."
