@@ -72,7 +72,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
     
     
     
-    static GetWidth = function()
+    static __GetWidth = function()
     {
         if (__width == undefined)
         {
@@ -85,7 +85,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
         return __width;
     }
     
-    static GetHeight = function()
+    static __GetHeight = function()
     {
         if (__height == undefined)
         {

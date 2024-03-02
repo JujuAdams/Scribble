@@ -120,7 +120,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     
     
     
-    static GetWidth = function()
+    static __GetWidth = function()
     {
         if (__width == undefined)
         {
@@ -143,7 +143,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         return __width;
     }
     
-    static GetHeight = function()
+    static __GetHeight = function()
     {
         if (__height == undefined)
         {

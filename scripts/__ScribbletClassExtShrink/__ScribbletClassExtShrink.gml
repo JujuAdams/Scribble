@@ -202,12 +202,12 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
     
     
     
-    static GetWidth = function()
+    static __GetWidth = function()
     {
         return __width;
     }
     
-    static GetHeight = function()
+    static __GetHeight = function()
     {
         return __height;
     }

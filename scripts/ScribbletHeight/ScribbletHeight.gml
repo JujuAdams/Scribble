@@ -12,5 +12,5 @@ function ScribbletHeight(_string, _hAlign = fa_left, _vAlign = fa_top, _font = u
 {
     if (_string == "") return 0;
     __SCRIBBLET_GET
-    return _struct.GetHeight();
+    return _struct.__GetHeight();
 }

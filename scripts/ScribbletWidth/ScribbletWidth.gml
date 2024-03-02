@@ -12,5 +12,5 @@ function ScribbletWidth(_string, _hAlign = fa_left, _vAlign = fa_top, _font = un
 {
     if (_string == "") return 0;
     __SCRIBBLET_GET
-    return _struct.GetWidth();
+    return _struct.__GetWidth();
 }

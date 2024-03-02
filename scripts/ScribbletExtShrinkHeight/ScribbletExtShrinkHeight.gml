@@ -14,5 +14,5 @@ function ScribbletExtShrinkHeight(_string, _hAlign = fa_left, _vAlign = fa_top, 
 {
     if (_string == "") return 0;
     __SCRIBBLET_EXT_SHRINK_GET
-    return _struct.GetHeight();
+    return _struct.__GetHeight();
 }
