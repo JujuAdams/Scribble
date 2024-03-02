@@ -5,6 +5,9 @@
 /// background, Scribble will build a vertex buffer in the background that replaces the native
 /// text rendering and is faster to draw.
 /// 
+/// This function scales text without adding newlines. If you want to scale down text whilst adding
+/// newlines (a.k.a. "reflowing"), albeit at a performance penality, then use ScribbletDrawExtFit().
+/// 
 /// N.B. Manual line breaks ("newlines") are not supported.
 /// 
 /// This function relies on internal caching for performance gains. If you change any of the

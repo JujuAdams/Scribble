@@ -5,6 +5,13 @@
 /// rendering. Over a few frames and in the background, Scribble will build a vertex buffer in the
 /// background that replaces the native text rendering and is faster to draw.
 /// 
+/// This function scales text without adding newlines. If you want to scale down text whilst adding
+/// newlines (a.k.a. "reflowing"), albeit at a performance penality, then use ScribbletDrawFit().
+/// 
+/// N.B. Word breaks will only happen on spaces and any single words too long for a line will not
+///      be split in the middle. Per-character text wrapping (commonly used for Chinese) is not
+///      supported.
+/// 
 /// This function relies on internal caching for performance gains. If you change any of the
 /// following arguments, Scribble will have to do extra work to recache the new text data. Try to
 /// limit how often you change these variables to get the best performance.

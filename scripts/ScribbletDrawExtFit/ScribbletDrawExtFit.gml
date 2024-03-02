@@ -6,7 +6,12 @@
 /// will build a vertex buffer in the background that replaces the native text rendering and is
 /// faster to draw.
 /// 
-/// N.B. Manual line breaks ("newlines") are not supported.
+/// This function scales text whilst adding newlines. If you want to scale down text without adding
+/// newlines, which will gain you a little performance, then use ScribbletDrawExtShrink().
+/// 
+/// N.B. Manual line breaks ("newlines") are not supported. Word breaks will only happen on spaces
+///      and any single words too long for a line will not be split in the middle. Per-character
+///      text wrapping (commonly used for Chinese) is not supported.
 /// 
 /// This function relies on internal caching for performance gains. If you change any of the
 /// following arguments, Scribble will have to do extra work to recache the new text data. Try to
@@ -239,9 +244,9 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
     
     var _overallWidth = 0;
     
+    var _tryScale   = _fontScale;
     var _upperScale = _fontScale;
-    var _lowerScale = 0;
-    var _tryScale   = _upperScale;
+    var _lowerScale = 0.1;
     
     var _iterations = 0;
     while(_iterations < SCRIBBLET_FIT_ITERATIONS)
@@ -342,7 +347,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
             ++_i;
         }
         
-        if (_iterations >= SCRIBBLET_FIT_ITERATIONS-1)
+        if (_iterations >= _lastIteration)
         {
             _overallWidth = max(_overallWidth, _cursorX - (_fragment.__whitespaceFollows? _spaceWidth : 0));
             
