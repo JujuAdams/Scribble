@@ -30,31 +30,35 @@
 function ScribbletDraw(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
 {
     static _system = __ScribbletSystem();
-    static _cache  = _system.__cacheTest;
+    static _cache  = _system.__elementsCache;
+    static _array  = _system.__elementsArray;
     
     if (_string == "") return;
     if (_font == undefined) _font = _system.__defaultFont;
     
     var _key = string_concat(_string, ":",
-                             _hAlign + 3*_vAlign, //Pack these flags together
+                             _hAlign + 3*_vAlign, ":", //Pack these flags together
                              _font, ":",
-                             _fontScale);
+                             _fontScale, ":A");
     
     var _struct = _cache[$ _key];
     if (_struct == undefined)
     {
-        _struct = new __ScribbletClass(_string, _hAlign, _vAlign, _font, _fontScale);
+        _struct = new __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale);
         _cache[$ _key] = _struct;
+        array_push(_array, _struct);
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
+    _struct.__lastDraw = current_time;
     return _struct;
 }
 
-function __ScribbletClass(_string, _hAlign, _vAlign, _font, _fontScale) constructor
+function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) constructor
 {
     static _system = __ScribbletSystem();
     
+    __key    = _key;
     __string = _string;
     __hAlign = _hAlign;
     __vAlign = _vAlign;
@@ -216,5 +220,24 @@ function __ScribbletClass(_string, _hAlign, _vAlign, _font, _fontScale) construc
         shader_set_uniform_i(_shdScribbletSDF_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
+    }
+    
+    
+    
+    
+    
+    static __Destroy = function()
+    {
+        if (__vertexBuilder != undefined)
+        {
+            __vertexBuilder.__Destroy();
+            __vertexBuilder = undefined;
+        }
+        
+        if (__vertexBuffer != undefined)
+        {
+            vertex_delete_buffer(__vertexBuffer);
+            __vertexBuffer = undefined;
+        }
     }
 }

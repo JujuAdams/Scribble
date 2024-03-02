@@ -3,6 +3,9 @@
 #macro __SCRIBBLET_VERSION  "1.0.0"
 #macro __SCRIBBLET_DATE     "2024-03-02"
 
+#macro __SCRIBBLET_TIMEOUT  1000
+#macro __SCRIBBLET_DEBUG    true
+
 function __ScribbletSystem()
 {
     static _system = undefined;
@@ -13,7 +16,10 @@ function __ScribbletSystem()
     _system = {};
     with(_system)
     {
-        __cacheTest        = {};
+        __elementsCache     = {};
+        __elementsArray     = [];
+        __elementSweepIndex = 0;
+        
         __cacheFontInfo    = {};
         __cacheSpaceWidth  = {};
         __cacheSpaceHeight = {};
@@ -22,7 +28,7 @@ function __ScribbletSystem()
         __budgetUsed     = 0;
         __budgetUsedPrev = 0;
         
-        __defaultFont = fntTest;
+        __defaultFont = ScribbletDefaultFont;
         
         __colourDict = {};
         __colourDict[$ "c_aqua"   ] = c_aqua;
@@ -67,10 +73,32 @@ function __ScribbletSystem()
     time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
     {
         static _system = __ScribbletSystem();
+        static _cache  = _system.__elementsCache;
+        static _array  = _system.__elementsArray;
+        
         with(_system)
         {
             __budgetUsedPrev = __budgetUsed;
             __budgetUsed = 0;
+            
+            var _index = __elementSweepIndex;
+            repeat(sqrt(array_length(_array)))
+            {
+                _index = (_index + 1) mod array_length(_array);
+                
+                var _element = _array[_index];
+                if (current_time > _element.__lastDraw + __SCRIBBLET_TIMEOUT)
+                {
+                    if (__SCRIBBLET_DEBUG) __ScribbletTrace("Freeing ", _element.__key);
+                    
+                    array_delete(_array, _index, 1);
+                    variable_struct_remove(_cache, _element.__key);
+                    
+                    _element.__Destroy();
+                }
+            }
+            
+            __elementSweepIndex = _index;
         }
     },
     [], -1));

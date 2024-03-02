@@ -52,6 +52,19 @@ function __ScribbletClassBuilderFit(_string, _font, _hAlign, _vAlign, _wrapWidth
     
     
     
+    static __Destroy = function()
+    {
+        if (__vertexBuffer != undefined)
+        {
+            vertex_delete_buffer(__vertexBuffer);
+            __vertexBuffer = undefined;
+        }
+    }
+    
+    
+    
+    
+    
     static __Decompose = function()
     {
         //GameMaker needs a function to decompose a string into glyphs

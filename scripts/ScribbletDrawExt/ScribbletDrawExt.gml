@@ -52,32 +52,36 @@
 function ScribbletDrawExt(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1)
 {
     static _system = __ScribbletSystem();
-    static _cache  = _system.__cacheTest;
+    static _cache  = _system.__elementsCache;
+    static _array  = _system.__elementsArray;
     
     if (_string == "") return;
     if (_font == undefined) _font = _system.__defaultFont;
     
     var _key = string_concat(_string, ":",
-                             _hAlign + 3*_vAlign, //Pack these flags together
-                             _font,
-                             _fontScale);
+                             _hAlign + 3*_vAlign, ":", //Pack these flags together
+                             _font, ":",
+                             _fontScale, ":D");
     
     var _struct = _cache[$ _key];
     if (_struct == undefined)
     {
-        _struct = new __ScribbletClassExt(_string, _hAlign, _vAlign, _font, _fontScale);
+        _struct = new __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale);
         _cache[$ _key] = _struct;
+        array_push(_array, _struct);
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
+    _struct.__lastDraw = current_time;
     return _struct;
 }
 
-function __ScribbletClassExt(_string, _hAlign, _vAlign, _font, _fontScale) constructor
+function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale) constructor
 {
     static _system     = __ScribbletSystem();
     static _colourDict = _system.__colourDict;
     
+    __key    = _key;
     __string = _string;
     __hAlign = _hAlign;
     __vAlign = _vAlign;
@@ -447,5 +451,24 @@ function __ScribbletClassExt(_string, _hAlign, _vAlign, _font, _fontScale) const
         
         //Lean into GameMaker's native renderer for sprites
         __DrawSprites(_x, _y, _alpha);
+    }
+    
+    
+    
+    
+    
+    static __Destroy = function()
+    {
+        if (__vertexBuilder != undefined)
+        {
+            __vertexBuilder.__Destroy();
+            __vertexBuilder = undefined;
+        }
+        
+        if (__vertexBuffer != undefined)
+        {
+            vertex_delete_buffer(__vertexBuffer);
+            __vertexBuffer = undefined;
+        }
     }
 }

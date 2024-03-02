@@ -40,6 +40,19 @@ function __ScribbletClassBuilderExt(_fragArray, _font) constructor
     
     
     
+    static __Destroy = function()
+    {
+        if (__vertexBuffer != undefined)
+        {
+            vertex_delete_buffer(__vertexBuffer);
+            __vertexBuffer = undefined;
+        }
+    }
+    
+    
+    
+    
+    
     static __DecomposeFragment = function()
     {
         var _fragmentData   = __fragArray[__fragment];

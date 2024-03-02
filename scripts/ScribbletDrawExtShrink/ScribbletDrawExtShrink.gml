@@ -56,37 +56,38 @@
 function ScribbletDrawExtShrink(_x, _y, _string, _colour = c_white, _alpha = 1, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
 {
     static _system = __ScribbletSystem();
-    static _cache  = _system.__cacheTest;
+    static _cache  = _system.__elementsCache;
+    static _array  = _system.__elementsArray;
     
-    if (_string == "") return;
+    if ((_string == "") || (_maxWidth < 0) || (_maxHeight < 0)) return;
     if (_font == undefined) _font = _system.__defaultFont;
     
-    _maxWidth  = max(0, _maxWidth);
-    _maxHeight = max(0, _maxHeight);
-    
     var _key = string_concat(_string, ":",
-                             _hAlign + 3*_vAlign, //Pack these flags together
-                             _font,
+                             _hAlign + 3*_vAlign, ":", //Pack these flags together
+                             _font, ":",
                              _fontScale, ":",
                              _maxWidth, ":",
-                             _maxHeight);
+                             _maxHeight, ":F");
     
     var _struct = _cache[$ _key];
     if (_struct == undefined)
     {
-        _struct = new __ScribbletClassExtShrink(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
+        _struct = new __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight);
         _cache[$ _key] = _struct;
+        array_push(_array, _struct);
     }
     
     _struct.__drawMethod(_x, _y, _colour, _alpha);
+    _struct.__lastDraw = current_time;
     return _struct;
 }
 
-function __ScribbletClassExtShrink(_string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
+function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _fontScale, _maxWidth, _maxHeight) constructor
 {
     static _system     = __ScribbletSystem();
     static _colourDict = _system.__colourDict;
     
+    __key       = _key;
     __string    = _string;
     __hAlign    = _hAlign;
     __vAlign    = _vAlign;
@@ -416,5 +417,24 @@ function __ScribbletClassExtShrink(_string, _hAlign, _vAlign, _font, _fontScale,
         
         //Lean into GameMaker's native renderer for sprites
         __DrawSprites(_x, _y, _alpha);
+    }
+    
+    
+    
+    
+    
+    static __Destroy = function()
+    {
+        if (__vertexBuilder != undefined)
+        {
+            __vertexBuilder.__Destroy();
+            __vertexBuilder = undefined;
+        }
+        
+        if (__vertexBuffer != undefined)
+        {
+            vertex_delete_buffer(__vertexBuffer);
+            __vertexBuffer = undefined;
+        }
     }
 }

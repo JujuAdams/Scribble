@@ -9,7 +9,7 @@ function __ScribbletError()
     var _i = 0;
     repeat(argument_count)
     {
-        _string += string(argument[0]);
+        _string += string(argument[_i]);
         ++_i;
     }
     
