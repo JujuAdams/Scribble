@@ -2,7 +2,7 @@
 
 /// Convenience function to reset GameMaker's native draw state.
 
-function ScribbletResetFontState()
+function ScribbletResetDraw()
 {
     draw_set_font(-1);
     draw_set_colour(c_white);

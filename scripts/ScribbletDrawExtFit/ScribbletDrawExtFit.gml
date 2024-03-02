@@ -461,7 +461,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
         
         if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDraw();
     }
     
     static __DrawSprites = function(_x, _y, _alpha)

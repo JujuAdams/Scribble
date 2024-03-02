@@ -15,7 +15,7 @@
     {"name":"__ScribbletTrace","order":12,"path":"scripts/__ScribbletTrace/__ScribbletTrace.yy",},
     {"name":"ScribbletGetDefaultFont","order":8,"path":"scripts/ScribbletGetDefaultFont/ScribbletGetDefaultFont.yy",},
     {"name":"ScribbletDrawExtFit","order":5,"path":"scripts/ScribbletDrawExtFit/ScribbletDrawExtFit.yy",},
-    {"name":"ScribbletResetFontState","order":7,"path":"scripts/ScribbletResetFontState/ScribbletResetFontState.yy",},
+    {"name":"ScribbletResetDraw","order":7,"path":"scripts/ScribbletResetDraw/ScribbletResetDraw.yy",},
     {"name":"ScribbletAddColor","order":4,"path":"scripts/ScribbletAddColor/ScribbletAddColor.yy",},
     {"name":"sTestShape","order":7,"path":"sprites/sTestShape/sTestShape.yy",},
     {"name":"__Misc","order":2,"path":"scripts/__Misc/__Misc.yy",},
