@@ -139,39 +139,19 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
                 var _adjustedWidth  = _maxWidth/_tryScale;
                 var _adjustedHeight = _maxHeight/_tryScale;
                 
-                if (SCRIBBLET_FIT_SAFE)
+                //Subtract 1 here to fix on off-by-one in GameMaker's text layout
+                var _height = string_height_ext(_string, -1, _adjustedWidth-1);
+                if (_height > _adjustedHeight)
                 {
-                    //Subtract 1 here to fix on off-by-one in GameMaker's text layout
-                    var _width  = string_width_ext( _string, -1, _adjustedWidth-1);
-                    var _height = string_height_ext(_string, -1, _adjustedWidth-1);
-                    
-                    if ((_width > _adjustedWidth) || (_height > _adjustedHeight))
-                    {
-                        _upperScale = _tryScale;
-                    }
-                    else
-                    {
-                        _lowerScale = _tryScale;
-                    }
+                    _upperScale = _tryScale;
                 }
                 else
                 {
-                    //Subtract 1 here to fix on off-by-one in GameMaker's text layout
-                    var _height = string_height_ext(_string, -1, _adjustedWidth-1);
-                    if (_height > _adjustedHeight)
-                    {
-                        _upperScale = _tryScale;
-                    }
-                    else
-                    {
-                        _lowerScale = _tryScale;
-                    }
+                    _lowerScale = _tryScale;
                 }
             }
             
-            __width  = _width;
-            __height = _height;
-            
+            __height     = _height;
             __scale      = _lowerScale;
             __wrapWidth  = _maxWidth/_lowerScale;
             __drawMethod = __DrawFit;
@@ -185,6 +165,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     __vertexBuilder = new __ScribbletClassBuilderFit(__string, _font, __hAlign, __vAlign, __wrapWidth);
     
     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Created ", self);
+    if (not SCRIBBLET_PROGRESSIVE_BUILD) __BuildVertexBuffer();
     
     
     
@@ -249,9 +230,9 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         draw_set_valign(__vAlign);
         
         draw_text(_x, _y, __string);
-        if (not _forceNative) __BuildVertexBuffer();
+        if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
     }
     
     static __DrawScale = function(_x, _y, _colour, _alpha, _forceNative)
@@ -263,9 +244,9 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         draw_set_valign(__vAlign);
         
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
-        if (not _forceNative) __BuildVertexBuffer();
+        if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
     }
     
     static __DrawWrap = function(_x, _y, _colour, _alpha, _forceNative)
@@ -277,9 +258,9 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         draw_set_valign(__vAlign);
         
         draw_text_ext(_x, _y, __string, -1, __wrapWidth);
-        if (not _forceNative) __BuildVertexBuffer();
+        if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
     }
     
     static __DrawFit = function(_x, _y, _colour, _alpha, _forceNative)
@@ -291,20 +272,25 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
         draw_set_valign(__vAlign);
         
         draw_text_ext_transformed(_x, _y, __string, -1, __wrapWidth, __scale, __scale, 0);
-        if (not _forceNative) __BuildVertexBuffer();
+        if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
     }
     
     
     
     
     
-    static __BuildVertexBuffer = function()
+    static __BuildVertexBufferTimed = function()
     {
         if (_system.__budgetUsed >= _system.__budget) return;
         var _timer = get_timer();
-        
+        __BuildVertexBuffer();
+        _system.__budgetUsed += get_timer() - _timer;
+    }
+    
+    static __BuildVertexBuffer = function()
+    {
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
             if (SCRIBBLET_VERBOSE) __ScribbletTrace("Compiled ", self);
@@ -312,8 +298,6 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
             __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;
         }
-        
-        _system.__budgetUsed += get_timer() - _timer;
     }
     
     static __DrawVertexBuffer = function(_x, _y, _colour, _alpha, _forceNative)

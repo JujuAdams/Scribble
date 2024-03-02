@@ -4,15 +4,6 @@
 #macro __SCRIBBLET_DATE     "2024-03-02"
 
 #macro __SCRIBBLET_TIMEOUT  1000
-#macro __SCRIBBLET_DEBUG    true
-
-#macro __SCRIBBLET_RESET_FORMATTING  {\
-                                         draw_set_font(-1);\
-                                         draw_set_colour(c_white);\
-                                         draw_set_alpha(1);\
-                                         draw_set_halign(fa_left);\
-                                         draw_set_valign(fa_top);\
-                                     }
 
 function __ScribbletSystem()
 {
@@ -97,7 +88,7 @@ function __ScribbletSystem()
                 var _element = _array[_index];
                 if (current_time > _element.__lastDraw + __SCRIBBLET_TIMEOUT)
                 {
-                    if (__SCRIBBLET_DEBUG) __ScribbletTrace("Freeing ", _element.__key);
+                    if (SCRIBBLET_VERBOSE) __ScribbletTrace("Freeing ", _element.__key);
                     
                     array_delete(_array, _index, 1);
                     variable_struct_remove(_cache, _element.__key);

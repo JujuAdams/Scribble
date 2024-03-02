@@ -31,5 +31,5 @@ function ScribbletDrawNative(_x, _y, _string, _colour = c_white, _alpha = 1, _hA
     
     draw_text_transformed(_x, _y, _string, _fontScale, _fontScale, 0);
     
-    if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
+    if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
 }

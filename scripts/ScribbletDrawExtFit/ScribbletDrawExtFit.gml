@@ -416,6 +416,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
     
     if (SCRIBBLET_RESET_DRAW_STATE) draw_set_font(_oldFont);
     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Created ", self);
+    if (not SCRIBBLET_PROGRESSIVE_BUILD) __BuildVertexBuffer();
     
     
     
@@ -458,9 +459,9 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
         
         __DrawSprites(_x, _y, _alpha);
         
-        if (not _forceNative) __BuildVertexBuffer();
+        if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
     }
     
     static __DrawSprites = function(_x, _y, _alpha)
@@ -484,11 +485,16 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
     
     
     
-    static __BuildVertexBuffer = function()
+    static __BuildVertexBufferTimed = function()
     {
         if (_system.__budgetUsed >= _system.__budget) return;
         var _timer = get_timer();
-        
+        __BuildVertexBuffer();
+        _system.__budgetUsed += get_timer() - _timer;
+    }
+    
+    static __BuildVertexBuffer = function()
+    {
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
             if (SCRIBBLET_VERBOSE) __ScribbletTrace("Compiled ", self);
@@ -496,8 +502,6 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
             __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;
         }
-        
-        _system.__budgetUsed += get_timer() - _timer;
     }
     
     static __DrawVertexBuffer = function(_x, _y, _colour, _alpha, _forceNative)

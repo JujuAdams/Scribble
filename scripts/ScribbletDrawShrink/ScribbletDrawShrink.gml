@@ -129,6 +129,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
     __vertexBuilder = new __ScribbletClassBuilder(__string, _font);
     
     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Created ", self);
+    if (not SCRIBBLET_PROGRESSIVE_BUILD) __BuildVertexBuffer();
     
     
     
@@ -173,9 +174,9 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
         draw_set_valign(__vAlign);
         
         draw_text(_x, _y, __string);
-        if (not _forceNative) __BuildVertexBuffer();
+        if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
     }
     
     static __DrawScale = function(_x, _y, _colour, _alpha, _forceNative)
@@ -187,20 +188,25 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
         draw_set_valign(__vAlign);
         
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
-        if (not _forceNative) __BuildVertexBuffer();
+        if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) __SCRIBBLET_RESET_FORMATTING
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetFontState();
     }
     
     
     
     
     
-    static __BuildVertexBuffer = function()
+    static __BuildVertexBufferTimed = function()
     {
         if (_system.__budgetUsed >= _system.__budget) return;
         var _timer = get_timer();
-        
+        __BuildVertexBuffer();
+        _system.__budgetUsed += get_timer() - _timer;
+    }
+    
+    static __BuildVertexBuffer = function()
+    {
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
             if (SCRIBBLET_VERBOSE) __ScribbletTrace("Compiled ", self);
@@ -208,8 +214,6 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
             __drawMethod    = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
             __vertexBuilder = undefined;
         }
-        
-        _system.__budgetUsed += get_timer() - _timer;
     }
     
     static __DrawVertexBuffer = function(_x, _y, _colour, _alpha, _forceNative)
