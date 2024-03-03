@@ -163,11 +163,11 @@ function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale)
                         array_push(__spriteArray, {
                             __sprite: _sprite,
                             __image: _spriteImage,
-                            __x: _spriteX + _x + sprite_get_xoffset(_sprite) / __scale,
-                            __y: _spriteY + 0.5*(_lineHeight - (sprite_get_height(_sprite) / __scale)) + sprite_get_yoffset(_sprite) / __scale,
+                            __x: _spriteX + _x + sprite_get_xoffset(_sprite) / _fontScale,
+                            __y: _spriteY + 0.5*(_lineHeight - (sprite_get_height(_sprite) / _fontScale)) + sprite_get_yoffset(_sprite) / _fontScale,
                         });
                         
-                        _x += sprite_get_width(_sprite) / __scale;
+                        _x += sprite_get_width(_sprite) / _fontScale;
                     }
                     else
                     {
@@ -308,7 +308,7 @@ function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale)
             with(__fragArray[_i])
             {
                 draw_set_colour((__colour >= 0)? __colour : _colour);
-                draw_text_transformed(_x + __x, _y, __string, _scale, _scale, 0);
+                draw_text_transformed(_x + _scale*__x, _y, __string, _scale, _scale, 0);
             }
             
             ++_i;
@@ -330,7 +330,7 @@ function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale)
         {
             with(__spriteArray[_i])
             {
-                draw_sprite_ext(__sprite, __image, _x + _scale*__x, _y + _scale*__y, _scale, _scale, 0, c_white, _alpha);
+                draw_sprite_ext(__sprite, __image, _x + _scale*__x, _y + _scale*__y, 1, 1, 0, c_white, _alpha);
             }
             
             ++_i;
