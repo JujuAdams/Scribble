@@ -29,7 +29,7 @@
   "resources": [
     {"id":{"name":"__ScribbletClassBuilder","path":"scripts/__ScribbletClassBuilder/__ScribbletClassBuilder.yy",},},
     {"id":{"name":"__ScribbletGetSpaceWidth","path":"scripts/__ScribbletGetSpaceWidth/__ScribbletGetSpaceWidth.yy",},},
-    {"id":{"name":"ScribbletAddSpriteFont","path":"scripts/ScribbletAddSpriteFont/ScribbletAddSpriteFont.yy",},},
+    {"id":{"name":"ScribbletAttachSpritefont","path":"scripts/ScribbletAttachSpritefont/ScribbletAttachSpritefont.yy",},},
     {"id":{"name":"ScribbletShrinkExt","path":"scripts/ScribbletShrinkExt/ScribbletShrinkExt.yy",},},
     {"id":{"name":"__ScribbletClassBuilderExt","path":"scripts/__ScribbletClassBuilderExt/__ScribbletClassBuilderExt.yy",},},
     {"id":{"name":"__ScribbletClassBuilderExtFit","path":"scripts/__ScribbletClassBuilderExtFit/__ScribbletClassBuilderExtFit.yy",},},

@@ -4,7 +4,7 @@
 /// @param proportional
 /// @param separation
 
-function ScribbletAttachSpriteFont(_font, _proportional, _separation)
+function ScribbletAttachSpritefont(_font, _proportional, _separation)
 {
     static _system = __ScribbletSystem();
     _system.__spriteFontData[$ font_get_name(_font)] = {

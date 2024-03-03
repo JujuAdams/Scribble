@@ -8,7 +8,7 @@
   ],
   "ResourceOrderSettings": [
     {"name":"__ScribbletGetSpaceWidth","order":6,"path":"scripts/__ScribbletGetSpaceWidth/__ScribbletGetSpaceWidth.yy",},
-    {"name":"ScribbletAddSpriteFont","order":9,"path":"scripts/ScribbletAddSpriteFont/ScribbletAddSpriteFont.yy",},
+    {"name":"ScribbletAttachSpritefont","order":9,"path":"scripts/ScribbletAttachSpritefont/ScribbletAttachSpritefont.yy",},
     {"name":"ScribbletShrinkExt","order":9,"path":"scripts/ScribbletShrinkExt/ScribbletShrinkExt.yy",},
     {"name":"__ScribbletClassBuilderExt","order":2,"path":"scripts/__ScribbletClassBuilderExt/__ScribbletClassBuilderExt.yy",},
     {"name":"__ScribbletClassBuilderExtFit","order":3,"path":"scripts/__ScribbletClassBuilderExtFit/__ScribbletClassBuilderExtFit.yy",},

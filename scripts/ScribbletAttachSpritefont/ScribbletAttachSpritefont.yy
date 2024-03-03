@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbletAddSpriteFont",
+  "name": "ScribbletAttachSpritefont",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

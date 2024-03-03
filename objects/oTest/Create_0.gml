@@ -42,4 +42,4 @@ mode = 7;
 
 var _mapstring = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
 spriteFont = font_add_sprite_ext(sSpriteFont, _mapstring, true, 1);
-ScribbletAttachSpriteFont(spriteFont, true, 1);
+ScribbletAttachSpritefont(spriteFont, true, 1);
