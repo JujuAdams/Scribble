@@ -27,7 +27,7 @@ function __ScribbletClassBuilderFit(_string, _font, _hAlign, _vAlign, _wrapWidth
     __spaceWidth      = undefined;
     __spaceHeight     = undefined;
     
-    var _fontTexture = _fontInfo.forcedTexturePointer;
+    var _fontTexture = _fontInfo.__forcedTexturePointer;
     __texTexelW = texture_get_texel_width(_fontTexture);
     __texTexelH = texture_get_texel_height(_fontTexture);
         

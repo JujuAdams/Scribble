@@ -21,6 +21,8 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     __font      = _font;
     __wrapWidth = undefined;
     
+    __fontIsDynamic = __ScribbletGetFontInfo(_font).__isDynamic;
+    
     Draw = __Draw;
     
     __wrapped = true;
@@ -113,7 +115,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     }
     
     __vertexBuffer  = undefined;
-    __fontTexture   = __ScribbletGetFontInfo(_font).forcedTexturePointer;
+    __fontTexture   = __ScribbletGetFontInfo(_font).__forcedTexturePointer;
     __vertexBuilder = new __ScribbletClassBuilderFit(__string, _font, __hAlign, __vAlign, __wrapWidth);
     
     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Created ", self);
@@ -240,7 +242,9 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     
     static __BuildVertexBufferTimed = function()
     {
-        if (_system.__budgetUsed >= _system.__budget) return;
+        if (__fontIsDynamic) return; //Don't bake dynamic fonts
+        if (_system.__budgetUsed >= _system.__budget) return; //Don't exceed the baking budget
+        
         var _timer = get_timer();
         __BuildVertexBuffer();
         _system.__budgetUsed += get_timer() - _timer;
@@ -248,6 +252,8 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     
     static __BuildVertexBuffer = function()
     {
+        if (__fontIsDynamic) return; //Don't bake dynamic fonts
+        
         if (__vertexBuilder != undefined) && (__vertexBuilder.__tickMethod())
         {
             if (SCRIBBLET_VERBOSE) __ScribbletTrace("Compiled ", self);

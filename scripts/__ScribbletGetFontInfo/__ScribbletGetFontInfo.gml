@@ -25,6 +25,10 @@ function __ScribbletGetFontInfo(_font)
             var _textureIndex = _framesArray[0].texture;
             var _texturePointer = sprite_get_texture(_sprite, 0);
             
+            //Force the texture information for the font
+            _fontInfo.__forcedTexturePointer = _texturePointer;
+            _fontInfo.__isDynamic = false;
+            
             var _texTexelW = texture_get_texel_width(_texturePointer);
             var _texTexelH = texture_get_texel_height(_texturePointer);
             
@@ -43,9 +47,6 @@ function __ScribbletGetFontInfo(_font)
                     ++_i;
                 }
             }
-            
-            //Force the texture information for the font
-            _fontInfo.forcedTexturePointer = _texturePointer;
             
             var _extraData = _spriteFontData[$ font_get_name(_font)];
             if (_extraData == undefined)
@@ -95,7 +96,8 @@ function __ScribbletGetFontInfo(_font)
         else
         {
             //Force the texture information for the font
-            _fontInfo.forcedTexturePointer = font_get_texture(_font);
+            _fontInfo.__forcedTexturePointer = font_get_texture(_font);
+            _fontInfo.__isDynamic = _fontInfo.freetype;
             
             if (_fontInfo.sdfEnabled)
             {

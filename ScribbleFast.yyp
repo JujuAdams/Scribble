@@ -18,7 +18,9 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Element","folderPath":"folders/Scribblet (Mini Scribble)/(System)/Classes/Element.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Setup","folderPath":"folders/Scribblet (Mini Scribble)/Setup.yy",},
   ],
-  "IncludedFiles": [],
+  "IncludedFiles": [
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"NotoSansMono-CondensedMedium.ttf","CopyToMask":-1,"filePath":"datafiles",},
+  ],
   "isEcma": false,
   "LibraryEmitters": [],
   "MetaData": {

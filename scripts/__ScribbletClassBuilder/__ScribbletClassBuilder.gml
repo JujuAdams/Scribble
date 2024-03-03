@@ -17,7 +17,7 @@ function __ScribbletClassBuilder(_string, _font) constructor
     var _spaceWidth = __ScribbletGetSpaceWidth(_font);
     __spaceWidth = _spaceWidth;
     
-    var _fontTexture = _fontInfo.forcedTexturePointer;
+    var _fontTexture = _fontInfo.__forcedTexturePointer;
     __texTexelW = texture_get_texel_width(_fontTexture);
     __texTexelH = texture_get_texel_height(_fontTexture);
         
