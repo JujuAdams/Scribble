@@ -2,8 +2,8 @@ hAlign    = fa_left;
 vAlign    = fa_top;
 font      = fntTest;
 fontScale = 1;
-width     = 314; //room_width - x;
-height    = 43;  //room_height - y;
+width     = 500;
+height    = 200;
 
 showHelp = false;
 
