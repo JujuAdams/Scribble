@@ -1,10 +1,10 @@
 {
   "FolderOrderSettings": [
-    {"name":"Scribblet","order":10,"path":"folders/Scribblet.yy",},
-    {"name":"Classes","order":15,"path":"folders/Scribblet/(System)/Classes.yy",},
-    {"name":"Builder","order":2,"path":"folders/Scribblet/(System)/Classes/Builder.yy",},
-    {"name":"Element","order":3,"path":"folders/Scribblet/(System)/Classes/Element.yy",},
-    {"name":"Setup","order":1,"path":"folders/Scribblet/Setup.yy",},
+    {"name":"Scribble Jr.","order":10,"path":"folders/Scribble Jr..yy",},
+    {"name":"Classes","order":15,"path":"folders/Scribble Jr./(System)/Classes.yy",},
+    {"name":"Builder","order":2,"path":"folders/Scribble Jr./(System)/Classes/Builder.yy",},
+    {"name":"Element","order":3,"path":"folders/Scribble Jr./(System)/Classes/Element.yy",},
+    {"name":"Setup","order":1,"path":"folders/Scribble Jr./Setup.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"__ScribbletGetSpaceWidth","order":6,"path":"scripts/__ScribbletGetSpaceWidth/__ScribbletGetSpaceWidth.yy",},

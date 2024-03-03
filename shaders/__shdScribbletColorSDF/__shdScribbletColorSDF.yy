@@ -4,7 +4,7 @@
   "name": "__shdScribbletColorSDF",
   "parent": {
     "name": "(System)",
-    "path": "folders/Scribblet/(System).yy",
+    "path": "folders/Scribble Jr./(System).yy",
   },
   "type": 1,
 }

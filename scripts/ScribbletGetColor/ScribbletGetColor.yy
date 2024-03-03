@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "Setup",
-    "path": "folders/Scribblet/Setup.yy",
+    "path": "folders/Scribble Jr./Setup.yy",
   },
 }
