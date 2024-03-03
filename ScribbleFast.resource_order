@@ -22,7 +22,7 @@
     {"name":"ScribbletGetDefaultFont","order":8,"path":"scripts/ScribbletGetDefaultFont/ScribbletGetDefaultFont.yy",},
     {"name":"ScribbletFitExt","order":7,"path":"scripts/ScribbletFitExt/ScribbletFitExt.yy",},
     {"name":"sSpriteFont","order":8,"path":"sprites/sSpriteFont/sSpriteFont.yy",},
-    {"name":"ScribbletResetDraw","order":3,"path":"scripts/ScribbletResetDraw/ScribbletResetDraw.yy",},
+    {"name":"ScribbletResetDrawState","order":3,"path":"scripts/ScribbletResetDrawState/ScribbletResetDrawState.yy",},
     {"name":"ScribbletAddColor","order":4,"path":"scripts/ScribbletAddColor/ScribbletAddColor.yy",},
     {"name":"__ScribbletClassExt","order":3,"path":"scripts/__ScribbletClassExt/__ScribbletClassExt.yy",},
     {"name":"sTestShape","order":7,"path":"sprites/sTestShape/sTestShape.yy",},

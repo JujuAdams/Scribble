@@ -237,7 +237,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         draw_text(_x, _y, __string);
         if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDraw();
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDrawState();
     }
     
     static __DrawSimpleScaled = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
@@ -251,7 +251,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         draw_text_transformed(_x, _y, __string, __scale, __scale, 0);
         if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDraw();
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDrawState();
     }
     
     static __DrawNative = function(_x, _y, _colour = c_white, _alpha = 1, _forceNative = SCRIBBLET_DEFAULT_FORCE_NATIVE)
@@ -281,7 +281,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         
         if (not _forceNative) __BuildVertexBufferTimed();
         
-        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDraw();
+        if (SCRIBBLET_RESET_DRAW_STATE) ScribbletResetDrawState();
     }
     
     static __DrawSprites = function(_x, _y, _alpha)

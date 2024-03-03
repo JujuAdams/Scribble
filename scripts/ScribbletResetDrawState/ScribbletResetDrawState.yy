@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ScribbletResetDraw",
+  "name": "ScribbletResetDrawState",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

@@ -43,7 +43,7 @@
     {"id":{"name":"ScribbletGetDefaultFont","path":"scripts/ScribbletGetDefaultFont/ScribbletGetDefaultFont.yy",},},
     {"id":{"name":"ScribbletFitExt","path":"scripts/ScribbletFitExt/ScribbletFitExt.yy",},},
     {"id":{"name":"sSpriteFont","path":"sprites/sSpriteFont/sSpriteFont.yy",},},
-    {"id":{"name":"ScribbletResetDraw","path":"scripts/ScribbletResetDraw/ScribbletResetDraw.yy",},},
+    {"id":{"name":"ScribbletResetDrawState","path":"scripts/ScribbletResetDrawState/ScribbletResetDrawState.yy",},},
     {"id":{"name":"ScribbletAddColor","path":"scripts/ScribbletAddColor/ScribbletAddColor.yy",},},
     {"id":{"name":"__ScribbletClassExt","path":"scripts/__ScribbletClassExt/__ScribbletClassExt.yy",},},
     {"id":{"name":"sTestShape","path":"sprites/sTestShape/sTestShape.yy",},},
