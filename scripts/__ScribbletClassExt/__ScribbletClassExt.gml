@@ -27,7 +27,7 @@ function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale)
     __fragArray     = [];
     __vertexBuffer  = undefined;
     __vertexBuilder = new __ScribbletClassBuilderExt(__fragArray, _font);
-    __fontTexture   = font_get_texture(_font);
+    __fontTexture   = __ScribbletGetFontInfo(_font).forcedTexturePointer;
     
     __simple = false;
     __width  = undefined;

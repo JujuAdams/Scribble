@@ -17,7 +17,7 @@ function __ScribbletClassBuilderExt(_fragArray, _font) constructor
     __spaceWidth  = __ScribbletGetSpaceWidth(_font);
     __spaceHeight = __ScribbletGetSpaceHeight(_font);
     
-    var _fontTexture = font_get_texture(_font);
+    var _fontTexture = _fontInfo.forcedTexturePointer;
     __texTexelW = texture_get_texel_width(_fontTexture);
     __texTexelH = texture_get_texel_height(_fontTexture);
         
@@ -103,7 +103,7 @@ function __ScribbletClassBuilderExt(_fragArray, _font) constructor
                     var _texB = _texT + _glyphData.h*__texTexelH;
                     
                     var _glyphL = __glyphX + _glyphData.offset - _fontSDFSpread;
-                    var _glyphT = -_fontSDFSpread;
+                    var _glyphT = _glyphData.yOffset - _fontSDFSpread;
                     var _glyphR = _glyphL + _glyphData.w;
                     var _glyphB = _glyphT + _glyphData.h;
                     

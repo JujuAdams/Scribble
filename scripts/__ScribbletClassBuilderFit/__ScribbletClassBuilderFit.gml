@@ -28,7 +28,7 @@ function __ScribbletClassBuilderFit(_string, _font, _hAlign, _vAlign, _wrapWidth
     __spaceWidth      = undefined;
     __spaceHeight     = undefined;
     
-    var _fontTexture = font_get_texture(_font);
+    var _fontTexture = _fontInfo.forcedTexturePointer;
     __texTexelW = texture_get_texel_width(_fontTexture);
     __texTexelH = texture_get_texel_height(_fontTexture);
         
@@ -196,7 +196,7 @@ function __ScribbletClassBuilderFit(_string, _font, _hAlign, _vAlign, _wrapWidth
                     var _texB = _texT + _glyphData.h*__texTexelH;
                     
                     var _glyphL = __glyphX + _glyphData.offset - _fontSDFSpread;
-                    var _glyphT = __glyphY - _fontSDFSpread;
+                    var _glyphT = __glyphY + _glyphData.yOffset - _fontSDFSpread;
                     var _glyphR = _glyphL + _glyphData.w;
                     var _glyphB = _glyphT + _glyphData.h;
                     

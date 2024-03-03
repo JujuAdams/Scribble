@@ -113,7 +113,7 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
     }
     
     __vertexBuffer  = undefined;
-    __fontTexture   = font_get_texture(_font);
+    __fontTexture   = __ScribbletGetFontInfo(_font).forcedTexturePointer;
     __vertexBuilder = new __ScribbletClassBuilderFit(__string, _font, __hAlign, __vAlign, __wrapWidth);
     
     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Created ", self);

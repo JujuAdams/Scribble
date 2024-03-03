@@ -77,7 +77,7 @@ function __ScribbletClassShrink(_key, _string, _hAlign, _vAlign, _font, _fontSca
     }
     
     __vertexBuffer  = undefined;
-    __fontTexture   = font_get_texture(_font);
+    __fontTexture   = __ScribbletGetFontInfo(_font).forcedTexturePointer;
     __vertexBuilder = new __ScribbletClassBuilder(__string, _font);
     
     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Created ", self);

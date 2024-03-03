@@ -22,7 +22,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
     Draw = (_fontScale == 1)? __Draw : __DrawScale;
     
     __vertexBuffer  = undefined;
-    __fontTexture   = font_get_texture(_font);
+    __fontTexture   = __ScribbletGetFontInfo(_font).forcedTexturePointer;
     __vertexBuilder = new __ScribbletClassBuilder(__string, _font);
     
     __width  = undefined;

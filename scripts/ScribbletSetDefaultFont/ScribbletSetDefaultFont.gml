@@ -1,8 +1,8 @@
 // Feather disable all
 
-/// @param name
+/// @param font
 
-function ScribbletSetDefaultFont(_name)
+function ScribbletSetDefaultFont(_font)
 {
     __ScribbletSystem().__defaultFont = _font;
 }

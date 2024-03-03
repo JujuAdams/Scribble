@@ -30,7 +30,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
     __fragArray     = [];
     __vertexBuffer  = undefined;
     __vertexBuilder = new __ScribbletClassBuilderExt(__fragArray, _font);
-    __fontTexture   = font_get_texture(_font);
+    __fontTexture   = __ScribbletGetFontInfo(_font).forcedTexturePointer;
     
     if (SCRIBBLET_RESET_DRAW_STATE) var _oldFont = draw_get_font();
     draw_set_font(__font);
