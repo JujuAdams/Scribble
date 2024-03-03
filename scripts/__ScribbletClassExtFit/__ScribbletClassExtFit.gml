@@ -39,10 +39,11 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
     if (SCRIBBLET_RESET_DRAW_STATE) var _oldFont = draw_get_font();
     draw_set_font(_font);
     
-    var _spaceWidth = __ScribbletGetSpaceWidth(_font);
-    var _lineHeight = __ScribbletGetSpaceHeight(_font);
-    var _substringArray = string_split(__string, "[");
+    var _spriteScale = SCRIBBLET_SCALE_SPRITES? 1 : (1/_fontScale);
+    var _spaceWidth  = __ScribbletGetSpaceWidth(_font);
+    var _lineHeight  = __ScribbletGetSpaceHeight(_font);
     
+    var _substringArray = string_split(__string, "[");
     _substringArray[0] = "]" + _substringArray[0];
     
     var _colour = -1;
@@ -110,11 +111,10 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
                             __image: _spriteImage,
                             __x: undefined,
                             __y: undefined,
-                            __xOffset: _spriteX + sprite_get_xoffset(_sprite)/_fontScale,
-                            __yOffset: _spriteY + 0.5*(_lineHeight - sprite_get_height(_sprite)/_fontScale) + sprite_get_yoffset(_sprite)/_fontScale,
-                            __width: sprite_get_width(_sprite)/_fontScale,
+                            __xOffset: _spriteX + _spriteScale*sprite_get_xoffset(_sprite),
+                            __yOffset: _spriteY + 0.5*(_lineHeight - _spriteScale*sprite_get_height(_sprite)) + _spriteScale*sprite_get_yoffset(_sprite),
+                            __width: _spriteScale*sprite_get_width(_sprite),
                             __whitespaceFollows: string_starts_with(_textString, " "),
-                            __scale: 1/_fontScale,
                         };
                         
                         array_push(_layoutArray, _fragment);
@@ -329,9 +329,9 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
         }
     }
     
-    __scale  = _lowerScale;
-    __width  = __scale*_overallWidth;
-    __height = __scale*_height;
+    __scale  = _lowerScale / _fontScale;
+    __width  = __scale*__fontScale*_overallWidth;
+    __height = __scale*__fontScale*_height;
     
     __xOffset = 0;
     __yOffset = 0;
@@ -374,7 +374,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
         
-        var _scale = __scale;
+        var _scale = __scale*__fontScale;
         
         var _i = 0;
         repeat(array_length(__fragArray))
@@ -397,15 +397,15 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
     
     static __DrawSprites = function(_x, _y, _alpha)
     {
-        var _fontScale = __fontScale;
-        var _scale     = __scale;
+        var _textScale   = __scale*__fontScale;
+        var _spriteScale = SCRIBBLET_SCALE_SPRITES? _textScale : __scale;
         
         var _i = 0;
         repeat(array_length(__spriteArray))
         {
             with(__spriteArray[_i])
             {
-                draw_sprite_ext(__sprite, __image, _x + _scale*__x, _y + _scale*__y, _scale*_fontScale, _scale*_fontScale, 0, c_white, _alpha);
+                draw_sprite_ext(__sprite, __image, _x + _textScale*__x, _y + _textScale*__y, _spriteScale, _spriteScale, 0, c_white, _alpha);
             }
             
             ++_i;

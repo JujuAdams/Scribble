@@ -87,7 +87,8 @@ function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale)
     }
     else
     {
-        var _lineHeight = __ScribbletGetSpaceHeight(_font);
+        var _spriteScale = SCRIBBLET_SCALE_SPRITES? 1 : (1/_fontScale);
+        var _lineHeight  = __ScribbletGetSpaceHeight(_font);
         
         //Handle the first text fragment
         var _textString = _substringArray[0];
@@ -163,11 +164,11 @@ function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale)
                         array_push(__spriteArray, {
                             __sprite: _sprite,
                             __image: _spriteImage,
-                            __x: _spriteX + _x + sprite_get_xoffset(_sprite) / _fontScale,
-                            __y: _spriteY + 0.5*(_lineHeight - (sprite_get_height(_sprite) / _fontScale)) + sprite_get_yoffset(_sprite) / _fontScale,
+                            __x: _spriteX + _x + _spriteScale*sprite_get_xoffset(_sprite),
+                            __y: _spriteY + 0.5*(_lineHeight - _spriteScale*sprite_get_height(_sprite)) + _spriteScale*sprite_get_yoffset(_sprite),
                         });
                         
-                        _x += sprite_get_width(_sprite) / _fontScale;
+                        _x += _spriteScale*sprite_get_width(_sprite);
                     }
                     else
                     {
@@ -323,14 +324,15 @@ function __ScribbletClassExt(_key, _string, _hAlign, _vAlign, _font, _fontScale)
     
     static __DrawSprites = function(_x, _y, _alpha)
     {
-        var _scale = __scale;
+        var _textScale   = __scale;
+        var _spriteScale = SCRIBBLET_SCALE_SPRITES? _textScale : 1;
         
         var _i = 0;
         repeat(array_length(__spriteArray))
         {
             with(__spriteArray[_i])
             {
-                draw_sprite_ext(__sprite, __image, _x + _scale*__x, _y + _scale*__y, 1, 1, 0, c_white, _alpha);
+                draw_sprite_ext(__sprite, __image, _x + _textScale*__x, _y + _textScale*__y, _spriteScale, _spriteScale, 0, c_white, _alpha);
             }
             
             ++_i;
