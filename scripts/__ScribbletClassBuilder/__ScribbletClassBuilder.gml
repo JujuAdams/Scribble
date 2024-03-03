@@ -55,15 +55,7 @@ function __ScribbletClassBuilder(_string, _font) constructor
     
     static __Decompose = function()
     {
-        //GameMaker needs a function to decompose a string into glyphs
-        __stringArray = array_create(__glyphCount);
-        string_foreach(__string, method({
-            __array: __stringArray,
-        }, function(_character, _position)
-        {
-            __array[_position-1] = _character;
-        }));
-        
+        __stringArray = __ScribbletStringDecompose(__string, __glyphCount);
         __tickMethod = __Tick;
         return false;
     }

@@ -56,21 +56,14 @@ function __ScribbletClassBuilderExtFit(_fragArray, _font) constructor
     {
         var _fragmentData   = __fragmentArray[__fragment];
         var _fragmentString = _fragmentData.__string;
+        
         __glyph       = 0;
         __glyphCount  = string_length(_fragmentString);
         __glyphX      = _fragmentData.__x;
         __glyphY      = _fragmentData.__y;
         __glyphColour = _fragmentData.__colour;
         
-        //GameMaker needs a function to decompose a string into glyphs
-        __stringArray = array_create(__glyphCount);
-        string_foreach(_fragmentString, method({
-            __array: __stringArray,
-        }, function(_character, _position)
-        {
-            __array[_position-1] = _character;
-        }));
-        
+        __stringArray = __ScribbletStringDecompose(_fragmentString, __glyphCount);
         __tickMethod = __Tick;
         return false;
     }

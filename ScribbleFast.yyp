@@ -34,6 +34,7 @@
     {"id":{"name":"__ScribbletClassBuilderExt","path":"scripts/__ScribbletClassBuilderExt/__ScribbletClassBuilderExt.yy",},},
     {"id":{"name":"__ScribbletClassBuilderExtFit","path":"scripts/__ScribbletClassBuilderExtFit/__ScribbletClassBuilderExtFit.yy",},},
     {"id":{"name":"__ScribbletClassExtShrink","path":"scripts/__ScribbletClassExtShrink/__ScribbletClassExtShrink.yy",},},
+    {"id":{"name":"__ScribbletStringDecompose","path":"scripts/__ScribbletStringDecompose/__ScribbletStringDecompose.yy",},},
     {"id":{"name":"__shdScribbletColorSDF","path":"shaders/__shdScribbletColorSDF/__shdScribbletColorSDF.yy",},},
     {"id":{"name":"ScribbletSetBudget","path":"scripts/ScribbletSetBudget/ScribbletSetBudget.yy",},},
     {"id":{"name":"__ScribbletClassFit","path":"scripts/__ScribbletClassFit/__ScribbletClassFit.yy",},},
