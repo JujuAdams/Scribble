@@ -38,6 +38,7 @@
     {"id":{"name":"__ScribbletTrace","path":"scripts/__ScribbletTrace/__ScribbletTrace.yy",},},
     {"id":{"name":"ScribbletGetDefaultFont","path":"scripts/ScribbletGetDefaultFont/ScribbletGetDefaultFont.yy",},},
     {"id":{"name":"ScribbletFitExt","path":"scripts/ScribbletFitExt/ScribbletFitExt.yy",},},
+    {"id":{"name":"sSpriteFont","path":"sprites/sSpriteFont/sSpriteFont.yy",},},
     {"id":{"name":"ScribbletResetDraw","path":"scripts/ScribbletResetDraw/ScribbletResetDraw.yy",},},
     {"id":{"name":"ScribbletAddColor","path":"scripts/ScribbletAddColor/ScribbletAddColor.yy",},},
     {"id":{"name":"__ScribbletClassExt","path":"scripts/__ScribbletClassExt/__ScribbletClassExt.yy",},},
