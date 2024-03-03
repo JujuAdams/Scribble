@@ -34,7 +34,7 @@
 #macro SCRIBBLET_DEFAULT_FORCE_NATIVE  false
 
 //Whether to emit lots of additional debug messages to help track Scribblet's behaviour.
-#macro SCRIBBLET_VERBOSE  true
+#macro SCRIBBLET_VERBOSE  false
 
 //Functions to call when Scribblet emits messages. Change these if you want to redirect Scribblet
 //messages to something other than the console / native error handler.
