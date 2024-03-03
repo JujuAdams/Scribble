@@ -103,6 +103,7 @@ function __ScribbletGetFontInfo(_font)
                 var _name = _glyphNameArray[_i];
                 var _glyphInfo = _fontGlyphStruct[$ _name];
                 _glyphInfo.yOffset = 0;
+                ++_i;
             }
         }
     }
