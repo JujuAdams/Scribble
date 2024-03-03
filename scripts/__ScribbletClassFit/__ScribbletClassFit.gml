@@ -103,9 +103,9 @@ function __ScribbletClassFit(_key, _string, _hAlign, _vAlign, _font, _fontScale,
                 }
             }
             
-            __height     = _height;
-            __scale      = _lowerScale;
-            __wrapWidth  = _maxWidth/_lowerScale;
+            __scale     = _lowerScale;
+            __wrapWidth = _maxWidth / _lowerScale;
+            __height    = __scale*((_height > _adjustedHeight)? string_height_ext(_string, -1, __wrapWidth-1) : _height);
             Draw = __DrawFit;
         }
         
