@@ -24,7 +24,6 @@ function __ScribbletClassBuilderFit(_string, _font, _hAlign, _vAlign, _wrapWidth
     
     var _fontInfo = __ScribbletGetFontInfo(_font);
     __fontGlyphStruct = _fontInfo.glyphs;
-    __fontSDFSpread   = _fontInfo.sdfEnabled? _fontInfo.sdfSpread : undefined;
     __spaceWidth      = undefined;
     __spaceHeight     = undefined;
     
@@ -172,8 +171,6 @@ function __ScribbletClassBuilderFit(_string, _font, _hAlign, _vAlign, _wrapWidth
     
     static __Tick = function()
     {
-        var _fontSDFSpread = __fontSDFSpread ?? 0;
-        
         repeat(SCRIBBLET_BUILD_GLYPH_ITERATIONS)
         {
             var _char = __stringArray[__glyph];
@@ -195,8 +192,8 @@ function __ScribbletClassBuilderFit(_string, _font, _hAlign, _vAlign, _wrapWidth
                     var _texR = _texL + _glyphData.w*__texTexelW;
                     var _texB = _texT + _glyphData.h*__texTexelH;
                     
-                    var _glyphL = __glyphX + _glyphData.offset - _fontSDFSpread;
-                    var _glyphT = __glyphY + _glyphData.yOffset - _fontSDFSpread;
+                    var _glyphL = __glyphX + _glyphData.offset;
+                    var _glyphT = __glyphY + _glyphData.yOffset;
                     var _glyphR = _glyphL + _glyphData.w;
                     var _glyphB = _glyphT + _glyphData.h;
                     

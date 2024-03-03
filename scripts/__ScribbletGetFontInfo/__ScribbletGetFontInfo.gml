@@ -97,13 +97,33 @@ function __ScribbletGetFontInfo(_font)
             //Force the texture information for the font
             _fontInfo.forcedTexturePointer = font_get_texture(_font);
             
-            var _i = 0;
-            repeat(array_length(_glyphNameArray))
+            if (_fontInfo.sdfEnabled)
             {
-                var _name = _glyphNameArray[_i];
-                var _glyphInfo = _fontGlyphStruct[$ _name];
-                _glyphInfo.yOffset = 0;
-                ++_i;
+                var _offset = _fontInfo.sdfSpread;
+                var _i = 0;
+                repeat(array_length(_glyphNameArray))
+                {
+                    var _name = _glyphNameArray[_i];
+                    var _glyphInfo = _fontGlyphStruct[$ _name];
+                    
+                    _glyphInfo.offset  -=  _offset;
+                    _glyphInfo.yOffset  = -_offset;
+                    
+                    ++_i;
+                }
+            }
+            else
+            {
+                var _i = 0;
+                repeat(array_length(_glyphNameArray))
+                {
+                    var _name = _glyphNameArray[_i];
+                    var _glyphInfo = _fontGlyphStruct[$ _name];
+                    
+                    _glyphInfo.yOffset = 0;
+                    
+                    ++_i;
+                }
             }
         }
     }

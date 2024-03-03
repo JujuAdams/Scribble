@@ -11,7 +11,6 @@ function __ScribbletClassBuilderExtFit(_fragArray, _font) constructor
     
     var _fontInfo = __ScribbletGetFontInfo(_font);
     __fontGlyphStruct = _fontInfo.glyphs;
-    __fontSDFSpread   = _fontInfo.sdfEnabled? _fontInfo.sdfSpread : undefined;
     
     __spaceWidth  = __ScribbletGetSpaceWidth(_font);
     __spaceHeight = __ScribbletGetSpaceHeight(_font);
@@ -78,7 +77,6 @@ function __ScribbletClassBuilderExtFit(_fragArray, _font) constructor
     
     static __Tick = function()
     {
-        var _fontSDFSpread = __fontSDFSpread ?? 0;
         var _glyphColour = __glyphColour;
         var _glyphAlpha  = (__glyphColour >= 0);
         
@@ -103,8 +101,8 @@ function __ScribbletClassBuilderExtFit(_fragArray, _font) constructor
                     var _texR = _texL + _glyphData.w*__texTexelW;
                     var _texB = _texT + _glyphData.h*__texTexelH;
                     
-                    var _glyphL = __glyphX + _glyphData.offset - _fontSDFSpread;
-                    var _glyphT = __glyphY + _glyphData.yOffset - _fontSDFSpread;
+                    var _glyphL = __glyphX + _glyphData.offset;
+                    var _glyphT = __glyphY + _glyphData.yOffset;
                     var _glyphR = _glyphL + _glyphData.w;
                     var _glyphB = _glyphT + _glyphData.h;
                     

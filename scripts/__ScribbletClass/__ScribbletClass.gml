@@ -156,7 +156,7 @@ function __ScribbletClass(_key, _string, _hAlign, _vAlign, _font, _fontScale) co
         {
             if (SCRIBBLET_VERBOSE) __ScribbletTrace("Compiled ", self);
             __vertexBuffer = __vertexBuilder.__vertexBuffer;
-            Draw = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
+            Draw = __ScribbletGetFontInfo(__font).sdfEnabled? __DrawVertexBufferSDF : __DrawVertexBuffer;
             __vertexBuilder = undefined;
         }
     }

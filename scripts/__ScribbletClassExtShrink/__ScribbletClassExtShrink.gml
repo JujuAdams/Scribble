@@ -23,7 +23,6 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
     __scale     = _fontScale;
     __fontScale = _fontScale;
     
-    __fontSDFSpread = undefined;
     Draw = __DrawNative;
         
     __spriteArray   = [];
@@ -318,7 +317,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         {
             if (SCRIBBLET_VERBOSE) __ScribbletTrace("Compiled ", self);
             __vertexBuffer = __vertexBuilder.__vertexBuffer;
-            Draw = (__vertexBuilder.__fontSDFSpread == undefined)? __DrawVertexBuffer : __DrawVertexBufferSDF;
+            Draw = __ScribbletGetFontInfo(__font).sdfEnabled? __DrawVertexBufferSDF : __DrawVertexBuffer;
             __vertexBuilder = undefined;
         }
     }
