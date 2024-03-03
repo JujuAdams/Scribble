@@ -268,7 +268,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
             ++_i;
         }
         
-        if (_iterations >= _lastIteration)
+        if (_lastIteration)
         {
             _overallWidth = max(_overallWidth, _cursorX - (_fragment.__whitespaceFollows? _spaceWidth : 0));
             
