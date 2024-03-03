@@ -55,6 +55,7 @@ function __ScribbletGetFontInfo(_font)
             
             var _proportional = _extraData.__proportional;
             var _separation   = _extraData.__separation;
+            var _spriteWidth  = sprite_get_width(_sprite);
             
             var _i = 0;
             repeat(array_length(_glyphNameArray))
@@ -77,7 +78,7 @@ function __ScribbletGetFontInfo(_font)
                 else
                 {            
                     var _xOffset = _imageInfo.x_offset;
-                    var _glyphSeparation = _sprite_width + _separation;
+                    var _glyphSeparation = _spriteWidth + _separation;
                 }
                 
                 _glyphInfo.x       = _left;
