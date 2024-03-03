@@ -120,7 +120,7 @@
   "maintainGms1Font": false,
   "parent": {
     "name": "(System)",
-    "path": "folders/Scribblet (Mini Scribble)/(System).yy",
+    "path": "folders/Scribblet/(System).yy",
   },
   "pointRounding": 0,
   "ranges": [

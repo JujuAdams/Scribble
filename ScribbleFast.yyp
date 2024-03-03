@@ -11,12 +11,12 @@
   },
   "defaultScriptType": 1,
   "Folders": [
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Scribblet (Mini Scribble)","folderPath":"folders/Scribblet (Mini Scribble).yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"(System)","folderPath":"folders/Scribblet (Mini Scribble)/(System).yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Classes","folderPath":"folders/Scribblet (Mini Scribble)/(System)/Classes.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Builder","folderPath":"folders/Scribblet (Mini Scribble)/(System)/Classes/Builder.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Element","folderPath":"folders/Scribblet (Mini Scribble)/(System)/Classes/Element.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Setup","folderPath":"folders/Scribblet (Mini Scribble)/Setup.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Scribblet","folderPath":"folders/Scribblet.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"(System)","folderPath":"folders/Scribblet/(System).yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Classes","folderPath":"folders/Scribblet/(System)/Classes.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Builder","folderPath":"folders/Scribblet/(System)/Classes/Builder.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Element","folderPath":"folders/Scribblet/(System)/Classes/Element.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Setup","folderPath":"folders/Scribblet/Setup.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"NotoSansMono-CondensedMedium.ttf","CopyToMask":-1,"filePath":"datafiles",},

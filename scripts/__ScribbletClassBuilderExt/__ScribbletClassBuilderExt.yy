@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "Builder",
-    "path": "folders/Scribblet (Mini Scribble)/(System)/Classes/Builder.yy",
+    "path": "folders/Scribblet/(System)/Classes/Builder.yy",
   },
 }

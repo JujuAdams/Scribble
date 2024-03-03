@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "Scribblet (Mini Scribble)",
-    "path": "folders/Scribblet (Mini Scribble).yy",
+    "name": "Scribblet",
+    "path": "folders/Scribblet.yy",
   },
 }

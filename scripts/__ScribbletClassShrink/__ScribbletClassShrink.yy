@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "Element",
-    "path": "folders/Scribblet (Mini Scribble)/(System)/Classes/Element.yy",
+    "path": "folders/Scribblet/(System)/Classes/Element.yy",
   },
 }
