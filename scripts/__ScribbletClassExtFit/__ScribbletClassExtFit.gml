@@ -441,7 +441,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
         static _shdScribbletExt_u_iColour = shader_get_uniform(__shdScribbletColor, "u_iColour");
         
         shader_set(__shdScribbletColor);
-        shader_set_uniform_f(_shdScribbletExt_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
+        shader_set_uniform_f(_shdScribbletExt_u_vPositionAlphaScale, _x, _y, _alpha, __scale*__fontScale);
         shader_set_uniform_i(_shdScribbletExt_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
@@ -456,7 +456,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
         static _shdScribbletExt_SDF_u_iColour = shader_get_uniform(__shdScribbletColorSDF, "u_iColour");
         
         shader_set(__shdScribbletColorSDF);
-        shader_set_uniform_f(_shdScribbletExt_SDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
+        shader_set_uniform_f(_shdScribbletExt_SDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale*__fontScale);
         shader_set_uniform_i(_shdScribbletExt_SDF_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();

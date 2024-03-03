@@ -331,7 +331,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         _y += __yOffset;
         
         shader_set(__shdScribbletColor);
-        shader_set_uniform_f(_shdScribbletExt_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
+        shader_set_uniform_f(_shdScribbletExt_u_vPositionAlphaScale, _x, _y, _alpha, __scale*__fontScale);
         shader_set_uniform_i(_shdScribbletExt_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
@@ -349,7 +349,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         _y += __yOffset;
         
         shader_set(__shdScribbletColorSDF);
-        shader_set_uniform_f(_shdScribbletExt_SDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale);
+        shader_set_uniform_f(_shdScribbletExt_SDF_u_vPositionAlphaScale, _x, _y, _alpha, __scale*__fontScale);
         shader_set_uniform_i(_shdScribbletExt_SDF_u_iColour, _colour);
         vertex_submit(__vertexBuffer, pr_trianglelist, __fontTexture);
         shader_reset();
