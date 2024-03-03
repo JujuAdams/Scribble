@@ -1,6 +1,6 @@
 {
   "FolderOrderSettings": [
-    {"name":"Scribblet (Mini Scribble)","order":9,"path":"folders/Scribblet (Mini Scribble).yy",},
+    {"name":"Scribblet (Mini Scribble)","order":10,"path":"folders/Scribblet (Mini Scribble).yy",},
     {"name":"Classes","order":15,"path":"folders/Scribblet (Mini Scribble)/(System)/Classes.yy",},
     {"name":"Builder","order":1,"path":"folders/Scribblet (Mini Scribble)/(System)/Classes/Builder.yy",},
     {"name":"Element","order":2,"path":"folders/Scribblet (Mini Scribble)/(System)/Classes/Element.yy",},
@@ -8,6 +8,7 @@
   ],
   "ResourceOrderSettings": [
     {"name":"__ScribbletGetSpaceWidth","order":6,"path":"scripts/__ScribbletGetSpaceWidth/__ScribbletGetSpaceWidth.yy",},
+    {"name":"ScribbletAddSpriteFont","order":9,"path":"scripts/ScribbletAddSpriteFont/ScribbletAddSpriteFont.yy",},
     {"name":"ScribbletShrinkExt","order":9,"path":"scripts/ScribbletShrinkExt/ScribbletShrinkExt.yy",},
     {"name":"__ScribbletClassBuilderExt","order":2,"path":"scripts/__ScribbletClassBuilderExt/__ScribbletClassBuilderExt.yy",},
     {"name":"__ScribbletClassBuilderExtFit","order":3,"path":"scripts/__ScribbletClassBuilderExtFit/__ScribbletClassBuilderExtFit.yy",},

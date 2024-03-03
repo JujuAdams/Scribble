@@ -1,7 +1,8 @@
 function __ScribbletGetFontInfo(_font)
 {
-    static _system = __ScribbletSystem();
-    static _cache  = _system.__cacheFontInfo;
+    static _system         = __ScribbletSystem();
+    static _cache          = _system.__cacheFontInfo;
+    static _spriteFontData = _system.__spriteFontData;
     
     var _name = font_get_name(_font);
     
@@ -46,8 +47,14 @@ function __ScribbletGetFontInfo(_font)
             //Force the texture information for the font
             _fontInfo.forcedTexturePointer = _texturePointer;
             
-            var _separation   = 1;
-            var _proportional = true;
+            var _extraData = _spriteFontData[$ font_get_name(_font)];
+            if (_extraData == undefined)
+            {
+                __ScribbletError("Spritefont ", _font, " (sprite=", sprite_get_name(_sprite), ") has not been attached with ScribbletAddSpriteFont()");
+            }
+            
+            var _proportional = _extraData.__proportional;
+            var _separation   = _extraData.__separation;
             
             var _i = 0;
             repeat(array_length(_glyphNameArray))

@@ -23,6 +23,8 @@ function __ScribbletSystem()
         __cacheSpaceWidth  = {};
         __cacheSpaceHeight = {};
         
+        __spriteFontData = {};
+        
         __budget         = SCRIBBLET_BUDGET;
         __budgetUsed     = 0;
         __budgetUsedPrev = 0;

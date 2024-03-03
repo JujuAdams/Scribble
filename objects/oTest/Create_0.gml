@@ -39,3 +39,6 @@ stressCount = 1;
 startTime = current_time;
 fpsRealSmoothed = 1000;
 mode = 7;
+var _mapstring = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.-;:_+-*/\\'\"!?~^°<>|(){[]}%&=#@$ÄÖÜäöüß";
+spriteFont = font_add_sprite_ext(sSpriteFont, _mapstring, true, 1);
+ScribbletAttachSpriteFont(spriteFont, true, 1);
