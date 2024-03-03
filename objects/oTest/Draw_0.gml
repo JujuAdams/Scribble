@@ -10,7 +10,7 @@ if (showHelp)
     _string += "\n";
     _string += Concat("Scribblet ", __SCRIBBLET_VERSION, " Tester\n");
     _string += "\n";
-    _string += "F1 = toggle this window\n";
+    _string += "F1 = toggle help\n";
     _string += "1-7 = change test mode\n";
     _string += "up/down = increase/decrease draw count\n";
     _string += "enter = change draw count to match 60FPS (roughly)\n";
@@ -21,6 +21,10 @@ if (showHelp)
     _string += "right click = move text\n";
     _string += "Q/A = increase/decrease font scale\n";
     _string += "shift+arrow keys = change alignment\n";
+}
+else
+{
+    _string += "F1 = toggle help\n";
 }
 
 draw_rectangle(x, y, x + width, y + height, true);

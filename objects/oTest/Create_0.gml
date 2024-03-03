@@ -5,7 +5,7 @@ fontScale = 1;
 width     = 314; //room_width - x;
 height    = 43;  //room_height - y;
 
-showHelp = true;
+showHelp = false;
 
 testString = 2*"Sphinx of black quartz, hear my vow! ";
 testStringColor = 2*"Sphinx of black quartz, [sTestShape]hear my [c_red]vow[/c]! ";
