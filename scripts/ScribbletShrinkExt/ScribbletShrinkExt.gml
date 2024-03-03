@@ -55,11 +55,12 @@
 
 function ScribbletShrinkExt(_string, _hAlign = fa_left, _vAlign = fa_top, _font = undefined, _fontScale = 1, _maxWidth = infinity, _maxHeight = infinity)
 {
-    static _system = __ScribbletSystem();
-    static _cache  = _system.__wrappersCache;
-    static _array  = _system.__elementsArray;
+    static _system      = __ScribbletSystem();
+    static _nullWrapper = _system.__nullWrapper;
+    static _cache       = _system.__wrappersCache;
+    static _array       = _system.__elementsArray;
     
-    if ((_string == "") || (_maxWidth < 0) || (_maxHeight < 0)) return;
+    if ((_string == "") || (_maxWidth < 0) || (_maxHeight < 0)) return _nullWrapper;
     if (_font == undefined) _font = _system.__defaultFont;
     
     var _key = string_concat(_string, ":",

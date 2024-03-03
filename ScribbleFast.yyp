@@ -52,6 +52,7 @@
     {"id":{"name":"fntTestSDF","path":"fonts/fntTestSDF/fntTestSDF.yy",},},
     {"id":{"name":"__ScribbletSystem","path":"scripts/__ScribbletSystem/__ScribbletSystem.yy",},},
     {"id":{"name":"oTest","path":"objects/oTest/oTest.yy",},},
+    {"id":{"name":"__ScribbletClassNullWrapper","path":"scripts/__ScribbletClassNullWrapper/__ScribbletClassNullWrapper.yy",},},
     {"id":{"name":"__ScribbletClass","path":"scripts/__ScribbletClass/__ScribbletClass.yy",},},
     {"id":{"name":"__ScribbletClassBuilderFit","path":"scripts/__ScribbletClassBuilderFit/__ScribbletClassBuilderFit.yy",},},
     {"id":{"name":"ScribbletExt","path":"scripts/ScribbletExt/ScribbletExt.yy",},},

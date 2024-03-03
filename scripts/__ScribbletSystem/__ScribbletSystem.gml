@@ -15,6 +15,8 @@ function __ScribbletSystem()
     _system = {};
     with(_system)
     {
+        __nullWrapper = new __ScribbletClassNullWrapper();
+        
         __wrappersCache     = {};
         __elementsArray     = [];
         __elementSweepIndex = 0;
