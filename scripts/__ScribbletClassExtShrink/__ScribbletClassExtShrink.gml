@@ -147,11 +147,11 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
                         array_push(__spriteArray, {
                             __sprite: _sprite,
                             __image: _spriteImage,
-                            __x: _spriteX + _x + sprite_get_xoffset(_sprite)/_fontScale,
-                            __y: _spriteY + 0.5*(_lineHeight - sprite_get_height(_sprite)/_fontScale) + sprite_get_yoffset(_sprite)/_fontScale,
+                            __x: _spriteX + _x + sprite_get_xoffset(_sprite) / _fontScale,
+                            __y: _spriteY + 0.5*(_lineHeight - (sprite_get_height(_sprite) / _fontScale)) + (sprite_get_yoffset(_sprite) / _fontScale),
                         });
                         
-                        _x += sprite_get_width(_sprite);
+                        _x += sprite_get_width(_sprite) / _fontScale;
                     }
                     else
                     {
@@ -176,8 +176,8 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
             ++_i;
         }
         
-        __width   = _x;
-        __height  = _lineHeight;
+        __width   = __fontScale*_x;
+        __height  = __fontScale*_lineHeight;
         __scale   = min(1, _maxWidth/__width, _maxHeight/__height);
         __width  *= __scale;
         __height *= __scale;
@@ -259,7 +259,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
         
-        var _scale = __scale;
+        var _scale = __scale*__fontScale;
         _x += __xOffset;
         _y += __yOffset;
         
@@ -292,7 +292,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         {
             with(__spriteArray[_i])
             {
-                draw_sprite_ext(__sprite, __image, _x + _scale*__x, _y + _scale*__y, _scale*_fontScale, _scale*_fontScale, 0, c_white, _alpha);
+                draw_sprite_ext(__sprite, __image, _x + _scale*_fontScale*__x, _y + _scale*_fontScale*__y, _scale, _scale, 0, c_white, _alpha);
             }
             
             ++_i;
