@@ -1,3 +1,12 @@
+//Scaling values passed to Scribblet*Ext functions will scale up and down text. However, you may
+//not want to scale sprites that have been inserted into the string in the same way. Setting this
+//macro to <false> will keep sprites unscaled (scaling factor = 1) relative to the specified text
+//scale.
+//
+// N.B. If ScribbletShrinkExt() or ScribbletFitExt() require the string to be scaled down then
+//      sprites will be scaled down regardless of this macro's value.
+#macro SCRIBBLET_SCALE_SPRITES  true
+
 //Whether to reset draw state after Scribblet calls. This will slighly negatively impact
 //performance but is convenient.
 #macro SCRIBBLET_RESET_DRAW_STATE  true
