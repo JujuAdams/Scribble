@@ -5,7 +5,7 @@ function __ScribbletClassBuilderExtFit(_fragArray, _font) constructor
     static _system       = __ScribbletSystem();
     static _vertexFormat = _system.__vertexFormatColor;
     
-    __fragArray = _fragArray;
+    __fragmentArray = _fragArray;
     
     __tickMethod = __DecomposeFragment;
     
@@ -54,7 +54,7 @@ function __ScribbletClassBuilderExtFit(_fragArray, _font) constructor
     
     static __DecomposeFragment = function()
     {
-        var _fragmentData   = __fragArray[__fragment];
+        var _fragmentData   = __fragmentArray[__fragment];
         var _fragmentString = _fragmentData.__string;
         __glyph       = 0;
         __glyphCount  = string_length(_fragmentString);
@@ -121,7 +121,7 @@ function __ScribbletClassBuilderExtFit(_fragArray, _font) constructor
             if (__glyph >= __glyphCount)
             {
                 __fragment++;
-                if (__fragment < array_length(__fragArray))
+                if (__fragment < array_length(__fragmentArray))
                 {
                     __tickMethod = __DecomposeFragment;
                     break;

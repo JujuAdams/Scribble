@@ -26,9 +26,9 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
     Draw = __DrawNative;
         
     __spriteArray   = [];
-    __fragArray     = [];
+    __fragmentArray     = [];
     __vertexBuffer  = undefined;
-    __vertexBuilder = new __ScribbletClassBuilderExt(__fragArray, _font);
+    __vertexBuilder = new __ScribbletClassBuilderExt(__fragmentArray, _font);
     __fontTexture   = __ScribbletGetFontInfo(_font).forcedTexturePointer;
     
     if (SCRIBBLET_RESET_DRAW_STATE) var _oldFont = draw_get_font();
@@ -62,7 +62,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         Draw = (__scale == 1)? __DrawSimple : __DrawSimpleScaled;
         
         //Add a spoofed fragment so the vertex buffer builder has something to work on
-        array_push(__fragArray, {
+        array_push(__fragmentArray, {
             __colour: -1,
             __string: __string,
             __x: 0,
@@ -77,7 +77,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         var _textString = _substringArray[0];
         if (_textString != "")
         {
-            array_push(__fragArray, {
+            array_push(__fragmentArray, {
                 __colour: -1,
                 __string: _textString,
                 __x: 0,
@@ -163,7 +163,7 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
                 var _textString = _tagSplitArray[1];
                 if (_textString != "")
                 {
-                    array_push(__fragArray, {
+                    array_push(__fragmentArray, {
                         __colour: _colour,
                         __string: _tagSplitArray[1],
                         __x: _x,
@@ -264,9 +264,9 @@ function __ScribbletClassExtShrink(_key, _string, _hAlign, _vAlign, _font, _font
         _y += __yOffset;
         
         var _i = 0;
-        repeat(array_length(__fragArray))
+        repeat(array_length(__fragmentArray))
         {
-            with(__fragArray[_i])
+            with(__fragmentArray[_i])
             {
                 draw_set_colour((__colour >= 0)? __colour : _colour);
                 draw_text_transformed(_x + _scale*__x, _y, __string, _scale, _scale, 0);

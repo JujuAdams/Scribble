@@ -23,10 +23,10 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
     __scale     = _fontScale;
     __fontScale = _fontScale;
     
-    __fragArray     = [];
+    __fragmentArray     = [];
     __spriteArray   = [];
     __vertexBuffer  = undefined;
-    __vertexBuilder = new __ScribbletClassBuilderExt(__fragArray, _font);
+    __vertexBuilder = new __ScribbletClassBuilderExt(__fragmentArray, _font);
     __fontTexture   = __ScribbletGetFontInfo(_font).forcedTexturePointer;
     
     var _layoutArray = [];
@@ -150,7 +150,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
                         };
                         
                         array_push(_layoutArray, _fragment);
-                        array_push(__fragArray, _fragment);
+                        array_push(__fragmentArray, _fragment);
                     }
                     
                     ++_j;
@@ -338,7 +338,7 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
     
     __vertexBuffer  = undefined;
     __fontTexture   = __ScribbletGetFontInfo(_font).forcedTexturePointer;
-    __vertexBuilder = new __ScribbletClassBuilderExtFit(__fragArray, _font);
+    __vertexBuilder = new __ScribbletClassBuilderExtFit(__fragmentArray, _font);
     
     if (SCRIBBLET_RESET_DRAW_STATE) draw_set_font(_oldFont);
     if (SCRIBBLET_VERBOSE) __ScribbletTrace("Created ", self);
@@ -377,9 +377,9 @@ function __ScribbletClassExtFit(_key, _string, _hAlign, _vAlign, _font, _fontSca
         var _scale = __scale*__fontScale;
         
         var _i = 0;
-        repeat(array_length(__fragArray))
+        repeat(array_length(__fragmentArray))
         {
-            with(__fragArray[_i])
+            with(__fragmentArray[_i])
             {
                 draw_set_colour((__colour >= 0)? __colour : _colour);
                 draw_text_transformed(_x + _scale*__x, _y + _scale*__y, __string, _scale, _scale, 0);
