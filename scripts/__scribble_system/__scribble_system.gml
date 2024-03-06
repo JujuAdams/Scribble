@@ -4,6 +4,7 @@
 #macro __SCRIBBLE_DATE              "2023-03-13"
 #macro __SCRIBBLE_DEBUG             false
 #macro __SCRIBBLE_VERBOSE_GC        false
+#macro __SCRIBBLE_RUNNING_FROM_IDE  (GM_build_type == "run")
 #macro SCRIBBLE_LOAD_FONTS_ON_BOOT  true
 
 
@@ -15,50 +16,68 @@ if (SCRIBBLE_LOAD_FONTS_ON_BOOT) __scribble_font_add_all_from_project();
 
 function __scribble_initialize()
 {
-    static _initialized = false;
-    if (_initialized) return;
-    _initialized = true;
+    static _system = undefined;
+    if (_system != undefined) return;
+    _system = {};
     
-    __scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
-    
-    if (SCRIBBLE_VERBOSE)
+    with(_system)
     {
-        __scribble_trace("Verbose mode is on");
-    }
-    else
-    {
-        __scribble_trace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
-    }
-    
-    try
-    {
-        time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
+        __scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
+        
+        if (SCRIBBLE_VERBOSE)
         {
-            //We use an anonymous function here because directly calling __scribble_tick() fails on HTML5
-            __scribble_tick()
-        }, [], -1));
-    }
-    catch(_error)
-    {
-        __scribble_trace(_error);
-        __scribble_error("Versions earlier than GameMaker 2022 LTS are not supported");
+            __scribble_trace("Verbose mode is on");
+        }
+        else
+        {
+            __scribble_trace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
+        }
+        
+        try
+        {
+            time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
+            {
+                //We use an anonymous function here because directly calling __scribble_tick() fails on HTML5
+                __scribble_tick()
+            }, [], -1));
+        }
+        catch(_error)
+        {
+            __scribble_trace(_error);
+            __scribble_error("Versions earlier than GameMaker 2022 LTS are not supported");
+        }
+        
+        //Initialize statics on boot before they need to be used
+        __scribble_get_font_directory();
+        __scribble_get_state();
+        __scribble_get_generator_state();
+        __scribble_glyph_data_initialize();
+        __scribble_get_font_data_map();
+        __scribble_config_colours();
+        __scribble_get_buffer_a();
+        __scribble_get_buffer_b();
+        __scribble_get_anim_properties();
+        __scribble_effects_maps_initialize();
+        __scribble_typewrite_events_map_initialize();
+        __scribble_krutidev_lookup_map_initialize();
+        __scribble_krutidev_matra_lookup_map_initialize();
+        scribble_anim_reset();
+        
+        __useHandleParse = false;
+        try
+        {
+            handle_parse(string(__scribble_initialize));
+            __useHandleParse = true;
+            
+            __scribble_trace("Using handle_parse() where possible");
+        }
+        catch(_error)
+        {
+            __scribble_trace("handle_parse() not available");
+        }
     }
     
-    //Initialize statics on boot before they need to be used
-    __scribble_get_font_directory();
-    __scribble_get_state();
-    __scribble_get_generator_state();
-    __scribble_glyph_data_initialize();
-    __scribble_get_font_data_map();
-    __scribble_config_colours();
-    __scribble_get_buffer_a();
-    __scribble_get_buffer_b();
-    __scribble_get_anim_properties();
-    __scribble_effects_maps_initialize();
-    __scribble_typewrite_events_map_initialize();
-    __scribble_krutidev_lookup_map_initialize();
-    __scribble_krutidev_matra_lookup_map_initialize();
-    scribble_anim_reset();
+    return _system;
 }
 
 

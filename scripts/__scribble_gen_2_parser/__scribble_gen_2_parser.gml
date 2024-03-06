@@ -145,6 +145,8 @@ function __scribble_gen_2_parser()
     
     #endregion
     
+    static _system                = __scribble_system();
+    static _useHandleParse        = _system.__useHandleParse;
     static _effects_map           = __scribble_get_effects_map();
     static _effects_slash_map     = __scribble_get_effects_slash_map();
     static _typewriter_events_map = __scribble_get_typewriter_events_map();
@@ -780,7 +782,14 @@ function __scribble_gen_2_parser()
                     
                     // [surface]
                     case 28:
-                        var _surface = real(_tag_parameters[1]);
+                        if (_useHandleParse)
+                        {
+                            var _surface = handle_parse(_tag_parameters[1]);
+                        }
+                        else
+                        {
+                            var _surface = real(_tag_parameters[1]);
+                        }
                         
                         var _surface_w = surface_get_width(_surface);
                         var _surface_h = surface_get_height(_surface);
