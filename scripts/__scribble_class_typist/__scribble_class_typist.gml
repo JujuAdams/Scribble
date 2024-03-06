@@ -552,7 +552,7 @@ function __scribble_class_typist(_per_line) constructor
                     {
                         with(_function_scope) _function(_target_element, _event_data, _event_position);
                     }
-                    else if (is_real(_function) && script_exists(_function))
+                    else if (script_exists(_function))
                     {
                         with(_function_scope) script_execute(_function, _target_element, _event_data, _event_position);
                     }
@@ -624,7 +624,7 @@ function __scribble_class_typist(_per_line) constructor
         {
             __function_per_char(_function_scope, __last_character - 1, self);
         }
-        else if (is_real(__function_per_char) && script_exists(__function_per_char))
+        else if (script_exists(__function_per_char))
         {
             script_execute(__function_per_char, _function_scope, __last_character - 1, self);
         }
@@ -637,7 +637,7 @@ function __scribble_class_typist(_per_line) constructor
         {
             __function_on_complete(_function_scope, self);
         }
-        else if (is_real(__function_on_complete) && script_exists(__function_on_complete))
+        else if (script_exists(__function_on_complete))
         {
             script_execute(__function_on_complete, _function_scope, self);
         }
