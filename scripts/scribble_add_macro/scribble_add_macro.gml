@@ -12,7 +12,7 @@ function scribble_add_macro(_name, _function)
         exit;
     }
     
-    if (!is_method(_function) && !script_exists(_function))
+    if (is_undefined(_function) || (!is_method(_function) && !script_exists(_function)))
     {
         __scribble_error("Invalid function provided\n(Input datatype was \"", typeof(_function), "\")");
         exit;
