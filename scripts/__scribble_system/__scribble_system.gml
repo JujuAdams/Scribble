@@ -17,7 +17,7 @@ if (SCRIBBLE_LOAD_FONTS_ON_BOOT) __scribble_font_add_all_from_project();
 function __scribble_initialize()
 {
     static _system = undefined;
-    if (_system != undefined) return;
+    if (_system != undefined) return _system;
     _system = {};
     
     with(_system)

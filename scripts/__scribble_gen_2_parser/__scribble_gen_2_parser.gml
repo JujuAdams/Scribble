@@ -145,7 +145,7 @@ function __scribble_gen_2_parser()
     
     #endregion
     
-    static _system                = __scribble_system();
+    static _system                = __scribble_initialize();
     static _useHandleParse        = _system.__useHandleParse;
     static _effects_map           = __scribble_get_effects_map();
     static _effects_slash_map     = __scribble_get_effects_slash_map();
