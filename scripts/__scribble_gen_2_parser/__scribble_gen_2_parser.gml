@@ -1,3 +1,4 @@
+// Feather disable all
 #macro __SCRIBBLE_PARSER_PUSH_SCALE  if (_state_scale != 1)\
                                      {\
                                             ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_GEN_GLYPH.__X, _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE, _state_scale);\ //Covers x, y, width, height, and separation
@@ -53,7 +54,7 @@
                                           if (SCRIBBLE_USE_KERNING)\
                                           {\
                                               var _kerning = _font_kerning_map[? ((_glyph_write & 0xFFFF) << 16) | (_glyph_prev & 0xFFFF)];\
-                                              if (_kerning != undefined) _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__SEPARATION] += _kerning;\
+                                              if (_kerning != undefined) _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION] += _kerning;\
                                           }\
                                           ;\
                                           __SCRIBBLE_PARSER_NEXT_GLYPH\
@@ -144,6 +145,8 @@ function __scribble_gen_2_parser()
     
     #endregion
     
+    static _system                = __scribble_initialize();
+    static _useHandleParse        = _system.__useHandleParse;
     static _effects_map           = __scribble_get_effects_map();
     static _effects_slash_map     = __scribble_get_effects_slash_map();
     static _typewriter_events_map = __scribble_get_typewriter_events_map();
@@ -779,7 +782,14 @@ function __scribble_gen_2_parser()
                     
                     // [surface]
                     case 28:
-                        var _surface = real(_tag_parameters[1]);
+                        if (_useHandleParse)
+                        {
+                            var _surface = handle_parse(_tag_parameters[1]);
+                        }
+                        else
+                        {
+                            var _surface = real(_tag_parameters[1]);
+                        }
                         
                         var _surface_w = surface_get_width(_surface);
                         var _surface_h = surface_get_height(_surface);

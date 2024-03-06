@@ -1,3 +1,4 @@
+// Feather disable all
 /// Resets animation effects to their default values
 
 function scribble_anim_reset()

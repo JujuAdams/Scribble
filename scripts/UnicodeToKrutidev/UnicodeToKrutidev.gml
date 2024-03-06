@@ -1,3 +1,4 @@
+// Feather disable all
 /// Unicode to Krutidev
 /// @jujuadams  2022-01-29
 /// 

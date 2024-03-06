@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param name
 
 function scribble_font_exists(_name)

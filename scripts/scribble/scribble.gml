@@ -1,3 +1,4 @@
+// Feather disable all
 /// Returns a Scribble text element corresponding to the input string
 /// If a text element with the same input string (and unique ID) has been cached, this function will return the cached text element
 /// 

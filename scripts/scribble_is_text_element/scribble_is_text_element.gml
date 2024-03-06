@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param value
 
 function scribble_is_text_element(_value)

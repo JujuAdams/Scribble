@@ -1,3 +1,4 @@
+// Feather disable all
 #macro __SCRIBBLE_GEN_WORD_START  _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__GLYPH_START] = _word_glyph_start;\
                                   _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI_RAW   ] = _word_bidi;\
                                   _word_grid[# _word_count, __SCRIBBLE_GEN_WORD.__BIDI       ] = ((_word_bidi == __SCRIBBLE_BIDI.ISOLATED) || (_word_bidi == __SCRIBBLE_BIDI.ISOLATED_CJK))? __SCRIBBLE_BIDI.L2R : _word_bidi; //CJK isolated characters are written L2R

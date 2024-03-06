@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param size   Shake amplitude, in pixels
 /// @param speed  Shake speed. Larger values cause characters to move around more rapidly
 

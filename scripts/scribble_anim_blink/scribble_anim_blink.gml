@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param onDuration   Duration that blinking text should stay on for, in milliseconds
 /// @param offDuration  Duration that blinking text should turn off for, in milliseconds
 /// @param timeOffset   Blink time offset, in milliseconds

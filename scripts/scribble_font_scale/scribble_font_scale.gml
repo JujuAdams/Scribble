@@ -1,3 +1,4 @@
+// Feather disable all
 /// Scales a font's glyphs permanently across all future text elements
 /// 
 /// Returns: N/A (undefined)

@@ -1,3 +1,4 @@
+// Feather disable all
 /// Adds a colour name for use with Scribble's text formatting tags
 /// 
 /// For example, adding a colour called "c_banana" will allow the use of the [c_banana] formatting

@@ -1,3 +1,4 @@
+// Feather disable all
 /// Emulation of draw_text(), but using Scribble for rendering
 /// 
 /// **Please do not use this function in conjunction with string_copy()**
@@ -20,7 +21,7 @@ function draw_text_scribble(_x, _y, _string, _reveal = undefined)
     static _scribble_state = __scribble_get_state();
     
     var _font = draw_get_font();
-    if (is_numeric(_font) && (_font >= 0) && font_exists(_font))
+    if (font_exists(_font))
     {
         _font = font_get_name(_font);
         if (!scribble_font_exists(_font)) __scribble_error("Font \"", _font, "\" does not exist in Scribble\n(Fonts added with font_add() are not supported)");

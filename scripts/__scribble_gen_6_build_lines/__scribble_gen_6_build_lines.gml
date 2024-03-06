@@ -1,3 +1,4 @@
+// Feather disable all
 #macro __SCRIBBLE_GEN_LINE_START  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__X                 ] = _indent_x;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_START        ] = _line_word_start;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HALIGN            ] = _state_halign;\
@@ -157,7 +158,13 @@ function __scribble_gen_6_build_lines()
                     if (_word_width >= _simulated_model_max_width)
                     {
                         _word_broken = true;
-                        if (_wrap_no_pages) break;
+                        if (_wrap_no_pages)
+                        {
+                            var _line_word_end = _i;
+                            __SCRIBBLE_GEN_LINE_END;
+                            _line_y += _line_height;
+                            break;
+                        }
                         
                         #region Emergency! We're going to have to retroactively implement per-glyph line wrapping
                         

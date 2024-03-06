@@ -5,7 +5,7 @@ scribble_font_set_default("devanagari test");
 
 
 
-index = 38;
+index = 40;
 
 testVectorArray = [
 /*  0 */    { unicode: "गया", expected: "x;k" },
@@ -48,4 +48,5 @@ testVectorArray = [
 /* 37 */    { unicode: "फॉक्स BS30", expected: "Q‚Dl BS30" },
 /* 38 */    { unicode: "फ़िफ्टी", expected: "fQ¶Vh" },
 /* 39 */    { unicode: "और", expected: "vkSj" },
+/* 40 */    { unicode: "हम्म्...", expected: "gEe~---" },
 ];

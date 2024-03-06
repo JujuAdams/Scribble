@@ -1,3 +1,4 @@
+// Feather disable all
 function scribble_super_glyph_delete(_target)
 {
     static _font_data_map = __scribble_get_font_data_map();

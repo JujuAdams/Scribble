@@ -1,3 +1,4 @@
+// Feather disable all
 function __scribble_get_glyph_data()
 {
     static _struct = {

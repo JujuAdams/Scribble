@@ -1,3 +1,4 @@
+// Feather disable all
 function __scribble_tick()
 {
     static _scribble_state = __scribble_get_state();

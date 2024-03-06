@@ -1,3 +1,4 @@
+// Feather disable all
 /// @param newFontName
 
 function scribble_super_create(_name)
