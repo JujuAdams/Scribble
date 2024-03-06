@@ -12,21 +12,10 @@ function scribble_add_macro(_name, _function)
         exit;
     }
     
-    if (!is_method(_function))
+    if (!is_method(_function) && !script_exists(_function))
     {
-        if (is_real(_function))
-        {
-            if (!script_exists(_function))
-            {
-                __scribble_error("Script with asset index ", _function, " doesn't exist\n ", false);
-                exit;
-            }
-        }
-        else
-        {
-            __scribble_error("Invalid function provided\n(Input datatype was \"", typeof(_function), "\")");
-            exit;
-        }
+        __scribble_error("Invalid function provided\n(Input datatype was \"", typeof(_function), "\")");
+        exit;
     }
     
     if (ds_map_exists(__scribble_config_colours(), _name))
@@ -51,14 +40,7 @@ function scribble_add_macro(_name, _function)
     var _old_function = _macros_map[? _name];
     if (!is_undefined(_old_function))
     {
-        if (is_numeric(_old_function) and (_old_function < 0))
-        {
-            __scribble_trace("Warning! Overwriting event [" + _name + "] tied to <invalid script>");
-        }
-        else
-        {
-            __scribble_trace("Warning! Overwriting event [" + _name + "] tied to \"" + (is_method(_old_function)? string(_old_function) : script_get_name(_old_function)) + "\"");
-        }
+        __scribble_trace("Warning! Overwriting event [" + _name + "] tied to \"" + (is_method(_old_function)? string(_old_function) : script_get_name(_old_function)) + "\"");
     }
     
     _macros_map[? _name] = _function;
