@@ -18,7 +18,7 @@ function scribble_add_macro(_name, _function)
         exit;
     }
     
-    if (ds_map_exists(__scribble_config_colours(), _name))
+    if (variable_struct_exists(__scribble_config_colours(), _name))
     {
         __scribble_trace("Warning! Macro name \"" + _name + "\" has already been defined as a colour");
         exit;
