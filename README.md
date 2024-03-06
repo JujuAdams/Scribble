@@ -1,5 +1,5 @@
 <p align="center"><img src="https://raw.githubusercontent.com/JujuAdams/scribble/master/LOGO.png" style="display:block; margin:auto; width:300px"></p>
-<h1 align="center">Scribble 8.7.0</h1>
+<h1 align="center">Scribble 8.7.1</h1>
 
 <p align="center">A modern text renderer for GameMaker Studio 2022 LTS by <b>@jujuadams</b></p>
 
