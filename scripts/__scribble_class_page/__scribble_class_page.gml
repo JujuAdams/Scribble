@@ -37,21 +37,21 @@ function __scribble_class_page() constructor
     
     static __submit = function(_sdf_feather_thickness, _double_draw)
     {
+        static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );
+        static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );
+        static _u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble, "u_fSDFThicknessOffset");
+        static _u_fSecondDraw         = shader_get_uniform(__shd_scribble, "u_fSecondDraw"        );
+        static _u_fSDF                = shader_get_uniform(__shd_scribble, "u_fSDF"               );
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
-        var _shader = undefined;
+        shader_set(__shd_scribble);
+        
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
         {
             var _data = __vertex_buffer_array[_i];
             var _bilinear = _data[__SCRIBBLE_VERTEX_BUFFER.__BILINEAR];
-            
-            if (_data[__SCRIBBLE_VERTEX_BUFFER.__SHADER] != _shader)
-            {
-                _shader = _data[__SCRIBBLE_VERTEX_BUFFER.__SHADER];
-                shader_set(_shader);
-            }
             
             if (_bilinear != undefined)
             {
@@ -60,30 +60,27 @@ function __scribble_class_page() constructor
                 gpu_set_tex_filter(_bilinear);
             }
             
-            if (_shader == __shd_scribble_sdf)
+            if (_data[__SCRIBBLE_VERTEX_BUFFER.__SHADER] == __shd_scribble_sdf)
             {
-                static _sdf_u_vTexel               = shader_get_uniform(__shd_scribble_sdf, "u_vTexel"              );
-                static _sdf_u_fSDFRange           = shader_get_uniform(__shd_scribble_sdf, "u_fSDFRange"          );
-                static _sdf_u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble_sdf, "u_fSDFThicknessOffset");
-                static _sdf_u_fSecondDraw          = shader_get_uniform(__shd_scribble_sdf, "u_fSecondDraw"         );
-                
                 //Set shader uniforms unique to the SDF shader
-                shader_set_uniform_f(_sdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
-                shader_set_uniform_f(_sdf_u_fSDFRange, _sdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE]);
-                shader_set_uniform_f(_sdf_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET]);
+                shader_set_uniform_f(_u_fSDF, 1);
+                shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
+                shader_set_uniform_f(_u_fSDFRange, _sdf_feather_thickness*(_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE] ?? 0));
+                shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] ?? 0));
                 
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
                 
                 if (_double_draw)
                 {
-                    shader_set_uniform_f(_sdf_u_fSecondDraw, 1);
+                    shader_set_uniform_f(_u_fSecondDraw, 1);
                     vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
-                    shader_set_uniform_f(_sdf_u_fSecondDraw, 0);
+                    shader_set_uniform_f(_u_fSecondDraw, 0);
                 }
             }
             else
             {
                 //Other shaders don't need extra work
+                shader_set_uniform_f(_u_fSDF, 0);
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
             }
             
