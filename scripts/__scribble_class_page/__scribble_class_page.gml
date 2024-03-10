@@ -60,7 +60,7 @@ function __scribble_class_page() constructor
                 gpu_set_tex_filter(_bilinear);
             }
             
-            if (_data[__SCRIBBLE_VERTEX_BUFFER.__SHADER] == __shd_scribble_sdf)
+            if (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF])
             {
                 //Set shader uniforms unique to the SDF shader
                 shader_set_uniform_f(_u_fSDF, 1);
@@ -179,12 +179,12 @@ function __scribble_class_page() constructor
             if (_pxrange == undefined)
             {
                 _model_struct.__uses_standard_font = true;
-                var _shader = __shd_scribble;
+                var _sdf = false;
             }
             else
             {
                 _model_struct.__uses_sdf_font = true;
-                var _shader = __shd_scribble_sdf;
+                var _sdf = true;
             }
             
             static _vertex_format = undefined;
@@ -207,14 +207,14 @@ function __scribble_class_page() constructor
             array_push(__gc_vbuff_ids, _vbuff);
             
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER        ] = _vbuff;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE              ] = _texture;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER       ] = _vbuff;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _texture;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE           ] = _pxrange;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thickness_offset;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH          ] = texture_get_texel_width(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT         ] = texture_get_texel_height(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SHADER               ] = _shader;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR             ] = _bilinear;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_texture);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                 ] = _sdf;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR            ] = _bilinear;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;
             if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;

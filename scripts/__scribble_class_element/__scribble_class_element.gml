@@ -199,8 +199,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             __animation_blink_state = true;
         }
         
-        if (_model.__uses_standard_font) __set_standard_uniforms(_typist, _function_scope);
-        if (_model.__uses_sdf_font) __set_sdf_uniforms(_typist, _function_scope);
+        __set_standard_uniforms(_typist, _function_scope);
         
         //...aaaand set the matrix
         var _old_matrix = matrix_get(matrix_world);
@@ -1528,16 +1527,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static __set_standard_uniforms = function(_typist, _function_scope)
     {
-        static _u_fTime         = shader_get_uniform(__shd_scribble, "u_fTime"                   );
-        static _u_vColourBlend  = shader_get_uniform(__shd_scribble, "u_vColourBlend"            );
-        static _u_fBlinkState   = shader_get_uniform(__shd_scribble, "u_fBlinkState"             );
-        static _u_vGradient     = shader_get_uniform(__shd_scribble, "u_vGradient"               );
-        static _u_vSkew         = shader_get_uniform(__shd_scribble, "u_vSkew"                   );
-        static _u_vFlash        = shader_get_uniform(__shd_scribble, "u_vFlash"                  );
-        static _u_vRegionActive = shader_get_uniform(__shd_scribble, "u_vRegionActive"           );
-        static _u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour"           );
-        static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"             );
-        static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"                 );
+        static _u_fTime         = shader_get_uniform(__shd_scribble, "u_fTime"        );
+        static _u_vColourBlend  = shader_get_uniform(__shd_scribble, "u_vColourBlend" );
+        static _u_fBlinkState   = shader_get_uniform(__shd_scribble, "u_fBlinkState"  );
+        static _u_vGradient     = shader_get_uniform(__shd_scribble, "u_vGradient"    );
+        static _u_vSkew         = shader_get_uniform(__shd_scribble, "u_vSkew"        );
+        static _u_vFlash        = shader_get_uniform(__shd_scribble, "u_vFlash"       );
+        static _u_vRegionActive = shader_get_uniform(__shd_scribble, "u_vRegionActive");
+        static _u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour");
+        static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
+        static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
         
         static _u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble, "u_iTypewriterUseLines"     );
         static _u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
@@ -1548,6 +1547,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         static _u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"   );
         static _u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation");
         static _u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration");
+    
+        static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
+        static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
+        static _u_vBorderColour            = shader_get_uniform(__shd_scribble, "u_vBorderColour"           );
+        static _u_fBorderThickness         = shader_get_uniform(__shd_scribble, "u_fBorderThickness"        );
+        static _u_vOutputSize              = shader_get_uniform(__shd_scribble, "u_vOutputSize"             );
         
         static _scribble_state        = __scribble_get_state();
         static _anim_properties_array = __scribble_get_anim_properties();
@@ -1559,10 +1564,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         shader_set_uniform_f(_u_fTime, __animation_time);
         
         //TODO - Optimise
-        var _blend_colour = __blend_colour;
-        shader_set_uniform_f(_u_vColourBlend, colour_get_red(  _blend_colour)/255,
-                                              colour_get_green(_blend_colour)/255,
-                                              colour_get_blue( _blend_colour)/255,
+        shader_set_uniform_f(_u_vColourBlend, colour_get_red(  __blend_colour)/255,
+                                              colour_get_green(__blend_colour)/255,
+                                              colour_get_blue( __blend_colour)/255,
                                               __blend_alpha);
         
         shader_set_uniform_f(_u_fBlinkState, __animation_blink_state);
@@ -1589,7 +1593,6 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                    colour_get_green(__region_colour)/255,
                                                    colour_get_blue( __region_colour)/255,
                                                    __region_blend);
-            
         }
         else if (_shader_uniforms_dirty)
         {
@@ -1657,156 +1660,18 @@ function __scribble_class_element(_string, _unique_id) constructor
             shader_set_uniform_i(_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
         }
         
-        shader_reset();
-    }
-   
-    static __set_sdf_uniforms = function(_typist, _function_scope)
-    {
-        static _sdf_u_fTime         = shader_get_uniform(__shd_scribble, "u_fTime"        );
-        static _sdf_u_vColourBlend  = shader_get_uniform(__shd_scribble, "u_vColourBlend" );
-        static _sdf_u_fBlinkState   = shader_get_uniform(__shd_scribble, "u_fBlinkState"  );
-        static _sdf_u_vGradient     = shader_get_uniform(__shd_scribble, "u_vGradient"    );
-        static _sdf_u_vSkew         = shader_get_uniform(__shd_scribble, "u_vSkew"        );
-        static _sdf_u_vFlash        = shader_get_uniform(__shd_scribble, "u_vFlash"       );
-        static _sdf_u_vRegionActive = shader_get_uniform(__shd_scribble, "u_vRegionActive");
-        static _sdf_u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour");
-        static _sdf_u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
-        static _sdf_u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
+        shader_set_uniform_f(_u_vShadowOffsetAndSoftness, __sdf_shadow_xoffset, __sdf_shadow_yoffset, __sdf_shadow_softness);
         
-        static _sdf_u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble, "u_iTypewriterUseLines"     );
-        static _sdf_u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
-        static _sdf_u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
-        static _sdf_u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
-        static _sdf_u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"   );
-        static _sdf_u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"     );
-        static _sdf_u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"   );
-        static _sdf_u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation");
-        static _sdf_u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration");
-    
-        static _sdf_u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
-        static _sdf_u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
-        static _sdf_u_vBorderColour            = shader_get_uniform(__shd_scribble, "u_vBorderColour"           );
-        static _sdf_u_fBorderThickness         = shader_get_uniform(__shd_scribble, "u_fBorderThickness"        );
-        static _sdf_u_vOutputSize              = shader_get_uniform(__shd_scribble, "u_vOutputSize"             );
+        shader_set_uniform_f(_u_vShadowColour, colour_get_red(  __sdf_shadow_colour)/255,
+                                               colour_get_green(__sdf_shadow_colour)/255,
+                                               colour_get_blue( __sdf_shadow_colour)/255,
+                                               __sdf_shadow_alpha);
         
-        static _scribble_state        = __scribble_get_state();
-        static _anim_properties_array = __scribble_get_anim_properties();
+        shader_set_uniform_f(_u_vBorderColour, colour_get_red(  __sdf_border_colour)/255,
+                                               colour_get_green(__sdf_border_colour)/255,
+                                               colour_get_blue( __sdf_border_colour)/255);
         
-        static _shader_uniforms_dirty    = true;
-        static _shader_set_to_use_bezier = false;
-        
-        shader_set(__shd_scribble);
-        shader_set_uniform_f(_sdf_u_fTime, __animation_time);
-        
-        //TODO - Optimise
-        shader_set_uniform_f(_sdf_u_vColourBlend, colour_get_red(  __blend_colour)/255,
-                                                   colour_get_green(__blend_colour)/255,
-                                                   colour_get_blue( __blend_colour)/255,
-                                                   __blend_alpha);
-        
-        shader_set_uniform_f(_sdf_u_fBlinkState, __animation_blink_state);
-        
-        if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0))
-        {
-            _shader_uniforms_dirty = true;
-            
-            shader_set_uniform_f(_sdf_u_vGradient, colour_get_red(  __gradient_colour)/255,
-                                                    colour_get_green(__gradient_colour)/255,
-                                                    colour_get_blue( __gradient_colour)/255,
-                                                    __gradient_alpha);
-            
-            shader_set_uniform_f(_sdf_u_vSkew, __skew_x, __skew_y);
-            
-            shader_set_uniform_f(_sdf_u_vFlash, colour_get_red(  __flash_colour)/255,
-                                                 colour_get_green(__flash_colour)/255,
-                                                 colour_get_blue( __flash_colour)/255,
-                                                 __flash_alpha);
-            
-            shader_set_uniform_f(_sdf_u_vRegionActive, __region_glyph_start, __region_glyph_end);
-            
-            shader_set_uniform_f(_sdf_u_vRegionColour, colour_get_red(  __region_colour)/255,
-                                                        colour_get_green(__region_colour)/255,
-                                                        colour_get_blue( __region_colour)/255,
-                                                        __region_blend);
-        }
-        else if (_shader_uniforms_dirty)
-        {
-            _shader_uniforms_dirty = false;
-            
-            shader_set_uniform_f(_sdf_u_vGradient, 0, 0, 0, 0);
-            shader_set_uniform_f(_sdf_u_vSkew, 0, 0);
-            shader_set_uniform_f(_sdf_u_vFlash, 0, 0, 0, 0);
-            shader_set_uniform_f(_sdf_u_vRegionActive, 0, 0);
-            shader_set_uniform_f(_sdf_u_vRegionColour, 0, 0, 0, 0);
-        }
-        
-        //Update the animation properties for this shader if they've changed since the last time we drew an element
-        if (_scribble_state.__sdf_anim_desync)
-        {
-            with(_scribble_state)
-            {
-                __sdf_anim_desync  = false;
-                __sdf_anim_default = __sdf_anim_desync_to_default;
-            }
-            
-            shader_set_uniform_f_array(_sdf_u_aDataFields, _anim_properties_array);
-        }
-        
-        if (__bezier_using)
-        {
-            //If we're using a Bezier curve for this element, push that value into the shader
-            _shader_set_to_use_bezier = true;
-            shader_set_uniform_f_array(_sdf_u_aBezier, __bezier_array);
-        }
-        else if (_shader_set_to_use_bezier)
-        {
-            //If we're *not* using a Bezier curve but we have a previous Bezier curve cached, reset the curve in the shader
-            _shader_set_to_use_bezier = false;
-            
-            static _null_array = array_create(6, 0);
-            shader_set_uniform_f_array(_sdf_u_aBezier, _null_array);
-        }
-        
-        if (_typist != undefined)
-        {
-            with(_typist)
-            {
-                //Tick over the typist
-                __tick(other, _function_scope);
-                
-                //Let the typist set the shader uniforms
-                __set_sdf_shader_uniforms();
-            }
-        }
-        else if (__tw_reveal != undefined)
-        {
-            shader_set_uniform_i(_sdf_u_iTypewriterUseLines,          0);
-            shader_set_uniform_i(_sdf_u_iTypewriterMethod,            SCRIBBLE_EASE.LINEAR);
-            shader_set_uniform_i(_sdf_u_iTypewriterCharMax,           0);
-            shader_set_uniform_f(_sdf_u_fTypewriterSmoothness,        0);
-            shader_set_uniform_f(_sdf_u_vTypewriterStartPos,          0, 0);
-            shader_set_uniform_f(_sdf_u_vTypewriterStartScale,        1, 1);
-            shader_set_uniform_f(_sdf_u_fTypewriterStartRotation,     0);
-            shader_set_uniform_f(_sdf_u_fTypewriterAlphaDuration,     1.0);
-            shader_set_uniform_f_array(_sdf_u_fTypewriterWindowArray, __tw_reveal_window_array);
-        }
-        else
-        {
-            shader_set_uniform_i(_sdf_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
-        }
-        
-        shader_set_uniform_f(_sdf_u_vShadowOffsetAndSoftness, __sdf_shadow_xoffset, __sdf_shadow_yoffset, __sdf_shadow_softness);
-        
-        shader_set_uniform_f(_sdf_u_vShadowColour, colour_get_red(  __sdf_shadow_colour)/255,
-                                                    colour_get_green(__sdf_shadow_colour)/255,
-                                                    colour_get_blue( __sdf_shadow_colour)/255,
-                                                    __sdf_shadow_alpha);
-        
-        shader_set_uniform_f(_sdf_u_vBorderColour, colour_get_red(  __sdf_border_colour)/255,
-                                                    colour_get_green(__sdf_border_colour)/255,
-                                                    colour_get_blue( __sdf_border_colour)/255);
-        
-        shader_set_uniform_f(_sdf_u_fBorderThickness, __sdf_border_thickness);
+        shader_set_uniform_f(_u_fBorderThickness, __sdf_border_thickness);
         
         var _surface = surface_get_target();
         if (_surface >= 0)
@@ -1820,7 +1685,7 @@ function __scribble_class_element(_string, _unique_id) constructor
             var _surface_height = window_get_height();
         }
         
-        shader_set_uniform_f(_sdf_u_vOutputSize, _surface_width, _surface_height);
+        shader_set_uniform_f(_u_vOutputSize, _surface_width, _surface_height);
         
         shader_reset();
     }

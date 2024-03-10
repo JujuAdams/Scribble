@@ -545,16 +545,16 @@ enum __SCRIBBLE_GLYPH_LAYOUT
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {
-    __VERTEX_BUFFER,         //0
-    __TEXTURE,               //1
+    __VERTEX_BUFFER,        //0
+    __TEXTURE,              //1
     __SDF_RANGE,            //2
     __SDF_THICKNESS_OFFSET, //3
-    __TEXEL_WIDTH,           //4
-    __TEXEL_HEIGHT,          //5
-    __SHADER,                //6
-    __BUFFER,                //7
-    __BILINEAR,              //8
-    __SIZE                   //9
+    __TEXEL_WIDTH,          //4
+    __TEXEL_HEIGHT,         //5
+    __SDF,                  //6
+    __BUFFER,               //7
+    __BILINEAR,             //8
+    __SIZE                  //9
 }
 
 enum __SCRIBBLE_ANIM
@@ -714,6 +714,6 @@ enum __SCRIBBLE_GEN_LINE
 
 #macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This probably won't work for any other value
 
-#macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. This constant must match the corresponding values in __shd_scribble and __shd_scribble_sdf
+#macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. This constant must match the corresponding values in __shd_scribble
 
 #endregion
