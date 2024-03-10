@@ -4,5 +4,5 @@ typist.ease(SCRIBBLE_EASE.BOUNCE, 0, -40, 1, 1, 0, 0.1);
 
 test_string = "here's some cute text! [spr_large_coin]";
 
-scribble_font_set_default("spr_sdf_notoarabic"); //spr_sdf_notoarabic
+scribble_font_set_default("fnt_noto_arabic_sdf");
 test_string = "[scale,2]هل يمكنك رؤية هذا الذي يعد تنازليًا؟";

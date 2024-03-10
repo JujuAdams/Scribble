@@ -1,4 +1,4 @@
-var _element = scribble("[spr_sdf_industrydemi]Here is a [region,region 1]region\nto test[/region] this [region,region 2]feature.");
+var _element = scribble("[fnt_industrydemi_sdf]Here is a [region,region 1]region\nto test[/region] this [region,region 2]feature.");
 _element.draw(10, 10);
 
 var _region = _element.region_detect(10, 10, mouse_x, mouse_y);

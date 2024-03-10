@@ -4,7 +4,7 @@
   "name": "fnt_test_1",
   "AntiAlias": 1,
   "applyKerning": 0,
-  "ascender": 0,
+  "ascender": 22,
   "ascenderOffset": 3,
   "bold": true,
   "canGenerateBitmap": true,
@@ -210,7 +210,7 @@
   "italic": false,
   "kerningPairs": [],
   "last": 0,
-  "lineHeight": 0,
+  "lineHeight": 31,
   "maintainGms1Font": false,
   "parent": {
     "name": "Fonts",

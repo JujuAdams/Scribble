@@ -10,5 +10,5 @@ y3 = y0;
 // Force bilinear filtering on for this test case
 gpu_set_tex_filter(true);
 
-scribble_font_set_default("spr_sdf_notoarabic");
+scribble_font_set_default("fnt_noto_arabic_sdf");
 test_string = "هل يمكنك رؤية هذا الذي يعد تنازليا؟";

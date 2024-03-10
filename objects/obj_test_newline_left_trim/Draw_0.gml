@@ -9,7 +9,7 @@ scribble("[scale,5]H!!!!").starting_format("scribble_fallback_font").draw(10, 31
 
 draw_line(10, 50, 10, room_height);
 
-scribble("[scale,5]jjjj").starting_format("spr_sdf_openhuninn").draw(450,  50);
-scribble("[scale,5]Hjjj").starting_format("spr_sdf_openhuninn").draw(450, 150);
+scribble("[scale,5]jjjj").starting_format("fnt_openhuninn_sdf").draw(450,  50);
+scribble("[scale,5]Hjjj").starting_format("fnt_openhuninn_sdf").draw(450, 150);
 
 draw_line(450, 50, 450, room_height);

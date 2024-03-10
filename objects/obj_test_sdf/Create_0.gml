@@ -1,1 +1,1 @@
-scribble_font_set_default("spr_sdf_riffic");
+scribble_font_set_default("fnt_riffic_sdf");
