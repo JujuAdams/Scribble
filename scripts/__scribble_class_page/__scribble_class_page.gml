@@ -45,8 +45,6 @@ function __scribble_class_page() constructor
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
-        shader_set(__shd_scribble);
-        
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
         {
@@ -66,14 +64,22 @@ function __scribble_class_page() constructor
                 shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
                 shader_set_uniform_f(_u_fSDFRange, (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE] ?? 0));
                 shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] ?? 0));
+                
+                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
+                
+                if (_double_draw)
+                {
+                    shader_set_uniform_f(_u_fSecondDraw, 1);
+                    vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
+                    shader_set_uniform_f(_u_fSecondDraw, 0);
+                }
             }
             else
             {
                 //TODO - Optimise
                 shader_set_uniform_f(_u_fSDF, 0);
+                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
             }
-            
-            vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
             
             if (_bilinear != undefined)
             {
@@ -83,8 +89,6 @@ function __scribble_class_page() constructor
             
             ++_i;
         }
-        
-        shader_reset();
     }
     
     static __freeze = function()
