@@ -26,6 +26,18 @@ Scribble was confirmed to work with [GMLive](https://yellowafterlife.itch.io/gam
 
 &nbsp;
 
+## What's the difference between [Scribble Junior](https://github.com/JujuAdams/ScribbleJunior) and Scribble Deluxe?
+
+Scribble Junior is a stripped back lighter text rendering solution compared to Scribble Deluxe. The focus for Scribble Junior is static text that doesn't need to animate where performance is the primary concern. Scribble Deluxe is oriented towards complex text effects where there's a lot of animation and fancy effects going on.
+
+&nbsp;
+
+## Can I use [Scribble Junior](https://github.com/JujuAdams/ScribbleJunior) alongside Scribble Deluxe?
+
+Yes! In fact, I encourage it. Scribble Junior is excellent for static UI text whereas Scribble Deluxe is geared more towards dialogue and animated text.
+
+&nbsp;
+
 ## How is Scribble Deluxe licensed? Can I use it for commercial projects?
 
 [Scribble is released under the MIT license](https://github.com/JujuAdams/Scribble/blob/master/LICENSE). This means you can use it for whatever purpose you want, including commercial projects. It'd mean a lot to me if you'd drop my name in your credits (Juju Adams) and/or say thanks, but you're under no obligation to do so.
