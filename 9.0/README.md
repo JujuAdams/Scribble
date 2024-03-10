@@ -20,7 +20,7 @@ There are a multitude of very useful features available:
 - Automatic [pagination](https://en.wikipedia.org/wiki/Pagination)
 - High performance caching
 - Font effect baking
-- Resolution-independent [MSDF fonts](msdf-fonts)
+- Resolution-independent SDF fonts
 - Arabic and Hebrew support, and limited Thai and Hindi (Devanagari) support
 
 ## About & Support

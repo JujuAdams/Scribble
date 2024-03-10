@@ -21,7 +21,3 @@ Alternatively, if you want to simplify some of your existing text drawing that y
 ## How do I use spritefonts?
 
 Spritefonts work similarly to standard fonts and they are interchangeable when drawing text. They do, however, require that you use [`font_add_sprite`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Fonts/font_add_sprite.htm) or [`font_add_sprite_ext`](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Fonts/font_add_sprite.htm) to define the spritefont before using them with Scribble. The name of the spritefont in Scribble is the same as the name of the sprite asset.
-
-## How do I use MSDF fonts?
-
-[MSDF fonts](msdf-fonts) are an alternate way to draw text in a way that improves how text looks when it's scaled. This not only reduces texture page usage but it's very helpful when drawing text on mobile devices. Scribble's implementation of MSDF fonts also supports borders and drop shadows. MSDF fonts are useful but relatively complex; please read the dedicated [MSDF font page](msdf-fonts) for more information.

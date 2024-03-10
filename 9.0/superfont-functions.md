@@ -30,7 +30,7 @@ Creates a new superfont. The new font is totally blank and should not be used un
 
 Copies a set of glyphs from the source font into the target superfont. The target font must be a superfont created by `scribble_super_create()`, though the source font can be either a superfont or not. If `overwrite` is set to `false`, any glyphs that already exist in the target font will be ignored. If `overwrite` is set to `true` existing glyphs will be overwritten.
 
-?> It is not possible to combine glyphs from an MSDF font and a standard/sprite font. It is further not possible to combine glyphs from MSDF fonts that have a different `pxrange`. Standard fonts and sprite fonts can otherwise be combined however you like.
+?> It is not possible to combine glyphs from an SDF font and a standard/sprite font. It is further not possible to combine glyphs from SDF fonts that have a different spread values. Standard fonts and sprite fonts can otherwise be combined however you like.
 
 `glyphSet` can be one of three different types of input. You may specify as many glyph sets as you like
 
@@ -62,7 +62,7 @@ scribble_super_glyph_copy("targetFont", "sourceFont", true, [40, 41], [88, 90]);
 
 Copies **all** glyphs from the source font into the target superfont. The target font must be a superfont created by `scribble_super_create()`, though the source font can be either a superfont or not. If `overwrite` is set to `false`, any glyphs that already exist in the target font will be ignored. If `overwrite` is set to `true` existing glyphs will be overwritten.
 
-?> It is not possible to combine glyphs from an MSDF font and a standard/sprite font. It is further not possible to combine glyphs from MSDF fonts that have a different `pxrange`. Standard fonts and sprite fonts can otherwise be combined however you like.
+?> It is not possible to combine glyphs from an SDF font and a standard/sprite font. It is further not possible to combine glyphs from SDF fonts that have a different spread values. Standard fonts and sprite fonts can otherwise be combined however you like.
 
 &nbsp;
 
