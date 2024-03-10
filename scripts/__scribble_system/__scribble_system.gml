@@ -85,7 +85,7 @@ function __scribble_initialize()
 
 function __scribble_trace()
 {
-    var _string = "Scribble: ";
+    var _string = "Scribble Deluxe: ";
     
     var _i = 0
     repeat(argument_count)
@@ -107,7 +107,7 @@ function __scribble_trace()
 
 function __scribble_loud()
 {
-    var _string = "Scribble:\n";
+    var _string = "Scribble Deluxe:\n";
     
     var _i = 0
     repeat(argument_count)
@@ -139,8 +139,8 @@ function __scribble_error()
         ++_i;
     }
     
-    show_debug_message("Scribble " + __SCRIBBLE_VERSION + ": " + string_replace_all(_string, "\n", "\n          "));
-    show_error("Scribble:\n" + _string + "\n ", true);
+    show_debug_message("Scribble Deluxe " + __SCRIBBLE_VERSION + ": " + string_replace_all(_string, "\n", "\n          "));
+    show_error("Scribble Deluxe:\n" + _string + "\n ", true);
 }
 
 function __scribble_get_font_data(_name)
