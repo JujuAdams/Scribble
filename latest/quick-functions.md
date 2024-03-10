@@ -1,6 +1,6 @@
 # Quick Functions
 
-?> The functions on this page are intended as quick and easy functions to get you started with Scribble as fast as possible. Scribble is capable of much more, unlocked by using [`scribble()` methods](scribble-methods) and Scribble's many other functions.
+?> The functions on this page are intended as quick and easy functions to get you started with Scribble Deluxe as fast as possible. Scribble is capable of much more, unlocked by using [`scribble()` methods](scribble-methods) and Scribble's many other functions.
 
 &nbsp;
 

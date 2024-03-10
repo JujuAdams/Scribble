@@ -2,37 +2,49 @@
 
 ---
 
-## What platforms does Scribble support?
+## What platforms does Scribble Deluxe support?
 
 Everything apart from HTML5. You might run into edge cases on platforms that I don't regularly test; please [report any bugs](https://github.com/JujuAdams/Scribble/issues) if and when you find them.
 
 &nbsp;
 
-## What versions of GameMaker does Scribble support?
+## What versions of GameMaker does Scribble Deluxe support?
 
-Version 8 of Scribble primarily supports GameMaker LTS 2022, and in theory supports every version of GameMaker later than that. Later versions of GameMaker may change functionality in a way that Scribble is not forwards-compatible with, but Scribble uses only native GameMaker functions so is in the best possible position for long-term compatibility.
-
-&nbsp;
-
-## What kinds of fonts can Scribble draw?
-
-Anything that GameMaker natively supports as a font resource, including spritefonts. Scribble additionally supports [MSDF fonts](msdf-fonts) which are very useful for mobile games or any game which might have a wide variety of text sizes. Scribble unfortunately doesn't (yet) support fonts added via `font_add()`.
+Version 9 of Scribble Deluxe primarily supports GameMaker LTS 2022, and in theory supports every version of GameMaker later than that. Later versions of GameMaker may change functionality in a way that Scribble is not forwards-compatible with, but Scribble uses only native GameMaker functions so is in the best possible position for long-term compatibility.
 
 &nbsp;
 
-## Does Scribble work with GMLive?
+## What kinds of fonts can Scribble Deluxe draw?
+
+Anything that GameMaker natively supports as a font resource, including spritefonts. Scribble additionally supports SDF fonts which are very useful for mobile games or any game which might have a wide variety of text sizes. Scribble unfortunately doesn't (yet) support fonts added via `font_add()`.
+
+&nbsp;
+
+## Does Scribble Deluxe work with GMLive?
 
 Scribble was confirmed to work with [GMLive](https://yellowafterlife.itch.io/gamemaker-live) using version 7.1.2. At the time of writing, version 8 has not been tested with GMLive.
 
 &nbsp;
 
-## How is Scribble licensed? Can I use it for commercial projects?
+## What's the difference between [Scribble Junior](https://github.com/JujuAdams/ScribbleJunior) and Scribble Deluxe?
+
+Scribble Junior is a stripped back lighter text rendering solution compared to Scribble Deluxe. The focus for Scribble Junior is static text that doesn't need to animate where performance is the primary concern. Scribble Deluxe is oriented towards complex text effects where there's a lot of animation and fancy effects going on.
+
+&nbsp;
+
+## Can I use [Scribble Junior](https://github.com/JujuAdams/ScribbleJunior) alongside Scribble Deluxe?
+
+Yes! In fact, I encourage it. Scribble Junior is excellent for static UI text whereas Scribble Deluxe is geared more towards dialogue and animated text.
+
+&nbsp;
+
+## How is Scribble Deluxe licensed? Can I use it for commercial projects?
 
 [Scribble is released under the MIT license](https://github.com/JujuAdams/Scribble/blob/master/LICENSE). This means you can use it for whatever purpose you want, including commercial projects. It'd mean a lot to me if you'd drop my name in your credits (Juju Adams) and/or say thanks, but you're under no obligation to do so.
 
 &nbsp;
 
-## What games are using Scribble?
+## What games are using Scribble Deluxe?
 
 Scribble is being used in [Shovel Knight Pocket Dungeon](https://www.yachtclubgames.com/games/shovel-knight-pocket-dungeon), [Wally and the Fantastic Predators](https://store.steampowered.com/app/1077450/Wally_and_the_FANTASTIC_PREDATORS/), [Stargrove](https://twitter.com/FauxOperative), [Wizarducks](https://twitter.com/wizarducks1) and [many others](https://www.youtube.com/watch?v=KvakyfLhvfU). Scribble gets a lot of real world testing!
 
