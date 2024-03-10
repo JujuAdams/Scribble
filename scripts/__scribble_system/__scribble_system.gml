@@ -48,7 +48,6 @@ function __scribble_initialize()
         }
         
         //Initialize statics on boot before they need to be used
-        __scribble_get_font_directory();
         __scribble_get_state();
         __scribble_get_generator_state();
         __scribble_glyph_data_initialize();
@@ -142,52 +141,6 @@ function __scribble_error()
     
     show_debug_message("Scribble " + __SCRIBBLE_VERSION + ": " + string_replace_all(_string, "\n", "\n          "));
     show_error("Scribble:\n" + _string + "\n ", true);
-}
-
-function __scribble_get_font_directory()
-{
-    static _font_directory = undefined;
-    
-    if (_font_directory == undefined)
-    {
-        _font_directory = SCRIBBLE_INCLUDED_FILES_SUBDIRECTORY;
-        
-        if (__SCRIBBLE_ON_MOBILE)
-        {
-            if (_font_directory != "")
-            {
-                __scribble_error("GameMaker's Included Files work a bit strangely on iOS and Android.\nPlease use an empty string for the font directory and place fonts in the root of Included Files");
-                exit;
-            }
-        }
-        else if (__SCRIBBLE_ON_WEB)
-        {
-            if (_font_directory != "")
-            {
-                __scribble_trace("Using folders inside Included Files might not work properly on HTML5. If you're having trouble, try using an empty string for the font directory and place fonts in the root of Included Files.");
-            }
-        }
-        
-        if (_font_directory != "")
-        {
-            //Fix the font directory name if it's weird
-            var _char = string_char_at(_font_directory, string_length(_font_directory));
-            if (_char != "\\") && (_char != "/") _font_directory += "\\";
-    
-            __scribble_trace("Using font directory \"", _font_directory, "\"");
-        }
-        
-        if (!__SCRIBBLE_ON_WEB)
-        {
-            //Check if the directory exists
-            if ((_font_directory != "") && !directory_exists(_font_directory))
-            {
-                __scribble_trace("Warning! Font directory \"" + string(_font_directory) + "\" could not be found in \"" + game_save_id + "\"!");
-            }
-        }
-    }
-    
-    return _font_directory;
 }
 
 function __scribble_get_font_data(_name)

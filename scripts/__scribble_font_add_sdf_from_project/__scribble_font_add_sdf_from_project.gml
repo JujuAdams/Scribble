@@ -35,17 +35,15 @@ function __scribble_font_add_sdf_from_project(_sprite)
     _sprite_uvs[2] += _texel_w*_sprite_width*(1 - _sprite_uvs[6]);
     _sprite_uvs[3] += _texel_h*_sprite_height*(1 - _sprite_uvs[7]);
     
-    var _font_directory = __scribble_get_font_directory();
-    var _json_buffer = buffer_load(_font_directory + _name + ".json");
-    
+    var _json_buffer = buffer_load(_name + ".json");
     if (_json_buffer < 0)
     {
-        _json_buffer = buffer_load(_font_directory + _name);
+        _json_buffer = buffer_load(_name);
     }
     
     if (_json_buffer < 0)
     {
-        __scribble_error("Could not find \"", _font_directory + _name + ".json\"\nPlease add it to the project's Included Files");
+        __scribble_error("Could not find \"", _name + ".json\"\nPlease add it to the project's Included Files");
     }
     
     var _json_string = buffer_read(_json_buffer, buffer_text);

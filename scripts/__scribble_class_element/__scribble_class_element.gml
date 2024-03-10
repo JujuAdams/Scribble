@@ -1289,16 +1289,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         //Set as __flushed
         __flushed = true;
-        
-        if (SCRIBBLE_FLUSH_RETURNS_SELF)
-        {
-            return self;
-        }
-        else
-        {
-            static _null = new __scribble_class_null_element();
-            return _null;
-        }
     }
     
     #endregion
