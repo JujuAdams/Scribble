@@ -1556,7 +1556,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
         static _u_vBorderColour            = shader_get_uniform(__shd_scribble, "u_vBorderColour"           );
         static _u_fBorderThickness         = shader_get_uniform(__shd_scribble, "u_fBorderThickness"        );
-        static _u_vOutputSize              = shader_get_uniform(__shd_scribble, "u_vOutputSize"             );
         
         static _scribble_state        = __scribble_get_state();
         static _anim_properties_array = __scribble_get_anim_properties();
@@ -1676,20 +1675,6 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                colour_get_blue( __sdf_border_colour)/255);
         
         shader_set_uniform_f(_u_fBorderThickness, __sdf_border_thickness);
-        
-        var _surface = surface_get_target();
-        if (_surface >= 0)
-        {
-            var _surface_width  = surface_get_width( _surface);
-            var _surface_height = surface_get_height(_surface);
-        }
-        else
-        {
-            var _surface_width  = window_get_width();
-            var _surface_height = window_get_height();
-        }
-        
-        shader_set_uniform_f(_u_vOutputSize, _surface_width, _surface_height);
         
         shader_reset();
     }
