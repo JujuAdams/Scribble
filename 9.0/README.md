@@ -27,7 +27,7 @@ There are a multitude of very useful features available:
 
 Scribble Deluxe supports all GameMaker export modules, including consoles, mobile, and Opera GX. Scribble also works on HTML5 but YoYoGames' lacklustre support for this platform can make bug fixing hard if you run into anything. If you'd like to report a bug or suggest a feature, please use the repo's [Issues page](https://github.com/JujuAdams/scribble/issues). Scribble is constantly being maintained and upgraded; bugs are usually addressed within a few days of being reported.
 
-Scribble Deluxe is built and maintained by [@jujuadams](https://twitter.com/jujuadams) who has a long history of fiddling with text engines. Juju's worked on a lot of [commercial GameMaker games](http://www.jujuadams.com/). Many, many other people have contributed bug reports and feature requests over the years, too many to list here. Scribble wouldn't exist without them and Juju is eternally grateful for their creativity and patience.
+Scribble Deluxe is built and maintained by [Juju Adams](https://www.jujuadams.com/jujuadams) who has a long history of fiddling with text engines. Juju's worked on a lot of commercial GameMaker games. Many, many other people have contributed bug reports and feature requests over the years, too many to list here. Scribble wouldn't exist without them and Juju is eternally grateful for their creativity and patience.
 
 This library will never truly be finished because contributions and suggestions from new users are always welcome. Scribble wouldn't be the same without [your](https://tenor.com/search/whos-awesome-gifs) input! Make a suggestion on the repo's [Issues page](https://github.com/JujuAdams/scribble/issues) if you'd like a feature to be added.
 
