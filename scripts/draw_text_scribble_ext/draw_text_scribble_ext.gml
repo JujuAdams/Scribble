@@ -39,5 +39,4 @@ function draw_text_scribble_ext(_x, _y, _string, _width, _reveal = undefined)
     .wrap(_width);
     if (_reveal != undefined) _element.reveal(_reveal);
     _element.draw(_x, _y);
-    return _element;
 }

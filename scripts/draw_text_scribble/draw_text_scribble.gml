@@ -37,5 +37,4 @@ function draw_text_scribble(_x, _y, _string, _reveal = undefined)
     .blend(draw_get_color(), draw_get_alpha());
     if (_reveal != undefined) _element.reveal(_reveal);
     _element.draw(_x, _y);
-    return _element;
 }
