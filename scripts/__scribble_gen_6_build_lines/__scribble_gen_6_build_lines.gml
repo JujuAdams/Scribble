@@ -13,6 +13,7 @@
                                       ;\
                                       if (((_left_correction > 0) && SCRIBBLE_NEWLINES_PAD_LEFT_SPACE) || ((_left_correction < 0) && SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE))\
                                       {\
+                                          _word_grid[#  _line_word_start,  __SCRIBBLE_GEN_WORD.__WIDTH] += _left_correction;\
                                           _word_width += _left_correction;\
                                       }\
                                   }\
@@ -188,6 +189,15 @@ function __scribble_gen_6_build_lines()
                             var _original_word_glyph_end   = _word_grid[# _i, __SCRIBBLE_GEN_WORD.__GLYPH_END  ];
                             //var _original_word_width       = _word_grid[# _i, __SCRIBBLE_GEN_WORD.__WIDTH      ]; //Unused
                             var _original_word_height      = _word_grid[# _i, __SCRIBBLE_GEN_WORD.__HEIGHT     ];
+                            
+                            if ((SCRIBBLE_NEWLINES_PAD_LEFT_SPACE || SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE) && (_word_grid[# _i, __SCRIBBLE_GEN_WORD.__BIDI] < __SCRIBBLE_BIDI.R2L))
+                            {
+                                var _left_correction = _glyph_grid[# _original_word_glyph_start, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET];
+                                if (((_left_correction > 0) && SCRIBBLE_NEWLINES_PAD_LEFT_SPACE) || ((_left_correction < 0) && SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE))
+                                {
+                                    _word_x += _left_correction;
+                                }
+                            }
                             
                             var _new_word_start_x     = _word_x;
                             var _new_word_glyph_start = _original_word_glyph_start;
