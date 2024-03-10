@@ -1,7 +1,7 @@
 // Feather disable all
 // @jujuadams
-#macro __SCRIBBLE_VERSION           "8.7.1"
-#macro __SCRIBBLE_DATE              "2024-03-06"
+#macro __SCRIBBLE_VERSION           "9.0.0"
+#macro __SCRIBBLE_DATE              "2024-03-10"
 #macro __SCRIBBLE_DEBUG             false
 #macro __SCRIBBLE_VERBOSE_GC        false
 #macro __SCRIBBLE_RUNNING_FROM_IDE  (GM_build_type == "run")
@@ -22,7 +22,7 @@ function __scribble_initialize()
     
     with(_system)
     {
-        __scribble_trace("Welcome to Scribble by @jujuadams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
+        __scribble_trace("Welcome to Scribble by Juju Adams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
         
         if (SCRIBBLE_VERBOSE)
         {
