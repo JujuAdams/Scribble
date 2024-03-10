@@ -103,7 +103,6 @@
     {"name":"obj_test_sdf_comparison","order":2,"path":"objects/obj_test_sdf_comparison/obj_test_sdf_comparison.yy",},
     {"name":"obj_test_browser","order":1,"path":"objects/obj_test_browser/obj_test_browser.yy",},
     {"name":"obj_test_sdf_drop_shadow","order":3,"path":"objects/obj_test_sdf_drop_shadow/obj_test_sdf_drop_shadow.yy",},
-    {"name":"obj_test_sdf_feather","order":4,"path":"objects/obj_test_sdf_feather/obj_test_sdf_feather.yy",},
     {"name":"obj_test_sdf_soft_drop_shadow","order":5,"path":"objects/obj_test_sdf_soft_drop_shadow/obj_test_sdf_soft_drop_shadow.yy",},
     {"name":"obj_test_sdf_superfont","order":6,"path":"objects/obj_test_sdf_superfont/obj_test_sdf_superfont.yy",},
     {"name":"obj_test_nbsp","order":10,"path":"objects/obj_test_nbsp/obj_test_nbsp.yy",},

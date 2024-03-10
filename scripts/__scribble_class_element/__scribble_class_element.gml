@@ -114,8 +114,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     __sdf_border_colour    = c_black;
     __sdf_border_thickness = 0.0;
     
-    __sdf_feather_thickness = 1.0;
-    
     __bidi_hint = undefined;
     
     __z = SCRIBBLE_DEFAULT_Z;
@@ -1200,13 +1198,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         __sdf_border_colour    = _colour;
         __sdf_border_thickness = _thickness;
-        
-        return self;
-    }
-    
-    static sdf_feather = function(_thickness)
-    {
-        __sdf_feather_thickness = _thickness;
         
         return self;
     }
