@@ -2,7 +2,7 @@
 
 &nbsp;
 
-Scribble supports many in-line commands that can be used inside a string. Here's a quick example:
+Scribble Deluxe supports many in-line commands that can be used inside a string. Here's a quick example:
 
 ```
 scribble("This text is normal size. [scale,2]This text is twice as big.").draw(x, y);
