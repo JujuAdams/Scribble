@@ -14,11 +14,11 @@ function __scribble_get_state()
         __standard_anim_desync_to_default: false,
         __standard_anim_default:           false,
         
-        __msdf_anim_desync:            false,
-        __msdf_anim_desync_to_default: false,
-        __msdf_anim_default:           false,
+        __sdf_anim_desync:            false,
+        __sdf_anim_desync_to_default: false,
+        __sdf_anim_default:           false,
         
-        __msdf_thickness_offset: 0,
+        __sdf_thickness_offset: 0,
         
         __markdown_styles_struct: {},
     };

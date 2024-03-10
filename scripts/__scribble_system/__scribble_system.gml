@@ -506,8 +506,8 @@ enum SCRIBBLE_GLYPH
     V0,                    //14  |
     V1,                    //15  |
                            //    |
-    MSDF_PXRANGE,          //16  |
-    MSDF_THICKNESS_OFFSET, //17  |
+    SDF_PXRANGE,          //16  |
+    SDF_THICKNESS_OFFSET, //17  |
     BILINEAR,              //18 /
     
     __SIZE                 //19
@@ -547,8 +547,8 @@ enum __SCRIBBLE_VERTEX_BUFFER
 {
     __VERTEX_BUFFER,         //0
     __TEXTURE,               //1
-    __MSDF_RANGE,            //2
-    __MSDF_THICKNESS_OFFSET, //3
+    __SDF_RANGE,            //2
+    __SDF_THICKNESS_OFFSET, //3
     __TEXEL_WIDTH,           //4
     __TEXEL_HEIGHT,          //5
     __SHADER,                //6
@@ -609,8 +609,8 @@ enum __SCRIBBLE_GEN_GLYPH
     __QUAD_V0,               //13   |
     __QUAD_V1,               //14   |
                              //     |
-    __MSDF_PXRANGE,          //15   |
-    __MSDF_THICKNESS_OFFSET, //16   |
+    __SDF_PXRANGE,          //15   |
+    __SDF_THICKNESS_OFFSET, //16   |
     __BILINEAR,              //17  /
     
     __CONTROL_COUNT,         //18
@@ -714,6 +714,6 @@ enum __SCRIBBLE_GEN_LINE
 
 #macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This probably won't work for any other value
 
-#macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. This constant must match the corresponding values in __shd_scribble and __shd_scribble_msdf
+#macro __SCRIBBLE_MAX_LINES  1000  //Maximum number of lines in a textbox. This constant must match the corresponding values in __shd_scribble and __shd_scribble_sdf
 
 #endregion

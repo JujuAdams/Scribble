@@ -174,8 +174,8 @@ function __scribble_font_add_from_project(_font)
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V0                   ] = _v0;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1                   ] = _v1;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_PXRANGE         ] = undefined;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MSDF_THICKNESS_OFFSET] = undefined;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SDF_PXRANGE         ] = undefined;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SDF_THICKNESS_OFFSET] = undefined;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BILINEAR             ] = undefined;
             
             _font_glyphs_map[? _unicode] = _i;

@@ -38,8 +38,8 @@
 #macro SCRIBBLE_INCREMENTAL_FREEZE             true       //Whether text models should freeze their vertex buffers one frame after the text model is created. This leads to increased performance, especially with large amounts of text
 #macro SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN       false      //Set to <true> to ignore a sprite origin's contribution to its spritefont glyph x/y offsets
 #macro SCRIBBLE_SPRITEFONT_LEGACY_HEIGHT       false      //Version 8 uses GameMaker's native spritefont dimensions. Older versions used the tight bounding box leading to narrower lines. Set this macro to <true> to use the tighter legacy behaviour
-#macro SCRIBBLE_MSDF_BORDER_TRIM               0          //Edge trimming around the bounding box for MSDF glyphs (in pixels). This is useful for tidying up any glitches when scaling
-#macro SCRIBBLE_ALWAYS_DOUBLE_DRAW             false      //Whether to force double-draw behaviour. This is useful for fixing problems with MSDF glyph border overlap
+#macro SCRIBBLE_SDF_BORDER_TRIM               0          //Edge trimming around the bounding box for SDF glyphs (in pixels). This is useful for tidying up any glitches when scaling
+#macro SCRIBBLE_ALWAYS_DOUBLE_DRAW             false      //Whether to force double-draw behaviour. This is useful for fixing problems with SDF glyph border overlap
 
 #macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
 #macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only

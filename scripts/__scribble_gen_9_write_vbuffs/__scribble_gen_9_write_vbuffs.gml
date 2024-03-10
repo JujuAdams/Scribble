@@ -21,8 +21,8 @@
                                      {\
                                          _last_glyph_texture = _glyph_texture;\
                                          _vbuff = _page_data.__get_vertex_buffer(_glyph_texture,\
-                                                                                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE],\
-                                                                                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__MSDF_THICKNESS_OFFSET],\
+                                                                                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE],\
+                                                                                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__SDF_THICKNESS_OFFSET],\
                                                                                  _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__BILINEAR],\
                                                                                  self);\
                                      }\
@@ -526,7 +526,7 @@ function __scribble_gen_9_write_vbuffs()
     
     //Ensure that the model thinks it is using at least one of the font types
     //This ensures typists still process even if there's no drawable text
-    if (!__uses_standard_font && !__uses_msdf_font) __uses_standard_font = true;
+    if (!__uses_standard_font && !__uses_sdf_font) __uses_standard_font = true;
     
     //Ensure we've ended the vertex buffers we created
     __finalize_vertex_buffers(_element.__freeze);

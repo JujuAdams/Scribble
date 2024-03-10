@@ -34,8 +34,8 @@ function __scribble_tick()
         {
             __standard_anim_desync            = true;
             __standard_anim_desync_to_default = true;
-            __msdf_anim_desync                = true;
-            __msdf_anim_desync_to_default     = true;
+            __sdf_anim_desync                = true;
+            __sdf_anim_desync_to_default     = true;
         }
     }
     

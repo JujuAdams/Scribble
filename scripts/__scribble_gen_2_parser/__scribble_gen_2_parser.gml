@@ -821,7 +821,7 @@ function __scribble_gen_2_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U1      ] = 1;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V1      ] = 1;
                         
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE ] = undefined;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE ] = undefined;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
                         
@@ -1039,7 +1039,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
                         
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__MSDF_PXRANGE ] = undefined;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE ] = undefined;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
                             

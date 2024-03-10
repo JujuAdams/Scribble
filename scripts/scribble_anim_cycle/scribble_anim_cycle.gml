@@ -20,8 +20,8 @@ function scribble_anim_cycle(_speed, _saturation, _value)
         {
             __standard_anim_desync            = true;
             __standard_anim_desync_to_default = false;
-            __msdf_anim_desync                = true;
-            __msdf_anim_desync_to_default     = false;
+            __sdf_anim_desync                = true;
+            __sdf_anim_desync_to_default     = false;
         }
     }
 }

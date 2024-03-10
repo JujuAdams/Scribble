@@ -35,7 +35,7 @@ function __scribble_class_page() constructor
     __line_events  = {};
     __region_array = [];
     
-    static __submit = function(_msdf_feather_thickness, _double_draw)
+    static __submit = function(_sdf_feather_thickness, _double_draw)
     {
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
@@ -55,30 +55,30 @@ function __scribble_class_page() constructor
             
             if (_bilinear != undefined)
             {
-                //Force texture filtering when using MSDF fonts
+                //Force texture filtering when using SDF fonts
                 var _old_tex_filter = gpu_get_tex_filter();
                 gpu_set_tex_filter(_bilinear);
             }
             
-            if (_shader == __shd_scribble_msdf)
+            if (_shader == __shd_scribble_sdf)
             {
-                static _msdf_u_vTexel               = shader_get_uniform(__shd_scribble_msdf, "u_vTexel"              );
-                static _msdf_u_fMSDFRange           = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFRange"          );
-                static _msdf_u_fMSDFThicknessOffset = shader_get_uniform(__shd_scribble_msdf, "u_fMSDFThicknessOffset");
-                static _msdf_u_fSecondDraw          = shader_get_uniform(__shd_scribble_msdf, "u_fSecondDraw"         );
+                static _sdf_u_vTexel               = shader_get_uniform(__shd_scribble_sdf, "u_vTexel"              );
+                static _sdf_u_fSDFRange           = shader_get_uniform(__shd_scribble_sdf, "u_fSDFRange"          );
+                static _sdf_u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble_sdf, "u_fSDFThicknessOffset");
+                static _sdf_u_fSecondDraw          = shader_get_uniform(__shd_scribble_sdf, "u_fSecondDraw"         );
                 
-                //Set shader uniforms unique to the MSDF shader
-                shader_set_uniform_f(_msdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
-                shader_set_uniform_f(_msdf_u_fMSDFRange, _msdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE]);
-                shader_set_uniform_f(_msdf_u_fMSDFThicknessOffset, __scribble_state.__msdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET]);
+                //Set shader uniforms unique to the SDF shader
+                shader_set_uniform_f(_sdf_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
+                shader_set_uniform_f(_sdf_u_fSDFRange, _sdf_feather_thickness*_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE]);
+                shader_set_uniform_f(_sdf_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + _data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET]);
                 
                 vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
                 
                 if (_double_draw)
                 {
-                    shader_set_uniform_f(_msdf_u_fSecondDraw, 1);
+                    shader_set_uniform_f(_sdf_u_fSecondDraw, 1);
                     vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
-                    shader_set_uniform_f(_msdf_u_fSecondDraw, 0);
+                    shader_set_uniform_f(_sdf_u_fSecondDraw, 0);
                 }
             }
             else
@@ -186,8 +186,8 @@ function __scribble_class_page() constructor
             }
             else
             {
-                _model_struct.__uses_msdf_font = true;
-                var _shader = __shd_scribble_msdf;
+                _model_struct.__uses_sdf_font = true;
+                var _shader = __shd_scribble_sdf;
             }
             
             static _vertex_format = undefined;
@@ -212,8 +212,8 @@ function __scribble_class_page() constructor
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER        ] = _vbuff;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE              ] = _texture;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__MSDF_RANGE           ] = _pxrange;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__MSDF_THICKNESS_OFFSET] = _thickness_offset;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE           ] = _pxrange;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thickness_offset;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH          ] = texture_get_texel_width(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT         ] = texture_get_texel_height(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SHADER               ] = _shader;
