@@ -96,15 +96,6 @@ function __scribble_class_element(_string, _unique_id) constructor
     __tw_reveal              = undefined;
     __tw_reveal_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     
-    if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
-    {
-        //If we're permitting use of legacy typewriter functions, create a private typist for this specific text element
-        __tw_legacy_typist = scribble_typist();
-        __tw_legacy_typist.__associate(self);
-        
-        __tw_legacy_typist_use = false;
-    }
-    
     __animation_time        = current_time;
     __animation_speed       = 1;
     __animation_blink_state = true;
@@ -170,11 +161,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         static _scribble_state = __scribble_get_state();
         
         var _function_scope = other;
-        
-        if (!SCRIBBLE_WARNING_LEGACY_TYPEWRITER)
-        {
-            if (__tw_legacy_typist_use && (_typist == undefined)) _typist = __tw_legacy_typist;
-        }
         
         //Get our model, and create one if needed
         var _model = __get_model(true);
@@ -1787,162 +1773,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         
         return __matrix;
-    }
-    
-    #endregion
-    
-    
-    
-    #region Legacy Typewriter
-    
-    static typewriter_off = function()
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        if (__tw_legacy_typist_use) __tw_legacy_typist.reset();
-        __tw_legacy_typist_use = false;
-        
-        return self;
-    }
-    
-    static typewriter_reset = function()
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        
-        __tw_legacy_typist = scribble_typist();
-        __tw_legacy_typist.__associate(self);
-        
-        return self;
-    }
-    
-    /// @param speed
-    /// @param smoothness
-    static typewriter_in = function(_speed, _smoothness)
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        __tw_legacy_typist_use = true;
-        __tw_legacy_typist.in(_speed, _smoothness);
-        
-        return self;
-    }
-    
-    /// @param speed
-    /// @param smoothness
-    /// @param [backwards=false]
-    static typewriter_out = function(_speed, _smoothness, _backwards = false)
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        __tw_legacy_typist_use = true;
-        __tw_legacy_typist.out(_speed, _smoothness, _backwards);
-        
-        return self;
-    }
-    
-    static typewriter_skip = function()
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        __tw_legacy_typist.skip();
-        
-        return self;
-    }
-    
-    /// @param soundArray
-    /// @param overlap
-    /// @param pitchMin
-    /// @param pitchMax
-    static typewriter_sound = function(_sound_array, _overlap, _pitch_min, _pitch_max)
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        __tw_legacy_typist.sound(_sound_array, _overlap, _pitch_min, _pitch_max);
-        
-        return self;
-    }
-    
-    /// @param soundArray
-    /// @param pitchMin
-    /// @param pitchMax
-    static typewriter_sound_per_char = function(_sound_array, _pitch_min, _pitch_max)
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        __tw_legacy_typist.sound_per_char(_sound_array, _pitch_min, _pitch_max);
-        
-        return self;
-    }
-    
-    static typewriter_function = function(_function)
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        __tw_legacy_typist.function_per_char(_function);
-        
-        return self;
-    }
-    
-    static typewriter_pause = function()
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        __tw_legacy_typist.pause();
-        
-        return self;
-    }
-    
-    static typewriter_unpause = function()
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        __tw_legacy_typist.unpause();
-        
-        return self;
-    }
-    
-    /// @param easeMethod
-    /// @param dx
-    /// @param dy
-    /// @param xscale
-    /// @param yscale
-    /// @param rotation
-    /// @param alphaDuration
-    static typewriter_ease = function(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration)
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        __tw_legacy_typist.ease(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration);
-        
-        return self;
-    }
-    
-    static get_typewriter_state = function()
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        if (!__tw_legacy_typist_use) return 1.0;
-        
-        return __tw_legacy_typist.get_state();
-    }
-    
-    static get_typewriter_paused = function()
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        if (!__tw_legacy_typist_use) return false;
-        
-        return __tw_legacy_typist.get_paused();
-    }
-    
-    static get_typewriter_pos = function()
-    {
-        if (SCRIBBLE_WARNING_LEGACY_TYPEWRITER) __scribble_error(".typewriter_*() methods have been deprecated\nIt is recommend you move to the new \"typist\" system\nPlease visit https://www.jujuadams.com/Scribble/\n \n(Set SCRIBBLE_WARNING_LEGACY_TYPEWRITER to <false> to turn off this warning)");
-        
-        if (!__tw_legacy_typist_use) return 0;
-        
-        return __tw_legacy_typist.get_position();
     }
     
     #endregion
