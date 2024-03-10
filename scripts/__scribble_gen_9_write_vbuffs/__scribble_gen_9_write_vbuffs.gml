@@ -521,10 +521,6 @@ function __scribble_gen_9_write_vbuffs()
         _control_index++;
     }
     
-    //Ensure that the model thinks it is using at least one of the font types
-    //This ensures typists still process even if there's no drawable text
-    if (!__uses_standard_font && !__uses_sdf_font) __uses_standard_font = true;
-    
     //Ensure we've ended the vertex buffers we created
     __finalize_vertex_buffers(_element.__freeze);
 }

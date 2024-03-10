@@ -15,10 +15,8 @@ function scribble_anim_rainbow(_weight, _speed)
         static _scribble_state = __scribble_get_state();
         with(_scribble_state)
         {
-            __standard_anim_desync            = true;
-            __standard_anim_desync_to_default = false;
-            __sdf_anim_desync                = true;
-            __sdf_anim_desync_to_default     = false;
+            __shader_anim_desync            = true;
+            __shader_anim_desync_to_default = false;
         }
     }
 }

@@ -35,7 +35,7 @@ function __scribble_class_page() constructor
     __line_events  = {};
     __region_array = [];
     
-    static __submit = function(_sdf_feather_thickness, _double_draw)
+    static __submit = function(_double_draw)
     {
         static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );
         static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );
@@ -55,7 +55,6 @@ function __scribble_class_page() constructor
             
             if (_bilinear != undefined)
             {
-                //Force texture filtering when using SDF fonts
                 var _old_tex_filter = gpu_get_tex_filter();
                 gpu_set_tex_filter(_bilinear);
             }
@@ -65,24 +64,16 @@ function __scribble_class_page() constructor
                 //Set shader uniforms unique to the SDF shader
                 shader_set_uniform_f(_u_fSDF, 1);
                 shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
-                shader_set_uniform_f(_u_fSDFRange, _sdf_feather_thickness*(_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE] ?? 0));
+                shader_set_uniform_f(_u_fSDFRange, (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE] ?? 0));
                 shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] ?? 0));
-                
-                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
-                
-                if (_double_draw)
-                {
-                    shader_set_uniform_f(_u_fSecondDraw, 1);
-                    vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
-                    shader_set_uniform_f(_u_fSecondDraw, 0);
-                }
             }
             else
             {
-                //Other shaders don't need extra work
+                //TODO - Optimise
                 shader_set_uniform_f(_u_fSDF, 0);
-                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
             }
+            
+            vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
             
             if (_bilinear != undefined)
             {
@@ -176,17 +167,6 @@ function __scribble_class_page() constructor
         
         if (_data == undefined)
         {
-            if (_pxrange == undefined)
-            {
-                _model_struct.__uses_standard_font = true;
-                var _sdf = false;
-            }
-            else
-            {
-                _model_struct.__uses_sdf_font = true;
-                var _sdf = true;
-            }
-            
             static _vertex_format = undefined;
             if (_vertex_format == undefined)
             {
@@ -196,7 +176,7 @@ function __scribble_class_page() constructor
                 vertex_format_add_colour();                                       // 4 bytes
                 vertex_format_add_texcoord();                                     // 8 bytes
                 vertex_format_add_custom(vertex_type_float2, vertex_usage_color); // 8 bytes
-                _vertex_format = vertex_format_end();            //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
+                _vertex_format = vertex_format_end();                             //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
             }
             
             var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version
@@ -213,7 +193,7 @@ function __scribble_class_page() constructor
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thickness_offset;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                 ] = _sdf;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                 ] = (_pxrange != undefined); //We're using an SDF font if we have no defined SDF range
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR            ] = _bilinear;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;

@@ -207,7 +207,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        _model.__submit(__page, __sdf_feather_thickness, (__sdf_border_thickness > 0) || (__sdf_shadow_alpha > 0));
+        _model.__submit(__page, (__sdf_border_thickness > 0) || (__sdf_shadow_alpha > 0));
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);
@@ -1606,12 +1606,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
-        if (_scribble_state.__standard_anim_desync)
+        if (_scribble_state.__shader_anim_desync)
         {
             with(_scribble_state)
             {
-                __standard_anim_desync  = false;
-                __standard_anim_default = __standard_anim_desync_to_default;
+                __shader_anim_desync  = false;
+                __shader_anim_default = __shader_anim_desync_to_default;
             }
             
             shader_set_uniform_f_array(_u_aDataFields, _anim_properties_array);

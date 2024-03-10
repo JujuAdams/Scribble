@@ -10,13 +10,9 @@ function __scribble_get_state()
         __blink_off_duration: SCRIBBLE_DEFAULT_BLINK_OFF_DURATION,
         __blink_time_offset:  SCRIBBLE_DEFAULT_BLINK_TIME_OFFSET,
         
-        __standard_anim_desync:            false,
-        __standard_anim_desync_to_default: false,
-        __standard_anim_default:           false,
-        
-        __sdf_anim_desync:            false,
-        __sdf_anim_desync_to_default: false,
-        __sdf_anim_default:           false,
+        __shader_anim_desync:            false,
+        __shader_anim_desync_to_default: false,
+        __shader_anim_default:           false,
         
         __sdf_thickness_offset: 0,
         

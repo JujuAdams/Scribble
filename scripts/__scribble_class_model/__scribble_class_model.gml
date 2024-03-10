@@ -33,9 +33,6 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __frozen     = undefined;
     __flushed    = false;
     
-    __uses_standard_font = false;
-    __uses_sdf_font     = false;
-    
     __pages      = 0;
     __width      = 0;
     __height     = 0;
@@ -63,13 +60,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     
     
-    static __submit = function(_page, _sdf_feather_thickness, _double_draw)
+    static __submit = function(_page, _double_draw)
     {
         if (__flushed) return undefined;
         
         __last_drawn = __scribble_state.__frames;
         
-        __pages_array[_page].__submit(_sdf_feather_thickness, (__has_arabic || __has_thai || SCRIBBLE_ALWAYS_DOUBLE_DRAW) && _double_draw);
+        __pages_array[_page].__submit((SCRIBBLE_ALWAYS_DOUBLE_DRAW || __has_arabic || __has_thai) && _double_draw);
     }
     
     static __freeze = function()
