@@ -82,6 +82,7 @@ function __scribble_font_add_from_project(_font)
             var _sdf_thickness_offset = 0;
             var _bilinear             = true;
             var _sdf_offset           = -_sdf_pxrange;
+            var _sdf_height_offset    = -_sdf_pxrange + 2; //idk why
         }
         else
         {
@@ -89,11 +90,7 @@ function __scribble_font_add_from_project(_font)
             var _sdf_thickness_offset = undefined;
             var _bilinear             = undefined;
             var _sdf_offset           = 0;
-        }
-        
-        if (_name == "fnt_test_1") || (_name == "fnt_test_1_control")
-        {
-            show_debug_message("!");
+            var _sdf_height_offset    = 0;
         }
         
         var _i = 0;
@@ -185,7 +182,7 @@ function __scribble_font_add_from_project(_font)
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET             ] = 0.5*_sdf_offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH                ] = _w;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT               ] = _h;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT          ] = _h + _sdf_offset;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT          ] = _h + _sdf_height_offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION           ] = _glyph_dict.shift;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.LEFT_OFFSET          ] = -_glyph_dict.offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE           ] = 1;
