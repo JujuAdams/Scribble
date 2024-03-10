@@ -1198,7 +1198,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region SDF
     
-    static sdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 1)
+    static sdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.25)
     {
         __sdf_shadow_colour   = _colour;
         __sdf_shadow_alpha    = _alpha;

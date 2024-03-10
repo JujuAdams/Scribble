@@ -7,7 +7,6 @@ precision highp float;
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
 varying float v_fPixelScale;
-varying float v_fTextScale;
 
 uniform vec2  u_vTexel;
 uniform float u_fSDFRange;
@@ -22,6 +21,12 @@ uniform vec4  u_vFlash;
 float median(vec3 v)
 {
     return max(min(v.x, v.y), min(max(v.x, v.y), v.z));
+}
+
+float SDFValue(vec2 texcoord)
+{
+    vec4 sample = texture2D(gm_BaseTexture, texcoord);
+    return sample.a; //max(sample.r, max(sample.g, sample.b));
 }
 
 float SDFSignedDistance(vec4 sample)
@@ -41,37 +46,38 @@ float SDFAlphaSoft(float signedDistance, float pixelSize, float outerBorder, flo
 
 void main()
 {
-    vec4 sample = texture2D(gm_BaseTexture, v_vTexcoord);
-    float distBase = SDFSignedDistance(sample);
-    gl_FragColor = vec4(v_vColour.rgb, SDFAlpha(distBase, v_fPixelScale, 0.0));
+    float smoothness = 0.5;
     
-    if (u_fSecondDraw < 0.5)
-    {
-        if (u_fBorderThickness > 0.0)
-        {
-            float borderDist = SDFSignedDistance(sample);
-            float alphaBorder = SDFAlpha(borderDist, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness);
-            gl_FragColor.rgb = mix(u_vBorderColour, gl_FragColor.rgb, gl_FragColor.a);
-            gl_FragColor.a = max(gl_FragColor.a, alphaBorder);
-        }
-        
-        if (u_vShadowColour.a > 0.0)
-        {
-            vec4 shadowSample = texture2D(gm_BaseTexture, v_vTexcoord - u_vTexel*u_vShadowOffsetAndSoftness.xy/v_fPixelScale);
-            float shadowDist = SDFSignedDistance(shadowSample);
-            float alphaShadow = SDFAlphaSoft(shadowDist, v_fPixelScale, PROPORTIONAL_BORDER_SCALE? (v_fPixelScale*u_fBorderThickness) : u_fBorderThickness, u_vShadowOffsetAndSoftness.z);
-            
-            float preAlpha = gl_FragColor.a;
-            gl_FragColor = mix(vec4(u_vShadowColour.rgb, alphaShadow), gl_FragColor, gl_FragColor.a);
-            gl_FragColor.a = max(preAlpha, u_vShadowColour.a*alphaShadow);
-        }
-    }
+    float baseDist = SDFValue(v_vTexcoord);
+    float spread = max(fwidth(baseDist), 0.001);    
     
-    gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFlash.rgb, u_vFlash.a);
-    gl_FragColor.a *= v_vColour.a;
+    float alpha = smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist);   
+    gl_FragColor = vec4(v_vColour.rgb, alpha*v_vColour.a);
     
-    if (PREMULTIPLY_ALPHA)
-    {
-        gl_FragColor.rgb *= gl_FragColor.a;
-    }
+    //if (u_fSecondDraw < 0.5)
+    //{
+    //    float borderOffset = u_fBorderThickness*length(fwidth(v_vTexcoord)/u_vTexel);
+    //    
+    //    if (u_fBorderThickness > 0.0)
+    //    {
+    //        gl_FragColor.rgb = mix(u_vBorderColour, gl_FragColor.rgb, gl_FragColor.a);
+    //        gl_FragColor.a = max(gl_FragColor.a, smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist + borderOffset));
+    //    }
+    //    
+    //    if (u_vShadowColour.a > 0.0)
+    //    {
+    //        float alphaShadow = smoothstep(0.5 - spread*u_vShadowOffsetAndSoftness.z, 0.5 + spread*u_vShadowOffsetAndSoftness.z, SDFValue(v_vTexcoord - u_vShadowOffsetAndSoftness.xy*fwidth(v_vTexcoord)) + borderOffset);
+    //        float preAlpha = gl_FragColor.a;
+    //        gl_FragColor = mix(vec4(u_vShadowColour.rgb, alphaShadow), gl_FragColor, gl_FragColor.a);
+    //        gl_FragColor.a = max(preAlpha, u_vShadowColour.a*alphaShadow);
+    //    }
+    //}
+    //
+    //gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFlash.rgb, u_vFlash.a);
+    //gl_FragColor.a *= v_vColour.a;
+    //
+    //if (PREMULTIPLY_ALPHA)
+    //{
+    //    gl_FragColor.rgb *= gl_FragColor.a;
+    //}
 }
