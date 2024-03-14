@@ -117,6 +117,7 @@ function __scribble_class_typist(_per_line) constructor
         __skip = _state;
         __skip_paused = true;
         __drawn_since_skip = false;
+        __delay_end = -infinity;
         
         return self;
     }
@@ -126,6 +127,7 @@ function __scribble_class_typist(_per_line) constructor
         __skip = _state;
         __skip_paused = false;
         __drawn_since_skip = false;
+        __delay_end = -infinity;
         
         return self;
     }
