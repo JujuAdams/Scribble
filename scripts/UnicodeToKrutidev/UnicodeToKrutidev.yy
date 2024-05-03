@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "UnicodeToKrutidev",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Devanagari",
-    "path": "folders/Test Cases/Language Support/Devanagari.yy",
+  "$GMScript":"",
+  "%Name":"UnicodeToKrutidev",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"UnicodeToKrutidev",
+  "parent":{
+    "name":"Devanagari",
+    "path":"folders/Test Cases/Language Support/Devanagari.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

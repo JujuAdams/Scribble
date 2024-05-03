@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "scribble_anim_rainbow",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Animation",
-    "path": "folders/Scribble/Animation.yy",
+  "$GMScript":"",
+  "%Name":"scribble_anim_rainbow",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scribble_anim_rainbow",
+  "parent":{
+    "name":"Animation",
+    "path":"folders/Scribble/Animation.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

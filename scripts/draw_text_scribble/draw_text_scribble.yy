@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "draw_text_scribble",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Quick Functions",
-    "path": "folders/Scribble/Quick Functions.yy",
+  "$GMScript":"",
+  "%Name":"draw_text_scribble",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_text_scribble",
+  "parent":{
+    "name":"Quick Functions",
+    "path":"folders/Scribble/Quick Functions.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

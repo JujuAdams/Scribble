@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "scribble_glyph_get",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Fonts",
-    "path": "folders/Scribble/Fonts.yy",
+  "$GMScript":"",
+  "%Name":"scribble_glyph_get",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scribble_glyph_get",
+  "parent":{
+    "name":"Fonts",
+    "path":"folders/Scribble/Fonts.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }
