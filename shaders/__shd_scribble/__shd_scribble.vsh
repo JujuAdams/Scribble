@@ -69,10 +69,10 @@ const float PI = 3.14159265359;
 
 
 attribute vec3  in_Position;     //{X, Y, Packed character & line index}
-attribute vec3  in_Normal;       //{dX, Sprite data, Bitpacked effect flags}
+attribute vec3  in_Normal;       //{unused, Sprite data, Bitpacked effect flags}
 attribute vec4  in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
 attribute vec2  in_TextureCoord; //UVs
-attribute vec2  in_Colour2;      //{Scale, dY}
+attribute vec2  in_Colour2;      //{dX, dY}
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
@@ -412,10 +412,6 @@ void main()
     
     
     //Unpack the glyph centre
-    vec2 centreDelta = vec2(in_Normal.x, in_Colour2.y);
-    
-    
-    
     vec2 centre;
     
     //If we have a valid Bezier curve, apply it
@@ -424,18 +420,18 @@ void main()
         centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         
         vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        pos = rotate_by_vector(centre - centreDelta, centre, normalize(orientation));
+        pos = rotate_by_vector(centre - in_Colour2, centre, normalize(orientation));
         
         vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
         pos += in_Position.y*perpendicular;
     }
     else
     {
-        centre = pos + centreDelta;
+        centre = pos + in_Colour2;
     }
     
     pos += u_vSkew*centre.yx;
-    if (SLANT_FLAG > 0.5) pos.x += centreDelta.y*SLANT_GRADIENT;
+    if (SLANT_FLAG > 0.5) pos.x += in_Colour2.y*SLANT_GRADIENT;
     
     
     
