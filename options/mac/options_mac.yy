@@ -10,6 +10,7 @@
   "option_mac_apple_sign_in": false,
   "option_mac_arm64": true,
   "option_mac_build_app_store": false,
+  "option_mac_build_number": 0,
   "option_mac_copyright": "(c) 2018 CompanyName",
   "option_mac_disable_sandbox": false,
   "option_mac_display_cursor": true,
