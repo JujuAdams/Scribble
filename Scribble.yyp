@@ -57,6 +57,7 @@
     {"id":{"name":"obj_test_bbox_revealed","path":"objects/obj_test_bbox_revealed/obj_test_bbox_revealed.yy",},"order":1,},
     {"id":{"name":"obj_test_bezier","path":"objects/obj_test_bezier/obj_test_bezier.yy",},"order":0,},
     {"id":{"name":"obj_test_bezier_arabic","path":"objects/obj_test_bezier_arabic/obj_test_bezier_arabic.yy",},"order":3,},
+    {"id":{"name":"scribble_font_set_halign_offset","path":"scripts/scribble_font_set_halign_offset/scribble_font_set_halign_offset.yy",},"order":20,},
     {"id":{"name":"obj_test_bgr_colour","path":"objects/obj_test_bgr_colour/obj_test_bgr_colour.yy",},"order":0,},
     {"id":{"name":"obj_test_blend","path":"objects/obj_test_blend/obj_test_blend.yy",},"order":2,},
     {"id":{"name":"obj_test_build","path":"objects/obj_test_build/obj_test_build.yy",},"order":3,},
@@ -345,6 +346,7 @@
     {"id":{"name":"spr_sprite_font","path":"sprites/spr_sprite_font/spr_sprite_font.yy",},"order":29,},
     {"id":{"name":"spr_static_coin","path":"sprites/spr_static_coin/spr_static_coin.yy",},"order":4,},
     {"id":{"name":"spr_vertical_spacing","path":"sprites/spr_vertical_spacing/spr_vertical_spacing.yy",},"order":5,},
+    {"id":{"name":"scribble_font_set_valign_offset","path":"scripts/scribble_font_set_valign_offset/scribble_font_set_valign_offset.yy",},"order":21,},
     {"id":{"name":"spr_white_coin","path":"sprites/spr_white_coin/spr_white_coin.yy",},"order":6,},
   ],
   "Options": [
