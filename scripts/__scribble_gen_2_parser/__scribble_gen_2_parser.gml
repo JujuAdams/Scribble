@@ -59,8 +59,8 @@
                                           ;\
                                           if (SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS)\
                                           {\
-                                              _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X] = _state_halign_offset;\
-                                              _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y] = _state_valign_offset;\
+                                              _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X] += _state_halign_offset;\
+                                              _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y] += _state_valign_offset;\
                                           }\
                                           ;\
                                           __SCRIBBLE_PARSER_NEXT_GLYPH\
