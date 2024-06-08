@@ -29,6 +29,7 @@ function __scribble_font_add_from_project(_font)
         //Get font info from the runtime
         var _font_info = font_get_info(_font);
         var _info_glyphs_dict = _font_info.glyphs;
+        var _ascender_offset = SCRIBBLE_USE_ASCENDER_OFFSET? _font_info.ascenderOffset : 0;
         
         var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
         var _size = array_length(_info_glyph_names);
@@ -160,7 +161,7 @@ function __scribble_font_add_from_project(_font)
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.BIDI                 ] = _bidi;
             
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.X_OFFSET             ] = _glyph_dict.offset;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET             ] = 0;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET             ] = -_ascender_offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH                ] = _w;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT               ] = _h;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT          ] = _h;
