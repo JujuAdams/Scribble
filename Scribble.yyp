@@ -433,6 +433,7 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"spr_msdf_industrydemi.json","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"spr_msdf_font_awesome.json","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"blip.ogg","CopyToMask":-1,"filePath":"datafiles",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"scribble_license.txt","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "MetaData": {
     "IDEVersion": "2022.0.2.51",
