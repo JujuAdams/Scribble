@@ -78,7 +78,7 @@
                                     var _font_valign_offset_array = _font_data.__valign_offset_array;\
                                     ;\
                                     var _state_halign_offset = _font_halign_offset_array[_state_halign];\
-                                    var _state_valign_offset = _font_halign_offset_array[__valign ?? _starting_valign];\
+                                    var _state_valign_offset = _font_valign_offset_array[__valign ?? _starting_valign];\
                                     ;\
                                     var _space_data_index     = _font_glyphs_map[? 32];\
                                     if (_space_data_index == undefined)\
