@@ -6,6 +6,7 @@
 
 &nbsp;
 
+- ### Got questions? [Make a new issue!](https://github.com/JujuAdams/Scribble/issues/new)
 - ### [Download the .yymps](https://github.com/JujuAdams/scribble/releases/)
 - ### Read the [documentation](http://jujuadams.github.io/Scribble)
 - ### You may also like [Scribble Junior](https://www.github.com/jujuadams/ScribbleJunior/), [Scripture](https://pixelatedpope.itch.io/scripture), [diest’s text engine](http://michaelvandiest.com/advanced-dialogue-box/), and [gmdialogue](https://github.com/danielpancake/gmdialogue)
