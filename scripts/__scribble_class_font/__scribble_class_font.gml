@@ -25,7 +25,7 @@ function __scribble_class_font(_name, _glyph_count, _msdf) constructor
     __scale  = 1.0;
     __height = 0; //*Not* the raw height. This value is changed by scribble_font_scale()
     
-    __halign_offset_array = [0, 0, 0];
+    __halign_offset_array = [0, 0, 0,   0, 0, 0, 0];
     __valign_offset_array = [0, 0, 0];
     
     __style_regular     = undefined;
