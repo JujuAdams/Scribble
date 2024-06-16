@@ -1,6 +1,6 @@
 <p align="center"><img src="https://raw.githubusercontent.com/JujuAdams/scribble/master/LOGO.png" style="display:block; margin:auto; width:300px"></p>
 <h1 align="center">Scribble Deluxe 9.0.0</h1>
-<p align="center">A modern text renderer for GameMaker Studio 2023.8 by <b>Juju Adams</b></p>
+<p align="center">A modern text renderer for GameMaker Studio 2024.4</p>
 
 &nbsp;
 
