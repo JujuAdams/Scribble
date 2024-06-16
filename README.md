@@ -1,12 +1,13 @@
 <p align="center"><img src="https://raw.githubusercontent.com/JujuAdams/scribble/master/LOGO.png" style="display:block; margin:auto; width:300px"></p>
-<h1 align="center">Scribble 8.8.0</h1>
+<h1 align="center">Scribble 8.8.1</h1>
 
-<p align="center">A modern text renderer for GameMaker Studio 2022 LTS by <b>@jujuadams</b></p>
-
-&nbsp;
+<p align="center">A modern text renderer for GameMaker Studio 2022 LTS</p>
 
 &nbsp;
 
+&nbsp;
+
+- ### Got questions? [Make a new issue!](https://github.com/JujuAdams/Scribble/issues/new)
 - ### [Download the .yymps](https://github.com/JujuAdams/scribble/releases/)
 - ### Read the [documentation](http://jujuadams.github.io/Scribble)
 - ### Talk about Scribble on the [Discord server](https://discord.gg/8krYCqr)
