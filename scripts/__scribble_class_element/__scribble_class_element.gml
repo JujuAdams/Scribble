@@ -385,7 +385,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (__pre_scale != _scale)
         {
             __model_cache_name_dirty = true;
-            __bbox_dirty = true;
+            __bbox_dirty             = true;
+            
             __pre_scale = _scale;
         }
         
