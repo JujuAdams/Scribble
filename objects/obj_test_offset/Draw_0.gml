@@ -1,0 +1,2 @@
+var _element = scribble("Hello, this is a test of the [[offset] tag.\nx-offset of ->[offset,20]+20px[offsetPop]<-\ny-offset of ->[offset,0,20]+20px[offsetPop]<-\nStacked offsets that ->[offset,10,10][offset,-10,-10]cancel out[offsetPop][offsetPop]<-\nCentre[offset,0,10]Down[offset,0,-20]Up[offsetPop]Down[offsetPop]Centre", 0);
+_element.draw(x, y);

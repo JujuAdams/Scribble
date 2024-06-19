@@ -1,0 +1,1 @@
+scribble_font_set_default("fnt_noto_latin");

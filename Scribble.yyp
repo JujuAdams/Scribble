@@ -178,6 +178,7 @@
     {"id":{"name":"obj_test_new_cache","path":"objects/obj_test_new_cache/obj_test_new_cache.yy",},},
     {"id":{"name":"obj_test_newline_left_trim","path":"objects/obj_test_newline_left_trim/obj_test_newline_left_trim.yy",},},
     {"id":{"name":"obj_test_newline","path":"objects/obj_test_newline/obj_test_newline.yy",},},
+    {"id":{"name":"obj_test_offset","path":"objects/obj_test_offset/obj_test_offset.yy",},},
     {"id":{"name":"obj_test_origin","path":"objects/obj_test_origin/obj_test_origin.yy",},},
     {"id":{"name":"obj_test_overwrite","path":"objects/obj_test_overwrite/obj_test_overwrite.yy",},},
     {"id":{"name":"obj_test_padding_fit_to_box","path":"objects/obj_test_padding_fit_to_box/obj_test_padding_fit_to_box.yy",},},
