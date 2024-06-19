@@ -254,12 +254,16 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (_halign != __starting_halign)
         {
             __model_cache_name_dirty = true;
+            __bbox_dirty             = true;
+            
             __starting_halign = _halign;
         }
         
         if (_valign != __starting_valign)
         {
             __model_cache_name_dirty = true;
+            __bbox_dirty             = true;
+            
             __starting_valign = _valign;
         }
         
