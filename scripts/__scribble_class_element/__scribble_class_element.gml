@@ -173,14 +173,17 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         __last_drawn = __scribble_state.__frames;
         
-        //Update the blink state
-        if (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration > 0)
+        with(_scribble_state)
         {
-            __animation_blink_state = (((__animation_time + _scribble_state.__blink_time_offset) mod (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration)) < _scribble_state.__blink_on_duration);
-        }
-        else
-        {
-            __animation_blink_state = true;
+            //Update the blink state
+            if ((not __shader_anim_disabled) && __blink_on_duration + __blink_off_duration > 0)
+            {
+                other.__animation_blink_state = (((other.__animation_time + __blink_time_offset) mod (__blink_on_duration + __blink_off_duration)) < __blink_on_duration);
+            }
+            else
+            {
+                other.__animation_blink_state = true;
+            }
         }
         
         shader_set(__shd_scribble);
@@ -1550,6 +1553,14 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;
+        static _shader_uniforms_disabled = (function()
+        {
+            var _array = array_create(__SCRIBBLE_ANIM.__SIZE, 0);
+            _array[__SCRIBBLE_ANIM.__JITTER_MINIMUM] = 1;
+            _array[__SCRIBBLE_ANIM.__JITTER_MAXIMUM] = 1;
+            _array[__SCRIBBLE_ANIM.__CYCLE_VALUE   ] = 255;
+            return _array;
+        })();
         
         shader_set_uniform_f(_u_fTime, __animation_time);
         
@@ -1602,9 +1613,8 @@ function __scribble_class_element(_string, _unique_id) constructor
             {
                 __shader_anim_desync  = false;
                 __shader_anim_default = __shader_anim_desync_to_default;
+                shader_set_uniform_f_array(_u_aDataFields, __shader_anim_disabled? _shader_uniforms_disabled : _anim_properties_array);
             }
-            
-            shader_set_uniform_f_array(_u_aDataFields, _anim_properties_array);
         }
         
         if (__bezier_using)

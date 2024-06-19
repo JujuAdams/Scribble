@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"scribble_anim_get_disabled",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scribble_anim_get_disabled",
+  "parent":{
+    "name":"Animation",
+    "path":"folders/Scribble/Animation.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

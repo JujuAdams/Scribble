@@ -13,6 +13,7 @@ function __scribble_get_state()
         __shader_anim_desync:            false,
         __shader_anim_desync_to_default: false,
         __shader_anim_default:           false,
+        __shader_anim_disabled:          false,
         
         __sdf_thickness_offset: 0,
         
