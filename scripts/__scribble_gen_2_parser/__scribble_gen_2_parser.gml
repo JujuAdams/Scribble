@@ -57,6 +57,12 @@
                                               if (_kerning != undefined) _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__SEPARATION] += _kerning;\
                                           }\
                                           ;\
+                                          if (SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS)\
+                                          {\
+                                              _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X] += _state_halign_offset;\
+                                              _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y] += _state_valign_offset;\
+                                          }\
+                                          ;\
                                           __SCRIBBLE_PARSER_NEXT_GLYPH\
                                       }
 
@@ -64,15 +70,23 @@
 
 #macro __SCRIBBLE_PARSER_SET_FONT   var _font_data            = __scribble_get_font_data(_font_name);\
                                     if (_font_data.__is_krutidev) __has_devanagari = true;\
-                                    var _font_glyph_data_grid = _font_data.__glyph_data_grid;\
-                                    var _font_glyphs_map      = _font_data.__glyphs_map;\
-                                    var _font_kerning_map     = _font_data.__kerning_map;\
-                                    var _space_data_index     = _font_glyphs_map[? 32];\
+                                    ;\
+                                    var _font_glyph_data_grid     = _font_data.__glyph_data_grid;\
+                                    var _font_glyphs_map          = _font_data.__glyphs_map;\
+                                    var _font_kerning_map         = _font_data.__kerning_map;\
+                                    var _font_halign_offset_array = _font_data.__halign_offset_array;\
+                                    var _font_valign_offset_array = _font_data.__valign_offset_array;\
+                                    ;\
+                                    var _state_halign_offset = _font_halign_offset_array[_state_halign];\
+                                    var _state_valign_offset = _font_valign_offset_array[__valign ?? _starting_valign];\
+                                    ;\
+                                    var _space_data_index = _font_glyphs_map[? 32];\
                                     if (_space_data_index == undefined)\
                                     {\
                                         __scribble_error("The space character is missing from font definition for \"", _font_name, "\"");\
                                         return false;\
                                     }\
+                                    ;\
                                     var _font_space_width = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.SEPARATION ];\
                                     var _font_line_height = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.FONT_HEIGHT];\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__FONT;\
@@ -292,8 +306,6 @@ function __scribble_gen_2_parser()
     var _control_count = 0;
     var _skip_write    = false;
     
-    __SCRIBBLE_PARSER_SET_FONT;
-    
     var _state_effect_flags         = 0;
     var _state_colour               = 0xFF000000 | _starting_colour; //Uses all four bytes
     var _state_halign               = _starting_halign;
@@ -302,6 +314,9 @@ function __scribble_gen_2_parser()
     var _state_scale             = _pre_scale;
     var _state_scale_start_glyph = 0;
     
+    var _state_halign_offset = 0;
+    var _state_valign_offset = 0;
+    
     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__HALIGN;
     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_halign;
     ++_control_count;
@@ -309,6 +324,8 @@ function __scribble_gen_2_parser()
     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__COLOUR;
     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
     ++_control_count;
+    
+    __SCRIBBLE_PARSER_SET_FONT;
     
     //Keep going until we hit a null
     while(true)
@@ -1178,6 +1195,7 @@ function __scribble_gen_2_parser()
                 {
                     _state_halign = _new_halign;
                     _new_halign = undefined;
+                    _state_halign_offset = _font_halign_offset_array[_state_halign];
                     
                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__HALIGN;
                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_halign;
@@ -1210,6 +1228,7 @@ function __scribble_gen_2_parser()
                     }
                     
                     _new_valign = undefined;
+                    _state_valign_offset = _font_valign_offset_array[__valign];
                 }
             }
             else if (_glyph_ord == SCRIBBLE_COMMAND_TAG_ARGUMENT) //If we've hit a command tag argument delimiter character (usually ,)
