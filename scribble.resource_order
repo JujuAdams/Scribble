@@ -75,6 +75,7 @@
     {"name":"obj_test_debug_draw_bbox","order":1,"path":"objects/obj_test_debug_draw_bbox/obj_test_debug_draw_bbox.yy",},
     {"name":"obj_test_default","order":4,"path":"objects/obj_test_default/obj_test_default.yy",},
     {"name":"obj_test_devangari_sprites","order":1,"path":"objects/obj_test_devangari_sprites/obj_test_devangari_sprites.yy",},
+    {"name":"obj_test_disable_animation","order":2,"path":"objects/obj_test_disable_animation/obj_test_disable_animation.yy",},
     {"name":"obj_test_draw_text_scribble","order":5,"path":"objects/obj_test_draw_text_scribble/obj_test_draw_text_scribble.yy",},
     {"name":"obj_test_escaped_newlines","order":1,"path":"objects/obj_test_escaped_newlines/obj_test_escaped_newlines.yy",},
     {"name":"obj_test_fa_middle","order":6,"path":"objects/obj_test_fa_middle/obj_test_fa_middle.yy",},

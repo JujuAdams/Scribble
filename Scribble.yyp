@@ -134,6 +134,7 @@
     {"id":{"name":"obj_test_default","path":"objects/obj_test_default/obj_test_default.yy",},},
     {"id":{"name":"obj_test_devangari_basic","path":"objects/obj_test_devangari_basic/obj_test_devangari_basic.yy",},},
     {"id":{"name":"obj_test_devangari_sprites","path":"objects/obj_test_devangari_sprites/obj_test_devangari_sprites.yy",},},
+    {"id":{"name":"obj_test_disable_animation","path":"objects/obj_test_disable_animation/obj_test_disable_animation.yy",},},
     {"id":{"name":"obj_test_draw_text_scribble","path":"objects/obj_test_draw_text_scribble/obj_test_draw_text_scribble.yy",},},
     {"id":{"name":"obj_test_escaped_newlines","path":"objects/obj_test_escaped_newlines/obj_test_escaped_newlines.yy",},},
     {"id":{"name":"obj_test_fa_middle","path":"objects/obj_test_fa_middle/obj_test_fa_middle.yy",},},
