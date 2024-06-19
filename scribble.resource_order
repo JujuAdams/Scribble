@@ -304,6 +304,7 @@
     {"name":"scribble_super_glyph_delete","order":3,"path":"scripts/scribble_super_glyph_delete/scribble_super_glyph_delete.yy",},
     {"name":"scribble_typist","order":1,"path":"scripts/scribble_typist/scribble_typist.yy",},
     {"name":"scribble_typists_add_event","order":2,"path":"scripts/scribble_typists_add_event/scribble_typists_add_event.yy",},
+    {"name":"scribble_whitelist_sprite","order":7,"path":"scripts/scribble_whitelist_sprite/scribble_whitelist_sprite.yy",},
     {"name":"string_height_scribble_ext","order":5,"path":"scripts/string_height_scribble_ext/string_height_scribble_ext.yy",},
     {"name":"string_height_scribble","order":3,"path":"scripts/string_height_scribble/string_height_scribble.yy",},
     {"name":"string_length_scribble","order":6,"path":"scripts/string_length_scribble/string_length_scribble.yy",},

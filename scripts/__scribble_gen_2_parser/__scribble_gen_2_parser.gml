@@ -173,6 +173,7 @@ function __scribble_gen_2_parser()
     static _colors_struct         = __scribble_config_colours();
     static _font_data_map         = __scribble_get_font_data_map();
     static _generator_state       = __scribble_get_generator_state();
+    static _sprite_whitelist_map  = __scribble_get_state().__sprite_whitelist_map;
     
     with(_generator_state)
     {
@@ -1035,68 +1036,70 @@ function __scribble_gen_2_parser()
                             #region Sprite
                             
                             var _sprite_index = asset_get_index(_tag_command_name);
-                            
-                            var _sprite_w = sprite_get_width( _sprite_index);
-                            var _sprite_h = sprite_get_height(_sprite_index);
-                            
-                            if (SCRIBBLE_AUTOFIT_INLINE_SPRITES)
+                            if ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_sprite_whitelist_map[? _sprite_index] ?? false))
                             {
-                                var _scale = min(1, (_font_line_height+2)/_sprite_h);
-                                _sprite_w *= _scale;
-                                _sprite_h *= _scale;
+                                var _sprite_w = sprite_get_width( _sprite_index);
+                                var _sprite_h = sprite_get_height(_sprite_index);
+                                
+                                if (SCRIBBLE_AUTOFIT_INLINE_SPRITES)
+                                {
+                                    var _scale = min(1, (_font_line_height+2)/_sprite_h);
+                                    _sprite_w *= _scale;
+                                    _sprite_h *= _scale;
+                                }
+                                
+                                var _image_index = 0;
+                                var _image_speed = 0;
+                                switch(_tag_parameter_count)
+                                {
+                                    case 1:
+                                        _image_index = 0;
+                                        _image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
+                                    break;
+                                                         
+                                    case 2:
+                                        _image_index = real(_tag_parameters[1]);
+                                        _image_speed = 0;
+                                    break;
+                                                     
+                                    default:
+                                        _image_index = real(_tag_parameters[1]);
+                                        _image_speed = real(_tag_parameters[2]);
+                                    break;
+                                }
+                                
+                                //Apply IDE sprite speed
+                                if (!SCRIBBLE_LEGACY_ANIMATION_SPEED) _image_speed *= __scribble_image_speed_get(_sprite_index);
+                                
+                                //Only report the model as animated if we're actually able to animate this sprite
+                                if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __has_animation = true;
+                                
+                                //Add this glyph to our grid
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_SPRITE;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
+                                
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = _sprite_w;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _sprite_h;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _sprite_h;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = _sprite_w;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
+                                
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE ] = undefined;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
+                                
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SPRITE_INDEX ] = _sprite_index;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__IMAGE_INDEX  ] = _image_index;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__IMAGE_SPEED  ] = _image_speed;
+                                
+                                ++_glyph_count;
+                                _glyph_prev_arabic_join_next = false;
+                                _glyph_prev_prev = _glyph_prev;
+                                _glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
                             }
-                            
-                            var _image_index = 0;
-                            var _image_speed = 0;
-                            switch(_tag_parameter_count)
-                            {
-                                case 1:
-                                    _image_index = 0;
-                                    _image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
-                                break;
-                                                            
-                                case 2:
-                                    _image_index = real(_tag_parameters[1]);
-                                    _image_speed = 0;
-                                break;
-                                                            
-                                default:
-                                    _image_index = real(_tag_parameters[1]);
-                                    _image_speed = real(_tag_parameters[2]);
-                                break;
-                            }
-                            
-                            //Apply IDE sprite speed
-                            if (!SCRIBBLE_LEGACY_ANIMATION_SPEED) _image_speed *= __scribble_image_speed_get(_sprite_index);
-                            
-                            //Only report the model as animated if we're actually able to animate this sprite
-                            if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __has_animation = true;
-                            
-                            //Add this glyph to our grid
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_SPRITE;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
-                            
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = _sprite_w;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _sprite_h;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _sprite_h;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = _sprite_w;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
-                        
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE ] = undefined;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
-                            
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SPRITE_INDEX ] = _sprite_index;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__IMAGE_INDEX  ] = _image_index;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__IMAGE_SPEED  ] = _image_speed;
-                            
-                            ++_glyph_count;
-                            _glyph_prev_arabic_join_next = false;
-                            _glyph_prev_prev = _glyph_prev;
-                            _glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
                             
                             #endregion
                         }
