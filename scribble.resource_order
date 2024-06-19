@@ -174,6 +174,7 @@
     {"name":"obj_test_typewriter_per_character","order":19,"path":"objects/obj_test_typewriter_per_character/obj_test_typewriter_per_character.yy",},
     {"name":"obj_test_typewriter_per_line","order":24,"path":"objects/obj_test_typewriter_per_line/obj_test_typewriter_per_line.yy",},
     {"name":"obj_test_typewriter_preskip","order":20,"path":"objects/obj_test_typewriter_preskip/obj_test_typewriter_preskip.yy",},
+    {"name":"obj_test_typewriter_skip_during_delay","order":26,"path":"objects/obj_test_typewriter_skip_during_delay/obj_test_typewriter_skip_during_delay.yy",},
     {"name":"obj_test_typewriter_skip_to_pause","order":25,"path":"objects/obj_test_typewriter_skip_to_pause/obj_test_typewriter_skip_to_pause.yy",},
     {"name":"obj_test_typewriter_sound_per_char","order":21,"path":"objects/obj_test_typewriter_sound_per_char/obj_test_typewriter_sound_per_char.yy",},
     {"name":"obj_test_typewriter_speed","order":22,"path":"objects/obj_test_typewriter_speed/obj_test_typewriter_speed.yy",},
