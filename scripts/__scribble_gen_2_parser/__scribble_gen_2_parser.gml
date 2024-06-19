@@ -155,6 +155,8 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "l2r"               ] = 35;
         _command_tag_lookup_accelerator_map[? "indent"            ] = 36;
         _command_tag_lookup_accelerator_map[? "/indent"           ] = 37;
+        _command_tag_lookup_accelerator_map[? "offset"            ] = 38;
+        _command_tag_lookup_accelerator_map[? "offsetPop"         ] = 39;
     }
     
     #endregion
@@ -316,6 +318,8 @@ function __scribble_gen_2_parser()
     
     var _state_halign_offset = 0;
     var _state_valign_offset = 0;
+    
+    var _offset_data_array = []; // start glyph, dX, dY
     
     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__HALIGN;
     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_halign;
@@ -509,6 +513,31 @@ function __scribble_gen_2_parser()
                         {
                             __SCRIBBLE_PARSER_PUSH_SCALE;
                             _state_scale *= real(_tag_parameters[1]);
+                        }
+                    break;
+                    
+                    #endregion
+                    
+                    #region Offset
+                    
+                    // [offset,dX,dY]
+                    case 38:
+                        var _offset_dx = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 0;
+                        var _offset_dy = (_tag_parameter_count > 2)? real(_tag_parameters[2]) : 0;
+                        
+                        array_push(_offset_data_array, _glyph_count, _offset_dx, _offset_dy);
+                    break;
+                    
+                    // [offsetPop]
+                    case 39:
+                        if ((_glyph_count > 0) && (array_length(_offset_data_array) >= 3))
+                        {
+                            var _offset_dy    = array_pop(_offset_data_array);
+                            var _offset_dx    = array_pop(_offset_data_array);
+                            var _offset_start = array_pop(_offset_data_array);
+                            
+                            ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH.__X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__X, _offset_dx);
+                            ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH.__Y, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y, _offset_dy);
                         }
                     break;
                     
@@ -1624,6 +1653,20 @@ function __scribble_gen_2_parser()
     }
     
     __SCRIBBLE_PARSER_PUSH_SCALE;
+    
+    //Resolve hanging offsets
+    if (_glyph_count > 0)
+    {
+        while(array_length(_offset_data_array) >= 3)
+        {
+            var _offset_dy    = array_pop(_offset_data_array);
+            var _offset_dx    = array_pop(_offset_data_array);
+            var _offset_start = array_pop(_offset_data_array);
+            
+            ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH.__X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__X, _offset_dx);
+            ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH.__Y, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y, _offset_dy);
+        }
+    }
     
     if (__has_arabic || __has_hebrew) __has_r2l = true;
     
