@@ -74,6 +74,7 @@
     {"name":"obj_test_flash","order":7,"path":"objects/obj_test_flash/obj_test_flash.yy",},
     {"name":"obj_test_flush_multi","order":5,"path":"objects/obj_test_flush_multi/obj_test_flush_multi.yy",},
     {"name":"obj_test_flush","order":4,"path":"objects/obj_test_flush/obj_test_flush.yy",},
+    {"name":"obj_test_font_align_offset","order":16,"path":"objects/obj_test_font_align_offset/obj_test_font_align_offset.yy",},
     {"name":"obj_test_font_duplicate","order":1,"path":"objects/obj_test_font_duplicate/obj_test_font_duplicate.yy",},
     {"name":"obj_test_font_height","order":2,"path":"objects/obj_test_font_height/obj_test_font_height.yy",},
     {"name":"obj_test_font_outline_4dir","order":3,"path":"objects/obj_test_font_outline_4dir/obj_test_font_outline_4dir.yy",},
