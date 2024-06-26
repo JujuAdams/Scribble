@@ -258,7 +258,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param halign
     /// @param valign
-    static align = function(_halign, _valign)
+    static align = function(_halign = __starting_halign, _valign = __starting_valign)
     {
         if (_halign == "pin_left"  ) _halign = __SCRIBBLE_PIN_LEFT;
         if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
