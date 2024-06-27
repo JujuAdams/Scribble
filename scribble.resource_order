@@ -310,6 +310,7 @@
     {"name":"string_length_scribble","order":6,"path":"scripts/string_length_scribble/string_length_scribble.yy",},
     {"name":"string_width_scribble_ext","order":4,"path":"scripts/string_width_scribble_ext/string_width_scribble_ext.yy",},
     {"name":"string_width_scribble","order":2,"path":"scripts/string_width_scribble/string_width_scribble.yy",},
+    {"name":"StringArabicParse","order":7,"path":"scripts/StringArabicParse/StringArabicParse.yy",},
     {"name":"UnicodeToKrutidev","order":2,"path":"scripts/UnicodeToKrutidev/UnicodeToKrutidev.yy",},
     {"name":"__shd_scribble_bake_outline_4dir","order":2,"path":"shaders/__shd_scribble_bake_outline_4dir/__shd_scribble_bake_outline_4dir.yy",},
     {"name":"__shd_scribble_bake_outline_8dir_2px","order":4,"path":"shaders/__shd_scribble_bake_outline_8dir_2px/__shd_scribble_bake_outline_8dir_2px.yy",},
