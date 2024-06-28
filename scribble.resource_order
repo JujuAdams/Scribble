@@ -317,7 +317,6 @@
     {"name":"StringHebrewParse","order":3,"path":"scripts/StringHebrewParse/StringHebrewParse.yy",},
     {"name":"StringRecompose","order":1,"path":"scripts/StringRecompose/StringRecompose.yy",},
     {"name":"StringThaiParse","order":4,"path":"scripts/StringThaiParse/StringThaiParse.yy",},
-    {"name":"UnicodeToKrutidev","order":2,"path":"scripts/UnicodeToKrutidev/UnicodeToKrutidev.yy",},
     {"name":"__shd_scribble_bake_outline_4dir","order":2,"path":"shaders/__shd_scribble_bake_outline_4dir/__shd_scribble_bake_outline_4dir.yy",},
     {"name":"__shd_scribble_bake_outline_8dir_2px","order":4,"path":"shaders/__shd_scribble_bake_outline_8dir_2px/__shd_scribble_bake_outline_8dir_2px.yy",},
     {"name":"__shd_scribble_bake_outline_8dir","order":3,"path":"shaders/__shd_scribble_bake_outline_8dir/__shd_scribble_bake_outline_8dir.yy",},
