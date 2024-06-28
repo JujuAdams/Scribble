@@ -382,6 +382,7 @@
     {"id":{"name":"StringDecompose","path":"scripts/StringDecompose/StringDecompose.yy",},},
     {"id":{"name":"StringHebrewParse","path":"scripts/StringHebrewParse/StringHebrewParse.yy",},},
     {"id":{"name":"StringRecompose","path":"scripts/StringRecompose/StringRecompose.yy",},},
+    {"id":{"name":"StringThaiParse","path":"scripts/StringThaiParse/StringThaiParse.yy",},},
     {"id":{"name":"UnicodeToKrutidev","path":"scripts/UnicodeToKrutidev/UnicodeToKrutidev.yy",},},
     {"id":{"name":"__shd_scribble_bake_outline_4dir","path":"shaders/__shd_scribble_bake_outline_4dir/__shd_scribble_bake_outline_4dir.yy",},},
     {"id":{"name":"__shd_scribble_bake_outline_8dir_2px","path":"shaders/__shd_scribble_bake_outline_8dir_2px/__shd_scribble_bake_outline_8dir_2px.yy",},},
