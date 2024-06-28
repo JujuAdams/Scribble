@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"StringArabicParse",
+  "%Name":"StringRecompose",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"StringArabicParse",
+  "name":"StringRecompose",
   "parent":{
     "name":"String Parsers",
     "path":"folders/Test Cases/Language Support/String Parsers.yy",
