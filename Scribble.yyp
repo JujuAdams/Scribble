@@ -380,6 +380,7 @@
     {"id":{"name":"string_width_scribble","path":"scripts/string_width_scribble/string_width_scribble.yy",},},
     {"id":{"name":"StringArabicParse","path":"scripts/StringArabicParse/StringArabicParse.yy",},},
     {"id":{"name":"StringDecompose","path":"scripts/StringDecompose/StringDecompose.yy",},},
+    {"id":{"name":"StringDevanagariParse","path":"scripts/StringDevanagariParse/StringDevanagariParse.yy",},},
     {"id":{"name":"StringHebrewParse","path":"scripts/StringHebrewParse/StringHebrewParse.yy",},},
     {"id":{"name":"StringRecompose","path":"scripts/StringRecompose/StringRecompose.yy",},},
     {"id":{"name":"StringThaiParse","path":"scripts/StringThaiParse/StringThaiParse.yy",},},
