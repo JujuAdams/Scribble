@@ -1,1 +1,2 @@
-scribble("The Quick Brown Fox Jumps Over The Lazy Dog!").wrap(room_width - 20).draw(10, 10);
+scribble("[fnt_test_2_shadow]The Quick Brown Fox Jumps Over The Lazy Dog!").wrap(room_width - 20).draw(10, 10);
+scribble("[fnt_test_2]The Quick Brown Fox Jumps Over The Lazy Dog!").wrap(room_width - 20).draw(10, 250);

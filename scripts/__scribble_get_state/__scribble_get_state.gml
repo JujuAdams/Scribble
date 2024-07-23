@@ -13,10 +13,13 @@ function __scribble_get_state()
         __shader_anim_desync:            false,
         __shader_anim_desync_to_default: false,
         __shader_anim_default:           false,
+        __shader_anim_disabled:          false,
         
         __sdf_thickness_offset: 0,
         
         __markdown_styles_struct: {},
+        
+        __sprite_whitelist_map: ds_map_create(),
     };
     
     return _struct;

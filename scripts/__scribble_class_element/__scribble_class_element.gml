@@ -39,6 +39,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     
     
+    __preprocessorFunc = undefined;
+    
     __starting_font   = __scribble_state.__default_font;
     __starting_colour = __scribble_process_colour(SCRIBBLE_DEFAULT_COLOR);
     __starting_halign = SCRIBBLE_DEFAULT_HALIGN;
@@ -173,14 +175,17 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         __last_drawn = __scribble_state.__frames;
         
-        //Update the blink state
-        if (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration > 0)
+        with(_scribble_state)
         {
-            __animation_blink_state = (((__animation_time + _scribble_state.__blink_time_offset) mod (_scribble_state.__blink_on_duration + _scribble_state.__blink_off_duration)) < _scribble_state.__blink_on_duration);
-        }
-        else
-        {
-            __animation_blink_state = true;
+            //Update the blink state
+            if ((not __shader_anim_disabled) && __blink_on_duration + __blink_off_duration > 0)
+            {
+                other.__animation_blink_state = (((other.__animation_time + __blink_time_offset) mod (__blink_on_duration + __blink_off_duration)) < __blink_on_duration);
+            }
+            else
+            {
+                other.__animation_blink_state = true;
+            }
         }
         
         shader_set(__shd_scribble);
@@ -243,7 +248,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     /// @param halign
     /// @param valign
-    static align = function(_halign, _valign)
+    static align = function(_halign = __starting_halign, _valign = __starting_valign)
     {
         if (_halign == "pin_left"  ) _halign = __SCRIBBLE_PIN_LEFT;
         if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
@@ -254,12 +259,16 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (_halign != __starting_halign)
         {
             __model_cache_name_dirty = true;
+            __bbox_dirty             = true;
+            
             __starting_halign = _halign;
         }
         
         if (_valign != __starting_valign)
         {
             __model_cache_name_dirty = true;
+            __bbox_dirty             = true;
+            
             __starting_valign = _valign;
         }
         
@@ -381,6 +390,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (__pre_scale != _scale)
         {
             __model_cache_name_dirty = true;
+            __bbox_dirty             = true;
             
             __pre_scale = _scale;
         }
@@ -1288,6 +1298,17 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Miscellaneous
     
+    static preprocessor = function(_function)
+    {
+        if (_function != __preprocessorFunc)
+        {
+            __model_cache_name_dirty = true;
+            __preprocessorFunc = _function;
+        }
+        
+        return self;
+    }
+    
     static get_events = function(_position, _page_index = __page, _use_lines = false)
     {
         static _empty_array = [];
@@ -1487,6 +1508,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 buffer_write(_buffer, buffer_text, string(__bidi_hint));           buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__ignore_command_tags)); buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_text, string(__randomize_animation)); buffer_write(_buffer, buffer_u8,  0x3A);
+                buffer_write(_buffer, buffer_text, string(ptr(__preprocessorFunc ?? pointer_null))); buffer_write(_buffer, buffer_u8,  0x3A);
                 buffer_write(_buffer, buffer_u8, 0x00);
                 buffer_seek(_buffer, buffer_seek_start, 0);
                 
@@ -1545,6 +1567,14 @@ function __scribble_class_element(_string, _unique_id) constructor
         
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;
+        static _shader_uniforms_disabled = (function()
+        {
+            var _array = array_create(__SCRIBBLE_ANIM.__SIZE, 0);
+            _array[__SCRIBBLE_ANIM.__JITTER_MINIMUM] = 1;
+            _array[__SCRIBBLE_ANIM.__JITTER_MAXIMUM] = 1;
+            _array[__SCRIBBLE_ANIM.__CYCLE_VALUE   ] = 255;
+            return _array;
+        })();
         
         shader_set_uniform_f(_u_fTime, __animation_time);
         
@@ -1597,9 +1627,8 @@ function __scribble_class_element(_string, _unique_id) constructor
             {
                 __shader_anim_desync  = false;
                 __shader_anim_default = __shader_anim_desync_to_default;
+                shader_set_uniform_f_array(_u_aDataFields, __shader_anim_disabled? _shader_uniforms_disabled : _anim_properties_array);
             }
-            
-            shader_set_uniform_f_array(_u_aDataFields, _anim_properties_array);
         }
         
         if (__bezier_using)

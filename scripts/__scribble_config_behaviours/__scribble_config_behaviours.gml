@@ -20,6 +20,9 @@
 #macro SCRIBBLE_USE_KERNING                   true
 #macro SCRIBBLE_SPRITE_BILINEAR_FILTERING     undefined
 #macro SCRIBBLE_DELAY_LAST_CHARACTER          false
+#macro SCRIBBLE_USE_ASCENDER_OFFSET           true
+#macro SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS    true
+#macro SCRIBBLE_USE_SPRITE_WHITELIST          false
 
 
 

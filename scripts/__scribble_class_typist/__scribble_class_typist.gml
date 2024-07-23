@@ -16,6 +16,8 @@ function __scribble_class_typist(_per_line) constructor
     __skip_paused = false;
     __drawn_since_skip = false;
     
+    __sound_tag_gain = 1;
+    
     __sound_array                   = undefined;
     __sound_overlap                 = 0;
     __sound_pitch_min               = 1;
@@ -117,6 +119,7 @@ function __scribble_class_typist(_per_line) constructor
         __skip = _state;
         __skip_paused = true;
         __drawn_since_skip = false;
+        __delay_end = -infinity;
         
         return self;
     }
@@ -126,6 +129,7 @@ function __scribble_class_typist(_per_line) constructor
         __skip = _state;
         __skip_paused = false;
         __drawn_since_skip = false;
+        __delay_end = -infinity;
         
         return self;
     }
@@ -419,6 +423,23 @@ function __scribble_class_typist(_per_line) constructor
     
     
     
+    #region Gain
+    
+    static set_sound_tag_gain = function(_gain)
+    {
+        __sound_tag_gain = _gain;
+        return self;
+    }
+    
+    static get_sound_tag_gain = function()
+    {
+        return __sound_tag_gain;
+    }
+    
+    #endregion
+    
+    
+    
     #region Private Methods
     
     static __associate = function(_text_element)
@@ -528,7 +549,7 @@ function __scribble_class_typist(_per_line) constructor
                     {
                         var _asset = _event_data[0];
                         if (is_string(_asset)) _asset = asset_get_index(_asset);
-                        audio_play_sound(_asset, 1, false);
+                        audio_play_sound(_asset, 1, false, __sound_tag_gain);
                     }
                 break;
                 
