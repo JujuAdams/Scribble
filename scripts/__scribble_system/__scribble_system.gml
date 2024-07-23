@@ -1,7 +1,7 @@
 // Feather disable all
 // @jujuadams
-#macro __SCRIBBLE_VERSION           "9.0.0"
-#macro __SCRIBBLE_DATE              "2024-03-10"
+#macro __SCRIBBLE_VERSION           "9.1.0"
+#macro __SCRIBBLE_DATE              "2024-07-23"
 #macro __SCRIBBLE_DEBUG             false
 #macro __SCRIBBLE_VERBOSE_GC        false
 #macro __SCRIBBLE_RUNNING_FROM_IDE  (GM_build_type == "run")
