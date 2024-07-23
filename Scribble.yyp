@@ -192,6 +192,7 @@
     {"id":{"name":"obj_test_pages","path":"objects/obj_test_pages/obj_test_pages.yy",},},
     {"id":{"name":"obj_test_pin_alignment","path":"objects/obj_test_pin_alignment/obj_test_pin_alignment.yy",},},
     {"id":{"name":"obj_test_pin_width","path":"objects/obj_test_pin_width/obj_test_pin_width.yy",},},
+    {"id":{"name":"obj_test_preprocessor","path":"objects/obj_test_preprocessor/obj_test_preprocessor.yy",},},
     {"id":{"name":"obj_test_refresh","path":"objects/obj_test_refresh/obj_test_refresh.yy",},},
     {"id":{"name":"obj_test_region_line_height","path":"objects/obj_test_region_line_height/obj_test_region_line_height.yy",},},
     {"id":{"name":"obj_test_region_pages","path":"objects/obj_test_region_pages/obj_test_region_pages.yy",},},
