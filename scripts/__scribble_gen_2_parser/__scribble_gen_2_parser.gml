@@ -216,6 +216,9 @@ function __scribble_gen_2_parser()
     
     var _font_name = _starting_font;
     
+    //Run the pre-processor
+    _element_text = ((_element.__preprocessorFunc ?? _system.__defaultPreprocessorFunc)(_element_text)) ?? _element_text;
+    
     //Place our input string into a buffer for quicker reading
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     buffer_write(_string_buffer, buffer_string, _element_text);

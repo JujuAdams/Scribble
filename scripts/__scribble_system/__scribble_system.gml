@@ -62,6 +62,8 @@ function __scribble_initialize()
         __scribble_krutidev_matra_lookup_map_initialize();
         scribble_anim_reset();
         
+        __defaultPreprocessorFunc = SCRIBBLE_NO_PREPROCESS;
+        
         __useHandleParse = false;
         try
         {
