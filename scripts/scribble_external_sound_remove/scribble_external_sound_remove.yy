@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scribble_external_sound_remove",
   "isCompatibility":false,
   "isDnD":false,

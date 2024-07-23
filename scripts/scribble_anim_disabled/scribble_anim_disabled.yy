@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scribble_anim_disabled",
   "isCompatibility":false,
   "isDnD":false,

@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scribble_super_glyph_delete",
   "isCompatibility":false,
   "isDnD":false,

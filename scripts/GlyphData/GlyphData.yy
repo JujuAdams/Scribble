@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"GlyphData",
   "isCompatibility":false,
   "isDnD":false,

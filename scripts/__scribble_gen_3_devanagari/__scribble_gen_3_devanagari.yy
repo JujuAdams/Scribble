@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"__scribble_gen_3_devanagari",
   "isCompatibility":false,
   "isDnD":false,

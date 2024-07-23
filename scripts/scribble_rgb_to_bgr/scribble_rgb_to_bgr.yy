@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scribble_rgb_to_bgr",
   "isCompatibility":false,
   "isDnD":false,

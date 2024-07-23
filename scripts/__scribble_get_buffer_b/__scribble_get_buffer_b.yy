@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"__scribble_get_buffer_b",
   "isCompatibility":false,
   "isDnD":false,

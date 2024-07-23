@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"__scribble_config_defaults",
   "isCompatibility":false,
   "isDnD":false,

@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"__scribble_gen_5_finalize_bidi",
   "isCompatibility":false,
   "isDnD":false,

@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scribble_kerning_pair_set",
   "isCompatibility":false,
   "isDnD":false,

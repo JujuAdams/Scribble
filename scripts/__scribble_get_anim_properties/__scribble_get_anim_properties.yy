@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"__scribble_get_anim_properties",
   "isCompatibility":false,
   "isDnD":false,

@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scribble_super_glyph_copy",
   "isCompatibility":false,
   "isDnD":false,

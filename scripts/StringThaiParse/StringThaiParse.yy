@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"StringThaiParse",
   "isCompatibility":false,
   "isDnD":false,

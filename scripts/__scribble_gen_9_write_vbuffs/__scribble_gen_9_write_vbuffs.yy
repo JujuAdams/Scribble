@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"__scribble_gen_9_write_vbuffs",
   "isCompatibility":false,
   "isDnD":false,

@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scribble_flush_everything",
   "isCompatibility":false,
   "isDnD":false,

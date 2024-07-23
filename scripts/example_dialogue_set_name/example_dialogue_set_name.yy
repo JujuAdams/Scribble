@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"example_dialogue_set_name",
   "isCompatibility":false,
   "isDnD":false,

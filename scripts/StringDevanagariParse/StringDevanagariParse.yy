@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"StringDevanagariParse",
   "isCompatibility":false,
   "isDnD":false,

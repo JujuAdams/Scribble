@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"__scribble_get_krutidev_matra_lookup_map",
   "isCompatibility":false,
   "isDnD":false,

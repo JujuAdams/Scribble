@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"__scribble_effects_maps_initialize",
   "isCompatibility":false,
   "isDnD":false,

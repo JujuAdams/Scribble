@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"__scribble_gen_8_position_glyphs",
   "isCompatibility":false,
   "isDnD":false,

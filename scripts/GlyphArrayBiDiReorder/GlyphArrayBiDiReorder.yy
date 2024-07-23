@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"GlyphArrayBiDiReorder",
   "isCompatibility":false,
   "isDnD":false,

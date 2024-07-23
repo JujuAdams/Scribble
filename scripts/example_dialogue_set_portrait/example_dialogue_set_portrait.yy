@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"example_dialogue_set_portrait",
   "isCompatibility":false,
   "isDnD":false,

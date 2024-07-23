@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scribble_font_bake_outline_4dir",
   "isCompatibility":false,
   "isDnD":false,
