@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"__scribble_constants",
   "parent":{
-    "name":"Configuration - Please edit these!",
-    "path":"folders/Scribble/Configuration - Please edit these!.yy",
+    "name":"Scribble",
+    "path":"folders/Scribble.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
