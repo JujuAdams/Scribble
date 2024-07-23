@@ -22,7 +22,7 @@ function __scribble_initialize()
     
     with(_system)
     {
-        __scribble_trace("Welcome to Scribble by Juju Adams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
+        __scribble_trace("Welcome to Scribble Deluxe by Juju Adams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
         
         if (SCRIBBLE_VERBOSE)
         {
@@ -87,7 +87,7 @@ function __scribble_initialize()
 
 function __scribble_trace()
 {
-    var _string = "Scribble Deluxe: ";
+    var _string = "ScribbleDX: ";
     
     var _i = 0
     repeat(argument_count)
@@ -142,7 +142,7 @@ function __scribble_error()
     }
     
     show_debug_message("Scribble Deluxe " + __SCRIBBLE_VERSION + ": " + string_replace_all(_string, "\n", "\n          "));
-    show_error("Scribble Deluxe:\n" + _string + "\n ", true);
+    show_error("ScribbleDX:\n" + _string + "\n ", true);
 }
 
 function __scribble_get_font_data(_name)
