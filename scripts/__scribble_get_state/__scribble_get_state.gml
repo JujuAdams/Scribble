@@ -20,6 +20,7 @@ function __scribble_get_state()
         __markdown_styles_struct: {},
         
         __sprite_whitelist_map: ds_map_create(),
+        __sound_whitelist_map: ds_map_create(),
     };
     
     return _struct;

@@ -549,7 +549,7 @@ function __scribble_class_typist(_per_line) constructor
                     {
                         var _asset = _event_data[0];
                         if (is_string(_asset)) _asset = asset_get_index(_asset);
-                        audio_play_sound(_asset, 1, false, __sound_tag_gain);
+                        __scribble_play_sound(_asset, __sound_tag_gain, 1);
                     }
                 break;
                 
@@ -629,9 +629,7 @@ function __scribble_class_typist(_per_line) constructor
                 
                 if (_audio_asset != undefined)
                 {
-                    var _inst = audio_play_sound(_audio_asset, 0, false);
-                    audio_sound_pitch(_inst, lerp(__sound_pitch_min, __sound_pitch_max, __scribble_random()));
-                    audio_sound_gain(_inst, __sound_gain, 0);
+                    var _inst = __scribble_play_sound(_audio_asset, __sound_gain, lerp(__sound_pitch_min, __sound_pitch_max, __scribble_random()));
                     __sound_finish_time = current_time + 1000*audio_sound_length(_inst) - __sound_overlap;
                 }
             }

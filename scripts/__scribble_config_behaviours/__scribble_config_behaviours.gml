@@ -23,6 +23,7 @@
 #macro SCRIBBLE_USE_ASCENDER_OFFSET           true
 #macro SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS    true
 #macro SCRIBBLE_USE_SPRITE_WHITELIST          false
+#macro SCRIBBLE_USE_SOUND_WHITELIST           false
 
 
 

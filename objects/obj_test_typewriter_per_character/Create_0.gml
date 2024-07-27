@@ -13,8 +13,7 @@ typist.function_per_char(function(_element, _position, _typist)
         var _pitch = lerp(0.8, 1.2, 0.5 + 0.5*dsin(36*_position));
         
         //Play a sound and then modify its pitch
-        var _sound_instance = audio_play_sound(snd_switch, 1, false);
-        audio_sound_pitch(_sound_instance, _pitch);
+        audio_play_sound(snd_switch, 1, false, 1, 0, _pitch);
     }
 });
 
