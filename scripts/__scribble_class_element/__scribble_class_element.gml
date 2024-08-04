@@ -1191,6 +1191,27 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     
     
+    #region Outline & Shadow
+    
+    static shadow = function(_colour, _alpha)
+    {
+        __sdf_shadow_colour = _colour;
+        __sdf_shadow_alpha  = _alpha;
+        
+        return self;
+    }
+    
+    static border = function(_colour)
+    {
+        __sdf_border_colour = _colour;
+        
+        return self;
+    }
+    
+    #endregion
+    
+    
+    
     #region SDF
     
     static sdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.25)
