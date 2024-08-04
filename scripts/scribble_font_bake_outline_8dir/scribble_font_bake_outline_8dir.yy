@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scribble_font_bake_outline_8dir",
   "parent":{
-    "name":"Deprecated",
-    "path":"folders/Scribble/Deprecated.yy",
+    "name":"Legacy",
+    "path":"folders/Scribble/Legacy.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
