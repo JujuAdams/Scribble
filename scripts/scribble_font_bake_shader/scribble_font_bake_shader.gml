@@ -52,8 +52,9 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _glyph_count = ds_grid_width(_src_glyph_grid);
     
     //Create a new font
-    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, false);
-    _new_font_data.__runtime = true;
+    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, _markAsRasterEffect? __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS : __SCRIBBLE_FONT_TYPE.__RASTER);
+    _new_font_data.__bilinear = _smooth;
+    _new_font_data.__runtime  = true;
     var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
     
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
@@ -224,8 +225,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, _glyph_count-1, SCRIBBLE_GLYPH.FONT_HEIGHT, _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.SEPARATION,  _glyph_count-1, SCRIBBLE_GLYPH.SEPARATION,  _separation);
     ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.TEXTURE,     _glyph_count-1, SCRIBBLE_GLYPH.TEXTURE,     sprite_get_texture(_sprite, 0));
-    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.BILINEAR,    _glyph_count-1, SCRIBBLE_GLYPH.BILINEAR,    _smooth);
-    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.SDF_PXRANGE, _glyph_count-1, SCRIBBLE_GLYPH.SDF_PXRANGE, _markAsRasterEffect? -1 : undefined);
+    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.FONT_NAME,   _glyph_count-1, SCRIBBLE_GLYPH.FONT_NAME,   _new_font_name);
     
     //Figure out the new UVs using some bulk commands
     var _sprite_uvs = sprite_get_uvs(_sprite, 0);

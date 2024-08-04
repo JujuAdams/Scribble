@@ -48,7 +48,7 @@
                                       else\
                                       {\
                                           ;\//Add this glyph to our grid by copying from the font's own glyph data grid
-                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.UNICODE, _data_index, SCRIBBLE_GLYPH.BILINEAR, _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE);\
+                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, SCRIBBLE_GLYPH.UNICODE, _data_index, SCRIBBLE_GLYPH.FONT_NAME, _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE);\
                                           _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;\
                                           ;\
                                           if (SCRIBBLE_USE_KERNING)\
@@ -870,9 +870,8 @@ function __scribble_gen_2_parser()
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V0      ] = 0;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U1      ] = 1;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V1      ] = 1;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_NAME    ] = undefined;
                         
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE  ] = undefined;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
                         
                         ++_glyph_count;
@@ -1090,8 +1089,8 @@ function __scribble_gen_2_parser()
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
                                 
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SDF_PXRANGE  ] = undefined;
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BILINEAR     ] = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_NAME    ] = undefined;
+                                
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
                                 
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SPRITE_INDEX ] = _sprite_index;

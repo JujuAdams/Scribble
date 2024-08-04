@@ -155,8 +155,25 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_texture, _pxrange, _thickness_offset, _bilinear, _model_struct)
+    static __get_vertex_buffer = function(_texture, _fontName, _model_struct)
     {
+        if (_fontName == undefined)
+        {
+            //Sprite or surface
+            var _fontType        = __SCRIBBLE_FONT_TYPE.__RASTER;
+            var _pxrange         = undefined;
+            var _thicknessOffset = undefined;
+            var _bilinear        = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
+        }
+        else
+        {
+            var _fontData = __scribble_get_font_data(_fontName);
+            var _fontType        = _fontData.__fontType;
+            var _pxrange         = _fontData.__sdf_pxrange;
+            var _thicknessOffset = _fontData.__sdf_thickness_offset;
+            var _bilinear        = _fontData.__bilinear;
+        }
+        
         var _pointer_string = string(_texture);
         
         if (!__SCRIBBLE_ON_WEB)
@@ -201,27 +218,14 @@ function __scribble_class_page() constructor
             array_push(__gc_vbuff_refs, weak_ref_create(self));
             array_push(__gc_vbuff_ids, _vbuff);
             
-            if (_pxrange == undefined)
-            {
-                var _fontType = __SCRIBBLE_FONT_TYPE.__RASTER;
-            }
-            else if (_pxrange < 0)
-            {
-                var _fontType = __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS;
-            }
-            else
-            {
-                var _fontType = __SCRIBBLE_FONT_TYPE.__SDF;
-            }
-            
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER       ] = _vbuff;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _texture;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE           ] = _pxrange;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thickness_offset;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thicknessOffset;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__FONT_TYPE           ] = (_pxrange != undefined)? __SCRIBBLE_FONT_TYPE.__SDF : __SCRIBBLE_FONT_TYPE.__RASTER; //We're using an SDF font if we have no defined SDF range
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__FONT_TYPE           ] = _fontType; //We're using an SDF font if we have no defined SDF range
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR            ] = _bilinear;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;

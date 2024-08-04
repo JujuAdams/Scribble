@@ -16,7 +16,7 @@
 enum SCRIBBLE_GLYPH
 {
     CHARACTER,             // 0
-                   
+                           //  
     UNICODE,               // 1
     BIDI,                  // 2
                            //  
@@ -34,12 +34,9 @@ enum SCRIBBLE_GLYPH
     U1,                    //13
     V0,                    //14
     V1,                    //15
+    FONT_NAME,             //16
                            //  
-    SDF_PXRANGE,           //16
-    SDF_THICKNESS_OFFSET,  //17
-    BILINEAR,              //18
-    
-    __SIZE                 //19
+    __SIZE                 //17
 }
 
 enum SCRIBBLE_EASE
