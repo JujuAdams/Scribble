@@ -42,8 +42,9 @@ void main()
         
         if (u_fSecondDraw < 0.5)
         {
-            gl_FragColor.rgb = mix(u_vBorderColour, gl_FragColor.rgb, gl_FragColor.a);
-            gl_FragColor.a = max(gl_FragColor.a, sample.g);
+            float outAlpha = gl_FragColor.a + sample.g*(1.0 - gl_FragColor.a);
+            gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + u_vBorderColour*sample.g*(1.0 - gl_FragColor.a)) / outAlpha;
+            gl_FragColor.a = outAlpha;
             
             if (u_vShadowColour.a > 0.0)
             {
