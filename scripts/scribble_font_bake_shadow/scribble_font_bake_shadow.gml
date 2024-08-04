@@ -2,7 +2,7 @@
 /// Creates a new font with an outline based on a given source font
 ///
 /// @param sourceFontName   Name, as a string, of the font to use as a basis for the effect
-/// @param newFontName      Name of the new font to create, as a strintg
+/// @param newFontName      Name of the new font to create, as a string
 /// @param dX               
 /// @param dY               
 /// @param shadowColour     Colour of the shadow
@@ -37,6 +37,6 @@ function scribble_font_bake_shadow(_source_font_name, _new_font_name, _dx, _dy, 
 
     //Run the baking operation
     scribble_font_bake_shader(_source_font_name, _new_font_name, __shd_scribble_bake_shadow,
-                              2, max(0, -_dx), max(0, -_dx), max(0, _dx), max(0, _dy),
+                              2, max(0, -_dx), max(0, -_dy), max(0, _dx), max(0, _dy),
                               _separation, _smooth);
 }
