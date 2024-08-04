@@ -2,7 +2,7 @@
 /// Creates a new font with an outline based on a given source font
 ///
 /// @param sourceFontName   Name, as a string, of the font to use as a basis for the effect
-/// @param newFontName      Name of the new font to create, as a strintg
+/// @param newFontName      Name of the new font to create, as a string
 /// @param outlineColour    Colour of the outline
 /// @param smooth           Whether or not to interpolate the outline. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
 /// @param [textureSize]
