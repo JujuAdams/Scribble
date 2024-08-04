@@ -201,6 +201,19 @@ function __scribble_class_page() constructor
             array_push(__gc_vbuff_refs, weak_ref_create(self));
             array_push(__gc_vbuff_ids, _vbuff);
             
+            if (_pxrange == undefined)
+            {
+                var _fontType = __SCRIBBLE_FONT_TYPE.__RASTER;
+            }
+            else if (_pxrange < 0)
+            {
+                var _fontType = __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS;
+            }
+            else
+            {
+                var _fontType = __SCRIBBLE_FONT_TYPE.__SDF;
+            }
+            
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER       ] = _vbuff;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _texture;

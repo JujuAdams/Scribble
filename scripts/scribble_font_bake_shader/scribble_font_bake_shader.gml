@@ -224,6 +224,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.SEPARATION,  _glyph_count-1, SCRIBBLE_GLYPH.SEPARATION,  _separation);
     ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.TEXTURE,     _glyph_count-1, SCRIBBLE_GLYPH.TEXTURE,     sprite_get_texture(_sprite, 0));
     ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.BILINEAR,    _glyph_count-1, SCRIBBLE_GLYPH.BILINEAR,    _smooth);
+    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.SDF_PXRANGE, _glyph_count-1, SCRIBBLE_GLYPH.SDF_PXRANGE, -1);
     
     //Figure out the new UVs using some bulk commands
     var _sprite_uvs = sprite_get_uvs(_sprite, 0);

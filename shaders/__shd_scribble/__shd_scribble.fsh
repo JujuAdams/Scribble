@@ -38,7 +38,20 @@ void main()
     {
         //Font with effects baked in
         vec4 sample = texture2D(gm_BaseTexture, v_vTexcoord);
-        gl_FragColor = v_vColour*sample.rrra;
+        gl_FragColor = v_vColour*vec4(1.0, 1.0, 1.0, sample.r);
+        
+        if (u_fSecondDraw < 0.5)
+        {
+            gl_FragColor.rgb = mix(u_vBorderColour, gl_FragColor.rgb, gl_FragColor.a);
+            gl_FragColor.a = max(gl_FragColor.a, sample.g);
+            
+            if (u_vShadowColour.a > 0.0)
+            {
+                float outAlpha = gl_FragColor.a + u_vShadowColour.a*sample.b*(1.0 - gl_FragColor.a);
+                gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + u_vShadowColour.rgb*u_vShadowColour.a*sample.b*(1.0 - gl_FragColor.a)) / outAlpha;
+                gl_FragColor.a = outAlpha;
+            }
+        }
     }
     else
     {

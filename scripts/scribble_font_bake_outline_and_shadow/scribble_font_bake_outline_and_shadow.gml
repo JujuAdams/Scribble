@@ -43,5 +43,5 @@ function scribble_font_bake_outline_and_shadow(_sourceFontName, _newFontName, _d
     //Run the baking operation
     scribble_font_bake_shader(_sourceFontName, _newFontName, _shader,
                               2, _outlineSize + max(0, -_dX), _outlineSize + max(0, -_dY), _outlineSize + max(0, _dX), _outlineSize + max(0, _dY),
-                              1, _smooth, _textureSize);
+                              _separation, _smooth, _textureSize);
 }

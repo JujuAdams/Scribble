@@ -522,8 +522,8 @@ enum __SCRIBBLE_GEN_GLYPH
     __QUAD_V0,               //13   |
     __QUAD_V1,               //14   |
                              //     |
-    __SDF_PXRANGE,          //15   |
-    __SDF_THICKNESS_OFFSET, //16   |
+    __SDF_PXRANGE,           //15   |
+    __SDF_THICKNESS_OFFSET,  //16   |
     __BILINEAR,              //17  /
     
     __CONTROL_COUNT,         //18
