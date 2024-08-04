@@ -17,22 +17,38 @@ float InsideTexture(vec2 point)
     return result.x*result.y;   
 }
 
-void main()
+float SampleAlpha(vec2 inTexcoord)
 {
-    vec2 shadowTexcoord = v_vTexcoord - u_vTexel*u_vShadowDelta;
+    vec2  texcoord;
+    float alpha = 0.0;
     
-    float outlineAlpha = 0.0;
     for(int iAngle = 0; iAngle < u_iOutlineSamples; iAngle++)
     {
         float angle = 2.0*PI*float(iAngle) / float(u_iOutlineSamples);
         for(int radius = 1; radius <= u_iOutlineSize; radius++)
         {
-            outlineAlpha = mix(outlineAlpha, 1.0, texture2D(gm_BaseTexture, v_vTexcoord + u_vTexel*(float(radius)*vec2(cos(angle), sin(angle)))).a);
+            texcoord = inTexcoord + u_vTexel*(float(radius)*vec2(cos(angle), sin(angle)));
+            alpha = mix(alpha, 1.0, texture2D(gm_BaseTexture, texcoord).a*InsideTexture(texcoord));
         }
     }
     
-    gl_FragColor = vec4(texture2D(gm_BaseTexture, v_vTexcoord).a,
-                        outlineAlpha,
-                        texture2D(gm_BaseTexture, shadowTexcoord).a*InsideTexture(shadowTexcoord).a,
-                        1.0);
+    return alpha;
+}
+
+void main()
+{
+    if (all(equal(u_vShadowDelta, vec2(0.0))))
+    {
+        gl_FragColor = vec4(texture2D(gm_BaseTexture, v_vTexcoord).a,
+                            SampleAlpha(v_vTexcoord),
+                            0.0,
+                            1.0);
+    }
+    else
+    {
+        gl_FragColor = vec4(texture2D(gm_BaseTexture, v_vTexcoord).a,
+                            SampleAlpha(v_vTexcoord),
+                            SampleAlpha(v_vTexcoord - u_vTexel*u_vShadowDelta),
+                            1.0);
+    }
 }

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scribble_font_bake_effect",
+  "%Name":"scribble_font_bake_outline_and_shadow",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scribble_font_bake_effect",
+  "name":"scribble_font_bake_outline_and_shadow",
   "parent":{
     "name":"Fonts",
     "path":"folders/Scribble/Fonts.yy",

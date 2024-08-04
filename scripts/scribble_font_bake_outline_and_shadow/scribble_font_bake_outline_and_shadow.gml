@@ -10,7 +10,7 @@
 /// @param smooth           Whether or not to interpolate the effect. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
 /// @param [textureSize]
 
-function scribble_font_bake_effect(_sourceFontName, _newFontName, _dX, _dY, _outlineMode, _separation, _smooth, _textureSize = undefined)
+function scribble_font_bake_outline_and_shadow(_sourceFontName, _newFontName, _dX, _dY, _outlineMode, _separation, _smooth, _textureSize = undefined)
 {
     var _outlineSize = 0;
     var _shader = __shd_scribble_bake_effect_no_outline;

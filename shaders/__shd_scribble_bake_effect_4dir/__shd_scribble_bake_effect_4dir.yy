@@ -3,8 +3,8 @@
   "%Name":"__shd_scribble_bake_effect_4dir",
   "name":"__shd_scribble_bake_effect_4dir",
   "parent":{
-    "name":"Effect",
-    "path":"folders/Scribble/(System - don't call these functions)/Shaders/Effect.yy",
+    "name":"Outline & Shadow",
+    "path":"folders/Scribble/(System - don't call these functions)/Shaders/Outline & Shadow.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",
