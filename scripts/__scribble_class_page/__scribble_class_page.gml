@@ -77,7 +77,7 @@ function __scribble_class_page() constructor
             else if (_data[__SCRIBBLE_VERTEX_BUFFER.__FONT_TYPE] == __SCRIBBLE_FONT_TYPE.__SDF)
             {
                 //Set shader uniforms unique to the SDF shader
-                shader_set_uniform_f(_u_fFontType, 1);
+                shader_set_uniform_f(_u_fFontType, __SCRIBBLE_FONT_TYPE.__SDF);
                 shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
                 shader_set_uniform_f(_u_fSDFRange, (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE] ?? 0));
                 shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] ?? 0));
