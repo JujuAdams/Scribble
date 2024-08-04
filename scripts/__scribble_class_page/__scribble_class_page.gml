@@ -41,7 +41,7 @@ function __scribble_class_page() constructor
         static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );
         static _u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble, "u_fSDFThicknessOffset");
         static _u_fSecondDraw         = shader_get_uniform(__shd_scribble, "u_fSecondDraw"        );
-        static _u_fSDF                = shader_get_uniform(__shd_scribble, "u_fSDF"               );
+        static _u_fFontType           = shader_get_uniform(__shd_scribble, "u_fFontType"          );
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
         
@@ -57,10 +57,27 @@ function __scribble_class_page() constructor
                 gpu_set_tex_filter(_bilinear);
             }
             
-            if (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF])
+            if (_data[__SCRIBBLE_VERTEX_BUFFER.__FONT_TYPE] == __SCRIBBLE_FONT_TYPE.__RASTER)
+            {
+                shader_set_uniform_f(_u_fFontType, __SCRIBBLE_FONT_TYPE.__RASTER);
+                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
+            }
+            else if (_data[__SCRIBBLE_VERTEX_BUFFER.__FONT_TYPE] == __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS)
+            {
+                shader_set_uniform_f(_u_fFontType, __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS);
+                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
+                
+                if (_double_draw)
+                {
+                    shader_set_uniform_f(_u_fSecondDraw, 1);
+                    vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
+                    shader_set_uniform_f(_u_fSecondDraw, 0);
+                }
+            }
+            else if (_data[__SCRIBBLE_VERTEX_BUFFER.__FONT_TYPE] == __SCRIBBLE_FONT_TYPE.__SDF)
             {
                 //Set shader uniforms unique to the SDF shader
-                shader_set_uniform_f(_u_fSDF, 1);
+                shader_set_uniform_f(_u_fFontType, 1);
                 shader_set_uniform_f(_u_vTexel, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH], _data[__SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT]);
                 shader_set_uniform_f(_u_fSDFRange, (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE] ?? 0));
                 shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + (_data[__SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] ?? 0));
@@ -73,12 +90,6 @@ function __scribble_class_page() constructor
                     vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
                     shader_set_uniform_f(_u_fSecondDraw, 0);
                 }
-            }
-            else
-            {
-                //TODO - Optimise
-                shader_set_uniform_f(_u_fSDF, 0);
-                vertex_submit(_data[__SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER], pr_trianglelist, _data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE]);
             }
             
             if (_bilinear != undefined)
@@ -197,7 +208,7 @@ function __scribble_class_page() constructor
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thickness_offset;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF                 ] = (_pxrange != undefined); //We're using an SDF font if we have no defined SDF range
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__FONT_TYPE           ] = (_pxrange != undefined)? __SCRIBBLE_FONT_TYPE.__SDF : __SCRIBBLE_FONT_TYPE.__RASTER; //We're using an SDF font if we have no defined SDF range
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR            ] = _bilinear;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;

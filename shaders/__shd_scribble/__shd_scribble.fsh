@@ -7,18 +7,19 @@ precision highp float;
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
 
-uniform float u_fSDF;
+uniform float u_fFontType;
 uniform vec4  u_vFlash;
+
+uniform vec4  u_vShadowColour;
+uniform vec3  u_vBorderColour;
+uniform float u_fSecondDraw;
 
 //SDF-only
 uniform vec2  u_vTexel;
 uniform float u_fSDFRange;
 uniform float u_fSDFThicknessOffset;
-uniform vec4  u_vShadowColour;
 uniform vec3  u_vShadowOffsetAndSoftness;
-uniform vec3  u_vBorderColour;
 uniform float u_fBorderThickness;
-uniform float u_fSecondDraw;
 
 float SDFValue(vec2 texcoord)
 {
@@ -28,16 +29,16 @@ float SDFValue(vec2 texcoord)
 
 void main()
 {
-    if (u_fSDF < 0.5)
+    if (u_fFontType == 0.0)
     {
-        //Standard rendering (standard fonts, spritefonts, sprites, surfaces)
+        //Standard raster rendering (standard fonts, spritefonts, sprites, surfaces)
         gl_FragColor = v_vColour*texture2D(gm_BaseTexture, v_vTexcoord);
-        gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFlash.rgb, u_vFlash.a);
-        
-        if (PREMULTIPLY_ALPHA)
-        {
-            gl_FragColor.rgb *= gl_FragColor.a;
-        }
+    }
+    else if (u_fFontType == 1.0)
+    {
+        //Font with effects baked in
+        vec4 sample = texture2D(gm_BaseTexture, v_vTexcoord);
+        gl_FragColor = v_vColour*sample.rrra;
     }
     else
     {
@@ -70,12 +71,14 @@ void main()
             }
         }
         
-        gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFlash.rgb, u_vFlash.a);
         gl_FragColor.a *= v_vColour.a;
-        
-        if (PREMULTIPLY_ALPHA)
-        {
-            gl_FragColor.rgb *= gl_FragColor.a;
-        }
+    }
+    
+    //Apply flash effect
+    gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vFlash.rgb, u_vFlash.a);
+    
+    if (PREMULTIPLY_ALPHA)
+    {
+        gl_FragColor.rgb *= gl_FragColor.a;
     }
 }
