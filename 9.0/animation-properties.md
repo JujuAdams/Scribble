@@ -16,30 +16,6 @@ Restores animation properties to the defaults set in [`__scribble_config_animati
 
 &nbsp;
 
-## `scribble_anim_disabled(state)`
-
-**Returns**: N/A (`undefined`)
-
-|Name   |Datatype|Purpose                                    |
-|-------|--------|-------------------------------------------|
-|`state`|boolean |Whether to enable or disable text animation|
-
-Disabling text animations is a common accessibility requirement and is useful for people who have diminished eyesight or find it disorientating to read rapidly moving text.
-
-?> Disabling text animations will **not** disable typist animations.
-
-&nbsp;
-
-## `scribble_anim_get_disabled()`
-
-**Returns**: Boolean, whether text animations are disabled
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-&nbsp;
-
 ## `scribble_anim_wave(size, frequency, speed)`
 
 **Returns**: The text element

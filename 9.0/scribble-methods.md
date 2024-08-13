@@ -8,7 +8,7 @@ When you call `scribble()`, the function searches Scribble's internal cache and 
 
 **Even small changes in a string may cause a new text element to be generated automatically.** Scribble Deluxe is pretty fast, but you don't want to use it for text that changes rapidly (e.g. health points, money, or score) as this will cause Scribble to do a lot of work, potentially slowing down your game.
 
-Each text element can be altered by calling methods. Most methods return the text element itself. This allows you to chain methods together, achieving a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Some methods are marked as "regenerator methods". Setting new, different values for a piece of text using a regenerator method will cause Scribble to regenerate the underlying vertex buffers. For the sake of performance, avoid frequently changing values for regenerator methods as this will cause performance problems.
+Each text element can be altered by calling methods, a new feature in [GMS2.3.0](https://www.yoyogames.com/blog/549/gamemaker-studio-2-3-new-gml-features). Most methods return the text element itself. This allows you to chain methods together, achieving a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Some methods are marked as "regenerator methods". Setting new, different values for a piece of text using a regenerator method will cause Scribble to regenerate the underlying vertex buffers. For the sake of performance, avoid frequently changing values for regenerator methods as this will cause performance problems.
 
 Don't worry about clearing up after yourself when you draw text - Scribble automatically manages memory for you. If you *do* want to manually control how memory is used, please use the [`.flush()`](scribble-methods?id=flush) method and [`scribble_flush_everything()`](misc-functions?id=scribble_flush_everything). Please be aware that it is not possible to serialise/deserialise Scribble text elements for e.g. a save system.
 
@@ -683,36 +683,7 @@ The value returned from this function defaults to `1`.
 
 &nbsp;
 
-# Outlines & Shadows
-
-## `.shadow(colour, alpha)`
-
-**Returns**: The text element
-
-|Name    |Datatype|Purpose                                                                                                  |
-|--------|--------|---------------------------------------------------------------------------------------------------------|
-|`colour`|integer |The colour of the shadow, as a standard GameMaker 24-bit BGR format                                      |
-|`alpha` |number  |Opacity of the shadow, `0.0` being transparent and `1.0` being fully opaque                              |
-
-Sets the colour, alpha, and offset for a shadow for a font created by `scribble_font_bake_outline_and_shadow()`. This method will not affect other kinds of fonts. Setting the alpha to `0` will prevent the shadow from being drawn at all.
-
-?> This method is intended for use only with fonts created by `scribble_font_bake_outline_and_shadow()`. If you'd like to add shadows to SDF fonts, use the SDF-specific variant `.sdf_shadow()` explained below.
-
-&nbsp;
-
-## `.outline(colour)`
-
-**Returns**: The text element
-
-|Name    |Datatype|Purpose                                                                 |
-|--------|--------|------------------------------------------------------------------------|
-|`colour`|integer |Colour of the glyph's outline, as a standard GameMaker 24-bit BGR format|
-
-Sets the colour of an outline for a font created by `scribble_font_bake_outline_and_shadow()`. This method will not affect other kinds of fonts.
-
-?> This method is intended for use only with fonts created by `scribble_font_bake_outline_and_shadow()`. If you'd like to add outlines to SDF fonts, use the SDF-specific variant `.sdf_outline()` explained below.
-
-&nbsp;
+# SDF
 
 ## `.sdf_shadow(colour, alpha, xoffset, yoffset, [softness])`
 
@@ -728,22 +699,22 @@ Sets the colour of an outline for a font created by `scribble_font_bake_outline_
 
 Sets the colour, alpha, and offset for a procedural SDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all. If you find that your shadow(s) are being clipped or cut off when using large offset values, increase the SDF spread for the font.
 
-?> This method is intended for use only with SDF fonts. If you'd like to add a shadow to standard fonts or spritefonts, use `scribble_font_bake_outline_and_shadow()` and the non-SDF variant `.outline()` explained above.
+?> This method will only affect SDF fonts. If you'd like to add shadows to standard fonts or spritefonts, you may want to consider [baking this effect](fonts?id=scribble_font_bake_shadowsourcefontname-newfontname-dx-dy-shadowcolor-shadowalpha-separation-smooth).
 
 &nbsp;
 
-## `.sdf_outline(colour, thickness)`
+## `.sdf_border(colour, thickness)`
 
 **Returns**: The text element
 
-|Name       |Datatype|Purpose                                                                 |
-|-----------|--------|------------------------------------------------------------------------|
-|`colour`   |integer |Colour of the glyph's outline, as a standard GameMaker 24-bit BGR format|
-|`thickness`|real    |Thickness of the outline, in pixels                                     |
+|Name       |Datatype|Purpose                                                                |
+|-----------|--------|-----------------------------------------------------------------------|
+|`colour`   |integer |Colour of the glyph's border, as a standard GameMaker 24-bit BGR format|
+|`thickness`|real    |Thickness of the border, in pixels                                     |
 
-Sets the colour and thickness for a procedural SDF outline. Setting the thickness to `0` will prevent the outline from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, increase the SDF spread for the font.
+Sets the colour and thickness for a procedural SDF border. Setting the thickness to `0` will prevent the border from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, increase the SDF spread for the font.
 
-?> This method is intended for use only with SDF fonts. If you'd like to add an outline to standard fonts or spritefonts, use `scribble_font_bake_outline_and_shadow()` and the non-SDF variant `.outline()` explained above.
+?> This method will only affect SDF fonts. If you'd like to add outlines to standard fonts or spritefonts, you may want to consider [baking this effect](fonts?id=scribble_font_bake_outline_4dirsourcefontname-newfontname-color-smooth).
 
 &nbsp;
 
@@ -795,55 +766,6 @@ Forces Scribble to rebuild the text model for this text element. This is particu
 |None|        |       |
 
 Forces Scribble to remove this text element from the internal cache, invalidating the text element. If you have manually cached a reference to a flushed text element, that text element will no longer be able to be drawn. Given that Scribble actively garbage collects used memory it is uncommon that you'd want to ever use this function, but if you want to tightly manage your memory, this function is available.
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-# Preprocessor
-
-## `.preprocessor(function)` *regenerator*
-
-**Returns**: The text element
-
-|Name      |Datatype|Purpose                                                                                                                                                           |
-|----------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`function`|function|The function to execute as a preprocessor. Set to `undefined` to use the global default preprocessor, or set to `SCRIBBLE_NO_PREPROCESS` to force no preprocessing|
-
-A preprocessor function allows you to adjust a string being drawn by Scribble using custom code that goes beyond what Scribble can natively employ. A preprocessor function takes one argument which is the input string defined when calling `scribble()`. This string is literally the string passed to `scribble()` so it will include command tags. A preprocessor function will need to return the modified string using the standard `return` command.
-
-Without intervention, a text element will use the global default preprocessor function as set by `scribble_default_preprocessor_set()`. Updating the global default preprocessor function will **not** automatically regenerate existing text elements so be careful how you use it (intention is to set-and-forget when the game starts).
-
-A preprocessor function is called before Scribble does any processing, including Scribble macros, so it is maximally flexible. **The preprocessor function is only called once when a text element is cached.** This means that using a preprocessor to draw a variable that is liable to update during the lifetime of a text element will not lead to sastisfactory results. Because the preprocessor function is called when the text element is cached, the value that is found in the variable is "frozen" into the text model and will not change until the text element is regenerated by some means. *(If you want to have live updating variables, just modify the input string like you would with any other normal text drawing command.)*
-
-An example pass-through preprocessor function (a function that does not modify the string) looks like this:
-
-```gml
-function(_string)
-{
-    return _string;
-}
-```
-
-A more complicated preprocessor function that replaces `$123$` to follow the pattern `[spr_money][c_green]123[/c]` looks like this:
-
-```gml
-function(_string)
-{
-    var _split = string_split(_string, "$");
-    var _i = array_length(_split)-2;
-    repeat((array_length(_split)-1) div 2)
-    {
-        array_insert(_split, _i,   "[spr_money][c_green]");
-        array_insert(_split, _i+1, "[/c]");
-        _i -= 2;
-    }
-    
-    return string_concat_ext(_split);
-}
-```
 
 &nbsp;
 
