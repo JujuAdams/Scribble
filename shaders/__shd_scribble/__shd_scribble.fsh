@@ -77,7 +77,7 @@ void main()
                 gl_FragColor.a = max(gl_FragColor.a, smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist + borderOffset));
             }
             
-            if (u_vShadowColour.a > 0.0)
+            if ((u_vShadowColour.a > 0.0) && !all(equal(u_vShadowOffsetAndSoftness.xy, vec2(0.0))))
             {
                 float alphaShadow = u_vShadowColour.a*smoothstep(0.5 - spread*u_vShadowOffsetAndSoftness.z, 0.5 + spread*u_vShadowOffsetAndSoftness.z, SDFValue(v_vTexcoord - u_vShadowOffsetAndSoftness.xy*fwidth(v_vTexcoord)) + borderOffset);
                 
