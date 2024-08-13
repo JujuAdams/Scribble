@@ -237,6 +237,8 @@ If there is no kerning offset defined for the given pair of characters (either s
 |`.EIGHT_DIR`      |One-pixel thick outline in the 8 compass directions |
 |`.EIGHT_DIR_THICK`|Two-pixel thick outline in the 8 compass directions |
 
+You can change the colour of the outline by using the `.outline()` text element method. You can change the colour and alpha of the shadow by using the `.shadow()` text element method.
+
 &nbsp;
 
 ## `scribble_font_bake_shader(sourceFontName, newFontName, shader, leftPad, topPad, rightPad, bottomPad, separationDelta, smooth, [textureSize=2048])`
