@@ -1195,15 +1195,19 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static shadow = function(_colour, _alpha)
     {
-        __sdf_shadow_colour = _colour;
-        __sdf_shadow_alpha  = _alpha;
+        __sdf_shadow_colour   = _colour;
+        __sdf_shadow_alpha    = _alpha;
+        __sdf_shadow_xoffset  = 0;
+        __sdf_shadow_yoffset  = 0;
+        __sdf_shadow_softness = 0;
         
         return self;
     }
     
     static border = function(_colour)
     {
-        __sdf_border_colour = _colour;
+        __sdf_border_colour    = _colour;
+        __sdf_border_thickness = 0;
         
         return self;
     }
