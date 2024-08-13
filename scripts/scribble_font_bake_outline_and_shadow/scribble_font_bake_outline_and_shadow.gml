@@ -1,11 +1,14 @@
 // Feather disable all
-/// Creates a new font with an outline based on a given source font
+
+/// Creates a new font with an outline and shadow based on a given source font. The new font will
+/// pack shadow and outline information into the green and blue channels whereas the "core" glyph
+/// will occupy the red channel.
 ///
 /// @param sourceFontName   Name, as a string, of the font to use as a basis for the effect
 /// @param newFontName      Name of the new font to create, as a string
 /// @param shadowX          
 /// @param shadowY          
-/// @param outlineMode      0 = No outline, 1 = 4-dir, 2 = 8-dir, 3 = 8-dir, 2px thick
+/// @param outlineMode      Type of outline, member of SCRIBBLE_OUTLINE
 /// @param separation       Additional separation to add between glyphs
 /// @param smooth           Whether or not to interpolate the effect. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
 /// @param [textureSize]
@@ -15,21 +18,17 @@ function scribble_font_bake_outline_and_shadow(_sourceFontName, _newFontName, _d
     var _outlineSize = 0;
     var _shader = __shd_scribble_bake_effect_no_outline;
     
-    if (_outlineMode == 0)
-    {
-        //No outline
-    }
-    else if (_outlineMode == 1)
+    if (_outlineMode == SCRIBBLE_OUTLINE.FOUR_DIR)
     {
         _outlineSize = 1;
         _shader = __shd_scribble_bake_effect_4dir;
     }
-    else if (_outlineMode == 2)
+    else if (_outlineMode == SCRIBBLE_OUTLINE.EIGHT_DIR)
     {
         _outlineSize = 1;
         _shader = __shd_scribble_bake_effect_8dir;
     }
-    else if (_outlineMode == 3)
+    else if (_outlineMode == SCRIBBLE_OUTLINE.EIGHT_DIR_THICK)
     {
         _outlineSize = 2;
         _shader = __shd_scribble_bake_effect_8dir_2px;

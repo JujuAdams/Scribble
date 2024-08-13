@@ -13,6 +13,34 @@
 
 #macro SCRIBBLE_NO_PREPROCESS  (function(_string) { return _string; })
 
+enum SCRIBBLE_EASE
+{
+    NONE,     // 0
+    LINEAR,   // 1
+    QUAD,     // 2
+    CUBIC,    // 3
+    QUART,    // 4
+    QUINT,    // 5
+    SINE,     // 6
+    EXPO,     // 7
+    CIRC,     // 8
+    BACK,     // 9
+    ELASTIC,  //10
+    BOUNCE,   //11
+    CUSTOM_1, //12
+    CUSTOM_2, //13
+    CUSTOM_3, //14
+    __SIZE    //15
+}
+
+enum SCRIBBLE_OUTLINE
+{
+    NO_OUTLINE,      // 0
+    FOUR_DIR,        // 1
+    EIGHT_DIR,       // 2
+    EIGHT_DIR_THICK, // 3
+}
+
 enum SCRIBBLE_GLYPH
 {
     CHARACTER,             // 0
@@ -37,24 +65,4 @@ enum SCRIBBLE_GLYPH
     FONT_NAME,             //16
                            //  
     __SIZE                 //17
-}
-
-enum SCRIBBLE_EASE
-{
-    NONE,     // 0
-    LINEAR,   // 1
-    QUAD,     // 2
-    CUBIC,    // 3
-    QUART,    // 4
-    QUINT,    // 5
-    SINE,     // 6
-    EXPO,     // 7
-    CIRC,     // 8
-    BACK,     // 9
-    ELASTIC,  //10
-    BOUNCE,   //11
-    CUSTOM_1, //12
-    CUSTOM_2, //13
-    CUSTOM_3, //14
-    __SIZE    //15
 }
