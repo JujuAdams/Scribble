@@ -42,6 +42,12 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         return undefined;
     }
     
+    if (_src_font_data.__fontType == __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS)
+    {
+        __scribble_error("Source font cannot already have been modified by scribble_font_bake_outline_and_shadow()");
+        return undefined;
+    }
+    
     if (_src_font_data.__sdf)
     {
         __scribble_error("Source font cannot be an SDF font");
@@ -52,13 +58,15 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _glyph_count = ds_grid_width(_src_glyph_grid);
     
     //Create a new font
-    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, _markAsRasterEffect? __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS : __SCRIBBLE_FONT_TYPE.__RASTER);
+    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, undefined);
     _new_font_data.__bilinear = _smooth;
     _new_font_data.__runtime  = true;
     var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
     
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
     _src_font_data.__copy_to(_new_font_data, false);
+    
+    if (_markAsRasterEffect) _new_font_data.__fontType = __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS;
     
     
     
