@@ -102,6 +102,67 @@ The final string that Scribble will draw is equivalent to `"You find [spr_coin][
 
 &nbsp;
 
+## `scribble_whitelist_sound(sound)`
+
+**Returns:** N/A (`undefined`)
+
+|Name   |Datatype                                                          |Purpose            |
+|-------|------------------------------------------------------------------|-------------------|
+|`sound`|[sound](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|The sound to target|
+
+Adds a sound to the global whitelist, permitting it to be played by Scribble.
+
+?> You must also set `SCRIBBLE_USE_SOUND_WHITELIST` to `true` to use this function (otherwise all sounds are whitelisted by default).
+
+&nbsp;
+
+## `scribble_whitelist_sprite(sprite)`
+
+**Returns:** N/A (`undefined`)
+
+|Name    |Datatype                                                            |Purpose             |
+|--------|--------------------------------------------------------------------|--------------------|
+|`sprite`|[sprite](https://manual.yoyogames.com/The_Asset_Editors/Sprites.htm)|The sprite to target|
+
+Adds a sprite to the global whitelist, permitting it to be displayed by Scribble.
+
+?> You must also set `SCRIBBLE_USE_SPRITE_WHITELIST` to `true` to use this function (otherwise all sprite are whitelisted by default).
+
+&nbsp;
+
+## `scribble_external_sound_add(soundID, alias)`
+
+**Returns:** N/A (`undefined`)
+
+|Name     |Datatype                                                          |Purpose                                                       |
+|---------|------------------------------------------------------------------|--------------------------------------------------------------|
+|`soundID`|[sound](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|The sound to target                                           |
+|`alias`  |string                                                            |A string to use to refer to the sound ID in Scribble functions|
+
+Adds a sound that can be referenced in Scribble functions using the given alias. This is intended for use with externally added sounds via `audio_create_stream()` or `audio_create_buffer_sound()`.
+
+&nbsp;
+
+## `scribble_external_sound_remove(alias)`
+
+**Returns:** N/A (`undefined`)
+
+|Name     |Datatype|Purpose                                         |
+|---------|--------|------------------------------------------------|
+|`alias`  |string  |The external sound alias to remove from Scribble|
+
+&nbsp;
+
+## `scribble_external_sound_exists(alias)`
+
+**Returns:** Boolean, whether the alias has been added by `scribble_external_sound_add()`
+
+|Name     |Datatype|Purpose                              |
+|---------|--------|-------------------------------------|
+|`alias`  |string  |The external sound alias to check for|
+
+&nbsp;
+
 ## `scribble_markdown_format(string)`
 
 **Returns:** String, the modified string containing Scribble formatting tags
@@ -224,39 +285,6 @@ The following struct is what Scribble uses by default. Note that no font is spec
     bullet_sprite: scribble_fallback_bulletpoint, //A small arrowhead
 }
 ```
-
-&nbsp;
-
-## `scribble_external_sound_add(soundID, alias)`
-
-**Returns:** N/A (`undefined`)
-
-|Name     |Datatype                                                          |Purpose                                                       |
-|---------|------------------------------------------------------------------|--------------------------------------------------------------|
-|`soundID`|[sound](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|The sound to target                                           |
-|`alias`  |string                                                            |A string to use to refer to the sound ID in Scribble functions|
-
-Adds a sound that can be referenced in Scribble functions using the given alias. This is intended for use with externally added sounds via `audio_create_stream()` or `audio_create_buffer_sound()`.
-
-&nbsp;
-
-## `scribble_external_sound_remove(alias)`
-
-**Returns:** N/A (`undefined`)
-
-|Name     |Datatype|Purpose                                         |
-|---------|--------|------------------------------------------------|
-|`alias`  |string  |The external sound alias to remove from Scribble|
-
-&nbsp;
-
-## `scribble_external_sound_exists(alias)`
-
-**Returns:** Boolean, whether the alias has been added by `scribble_external_sound_add()`
-
-|Name     |Datatype|Purpose                              |
-|---------|--------|-------------------------------------|
-|`alias`  |string  |The external sound alias to check for|
 
 &nbsp;
 
