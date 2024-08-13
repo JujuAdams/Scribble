@@ -26,15 +26,15 @@ Scribble was confirmed to work with [GMLive](https://yellowafterlife.itch.io/gam
 
 &nbsp;
 
-## What's the difference between [Scribble Junior](https://github.com/JujuAdams/ScribbleJunior) and Scribble Deluxe?
+## What's the difference between Scribble Junior and Scribble Deluxe?
 
-Scribble Junior is a stripped back lighter text rendering solution compared to Scribble Deluxe. The focus for Scribble Junior is static text that doesn't need to animate where performance is the primary concern. Scribble Deluxe is oriented towards complex text effects where there's a lot of animation and fancy effects going on.
+[Scribble Junior](https://github.com/JujuAdams/ScribbleJunior) is a stripped back lighter text rendering solution compared to Scribble Deluxe. The focus for Scribble Junior is static text that doesn't need to animate where performance is the primary concern. Scribble Deluxe is oriented towards complex text effects where there's a lot of animation and fancy effects going on.
 
 &nbsp;
 
-## Can I use [Scribble Junior](https://github.com/JujuAdams/ScribbleJunior) alongside Scribble Deluxe?
+## Can I use Scribble Junior alongside Scribble Deluxe?
 
-Yes! In fact, I encourage it. Scribble Junior is excellent for static UI text whereas Scribble Deluxe is geared more towards dialogue and animated text.
+Yes! In fact, I encourage it. [Scribble Junior](https://github.com/JujuAdams/ScribbleJunior) is excellent for static UI text whereas Scribble Deluxe is geared more towards dialogue and animated text.
 
 &nbsp;
 
@@ -59,12 +59,6 @@ Great! Please make a [feature request](https://github.com/JujuAdams/scribble/iss
 ## I found a bug, and it both scares and mildly annoys me. What is the best way to get the problem solved?
 
 Please make a [bug report](https://github.com/JujuAdams/scribble/issues). Juju checks GitHub every day and bug fixes usually go out a couple days after that.
-
-&nbsp;
-
-## I'm using colour blending with an outlined font and the blend colour is affecting the outline too. What's going on?
-
-[`scribble_font_bake_outline_4dir()`](fonts?id=scribble_font_bake_outline_4dirsourcefontname-newfontname-color-smooth), [`scribble_font_bake_outline_8dir`](fonts?id=scribble_font_bake_outline_8dirsourcefontname-newfontname-color-smooth) and [`scribble_font_bake_outline_8dir_2px`](https://www.jujuadams.com/Scribble/#/latest/fonts?id=scribble_font_bake_outline_8dir_2pxsourcefontname-newfontname-color-smooth) work by pre-rendering the font to a surface using a simple outline shader. The outline and the font itself are inseparably combined. When these outlined glyphs are drawn with some sort of blending applied, Scribble has no way to separate out what's an outline and what's the main body of the glyph. This means the blend necessarily has to apply to both the outline and the glyph itself.
 
 &nbsp;
 
