@@ -86,6 +86,56 @@ Scales every glyph in a font (including the space character) by the given factor
 
 &nbsp;
 
+## `scribble_font_set_halign_offset(fontName, hAlign, offset)`
+
+**Returns:** N/A (`undefined`)
+
+|Name      |Datatype|Purpose                                  |
+|----------|--------|-----------------------------------------|
+|`fontName`|string  |Name of the font to modify, as a string  |
+|`hAlign`  |constant|Horizontal alignment to target, see below|
+|`offset`  |number  |x-axis offset to apply                   |
+
+This function sets up a fixed offset for a font when used with a particular alignment. Valid constants for the `hAlign` argument are:
+
+- `fa_left`
+- `fa_center`
+- `fa_right`
+- `fa_justify`
+- `"pin_left"`
+- `"pin_centre"`
+- `"pin_center"`
+- `"pin_right"`
+- `"fa_justify"`
+
+?> The macro `SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS` must be set to `true` to use this function. This will incur a slight performance penalty when building text elements.
+
+?> Existing text elements that use the targetted font will not be immediately updated - you will need to refresh those text elements.
+
+&nbsp;
+
+## `scribble_font_set_valign_offset(fontName, vAlign, offset)`
+
+**Returns:** N/A (`undefined`)
+
+|Name      |Datatype|Purpose                                |
+|----------|--------|---------------------------------------|
+|`fontName`|string  |Name of the font to modify, as a string|
+|`vAlign`  |constant|Vertical alignment to target, see below|
+|`offset`  |number  |x-axis offset to apply                 |
+
+This function sets up a fixed offset for a font when used with a particular alignment. Valid constants for the `vAlign` argument are:
+
+- `fa_top`
+- `fa_middle`
+- `fa_bottom`
+
+?> The macro `SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS` must be set to `true` to use this function. This will incur a slight performance penalty when building text elements.
+
+?> Existing text elements that use the targetted font will not be immediately updated - you will need to refresh those text elements.
+
+&nbsp;
+
 ## `scribble_glyph_set(fontName, character, property, value, [relative])`
 
 **Returns:** N/A (`undefined`)
