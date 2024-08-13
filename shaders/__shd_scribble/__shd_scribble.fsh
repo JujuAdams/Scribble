@@ -53,6 +53,8 @@ void main()
                 gl_FragColor.a = outAlpha;
             }
         }
+        
+        gl_FragColor.a *= v_vColour.a;
     }
     else
     {
