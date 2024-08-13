@@ -276,6 +276,18 @@ Clears all per-character delays that have been set for this typist.
 
 &nbsp;
 
+## `.set_sound_tag_gain(gain)`
+
+**Returns**: `self`, the typist
+
+|Name  |Datatype|Purpose                                                                    |
+|------|--------|---------------------------------------------------------------------------|
+|`gain`|real    |Gain to play the sound tags at, from `0.0` (silence) to `1.0` (full volume)|
+
+Sets the gain for sounds played using sound tags.
+
+&nbsp;
+
 ## `.sound(soundArray, overlap, pitchMin, pitchMax. [gain=1])`
 
 **Returns**: `self`, the typist
