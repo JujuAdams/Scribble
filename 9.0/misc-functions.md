@@ -102,6 +102,28 @@ The final string that Scribble will draw is equivalent to `"You find [spr_coin][
 
 &nbsp;
 
+## `scribble_default_preprocessor_set(function)`
+
+**Returns:** N/A (`undefined`)
+
+|Name      |Datatype|Purpose                                        |
+|----------|--------|-----------------------------------------------|
+|`function`|function|Function to execute as the default preprocessor|
+
+Please see `.preprocessor()` in the Scribble text element method documentation.
+
+&nbsp;
+
+## `scribble_default_preprocessor_get()`
+
+**Returns:** Function, the default processor set by `scribble_default_preprocessor_set()`
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+&nbsp;
+
 ## `scribble_whitelist_sound(sound)`
 
 **Returns:** N/A (`undefined`)
