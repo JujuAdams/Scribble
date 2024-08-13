@@ -155,7 +155,7 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_texture, _fontName, _model_struct)
+    static __get_vertex_buffer = function(_texture, _fontName)
     {
         if (_fontName == undefined)
         {
