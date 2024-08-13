@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/JujuAdams/scribble/master/LOGO.png" width="50%" style="display: block; margin: auto;" />
-<h1 align="center">Scribble Deluxe 9.2</h1>
-<p align="center">A modern text renderer for GameMaker by <a href="https://www.jujuadams.com/" target="_blank">Juju Adams</a></p>
+<h1 align="center">Scribble Deluxe 9.0 (beta)</h1>
+<p align="center">A modern text renderer for GameMaker 2023.8 by <a href="https://www.jujuadams.com/" target="_blank">Juju Adams</a></p>
 
 <p align="center"><a href="https://github.com/JujuAdams/scribble/releases/">Download the .yymps</a></p>
 
