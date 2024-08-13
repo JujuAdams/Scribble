@@ -8,7 +8,7 @@ When you call `scribble()`, the function searches Scribble's internal cache and 
 
 **Even small changes in a string may cause a new text element to be generated automatically.** Scribble Deluxe is pretty fast, but you don't want to use it for text that changes rapidly (e.g. health points, money, or score) as this will cause Scribble to do a lot of work, potentially slowing down your game.
 
-Each text element can be altered by calling methods, a new feature in [GMS2.3.0](https://www.yoyogames.com/blog/549/gamemaker-studio-2-3-new-gml-features). Most methods return the text element itself. This allows you to chain methods together, achieving a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Some methods are marked as "regenerator methods". Setting new, different values for a piece of text using a regenerator method will cause Scribble to regenerate the underlying vertex buffers. For the sake of performance, avoid frequently changing values for regenerator methods as this will cause performance problems.
+Each text element can be altered by calling methods. Most methods return the text element itself. This allows you to chain methods together, achieving a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface). Some methods are marked as "regenerator methods". Setting new, different values for a piece of text using a regenerator method will cause Scribble to regenerate the underlying vertex buffers. For the sake of performance, avoid frequently changing values for regenerator methods as this will cause performance problems.
 
 Don't worry about clearing up after yourself when you draw text - Scribble automatically manages memory for you. If you *do* want to manually control how memory is used, please use the [`.flush()`](scribble-methods?id=flush) method and [`scribble_flush_everything()`](misc-functions?id=scribble_flush_everything). Please be aware that it is not possible to serialise/deserialise Scribble text elements for e.g. a save system.
 
@@ -703,16 +703,16 @@ Sets the colour, alpha, and offset for a procedural SDF shadow. Setting the alph
 
 &nbsp;
 
-## `.sdf_border(colour, thickness)`
+## `.sdf_outline(colour, thickness)`
 
 **Returns**: The text element
 
-|Name       |Datatype|Purpose                                                                |
-|-----------|--------|-----------------------------------------------------------------------|
-|`colour`   |integer |Colour of the glyph's border, as a standard GameMaker 24-bit BGR format|
-|`thickness`|real    |Thickness of the border, in pixels                                     |
+|Name       |Datatype|Purpose                                                                 |
+|-----------|--------|------------------------------------------------------------------------|
+|`colour`   |integer |Colour of the glyph's outline, as a standard GameMaker 24-bit BGR format|
+|`thickness`|real    |Thickness of the outline, in pixels                                     |
 
-Sets the colour and thickness for a procedural SDF border. Setting the thickness to `0` will prevent the border from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, increase the SDF spread for the font.
+Sets the colour and thickness for a procedural SDF outline. Setting the thickness to `0` will prevent the outline from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, increase the SDF spread for the font.
 
 ?> This method will only affect SDF fonts. If you'd like to add outlines to standard fonts or spritefonts, you may want to consider [baking this effect](fonts?id=scribble_font_bake_outline_4dirsourcefontname-newfontname-color-smooth).
 
