@@ -11,7 +11,7 @@ uniform float u_fFontType;
 uniform vec4  u_vFlash;
 
 uniform vec4  u_vShadowColour;
-uniform vec3  u_vBorderColour;
+uniform vec3  u_vOutlineColour;
 uniform float u_fSecondDraw;
 
 //SDF-only
@@ -19,7 +19,7 @@ uniform vec2  u_vTexel;
 uniform float u_fSDFRange;
 uniform float u_fSDFThicknessOffset;
 uniform vec3  u_vShadowOffsetAndSoftness;
-uniform float u_fBorderThickness;
+uniform float u_fOutlineThickness;
 
 float SDFValue(vec2 texcoord)
 {
@@ -43,7 +43,7 @@ void main()
         if (u_fSecondDraw < 0.5)
         {
             float outAlpha = gl_FragColor.a + sample.g*(1.0 - gl_FragColor.a);
-            gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + u_vBorderColour*sample.g*(1.0 - gl_FragColor.a)) / outAlpha;
+            gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + u_vOutlineColour*sample.g*(1.0 - gl_FragColor.a)) / outAlpha;
             gl_FragColor.a = outAlpha;
             
             if (u_vShadowColour.a > 0.0)
@@ -69,17 +69,17 @@ void main()
         
         if (u_fSecondDraw < 0.5)
         {
-            float borderOffset = u_fBorderThickness*length(fwidth(v_vTexcoord)/u_vTexel)/(sqrt(2.0)*u_fSDFRange);
+            float outlineOffset = u_fOutlineThickness*length(fwidth(v_vTexcoord)/u_vTexel)/(sqrt(2.0)*u_fSDFRange);
             
-            if (u_fBorderThickness > 0.0)
+            if (u_fOutlineThickness > 0.0)
             {
-                gl_FragColor.rgb = mix(u_vBorderColour, gl_FragColor.rgb, gl_FragColor.a);
-                gl_FragColor.a = max(gl_FragColor.a, smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist + borderOffset));
+                gl_FragColor.rgb = mix(u_vOutlineColour, gl_FragColor.rgb, gl_FragColor.a);
+                gl_FragColor.a = max(gl_FragColor.a, smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist + outlineOffset));
             }
             
             if ((u_vShadowColour.a > 0.0) && !all(equal(u_vShadowOffsetAndSoftness.xy, vec2(0.0))))
             {
-                float alphaShadow = u_vShadowColour.a*smoothstep(0.5 - spread*u_vShadowOffsetAndSoftness.z, 0.5 + spread*u_vShadowOffsetAndSoftness.z, SDFValue(v_vTexcoord - u_vShadowOffsetAndSoftness.xy*fwidth(v_vTexcoord)) + borderOffset);
+                float alphaShadow = u_vShadowColour.a*smoothstep(0.5 - spread*u_vShadowOffsetAndSoftness.z, 0.5 + spread*u_vShadowOffsetAndSoftness.z, SDFValue(v_vTexcoord - u_vShadowOffsetAndSoftness.xy*fwidth(v_vTexcoord)) + outlineOffset);
                 
                 float outAlpha = gl_FragColor.a + alphaShadow*(1.0 - gl_FragColor.a);
                 gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + u_vShadowColour.rgb*alphaShadow*(1.0 - gl_FragColor.a)) / outAlpha;

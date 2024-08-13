@@ -113,8 +113,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     __sdf_shadow_yoffset  = 0;
     __sdf_shadow_softness = 0;
     
-    __sdf_border_colour    = c_black;
-    __sdf_border_thickness = 0.0;
+    __sdf_outline_colour    = c_black;
+    __sdf_outline_thickness = 0.0;
     
     __bidi_hint = undefined;
     
@@ -197,7 +197,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        _model.__submit(__page, (__sdf_border_thickness > 0) || (__sdf_shadow_alpha > 0));
+        _model.__submit(__page, (__sdf_outline_thickness > 0) || (__sdf_shadow_alpha > 0));
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);
@@ -1204,10 +1204,10 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    static border = function(_colour)
+    static outline = function(_colour)
     {
-        __sdf_border_colour    = _colour;
-        __sdf_border_thickness = 0;
+        __sdf_outline_colour    = _colour;
+        __sdf_outline_thickness = 0;
         
         return self;
     }
@@ -1229,10 +1229,19 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+    //TODO - DEPRECATED, remove in v10
     static sdf_border = function(_colour, _thickness)
     {
-        __sdf_border_colour    = _colour;
-        __sdf_border_thickness = _thickness;
+        __sdf_outline_colour    = _colour;
+        __sdf_outline_thickness = _thickness;
+        
+        return self;
+    }
+    
+    static sdf_outline = function(_colour, _thickness)
+    {
+        __sdf_outline_colour    = _colour;
+        __sdf_outline_thickness = _thickness;
         
         return self;
     }
@@ -1584,8 +1593,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
         static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
-        static _u_vBorderColour            = shader_get_uniform(__shd_scribble, "u_vBorderColour"           );
-        static _u_fBorderThickness         = shader_get_uniform(__shd_scribble, "u_fBorderThickness"        );
+        static _u_vOutlineColour            = shader_get_uniform(__shd_scribble, "u_vOutlineColour"         );
+        static _u_fOutlineThickness         = shader_get_uniform(__shd_scribble, "u_fOutlineThickness"      );
         
         static _scribble_state        = __scribble_get_state();
         static _anim_properties_array = __scribble_get_anim_properties();
@@ -1706,11 +1715,11 @@ function __scribble_class_element(_string, _unique_id) constructor
                                                colour_get_blue( __sdf_shadow_colour)/255,
                                                __sdf_shadow_alpha);
         
-        shader_set_uniform_f(_u_vBorderColour, colour_get_red(  __sdf_border_colour)/255,
-                                               colour_get_green(__sdf_border_colour)/255,
-                                               colour_get_blue( __sdf_border_colour)/255);
+        shader_set_uniform_f(_u_vOutlineColour,colour_get_red(  __sdf_outline_colour)/255,
+                                               colour_get_green(__sdf_outline_colour)/255,
+                                               colour_get_blue( __sdf_outline_colour)/255);
         
-        shader_set_uniform_f(_u_fBorderThickness, __sdf_border_thickness);
+        shader_set_uniform_f(_u_fOutlineThickness, __sdf_outline_thickness);
     }
     
     static __update_scale_to_box_scale = function()

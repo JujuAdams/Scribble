@@ -346,7 +346,7 @@ function __scribble_class_null_element() constructor
         __error();
     }
     
-    static sdf_border = function()
+    static sdf_outline = function()
     {
         __error();
     }
