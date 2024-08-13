@@ -683,7 +683,36 @@ The value returned from this function defaults to `1`.
 
 &nbsp;
 
-# SDF
+# Outlines & Shadows
+
+## `.shadow(colour, alpha)`
+
+**Returns**: The text element
+
+|Name    |Datatype|Purpose                                                                                                  |
+|--------|--------|---------------------------------------------------------------------------------------------------------|
+|`colour`|integer |The colour of the shadow, as a standard GameMaker 24-bit BGR format                                      |
+|`alpha` |number  |Opacity of the shadow, `0.0` being transparent and `1.0` being fully opaque                              |
+
+Sets the colour, alpha, and offset for a shadow for a font created by `scribble_font_bake_outline_and_shadow()`. This method will not affect other kinds of fonts. Setting the alpha to `0` will prevent the shadow from being drawn at all.
+
+?> This method is intended for use only with fonts created by `scribble_font_bake_outline_and_shadow()`. If you'd like to add shadows to SDF fonts, use the SDF-specific variant `.sdf_shadow()` explained below.
+
+&nbsp;
+
+## `.outline(colour)`
+
+**Returns**: The text element
+
+|Name    |Datatype|Purpose                                                                 |
+|--------|--------|------------------------------------------------------------------------|
+|`colour`|integer |Colour of the glyph's outline, as a standard GameMaker 24-bit BGR format|
+
+Sets the colour of an outline for a font created by `scribble_font_bake_outline_and_shadow()`. This method will not affect other kinds of fonts.
+
+?> This method is intended for use only with fonts created by `scribble_font_bake_outline_and_shadow()`. If you'd like to add outlines to SDF fonts, use the SDF-specific variant `.sdf_outline()` explained below.
+
+&nbsp;
 
 ## `.sdf_shadow(colour, alpha, xoffset, yoffset, [softness])`
 
@@ -699,7 +728,7 @@ The value returned from this function defaults to `1`.
 
 Sets the colour, alpha, and offset for a procedural SDF shadow. Setting the alpha to `0` will prevent the shadow from being drawn at all. If you find that your shadow(s) are being clipped or cut off when using large offset values, increase the SDF spread for the font.
 
-?> This method will only affect SDF fonts. If you'd like to add shadows to standard fonts or spritefonts, you may want to consider [baking this effect](fonts?id=scribble_font_bake_shadowsourcefontname-newfontname-dx-dy-shadowcolor-shadowalpha-separation-smooth).
+?> This method is intended for use only with SDF fonts. If you'd like to add a shadow to standard fonts or spritefonts, use `scribble_font_bake_outline_and_shadow()` and the non-SDF variant `.outline()` explained above.
 
 &nbsp;
 
@@ -714,7 +743,7 @@ Sets the colour, alpha, and offset for a procedural SDF shadow. Setting the alph
 
 Sets the colour and thickness for a procedural SDF outline. Setting the thickness to `0` will prevent the outline from being drawn at all. If you find that your glyphs have filled (or partially filled) backgrounds, increase the SDF spread for the font.
 
-?> This method will only affect SDF fonts. If you'd like to add outlines to standard fonts or spritefonts, you may want to consider [baking this effect](fonts?id=scribble_font_bake_outline_4dirsourcefontname-newfontname-color-smooth).
+?> This method is intended for use only with SDF fonts. If you'd like to add an outline to standard fonts or spritefonts, use `scribble_font_bake_outline_and_shadow()` and the non-SDF variant `.outline()` explained above.
 
 &nbsp;
 
