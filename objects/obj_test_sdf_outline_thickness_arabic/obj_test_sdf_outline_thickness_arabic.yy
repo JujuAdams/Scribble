@@ -1,12 +1,12 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_sdf_border_thickness_arabic",
+  "%Name":"obj_test_sdf_outline_thickness_arabic",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_sdf_border_thickness_arabic",
+  "name":"obj_test_sdf_outline_thickness_arabic",
   "overriddenProperties":[],
   "parent":{
     "name":"Arabic",
