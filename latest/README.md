@@ -22,6 +22,8 @@ There are a multitude of very useful features available:
 - Resolution-independent SDF fonts
 - Arabic and Hebrew support, and limited Thai and Hindi (Devanagari) support
 
+&nbsp;
+
 ## Updating
 
 Releases go out once in while, typically expedited if there is a serious bug. This library uses [semantic versioning](https://semver.org/). In short, if the left-most number in the version is increased then this is a "major version increase". Major version increases introduce breaking changes and you'll almost certainly have to rewrite some code. However, if the middle or right-most number in the version is increased then you probably won't have to rewrite any code. For example, moving from `1.1.0` to `2.0.0` is a major version increase but moving from `1.1.0` to `1.2.0` isn't.
@@ -31,7 +33,7 @@ Releases go out once in while, typically expedited if there is a serious bug. Th
 At any rate, the process to update is as follows:
 
 1. **Back up your whole project using source control!**
-2. Back up the contents of your configuration script (`__scribble_config*`) within your project. Duplicating scripts is sufficient
+2. Back up the contents of your configuration scripts (`__scribble_config*`) within your project. Duplicating scripts is sufficient
 3. Delete all library scripts from your project. Unless you've moved things around, this means deleting the library folder from the asset browser
 4. Import the latest [.yymps](https://github.com/JujuAdams/Scribble/releases/)
 5. Restore your configuration scripts from the back-up line by line
