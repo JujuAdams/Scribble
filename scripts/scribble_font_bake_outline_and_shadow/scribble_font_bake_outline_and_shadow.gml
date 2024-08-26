@@ -9,11 +9,11 @@
 /// @param shadowX          
 /// @param shadowY          
 /// @param outlineMode      Type of outline, member of SCRIBBLE_OUTLINE
-/// @param separation       Additional separation to add between glyphs
 /// @param smooth           Whether or not to interpolate the effect. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
+/// @param [separation]     Additional separation to add between glyphs. Defaults to outline width * 2
 /// @param [textureSize]
 
-function scribble_font_bake_outline_and_shadow(_sourceFontName, _newFontName, _dX, _dY, _outlineMode, _separation, _smooth, _textureSize = undefined)
+function scribble_font_bake_outline_and_shadow(_sourceFontName, _newFontName, _dX, _dY, _outlineMode, _smooth, _separation = undefined, _textureSize = undefined)
 {
     var _outlineSize = 0;
     var _shader = __shd_scribble_bake_effect_no_outline;
@@ -42,5 +42,5 @@ function scribble_font_bake_outline_and_shadow(_sourceFontName, _newFontName, _d
     //Run the baking operation
     scribble_font_bake_shader(_sourceFontName, _newFontName, _shader,
                               2, _outlineSize + max(0, -_dX), _outlineSize + max(0, -_dY), _outlineSize + max(0, _dX), _outlineSize + max(0, _dY),
-                              _separation, _smooth, _textureSize, true);
+                              _separation ?? 2 * _outlineSize, _smooth, _textureSize, true);
 }
