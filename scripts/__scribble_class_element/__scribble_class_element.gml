@@ -716,6 +716,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         return __region_active;
     }
     
+    static region_clear = function()
+    {
+        region_set_active(undefined, undefined, undefined);
+        return self;
+    }
+    
     #endregion
     
     
