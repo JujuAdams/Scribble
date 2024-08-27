@@ -2,6 +2,7 @@
 #macro __SCRIBBLE_GEN_LINE_START  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__X                 ] = _indent_x;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_START        ] = _line_word_start;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HALIGN            ] = _state_halign;\
+                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__DISABLE_JUSTIFY   ] = false;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__STARTS_MANUAL_PAGE] = false;\
                                   ;\ //Adjust the first word's width to account for visual tweaks
                                   ;\ //TODO - Implement for R2L text
@@ -296,6 +297,9 @@ function __scribble_gen_6_build_lines()
                         __SCRIBBLE_GEN_LINE_END;
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
+                        
+                        //Mark the previous line as not needing justification
+                        _line_grid[# _line_count-1, __SCRIBBLE_GEN_LINE.__DISABLE_JUSTIFY] = true;
                     }
                     else if (_glyph_start_ord == 0x00) //Null, indicates a new page
                     {
@@ -305,6 +309,9 @@ function __scribble_gen_6_build_lines()
                         _line_y = 0;
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
+                        
+                        //Mark the previous line as not needing justification
+                        _line_grid[# _line_count-1, __SCRIBBLE_GEN_LINE.__DISABLE_JUSTIFY] = true;
                         
                         //Only mark the new line as beginning a new page if this null *isn't* the last glyph for the input string
                         if (_i < _word_count - 1) _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__STARTS_MANUAL_PAGE] = true;
@@ -361,6 +368,9 @@ function __scribble_gen_6_build_lines()
             __fit_scale = _lower_limit + 0.5*(_upper_limit - _lower_limit);
         }
     }
+    
+    //Mark the final line as not needing justification
+    _line_grid[# _line_count-1, __SCRIBBLE_GEN_LINE.__DISABLE_JUSTIFY] = true;
     
     //Align the left-hand side of the word to the left-hand side of the line. This corrects visually unpleasant gaps and overlaps
     //TODO - Implement for R2L text

@@ -595,8 +595,9 @@ enum __SCRIBBLE_GEN_LINE
     __WIDTH,              //4
     __HEIGHT,             //5
     __HALIGN,             //6
-    __STARTS_MANUAL_PAGE, //7
-    __SIZE,               //8
+    __DISABLE_JUSTIFY,    //7
+    __STARTS_MANUAL_PAGE, //8
+    __SIZE,               //9
 }
 
 #endregion

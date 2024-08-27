@@ -55,13 +55,14 @@ function __scribble_gen_8_position_glyphs()
         var _j = _page_start_line;
         repeat(1 + _page_end_line - _page_start_line)
         {
-            var _line_x          = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__X         ];
-            var _line_y          = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__Y         ];
-            var _line_word_start = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__WORD_START];
-            var _line_word_end   = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__WORD_END  ];
-            var _line_width      = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__WIDTH     ];
-            var _line_height     = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__HEIGHT    ];
-            var _line_halign     = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__HALIGN    ];
+            var _line_x               = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__X              ];
+            var _line_y               = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__Y              ];
+            var _line_word_start      = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__WORD_START     ];
+            var _line_word_end        = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__WORD_END       ];
+            var _line_width           = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__WIDTH          ];
+            var _line_height          = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__HEIGHT         ];
+            var _line_halign          = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__HALIGN         ];
+            var _line_disable_justify = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__DISABLE_JUSTIFY];
             
             var _line_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.__GLYPH_START];
             var _line_glyph_end   = _word_grid[# _line_word_end,   __SCRIBBLE_GEN_WORD.__GLYPH_END  ];
@@ -130,8 +131,7 @@ function __scribble_gen_8_position_glyphs()
             
             
             // Text on the last line is never justified
-            // FIXME - This should work per-page not per-model
-            if ((_line_halign == __SCRIBBLE_FA_JUSTIFY) && (_j >= _line_count - 1)) _line_halign = __SCRIBBLE_PIN_LEFT;
+            if ((_line_halign == __SCRIBBLE_FA_JUSTIFY) && _line_disable_justify) _line_halign = __SCRIBBLE_PIN_LEFT;
             
             var _justification_extra_spacing = 0;
             
