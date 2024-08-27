@@ -1,7 +1,5 @@
 // Feather disable all
-// @jujuadams
-#macro __SCRIBBLE_VERSION           "9.2.0"
-#macro __SCRIBBLE_DATE              "2024-08-13"
+
 #macro __SCRIBBLE_DEBUG             false
 #macro __SCRIBBLE_VERBOSE_GC        false
 #macro __SCRIBBLE_RUNNING_FROM_IDE  (GM_build_type == "run")
@@ -22,7 +20,7 @@ function __scribble_initialize()
     
     with(_system)
     {
-        __scribble_trace("Welcome to Scribble Deluxe by Juju Adams! This is version " + __SCRIBBLE_VERSION + ", " + __SCRIBBLE_DATE);
+        __scribble_trace("Welcome to Scribble Deluxe by Juju Adams! This is version " + SCRIBBLE_VERSION + ", " + SCRIBBLE_DATE);
         
         if (SCRIBBLE_VERBOSE)
         {
@@ -141,7 +139,7 @@ function __scribble_error()
         ++_i;
     }
     
-    show_debug_message("Scribble Deluxe " + __SCRIBBLE_VERSION + ": " + string_replace_all(_string, "\n", "\n          "));
+    show_debug_message("Scribble Deluxe " + SCRIBBLE_VERSION + ": " + string_replace_all(_string, "\n", "\n          "));
     show_error("ScribbleDX:\n" + _string + "\n ", true);
 }
 

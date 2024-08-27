@@ -11,6 +11,9 @@
 //                                                                        //
 ////////////////////////////////////////////////////////////////////////////
 
+#macro SCRIBBLE_VERSION  "9.3.0"
+#macro SCRIBBLE_DATE     "2024-08-27"
+
 #macro SCRIBBLE_NO_PREPROCESS  (function(_string) { return _string; })
 
 enum SCRIBBLE_EASE
