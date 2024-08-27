@@ -722,6 +722,16 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+    static region_get_bboxes = function()
+    {
+        static _emptyArray = [];
+        
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return _emptyArray;
+        
+        return _model.__pages_array[__page].__region_array;
+    }
+    
     #endregion
     
     
