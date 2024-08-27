@@ -362,6 +362,11 @@ function __scribble_class_typist(_per_line) constructor
         }
     }
     
+    static get_delay_paused = function()
+    {
+        return __delay_paused;
+    }
+    
     static get_paused = function()
     {
         return __paused;
