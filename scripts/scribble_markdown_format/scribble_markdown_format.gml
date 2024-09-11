@@ -105,8 +105,6 @@
 
 function scribble_markdown_format(_string)
 {
-    __scribble_initialize();
-    
     if ((SCRIBBLE_COMMAND_TAG_OPEN     != ord("["))
     ||  (SCRIBBLE_COMMAND_TAG_CLOSE    != ord("]"))
     ||  (SCRIBBLE_COMMAND_TAG_ARGUMENT != ord(",")))

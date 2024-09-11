@@ -20,8 +20,6 @@ function __scribble_font_add_sprite_ext(_sprite, _mapstring, _proportional, _sep
 
 function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, _separation)
 {
-    __scribble_initialize();
-    
     var _font_info = font_get_info(_spritefont);
     var _sprite_name = sprite_get_name(_sprite);
     
