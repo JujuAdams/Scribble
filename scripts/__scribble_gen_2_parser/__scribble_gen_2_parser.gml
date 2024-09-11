@@ -172,7 +172,7 @@ function __scribble_gen_2_parser()
     static _other_string_buffer   = _system.__buffer_b;
     static _colors_struct         = __scribble_config_colours();
     static _font_data_map         = _system.__font_data_map;
-    static _generator_state       = __scribble_get_generator_state();
+    static _generator_state       = __scribble_initialize().__generator_state;
     static _sprite_whitelist_map  = _system.__state.__sprite_whitelist_map;
     
     with(_generator_state)

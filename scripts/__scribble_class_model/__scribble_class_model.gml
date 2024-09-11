@@ -296,7 +296,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         }
     }
     
-    static _generator_state = __scribble_get_generator_state();
+    static _generator_state = __scribble_initialize().__generator_state;
     with(_generator_state)
     {
         __Reset();

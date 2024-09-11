@@ -17,7 +17,7 @@ function __scribble_gen_3_devanagari()
     static _krutidev_lookup_map       = __scribble_initialize().__krutidev_lookup_map;
     static _krutidev_matra_lookup_map = __scribble_initialize().__krutidev_matra_lookup_map;
     
-    static _generator_state = __scribble_get_generator_state();
+    static _generator_state = __scribble_initialize().__generator_state;
     with(_generator_state)
     {
         var _glyph_grid   = __glyph_grid;

@@ -58,8 +58,7 @@ function __scribble_initialize()
             __scribble_trace("handle_parse() not available");
         }
         
-        //Initialize statics on boot before they need to be used
-        __scribble_get_generator_state();
+        //Initialize colours on boot before they need to be used
         __scribble_config_colours();
         
         __defaultPreprocessorFunc = SCRIBBLE_NO_PREPROCESS;
@@ -109,6 +108,9 @@ function __scribble_initialize()
             __gc_vbuff_refs: [],
             __gc_vbuff_ids:  [],
         };
+        
+        //
+        __generator_state = new __scribble_class_generator_state();
         
         //Contains Unicode data, necessary for extended language support
         __glyph_data                = __scribble_glyph_data_initialize();
