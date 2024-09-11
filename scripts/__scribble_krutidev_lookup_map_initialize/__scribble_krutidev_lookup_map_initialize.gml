@@ -1,13 +1,8 @@
 // Feather disable all
-function __scribble_get_krutidev_lookup_map()
-{
-    static _map = ds_map_create();
-    return _map;
-}
 
 function __scribble_krutidev_lookup_map_initialize()
 {
-    var _lookup_map = __scribble_get_krutidev_lookup_map();
+    var _lookup_map = ds_map_create();
     
     //TODO - Precalculate the lookup table
     //TODO - Move this to __scribble_glyph_data_initialize()
@@ -97,4 +92,6 @@ function __scribble_krutidev_lookup_map_initialize()
         
         ++_i;
     }
+    
+    return _lookup_map;
 }

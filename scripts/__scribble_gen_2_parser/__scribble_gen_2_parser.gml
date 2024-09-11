@@ -163,17 +163,17 @@ function __scribble_gen_2_parser()
     
     static _system                = __scribble_initialize();
     static _useHandleParse        = _system.__useHandleParse;
-    static _effects_map           = __scribble_get_effects_map();
-    static _effects_slash_map     = __scribble_get_effects_slash_map();
-    static _typewriter_events_map = __scribble_get_typewriter_events_map();
-    static _external_sound_map    = __scribble_get_external_sound_map();
-    static _macros_map            = __scribble_get_macros_map();
-    static _string_buffer         = __scribble_initialize().__buffer_a;
-    static _other_string_buffer   = __scribble_initialize().__buffer_b;
+    static _effects_map           = _system.__effects_map;
+    static _effects_slash_map     = _system.__effects_slash_map;
+    static _typewriter_events_map = _system.__typewriter_events_map;
+    static _external_sound_map    = _system.__external_sound_map;
+    static _macros_map            = _system.__macros_map;
+    static _string_buffer         = _system.__buffer_a;
+    static _other_string_buffer   = _system.__buffer_b;
     static _colors_struct         = __scribble_config_colours();
-    static _font_data_map         = __scribble_get_font_data_map();
+    static _font_data_map         = _system.__font_data_map;
     static _generator_state       = __scribble_get_generator_state();
-    static _sprite_whitelist_map  = __scribble_initialize().__state.__sprite_whitelist_map;
+    static _sprite_whitelist_map  = _system.__state.__sprite_whitelist_map;
     
     with(_generator_state)
     {

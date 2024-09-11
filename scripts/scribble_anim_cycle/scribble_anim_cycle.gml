@@ -5,7 +5,7 @@
 
 function scribble_anim_cycle(_speed, _saturation, _value)
 {
-    static _array = __scribble_get_anim_properties();
+    static _array = __scribble_initialize().__anim_properties;
     
     if ((_speed      != _array[__SCRIBBLE_ANIM.__CYCLE_SPEED     ])
     ||  (_saturation != _array[__SCRIBBLE_ANIM.__CYCLE_SATURATION])

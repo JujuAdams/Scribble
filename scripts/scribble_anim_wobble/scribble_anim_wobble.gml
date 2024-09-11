@@ -4,7 +4,7 @@
 
 function scribble_anim_wobble(_angle, _frequency)
 {
-    static _array = __scribble_get_anim_properties();
+    static _array = __scribble_initialize().__anim_properties;
     
     if ((_angle     != _array[__SCRIBBLE_ANIM.__WOBBLE_ANGLE])
     ||  (_frequency != _array[__SCRIBBLE_ANIM.__WOBBLE_FREQ ]))

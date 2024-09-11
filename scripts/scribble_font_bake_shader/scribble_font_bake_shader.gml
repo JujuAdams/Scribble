@@ -34,7 +34,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         return undefined;
     }
 
-    static _font_data_map = __scribble_get_font_data_map();
+    static _font_data_map = __scribble_initialize().__font_data_map;
     var _src_font_data = _font_data_map[? _source_font_name];
     if (!is_struct(_src_font_data))
     {

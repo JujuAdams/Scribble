@@ -45,18 +45,6 @@ function __scribble_initialize()
             __scribble_error("Versions earlier than GameMaker 2022 LTS are not supported");
         }
         
-        //Initialize statics on boot before they need to be used
-        __scribble_get_generator_state();
-        __scribble_get_font_data_map();
-        __scribble_config_colours();
-        __scribble_get_anim_properties();
-        __scribble_effects_maps_initialize();
-        __scribble_typewrite_events_map_initialize();
-        __scribble_krutidev_lookup_map_initialize();
-        __scribble_krutidev_matra_lookup_map_initialize();
-        
-        __defaultPreprocessorFunc = SCRIBBLE_NO_PREPROCESS;
-        
         __useHandleParse = false;
         try
         {
@@ -70,8 +58,21 @@ function __scribble_initialize()
             __scribble_trace("handle_parse() not available");
         }
         
+        //Initialize statics on boot before they need to be used
+        __scribble_get_generator_state();
+        __scribble_config_colours();
+        
+        __defaultPreprocessorFunc = SCRIBBLE_NO_PREPROCESS;
+        
+        //Main lookup for fonts
+        __font_data_map = ds_map_create();
+        
+        //Multi-use buffers
         __buffer_a = buffer_create(1024, buffer_grow, 1);
         __buffer_b = buffer_create(1024, buffer_grow, 1);
+        
+        //Contains animation parameters. See scribble_anim_reset()
+        __anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE, undefined);
         
         //Contains global state information that is shared between various features
         __state = {
@@ -93,7 +94,7 @@ function __scribble_initialize()
             __markdown_styles_struct: {},
             
             __sprite_whitelist_map: ds_map_create(),
-            __sound_whitelist_map: ds_map_create(),
+            __sound_whitelist_map:  ds_map_create(),
         };
         
         //Contains state information for the Scribble cache
@@ -110,7 +111,71 @@ function __scribble_initialize()
         };
         
         //Contains Unicode data, necessary for extended language support
-        __glyph_data = __scribble_glyph_data_initialize();
+        __glyph_data                = __scribble_glyph_data_initialize();
+        __krutidev_lookup_map       = __scribble_krutidev_lookup_map_initialize();
+        __krutidev_matra_lookup_map = __scribble_krutidev_matra_lookup_map_initialize();
+        
+        //External sound reference storage
+        __external_sound_map = ds_map_create();
+        
+        //Lookup for user-defined macros
+        __macros_map = ds_map_create();
+        
+        //Lookup for typewrite events
+        //Pre-populated with native typewriter event types
+        __typewriter_events_map = ds_map_create();
+        __typewriter_events_map[? "pause" ] = undefined;
+        __typewriter_events_map[? "delay" ] = undefined;
+        __typewriter_events_map[? "sync"  ] = undefined;
+        __typewriter_events_map[? "speed" ] = undefined;
+        __typewriter_events_map[? "/speed"] = undefined;
+        
+        //Add bindings for default effect names
+        //Effect index 0 is reserved for sprites
+        __effects_map       = ds_map_create();
+        __effects_slash_map = ds_map_create();
+        
+        __effects_map[?       "wave"    ] = 1;
+        __effects_map[?       "shake"   ] = 2;
+        __effects_map[?       "rainbow" ] = 3;
+        __effects_map[?       "wobble"  ] = 4;
+        __effects_map[?       "pulse"   ] = 5;
+        __effects_map[?       "wheel"   ] = 6;
+        __effects_map[?       "cycle"   ] = 7;
+        __effects_map[?       "jitter"  ] = 8;
+        __effects_map[?       "blink"   ] = 9;
+        __effects_map[?       "slant"   ] = 10;
+        __effects_slash_map[? "/wave"   ] = 1;
+        __effects_slash_map[? "/shake"  ] = 2;
+        __effects_slash_map[? "/rainbow"] = 3;
+        __effects_slash_map[? "/wobble" ] = 4;
+        __effects_slash_map[? "/pulse"  ] = 5;
+        __effects_slash_map[? "/wheel"  ] = 6;
+        __effects_slash_map[? "/cycle"  ] = 7;
+        __effects_slash_map[? "/jitter" ] = 8;
+        __effects_slash_map[? "/blink"  ] = 9;
+        __effects_slash_map[? "/slant"  ] = 10;
+        
+        __effects_map[?       "WAVE"    ] = 1;
+        __effects_map[?       "SHAKE"   ] = 2;
+        __effects_map[?       "RAINBOW" ] = 3;
+        __effects_map[?       "WOBBLE"  ] = 4;
+        __effects_map[?       "PULSE"   ] = 5;
+        __effects_map[?       "WHEEL"   ] = 6;
+        __effects_map[?       "CYCLE"   ] = 7;
+        __effects_map[?       "JITTER"  ] = 8;
+        __effects_map[?       "BLINK"   ] = 9;
+        __effects_map[?       "SLANT"   ] = 10;
+        __effects_slash_map[? "/WAVE"   ] = 1;
+        __effects_slash_map[? "/SHAKE"  ] = 2;
+        __effects_slash_map[? "/RAINBOW"] = 3;
+        __effects_slash_map[? "/WOBBLE" ] = 4;
+        __effects_slash_map[? "/PULSE"  ] = 5;
+        __effects_slash_map[? "/WHEEL"  ] = 6;
+        __effects_slash_map[? "/CYCLE"  ] = 7;
+        __effects_slash_map[? "/JITTER" ] = 8;
+        __effects_slash_map[? "/BLINK"  ] = 9;
+        __effects_slash_map[? "/SLANT"  ] = 10;
     }
     
     scribble_anim_reset();
@@ -184,7 +249,7 @@ function __scribble_error()
 
 function __scribble_get_font_data(_name)
 {
-    static _font_data_map = __scribble_get_font_data_map();
+    static _font_data_map = __scribble_initialize().__font_data_map;
     var _data = _font_data_map[? _name];
     if (_data == undefined) __scribble_error("Font \"", _name, "\" not recognised");
     return _data;

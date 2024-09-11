@@ -1613,7 +1613,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         static _u_fOutlineThickness         = shader_get_uniform(__shd_scribble, "u_fOutlineThickness"      );
         
         static _scribble_state        = __scribble_initialize().__state;
-        static _anim_properties_array = __scribble_get_anim_properties();
+        static _anim_properties_array = __scribble_initialize().__anim_properties;
         
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;

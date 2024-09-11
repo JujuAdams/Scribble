@@ -15,7 +15,7 @@ function scribble_font_set_style_family(_r_font, _b_font, _i_font, _bi_font)
     _font_names[@ 2] = is_string(_i_font )? _i_font  : undefined;
     _font_names[@ 3] = is_string(_bi_font)? _bi_font : undefined;
     
-    static _font_data_map = __scribble_get_font_data_map();
+    static _font_data_map = __scribble_initialize().__font_data_map;
     
     var _i = 0;
     repeat(4)

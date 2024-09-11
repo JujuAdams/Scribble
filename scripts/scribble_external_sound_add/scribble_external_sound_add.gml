@@ -4,7 +4,7 @@
 
 function scribble_external_sound_add(_soundID, _alias)
 {
-    var _external_sound_map = __scribble_get_external_sound_map();
+    static _external_sound_map = __scribble_initialize().__external_sound_map;
     
     if (ds_map_exists(_external_sound_map, _alias))
     {

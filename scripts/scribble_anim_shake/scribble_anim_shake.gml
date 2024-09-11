@@ -4,7 +4,7 @@
 
 function scribble_anim_shake(_size, _speed)
 {
-    static _array = __scribble_get_anim_properties();
+    static _array = __scribble_initialize().__anim_properties;
     
     if ((_size  != _array[__SCRIBBLE_ANIM.__SHAKE_SIZE ])
     ||  (_speed != _array[__SCRIBBLE_ANIM.__SHAKE_SPEED]))
