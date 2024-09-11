@@ -7,7 +7,7 @@ function scribble_flush_everything()
 {
     if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing everything");
     
-    with(__scribble_get_cache_state())
+    with(__scribble_initialize().__cache_state)
     {
         //Flush elements
         var _i = 0;

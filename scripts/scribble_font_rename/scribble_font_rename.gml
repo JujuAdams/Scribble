@@ -10,6 +10,6 @@ function scribble_font_rename(_old, _new)
     _font_data_map[? _new] = _data;
     ds_map_delete(_font_data_map, _old);
     
-    var _scribble_state = __scribble_get_state();
+    var _scribble_state = __scribble_initialize().__state;
     if (_scribble_state.__default_font == _old) _scribble_state.__default_font = _new;
 }

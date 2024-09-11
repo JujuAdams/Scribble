@@ -168,12 +168,12 @@ function __scribble_gen_2_parser()
     static _typewriter_events_map = __scribble_get_typewriter_events_map();
     static _external_sound_map    = __scribble_get_external_sound_map();
     static _macros_map            = __scribble_get_macros_map();
-    static _string_buffer         = __scribble_get_buffer_a();
-    static _other_string_buffer   = __scribble_get_buffer_b();
+    static _string_buffer         = __scribble_initialize().__buffer_a;
+    static _other_string_buffer   = __scribble_initialize().__buffer_b;
     static _colors_struct         = __scribble_config_colours();
     static _font_data_map         = __scribble_get_font_data_map();
     static _generator_state       = __scribble_get_generator_state();
-    static _sprite_whitelist_map  = __scribble_get_state().__sprite_whitelist_map;
+    static _sprite_whitelist_map  = __scribble_initialize().__state.__sprite_whitelist_map;
     
     with(_generator_state)
     {
@@ -184,7 +184,7 @@ function __scribble_gen_2_parser()
         var _element        = __element;
     }
     
-    static _glyph_data_struct = __scribble_get_glyph_data();
+    static _glyph_data_struct = __scribble_initialize().__glyph_data;
     static _global_glyph_bidi_map = _glyph_data_struct.__bidi_map;
     
     //Arabic look-up tables

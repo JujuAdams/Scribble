@@ -1,8 +1,8 @@
 // Feather disable all
 function __scribble_tick()
 {
-    static _scribble_state = __scribble_get_state();
-    static _cache_state = __scribble_get_cache_state();
+    static _scribble_state = __scribble_initialize().__state;
+    static _cache_state = __scribble_initialize().__cache_state;
     
     static _ecache_list_index = 0;
     static _ecache_name_index = 0;
@@ -29,7 +29,7 @@ function __scribble_tick()
     {
         _os_is_paused = os_is_paused();
         
-        static _scribble_state = __scribble_get_state();
+        static _scribble_state = __scribble_initialize().__state;
         with(_scribble_state)
         {
             __shader_anim_desync            = true;

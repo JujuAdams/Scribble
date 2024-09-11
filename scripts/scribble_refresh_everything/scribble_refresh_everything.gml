@@ -3,7 +3,7 @@ function scribble_refresh_everything()
 {
     if (__SCRIBBLE_DEBUG) __scribble_trace("Refreshing everything");
     
-    with(__scribble_get_cache_state())
+    with(__scribble_initialize().__cache_state)
     {
         var _i = 0;
         repeat(array_length(__ecache_array))

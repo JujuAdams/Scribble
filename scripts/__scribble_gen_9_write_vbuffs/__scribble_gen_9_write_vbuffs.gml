@@ -64,7 +64,7 @@
 
 function __scribble_gen_9_write_vbuffs()
 {
-    static _string_buffer   = __scribble_get_buffer_a();
+    static _string_buffer   = __scribble_initialize().__buffer_a;
     static _effects_map     = __scribble_get_effects_map();
     static _generator_state = __scribble_get_generator_state();
     

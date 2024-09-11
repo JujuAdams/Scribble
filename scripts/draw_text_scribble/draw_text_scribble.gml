@@ -18,7 +18,7 @@
 
 function draw_text_scribble(_x, _y, _string, _reveal = undefined)
 {
-    static _scribble_state = __scribble_get_state();
+    static _scribble_state = __scribble_initialize().__state;
     
     var _font = draw_get_font();
     if (font_exists(_font))

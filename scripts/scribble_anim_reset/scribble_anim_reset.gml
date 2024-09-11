@@ -3,7 +3,7 @@
 
 function scribble_anim_reset()
 {
-    static _scribble_state = __scribble_get_state();
+    static _scribble_state = __scribble_initialize().__state;
     with(_scribble_state)
     {
         if (!__shader_anim_default)

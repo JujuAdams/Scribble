@@ -3,7 +3,7 @@
 
 function __scribble_class_typist(_per_line) constructor
 {
-    static __scribble_state = __scribble_get_state();
+    static __scribble_state = __scribble_initialize().__state;
     
     __last_element = undefined;
     

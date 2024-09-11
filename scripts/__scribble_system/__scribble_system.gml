@@ -16,8 +16,8 @@ function __scribble_initialize()
 {
     static _system = undefined;
     if (_system != undefined) return _system;
-    _system = {};
     
+    _system = {};
     with(_system)
     {
         __scribble_trace("Welcome to Scribble Deluxe by Juju Adams! This is version " + SCRIBBLE_VERSION + ", " + SCRIBBLE_DATE);
@@ -46,19 +46,14 @@ function __scribble_initialize()
         }
         
         //Initialize statics on boot before they need to be used
-        __scribble_get_state();
         __scribble_get_generator_state();
-        __scribble_glyph_data_initialize();
         __scribble_get_font_data_map();
         __scribble_config_colours();
-        __scribble_get_buffer_a();
-        __scribble_get_buffer_b();
         __scribble_get_anim_properties();
         __scribble_effects_maps_initialize();
         __scribble_typewrite_events_map_initialize();
         __scribble_krutidev_lookup_map_initialize();
         __scribble_krutidev_matra_lookup_map_initialize();
-        scribble_anim_reset();
         
         __defaultPreprocessorFunc = SCRIBBLE_NO_PREPROCESS;
         
@@ -74,7 +69,51 @@ function __scribble_initialize()
         {
             __scribble_trace("handle_parse() not available");
         }
+        
+        __buffer_a = buffer_create(1024, buffer_grow, 1);
+        __buffer_b = buffer_create(1024, buffer_grow, 1);
+        
+        //Contains global state information that is shared between various features
+        __state = {
+            __frames: 0,
+            
+            __default_font: "scribble_fallback_font",
+            
+            __blink_on_duration:  SCRIBBLE_DEFAULT_BLINK_ON_DURATION,
+            __blink_off_duration: SCRIBBLE_DEFAULT_BLINK_OFF_DURATION,
+            __blink_time_offset:  SCRIBBLE_DEFAULT_BLINK_TIME_OFFSET,
+            
+            __shader_anim_desync:            false,
+            __shader_anim_desync_to_default: false,
+            __shader_anim_default:           false,
+            __shader_anim_disabled:          false,
+            
+            __sdf_thickness_offset: 0,
+            
+            __markdown_styles_struct: {},
+            
+            __sprite_whitelist_map: ds_map_create(),
+            __sound_whitelist_map: ds_map_create(),
+        };
+        
+        //Contains state information for the Scribble cache
+        __cache_state = {
+            __mcache_dict:       {},
+            __mcache_name_array: [],
+            
+            __ecache_dict:       {},
+            __ecache_array:      [],
+            __ecache_name_array: [],
+            
+            __gc_vbuff_refs: [],
+            __gc_vbuff_ids:  [],
+        };
+        
+        //Contains Unicode data, necessary for extended language support
+        __glyph_data = __scribble_glyph_data_initialize();
     }
+    
+    scribble_anim_reset();
     
     return _system;
 }

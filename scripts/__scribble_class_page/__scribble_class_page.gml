@@ -1,9 +1,9 @@
 // Feather disable all
 function __scribble_class_page() constructor
 {
-    static __scribble_state = __scribble_get_state();
-    static __gc_vbuff_refs  = __scribble_get_cache_state().__gc_vbuff_refs;
-    static __gc_vbuff_ids   = __scribble_get_cache_state().__gc_vbuff_ids;
+    static __scribble_state = __scribble_initialize().__state;
+    static __gc_vbuff_refs  = __scribble_initialize().__cache_state.__gc_vbuff_refs;
+    static __gc_vbuff_ids   = __scribble_initialize().__cache_state.__gc_vbuff_ids;
     
     __text = "";
     __glyph_grid = undefined;

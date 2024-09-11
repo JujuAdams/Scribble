@@ -4,7 +4,7 @@
 
 function scribble_anim_disabled(_state)
 {
-    static _scribble_state = __scribble_get_state();
+    static _scribble_state = __scribble_initialize().__state;
     
     with(_scribble_state)
     {

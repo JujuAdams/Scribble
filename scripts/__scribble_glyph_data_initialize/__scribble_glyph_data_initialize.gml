@@ -1,7 +1,8 @@
 // Feather disable all
-function __scribble_get_glyph_data()
+
+function __scribble_glyph_data_initialize()
 {
-    static _struct = {
+    var _data_struct = {
         __bidi_map   : ds_map_create(),
         __mirror_map : ds_map_create(),
         
@@ -19,15 +20,6 @@ function __scribble_get_glyph_data()
         __thai_lower_map          : ds_map_create(),
         __thai_upper_map          : ds_map_create(),
     };
-    
-    return _struct;
-}
-
-function __scribble_glyph_data_initialize()
-{
-    var _data_struct = __scribble_get_glyph_data();
-    
-    
     
     #region BiDi definitions
     
@@ -468,4 +460,6 @@ function __scribble_glyph_data_initialize()
     _map[? 0x0E4D] = true;
     
     #endregion
+    
+    return _data_struct;
 }
