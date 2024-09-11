@@ -11,8 +11,8 @@
 //                                                                        //
 ////////////////////////////////////////////////////////////////////////////
 
-#macro SCRIBBLE_VERSION  "9.3.0"
-#macro SCRIBBLE_DATE     "2024-08-27"
+#macro SCRIBBLE_VERSION  "9.3.1"
+#macro SCRIBBLE_DATE     "2024-09-11"
 
 #macro SCRIBBLE_NO_PREPROCESS  (function(_string) { return _string; })
 
