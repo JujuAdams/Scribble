@@ -225,6 +225,16 @@ Unpauses the typewriter effect. This is helpful when combined with the [`[pause]
 
 &nbsp;
 
+## `.get_delay_paused()`
+
+**Returns:** Boolean, whether the text element is currently paused due to encountering `[delay]` tag when typing out text
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+&nbsp;
+
 ## `.sync_to_sound(soundInstance)`
 
 **Returns:** `self`, the typist

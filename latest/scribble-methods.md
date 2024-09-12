@@ -348,6 +348,54 @@ This function expects the name of a region that has been defined in your text us
 
 &nbsp;
 
+## `.region_clear()`
+
+**Returns:** N/A (`undefined`)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Clears the currently active region. This is a convenience function and is the same as calling `.region_set_active(undefined, ...)`.
+
+&nbsp;
+
+## `.region_get_bboxes()`
+
+**Returns:** Array/struct assemblage, the internal data structure used to track regions
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Returns a complex data structure made of arrays and structs that defines where regions are for the current page of text being shown. This is useful for, for example, drawing highlight regions or performing your own mouse-over checks.
+
+!> Do not edit the struct returned by this function! It is used internally for a number of things and modifying it will cause unexpected issues elsehwere.
+
+The data structure has the following layout. Note that regions spread across multiple lines will generate multiple individual bounding boxes:
+
+```
+[
+	{
+		name:        <name of the region>
+		start_glyph: <starting glyph for the region, 0-indexed>
+		end_glyph:   <ending glyph for the region, 0-indexed>
+		bbox_array: [
+			{
+				x1: <left coordinate for a bounding box>
+				y1: <top coordinate for a bounding box>
+				x2: <right coordinate for a bounding box>
+				y2: <bottom coordinate for a bounding box>
+			},
+			...
+		]
+	},
+	...
+]
+```
+
+&nbsp;
+
 &nbsp;
 
 &nbsp;
