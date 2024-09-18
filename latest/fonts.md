@@ -46,7 +46,7 @@ This function sets the default font to use for future [`scribble()`](scribble-me
 
 &nbsp;
 
-## `scribble_font_exists(fontName`
+## `scribble_font_exists(fontName)`
 
 **Returns:** Boolean, whether a Scribble font with the given name exists
 
