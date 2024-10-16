@@ -57,7 +57,10 @@ function __scribble_initialize()
         //Initialize colours on boot before they need to be used
         __scribble_config_colours();
         
-        __defaultPreprocessorFunc = SCRIBBLE_NO_PREPROCESS;
+        __defaultPreprocessorFunc = function(_string)
+        {
+            return _string;
+        };
         
         //Main lookup for fonts
         __font_data_map = ds_map_create();

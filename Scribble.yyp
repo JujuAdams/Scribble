@@ -308,6 +308,9 @@
     {"id":{"name":"__scribble_play_sound","path":"scripts/__scribble_play_sound/__scribble_play_sound.yy",},},
     {"id":{"name":"__scribble_system","path":"scripts/__scribble_system/__scribble_system.yy",},},
     {"id":{"name":"__scribble_tick","path":"scripts/__scribble_tick/__scribble_tick.yy",},},
+    {"id":{"name":"__test_preprocessor_func_blue","path":"scripts/__test_preprocessor_func_blue/__test_preprocessor_func_blue.yy",},},
+    {"id":{"name":"__test_preprocessor_func_mouse","path":"scripts/__test_preprocessor_func_mouse/__test_preprocessor_func_mouse.yy",},},
+    {"id":{"name":"__test_preprocessor_func_red","path":"scripts/__test_preprocessor_func_red/__test_preprocessor_func_red.yy",},},
     {"id":{"name":"draw_text_scribble_ext","path":"scripts/draw_text_scribble_ext/draw_text_scribble_ext.yy",},},
     {"id":{"name":"draw_text_scribble","path":"scripts/draw_text_scribble/draw_text_scribble.yy",},},
     {"id":{"name":"example_dialogue_set_name","path":"scripts/example_dialogue_set_name/example_dialogue_set_name.yy",},},
@@ -412,8 +415,8 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
-    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
+    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
   ],
   "templateType":null,
   "TextureGroups":[
