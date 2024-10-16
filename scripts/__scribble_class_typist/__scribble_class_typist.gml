@@ -559,14 +559,14 @@ function __scribble_class_typist(_per_line) constructor
                 break;
                 
                 case __SCRIBBLE_TYPIST_SOUND_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
-                    sound(asset_get_index(_event_data[1]), real(_event_data[2]), real(_event_data[3]), real(_event_data[4]));
+                    sound(__scribble_parse_sound_array_string(_event_data[1]), real(_event_data[2]), real(_event_data[3]), real(_event_data[4]));
                 break;
                 
                 case __SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
                     switch(array_length(_event_data))
                     {
-                        case 4: sound_per_char(asset_get_index(_event_data[1]), real(_event_data[2]), real(_event_data[3])); break;
-                        case 5: sound_per_char(asset_get_index(_event_data[1]), real(_event_data[2]), real(_event_data[3]), _event_data[4]); break;
+                        case 4: sound_per_char(__scribble_parse_sound_array_string(_event_data[1]), real(_event_data[2]), real(_event_data[3])); break;
+                        case 5: sound_per_char(__scribble_parse_sound_array_string(_event_data[1]), real(_event_data[2]), real(_event_data[3]), _event_data[4]); break;
                     }
                 break;
                 

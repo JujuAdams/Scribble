@@ -250,6 +250,7 @@
     {"name":"__scribble_krutidev_matra_lookup_map_initialize","order":15,"path":"scripts/__scribble_krutidev_matra_lookup_map_initialize/__scribble_krutidev_matra_lookup_map_initialize.yy",},
     {"name":"__scribble_misc_functions","order":14,"path":"scripts/__scribble_misc_functions/__scribble_misc_functions.yy",},
     {"name":"__scribble_no_preprocessing","order":15,"path":"scripts/__scribble_no_preprocessing/__scribble_no_preprocessing.yy",},
+    {"name":"__scribble_parse_sound_array_string","order":16,"path":"scripts/__scribble_parse_sound_array_string/__scribble_parse_sound_array_string.yy",},
     {"name":"__scribble_play_sound","order":13,"path":"scripts/__scribble_play_sound/__scribble_play_sound.yy",},
     {"name":"__scribble_system","order":8,"path":"scripts/__scribble_system/__scribble_system.yy",},
     {"name":"__scribble_tick","order":9,"path":"scripts/__scribble_tick/__scribble_tick.yy",},
