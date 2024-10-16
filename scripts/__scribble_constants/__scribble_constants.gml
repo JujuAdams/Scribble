@@ -14,7 +14,7 @@
 #macro SCRIBBLE_VERSION  "9.3.1"
 #macro SCRIBBLE_DATE     "2024-09-11"
 
-#macro SCRIBBLE_NO_PREPROCESS  (__scribble_initialize().__defaultPreprocessorFunc)
+#macro SCRIBBLE_NO_PREPROCESS  __scribble_no_preprocessing
 
 enum SCRIBBLE_EASE
 {

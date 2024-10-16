@@ -1352,6 +1352,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         if (_function != __preprocessorFunc)
         {
+            if ((_function != undefined) && (not script_exists(_function)))
+            {
+                __scribble_error("Preprocessor functions must be stored in scripts in global scope");
+            }
+            
             __model_cache_name_dirty = true;
             __preprocessorFunc = _function;
         }
