@@ -32,5 +32,7 @@ _y += _elementRefresh.get_height() + 20;
 var _element = scribble("Text that updates when you click the mouse")
 .preprocessor(__test_preprocessor_func_mouse);
 _element.draw(_x, _y);
+var _bbox = _element.get_bbox(_x, _y);
+draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, true);
 
 _y += _elementRefresh.get_height() + 20;
