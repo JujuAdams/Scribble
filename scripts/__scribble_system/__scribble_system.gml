@@ -99,6 +99,7 @@ function __scribble_initialize()
             
             __ecache_dict:       {},
             __ecache_array:      [],
+            __ecache_weak_array: [],
             __ecache_name_array: [],
             
             __gc_vbuff_refs: [],
