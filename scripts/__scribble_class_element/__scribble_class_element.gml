@@ -7,6 +7,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     static __scribble_state    = __scribble_initialize().__state;
     static __ecache_array      = __scribble_initialize().__cache_state.__ecache_array;
     static __ecache_dict       = __scribble_initialize().__cache_state.__ecache_dict;
+    static __ecache_weak_array = __scribble_initialize().__cache_state.__ecache_weak_array;
     static __ecache_name_array = __scribble_initialize().__cache_state.__ecache_name_array;
     
     __text       = _string;
@@ -26,6 +27,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     //Add this text element to the global cache
     __ecache_dict[$ __cache_name] = weak_ref_create(self);
     array_push(__ecache_array, self);
+    array_push(__ecache_weak_array, weak_ref_create(self));
     array_push(__ecache_name_array, __cache_name);
     
     __flushed = false;

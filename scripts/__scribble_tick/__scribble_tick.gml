@@ -5,9 +5,11 @@ function __scribble_tick()
     static _cache_state = __scribble_initialize().__cache_state;
     
     static _ecache_list_index = 0;
+    static _ecache_weak_index = 0;
     static _ecache_name_index = 0;
     static _ecache_array      = _cache_state.__ecache_array;
     static _ecache_dict       = _cache_state.__ecache_dict;
+    static _ecache_weak_array = _cache_state.__ecache_weak_array;
     static _ecache_name_array = _cache_state.__ecache_name_array;
     
     static _mcache_name_index = 0;
@@ -70,6 +72,15 @@ function __scribble_tick()
             if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("\"", _element.__cache_name, "\" has timed out (", _frames, " > ", _element.__last_drawn, " + ", __SCRIBBLE_CACHE_TIMEOUT, ")");
             array_delete(_ecache_array, _ecache_list_index, 1);
             variable_struct_remove(_ecache_dict, _element.__cache_name);
+        }
+    }
+    
+    if (array_length(_ecache_weak_array) > 0)
+    {
+        _ecache_weak_index = (_ecache_weak_index + 1) mod array_length(_ecache_weak_array);
+        if (not weak_ref_alive(_ecache_weak_array[_ecache_weak_index]))
+        {
+            array_delete(_ecache_weak_array, _ecache_weak_index, 1);
         }
     }
     
