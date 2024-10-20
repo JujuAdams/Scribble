@@ -1304,8 +1304,7 @@ function __scribble_gen_2_parser()
                     _tag_start           = buffer_tell(_string_buffer);
                     _tag_open_count      = 1;
                     _tag_parameter_count = 0;
-                    
-                    array_resize(_tag_parameters, 0);
+                    _tag_parameters      = [];
                 }
             }
             else if ((_glyph_ord == 0x0A) //If we've hit a newline (\n)
