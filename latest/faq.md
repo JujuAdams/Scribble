@@ -14,6 +14,12 @@ Version 9 of Scribble Deluxe primarily supports GameMaker LTS 2022, and in theor
 
 &nbsp;
 
+## Does this library support GMRT / "new runtime"?
+
+No, GMRT is not supported by this library.
+
+&nbsp;
+
 ## What kinds of fonts can Scribble Deluxe draw?
 
 Anything that GameMaker natively supports as a font resource, including spritefonts. Scribble additionally supports SDF fonts which are very useful for mobile games or any game which might have a wide variety of text sizes. Scribble unfortunately doesn't (yet) support fonts added via `font_add()`.
