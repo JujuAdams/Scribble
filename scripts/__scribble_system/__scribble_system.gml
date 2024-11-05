@@ -27,6 +27,11 @@ function __scribble_initialize()
             __scribble_trace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
         }
         
+        if (not font_exists(asset_get_index("scribble_fallback_font")))
+        {
+            __scribble_error("Fallback font was not found. This may indicate that unused assets have been stripped from the project\nPlease untick \"Automatically remove unused assets when compiling\" in Game Options");
+        }
+        
         try
         {
             time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
@@ -53,6 +58,32 @@ function __scribble_initialize()
         {
             __scribble_trace("handle_parse() not available");
         }
+        
+        __gmMightRemoveUnusedAssets = true;
+        __gmVersionMajor = 0;
+        __gmVersionMinor = 0;
+        __gmVersionPatch = 0;
+        __gmVersionBuild = 0;
+        
+        try
+        {
+            var _workString = GM_runtime_version;
+            var _pos = string_pos(".", _workString);
+            __gmVersionMajor = real(string_copy(_workString, 1, _pos-1));
+            _workString = string_delete(_workString, 1, _pos);
+            var _pos = string_pos(".", _workString);
+            __gmVersionMinor = real(string_copy(_workString, 1, _pos-1));
+            _workString = string_delete(_workString, 1, _pos);
+            var _pos = string_pos(".", _workString);
+            __gmVersionPatch = real(string_copy(_workString, 1, _pos-1));
+            __gmVersionBuild = real(string_delete(_workString, 1, _pos));
+        }
+        catch(_error)
+        {
+            __scribble_trace("Warning! Failed to obtain runtime version");
+        }
+        
+        __gmMightRemoveUnusedAssets = (__gmVersionMajor >= 2025) || ((__gmVersionMajor == 2024) && ((__gmVersionMinor >= 1100) || (__gmVersionMinor == 11)));
         
         //Initialize colours on boot before they need to be used
         __scribble_config_colours();
