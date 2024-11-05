@@ -37,6 +37,12 @@ function __scribble_initialize()
             __scribble_error("Fallback font was not found. This may indicate that unused assets have been stripped from the project\nPlease untick \"Automatically remove unused assets when compiling\" in Game Options");
         }
         
+        var _fontInfo = font_get_info(asset_get_index("scribble_fallback_font"));
+        if (_fontInfo[$ "sdfEnabled"] == undefined)
+        {
+            __scribble_error("Versions of GameMaker without SDF font support are not supported (versions pre-2023.1, including LTS 2022)");
+        }
+        
         try
         {
             time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
@@ -48,7 +54,7 @@ function __scribble_initialize()
         catch(_error)
         {
             __scribble_trace(_error);
-            __scribble_error("Versions earlier than GameMaker 2022 LTS are not supported");
+            __scribble_error("Versions earlier than GameMaker 2023.1 are not supported");
         }
         
         __useHandleParse = false;
