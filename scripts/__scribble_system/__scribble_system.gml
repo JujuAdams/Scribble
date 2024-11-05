@@ -27,6 +27,11 @@ function __scribble_initialize()
             __scribble_trace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
         }
         
+        if (not shader_is_compiled(__shd_scribble))
+        {
+            __scribble_error("Shader failed to compile. Please check your version of GameMaker is compatible\nPlease report this error if it persists");
+        }
+        
         if (not font_exists(asset_get_index("scribble_fallback_font")))
         {
             __scribble_error("Fallback font was not found. This may indicate that unused assets have been stripped from the project\nPlease untick \"Automatically remove unused assets when compiling\" in Game Options");
