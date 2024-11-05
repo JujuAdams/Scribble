@@ -57,7 +57,7 @@ function __scribble_error()
     }
     
     show_debug_message("Scribble Deluxe " + SCRIBBLE_VERSION + ": " + string_replace_all(_string, "\n", "\n          "));
-    show_error("ScribbleDX:\n" + _string + "\n ", true);
+    show_error(" \nScribble Deluxe " + SCRIBBLE_VERSION + ":\n" + _string + "\n ", true);
 }
 
 function __scribble_get_font_data(_name)
