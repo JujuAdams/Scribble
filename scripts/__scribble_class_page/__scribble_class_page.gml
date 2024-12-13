@@ -290,7 +290,7 @@ function __scribble_class_page() constructor
             var _index = __scribble_array_find_index(__gc_grid_ids, __glyph_grid);
             if (_index >= 0)
             {
-                if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Manually removing glyph grid ", _vbuff, " from tracking");
+                if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Manually removing glyph grid ", __glyph_grid, " from tracking");
                 array_delete(__gc_grid_refs, _index, 1);
                 array_delete(__gc_grid_ids,  _index, 1);
             }
