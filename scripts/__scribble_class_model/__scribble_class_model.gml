@@ -86,6 +86,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     
     static __flush = function()
     {
+        //Don't forget to update scribble_flush_everything() if you change anything here!
+        
         if (__flushed) return undefined;
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing model \"" + string(__cache_name) + "\"");
         

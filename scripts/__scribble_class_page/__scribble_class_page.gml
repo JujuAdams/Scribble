@@ -4,6 +4,8 @@ function __scribble_class_page() constructor
     static __scribble_state = __scribble_initialize().__state;
     static __gc_vbuff_refs  = __scribble_initialize().__cache_state.__gc_vbuff_refs;
     static __gc_vbuff_ids   = __scribble_initialize().__cache_state.__gc_vbuff_ids;
+    static __gc_grid_refs   = __scribble_initialize().__cache_state.__gc_grid_refs;
+    static __gc_grid_ids    = __scribble_initialize().__cache_state.__gc_grid_ids;
     
     __text = "";
     __glyph_grid = undefined;
@@ -239,6 +241,20 @@ function __scribble_class_page() constructor
         }
     }
     
+    static __ensure_glyph_grid = function()
+    {
+        if (__glyph_grid == undefined)
+        {
+            __glyph_grid = ds_grid_create(__glyph_count, __SCRIBBLE_GLYPH_LAYOUT.__SIZE);
+            
+            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding glyph grid ", __glyph_grid, " to tracking");
+            array_push(__gc_grid_refs, weak_ref_create(self));
+            array_push(__gc_grid_ids, __glyph_grid);
+        }
+        
+        return __glyph_grid;
+    }
+    
     static __finalize_vertex_buffers = function(_freeze)
     {
         var _i = 0;
@@ -256,6 +272,8 @@ function __scribble_class_page() constructor
     
     static __flush = function()
     {
+        //Don't forget to update scribble_flush_everything() if you change anything here!
+        
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
         {
@@ -275,5 +293,19 @@ function __scribble_class_page() constructor
         
         __texture_to_vertex_buffer_dict = {};
         array_resize(__vertex_buffer_array, 0);
+        
+        if (__glyph_grid != undefined)
+        {
+            var _index = __scribble_array_find_index(__gc_grid_ids, __glyph_grid);
+            if (_index >= 0)
+            {
+                if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Manually removing glyph grid ", __glyph_grid, " from tracking");
+                array_delete(__gc_grid_refs, _index, 1);
+                array_delete(__gc_grid_ids,  _index, 1);
+            }
+            
+            ds_grid_destroy(__glyph_grid);
+            __glyph_grid = undefined;
+        }
     }
 }

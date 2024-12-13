@@ -146,6 +146,9 @@ function __scribble_initialize()
             
             __gc_vbuff_refs: [],
             __gc_vbuff_ids:  [],
+            
+            __gc_grid_refs: [],
+            __gc_grid_ids:  [],
         };
         
         //
