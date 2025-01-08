@@ -15,7 +15,7 @@ There are a multitude of very useful features available:
 - Font effect baking
 - Resolution-independent SDF fonts
 
-Scribble supports all GameMaker export modules, including consoles, Opera GX, and HTML5.
+Scribble supports all GameMaker export modules (including consoles and OperaGX), with the exception of HTML5.
 
 Scroll down to read more about each feature.
 
