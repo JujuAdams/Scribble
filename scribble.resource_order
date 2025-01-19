@@ -110,6 +110,7 @@
     {"name":"obj_test_font_outline_8dir","order":5,"path":"objects/obj_test_font_outline_8dir/obj_test_font_outline_8dir.yy",},
     {"name":"obj_test_font_outline_and_shadow","order":3,"path":"objects/obj_test_font_outline_and_shadow/obj_test_font_outline_and_shadow.yy",},
     {"name":"obj_test_font_outline_stress_test","order":7,"path":"objects/obj_test_font_outline_stress_test/obj_test_font_outline_stress_test.yy",},
+    {"name":"obj_test_font_rename","order":17,"path":"objects/obj_test_font_rename/obj_test_font_rename.yy",},
     {"name":"obj_test_font_scale","order":8,"path":"objects/obj_test_font_scale/obj_test_font_scale.yy",},
     {"name":"obj_test_font_shadow","order":9,"path":"objects/obj_test_font_shadow/obj_test_font_shadow.yy",},
     {"name":"obj_test_get_events","order":7,"path":"objects/obj_test_get_events/obj_test_get_events.yy",},
