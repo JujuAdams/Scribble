@@ -18,7 +18,7 @@ function __scribble_class_font(_name, _glyph_count, _fontType) constructor
     __is_krutidev = false;
     __bilinear    = (_fontType == __SCRIBBLE_FONT_TYPE.__SDF)? true : undefined;
     
-    __sdf                  = (_fontType == __SCRIBBLE_FONT_TYPE.__SDF);
+    __sdf                  = (_fontType == undefined)? undefined : (_fontType == __SCRIBBLE_FONT_TYPE.__SDF);
     __sdf_pxrange          = undefined;
     __sdf_thickness_offset = 0;
     
