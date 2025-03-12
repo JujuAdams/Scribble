@@ -162,6 +162,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     {
         static _scribble_state = __scribble_initialize().__state;
         
+        if (SCRIBBLE_FLOOR_DRAW_COORDINATES)
+        {
+            _x = floor(_x);
+            _y = floor(_y);
+        }
+        
         var _function_scope = other;
         
         //Get our model, and create one if needed

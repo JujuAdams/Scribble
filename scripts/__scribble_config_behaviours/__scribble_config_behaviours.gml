@@ -24,6 +24,7 @@
 #macro SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS    true
 #macro SCRIBBLE_USE_SPRITE_WHITELIST          false
 #macro SCRIBBLE_USE_SOUND_WHITELIST           false
+#macro SCRIBBLE_FLOOR_DRAW_COORDINATES        false  //Whether to floor draw coordinates passed to the `.draw()` method. This will not affect the draw coordinates of glyphs themselves
 
 
 
