@@ -90,12 +90,14 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         
         //Ignore any glyphs with invalid textures
         //Due to HTML5 being dogshit, we can't use is_ptr()
-        if (is_numeric(_texture) || is_undefined(_texture))
-        {
+		// Expect numeric texture ID for non html platforms
+		if (is_undefined(_texture))
+        || (__SCRIBBLE_ON_WEB && is_numeric(_texture))
+		{
             ++_i;
             continue;
         }
-        
+		
         var _width_ext  = _width  + _outline + _l_pad + _r_pad;
         var _height_ext = _height + _outline + _t_pad + _b_pad;
         
@@ -223,8 +225,6 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     _new_font_data.__source_sprite = _sprite;
     surface_free(_surface_1);
     
-    
-    
     //Make bulk corrections to various glyph properties based on the input parameters
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.X_OFFSET,    _glyph_count-1, SCRIBBLE_GLYPH.X_OFFSET,    -_l_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.Y_OFFSET,    _glyph_count-1, SCRIBBLE_GLYPH.Y_OFFSET,    -_t_pad);
@@ -232,7 +232,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.HEIGHT,      _glyph_count-1, SCRIBBLE_GLYPH.HEIGHT,      _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, _glyph_count-1, SCRIBBLE_GLYPH.FONT_HEIGHT, _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.SEPARATION,  _glyph_count-1, SCRIBBLE_GLYPH.SEPARATION,  _separation);
-    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.TEXTURE,     _glyph_count-1, SCRIBBLE_GLYPH.TEXTURE,     sprite_get_texture(_sprite, 0));
+    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.TEXTURE,     _glyph_count-1, SCRIBBLE_GLYPH.TEXTURE,     __scribble_sprite_get_texture_id(_sprite, 0));
     ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.FONT_NAME,   _glyph_count-1, SCRIBBLE_GLYPH.FONT_NAME,   _new_font_name);
     
     //Figure out the new UVs using some bulk commands

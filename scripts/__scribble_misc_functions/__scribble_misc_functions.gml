@@ -359,6 +359,51 @@ function __scribble_matrix_inverse(_matrix)
     return _inv;
 }
 
+function __scribble_sprite_get_texture_id(_sprite_index, _image_index)
+{
+	static __cache = {}
+	
+	var _key = sprite_get_name(_sprite_index) + "_" + string(_image_index)
+	var _val = __cache[$ _key];
+	if (_val != undefined)
+	{
+		return _val;
+	}
+	
+	if (__SCRIBBLE_ON_WEB) {
+		// TODO: build look up table to fetch the best pointer so we can compare pointers better for batch breaks
+		_val = sprite_get_texture(_sprite_index, _image_index);
+	}
+	else {
+		_val = sprite_get_info(_sprite_index).frames[_image_index].texture;
+	}
+	__cache[$ _key] = _val;
+	
+	return _val;
+}
+function __scribble_font_get_texture_id(_font)
+{
+	static __cache = {}
+	
+	var _key = font_get_name(_font)
+	var _val = __cache[$ _key];
+	if (_val != undefined)
+	{
+		return _val;
+	}
+	
+	if (__SCRIBBLE_ON_WEB) {
+		// TODO: build look up table to fetch the best pointer so we can compare pointers better for batch breaks
+		_val = font_get_texture(_font);
+	}
+	else {
+		_val = font_get_info(_font).texture;
+	}
+	__cache[$ _key] = _val;
+	
+	return _val;
+}
+
 #region Enums
 
 enum __SCRIBBLE_GLYPH_LAYOUT
