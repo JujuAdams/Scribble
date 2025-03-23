@@ -47,7 +47,7 @@ function __scribble_font_add_from_project(_font)
         if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");
         
         var _asset       = asset_get_index(_name);
-        var _texture     = font_get_texture(_asset);
+        var _texture     = font_get_info(_asset).texture; // NOTE :: HTML5 does not support using the texture ID in place of the texture pointer, this is the texture ID -Red (2025/03/23)
         var _texture_uvs = font_get_uvs(_asset);
         
         var _texture_tw = texture_get_texel_width(_texture);
