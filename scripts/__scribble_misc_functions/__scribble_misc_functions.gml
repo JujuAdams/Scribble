@@ -359,49 +359,50 @@ function __scribble_matrix_inverse(_matrix)
     return _inv;
 }
 
-function __scribble_sprite_get_texture_id(_sprite_index, _image_index)
+function __scribble_sprite_get_texture(_sprite_index, _image_index)
 {
-	static __cache = {}
+	static __texture_id_lookup = ds_map_create();
+	static __texture_pointer_lookup = ds_map_create();
 	
-	var _key = sprite_get_name(_sprite_index) + "_" + string(_image_index)
-	var _val = __cache[$ _key];
-	if (_val != undefined)
+	var _key = sprite_get_name(_sprite_index) + "_" + string(_image_index);
+	var _texture_id = __texture_id_lookup[? _key];
+	if (_texture_id == undefined)
 	{
-		return _val;
+		_texture_id = sprite_get_info(_sprite_index).frames[_image_index].texture;
+		__texture_id_lookup[? _key] = _texture_id;
 	}
 	
-	if (__SCRIBBLE_ON_WEB) {
-		// TODO: build look up table to fetch the best pointer so we can compare pointers better for batch breaks
-		_val = sprite_get_texture(_sprite_index, _image_index);
+	var _pointer = __texture_pointer_lookup[? _texture_id];
+	if (_pointer == undefined)
+	{
+		_pointer = sprite_get_texture(_sprite_index, _image_index);
+		__texture_pointer_lookup[? _key] = _texture_id;
 	}
-	else {
-		_val = sprite_get_info(_sprite_index).frames[_image_index].texture;
-	}
-	__cache[$ _key] = _val;
 	
-	return _val;
+	return _pointer;
 }
-function __scribble_font_get_texture_id(_font)
+
+function __scribble_font_get_texture(_font)
 {
-	static __cache = {}
+	static __texture_id_lookup = ds_map_create();
+	static __texture_pointer_lookup = ds_map_create();
 	
-	var _key = font_get_name(_font)
-	var _val = __cache[$ _key];
-	if (_val != undefined)
+	var _key = font_get_name(_font);
+	var _texture_id = __texture_id_lookup[? _key];
+	if (_texture_id == undefined)
 	{
-		return _val;
+		_texture_id = font_get_info(_font).texture;
+		__texture_id_lookup[? _key] = _texture_id;
 	}
 	
-	if (__SCRIBBLE_ON_WEB) {
-		// TODO: build look up table to fetch the best pointer so we can compare pointers better for batch breaks
-		_val = font_get_texture(_font);
+	var _pointer = __texture_pointer_lookup[? _texture_id];
+	if (_pointer == undefined)
+	{
+		_pointer = font_get_texture(_font);
+		__texture_pointer_lookup[? _key] = _texture_id;
 	}
-	else {
-		_val = font_get_info(_font).texture;
-	}
-	__cache[$ _key] = _val;
 	
-	return _val;
+	return _pointer;
 }
 
 #region Enums

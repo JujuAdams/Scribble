@@ -322,7 +322,7 @@ function __scribble_gen_9_write_vbuffs()
                 var _j = _image_index;
                 repeat((_image_speed > 0)? _sprite_number : 1) //Only draw one image if we have an image speed of 0 since we're not animating
                 {
-                    var _glyph_texture = __scribble_sprite_get_texture_id(_sprite_index, _j);
+                    var _glyph_texture = __scribble_sprite_get_texture(_sprite_index, _j);
                     
                     var _uvs = sprite_get_uvs(_sprite_index, _j);
                     var _quad_u0 = _uvs[0];

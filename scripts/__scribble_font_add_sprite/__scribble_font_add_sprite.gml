@@ -129,16 +129,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         {
             var _image_info = _sprite_frames[_image];
             
-            //Convert the texture index to a texture pointer
-            var _texture_index = _image_info.texture;
-            
-            static _tex_index_lookup_map = ds_map_create();
-            var _texture = _tex_index_lookup_map[? _texture_index];
-            if (_texture == undefined)
-            {
-                _texture = sprite_get_texture(_sprite, _image);
-                _tex_index_lookup_map[? _texture_index] = _texture;
-            }
+            var _texture = __scribble_sprite_get_texture(_sprite, _image)
             
             if (_proportional)
             {
