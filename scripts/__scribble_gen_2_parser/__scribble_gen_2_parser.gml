@@ -157,6 +157,7 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "/indent"           ] = 37;
         _command_tag_lookup_accelerator_map[? "offset"            ] = 38;
         _command_tag_lookup_accelerator_map[? "offsetPop"         ] = 39;
+        _command_tag_lookup_accelerator_map[? "texture"           ] = 40;
     }
     
     #endregion
@@ -955,7 +956,67 @@ function __scribble_gen_2_parser()
                         break;
                     
                         #endregion
-                    
+						
+						#region Texture
+						// [texture,<index>,<x>,<y>,<w>,<h>]
+                        case 40:
+                            
+							var _tex_id = real(_tag_parameters[1]);
+                            var _tex_x = real(_tag_parameters[2]);
+                            var _tex_y = real(_tag_parameters[3]);
+                            var _tex_w = real(_tag_parameters[4]);
+                            var _tex_h = real(_tag_parameters[5]);
+							
+							var _texture_tw = texture_get_texel_width(_tex_id);
+					        var _texture_th = texture_get_texel_height(_tex_id);
+					        
+							var _u0 = _tex_x*_texture_tw;
+				            var _v0 = _tex_y*_texture_th;
+				            var _u1 = (_tex_x+_tex_w)*_texture_tw;
+				            var _v1 = (_tex_y+_tex_h)*_texture_th;
+							
+							// Maybe support inlineing texture sections?
+                            if (SCRIBBLE_AUTOFIT_INLINE_TEXTURES)
+                            {
+                                var _scale = min(1, (_font_line_height+2)/_tex_h);
+                                _tex_w *= _scale;
+                                _tex_h *= _scale;
+                            }
+							
+                            //Add this glyph to our grid
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_TEXTURE;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
+							
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = _state_halign_offset;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = _state_valign_offset;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = _tex_w;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _tex_h;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _tex_h;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = _tex_w;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
+							
+                            //TODO - Add a way to force a regeneration of every text element that contains a given surface
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__TEXTURE      ] = _tex_id;
+                            //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U0      ] = 0;
+                            //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V0      ] = 0;
+                            //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U1      ] = 1;
+                            //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V1      ] = 1;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U0      ] = _u0;
+				            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U1      ] = _u1;
+				            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V0      ] = _v0;
+				            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V1      ] = _v1;
+				            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_NAME    ] = undefined;
+							
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
+                        
+                            ++_glyph_count;
+                            _glyph_prev_arabic_join_next = false;
+                            _glyph_prev_prev = _glyph_prev;
+                            _glyph_prev = __SCRIBBLE_GLYPH_TEXTURE;
+                        break;
+						#endregion
+						
                         default: //TODO - Optimize
                             if (ds_map_exists(_effects_map, _tag_command_name)) //Set an effect
                             {
