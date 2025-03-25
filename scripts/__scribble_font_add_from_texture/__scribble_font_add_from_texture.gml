@@ -1,10 +1,13 @@
 // Feather disable all
-/// @param font
 
-function __scribble_font_add_from_project(_font)
+/// @param fontName
+/// @param texture
+/// @param textureUVs
+/// @param fontInfo
+/// @param isKrutidev
+
+function __scribble_font_add_from_texture(_name, _texture, _texture_uvs, _font_info, _is_krutidev)
 {
-    var _name = font_get_name(_font);
-    
     static _font_data_map = __scribble_initialize().__font_data_map;
     if (ds_map_exists(_font_data_map, _name))
     {
@@ -23,11 +26,9 @@ function __scribble_font_add_from_project(_font)
     
     try
     {
-        var _is_krutidev = __scribble_asset_is_krutidev(_font, asset_font);
         var _global_glyph_bidi_map = __scribble_initialize().__glyph_data.__bidi_map;
         
         //Get font info from the runtime
-        var _font_info = font_get_info(_font);
         var _info_glyphs_dict = _font_info.glyphs;
         var _ascender_offset = SCRIBBLE_USE_ASCENDER_OFFSET? _font_info.ascenderOffset : 0;
         
@@ -46,10 +47,6 @@ function __scribble_font_add_from_project(_font)
         
         if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");
         
-        var _asset       = asset_get_index(_name);
-        var _texture     = font_get_texture(_asset);
-        var _texture_uvs = font_get_uvs(_asset);
-        
         var _texture_tw = texture_get_texel_width(_texture);
         var _texture_th = texture_get_texel_height(_texture);
         var _texture_w  = (_texture_uvs[2] - _texture_uvs[0])/_texture_tw; //texture_get_width(_texture);
@@ -62,7 +59,6 @@ function __scribble_font_add_from_project(_font)
         if (SCRIBBLE_VERBOSE)
         {
             __scribble_trace("  \"" + _name +"\""
-                             + ", asset = " + string(_asset)
                              + ", texture = " + string(_texture)
                              + ", top-left = " + string(_texture_l) + "," + string(_texture_t)
                              + ", size = " + string(_texture_w) + " x " + string(_texture_h)

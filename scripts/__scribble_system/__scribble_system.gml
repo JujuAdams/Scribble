@@ -223,7 +223,7 @@ function __scribble_initialize()
     }
     
     scribble_anim_reset();
-    if (SCRIBBLE_LOAD_FONTS_ON_BOOT) __scribble_font_add_all_from_project();
+    if (SCRIBBLE_LOAD_FONTS_ON_BOOT) __scribble_font_add_all_from_bundle();
     
     return _system;
 }
