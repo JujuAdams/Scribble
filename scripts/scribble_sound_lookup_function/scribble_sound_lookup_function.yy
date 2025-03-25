@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scribble_sound_lookup_function",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scribble_sound_lookup_function",
+  "parent":{
+    "name":"Miscellaneous",
+    "path":"folders/Scribble/Miscellaneous.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -480,7 +480,10 @@ function __scribble_class_typist(_per_line) constructor
     
     static __process_event_stack = function(_character_count, _target_element, _function_scope)
     {
-        static _typewriter_events_map = __scribble_initialize().__typewriter_events_map;
+        static _system = __scribble_initialize();
+        static _typewriter_events_map = _system.__typewriter_events_map;
+        
+        var _sound_lookup_func = _system.__sound_lookup_func;
         
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
         //We return <true> if there have been no pausing behaviours called i.e. [pause] and [delay]
@@ -553,8 +556,12 @@ function __scribble_class_typist(_per_line) constructor
                     if (array_length(_event_data) >= 1)
                     {
                         var _asset = _event_data[0];
-                        if (is_string(_asset)) _asset = asset_get_index(_asset);
-                        __scribble_play_sound(_asset, __sound_tag_gain, 1);
+                        
+                        if (is_string(_asset)) _asset = _sound_lookup_func(_asset);
+                        if (audio_exists(_asset))
+                        {
+                            __scribble_play_sound(_asset, __sound_tag_gain, 1);
+                        }
                     }
                 break;
                 
@@ -597,7 +604,9 @@ function __scribble_class_typist(_per_line) constructor
     
     static __play_sound = function(_head_pos, _character)
     {
-        static _external_sound_map = __scribble_initialize().__external_sound_map;
+        static _system = __scribble_initialize();
+        static _external_sound_map = _system.__external_sound_map;
+        var _sound_lookup_func = _system.__sound_lookup_func;
         
         var _sound_array = __sound_array;
         if (is_array(_sound_array) && (array_length(_sound_array) > 0))
@@ -630,10 +639,18 @@ function __scribble_class_typist(_per_line) constructor
                 var _audio_asset = _sound_array[floor(__scribble_random()*array_length(_sound_array))];
                 if (is_string(_audio_asset))
                 {
-                    _audio_asset = _external_sound_map[? _audio_asset];
+                    var _found_asset = _external_sound_map[? _audio_asset];
+                    if (_audio_asset != undefined)
+                    {
+                        _audio_asset = _found_asset;
+                    }
+                    else
+                    {
+                        _audio_asset = _sound_lookup_func(_audio_asset);
+                    }
                 }
                 
-                if (_audio_asset != undefined)
+                if (audio_exists(_audio_asset))
                 {
                     var _inst = __scribble_play_sound(_audio_asset, __sound_gain, lerp(__sound_pitch_min, __sound_pitch_max, __scribble_random()));
                     __sound_finish_time = current_time + 1000*audio_sound_length(_inst) - __sound_overlap;

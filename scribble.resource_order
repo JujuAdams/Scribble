@@ -308,6 +308,8 @@
     {"name":"scribble_markdown_set_styles","order":5,"path":"scripts/scribble_markdown_set_styles/scribble_markdown_set_styles.yy",},
     {"name":"scribble_refresh_everything","order":1,"path":"scripts/scribble_refresh_everything/scribble_refresh_everything.yy",},
     {"name":"scribble_rgb_to_bgr","order":4,"path":"scripts/scribble_rgb_to_bgr/scribble_rgb_to_bgr.yy",},
+    {"name":"scribble_sound_lookup_function","order":12,"path":"scripts/scribble_sound_lookup_function/scribble_sound_lookup_function.yy",},
+    {"name":"scribble_sprite_lookup_function","order":11,"path":"scripts/scribble_sprite_lookup_function/scribble_sprite_lookup_function.yy",},
     {"name":"scribble_super_clear","order":4,"path":"scripts/scribble_super_clear/scribble_super_clear.yy",},
     {"name":"scribble_super_glyph_copy_all","order":2,"path":"scripts/scribble_super_glyph_copy_all/scribble_super_glyph_copy_all.yy",},
     {"name":"scribble_super_glyph_copy","order":1,"path":"scripts/scribble_super_glyph_copy/scribble_super_glyph_copy.yy",},

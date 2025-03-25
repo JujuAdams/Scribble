@@ -175,6 +175,9 @@ function __scribble_gen_2_parser()
     static _generator_state       = _system.__generator_state;
     static _sprite_whitelist_map  = _system.__state.__sprite_whitelist_map;
     
+    var _sprite_lookup_func = _system.__sprite_lookup_func;
+    var _sound_lookup_func  = _system.__sound_lookup_func;
+    
     with(_generator_state)
     {
         var _glyph_grid     = __glyph_grid;
@@ -1045,8 +1048,8 @@ function __scribble_gen_2_parser()
                             {
                                 #region Sprite
                             
-                                var _sprite_index = asset_get_index(_tag_command_name);
-                                if ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_sprite_whitelist_map[? _sprite_index] ?? false))
+                                var _sprite_index = _sprite_lookup_func(_tag_command_name);
+                                if (sprite_exists(_sprite_index) && ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_sprite_whitelist_map[? _sprite_index] ?? false)))
                                 {
                                     var _sprite_w = sprite_get_width( _sprite_index);
                                     var _sprite_h = sprite_get_height(_sprite_index);
