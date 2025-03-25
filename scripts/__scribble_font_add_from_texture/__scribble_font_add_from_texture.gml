@@ -5,8 +5,9 @@
 /// @param textureUVs
 /// @param fontInfo
 /// @param isKrutidev
+/// @param fromBundle
 
-function __scribble_font_add_from_texture(_name, _texture, _texture_uvs, _font_info, _is_krutidev)
+function __scribble_font_add_from_texture(_name, _texture, _texture_uvs, _font_info, _is_krutidev, _from_bundle)
 {
     static _font_data_map = __scribble_initialize().__font_data_map;
     if (ds_map_exists(_font_data_map, _name))

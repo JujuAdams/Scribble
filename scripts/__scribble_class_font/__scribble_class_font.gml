@@ -3,10 +3,10 @@
 /// @param glyphCount
 /// @param fontType
 
-function __scribble_class_font(_name, _glyph_count, _fontType) constructor
+function __scribble_class_font(_name, _glyph_count, _font_type) constructor
 {
     __name     = _name;
-    __fontType = _fontType;
+    __fontType = _font_type;
     
     static _font_data_map = __scribble_initialize().__font_data_map;
     _font_data_map[? _name] = self;
@@ -16,9 +16,9 @@ function __scribble_class_font(_name, _glyph_count, _fontType) constructor
     __kerning_map     = ds_map_create();
     
     __is_krutidev = false;
-    __bilinear    = (_fontType == __SCRIBBLE_FONT_TYPE.__SDF)? true : undefined;
+    __bilinear    = (_font_type == __SCRIBBLE_FONT_TYPE.__SDF)? true : undefined;
     
-    __sdf                  = (_fontType == undefined)? undefined : (_fontType == __SCRIBBLE_FONT_TYPE.__SDF);
+    __sdf                  = (_font_type == undefined)? undefined : (_font_type == __SCRIBBLE_FONT_TYPE.__SDF);
     __sdf_pxrange          = undefined;
     __sdf_thickness_offset = 0;
     

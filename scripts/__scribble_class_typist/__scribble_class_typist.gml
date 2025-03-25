@@ -639,15 +639,7 @@ function __scribble_class_typist(_per_line) constructor
                 var _audio_asset = _sound_array[floor(__scribble_random()*array_length(_sound_array))];
                 if (is_string(_audio_asset))
                 {
-                    var _found_asset = _external_sound_map[? _audio_asset];
-                    if (_audio_asset != undefined)
-                    {
-                        _audio_asset = _found_asset;
-                    }
-                    else
-                    {
-                        _audio_asset = _sound_lookup_func(_audio_asset);
-                    }
+                    var _audio_asset = _external_sound_map[? _audio_asset] ?? _sound_lookup_func(_audio_asset);
                 }
                 
                 if (audio_exists(_audio_asset))

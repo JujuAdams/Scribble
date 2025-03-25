@@ -11,5 +11,5 @@ function __scribble_font_add_from_bundle(_font)
     var _font_info   = font_get_info(_font);
     var _is_krutidev = __scribble_asset_is_krutidev(_font, asset_font);
     
-    return __scribble_font_add_from_texture(_name, _texture, _texture_uvs, _font_info, _is_krutidev);
+    return __scribble_font_add_from_texture(_name, _texture, _texture_uvs, _font_info, _is_krutidev, true);
 }

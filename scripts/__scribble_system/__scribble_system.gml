@@ -159,11 +159,11 @@ function __scribble_initialize()
         __krutidev_lookup_map       = __scribble_krutidev_lookup_map_initialize();
         __krutidev_matra_lookup_map = __scribble_krutidev_matra_lookup_map_initialize();
         
-        __sprite_lookup_func = asset_get_index;
-        __sound_lookup_func  = asset_get_index;
-        
         //External sound reference storage
-        __external_sound_map = ds_map_create();
+        __external_sprite_map = ds_map_create();
+        __external_sound_map  = ds_map_create();
+        __sprite_lookup_func  = asset_get_index;
+        __sound_lookup_func   = asset_get_index;
         
         //Lookup for user-defined macros
         __macros_map = ds_map_create();

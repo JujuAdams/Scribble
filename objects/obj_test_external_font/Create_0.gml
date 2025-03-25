@@ -5,5 +5,5 @@ var _json_string = buffer_read(_buffer, buffer_text);
 var _yy_json = json_parse(_json_string);
 buffer_delete(_buffer);
 
-font_name = scribble_font_add_from_source(sprite, 0, _yy_json);
+font_name = scribble_external_font_add(sprite, 0, _yy_json);
 scribble_font_set_default(font_name);

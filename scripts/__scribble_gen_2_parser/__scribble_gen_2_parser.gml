@@ -166,6 +166,7 @@ function __scribble_gen_2_parser()
     static _effects_map           = _system.__effects_map;
     static _effects_slash_map     = _system.__effects_slash_map;
     static _typewriter_events_map = _system.__typewriter_events_map;
+    static _external_sprite_map   = _system.__external_sprite_map;
     static _external_sound_map    = _system.__external_sound_map;
     static _macros_map            = _system.__macros_map;
     static _string_buffer         = _system.__buffer_a;
@@ -1044,11 +1045,11 @@ function __scribble_gen_2_parser()
                                 _font_name = _tag_command_name;
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
-                            else if (asset_get_type(_tag_command_name) == asset_sprite)
+                            else if ((asset_get_type(_tag_command_name) == asset_sprite) || ds_map_exists(_external_sprite_map, _tag_command_name))
                             {
                                 #region Sprite
                             
-                                var _sprite_index = _sprite_lookup_func(_tag_command_name);
+                                var _sprite_index = _external_sprite_map[? _tag_command_name] ?? _sprite_lookup_func(_tag_command_name);
                                 if (sprite_exists(_sprite_index) && ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_sprite_whitelist_map[? _sprite_index] ?? false)))
                                 {
                                     var _sprite_w = sprite_get_width( _sprite_index);

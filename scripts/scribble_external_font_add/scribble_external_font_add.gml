@@ -13,7 +13,7 @@
 /// @param [fontName]
 /// @param [isKrutidev=false]
 
-function scribble_font_add_from_source(_sprite, _image, _json, _font_name = undefined, _is_krutidev = false)
+function scribble_external_font_add(_sprite, _image, _json, _font_name = undefined, _is_krutidev = false)
 {
     var _texture     = sprite_get_texture(_sprite, _image);
     var _texture_uvs = sprite_get_uvs(_sprite, _image);
@@ -57,7 +57,7 @@ function scribble_font_add_from_source(_sprite, _image, _json, _font_name = unde
         ++_i;
     }
     
-    __scribble_font_add_from_texture(_font_name, _texture, _texture_uvs, _font_info, _is_krutidev);
+    __scribble_font_add_from_texture(_font_name, _texture, _texture_uvs, _font_info, _is_krutidev, false);
     
     return _font_name;
 }
