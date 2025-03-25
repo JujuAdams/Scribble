@@ -3,7 +3,7 @@
 /// @param sprite
 /// @param alias
 
-function scribble_external_sound_add(_sprite, _alias)
+function scribble_external_sprite_add(_sprite, _alias)
 {
     static _external_sprite_map = __scribble_initialize().__external_sprite_map;
     

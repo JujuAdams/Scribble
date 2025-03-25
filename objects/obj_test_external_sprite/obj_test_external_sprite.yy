@@ -1,12 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_typewriter_external_sound_per_char",
+  "%Name":"obj_test_external_sprite",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_typewriter_external_sound_per_char",
+  "name":"obj_test_external_sprite",
   "overriddenProperties":[],
   "parent":{
     "name":"External Assets",
