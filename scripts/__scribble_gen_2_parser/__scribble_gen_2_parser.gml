@@ -1045,191 +1045,194 @@ function __scribble_gen_2_parser()
                                 _font_name = _tag_command_name;
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
-                            else if ((asset_get_type(_tag_command_name) == asset_sprite) || ds_map_exists(_external_sprite_map, _tag_command_name))
-                            {
-                                #region Sprite
-                            
-                                var _sprite_index = _external_sprite_map[? _tag_command_name] ?? _sprite_lookup_func(_tag_command_name);
-                                if (sprite_exists(_sprite_index) && ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_sprite_whitelist_map[? _sprite_index] ?? false)))
-                                {
-                                    var _sprite_w = sprite_get_width( _sprite_index);
-                                    var _sprite_h = sprite_get_height(_sprite_index);
-                                
-                                    if (SCRIBBLE_AUTOFIT_INLINE_SPRITES)
-                                    {
-                                        var _scale = min(1, (_font_line_height+2)/_sprite_h);
-                                        _sprite_w *= _scale;
-                                        _sprite_h *= _scale;
-                                    }
-                                
-                                    var _image_index = 0;
-                                    var _image_speed = 0;
-                                    switch(_tag_parameter_count)
-                                    {
-                                        case 1:
-                                            _image_index = 0;
-                                            _image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
-                                        break;
-                                                         
-                                        case 2:
-                                            _image_index = real(_tag_parameters[1]);
-                                            _image_speed = 0;
-                                        break;
-                                                     
-                                        default:
-                                            _image_index = real(_tag_parameters[1]);
-                                            _image_speed = real(_tag_parameters[2]);
-                                        break;
-                                    }
-                                
-                                    //Apply IDE sprite speed
-                                    if (!SCRIBBLE_LEGACY_ANIMATION_SPEED) _image_speed *= __scribble_image_speed_get(_sprite_index);
-                                
-                                    //Only report the model as animated if we're actually able to animate this sprite
-                                    if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __has_animation = true;
-                                
-                                    //Add this glyph to our grid
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_SPRITE;
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
-                                
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = _state_halign_offset;
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = _state_valign_offset;
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = _sprite_w;
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _sprite_h;
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _sprite_h;
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = _sprite_w;
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
-                                
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_NAME    ] = undefined;
-                                
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
-                                
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SPRITE_INDEX ] = _sprite_index;
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__IMAGE_INDEX  ] = _image_index;
-                                    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__IMAGE_SPEED  ] = _image_speed;
-                                
-                                    ++_glyph_count;
-                                    _glyph_prev_arabic_join_next = false;
-                                    _glyph_prev_prev = _glyph_prev;
-                                    _glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
-                                }
-                            
-                                #endregion
-                            }
-                            else if (asset_get_type(_tag_command_name) == asset_sound)
-                            {
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EVENT;
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters);
-                                ++_control_count;
-                            }
-                            else if (ds_map_exists(_external_sound_map, _tag_command_name))
-                            {
-                                //External audio added via scribble_external_sound_add()
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EVENT;
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, [_external_sound_map[? _tag_command_name]]);
-                                ++_control_count;
-                            }
                             else
                             {
-                                var _first_char = string_copy(_tag_command_name, 1, 1);
-                                if ((string_length(_tag_command_name) <= 7) && ((_first_char == "$") || (_first_char == "#")))
+                                var _sprite_index = _external_sprite_map[? _tag_command_name] ?? _sprite_lookup_func(_tag_command_name); 
+                                if (sprite_exists(_sprite_index))
                                 {
-                                    #region Hex colour decoding
-                                
-                                    if (!__SCRIBBLE_ON_WEB)
-                                    {
-                                        //Crafty trick to quickly convert a hex string into a number
-                                        try
-                                        {
-                                            var _decoded_colour = real("0x" + string_delete(_tag_command_name, 1, 1));
-                                            if (!SCRIBBLE_BGR_COLOR_HEX_CODES) _decoded_colour = scribble_rgb_to_bgr(_decoded_colour);
-                                        }
-                                        catch(_error)
-                                        {
-                                            __scribble_trace(_error);
-                                            __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a hexcode");
-                                            _decoded_colour = _starting_colour;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //Boring hex decoder because HTML5 hates the cool trick
-                                        var _decoded_colour = 0;
+                                    #region Sprite
                                     
-                                        var _i = 2;
-                                        repeat(string_length(_tag_command_name) - 1)
+                                    if (sprite_exists(_sprite_index) && ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_sprite_whitelist_map[? _sprite_index] ?? false)))
+                                    {
+                                        var _sprite_w = sprite_get_width( _sprite_index);
+                                        var _sprite_h = sprite_get_height(_sprite_index);
+                                
+                                        if (SCRIBBLE_AUTOFIT_INLINE_SPRITES)
                                         {
-                                            _decoded_colour = _decoded_colour << 4;
-                                        
-                                            switch(ord(string_char_at(_tag_command_name, _i)))
-                                            {
-                                                case ord("1"):                _decoded_colour |=  1; break;
-                                                case ord("2"):                _decoded_colour |=  2; break;
-                                                case ord("3"):                _decoded_colour |=  3; break;
-                                                case ord("4"):                _decoded_colour |=  4; break;
-                                                case ord("5"):                _decoded_colour |=  5; break;
-                                                case ord("6"):                _decoded_colour |=  6; break;
-                                                case ord("7"):                _decoded_colour |=  7; break;
-                                                case ord("8"):                _decoded_colour |=  8; break;
-                                                case ord("9"):                _decoded_colour |=  9; break;
-                                                case ord("a"): case ord("A"): _decoded_colour |= 10; break;
-                                                case ord("b"): case ord("B"): _decoded_colour |= 11; break;
-                                                case ord("c"): case ord("C"): _decoded_colour |= 12; break;
-                                                case ord("d"): case ord("D"): _decoded_colour |= 13; break;
-                                                case ord("e"): case ord("E"): _decoded_colour |= 14; break;
-                                                case ord("f"): case ord("F"): _decoded_colour |= 15; break;
-                                            }
-                                        
-                                            ++_i;
+                                            var _scale = min(1, (_font_line_height+2)/_sprite_h);
+                                            _sprite_w *= _scale;
+                                            _sprite_h *= _scale;
                                         }
-                                    
-                                        if (!SCRIBBLE_BGR_COLOR_HEX_CODES) _decoded_colour = scribble_rgb_to_bgr(_decoded_colour);
+                                
+                                        var _image_index = 0;
+                                        var _image_speed = 0;
+                                        switch(_tag_parameter_count)
+                                        {
+                                            case 1:
+                                                _image_index = 0;
+                                                _image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
+                                            break;
+                                                         
+                                            case 2:
+                                                _image_index = real(_tag_parameters[1]);
+                                                _image_speed = 0;
+                                            break;
+                                                     
+                                            default:
+                                                _image_index = real(_tag_parameters[1]);
+                                                _image_speed = real(_tag_parameters[2]);
+                                            break;
+                                        }
+                                
+                                        //Apply IDE sprite speed
+                                        if (!SCRIBBLE_LEGACY_ANIMATION_SPEED) _image_speed *= __scribble_image_speed_get(_sprite_index);
+                                
+                                        //Only report the model as animated if we're actually able to animate this sprite
+                                        if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __has_animation = true;
+                                
+                                        //Add this glyph to our grid
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_SPRITE;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
+                                
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = _state_halign_offset;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = _state_valign_offset;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = _sprite_w;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _sprite_h;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _sprite_h;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SEPARATION   ] = _sprite_w;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
+                                
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_NAME    ] = undefined;
+                                
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _control_count;
+                                
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SPRITE_INDEX ] = _sprite_index;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__IMAGE_INDEX  ] = _image_index;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__IMAGE_SPEED  ] = _image_speed;
+                                
+                                        ++_glyph_count;
+                                        _glyph_prev_arabic_join_next = false;
+                                        _glyph_prev_prev = _glyph_prev;
+                                        _glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
                                     }
-                                
-                                    _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
-                                
-                                    //Add a colour control
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__COLOUR;
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
-                                    ++_control_count;
-                                
+                            
                                     #endregion
+                                }
+                                else if (asset_get_type(_tag_command_name) == asset_sound)
+                                {
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EVENT;
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters);
+                                    ++_control_count;
+                                }
+                                else if (ds_map_exists(_external_sound_map, _tag_command_name))
+                                {
+                                    //External audio added via scribble_external_sound_add()
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EVENT;
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, [_external_sound_map[? _tag_command_name]]);
+                                    ++_control_count;
                                 }
                                 else
                                 {
-                                    var _second_char = string_copy(_tag_command_name, 2, 1);
-                                    if (((_first_char  == "d") || (_first_char  == "D"))
-                                    &&  ((_second_char == "$") || (_second_char == "#")))
+                                    var _first_char = string_copy(_tag_command_name, 1, 1);
+                                    if ((string_length(_tag_command_name) <= 7) && ((_first_char == "$") || (_first_char == "#")))
                                     {
-                                        #region Decimal colour decoding
-                                    
-                                        try
+                                        #region Hex colour decoding
+                                
+                                        if (!__SCRIBBLE_ON_WEB)
                                         {
-                                            var _decoded_colour = real(string_delete(_tag_command_name, 1, 2));
+                                            //Crafty trick to quickly convert a hex string into a number
+                                            try
+                                            {
+                                                var _decoded_colour = real("0x" + string_delete(_tag_command_name, 1, 1));
+                                                if (!SCRIBBLE_BGR_COLOR_HEX_CODES) _decoded_colour = scribble_rgb_to_bgr(_decoded_colour);
+                                            }
+                                            catch(_error)
+                                            {
+                                                __scribble_trace(_error);
+                                                __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a hexcode");
+                                                _decoded_colour = _starting_colour;
+                                            }
                                         }
-                                        catch(_error)
+                                        else
                                         {
-                                            __scribble_trace(_error);
-                                            __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a decimal");
-                                            _decoded_colour = _starting_colour;
-                                        }
+                                            //Boring hex decoder because HTML5 hates the cool trick
+                                            var _decoded_colour = 0;
                                     
+                                            var _i = 2;
+                                            repeat(string_length(_tag_command_name) - 1)
+                                            {
+                                                _decoded_colour = _decoded_colour << 4;
+                                        
+                                                switch(ord(string_char_at(_tag_command_name, _i)))
+                                                {
+                                                    case ord("1"):                _decoded_colour |=  1; break;
+                                                    case ord("2"):                _decoded_colour |=  2; break;
+                                                    case ord("3"):                _decoded_colour |=  3; break;
+                                                    case ord("4"):                _decoded_colour |=  4; break;
+                                                    case ord("5"):                _decoded_colour |=  5; break;
+                                                    case ord("6"):                _decoded_colour |=  6; break;
+                                                    case ord("7"):                _decoded_colour |=  7; break;
+                                                    case ord("8"):                _decoded_colour |=  8; break;
+                                                    case ord("9"):                _decoded_colour |=  9; break;
+                                                    case ord("a"): case ord("A"): _decoded_colour |= 10; break;
+                                                    case ord("b"): case ord("B"): _decoded_colour |= 11; break;
+                                                    case ord("c"): case ord("C"): _decoded_colour |= 12; break;
+                                                    case ord("d"): case ord("D"): _decoded_colour |= 13; break;
+                                                    case ord("e"): case ord("E"): _decoded_colour |= 14; break;
+                                                    case ord("f"): case ord("F"): _decoded_colour |= 15; break;
+                                                }
+                                        
+                                                ++_i;
+                                            }
+                                    
+                                            if (!SCRIBBLE_BGR_COLOR_HEX_CODES) _decoded_colour = scribble_rgb_to_bgr(_decoded_colour);
+                                        }
+                                
                                         _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
-                                    
+                                
                                         //Add a colour control
                                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__COLOUR;
                                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                                         ++_control_count;
-                                    
+                                
                                         #endregion
                                     }
                                     else
                                     {
-                                        var _command_string = string(_tag_command_name);
-                                        var _j = 1;
-                                        repeat(_tag_parameter_count-1) _command_string += "," + string(_tag_parameters[_j++]);
-                                        __scribble_trace("Warning! Unrecognised command tag [" + _command_string + "]" );
+                                        var _second_char = string_copy(_tag_command_name, 2, 1);
+                                        if (((_first_char  == "d") || (_first_char  == "D"))
+                                        &&  ((_second_char == "$") || (_second_char == "#")))
+                                        {
+                                            #region Decimal colour decoding
+                                    
+                                            try
+                                            {
+                                                var _decoded_colour = real(string_delete(_tag_command_name, 1, 2));
+                                            }
+                                            catch(_error)
+                                            {
+                                                __scribble_trace(_error);
+                                                __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a decimal");
+                                                _decoded_colour = _starting_colour;
+                                            }
+                                    
+                                            _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
+                                    
+                                            //Add a colour control
+                                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__COLOUR;
+                                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
+                                            ++_control_count;
+                                    
+                                            #endregion
+                                        }
+                                        else
+                                        {
+                                            var _command_string = string(_tag_command_name);
+                                            var _j = 1;
+                                            repeat(_tag_parameter_count-1) _command_string += "," + string(_tag_parameters[_j++]);
+                                            __scribble_trace("Warning! Unrecognised command tag [" + _command_string + "]" );
+                                        }
                                     }
                                 }
                             }
