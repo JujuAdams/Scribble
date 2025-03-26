@@ -1,5 +1,5 @@
 // Feather disable all
-/// @param value
+/// @param {Any} value
 
 function scribble_is_text_element(_value)
 {

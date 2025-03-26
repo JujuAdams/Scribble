@@ -2,8 +2,9 @@
 /// Tests to see if a font has the given character
 /// 
 /// Returns: Boolean, indicating whether the given character is found in the font
-/// @param fontName   The target font, as a string
-/// @param character  Character to test for, as a string
+/// @param {String} fontName   The target font, as a string
+/// @param {String} character  Character to test for, as a string
+/// @returns {Bool}
 
 function scribble_font_has_character(_font_name, _character)
 {

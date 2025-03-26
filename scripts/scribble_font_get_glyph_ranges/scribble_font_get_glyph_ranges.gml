@@ -1,6 +1,6 @@
 // Feather disable all
-/// @param fontName
-/// @param [hex=false]
+/// @param {String} fontName
+/// @param {Bool} [hex=false]
 
 function scribble_font_get_glyph_ranges(_name, _hex = false)
 {

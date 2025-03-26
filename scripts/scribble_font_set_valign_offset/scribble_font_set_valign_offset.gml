@@ -1,8 +1,8 @@
 /// Feather ignore all
 /// 
-/// @param font
-/// @param vAlign
-/// @param offset
+/// @param {String} fontName
+/// @param {Constant.VAlign} vAlign
+/// @param {Real} offset
 
 function scribble_font_set_valign_offset(_font, _valign, _offset)
 {

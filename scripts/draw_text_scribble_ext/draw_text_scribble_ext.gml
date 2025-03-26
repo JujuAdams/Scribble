@@ -11,11 +11,11 @@
 /// 
 /// This will take full advantage of Scribble's power (and is less to type!)
 /// 
-/// @param x            The x coordinate of the drawn string
-/// @param y            The y coordinate of the drawn string
-/// @param string       The string to draw
-/// @param width        The maximum width in pixels of the string before a line break
-/// @param [charCount]  The number of characters from the string to draw. If not specified, all characters will be drawn
+/// @param {Real} x            The x coordinate of the drawn string
+/// @param {Real} y            The y coordinate of the drawn string
+/// @param {String} string       The string to draw
+/// @param {Real} width        The maximum width in pixels of the string before a line break
+/// @param {Real.Int} [charCount]  The number of characters from the string to draw. If not specified, all characters will be drawn
 
 function draw_text_scribble_ext(_x, _y, _string, _width, _reveal = undefined)
 {

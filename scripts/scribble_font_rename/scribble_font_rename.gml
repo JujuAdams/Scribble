@@ -1,6 +1,6 @@
 // Feather disable all
-/// @param oldName
-/// @param newName
+/// @param {String} oldName
+/// @param {String} newName
 
 function scribble_font_rename(_old, _new)
 {

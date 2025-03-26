@@ -1,7 +1,7 @@
 // Feather disable all
-/// @param speed       Cycle speed. Larger numbers cause characters to change colour more rapidly
-/// @param saturation  Cycle colour saturation, from 0 to 255. Colour cycles using the HSV model to create colours
-/// @param value       Cycle colour value, from 0 to 255. Colour cycles using the HSV model to create colours
+/// @param {Real} speed       Cycle speed. Larger numbers cause characters to change colour more rapidly
+/// @param {Real.Int} saturation  Cycle colour saturation, from 0 to 255. Colour cycles using the HSV model to create colours
+/// @param {Real.Int} value       Cycle colour value, from 0 to 255. Colour cycles using the HSV model to create colours
 
 function scribble_anim_cycle(_speed, _saturation, _value)
 {

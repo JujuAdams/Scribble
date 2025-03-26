@@ -2,8 +2,9 @@
 /// Scales a font's glyphs permanently across all future text elements
 /// 
 /// Returns: N/A (undefined)
-/// @param fontName  The target font, as a string
-/// @param scale     Scaling factor to apply
+/// @param {String} fontName  The target font, as a string
+/// @param {Real} scale     Scaling factor to apply
+/// @returns {Undefined}
 
 function scribble_font_scale(_font, _scale)
 {

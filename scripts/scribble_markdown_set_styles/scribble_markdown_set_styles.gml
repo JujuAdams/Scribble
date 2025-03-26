@@ -1,6 +1,6 @@
 // Feather disable all
-/// @param styleStruct
-/// @param [fastMode=false]
+/// @param {Struct} styleStruct
+/// @param {Bool} [fastMode=false]
 
 function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
 {
