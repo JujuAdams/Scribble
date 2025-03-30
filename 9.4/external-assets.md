@@ -6,10 +6,10 @@
 
 **Returns:** N/A (`undefined`)
 
-|Name     |Datatype                                                          |Purpose                                                       |
-|---------|------------------------------------------------------------------|--------------------------------------------------------------|
-|`soundID`|[sound](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|The sound to target                                           |
-|`alias`  |string                                                            |A string to use to refer to the sound ID in Scribble functions|
+|Name   |Datatype                                                          |Purpose                                                    |
+|-------|------------------------------------------------------------------|-----------------------------------------------------------|
+|`sound`|[sound](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|The sound to target                                        |
+|`alias`|string                                                            |A string to use to refer to the sound in Scribble functions|
 
 Adds a sound that can be referenced in Scribble functions using the given alias. This is intended for use with externally added sounds via `audio_create_stream()` or `audio_create_buffer_sound()`.
 
@@ -19,9 +19,9 @@ Adds a sound that can be referenced in Scribble functions using the given alias.
 
 **Returns:** N/A (`undefined`)
 
-|Name     |Datatype|Purpose                                         |
-|---------|--------|------------------------------------------------|
-|`alias`  |string  |The external sound alias to remove from Scribble|
+|Name   |Datatype|Purpose                                         |
+|-------|--------|------------------------------------------------|
+|`alias`|string  |The external sound alias to remove from Scribble|
 
 &nbsp;
 
@@ -29,6 +29,57 @@ Adds a sound that can be referenced in Scribble functions using the given alias.
 
 **Returns:** Boolean, whether the alias has been added by `scribble_external_sound_add()`
 
-|Name     |Datatype|Purpose                              |
-|---------|--------|-------------------------------------|
-|`alias`  |string  |The external sound alias to check for|
+|Name   |Datatype|Purpose                              |
+|-------|--------|-------------------------------------|
+|`alias`|string  |The external sound alias to check for|
+
+&nbsp;
+
+## `scribble_external_sprite_add(sprite, alias)`
+
+**Returns:** N/A (`undefined`)
+
+|Name    |Datatype                                                            |Purpose                                                     |
+|--------|--------------------------------------------------------------------|------------------------------------------------------------|
+|`sprite`|[sprite](https://manual.yoyogames.com/The_Asset_Editors/Sprites.htm)|The sprite to target                                        |
+|`alias` |string                                                              |A string to use to refer to the sprite in Scribble functions|
+
+Adds a sprite that can be referenced in Scribble formatting tags using the given alias. This is intended for use with externally added sounds via `sprite_add()` or `sprite_create_from_surface()` etc.
+
+&nbsp;
+
+## `scribble_external_sprite_remove(alias)`
+
+**Returns:** N/A (`undefined`)
+
+|Name     |Datatype|Purpose                                          |
+|---------|--------|-------------------------------------------------|
+|`alias`  |string  |The external sprite alias to remove from Scribble|
+
+&nbsp;
+
+## `scribble_external_sprite_exists(alias)`
+
+**Returns:** Boolean, whether the alias has been added by `scribble_external_sprite_add()`
+
+|Name     |Datatype|Purpose                               |
+|---------|--------|--------------------------------------|
+|`alias`  |string  |The external sprite alias to check for|
+
+&nbsp;
+
+## `scribble_external_font_add(sprite, image, yyJSON, [fontName], [isKrutidev=false])`
+
+**Returns:** N/A (`undefined`)
+
+|Name         |Datatype|Purpose                                                                                                |
+|--------------|--------|------------------------------------------------------------------------------------------------------|
+|`sprite`      |sprite  |Sprite to use as the glyph texture atlas for the font                                                 |
+|`image`       |integer |Image of the sprite to use                                                                            |
+|`yyJSON`      |struct  |JSON obtained by parsing the contents of the font's .yy file                                          |
+|`[fontName]`  |string  |Name of the font to use for Scribble. If not specified, the font's name is extracted from the .yy JSON|
+|`[isKrutidev]`|boolean |Whether the font should be treated as a Krutidev font. If not specified, defaults to `false`          |
+
+Adds a font to Scribble using the font texture and font .yy file stored within project files. This function is intended for use with games that would like to support moddable content or for writing external editors that need to hook into project assets.
+
+!> This function is *not* a replacement for `font_add()` and will not inherently handle dynamic glyph creation.
