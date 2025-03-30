@@ -162,8 +162,6 @@ function __scribble_initialize()
         //External sound reference storage
         __external_sprite_map = ds_map_create();
         __external_sound_map  = ds_map_create();
-        __sprite_lookup_func  = asset_get_index;
-        __sound_lookup_func   = asset_get_index;
         
         //Lookup for user-defined macros
         __macros_map = ds_map_create();

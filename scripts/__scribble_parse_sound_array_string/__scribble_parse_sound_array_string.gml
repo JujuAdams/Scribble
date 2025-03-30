@@ -4,8 +4,6 @@ function __scribble_parse_sound_array_string(_string)
 {
     static _system  = __scribble_initialize();
     static _external_sound_map = _system.__external_sound_map;
-    var _sound_lookup_func = _system.__sound_lookup_func;
-    
     
     var _sound_array_string = string_trim_start(_string);
     
@@ -26,7 +24,7 @@ function __scribble_parse_sound_array_string(_string)
         {
             var _sound_name = _sound_array[_i];
             
-            var _sound = _external_sound_map[? _sound_name] ?? _sound_lookup_func(_sound_name);
+            var _sound = _external_sound_map[? _sound_name] ?? asset_get_index(_sound_name);
             if (audio_exists(_sound))
             {
                 _sound_array[_i] = _sound;
@@ -43,6 +41,6 @@ function __scribble_parse_sound_array_string(_string)
     }
     else
     {
-        return _sound_lookup_func(_string);
+        return asset_get_index(_string);
     }
 }

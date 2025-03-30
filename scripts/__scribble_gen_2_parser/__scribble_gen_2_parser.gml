@@ -176,9 +176,6 @@ function __scribble_gen_2_parser()
     static _generator_state       = _system.__generator_state;
     static _sprite_whitelist_map  = _system.__state.__sprite_whitelist_map;
     
-    var _sprite_lookup_func = _system.__sprite_lookup_func;
-    var _sound_lookup_func  = _system.__sound_lookup_func;
-    
     with(_generator_state)
     {
         var _glyph_grid     = __glyph_grid;
@@ -1047,7 +1044,7 @@ function __scribble_gen_2_parser()
                             }
                             else
                             {
-                                var _sprite_index = _external_sprite_map[? _tag_command_name] ?? _sprite_lookup_func(_tag_command_name); 
+                                var _sprite_index = _external_sprite_map[? _tag_command_name] ?? asset_get_index(_tag_command_name); 
                                 if (sprite_exists(_sprite_index))
                                 {
                                     #region Sprite

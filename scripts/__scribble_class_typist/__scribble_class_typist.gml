@@ -483,8 +483,6 @@ function __scribble_class_typist(_per_line) constructor
         static _system = __scribble_initialize();
         static _typewriter_events_map = _system.__typewriter_events_map;
         
-        var _sound_lookup_func = _system.__sound_lookup_func;
-        
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
         //We return <true> if there have been no pausing behaviours called i.e. [pause] and [delay]
         //We return <false> immediately if we do run into pausing behaviours
@@ -557,7 +555,7 @@ function __scribble_class_typist(_per_line) constructor
                     {
                         var _asset = _event_data[0];
                         
-                        if (is_string(_asset)) _asset = _sound_lookup_func(_asset);
+                        if (is_string(_asset)) _asset = asset_get_index(_asset);
                         if (audio_exists(_asset))
                         {
                             __scribble_play_sound(_asset, __sound_tag_gain, 1);
@@ -606,7 +604,6 @@ function __scribble_class_typist(_per_line) constructor
     {
         static _system = __scribble_initialize();
         static _external_sound_map = _system.__external_sound_map;
-        var _sound_lookup_func = _system.__sound_lookup_func;
         
         var _sound_array = __sound_array;
         if (is_array(_sound_array) && (array_length(_sound_array) > 0))
@@ -639,7 +636,7 @@ function __scribble_class_typist(_per_line) constructor
                 var _audio_asset = _sound_array[floor(__scribble_random()*array_length(_sound_array))];
                 if (is_string(_audio_asset))
                 {
-                    var _audio_asset = _external_sound_map[? _audio_asset] ?? _sound_lookup_func(_audio_asset);
+                    var _audio_asset = _external_sound_map[? _audio_asset] ?? asset_get_index(_audio_asset);
                 }
                 
                 if (audio_exists(_audio_asset))
