@@ -45,9 +45,14 @@
 #macro SCRIBBLE_SDF_BORDER_TRIM                0          //Edge trimming around the bounding box for SDF glyphs (in pixels). This is useful for tidying up any glitches when scaling
 #macro SCRIBBLE_ALWAYS_DOUBLE_DRAW             false      //Whether to force double-draw behaviour. This is useful for fixing problems with SDF glyph outline overlap
 
-#macro SCRIBBLE_COMMAND_TAG_OPEN          ord("[") //Character used to open a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_CLOSE         ord("]") //Character used to close a command tag. First 127 ASCII chars only
-#macro SCRIBBLE_COMMAND_TAG_ARGUMENT      ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
+//What function to use to play audio from Scribble. This function is called using the same
+//parameters as `audio_play_sound()`:
+//  `SCRIBBLE_AUDIO_PLAY_FUNCTION(sound, 1, false, gain, 0, pitch)`
+#macro SCRIBBLE_AUDIO_PLAY_FUNCTION  audio_play_sound
+
+#macro SCRIBBLE_COMMAND_TAG_OPEN      ord("[") //Character used to open a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_CLOSE     ord("]") //Character used to close a command tag. First 127 ASCII chars only
+#macro SCRIBBLE_COMMAND_TAG_ARGUMENT  ord(",") //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only
 
 #macro SCRIBBLE_DRAW_RETURNS_SELF         false    //Whether the .draw() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
 #macro SCRIBBLE_BUILD_RETURNS_SELF        false    //Whether the .build() method for text element returns <self>. This defaults to <false> to avoid unintentional misuse
