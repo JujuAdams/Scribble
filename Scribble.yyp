@@ -13,7 +13,6 @@
     {"$GMFolder":"","%Name":"Examples","folderPath":"folders/Examples.yy","name":"Examples","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Fonts","folderPath":"folders/Fonts.yy","name":"Fonts","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Mallangche","folderPath":"folders/Fonts/Mallangche.yy","name":"Mallangche","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"Texture","folderPath":"folders/Test Cases/Texture.yy","name":"Texture","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Scribble","folderPath":"folders/Scribble.yy","name":"Scribble","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"(System - don't call these functions)","folderPath":"folders/Scribble/(System - don't call these functions).yy","name":"(System - don't call these functions)","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Classes","folderPath":"folders/Scribble/(System - don't call these functions)/Classes.yy","name":"Classes","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -54,6 +53,7 @@
     {"$GMFolder":"","%Name":"Regions","folderPath":"folders/Test Cases/Regions.yy","name":"Regions","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"SDF","folderPath":"folders/Test Cases/SDF.yy","name":"SDF","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Text Element Methods","folderPath":"folders/Test Cases/Text Element Methods.yy","name":"Text Element Methods","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Texture","folderPath":"folders/Test Cases/Texture.yy","name":"Texture","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Typewriter","folderPath":"folders/Test Cases/Typewriter.yy","name":"Typewriter","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Wrapping","folderPath":"folders/Test Cases/Wrapping.yy","name":"Wrapping","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
@@ -67,7 +67,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.11.0.179",
+    "IDEVersion":"2024.8.1.171",
   },
   "name":"Scribble",
   "resources":[

@@ -1,7 +1,6 @@
 {
   "FolderOrderSettings":[
     {"name":"Mallangche","order":1,"path":"folders/Fonts/Mallangche.yy",},
-    {"name":"Texture","order":18,"path":"folders/Test Cases/Texture.yy",},
     {"name":"(System - don't call these functions)","order":3,"path":"folders/Scribble/(System - don't call these functions).yy",},
     {"name":"Classes","order":1,"path":"folders/Scribble/(System - don't call these functions)/Classes.yy",},
     {"name":"Deprecated","order":2,"path":"folders/Scribble/(System - don't call these functions)/Deprecated.yy",},
@@ -33,6 +32,7 @@
     {"name":"Regions","order":11,"path":"folders/Test Cases/Regions.yy",},
     {"name":"SDF","order":12,"path":"folders/Test Cases/SDF.yy",},
     {"name":"Text Element Methods","order":13,"path":"folders/Test Cases/Text Element Methods.yy",},
+    {"name":"Texture","order":18,"path":"folders/Test Cases/Texture.yy",},
     {"name":"Typewriter","order":14,"path":"folders/Test Cases/Typewriter.yy",},
     {"name":"Wrapping","order":15,"path":"folders/Test Cases/Wrapping.yy",},
   ],
