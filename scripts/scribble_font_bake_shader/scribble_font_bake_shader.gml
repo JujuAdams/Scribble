@@ -81,20 +81,20 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     repeat(_glyph_count)
     {
         var _texture = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.TEXTURE];
-        var _width   = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.WIDTH  ];
-        var _height  = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.HEIGHT ];
-        var _u0      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U0     ];
-        var _v0      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V0     ];
-        var _u1      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U1     ];
-        var _v1      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V1     ];
         
         //Ignore any glyphs with invalid textures
-        //Due to HTML5 being dogshit, we can't use is_ptr()
-        if (is_numeric(_texture) || is_undefined(_texture))
+        if (_texture == undefined)
         {
             ++_i;
             continue;
         }
+        
+        var _width  = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.WIDTH  ];
+        var _height = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.HEIGHT ];
+        var _u0     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U0     ];
+        var _v0     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V0     ];
+        var _u1     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U1     ];
+        var _v1     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V1     ];
         
         var _width_ext  = _width  + _outline + _l_pad + _r_pad;
         var _height_ext = _height + _outline + _t_pad + _b_pad;
