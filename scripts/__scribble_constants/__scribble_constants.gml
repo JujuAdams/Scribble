@@ -60,7 +60,7 @@ enum SCRIBBLE_GLYPH
     LEFT_OFFSET,           // 9
     FONT_SCALE,            //10
                            //  
-    TEXTURE,               //11
+    MATERIAL,              //11
     U0,                    //12
     U1,                    //13
     V0,                    //14

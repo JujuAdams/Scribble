@@ -157,51 +157,9 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_texture_index_or_pointer, _fontName)
+    static __get_vertex_buffer = function(_material)
     {
-        //FIXME - Due to texture indexes potentially being the same for textures with different rendering properties,
-        //        we need to move over to a material system.
-        
-        if (_fontName == undefined)
-        {
-            //Sprite or surface
-            var _renderType      = __SCRIBBLE_RENDER_RASTER;
-            var _pxrange         = undefined;
-            var _thicknessOffset = undefined;
-            var _bilinear        = SCRIBBLE_SPRITE_BILINEAR_FILTERING;
-        }
-        else
-        {
-            var _fontData        = __scribble_get_font_data(_fontName);
-            var _renderType      = _fontData.__render_type;
-            var _pxrange         = _fontData.__sdf_pxrange;
-            var _thicknessOffset = _fontData.__sdf_thickness_offset;
-            var _bilinear        = _fontData.__bilinear;
-        }
-        
-        var _pointer_string = string(_texture_index_or_pointer);
-        
-        if (!__SCRIBBLE_ON_WEB)
-        {
-            var _data = __texture_to_vertex_buffer_dict[$ _pointer_string];
-        }
-        else //FIXME - Workaround for pointers not being stringified properly on HTML5
-        {
-            var _data = undefined;
-            var _i = 0;
-            repeat(array_length(__vertex_buffer_array))
-            {
-                var _vbuff_data = __vertex_buffer_array[_i];
-                if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE] == _texture_index_or_pointer)
-                {
-                    _data = _vbuff_data;
-                    break;
-                }
-                
-                ++_i;
-            }
-        }
-        
+        var _data = __texture_to_vertex_buffer_dict[$ _material.__key];
         if (_data == undefined)
         {
             static _vertex_format = undefined;
@@ -223,18 +181,21 @@ function __scribble_class_page() constructor
             array_push(__gc_vbuff_refs, weak_ref_create(self));
             array_push(__gc_vbuff_ids, _vbuff);
             
+            //TODO - Convert this data into just a material reference
+            
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER       ] = _vbuff;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _texture_index_or_pointer;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE           ] = _pxrange;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thicknessOffset;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture_index_or_pointer);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_texture_index_or_pointer);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__RENDER_TYPE         ] = _renderType; //We're using an SDF font if we have no defined SDF range
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR            ] = _bilinear;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _material.__texture;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE           ] = _material.__sdf_pxrange;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _material.__sdf_thickness_offset;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_material.__texture);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_material.__texture);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__RENDER_TYPE         ] = _material.__render_type; //We're using an SDF font if we have no defined SDF range
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR            ] = _material.__bilinear;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__MATERIAL            ] = _material;
             
             __vertex_buffer_array[@ array_length(__vertex_buffer_array)] = _data;
-            if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict[$ _pointer_string] = _data;
+            if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict[$ _material.__key] = _data;
             
             return _vbuff;
         }

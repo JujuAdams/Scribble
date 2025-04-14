@@ -875,7 +875,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
                         
                             //TODO - Add a way to force a regeneration of every text element that contains a given surface
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__TEXTURE      ] = surface_get_texture(_surface);
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__MATERIAL     ] = __scribble_surface_get_material(_surface);
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U0      ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V0      ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U1      ] = 1;
@@ -959,14 +959,14 @@ function __scribble_gen_2_parser()
                         #endregion
                         
                         case 40: // [texture,<index>,<x>,<y>,<w>,<h>]
-                            var _tex_id = real(_tag_parameters[1]);
-                            var _tex_x  = real(_tag_parameters[2]);
-                            var _tex_y  = real(_tag_parameters[3]);
-                            var _tex_w  = real(_tag_parameters[4]);
-                            var _tex_h  = real(_tag_parameters[5]);
+                            var _tex_index = real(_tag_parameters[1]);
+                            var _tex_x     = real(_tag_parameters[2]);
+                            var _tex_y     = real(_tag_parameters[3]);
+                            var _tex_w     = real(_tag_parameters[4]);
+                            var _tex_h     = real(_tag_parameters[5]);
                             
-                            var _texture_tw = texture_get_texel_width(_tex_id);
-                            var _texture_th = texture_get_texel_height(_tex_id);
+                            var _texture_tw = texture_get_texel_width(_tex_index);
+                            var _texture_th = texture_get_texel_height(_tex_index);
                             
                             var _u0 = _tex_x*_texture_tw;
                             var _v0 = _tex_y*_texture_th;
@@ -992,7 +992,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET  ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__SCALE        ] = 1;
                             
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__TEXTURE      ] = _tex_id;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__MATERIAL     ] = __scribble_texture_get_material(_tex_index);
                             //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U0      ] = 0;
                             //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_V0      ] = 0;
                             //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__QUAD_U1      ] = 1;

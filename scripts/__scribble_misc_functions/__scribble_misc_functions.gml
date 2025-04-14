@@ -373,16 +373,17 @@ enum __SCRIBBLE_GLYPH_LAYOUT
 
 enum __SCRIBBLE_VERTEX_BUFFER
 {
-    __VERTEX_BUFFER,        //0
-    __TEXTURE,              //1 - This can be a texture pointer or texture index
-    __SDF_RANGE,            //2
-    __SDF_THICKNESS_OFFSET, //3
-    __TEXEL_WIDTH,          //4
-    __TEXEL_HEIGHT,         //5
-    __RENDER_TYPE,            //6
-    __BUFFER,               //7
-    __BILINEAR,             //8
-    __SIZE                  //9
+    __VERTEX_BUFFER,        // 0
+    __TEXTURE,              // 1 - This can be a texture pointer or texture index
+    __SDF_RANGE,            // 2
+    __SDF_THICKNESS_OFFSET, // 3
+    __TEXEL_WIDTH,          // 4
+    __TEXEL_HEIGHT,         // 5
+    __RENDER_TYPE,          // 6
+    __BUFFER,               // 7
+    __BILINEAR,             // 8
+    __MATERIAL,             // 9
+    __SIZE                  //10
 }
 
 #macro __SCRIBBLE_RENDER_RASTER               0
@@ -423,19 +424,19 @@ enum __SCRIBBLE_ANIM
 
 enum __SCRIBBLE_GEN_GLYPH
 {
-    __UNICODE,               // 0  \  - Can be negative, see below
+    __UNICODE,               // 0  \  - Can be negative if a glyph is sprite/surface/texture
     __BIDI,                  // 1   |
                              //     |
     __X,                     // 2   |
-    __Y,                     // 3   |  This group of enum elements must not change order or be split
-    __WIDTH,                 // 4   |  Be careful of ordering!
-    __HEIGHT,                // 5   |  scribble_font_bake_shader() relies on this
+    __Y,                     // 3   |
+    __WIDTH,                 // 4   |
+    __HEIGHT,                // 5   |
     __FONT_HEIGHT,           // 6   |
-    __SEPARATION,            // 7   |
-    __LEFT_OFFSET,           // 8   |
-    __SCALE,                 // 9   |
+    __SEPARATION,            // 7   |  This group of enum elements must not change order or be split
+    __LEFT_OFFSET,           // 8   |  Be careful of ordering!
+    __SCALE,                 // 9   |  scribble_font_bake_shader() relies on this
                              //     |
-    __TEXTURE,               //10   | - This can be a texture pointer or texture index
+    __MATERIAL,              //10   |
     __QUAD_U0,               //11   |
     __QUAD_U1,               //12   |
     __QUAD_V0,               //13   |
