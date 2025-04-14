@@ -254,7 +254,45 @@ function __scribble_gen_9_write_vbuffs()
             #endregion
             
             var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
-            if (_glyph_ord == __SCRIBBLE_GLYPH_SPRITE)
+            if (_glyph_ord >= 0)
+            {
+                #region Write standard glyph
+                
+                if (SCRIBBLE_ALLOW_TEXT_GETTER)
+                {
+                    __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
+                }
+                
+                if ((_glyph_ord == 0x00) || (_glyph_ord == 0x0A))
+                {
+                    if (_region_name != undefined)
+                    {
+                        var _region_end = (_glyph_ord == 0x00)? _i-1 : _i;
+                        
+                        if (_region_start <= _region_end)
+                        {
+                            //Push a bounding box to the region, if we have one
+                            //N.B. This array is exposed to the end-user via .region_get_bboxes()
+                            array_push(_region_bbox_array, {
+                                x1 : ds_grid_get_min(_vbuff_pos_grid, _region_bbox_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_L, _region_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_L),
+                                y1 : ds_grid_get_min(_vbuff_pos_grid, _region_bbox_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_T, _region_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_T),
+                                x2 : ds_grid_get_max(_vbuff_pos_grid, _region_bbox_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R, _region_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R),
+                                y2 : ds_grid_get_max(_vbuff_pos_grid, _region_bbox_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B, _region_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B),
+                            });
+                        }
+                        
+                        _region_bbox_start = _region_end + 1;
+                    }
+                }
+                else if ((_glyph_ord > 0x20) && (_glyph_ord != 0xA0) && (_glyph_ord != 0x200B))
+                {
+                    __SCRIBBLE_VBUFF_READ_GLYPH;
+                    __SCRIBBLE_VBUFF_WRITE_GLYPH;
+                }
+                
+                #endregion
+            }
+            else if (_glyph_ord == __SCRIBBLE_GLYPH_SPRITE)
             {
                 #region Write sprite
                 
@@ -372,6 +410,8 @@ function __scribble_gen_9_write_vbuffs()
             }
             else if ((_glyph_ord == __SCRIBBLE_GLYPH_SURFACE) || (_glyph_ord == __SCRIBBLE_GLYPH_TEXTURE))
             {
+                #region Write surface or texture
+                
                 if (SCRIBBLE_ALLOW_TEXT_GETTER)
                 {
                     buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
@@ -399,40 +439,8 @@ function __scribble_gen_9_write_vbuffs()
                     _write_colour       = _old_write_colour;
                     _glyph_effect_flags = _old_glyph_effect_flags;
                 }
-            }
-            else //Writing a standard glyph
-            {
-                if (SCRIBBLE_ALLOW_TEXT_GETTER)
-                {
-                    __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
-                }
                 
-                if ((_glyph_ord == 0x00) || (_glyph_ord == 0x0A))
-                {
-                    if (_region_name != undefined)
-                    {
-                        var _region_end = (_glyph_ord == 0x00)? _i-1 : _i;
-                        
-                        if (_region_start <= _region_end)
-                        {
-                            //Push a bounding box to the region, if we have one
-                            //N.B. This array is exposed to the end-user via .region_get_bboxes()
-                            array_push(_region_bbox_array, {
-                                x1 : ds_grid_get_min(_vbuff_pos_grid, _region_bbox_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_L, _region_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_L),
-                                y1 : ds_grid_get_min(_vbuff_pos_grid, _region_bbox_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_T, _region_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_T),
-                                x2 : ds_grid_get_max(_vbuff_pos_grid, _region_bbox_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R, _region_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R),
-                                y2 : ds_grid_get_max(_vbuff_pos_grid, _region_bbox_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B, _region_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B),
-                            });
-                        }
-                        
-                        _region_bbox_start = _region_end + 1;
-                    }
-                }
-                else if ((_glyph_ord > 0x20) && (_glyph_ord != 0xA0) && (_glyph_ord != 0x200B))
-                {
-                    __SCRIBBLE_VBUFF_READ_GLYPH;
-                    __SCRIBBLE_VBUFF_WRITE_GLYPH;
-                }
+                #endregion
             }
             
             ++_i;
