@@ -13,6 +13,7 @@
     {"$GMFolder":"","%Name":"Examples","folderPath":"folders/Examples.yy","name":"Examples","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Fonts","folderPath":"folders/Fonts.yy","name":"Fonts","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Mallangche","folderPath":"folders/Fonts/Mallangche.yy","name":"Mallangche","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Texture","folderPath":"folders/Test Cases/Texture.yy","name":"Texture","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Scribble","folderPath":"folders/Scribble.yy","name":"Scribble","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"(System - don't call these functions)","folderPath":"folders/Scribble/(System - don't call these functions).yy","name":"(System - don't call these functions)","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Classes","folderPath":"folders/Scribble/(System - don't call these functions)/Classes.yy","name":"Classes","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -66,7 +67,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.8.1.171",
+    "IDEVersion":"2024.11.0.179",
   },
   "name":"Scribble",
   "resources":[
@@ -242,6 +243,7 @@
     {"id":{"name":"obj_test_superfont","path":"objects/obj_test_superfont/obj_test_superfont.yy",},},
     {"id":{"name":"obj_test_surface","path":"objects/obj_test_surface/obj_test_surface.yy",},},
     {"id":{"name":"obj_test_template","path":"objects/obj_test_template/obj_test_template.yy",},},
+    {"id":{"name":"obj_test_texture","path":"objects/obj_test_texture/obj_test_texture.yy",},},
     {"id":{"name":"obj_test_thai","path":"objects/obj_test_thai/obj_test_thai.yy",},},
     {"id":{"name":"obj_test_transform","path":"objects/obj_test_transform/obj_test_transform.yy",},},
     {"id":{"name":"obj_test_typewriter_custom","path":"objects/obj_test_typewriter_custom/obj_test_typewriter_custom.yy",},},

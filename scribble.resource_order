@@ -1,6 +1,7 @@
 {
   "FolderOrderSettings":[
     {"name":"Mallangche","order":1,"path":"folders/Fonts/Mallangche.yy",},
+    {"name":"Texture","order":18,"path":"folders/Test Cases/Texture.yy",},
     {"name":"(System - don't call these functions)","order":3,"path":"folders/Scribble/(System - don't call these functions).yy",},
     {"name":"Classes","order":1,"path":"folders/Scribble/(System - don't call these functions)/Classes.yy",},
     {"name":"Deprecated","order":2,"path":"folders/Scribble/(System - don't call these functions)/Deprecated.yy",},
@@ -85,7 +86,7 @@
     {"name":"obj_test_bezier_arabic","order":3,"path":"objects/obj_test_bezier_arabic/obj_test_bezier_arabic.yy",},
     {"name":"obj_test_bilinear_filtering","order":16,"path":"objects/obj_test_bilinear_filtering/obj_test_bilinear_filtering.yy",},
     {"name":"obj_test_blend","order":2,"path":"objects/obj_test_blend/obj_test_blend.yy",},
-    {"name":"obj_test_browser","order":17,"path":"objects/obj_test_browser/obj_test_browser.yy",},
+    {"name":"obj_test_browser","order":16,"path":"objects/obj_test_browser/obj_test_browser.yy",},
     {"name":"obj_test_build","order":3,"path":"objects/obj_test_build/obj_test_build.yy",},
     {"name":"obj_test_colour","order":3,"path":"objects/obj_test_colour/obj_test_colour.yy",},
     {"name":"obj_test_cycle_comparison","order":12,"path":"objects/obj_test_cycle_comparison/obj_test_cycle_comparison.yy",},
@@ -131,7 +132,7 @@
     {"name":"obj_test_line_spacing","order":11,"path":"objects/obj_test_line_spacing/obj_test_line_spacing.yy",},
     {"name":"obj_test_linewrap_single_word","order":1,"path":"objects/obj_test_linewrap_single_word/obj_test_linewrap_single_word.yy",},
     {"name":"obj_test_macros","order":9,"path":"objects/obj_test_macros/obj_test_macros.yy",},
-    {"name":"obj_test_markdown","order":18,"path":"objects/obj_test_markdown/obj_test_markdown.yy",},
+    {"name":"obj_test_markdown","order":17,"path":"objects/obj_test_markdown/obj_test_markdown.yy",},
     {"name":"obj_test_missing_character","order":3,"path":"objects/obj_test_missing_character/obj_test_missing_character.yy",},
     {"name":"obj_test_nbsp_repeat","order":11,"path":"objects/obj_test_nbsp_repeat/obj_test_nbsp_repeat.yy",},
     {"name":"obj_test_nbsp","order":10,"path":"objects/obj_test_nbsp/obj_test_nbsp.yy",},
