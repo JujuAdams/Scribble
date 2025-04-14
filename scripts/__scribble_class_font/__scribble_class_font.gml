@@ -28,7 +28,9 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle) 
     __is_krutidev = false;
     __bilinear    = (__render_type == __SCRIBBLE_RENDER_SDF)? true : undefined;
     
-    __sdf                  = (__render_type == undefined)? undefined : (__render_type == __SCRIBBLE_RENDER_SDF);
+    //TODO - Deprecate the `__sdf` variable
+    __sdf  = (__render_type == undefined)? undefined : (__render_type == __SCRIBBLE_RENDER_SDF);
+    
     __sdf_pxrange          = undefined;
     __sdf_thickness_offset = 0;
     
@@ -46,6 +48,10 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle) 
     __style_bold        = undefined;
     __style_italic      = undefined;
     __style_bold_italic = undefined;
+    
+    
+    
+    
     
     static __copy_to = function(_target, _copy_styles)
     {
