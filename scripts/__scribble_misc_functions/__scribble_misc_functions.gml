@@ -371,21 +371,6 @@ enum __SCRIBBLE_GLYPH_LAYOUT
     __SIZE,    // 5
 }
 
-enum __SCRIBBLE_VERTEX_BUFFER
-{
-    __VERTEX_BUFFER,        // 0
-    __TEXTURE,              // 1 - This can be a texture pointer or texture index
-    __SDF_RANGE,            // 2
-    __SDF_THICKNESS_OFFSET, // 3
-    __TEXEL_WIDTH,          // 4
-    __TEXEL_HEIGHT,         // 5
-    __RENDER_TYPE,          // 6
-    __BUFFER,               // 7
-    __BILINEAR,             // 8
-    __MATERIAL,             // 9
-    __SIZE                  //10
-}
-
 #macro __SCRIBBLE_RENDER_RASTER               0
 #macro __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS  1
 #macro __SCRIBBLE_RENDER_SDF                  2
