@@ -15,8 +15,20 @@
 
 function scribble_external_font_add(_sprite, _image, _json, _font_name = undefined, _is_krutidev = false)
 {
-    var _texture     = sprite_get_texture(_sprite, _image);
-    var _texture_uvs = sprite_get_uvs(_sprite, _image);
+    //Get source image data for the sprite/image that is being used as the glyph stlas for the font
+    var _source_font_info = sprite_get_info(_sprite);
+    var _frame_info = _source_font_info.frames[_image]
+    
+    var _texture_index  = _frame_info.texture;
+    var _texture_width  = texture_get_width(_texture_index);
+    var _texture_height = texture_get_height(_texture_index);
+    
+    var _texture_uvs = [
+        _frame_info.x / _texture_width,
+        _frame_info.y / _texture_height,
+        _frame_info.w / _texture_width,
+        _frame_info.h / _texture_height,
+    ];
     
     if (_font_name == undefined)
     {
@@ -25,6 +37,7 @@ function scribble_external_font_add(_sprite, _image, _json, _font_name = undefin
     
     //Convert the .yy JSON format into the key parts of the `font_get_info()` format that we need
     var _font_info = {
+        texture: _texture_index,
         glyphs: {},
         ascenderOffset: _json.ascenderOffset,
         sdfEnabled: _json.usesSDF,
@@ -57,7 +70,7 @@ function scribble_external_font_add(_sprite, _image, _json, _font_name = undefin
         ++_i;
     }
     
-    __scribble_font_add_from_texture(_font_name, _texture, _texture_uvs, _font_info, _is_krutidev, false);
+    __scribble_font_add_from_info(_font_name, _texture_uvs, _font_info, _is_krutidev, false);
     
     return _font_name;
 }

@@ -298,7 +298,7 @@
     {"id":{"name":"__scribble_constants","path":"scripts/__scribble_constants/__scribble_constants.yy",},},
     {"id":{"name":"__scribble_font_add_all_from_bundle","path":"scripts/__scribble_font_add_all_from_bundle/__scribble_font_add_all_from_bundle.yy",},},
     {"id":{"name":"__scribble_font_add_from_bundle","path":"scripts/__scribble_font_add_from_bundle/__scribble_font_add_from_bundle.yy",},},
-    {"id":{"name":"__scribble_font_add_from_texture","path":"scripts/__scribble_font_add_from_texture/__scribble_font_add_from_texture.yy",},},
+    {"id":{"name":"__scribble_font_add_from_info","path":"scripts/__scribble_font_add_from_info/__scribble_font_add_from_info.yy",},},
     {"id":{"name":"__scribble_font_add_sprite","path":"scripts/__scribble_font_add_sprite/__scribble_font_add_sprite.yy",},},
     {"id":{"name":"__scribble_gen_1_model_limits_and_bezier_curves","path":"scripts/__scribble_gen_1_model_limits_and_bezier_curves/__scribble_gen_1_model_limits_and_bezier_curves.yy",},},
     {"id":{"name":"__scribble_gen_10_set_padding_flags","path":"scripts/__scribble_gen_10_set_padding_flags/__scribble_gen_10_set_padding_flags.yy",},},
