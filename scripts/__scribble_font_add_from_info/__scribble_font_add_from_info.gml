@@ -9,6 +9,7 @@
 function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _is_krutidev, _from_bundle)
 {
     static _font_data_map = __scribble_initialize().__font_data_map;
+    
     if (ds_map_exists(_font_data_map, _name))
     {
         __scribble_trace("Warning! A font for \"", _name, "\" has already been added. Destroying the old font and creating a new one");
@@ -83,7 +84,7 @@ function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _is_krut
             var _sdf_height_offset    = 0;
         }
         
-        var _font_data = new __scribble_class_font(_name, _size, _sdf? __SCRIBBLE_FONT_TYPE.__SDF : __SCRIBBLE_FONT_TYPE.__RASTER);
+        var _font_data = new __scribble_class_font(_name, _size, _sdf? __SCRIBBLE_FONT_TYPE.__SDF : __SCRIBBLE_FONT_TYPE.__RASTER, _from_bundle);
         _font_data.__sdf_pxrange          = _sdf_pxrange;
         _font_data.__sdf_thickness_offset = _sdf_thickness_offset;
         

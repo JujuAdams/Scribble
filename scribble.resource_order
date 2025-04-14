@@ -283,6 +283,8 @@
     {"name":"scribble_default_preprocessor_get","order":10,"path":"scripts/scribble_default_preprocessor_get/scribble_default_preprocessor_get.yy",},
     {"name":"scribble_default_preprocessor_set","order":9,"path":"scripts/scribble_default_preprocessor_set/scribble_default_preprocessor_set.yy",},
     {"name":"scribble_external_font_add","order":6,"path":"scripts/scribble_external_font_add/scribble_external_font_add.yy",},
+    {"name":"scribble_external_font_exists","order":8,"path":"scripts/scribble_external_font_exists/scribble_external_font_exists.yy",},
+    {"name":"scribble_external_font_remove","order":7,"path":"scripts/scribble_external_font_remove/scribble_external_font_remove.yy",},
     {"name":"scribble_external_sound_exists","order":2,"path":"scripts/scribble_external_sound_exists/scribble_external_sound_exists.yy",},
     {"name":"scribble_external_sound_remove","order":1,"path":"scripts/scribble_external_sound_remove/scribble_external_sound_remove.yy",},
     {"name":"scribble_external_sprite_add","order":3,"path":"scripts/scribble_external_sprite_add/scribble_external_sprite_add.yy",},

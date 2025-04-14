@@ -1,12 +1,22 @@
 // Feather disable all
+
 /// @param fontName
 /// @param glyphCount
 /// @param fontType
+/// @param fromBundle
 
-function __scribble_class_font(_name, _glyph_count, _font_type) constructor
+function __scribble_class_font(_name, _glyph_count, _font_type, _from_bundle) constructor
 {
-    __name     = _name;
-    __fontType = _font_type;
+    //The name of the font. This is the alias used to reference the font elsewhere
+    __name = _name;
+    
+    //Member of the `__SCRIBBLE_FONT_TYPE` enum. Largely used to determine which shader path to use
+    __fontType = _font_type; //FIXME: Why is this camelCase, Juju?
+    
+    //Whether the source texture data exists in the asset bundle. If set to `false`, the source
+    //texture data was added at runtime (probably with `sprite_add()`). This value can be `undefined`
+    //if the origin is not known (typically spritefonts).
+    __from_bundle = _from_bundle;
     
     static _font_data_map = __scribble_initialize().__font_data_map;
     _font_data_map[? _name] = self;
@@ -52,7 +62,9 @@ function __scribble_class_font(_name, _glyph_count, _font_type) constructor
             {
                 ds_grid_copy(_target.__glyph_data_grid, __glyph_data_grid);
             }
-            else if ((_name != "__name") && (_copy_styles || ((_name != "__style_regular") && (_name != "__style_bold") && (_name != "__style_italic") && (_name != "__style_bold_italic"))))
+            else if ((_name != "__name")
+                  && (_name != "__from_bundle")
+                  && (_copy_styles || ((_name != "__style_regular") && (_name != "__style_bold") && (_name != "__style_italic") && (_name != "__style_bold_italic"))))
             {
                 variable_struct_set(_target, _name, variable_struct_get(self, _name));
             }

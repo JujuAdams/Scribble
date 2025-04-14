@@ -2,7 +2,8 @@
 
 /// Adds a font to Scribble using the font texture and font .yy file stored within project files.
 /// This function is intended for use with games that would like to support moddable content or
-/// for writing external editors that need to hook into project assets.
+/// for writing external editors that need to hook into project assets. This function returns
+/// the name of the font that has been added.
 /// 
 /// N.B. This function is *not* a replacement for `font_add()` and will not inherently handle
 ///      dynamic glyph creation.
