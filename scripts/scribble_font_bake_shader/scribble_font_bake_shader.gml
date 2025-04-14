@@ -48,7 +48,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         return undefined;
     }
     
-    if (_src_font_data.__sdf)
+    if (_src_font_data.__render_type == __SCRIBBLE_RENDER_SDF)
     {
         __scribble_error("Source font cannot be an SDF font");
         return undefined;
@@ -235,7 +235,6 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, _glyph_count-1, SCRIBBLE_GLYPH.FONT_HEIGHT, _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.SEPARATION,  _glyph_count-1, SCRIBBLE_GLYPH.SEPARATION,  _separation);
     ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.MATERIAL,    _glyph_count-1, SCRIBBLE_GLYPH.MATERIAL,    _new_material);
-    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.FONT_NAME,   _glyph_count-1, SCRIBBLE_GLYPH.FONT_NAME,   _new_font_name);
     
     //Figure out the new UVs using some bulk commands
     var _sprite_uvs = sprite_get_uvs(_sprite, 0);

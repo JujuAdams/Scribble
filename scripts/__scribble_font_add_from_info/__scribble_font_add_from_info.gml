@@ -209,7 +209,6 @@ function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _is_krut
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U1         ] = _u1;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V0         ] = _v0;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1         ] = _v1;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_NAME  ] = _name;
             
             _font_glyphs_map[? _unicode] = _i;
             

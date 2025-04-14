@@ -425,18 +425,16 @@ enum __SCRIBBLE_GEN_GLYPH
     __QUAD_U0,               //11   |
     __QUAD_U1,               //12   |
     __QUAD_V0,               //13   |
-    __QUAD_V1,               //14   |
-                             //     |
-    __FONT_NAME,             //15  /
+    __QUAD_V1,               //14  /
     
-    __CONTROL_COUNT,         //16
-    __ANIMATION_INDEX,       //17
+    __CONTROL_COUNT,         //15
+    __ANIMATION_INDEX,       //16
                       
-    __SPRITE_INDEX,          //18  \
-    __IMAGE_INDEX,           //19   | Only used for sprites
-    __IMAGE_SPEED,           //20  /
+    __SPRITE_INDEX,          //17  \
+    __IMAGE_INDEX,           //18   | Only used for sprites
+    __IMAGE_SPEED,           //19  /
                       
-    __SIZE,                  //21
+    __SIZE,                  //20
 }
 
 enum __SCRIBBLE_GEN_VBUFF_POS
