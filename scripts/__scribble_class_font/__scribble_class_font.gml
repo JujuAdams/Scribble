@@ -2,16 +2,16 @@
 
 /// @param fontName
 /// @param glyphCount
-/// @param fontType
+/// @param renderType
 /// @param fromBundle
 
-function __scribble_class_font(_name, _glyph_count, _font_type, _from_bundle) constructor
+function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle) constructor
 {
     //The name of the font. This is the alias used to reference the font elsewhere
     __name = _name;
     
-    //Member of the `__SCRIBBLE_FONT_TYPE` enum. Largely used to determine which shader path to use
-    __fontType = _font_type; //FIXME: Why is this camelCase, Juju?
+    //One of the `__SCRIBBLE_RENDER_*` macros. Largely used to determine which shader path to use
+    __render_type = _render_type; //FIXME: Why is this camelCase, Juju?
     
     //Whether the source texture data exists in the asset bundle. If set to `false`, the source
     //texture data was added at runtime (probably with `sprite_add()`). This value can be `undefined`
@@ -26,9 +26,9 @@ function __scribble_class_font(_name, _glyph_count, _font_type, _from_bundle) co
     __kerning_map     = ds_map_create();
     
     __is_krutidev = false;
-    __bilinear    = (_font_type == __SCRIBBLE_FONT_TYPE.__SDF)? true : undefined;
+    __bilinear    = (__render_type == __SCRIBBLE_RENDER_SDF)? true : undefined;
     
-    __sdf                  = (_font_type == undefined)? undefined : (_font_type == __SCRIBBLE_FONT_TYPE.__SDF);
+    __sdf                  = (__render_type == undefined)? undefined : (__render_type == __SCRIBBLE_RENDER_SDF);
     __sdf_pxrange          = undefined;
     __sdf_thickness_offset = 0;
     

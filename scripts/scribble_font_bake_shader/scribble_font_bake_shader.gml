@@ -42,9 +42,9 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         return undefined;
     }
     
-    if (_src_font_data.__fontType == __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS)
+    if (_src_font_data.__render_type == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
     {
-        __scribble_error("Source font cannot already have been modified by scribble_font_bake_outline_and_shadow()");
+        __scribble_error("Source font cannot already have been modified by `scribble_font_bake_outline_and_shadow()`");
         return undefined;
     }
     
@@ -66,7 +66,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
     _src_font_data.__copy_to(_new_font_data, false);
     
-    if (_markAsRasterEffect) _new_font_data.__fontType = __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS;
+    if (_markAsRasterEffect) _new_font_data.__render_type = __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS;
     
     
     

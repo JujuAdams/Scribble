@@ -67,7 +67,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     
     var _size = array_length(_info_glyph_names);
     
-    var _font_data = new __scribble_class_font(_sprite_name, _size, __SCRIBBLE_FONT_TYPE.__RASTER, undefined);
+    var _font_data = new __scribble_class_font(_sprite_name, _size, __SCRIBBLE_RENDER_RASTER, undefined);
     var _font_glyphs_map      = _font_data.__glyphs_map;
     var _font_glyph_data_grid = _font_data.__glyph_data_grid;
     if (_is_krutidev) _font_data.__is_krutidev = true;

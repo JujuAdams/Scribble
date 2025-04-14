@@ -379,18 +379,15 @@ enum __SCRIBBLE_VERTEX_BUFFER
     __SDF_THICKNESS_OFFSET, //3
     __TEXEL_WIDTH,          //4
     __TEXEL_HEIGHT,         //5
-    __FONT_TYPE,            //6
+    __RENDER_TYPE,            //6
     __BUFFER,               //7
     __BILINEAR,             //8
     __SIZE                  //9
 }
 
-enum __SCRIBBLE_FONT_TYPE
-{
-    __RASTER,
-    __RASTER_WITH_EFFECTS,
-    __SDF,
-}
+#macro __SCRIBBLE_RENDER_RASTER               0
+#macro __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS  1
+#macro __SCRIBBLE_RENDER_SDF                  2
 
 enum __SCRIBBLE_ANIM
 {
