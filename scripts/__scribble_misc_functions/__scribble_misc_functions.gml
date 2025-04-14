@@ -481,6 +481,7 @@ enum __SCRIBBLE_GEN_CONTROL_TYPE
 //These can be used for ORD
 #macro  __SCRIBBLE_GLYPH_SPRITE   -1
 #macro  __SCRIBBLE_GLYPH_SURFACE  -2
+#macro  __SCRIBBLE_GLYPH_TEXTURE  -3
 
 enum __SCRIBBLE_GEN_CONTROL
 {
