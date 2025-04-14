@@ -402,8 +402,8 @@ function __scribble_gen_9_write_vbuffs()
             }
             else if (_glyph_ord == __SCRIBBLE_GLYPH_TEXTURE)
             {
-				//arguably this could be in the same check as surface, but for future distinction better to seporate the code.
-				
+                //arguably this could be in the same check as surface, but for future distinction better to seporate the code.
+                
                 if (SCRIBBLE_ALLOW_TEXT_GETTER)
                 {
                     buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
