@@ -157,8 +157,11 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_texture, _fontName)
+    static __get_vertex_buffer = function(_texture_index_or_pointer, _fontName)
     {
+        //FIXME - Due to texture indexes potentially being the same for textures with different rendering properties,
+        //        we need to move over to a material system.
+        
         if (_fontName == undefined)
         {
             //Sprite or surface
@@ -176,7 +179,7 @@ function __scribble_class_page() constructor
             var _bilinear        = _fontData.__bilinear;
         }
         
-        var _pointer_string = string(_texture);
+        var _pointer_string = string(_texture_index_or_pointer);
         
         if (!__SCRIBBLE_ON_WEB)
         {
@@ -189,7 +192,7 @@ function __scribble_class_page() constructor
             repeat(array_length(__vertex_buffer_array))
             {
                 var _vbuff_data = __vertex_buffer_array[_i];
-                if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE] == _texture)
+                if (_vbuff_data[__SCRIBBLE_VERTEX_BUFFER.__TEXTURE] == _texture_index_or_pointer)
                 {
                     _data = _vbuff_data;
                     break;
@@ -222,11 +225,11 @@ function __scribble_class_page() constructor
             
             var _data = array_create(__SCRIBBLE_VERTEX_BUFFER.__SIZE);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__VERTEX_BUFFER       ] = _vbuff;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _texture;
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXTURE             ] = _texture_index_or_pointer;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_RANGE           ] = _pxrange;
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__SDF_THICKNESS_OFFSET] = _thicknessOffset;
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture);
-            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_texture);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_WIDTH         ] = texture_get_texel_width(_texture_index_or_pointer);
+            _data[@ __SCRIBBLE_VERTEX_BUFFER.__TEXEL_HEIGHT        ] = texture_get_texel_height(_texture_index_or_pointer);
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__FONT_TYPE           ] = _fontType; //We're using an SDF font if we have no defined SDF range
             _data[@ __SCRIBBLE_VERTEX_BUFFER.__BILINEAR            ] = _bilinear;
             

@@ -103,6 +103,7 @@ function __scribble_initialize()
         
         //Main lookup for fonts
         __font_data_map = ds_map_create();
+        __sprite_texture_index_map = ds_map_create();
         
         //Multi-use buffers
         __buffer_a = buffer_create(1024, buffer_grow, 1);

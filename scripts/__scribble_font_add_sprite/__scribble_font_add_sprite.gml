@@ -129,17 +129,6 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         {
             var _image_info = _sprite_frames[_image];
             
-            //Convert the texture index to a texture pointer
-            var _texture_index = _image_info.texture;
-            
-            static _tex_index_lookup_map = ds_map_create();
-            var _texture = _tex_index_lookup_map[? _texture_index];
-            if (_texture == undefined)
-            {
-                _texture = sprite_get_texture(_sprite, _image);
-                _tex_index_lookup_map[? _texture_index] = _texture;
-            }
-            
             if (_proportional)
             {
                 var _x_offset = 0;
@@ -208,7 +197,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.LEFT_OFFSET] = -_x_offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE ] = 1;
             
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE    ] = _texture;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXTURE    ] = _image_info.texture;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0         ] = _uvs[0];
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V0         ] = _uvs[1];
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U1         ] = _uvs[2];

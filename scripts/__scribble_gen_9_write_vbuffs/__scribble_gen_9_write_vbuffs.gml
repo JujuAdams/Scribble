@@ -360,7 +360,7 @@ function __scribble_gen_9_write_vbuffs()
                 var _j = _image_index;
                 repeat((_image_speed > 0)? _sprite_number : 1) //Only draw one image if we have an image speed of 0 since we're not animating
                 {
-                    var _glyph_texture = sprite_get_texture(_sprite_index, _j);
+                    var _glyph_texture = __scribble_sprite_get_texture_index(_sprite_index, _j);
                     
                     var _uvs = sprite_get_uvs(_sprite_index, _j);
                     var _quad_u0 = _uvs[0];
@@ -372,7 +372,7 @@ function __scribble_gen_9_write_vbuffs()
                     var _quad_t = floor(_glyph_y + _uvs[5]/_glyph_yscale);
                     var _quad_r = _quad_l + _uvs[6]*_glyph_width;
                     
-                    if (!__SCRIBBLE_ON_WEB)
+                    if (not __SCRIBBLE_ON_WEB)
                     {
                         var _quad_b = _quad_t + _uvs[7]*_glyph_height;
                     }
