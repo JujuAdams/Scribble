@@ -1,7 +1,7 @@
 // Feather disable all
-/// @param minScale  Jitter minimum scale. Unlike SCRIBBLE_DEFAULT_PULSE_SCALE this is not an offset
-/// @param maxScale  Jitter maximum scale. Unlike SCRIBBLE_DEFAULT_PULSE_SCALE this is not an offset
-/// @param speed     Jitter speed. Larger values cause glyph scales to fluctuate faster
+/// @param {Real} minScale  Jitter minimum scale. Unlike SCRIBBLE_DEFAULT_PULSE_SCALE this is not an offset
+/// @param {Real} maxScale  Jitter maximum scale. Unlike SCRIBBLE_DEFAULT_PULSE_SCALE this is not an offset
+/// @param {Real} speed     Jitter speed. Larger values cause glyph scales to fluctuate faster
 
 function scribble_anim_jitter(_min_scale, _max_scale, _speed)
 {

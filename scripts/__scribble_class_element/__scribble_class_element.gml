@@ -1,6 +1,6 @@
 // Feather disable all
-/// @param string
-/// @param uniqueID
+/// @param {String} string
+/// @param {String} uniqueID
 
 function __scribble_class_element(_string, _unique_id) constructor
 {
@@ -155,9 +155,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Basics
     
-    /// @param x
-    /// @param y
-    /// @param [typist]
+    /// @param {real} x							x position in the room to draw at
+    /// @param {real} y							y position in the room to draw at
+    /// @param {Id.Scribble.typist} [typist]	Optional. Typist being used to render the text element. See scribble_typist() for more information.
+	/// @returns {Id.Scribble.element}
     static draw = function(_x, _y, _typist = undefined)
     {
         static _scribble_state = __scribble_initialize().__state;
@@ -218,8 +219,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
     }
     
-    /// @param fontName
-    /// @param colour
+    /// @param {string} fontName						Name of the starting font, as a string. This is the font that is set when [/] or [/font] is used in a string
+    /// @param {Real.Int|Constant.Colour} colour	Starting colour in the standard GameMaker 24-bit BGR format. This is the colour that is set when [/] or [/color] is used in a string
+	/// @returns {Id.Scribble.element}
     static starting_format = function(_font_name, _in_colour)
     {
         if (is_string(_font_name))
@@ -248,8 +250,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param halign
-    /// @param valign
+    /// @param {Constant.HAlign} halign		Starting horizontal alignment of each line of text. Accepts fa_left, fa_right, and fa_center
+    /// @param {Constant.VAlign} valign		Starting vertical alignment of the entire textbox. Accepts fa_top, fa_bottom, and fa_middle
+	/// @returns {Id.Scribble.element}
     static align = function(_halign = __starting_halign, _valign = __starting_valign)
     {
         if (_halign == "pin_left"  ) _halign = __SCRIBBLE_PIN_LEFT;
@@ -277,8 +280,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param colour
-    /// @param alpha
+    /// @param {Real.Int|Constant.Colour} colour	Blend colour used when drawing text, applied multiplicatively
+    /// @param {Real.Float} alpha						Alpha used when drawing text, 0 being fully transparent and 1 being fully opaque
+	/// @returns {Id.Scribble.element}
     static blend = function(_colour, _alpha)
     {
         static _colors_struct = __scribble_config_colours();
@@ -299,8 +303,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param colour
-    /// @param alpha
+    /// @param {Real.Int|Constant.Colour} colour	Colour of the bottom of the gradient for each glyph
+    /// @param {Real.Float} alpha						Blending factor for the gradient, from 0 (no gradient applied) to 1 (base blend colour of the bottom of each glyph is replaced with colour)
+	/// @returns {Id.Scribble.element}
     static gradient = function(_colour, _alpha)
     {
         static _colors_struct = __scribble_config_colours();
@@ -320,13 +325,15 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @desc	.fog() has been replaced by .flash()
     static fog = function()
     {
         __scribble_error(".fog() has been replaced by .flash()");
     }
     
-    /// @param colour
-    /// @param alpha
+    /// @param {Real.Int|Constant.Colour} colour	Flash colour, in the standard GameMaker 24-bit BGR format
+    /// @param {Real.Float} alpha						Blending factor for the flash, from 0 to 1
+	/// @returns {Id.Scribble.element}
     static flash = function(_colour, _alpha)
     {
         static _colors_struct = __scribble_config_colours();
@@ -352,8 +359,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Layout
     
-    /// @param xOffset
-    /// @param yOffset
+    /// @param {real} xOffset	x-coordinate of the origin, in model space
+    /// @param {real} yOffset	y-coordinate of the origin, in model space
+	/// @returns {Id.Scribble.element}
     static origin = function(_x, _y)
     {
         if ((__origin_x != _x) || (__origin_y != _y))
@@ -368,9 +376,10 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param xScale
-    /// @param [yScale=xScale]
-    /// @param [angle=0]
+    /// @param {Real} xscale			x scale of the text element
+    /// @param {Real} [yScale=xScale]	y scale of the text element
+    /// @param {Real} [angle=0]		rotation angle of the text element
+	/// @returns {Id.Scribble.element}
     static transform = function(_xscale, _yscale = _xscale, _angle = 0)
     {
         if ((__post_xscale != _xscale) || (__post_yscale != _yscale) || (__post_angle != _angle))
@@ -386,7 +395,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param scale
+    /// @param {Real} scale		Scaling factor to apply to the text element. 1.0 represents no change in scale
+	/// @returns {Id.Scribble.element}
     static scale = function(_scale)
     {
         if (__pre_scale != _scale)
@@ -400,6 +410,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Real} skewX		Skew factor contributed by x-coordinate of glyphs in the text element. A value is 0 confers no skewing
+    /// @param {Real} skewY		Skew factor contributed by y-coordinate of glyphs in the text element. A value of 0 confers no skewing
+    /// @returns {Id.Scribble.element}
     static skew = function(_skew_x, _skew_y)
     {
         __skew_x = _skew_x;
@@ -408,9 +421,10 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param maxWidth
-    /// @param maxHeight
-    /// @param [maximise=false]
+    /// @param {Real} maxWidth			Maximum width of the bounding box to fit the text into. Use a negative number (the default) for no limit
+    /// @param {Real} maxHeight			Maximum height of the bounding box to fit the text into. Use a negative number (the default) for no limit
+    /// @param {Bool} [maximise=false]	Allows the scaling algorithm to increase the scale as well as decreasing. Defaults to false
+	/// @returns {Id.Scribble.element}
     static scale_to_box = function(_max_width, _max_height, _maximise = false)
     {
         _max_width  = ((_max_width  == undefined) || (_max_width  < 0))? 0 : _max_width;
@@ -427,9 +441,10 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param maxWidth
-    /// @param [maxHeight=-1]
-    /// @param [characterWrap=false]
+    /// @param {Real.Int} maxWidth				Maximum width for the whole textbox. Use a negative number (the default) for no limit
+    /// @param {Real.Int} [maxHeight=-1]		Maximum height for the whole textbox. Use a negative number (the default) for no limit
+    /// @param {Bool} [characterWrap=false]	Whether to wrap text per character (rather than per word). Defaults to false. This is useful for tight textboxes and some East Asian languages
+	/// @returns {Id.Scribble.element}
     static wrap = function(_wrap_max_width, _wrap_max_height = -1, _wrap_per_char = false)
     {
         if (!__wrap_apply
@@ -454,10 +469,11 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param maxWidth
-    /// @param maxHeight
-    /// @param [characterWrap=false]
-    /// @param [maxScale=1]
+    /// @param {Real.Int} maxWidth			Maximum width for the whole textbox
+    /// @param {Real.Int} maxHeight			Maximum height for the whole textbox
+    /// @param {Bool} [characterWrap=false]	Whether to wrap text per character (rather than per word). Defaults to false. This is useful for very tight textboxes and some East Asian languages
+    /// @param {Real} [maxScale=1]			
+	/// @returns {Id.Scribble.element}
     static fit_to_box = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false, _wrap_max_scale = 1)
     {
         if (!__wrap_apply
@@ -483,6 +499,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Real.Int} width		Width to use for pin-type alignments. Use a negative number (the default) to use the width of the text instead of a fixed number
+    /// @returns {Id.Scribble.element}
     static pin_guide_width = function(_width)
     {
         if (__wrap_apply
@@ -507,8 +525,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param min
-    /// @param max
+    /// @param {Real} min	Minimum line height for each line of text. Use a negative number (the default) for the height of a space character of the default font
+    /// @param {Real} max	Maximum line height for each line of text. Use a negative number (the default) for no limit
+	/// @returns {Id.Scribble.element}
     static line_height = function(_min, _max)
     {
         if (_min != __line_height_min)
@@ -526,7 +545,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param spacing
+    /// @param {Real|String} spacing	The spacing from one line of text to the next. Can be a number, or a percentage string e.g. "100%"
+	/// @returns {Id.Scribble.element}
     static line_spacing = function(_spacing)
     {
         if (_spacing != __line_spacing)
@@ -538,6 +558,11 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Real} left		Extra space on the left-hand side of the textbox. Positive values create more space
+	/// @param {Real} top		Extra space on the top of the textbox. Positive values create more space
+	/// @param {Real} right		Extra space on the right-hand side of the textbox. Positive values create more space
+	/// @param {Real} bottom	Extra space on the bottom of the textbox. Positive values create more space
+	/// @returns {Id.Scribble.element}
     static padding = function(_l, _t, _r, _b)
     {
         if ((_l != __padding_l) || (_t != __padding_t) || (_r != __padding_r) || (_b != __padding_b))
@@ -556,14 +581,15 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param [x1=0]
-    /// @param [y1=0]
-    /// @param [x2=0]
-    /// @param [y2=0]
-    /// @param [x3=0]
-    /// @param [y3=0]
-    /// @param [x4=0]
-    /// @param [y4=0]
+    /// @param {Real} [x1=0]	Parameter for the cubic Bézier curve
+    /// @param {Real} [y1=0]	Parameter for the cubic Bézier curve
+    /// @param {Real} [x2=0]	Parameter for the cubic Bézier curve
+    /// @param {Real} [y2=0]	Parameter for the cubic Bézier curve
+    /// @param {Real} [x3=0]	Parameter for the cubic Bézier curve
+    /// @param {Real} [y3=0]	Parameter for the cubic Bézier curve
+    /// @param {Real} [x4=0]	Parameter for the cubic Bézier curve
+    /// @param {Real} [y4=0]	Parameter for the cubic Bézier curve
+	/// @returns {Id.Scribble.element}
     static bezier = function(_x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4)
     {
         if (argument_count <= 0)
@@ -608,6 +634,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Bool} state		Whether the overall text direction is right-to-left
+	/// @returns {Id.Scribble.element}
     static right_to_left = function(_state)
     {
         if (_state == undefined)
@@ -634,6 +662,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Regions
     
+	
+	/// @param {Real} elementX	x position of the text element in the room (usually the same as the coordinate you’d specify for .draw())
+	/// @param {Real} elementY	y position of the text element in the room (usually the same as the coordinate you’d specify for .draw())
+	/// @param {Real} pointerX	x position of the mouse/cursor
+	/// @param {Real} pointerY	y position of the mouse/cursor
+	/// @return {String}
     static region_detect = function(_element_x, _element_y, _pointer_x, _pointer_y)
     {
         var _model = __get_model(true);
@@ -675,6 +709,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return _found;
     }
     
+	/// @param {String}		name		Name of the region to highlight. Use undefined to highlight no region
+	/// @param {Real.Int}	colour		Colour to highlight the region (a standard GameMaker BGR colour)
+	/// @param {Real}		blendAmount	Blend factor to apply for the highlighted region
     static region_set_active = function(_name, _colour, _blend_amount)
     {
         if (!is_string(_name))
@@ -713,17 +750,20 @@ function __scribble_class_element(_string, _unique_id) constructor
         __scribble_error("Region \"", _name, "\" not found");
     }
     
+	/// @returns {String}
     static region_get_active = function()
     {
         return __region_active;
     }
     
+	/// @returns {Id.Scribble.element}
     static region_clear = function()
     {
         region_set_active(undefined, undefined, undefined);
         return self;
     }
     
+	/// @returns {Array<Struct>}
     static region_get_bboxes = function()
     {
         static _emptyArray = [];
@@ -855,8 +895,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return __bbox_raw_height;
     }
     
-    /// @param x
-    /// @param y
+    /// @param {real} x
+    /// @param {real} y
     static get_bbox = function(_x = 0, _y = 0)
     {
         __update_bbox_matrix();
@@ -880,9 +920,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         };
     }
     
-    /// @param x
-    /// @param y
-    /// @param [typist]
+    /// @param {real} x
+    /// @param {real} y
+    /// @param {Id.Scribble.typist} [typist]
     static get_bbox_revealed = function(_x, _y, _typist)
     {
         //No typist set up, return the whole bounding box
@@ -977,7 +1017,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Pages
     
-    /// @param page
+    /// @param {Real.Int} page	Page to display, starting at 0 for the first page
+	/// @returns {Id.Scribble.element}
     static page = function(_page)
     {
         var _old_page = __page;
@@ -1010,16 +1051,19 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @returns {Real.Int}
     static get_page = function()
     {
         return __page;
     }
     
+	/// @desc .get_pages() has been replaced by .get_page_count()
     static get_pages = function()
     {
         __scribble_error(".get_pages() has been replaced by .get_page_count()");
     }
     
+	/// @returns {Real.Int}
     static get_page_count = function()
     {
         var _model = __get_model(true);
@@ -1027,6 +1071,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         return _model.__get_page_count();
     }
     
+	/// @returns {Bool}
     static on_last_page = function()
     {
         return (get_page() >= get_page_count() - 1);
@@ -1038,6 +1083,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Other Getters
     
+	/// @return {Bool}
     static get_wrapped = function()
     {
         var _model = __get_model(true);
@@ -1045,7 +1091,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         return _model.__get_wrapped();
     }
     
-    /// @param [page]
+    /// @return {String}
     static get_text = function()
     {
         var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
@@ -1055,7 +1101,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return _model.__get_text(_page);
     }
     
-    /// @param [page]
+	/// @param {Real.Int} glyphIndex	integer	Index of the glyph whose data will be returned
+	/// @param {Real.Int} [page]		integer	Page to get the glyph data from. If not specified, the current page is used
+	/// @return {Struct}
     static get_glyph_data = function()
     {
         var _index = argument[0];
@@ -1066,7 +1114,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return _model.__get_glyph_data(_index, _page);
     }
     
-    /// @param [page]
+	/// @param {Real.Int} page		Page to get the glyph count from. If not specified, the current page is used
+    /// @return {Real.Int}
     static get_glyph_count = function()
     {
         var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
@@ -1076,7 +1125,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         return _model.__get_glyph_count(_page);
     }
     
-    /// @param [page]
+    /// @return {Real.Int}
     static get_line_count = function()
     {
         var _page = ((argument_count > 0) && (argument[0] != undefined))? argument[0] : __page;
@@ -1092,6 +1141,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Typewriter
     
+	/// @param {Id.Scribble.typist} typist		Typist being used to render the text element. See scribble_typist() for more information
+	/// @returns {Id.Scribble.element}
     static pre_update_typist = function(_typist)
     {
         var _function_scope = other;
@@ -1108,6 +1159,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Real.Int} character		The number of characters to reveal
+	/// @returns {Id.Scribble.element}
     static reveal = function(_character)
     {
         if (__tw_reveal != _character)
@@ -1119,6 +1172,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @returns {Real.Int}
     static get_reveal = function()
     {
         return __tw_reveal;
@@ -1130,11 +1184,14 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Animation
     
+	/// @desc	.animation_tick_speed() has been replaced by .animation_speed()
     static animation_tick_speed = function()
     {
         __scribble_error(".animation_tick_speed() has been replaced by .animation_speed()");
     }
     
+	/// @returns {Real} speed		The animation speed multiplier where 1 is normal speed, 2 is double speed, and 0.5 is half speed
+    /// @returns {Id.Scribble.element}
     static animation_speed = function(_speed)
     {
         __animation_speed = _speed;
@@ -1142,11 +1199,13 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @returns {Real.Int}
     static get_animation_speed = function()
     {
         return __animation_speed;
     }
     
+	/// @returns {Bool}
     static is_animated = function()
     {
         var _model = __get_model(true);
@@ -1155,51 +1214,61 @@ function __scribble_class_element(_string, _unique_id) constructor
         return _model.__has_animation;
     }
     
+	/// @desc	.animation_sync() has been removed\nPlease get in touch if this feature is essential for your project
     static animation_sync = function()
     {
         __scribble_error(".animation_sync() has been removed\nPlease get in touch if this feature is essential for your project");
     }
     
+	/// @desc	.animation_wave() has been replaced by scribble_anim_wave()
     static animation_wave = function()
     {
         __scribble_error(".animation_wave() has been replaced by scribble_anim_wave()");
     }
     
+	/// @desc	.animation_wave() has been replaced by scribble_anim_shake()
     static animation_shake = function()
     {
         __scribble_error(".animation_wave() has been replaced by scribble_anim_shake()");
     }
     
+	/// @desc	.animation_rainbow() has been replaced by scribble_anim_rainbow()
     static animation_rainbow = function()
     {
         __scribble_error(".animation_rainbow() has been replaced by scribble_anim_rainbow()");
     }
     
+	/// @desc	.animation_wobble() has been replaced by scribble_anim_wobble()
     static animation_wobble = function()
     {
         __scribble_error(".animation_wobble() has been replaced by scribble_anim_wobble()");
     }
     
+	/// @desc	.animation_pulse() has been replaced by scribble_anim_pulse()
     static animation_pulse = function()
     {
         __scribble_error(".animation_pulse() has been replaced by scribble_anim_pulse()");
     }
     
+	/// @desc	.animation_wheel() has been replaced by scribble_anim_wheel()
     static animation_wheel = function()
     {
         __scribble_error(".animation_wheel() has been replaced by scribble_anim_wheel()");
     }
     
+	/// @desc	.animation_cycle() has been replaced by scribble_anim_cycle()
     static animation_cycle = function()
     {
         __scribble_error(".animation_cycle() has been replaced by scribble_anim_cycle()");
     }
     
+	/// @desc	.animation_jitter() has been replaced by scribble_anim_jitter()
     static animation_jitter = function()
     {
         __scribble_error(".animation_jitter() has been replaced by scribble_anim_jitter()");
     }
     
+	/// @desc	.animation_blink() has been replaced by scribble_anim_blink()
     static animation_blink = function()
     {
         __scribble_error(".animation_blink() has been replaced by scribble_anim_blink()");
@@ -1211,6 +1280,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Outline & Shadow
     
+	/// @param {Real.Int|Constant.Colour}	colour	The colour of the shadow, as a standard GameMaker 24-bit BGR format
+	/// @param {Real}		alpha	Opacity of the shadow, 0.0 being transparent and 1.0 being fully opaque
+	/// @returns {Id.Scribble.element}
     static shadow = function(_colour, _alpha)
     {
         __sdf_shadow_colour   = _colour;
@@ -1222,6 +1294,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Real.Int}	colour	Colour of the glyph’s outline, as a standard GameMaker 24-bit BGR format
+	/// @returns {Id.Scribble.element}
     static outline = function(_colour)
     {
         __sdf_outline_colour    = _colour;
@@ -1236,6 +1310,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region SDF
     
+	/// @param {Real.Int|Constant.Colour}	colour		The colour of the shadow, as a standard GameMaker 24-bit BGR format
+	/// @param {Real}						alpha		Opacity of the shadow, 0.0 being transparent and 1.0 being fully opaque
+	/// @param {Real}						xoffset		x-coordinate of the shadow, relative to the parent glyph
+	/// @param {Real}						yoffset		y-coordinate of the shadow, relative to the parent glyph
+	/// @param {Real}						softness	Optional. Larger values give a softer edge to the shadow. If not specified, this will default to 0.1 (which draws an antialiased but clean shadow edge)
+	/// @returns {Id.Scribble.element}
     static sdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.25)
     {
         __sdf_shadow_colour   = _colour;
@@ -1248,6 +1328,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     }
     
     //TODO - DEPRECATED, remove in v10
+	/// @desc	DEPRECATED, planned for removal in v10
+	/// @returns {Id.Scribble.element}
     static sdf_border = function(_colour, _thickness)
     {
         __sdf_outline_colour    = _colour;
@@ -1256,6 +1338,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Real.Int|Constant.Colour}	colour		The colour of the outline, as a standard GameMaker 24-bit BGR format
+	/// @param {Real}						thickness	Thickness of the outline, in pixels
+	/// @returns {Id.Scribble.element}
     static sdf_outline = function(_colour, _thickness)
     {
         __sdf_outline_colour    = _colour;
@@ -1264,18 +1349,23 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @returns {Id.Scribble.element}
     static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.25)
     {
         __scribble_error(".msdf_shadow(), and MSDF fonts as a whole, have been removed from Scribble\nInstead, please use GameMaker's native SDF fonts");
         return self;
     }
     
+	/// @desc	.msdf_border(), and MSDF fonts as a whole, have been removed from Scribble\nInstead, please use GameMaker's native SDF fonts
+	/// @returns {Id.Scribble.element}
     static msdf_border = function(_colour, _thickness)
     {
         __scribble_error(".msdf_border(), and MSDF fonts as a whole, have been removed from Scribble\nInstead, please use GameMaker's native SDF fonts");
         return self;
     }
     
+	/// @desc	.msdf_feather(), and MSDF fonts as a whole, have been removed from Scribble\nInstead, please use GameMaker's native SDF fonts
+	/// @returns {Id.Scribble.element}
     static msdf_feather = function(_thickness)
     {
         __scribble_error(".msdf_feather(), and MSDF fonts as a whole, have been removed from Scribble\nInstead, please use GameMaker's native SDF fonts");
@@ -1288,7 +1378,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Cache Management
     
-     /// @param freeze
+    /// @param {Bool} freeze	Whether to freeze generated vertex buffers
+	/// @returns {Id.Scribble.element}
     static build = function(_freeze)
     {
         __freeze = _freeze;
@@ -1306,6 +1397,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
     }
     
+	/// @returns {Id.Scribble.element}
     static refresh = function()
     {
         var _model = __get_model(false);
@@ -1358,6 +1450,8 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     #region Miscellaneous
     
+	/// @param {Function|Script} function	he function to execute as a preprocessor. Set to undefined to use the global default preprocessor, or set to SCRIBBLE_NO_PREPROCESS to force no preprocessing
+	/// @returns {Id.Scribble.element}
     static preprocessor = function(_function)
     {
         if (_function != __preprocessorFunc)
@@ -1374,6 +1468,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Real.Int} position	Character to get events for. See below for more details
+	/// @param {Real.Int} [page]	The page to get events for. If not specified, the current page will be used
+    /// @returns {Array<Struct>}
     static get_events = function(_position, _page_index = __page, _use_lines = false)
     {
         static _empty_array = [];
@@ -1390,8 +1487,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return _events;
     }
     
-    /// @param templateFunction/Array
-    /// @param [executeOnlyOnChange=true]
+    /// @param {Function|Array<Function>} function	Function to execute to set Scribble behaviour for this text element
+    /// @param {Bool} [executeOnlyOnChange=true]	Whether to only execute the template function if it has changed. Defaults to true
+	/// @returns {Id.Scribble.element}
     static template = function(_template, _on_change = true)
     {
         if (is_array(_template))
@@ -1429,7 +1527,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    /// @param state
+    /// @param {Bool} state		Whether to ignore command tags
+	/// @returns {Id.Scribble.element}
     static ignore_command_tags = function(_state)
     {
         if (__ignore_command_tags != _state)
@@ -1441,6 +1540,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Bool} state		Whether to randomize the order that glyphs are animated
+	/// @returns {Id.Scribble.element}
     static randomize_animation = function(_state)
     {
         if (__randomize_animation != _state)
@@ -1452,6 +1553,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Real} z		The z coordinate to draw the text element at
+	/// @returns {Id.Scribble.element}
     static z = function(_z)
     {
         __z = _z;
@@ -1459,13 +1562,15 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @returns {Real}
     static get_z = function()
     {
         return __z;
     }
     
-    /// @param string
-    /// @param [uniqueID]
+    /// @param {String} string		New string to display using the text element
+    /// @param {String} [uniqueID]	
+	/// @returns {Id.Scribble.element}
     static overwrite = function(_text, _unique_id = __unique_id)
     {
         __text      = _text;
@@ -1496,6 +1601,9 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+	/// @param {Real} x
+	/// @param {Real} y
+	/// @returns {Id.Scribble.element}
     static debug_draw_bbox = function(_x, _y)
     {
         //FIXME - Reimplement properly

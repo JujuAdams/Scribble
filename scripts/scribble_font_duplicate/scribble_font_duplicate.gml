@@ -1,6 +1,6 @@
 // Feather disable all
-/// @param fontName
-/// @param newName
+/// @param {String} fontName
+/// @param {String} newName
 
 function scribble_font_duplicate(_old, _new)
 {

@@ -1,6 +1,6 @@
 // Feather disable all
 
-/// @param state
+/// @param {Real.Int} state
 
 function scribble_anim_disabled(_state)
 {

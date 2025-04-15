@@ -1,9 +1,9 @@
 // Feather disable all
-/// @param target
-/// @param source
-/// @param overwrite
-/// @param glyphs
-/// @param [glyphs]...
+/// @param {String} target		Name of the superfont to add glyphs to
+/// @param {String} source		Name of the font to add glyphs from
+/// @param {Bool} overwrite		Whether to overwrite existing glyphs in the target font with new glyphs from the source font
+/// @param {Any} glyphsSet...	The glyph, or glyphs, to add.
+/// @param {Any} glyphs...		Additional glyph, or glyphs, to add
 
 function scribble_super_glyph_copy(_target, _source, _overwrite)
 {

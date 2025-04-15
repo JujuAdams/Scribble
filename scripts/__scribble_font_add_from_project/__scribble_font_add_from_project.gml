@@ -1,5 +1,5 @@
 // Feather disable all
-/// @param font
+/// @param {Asset.GMFont} font
 
 function __scribble_font_add_from_project(_font)
 {
@@ -47,7 +47,7 @@ function __scribble_font_add_from_project(_font)
         if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");
         
         var _asset       = asset_get_index(_name);
-        var _texture     = font_get_texture(_asset);
+        var _texture     = __scribble_font_get_texture(_asset);
         var _texture_uvs = font_get_uvs(_asset);
         
         var _texture_tw = texture_get_texel_width(_texture);

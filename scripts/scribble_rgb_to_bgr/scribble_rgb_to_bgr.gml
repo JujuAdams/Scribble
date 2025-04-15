@@ -1,7 +1,7 @@
 // Feather disable all
 /// Converts an RGB colour code (the industry standard) to GameMaker's native BGR format
 /// 
-/// @param RGB   24-bit industry standard RGB colour integer
+/// @param {Real.Int|Constant.Colour} RGB   24-bit industry standard RGB colour integer
 
 function scribble_rgb_to_bgr(_rgb)
 {

@@ -1,14 +1,14 @@
 // Feather disable all
 /// Creates a new font with an outline based on a given source font
 ///
-/// @param sourceFontName   Name, as a string, of the font to use as a basis for the effect
-/// @param newFontName      Name of the new font to create, as a string
-/// @param dX               
-/// @param dY               
-/// @param shadowColour     Colour of the shadow
-/// @param shadowAlpha      Alpha of the shadow
-/// @param separation       Additional separation to add between glyphs
-/// @param smooth           Whether or not to interpolate the outline. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
+/// @param {String} sourceFontName                     Name, as a string, of the font to use as a basis for the effect
+/// @param {String} newFontName                        Name of the new font to create, as a string
+/// @param {Real} dx                                   The x direction of the drop shadow
+/// @param {Real} dy                                   The y direction of the drop shadow
+/// @param {Real.Int|Constant.Colour} shadowColour     Colour of the shadow
+/// @param {Real.Float} shadowAlpha                    Alpha of the shadow
+/// @param {Real} separation                           Additional separation to add between glyphs
+/// @param {Bool} smooth                               Whether or not to interpolate the outline. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
 
 function scribble_font_bake_shadow(_source_font_name, _new_font_name, _dx, _dy, _shadow_color, _shadow_alpha, _separation, _smooth)
 {

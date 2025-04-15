@@ -1,6 +1,6 @@
 // Feather disable all
 
-/// @param function
+/// @param {Function} function
 
 function scribble_default_preprocessor_set(_function)
 {

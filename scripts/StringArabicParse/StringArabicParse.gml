@@ -1,6 +1,6 @@
 // Feather disable all
 
-/// @param string
+/// @param {String} string
 
 function StringArabicParse(_string)
 {

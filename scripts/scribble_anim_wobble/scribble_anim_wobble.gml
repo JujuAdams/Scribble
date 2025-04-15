@@ -1,6 +1,6 @@
 // Feather disable all
-/// @param angle      Maximum wobble angle. Larger values cause glyphs to oscillate further to the left and right
-/// @param frequency  Wobble frequency. Larger values cause glyphs to oscillate faster
+/// @param {Real} angle      Maximum wobble angle. Larger values cause glyphs to oscillate further to the left and right
+/// @param {Real} frequency  Wobble frequency. Larger values cause glyphs to oscillate faster
 
 function scribble_anim_wobble(_angle, _frequency)
 {

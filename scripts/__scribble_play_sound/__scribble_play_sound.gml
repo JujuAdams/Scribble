@@ -1,8 +1,8 @@
 // Feather disable all
 
-/// @param sound
-/// @param gain
-/// @param pitch
+/// @param {Asset.GMSound} sound
+/// @param {Real} gain
+/// @param {Real} pitch
 
 function __scribble_play_sound(_sound, _gain, _pitch)
 {

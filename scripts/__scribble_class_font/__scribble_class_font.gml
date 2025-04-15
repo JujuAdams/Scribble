@@ -1,7 +1,7 @@
 // Feather disable all
-/// @param fontName
-/// @param glyphCount
-/// @param fontType
+/// @param {String} fontName
+/// @param {Real} glyphCount
+/// @param {Constant.__SCRIBBLE_FONT_TYPE} fontType
 
 function __scribble_class_font(_name, _glyph_count, _fontType) constructor
 {

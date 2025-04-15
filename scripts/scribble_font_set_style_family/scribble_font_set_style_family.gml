@@ -2,10 +2,10 @@
 /// Associates four fonts together for use with [r] [b] [i] [bi] font tags
 /// Use <undefined> for any style you don't want to set a font for
 /// 
-/// @param regularFont     Name of font to use for the regular style
-/// @param boldFont        Name of font to use for the bold style
-/// @param italicFont      Name of font to use for the italic style
-/// @param boldItalicFont  Name of font to use for the bold-italic style
+/// @param {String} regularFont     Name of font to use for the regular style
+/// @param {String} boldFont        Name of font to use for the bold style
+/// @param {String} italicFont      Name of font to use for the italic style
+/// @param {String} boldItalicFont  Name of font to use for the bold-italic style
 
 function scribble_font_set_style_family(_r_font, _b_font, _i_font, _bi_font)
 {

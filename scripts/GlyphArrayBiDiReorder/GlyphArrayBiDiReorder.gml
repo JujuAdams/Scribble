@@ -1,6 +1,6 @@
-/// @param glyphArray
-/// @param rightToLeftHint
-/// @param [copy=true]
+/// @param {Array} glyphArray
+/// @param {Bool} rightToLeftHint
+/// @param {Bool} [copy=true]
 
 function GlyphArrayBiDiReorder(_glyphArray, _rightToLeftHint, _copy = true)
 {

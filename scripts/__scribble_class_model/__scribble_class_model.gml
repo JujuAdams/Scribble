@@ -1,6 +1,6 @@
 // Feather disable all
-/// @param element
-/// @param modelCacheName
+/// @param {Asset.Scribble.element} element
+/// @param {String} modelCacheName
 
 function __scribble_class_model(_element, _model_cache_name) constructor
 {
@@ -203,13 +203,13 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         };
     }
     
-    /// @page
+    /// @param page
     static __get_width = function(_page)
     {
         return __fit_scale*__width;
     }
     
-    /// @page
+    /// @param page
     static __get_height = function(_page)
     {
         return __fit_scale*__height;
