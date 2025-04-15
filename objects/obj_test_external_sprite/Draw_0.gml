@@ -1,0 +1,1 @@
+scribble("External [testSprite]sprite[testSprite] test!").draw(x, y);

@@ -10,8 +10,8 @@
   "name":"obj_test_typewriter_external_sound",
   "overriddenProperties":[],
   "parent":{
-    "name":"Typewriter",
-    "path":"folders/Test Cases/Typewriter.yy",
+    "name":"External Assets",
+    "path":"folders/Test Cases/External Assets.yy",
   },
   "parentObjectId":null,
   "persistent":false,

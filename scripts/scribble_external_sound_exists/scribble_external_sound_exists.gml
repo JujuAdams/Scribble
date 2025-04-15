@@ -1,4 +1,5 @@
 // Feather disable all
+
 function scribble_external_sound_exists(_alias)
 {
     static _external_sound_map = __scribble_initialize().__external_sound_map;

@@ -42,13 +42,13 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         return undefined;
     }
     
-    if (_src_font_data.__fontType == __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS)
+    if (_src_font_data.__render_type == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
     {
-        __scribble_error("Source font cannot already have been modified by scribble_font_bake_outline_and_shadow()");
+        __scribble_error("Source font cannot already have effects baked into it");
         return undefined;
     }
     
-    if (_src_font_data.__sdf)
+    if (_src_font_data.__render_type == __SCRIBBLE_RENDER_SDF)
     {
         __scribble_error("Source font cannot be an SDF font");
         return undefined;
@@ -58,7 +58,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _glyph_count = ds_grid_width(_src_glyph_grid);
     
     //Create a new font
-    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, undefined);
+    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, undefined, false);
     _new_font_data.__bilinear = _smooth;
     _new_font_data.__runtime  = true;
     var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
@@ -66,7 +66,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
     _src_font_data.__copy_to(_new_font_data, false);
     
-    if (_markAsRasterEffect) _new_font_data.__fontType = __SCRIBBLE_FONT_TYPE.__RASTER_WITH_EFFECTS;
+    if (_markAsRasterEffect) _new_font_data.__render_type = __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS;
     
     
     
@@ -80,21 +80,22 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _i = 0;
     repeat(_glyph_count)
     {
-        var _texture = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.TEXTURE];
-        var _width   = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.WIDTH  ];
-        var _height  = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.HEIGHT ];
-        var _u0      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U0     ];
-        var _v0      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V0     ];
-        var _u1      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U1     ];
-        var _v1      = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V1     ];
+        var _material = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.MATERIAL];
+        var _texture = _material.__texture;
         
         //Ignore any glyphs with invalid textures
-        //Due to HTML5 being dogshit, we can't use is_ptr()
-        if (is_numeric(_texture) || is_undefined(_texture))
+        if (_texture == undefined)
         {
             ++_i;
             continue;
         }
+        
+        var _width  = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.WIDTH  ];
+        var _height = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.HEIGHT ];
+        var _u0     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U0     ];
+        var _v0     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V0     ];
+        var _u1     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.U1     ];
+        var _v1     = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.V1     ];
         
         var _width_ext  = _width  + _outline + _l_pad + _r_pad;
         var _height_ext = _height + _outline + _t_pad + _b_pad;
@@ -223,7 +224,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     _new_font_data.__source_sprite = _sprite;
     surface_free(_surface_1);
     
-    
+    //Create a new material for this font
+    var _new_material = __scribble_get_material(_new_font_name, __scribble_sprite_get_texture_index(_sprite, 0), _new_font_data.__render_type, undefined, undefined, _new_font_data.__bilinear);
     
     //Make bulk corrections to various glyph properties based on the input parameters
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.X_OFFSET,    _glyph_count-1, SCRIBBLE_GLYPH.X_OFFSET,    -_l_pad);
@@ -232,8 +234,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.HEIGHT,      _glyph_count-1, SCRIBBLE_GLYPH.HEIGHT,      _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, _glyph_count-1, SCRIBBLE_GLYPH.FONT_HEIGHT, _t_pad + _b_pad);
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.SEPARATION,  _glyph_count-1, SCRIBBLE_GLYPH.SEPARATION,  _separation);
-    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.TEXTURE,     _glyph_count-1, SCRIBBLE_GLYPH.TEXTURE,     sprite_get_texture(_sprite, 0));
-    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.FONT_NAME,   _glyph_count-1, SCRIBBLE_GLYPH.FONT_NAME,   _new_font_name);
+    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.MATERIAL,    _glyph_count-1, SCRIBBLE_GLYPH.MATERIAL,    _new_material);
     
     //Figure out the new UVs using some bulk commands
     var _sprite_uvs = sprite_get_uvs(_sprite, 0);

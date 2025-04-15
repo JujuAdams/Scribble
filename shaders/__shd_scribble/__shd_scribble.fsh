@@ -7,7 +7,7 @@ precision highp float;
 varying vec2  v_vTexcoord;
 varying vec4  v_vColour;
 
-uniform float u_fFontType;
+uniform float u_fRenderType;
 uniform vec4  u_vFlash;
 
 uniform vec4  u_vShadowColour;
@@ -29,12 +29,12 @@ float SDFValue(vec2 texcoord)
 
 void main()
 {
-    if (u_fFontType == 0.0)
+    if (u_fRenderType == 0.0)
     {
         //Standard raster rendering (standard fonts, spritefonts, sprites, surfaces)
         gl_FragColor = v_vColour*texture2D(gm_BaseTexture, v_vTexcoord);
     }
-    else if (u_fFontType == 1.0)
+    else if (u_fRenderType == 1.0)
     {
         //Font with effects baked in
         vec4 sample = texture2D(gm_BaseTexture, v_vTexcoord);

@@ -12,7 +12,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __text       = _string;
     __unique_id  = _unique_id;
-    __cache_name = _string + ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (":" + string(_unique_id)));
+    __cache_name = ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_unique_id) + ":")) + _string;
     
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + __cache_name + "\"");
     
@@ -162,6 +162,12 @@ function __scribble_class_element(_string, _unique_id) constructor
     static draw = function(_x, _y, _typist = undefined)
     {
         static _scribble_state = __scribble_initialize().__state;
+        
+        if (SCRIBBLE_FLOOR_DRAW_COORDINATES)
+        {
+            _x = floor(_x);
+            _y = floor(_y);
+        }
         
         var _function_scope = other;
         
@@ -1576,7 +1582,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         __text      = _text;
         __unique_id = _unique_id;
         
-        var _new_cache_name = __text + ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (":" + string(_unique_id)));
+        var _new_cache_name = ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_unique_id) + ":")) + __text;
         if (__cache_name != _new_cache_name)
         {
             flush();

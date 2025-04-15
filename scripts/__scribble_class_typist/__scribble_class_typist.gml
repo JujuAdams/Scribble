@@ -522,7 +522,8 @@ function __scribble_class_typist(_per_line) constructor
     
     static __process_event_stack = function(_character_count, _target_element, _function_scope)
     {
-        static _typewriter_events_map = __scribble_initialize().__typewriter_events_map;
+        static _system = __scribble_initialize();
+        static _typewriter_events_map = _system.__typewriter_events_map;
         
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
         //We return <true> if there have been no pausing behaviours called i.e. [pause] and [delay]
@@ -594,9 +595,7 @@ function __scribble_class_typist(_per_line) constructor
                 case __SCRIBBLE_AUDIO_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
                     if (array_length(_event_data) >= 1)
                     {
-                        var _asset = _event_data[0];
-                        if (is_string(_asset)) _asset = asset_get_index(_asset);
-                        __scribble_play_sound(_asset, __sound_tag_gain, 1);
+                        __scribble_play_sound(_event_data[0], __sound_tag_gain, 1);
                     }
                 break;
                 
@@ -639,7 +638,7 @@ function __scribble_class_typist(_per_line) constructor
     
     static __play_sound = function(_head_pos, _character)
     {
-        static _external_sound_map = __scribble_initialize().__external_sound_map;
+        static _system = __scribble_initialize();
         
         var _sound_array = __sound_array;
         if (is_array(_sound_array) && (array_length(_sound_array) > 0))
@@ -669,15 +668,9 @@ function __scribble_class_typist(_per_line) constructor
             {
                 __last_audio_character = _head_pos;
                 
-                var _audio_asset = _sound_array[floor(__scribble_random()*array_length(_sound_array))];
-                if (is_string(_audio_asset))
+                var _inst = __scribble_play_sound(_sound_array[floor(__scribble_random()*array_length(_sound_array))], __sound_gain, lerp(__sound_pitch_min, __sound_pitch_max, __scribble_random()));
+                if (_inst >= 0)
                 {
-                    _audio_asset = _external_sound_map[? _audio_asset];
-                }
-                
-                if (_audio_asset != undefined)
-                {
-                    var _inst = __scribble_play_sound(_audio_asset, __sound_gain, lerp(__sound_pitch_min, __sound_pitch_max, __scribble_random()));
                     __sound_finish_time = current_time + 1000*audio_sound_length(_inst) - __sound_overlap;
                 }
             }

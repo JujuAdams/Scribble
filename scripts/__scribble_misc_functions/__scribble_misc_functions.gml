@@ -371,26 +371,9 @@ enum __SCRIBBLE_GLYPH_LAYOUT
     __SIZE,    // 5
 }
 
-enum __SCRIBBLE_VERTEX_BUFFER
-{
-    __VERTEX_BUFFER,        //0
-    __TEXTURE,              //1
-    __SDF_RANGE,            //2
-    __SDF_THICKNESS_OFFSET, //3
-    __TEXEL_WIDTH,          //4
-    __TEXEL_HEIGHT,         //5
-    __FONT_TYPE,            //6
-    __BUFFER,               //7
-    __BILINEAR,             //8
-    __SIZE                  //9
-}
-
-enum __SCRIBBLE_FONT_TYPE
-{
-    __RASTER,
-    __RASTER_WITH_EFFECTS,
-    __SDF,
-}
+#macro __SCRIBBLE_RENDER_RASTER               0
+#macro __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS  1
+#macro __SCRIBBLE_RENDER_SDF                  2
 
 enum __SCRIBBLE_ANIM
 {
@@ -426,7 +409,7 @@ enum __SCRIBBLE_ANIM
 
 enum __SCRIBBLE_GEN_GLYPH
 {
-    __UNICODE,               // 0  \   Can be negative, see below
+    __UNICODE,               // 0  \  - Can be negative if a glyph is sprite/surface/texture
     __BIDI,                  // 1   |
                              //     |
     __X,                     // 2   |
@@ -434,26 +417,24 @@ enum __SCRIBBLE_GEN_GLYPH
     __WIDTH,                 // 4   |
     __HEIGHT,                // 5   |
     __FONT_HEIGHT,           // 6   |
-    __SEPARATION,            // 7   |
-    __LEFT_OFFSET,           // 8   |
-    __SCALE,                 // 9   | This group of enums must not change order or be split
+    __SEPARATION,            // 7   |  This group of enum elements must not change order or be split
+    __LEFT_OFFSET,           // 8   |  Be careful of ordering!
+    __SCALE,                 // 9   |  scribble_font_bake_shader() relies on this
                              //     |
-    __TEXTURE,               //10   |
-    __QUAD_U0,               //11   | Be careful of ordering!
-    __QUAD_U1,               //12   | scribble_font_bake_shader() relies on this
+    __MATERIAL,              //10   |
+    __QUAD_U0,               //11   |
+    __QUAD_U1,               //12   |
     __QUAD_V0,               //13   |
-    __QUAD_V1,               //14   |
-                             //     |
-    __FONT_NAME,             //15  /
+    __QUAD_V1,               //14  /
     
-    __CONTROL_COUNT,         //16
-    __ANIMATION_INDEX,       //17
+    __CONTROL_COUNT,         //15
+    __ANIMATION_INDEX,       //16
                       
-    __SPRITE_INDEX,          //18  \
-    __IMAGE_INDEX,           //19   | Only used for sprites
-    __IMAGE_SPEED,           //20  /
+    __SPRITE_INDEX,          //17  \
+    __IMAGE_INDEX,           //18   | Only used for sprites
+    __IMAGE_SPEED,           //19  /
                       
-    __SIZE,                  //21
+    __SIZE,                  //20
 }
 
 enum __SCRIBBLE_GEN_VBUFF_POS
@@ -481,6 +462,7 @@ enum __SCRIBBLE_GEN_CONTROL_TYPE
 //These can be used for ORD
 #macro  __SCRIBBLE_GLYPH_SPRITE   -1
 #macro  __SCRIBBLE_GLYPH_SURFACE  -2
+#macro  __SCRIBBLE_GLYPH_TEXTURE  -3
 
 enum __SCRIBBLE_GEN_CONTROL
 {

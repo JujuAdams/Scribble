@@ -1,0 +1,1 @@
+scribble("External font test!").draw(x, y);

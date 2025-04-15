@@ -1,5 +1,5 @@
 <p align="center"><img src="https://raw.githubusercontent.com/JujuAdams/scribble/master/LOGO.png" style="display:block; margin:auto; width:300px"></p>
-<h1 align="center">Scribble Deluxe 9.3.5</h1>
+<h1 align="center">Scribble Deluxe 9.4.2</h1>
 <p align="center">A feature-packed text renderer, optimised for dynamic effects and dialogue</p>
 
 &nbsp;

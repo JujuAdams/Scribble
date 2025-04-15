@@ -104,6 +104,11 @@ function __scribble_initialize()
         //Main lookup for fonts
         __font_data_map = ds_map_create();
         
+        //Other caching maps
+        __sprite_texture_index_map    = ds_map_create();
+        __sprite_texture_material_map = ds_map_create();
+        __material_map                = ds_map_create();
+        
         //Multi-use buffers
         __buffer_a = buffer_create(1024, buffer_grow, 1);
         __buffer_b = buffer_create(1024, buffer_grow, 1);
@@ -160,7 +165,8 @@ function __scribble_initialize()
         __krutidev_matra_lookup_map = __scribble_krutidev_matra_lookup_map_initialize();
         
         //External sound reference storage
-        __external_sound_map = ds_map_create();
+        __external_sprite_map = ds_map_create();
+        __external_sound_map  = ds_map_create();
         
         //Lookup for user-defined macros
         __macros_map = ds_map_create();
@@ -223,7 +229,7 @@ function __scribble_initialize()
     }
     
     scribble_anim_reset();
-    if (SCRIBBLE_LOAD_FONTS_ON_BOOT) __scribble_font_add_all_from_project();
+    if (SCRIBBLE_LOAD_FONTS_ON_BOOT) __scribble_font_add_all_from_bundle();
     
     return _system;
 }
