@@ -1,0 +1,152 @@
+[33mae3db094[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeatherArgumentFix[m[33m, [m[1;31morigin/featherArgumentFix[m[33m)[m Added type tags to the existing jsDocs
+[33m2a9136d6[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m Unified pointer lookup tables across differing asset texture getters
+[33m61646300[m Updated Texture ID look ups to Texture Pointer look ups to unify with html5.
+[33m4515fc1b[m Improved texture ID handling into self caching functions
+[33m934fcede[m Update __scribble_gen_9_write_vbuffs.gml
+[33m84f888b1[m Update __scribble_font_add_from_project.gml
+[33m7e0baea4[m 9.3.5
+[33m811757f2[m Update Scribble.yyp
+[33m6fc89cfe[m Adds glyph grid metrics to GC stress test
+[33med81ae88[m Fixes glyph grids leaking
+[33m465e7db0[m 9.3.4
+[33m2cabfba6[m Adds version check for SDF fonts
+[33m0ecd977b[m Adds error when main shader doesn't compile
+[33m0d075762[m Adds warnings about 2024.1100 asset stripping behaviour
+[33mb884cf20[m Adds version number to error message
+[33mf864bc8d[m Updates obj_test_typewriter_out
+[33m5dcababc[m 9.3.3
+[33m53c4f9db[m Merge branch 'dev-9'
+[33m5c468108[m Fixes tags not generating unique data arrays
+[33m5525bf95[m Fixes scribble_refresh_everything() not refreshing long-term cached text elements
+[33m2b0b1532[m 9.3.2.1
+[33m797b71b9[m Fixes crash due to renaming of internal region variables
+[33md7d838e8[m 9.3.2
+[33mbc336275[m Update Draw_0.gml
+[33mfe3a59c4[m Fixes text element refreshing not updating the bounding box calcs
+[33m8172b09c[m Supporting JSON inside command tags
+[33m89d9b417[m Adds error checking for non-global preprocessor functions
+[33m38aac1b4[m Updates preprocessor test case
+[33m25b1561d[m Fixes inconsistent return from region getter
+[33m2d1d8ec2[m 9.3.1
+[33mf0d9bad1[m More tidying
+[33m028fb255[m Implicit load on boot now more reliable
+[33mf43cc671[m Moves various support functions to their own script
+[33ma25867db[m Further cleaning up
+[33m6811ef82[m More static simplification
+[33m321300b1[m Simplifies "global" static data containers
+[33m2e846344[m Updates test case
+[33md5afafba[m Adds .get_delay_paused() to typists
+[33m66fc51bc[m 9.3.0
+[33m6036b024[m Adds fa_justify test case
+[33m60e44530[m Fixes justification when using line breaks and page breaks
+[33m16b6e39a[m Adds .region_get_bboxes()
+[33m3a75d73d[m Adds .region_clear()
+[33mac45db7b[m Merge branch 'master' into dev-9
+[33mf9365be7[m 9.2.0
+[33m0f7de45a[m Removes unused argument internally
+[33m630acd22[m Renames some test case objects
+[33mc189f194[m Replaces use of deprecated method in test cases
+[33m94ec7368[m Renames "border" to "outline"
+[33md68a68e4[m Update __shd_scribble.fsh
+[33mc79854a7[m Deprecates old outline/shadow effect shaders
+[33m875e1b77[m .shadow() and .border() not unset SDF-related properties
+[33m662ad520[m Improves test cases
+[33meedb71b9[m Fixes scribble_font_bake_shader() not setting font type correctly
+[33mf18a4ece[m Adds public SCRIBBLE_OUTLINE enum
+[33m67cdb47f[m Fixes alpha blending on raster drop shadows
+[33mf6f517fb[m Update README.md
+[33m232ee0a4[m Update README.md
+[33m286d6999[m Renames some folders
+[33m745ae675[m Adds simple shadow + outline setters
+[33m410fc087[m Moves font properties into the font struct
+[33m52e6dd8a[m Fixes SDF rendering
+[33m785c223a[m Adds mark argument to scribble_font_bake_shader()
+[33ma7834415[m Improves raster border handling
+[33m68d57a12[m Adds obj_test_font_outline_and_shadow
+[33mf5ea674f[m Hooks up hacky font types
+[33m9d76126c[m Fixes up outline & shadow shaders
+[33mf3e0ba49[m Removes baked shadow from spritefont
+[33mc47c056c[m Update scribble.resource_order
+[33m497f12a6[m Adds generic effect baking shaders
+[33ma046f892[m Update scribble_font_bake_shadow.gml
+[33m14629fc3[m Fixes some comments
+[33mf1527c5e[m Starting on multichannel baked effects for fonts
+[33m76bcb580[m Adds scribble_whitelist_sound() and SCRIBBLE_USE_SOUND_WHITELIST
+[33ma7b78759[m Merge branch 'dev-9'
+[33ma2d9e5ad[m Fleshes out constants script
+[33m19a9f7cc[m 9.1.0
+[33m229bea98[m Fixes sprite positions when using font alignment offsets
+[33mc6ce8729[m Adds sprites to font align offset test case
+[33ma5fa97c5[m Adds long sprite test case
+[33m04d18c56[m Increases sprite image number limit to 127, reduces accuracy of image speed
+[33m93b1fcb4[m Update README.md
+[33mc3827525[m Fixes some issues with pre-processor function pointers
+[33mb9c641f1[m Update __scribble_system.gml
+[33m53ace8fb[m Adds preprocessor test case
+[33mb188829f[m Updates to GM2024.6
+[33md03d21dc[m Improves speed of scribble_is_text_element()
+[33mbdb34115[m Adds pre-processor
+[33m35d825be[m Removes UnicodeToKrutidev()
+[33m0996403b[m Adds StringDevanagariParse()
+[33m8547087c[m Adds StringThaiParse()
+[33m1b67c36e[m Update Draw_0.gml
+[33mffc3f674[m Fixes string parsers, phew
+[33m83157e0f[m Builds bidi string layout code
+[33mcd6ca33b[m Update Draw_0.gml
+[33m1fce6538[m Adds StringArabicParse()
+[33mf640cf62[m Merge pull request #524 from biyectivo/mantaray
+[33me3288b9c[m Tidies up __scribble_font_add_all_from_project()
+[33mcdd9fec9[m Merge pull request #546 from AtlaStar/Atla-dev-9
+[33m8ff50114[m Fix align function
+[33ma1461ada[m Adds sprite whitelisting behaviour
+[33m706b29e9[m Adds offset tag test case
+[33mcc91a361[m Adds [offset] and [offsetPop] tags
+[33ma3a8ea47[m Adds typist sound tag gain methods
+[33m6314c6c9[m Adds animation disabled test case
+[33md03b198e[m Adds feature to disabled all animations
+[33m0be36c74[m Update __scribble_class_element.gml
+[33m8a5083d7[m Adds test case obj_test_font_align_offset
+[33me9aa5ad6[m Adds font alignment offset feature
+[33mdbc05d30[m Fixes .align() not regenerating bounding box
+[33m37756e83[m Adds SCRIBBLE_USE_ASCENDER_OFFSET
+[33m4788f9e2[m Fixes kerning being applied to the wrong glyph in a pair
+[33m533ae343[m Improves font shadow test case
+[33mf8071d7b[m Adds test case for skipping during an in-line delay
+[33md88e44b0[m Update README.md
+[33m8599150b[m Update README.md
+[33mfe257337[m Merge pull request #528 from sohomsahaun/fix-bbox-after-scale
+[33me8ac9443[m Fix bbox when scaling
+[33mcbebc043[m Fixes shadow smearing for some glyphs when using a large shadow offset
+[33m611bbe50[m Fixes space width being derived from the wrong glyph property
+[33ma7c06fb6[m Updates project version to 2024.4
+[33m60dde625[m Fixes centre calculation in shader
+[33ma5c7e371[m Now scans for all project fonts using asset_get_ids
+[33m739396d1[m Fixes typist.skip() not skipping in the middle of a delay
+[33m50b9313a[m Fixes problematic return from draw_text_scribble*() functions
+[33m52b7b4c8[m Merge pull request #514 from Hmmmpf/master
+[33ma056c24b[m Merge branch 'master' into dev-9
+[33m2b60b202[m 9.0.0 (beta)
+[33m31ce2270[m Reimplements SCRIBBLE_SDF_BORDER_TRIM
+[33m26526232[m Removes .sdf_feather()
+[33m204acd28[m Removes __scribble_font_add_sdf_from_project()
+[33m2b2476d1[m Removes old MSDF font sprites
+[33m742f5fa7[m Fixes slight misalignment for SDF fonts
+[33m6a587fa5[m Wedges in support for SDF
+[33m69b3a83c[m Fixes glyphs with large negative x-offsets upsetting the generator
+[33m62860069[m Removes more legacy code
+[33m20c16fc0[m Removes INCLUDED_FILES_SUBDIRECTORY and FLUSH_RETURNS_SELF
+[33me39e5aa8[m Fixes up double draw
+[33m2e67dcde[m Removes u_vOutputSize fluff
+[33m60333095[m SDF spaces now don't generate new vertex buffers
+[33m575c7e4f[m Restores u_fSDFThicknessOffset
+[33m9bf0a98d[m Removes a bunch of old functions
+[33m7241b96f[m Deprecates scribble_msdf_thickness_offset()
+[33m5572f577[m Adds removal warnings for old .msdf methods
+[33mc6f360b6[m Removes some MSDF-specific state tracking
+[33me207ca99[m Removes specific MSDF shader
+[33m65b3b770[m Moves SDF behaviour to main Scribble shader
+[33m06338f1f[m Simplifying SDF shader
+[33m13513781[m Gets MTSDF fonts rendering, first step towards SDF proper
+[33m45473f02[m Swaps MSDF references to SDF
+[33medd917d0[m Updates version info
+[33m36dc7212[m 
