@@ -264,6 +264,7 @@
     {"id":{"name":"obj_test_typewriter_manual_arabic","path":"objects/obj_test_typewriter_manual_arabic/obj_test_typewriter_manual_arabic.yy",},},
     {"id":{"name":"obj_test_typewriter_manual","path":"objects/obj_test_typewriter_manual/obj_test_typewriter_manual.yy",},},
     {"id":{"name":"obj_test_typewriter_out","path":"objects/obj_test_typewriter_out/obj_test_typewriter_out.yy",},},
+    {"id":{"name":"obj_test_typewriter_pause_at_start","path":"objects/obj_test_typewriter_pause_at_start/obj_test_typewriter_pause_at_start.yy",},},
     {"id":{"name":"obj_test_typewriter_pause","path":"objects/obj_test_typewriter_pause/obj_test_typewriter_pause.yy",},},
     {"id":{"name":"obj_test_typewriter_per_character","path":"objects/obj_test_typewriter_per_character/obj_test_typewriter_per_character.yy",},},
     {"id":{"name":"obj_test_typewriter_per_line","path":"objects/obj_test_typewriter_per_line/obj_test_typewriter_per_line.yy",},},
