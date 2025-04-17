@@ -3,7 +3,7 @@
 /// 
 /// Returns: The new value of the property that was modified.
 /// @param fontName           The target font, as a string
-/// @param character          Target character, as a string
+/// @param character          Target character, as a string. You may use the GameMaker constant `all` to adjust all characters in a font
 /// @param property           Property to return, see below
 /// @param value              The value to set
 /// @param [relative=false]   Whether to add the new value to the existing value, or to overwrite the existing value. Defaults to false, overwriting the existing value
