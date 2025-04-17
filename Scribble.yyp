@@ -362,6 +362,7 @@
     {"id":{"name":"scribble_external_sprite_exists","path":"scripts/scribble_external_sprite_exists/scribble_external_sprite_exists.yy",},},
     {"id":{"name":"scribble_external_sprite_remove","path":"scripts/scribble_external_sprite_remove/scribble_external_sprite_remove.yy",},},
     {"id":{"name":"scribble_flush_everything","path":"scripts/scribble_flush_everything/scribble_flush_everything.yy",},},
+    {"id":{"name":"scribble_flush_shader_uniforms","path":"scripts/scribble_flush_shader_uniforms/scribble_flush_shader_uniforms.yy",},},
     {"id":{"name":"scribble_font_bake_outline_4dir","path":"scripts/scribble_font_bake_outline_4dir/scribble_font_bake_outline_4dir.yy",},},
     {"id":{"name":"scribble_font_bake_outline_8dir_2px","path":"scripts/scribble_font_bake_outline_8dir_2px/scribble_font_bake_outline_8dir_2px.yy",},},
     {"id":{"name":"scribble_font_bake_outline_8dir","path":"scripts/scribble_font_bake_outline_8dir/scribble_font_bake_outline_8dir.yy",},},
