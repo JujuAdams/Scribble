@@ -207,6 +207,7 @@ Instructs Scribble to fit text inside a box by automatically inserting line brea
 |`maxWidth`       |integer |Maximum width for the whole textbox                                                                                                                  |
 |`maxHeight`      |integer |Maximum height for the whole textbox                                                                                                                 |
 |`[characterWrap]`|boolean |Whether to wrap text per character (rather than per word). Defaults to `false`. This is useful for very tight textboxes and some East Asian languages|
+|`[maxScale]`     |real    |Maximum scale to allow to fit text. Defaults to `1`. Setting this value higher than `1` will allow text to increase in size to fix the box           |
 
 Fits text to a box by inserting line breaks and scaling text but **will not** insert any page breaks. Text will take up as much space as possible without starting a new page. The macro `SCRIBBLE_FIT_TO_BOX_ITERATIONS` controls how many iterations to perform (higher is slower but more accurate).
 
