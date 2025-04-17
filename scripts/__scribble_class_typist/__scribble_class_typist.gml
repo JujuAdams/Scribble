@@ -171,7 +171,7 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
-    /// @param {Array<Asset.GMSound>} soundArray	Array of audio assets that can be used for playback
+    /// @param {Asset.GMSound, Array<Asset.GMSound>} soundArray	Array of audio assets that can be used for playback
     /// @param {Real.Float} pitchMin				Minimum pitch to play a sound at. A value of 1.0 gives no change in pitch, a value of 0.5 halves the pitch etc.
     /// @param {Real.Float} pitchMax				Maximum pitch to play a sound at. A value of 1.0 gives no change in pitch, a value of 2.0 doubles the pitch etc.
     /// @param {String} [exceptionString]			String of characters for whom a sound should not be played. If no string is specified, all characters will play a sound when revealed
