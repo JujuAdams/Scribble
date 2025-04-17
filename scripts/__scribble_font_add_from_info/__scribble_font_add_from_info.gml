@@ -85,8 +85,6 @@ function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _is_krut
         }
         
         var _font_data = new __scribble_class_font(_name, _size, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _from_bundle);
-        _font_data.__sdf_pxrange          = _sdf_pxrange;
-        _font_data.__sdf_thickness_offset = _sdf_thickness_offset;
         
         var _font_glyphs_map      = _font_data.__glyphs_map;
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;

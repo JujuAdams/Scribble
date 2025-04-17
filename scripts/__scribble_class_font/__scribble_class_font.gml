@@ -28,12 +28,6 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle) 
     __is_krutidev = false;
     __bilinear    = (__render_type == __SCRIBBLE_RENDER_SDF)? true : undefined;
     
-    //TODO - Deprecate the `__sdf` variable
-    __sdf  = (__render_type == undefined)? undefined : (__render_type == __SCRIBBLE_RENDER_SDF);
-    
-    __sdf_pxrange          = undefined;
-    __sdf_thickness_offset = 0;
-    
     __superfont     = false;
     __runtime       = false;
     __source_sprite = undefined;
@@ -90,9 +84,6 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle) 
         if (!__superfont) __scribble_error("Cannot clear non-superfont fonts");
         
         ds_map_clear(__glyphs_map);
-        
-        __sdf_pxrange = undefined;
-        __sdf         = undefined;
         
         __height = 0;
     }
