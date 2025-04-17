@@ -1,14 +1,15 @@
 // Feather disable all
+
 /// Modifies a particular value for a character in a font previously added to Scribble.
 /// 
 /// Returns: The new value of the property that was modified.
 /// @param {String}                   fontName   The target font, as a string
-/// @param {String}                   character  Target character, as a string
+/// @param {String}                   character  Target character, as a string. You may use the GameMaker constant `all` to adjust all characters in a font
 /// @param {Constant.SCRIBBLE_GLYPH}  property   Property to return, see below
 /// @param {Any}                      value      The value to set
 /// @param {Bool}                     relative   Whether to add the new value to the existing value, or to overwrite the existing value. Defaults to false, overwriting the existing value
 /// @return {any}
-
+/// 
 /// Fonts can often be tricky to render correctly, and this script allows you to change certain properties.
 /// Properties can be adjusted at any time, but existing/cached Scribble text will not be updated to match new properties.
 /// 
