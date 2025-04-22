@@ -152,39 +152,6 @@ Adds a sprite to the global whitelist, permitting it to be displayed by Scribble
 
 &nbsp;
 
-## `scribble_external_sound_add(soundID, alias)`
-
-**Returns:** N/A (`undefined`)
-
-|Name     |Datatype                                                          |Purpose                                                       |
-|---------|------------------------------------------------------------------|--------------------------------------------------------------|
-|`soundID`|[sound](https://manual.yoyogames.com/The_Asset_Editors/Sounds.htm)|The sound to target                                           |
-|`alias`  |string                                                            |A string to use to refer to the sound ID in Scribble functions|
-
-Adds a sound that can be referenced in Scribble functions using the given alias. This is intended for use with externally added sounds via `audio_create_stream()` or `audio_create_buffer_sound()`.
-
-&nbsp;
-
-## `scribble_external_sound_remove(alias)`
-
-**Returns:** N/A (`undefined`)
-
-|Name     |Datatype|Purpose                                         |
-|---------|--------|------------------------------------------------|
-|`alias`  |string  |The external sound alias to remove from Scribble|
-
-&nbsp;
-
-## `scribble_external_sound_exists(alias)`
-
-**Returns:** Boolean, whether the alias has been added by `scribble_external_sound_add()`
-
-|Name     |Datatype|Purpose                              |
-|---------|--------|-------------------------------------|
-|`alias`  |string  |The external sound alias to check for|
-
-&nbsp;
-
 ## `scribble_markdown_format(string)`
 
 **Returns:** String, the modified string containing Scribble formatting tags
@@ -331,3 +298,15 @@ Frees all memory that Scribble text elements and text models are currently using
 |None|        |       |
 
 Forces every Scribble text element to refresh their text model. This may be useful if some global property has changed, such as a change in default font or a macro has changed.
+
+&nbsp;
+
+## `scribble_flush_shader_uniforms()`
+
+**Returns:** N/A (`undefined`)
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Forces Scribble to re-set all shader uniforms the next time text is drawn. You should call this function if Scribble is exhibiting strange behaviour after another process takes control of the application e.g. after showing an ad on Android.
