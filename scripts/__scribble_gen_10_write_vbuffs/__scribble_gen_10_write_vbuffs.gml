@@ -15,7 +15,7 @@
 
 
 
-#macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_material != _material_prev)\
+#macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_material != _material_prev)\ //Swap vertex buffer if the material has changed
                                      {\
                                          _material_prev = _material;\
                                          _vbuff = _page_data.__get_vertex_buffer(_material);\
@@ -62,7 +62,7 @@
 
 
 
-function __scribble_gen_9_write_vbuffs()
+function __scribble_gen_10_write_vbuffs()
 {
     static _string_buffer   = __scribble_initialize().__buffer_a;
     static _effects_map     = __scribble_initialize().__effects_map;

@@ -228,6 +228,11 @@ function __scribble_initialize()
         __effects_slash_map[? "/SLANT"  ] = 10;
     }
     
+    if (GM_build_type == "run")
+    {
+        global._scribble_debug = _system;
+    }
+    
     scribble_anim_reset();
     if (SCRIBBLE_LOAD_FONTS_ON_BOOT) __scribble_font_add_all_from_bundle();
     
