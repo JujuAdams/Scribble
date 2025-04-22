@@ -1,8 +1,8 @@
 /// Feather ignore all
 /// 
-/// @param font
-/// @param hAlign
-/// @param offset
+/// @param {String} fontName
+/// @param {Constant.HAlign} hAlign
+/// @param {Real} offset
 
 function scribble_font_set_halign_offset(_font, _halign, _offset)
 {

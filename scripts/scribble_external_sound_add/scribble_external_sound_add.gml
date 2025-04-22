@@ -1,7 +1,6 @@
 // Feather disable all
-
-/// @param sound
-/// @param alias
+/// @param {Asset.GMSound} sound
+/// @param {String} alias
 
 function scribble_external_sound_add(_sound, _alias)
 {

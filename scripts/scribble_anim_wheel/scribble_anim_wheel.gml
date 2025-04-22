@@ -1,7 +1,7 @@
 // Feather disable all
-/// @param size       Wheel amplitude, in pixels
-/// @param frequency  Wheel frequency. Larger values create more "humps" over a certain number of characters
-/// @param speed      Wheel speed. Larger numbers cause characters to move up and down more rapidly
+/// @param {Real} size       Wheel amplitude, in pixels
+/// @param {Real} frequency  Wheel frequency. Larger values create more "humps" over a certain number of characters
+/// @param {Real} speed      Wheel speed. Larger numbers cause characters to move up and down more rapidly
 
 function scribble_anim_wheel(_size, _frequency, _speed)
 {

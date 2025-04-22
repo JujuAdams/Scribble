@@ -3,8 +3,8 @@
 /// 
 /// **Please do not use this function in conjunction with string_copy()**
 /// 
-/// @param string  The string to draw
-/// @param width   The maximum width in pixels of the string before a line break
+/// @param {String} string  The string to draw
+/// @param {Real} width   The maximum width in pixels of the string before a line break
 
 function string_width_scribble_ext(_string, _width)
 {

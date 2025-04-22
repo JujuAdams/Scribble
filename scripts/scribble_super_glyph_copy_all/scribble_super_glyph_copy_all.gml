@@ -1,7 +1,7 @@
 // Feather disable all
-/// @param targetFontName
-/// @param sourceFontName
-/// @param overwrite
+/// @param {String} targetFontName
+/// @param {String} sourceFontName
+/// @param {Bool} overwrite
 
 function scribble_super_glyph_copy_all(_target, _source, _overwrite)
 {

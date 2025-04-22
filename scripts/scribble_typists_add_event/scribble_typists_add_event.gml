@@ -1,8 +1,8 @@
 // Feather disable all
 /// Defines an event - a script that can be executed (with parameters) by an in-line command tag
 /// 
-/// @param name              Name of the new formatting tag to add e.g. portrait adds the tag [portrait] for use
-/// @param function/method   Function or method to execute
+/// @param {String} name              Name of the new formatting tag to add e.g. portrait adds the tag [portrait] for use
+/// @param {Function} function/method   Function or method to execute
 
 function scribble_typists_add_event(_name, _function)
 {

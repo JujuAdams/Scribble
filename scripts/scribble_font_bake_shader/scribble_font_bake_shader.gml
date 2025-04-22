@@ -1,18 +1,18 @@
 // Feather disable all
 /// Creates a new font with an outline based on a given source font
 ///
-/// @param sourceFontName              Name, as a string, of the font to use as a basis for the effect
-/// @param newFontName                 Name of the new font to create, as a string
-/// @param shader                      Shader to use
-/// @param emptyOutlineSize            Outline around the outside of every output glyph, in pixels. A value of 2 is typical
-/// @param leftPad                     Padding around the outside of every *input* glyph. Positive values give more space. e.g. For a shader that adds a outline of 2px around the entire glyph, *all* padding arguments should be set to <2>
-/// @param topPad                      "
-/// @param rightPad                    "
-/// @param bottomPad                   "
-/// @param separationDelta             Change in every glyph's SCRIBBLE_GLYPH.SEPARATION value. For a shader that adds a outline of 2px around the entire glyph, this value should be 4px
-/// @param smooth                      Set to <true> to turn on linear interpolation
-/// @param [surfaceSize=2048]          Size of the surface to use. Defaults to 2048x2048
-/// @param [markAsRasterEffect=false]
+/// @param {string} sourceFontName              Name, as a string, of the font to use as a basis for the effect
+/// @param {string} newFontName                 Name of the new font to create, as a string
+/// @param {Asset.GMShader} shader                      Shader to use
+/// @param {Real} emptyOutlineSize            Outline around the outside of every output glyph, in pixels. A value of 2 is typical
+/// @param {Real} leftPad                     Padding around the outside of every *input* glyph. Positive values give more space. e.g. For a shader that adds a outline of 2px around the entire glyph, *all* padding arguments should be set to <2>
+/// @param {Real} topPad                      "
+/// @param {Real} rightPad                    "
+/// @param {Real} bottomPad                   "
+/// @param {Real} separationDelta             Change in every glyph's SCRIBBLE_GLYPH.SEPARATION value. For a shader that adds a outline of 2px around the entire glyph, this value should be 4px
+/// @param {Bool} smooth                      Set to <true> to turn on linear interpolation
+/// @param {Real} [surfaceSize=2048]          Size of the surface to use. Defaults to 2048x2048
+/// @param {Bool} [markAsRasterEffect=false]
 
 function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _outline, _l_pad, _t_pad, _r_pad, _b_pad, _separation, _smooth, _texture_size = 2048, _markAsRasterEffect = false)
 {

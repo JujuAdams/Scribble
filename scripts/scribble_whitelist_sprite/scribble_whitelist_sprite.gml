@@ -1,6 +1,6 @@
 // Feather disable all
 
-/// @param sprite
+/// @param {Asset.GMSprite} sprite
 
 function scribble_whitelist_sprite(_sprite)
 {

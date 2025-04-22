@@ -11,8 +11,8 @@
 ///      colours frequently, and this function should typically be used at the start of the game or
 ///      on loading screens etc.
 /// 
-/// @param name
-/// @param colour
+/// @param {String} name
+/// @param {Real.Int|Constant.ColourColor} colour
 
 function scribble_color_set(_name, _colour)
 {

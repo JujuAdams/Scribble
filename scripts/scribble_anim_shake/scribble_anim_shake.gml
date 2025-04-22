@@ -1,6 +1,6 @@
 // Feather disable all
-/// @param size   Shake amplitude, in pixels
-/// @param speed  Shake speed. Larger values cause characters to move around more rapidly
+/// @param {Real} size   Shake amplitude, in pixels
+/// @param {Real} speed  Shake speed. Larger values cause characters to move around more rapidly
 
 function scribble_anim_shake(_size, _speed)
 {

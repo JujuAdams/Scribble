@@ -1,5 +1,5 @@
 // Feather disable all
-/// @param perLine
+/// @param {Bool} perLine
 
 function __scribble_class_typist(_per_line) constructor
 {
@@ -58,6 +58,7 @@ function __scribble_class_typist(_per_line) constructor
     
     #region Setters
     
+	/// @returns {Id.Scribble.typist}
     static reset = function()
     {
         __last_page            = 0;
@@ -79,8 +80,9 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
-    /// @param speed
-    /// @param smoothness
+    /// @param {Real} speed			Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above
+    /// @param {Real} smoothness	How much text is visible during the fade. Higher numbers will allow more text to be visible as it fades in
+	/// @returns {Id.Scribble.typist}
     static in = function(_speed, _smoothness)
     {
         var _old_in = __in;
@@ -96,9 +98,10 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
-    /// @param speed
-    /// @param smoothness
-    /// @param [backwards=false]
+    /// @param {Real} speed				Amount of text to reveal per tick (1 tick is usually 1 frame). This is character or lines depending on the method defined above
+    /// @param {Real} smoothness		How much text is visible during the fade. Higher numbers will allow more text to be visible as it fades out
+    /// @param {Bool} [backwards=false]	Whether to animate the typewriter backwards. Defaults to false
+	/// @returns {Id.Scribble.typist}
     static out = function(_speed, _smoothness, _backwards = false)
     {
         var _old_in = __in;
@@ -114,6 +117,8 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+	/// @param {Bool} state	Whether the typist should skip the typewriter animation
+	/// @returns {Id.Scribble.typist}
     static skip = function(_state = true)
     {
         __skip = _state;
@@ -124,6 +129,8 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+	/// @param {Bool} state	Whether the typist should skip the typewriter animation
+	/// @returns {Id.Scribble.typist}
     static skip_to_pause = function(_state = true)
     {
         __skip = _state;
@@ -134,6 +141,8 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+    /// @param {Bool} state	Whether the typist should skip the typewriter animation
+	/// @returns {Id.Scribble.typist}
     static ignore_delay = function(_state = true)
     {
         __ignore_delay = _state;
@@ -141,11 +150,12 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
-    /// @param soundArray
-    /// @param overlap
-    /// @param pitchMin
-    /// @param pitchMax
-    /// @param [gain=1]
+    /// @param {Array<Asset.GMSound>} soundArray	Array of audio assets that can be used for playback
+    /// @param {Real} overlap						Amount of overlap between sound effect playback, in milliseconds
+    /// @param {Real.Float} pitchMin				Minimum pitch to play a sound at. A value of 1.0 gives no change in pitch, a value of 0.5 halves the pitch etc.
+    /// @param {Real.Float} pitchMax				Maximum pitch to play a sound at. A value of 1.0 gives no change in pitch, a value of 2.0 doubles the pitch etc.
+    /// @param {Real.Float} [gain=1]				Gain to play the sound at, from 0.0 (silence) to 1.0 (full volume). Defaults to 1
+	/// @returns {Id.Scribble.typist}
     static sound = function(_in_sound_array, _overlap, _pitch_min, _pitch_max, _gain = 1)
     {
         var _sound_array = _in_sound_array;
@@ -161,11 +171,12 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
-    /// @param soundArray
-    /// @param pitchMin
-    /// @param pitchMax
-    /// @param [exceptionString]
-    /// @param [gain=1]
+    /// @param {Asset.GMSound, Array<Asset.GMSound>} soundArray	Array of audio assets that can be used for playback
+    /// @param {Real.Float} pitchMin				Minimum pitch to play a sound at. A value of 1.0 gives no change in pitch, a value of 0.5 halves the pitch etc.
+    /// @param {Real.Float} pitchMax				Maximum pitch to play a sound at. A value of 1.0 gives no change in pitch, a value of 2.0 doubles the pitch etc.
+    /// @param {String} [exceptionString]			String of characters for whom a sound should not be played. If no string is specified, all characters will play a sound when revealed
+    /// @param {Real.Float} [gain=1]				Gain to play the sound at, from 0.0 (silence) to 1.0 (full volume). Defaults to 1
+	/// @returns {Id.Scribble.typist}
     static sound_per_char = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string, _gain = 1)
     {
         var _sound_array = _in_sound_array;
@@ -199,6 +210,8 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+    /// @param {Function} function	Function to execute when a new character is revealed
+	/// @returns {Id.Scribble.typist}
     static function_per_char = function(_function)
     {
         __function_per_char = _function;
@@ -206,6 +219,8 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+    /// @param {Function} function	Function to execute when a typist finishes animating
+	/// @returns {Id.Scribble.typist}
     static function_on_complete = function(_function)
     {
         __function_on_complete = _function;
@@ -213,6 +228,8 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+    /// @param {Id.Instance|Struct} scope	The new scope to execution typist functions in
+	/// @returns {Id.Scribble.typist}
     static execution_scope = function(_scope)
     {
         __function_scope = _scope;
@@ -220,6 +237,7 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+	/// @returns {Id.Scribble.typist}
     static pause = function()
     {
         __paused = true;
@@ -227,6 +245,7 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+	/// @returns {Id.Scribble.typist}
     static unpause = function()
     {
         if (__paused)
@@ -244,13 +263,14 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
-    /// @param easeMethod
-    /// @param dx
-    /// @param dy
-    /// @param xscale
-    /// @param yscale
-    /// @param rotation
-    /// @param alphaDuration
+    /// @param {Constant.SCRIBBLE_EASE} easeMethod		A member of the SCRIBBLE_EASE enum. See below
+    /// @param {Real} dx								Starting x-coordinate of the glyph, relative to its final position
+    /// @param {Real} dy								Starting y-coordinate of the glyph, relative to its final position
+    /// @param {Real} xscale							Starting x-scale of the glyph, relative to its final scale
+    /// @param {Real} yscale							Starting y-scale of the glyph, relative to its final scale
+    /// @param {Real} rotation							Starting rotation of the glyph, relative to its final rotation
+    /// @param {Real.Float} alphaDuration				Value from 0 to 1 (inclusive). See below
+	/// @returns {Id.Scribble.typist}
     static ease = function(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration)
     {
         __ease_method         = _ease_method;
@@ -264,6 +284,10 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+	/// @param {String} character	A single character or a pair of characters, the substring to search for to apply a delay during typist animation
+    /// @param {Number} delay		The length of time to delay for, in milliseconds
+    /// @param {Real.Float} alphaDuration				Value from 0 to 1 (inclusive).
+	/// @returns {Id.Scribble.typist}
     static character_delay_add = function(_character, _delay)
     {
         if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> to use per-character delay");
@@ -284,6 +308,8 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+	/// @param {string} character	A single character or a pair of characters, the substring whose delay should be removed from the typist
+	/// @returns {Id.Scribble.typist}
     static character_delay_remove = function(_character)
     {
         var _char_1 = _character;
@@ -301,6 +327,7 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+	/// @returns {Id.Scribble.typist}
     static character_delay_clear = function()
     {
         __character_delay = false;
@@ -315,16 +342,19 @@ function __scribble_class_typist(_per_line) constructor
     
     #region Getters
     
+	/// @returns {Bool}
     static get_skip = function()
     {
         return __skip;
     }
     
+	/// @returns {Bool}
     static get_ignore_delay = function()
     {
         return __ignore_delay;
     }
     
+	/// @returns {Real}
     static get_state = function()
     {
         if ((__last_element == undefined) || (__last_page == undefined) || (__last_character == undefined)) return 0.0;
@@ -362,27 +392,32 @@ function __scribble_class_typist(_per_line) constructor
         }
     }
     
+	/// @returns {Bool}
     static get_delay_paused = function()
     {
         return __delay_paused;
     }
     
+	/// @returns {Bool}
     static get_paused = function()
     {
         return __paused;
     }
     
+	/// @returns {Real}
     static get_position = function()
     {
         if (__in == undefined) return 0;
         return __window_array[__window_index];
     }
     
+	/// @returns {Id.Scribble.element|undefined}
     static get_text_element = function()
     {
         return weak_ref_alive(__last_element)? __last_element.ref : undefined;
     }
     
+	/// @returns {Id.Instance|Struct|undefined}
     static get_execution_scope = function()
     {
         return __function_scope;
@@ -394,6 +429,8 @@ function __scribble_class_typist(_per_line) constructor
     
     #region Sync
     
+	/// @param {Id.Sound} soundInstance	Sound instance to use as the basis for synchronisation
+	/// @returns {Id.Scribble.typist}
     static sync_to_sound = function(_instance)
     {
         if (_instance < 400000)
@@ -416,6 +453,7 @@ function __scribble_class_typist(_per_line) constructor
         return self;
     }
     
+	/// @returns {undefined}
     static __sync_reset = function()
     {
         __sync_started   = false;
@@ -430,12 +468,15 @@ function __scribble_class_typist(_per_line) constructor
     
     #region Gain
     
+	/// @param {Real.Float} gain	Gain to play the sound tags at, from 0.0 (silence) to 1.0 (full volume)
+	/// @returns {Id.Scribble.typist}
     static set_sound_tag_gain = function(_gain)
     {
         __sound_tag_gain = _gain;
         return self;
     }
     
+	/// @returns {Real.Float}
     static get_sound_tag_gain = function()
     {
         return __sound_tag_gain;
@@ -447,6 +488,7 @@ function __scribble_class_typist(_per_line) constructor
     
     #region Private Methods
     
+	// ToDo: update these internal jsDocs
     static __associate = function(_text_element)
     {
         var _carry_skip = __skip && ((__last_element == undefined) || !__drawn_since_skip);

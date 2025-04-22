@@ -50,7 +50,7 @@
 /// 4) Setting Krutidev font glyph ranges is a faff. Not the worst thing in the world, but worth
 ///    bearing in mind.
 /// 
-/// @param unicodeString
+/// @param {String} unicodeString
 
 function StringDevanagariParse(_inString)
 {

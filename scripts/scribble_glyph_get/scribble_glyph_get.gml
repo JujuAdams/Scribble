@@ -1,9 +1,10 @@
 // Feather disable all
 /// Returns: Real-value for the specified property
-/// @param fontName     The target font, as a string
-/// @param character    Target character, as a string
-/// @param property     Property to return, see below
-/// 
+/// @param {String}                  fontName     The target font, as a string
+/// @param {String}                  character    Target character, as a string
+/// @param {Constant.SCRIBBLE_GLYPH} property     Property to return, see below
+/// @return {Any}
+
 /// Three properties are available:
 /// SCRIBBLE_GLYPH.X_OFFSET:   The relative x-offset to draw the glyph
 /// SCRIBBLE_GLYPH.Y_OFFSET:   The relative y-offset to draw the glyph

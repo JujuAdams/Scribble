@@ -3,7 +3,7 @@
 /// 
 /// **Please do not use this function in conjunction with string_copy()**
 /// 
-/// @param string    The string to draw
+/// @param {String} string    The string to draw
 
 function string_width_scribble(_string)
 {

@@ -362,7 +362,6 @@ function __scribble_class_null_element() constructor
     
     #region Cache Management
     
-     /// @param freeze
     static build = function()
     {
         __error();
@@ -391,7 +390,7 @@ function __scribble_class_null_element() constructor
         __error();
     }
     
-    /// @param state
+    /// @param {Real.Int} state
     static ignore_command_tags = function()
     {
         __error();
@@ -407,8 +406,8 @@ function __scribble_class_null_element() constructor
         __error();
     }
     
-    /// @param string
-    /// @param [uniqueID]
+    /// @param {String} string
+    /// @param {String} [uniqueID]
     static overwrite = function()
     {
         __error();

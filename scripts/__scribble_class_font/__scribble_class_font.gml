@@ -1,8 +1,8 @@
 // Feather disable all
 
-/// @param fontName
-/// @param glyphCount
-/// @param renderType
+/// @param {String} fontName
+/// @param {Real} glyphCount
+/// @param {Constant.__SCRIBBLE_FONT_TYPE} fontType
 /// @param fromBundle
 
 function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle) constructor

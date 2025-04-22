@@ -2,11 +2,11 @@
 /// Adjusts the separation offset between two characters
 /// 
 /// Returns: The new value of the property that was modified.
-/// @param fontName           The target font, as a string
-/// @param firstChar          First character in the pair, as a string
-/// @param secondChar         Second character in the pair, as a string
-/// @param value              The value to set
-/// @param [relative=false]   Whether to add the new value to the existing value, or to overwrite the existing value. Defaults to false, overwriting the existing value
+/// @param {String} fontName           The target font, as a string
+/// @param {String} firstChar          First character in the pair, as a string
+/// @param {String} secondChar         Second character in the pair, as a string
+/// @param {Real} value              The value to set
+/// @param {Bool} [relative=false]   Whether to add the new value to the existing value, or to overwrite the existing value. Defaults to false, overwriting the existing value
 
 function scribble_kerning_pair_set(_font, _first_char, _second_char, _value, _relative = false)
 {

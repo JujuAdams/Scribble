@@ -1,3 +1,5 @@
+// Feather disable all
+
 function GlyphData()
 {
     static _result = undefined;

@@ -1,6 +1,6 @@
 // Feather disable all
-/// @param name
-/// @param function
+/// @param {String} name
+/// @param {Function} function
 
 function scribble_add_macro(_name, _function)
 {

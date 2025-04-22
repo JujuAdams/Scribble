@@ -2,9 +2,9 @@
 /// Returns the separation offset between two characters
 /// 
 /// Returns: The new value of the property that was modified.
-/// @param fontName           The target font, as a string
-/// @param firstChar          First character in the pair, as a string
-/// @param secondChar         Second character in the pair, as a string
+/// @param {String} fontName           The target font, as a string
+/// @param {String} firstChar          First character in the pair, as a string
+/// @param {String} secondChar         Second character in the pair, as a string
 
 function scribble_kerning_pair_get(_font, _first_char, _second_char)
 {

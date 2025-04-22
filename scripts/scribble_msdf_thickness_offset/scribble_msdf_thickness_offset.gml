@@ -1,6 +1,6 @@
 // Feather disable all
 
-/// @param offset
+/// @param {Real} offset
 
 function scribble_msdf_thickness_offset(_offset)
 {

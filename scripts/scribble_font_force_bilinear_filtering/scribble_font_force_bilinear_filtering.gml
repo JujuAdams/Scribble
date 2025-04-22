@@ -1,7 +1,7 @@
 // Feather disable all
 
-/// @param font
-/// @param state
+/// @param {String} fontName
+/// @param {Real.Int} state
 
 function scribble_font_force_bilinear_filtering(_font, _state)
 {

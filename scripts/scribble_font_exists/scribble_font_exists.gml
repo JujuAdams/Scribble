@@ -1,5 +1,5 @@
 // Feather disable all
-/// @param name
+/// @param {String} name
 
 function scribble_font_exists(_name)
 {

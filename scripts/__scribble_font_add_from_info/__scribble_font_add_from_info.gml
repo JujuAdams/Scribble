@@ -1,4 +1,5 @@
 // Feather disable all
+/// @param {Asset.GMFont} font
 
 /// @param fontName
 /// @param textureUVs

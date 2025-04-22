@@ -1,6 +1,6 @@
 // Feather disable all
 
-/// @param wound
+/// @param {Asset.GMSound} wound
 
 function scribble_whitelist_sound(_wound)
 {
