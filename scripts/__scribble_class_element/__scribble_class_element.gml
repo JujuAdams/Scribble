@@ -584,11 +584,6 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
-    static get_visual_bboxes = function()
-    {
-        return __visual_bboxes;
-    }
-    
     /// @param [x1=0]
     /// @param [y1=0]
     /// @param [x2=0]
