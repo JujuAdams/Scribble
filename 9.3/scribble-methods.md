@@ -252,26 +252,6 @@ If a number is passed to this method then a fixed line spacing is used. If a str
 
 &nbsp;
 
-## `.visual_bboxes(state)` *regenerator*
-
-**Returns**: The text element
-
-|Name    |Datatype|Purpose                                                                              |
-|--------|--------|-------------------------------------------------------------------------------------|
-|`state` |boolean |Whether to use the visual bounding box (`true`) or the logical bounding box (`false`)|
-
-"Bounding boxes" are rectangles that are drawn around text to calculate the width and height of that text, and the position of the entire text element. Bounding boxes are used in many places. Two examples are the data returned by the `.get_bbox()` method and the internal calculations for text alignment (e.g. right-alignment requires knowledge of the overall width of the text). Exactly how these bounding boxes are calculated is thus crucial to how text is laid out on the screen.
-
-Scribble has two modes available to calculate the bounding box for text: "logical" and "visual".
-
-Out of the box, Scribble will default to using the **logical** bounding box. This is also how GameMaker natively calculates text width and height. The logical bounding box is consistent: if you're drawing three lines of text in the same font, the logical bounding box will remain the same height no matter what specifically is being drawn. This is very useful for text alignment as the size of a text element is largely predictable. However, logical bounding boxes do not respect `[offset]` tags and some other text adjustment options that Scribble provides. This is usually of little consequence but is a limitation nonetheless.
-
-The alternative is to use a **visual** bounding box. Visual bounding boxes use the coordinates of the textured quads used to render the actual glyph graphics. As a result, the bounding box will respect `[offset]` and other Scribble tools and will generally fit more tightly if you're doing something unusual with your text. However, not all that glitters is gold. Visual bounding boxes can be inconsistent and will depend a great deal on what exactly is being drawn. Visual bounding boxes are also not guaranteed to match GameMaker's native text position and so may not be suitable if you're converting a game from GameMaker's native `draw_text*()` functions to Scribble.
-
-Visual bounding boxes will often also return values that don't fit as tightly as you might expect. Visual bounding boxes work best with spritefonts because calculating the glyph positions is very accurate. However, visual bounding boxes don't work as well with standard raster fonts nor do they work well with SDF fonts.
-
-&nbsp;
-
 ## `.padding(left, top, right, bottom)` *regenerator*
 
 **Returns**: The text element
@@ -302,7 +282,7 @@ Visual bounding boxes will often also return values that don't fit as tightly as
 
 This function defines a [cubic Bézier curve](https://en.wikipedia.org/wiki/B%C3%A9zier_curve) to shape text to. The four x/y coordinate pairs provide a smooth curve that Scribble uses as a guide to position and rotate glyphs.
 
-**The curve is positioned relative to the coordinate specified when calling** [`.draw()`](scribble-methods?id=drawx-y) **so that the first Bézier coordinate is at the draw coordinate**. This enables you to translate a curve without re-adjusting the values set in `.bezier()` (which would regenerate the text element and cause performance problems).
+**The curve is positioned relative to the coordinate specified when calling** [`.draw()`](scribble-methods?id=drawx-y) **so that the first Bézier coordinate is at the draw coordinate**. This enables you to move a curve without re-adjusting the values set in `.bezier()` (which would regenerate the text element, likely causing performance problems).
 
 If used in conjunction with [`.wrap()`](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator), the total length of the curve is used to wrap text horizontally and overrides the value specified in [`.wrap()`](scribble-methods?id=wrapmaxwidth-maxheight-characterwrap-regenerator). `.bezier()` will not work with `[fa_right]` or `[fa_center]` alignment. Instead, you should use `[pin_right]` and `[pin_center]`.
 

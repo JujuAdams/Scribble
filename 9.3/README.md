@@ -1,5 +1,5 @@
 <img src="https://raw.githubusercontent.com/JujuAdams/scribble/master/LOGO.png" width="50%" style="display: block; margin: auto;" />
-<h1 align="center">Scribble Deluxe 9.5</h1>
+<h1 align="center">Scribble Deluxe 9.3</h1>
 <p align="center">A modern text renderer for GameMaker by <a href="https://www.jujuadams.com/" target="_blank">Juju Adams</a></p>
 
 <p align="center"><a href="https://github.com/JujuAdams/scribble/releases/">Download the .yymps</a></p>
