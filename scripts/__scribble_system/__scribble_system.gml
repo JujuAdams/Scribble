@@ -4,6 +4,7 @@
 #macro __SCRIBBLE_VERBOSE_GC        false
 #macro __SCRIBBLE_RUNNING_FROM_IDE  (GM_build_type == "run")
 #macro SCRIBBLE_LOAD_FONTS_ON_BOOT  true
+gml_pragma("MarkTagAsUsed", "scribble asset");
 
 
 
