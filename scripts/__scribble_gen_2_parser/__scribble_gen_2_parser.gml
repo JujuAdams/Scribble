@@ -1456,7 +1456,13 @@ function __scribble_gen_2_parser()
             }
             else if (SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS && (_glyph_ord == 0x2026)) //Replace ellipsis … with three full stops (periods)
             {
-                //Figure out how much we need to copy and if we need to resize the target buffer
+                //expand the glyph grid by 2 additional slots to account for a single glyph of `…` being converted into 3 glyphs of `...`
+				var _element_expected_text_length = ds_grid_width(_glyph_grid);
+				ds_grid_resize(_glyph_grid,     _element_expected_text_length + 2, __SCRIBBLE_GEN_GLYPH.__SIZE);
+			    ds_grid_resize(_word_grid,      _element_expected_text_length + 2, __SCRIBBLE_GEN_GLYPH.__SIZE);
+				ds_grid_resize(_vbuff_pos_grid, _element_expected_text_length + 2, __SCRIBBLE_GEN_GLYPH.__SIZE);
+				
+				//Figure out how much we need to copy and if we need to resize the target buffer
                 var _copy_size = _buffer_length - buffer_tell(_string_buffer);
                 
                 _buffer_length = 3 + _copy_size;
