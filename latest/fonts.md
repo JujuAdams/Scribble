@@ -152,7 +152,7 @@ Fonts can often be tricky to render correctly, and this script allows you to cha
 
 The following properties are available for modification:
 
-|Macro                       | Property                                                                                                                       |
+|Enum                        | Property                                                                                                                       |
 |----------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 |`SCRIBBLE_GLYPH.WIDTH`      |Width of the glyph, in pixels. Changing this value will visually stretch the glyph                                              |
 |`SCRIBBLE_GLYPH.HEIGHT`     |Height of the glyph, in pixels. Changing this value will visually stretch the glyph                                             |
