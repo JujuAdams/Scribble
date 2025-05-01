@@ -38,6 +38,16 @@ Scribble was confirmed to work with [GMLive](https://yellowafterlife.itch.io/gam
 
 &nbsp;
 
+## I can't use `font_add()` fonts with Scribble Deluxe but I can with Scribble Junior. What's that about?
+
+Scribble Junior is performing a sleight of hand to support `font_add()`. if you use a dynamic font with Scribble Junior then it turns off all of the optimisations and the library instead functions as a nice interface for what is ultimately GameMaker's native text drawing with some extra features. For other types of font, Scribble Junior makes vertex buffers and renders at maximum efficiency.
+
+Scribble Deluxe requires that all text use a custom vertex buffer. This is to support all the animation and other fancy rendering features that Scribble Junior doesn't have. Whilst it's possible to put `font_add()` text into a vertex buffer, it's also 1) slow 2) liable to break. Many people have tried in the past but no one's cracked it just yet. i consider it an open problem.
+
+tl;dr - Scribble Junior gets away with slower rendering when using `font_add()`, Scribble Deluxe cannot use that slower renderer path.
+
+&nbsp;
+
 ## Can I use Scribble Junior alongside Scribble Deluxe?
 
 Yes! In fact, I encourage it. [Scribble Junior](https://github.com/JujuAdams/ScribbleJunior) is excellent for static UI text whereas Scribble Deluxe is geared more towards dialogue and animated text.
