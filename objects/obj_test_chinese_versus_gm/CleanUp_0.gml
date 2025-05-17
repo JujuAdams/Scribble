@@ -1,0 +1,1 @@
+scribble_font_set_default("scribble_fallback_font");
