@@ -1,0 +1,11 @@
+{
+  "$GMNotes":"",
+  "%Name":"spr_droid_bm_fnt",
+  "name":"spr_droid_bm_fnt",
+  "parent":{
+    "name":"Droid",
+    "path":"folders/Fonts/Droid.yy",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}
