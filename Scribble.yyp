@@ -1,5 +1,5 @@
 {
-  "$GMProject":"",
+  "$GMProject":"v1",
   "%Name":"Scribble",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
@@ -12,6 +12,7 @@
   "Folders":[
     {"$GMFolder":"","%Name":"Examples","folderPath":"folders/Examples.yy","name":"Examples","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Fonts","folderPath":"folders/Fonts.yy","name":"Fonts","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Droid","folderPath":"folders/Fonts/Droid.yy","name":"Droid","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Mallangche","folderPath":"folders/Fonts/Mallangche.yy","name":"Mallangche","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Scribble","folderPath":"folders/Scribble.yy","name":"Scribble","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"(System - don't call these functions)","folderPath":"folders/Scribble/(System - don't call these functions).yy","name":"(System - don't call these functions)","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -57,6 +58,7 @@
     {"$GMFolder":"","%Name":"Typewriter","folderPath":"folders/Test Cases/Typewriter.yy","name":"Typewriter","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Wrapping","folderPath":"folders/Test Cases/Wrapping.yy","name":"Wrapping","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
+  "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"blip.ogg","CopyToMask":-1,"filePath":"datafiles","name":"blip.ogg","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"fnt_font_awesome.png","CopyToMask":-1,"filePath":"datafiles","name":"fnt_font_awesome.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -67,7 +69,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.11.0.179",
+    "IDEVersion":"2024.13.1.193",
   },
   "name":"Scribble",
   "resources":[
@@ -101,8 +103,10 @@
     {"id":{"name":"fnt_thai","path":"fonts/fnt_thai/fnt_thai.yy",},},
     {"id":{"name":"scribble_fallback_font","path":"fonts/scribble_fallback_font/scribble_fallback_font.yy",},},
     {"id":{"name":"Mallangche License","path":"notes/Mallangche License/Mallangche License.yy",},},
+    {"id":{"name":"spr_droid_bm_fnt","path":"notes/spr_droid_bm_fnt/spr_droid_bm_fnt.yy",},},
     {"id":{"name":"obj_example_basic","path":"objects/obj_example_basic/obj_example_basic.yy",},},
     {"id":{"name":"obj_example_big_textbox","path":"objects/obj_example_big_textbox/obj_example_big_textbox.yy",},},
+    {"id":{"name":"obj_example_bmfont","path":"objects/obj_example_bmfont/obj_example_bmfont.yy",},},
     {"id":{"name":"obj_example_glyph_position","path":"objects/obj_example_glyph_position/obj_example_glyph_position.yy",},},
     {"id":{"name":"obj_test_align","path":"objects/obj_test_align/obj_test_align.yy",},},
     {"id":{"name":"obj_test_alignment_changes","path":"objects/obj_test_alignment_changes/obj_test_alignment_changes.yy",},},
@@ -366,6 +370,7 @@
     {"id":{"name":"scribble_external_sprite_remove","path":"scripts/scribble_external_sprite_remove/scribble_external_sprite_remove.yy",},},
     {"id":{"name":"scribble_flush_everything","path":"scripts/scribble_flush_everything/scribble_flush_everything.yy",},},
     {"id":{"name":"scribble_flush_shader_uniforms","path":"scripts/scribble_flush_shader_uniforms/scribble_flush_shader_uniforms.yy",},},
+    {"id":{"name":"scribble_font_add_bmfont","path":"scripts/scribble_font_add_bmfont/scribble_font_add_bmfont.yy",},},
     {"id":{"name":"scribble_font_bake_outline_4dir","path":"scripts/scribble_font_bake_outline_4dir/scribble_font_bake_outline_4dir.yy",},},
     {"id":{"name":"scribble_font_bake_outline_8dir_2px","path":"scripts/scribble_font_bake_outline_8dir_2px/scribble_font_bake_outline_8dir_2px.yy",},},
     {"id":{"name":"scribble_font_bake_outline_8dir","path":"scripts/scribble_font_bake_outline_8dir/scribble_font_bake_outline_8dir.yy",},},
@@ -430,6 +435,7 @@
     {"id":{"name":"snd_sync_test","path":"sounds/snd_sync_test/snd_sync_test.yy",},},
     {"id":{"name":"scribble_fallback_bulletpoint","path":"sprites/scribble_fallback_bulletpoint/scribble_fallback_bulletpoint.yy",},},
     {"id":{"name":"spr_coin","path":"sprites/spr_coin/spr_coin.yy",},},
+    {"id":{"name":"spr_droid_bm","path":"sprites/spr_droid_bm/spr_droid_bm.yy",},},
     {"id":{"name":"spr_large_coin","path":"sprites/spr_large_coin/spr_large_coin.yy",},},
     {"id":{"name":"spr_long_sprite_test","path":"sprites/spr_long_sprite_test/spr_long_sprite_test.yy",},},
     {"id":{"name":"spr_mallangche","path":"sprites/spr_mallangche/spr_mallangche.yy",},},
