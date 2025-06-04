@@ -97,7 +97,7 @@
 #macro SCRIBBLE_TICK_SIZE  (delta_time / 16666)
 
 //Default value to use for text element unique IDs. This is used when no unique ID is specified.
-//This value must be a string, and must start with a colon (:).
+//This value must be a string, and must end with a colon (:).
 #macro SCRIBBLE_DEFAULT_UNIQUE_ID  "default:"
 
 //Enables verbose console output to aid with debugging
