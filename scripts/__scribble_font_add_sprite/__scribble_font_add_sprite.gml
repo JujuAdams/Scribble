@@ -209,7 +209,8 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         ++_i;
     }
     
-    _font_data.__calculate_font_height();
+    var _space_index = _font_glyphs_map[? 0x20];
+    _font_data.__height = _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.HEIGHT];
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"", _sprite_name, "\" as a spritefont");
     

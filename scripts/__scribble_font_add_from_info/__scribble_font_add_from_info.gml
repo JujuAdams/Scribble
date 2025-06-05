@@ -3,10 +3,11 @@
 /// @param fontName
 /// @param textureUVs
 /// @param fontInfo
+/// @param [lineHeight]
 /// @param isKrutidev
 /// @param fromBundle
 
-function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _is_krutidev, _from_bundle)
+function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_height = undefined, _is_krutidev, _from_bundle)
 {
     static _font_data_map = __scribble_initialize().__font_data_map;
     
@@ -213,10 +214,16 @@ function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _is_krut
             ++_i;
         }
         
-        _font_data.__calculate_font_height();
+        var _space_index = _font_glyphs_map[? 0x20];
+        if (_line_height == undefined)
+        {
+            _line_height = _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.HEIGHT];
+        }
+        
+        _font_data.__height = _line_height;
         
         //Check to see if this texture has been resized during compile
-        var _GM_scaling = _font_info.size / _font_glyph_data_grid[# _font_glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT];
+        var _GM_scaling = _font_info.size / _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.HEIGHT];
         if (_GM_scaling > 1)
         {
             __scribble_trace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyph_data_grid[# _font_glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT], ", scaling factor = ", _GM_scaling, "). Check that the font is rendering correctly. If it is not, try setting SCRIBBLE_ATTEMPT_FONT_SCALING_FIX to <false>");

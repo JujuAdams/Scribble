@@ -73,12 +73,6 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle) 
         }
     }
     
-    static __calculate_font_height = function()
-    {
-        __height = __glyph_data_grid[# __glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT];
-        return __height;
-    }
-    
     static __clear = function()
     {
         if (!__superfont) __scribble_error("Cannot clear non-superfont fonts");
