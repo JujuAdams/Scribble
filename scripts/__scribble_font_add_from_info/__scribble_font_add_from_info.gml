@@ -6,8 +6,9 @@
 /// @param [lineHeight]
 /// @param isKrutidev
 /// @param fromBundle
+/// @param addAtlasOffset
 
-function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_height = undefined, _is_krutidev, _from_bundle)
+function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_height = undefined, _is_krutidev, _from_bundle, _add_atlas_offset)
 {
     static _font_data_map = __scribble_initialize().__font_data_map;
     
@@ -163,7 +164,7 @@ function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_he
             var _w = _glyph_dict.w;
             var _h = _glyph_dict.h;
             
-            if (__SCRIBBLE_ON_WEB)
+            if (_add_atlas_offset)
             {
                 _x += _texture_l;
                 _y += _texture_t;
@@ -229,6 +230,8 @@ function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_he
             __scribble_trace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyph_data_grid[# _font_glyphs_map[? 32], SCRIBBLE_GLYPH.HEIGHT], ", scaling factor = ", _GM_scaling, "). Check that the font is rendering correctly. If it is not, try setting SCRIBBLE_ATTEMPT_FONT_SCALING_FIX to <false>");
             if (SCRIBBLE_ATTEMPT_FONT_SCALING_FIX) scribble_font_scale(_name, ceil(_GM_scaling));
         }
+        
+        return _font_data;
     }
     catch(_error)
     {

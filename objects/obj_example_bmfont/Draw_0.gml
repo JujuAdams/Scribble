@@ -1,5 +1,5 @@
-var _string = @"[fa_center][fa_middle][wave][rainbow][" + bmfont_name + "]j[/]";
+var _scribble = scribble("d").starting_format(bmfont_name, c_white);
+_scribble.draw(room_width div 2, room_height div 2);
 
-// Draw our BMFont string in the center of the screen
-scribble(_string)
-.draw(room_width div 2, room_height div 2);
+draw_line(0, room_height div 2, room_width, room_height div 2);
+draw_line(room_width div 2, 0, room_width div 2, room_height);

@@ -15,5 +15,5 @@ function __scribble_font_add_from_bundle(_font)
     var _line_height = string_height(" ");
     draw_set_font(_old_font);
     
-    return __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_height, _is_krutidev, true);
+    return __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_height, _is_krutidev, true, __SCRIBBLE_ON_WEB);
 }

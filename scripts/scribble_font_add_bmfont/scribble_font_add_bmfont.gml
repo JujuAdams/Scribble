@@ -5,6 +5,7 @@
 /// @param spriteAsset      Sprite asset to use for the font texture
 /// @param [fontName]       Name to give the font (if not specified, will use the name in the .fnt file)
 /// @param [mapString]      Optional string for character mapping (only for compatibility with older BMFont files)
+
 function scribble_font_add_bmfont(_bmfont_path, _sprite_asset, _font_name = undefined, _map_string = undefined)
 {
     // Make sure the sprite exists
@@ -35,15 +36,30 @@ function scribble_font_add_bmfont(_bmfont_path, _sprite_asset, _font_name = unde
         return;
     }
     
-    // Get the texture dimensions
-    var _texture_width  = texture_get_width(_font_info.texture);
-    var _texture_height = texture_get_height(_font_info.texture);
-    
-    // Create texture UVs array [u0, v0, u1, v1]
-    var _texture_uvs = [0, 0, 1, 1];
-    
     // Add the font to Scribble
-    __scribble_font_add_from_info(_font_name, _texture_uvs, _font_info, false, false);
+    var _font_data = __scribble_font_add_from_info(_font_name, sprite_get_uvs(_sprite_asset, 0), _font_info, _font_info.lineHeight, false, undefined, true);
+    
+    // Apply y-offsets
+    if (_font_data != undefined)
+    {
+        var _grid = _font_data.__glyph_data_grid;
+        var _map  = _font_data.__glyphs_map;
+        
+        var _info_glyphs_dict = _font_info.glyphs;
+        var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
+        
+        var _i = 0;
+        repeat(array_length(_info_glyph_names))
+        {
+            var _glyph = _info_glyph_names[_i];
+            var _struct = _info_glyphs_dict[$ _glyph];
+            
+            var _glyph_index = _map[? ord(_glyph)];
+            _grid[# _glyph_index, SCRIBBLE_GLYPH.Y_OFFSET] = _grid[# _glyph_index, SCRIBBLE_GLYPH.Y_OFFSET] + _struct.yoffset;
+            
+            ++_i;
+        }
+    }
     
     return _font_name;
 }
@@ -62,9 +78,11 @@ function __scribble_process_bmfont(_bmfont_path, _sprite_asset, _map_string)
         return undefined;
     }
     
+    var _sprite_info = sprite_get_info(_sprite_asset);
+    
     // Create the font info structure that will be returned
     var _font_info = {
-        texture: undefined,
+        texture: __scribble_sprite_get_texture_index(_sprite_asset, 0),
         glyphs: {},
         ascenderOffset: 0,
         sdfEnabled: false,
@@ -77,8 +95,7 @@ function __scribble_process_bmfont(_bmfont_path, _sprite_asset, _map_string)
     var _chars = {};
     var _kernings = [];
     
-    // Get the texture from the sprite
-    _font_info.texture = sprite_get_texture(_sprite_asset, 0);
+    
     
     // Parse the BMFont file line by line
     while (!file_text_eof(_file))
@@ -125,9 +142,7 @@ function __scribble_process_bmfont(_bmfont_path, _sprite_asset, _map_string)
                 break;
                 
             case "common":
-                _line_height = real(_params[$ "lineHeight"] ?? "0");
-                _base_line = real(_params[$ "base"] ?? "0");
-                _font_info.ascenderOffset = _line_height - _base_line;
+                _font_info.lineHeight = real(_params[$ "lineHeight"] ?? "0");
                 break;
                 
             case "char":
