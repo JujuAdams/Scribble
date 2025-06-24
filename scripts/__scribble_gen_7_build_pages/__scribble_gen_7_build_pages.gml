@@ -38,8 +38,8 @@
                                     var _i = _page_data.__line_start;\
                                     repeat(_page_data.__line_count)\
                                     {\
-                                        var _glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START];\
-                                        var _glyph_end   = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_END  ], __SCRIBBLE_GEN_WORD.__GLYPH_END  ];\
+                                        var _glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START] - _page_data.__glyph_start;\
+                                        var _glyph_end   = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_END  ], __SCRIBBLE_GEN_WORD.__GLYPH_END  ] - _page_data.__glyph_start;\
                                         array_push(_line_data_array, new __scribble_class_line(_line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y           ],\
                                                                                                _line_grid[# _i, __SCRIBBLE_GEN_LINE.__HEIGHT      ],\
                                                                                                _line_grid[# _i, __SCRIBBLE_GEN_LINE.__FORCED_BREAK],\
