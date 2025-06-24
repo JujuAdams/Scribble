@@ -589,6 +589,28 @@ The string that is returned is the raw text that is drawn i.e. all command tags 
 
 &nbsp;
 
+## `.get_line_data(lineIndex, [page])`
+
+**Returns:** Struct, containing layout details for the line on the given page (see below)
+
+|Name       |Datatype|Purpose                                                                    |
+|-----------|--------|---------------------------------------------------------------------------|
+|`lineIndex`|integer |Index of the line whose data will be returned                              |
+|`[page]`   |integer |Page to get the glyph data from. If not specified, the current page is used|
+
+The struct that is returned has the following member variables:
+
+|Name          |Datatype|Purpose                                                         |
+|--------------|--------|----------------------------------------------------------------|
+|`y`           |number  |y-position of the top of the line relative to the model's origin|
+|`height`      |number  |Height of the line, in pixels                                   |
+|`forced_break`|boolean |Whether the line was created by a manual line break. This value will also be `true` for the first line (index 0) for a text element|
+|`glyph_start` |integer |Index of the first glyph on the line                            |
+|`glyph_end`   |integer |Index of the last glyph on the line                             |
+|`glyph_count` |integer |Number of the glyphs on the line                                |
+
+&nbsp;
+
 ## `.get_glyph_data(glyphIndex, [page])`
 
 **Returns:** Struct, containing layout details for the glyph on the given page (see below)
