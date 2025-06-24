@@ -132,9 +132,18 @@ function __scribble_class_page() constructor
         }
     }
     
+    static __get_line_data = function(_index)
+    {
+        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Cannot get line data, SCRIBBLE_ALLOW_LINE_DATA_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_LINE_DATA_GETTER to <true> to get glyph data");
+        
+        return __line_data_array[clamp(_index, 0, __line_count-1)];
+    }
+    
     static __get_glyph_data = function(_index)
     {
         if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Cannot get glyph data, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to <true> to get glyph data");
+        
+        //TODO - Static struct return needed here?
         
         if (_index < 0)
         {

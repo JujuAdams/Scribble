@@ -1077,8 +1077,16 @@ function __scribble_class_element(_string, _unique_id) constructor
     static get_text = function(_page = __page)
     {
         var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
+        if (!is_struct(_model)) return "";
         return _model.__get_text(_page);
+    }
+    
+    /// @param [page]
+    static get_line_data = function(_index, _page = __page)
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return undefined;
+        return _model.__get_line_data(_index, _page);
     }
     
     /// @param index
@@ -1086,7 +1094,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     static get_glyph_data = function(_index, _page = __page)
     {
         var _model = __get_model(true);
-        if (!is_struct(_model)) return 0;
+        if (!is_struct(_model)) return undefined;
         return _model.__get_glyph_data(_index, _page);
     }
     
