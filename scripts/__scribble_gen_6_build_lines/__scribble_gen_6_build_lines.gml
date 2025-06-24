@@ -4,6 +4,8 @@
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HALIGN            ] = _state_halign;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__DISABLE_JUSTIFY   ] = false;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__STARTS_MANUAL_PAGE] = false;\
+                                  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__FORCED_BREAK      ] = _forced_break;\
+                                  _forced_break = false;\ //Reset this value since we presume line wrapping
                                   ;\ //Adjust the first word's width to account for visual tweaks
                                   ;\ //TODO - Implement for R2L text
                                   if ((SCRIBBLE_NEWLINES_PAD_LEFT_SPACE || SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE) && (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.__BIDI] < __SCRIBBLE_BIDI.R2L))\
@@ -51,11 +53,9 @@
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_END    ] = _line_word_end;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WIDTH       ] = _word_x;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HEIGHT      ] = _line_height;\
-                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__FORCED_BREAK] = _forced_break;\
                                 _line_count++;\
                                 if (_line_y + _line_height > _line_max_y) _line_max_y = _line_y + _line_height;\
-                                _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;\
-                                _forced_break = false; //Reset this value since we presume line wrapping
+                                _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
 
 function __scribble_gen_6_build_lines()
 {
@@ -80,7 +80,7 @@ function __scribble_gen_6_build_lines()
         var _model_max_height      = (_wrap_apply? __model_max_height : infinity);
     }
     
-    var _forced_break = false; //We presume natural line wrapping
+    var _forced_break = true; //Start with a forced break because it's the first line!
     
     var _fit_to_box_iterations = 0;
     var _lower_limit = undefined;
@@ -297,9 +297,9 @@ function __scribble_gen_6_build_lines()
                     {
                         //Linebreak after this word
                         var _line_word_end = _i;
-                        _forced_break = true; //Gets reset to `false`
                         __SCRIBBLE_GEN_LINE_END;
                         _line_word_start = _i+1;
+                        _forced_break = true; //Gets reset to `false`
                         __SCRIBBLE_GEN_LINE_START;
                         
                         //Mark the previous line as not needing justification
@@ -309,10 +309,10 @@ function __scribble_gen_6_build_lines()
                     {
                         //Pagebreak after this word
                         var _line_word_end = _i;
-                        _forced_break = true; //Gets reset to `false`
                         __SCRIBBLE_GEN_LINE_END;
                         _line_y = 0;
                         _line_word_start = _i+1;
+                        _forced_break = true; //Gets reset to `false`
                         __SCRIBBLE_GEN_LINE_START;
                         
                         //Mark the previous line as not needing justification

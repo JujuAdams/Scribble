@@ -26,7 +26,7 @@
                                 }\
                                 ;\
                                 ;\ //Correct line positions for vertical alignment
-                                ;\ if (_page_data.__min_y != 0) ds_grid_add_region(_line_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__Y, _page_end_line, __SCRIBBLE_GEN_GLYPH.__Y, _page_data.__min_y);
+                                if (_page_data.__min_y != 0) ds_grid_add_region(_line_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__Y, _page_end_line, __SCRIBBLE_GEN_GLYPH.__Y, _page_data.__min_y);\
                                 ;\
                                 ;\// Set up the character indexes for the page, relative to the character index of the first glyph on the page
                                 var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];\
@@ -35,12 +35,15 @@
                                 ;\
                                 if (SCRIBBLE_ALLOW_LINE_DATA_GETTER)\
                                 {\
-                                    var _i = _page_data.__glyph_start;\
+                                    var _i = _page_data.__line_start;\
                                     repeat(_page_data.__line_count)\
                                     {\
+                                        var _glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_START], __SCRIBBLE_GEN_WORD.__GLYPH_START];\
+                                        var _glyph_end   = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE.__WORD_END  ], __SCRIBBLE_GEN_WORD.__GLYPH_END  ];\
                                         array_push(_line_data_array, new __scribble_class_line(_line_grid[# _i, __SCRIBBLE_GEN_LINE.__Y           ],\
                                                                                                _line_grid[# _i, __SCRIBBLE_GEN_LINE.__HEIGHT      ],\
-                                                                                               _line_grid[# _i, __SCRIBBLE_GEN_LINE.__FORCED_BREAK]));\
+                                                                                               _line_grid[# _i, __SCRIBBLE_GEN_LINE.__FORCED_BREAK],\
+                                                                                               _glyph_start, _glyph_end));\
                                         ++_i;\
                                     }\
                                     ;\
