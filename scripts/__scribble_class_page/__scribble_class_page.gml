@@ -23,6 +23,8 @@ function __scribble_class_page() constructor
     __line_end   = undefined;
     __line_count = 0;
     
+    __line_data_array = undefined; //Only set to an array if `SCRIBBLE_ALLOW_LINE_DATA_GETTER` is set to `true`
+    
     __width  = 0;
     __height = 0;
     __min_x  = 0;

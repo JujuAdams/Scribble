@@ -291,6 +291,7 @@
     {"id":{"name":"__scribble_class_event","path":"scripts/__scribble_class_event/__scribble_class_event.yy",},},
     {"id":{"name":"__scribble_class_font","path":"scripts/__scribble_class_font/__scribble_class_font.yy",},},
     {"id":{"name":"__scribble_class_generator_state","path":"scripts/__scribble_class_generator_state/__scribble_class_generator_state.yy",},},
+    {"id":{"name":"__scribble_class_line","path":"scripts/__scribble_class_line/__scribble_class_line.yy",},},
     {"id":{"name":"__scribble_class_material","path":"scripts/__scribble_class_material/__scribble_class_material.yy",},},
     {"id":{"name":"__scribble_class_model","path":"scripts/__scribble_class_model/__scribble_class_model.yy",},},
     {"id":{"name":"__scribble_class_null_element","path":"scripts/__scribble_class_null_element/__scribble_class_null_element.yy",},},
@@ -444,8 +445,8 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
-    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
+    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
   ],
   "templateType":null,
   "TextureGroups":[

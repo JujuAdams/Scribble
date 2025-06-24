@@ -9,7 +9,6 @@ function __scribble_gen_8_position_glyphs()
         var _stretch_grid    = __stretch_grid;
         var _line_grid       = __line_grid;
         var _temp_grid       = __temp_grid;
-        var _line_count      = __line_count;
         var _overall_bidi    = __overall_bidi;
         var _model_max_width = __model_max_width;
         var _glyph_count     = __glyph_count;
@@ -84,11 +83,6 @@ function __scribble_gen_8_position_glyphs()
             ds_grid_add_grid_region(_glyph_grid, _temp_grid, 0, 0, _line_glyph_count-1, 0, _line_glyph_start, __SCRIBBLE_GEN_GLYPH.__Y);
             
             #endregion
-            
-            
-            
-            //Correct for vertical alignment
-            if (_page_data.__min_y != 0) ds_grid_add_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH.__Y, _line_glyph_end, __SCRIBBLE_GEN_GLYPH.__Y, _page_data.__min_y);
             
             
             

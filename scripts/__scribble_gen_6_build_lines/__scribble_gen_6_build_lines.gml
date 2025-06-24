@@ -48,13 +48,14 @@
                                 {\
                                     var _line_height = _found_line_height;\ //Line height is fine, don't fiddle with anything
                                 }\
-                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_END] = _line_word_end;\
-                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WIDTH   ] = _word_x;\
-                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HEIGHT  ] = _line_height;\
+                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_END    ] = _line_word_end;\
+                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WIDTH       ] = _word_x;\
+                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HEIGHT      ] = _line_height;\
+                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__FORCED_BREAK] = _forced_break;\
                                 _line_count++;\
                                 if (_line_y + _line_height > _line_max_y) _line_max_y = _line_y + _line_height;\
-                                _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
-
+                                _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;\
+                                _forced_break = false; //Reset this value since we presume line wrapping
 
 function __scribble_gen_6_build_lines()
 {
@@ -78,6 +79,8 @@ function __scribble_gen_6_build_lines()
         var _model_max_width       = (_wrap_apply? __model_max_width  : infinity);
         var _model_max_height      = (_wrap_apply? __model_max_height : infinity);
     }
+    
+    var _forced_break = false; //We presume natural line wrapping
     
     var _fit_to_box_iterations = 0;
     var _lower_limit = undefined;
@@ -294,6 +297,7 @@ function __scribble_gen_6_build_lines()
                     {
                         //Linebreak after this word
                         var _line_word_end = _i;
+                        _forced_break = true; //Gets reset to `false`
                         __SCRIBBLE_GEN_LINE_END;
                         _line_word_start = _i+1;
                         __SCRIBBLE_GEN_LINE_START;
@@ -305,6 +309,7 @@ function __scribble_gen_6_build_lines()
                     {
                         //Pagebreak after this word
                         var _line_word_end = _i;
+                        _forced_break = true; //Gets reset to `false`
                         __SCRIBBLE_GEN_LINE_END;
                         _line_y = 0;
                         _line_word_start = _i+1;

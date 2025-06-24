@@ -492,16 +492,17 @@ enum __SCRIBBLE_GEN_STRETCH
 
 enum __SCRIBBLE_GEN_LINE
 {
-    __X,                  //0
-    __Y,                  //1
-    __WORD_START,         //2
-    __WORD_END,           //3
-    __WIDTH,              //4
-    __HEIGHT,             //5
-    __HALIGN,             //6
-    __DISABLE_JUSTIFY,    //7
-    __STARTS_MANUAL_PAGE, //8
-    __SIZE,               //9
+    __X,                  // 0
+    __Y,                  // 1
+    __WORD_START,         // 2
+    __WORD_END,           // 3
+    __WIDTH,              // 4
+    __HEIGHT,             // 5
+    __HALIGN,             // 6
+    __DISABLE_JUSTIFY,    // 7
+    __STARTS_MANUAL_PAGE, // 8
+    __FORCED_BREAK,       // 9
+    __SIZE,               //10
 }
 
 #endregion
