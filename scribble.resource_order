@@ -180,6 +180,7 @@
     {"name":"obj_test_sprite_colourization","order":9,"path":"objects/obj_test_sprite_colourization/obj_test_sprite_colourization.yy",},
     {"name":"obj_test_sprite_long","order":20,"path":"objects/obj_test_sprite_long/obj_test_sprite_long.yy",},
     {"name":"obj_test_sprite_origins","order":10,"path":"objects/obj_test_sprite_origins/obj_test_sprite_origins.yy",},
+    {"name":"obj_test_sprite_via_handle","order":20,"path":"objects/obj_test_sprite_via_handle/obj_test_sprite_via_handle.yy",},
     {"name":"obj_test_spritefont","order":12,"path":"objects/obj_test_spritefont/obj_test_spritefont.yy",},
     {"name":"obj_test_starting_format","order":16,"path":"objects/obj_test_starting_format/obj_test_starting_format.yy",},
     {"name":"obj_test_stress_lots_of_text","order":1,"path":"objects/obj_test_stress_lots_of_text/obj_test_stress_lots_of_text.yy",},

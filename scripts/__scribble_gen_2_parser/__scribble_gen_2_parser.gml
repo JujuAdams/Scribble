@@ -1097,6 +1097,11 @@ function __scribble_gen_2_parser()
                             else
                             {
                                 var _sprite_index = _external_sprite_map[? _tag_command_name] ?? asset_get_index(_tag_command_name); 
+                                if ((not sprite_exists(_sprite_index)) && _useHandleParse)
+                                {
+                                    _sprite_index = handle_parse(_tag_command_name);
+                                }
+                                
                                 if (sprite_exists(_sprite_index))
                                 {
                                     #region Sprite
