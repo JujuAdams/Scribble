@@ -26,7 +26,7 @@
                                 }\
                                 ;\
                                 ;\ //Correct line positions for vertical alignment
-                                if (_page_data.__min_y != 0) ds_grid_add_region(_line_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__Y, _page_end_line, __SCRIBBLE_GEN_GLYPH.__Y, _page_data.__min_y);\
+                                if (_page_data.__min_y != 0) ds_grid_add_region(_line_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_LINE.__Y, _page_end_line, __SCRIBBLE_GEN_LINE.__Y, _page_data.__min_y);\
                                 ;\
                                 ;\// Set up the character indexes for the page, relative to the character index of the first glyph on the page
                                 var _page_anim_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];\
