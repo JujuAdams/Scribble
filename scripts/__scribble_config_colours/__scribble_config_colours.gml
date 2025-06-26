@@ -1,6 +1,6 @@
 // Feather disable all
+
 /// Creates a collection of colour names that map to 24-bit BGR colours
-/// Use scribble_rgb_to_bgr() to convert from industry standard RGB colour codes to GM's native BGR format
 /// 
 /// To add or change colours at runtime, use scribble_color_set()
 /// 
@@ -35,10 +35,10 @@ function __scribble_config_colours()
         c_yellow:  c_yellow,
     
         //Here are some example colours
-        c_coquelicot: scribble_rgb_to_bgr(0xff3800),
-        c_smaragdine: scribble_rgb_to_bgr(0x50c875),
-        c_xanadu:     scribble_rgb_to_bgr(0x738678),
-        c_amaranth:   scribble_rgb_to_bgr(0xe52b50),
+        c_coquelicot: #ff3800,
+        c_smaragdine: #50c875,
+        c_xanadu:     #738678,
+        c_amaranth:   #e52b50,
     };
     
     return _colours;
