@@ -1,7 +1,6 @@
 // Feather disable all
-/// @param [perLine=false]
 
-function scribble_typist(_per_line = false)
+function scribble_typist()
 {
-    return new __scribble_class_typist(_per_line);
+    __scribble_error("Typists have been removed in favour of `scribble_unique()`. Please refer to documentation");
 }
