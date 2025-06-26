@@ -327,7 +327,6 @@
     {"name":"scribble_kerning_pair_set","order":9,"path":"scripts/scribble_kerning_pair_set/scribble_kerning_pair_set.yy",},
     {"name":"scribble_markdown_format","order":7,"path":"scripts/scribble_markdown_format/scribble_markdown_format.yy",},
     {"name":"scribble_markdown_set_styles","order":6,"path":"scripts/scribble_markdown_set_styles/scribble_markdown_set_styles.yy",},
-    {"name":"scribble_msdf_thickness_offset","order":1,"path":"scripts/scribble_msdf_thickness_offset/scribble_msdf_thickness_offset.yy",},
     {"name":"scribble_refresh_everything","order":2,"path":"scripts/scribble_refresh_everything/scribble_refresh_everything.yy",},
     {"name":"scribble_rgb_to_bgr","order":4,"path":"scripts/scribble_rgb_to_bgr/scribble_rgb_to_bgr.yy",},
     {"name":"scribble_super_clear","order":4,"path":"scripts/scribble_super_clear/scribble_super_clear.yy",},

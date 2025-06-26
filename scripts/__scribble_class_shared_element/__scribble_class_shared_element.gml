@@ -1170,15 +1170,6 @@ function __scribble_class_shared_element(_string, _unique_id) constructor
         return self;
     }
     
-    //TODO - DEPRECATED, remove in v10
-    static sdf_border = function(_colour, _thickness)
-    {
-        __sdf_outline_colour    = _colour;
-        __sdf_outline_thickness = _thickness;
-        
-        return self;
-    }
-    
     static sdf_outline = function(_colour, _thickness)
     {
         __sdf_outline_colour    = _colour;
