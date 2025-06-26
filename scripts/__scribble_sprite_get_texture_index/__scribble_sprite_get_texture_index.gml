@@ -25,6 +25,7 @@ function __scribble_sprite_get_texture_index(_sprite, _image)
     {
         //No array found, extract texture indexs from sprite info into a new array for the cache
         _array = array_create(_count);
+        _sprite_texture_index_map[? _sprite] = _array;
         
         var _sprite_info = sprite_get_info(_sprite);
         var _frame_array = _sprite_info.frames;
@@ -32,7 +33,7 @@ function __scribble_sprite_get_texture_index(_sprite, _image)
         var _i = 0;
         repeat(_count)
         {
-            _array[_i] = _frame_array[_i].texture;
+            _array[@ _i] = _frame_array[_i].texture;
             ++_i;
         }
     }
