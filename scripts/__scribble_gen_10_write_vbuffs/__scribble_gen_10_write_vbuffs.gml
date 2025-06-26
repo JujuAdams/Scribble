@@ -226,7 +226,6 @@ function __scribble_gen_10_write_vbuffs()
                         var _line_index      = (_packed_indexes mod __SCRIBBLE_MAX_LINES) + ((_character_index > 0)? 1 : 0);
                         
                         var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
-                        _event.position        = _character_index; //Legacy
                         _event.character_index = _character_index;
                         _event.line_index      = _line_index;
                         
@@ -453,7 +452,6 @@ function __scribble_gen_10_write_vbuffs()
             var _line_index      = (_packed_indexes mod __SCRIBBLE_MAX_LINES) + ((_character_index > 0)? 1 : 0);
             
             var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL.__DATA];
-            _event.position        = _character_index; //Legacy
             _event.character_index = _character_index;
             _event.line_index      = _line_index;
             

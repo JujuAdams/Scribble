@@ -33,7 +33,7 @@ function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_he
         //Get font info from the runtime
         var _texture_index = _font_info.texture;
         var _info_glyphs_dict = _font_info.glyphs;
-        var _ascender_offset = SCRIBBLE_USE_ASCENDER_OFFSET? _font_info.ascenderOffset : 0;
+        var _ascender_offset = _font_info.ascenderOffset;
         
         var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
         var _size = array_length(_info_glyph_names);

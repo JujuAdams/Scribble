@@ -1139,7 +1139,7 @@ function __scribble_gen_2_parser()
                                         }
                                 
                                         //Apply IDE sprite speed
-                                        if (!SCRIBBLE_LEGACY_ANIMATION_SPEED) _image_speed *= __scribble_image_speed_get(_sprite_index);
+                                        _image_speed *= __scribble_image_speed_get(_sprite_index);
                                 
                                         //Only report the model as animated if we're actually able to animate this sprite
                                         if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __has_animation = true;

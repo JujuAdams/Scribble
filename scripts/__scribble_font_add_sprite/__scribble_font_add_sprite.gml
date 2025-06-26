@@ -49,12 +49,6 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _sprite_x_offset = 0;
     var _sprite_y_offset = 0;
     
-    if (SCRIBBLE_SPRITEFONT_LEGACY_HEIGHT)
-    {
-        _sprite_height = 1 + sprite_get_bbox_bottom(_sprite) - sprite_get_bbox_top(_sprite);
-        _sprite_y_offset += sprite_get_bbox_top(_sprite);
-    }
-    
     if (!SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN)
     {
         _sprite_x_offset += sprite_get_xoffset(_sprite);

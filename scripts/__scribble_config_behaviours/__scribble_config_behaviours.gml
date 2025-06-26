@@ -57,8 +57,7 @@
 //height of the current font.
 #macro SCRIBBLE_AUTOFIT_INLINE_TEXTURES  false  
 
-//Whether to adjust the horizontal distance between glyphs depending on special per-font rules. Set
-//to `false` for legacy pre-8.2 behaviour.
+//Whether to adjust the horizontal distance between glyphs depending on special per-font rules.
 #macro SCRIBBLE_USE_KERNING  true
 
 //Bilinear filtering state to force for inline sprite (and surfaces too). Set to `undefined` to use
@@ -67,10 +66,6 @@
 
 //Whether the last character in a string should trigger a per-character delay.
 #macro SCRIBBLE_DELAY_LAST_CHARACTER  false
-
-//Whether to use ascender offsets when calculating glyph y-offsets. Set this macro to `false` for
-//compatibility with legacy codebases.
-#macro SCRIBBLE_USE_ASCENDER_OFFSET  true
 
 //Whether to allow use of `scribble_font_set_*align_offset()`. Set this macro to false for a slight
 //performance improvement.
@@ -130,11 +125,6 @@
 
 //Set to `true` to ignore a sprite origin's contribution to its spritefont glyph x/y offsets.
 #macro SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN  false
-
-//Version 8 and later uses GameMaker's native spritefont dimensions. Older versions used the tight
-//bounding box leading to narrower lines. Set this macro to <true> to use the tighter legacy
-//behaviour.
-#macro SCRIBBLE_SPRITEFONT_LEGACY_HEIGHT  false
 
 //Edge trimming around the bounding box for SDF glyphs (in pixels). This is useful for tidying up
 //any glitches when scaling.
