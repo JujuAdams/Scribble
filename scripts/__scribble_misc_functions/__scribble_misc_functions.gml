@@ -515,7 +515,7 @@ enum __SCRIBBLE_GEN_LINE
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
 #macro __SCRIBBLE_ON_WEB               (os_browser != browser_not_a_browser)
 #macro __SCRIBBLE_ON_OPENGL            (!__SCRIBBLE_ON_DIRECTX || __SCRIBBLE_ON_WEB)
-#macro __SCRIBBLE_FIX_ARGB             (__SCRIBBLE_ON_OPENGL)
+#macro __SCRIBBLE_FIX_ARGB             (__SCRIBBLE_ON_OPENGL && (os_type != os_switch))
 #macro __SCRIBBLE_EXPECTED_FRAME_TIME  (0.95*game_get_speed(gamespeed_microseconds)/1000) //Uses to prevent the autotype from advancing if a draw call is made multiple times a frame to the same text element
 #macro __SCRIBBLE_PIN_LEFT             3
 #macro __SCRIBBLE_PIN_CENTRE           4
