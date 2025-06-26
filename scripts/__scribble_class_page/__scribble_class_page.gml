@@ -33,7 +33,7 @@ function __scribble_class_page() constructor
     __max_y  = 0;
     
     __vertex_buffer_array = [];
-    if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict = {}; //FIXME - Workaround for pointers not being stringified properly on HTML5
+    __texture_to_vertex_buffer_dict = {};
     
     __char_events  = {};
     __line_events  = {};
@@ -206,7 +206,7 @@ function __scribble_class_page() constructor
         };
         
         array_push(__vertex_buffer_array, _data);
-        if (!__SCRIBBLE_ON_WEB) __texture_to_vertex_buffer_dict[$ _material.__key] = _data;
+        __texture_to_vertex_buffer_dict[$ _material.__key] = _data;
         
         return _vbuff;
     }

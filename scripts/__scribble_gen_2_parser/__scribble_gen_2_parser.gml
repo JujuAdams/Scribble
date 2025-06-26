@@ -1189,56 +1189,18 @@ function __scribble_gen_2_parser()
                                     var _first_char = string_copy(_tag_command_name, 1, 1);
                                     if ((string_length(_tag_command_name) <= 7) && ((_first_char == "$") || (_first_char == "#")))
                                     {
-                                        #region Hex colour decoding
-                                
-                                        if (!__SCRIBBLE_ON_WEB)
+                                        //Hex colour decoding
+                                        //Crafty trick to quickly convert a hex string into a number
+                                        try
                                         {
-                                            //Crafty trick to quickly convert a hex string into a number
-                                            try
-                                            {
-                                                var _decoded_colour = real("0x" + string_delete(_tag_command_name, 1, 1));
-                                                _decoded_colour = __scribble_rgb_to_bgr(_decoded_colour);
-                                            }
-                                            catch(_error)
-                                            {
-                                                __scribble_trace(_error);
-                                                __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a hexcode");
-                                                _decoded_colour = _starting_colour;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //Boring hex decoder because HTML5 hates the cool trick
-                                            var _decoded_colour = 0;
-                                    
-                                            var _i = 2;
-                                            repeat(string_length(_tag_command_name) - 1)
-                                            {
-                                                _decoded_colour = _decoded_colour << 4;
-                                        
-                                                switch(ord(string_char_at(_tag_command_name, _i)))
-                                                {
-                                                    case ord("1"):                _decoded_colour |=  1; break;
-                                                    case ord("2"):                _decoded_colour |=  2; break;
-                                                    case ord("3"):                _decoded_colour |=  3; break;
-                                                    case ord("4"):                _decoded_colour |=  4; break;
-                                                    case ord("5"):                _decoded_colour |=  5; break;
-                                                    case ord("6"):                _decoded_colour |=  6; break;
-                                                    case ord("7"):                _decoded_colour |=  7; break;
-                                                    case ord("8"):                _decoded_colour |=  8; break;
-                                                    case ord("9"):                _decoded_colour |=  9; break;
-                                                    case ord("a"): case ord("A"): _decoded_colour |= 10; break;
-                                                    case ord("b"): case ord("B"): _decoded_colour |= 11; break;
-                                                    case ord("c"): case ord("C"): _decoded_colour |= 12; break;
-                                                    case ord("d"): case ord("D"): _decoded_colour |= 13; break;
-                                                    case ord("e"): case ord("E"): _decoded_colour |= 14; break;
-                                                    case ord("f"): case ord("F"): _decoded_colour |= 15; break;
-                                                }
-                                        
-                                                ++_i;
-                                            }
-                                    
+                                            var _decoded_colour = real("0x" + string_delete(_tag_command_name, 1, 1));
                                             _decoded_colour = __scribble_rgb_to_bgr(_decoded_colour);
+                                        }
+                                        catch(_error)
+                                        {
+                                            __scribble_trace(_error);
+                                            __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a hexcode");
+                                            _decoded_colour = _starting_colour;
                                         }
                                 
                                         _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);

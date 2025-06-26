@@ -163,12 +163,6 @@ function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_he
             var _w = _glyph_dict.w;
             var _h = _glyph_dict.h;
             
-            if (__SCRIBBLE_ON_WEB)
-            {
-                _x += _texture_l;
-                _y += _texture_t;
-            }
-            
             var _xoffset = _glyph_dict.offset + 0.5*_sdf_offset;
             var _yoffset = 0.5*_sdf_offset;
             
