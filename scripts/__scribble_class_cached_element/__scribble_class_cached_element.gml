@@ -3,7 +3,7 @@
 /// @param string
 /// @param uniqueID
 
-function __scribble_class_cached_element(_string, _unique_id) constructor
+function __scribble_class_cached_element(_string, _unique_id) : __scribble_class_shared_element(_string) constructor
 {
     static __ecache_array      = __scribble_initialize().__cache_state.__ecache_array;
     static __ecache_dict       = __scribble_initialize().__cache_state.__ecache_dict;
@@ -62,7 +62,7 @@ function __scribble_class_cached_element(_string, _unique_id) constructor
         
         __last_drawn = __scribble_state.__frames;
         
-        with(_scribble_state)
+        with(__scribble_state)
         {
             //Update the blink state
             if ((not __shader_anim_disabled) && __blink_on_duration + __blink_off_duration > 0)

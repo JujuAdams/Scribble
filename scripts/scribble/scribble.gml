@@ -8,9 +8,9 @@
 
 function scribble(_string, _unique_id = undefined)
 {
-    if (is_struct(_string) && (instanceof(_string) == "__scribble_class_shared_element"))
+    if (is_struct(_string) && (is_instanceof(_string, __scribble_class_cached_element) || is_instanceof(_string, __scribble_class_unique_element)))
     {
-        __scribble_error("scribble() should not be used to access/draw text elements\nPlease instead call the .draw() method on a text element e.g. scribble(\"text\").draw(x, y);");
+        __scribble_error("`scribble()` should not be used to access/draw text elements\nPlease instead call the `.draw()` method on a text element e.g. `scribble(\"text\").draw(x, y);`");
         return;
     }
     
@@ -19,7 +19,7 @@ function scribble(_string, _unique_id = undefined)
     var _weak = _ecache_dict[$ ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_unique_id) + ":")) + string(_string)];
     if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.__flushed)
     {
-        return new __scribble_class_shared_element(string(_string), _unique_id);
+        return new __scribble_class_cached_element(string(_string), _unique_id);
     }
     else
     {

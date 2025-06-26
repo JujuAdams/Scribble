@@ -1,8 +1,8 @@
 // Feather disable all
-/// @param string
-/// @param uniqueID
 
-function __scribble_class_shared_element(_string, _unique_id) constructor
+/// @param string
+
+function __scribble_class_shared_element(_string) constructor
 {
     static __scribble_state = __scribble_initialize().__state;
     
@@ -137,23 +137,49 @@ function __scribble_class_shared_element(_string, _unique_id) constructor
     
     #region Basics
     
-    /// @param fontName
-    /// @param colour
-    static starting_format = function(_font_name, _in_colour)
+    /// @param font
+    static font = function(_font)
     {
-        if (is_string(_font_name))
+        if (is_string(_font))
         {
-            if (_font_name != __starting_font)
+            var _font_name = _font;
+        }
+        else if (is_handle(_font))
+        {
+            if (asset_get_type(_font) == asset_font)
             {
-                __model_cache_name_dirty = true;
-                __starting_font = _font_name;
+                var _font_name = font_get_name(_font);
+            }
+            else if (asset_get_type(_font) == asset_sprite)
+            {
+                var _font_name = sprite_get_name(_font);
+            }
+            else
+            {
+                __scribble_error("You may only set a font using one of the following:\n- Font name as a string\n- Font handle\n- Sprite name as a string (if it has been used to create a spritefont)\n- Sprite handle (if it has been used to create a spritefont)");
             }
         }
-        else if (!is_undefined(_font_name))
+        else if (_font == undefined)
+        {
+            return self;
+        }
+        else
         {
             __scribble_error("Fonts should be specified using their name as a string\nUse <undefined> to not set a new font");
         }
         
+        if (_font_name != __starting_font)
+        {
+            __model_cache_name_dirty = true;
+            __starting_font = _font_name;
+        }
+        
+        return self;
+    }
+    
+    /// @param colour
+    static color = function(_in_colour)
+    {
         if (_in_colour != undefined)
         {
             var _colour = __scribble_process_colour(_in_colour);
@@ -164,6 +190,19 @@ function __scribble_class_shared_element(_string, _unique_id) constructor
             }
         }
         
+        return self;
+    }
+    
+    /// @param colour
+    static colour = color;
+    
+    //TODO - DEPRECATED, remove in v11
+    /// @param fontName
+    /// @param colour
+    static starting_format = function(_font_name, _in_colour)
+    {
+        font(_font_name);
+        color(_in_colour);
         return self;
     }
     
@@ -1356,7 +1395,7 @@ function __scribble_class_shared_element(_string, _unique_id) constructor
     }
     
     /// @param string
-    static overwrite = function(_text, _unique_id = __unique_id)
+    static overwrite = function(_text, _unique_id = undefined)
     {
         //Unimplemented
     }
