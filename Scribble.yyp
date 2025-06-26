@@ -130,7 +130,6 @@
     {"id":{"name":"obj_test_bbox","path":"objects/obj_test_bbox/obj_test_bbox.yy",},},
     {"id":{"name":"obj_test_bezier_arabic","path":"objects/obj_test_bezier_arabic/obj_test_bezier_arabic.yy",},},
     {"id":{"name":"obj_test_bezier","path":"objects/obj_test_bezier/obj_test_bezier.yy",},},
-    {"id":{"name":"obj_test_bgr_colour","path":"objects/obj_test_bgr_colour/obj_test_bgr_colour.yy",},},
     {"id":{"name":"obj_test_bilinear_filtering","path":"objects/obj_test_bilinear_filtering/obj_test_bilinear_filtering.yy",},},
     {"id":{"name":"obj_test_blend","path":"objects/obj_test_blend/obj_test_blend.yy",},},
     {"id":{"name":"obj_test_browser","path":"objects/obj_test_browser/obj_test_browser.yy",},},

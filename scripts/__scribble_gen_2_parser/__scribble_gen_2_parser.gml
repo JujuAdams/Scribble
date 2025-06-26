@@ -1197,7 +1197,7 @@ function __scribble_gen_2_parser()
                                             try
                                             {
                                                 var _decoded_colour = real("0x" + string_delete(_tag_command_name, 1, 1));
-                                                if (!SCRIBBLE_BGR_COLOR_HEX_CODES) _decoded_colour = scribble_rgb_to_bgr(_decoded_colour);
+                                                _decoded_colour = scribble_rgb_to_bgr(_decoded_colour);
                                             }
                                             catch(_error)
                                             {
@@ -1238,7 +1238,7 @@ function __scribble_gen_2_parser()
                                                 ++_i;
                                             }
                                     
-                                            if (!SCRIBBLE_BGR_COLOR_HEX_CODES) _decoded_colour = scribble_rgb_to_bgr(_decoded_colour);
+                                            _decoded_colour = scribble_rgb_to_bgr(_decoded_colour);
                                         }
                                 
                                         _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
