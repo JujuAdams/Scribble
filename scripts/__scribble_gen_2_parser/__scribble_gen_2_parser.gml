@@ -54,7 +54,7 @@
                                           if (SCRIBBLE_USE_KERNING)\
                                           {\
                                               var _kerning = _font_kerning_map[? ((_glyph_write & 0xFFFF) << 16) | (_glyph_prev & 0xFFFF)];\
-                                              if (_kerning != undefined) _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__SEPARATION] += _kerning;\
+                                              if (_kerning != undefined && _glyph_count > 0) _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__SEPARATION] += _kerning;\
                                           }\
                                           ;\
                                           if (SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS)\
