@@ -92,7 +92,10 @@ function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_he
         var _font_kerning_map     = _font_data.__kerning_map;
         if (_is_krutidev) _font_data.__is_krutidev = true;
         
+        //Set some basic, repeated values in bulk for a little speed boost
         var _material = __scribble_get_material(_name, _texture_index, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdf_pxrange, _sdf_thickness_offset, _font_data.__bilinear);
+        ds_grid_set_region(_font_glyph_data_grid, 0, SCRIBBLE_GLYPH.FONT_SCALE, _size-1, SCRIBBLE_GLYPH.FONT_SCALE, 1);
+        ds_grid_set_region(_font_glyph_data_grid, 0, SCRIBBLE_GLYPH.MATERIAL,   _size-1, SCRIBBLE_GLYPH.FONT_SCALE, _material);
         
         var _i = 0;
         repeat(_size)
@@ -201,9 +204,9 @@ function __scribble_font_add_from_info(_name, _texture_uvs, _font_info, _line_he
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT] = _h + _sdf_height_offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION ] = _glyph_dict.shift;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.LEFT_OFFSET] = -_glyph_dict.offset;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE ] = 1;
+            //_font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE ] = 1; //Set above in bulk
                                                          
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MATERIAL   ] = _material;
+            //_font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.MATERIAL   ] = _material; //Set above in bulk
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0         ] = _u0;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.U1         ] = _u1;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.V0         ] = _v0;
