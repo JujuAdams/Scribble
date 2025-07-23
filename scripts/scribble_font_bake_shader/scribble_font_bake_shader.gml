@@ -54,11 +54,14 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         return undefined;
     }
     
+    _src_font_data.__ensure_material_textures_fetched();
+    _src_font_data.__ensure_texel_data();
+    
     var _src_glyph_grid = _src_font_data.__glyph_data_grid;
     var _glyph_count = ds_grid_width(_src_glyph_grid);
     
     //Create a new font
-    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, undefined, false);
+    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, undefined, false, true);
     _new_font_data.__bilinear = _smooth;
     _new_font_data.__runtime  = true;
     var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
@@ -82,6 +85,11 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     {
         var _material = _src_glyph_grid[# _i, SCRIBBLE_GLYPH.MATERIAL];
         var _texture = _material.__texture;
+        
+        if (not texture_is_ready(_texture))
+        {
+            __scribble_error($"Font \"{_source_font_name}\" texture {string(_texture)} not ready.\nIs the source graphic in an unloaded or unfetched dynamic texture group?\nMaterial debug name:\"{_material.__debug_font_name}\"\nMaterial key:\"{_material.__key}\"");
+        }
         
         //Ignore any glyphs with invalid textures
         if (_texture == undefined)
@@ -248,4 +256,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     ds_grid_multiply_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V0, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_v1 - _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.U0, _glyph_count-1, SCRIBBLE_GLYPH.U1, _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
     ds_grid_add_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.V0, _glyph_count-1, SCRIBBLE_GLYPH.V1, _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
+    
+    //All texels are automatically valid
+    ds_grid_set_region(_new_glyphs_grid, 0, SCRIBBLE_GLYPH.TEXELS_VALID, _glyph_count-1, SCRIBBLE_GLYPH.TEXELS_VALID, true);
 }

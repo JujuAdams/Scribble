@@ -268,6 +268,7 @@
     {"name":"__scribble_surface_get_material","order":19,"path":"scripts/__scribble_surface_get_material/__scribble_surface_get_material.yy",},
     {"name":"__scribble_system","order":7,"path":"scripts/__scribble_system/__scribble_system.yy",},
     {"name":"__scribble_texture_get_material","order":20,"path":"scripts/__scribble_texture_get_material/__scribble_texture_get_material.yy",},
+    {"name":"__scribble_texture_group_get_ready","order":23,"path":"scripts/__scribble_texture_group_get_ready/__scribble_texture_group_get_ready.yy",},
     {"name":"__scribble_tick","order":8,"path":"scripts/__scribble_tick/__scribble_tick.yy",},
     {"name":"__test_preprocessor_func_blue","order":22,"path":"scripts/__test_preprocessor_func_blue/__test_preprocessor_func_blue.yy",},
     {"name":"__test_preprocessor_func_mouse","order":23,"path":"scripts/__test_preprocessor_func_mouse/__test_preprocessor_func_mouse.yy",},
