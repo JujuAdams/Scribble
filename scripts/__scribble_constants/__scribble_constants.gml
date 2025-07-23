@@ -11,8 +11,8 @@
 //                                                                        //
 ////////////////////////////////////////////////////////////////////////////
 
-#macro SCRIBBLE_VERSION  "9.6.0"
-#macro SCRIBBLE_DATE     "2025-06-24"
+#macro SCRIBBLE_VERSION  "9.6.1"
+#macro SCRIBBLE_DATE     "2025-07-17"
 
 #macro SCRIBBLE_NO_PREPROCESS  __scribble_no_preprocessing
 
@@ -46,25 +46,26 @@ enum SCRIBBLE_OUTLINE
 
 enum SCRIBBLE_GLYPH
 {
-    CHARACTER,   // 0
-                 //  
-    UNICODE,     // 1
-    BIDI,        // 2
-                 //  
-    X_OFFSET,    // 3
-    Y_OFFSET,    // 4
-    WIDTH,       // 5
-    HEIGHT,      // 6
-    FONT_HEIGHT, // 7
-    SEPARATION,  // 8
-    LEFT_OFFSET, // 9
-    FONT_SCALE,  //10
-                 //  
-    MATERIAL,    //11
-    U0,          //12
-    U1,          //13
-    V0,          //14
-    V1,          //15
-                 //  
-    __SIZE       //17
+    CHARACTER,    // 0
+                  //  
+    UNICODE,      // 1
+    BIDI,         // 2
+                  //  
+    X_OFFSET,     // 3
+    Y_OFFSET,     // 4
+    WIDTH,        // 5
+    HEIGHT,       // 6
+    FONT_HEIGHT,  // 7
+    SEPARATION,   // 8
+    LEFT_OFFSET,  // 9
+    FONT_SCALE,   //10
+                  //  
+    MATERIAL,     //11
+    U0,           //12
+    U1,           //13
+    V0,           //14
+    V1,           //15
+    TEXELS_VALID, //16
+                  //  
+    __SIZE        //17
 }

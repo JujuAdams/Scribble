@@ -18,6 +18,12 @@ function __scribble_initialize()
     {
         __scribble_trace("Welcome to Scribble Deluxe by Juju Adams! This is version " + SCRIBBLE_VERSION + ", " + SCRIBBLE_DATE);
         
+        //Safety data structures. Theses exist at (hopefully) index 0 so that users can't accidentally
+        //delete important parts of Scribble if they're sloppy with destroy functions.
+        __protection_buffer = buffer_create(1, buffer_fixed, 1);
+        __protection_map    = ds_map_create();
+        __protection_grid   = ds_grid_create(1, 1);
+        
         if (SCRIBBLE_VERBOSE)
         {
             __scribble_trace("Verbose mode is on");
@@ -226,11 +232,33 @@ function __scribble_initialize()
         __effects_slash_map[? "/JITTER" ] = 8;
         __effects_slash_map[? "/BLINK"  ] = 9;
         __effects_slash_map[? "/SLANT"  ] = 10;
+        
+        //Unpack texture group data into an easy-to-use dictionary. This should, of course, just be a native
+        //feature of GameMaker. I, in fact, suggested such a feature (including sprites (and backgrounds!))
+        //back in 2018 when working on The Swords Of Ditto in GameMaker Studio 1.4.
+        __font_to_texture_group_map = ds_map_create();
+        
+        var _tg_name_array = texturegroup_get_names();
+        var _i = 0;
+        repeat(array_length(_tg_name_array))
+        {
+            var _tg_name = _tg_name_array[_i];
+            var _font_index_array = texturegroup_get_fonts(_tg_name);
+            
+            var _j = 0;
+            repeat(array_length(_font_index_array))
+            {
+                __font_to_texture_group_map[? _font_index_array[_j]] = _tg_name;
+                ++_j;
+            }
+            
+            ++_i;
+        }
     }
     
     if (GM_build_type == "run")
     {
-        global._scribble_debug = _system;
+        global.__Scribble = _system;
     }
     
     scribble_anim_reset();

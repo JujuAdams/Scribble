@@ -332,6 +332,7 @@
     {"id":{"name":"__scribble_surface_get_material","path":"scripts/__scribble_surface_get_material/__scribble_surface_get_material.yy",},},
     {"id":{"name":"__scribble_system","path":"scripts/__scribble_system/__scribble_system.yy",},},
     {"id":{"name":"__scribble_texture_get_material","path":"scripts/__scribble_texture_get_material/__scribble_texture_get_material.yy",},},
+    {"id":{"name":"__scribble_texture_group_get_ready","path":"scripts/__scribble_texture_group_get_ready/__scribble_texture_group_get_ready.yy",},},
     {"id":{"name":"__scribble_tick","path":"scripts/__scribble_tick/__scribble_tick.yy",},},
     {"id":{"name":"__test_preprocessor_func_blue","path":"scripts/__test_preprocessor_func_blue/__test_preprocessor_func_blue.yy",},},
     {"id":{"name":"__test_preprocessor_func_mouse","path":"scripts/__test_preprocessor_func_mouse/__test_preprocessor_func_mouse.yy",},},
