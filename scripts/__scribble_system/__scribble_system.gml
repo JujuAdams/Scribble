@@ -18,6 +18,12 @@ function __scribble_initialize()
     {
         __scribble_trace("Welcome to Scribble Deluxe by Juju Adams! This is version " + SCRIBBLE_VERSION + ", " + SCRIBBLE_DATE);
         
+        //Safety data structures. Theses exist at (hopefully) index 0 so that users can't accidentally
+        //delete important parts of Scribble if they're sloppy with destroy functions.
+        __protection_buffer = buffer_create(1, buffer_fixed, 1);
+        __protection_map    = ds_map_create();
+        __protection_grid   = ds_grid_create(1, 1);
+        
         if (SCRIBBLE_VERBOSE)
         {
             __scribble_trace("Verbose mode is on");
@@ -230,7 +236,7 @@ function __scribble_initialize()
     
     if (GM_build_type == "run")
     {
-        global._scribble_debug = _system;
+        global.__Scribble = _system;
     }
     
     scribble_anim_reset();
