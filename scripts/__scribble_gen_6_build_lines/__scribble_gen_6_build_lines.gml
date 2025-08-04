@@ -23,36 +23,8 @@
                                   _word_x = _indent_x;
 
 
-#macro __SCRIBBLE_GEN_LINE_END  var _found_line_height = ds_grid_get_max(_word_grid, _line_word_start, __SCRIBBLE_GEN_WORD.__HEIGHT, _line_word_end, __SCRIBBLE_GEN_WORD.__HEIGHT);\
-                                if (_found_line_height < _line_height_min)\ //Found line height is narrower than we want
-                                {\
-                                    if (((_found_line_height/2) == (_found_line_height div 2)) == ((_line_height_min/2) == (_line_height_min div 2)))\
-                                    {\
-                                        var _line_height = _line_height_min;\ //Evenness matches - set the line height to the minimum
-                                    }\
-                                    else\
-                                    {\
-                                        var _line_height = _line_height_min+1;\ //Evenness doesn't match - make the line height slightly wider than the minimum to avoid janky y-offsets
-                                    }\
-                                }\
-                                else if (_found_line_height > _line_height_max)\ //Found line height is wider than we want
-                                {\
-                                    if (((_found_line_height/2) == (_found_line_height div 2)) == ((_line_height_max/2) == (_line_height_max div 2)))\
-                                    {\
-                                        var _line_height = _line_height_max;\ //Evenness matches - set the line height to the maximum
-                                    }\
-                                    else\
-                                    {\
-                                        var _line_height = _line_height_max-1;\ //Evenness doesn't match - make the line height slightly narrower than the minimum to avoid janky y-offsets
-                                    }\
-                                }\
-                                else\
-                                {\
-                                    var _line_height = _found_line_height;\ //Line height is fine, don't fiddle with anything
-                                }\
-                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_END    ] = _line_word_end;\
-                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WIDTH       ] = _word_x;\
-                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__HEIGHT      ] = _line_height;\
+#macro __SCRIBBLE_GEN_LINE_END  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WORD_END] = _line_word_end;\
+                                _line_grid[# _line_count, __SCRIBBLE_GEN_LINE.__WIDTH   ] = _word_x;\
                                 _line_count++;\
                                 if (_line_y + _line_height > _line_max_y) _line_max_y = _line_y + _line_height;\
                                 _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
@@ -69,8 +41,7 @@ function __scribble_gen_6_build_lines()
         var _temp_grid             = __temp_grid;
         var _element               = __element;
         var _word_count            = __word_count;
-        var _line_height_min       = __line_height_min;
-        var _line_height_max       = __line_height_max;
+        var _line_height           = __line_height;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
         var _wrap_no_pages         = _element.__wrap_no_pages;

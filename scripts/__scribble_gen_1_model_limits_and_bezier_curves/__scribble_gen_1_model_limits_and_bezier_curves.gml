@@ -65,11 +65,6 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
     
     //Set up line height limits
     var _element = _generator_state.__element;
-    var _line_height_min = _element.__line_height_min;
-    var _line_height_max = _element.__line_height_max;
-    
-    if (_line_height_min < 0) _line_height_min = 1;
-    if (_line_height_max < 0) _line_height_max = infinity;
     
     var _line_spacing_raw = _element.__line_spacing;
     if (is_string(_line_spacing_raw))
@@ -104,8 +99,7 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
         __model_max_width  = _model_max_width;
         __model_max_height = _model_max_height;
         
-        __line_height_min = _line_height_min;
-        __line_height_max = _line_height_max;
+        __line_height = _element.__line_height;
         
         __line_spacing_add      = _line_spacing_add;
         __line_spacing_multiply = _line_spacing_multiply;

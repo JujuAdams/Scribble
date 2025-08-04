@@ -90,6 +90,11 @@
                                     ;\
                                     var _font_space_width = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.SEPARATION ];\
                                     var _font_line_height = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.FONT_HEIGHT];\
+                                    if ((_glyph_count <= 0) && (_line_height < 0))\
+                                    {\
+                                        _generator_state.__line_height = _font_line_height;\
+                                    }\
+                                    ;\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__FONT;\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _font_name;\
                                     ++_control_count;
@@ -185,6 +190,7 @@ function __scribble_gen_2_parser()
         var _control_grid   = __control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
         var _vbuff_pos_grid = __vbuff_pos_grid;
         var _element        = __element;
+        var _line_height    = __line_height;
     }
     
     static _glyph_data_struct = __scribble_initialize().__glyph_data;
@@ -1210,8 +1216,6 @@ function __scribble_gen_2_parser()
                                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__COLOUR;
                                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_colour;
                                         ++_control_count;
-                                
-                                        #endregion
                                     }
                                     else
                                     {

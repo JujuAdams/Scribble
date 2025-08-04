@@ -21,8 +21,6 @@ function __scribble_class_generator_state() constructor
         __control_count    = 0;
         __word_count       = 0;
         __line_count       = 0;
-        __line_height_min  = 0;
-        __line_height_max  = 0;
         __model_max_width  = 0;
         __model_max_height = 0;
         __overall_bidi     = undefined;
@@ -35,8 +33,7 @@ function __scribble_class_generator_state() constructor
         
         __model_max_width       = 0;
         __model_max_height      = 0;
-        __line_height_min       = 0;
-        __line_height_max       = 0;
+        __line_height           = 0;
         __line_spacing_add      = 0;
         __line_spacing_multiply = 0;
         

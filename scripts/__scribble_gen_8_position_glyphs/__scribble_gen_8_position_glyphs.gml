@@ -12,6 +12,7 @@ function __scribble_gen_8_position_glyphs()
         var _overall_bidi    = __overall_bidi;
         var _model_max_width = __model_max_width;
         var _glyph_count     = __glyph_count;
+        var _line_height     = __line_height;
     }
     
     ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
@@ -59,7 +60,6 @@ function __scribble_gen_8_position_glyphs()
             var _line_word_start      = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__WORD_START     ];
             var _line_word_end        = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__WORD_END       ];
             var _line_width           = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__WIDTH          ];
-            var _line_height          = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__HEIGHT         ];
             var _line_halign          = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__HALIGN         ];
             var _line_disable_justify = _line_grid[# _j, __SCRIBBLE_GEN_LINE.__DISABLE_JUSTIFY];
             

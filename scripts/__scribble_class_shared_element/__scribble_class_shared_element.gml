@@ -66,9 +66,8 @@ function __scribble_class_shared_element(_string) constructor
     __scale_to_box_maximise = false;
     __scale_to_box_scale    = undefined;
     
-    __line_height_min = -1;
-    __line_height_max = -1;
-    __line_spacing  = "100%";
+    __line_height  = -1;
+    __line_spacing = "100%";
     
     __visual_bboxes = SCRIBBLE_DEFAULT_VISUAL_BBOXES;
     
@@ -465,20 +464,13 @@ function __scribble_class_shared_element(_string) constructor
         return self;
     }
     
-    /// @param min
-    /// @param max
-    static line_height = function(_min, _max)
+    /// @param height
+    static line_height = function(_height)
     {
-        if (_min != __line_height_min)
+        if (_height != __line_height)
         {
             __model_cache_name_dirty = true;
-            __line_height_min = _min;
-        }
-        
-        if (_max != __line_height_max)
-        {
-            __model_cache_name_dirty = true;
-            __line_height_max = _max;
+            __line_height = _height;
         }
         
         return self;
@@ -1459,8 +1451,7 @@ function __scribble_class_shared_element(_string) constructor
                 buffer_write(_buffer, buffer_text, string(__starting_halign    )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__starting_valign    )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__pre_scale          )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__line_height_min    )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__line_height_max    )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__line_height        )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__line_spacing       )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__wrap_apply         )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__wrap_max_width  - (__padding_l + __padding_r))); buffer_write(_buffer, buffer_u8, 0x3A);
