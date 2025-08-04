@@ -3,11 +3,7 @@
 ///
 /// N.B. You never need to run this script yourself! All of these macros are handled automatically when Scribble is compiled into your project
 
-//Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's newline behaviour.
-#macro SCRIBBLE_HASH_NEWLINE  false
 
-//Replaces newline literals ("\\n") with an actual newline ("\n").
-#macro SCRIBBLE_FIX_ESCAPED_NEWLINES  false
 
 //Whether to use colourization for sprites. This includes [rainbow] and [cycle].
 #macro SCRIBBLE_COLORIZE_SPRITES  true
@@ -15,9 +11,6 @@
 //Whether to use sprite origins. Setting this to <false> will vertically centre sprites on the line
 //of text.
 #macro SCRIBBLE_ADD_SPRITE_ORIGINS  false
-
-//Character to use when another character is missing from a font.
-#macro SCRIBBLE_MISSING_CHARACTER  "?"
 
 //Whether to use text element sizes (false) or page sizes (true) for bounding box calculations
 #macro SCRIBBLE_BOUNDING_BOX_USES_PAGE  true
@@ -81,11 +74,59 @@
 //coordinates of glyphs themselves.
 #macro SCRIBBLE_FLOOR_DRAW_COORDINATES  false
 
+///////
+// Character Replacement
+///////
 
+//Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's newline behaviour.
+#macro SCRIBBLE_HASH_NEWLINE  false
 
+//Replaces newline literals ("\\n") with an actual newline ("\n").
+#macro SCRIBBLE_FIX_ESCAPED_NEWLINES  false
 
+//Character to use when another character is missing from a font.
+#macro SCRIBBLE_MISSING_CHARACTER  "?"
 
-#region Advanced Features
+//Whether to replace a grave accent (` U+0060, decimal=96) with a zero-width space for Thai text.
+//This makes life easier for localisation teams.
+#macro SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP  false
+
+//Whether to perform the following Unicode substitutions to fix copy-pasted text from e.g. Google Docs:
+// Ellipsis            … U+2026   ->   Three full stops . U+002E
+// En dash             – U+2013   ->   Hyphen           - U+002D
+// Em dash             — U+2014   ->   Hyphen           - U+002D
+// Horizontal bar      ― U+2015   ->   Hyphen           - U+002D
+// Start single quote  ‘ U+2018   ->   Single quote     ' U+0027
+// End single quote    ’ U+2018   ->   Single quote     ' U+0027
+// Start double quote  “ U+201C   ->   Double quote     " U+0022
+// End double quote    ” U+201D   ->   Double quote     " U+0022
+// Low double quote    „ U+201E   ->   Double quote     " U+0022
+// High double quote   ‟ U+201F   ->   Double quote     " U+0022
+// Greek question mark ; U+037E   ->   Semicolon        ; U+003B
+#macro SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS  false
+
+///////
+// Advanced
+///////
+
+//Edge trimming around the bounding box for SDF glyphs (in pixels). This is useful for tidying up
+//any glitches when scaling.
+#macro SCRIBBLE_SDF_BORDER_TRIM  0
+
+//Whether to force double-draw behaviour. This is useful for fixing problems with SDF glyph outline
+//overlap.
+#macro SCRIBBLE_ALWAYS_DOUBLE_DRAW  false
+
+//Whether to trim off empty left-hand space when moving a word to a new line. This can cause issues
+//with spritefonts in some situations.
+#macro SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE  false
+
+//Whether to pad extra space left-hand space when moving a word to a new line.
+#macro SCRIBBLE_NEWLINES_PAD_LEFT_SPACE  true
+
+//Number of iterations to fit text when using the `.fit_to_box()` method. Higher values are slower
+//but more accurate.
+#macro SCRIBBLE_FIT_TO_BOX_ITERATIONS  7
 
 //Animation tick size per step. The default macro `(delta_time / 16666)` ensures that animations
 //are smooth and consistent at all framerates.
@@ -101,17 +142,6 @@
 //Controls how accurately text fits Beziér curves. Higher is more accurate but slower.
 #macro SCRIBBLE_BEZIER_ACCURACY  20
 
-//Whether to trim off empty left-hand space when moving a word to a new line. This can cause issues
-//with spritefonts in some situations.
-#macro SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE  false
-
-//Whether to pad extra space left-hand space when moving a word to a new line.
-#macro SCRIBBLE_NEWLINES_PAD_LEFT_SPACE  true
-
-//Number of iterations to fit text when using the `.fit_to_box()` method. Higher values are slower
-//but more accurate.
-#macro SCRIBBLE_FIT_TO_BOX_ITERATIONS  7
-
 //Whether to wrap the internal time value.
 #macro SCRIBBLE_SAFELY_WRAP_TIME  true
 
@@ -125,14 +155,6 @@
 
 //Set to `true` to ignore a sprite origin's contribution to its spritefont glyph x/y offsets.
 #macro SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN  false
-
-//Edge trimming around the bounding box for SDF glyphs (in pixels). This is useful for tidying up
-//any glitches when scaling.
-#macro SCRIBBLE_SDF_BORDER_TRIM  0
-
-//Whether to force double-draw behaviour. This is useful for fixing problems with SDF glyph outline
-//overlap.
-#macro SCRIBBLE_ALWAYS_DOUBLE_DRAW  false
 
 //What function to use to play audio from Scribble. This function is called using the same
 //parameters as `audio_play_sound()`:
@@ -162,23 +184,3 @@
 
 //Whether to try to fix font scaling due to the font texture being too big for the texture page.
 #macro SCRIBBLE_ATTEMPT_FONT_SCALING_FIX  true
-
-//Whether to replace a grave accent (` U+0060, decimal=96) with a zero-width space for Thai text.
-//This makes life easier for localisation teams.
-#macro SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP  false
-
-//Whether to perform the following Unicode substitutions to fix copy-pasted text from e.g. Google Docs:
-// Ellipsis            … U+2026   ->   Three full stops . U+002E
-// En dash             – U+2013   ->   Hyphen           - U+002D
-// Em dash             — U+2014   ->   Hyphen           - U+002D
-// Horizontal bar      ― U+2015   ->   Hyphen           - U+002D
-// Start single quote  ‘ U+2018   ->   Single quote     ' U+0027
-// End single quote    ’ U+2018   ->   Single quote     ' U+0027
-// Start double quote  “ U+201C   ->   Double quote     " U+0022
-// End double quote    ” U+201D   ->   Double quote     " U+0022
-// Low double quote    „ U+201E   ->   Double quote     " U+0022
-// High double quote   ‟ U+201F   ->   Double quote     " U+0022
-// Greek question mark ; U+037E   ->   Semicolon        ; U+003B
-#macro SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS  false
-
-#endregion
