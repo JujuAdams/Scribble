@@ -63,6 +63,7 @@
     {"name":"fnt_test_1","order":23,"path":"fonts/fnt_test_1/fnt_test_1.yy",},
     {"name":"fnt_test_2","order":24,"path":"fonts/fnt_test_2/fnt_test_2.yy",},
     {"name":"fnt_thai","order":25,"path":"fonts/fnt_thai/fnt_thai.yy",},
+    {"name":"obj_0500_comparison_to_native","order":19,"path":"objects/obj_0500_comparison_to_native/obj_0500_comparison_to_native.yy",},
     {"name":"obj_example_big_textbox","order":1,"path":"objects/obj_example_big_textbox/obj_example_big_textbox.yy",},
     {"name":"obj_example_glyph_position","order":2,"path":"objects/obj_example_glyph_position/obj_example_glyph_position.yy",},
     {"name":"obj_test_alignment_changes","order":1,"path":"objects/obj_test_alignment_changes/obj_test_alignment_changes.yy",},
