@@ -13,6 +13,21 @@ function scribble_kerning_pair_set(_font, _first_char, _second_char, _value, _re
     var  _first_unicode = is_real( _first_char)?  _first_char : ord( _first_char);
     var _second_unicode = is_real(_second_char)? _second_char : ord(_second_char);
     
+    if (_first_char == 0)
+    {
+        __scribble_error("Cannot use null character (U+0000) for the first character");
+    }
+    
+    if (_first_char < 0)
+    {
+        __scribble_error("Cannot use negative value for first character");
+    }
+    
+    if (_second_char < 0)
+    {
+        __scribble_error("Cannot use negative value for second character");
+    }
+    
     var _font_data = __scribble_get_font_data(_font);
     var _kerning_map = _font_data.__kerning_map;
     
