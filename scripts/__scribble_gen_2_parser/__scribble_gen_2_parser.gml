@@ -88,8 +88,8 @@
                                         return false;\
                                     }\
                                     ;\
-                                    var _font_space_width = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.SEPARATION ];\
-                                    var _font_line_height = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.FONT_HEIGHT];\
+                                    var _font_space_width = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.SEPARATION];\
+                                    var _font_line_height = _font_data.__height;\
                                     if ((_glyph_count <= 0) && (_line_height < 0))\
                                     {\
                                         _generator_state.__line_height = _font_line_height;\

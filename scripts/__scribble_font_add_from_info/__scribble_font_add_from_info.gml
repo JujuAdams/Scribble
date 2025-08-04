@@ -32,9 +32,9 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         var _global_glyph_bidi_map = __scribble_initialize().__glyph_data.__bidi_map;
         
         //Get font info from the runtime
-        var _texture_index = _font_info.texture;
+        var _texture_index    = _font_info.texture;
         var _info_glyphs_dict = _font_info.glyphs;
-        var _ascender_offset = _font_info.ascenderOffset;
+        var _ascender_offset  = _font_info.ascenderOffset;
         
         var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
         var _size = array_length(_info_glyph_names);
@@ -224,7 +224,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.Y_OFFSET    ] = _yoffset - _ascender_offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.WIDTH       ] = _w;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.HEIGHT      ] = _h;
-            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT ] = _h + _sdf_height_offset;
+            _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_HEIGHT ] = _line_height + _sdf_height_offset;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.SEPARATION  ] = _glyph_dict.shift;
             _font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.LEFT_OFFSET ] = -_glyph_dict.offset;
             //_font_glyph_data_grid[# _i, SCRIBBLE_GLYPH.FONT_SCALE  ] = 1; //Set above in bulk
