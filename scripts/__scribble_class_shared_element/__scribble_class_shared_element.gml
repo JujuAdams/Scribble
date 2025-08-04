@@ -1692,27 +1692,24 @@ function __scribble_class_shared_element(_string) constructor
             }
             else
             {
-                //FIXME - Re-optimise
-                __matrix = matrix_multiply(matrix_build(_x_offset, _y_offset, 0,    0,0,0,          1,1,1),
-                           matrix_multiply(matrix_build(0,0,0,                      0,0,0,          _xscale, _yscale, 1),
-                           matrix_multiply(matrix_build(0,0,0,                      0,0,__post_angle,    1,1,1),
-                                           matrix_build(_x, _y, __z,                0,0,0,          1,1,1))));
+                var _cos =  dcos(__post_angle);
+                var _sin = -dsin(__post_angle);
                 
-                //var _sin = dsin(_angle);
-                //var _cos = dcos(_angle);
-                //
-                //var _m00 =  _xscale*_cos;
-                //var _m10 = -_yscale*_sin;
-                //var _m01 =  _xscale*_sin;
-                //var _m11 =  _yscale*_cos;
-                //
-                //var _m03 = _x_offset*_m00 + _y_offset*_m10 + _x;
-                //var _m13 = _x_offset*_m01 + _y_offset*_m11 + _y;
-                //
-                //__matrix = [_m00, _m10,   0, 0,
-                //            _m01, _m11,   0, 0,
-                //               0,    0,   1, 0,
-                //            _m03, _m13, __z, 1];
+                __matrix = matrix_build_identity();
+                __matrix[@  0] =  _xscale*_cos;
+                __matrix[@  1] =  _xscale*_sin;
+                __matrix[@  4] = -_yscale*_sin;
+                __matrix[@  5] =  _yscale*_cos;
+                __matrix[@ 12] =  _x + (_x_offset*_xscale*_cos - _y_offset*_yscale*_sin);
+                __matrix[@ 13] =  _y + (_x_offset*_xscale*_sin + _y_offset*_yscale*_cos);
+                __matrix[@ 14] =  __z;
+                
+                //Optimised version of:
+                
+                //__matrix = matrix_multiply(matrix_build(_x_offset, _y_offset, 0,    0,0,0,          1,1,1),
+                //           matrix_multiply(matrix_build(0,0,0,                      0,0,0,          _xscale, _yscale, 1),
+                //           matrix_multiply(matrix_build(0,0,0,                      0,0,__post_angle,    1,1,1),
+                //                           matrix_build(_x, _y, __z,                0,0,0,          1,1,1))));
             }
         }
         
