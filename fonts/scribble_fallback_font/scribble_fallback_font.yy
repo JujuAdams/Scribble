@@ -119,8 +119,8 @@
   "maintainGms1Font":false,
   "name":"scribble_fallback_font",
   "parent":{
-    "name":"(System - don't call these functions)",
-    "path":"folders/Scribble/(System - don't call these functions).yy",
+    "name":"(System)",
+    "path":"folders/Scribble/(System).yy",
   },
   "pointRounding":0,
   "ranges":[

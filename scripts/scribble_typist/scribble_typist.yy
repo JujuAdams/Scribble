@@ -6,7 +6,7 @@
   "name":"scribble_typist",
   "parent":{
     "name":"Deprecated",
-    "path":"folders/Scribble/(System - don't call these functions)/Deprecated.yy",
+    "path":"folders/Scribble/(System)/Don't call these functions/Deprecated.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

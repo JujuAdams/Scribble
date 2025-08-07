@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"(System - don't call these functions)",
-    "path":"folders/Scribble/(System - don't call these functions).yy",
+    "name":"Don't call these functions",
+    "path":"folders/Scribble/(System)/Don't call these functions.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -6,7 +6,7 @@
   "name":"__scribble_gen_4_build_words",
   "parent":{
     "name":"Generator",
-    "path":"folders/Scribble/(System - don't call these functions)/Generator.yy",
+    "path":"folders/Scribble/(System)/Don't call these functions/Generator.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
