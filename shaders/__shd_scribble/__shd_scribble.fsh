@@ -1,6 +1,7 @@
 //   @jujuadams   v8.0.0   2020-03-16
 precision highp float;
 
+#define REACTIVE_SDF_RANGE true
 #define PREMULTIPLY_ALPHA false
 #define USE_ALPHA_FOR_DISTANCE true
 
@@ -69,7 +70,15 @@ void main()
         
         if (u_fSecondDraw < 0.5)
         {
-            float outlineOffset = u_fOutlineThickness*length(fwidth(v_vTexcoord)/u_vTexel)/(sqrt(2.0)*u_fSDFRange);
+            float outlineOffset;
+            if (REACTIVE_SDF_RANGE)
+            {
+                outlineOffset = u_fOutlineThickness*length(fwidth(v_vTexcoord)/u_vTexel)/(sqrt(2.0)*u_fSDFRange);
+            }
+            else
+            {
+                outlineOffset = u_fOutlineThickness / (2.0*u_fSDFRange);
+            }
             
             if (u_fOutlineThickness > 0.0)
             {
@@ -79,7 +88,18 @@ void main()
             
             if ((u_vShadowColour.a > 0.0) && !all(equal(u_vShadowOffsetAndSoftness.xy, vec2(0.0))))
             {
-                float alphaShadow = u_vShadowColour.a*smoothstep(0.5 - spread*u_vShadowOffsetAndSoftness.z, 0.5 + spread*u_vShadowOffsetAndSoftness.z, SDFValue(v_vTexcoord - u_vShadowOffsetAndSoftness.xy*fwidth(v_vTexcoord)) + outlineOffset);
+                float shadowDist;
+                if (REACTIVE_SDF_RANGE)
+                {
+                    shadowDist = SDFValue(v_vTexcoord - u_vShadowOffsetAndSoftness.xy*fwidth(v_vTexcoord));
+                }
+                else
+                {
+                    shadowDist = SDFValue(v_vTexcoord - u_vShadowOffsetAndSoftness.xy*0.5*u_vTexel);
+                }
+                
+                float shadowSoftness = spread*u_vShadowOffsetAndSoftness.z;
+                float alphaShadow = u_vShadowColour.a*smoothstep(0.5 - shadowSoftness, 0.5 + shadowSoftness, shadowDist + outlineOffset);
                 
                 float outAlpha = gl_FragColor.a + alphaShadow*(1.0 - gl_FragColor.a);
                 gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + u_vShadowColour.rgb*alphaShadow*(1.0 - gl_FragColor.a)) / outAlpha;
