@@ -9,8 +9,8 @@
   "name":"obj_test_font_outline_4dir",
   "overriddenProperties":[],
   "parent":{
-    "name":"Fonts",
-    "path":"folders/Test Cases/Fonts.yy",
+    "name":"Font Modification",
+    "path":"folders/Test Cases/Font Modification.yy",
   },
   "parentObjectId":null,
   "persistent":false,
