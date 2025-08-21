@@ -214,6 +214,7 @@
     {"id":{"name":"obj_test_region_sdf","path":"objects/obj_test_region_sdf/obj_test_region_sdf.yy",},},
     {"id":{"name":"obj_test_region_transform","path":"objects/obj_test_region_transform/obj_test_region_transform.yy",},},
     {"id":{"name":"obj_test_region","path":"objects/obj_test_region/obj_test_region.yy",},},
+    {"id":{"name":"obj_test_remap","path":"objects/obj_test_remap/obj_test_remap.yy",},},
     {"id":{"name":"obj_test_reset","path":"objects/obj_test_reset/obj_test_reset.yy",},},
     {"id":{"name":"obj_test_scale_method","path":"objects/obj_test_scale_method/obj_test_scale_method.yy",},},
     {"id":{"name":"obj_test_scale_tags","path":"objects/obj_test_scale_tags/obj_test_scale_tags.yy",},},
