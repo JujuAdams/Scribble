@@ -33,6 +33,8 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __frozen     = undefined;
     __flushed    = false;
     
+    __allow_glyph_data_getter = _element.__allow_glyph_data_getter;
+    
     __pages      = 0;
     __width      = 0;
     __height     = 0;
@@ -168,7 +170,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         //TODO - Optimize by returning page bounds if the number of characters revealed is the same as the whole page
         
-        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Getting the revealed glyph bounding box requires SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to be set to <true>");
+        if (not __allow_glyph_data_getter) __scribble_error("Getting the revealed glyph bounding box requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         
         var _glyph_grid = __get_glyph_data_grid(_page);
         
@@ -252,6 +254,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
+        if (not __allow_glyph_data_getter)
+        {
+            __scribble_error("Getting glyph data requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
+        }
+        
         return __pages_array[_page].__get_glyph_data(_index);
     }
     
@@ -284,7 +291,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
-        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Getting glyph data requires SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to be set to <true>");
+        if (not __allow_glyph_data_getter) __scribble_error("Getting glyph data requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         
         return __pages_array[_page].__glyph_grid;
     }

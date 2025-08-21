@@ -57,6 +57,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     __flash_alpha     = 0.0;
     
     __randomize_animation = false;
+    __allow_glyph_data_getter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;
     
     __origin_x       = 0.0;
     __origin_y       = 0.0;
@@ -1480,6 +1481,17 @@ function __scribble_class_element(_string, _unique_id) constructor
         return self;
     }
     
+    static allow_glyph_data_getter = function()
+    {
+        if (not __allow_glyph_data_getter)
+        {
+            __model_cache_name_dirty = true;
+            __allow_glyph_data_getter = true;
+        }
+        
+        return self;
+    }
+    
     static z = function(_z)
     {
         __z = _z;
@@ -1577,31 +1589,32 @@ function __scribble_class_element(_string, _unique_id) constructor
                 
                 static _buffer = __scribble_initialize().__buffer_a;
                 buffer_seek(_buffer, buffer_seek_start, 0);
-                buffer_write(_buffer, buffer_text, string(__text               )); buffer_write(_buffer, buffer_u8, 0x3A); //colon
-                buffer_write(_buffer, buffer_text, string(__starting_font      )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__starting_colour    )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__starting_halign    )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__starting_valign    )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__pre_scale          )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__line_height_min    )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__line_height_max    )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__line_spacing       )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_apply         )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__text                   )); buffer_write(_buffer, buffer_u8, 0x3A); //colon
+                buffer_write(_buffer, buffer_text, string(__starting_font          )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__starting_colour        )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__starting_halign        )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__starting_valign        )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__pre_scale              )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__line_height_min        )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__line_height_max        )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__line_spacing           )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__wrap_apply             )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__wrap_max_width  - (__padding_l + __padding_r))); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__wrap_max_height - (__padding_t + __padding_b))); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_per_char      )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_no_pages      )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_max_scale     )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[0]    )); buffer_write(_buffer, buffer_u8, 0x2C); //comma
-                buffer_write(_buffer, buffer_text, string(__bezier_array[1]    )); buffer_write(_buffer, buffer_u8, 0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[2]    )); buffer_write(_buffer, buffer_u8, 0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[3]    )); buffer_write(_buffer, buffer_u8, 0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[4]    )); buffer_write(_buffer, buffer_u8, 0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[5]    )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__bidi_hint          )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__ignore_command_tags)); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__randomize_animation)); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__visual_bboxes        )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__wrap_per_char          )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__wrap_no_pages          )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__wrap_max_scale         )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__bezier_array[0]        )); buffer_write(_buffer, buffer_u8, 0x2C); //comma
+                buffer_write(_buffer, buffer_text, string(__bezier_array[1]        )); buffer_write(_buffer, buffer_u8, 0x2C);
+                buffer_write(_buffer, buffer_text, string(__bezier_array[2]        )); buffer_write(_buffer, buffer_u8, 0x2C);
+                buffer_write(_buffer, buffer_text, string(__bezier_array[3]        )); buffer_write(_buffer, buffer_u8, 0x2C);
+                buffer_write(_buffer, buffer_text, string(__bezier_array[4]        )); buffer_write(_buffer, buffer_u8, 0x2C);
+                buffer_write(_buffer, buffer_text, string(__bezier_array[5]        )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__bidi_hint              )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__ignore_command_tags    )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__randomize_animation    )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__allow_glyph_data_getter)); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__visual_bboxes          )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(ptr(__preprocessorFunc ?? pointer_null))); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_u8, 0x00);
                 buffer_seek(_buffer, buffer_seek_start, 0);

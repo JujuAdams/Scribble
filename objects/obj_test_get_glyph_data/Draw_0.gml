@@ -1,16 +1,10 @@
-if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER)
-{
-    draw_text(10, 10, "SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> for this test case");
-    return;
-}
-
 draw_clear(c_black);
 
 if (mouse_check_button(mb_left)) limit_x = mouse_x;
 draw_line(limit_x, 0, limit_x, room_height);
 
 var _text = "[scale,2]Hi world[/page]oijwagow\n\ngawoijgawj egonawegh";
-var _element = scribble(_text).wrap(limit_x-10);
+var _element = scribble(_text).allow_glyph_data_getter().wrap(limit_x-10);
 
 if (keyboard_check_pressed(vk_up  )) _element.page(_element.get_page()-1);
 if (keyboard_check_pressed(vk_down)) _element.page(_element.get_page()+1);

@@ -1,5 +1,3 @@
-if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) return;
-
 if (keyboard_check_pressed(vk_space))
 {
     if (typist.get_paused())

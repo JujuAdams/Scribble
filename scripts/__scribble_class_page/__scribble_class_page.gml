@@ -1,4 +1,5 @@
 // Feather disable all
+
 function __scribble_class_page() constructor
 {
     static __scribble_state = __scribble_initialize().__state;
@@ -141,8 +142,6 @@ function __scribble_class_page() constructor
     
     static __get_glyph_data = function(_index)
     {
-        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("Cannot get glyph data, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_GLYPH_DATA_GETTER to <true> to get glyph data");
-        
         //TODO - Static struct return needed here?
         
         if (_index < 0)
