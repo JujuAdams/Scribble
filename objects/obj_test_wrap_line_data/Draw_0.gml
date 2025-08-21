@@ -1,10 +1,4 @@
-if (not SCRIBBLE_ALLOW_LINE_DATA_GETTER)
-{
-    draw_text(x, y, "`SCRIBBLE_ALLOW_LINE_DATA_GETTER` must be set to `true`");
-    return;
-}
-
-element.wrap(width, height);
+element.allow_line_data_getter().wrap(width, height);
 page = clamp(page, 0, element.get_page_count()-1);
 element.page(page);
 element.draw(x, y);

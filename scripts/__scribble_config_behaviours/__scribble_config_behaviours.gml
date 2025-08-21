@@ -47,7 +47,7 @@
 
 //Set to <true> to enable the `.get_line_data()` method on text elements (and a few other features
 //too). This will apply to all text elements and carries a performance penalty.
-#macro SCRIBBLE_ALLOW_LINE_DATA_GETTER  false
+#macro SCRIBBLE_FORCE_LINE_DATA_GETTER  false
 
 //Whether to automatically scale sprites to fit into the line of text. This is based on the font
 //height of the current font.

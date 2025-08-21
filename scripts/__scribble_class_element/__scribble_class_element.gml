@@ -58,6 +58,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     __randomize_animation = false;
     __allow_glyph_data_getter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;
+    __allow_line_data_getter = SCRIBBLE_FORCE_LINE_DATA_GETTER;
     
     __origin_x       = 0.0;
     __origin_y       = 0.0;
@@ -1487,6 +1488,17 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             __model_cache_name_dirty = true;
             __allow_glyph_data_getter = true;
+        }
+        
+        return self;
+    }
+    
+    static allow_line_data_getter = function()
+    {
+        if (not __allow_line_data_getter)
+        {
+            __model_cache_name_dirty = true;
+            __allow_line_data_getter = true;
         }
         
         return self;

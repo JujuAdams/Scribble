@@ -24,7 +24,7 @@ function __scribble_class_page() constructor
     __line_end   = undefined;
     __line_count = 0;
     
-    __line_data_array = undefined; //Only set to an array if `SCRIBBLE_ALLOW_LINE_DATA_GETTER` is set to `true`
+    __line_data_array = undefined; //Only set to an array if we're allowing the line data getter
     
     __width  = 0;
     __height = 0;
@@ -135,8 +135,6 @@ function __scribble_class_page() constructor
     
     static __get_line_data = function(_index)
     {
-        if (!SCRIBBLE_ALLOW_LINE_DATA_GETTER) __scribble_error("Cannot get line data, SCRIBBLE_ALLOW_LINE_DATA_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_LINE_DATA_GETTER to <true> to get glyph data");
-        
         return __line_data_array[clamp(_index, 0, __line_count-1)];
     }
     

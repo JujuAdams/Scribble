@@ -34,6 +34,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __flushed    = false;
     
     __allow_glyph_data_getter = _element.__allow_glyph_data_getter;
+    __allow_line_data_getter  = _element.__allow_line_data_getter;
     
     __pages      = 0;
     __width      = 0;
@@ -243,6 +244,11 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     {
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        
+        if (not __allow_line_data_getter)
+        {
+            __scribble_error("Getting line data requires either:\n- Call `.allow_line_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_LINE_DATA_GETTER` to `true`");
+        }
         
         return __pages_array[_page].__get_line_data(_index);
     }
