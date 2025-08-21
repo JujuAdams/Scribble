@@ -1,7 +1,7 @@
 if (toggle)
 {
     test_text = "[fa_middle][fa_center]";
-    repeat(1000) test_text += chr(choose(irandom_range(32, 90), irandom_range(94, 126)));
+    repeat(1000) test_text += chr(choose(32, irandom_range(32, 90), irandom_range(94, 126), irandom_range(94, 126)));
     
     var _t = get_timer();
     scribble(test_text).wrap(500).draw(room_width div 2, room_height div 2);

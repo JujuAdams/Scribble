@@ -1,11 +1,5 @@
-if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER)
-{
-    draw_text(10, 10, "SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> for this test case");
-    return;
-}
-
 var _text = "[fa_middle][c_red]Hi world\nHi world Hi world";
-var _element = scribble(_text);
+var _element = scribble(_text).allow_glyph_data_getter();
 
 var _glyph_count = _element.get_glyph_count();
 var _reveal = min(_glyph_count, (_glyph_count+1)*mouse_x/room_width);

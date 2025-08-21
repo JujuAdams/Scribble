@@ -35,6 +35,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     __superfont     = false;
     __runtime       = false;
     __source_sprite = undefined;
+    __remap         = undefined;
     
     __scale  = 1.0;
     __height = 0; //*Not* the raw height. This value is changed by scribble_font_scale()

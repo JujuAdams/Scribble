@@ -363,12 +363,13 @@ function __scribble_matrix_inverse(_matrix)
 
 enum __SCRIBBLE_GLYPH_LAYOUT
 {
-    __UNICODE, // 0
-    __LEFT,    // 1
-    __TOP,     // 2
-    __RIGHT,   // 3
-    __BOTTOM,  // 4
-    __SIZE,    // 5
+    __UNICODE,  // 0
+    __LEFT,     // 1
+    __TOP,      // 2
+    __RIGHT,    // 3
+    __BOTTOM,   // 4
+    __Y_OFFSET, // 5
+    __SIZE,     // 7
 }
 
 #macro __SCRIBBLE_RENDER_RASTER               0

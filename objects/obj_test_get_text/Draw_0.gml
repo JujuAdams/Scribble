@@ -1,12 +1,6 @@
-if (!SCRIBBLE_ALLOW_TEXT_GETTER)
-{
-    draw_text(10, 10, "SCRIBBLE_ALLOW_TEXT_GETTER must be set to <true> for this test case");
-    return;
-}
+var _text = "[fa_middle][c_black][fnt_dialogue_2]Hi world[/page]oijwagow\n\ngawoijgawj egonawegh";
 
-var _text = "[fa_middle][c_red]Hi world[/page]oijwagow\n\ngawoijgawj egonawegh";
-
-var _element = scribble(_text).wrap(50);
+var _element = scribble(_text).allow_text_getter();
 if (keyboard_check_pressed(vk_up  )) _element.page(_element.get_page()-1);
 if (keyboard_check_pressed(vk_down)) _element.page(_element.get_page()+1);
 

@@ -274,8 +274,6 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
         
         if (is_string(_exception_string))
         {
-            if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> to use sound-per-character exceptions");
-            
             __soundPerCharException = true;
             __soundPerCharExceptionDict = {};
             
@@ -361,8 +359,6 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
     
     static character_delay_add = function(_character, _delay)
     {
-        if (!SCRIBBLE_ALLOW_GLYPH_DATA_GETTER) __scribble_error("SCRIBBLE_ALLOW_GLYPH_DATA_GETTER must be set to <true> to use per-character delay");
-        
         var _char_1 = _character;
         var _char_2 = 0;
         
@@ -757,6 +753,8 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
         var _model = __get_model(true);
         if (!is_struct(_model)) return undefined;
         
+        var _glyph_data_getter = _model.__allow_glyph_data_getter;
+        
         //Get page data
         //We use this to set the maximum limit for the typewriter feature
         var _pages_array = _model.__get_page_array();
@@ -860,7 +858,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
                         var _found_size = array_length(_found_events);
                         
                         //Add a per-character delay if required
-                        if (SCRIBBLE_ALLOW_GLYPH_DATA_GETTER
+                        if (_glyph_data_getter
                         &&  !__ignoreDelay
                         &&  __characterDelay
                         &&  (__last_character >= 1) //Don't check character delay until we're on the first character (index=1)
@@ -910,7 +908,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
                     if (__last_character <= _page_character_count)
                     {
                         //Only play sound once per frame if we're going reaaaally fast
-                        __play_sound(_head_pos, SCRIBBLE_ALLOW_GLYPH_DATA_GETTER? (_page_data.__glyph_grid[# _head_pos-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE]) : 0);
+                        __play_sound(_head_pos, _glyph_data_getter? (_page_data.__glyph_grid[# _head_pos-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE]) : 0);
                     }
                     else
                     {

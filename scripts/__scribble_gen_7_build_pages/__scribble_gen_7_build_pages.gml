@@ -33,7 +33,7 @@
                                 var _page_anim_end   = _glyph_grid[# _page_data.__glyph_end,   __SCRIBBLE_GEN_GLYPH.__ANIMATION_INDEX];\
                                 _page_data.__character_count = 1 + _page_anim_end - _page_anim_start;\
                                 ;\
-                                if (SCRIBBLE_ALLOW_LINE_DATA_GETTER)\
+                                if (_line_data_getter)\
                                 {\
                                     var _i = _page_data.__line_start;\
                                     repeat(_page_data.__line_count)\
@@ -91,11 +91,12 @@ function __scribble_gen_7_build_pages()
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
         var _randomize_animation   = __element.__randomize_animation;
+        var _line_data_getter      = __element.__allow_line_data_getter;
+        var _line_data_array       = _line_data_getter? [] : undefined;
     }
     
     static _animation_randomize_array = [];
     
-    var _line_data_array = SCRIBBLE_ALLOW_LINE_DATA_GETTER? [] : undefined;
     
     var _wrap_no_pages = _element.__wrap_no_pages;
     
