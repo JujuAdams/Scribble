@@ -22,7 +22,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     //Whether the source texture is ready - loaded into RAM and fetched into VRAM
     __texels_valid = _texels_valid;
     
-    static _font_data_map = __scribble_initialize().__font_data_map;
+    static _font_data_map = __scribble_system().__font_data_map;
     _font_data_map[? _name] = self;
     
     __glyph_data_grid = ds_grid_create(_glyph_count, SCRIBBLE_GLYPH.__SIZE);

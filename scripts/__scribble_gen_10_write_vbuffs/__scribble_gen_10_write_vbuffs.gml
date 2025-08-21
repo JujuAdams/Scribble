@@ -64,9 +64,9 @@
 
 function __scribble_gen_10_write_vbuffs()
 {
-    static _string_buffer   = __scribble_initialize().__buffer_a;
-    static _effects_map     = __scribble_initialize().__effects_map;
-    static _generator_state = __scribble_initialize().__generator_state;
+    static _string_buffer   = __scribble_system().__buffer_a;
+    static _effects_map     = __scribble_system().__effects_map;
+    static _generator_state = __scribble_system().__generator_state;
     
     with(_generator_state)
     {
@@ -120,7 +120,7 @@ function __scribble_gen_10_write_vbuffs()
     
     var _func_region_pop = function(_page_data, _region_name, _region_start, _region_end)
     {
-        static _generator_state = __scribble_initialize().__generator_state;
+        static _generator_state = __scribble_system().__generator_state;
         
         if (_region_start > _region_end) return;
         

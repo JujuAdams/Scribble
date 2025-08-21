@@ -5,7 +5,7 @@
 
 function __scribble_sprite_get_material(_sprite, _image)
 {
-    static _sprite_texture_material_map = __scribble_initialize().__sprite_texture_material_map;
+    static _sprite_texture_material_map = __scribble_system().__sprite_texture_material_map;
     
     var _texture_index = __scribble_sprite_get_texture_index(_sprite, _image);
     var _material = _sprite_texture_material_map[? _texture_index];

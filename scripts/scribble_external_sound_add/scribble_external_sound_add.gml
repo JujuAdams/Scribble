@@ -5,7 +5,7 @@
 
 function scribble_external_sound_add(_sound, _alias)
 {
-    static _external_sound_map = __scribble_initialize().__external_sound_map;
+    static _external_sound_map = __scribble_system().__external_sound_map;
     
     if (ds_map_exists(_external_sound_map, _alias))
     {

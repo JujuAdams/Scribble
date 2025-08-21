@@ -6,8 +6,8 @@
 
 function __scribble_play_sound(_asset, _gain, _pitch)
 {
-    static _sound_whitelist_map = __scribble_initialize().__state.__sound_whitelist_map;
-    static _external_sound_map  = __scribble_initialize().__external_sound_map;
+    static _sound_whitelist_map = __scribble_system().__state.__sound_whitelist_map;
+    static _external_sound_map  = __scribble_system().__external_sound_map;
     
     if (is_string(_asset))
     {

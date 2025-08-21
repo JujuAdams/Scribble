@@ -23,7 +23,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _font_info = font_get_info(_spritefont);
     var _sprite_name = sprite_get_name(_sprite);
     
-    static _font_data_map = __scribble_initialize().__font_data_map;
+    static _font_data_map = __scribble_system().__font_data_map;
     if (ds_map_exists(_font_data_map, _sprite_name))
     {
         __scribble_trace("Warning! A spritefont for \"", _sprite_name, "\" has already been added. Destroying the old spritefont and creating a new one");
@@ -31,9 +31,9 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     }
     
     var _is_krutidev = __scribble_asset_is_krutidev(_sprite, asset_sprite);
-    var _global_glyph_bidi_map = __scribble_initialize().__glyph_data.__bidi_map;
+    var _global_glyph_bidi_map = __scribble_system().__glyph_data.__bidi_map;
     
-    var _scribble_state = __scribble_initialize().__state;
+    var _scribble_state = __scribble_system().__state;
     if (_scribble_state.__default_font == undefined)
     {
         if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_sprite_name) + "\"");

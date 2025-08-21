@@ -3,7 +3,7 @@
 
 function __scribble_class_typist(_per_line) constructor
 {
-    static __scribble_state = __scribble_initialize().__state;
+    static __scribble_state = __scribble_system().__state;
     
     __last_element = undefined;
     
@@ -476,7 +476,7 @@ function __scribble_class_typist(_per_line) constructor
     
     static __process_event_stack = function(_character_count, _target_element, _function_scope)
     {
-        static _system = __scribble_initialize();
+        static _system = __scribble_system();
         static _typewriter_events_map = _system.__typewriter_events_map;
         
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
@@ -592,7 +592,7 @@ function __scribble_class_typist(_per_line) constructor
     
     static __play_sound = function(_head_pos, _character)
     {
-        static _system = __scribble_initialize();
+        static _system = __scribble_system();
         
         var _sound_array = __sound_array;
         if (is_array(_sound_array) && (array_length(_sound_array) > 0))

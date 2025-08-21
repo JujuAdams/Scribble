@@ -13,7 +13,7 @@ function scribble(_string, _unique_id = undefined)
         return;
     }
     
-    static _ecache_dict = __scribble_initialize().__cache_state.__ecache_dict;
+    static _ecache_dict = __scribble_system().__cache_state.__ecache_dict;
     
     var _weak = _ecache_dict[$ ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_unique_id) + ":")) + string(_string)];
     if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.__flushed)

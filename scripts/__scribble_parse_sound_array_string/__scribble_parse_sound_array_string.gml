@@ -2,7 +2,7 @@
 
 function __scribble_parse_sound_array_string(_string)
 {
-    static _system  = __scribble_initialize();
+    static _system  = __scribble_system();
     static _external_sound_map = _system.__external_sound_map;
     
     var _sound_array_string = string_trim_start(_string);

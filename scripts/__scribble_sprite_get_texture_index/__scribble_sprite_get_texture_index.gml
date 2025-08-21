@@ -5,7 +5,7 @@
 
 function __scribble_sprite_get_texture_index(_sprite, _image)
 {
-    static _sprite_texture_index_map = __scribble_initialize().__sprite_texture_index_map;
+    static _sprite_texture_index_map = __scribble_system().__sprite_texture_index_map;
     
     if (not sprite_exists(_sprite))
     {

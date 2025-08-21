@@ -4,11 +4,11 @@
 
 function __scribble_class_element(_string, _unique_id) constructor
 {
-    static __scribble_state    = __scribble_initialize().__state;
-    static __ecache_array      = __scribble_initialize().__cache_state.__ecache_array;
-    static __ecache_dict       = __scribble_initialize().__cache_state.__ecache_dict;
-    static __ecache_weak_array = __scribble_initialize().__cache_state.__ecache_weak_array;
-    static __ecache_name_array = __scribble_initialize().__cache_state.__ecache_name_array;
+    static __scribble_state    = __scribble_system().__state;
+    static __ecache_array      = __scribble_system().__cache_state.__ecache_array;
+    static __ecache_dict       = __scribble_system().__cache_state.__ecache_dict;
+    static __ecache_weak_array = __scribble_system().__cache_state.__ecache_weak_array;
+    static __ecache_name_array = __scribble_system().__cache_state.__ecache_name_array;
     
     __text       = _string;
     __unique_id  = _unique_id;
@@ -166,7 +166,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     /// @param [typist]
     static draw = function(_x, _y, _typist = undefined)
     {
-        static _scribble_state = __scribble_initialize().__state;
+        static _scribble_state = __scribble_system().__state;
         
         if (SCRIBBLE_FLOOR_DRAW_COORDINATES)
         {
@@ -1598,7 +1598,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static __get_model = function(_allow_create)
     {
-        static _mcache_dict = __scribble_initialize().__cache_state.__mcache_dict;
+        static _mcache_dict = __scribble_system().__cache_state.__mcache_dict;
         
         if (__flushed || (__text == ""))
         {
@@ -1612,7 +1612,7 @@ function __scribble_class_element(_string, _unique_id) constructor
                 __bbox_dirty             = true;
                 __scale_to_box_dirty     = true; //The dimensions of the text element might change as a result of a model change
                 
-                static _buffer = __scribble_initialize().__buffer_a;
+                static _buffer = __scribble_system().__buffer_a;
                 buffer_seek(_buffer, buffer_seek_start, 0);
                 buffer_write(_buffer, buffer_text, string(__text                   )); buffer_write(_buffer, buffer_u8, 0x3A); //colon
                 buffer_write(_buffer, buffer_text, string(__starting_font          )); buffer_write(_buffer, buffer_u8, 0x3A);
@@ -1696,8 +1696,8 @@ function __scribble_class_element(_string, _unique_id) constructor
         static _u_vOutlineColour            = shader_get_uniform(__shd_scribble, "u_vOutlineColour"         );
         static _u_fOutlineThickness         = shader_get_uniform(__shd_scribble, "u_fOutlineThickness"      );
         
-        static _scribble_state        = __scribble_initialize().__state;
-        static _anim_properties_array = __scribble_initialize().__anim_properties;
+        static _scribble_state        = __scribble_system().__state;
+        static _anim_properties_array = __scribble_system().__anim_properties;
         
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;

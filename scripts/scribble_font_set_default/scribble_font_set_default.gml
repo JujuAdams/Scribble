@@ -12,7 +12,7 @@ function scribble_font_set_default(_font)
         return undefined;
     }
     
-    static _scribble_state = __scribble_initialize().__state;
+    static _scribble_state = __scribble_system().__state;
     if (SCRIBBLE_VERBOSE && (_scribble_state.__default_font == undefined)) __scribble_trace("Setting default font to \"" + string(_font) + "\"");
     _scribble_state.__default_font = _font;
 }

@@ -4,7 +4,7 @@
 
 function scribble_add_macro(_name, _function)
 {
-    static _system                = __scribble_initialize();
+    static _system                = __scribble_system();
     static _effects_map           = _system.__effects_map;
     static _macros_map            = _system.__macros_map;
     static _typewriter_events_map = _system.__typewriter_events_map;

@@ -2,11 +2,11 @@
 
 function __scribble_class_page() constructor
 {
-    static __scribble_state = __scribble_initialize().__state;
-    static __gc_vbuff_refs  = __scribble_initialize().__cache_state.__gc_vbuff_refs;
-    static __gc_vbuff_ids   = __scribble_initialize().__cache_state.__gc_vbuff_ids;
-    static __gc_grid_refs   = __scribble_initialize().__cache_state.__gc_grid_refs;
-    static __gc_grid_ids    = __scribble_initialize().__cache_state.__gc_grid_ids;
+    static __scribble_state = __scribble_system().__state;
+    static __gc_vbuff_refs  = __scribble_system().__cache_state.__gc_vbuff_refs;
+    static __gc_vbuff_ids   = __scribble_system().__cache_state.__gc_vbuff_ids;
+    static __gc_grid_refs   = __scribble_system().__cache_state.__gc_grid_refs;
+    static __gc_grid_ids    = __scribble_system().__cache_state.__gc_grid_ids;
     
     __text = "";
     __glyph_grid = undefined;
@@ -177,7 +177,7 @@ function __scribble_class_page() constructor
             return _data.__vertex_buffer;
         }
         
-        //TODO - Move this to `__scribble_initialize()`
+        //TODO - Move this to `__scribble_system()`
         static _vertex_format = undefined;
         if (_vertex_format == undefined)
         {

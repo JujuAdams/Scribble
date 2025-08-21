@@ -4,9 +4,9 @@
 
 function __scribble_class_model(_element, _model_cache_name) constructor
 {
-    static __scribble_state    = __scribble_initialize().__state;
-    static __mcache_dict       = __scribble_initialize().__cache_state.__mcache_dict;
-    static __mcache_name_array = __scribble_initialize().__cache_state.__mcache_name_array;
+    static __scribble_state    = __scribble_system().__state;
+    static __mcache_dict       = __scribble_system().__cache_state.__mcache_dict;
+    static __mcache_name_array = __scribble_system().__cache_state.__mcache_name_array;
     
     //Record the start time so we can get a duration later
     if (SCRIBBLE_VERBOSE) var _timer_total = get_timer();
@@ -325,7 +325,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         }
     }
     
-    static _generator_state = __scribble_initialize().__generator_state;
+    static _generator_state = __scribble_system().__generator_state;
     with(_generator_state)
     {
         __Reset();

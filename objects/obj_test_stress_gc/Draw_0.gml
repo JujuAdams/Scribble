@@ -11,7 +11,7 @@ if (toggle)
     smoothed_time = lerp(smoothed_time, _t, 0.01);
 }
 
-var _cache_state = __scribble_initialize().__cache_state;
+var _cache_state = __scribble_system().__cache_state;
 
 draw_set_font(scribble_fallback_font);
 draw_text(10,  10, "models cached = " + string(variable_struct_names_count(_cache_state.__mcache_dict)));

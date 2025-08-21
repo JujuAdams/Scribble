@@ -10,7 +10,7 @@
 
 function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _font_info, _line_height = undefined, _is_krutidev, _from_bundle)
 {
-    static _font_data_map = __scribble_initialize().__font_data_map;
+    static _font_data_map = __scribble_system().__font_data_map;
     
     if (ds_map_exists(_font_data_map, _name))
     {
@@ -20,7 +20,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", _name, "\" as standard font");
     
-    var _scribble_state = __scribble_initialize().__state;
+    var _scribble_state = __scribble_system().__state;
     if (_scribble_state.__default_font == undefined)
     {
         if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_name) + "\"");
@@ -29,7 +29,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
     
     try
     {
-        var _global_glyph_bidi_map = __scribble_initialize().__glyph_data.__bidi_map;
+        var _global_glyph_bidi_map = __scribble_system().__glyph_data.__bidi_map;
         
         //Get font info from the runtime
         var _texture_index = _font_info.texture;

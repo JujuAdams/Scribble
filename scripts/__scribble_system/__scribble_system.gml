@@ -7,8 +7,8 @@
 
 
 
-__scribble_initialize();
-function __scribble_initialize()
+__scribble_system();
+function __scribble_system()
 {
     static _system = undefined;
     if (_system != undefined) return _system;
@@ -66,7 +66,7 @@ function __scribble_initialize()
         __useHandleParse = false;
         try
         {
-            handle_parse(string(__scribble_initialize));
+            handle_parse(string(__scribble_system));
             __useHandleParse = true;
             
             __scribble_trace("Using handle_parse() where possible");
