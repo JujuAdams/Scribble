@@ -1,7 +1,7 @@
-// Feather disable all
-/// Scribble's macros, used to customise and control behaviour throughout the library
-///
-/// N.B. You never need to run this script yourself! All of these macros are handled automatically when Scribble is compiled into your project
+//Whether to automatically initialize Scribble Deluxe when your game boots. Set this macro to
+//`true` if you don't want to make initialization manually. If you set this function to `false`
+//then you will need to call `scribble_initialize()` before calling other Scribble Deluxe functions.
+#macro SCRIBBLE_INITIALIZE_ON_BOOT  true
 
 //Replaces hashes (#) with newlines (ASCII chr10) to emulate GMS1's newline behaviour.
 #macro SCRIBBLE_HASH_NEWLINE  false
