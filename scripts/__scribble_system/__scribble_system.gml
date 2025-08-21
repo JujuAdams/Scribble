@@ -3,15 +3,27 @@
 #macro __SCRIBBLE_DEBUG             false
 #macro __SCRIBBLE_VERBOSE_GC        false
 #macro __SCRIBBLE_RUNNING_FROM_IDE  (GM_build_type == "run")
-#macro SCRIBBLE_LOAD_FONTS_ON_BOOT  true
 
 
 
-__scribble_initialize();
-function __scribble_initialize()
+if (SCRIBBLE_INITIALIZE_ON_BOOT)
+{
+    __scribble_system();
+}
+
+function __scribble_system(_calledFromInitialize = false)
 {
     static _system = undefined;
     if (_system != undefined) return _system;
+    
+    if (not SCRIBBLE_INITIALIZE_ON_BOOT)
+    {
+        if (not _calledFromInitialize)
+        {
+            __scribble_error("Scribble is not initialized. You must either:\n- Call `scribble_initialize()` first\n- Set `SCRIBBLE_INITIALIZE_ON_BOOT` to `true`");
+            return;
+        }
+    }
     
     _system = {};
     with(_system)
@@ -66,7 +78,7 @@ function __scribble_initialize()
         __useHandleParse = false;
         try
         {
-            handle_parse(string(__scribble_initialize));
+            handle_parse(string(__scribble_system));
             __useHandleParse = true;
             
             __scribble_trace("Using handle_parse() where possible");
@@ -262,7 +274,7 @@ function __scribble_initialize()
     }
     
     scribble_anim_reset();
-    if (SCRIBBLE_LOAD_FONTS_ON_BOOT) __scribble_font_add_all_from_bundle();
+    __scribble_font_add_all_from_bundle();
     
     return _system;
 }

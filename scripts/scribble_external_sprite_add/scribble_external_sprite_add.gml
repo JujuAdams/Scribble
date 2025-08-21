@@ -5,7 +5,7 @@
 
 function scribble_external_sprite_add(_sprite, _alias)
 {
-    static _external_sprite_map = __scribble_initialize().__external_sprite_map;
+    static _external_sprite_map = __scribble_system().__external_sprite_map;
     
     if (ds_map_exists(_external_sprite_map, _alias))
     {

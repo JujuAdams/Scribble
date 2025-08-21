@@ -1,17 +1,16 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_font_outline_4dir",
+  "%Name":"obj_test_remap",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_font_outline_4dir",
+  "name":"obj_test_remap",
   "overriddenProperties":[],
   "parent":{
-    "name":"Font Modification",
-    "path":"folders/Test Cases/Font Modification.yy",
+    "name":"Fonts",
+    "path":"folders/Test Cases/Fonts.yy",
   },
   "parentObjectId":null,
   "persistent":false,

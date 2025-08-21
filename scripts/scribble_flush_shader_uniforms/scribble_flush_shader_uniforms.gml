@@ -6,7 +6,7 @@
 
 function scribble_flush_shader_uniforms()
 {
-    static _scribble_state = __scribble_initialize().__state;
+    static _scribble_state = __scribble_system().__state;
     with(_scribble_state)
     {
         __shader_anim_desync            = true;

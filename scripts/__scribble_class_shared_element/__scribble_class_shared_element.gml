@@ -4,7 +4,7 @@
 
 function __scribble_class_shared_element(_string) constructor
 {
-    static __scribble_state = __scribble_initialize().__state;
+    static __scribble_state = __scribble_system().__state;
     
     
     
@@ -1466,7 +1466,7 @@ function __scribble_class_shared_element(_string) constructor
     
     static __get_model = function(_allow_create)
     {
-        static _mcache_dict = __scribble_initialize().__cache_state.__mcache_dict;
+        static _mcache_dict = __scribble_system().__cache_state.__mcache_dict;
         
         if (__flushed || (__text == ""))
         {
@@ -1480,7 +1480,7 @@ function __scribble_class_shared_element(_string) constructor
                 __bbox_dirty             = true;
                 __scale_to_box_dirty     = true; //The dimensions of the text element might change as a result of a model change
                 
-                static _buffer = __scribble_initialize().__buffer_a;
+                static _buffer = __scribble_system().__buffer_a;
                 buffer_seek(_buffer, buffer_seek_start, 0);
                 buffer_write(_buffer, buffer_text, string(__text                   )); buffer_write(_buffer, buffer_u8, 0x3A); //colon
                 buffer_write(_buffer, buffer_text, string(__starting_font          )); buffer_write(_buffer, buffer_u8, 0x3A);
@@ -1563,8 +1563,8 @@ function __scribble_class_shared_element(_string) constructor
         static _u_vOutlineColour            = shader_get_uniform(__shd_scribble, "u_vOutlineColour"         );
         static _u_fOutlineThickness         = shader_get_uniform(__shd_scribble, "u_fOutlineThickness"      );
         
-        static _scribble_state        = __scribble_initialize().__state;
-        static _anim_properties_array = __scribble_initialize().__anim_properties;
+        static _scribble_state        = __scribble_system().__state;
+        static _anim_properties_array = __scribble_system().__anim_properties;
         
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;

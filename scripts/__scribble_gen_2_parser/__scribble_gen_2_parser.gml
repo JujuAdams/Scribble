@@ -168,7 +168,7 @@ function __scribble_gen_2_parser()
     
     #endregion
     
-    static _system                = __scribble_initialize();
+    static _system                = __scribble_system();
     static _useHandleParse        = _system.__useHandleParse;
     static _effects_map           = _system.__effects_map;
     static _effects_slash_map     = _system.__effects_slash_map;
@@ -193,7 +193,7 @@ function __scribble_gen_2_parser()
         var _line_height    = __line_height;
     }
     
-    static _glyph_data_struct = __scribble_initialize().__glyph_data;
+    static _glyph_data_struct = __scribble_system().__glyph_data;
     static _global_glyph_bidi_map = _glyph_data_struct.__bidi_map;
     
     //Arabic look-up tables

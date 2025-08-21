@@ -4,7 +4,7 @@
 
 function __scribble_font_add_from_bundle(_font)
 {
-    static _font_to_texture_group_map = __scribble_initialize().__font_to_texture_group_map;
+    static _font_to_texture_group_map = __scribble_system().__font_to_texture_group_map;
     
     var _texture_group = _font_to_texture_group_map[? real(_font)];
     

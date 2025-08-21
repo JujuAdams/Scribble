@@ -8,7 +8,7 @@
 
 function scribble_external_font_exists(_font_name)
 {
-    static _font_data_map = __scribble_initialize().__font_data_map;
+    static _font_data_map = __scribble_system().__font_data_map;
     
     if (not ds_map_exists(_font_data_map, _font_name))
     {
