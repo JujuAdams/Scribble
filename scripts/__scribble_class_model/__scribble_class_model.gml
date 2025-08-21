@@ -33,6 +33,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __frozen     = undefined;
     __flushed    = false;
     
+    __allow_text_getter       = _element.__allow_text_getter;
     __allow_glyph_data_getter = _element.__allow_glyph_data_getter;
     __allow_line_data_getter  = _element.__allow_line_data_getter;
     
@@ -234,7 +235,10 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
-        if (!SCRIBBLE_ALLOW_TEXT_GETTER) __scribble_error("Cannot get text, SCRIBBLE_ALLOW_TEXT_GETTER = <false>\nPlease set SCRIBBLE_ALLOW_TEXT_GETTER to <true> to get text");
+        if (not __allow_text_getter)
+        {
+            __scribble_error("Getting element text requires either:\n- Call `.allow_text_getter()` on the element\n- Set `SCRIBBLE_FORCE_TEXT_GETTER` to `true`");
+        }
         
         return __pages_array[_page].__text;
     }

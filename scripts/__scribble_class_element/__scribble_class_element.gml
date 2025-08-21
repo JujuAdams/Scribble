@@ -57,8 +57,10 @@ function __scribble_class_element(_string, _unique_id) constructor
     __flash_alpha     = 0.0;
     
     __randomize_animation = false;
+    
+    __allow_text_getter       = SCRIBBLE_FORCE_TEXT_GETTER;
     __allow_glyph_data_getter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;
-    __allow_line_data_getter = SCRIBBLE_FORCE_LINE_DATA_GETTER;
+    __allow_line_data_getter  = SCRIBBLE_FORCE_LINE_DATA_GETTER;
     
     __origin_x       = 0.0;
     __origin_y       = 0.0;
@@ -1477,6 +1479,17 @@ function __scribble_class_element(_string, _unique_id) constructor
         {
             __model_cache_name_dirty = true;
             __randomize_animation = _state;
+        }
+        
+        return self;
+    }
+    
+    static allow_text_getter = function()
+    {
+        if (not __allow_text_getter)
+        {
+            __model_cache_name_dirty = true;
+            __allow_text_getter = true;
         }
         
         return self;
