@@ -217,6 +217,7 @@ function __scribble_gen_2_parser()
     var _starting_font = _element.__starting_font;
     if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
     
+    _starting_font = scribble_font_get_remap(_starting_font);
     var _font_name = _starting_font;
     
     //Run the pre-processor
@@ -422,7 +423,7 @@ function __scribble_gen_2_parser()
                         
                             if (_font_name != _starting_font)
                             {
-                                _font_name = _starting_font;
+                                _font_name = _starting_font; //Starting font already remapped
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                         
@@ -446,7 +447,7 @@ function __scribble_gen_2_parser()
                         case 1:
                             if (_font_name != _starting_font)
                             {
-                                _font_name = _starting_font;
+                                _font_name = _starting_font; //Starting font already remapped
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                         break;
@@ -774,7 +775,7 @@ function __scribble_gen_2_parser()
                             }
                             else
                             {
-                                _font_name = _new_font;
+                                _font_name = scribble_font_get_remap(_new_font);
                                 __SCRIBBLE_PARSER_SET_FONT;
                                 __SCRIBBLE_PARSER_PUSH_SCALE;
                             }
@@ -794,7 +795,7 @@ function __scribble_gen_2_parser()
                             }
                             else
                             {
-                                _font_name = _new_font;
+                                _font_name = scribble_font_get_remap(_new_font);
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                         break;
@@ -813,7 +814,7 @@ function __scribble_gen_2_parser()
                             }
                             else
                             {
-                                _font_name = _new_font;
+                                _font_name = scribble_font_get_remap(_new_font);
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                         break;
@@ -832,7 +833,7 @@ function __scribble_gen_2_parser()
                             }
                             else
                             {
-                                _font_name = _new_font;
+                                _font_name = scribble_font_get_remap(_new_font);
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                         break;
@@ -1092,7 +1093,7 @@ function __scribble_gen_2_parser()
                             }                        
                             else if (ds_map_exists(_font_data_map, _tag_command_name)) //Change font
                             {
-                                _font_name = _tag_command_name;
+                                _font_name = scribble_font_get_remap(_tag_command_name);
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                             else
