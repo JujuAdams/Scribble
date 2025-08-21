@@ -148,11 +148,12 @@ function __scribble_class_page() constructor
         if (_index < 0)
         {
             return {
-                unicode: 0,
-                left:    __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT  ],
-                top:     __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__TOP   ],
-                right:   __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT  ],
-                bottom:  __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM],
+                unicode:  0,
+                left:     __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT    ],
+                top:      __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__TOP     ],
+                right:    __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT    ],
+                bottom:   __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM  ],
+                y_offset: __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__Y_OFFSET],
             };
         }
         else
@@ -160,11 +161,12 @@ function __scribble_class_page() constructor
             _index = min(_index, __glyph_count-1);
             
             return {
-                unicode: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE],
-                left:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__LEFT   ],
-                top:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__TOP    ],
-                right:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT  ],
-                bottom:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM ],
+                unicode:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE ],
+                left:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__LEFT    ],
+                top:      __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__TOP     ],
+                right:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT   ],
+                bottom:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM  ],
+                y_offset: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__Y_OFFSET],
             };
         }
     }

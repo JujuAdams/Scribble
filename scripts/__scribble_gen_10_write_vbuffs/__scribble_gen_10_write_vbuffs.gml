@@ -183,6 +183,7 @@ function __scribble_gen_10_write_vbuffs()
             {
                 __ensure_glyph_grid();
                 ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH.__UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH.__UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE);
+                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH.__Y, __glyph_end, __SCRIBBLE_GEN_GLYPH.__Y, 0, __SCRIBBLE_GLYPH_LAYOUT.__Y_OFFSET);
                 ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyph_start, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT);
             }
         }
