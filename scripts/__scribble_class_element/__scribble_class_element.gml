@@ -1638,7 +1638,9 @@ function __scribble_class_element(_string, _unique_id) constructor
                 buffer_write(_buffer, buffer_text, string(__bidi_hint              )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__ignore_command_tags    )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__randomize_animation    )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__allow_text_getter      )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__allow_glyph_data_getter)); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__allow_line_data_getter )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__visual_bboxes          )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(ptr(__preprocessorFunc ?? pointer_null))); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_u8, 0x00);
