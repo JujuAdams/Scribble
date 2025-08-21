@@ -1167,6 +1167,17 @@ function __scribble_class_element(_string, _unique_id) constructor
         __scribble_error(".animation_tick_speed() has been replaced by .animation_speed()");
     }
     
+    static set_animation_time = function(_time)
+    {
+        __animation_time = _time;
+        return self;
+    }
+    
+    static get_animation_time = function()
+    {
+        return __animation_time;
+    }
+    
     static animation_speed = function(_speed)
     {
         __animation_speed = _speed;
