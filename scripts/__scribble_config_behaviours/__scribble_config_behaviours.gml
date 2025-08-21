@@ -3,8 +3,6 @@
 //then you will need to call `scribble_initialize()` before calling other Scribble Deluxe functions.
 #macro SCRIBBLE_INITIALIZE_ON_BOOT  true
 
-
-
 //Whether to use colourization for sprites. This includes [rainbow] and [cycle].
 #macro SCRIBBLE_COLORIZE_SPRITES  true
 

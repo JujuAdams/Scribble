@@ -5,10 +5,10 @@
 
 function __scribble_class_cached_element(_string, _unique_id) : __scribble_class_shared_element(_string) constructor
 {
-    static __ecache_array      = __scribble_initialize().__cache_state.__ecache_array;
-    static __ecache_dict       = __scribble_initialize().__cache_state.__ecache_dict;
-    static __ecache_weak_array = __scribble_initialize().__cache_state.__ecache_weak_array;
-    static __ecache_name_array = __scribble_initialize().__cache_state.__ecache_name_array;
+    static __ecache_array      = __scribble_system().__cache_state.__ecache_array;
+    static __ecache_dict       = __scribble_system().__cache_state.__ecache_dict;
+    static __ecache_weak_array = __scribble_system().__cache_state.__ecache_weak_array;
+    static __ecache_name_array = __scribble_system().__cache_state.__ecache_name_array;
     
     
     
