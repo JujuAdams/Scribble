@@ -957,7 +957,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
         }
         
         var _method = __easeMethod;
-        if (!__typistIn) _method += SCRIBBLE_EASE_COUNT;
+        if (!__typistIn) _method += __SCRIBBLE_EASE_COUNT;
         
         var _char_max = 0;
         if (__typistBackwards)

@@ -43,7 +43,7 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
         ++_i;
     }
     
-    ds_grid_set_region(_target_glyph_data_grid, 0, SCRIBBLE_GLYPH.FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), SCRIBBLE_GLYPH.FONT_HEIGHT,
+    ds_grid_set_region(_target_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT,
                        max(_target_font_data.__height, _source_font_data.__height));
 }
 
@@ -101,7 +101,7 @@ function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _tar
         //Create a new column in the grid to store this glyph's data
         var _target_x = ds_grid_width(_target_grid);
         _target_map[? _glyph] = _target_x;
-        ds_grid_resize(_target_grid, _target_x+1, SCRIBBLE_GLYPH.__SIZE);
+        ds_grid_resize(_target_grid, _target_x+1, __SCRIBBLE_GLYPH_PROPR_COUNT);
     }
     else
     {
@@ -115,5 +115,5 @@ function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _tar
     }
     
     //Do the actual copying
-    ds_grid_set_grid_region(_target_grid, _source_grid, _source_x, 0, _source_x, SCRIBBLE_GLYPH.__SIZE, _target_x, 0);
+    ds_grid_set_grid_region(_target_grid, _source_grid, _source_x, 0, _source_x, __SCRIBBLE_GLYPH_PROPR_COUNT, _target_x, 0);
 }

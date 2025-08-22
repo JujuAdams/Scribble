@@ -25,7 +25,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     static _font_data_map = __scribble_system().__font_data_map;
     _font_data_map[? _name] = self;
     
-    __glyph_data_grid = ds_grid_create(_glyph_count, SCRIBBLE_GLYPH.__SIZE);
+    __glyph_data_grid = ds_grid_create(_glyph_count, __SCRIBBLE_GLYPH_PROPR_COUNT);
     __glyphs_map      = ds_map_create();
     __kerning_map     = ds_map_create();
     
@@ -100,7 +100,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
         var _i = 0;
         repeat(_glyph_count)
         {
-            var _material = _glyph_data_grid[# _i, SCRIBBLE_GLYPH.MATERIAL];
+            var _material = _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL];
             var _texture_index = _material.__texture;
             if (_texture_index != undefined)
             {
@@ -118,7 +118,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
         var _glyph_data_grid = __glyph_data_grid;
         var _glyph_count = ds_grid_width(_glyph_data_grid);
         
-        if (not ds_grid_value_exists(_glyph_data_grid, 0, SCRIBBLE_GLYPH.TEXELS_VALID, _glyph_count-1, SCRIBBLE_GLYPH.TEXELS_VALID, false))
+        if (not ds_grid_value_exists(_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, false))
         {
             //Don't do any extra work if every texel is valid
             __texels_valid = true;
@@ -131,22 +131,22 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
         var _i = 0;
         repeat(_glyph_count)
         {
-            if (not _glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXELS_VALID])
+            if (not _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID])
             {
-                var _material = _glyph_data_grid[# _i, SCRIBBLE_GLYPH.MATERIAL];
+                var _material = _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL];
                 
                 var _texture_index = _material.__texture;
                 if ((_texture_index != undefined) && texture_is_ready(_texture_index))
                 {
-                    _glyph_data_grid[# _i, SCRIBBLE_GLYPH.TEXELS_VALID] = true;
+                    _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = true;
                     
                     var _texel_w = texture_get_texel_width(_texture_index);
                     var _texel_h = texture_get_texel_height(_texture_index);
                     
-                    _glyph_data_grid[# _i, SCRIBBLE_GLYPH.U0] *= _texel_w;
-                    _glyph_data_grid[# _i, SCRIBBLE_GLYPH.V0] *= _texel_h;
-                    _glyph_data_grid[# _i, SCRIBBLE_GLYPH.U1] *= _texel_w;
-                    _glyph_data_grid[# _i, SCRIBBLE_GLYPH.V1] *= _texel_h;
+                    _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0] *= _texel_w;
+                    _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0] *= _texel_h;
+                    _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1] *= _texel_w;
+                    _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1] *= _texel_h;
                 }
                 else
                 {

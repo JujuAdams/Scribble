@@ -36,35 +36,16 @@
 #macro SCRIBBLE_EASE_CUSTOM_2  13
 #macro SCRIBBLE_EASE_CUSTOM_3  14
 
-#macro SCRIBBLE_EASE_COUNT  15
-
 #macro SCRIBBLE_OUTLINE_NO_OUTLINE       0
 #macro SCRIBBLE_OUTLINE_FOUR_DIR         1
 #macro SCRIBBLE_OUTLINE_EIGHT_DIR        2
 #macro SCRIBBLE_OUTLINE_EIGHT_DIR_THICK  3
 
-enum SCRIBBLE_GLYPH
-{
-    CHARACTER,    // 0
-                  //  
-    UNICODE,      // 1
-    BIDI,         // 2
-                  //  
-    X_OFFSET,     // 3
-    Y_OFFSET,     // 4
-    WIDTH,        // 5
-    HEIGHT,       // 6
-    FONT_HEIGHT,  // 7
-    SEPARATION,   // 8
-    LEFT_OFFSET,  // 9
-    FONT_SCALE,   //10
-                  //  
-    MATERIAL,     //11
-    U0,           //12
-    U1,           //13
-    V0,           //14
-    V1,           //15
-    TEXELS_VALID, //16
-                  //  
-    __SIZE        //17
-}
+#macro SCRIBBLE_GLYPH_BIDI          __SCRIBBLE_GLYPH_PROPR_BIDI
+#macro SCRIBBLE_GLYPH_X_OFFSET      __SCRIBBLE_GLYPH_PROPR_X_OFFSET
+#macro SCRIBBLE_GLYPH_Y_OFFSET      __SCRIBBLE_GLYPH_PROPR_Y_OFFSET
+#macro SCRIBBLE_GLYPH_WIDTH         __SCRIBBLE_GLYPH_PROPR_WIDTH
+#macro SCRIBBLE_GLYPH_HEIGHT        __SCRIBBLE_GLYPH_PROPR_HEIGHT
+#macro SCRIBBLE_GLYPH_FONT_HEIGHT   __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT
+#macro SCRIBBLE_GLYPH_SEPARATION    __SCRIBBLE_GLYPH_PROPR_SEPARATION
+#macro SCRIBBLE_GLYPH_LEFT_OFFSET   __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET

@@ -5,9 +5,9 @@
 /// @param property     Property to return, see below
 /// 
 /// Three properties are available:
-/// SCRIBBLE_GLYPH.X_OFFSET:   The relative x-offset to draw the glyph
-/// SCRIBBLE_GLYPH.Y_OFFSET:   The relative y-offset to draw the glyph
-/// SCRIBBLE_GLYPH.SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
+/// SCRIBBLE_GLYPH_X_OFFSET:   The relative x-offset to draw the glyph
+/// SCRIBBLE_GLYPH_Y_OFFSET:   The relative y-offset to draw the glyph
+/// SCRIBBLE_GLYPH_SEPARATION: Effective width of the glyph, the distance between this glyph's left edge and the
 ///                            left edge of the next glyph. This can be a negative value!
 
 function scribble_glyph_get(_font, _character, _property)
