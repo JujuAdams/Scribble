@@ -144,6 +144,7 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "&nbsp;"            ] = 21;
         _command_tag_lookup_accelerator_map[? "cycle"             ] = 22;
         _command_tag_lookup_accelerator_map[? "/cycle"            ] = 23;
+        _command_tag_lookup_accelerator_map[? "/rainbow"          ] = 23;
         _command_tag_lookup_accelerator_map[? "r"                 ] = 24;
         _command_tag_lookup_accelerator_map[? "/b"                ] = 24;
         _command_tag_lookup_accelerator_map[? "/i"                ] = 24;
@@ -164,12 +165,14 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "offset"            ] = 38;
         _command_tag_lookup_accelerator_map[? "offsetPop"         ] = 39;
         _command_tag_lookup_accelerator_map[? "texture"           ] = 40;
+        _command_tag_lookup_accelerator_map[? "rainbow"           ] = 41;
     }
     
     #endregion
     
     static _system                = __scribble_system();
     static _useHandleParse        = _system.__useHandleParse;
+    static _cycle_data_map       = _system.__cycle_data_map;
     static _effects_map           = _system.__effects_map;
     static _effects_slash_map     = _system.__effects_slash_map;
     static _typewriter_events_map = _system.__typewriter_events_map;
@@ -401,7 +404,7 @@ function __scribble_gen_2_parser()
                     buffer_seek(_string_buffer, buffer_seek_start, _tag_start);
                     repeat(_tag_parameter_count)
                     {
-                        array_push(_tag_parameters, buffer_read(_string_buffer, buffer_string));
+                        array_push(_tag_parameters, string_trim(buffer_read(_string_buffer, buffer_string)));
                     }
                     
                     //Reset command tag state
@@ -725,38 +728,73 @@ function __scribble_gen_2_parser()
                     
                         // [cycle]
                         case 22:
-                            var _cycle_r = (_tag_parameter_count > 1)? max(1, real(_tag_parameters[1])) : 0;
-                            var _cycle_g = (_tag_parameter_count > 2)? max(1, real(_tag_parameters[2])) : 0;
-                            var _cycle_b = (_tag_parameter_count > 3)? max(1, real(_tag_parameters[3])) : 0;
-                            var _cycle_a = (_tag_parameter_count > 4)? max(1, real(_tag_parameters[4])) : 0;
-                        
+                            if (_tag_parameter_count < 2)
+                            {
+                                __scribble_error("Must provide a cycle name");
+                            }
+                            
+                            var _cycle_name     = _tag_parameters[1];
+                            var _cycle_duration = (_tag_parameter_count > 2)? real(_tag_parameters[2]) : 1;
+                            
+                            var _cycle_data = _cycle_data_map[? _cycle_name];
+                            if (not is_struct(_cycle_data))
+                            {
+                                __scribble_error("Cycle \"", _cycle_name, "\" not recognised");
+                            }
+                            
                             _state_effect_flags = _state_effect_flags | (1 << _effects_map[? "cycle"]);
-                        
+                            
                             //Add an effect flag control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
                             ++_control_count;
-                        
+                            
                             //Add a cycle control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = (_cycle_a << 24) | (_cycle_b << 16) | (_cycle_g << 8) | _cycle_r;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = (_cycle_data.__index + 0.5) / SCRIBBLE_CYCLE_TEXTURE_HEIGHT;
                             ++_control_count;
-                        
+                            
                             __has_animation = true;
                         break;
-                    
+                        
+                        // [rainbow]
+                        case 41:
+                            var _cycle_duration = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 1;
+                            
+                            var _cycle_data = _cycle_data_map[? SCRIBBLE_RAINBOW_CYCLE];
+                            if (not is_struct(_cycle_data))
+                            {
+                                __scribble_error("Cycle \"", SCRIBBLE_RAINBOW_CYCLE, "\" not recognised");
+                            }
+                            
+                            _state_effect_flags = _state_effect_flags | (1 << _effects_map[? "cycle"]);
+                            
+                            //Add an effect flag control
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
+                            ++_control_count;
+                            
+                            //Add a cycle control
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = (_cycle_data.__index + 0.5) / SCRIBBLE_CYCLE_TEXTURE_HEIGHT;
+                            ++_control_count;
+                            
+                            __has_animation = true;
+                        break;
+                        
+                        // [/rainbow]
                         // [/cycle]
                         case 23:
                             _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_map[? "/cycle"]));
-                        
+                            
                             //Add an effect flag control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
                             ++_control_count;
-                        
+                            
                             //Add a cycle control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = undefined;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = -1;
                             ++_control_count;
                         break;
                             

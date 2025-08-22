@@ -69,6 +69,7 @@ attribute vec2  in_Colour2;      //{dX, dY}
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
+varying vec2 v_vCycle;
 
 uniform vec4  u_vColourBlend;                           //4
 uniform vec4  u_vGradient;                              //4
@@ -380,6 +381,15 @@ void main()
     if (SLANT_FLAG > 0.5) pos.x += in_Colour2.y*SLANT_GRADIENT;
     
     
+    
+    if (CYCLE_FLAG > 0.5)
+    {
+        v_vCycle = vec2(mod(u_fTime/100.0, 1.0), in_Normal.x);
+    }
+    else
+    {
+        v_vCycle = vec2(-1.0);
+    }
     
     //Colour
     v_vColour = in_Colour;

@@ -5,8 +5,11 @@ precision highp float;
 #define PREMULTIPLY_ALPHA false
 #define USE_ALPHA_FOR_DISTANCE true
 
-varying vec2  v_vTexcoord;
-varying vec4  v_vColour;
+varying vec2 v_vTexcoord;
+varying vec4 v_vColour;
+varying vec2 v_vCycle;
+
+uniform sampler2D u_sCycle;
 
 uniform float u_fRenderType;
 uniform vec4  u_vFlash;
@@ -30,16 +33,27 @@ float SDFValue(vec2 texcoord)
 
 void main()
 {
+    vec4 colour;
+    if (v_vCycle.y >= 0.0)
+    {
+        colour = texture2D(u_sCycle, v_vCycle);
+        colour.a *= v_vColour.a;
+    }
+    else
+    {
+        colour = v_vColour;
+    }
+    
     if (u_fRenderType == 0.0)
     {
         //Standard raster rendering (standard fonts, spritefonts, sprites, surfaces)
-        gl_FragColor = v_vColour*texture2D(gm_BaseTexture, v_vTexcoord);
+        gl_FragColor = colour*texture2D(gm_BaseTexture, v_vTexcoord);
     }
     else if (u_fRenderType == 1.0)
     {
         //Font with effects baked in
         vec4 sample = texture2D(gm_BaseTexture, v_vTexcoord);
-        gl_FragColor = v_vColour*vec4(1.0, 1.0, 1.0, sample.r);
+        gl_FragColor = colour*vec4(1.0, 1.0, 1.0, sample.r);
         
         if (u_fSecondDraw < 0.5)
         {
@@ -55,7 +69,7 @@ void main()
             }
         }
         
-        gl_FragColor.a *= v_vColour.a;
+        gl_FragColor.a *= colour.a;
     }
     else
     {
@@ -66,7 +80,7 @@ void main()
         float spread = max(fwidth(baseDist), 0.001);    
         
         float alpha = smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist);   
-        gl_FragColor = vec4(v_vColour.rgb, alpha*v_vColour.a);
+        gl_FragColor = vec4(colour.rgb, alpha*colour.a);
         
         if (u_fSecondDraw < 0.5)
         {
@@ -107,7 +121,7 @@ void main()
             }
         }
         
-        gl_FragColor.a *= v_vColour.a;
+        gl_FragColor.a *= colour.a;
     }
     
     //Apply flash effect

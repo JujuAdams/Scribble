@@ -233,6 +233,11 @@ function __scribble_system(_calledFromInitialize = false)
         __effects_slash_map[? "/JITTER" ] = 7;
         __effects_slash_map[? "/SLANT"  ] = 8;
         
+        __cycle_surface = -1;
+        __cycle_data_open_array = [];
+        __cycle_data_map = ds_map_create();
+        scribble_cycle_add_from_array(SCRIBBLE_RAINBOW_CYCLE, [c_red, c_yellow, c_lime, c_aqua, c_blue, c_fuchsia], true, false);
+        
         //Unpack texture group data into an easy-to-use dictionary. This should, of course, just be a native
         //feature of GameMaker. I, in fact, suggested such a feature (including sprites (and backgrounds!))
         //back in 2018 when working on The Swords Of Ditto in GameMaker Studio 1.4.

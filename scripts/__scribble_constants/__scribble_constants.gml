@@ -16,6 +16,10 @@
 
 #macro SCRIBBLE_NO_PREPROCESS  __scribble_no_preprocessing
 
+#macro SCRIBBLE_RAINBOW_CYCLE         "rainbow"
+#macro SCRIBBLE_CYCLE_TEXTURE_WIDTH   256
+#macro SCRIBBLE_CYCLE_TEXTURE_HEIGHT  256
+
 enum SCRIBBLE_EASE
 {
     NONE,     // 0

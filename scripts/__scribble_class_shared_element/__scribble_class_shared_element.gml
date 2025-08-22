@@ -1479,6 +1479,8 @@ function __scribble_class_shared_element(_string) constructor
     
     static __set_standard_uniforms = function(_typist, _function_scope)
     {
+        static _u_sCycle = shader_get_sampler_index(__shd_scribble, "u_sCycle");
+        
         static _u_fTime         = shader_get_uniform(__shd_scribble, "u_fTime"        );
         static _u_vColourBlend  = shader_get_uniform(__shd_scribble, "u_vColourBlend" );
         static _u_vGradient     = shader_get_uniform(__shd_scribble, "u_vGradient"    );
@@ -1501,8 +1503,8 @@ function __scribble_class_shared_element(_string) constructor
     
         static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
-        static _u_vOutlineColour            = shader_get_uniform(__shd_scribble, "u_vOutlineColour"         );
-        static _u_fOutlineThickness         = shader_get_uniform(__shd_scribble, "u_fOutlineThickness"      );
+        static _u_vOutlineColour           = shader_get_uniform(__shd_scribble, "u_vOutlineColour"          );
+        static _u_fOutlineThickness        = shader_get_uniform(__shd_scribble, "u_fOutlineThickness"       );
         
         static _scribble_state        = __scribble_system().__state;
         static _anim_properties_array = __scribble_system().__anim_properties;
@@ -1516,6 +1518,8 @@ function __scribble_class_shared_element(_string) constructor
             _array[__SCRIBBLE_ANIM.__JITTER_MAXIMUM] = 1;
             return _array;
         })();
+        
+        texture_set_stage(_u_sCycle, surface_get_texture(__scribble_ensure_cycle_surface()));
         
         shader_set_uniform_f(_u_fTime, __animation_time);
         
