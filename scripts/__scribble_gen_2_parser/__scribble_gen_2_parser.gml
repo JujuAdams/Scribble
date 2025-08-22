@@ -732,8 +732,8 @@ function __scribble_gen_2_parser()
                             if (_tag_command_name == "rainbow")
                             {
                                 var _cycle_name  = "rainbow";
-                                var _cycle_speed = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 0.1;
-                                var _cycle_freq  = (_tag_parameter_count > 2)? real(_tag_parameters[2]) : 0.1;
+                                var _cycle_speed = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : SCRIBBLE_DEFAULT_RAINBOW_SPEED;
+                                var _cycle_freq  = (_tag_parameter_count > 2)? real(_tag_parameters[2]) : SCRIBBLE_DEFAULT_RAINBOW_FREQUENCY;
                             }
                             else
                             {
@@ -743,8 +743,8 @@ function __scribble_gen_2_parser()
                                 }
                                 
                                 var _cycle_name  = _tag_parameters[1];
-                                var _cycle_speed = (_tag_parameter_count > 2)? real(_tag_parameters[2]) : 0.1;
-                                var _cycle_freq  = (_tag_parameter_count > 3)? real(_tag_parameters[3]) : 0.1;
+                                var _cycle_speed = (_tag_parameter_count > 2)? real(_tag_parameters[2]) : SCRIBBLE_DEFAULT_CYCLE_SPEED;
+                                var _cycle_freq  = (_tag_parameter_count > 3)? real(_tag_parameters[3]) : SCRIBBLE_DEFAULT_CYCLE_FREQUENCY;
                             }
                             
                             var _cycle_data = _cycle_data_map[? _cycle_name];
@@ -760,9 +760,10 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
                             ++_control_count;
                             
+                            var _ms = game_get_speed(gamespeed_microseconds) / 1000;
                             var _cycleIndex = clamp(_cycle_data.__index, 0, 255);
-                            var _cycleSpeed = clamp(255*_cycle_speed/16.6, 1, 255);
-                            var _cycleFreq  = clamp(255*_cycle_freq/16.6, 0, 255);
+                            var _cycleSpeed = clamp(255*_cycle_speed/_ms, 1, 255);
+                            var _cycleFreq  = clamp(255*_cycle_freq/_ms, 0, 255);
                             
                             //Add a cycle control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;

@@ -1,8 +1,3 @@
-// Feather disable all
-// Default font is set by scribble_font_set_default()
-
-
-
 //Default vertex colour when drawing text models. This can be overwritten by the
 //`.starting_format()` text element method. This will not affect `draw_text_scribble()`
 //which instead uses `draw_get_color()`.
@@ -33,6 +28,24 @@
 //bounding boxes are built from the vertex buffer quad coordinates. Logical bounding boxes are
 //built from the layout information used to calculate glyph positions.
 #macro SCRIBBLE_DEFAULT_VISUAL_BBOXES  false
+
+
+
+//Default rainbow frequency. Larger values create more colour changes over a certain number of
+//characters. This value should be between 0 and 1.
+#macro SCRIBBLE_DEFAULT_RAINBOW_FREQUENCY  0.1
+
+//Default rainbow speed. Larger numbers cause characters to change colour faster.
+#macro SCRIBBLE_DEFAULT_RAINBOW_SPEED  0.1
+
+
+
+//Default cycle frequency. Larger values create more colour changes over a certain number of
+//characters. This value should be between 0 and 1.
+#macro SCRIBBLE_DEFAULT_CYCLE_FREQUENCY  0.1
+
+//Default cycle speed. Larger numbers cause characters to change colour faster.
+#macro SCRIBBLE_DEFAULT_CYCLE_SPEED  0.1
 
 
 
