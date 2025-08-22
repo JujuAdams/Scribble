@@ -383,23 +383,18 @@ enum __SCRIBBLE_ANIM
     __WAVE_SPEED,       // 2
     __SHAKE_SIZE,       // 3
     __SHAKE_SPEED,      // 4
-    __RAINBOW_WEIGHT,   // 5
-    __RAINBOW_SPEED,    // 6
-    __WOBBLE_ANGLE,     // 7
-    __WOBBLE_FREQ,      // 8
-    __PULSE_SCALE,      // 9
-    __PULSE_SPEED,      //10
-    __WHEEL_SIZE,       //11
-    __WHEEL_FREQ,       //12
-    __WHEEL_SPEED,      //13
-    __CYCLE_SPEED,      //14
-    __CYCLE_SATURATION, //15
-    __CYCLE_VALUE,      //16
-    __JITTER_MINIMUM,   //17
-    __JITTER_MAXIMUM,   //18
-    __JITTER_SPEED,     //19
-    __SLANT_GRADIENT,   //20
-    __SIZE,             //21
+    __WOBBLE_ANGLE,     // 5
+    __WOBBLE_FREQ,      // 6
+    __PULSE_SCALE,      // 7
+    __PULSE_SPEED,      // 8
+    __WHEEL_SIZE,       // 9
+    __WHEEL_FREQ,       //10
+    __WHEEL_SPEED,      //11
+    __JITTER_MINIMUM,   //12
+    __JITTER_MAXIMUM,   //13
+    __JITTER_SPEED,     //14
+    __SLANT_GRADIENT,   //15
+    __SIZE,             //16
 }
 
 #endregion

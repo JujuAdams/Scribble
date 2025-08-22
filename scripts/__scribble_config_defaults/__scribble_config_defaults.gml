@@ -55,15 +55,6 @@
 
 
 
-//Default rainbow blend weight. 0 does not show any rainbow effect at all, and 1 will blend a
-//glyph's colour fully with the rainbow colour.
-#macro SCRIBBLE_DEFAULT_RAINBOW_WEIGHT  0.5
-
-//Default rainbow speed. Larger values cause characters to change colour more rapidly.
-#macro SCRIBBLE_DEFAULT_RAINBOW_SPEED  0.01
-
-
-
 //Default maximum wobble angle. Larger values cause glyphs to oscillate further to the left and
 //right.
 #macro SCRIBBLE_DEFAULT_WOBBLE_ANGLE  40
@@ -90,18 +81,6 @@
 
 //Default wheel speed. Larger numbers cause characters to move up and down more rapidly.
 #macro SCRIBBLE_DEFAULT_WHEEL_SPEED  0.2
-
-
-
-//Default cycle speed. Larger numbers cause characters to change colour more rapidly.
-#macro SCRIBBLE_DEFAULT_CYCLE_SPEED  0.5
-
-//Default cycle colour saturation, from 0 to 255. Colour cycles using the HSV model to create
-//colours.
-#macro SCRIBBLE_DEFAULT_CYCLE_SATURATION  180
-
-//Default cycle colour value, from 0 to 255. Colour cycles using the HSV model to create colours.
-#macro SCRIBBLE_DEFAULT_CYCLE_VALUE  255
 
 
 

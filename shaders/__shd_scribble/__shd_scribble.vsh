@@ -4,17 +4,16 @@ precision highp float;
 #define BLEND_SPRITES true
 
 const int MAX_EFFECTS = 11;
-#define SPRITE_FLAG   flagArray[ 0]
-#define WAVE_FLAG     flagArray[ 1]
-#define SHAKE_FLAG    flagArray[ 2]
-#define RAINBOW_FLAG  flagArray[ 3]
-#define WOBBLE_FLAG   flagArray[ 4]
-#define PULSE_FLAG    flagArray[ 5]
-#define WHEEL_FLAG    flagArray[ 6]
-#define CYCLE_FLAG    flagArray[ 7]
-#define JITTER_FLAG   flagArray[ 8]
-#define BLINK_FLAG    flagArray[ 9]
-#define SLANT_FLAG    flagArray[10]
+#define SPRITE_FLAG   flagArray[0]
+#define WAVE_FLAG     flagArray[1]
+#define SHAKE_FLAG    flagArray[2]
+#define WOBBLE_FLAG   flagArray[3]
+#define PULSE_FLAG    flagArray[4]
+#define WHEEL_FLAG    flagArray[5]
+#define CYCLE_FLAG    flagArray[6]
+#define JITTER_FLAG   flagArray[7]
+#define BLINK_FLAG    flagArray[8]
+#define SLANT_FLAG    flagArray[9]
 
 const int MAX_ANIM_FIELDS = 21;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
@@ -22,22 +21,17 @@ const int MAX_ANIM_FIELDS = 21;
 #define WAVE_SPEED        u_aDataFields[ 2]
 #define SHAKE_AMPLITUDE   u_aDataFields[ 3]
 #define SHAKE_SPEED       u_aDataFields[ 4]
-#define RAINBOW_WEIGHT    u_aDataFields[ 5]
-#define RAINBOW_SPEED     u_aDataFields[ 6]
-#define WOBBLE_ANGLE      u_aDataFields[ 7]
-#define WOBBLE_FREQUENCY  u_aDataFields[ 8]
-#define PULSE_SCALE       u_aDataFields[ 9]
-#define PULSE_SPEED       u_aDataFields[10]
-#define WHEEL_AMPLITUDE   u_aDataFields[11]
-#define WHEEL_FREQUENCY   u_aDataFields[12]
-#define WHEEL_SPEED       u_aDataFields[13]
-#define CYCLE_SPEED       u_aDataFields[14]
-#define CYCLE_SATURATION  u_aDataFields[15]
-#define CYCLE_VALUE       u_aDataFields[16]
-#define JITTER_MINIMUM    u_aDataFields[17]
-#define JITTER_MAXIMUM    u_aDataFields[18]
-#define JITTER_SPEED      u_aDataFields[19]
-#define SLANT_GRADIENT    u_aDataFields[20]
+#define WOBBLE_ANGLE      u_aDataFields[ 5]
+#define WOBBLE_FREQUENCY  u_aDataFields[ 6]
+#define PULSE_SCALE       u_aDataFields[ 7]
+#define PULSE_SPEED       u_aDataFields[ 8]
+#define WHEEL_AMPLITUDE   u_aDataFields[ 9]
+#define WHEEL_FREQUENCY   u_aDataFields[10]
+#define WHEEL_SPEED       u_aDataFields[11]
+#define JITTER_MINIMUM    u_aDataFields[12]
+#define JITTER_MAXIMUM    u_aDataFields[13]
+#define JITTER_SPEED      u_aDataFields[14]
+#define SLANT_GRADIENT    u_aDataFields[25]
 
 const int EASE_METHOD_COUNT = 15;
 #define EASE_NONE         0
@@ -204,50 +198,6 @@ vec3 hsv2rgb(vec3 c)
     vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
     vec3 P = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
     return c.z * mix(K.xxx, clamp(P - K.xxx, 0.0, 1.0), c.y);
-}
-
-//Colour cycling for the rainbow effect
-vec4 rainbow(float characterIndex, vec4 colour)
-{
-    return vec4(mix(colour.rgb, hsv2rgb(vec3(0.02*characterIndex + RAINBOW_SPEED*u_fTime, 1.0, 1.0)), RAINBOW_FLAG*RAINBOW_WEIGHT), colour.a);
-}
-                           
-//Colour cycling through a defined palette
-vec4 cycle(float characterIndex, vec4 colour)
-{
-    float max_h = 4.0; //Default to a 4-colour cycle
-    
-    //Special cases for 0- and 1-colour cycles
-    if (colour.r < 0.003) return colour;
-    if (colour.g < 0.003) return vec4(hsv2rgb(vec3(colour.r, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0)), 1.0);
-    if (colour.a < 0.003) max_h = 3.0; //3-colour cycle
-    if (colour.b < 0.003) max_h = 2.0; //2-colour cycle
-    
-    float h = abs(mod((CYCLE_SPEED*u_fTime - characterIndex)/10.0, max_h));
-    
-    //vec3 rgbA = hsv2rgb(vec3(colour[int(h)], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
-    //vec3 rgbB = hsv2rgb(vec3(colour[int(mod(h + 1.0, max_h))], CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
-    
-    // rgbA
-    int ih = int(h); // int h
-    float c1 = 0.0; // colour 1
-    if (ih == 0) c1 = colour[0];
-    else if (ih == 1) c1 = colour[1];
-    else if (ih == 2) c1 = colour[2];
-    else if (ih == 3) c1 = colour[3];
-    
-    // rgbB
-    int ih2 = int(mod(h + 1.0, max_h)); // int h 2
-    float c2 = 0.0; // colour 2
-    if (ih2 == 0) c2 = colour[0];
-    else if (ih2 == 1) c2 = colour[1];
-    else if (ih2 == 2) c2 = colour[2];
-    else if (ih2 == 3) c2 = colour[3];
-    
-    vec3 rgbA = hsv2rgb(vec3(c1, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
-    vec3 rgbB = hsv2rgb(vec3(c2, CYCLE_SATURATION/255.0, CYCLE_VALUE/255.0));
-    
-    return vec4(mix(rgbA, rgbB, fract(h)), 1.0);
 }
 
 //Fade effect for typewriter etc.
@@ -437,9 +387,6 @@ void main()
     
     //Colour
     v_vColour = in_Colour;
-    
-    if (CYCLE_FLAG > 0.5) v_vColour = cycle(characterIndex, v_vColour); //Cycle colours through the defined palette
-    v_vColour = rainbow(characterIndex, v_vColour); //Cycle colours for the rainbow effect
     
     //Apply the gradient effect
     if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
