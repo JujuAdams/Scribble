@@ -271,6 +271,7 @@
     {"name":"__scribble_sprite_get_material","order":19,"path":"scripts/__scribble_sprite_get_material/__scribble_sprite_get_material.yy",},
     {"name":"__scribble_sprite_get_texture_index","order":18,"path":"scripts/__scribble_sprite_get_texture_index/__scribble_sprite_get_texture_index.yy",},
     {"name":"__scribble_surface_get_material","order":20,"path":"scripts/__scribble_surface_get_material/__scribble_surface_get_material.yy",},
+    {"name":"__scribble_system_macros","order":28,"path":"scripts/__scribble_system_macros/__scribble_system_macros.yy",},
     {"name":"__scribble_system","order":8,"path":"scripts/__scribble_system/__scribble_system.yy",},
     {"name":"__scribble_texture_get_material","order":21,"path":"scripts/__scribble_texture_get_material/__scribble_texture_get_material.yy",},
     {"name":"__scribble_texture_group_get_ready","order":23,"path":"scripts/__scribble_texture_group_get_ready/__scribble_texture_group_get_ready.yy",},
