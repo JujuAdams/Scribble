@@ -1,1 +1,1 @@
-scribble_font_bake_outline_and_shadow("fnt_test_2", "fnt_test_2_shadow", 4, 4, SCRIBBLE_OUTLINE.NO_OUTLINE, 0, false);
+scribble_font_bake_outline_and_shadow("fnt_test_2", "fnt_test_2_shadow", 4, 4, SCRIBBLE_OUTLINE_NO_OUTLINE, 0, false);

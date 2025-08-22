@@ -12,7 +12,7 @@ font_add_sprite_ext(spr_sprite_font, _mapstring, true, 1);
 scribble_font_force_bilinear_filtering("spr_sprite_font", false);
 
 //Create a new font based on the spritefont but with a drop shadow
-scribble_font_bake_outline_and_shadow("spr_sprite_font", "spr_sprite_font_outlined", 1, 1, SCRIBBLE_OUTLINE.NO_OUTLINE, 0, false);
+scribble_font_bake_outline_and_shadow("spr_sprite_font", "spr_sprite_font_outlined", 1, 1, SCRIBBLE_OUTLINE_NO_OUTLINE, 0, false);
 
 //Create a unique text element that holds typewriter state
 var _string = @"[fa_center][fa_middle][fnt_riffic_sdf][rainbow][wave]Welcome to Scribble 9![/]

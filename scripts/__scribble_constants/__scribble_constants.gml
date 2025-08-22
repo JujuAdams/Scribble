@@ -38,13 +38,10 @@
 
 #macro SCRIBBLE_EASE_COUNT  15
 
-enum SCRIBBLE_OUTLINE
-{
-    NO_OUTLINE,      // 0
-    FOUR_DIR,        // 1
-    EIGHT_DIR,       // 2
-    EIGHT_DIR_THICK, // 3
-}
+#macro SCRIBBLE_OUTLINE_NO_OUTLINE       0
+#macro SCRIBBLE_OUTLINE_FOUR_DIR         1
+#macro SCRIBBLE_OUTLINE_EIGHT_DIR        2
+#macro SCRIBBLE_OUTLINE_EIGHT_DIR_THICK  3
 
 enum SCRIBBLE_GLYPH
 {
