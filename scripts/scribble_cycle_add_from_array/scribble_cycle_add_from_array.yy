@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scribble_cycle_add_from_array",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scribble_cycle_add_from_array",
+  "parent":{
+    "name":"Colours",
+    "path":"folders/Scribble/Colours.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

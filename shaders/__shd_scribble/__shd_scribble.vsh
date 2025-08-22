@@ -70,7 +70,7 @@ const float PI = 3.14159265359;
 
 attribute vec3  in_Position;     //{X, Y, Packed character & line index}
 attribute vec3  in_Normal;       //{unused, Sprite data, Bitpacked effect flags}
-attribute vec4  in_Colour;       //Colour. This attribute is used for sprite data if this character is a sprite
+attribute vec4  in_Colour;       //Colour
 attribute vec2  in_TextureCoord; //UVs
 attribute vec2  in_Colour2;      //{dX, dY}
 
