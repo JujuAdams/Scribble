@@ -112,6 +112,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
     __soundTagGain = 1;
     
     __soundArray                = undefined;
+    __soundVoice                = -1;
     __soundOverlap              = 0;
     __soundPitchMin             = 1;
     __soundPitchMax             = 1;
@@ -688,7 +689,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
                 __soundVoice = __scribble_play_sound(_sound_array[floor(__scribble_random()*array_length(_sound_array))], __soundGain, lerp(__soundPitchMin, __soundPitchMax, __scribble_random()));
                 if (__soundVoice >= 0)
                 {
-                    __soundFinishTime = current_time + 1000*audio_sound_length(_inst) - __soundOverlap;
+                    __soundFinishTime = current_time + 1000*audio_sound_length(__soundVoice) - __soundOverlap;
                 }
             }
         }
