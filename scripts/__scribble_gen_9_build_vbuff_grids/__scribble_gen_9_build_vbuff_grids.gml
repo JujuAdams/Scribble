@@ -15,13 +15,13 @@ function __scribble_gen_9_build_vbuff_grids()
     
     
     //Copy the x/y offset into the quad LTRB
-    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y, 0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_L);
-    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__Y, 0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R);
+    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH_X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L);
+    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH_X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R);
     
     //Then add the deltas to give us the final quad LTRB positions
     //Note that the delta are already scaled via font scale / scaling tags etc
-    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__WIDTH,   _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__WIDTH,   0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R);
-    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH.__HEIGHT,  _glyph_count-1, __SCRIBBLE_GEN_GLYPH.__HEIGHT,  0, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B);
+    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH_WIDTH,   _glyph_count-1, __SCRIBBLE_GEN_GLYPH_WIDTH,   0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R);
+    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH_HEIGHT,  _glyph_count-1, __SCRIBBLE_GEN_GLYPH_HEIGHT,  0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B);
     
     
     
@@ -41,10 +41,10 @@ function __scribble_gen_9_build_vbuff_grids()
                 var _page_glyph_start = __glyph_start;
                 var _page_glyph_end   = __glyph_count-1 + _page_glyph_start;
                 
-                __min_x = ds_grid_get_min(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_L, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_L);
-                __min_y = ds_grid_get_min(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_T, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_T);
-                __max_x = ds_grid_get_max(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_R);
-                __max_y = ds_grid_get_max(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS.__QUAD_B);
+                __min_x = ds_grid_get_min(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L);
+                __min_y = ds_grid_get_min(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_T, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_T);
+                __max_x = ds_grid_get_max(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R);
+                __max_y = ds_grid_get_max(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B);
                 
                 var _model_min_x = min(_model_min_x, __min_x);
                 var _model_min_y = min(_model_min_y, __min_y);

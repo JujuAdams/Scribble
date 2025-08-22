@@ -397,102 +397,76 @@ function __scribble_matrix_inverse(_matrix)
 
 #region Generator Enums
 
-enum __SCRIBBLE_GEN_GLYPH
-{
-    __UNICODE,               // 0  \  - Can be negative if a glyph is sprite/surface/texture
-    __BIDI,                  // 1   |
-                             //     |
-    __X,                     // 2   |
-    __Y,                     // 3   |
-    __WIDTH,                 // 4   |
-    __HEIGHT,                // 5   |
-    __FONT_HEIGHT,           // 6   |
-    __SEPARATION,            // 7   |  This group of enum elements must not change order or be split
-    __LEFT_OFFSET,           // 8   |  Be careful of ordering!
-    __SCALE,                 // 9   |  scribble_font_bake_shader() relies on this
-                             //     |
-    __MATERIAL,              //10   |
-    __QUAD_U0,               //11   |
-    __QUAD_U1,               //12   |
-    __QUAD_V0,               //13   |
-    __QUAD_V1,               //14  /
-    
-    __CONTROL_COUNT,         //15
-    __ANIMATION_INDEX,       //16
-                      
-    __SPRITE_INDEX,          //17  \
-    __IMAGE_INDEX,           //18   | Only used for sprites
-    __IMAGE_SPEED,           //19  /
-                      
-    __SIZE,                  //20
-}
+#macro __SCRIBBLE_GEN_GLYPH_UNICODE           0 //  \  - Can be negative if a glyph is sprite/surface/texture
+#macro __SCRIBBLE_GEN_GLYPH_BIDI              1 //   |
+#macro __SCRIBBLE_GEN_GLYPH_X                 2 //   |
+#macro __SCRIBBLE_GEN_GLYPH_Y                 3 //   |
+#macro __SCRIBBLE_GEN_GLYPH_WIDTH             4 //   |
+#macro __SCRIBBLE_GEN_GLYPH_HEIGHT            5 //   |
+#macro __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT       6 //   |
+#macro __SCRIBBLE_GEN_GLYPH_SEPARATION        7 //   |  This group of enum elements must not change order or be split
+#macro __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET       8 //   |  Be careful of ordering!
+#macro __SCRIBBLE_GEN_GLYPH_SCALE             9 //   |  scribble_font_bake_shader() relies on this
+#macro __SCRIBBLE_GEN_GLYPH_MATERIAL         10 //   |
+#macro __SCRIBBLE_GEN_GLYPH_QUAD_U0          11 //   |
+#macro __SCRIBBLE_GEN_GLYPH_QUAD_U1          12 //   |
+#macro __SCRIBBLE_GEN_GLYPH_QUAD_V0          13 //   |
+#macro __SCRIBBLE_GEN_GLYPH_QUAD_V1          14 //  /
+#macro __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT    15 //
+#macro __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX  16 //
+#macro __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX     17 //  \
+#macro __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX      18 //   | Only used for sprites
+#macro __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED      19 //  /
+#macro __SCRIBBLE_GEN_GLYPH_SIZE             20 //
 
-enum __SCRIBBLE_GEN_VBUFF_POS
-{
-    __QUAD_L, //0
-    __QUAD_T, //1
-    __QUAD_R, //2
-    __QUAD_B, //3
-    __SIZE,   //4
-}
+#macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_L  0
+#macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_T  1
+#macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_R  2
+#macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_B  3
+#macro __SCRIBBLE_GEN_VBUFF_POS_SIZE    4
 
-enum __SCRIBBLE_GEN_CONTROL_TYPE
-{
-    __EVENT,        //0
-    __HALIGN,       //1
-    __COLOUR,       //2
-    __EFFECT,       //3
-    __CYCLE,        //4
-    __REGION,       //5
-    __FONT,         //6
-    __INDENT_START, //7
-    __INDENT_STOP,  //8
-}
+#macro __SCRIBBLE_GEN_CONTROL_TYPE_EVENT         0
+#macro __SCRIBBLE_GEN_CONTROL_TYPE_HALIGN        1
+#macro __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR        2
+#macro __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT        3
+#macro __SCRIBBLE_GEN_CONTROL_TYPE_CYCLE         4
+#macro __SCRIBBLE_GEN_CONTROL_TYPE_REGION        5
+#macro __SCRIBBLE_GEN_CONTROL_TYPE_FONT          6
+#macro __SCRIBBLE_GEN_CONTROL_TYPE_INDENT_START  7
+#macro __SCRIBBLE_GEN_CONTROL_TYPE_INDENT_STOP   8
 
 //These can be used for ORD
-#macro  __SCRIBBLE_GLYPH_REPL_SPRITE   -1
-#macro  __SCRIBBLE_GLYPH_REPL_SURFACE  -2
-#macro  __SCRIBBLE_GLYPH_REPL_TEXTURE  -3
+#macro __SCRIBBLE_GLYPH_REPL_SPRITE   -1
+#macro __SCRIBBLE_GLYPH_REPL_SURFACE  -2
+#macro __SCRIBBLE_GLYPH_REPL_TEXTURE  -3
 
-enum __SCRIBBLE_GEN_CONTROL
-{
-    __TYPE, //0
-    __DATA, //1
-    __SIZE, //2
-}
+#macro __SCRIBBLE_GEN_CONTROL_TYPE  0
+#macro __SCRIBBLE_GEN_CONTROL_DATA  1
+#macro __SCRIBBLE_GEN_CONTROL_SIZE  2
 
-enum __SCRIBBLE_GEN_WORD
-{
-    __BIDI_RAW,    //0
-    __BIDI,        //1
-    __GLYPH_START, //2
-    __GLYPH_END,   //3
-    __WIDTH,       //4
-    __HEIGHT,      //5
-    __SIZE,        //6
-}
+#macro __SCRIBBLE_GEN_WORD_BIDI_RAW     0
+#macro __SCRIBBLE_GEN_WORD_BIDI         1
+#macro __SCRIBBLE_GEN_WORD_GLYPH_START  2
+#macro __SCRIBBLE_GEN_WORD_GLYPH_END    3
+#macro __SCRIBBLE_GEN_WORD_WIDTH        4
+#macro __SCRIBBLE_GEN_WORD_HEIGHT       5
+#macro __SCRIBBLE_GEN_WORD_SIZE         6
 
-enum __SCRIBBLE_GEN_STRETCH
-{
-    __WORD_START, //0
-    __WORD_END,   //1
-    __BIDI,       //2
-    __SIZE,
-}
+#macro __SCRIBBLE_GEN_STRETCH_WORD_START  0
+#macro __SCRIBBLE_GEN_STRETCH_WORD_END    1
+#macro __SCRIBBLE_GEN_STRETCH_BIDI        2
+#macro __SCRIBBLE_GEN_STRETCH_SIZE        3
 
-enum __SCRIBBLE_GEN_LINE
-{
-    __X,                  // 0
-    __Y,                  // 1
-    __WORD_START,         // 2
-    __WORD_END,           // 3
-    __WIDTH,              // 4
-    __HALIGN,             // 5
-    __DISABLE_JUSTIFY,    // 6
-    __STARTS_MANUAL_PAGE, // 7
-    __FORCED_BREAK,       // 8
-    __SIZE,               // 9
-}
+#macro __SCRIBBLE_GEN_LINE_X                   0
+#macro __SCRIBBLE_GEN_LINE_Y                   1
+#macro __SCRIBBLE_GEN_LINE_WORD_START          2
+#macro __SCRIBBLE_GEN_LINE_WORD_END            3
+#macro __SCRIBBLE_GEN_LINE_WIDTH               4
+#macro __SCRIBBLE_GEN_LINE_HALIGN              5
+#macro __SCRIBBLE_GEN_LINE_DISABLE_JUSTIFY     6
+#macro __SCRIBBLE_GEN_LINE_STARTS_MANUAL_PAGE  7
+#macro __SCRIBBLE_GEN_LINE_FORCED_BREAK        8
+#macro __SCRIBBLE_GEN_LINE_SIZE                9
 
 #endregion
 
