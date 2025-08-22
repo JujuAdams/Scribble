@@ -27,4 +27,4 @@ element = scribble_unique(_string)
 .wrap(850)
 .shadow(c_black, 1)
 .in(0.8, 60)
-.ease(SCRIBBLE_EASE.ELASTIC, 0, -25, 1, 1, 0, 0.1);
+.ease(SCRIBBLE_EASE_ELASTIC, 0, -25, 1, 1, 0, 0.1);

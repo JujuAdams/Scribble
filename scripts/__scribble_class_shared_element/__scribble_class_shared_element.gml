@@ -1598,7 +1598,7 @@ function __scribble_class_shared_element(_string) constructor
         if (__tw_reveal != undefined)
         {
             shader_set_uniform_i(_u_iTypewriterUseLines,          0);
-            shader_set_uniform_i(_u_iTypewriterMethod,            SCRIBBLE_EASE.LINEAR);
+            shader_set_uniform_i(_u_iTypewriterMethod,            SCRIBBLE_EASE_LINEAR);
             shader_set_uniform_i(_u_iTypewriterCharMax,           0);
             shader_set_uniform_f(_u_fTypewriterSmoothness,        0);
             shader_set_uniform_f(_u_vTypewriterStartPos,          0, 0);
@@ -1609,7 +1609,7 @@ function __scribble_class_shared_element(_string) constructor
         }
         else
         {
-            shader_set_uniform_i(_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
+            shader_set_uniform_i(_u_iTypewriterMethod, SCRIBBLE_EASE_NONE);
         }
         
         shader_set_uniform_f(_u_vShadowOffsetAndSoftness, __sdf_shadow_xoffset, __sdf_shadow_yoffset, __sdf_shadow_softness);

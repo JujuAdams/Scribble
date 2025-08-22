@@ -116,7 +116,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
     __functionPerChar    = undefined;
     __functionOnComplete = undefined;
     
-    __easeMethod        = SCRIBBLE_EASE.LINEAR;
+    __easeMethod        = SCRIBBLE_EASE_LINEAR;
     __easeDX            = 0;
     __easeDY            = 0;
     __easeXScale        = 1;
@@ -952,12 +952,12 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
         //If __typistIn hasn't been set yet (.in() / .out() haven't been set) then just nope out
         if (__typistIn == undefined)
         {
-            shader_set_uniform_i(_u_iTypewriterMethod, SCRIBBLE_EASE.NONE);
+            shader_set_uniform_i(_u_iTypewriterMethod, SCRIBBLE_EASE_NONE);
             return undefined;
         }
         
         var _method = __easeMethod;
-        if (!__typistIn) _method += SCRIBBLE_EASE.__SIZE;
+        if (!__typistIn) _method += SCRIBBLE_EASE_COUNT;
         
         var _char_max = 0;
         if (__typistBackwards)

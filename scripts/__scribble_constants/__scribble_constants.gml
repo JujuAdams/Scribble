@@ -20,25 +20,23 @@
 #macro SCRIBBLE_CYCLE_TEXTURE_WIDTH   256
 #macro SCRIBBLE_CYCLE_TEXTURE_HEIGHT  256 //Tied to constant in vertex shader
 
-enum SCRIBBLE_EASE
-{
-    NONE,     // 0
-    LINEAR,   // 1
-    QUAD,     // 2
-    CUBIC,    // 3
-    QUART,    // 4
-    QUINT,    // 5
-    SINE,     // 6
-    EXPO,     // 7
-    CIRC,     // 8
-    BACK,     // 9
-    ELASTIC,  //10
-    BOUNCE,   //11
-    CUSTOM_1, //12
-    CUSTOM_2, //13
-    CUSTOM_3, //14
-    __SIZE    //15
-}
+#macro SCRIBBLE_EASE_NONE       0
+#macro SCRIBBLE_EASE_LINEAR     1
+#macro SCRIBBLE_EASE_QUAD       2
+#macro SCRIBBLE_EASE_CUBIC      3
+#macro SCRIBBLE_EASE_QUART      4
+#macro SCRIBBLE_EASE_QUINT      5
+#macro SCRIBBLE_EASE_SINE       6
+#macro SCRIBBLE_EASE_EXPO       7
+#macro SCRIBBLE_EASE_CIRC       8
+#macro SCRIBBLE_EASE_BACK       9
+#macro SCRIBBLE_EASE_ELASTIC   10
+#macro SCRIBBLE_EASE_BOUNCE    11
+#macro SCRIBBLE_EASE_CUSTOM_1  12
+#macro SCRIBBLE_EASE_CUSTOM_2  13
+#macro SCRIBBLE_EASE_CUSTOM_3  14
+
+#macro SCRIBBLE_EASE_COUNT  15
 
 enum SCRIBBLE_OUTLINE
 {
