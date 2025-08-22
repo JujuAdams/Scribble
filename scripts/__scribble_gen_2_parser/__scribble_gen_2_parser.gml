@@ -726,15 +726,26 @@ function __scribble_gen_2_parser()
                     
                         #region Cycle
                     
-                        // [cycle]
-                        case 22:
-                            if (_tag_parameter_count < 2)
+                        
+                        case 22: // [cycle]
+                        case 41: // [rainbow]
+                            if (_tag_command_name == "rainbow")
                             {
-                                __scribble_error("Must provide a cycle name");
+                                var _cycle_name  = "rainbow";
+                                var _cycle_speed = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 0.1;
+                                var _cycle_freq  = (_tag_parameter_count > 2)? real(_tag_parameters[2]) : 0.1;
                             }
-                            
-                            var _cycle_name     = _tag_parameters[1];
-                            var _cycle_duration = (_tag_parameter_count > 2)? real(_tag_parameters[2]) : 1;
+                            else
+                            {
+                                if (_tag_parameter_count < 2)
+                                {
+                                    __scribble_error("Must provide a cycle name");
+                                }
+                                
+                                var _cycle_name  = _tag_parameters[1];
+                                var _cycle_speed = (_tag_parameter_count > 2)? real(_tag_parameters[2]) : 0.1;
+                                var _cycle_freq  = (_tag_parameter_count > 3)? real(_tag_parameters[3]) : 0.1;
+                            }
                             
                             var _cycle_data = _cycle_data_map[? _cycle_name];
                             if (not is_struct(_cycle_data))
@@ -749,34 +760,13 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
                             ++_control_count;
                             
-                            //Add a cycle control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = (_cycle_data.__index + 0.5) / SCRIBBLE_CYCLE_TEXTURE_HEIGHT;
-                            ++_control_count;
-                            
-                            __has_animation = true;
-                        break;
-                        
-                        // [rainbow]
-                        case 41:
-                            var _cycle_duration = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 1;
-                            
-                            var _cycle_data = _cycle_data_map[? SCRIBBLE_RAINBOW_CYCLE];
-                            if (not is_struct(_cycle_data))
-                            {
-                                __scribble_error("Cycle \"", SCRIBBLE_RAINBOW_CYCLE, "\" not recognised");
-                            }
-                            
-                            _state_effect_flags = _state_effect_flags | (1 << _effects_map[? "cycle"]);
-                            
-                            //Add an effect flag control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
-                            ++_control_count;
+                            var _cycleIndex = clamp(_cycle_data.__index, 0, 255);
+                            var _cycleSpeed = clamp(255*_cycle_speed/16.6, 1, 255);
+                            var _cycleFreq  = clamp(255*_cycle_freq/16.6, 0, 255);
                             
                             //Add a cycle control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = (_cycle_data.__index + 0.5) / SCRIBBLE_CYCLE_TEXTURE_HEIGHT;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _cycleIndex | (_cycleSpeed << 8) | (_cycleFreq << 16) | 0xFF000000;
                             ++_control_count;
                             
                             __has_animation = true;
@@ -790,11 +780,6 @@ function __scribble_gen_2_parser()
                             //Add an effect flag control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__EFFECT;
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _state_effect_flags;
-                            ++_control_count;
-                            
-                            //Add a cycle control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__CYCLE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = -1;
                             ++_control_count;
                         break;
                             

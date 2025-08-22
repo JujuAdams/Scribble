@@ -18,7 +18,7 @@
 
 #macro SCRIBBLE_RAINBOW_CYCLE         "rainbow"
 #macro SCRIBBLE_CYCLE_TEXTURE_WIDTH   256
-#macro SCRIBBLE_CYCLE_TEXTURE_HEIGHT  256
+#macro SCRIBBLE_CYCLE_TEXTURE_HEIGHT  256 //Tied to constant in vertex shader
 
 enum SCRIBBLE_EASE
 {

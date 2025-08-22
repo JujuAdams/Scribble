@@ -3,6 +3,8 @@ precision highp float;
 
 #define BLEND_SPRITES true
 
+const float CYCLE_TEXTURE_HEIGHT = 256.0;
+
 const int MAX_EFFECTS = 9;
 #define SPRITE_FLAG  flagArray[0]
 #define WAVE_FLAG    flagArray[1]
@@ -384,15 +386,14 @@ void main()
     
     if (CYCLE_FLAG > 0.5)
     {
-        v_vCycle = vec2(mod(u_fTime/100.0, 1.0), in_Normal.x);
+        v_vCycle  = vec2(mod(in_Colour.g*u_fTime - in_Colour.b*characterIndex, 1.0), in_Colour.r + (0.5 / CYCLE_TEXTURE_HEIGHT));
+        v_vColour = vec4(1.0);
     }
     else
     {
-        v_vCycle = vec2(-1.0);
+        v_vCycle  = vec2(-1.0);
+        v_vColour = in_Colour;
     }
-    
-    //Colour
-    v_vColour = in_Colour;
     
     //Apply the gradient effect
     if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
