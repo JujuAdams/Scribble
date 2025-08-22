@@ -59,6 +59,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __has_hebrew     = false;
     __has_devanagari = false;
     __has_animation  = false;
+    __has_cycle      = false;
     
     __pages_array = []; //Stores each page of text
     

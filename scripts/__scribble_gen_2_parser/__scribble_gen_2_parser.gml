@@ -59,6 +59,7 @@
                                           ;\
                                           if (SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS)\
                                           {\
+                                              ;\//TODO - Move this to when setting halign / font
                                               _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X] += _state_halign_offset;\
                                               _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y] += _state_valign_offset;\
                                           }\
@@ -771,6 +772,7 @@ function __scribble_gen_2_parser()
                             ++_control_count;
                             
                             __has_animation = true;
+                            __has_cycle = true;
                         break;
                         
                         // [/rainbow]
