@@ -1173,24 +1173,6 @@ function __scribble_class_shared_element(_string) constructor
         return self;
     }
     
-    static msdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.25)
-    {
-        __scribble_error(".msdf_shadow(), and MSDF fonts as a whole, have been removed from Scribble\nInstead, please use GameMaker's native SDF fonts");
-        return self;
-    }
-    
-    static msdf_border = function(_colour, _thickness)
-    {
-        __scribble_error(".msdf_border(), and MSDF fonts as a whole, have been removed from Scribble\nInstead, please use GameMaker's native SDF fonts");
-        return self;
-    }
-    
-    static msdf_feather = function(_thickness)
-    {
-        __scribble_error(".msdf_feather(), and MSDF fonts as a whole, have been removed from Scribble\nInstead, please use GameMaker's native SDF fonts");
-        return self;
-    }
-    
     #endregion
     
     
