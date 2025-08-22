@@ -896,7 +896,7 @@ function __scribble_gen_2_parser()
                             }
                         
                             //Add this glyph to our grid
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_SURFACE;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_REPL_SURFACE;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
                         
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = _state_halign_offset;
@@ -920,7 +920,7 @@ function __scribble_gen_2_parser()
                             ++_glyph_count;
                             _glyph_prev_arabic_join_next = false;
                             _glyph_prev_prev = _glyph_prev;
-                            _glyph_prev = __SCRIBBLE_GLYPH_SURFACE;
+                            _glyph_prev = __SCRIBBLE_GLYPH_REPL_SURFACE;
                         break;
                     
                         #endregion
@@ -1013,7 +1013,7 @@ function __scribble_gen_2_parser()
                                 _tex_h *= _scale;
                             }
                             
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_TEXTURE;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_REPL_TEXTURE;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
                             
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = _state_halign_offset;
@@ -1040,7 +1040,7 @@ function __scribble_gen_2_parser()
                             ++_glyph_count;
                             _glyph_prev_arabic_join_next = false;
                             _glyph_prev_prev = _glyph_prev;
-                            _glyph_prev = __SCRIBBLE_GLYPH_TEXTURE;
+                            _glyph_prev = __SCRIBBLE_GLYPH_REPL_TEXTURE;
                         break;
                         
                         default: //TODO - Optimize
@@ -1179,7 +1179,7 @@ function __scribble_gen_2_parser()
                                         if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __has_animation = true;
                                 
                                         //Add this glyph to our grid
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_SPRITE;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_GLYPH_REPL_SPRITE;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
                                 
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = _state_halign_offset;
@@ -1200,7 +1200,7 @@ function __scribble_gen_2_parser()
                                         ++_glyph_count;
                                         _glyph_prev_arabic_join_next = false;
                                         _glyph_prev_prev = _glyph_prev;
-                                        _glyph_prev = __SCRIBBLE_GLYPH_SPRITE;
+                                        _glyph_prev = __SCRIBBLE_GLYPH_REPL_SPRITE;
                                     }
                             
                                     #endregion

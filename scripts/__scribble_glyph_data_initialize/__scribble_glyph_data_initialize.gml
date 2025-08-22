@@ -36,8 +36,8 @@ function __scribble_glyph_data_initialize()
     }
     
     var _map = _data_struct.__bidi_map;
-    _map[? __SCRIBBLE_GLYPH_SPRITE ] = __SCRIBBLE_BIDI.SYMBOL;
-    _map[? __SCRIBBLE_GLYPH_SURFACE] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? __SCRIBBLE_GLYPH_REPL_SPRITE ] = __SCRIBBLE_BIDI.SYMBOL;
+    _map[? __SCRIBBLE_GLYPH_REPL_SURFACE] = __SCRIBBLE_BIDI.SYMBOL;
     for(var _i = 0x0000; _i <= 0x0009; _i++) _map[? _i] = __SCRIBBLE_BIDI.SYMBOL;
     _map[? 0x000A] = __SCRIBBLE_BIDI.ISOLATED;
     _map[? 0x000B] = __SCRIBBLE_BIDI.SYMBOL;

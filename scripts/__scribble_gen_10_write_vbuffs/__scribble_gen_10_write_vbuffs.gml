@@ -291,7 +291,7 @@ function __scribble_gen_10_write_vbuffs()
                     __SCRIBBLE_VBUFF_WRITE_GLYPH;
                 }
             }
-            else if (_glyph_ord == __SCRIBBLE_GLYPH_SPRITE)
+            else if (_glyph_ord == __SCRIBBLE_GLYPH_REPL_SPRITE)
             {
                 #region Write sprite
                 
@@ -387,7 +387,7 @@ function __scribble_gen_10_write_vbuffs()
                 
                 #endregion
             }
-            else if ((_glyph_ord == __SCRIBBLE_GLYPH_SURFACE) || (_glyph_ord == __SCRIBBLE_GLYPH_TEXTURE))
+            else if ((_glyph_ord == __SCRIBBLE_GLYPH_REPL_SURFACE) || (_glyph_ord == __SCRIBBLE_GLYPH_REPL_TEXTURE))
             {
                 #region Write surface or texture
                 
