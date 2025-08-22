@@ -1519,7 +1519,10 @@ function __scribble_class_shared_element(_string) constructor
             return _array;
         })();
         
-        texture_set_stage(_u_sCycle, surface_get_texture(__scribble_ensure_cycle_surface()));
+        var _texture = surface_get_texture(__scribble_ensure_cycle_surface());
+        texture_set_stage(_u_sCycle, _texture);
+        gpu_set_tex_filter_ext(_u_sCycle, true);
+        gpu_set_tex_repeat_ext(_u_sCycle, true);
         
         shader_set_uniform_f(_u_fTime, __animation_time);
         

@@ -386,7 +386,7 @@ void main()
     
     if (CYCLE_FLAG > 0.5)
     {
-        v_vCycle  = vec2(mod(in_Colour.g*u_fTime - in_Colour.b*characterIndex, 1.0), in_Colour.r + (0.5 / CYCLE_TEXTURE_HEIGHT));
+        v_vCycle  = vec2(in_Colour.g*u_fTime - in_Colour.b*characterIndex, in_Colour.r + (0.5 / CYCLE_TEXTURE_HEIGHT));
         v_vColour = vec4(1.0);
     }
     else

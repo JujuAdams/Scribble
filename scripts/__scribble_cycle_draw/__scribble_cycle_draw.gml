@@ -50,8 +50,6 @@ function __scribble_cycle_draw(_name)
                     }
                     else
                     {
-                        //TODO - Implement okLAB interpolation
-                        
                         var _x = 0;
                         repeat(SCRIBBLE_CYCLE_TEXTURE_WIDTH)
                         {
@@ -65,7 +63,7 @@ function __scribble_cycle_draw(_name)
                             draw_sprite_ext(__scribble_dot, 0,
                                             _x, __index,
                                             1, 1, 0,
-                                            merge_color(_array[_indexA], _array[_indexB], _frac), 1);
+                                            __scribble_merge_color_oklab(_array[_indexA], _array[_indexB], _frac), 1);
                             ++_x;
                         }
                     }

@@ -263,6 +263,7 @@
     {"name":"__scribble_krutidev_lookup_map_initialize","order":14,"path":"scripts/__scribble_krutidev_lookup_map_initialize/__scribble_krutidev_lookup_map_initialize.yy",},
     {"name":"__scribble_krutidev_matra_lookup_map_initialize","order":15,"path":"scripts/__scribble_krutidev_matra_lookup_map_initialize/__scribble_krutidev_matra_lookup_map_initialize.yy",},
     {"name":"__scribble_make_material_key","order":24,"path":"scripts/__scribble_make_material_key/__scribble_make_material_key.yy",},
+    {"name":"__scribble_merge_color_oklab","order":27,"path":"scripts/__scribble_merge_color_oklab/__scribble_merge_color_oklab.yy",},
     {"name":"__scribble_misc_functions","order":15,"path":"scripts/__scribble_misc_functions/__scribble_misc_functions.yy",},
     {"name":"__scribble_no_preprocessing","order":16,"path":"scripts/__scribble_no_preprocessing/__scribble_no_preprocessing.yy",},
     {"name":"__scribble_parse_sound_array_string","order":17,"path":"scripts/__scribble_parse_sound_array_string/__scribble_parse_sound_array_string.yy",},

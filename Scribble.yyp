@@ -328,6 +328,7 @@
     {"id":{"name":"__scribble_krutidev_lookup_map_initialize","path":"scripts/__scribble_krutidev_lookup_map_initialize/__scribble_krutidev_lookup_map_initialize.yy",},},
     {"id":{"name":"__scribble_krutidev_matra_lookup_map_initialize","path":"scripts/__scribble_krutidev_matra_lookup_map_initialize/__scribble_krutidev_matra_lookup_map_initialize.yy",},},
     {"id":{"name":"__scribble_make_material_key","path":"scripts/__scribble_make_material_key/__scribble_make_material_key.yy",},},
+    {"id":{"name":"__scribble_merge_color_oklab","path":"scripts/__scribble_merge_color_oklab/__scribble_merge_color_oklab.yy",},},
     {"id":{"name":"__scribble_misc_functions","path":"scripts/__scribble_misc_functions/__scribble_misc_functions.yy",},},
     {"id":{"name":"__scribble_no_preprocessing","path":"scripts/__scribble_no_preprocessing/__scribble_no_preprocessing.yy",},},
     {"id":{"name":"__scribble_parse_sound_array_string","path":"scripts/__scribble_parse_sound_array_string/__scribble_parse_sound_array_string.yy",},},
