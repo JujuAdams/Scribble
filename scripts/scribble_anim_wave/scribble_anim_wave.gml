@@ -7,13 +7,13 @@ function scribble_anim_wave(_size, _frequency, _speed)
 {
     static _array = __scribble_system().__anim_properties;
     
-    if ((_size      != _array[__SCRIBBLE_ANIM.__WAVE_SIZE ])
-    ||  (_frequency != _array[__SCRIBBLE_ANIM.__WAVE_FREQ ])
-    ||  (_speed     != _array[__SCRIBBLE_ANIM.__WAVE_SPEED]))
+    if ((_size      != _array[__SCRIBBLE_ANIM_WAVE_SIZE ])
+    ||  (_frequency != _array[__SCRIBBLE_ANIM_WAVE_FREQ ])
+    ||  (_speed     != _array[__SCRIBBLE_ANIM_WAVE_SPEED]))
     {
-        _array[@ __SCRIBBLE_ANIM.__WAVE_SIZE ] = _size;
-        _array[@ __SCRIBBLE_ANIM.__WAVE_FREQ ] = _frequency;
-        _array[@ __SCRIBBLE_ANIM.__WAVE_SPEED] = _speed;
+        _array[@ __SCRIBBLE_ANIM_WAVE_SIZE ] = _size;
+        _array[@ __SCRIBBLE_ANIM_WAVE_FREQ ] = _frequency;
+        _array[@ __SCRIBBLE_ANIM_WAVE_SPEED] = _speed;
         
         static _scribble_state = __scribble_system().__state;
         with(_scribble_state)

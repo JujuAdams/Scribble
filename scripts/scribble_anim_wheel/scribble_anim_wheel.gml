@@ -7,13 +7,13 @@ function scribble_anim_wheel(_size, _frequency, _speed)
 {
     static _array = __scribble_system().__anim_properties;
     
-    if ((_size     != _array[__SCRIBBLE_ANIM.__WHEEL_SIZE ])
-    || (_frequency != _array[__SCRIBBLE_ANIM.__WHEEL_FREQ ])
-    || (_speed     != _array[__SCRIBBLE_ANIM.__WHEEL_SPEED]))
+    if ((_size     != _array[__SCRIBBLE_ANIM_WHEEL_SIZE ])
+    || (_frequency != _array[__SCRIBBLE_ANIM_WHEEL_FREQ ])
+    || (_speed     != _array[__SCRIBBLE_ANIM_WHEEL_SPEED]))
     {
-        _array[@ __SCRIBBLE_ANIM.__WHEEL_SIZE ] = _size;
-        _array[@ __SCRIBBLE_ANIM.__WHEEL_FREQ ] = _frequency;
-        _array[@ __SCRIBBLE_ANIM.__WHEEL_SPEED] = _speed;
+        _array[@ __SCRIBBLE_ANIM_WHEEL_SIZE ] = _size;
+        _array[@ __SCRIBBLE_ANIM_WHEEL_FREQ ] = _frequency;
+        _array[@ __SCRIBBLE_ANIM_WHEEL_SPEED] = _speed;
         
         static _scribble_state = __scribble_system().__state;
         with(_scribble_state)

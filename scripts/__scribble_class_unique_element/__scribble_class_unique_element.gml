@@ -858,14 +858,14 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
                         &&  (__last_character >= 1) //Don't check character delay until we're on the first character (index=1)
                         &&  ((__last_character < (SCRIBBLE_DELAY_LAST_CHARACTER? _page_character_count : (_page_character_count-1))) || (_found_size > 0)))
                         {
-                            var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
+                            var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
                             
                             var _delay = __characterDelayDict[$ _glyph_ord];
                             _delay = (_delay == undefined)? 0 : _delay;
                             
                             if (__last_character > 1)
                             {
-                                _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
+                                _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
                                 var _double_char_delay = __characterDelayDict[$ _glyph_ord];
                                 _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
                                 
@@ -902,7 +902,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
                     if (__last_character <= _page_character_count)
                     {
                         //Only play sound once per frame if we're going reaaaally fast
-                        __play_sound(_head_pos, _glyph_data_getter? (_page_data.__glyph_grid[# _head_pos-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE]) : 0);
+                        __play_sound(_head_pos, _glyph_data_getter? (_page_data.__glyph_grid[# _head_pos-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0);
                     }
                     else
                     {

@@ -7,13 +7,13 @@ function scribble_anim_jitter(_min_scale, _max_scale, _speed)
 {
     static _array = __scribble_system().__anim_properties;
     
-    if ((_min_scale != _array[__SCRIBBLE_ANIM.__JITTER_MINIMUM])
-    ||  (_max_scale != _array[__SCRIBBLE_ANIM.__JITTER_MAXIMUM])
-    ||  (_speed     != _array[__SCRIBBLE_ANIM.__JITTER_SPEED  ]))
+    if ((_min_scale != _array[__SCRIBBLE_ANIM_JITTER_MINIMUM])
+    ||  (_max_scale != _array[__SCRIBBLE_ANIM_JITTER_MAXIMUM])
+    ||  (_speed     != _array[__SCRIBBLE_ANIM_JITTER_SPEED  ]))
     {
-        _array[@ __SCRIBBLE_ANIM.__JITTER_MINIMUM] = _min_scale;
-        _array[@ __SCRIBBLE_ANIM.__JITTER_MAXIMUM] = _max_scale;
-        _array[@ __SCRIBBLE_ANIM.__JITTER_SPEED  ] = _speed;
+        _array[@ __SCRIBBLE_ANIM_JITTER_MINIMUM] = _min_scale;
+        _array[@ __SCRIBBLE_ANIM_JITTER_MAXIMUM] = _max_scale;
+        _array[@ __SCRIBBLE_ANIM_JITTER_SPEED  ] = _speed;
         
         static _scribble_state = __scribble_system().__state;
         with(_scribble_state)

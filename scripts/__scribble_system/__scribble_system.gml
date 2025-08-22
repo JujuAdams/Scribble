@@ -154,7 +154,7 @@ function __scribble_system(_calledFromInitialize = false)
         __buffer_b = buffer_create(1024, buffer_grow, 1);
         
         //Contains animation parameters. See scribble_anim_reset()
-        __anim_properties = array_create(__SCRIBBLE_ANIM.__SIZE, undefined);
+        __anim_properties = array_create(__SCRIBBLE_ANIM_SIZE, undefined);
         
         //Contains global state information that is shared between various features
         __state = {

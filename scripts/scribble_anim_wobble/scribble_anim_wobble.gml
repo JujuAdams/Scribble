@@ -6,11 +6,11 @@ function scribble_anim_wobble(_angle, _frequency)
 {
     static _array = __scribble_system().__anim_properties;
     
-    if ((_angle     != _array[__SCRIBBLE_ANIM.__WOBBLE_ANGLE])
-    ||  (_frequency != _array[__SCRIBBLE_ANIM.__WOBBLE_FREQ ]))
+    if ((_angle     != _array[__SCRIBBLE_ANIM_WOBBLE_ANGLE])
+    ||  (_frequency != _array[__SCRIBBLE_ANIM_WOBBLE_FREQ ]))
     {
-        _array[@ __SCRIBBLE_ANIM.__WOBBLE_ANGLE] = _angle;
-        _array[@ __SCRIBBLE_ANIM.__WOBBLE_FREQ ] = _frequency;
+        _array[@ __SCRIBBLE_ANIM_WOBBLE_ANGLE] = _angle;
+        _array[@ __SCRIBBLE_ANIM_WOBBLE_FREQ ] = _frequency;
         
         static _scribble_state = __scribble_system().__state;
         with(_scribble_state)

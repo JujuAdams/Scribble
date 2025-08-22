@@ -361,41 +361,35 @@ function __scribble_matrix_inverse(_matrix)
 
 #region Enums
 
-enum __SCRIBBLE_GLYPH_LAYOUT
-{
-    __UNICODE,  // 0
-    __LEFT,     // 1
-    __TOP,      // 2
-    __RIGHT,    // 3
-    __BOTTOM,   // 4
-    __Y_OFFSET, // 5
-    __SIZE,     // 7
-}
+#macro __SCRIBBLE_GLYPH_LAYOUT_UNICODE   0
+#macro __SCRIBBLE_GLYPH_LAYOUT_LEFT      1
+#macro __SCRIBBLE_GLYPH_LAYOUT_TOP       2
+#macro __SCRIBBLE_GLYPH_LAYOUT_RIGHT     3
+#macro __SCRIBBLE_GLYPH_LAYOUT_BOTTOM    4
+#macro __SCRIBBLE_GLYPH_LAYOUT_Y_OFFSET  5
+#macro __SCRIBBLE_GLYPH_LAYOUT_SIZE      6
 
 #macro __SCRIBBLE_RENDER_RASTER               0
 #macro __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS  1
 #macro __SCRIBBLE_RENDER_SDF                  2
 
-enum __SCRIBBLE_ANIM
-{
-    __WAVE_SIZE,        // 0
-    __WAVE_FREQ,        // 1
-    __WAVE_SPEED,       // 2
-    __SHAKE_SIZE,       // 3
-    __SHAKE_SPEED,      // 4
-    __WOBBLE_ANGLE,     // 5
-    __WOBBLE_FREQ,      // 6
-    __PULSE_SCALE,      // 7
-    __PULSE_SPEED,      // 8
-    __WHEEL_SIZE,       // 9
-    __WHEEL_FREQ,       //10
-    __WHEEL_SPEED,      //11
-    __JITTER_MINIMUM,   //12
-    __JITTER_MAXIMUM,   //13
-    __JITTER_SPEED,     //14
-    __SLANT_GRADIENT,   //15
-    __SIZE,             //16
-}
+#macro __SCRIBBLE_ANIM_WAVE_SIZE        0
+#macro __SCRIBBLE_ANIM_WAVE_FREQ        1
+#macro __SCRIBBLE_ANIM_WAVE_SPEED       2
+#macro __SCRIBBLE_ANIM_SHAKE_SIZE       3
+#macro __SCRIBBLE_ANIM_SHAKE_SPEED      4
+#macro __SCRIBBLE_ANIM_WOBBLE_ANGLE     5
+#macro __SCRIBBLE_ANIM_WOBBLE_FREQ      6
+#macro __SCRIBBLE_ANIM_PULSE_SCALE      7
+#macro __SCRIBBLE_ANIM_PULSE_SPEED      8
+#macro __SCRIBBLE_ANIM_WHEEL_SIZE       9
+#macro __SCRIBBLE_ANIM_WHEEL_FREQ      10
+#macro __SCRIBBLE_ANIM_WHEEL_SPEED     11
+#macro __SCRIBBLE_ANIM_JITTER_MINIMUM  12
+#macro __SCRIBBLE_ANIM_JITTER_MAXIMUM  13
+#macro __SCRIBBLE_ANIM_JITTER_SPEED    14
+#macro __SCRIBBLE_ANIM_SLANT_GRADIENT  15
+#macro __SCRIBBLE_ANIM_SIZE            16
 
 #endregion
 

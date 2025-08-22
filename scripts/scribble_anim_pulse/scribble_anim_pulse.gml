@@ -6,11 +6,11 @@ function scribble_anim_pulse(_scale, _speed)
 {
     static _array = __scribble_system().__anim_properties;
     
-    if ((_scale != _array[__SCRIBBLE_ANIM.__PULSE_SCALE])
-    ||  (_speed != _array[__SCRIBBLE_ANIM.__PULSE_SPEED]))
+    if ((_scale != _array[__SCRIBBLE_ANIM_PULSE_SCALE])
+    ||  (_speed != _array[__SCRIBBLE_ANIM_PULSE_SPEED]))
     {
-        _array[@ __SCRIBBLE_ANIM.__PULSE_SCALE] = _scale;
-        _array[@ __SCRIBBLE_ANIM.__PULSE_SPEED] = _speed;
+        _array[@ __SCRIBBLE_ANIM_PULSE_SCALE] = _scale;
+        _array[@ __SCRIBBLE_ANIM_PULSE_SPEED] = _speed;
         
         static _scribble_state = __scribble_system().__state;
         with(_scribble_state)

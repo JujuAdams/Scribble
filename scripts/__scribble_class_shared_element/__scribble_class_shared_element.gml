@@ -1513,9 +1513,9 @@ function __scribble_class_shared_element(_string) constructor
         static _shader_set_to_use_bezier = false;
         static _shader_uniforms_disabled = (function()
         {
-            var _array = array_create(__SCRIBBLE_ANIM.__SIZE, 0);
-            _array[__SCRIBBLE_ANIM.__JITTER_MINIMUM] = 1;
-            _array[__SCRIBBLE_ANIM.__JITTER_MAXIMUM] = 1;
+            var _array = array_create(__SCRIBBLE_ANIM_SIZE, 0);
+            _array[__SCRIBBLE_ANIM_JITTER_MINIMUM] = 1;
+            _array[__SCRIBBLE_ANIM_JITTER_MAXIMUM] = 1;
             return _array;
         })();
         

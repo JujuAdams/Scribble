@@ -182,17 +182,17 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         
         if (_end < 0)
         {
-            var _left   = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT  ];
-            var _top    = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__TOP   ];
-            var _right  = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__LEFT  ];
-            var _bottom = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM];
+            var _left   = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT  ];
+            var _top    = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT_TOP   ];
+            var _right  = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT  ];
+            var _bottom = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM];
         }
         else
         {
-            var _left   = ds_grid_get_min(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.__LEFT,   _end, __SCRIBBLE_GLYPH_LAYOUT.__LEFT  );
-            var _top    = ds_grid_get_min(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.__TOP,    _end, __SCRIBBLE_GLYPH_LAYOUT.__TOP   );
-            var _right  = ds_grid_get_max(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT,  _end, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT );
-            var _bottom = ds_grid_get_max(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM, _end, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM);
+            var _left   = ds_grid_get_min(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT_LEFT,   _end, __SCRIBBLE_GLYPH_LAYOUT_LEFT  );
+            var _top    = ds_grid_get_min(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT_TOP,    _end, __SCRIBBLE_GLYPH_LAYOUT_TOP   );
+            var _right  = ds_grid_get_max(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT_RIGHT,  _end, __SCRIBBLE_GLYPH_LAYOUT_RIGHT );
+            var _bottom = ds_grid_get_max(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM, _end, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM);
         }
         
         if (__pad_bbox_l) _left   -= _padding_l; else _right  += _padding_l;
