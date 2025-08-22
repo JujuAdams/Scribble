@@ -285,56 +285,6 @@ function __scribble_class_null_element() constructor
         __error();
     }
     
-    static animation_sync = function()
-    {
-        __error();
-    }
-    
-    static animation_wave = function()
-    {
-        __error();
-    }
-    
-    static animation_shake = function()
-    {
-        __error();
-    }
-    
-    static animation_rainbow = function()
-    {
-        __error();
-    }
-    
-    static animation_wobble = function()
-    {
-        __error();
-    }
-    
-    static animation_pulse = function()
-    {
-        __error();
-    }
-    
-    static animation_wheel = function()
-    {
-        __error();
-    }
-    
-    static animation_cycle = function()
-    {
-        __error();
-    }
-    
-    static animation_jitter = function()
-    {
-        __error();
-    }
-    
-    static animation_blink = function()
-    {
-        __error();
-    }
-    
     #endregion
     
     

@@ -3,19 +3,18 @@ precision highp float;
 
 #define BLEND_SPRITES true
 
-const int MAX_EFFECTS = 11;
-#define SPRITE_FLAG   flagArray[0]
-#define WAVE_FLAG     flagArray[1]
-#define SHAKE_FLAG    flagArray[2]
-#define WOBBLE_FLAG   flagArray[3]
-#define PULSE_FLAG    flagArray[4]
-#define WHEEL_FLAG    flagArray[5]
-#define CYCLE_FLAG    flagArray[6]
-#define JITTER_FLAG   flagArray[7]
-#define BLINK_FLAG    flagArray[8]
-#define SLANT_FLAG    flagArray[9]
+const int MAX_EFFECTS = 9;
+#define SPRITE_FLAG  flagArray[0]
+#define WAVE_FLAG    flagArray[1]
+#define SHAKE_FLAG   flagArray[2]
+#define WOBBLE_FLAG  flagArray[3]
+#define PULSE_FLAG   flagArray[4]
+#define WHEEL_FLAG   flagArray[5]
+#define CYCLE_FLAG   flagArray[6]
+#define JITTER_FLAG  flagArray[7]
+#define SLANT_FLAG   flagArray[8]
 
-const int MAX_ANIM_FIELDS = 21;
+const int MAX_ANIM_FIELDS = 16;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
 #define WAVE_FREQUENCY    u_aDataFields[ 1]
 #define WAVE_SPEED        u_aDataFields[ 2]
@@ -31,7 +30,7 @@ const int MAX_ANIM_FIELDS = 21;
 #define JITTER_MINIMUM    u_aDataFields[12]
 #define JITTER_MAXIMUM    u_aDataFields[13]
 #define JITTER_SPEED      u_aDataFields[14]
-#define SLANT_GRADIENT    u_aDataFields[25]
+#define SLANT_GRADIENT    u_aDataFields[15]
 
 const int EASE_METHOD_COUNT = 15;
 #define EASE_NONE         0
@@ -79,7 +78,6 @@ uniform vec4  u_vRegionColour;                          //4
 uniform float u_fTime;                                  //1
 uniform float u_aDataFields[MAX_ANIM_FIELDS];           //21
 uniform vec2  u_aBezier[3];                             //6
-uniform float u_fBlinkState;                            //1
 
 uniform int   u_iTypewriterUseLines;                    //1
 uniform int   u_iTypewriterMethod;                      //1
@@ -342,17 +340,15 @@ void main()
     //MAX_EFFECTS = 11
     float flagValue = in_Normal.z;
     float edge;
-    edge = step(1024.0, flagValue); flagArray[10] = edge; flagValue -= 1024.0*edge;
-    edge = step( 512.0, flagValue); flagArray[ 9] = edge; flagValue -=  512.0*edge;
-    edge = step( 256.0, flagValue); flagArray[ 8] = edge; flagValue -=  256.0*edge;
-    edge = step( 128.0, flagValue); flagArray[ 7] = edge; flagValue -=  128.0*edge;
-    edge = step(  64.0, flagValue); flagArray[ 6] = edge; flagValue -=   64.0*edge;
-    edge = step(  32.0, flagValue); flagArray[ 5] = edge; flagValue -=   32.0*edge;
-    edge = step(  16.0, flagValue); flagArray[ 4] = edge; flagValue -=   16.0*edge;
-    edge = step(   8.0, flagValue); flagArray[ 3] = edge; flagValue -=    8.0*edge;
-    edge = step(   4.0, flagValue); flagArray[ 2] = edge; flagValue -=    4.0*edge;
-    edge = step(   2.0, flagValue); flagArray[ 1] = edge; flagValue -=    2.0*edge;
-    edge = step(   1.0, flagValue); flagArray[ 0] = edge; flagValue -=    1.0*edge;
+    edge = step(256.0, flagValue); flagArray[8] = edge; flagValue -= 256.0*edge;
+    edge = step(128.0, flagValue); flagArray[7] = edge; flagValue -= 128.0*edge;
+    edge = step( 64.0, flagValue); flagArray[6] = edge; flagValue -=  64.0*edge;
+    edge = step( 32.0, flagValue); flagArray[5] = edge; flagValue -=  32.0*edge;
+    edge = step( 16.0, flagValue); flagArray[4] = edge; flagValue -=  16.0*edge;
+    edge = step(  8.0, flagValue); flagArray[3] = edge; flagValue -=   8.0*edge;
+    edge = step(  4.0, flagValue); flagArray[2] = edge; flagValue -=   4.0*edge;
+    edge = step(  2.0, flagValue); flagArray[1] = edge; flagValue -=   2.0*edge;
+    edge = step(  1.0, flagValue); flagArray[0] = edge; flagValue -=   1.0*edge;
     
     
     
@@ -403,7 +399,6 @@ void main()
     }
     
     if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
-    if ((BLINK_FLAG > 0.5) && (u_fBlinkState < 0.5)) v_vColour.a = 0.0;
     
     //Regions
     if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);

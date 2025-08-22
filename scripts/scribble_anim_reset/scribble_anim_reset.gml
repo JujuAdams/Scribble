@@ -25,10 +25,6 @@ function scribble_anim_reset()
             _array[@ __SCRIBBLE_ANIM.__JITTER_MAXIMUM] = SCRIBBLE_DEFAULT_JITTER_MAX_SCALE;
             _array[@ __SCRIBBLE_ANIM.__JITTER_SPEED  ] = SCRIBBLE_DEFAULT_JITTER_SPEED;
             _array[@ __SCRIBBLE_ANIM.__SLANT_GRADIENT] = SCRIBBLE_SLANT_GRADIENT;
-            
-            __blink_on_duration  = SCRIBBLE_DEFAULT_BLINK_ON_DURATION;
-            __blink_off_duration = SCRIBBLE_DEFAULT_BLINK_OFF_DURATION;
-            __blink_time_offset  = SCRIBBLE_DEFAULT_BLINK_TIME_OFFSET;
         }
         
         if (!__shader_anim_desync)

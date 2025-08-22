@@ -140,10 +140,6 @@ function __scribble_system(_calledFromInitialize = false)
             
             __default_font: "scribble_fallback_font",
             
-            __blink_on_duration:  SCRIBBLE_DEFAULT_BLINK_ON_DURATION,
-            __blink_off_duration: SCRIBBLE_DEFAULT_BLINK_OFF_DURATION,
-            __blink_time_offset:  SCRIBBLE_DEFAULT_BLINK_TIME_OFFSET,
-            
             __shader_anim_desync:            false,
             __shader_anim_desync_to_default: false,
             __shader_anim_default:           false,
@@ -210,8 +206,7 @@ function __scribble_system(_calledFromInitialize = false)
         __effects_map[?       "wheel"   ] = 5;
         __effects_map[?       "cycle"   ] = 6;
         __effects_map[?       "jitter"  ] = 7;
-        __effects_map[?       "blink"   ] = 8;
-        __effects_map[?       "slant"   ] = 9;
+        __effects_map[?       "slant"   ] = 8;
         __effects_slash_map[? "/wave"   ] = 1;
         __effects_slash_map[? "/shake"  ] = 2;
         __effects_slash_map[? "/wobble" ] = 3;
@@ -219,8 +214,7 @@ function __scribble_system(_calledFromInitialize = false)
         __effects_slash_map[? "/wheel"  ] = 5;
         __effects_slash_map[? "/cycle"  ] = 6;
         __effects_slash_map[? "/jitter" ] = 7;
-        __effects_slash_map[? "/blink"  ] = 8;
-        __effects_slash_map[? "/slant"  ] = 9;
+        __effects_slash_map[? "/slant"  ] = 8;
         
         __effects_map[?       "WAVE"    ] = 1;
         __effects_map[?       "SHAKE"   ] = 2;
@@ -229,8 +223,7 @@ function __scribble_system(_calledFromInitialize = false)
         __effects_map[?       "WHEEL"   ] = 5;
         __effects_map[?       "CYCLE"   ] = 6;
         __effects_map[?       "JITTER"  ] = 7;
-        __effects_map[?       "BLINK"   ] = 8;
-        __effects_map[?       "SLANT"   ] = 9;
+        __effects_map[?       "SLANT"   ] = 8;
         __effects_slash_map[? "/WAVE"   ] = 1;
         __effects_slash_map[? "/SHAKE"  ] = 2;
         __effects_slash_map[? "/WOBBLE" ] = 3;
@@ -238,8 +231,7 @@ function __scribble_system(_calledFromInitialize = false)
         __effects_slash_map[? "/WHEEL"  ] = 5;
         __effects_slash_map[? "/CYCLE"  ] = 6;
         __effects_slash_map[? "/JITTER" ] = 7;
-        __effects_slash_map[? "/BLINK"  ] = 8;
-        __effects_slash_map[? "/SLANT"  ] = 9;
+        __effects_slash_map[? "/SLANT"  ] = 8;
         
         //Unpack texture group data into an easy-to-use dictionary. This should, of course, just be a native
         //feature of GameMaker. I, in fact, suggested such a feature (including sprites (and backgrounds!))

@@ -85,9 +85,8 @@ function __scribble_class_shared_element(_string) constructor
     __tw_reveal              = undefined;
     __tw_reveal_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     
-    __animation_time        = current_time;
-    __animation_speed       = 1;
-    __animation_blink_state = true;
+    __animation_time  = current_time;
+    __animation_speed = 1;
     
     __padding_l = 0;
     __padding_t = 0;
@@ -1124,56 +1123,6 @@ function __scribble_class_shared_element(_string) constructor
         return _model.__has_animation;
     }
     
-    static animation_sync = function()
-    {
-        __scribble_error(".animation_sync() has been removed\nPlease get in touch if this feature is essential for your project");
-    }
-    
-    static animation_wave = function()
-    {
-        __scribble_error(".animation_wave() has been replaced by scribble_anim_wave()");
-    }
-    
-    static animation_shake = function()
-    {
-        __scribble_error(".animation_wave() has been replaced by scribble_anim_shake()");
-    }
-    
-    static animation_rainbow = function()
-    {
-        __scribble_error(".animation_rainbow() has been replaced by scribble_anim_rainbow()");
-    }
-    
-    static animation_wobble = function()
-    {
-        __scribble_error(".animation_wobble() has been replaced by scribble_anim_wobble()");
-    }
-    
-    static animation_pulse = function()
-    {
-        __scribble_error(".animation_pulse() has been replaced by scribble_anim_pulse()");
-    }
-    
-    static animation_wheel = function()
-    {
-        __scribble_error(".animation_wheel() has been replaced by scribble_anim_wheel()");
-    }
-    
-    static animation_cycle = function()
-    {
-        __scribble_error(".animation_cycle() has been replaced by scribble_anim_cycle()");
-    }
-    
-    static animation_jitter = function()
-    {
-        __scribble_error(".animation_jitter() has been replaced by scribble_anim_jitter()");
-    }
-    
-    static animation_blink = function()
-    {
-        __scribble_error(".animation_blink() has been replaced by scribble_anim_blink()");
-    }
-    
     #endregion
     
     
@@ -1550,7 +1499,6 @@ function __scribble_class_shared_element(_string) constructor
     {
         static _u_fTime         = shader_get_uniform(__shd_scribble, "u_fTime"        );
         static _u_vColourBlend  = shader_get_uniform(__shd_scribble, "u_vColourBlend" );
-        static _u_fBlinkState   = shader_get_uniform(__shd_scribble, "u_fBlinkState"  );
         static _u_vGradient     = shader_get_uniform(__shd_scribble, "u_vGradient"    );
         static _u_vSkew         = shader_get_uniform(__shd_scribble, "u_vSkew"        );
         static _u_vFlash        = shader_get_uniform(__shd_scribble, "u_vFlash"       );
@@ -1594,8 +1542,6 @@ function __scribble_class_shared_element(_string) constructor
                                               colour_get_green(__blend_colour)/255,
                                               colour_get_blue( __blend_colour)/255,
                                               __blend_alpha);
-        
-        shader_set_uniform_f(_u_fBlinkState, __animation_blink_state);
         
         if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0))
         {

@@ -62,19 +62,6 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
         
         __last_drawn = __scribble_state.__frames;
         
-        with(__scribble_state)
-        {
-            //Update the blink state
-            if ((not __shader_anim_disabled) && __blink_on_duration + __blink_off_duration > 0)
-            {
-                other.__animation_blink_state = (((other.__animation_time + __blink_time_offset) mod (__blink_on_duration + __blink_off_duration)) < __blink_on_duration);
-            }
-            else
-            {
-                other.__animation_blink_state = true;
-            }
-        }
-        
         shader_set(__shd_scribble);
         __set_standard_uniforms();
         
