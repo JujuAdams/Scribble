@@ -99,9 +99,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
     }
     
     
-    
-    
-    
+
     __typistSpeed      = 1;
     __typistSmoothness = 0;
     __typistIn         = undefined;
@@ -118,10 +116,11 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
     __soundPitchMin             = 1;
     __soundPitchMax             = 1;
     __soundGain                 = 1;
-    __soundPerChar              = false;
     __soundFinishTime           = current_time;
+    __soundPerChar              = false;
     __soundPerCharException     = false;
     __soundPerCharExceptionDict = undefined;
+    __soundPerCharInterrupt     = false;
     
     __ignoreDelay = false;
     
@@ -261,16 +260,18 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
     /// @param pitchMax
     /// @param [exceptionString]
     /// @param [gain=1]
-    static sound_per_char = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string, _gain = 1)
+    /// @param [interrupt=false]
+    static sound_per_char = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string, _gain = 1, _interrupt = false)
     {
         var _sound_array = _in_sound_array;
         if (!is_array(_sound_array)) _sound_array = [_sound_array];
         
-        __soundArray     = _sound_array;
-        __soundPitchMin = _pitch_min;
-        __soundPitchMax = _pitch_max;
-        __soundGain      = _gain;
-        __soundPerChar  = true;
+        __soundArray            = _sound_array;
+        __soundPitchMin         = _pitch_min;
+        __soundPitchMax         = _pitch_max;
+        __soundGain             = _gain;
+        __soundPerChar          = true;
+        __soundPerCharInterrupt = _interrupt;
         
         if (is_string(_exception_string))
         {
@@ -660,13 +661,18 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
                 //Only play audio if a new character has been revealled
                 if (floor(_head_pos + 0.0001) > floor(__last_audio_character))
                 {
-                    if (!__soundPerCharException)
+                    if (not __soundPerCharException)
                     {
                         _play_sound = true;
                     }
                     else if (!variable_struct_exists(__soundPerCharExceptionDict, _character))
                     {
                         _play_sound = true;
+                    }
+                    
+                    if (_play_sound && __soundPerCharInterrupt)
+                    {
+                        audio_stop_sound(__soundVoice);
                     }
                 }
             }
@@ -679,8 +685,8 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
             {
                 __last_audio_character = _head_pos;
                 
-                var _inst = __scribble_play_sound(_sound_array[floor(__scribble_random()*array_length(_sound_array))], __soundGain, lerp(__soundPitchMin, __soundPitchMax, __scribble_random()));
-                if (_inst >= 0)
+                __soundVoice = __scribble_play_sound(_sound_array[floor(__scribble_random()*array_length(_sound_array))], __soundGain, lerp(__soundPitchMin, __soundPitchMax, __scribble_random()));
+                if (__soundVoice >= 0)
                 {
                     __soundFinishTime = current_time + 1000*audio_sound_length(_inst) - __soundOverlap;
                 }
