@@ -8,7 +8,7 @@
                                   _forced_break = false;\ //Reset this value since we presume line wrapping
                                   ;\ //Adjust the first word's width to account for visual tweaks
                                   ;\ //TODO - Implement for R2L text
-                                  if ((SCRIBBLE_NEWLINES_PAD_LEFT_SPACE || SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE) && (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.__BIDI] < __SCRIBBLE_BIDI.R2L))\
+                                  if ((SCRIBBLE_NEWLINES_PAD_LEFT_SPACE || SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE) && (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.__BIDI] < __SCRIBBLE_BIDI_R2L))\
                                   {\
                                       var _word_glyph_start = _word_grid[#  _line_word_start,  __SCRIBBLE_GEN_WORD.__GLYPH_START ];\
                                       var _word_glyph_end   = _word_grid[#  _line_word_start,  __SCRIBBLE_GEN_WORD.__GLYPH_END   ];\
@@ -144,7 +144,7 @@ function __scribble_gen_6_build_lines()
                         
                         #region Emergency! We're going to have to retroactively implement per-glyph line wrapping
                         
-                        if (_word_grid[# _i, __SCRIBBLE_GEN_WORD.__BIDI] >= __SCRIBBLE_BIDI.R2L)
+                        if (_word_grid[# _i, __SCRIBBLE_GEN_WORD.__BIDI] >= __SCRIBBLE_BIDI_R2L)
                         {
                             //TODO - Implement R2L emergency per-glyph line wrapping
                             var _line_word_end = _i;
@@ -165,7 +165,7 @@ function __scribble_gen_6_build_lines()
                             //var _original_word_width       = _word_grid[# _i, __SCRIBBLE_GEN_WORD.__WIDTH      ]; //Unused
                             var _original_word_height      = _word_grid[# _i, __SCRIBBLE_GEN_WORD.__HEIGHT     ];
                             
-                            if ((SCRIBBLE_NEWLINES_PAD_LEFT_SPACE || SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE) && (_word_grid[# _i, __SCRIBBLE_GEN_WORD.__BIDI] < __SCRIBBLE_BIDI.R2L))
+                            if ((SCRIBBLE_NEWLINES_PAD_LEFT_SPACE || SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE) && (_word_grid[# _i, __SCRIBBLE_GEN_WORD.__BIDI] < __SCRIBBLE_BIDI_R2L))
                             {
                                 var _left_correction = _glyph_grid[# _original_word_glyph_start, __SCRIBBLE_GEN_GLYPH.__LEFT_OFFSET];
                                 if (((_left_correction > 0) && SCRIBBLE_NEWLINES_PAD_LEFT_SPACE) || ((_left_correction < 0) && SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE))
@@ -238,7 +238,7 @@ function __scribble_gen_6_build_lines()
                         
                         #endregion
                     }
-                    else if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && (_word_grid[# _i, __SCRIBBLE_GEN_WORD.__BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE))
+                    else if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && (_word_grid[# _i, __SCRIBBLE_GEN_WORD.__BIDI_RAW] == __SCRIBBLE_BIDI_WHITESPACE))
                     {
                         //If the word at the end of the line is whitespace, include that on this line
                         //We trim the whitespace down to fit on the line later
@@ -356,7 +356,7 @@ function __scribble_gen_6_build_lines()
         repeat(_line_count)
         {
             var _line_word_start = _line_grid[# _line, __SCRIBBLE_GEN_LINE.__WORD_START];
-            if (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.__BIDI] < __SCRIBBLE_BIDI.R2L)
+            if (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD.__BIDI] < __SCRIBBLE_BIDI_R2L)
             {
                 var _word_glyph_start = _word_grid[#  _line_word_start,  __SCRIBBLE_GEN_WORD.__GLYPH_START ];
                 var _word_glyph_end   = _word_grid[#  _line_word_start,  __SCRIBBLE_GEN_WORD.__GLYPH_END   ];
@@ -381,7 +381,7 @@ function __scribble_gen_6_build_lines()
         repeat(_line_count)
         {
             var _line_end_word = _line_grid[# _line, __SCRIBBLE_GEN_LINE.__WORD_END];
-            if (_word_grid[# _line_end_word, __SCRIBBLE_GEN_WORD.__BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE) //Only adjust whitespace words
+            if (_word_grid[# _line_end_word, __SCRIBBLE_GEN_WORD.__BIDI_RAW] == __SCRIBBLE_BIDI_WHITESPACE) //Only adjust whitespace words
             {
                 var _line_width = _line_grid[# _line, __SCRIBBLE_GEN_LINE.__WIDTH];
                 if (_line_width > _simulated_model_max_width) //Only adjust lines that actually exceed the maximum size

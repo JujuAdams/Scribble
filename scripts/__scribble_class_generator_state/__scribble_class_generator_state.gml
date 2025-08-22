@@ -37,7 +37,7 @@ function __scribble_class_generator_state() constructor
         __line_spacing_add      = 0;
         __line_spacing_multiply = 0;
         
-        __overall_bidi  = __SCRIBBLE_BIDI.L2R;
+        __overall_bidi  = __SCRIBBLE_BIDI_L2R;
         __glyph_count   = 0;
         __control_count = 0;
     }

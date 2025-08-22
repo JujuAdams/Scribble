@@ -134,39 +134,39 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
             var _unicode = _glyph_dict.char;
             if ((_unicode >= 0x3000) && (_unicode <= 0x303F)) //CJK Symbols and Punctuation
             {
-                var _bidi = __SCRIBBLE_BIDI.SYMBOL;
+                var _bidi = __SCRIBBLE_BIDI_SYMBOL;
             }
             else if ((_unicode >= 0x3040) && (_unicode <= 0x30FF)) //Hiragana and Katakana
             {
-                var _bidi = __SCRIBBLE_BIDI.ISOLATED_CJK;
+                var _bidi = __SCRIBBLE_BIDI_ISOLATED_CJK;
             }
             else if ((_unicode >= 0x4E00) && (_unicode <= 0x9FFF)) //CJK Unified ideographs block
             {
-                var _bidi = __SCRIBBLE_BIDI.ISOLATED_CJK;
+                var _bidi = __SCRIBBLE_BIDI_ISOLATED_CJK;
             }
             else if ((_unicode >= 0xFF00) && (_unicode <= 0xFF0F)) //Fullwidth symbols
             {
-                var _bidi = __SCRIBBLE_BIDI.SYMBOL;
+                var _bidi = __SCRIBBLE_BIDI_SYMBOL;
             }
             else if ((_unicode >= 0xFF1A) && (_unicode <= 0xFF1F)) //More fullwidth symbols
             {
-                var _bidi = __SCRIBBLE_BIDI.SYMBOL;
+                var _bidi = __SCRIBBLE_BIDI_SYMBOL;
             }
             else if ((_unicode >= 0xFF5B) && (_unicode <= 0xFF64)) //Yet more fullwidth symbols
             {
-                var _bidi = __SCRIBBLE_BIDI.SYMBOL;
+                var _bidi = __SCRIBBLE_BIDI_SYMBOL;
             }
             else
             {
                 var _bidi = _global_glyph_bidi_map[? _unicode];
-                if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI.L2R;
+                if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI_L2R;
             }
             
             if (_is_krutidev)
             {
-                if (_bidi != __SCRIBBLE_BIDI.WHITESPACE)
+                if (_bidi != __SCRIBBLE_BIDI_WHITESPACE)
                 {
-                    _bidi = __SCRIBBLE_BIDI.L2R_DEVANAGARI;
+                    _bidi = __SCRIBBLE_BIDI_L2R_DEVANAGARI;
                     _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
                 }
             }

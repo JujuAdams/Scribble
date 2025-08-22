@@ -133,8 +133,8 @@ function __scribble_gen_8_position_glyphs()
             if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && (_line_halign != fa_left) && (_line_halign != __SCRIBBLE_PIN_LEFT))
             {
                 if ((_line_word_end >= 1)
-                && (_word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD.__BIDI_RAW] == __SCRIBBLE_BIDI.WHITESPACE)
-                && (_word_grid[# _line_word_end-1, __SCRIBBLE_GEN_WORD.__BIDI_RAW] != __SCRIBBLE_BIDI.WHITESPACE))
+                && (_word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD.__BIDI_RAW] == __SCRIBBLE_BIDI_WHITESPACE)
+                && (_word_grid[# _line_word_end-1, __SCRIBBLE_GEN_WORD.__BIDI_RAW] != __SCRIBBLE_BIDI_WHITESPACE))
                 {
                     _line_adjusted_width -= _word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD.__WIDTH];
                     
@@ -145,12 +145,12 @@ function __scribble_gen_8_position_glyphs()
                 }
             }
             
-            var _glyph_x = (_overall_bidi == __SCRIBBLE_BIDI.R2L)? -_line_x : _line_x;
+            var _glyph_x = (_overall_bidi == __SCRIBBLE_BIDI_R2L)? -_line_x : _line_x;
             
             switch(_line_halign)
             {
-                case fa_left:               _glyph_x += (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_alignment_width - _line_adjusted_width) : 0;     break;
-                case __SCRIBBLE_PIN_LEFT:   _glyph_x += (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_pin_alignment_width - _line_adjusted_width) : 0; break;
+                case fa_left:               _glyph_x += (_overall_bidi == __SCRIBBLE_BIDI_R2L)? (_alignment_width - _line_adjusted_width) : 0;     break;
+                case __SCRIBBLE_PIN_LEFT:   _glyph_x += (_overall_bidi == __SCRIBBLE_BIDI_R2L)? (_pin_alignment_width - _line_adjusted_width) : 0; break;
                 case fa_center:             _glyph_x += -(_line_adjusted_width div 2);                                                             break;
                 case fa_right:              _glyph_x += -_line_adjusted_width;                                                                     break;
                 case __SCRIBBLE_PIN_CENTRE: _glyph_x += (_pin_alignment_width - _line_adjusted_width) div 2;                                       break;
@@ -178,7 +178,7 @@ function __scribble_gen_8_position_glyphs()
             
             
             
-            if (_overall_bidi < __SCRIBBLE_BIDI.R2L)
+            if (_overall_bidi < __SCRIBBLE_BIDI_R2L)
             {
                 // "Normal" L2R text, no stretch reordering required
                 var _k = 0;
@@ -197,7 +197,7 @@ function __scribble_gen_8_position_glyphs()
                 var _stretch_word_end   = _stretch_grid[# _k, __SCRIBBLE_GEN_STRETCH.__WORD_END  ];
                 var _stretch_bidi       = _stretch_grid[# _k, __SCRIBBLE_GEN_STRETCH.__BIDI      ];
             
-                if (_stretch_bidi < __SCRIBBLE_BIDI.R2L)
+                if (_stretch_bidi < __SCRIBBLE_BIDI_R2L)
                 {
                     // "Normal" L2R text, no word reordering required
                     var _w = _stretch_word_start;

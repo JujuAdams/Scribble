@@ -589,7 +589,7 @@ function __scribble_class_shared_element(_string) constructor
         }
         else
         {
-            var _new_bidi_hint = _state? __SCRIBBLE_BIDI.R2L : __SCRIBBLE_BIDI.L2R;
+            var _new_bidi_hint = _state? __SCRIBBLE_BIDI_R2L : __SCRIBBLE_BIDI_L2R;
         }
         
         if (__bidi_hint != _new_bidi_hint)

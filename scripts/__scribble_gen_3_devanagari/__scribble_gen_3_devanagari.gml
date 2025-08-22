@@ -375,7 +375,7 @@ function __scribble_gen_3_devanagari()
                 //This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
                 __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");
             }
-            else if (_font_glyph_data_grid[# _data_index, __SCRIBBLE_GLYPH_PROPR_BIDI] != __SCRIBBLE_BIDI.WHITESPACE) //Don't transform whitespace
+            else if (_font_glyph_data_grid[# _data_index, __SCRIBBLE_GLYPH_PROPR_BIDI] != __SCRIBBLE_BIDI_WHITESPACE) //Don't transform whitespace
             {
                 //Add this glyph to our grid by copying from the font's own glyph data grid
                 ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _i, __SCRIBBLE_GEN_GLYPH.__UNICODE);
@@ -387,7 +387,7 @@ function __scribble_gen_3_devanagari()
     
     //Create a null terminator so we correctly handle the last character in the string
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = 0x00; //ASCII line break (dec = 10)
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.ISOLATED;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI_ISOLATED;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = 0;
