@@ -107,6 +107,7 @@
     {"id":{"name":"obj_example_basic","path":"objects/obj_example_basic/obj_example_basic.yy",},},
     {"id":{"name":"obj_example_big_textbox","path":"objects/obj_example_big_textbox/obj_example_big_textbox.yy",},},
     {"id":{"name":"obj_example_glyph_position","path":"objects/obj_example_glyph_position/obj_example_glyph_position.yy",},},
+    {"id":{"name":"obj_example_sheet","path":"objects/obj_example_sheet/obj_example_sheet.yy",},},
     {"id":{"name":"obj_test_align","path":"objects/obj_test_align/obj_test_align.yy",},},
     {"id":{"name":"obj_test_alignment_changes","path":"objects/obj_test_alignment_changes/obj_test_alignment_changes.yy",},},
     {"id":{"name":"obj_test_alignment","path":"objects/obj_test_alignment/obj_test_alignment.yy",},},
@@ -449,6 +450,7 @@
     {"id":{"name":"spr_mallangche","path":"sprites/spr_mallangche/spr_mallangche.yy",},},
     {"id":{"name":"spr_portrait_2","path":"sprites/spr_portrait_2/spr_portrait_2.yy",},},
     {"id":{"name":"spr_portrait","path":"sprites/spr_portrait/spr_portrait.yy",},},
+    {"id":{"name":"spr_sheet","path":"sprites/spr_sheet/spr_sheet.yy",},},
     {"id":{"name":"spr_sprite_font","path":"sprites/spr_sprite_font/spr_sprite_font.yy",},},
     {"id":{"name":"spr_static_coin","path":"sprites/spr_static_coin/spr_static_coin.yy",},},
     {"id":{"name":"spr_vertical_spacing","path":"sprites/spr_vertical_spacing/spr_vertical_spacing.yy",},},
@@ -457,8 +459,8 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
-    {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
+    {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
   ],
   "templateType":null,
   "TextureGroups":[

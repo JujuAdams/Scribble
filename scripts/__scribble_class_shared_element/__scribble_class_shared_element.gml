@@ -216,6 +216,9 @@ function __scribble_class_shared_element(_string) constructor
         if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
         if (_halign == "pin_center") _halign = __SCRIBBLE_PIN_CENTRE;
         if (_halign == "pin_right" ) _halign = __SCRIBBLE_PIN_RIGHT;
+        if (_valign == "pin_top"   ) _valign = __SCRIBBLE_PIN_TOP;
+        if (_valign == "pin_middle") _valign = __SCRIBBLE_PIN_MIDDLE;
+        if (_valign == "pin_bottom") _valign = __SCRIBBLE_PIN_BOTTOM;
         if (_halign == "fa_justify") _halign = __SCRIBBLE_FA_JUSTIFY;
         
         if (_halign != __starting_halign)
