@@ -171,13 +171,15 @@ function __scribble_gen_7_build_pages()
     
     __SCRIBBLE_GEN_PAGE_POP;
     
-    if ((_model_max_height != infinity)
-    &&  ((__valign == __SCRIBBLE_PIN_TOP) || (__valign == __SCRIBBLE_PIN_MIDDLE) || (__valign == __SCRIBBLE_PIN_BOTTOM)))
-    {
-        __height = _model_max_height;
-    }
-    else
-    {
-        __height = _model_height;
-    }
+    //Juju: Don't think we need this. `__height` gets calculated in the next phase
+    //
+    //if ((_model_max_height != infinity)
+    //&&  ((__valign == __SCRIBBLE_PIN_TOP) || (__valign == __SCRIBBLE_PIN_MIDDLE) || (__valign == __SCRIBBLE_PIN_BOTTOM)))
+    //{
+    //    __height = _model_max_height;
+    //}
+    //else
+    //{
+    //    __height = _model_height;
+    //}
 }
