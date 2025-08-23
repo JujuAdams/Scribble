@@ -10,11 +10,17 @@ function __scribble_gen_11_set_padding_flags()
     }
     
     //Figure out how to pad the bounding box based on what alignments have been used
-    switch(__valign)
+    __pad_bbox_t = false;
+    __pad_bbox_b = true;
+    
+    if (__valign == fa_top)
     {
-        case fa_top:    __pad_bbox_t = false; __pad_bbox_b = true;  break;
-        case fa_middle: __pad_bbox_t = true;  __pad_bbox_b = true;  break;
-        case fa_bottom: __pad_bbox_t = true;  __pad_bbox_b = false; break;
+        __pad_bbox_t = false;
+    }
+    
+    if (__valign == fa_bottom)
+    {
+        __pad_bbox_b = false;
     }
     
     if (_uses_halign_center)

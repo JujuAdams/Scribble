@@ -1,4 +1,5 @@
 // Feather disable all
+
 #macro __SCRIBBLE_GEN_PAGE_POP  _model_height = max(_model_height, _line_max_y);\
                                 var _page_end_line = _i - 1;\
                                 _page_data.__line_end    = _page_end_line;\
@@ -19,7 +20,34 @@
                                     _page_data.__min_y = -_line_max_y;\
                                     _page_data.__max_y = 0;\
                                 }\
-                                else\ //fa_top
+                                else if (__valign == __SCRIBBLE_PIN_MIDDLE)\
+                                {\
+                                    if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE || (_model_max_height == infinity))\
+                                    {\
+                                        _page_data.__min_y = -(_line_max_y div 2);\
+                                        _page_data.__max_y =  (_line_max_y div 2);\
+                                    }\
+                                    else\
+                                    {\
+                                        var _delta = _model_max_height - _line_max_y;\
+                                        _page_data.__min_y = 0.5*_delta;\
+                                        _page_data.__max_y = _model_max_height - 0.5*_delta;\
+                                    }\
+                                }\
+                                else if (__valign == __SCRIBBLE_PIN_BOTTOM)\
+                                {\
+                                    if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE || (_model_max_height == infinity))\
+                                    {\
+                                        _page_data.__min_y = -_line_max_y;\
+                                        _page_data.__max_y = 0;\
+                                    }\
+                                    else\
+                                    {\
+                                        _page_data.__min_y = _model_max_height - _line_max_y;\
+                                        _page_data.__max_y = _model_max_height;\
+                                    }\
+                                }\
+                                else\ //fa_top or pin_top
                                 {\
                                     _page_data.__min_y = 0;\
                                     _page_data.__max_y = _line_max_y;\
@@ -96,7 +124,6 @@ function __scribble_gen_7_build_pages()
     
     static _animation_randomize_array = [];
     
-    
     var _wrap_no_pages = _element.__wrap_no_pages;
     
     var _simulated_model_height = _wrap_no_pages? infinity : (_model_max_height / __fit_scale);
@@ -144,5 +171,13 @@ function __scribble_gen_7_build_pages()
     
     __SCRIBBLE_GEN_PAGE_POP;
     
-    __height = _model_height;
+    if ((_model_max_height != infinity)
+    &&  ((__valign == __SCRIBBLE_PIN_TOP) || (__valign == __SCRIBBLE_PIN_MIDDLE) || (__valign == __SCRIBBLE_PIN_BOTTOM)))
+    {
+        __height = _model_max_height;
+    }
+    else
+    {
+        __height = _model_height;
+    }
 }

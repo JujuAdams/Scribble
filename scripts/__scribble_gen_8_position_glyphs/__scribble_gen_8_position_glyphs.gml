@@ -149,10 +149,11 @@ function __scribble_gen_8_position_glyphs()
             
             switch(_line_halign)
             {
-                case fa_left:               _glyph_x += (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_alignment_width - _line_adjusted_width) : 0;     break;
+                case fa_left:   _glyph_x += (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_alignment_width - _line_adjusted_width) : 0; break;
+                case fa_center: _glyph_x += -(_line_adjusted_width div 2);                                                         break;
+                case fa_right:  _glyph_x += -_line_adjusted_width;                                                                 break;
+                
                 case __SCRIBBLE_PIN_LEFT:   _glyph_x += (_overall_bidi == __SCRIBBLE_BIDI.R2L)? (_pin_alignment_width - _line_adjusted_width) : 0; break;
-                case fa_center:             _glyph_x += -(_line_adjusted_width div 2);                                                             break;
-                case fa_right:              _glyph_x += -_line_adjusted_width;                                                                     break;
                 case __SCRIBBLE_PIN_CENTRE: _glyph_x += (_pin_alignment_width - _line_adjusted_width) div 2;                                       break;
                 case __SCRIBBLE_PIN_RIGHT:  _glyph_x += _pin_alignment_width - _line_adjusted_width;                                               break;
                 

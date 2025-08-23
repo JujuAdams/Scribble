@@ -159,6 +159,9 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "offset"            ] = 38;
         _command_tag_lookup_accelerator_map[? "offsetPop"         ] = 39;
         _command_tag_lookup_accelerator_map[? "texture"           ] = 40;
+        _command_tag_lookup_accelerator_map[? "pin_top"           ] = 41;
+        _command_tag_lookup_accelerator_map[? "pin_middle"        ] = 42;
+        _command_tag_lookup_accelerator_map[? "pin_bottom"        ] = 43;
     }
     
     #endregion
@@ -586,7 +589,7 @@ function __scribble_gen_2_parser()
                         case 13:
                             _new_halign = fa_right;
                         break;
-                            
+                        
                         // [fa_top]
                         case 14:
                             _new_valign = fa_top;
@@ -601,23 +604,38 @@ function __scribble_gen_2_parser()
                         case 16:
                             _new_valign = fa_bottom;
                         break;
-                    
+                        
                         // [pin_left]   
                         case 17:
                             _new_halign = __SCRIBBLE_PIN_LEFT;
                         break;
-                    
+                        
                         // [pin_center]
                         // [pin_centre]
                         case 18:
                             _new_halign = __SCRIBBLE_PIN_CENTRE;
                         break;
-                    
+                        
                         // [pin_right]
                         case 19:
                             _new_halign = __SCRIBBLE_PIN_RIGHT;
                         break;
-                    
+                        
+                        // [pin_top]
+                        case 41:
+                            _new_valign = __SCRIBBLE_PIN_TOP;
+                        break;
+                         
+                        // [pin_middle]   
+                        case 42:
+                            _new_valign = __SCRIBBLE_PIN_MIDDLE;
+                        break;
+                        
+                        // [pin_bottom]    
+                        case 43:
+                            _new_valign = __SCRIBBLE_PIN_BOTTOM;
+                        break;
+                        
                         // [fa_justify]
                         case 20:
                             _new_halign = __SCRIBBLE_FA_JUSTIFY;
