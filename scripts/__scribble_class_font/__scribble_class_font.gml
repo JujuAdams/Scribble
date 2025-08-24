@@ -5,8 +5,10 @@
 /// @param renderType
 /// @param fromBundle
 /// @param texelsValid
+/// @param underlineY
+/// @param strikeY
 
-function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, _texels_valid) constructor
+function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, _texels_valid, _underlineY, _strikeY) constructor
 {
     //The name of the font. This is the alias used to reference the font elsewhere
     __name = _name;
@@ -21,6 +23,10 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     
     //Whether the source texture is ready - loaded into RAM and fetched into VRAM
     __texels_valid = _texels_valid;
+    
+    //
+    __underlineY = _underlineY; //*Not* the raw value. This value is changed by scribble_font_scale()
+    __strikeY    = _strikeY;    //*Not* the raw value. This value is changed by scribble_font_scale()
     
     static _font_data_map = __scribble_system().__font_data_map;
     _font_data_map[? _name] = self;

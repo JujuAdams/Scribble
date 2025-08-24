@@ -113,7 +113,18 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
             var _sdf_height_offset    = 0;
         }
         
-        var _font_data = new __scribble_class_font(_name, _size, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _from_bundle, _texels_valid);
+        var _ascender = _font_info.ascender;
+        
+        //Fix dodgy ascender values
+        if (_ascender <= 0)
+        {
+            _ascender = floor(_font_info.size * (4/3));
+        }
+        
+        var _underlineY = _ascender - _font_info.ascenderOffset;
+        var _strikeY    = ceil(0.666*_ascender) - _font_info.ascenderOffset;
+        
+        var _font_data = new __scribble_class_font(_name, _size, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _from_bundle, _texels_valid, _underlineY, _strikeY);
         
         var _font_glyphs_map      = _font_data.__glyphs_map;
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;

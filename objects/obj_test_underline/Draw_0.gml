@@ -1,0 +1,1 @@
+scribble("[fa_center][fnt_noto_latin][ul,3][rainbow][wave]Sphinx of black quartz, hear my vow").draw(room_width div 2, room_height div 2);

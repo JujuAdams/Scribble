@@ -1,11 +1,11 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_strikethrough",
+  "%Name":"obj_test_underline",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_strikethrough",
+  "name":"obj_test_underline",
   "overriddenProperties":[],
   "parent":{
     "name":"Basic",

@@ -66,11 +66,11 @@ const float PI = 3.14159265359;
 // Attributes, Varyings, and Uniforms
 
 
-attribute vec3  in_Position;     //{X, Y, Animation index}
-attribute vec3  in_Normal;       //{Reveal index, Sprite data, Bitpacked effect flags}
-attribute vec4  in_Colour;       //Colour
-attribute vec2  in_TextureCoord; //UVs
-attribute vec2  in_Colour2;      //{dX, dY}
+attribute vec3 in_Position;     //{X, Y, Animation index}
+attribute vec3 in_Normal;       //{Reveal index, Sprite data, Bitpacked effect flags}
+attribute vec4 in_Colour;       //Colour
+attribute vec2 in_TextureCoord; //UVs
+attribute vec2 in_Colour2;      //{dX, dY}
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;

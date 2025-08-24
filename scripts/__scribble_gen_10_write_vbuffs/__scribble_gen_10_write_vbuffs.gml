@@ -68,6 +68,9 @@ function __scribble_gen_10_write_vbuffs()
     static _effects_map     = __scribble_system().__effects_map;
     static _generator_state = __scribble_system().__generator_state;
     
+    static _scribbleDotUVs = sprite_get_uvs(__scribble_dot, 0);
+    static _scribbleDotMaterial = __scribble_sprite_get_material(__scribble_dot, 0);
+    
     with(_generator_state)
     {
         var _glyph_grid        = __glyph_grid;
@@ -120,6 +123,9 @@ function __scribble_gen_10_write_vbuffs()
     
     var _underline = 0;
     var _strike    = 0;
+    
+    var _fontUnderlineY = 0;
+    var _fontStrikeY    = 0;
     
     var _func_region_pop = function(_page_data, _region_name, _region_start, _region_end)
     {
@@ -194,6 +200,7 @@ function __scribble_gen_10_write_vbuffs()
         }
         
         var _i = _page_data.__glyph_start;
+        var _iLast = _i + _page_data.__glyph_count - 1;
         repeat(_page_data.__glyph_count)
         {
             var _animation_index = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX];
@@ -258,7 +265,9 @@ function __scribble_gen_10_write_vbuffs()
                     break;
                     
                     case __SCRIBBLE_GEN_CONTROL_TYPE_FONT:
-                        //Do nothing
+                        var _fontData = __scribble_get_font_data(_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA]);
+                        var _fontUnderlineY = floor(_fontData.__underlineY);
+                        var _fontStrikeY    = floor(_fontData.__strikeY);
                     break;
                     
                     case __SCRIBBLE_GEN_CONTROL_TYPE_UNDERLINE:
@@ -427,57 +436,45 @@ function __scribble_gen_10_write_vbuffs()
                 #endregion
             }
             
-            if (_strike > 0)
+            if (_i < _iLast)
             {
-                static _scribbleDotUVs = sprite_get_uvs(__scribble_dot, 0);
-                static _scribbleDotMaterial = __scribble_sprite_get_material(__scribble_dot, 0);
-                
-                var _fontHeight = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT];
-                
-                var _quad_l = _vbuff_pos_grid[# _i,   __SCRIBBLE_GEN_VBUFF_POS_QUAD_L];
-                var _quad_t = (_fontHeight div 2) - ceil(0.5*_strike);
-                var _quad_r = _vbuff_pos_grid[# _i+1, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L];
-                var _quad_b = _quad_t + _strike;
-                
-                var _material = _scribbleDotMaterial;
-                var _quad_u0  = _scribbleDotUVs[0];
-                var _quad_v0  = _scribbleDotUVs[1];
-                var _quad_u1  = _scribbleDotUVs[2];
-                var _quad_v1  = _scribbleDotUVs[3];
-                
-                var _half_w = 0.5*(1 + _quad_r - _quad_l);
-                var _half_h = 0.5*_strike;
-                
-                __SCRIBBLE_VBUFF_WRITE_GLYPH
-            }
-            
-            if (_underline > 0)
-            {
-                static _scribbleDotUVs = sprite_get_uvs(__scribble_dot, 0);
-                static _scribbleDotMaterial = __scribble_sprite_get_material(__scribble_dot, 0);
-                
-                var _fontInfo = font_get_info(fnt_monospace);
-                var _ascender = _fontInfo.ascender;
-                if (_ascender <= 0)
+                if (_strike > 0)
                 {
-                    _ascender = ceil(_fontInfo.size * (4/3));
+                    var _quad_l = _vbuff_pos_grid[# _i,   __SCRIBBLE_GEN_VBUFF_POS_QUAD_L];
+                    var _quad_t = _vbuff_pos_grid[# _i,   __SCRIBBLE_GEN_VBUFF_POS_QUAD_T] - _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_Y] + _fontStrikeY - ceil(0.5*_strike);
+                    var _quad_r = _vbuff_pos_grid[# _i+1, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L];
+                    var _quad_b = _quad_t + _strike;
+                    
+                    var _material = _scribbleDotMaterial;
+                    var _quad_u0  = _scribbleDotUVs[0];
+                    var _quad_v0  = _scribbleDotUVs[1];
+                    var _quad_u1  = _scribbleDotUVs[2];
+                    var _quad_v1  = _scribbleDotUVs[3];
+                    
+                    var _half_w = 0.5*(1 + _quad_r - _quad_l);
+                    var _half_h = 0.5*_strike;
+                    
+                    __SCRIBBLE_VBUFF_WRITE_GLYPH
                 }
                 
-                var _quad_l = _vbuff_pos_grid[# _i,   __SCRIBBLE_GEN_VBUFF_POS_QUAD_L];
-                var _quad_t = _ascender + 1;
-                var _quad_r = _vbuff_pos_grid[# _i+1, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L];
-                var _quad_b = _quad_t + _underline;
-                
-                var _material = _scribbleDotMaterial;
-                var _quad_u0  = _scribbleDotUVs[0];
-                var _quad_v0  = _scribbleDotUVs[1];
-                var _quad_u1  = _scribbleDotUVs[2];
-                var _quad_v1  = _scribbleDotUVs[3];
-                
-                var _half_w = 0.5*(1 + _quad_r - _quad_l);
-                var _half_h = 0.5*_underline;
-                
-                __SCRIBBLE_VBUFF_WRITE_GLYPH
+                if (_underline > 0)
+                {
+                    var _quad_l = _vbuff_pos_grid[# _i,   __SCRIBBLE_GEN_VBUFF_POS_QUAD_L];
+                    var _quad_t = _vbuff_pos_grid[# _i,   __SCRIBBLE_GEN_VBUFF_POS_QUAD_T] - _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_Y] + _fontUnderlineY + 1;
+                    var _quad_r = _vbuff_pos_grid[# _i+1, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L];
+                    var _quad_b = _quad_t + _underline;
+                    
+                    var _material = _scribbleDotMaterial;
+                    var _quad_u0  = _scribbleDotUVs[0];
+                    var _quad_v0  = _scribbleDotUVs[1];
+                    var _quad_u1  = _scribbleDotUVs[2];
+                    var _quad_v1  = _scribbleDotUVs[3];
+                    
+                    var _half_w = 0.5*(1 + _quad_r - _quad_l);
+                    var _half_h = 0.5*_underline;
+                    
+                    __SCRIBBLE_VBUFF_WRITE_GLYPH
+                }
             }
             
             ++_i;

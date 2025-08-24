@@ -43,12 +43,13 @@ function scribble_external_font_add(_sprite, _image, _json, _font_name = undefin
     
     //Convert the .yy JSON format into the key parts of the `font_get_info()` format that we need
     var _font_info = {
-        texture: _texture_index,
-        glyphs: {},
+        texture:        _texture_index,
+        glyphs:         {},
         ascenderOffset: _json.ascenderOffset,
-        sdfEnabled: _json.usesSDF,
-        sdfSpread: _json.sdfSpread,
-        size: _json.size,
+        ascender:       _json.ascender,
+        sdfEnabled:     _json.usesSDF,
+        sdfSpread:      _json.sdfSpread,
+        size:           _json.size,
     };
     
     //Most of the work is duplicating out the glyph data
