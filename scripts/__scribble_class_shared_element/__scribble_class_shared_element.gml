@@ -88,7 +88,7 @@ function __scribble_class_shared_element(_string) constructor
     __tw_reveal              = undefined;
     __tw_reveal_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
     
-    __animation_time  = current_time;
+    __animation_time  = 0;
     __animation_speed = 1;
     
     __padding_l = 0;

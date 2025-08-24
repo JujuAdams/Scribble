@@ -185,11 +185,23 @@ vec2 jitter(vec2 position, vec2 centre, float index)
 
 float filterSprite(float spriteData)
 {
+    bool once = (spriteData < 0.0);
+    spriteData = abs(spriteData);
+    
     float imageSpeed = floor(spriteData / 16384.0);
     float imageMax   = floor((spriteData - 16384.0*imageSpeed) / 128.0);
     float image      = spriteData - (16384.0*imageSpeed + 128.0*imageMax);
     
-    float displayImage = floor(mod(u_fTime*(imageSpeed/256.0), imageMax));
+    float displayImage;
+    if (once)
+    {
+        displayImage = floor(min(u_fTime*(imageSpeed/256.0), imageMax-1.0));
+    }
+    else
+    {
+        displayImage = floor(mod(u_fTime*(imageSpeed/256.0), imageMax));
+    }
+    
     return ((abs(image-displayImage) < 1.0/255.0)? 1.0 : 0.0);
 }
 

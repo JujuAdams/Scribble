@@ -1124,7 +1124,22 @@ function __scribble_gen_2_parser()
                                                 _image_speed = real(_tag_parameters[2]);
                                             break;
                                         }
-                                
+                                        
+                                        if (_image_index < 0)
+                                        {
+                                            var _sprite_once = true;
+                                            _image_index = 0;
+                                            
+                                            if (_tag_parameter_count == 2)
+                                            {
+                                                _image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var _sprite_once = false;
+                                        }
+                                        
                                         //Apply IDE sprite speed
                                         _image_speed *= __scribble_image_speed_get(_sprite_index);
                                 
@@ -1149,6 +1164,7 @@ function __scribble_gen_2_parser()
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX ] = _sprite_index;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX  ] = _image_index;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED  ] = _image_speed;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SPRITE_ONCE  ] = _sprite_once;
                                 
                                         ++_glyph_count;
                                         _glyph_prev_arabic_join_next = false;

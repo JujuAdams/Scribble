@@ -49,7 +49,8 @@
 #macro __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX     18 // }
 #macro __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX      19 // } Only used for sprites
 #macro __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED      20 // }
-#macro __SCRIBBLE_GEN_GLYPH_SIZE             21 //
+#macro __SCRIBBLE_GEN_GLYPH_SPRITE_ONCE      21 // }
+#macro __SCRIBBLE_GEN_GLYPH_SIZE             22 //
 
 #macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_L  0
 #macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_T  1

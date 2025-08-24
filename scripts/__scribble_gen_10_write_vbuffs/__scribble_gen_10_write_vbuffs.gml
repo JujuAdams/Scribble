@@ -294,6 +294,7 @@ function __scribble_gen_10_write_vbuffs()
                 var _sprite_index    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX];
                 var _image_index     = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX ];
                 var _image_speed     = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED ];
+                var _sprite_once     = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_SPRITE_ONCE ];
                 
                 var _glyph_xscale = sprite_get_width( _sprite_index) / _glyph_width;
                 var _glyph_yscale = sprite_get_height(_sprite_index) / _glyph_height;
@@ -340,6 +341,16 @@ function __scribble_gen_10_write_vbuffs()
                 
                 var _glyph_sprite_data = 16384*floor(256*_image_speed) + 128*_sprite_number + _image_index;
                 
+                if (_sprite_once)
+                {
+                    _glyph_sprite_data *= -1;
+                    var _increment = -1;
+                }
+                else
+                {
+                    var _increment = 1;
+                }
+                
                 var _j = _image_index;
                 repeat((_image_speed > 0)? _sprite_number : 1) //Only draw one image if we have an image speed of 0 since we're not animating
                 {
@@ -362,7 +373,7 @@ function __scribble_gen_10_write_vbuffs()
                     __SCRIBBLE_VBUFF_WRITE_GLYPH;
                     
                     ++_j;
-                    ++_glyph_sprite_data;
+                    _glyph_sprite_data += _increment;
                 }
                 
                 if (!SCRIBBLE_COLORIZE_SPRITES) _write_colour = _old_write_colour;
