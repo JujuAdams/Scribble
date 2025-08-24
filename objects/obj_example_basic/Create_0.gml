@@ -15,7 +15,7 @@ scribble_font_force_bilinear_filtering("spr_sprite_font", false);
 scribble_font_bake_outline_and_shadow("spr_sprite_font", "spr_sprite_font_outlined", 1, 1, SCRIBBLE_OUTLINE_NONE, 0, false);
 
 //Create a unique text element that holds typewriter state
-var _string = @"[fa_center][fa_middle][fnt_riffic_sdf][rainbow][wave]Welcome to Scribble 9![/]
+var _string = @"[fa_center][fa_middle][rainbow][wave]Welcome to Scribble 9![/]
 
 Scribble is a multi-effects text engine designed to be fast, easy, and fun.
 

@@ -17,9 +17,6 @@ function __scribble_gen_8_position_glyphs()
     
     ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
     
-    //Transform the animation index into a proper packed index
-    ds_grid_multiply_region(_glyph_grid, 0, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _glyph_count-1, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, __SCRIBBLE_MAX_LINES);
-    
     var _model_min_x =  infinity;
     var _model_min_y =  infinity;
     var _model_max_x = -infinity;
@@ -68,7 +65,8 @@ function __scribble_gen_8_position_glyphs()
             
             
             
-            ds_grid_add_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _line_glyph_end, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _j - _page_start_line);
+            //TODO - Restore line reveal
+            //ds_grid_add_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _line_glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _j - _page_start_line);
             
             
             

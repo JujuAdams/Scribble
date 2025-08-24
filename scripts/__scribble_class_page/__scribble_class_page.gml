@@ -14,7 +14,7 @@ function __scribble_class_page() constructor
     __created_frame = __scribble_state.__frames;
     __frozen = undefined;
     
-    __character_count = 0;
+    __reveal_count = 0;
     
     __glyph_start = undefined;
     __glyph_end   = undefined;
@@ -36,8 +36,7 @@ function __scribble_class_page() constructor
     __vertex_buffer_array = [];
     __texture_to_vertex_buffer_dict = {};
     
-    __char_events  = {};
-    __line_events  = {};
+    __events_dict  = {};
     __region_array = [];
     
     static __submit = function(_double_draw)

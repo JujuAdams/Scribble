@@ -1,9 +1,8 @@
 // Feather disable all
 
 /// @param string
-/// @param [perLine=false]
 
-function __scribble_class_unique_element(_string, _perLine = false) : __scribble_class_shared_element(_string) constructor
+function __scribble_class_unique_element(_string) : __scribble_class_shared_element(_string) constructor
 {
     /// @param x
     /// @param y
@@ -126,8 +125,6 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
     
     __characterDelay     = false;
     __characterDelayDict = {};
-    
-    __perLine = _perLine;
     
     __syncStarted  = false;
     __syncInstance = undefined;
@@ -417,7 +414,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
         if (array_length(_pages_array) <= __last_page) return 1.0;
         var _page_data = _pages_array[__last_page];
         
-        var _max = __perLine? _page_data.__line_count : _page_data.__character_count;
+        var _max = _page_data.__reveal_count;
         if (_max <= 0) return 1.0;
         
         var _t = clamp((__window_array[__window_index] + max(0, __window_array[__window_index+1] + __typistSmoothness - _max)) / (_max + __typistSmoothness), 0, 1);
@@ -537,7 +534,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
             
             //Collect data from the struct
             //This data is set in __scribble_generate_model() via the .__new_event() method on the model class
-            var _event_position = __perLine? _event_struct.line_index : _event_struct.character_index;
+            var _event_position = _event_struct.reveal_index;
             var _event_name     = _event_struct.name;
             var _event_data     = _event_struct.data;
             
@@ -613,6 +610,8 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
                 
                 //Probably a current event
                 default:
+                    //FIXME - We should not be passing the reveal index to external functions (should be the character index)
+                    
                     //Otherwise try to find a custom event
                     var _function = _typewriter_events_map[? _event_name];
                     if (is_method(_function))
@@ -754,7 +753,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
         var _pages_array = _model.__get_page_array();
         if (array_length(_pages_array) == 0) return undefined;
         var _page_data = _pages_array[__last_page];
-        var _page_character_count = __perLine? _page_data.__line_count : _page_data.__character_count;
+        var _page_character_count = _page_data.__reveal_count;
         
         if (!__typistIn)
         {
@@ -848,7 +847,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
                         _play_sound = true;
                         
                         //Get an array of events for this character from the text element
-                        var _found_events = get_events(__last_character, undefined, __perLine);
+                        var _found_events = get_events(__last_character, undefined);
                         var _found_size = array_length(_found_events);
                         
                         //Add a per-character delay if required
@@ -939,7 +938,6 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
     
     static __set_typist_shader_uniforms = function()
     {
-        static _u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble, "u_iTypewriterUseLines"     );
         static _u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
         static _u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
         static _u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
@@ -959,7 +957,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
         var _method = __easeMethod;
         if (!__typistIn) _method += __SCRIBBLE_EASE_COUNT;
         
-        var _char_max = 0;
+        var _reveal_max = 0;
         if (__typistBackwards)
         {
             var _model = __get_model(true);
@@ -969,7 +967,7 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
             if (array_length(_pages_array) > __last_page)
             {
                 var _page_data = _pages_array[__last_page];
-                _char_max = __perLine? _page_data.__line_count : _page_data.__character_count;
+                _reveal_max = _page_data.__reveal_count;
             }
             else
             {
@@ -977,9 +975,8 @@ function __scribble_class_unique_element(_string, _perLine = false) : __scribble
             }
         }
         
-        shader_set_uniform_i(_u_iTypewriterUseLines,          __perLine);
         shader_set_uniform_i(_u_iTypewriterMethod,            _method);
-        shader_set_uniform_i(_u_iTypewriterCharMax,           _char_max);
+        shader_set_uniform_i(_u_iTypewriterCharMax,           _reveal_max);
         shader_set_uniform_f(_u_fTypewriterSmoothness,        __typistSmoothness);
         shader_set_uniform_f(_u_vTypewriterStartPos,          __easeDX, __easeDY);
         shader_set_uniform_f(_u_vTypewriterStartScale,        __easeXScale, __easeYScale);

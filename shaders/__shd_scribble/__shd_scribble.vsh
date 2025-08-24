@@ -2,6 +2,8 @@
 precision highp float;
 
 #define BLEND_SPRITES true
+#define ANIMATION_INDEX  in_Position.z
+#define REVEAL_INDEX     in_Normal.x
 
 const float CYCLE_TEXTURE_HEIGHT = 256.0;
 
@@ -131,15 +133,15 @@ vec2 scale(vec2 position, vec2 centre, vec2 scale)
 }
 
 //Oscillate the character
-vec2 wave(vec2 position, float characterIndex)
+vec2 wave(vec2 position, float index)
 {
-    return vec2(position.x, position.y + WAVE_FLAG*WAVE_AMPLITUDE*sin(WAVE_FREQUENCY*characterIndex + WAVE_SPEED*u_fTime));
+    return vec2(position.x, position.y + WAVE_FLAG*WAVE_AMPLITUDE*sin(WAVE_FREQUENCY*index + WAVE_SPEED*u_fTime));
 }
 
 //Wheel the character around
-vec2 wheel(vec2 position, float characterIndex)
+vec2 wheel(vec2 position, float index)
 {
-    float time = WHEEL_FREQUENCY*characterIndex + WHEEL_SPEED*u_fTime;
+    float time = WHEEL_FREQUENCY*index + WHEEL_SPEED*u_fTime;
     return position.xy + WHEEL_FLAG*WHEEL_AMPLITUDE*vec2(cos(time), -sin(time));
 }
 
@@ -150,35 +152,35 @@ vec2 wobble(vec2 position, vec2 centre)
 }
 
 //Pulse the character by scaling it up and down
-vec2 pulse(vec2 position, vec2 centre, float characterIndex)
+vec2 pulse(vec2 position, vec2 centre, float index)
 {
-    float adjustedScale = 1.0 +  PULSE_FLAG*PULSE_SCALE*(0.5 + 0.5*sin(PULSE_SPEED*(250.0*characterIndex + u_fTime)));
+    float adjustedScale = 1.0 +  PULSE_FLAG*PULSE_SCALE*(0.5 + 0.5*sin(PULSE_SPEED*(250.0*index + u_fTime)));
     return scale(position, centre, adjustedScale);
 }
 
 //Shake the character along the x/y axes
 //We use integer time steps so that at low speeds characters don't jump around too much
 //Lots of magic numbers in here to try to get a nice-looking shake
-vec2 shake(vec2 position, float characterIndex)
+vec2 shake(vec2 position, float index)
 {
     float time = SHAKE_SPEED*u_fTime + 0.5;
     float floorTime = floor(time);
     float merge = 1.0 - abs(2.0*(time - floorTime) - 1.0);
     
     //Use some misc prime numbers to try to get a varied-looking shake
-    vec2 delta = vec2(rand(vec2(characterIndex/149.0 + floorTime/13.0, characterIndex/727.0 - floorTime/331.0)),
-                      rand(vec2(characterIndex/501.0 - floorTime/19.0, characterIndex/701.0 + floorTime/317.0)));
+    vec2 delta = vec2(rand(vec2(index/149.0 + floorTime/13.0, index/727.0 - floorTime/331.0)),
+                      rand(vec2(index/501.0 - floorTime/19.0, index/701.0 + floorTime/317.0)));
     
     return position + SHAKE_FLAG*SHAKE_AMPLITUDE*merge*(2.0*delta - 1.0);
 }
 
 //Jitter the character scale, using a similar method to above
-vec2 jitter(vec2 position, vec2 centre, float characterIndex)
+vec2 jitter(vec2 position, vec2 centre, float index)
 {
     float floorTime = floor(JITTER_SPEED*u_fTime + 0.5);
     
     //Use some misc prime numbers to try to get a varied-looking jitter
-    float delta = rand(vec2(characterIndex/149.0 + floorTime/13.0, characterIndex/727.0 - floorTime/331.0));
+    float delta = rand(vec2(index/149.0 + floorTime/13.0, index/727.0 - floorTime/331.0));
     
     return scale(position, centre, mix(JITTER_MINIMUM, JITTER_MAXIMUM, delta));
 }
@@ -336,11 +338,6 @@ float easeBounce(float time)
 
 void main()
 {
-    //Unpack character/line index
-    float characterIndex = floor(in_Position.z / MAX_LINES);
-    float lineIndex      = in_Position.z - characterIndex*MAX_LINES;
-    
-    //MAX_EFFECTS = 11
     float flagValue = in_Normal.z;
     float edge;
     edge = step(256.0, flagValue); flagArray[8] = edge; flagValue -= 256.0*edge;
@@ -386,7 +383,7 @@ void main()
     
     if (CYCLE_FLAG > 0.5)
     {
-        v_vCycle  = vec2(in_Colour.g*u_fTime - in_Colour.b*characterIndex, in_Colour.r + (0.5 / CYCLE_TEXTURE_HEIGHT));
+        v_vCycle  = vec2(in_Colour.g*u_fTime - in_Colour.b*ANIMATION_INDEX, in_Colour.r + (0.5 / CYCLE_TEXTURE_HEIGHT));
         v_vColour = vec4(1.0);
     }
     else
@@ -412,14 +409,15 @@ void main()
     if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
     
     //Regions
-    if ((characterIndex >= u_vRegionActive.x) && (characterIndex <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
+    //FIXME - Tie regions to reveal index maybe?
+    if ((REVEAL_INDEX >= u_vRegionActive.x) && (REVEAL_INDEX <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
     
     
     
     //Vertex animation
     pos.xy = wobble(pos, centre);
-    pos.xy = pulse( pos, centre, characterIndex);
-    if (JITTER_FLAG > 0.5) pos.xy = jitter(pos, centre, characterIndex); //Apply the jitter effect
+    pos.xy = pulse(pos, centre, ANIMATION_INDEX);
+    if (JITTER_FLAG > 0.5) pos.xy = jitter(pos, centre, ANIMATION_INDEX); //Apply the jitter effect
     
     
     
@@ -430,7 +428,7 @@ void main()
     
     if (easeMethod > EASE_NONE)
     {
-        float fadeIndex = ((u_iTypewriterUseLines > 0)? lineIndex : characterIndex) + 1.0;
+        float fadeIndex = REVEAL_INDEX + 1.0;
         if (u_iTypewriterCharMax > 0) fadeIndex = float(u_iTypewriterCharMax) - fadeIndex;
         
         float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, fadeIndex, fadeOut);
@@ -465,9 +463,9 @@ void main()
     
     
     //Vertex
-    pos.xy = wave( pos, characterIndex); //Apply the wave effect
-    pos.xy = wheel(pos, characterIndex); //Apply the wheel effect
-    pos.xy = shake(pos, characterIndex); //Apply the shake effect
+    pos.xy = wave( pos, ANIMATION_INDEX); //Apply the wave effect
+    pos.xy = wheel(pos, ANIMATION_INDEX); //Apply the wheel effect
+    pos.xy = shake(pos, ANIMATION_INDEX); //Apply the shake effect
     
     
     

@@ -53,12 +53,12 @@
                                          _quad_b = _quad_cy;\
                                      }\
                                      ;\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, 0, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff,  _half_w,  _half_h);\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, 0, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, -_half_w, -_half_h);\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_b, _packed_indexes); vertex_normal(_vbuff, 0, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff,  _half_w, -_half_h);\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _packed_indexes); vertex_normal(_vbuff, 0, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, -_half_w, -_half_h);\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _packed_indexes); vertex_normal(_vbuff, 0, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff,  _half_w,  _half_h);\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_t, _packed_indexes); vertex_normal(_vbuff, 0, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, -_half_w,  _half_h);
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff,  _half_w,  _half_h);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, -_half_w, -_half_h);\
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_b, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff,  _half_w, -_half_h);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, -_half_w, -_half_h);\
+                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff,  _half_w,  _half_h);\
+                                     vertex_position_3d(_vbuff, _quad_r, _quad_t, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, -_half_w,  _half_h);
 
 
 
@@ -167,12 +167,12 @@ function __scribble_gen_10_write_vbuffs()
     var _p = 0;
     repeat(__pages)
     {
-        var _page_data             = __pages_array[_p];
-        var _page_char_events_dict = _page_data.__char_events;
-        var _page_line_events_dict = _page_data.__line_events;
-        var _vbuff                 = undefined;
-        var _material_prev         = undefined;
-        var _packed_indexes        = 0;
+        var _page_data        = __pages_array[_p];
+        var _page_events_dict = _page_data.__events_dict;
+        var _vbuff            = undefined;
+        var _material_prev    = undefined;
+        var _animation_index  = 0;
+        var _reveal_index     = 0;
         
         if (_glyph_data_getter)
         {
@@ -193,7 +193,8 @@ function __scribble_gen_10_write_vbuffs()
         var _i = _page_data.__glyph_start;
         repeat(_page_data.__glyph_count)
         {
-            var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX];
+            var _animation_index = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX];
+            var _reveal_index    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX   ];
             
             #region Read controls
             
@@ -225,32 +226,18 @@ function __scribble_gen_10_write_vbuffs()
                     break;
                     
                     case __SCRIBBLE_GEN_CONTROL_TYPE_EVENT:
-                        var _character_index =  _packed_indexes div __SCRIBBLE_MAX_LINES;
-                        var _line_index      = (_packed_indexes mod __SCRIBBLE_MAX_LINES) + ((_character_index > 0)? 1 : 0);
-                        
+                        //FIXME - Add character index (and line index if possible)
                         var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
-                        _event.character_index = _character_index;
-                        _event.line_index      = _line_index;
+                        _event.reveal_index = _reveal_index;
                         
                         
                         
-                        var _event_array = _page_char_events_dict[$ _character_index]; //Find the correct event array in the dictionary, creating a new one if needed
+                        var _event_array = _page_events_dict[$ _reveal_index]; //Find the correct event array in the dictionary, creating a new one if needed
                         
                         if (!is_array(_event_array))
                         {
                             var _event_array = [];
-                            _page_char_events_dict[$ _character_index] = _event_array;
-                        }
-                        
-                        array_push(_event_array, _event);
-                        
-                        
-                        
-                        var _event_array = _page_line_events_dict[$ _line_index]; //Find the correct event array in the dictionary, creating a new one if needed
-                        if (!is_array(_event_array))
-                        {
-                            var _event_array = [];
-                            _page_line_events_dict[$ _line_index] = _event_array;
+                            _page_events_dict[$ _reveal_index] = _event_array;
                         }
                         
                         array_push(_event_array, _event);
@@ -300,16 +287,13 @@ function __scribble_gen_10_write_vbuffs()
                     buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                 }
                 
-                var _glyph_x        = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_X              ];
-                var _glyph_y        = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_Y              ];
-                var _glyph_width    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_WIDTH          ];
-                var _glyph_height   = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_HEIGHT         ];
-                
-                var _packed_indexes = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX];
-                
-                var _sprite_index   = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX   ];
-                var _image_index    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX    ];
-                var _image_speed    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED    ];
+                var _glyph_x         = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_X           ];
+                var _glyph_y         = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_Y           ];
+                var _glyph_width     = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_WIDTH       ];
+                var _glyph_height    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_HEIGHT      ];
+                var _sprite_index    = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX];
+                var _image_index     = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX ];
+                var _image_speed     = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED ];
                 
                 var _glyph_xscale = sprite_get_width( _sprite_index) / _glyph_width;
                 var _glyph_yscale = sprite_get_height(_sprite_index) / _glyph_height;
@@ -444,39 +428,24 @@ function __scribble_gen_10_write_vbuffs()
         ++_p;
     }
     
-    //Sweep up any remaining controls
+    //Sweep up any remaining events
     var _control_delta = _glyph_grid[# _i-1, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
     repeat(_control_delta)
     {
         if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE_EVENT)
         {
-            var _character_index =  _packed_indexes div __SCRIBBLE_MAX_LINES;
-            var _line_index      = (_packed_indexes mod __SCRIBBLE_MAX_LINES) + ((_character_index > 0)? 1 : 0);
-            
+            //FIXME - Add character index (and line index if possible)
             var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
-            _event.character_index = _character_index;
-            _event.line_index      = _line_index;
+            _event.reveal_index = _reveal_index;
             
             
             
-            var _event_array = _page_char_events_dict[$ _character_index]; //Find the correct event array in the diciontary, creating a new one if needed
-            
-            if (!is_array(_event_array))
-            {
-                var _event_array = [];
-                _page_char_events_dict[$ _character_index] = _event_array;
-            }
-            
-            array_push(_event_array, _event);
-            
-            
-            
-            var _event_array = _page_line_events_dict[$ _line_index]; //Find the correct event array in the diciontary, creating a new one if needed
+            var _event_array = _page_events_dict[$ _reveal_index]; //Find the correct event array in the diciontary, creating a new one if needed
             
             if (!is_array(_event_array))
             {
                 var _event_array = [];
-                _page_line_events_dict[$ _line_index] = _event_array;
+                _page_events_dict[$ _reveal_index] = _event_array;
             }
             
             array_push(_event_array, _event);

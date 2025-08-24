@@ -1245,18 +1245,18 @@ function __scribble_class_shared_element(_string) constructor
         return self;
     }
     
-    static get_events = function(_position, _page_index = __page, _use_lines = false)
+    static get_events = function(_position, _page_index = __page)
     {
         static _empty_array = [];
         
         var _model = __get_model(true);
-        if (!is_struct(_model)) return _empty_array;
+        if (not is_struct(_model)) return _empty_array;
         
         var _page = _model.__pages_array[_page_index];
-        var _event_struct = _use_lines? _page.__line_events : _page.__char_events;
+        var _event_struct = _page.__events_dict;
         
         var _events = _event_struct[$ _position];
-        if (!is_array(_events)) return _empty_array;
+        if (not is_array(_events)) return _empty_array;
         
         return _events;
     }
@@ -1494,7 +1494,6 @@ function __scribble_class_shared_element(_string) constructor
         static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
         static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
         
-        static _u_iTypewriterUseLines      = shader_get_uniform(__shd_scribble, "u_iTypewriterUseLines"     );
         static _u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
         static _u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
         static _u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
@@ -1554,6 +1553,7 @@ function __scribble_class_shared_element(_string) constructor
                                             colour_get_blue( __flash_colour)/255,
                                             __flash_alpha);
             
+            //FIXME - Regions use reveal index
             shader_set_uniform_f(_u_vRegionActive, __region_glyph_start, __region_glyph_end);
             
             shader_set_uniform_f(_u_vRegionColour, colour_get_red(  __region_colour)/255,
@@ -1600,7 +1600,6 @@ function __scribble_class_shared_element(_string) constructor
         
         if (__tw_reveal != undefined)
         {
-            shader_set_uniform_i(_u_iTypewriterUseLines,          0);
             shader_set_uniform_i(_u_iTypewriterMethod,            SCRIBBLE_EASE_LINEAR);
             shader_set_uniform_i(_u_iTypewriterCharMax,           0);
             shader_set_uniform_f(_u_fTypewriterSmoothness,        0);
