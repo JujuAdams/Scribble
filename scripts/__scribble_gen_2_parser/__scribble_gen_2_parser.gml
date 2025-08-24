@@ -243,71 +243,6 @@ function __scribble_gen_2_parser()
     var _buffer_length = buffer_tell(_string_buffer);
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     
-    #region Determine the overall bidi direction for the string
-    
-    //TODO - Is it faster to scan for the overall bidi post-hoc?
-    
-    var _overall_bidi = _generator_state.__overall_bidi;
-    if ((_overall_bidi != __SCRIBBLE_BIDI_L2R) && (_overall_bidi != __SCRIBBLE_BIDI_R2L))
-    {
-        // Searching until we find a glyph with a well-defined direction
-        var _in_tag = false;
-        var _state_command_tag_flipflop = false;
-        repeat(string_byte_length(_element_text))
-        {
-            var _glyph_ord = __scribble_buffer_read_unicode(_string_buffer)
-            if (_glyph_ord == 0) break;
-            
-            if (_in_tag)
-            {
-                if (_glyph_ord == SCRIBBLE_COMMAND_TAG_CLOSE) _in_tag = false;
-                continue;
-            }
-            
-            if ((_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignore_commands)
-            {
-                if (__scribble_buffer_peek_unicode(_string_buffer, buffer_tell(_string_buffer)) == SCRIBBLE_COMMAND_TAG_OPEN)
-                {
-                    _state_command_tag_flipflop = true;
-                }
-                else if (_state_command_tag_flipflop)
-                {
-                    _state_command_tag_flipflop = false;
-                }
-                else
-                {
-                    _in_tag = true;
-                    continue;
-                }
-            }
-            
-            var _bidi = _global_glyph_bidi_map[? _glyph_ord];
-            if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI_L2R;
-            
-            if (_bidi == __SCRIBBLE_BIDI_L2R)
-            {
-                _overall_bidi = _bidi;
-                break;
-            }
-            
-            //Group R2L and R2L_ARABIC under the same overall bidi direction
-            if (_bidi >= __SCRIBBLE_BIDI_R2L)
-            {
-                _overall_bidi = __SCRIBBLE_BIDI_R2L;
-                break;
-            }
-        }
-        
-        buffer_seek(_string_buffer, buffer_seek_start, 0);
-        
-        // We didn't find a glyph with a direction, default to L2R
-        if ((_overall_bidi != __SCRIBBLE_BIDI_L2R) && (_overall_bidi != __SCRIBBLE_BIDI_R2L)) _overall_bidi = __SCRIBBLE_BIDI_L2R;
-        
-        _generator_state.__overall_bidi = _overall_bidi;
-    }
-    
-    #endregion
-    
     //Resize grids if we have to
     var _element_expected_text_length = string_length(_element_text) + 2;
     if (ds_grid_width(_glyph_grid    ) < _element_expected_text_length) ds_grid_resize(_glyph_grid,     _element_expected_text_length, __SCRIBBLE_GEN_GLYPH_SIZE);
@@ -1765,6 +1700,51 @@ function __scribble_gen_2_parser()
     
     //Set our vertical alignment if it hasn't been overrided
     if (__valign == undefined) __valign = _starting_valign;
+    
+    ///////
+    // Determine the overall bidi direction
+    ///////
+    
+    var _overall_bidi = _generator_state.__overall_bidi;
+    if ((_overall_bidi != __SCRIBBLE_BIDI_L2R) && (_overall_bidi != __SCRIBBLE_BIDI_R2L))
+    {
+        //Searching until we find a glyph with a well-defined direction
+        var _i = 0;
+        repeat(_glyph_count)
+        {
+            var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE];
+            if (_glyph_ord > 0)
+            {
+                var _bidi = _global_glyph_bidi_map[? _glyph_ord];
+                if ((_bidi == undefined) || (_bidi == __SCRIBBLE_BIDI_L2R))
+                {
+                    _overall_bidi = __SCRIBBLE_BIDI_L2R;
+                    break;
+                }
+                
+                //Group R2L and R2L_ARABIC under the same overall bidi direction
+                if (_bidi >= __SCRIBBLE_BIDI_R2L)
+                {
+                    _overall_bidi = __SCRIBBLE_BIDI_R2L;
+                    break;
+                }
+            }
+            
+            ++_i;
+        }
+        
+        // We didn't find a glyph with a direction, default to L2R
+        if ((_overall_bidi != __SCRIBBLE_BIDI_L2R) && (_overall_bidi != __SCRIBBLE_BIDI_R2L))
+        {
+            _overall_bidi = __SCRIBBLE_BIDI_L2R;
+        }
+        
+        _generator_state.__overall_bidi = _overall_bidi;
+    }
+    
+    ///////
+    // Tidy up loose ends
+    ///////
     
     //Create a null terminator so we correctly handle the last character in the string
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x00;

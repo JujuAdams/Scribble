@@ -370,7 +370,6 @@
     {"id":{"name":"scribble_cycle_exists","path":"scripts/scribble_cycle_exists/scribble_cycle_exists.yy",},},
     {"id":{"name":"scribble_default_preprocessor_get","path":"scripts/scribble_default_preprocessor_get/scribble_default_preprocessor_get.yy",},},
     {"id":{"name":"scribble_default_preprocessor_set","path":"scripts/scribble_default_preprocessor_set/scribble_default_preprocessor_set.yy",},},
-    {"id":{"name":"scribble_doc","path":"scripts/scribble_doc/scribble_doc.yy",},},
     {"id":{"name":"scribble_external_font_add","path":"scripts/scribble_external_font_add/scribble_external_font_add.yy",},},
     {"id":{"name":"scribble_external_font_exists","path":"scripts/scribble_external_font_exists/scribble_external_font_exists.yy",},},
     {"id":{"name":"scribble_external_font_remove","path":"scripts/scribble_external_font_remove/scribble_external_font_remove.yy",},},
@@ -459,8 +458,8 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
-    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
+    {"roomId":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
   ],
   "templateType":null,
   "TextureGroups":[
