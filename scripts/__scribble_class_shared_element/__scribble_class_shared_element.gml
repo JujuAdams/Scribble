@@ -714,6 +714,49 @@ function __scribble_class_shared_element(_string) constructor
         return _model.__pages_array[__page].__region_array;
     }
     
+    static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = __scribble_dot, _image = 0, _color = c_white, _alpha = 1)
+    {
+        var _model = __get_model(true);
+        if (!is_struct(_model)) return undefined;
+        
+        var _page         = _model.__pages_array[__page];
+        var _region_array = _page.__region_array;
+        
+        var _i = 0;
+        repeat(array_length(_region_array))
+        {
+            var _region = _region_array[_i];
+            if (_region.name == _name)
+            {
+                var _old_matrix = matrix_get(matrix_world);
+                var _matrix = matrix_multiply(__update_matrix(_model, _elementX, _elementY), _old_matrix);
+                matrix_set(matrix_world, _matrix);
+                
+                //TODO - Make regions a class and move this code to a method?
+                
+                var _bbox_array = _region.bbox_array;
+                var _j = 0;
+                repeat(array_length(_bbox_array))
+                {
+                    var _bbox = _bbox_array[_j];
+                    draw_sprite_stretched_ext(_sprite, _image,
+                                              _bbox.x1 - _padding, _bbox.y1 - _padding,
+                                              1 + _bbox.x2 - _bbox.x1 + 2*_padding, 1 + _bbox.y2 - _bbox.y1 + 2*_padding,
+                                              _color, _alpha);
+                    ++_j;
+                }
+                
+                //Make sure we reset the world matrix
+                matrix_set(matrix_world, _old_matrix);
+                shader_reset();
+                
+                return;
+            }
+            
+            ++_i;
+        }
+    }
+    
     #endregion
     
     
