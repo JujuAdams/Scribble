@@ -1,4 +1,5 @@
 // Feather disable all
+
 function __scribble_gen_8_position_glyphs()
 {
     static _generator_state = __scribble_system().__generator_state;
@@ -11,7 +12,6 @@ function __scribble_gen_8_position_glyphs()
         var _temp_grid       = __temp_grid;
         var _overall_bidi    = __overall_bidi;
         var _model_max_width = __model_max_width;
-        var _glyph_count     = __glyph_count;
         var _line_height     = __line_height;
     }
     
@@ -63,14 +63,9 @@ function __scribble_gen_8_position_glyphs()
             var _line_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_GLYPH_START];
             var _line_glyph_end   = _word_grid[# _line_word_end,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];
             
-            
-            
-            //TODO - Restore line reveal
-            //ds_grid_add_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _line_glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _j - _page_start_line);
-            
-            
-            
-            #region Centre all glyphs vertically on the line
+            ///////
+            // Vertically centre glyphs on the line
+            ///////
             
             var _line_glyph_count = 1 + _line_glyph_end - _line_glyph_start;
             
@@ -80,11 +75,9 @@ function __scribble_gen_8_position_glyphs()
             ds_grid_add_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, 0.5*_line_height + _line_y);
             ds_grid_add_grid_region(_glyph_grid, _temp_grid, 0, 0, _line_glyph_count-1, 0, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_Y);
             
-            #endregion
-            
-            
-            
-            #region Figure out what order words should come in
+            ///////
+            // Figure out what order words should come in
+            ///////
             
             // TODO - Do this whilst building lines
             
@@ -117,8 +110,6 @@ function __scribble_gen_8_position_glyphs()
                 _stretch_grid[# _line_stretch_count, __SCRIBBLE_GEN_STRETCH_BIDI      ] = _stretch_bidi;
                 _line_stretch_count++;
             }
-            
-            #endregion
             
             
             

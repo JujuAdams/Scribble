@@ -72,8 +72,11 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
     /// @param [uniqueID_UNUSED]
     static overwrite = function(_text, _unique_id_UNUSED)
     {
-        __text = _text;
-        __model_cache_name_dirty = true;
+        if (__text != _text)
+        {
+            __text = _text;
+            __model_cache_name_dirty = true;
+        }
         
         return self;
     }
@@ -81,6 +84,17 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
     static pre_update_typist = function(_typist)
     {
         __typist_tick(other);
+        return self;
+    }
+    
+    static reveal_type = function(_state)
+    {
+        if (__revealType != _state)
+        {
+            __revealType = _state;
+            __model_cache_name_dirty = true;
+        }
+        
         return self;
     }
     

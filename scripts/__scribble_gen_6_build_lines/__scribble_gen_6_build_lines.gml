@@ -25,6 +25,15 @@
 
 #macro __SCRIBBLE_GEN_LINE_END  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE_WORD_END] = _line_word_end;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE_WIDTH   ] = _word_x;\
+                                ;\
+                                if (_line_reveal)\
+                                {\
+                                    var _line_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_GLYPH_START];\
+                                    var _line_glyph_end   = _word_grid[# _line_word_end,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];\
+                                    ds_grid_set_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _line_glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _line_count);\
+                                    ;\
+                                }\
+                                ;\
                                 _line_count++;\
                                 if (_line_y + _line_height > _line_max_y) _line_max_y = _line_y + _line_height;\
                                 _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
@@ -49,6 +58,7 @@ function __scribble_gen_6_build_lines()
         var _wrap_apply            = _element.__wrap_apply;
         var _model_max_width       = (_wrap_apply? __model_max_width  : infinity);
         var _model_max_height      = (_wrap_apply? __model_max_height : infinity);
+        var _line_reveal           = (__element.__revealType == SCRIBBLE_REVEAL_PER_LINE);
     }
     
     var _forced_break = true; //Start with a forced break because it's the first line!

@@ -24,6 +24,10 @@
 //method.
 #macro SCRIBBLE_DEFAULT_Z  0
 
+//Default reveal type to use for the `scribble_unique()` typewriter. This value must be one of the
+//`SCRIBBLE_REVEAL_PER_*` macros.
+#macro SCRIBBLE_DEFAULT_REVEAL_TYPE  SCRIBBLE_REVEAL_PER_CHAR
+
 //Whether Scribble should default to using visual bounding boxes or logical bounding boxes. Visual
 //bounding boxes are built from the vertex buffer quad coordinates. Logical bounding boxes are
 //built from the layout information used to calculate glyph positions.

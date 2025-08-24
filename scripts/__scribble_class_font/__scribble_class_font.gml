@@ -12,7 +12,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     __name = _name;
     
     //One of the `__SCRIBBLE_RENDER_*` macros. Largely used to determine which shader path to use
-    __render_type = _render_type; //FIXME: Why is this camelCase, Juju?
+    __render_type = _render_type;
     
     //Whether the source texture data exists in the asset bundle. If set to `false`, the source
     //texture data was added at runtime (probably with `sprite_add()`). This value can be `undefined`

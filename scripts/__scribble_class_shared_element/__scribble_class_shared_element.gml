@@ -21,6 +21,9 @@ function __scribble_class_shared_element(_string) constructor
     
     
     
+    //We define this for all text elements because it gets used in the model key builder
+    __revealType = SCRIBBLE_DEFAULT_REVEAL_TYPE;
+    
     __preprocessorFunc = undefined;
     
     __starting_font   = __scribble_state.__default_font;
@@ -1454,6 +1457,7 @@ function __scribble_class_shared_element(_string) constructor
                 buffer_write(_buffer, buffer_text, string(__allow_glyph_data_getter)); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__allow_line_data_getter )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__visual_bboxes          )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__revealType             )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(ptr(__preprocessorFunc ?? pointer_null))); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_u8, 0x00);
                 buffer_seek(_buffer, buffer_seek_start, 0);
