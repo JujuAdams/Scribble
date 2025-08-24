@@ -23,7 +23,7 @@ function __scribble_class_shared_element(_string) constructor
     
     //We define this for all text elements because it gets used in the model key builder
     __revealType = SCRIBBLE_DEFAULT_REVEAL_TYPE;
-    __spritesDontScale = false;
+    __spritesDontScale = true;
     
     __preprocessorFunc = undefined;
     
@@ -450,11 +450,11 @@ function __scribble_class_shared_element(_string) constructor
         return self;
     }
     
-    static pin_guide_width = function(_width)
+    static pin_guide = function(_width, _height = -1)
     {
         if (__wrap_apply
         ||  (__wrap_max_width != _width)
-        ||  (__wrap_max_height != -1)
+        ||  (__wrap_max_height != _height)
         ||  __wrap_per_char
         ||  __wrap_no_pages
         ||  (__wrap_max_scale != 1))
@@ -465,7 +465,7 @@ function __scribble_class_shared_element(_string) constructor
             
             __wrap_apply      = false; //Turn off wrapping entirely
             __wrap_max_width  = _width;
-            __wrap_max_height = -1;
+            __wrap_max_height = _height;
             __wrap_per_char   = false;
             __wrap_no_pages   = false;
             __wrap_max_scale  = 1;

@@ -81,7 +81,7 @@ function __scribble_class_null_element() constructor
         __error();
     }
     
-    static pin_guide_width = function()
+    static pin_guide = function()
     {
         __error();
     }

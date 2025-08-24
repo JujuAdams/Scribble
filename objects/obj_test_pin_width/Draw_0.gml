@@ -1,5 +1,5 @@
 var _element = scribble("[pin_right]hello world")
-.pin_guide_width(width);
+.pin_guide(width);
 _element.draw(10, 10);
 
 draw_line(10 + width, 0, 10 + width, room_height);
