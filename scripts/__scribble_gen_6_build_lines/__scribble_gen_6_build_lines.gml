@@ -60,6 +60,7 @@ function __scribble_gen_6_build_lines()
         var _model_max_height      = (_wrap_apply? __model_max_height : infinity);
         var _line_reveal           = (__element.__revealType == SCRIBBLE_REVEAL_PER_LINE);
         
+        var _glyph_count = __glyph_count;
         var _spritesDontScale = __element.__spritesDontScale;
     }
     
@@ -112,7 +113,7 @@ function __scribble_gen_6_build_lines()
                 
                 if (_spritesDontScale)
                 {
-                    _word_width += (1 - _fit_scale) * _word_grid[# _i, __SCRIBBLE_GEN_WORD_SPRITE_WIDTH];
+                    _word_width += (1/_fit_scale - 1) * _word_grid[# _i, __SCRIBBLE_GEN_WORD_SPRITE_WIDTH];
                 }
                 
                 //Find any horizontal alignment changes
@@ -368,6 +369,32 @@ function __scribble_gen_6_build_lines()
     
     //Mark the final line as not needing justification
     _line_grid[# _line_count-1, __SCRIBBLE_GEN_LINE_DISABLE_JUSTIFY] = true;
+    
+    ///////
+    // Correct for unscaled sprites
+    ///////
+    
+    if (_spritesDontScale && (_fit_scale != 1))
+    {
+        var _i = 0;
+        repeat(_glyph_count)
+        {
+            var _unicode = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE];
+            if (_unicode < 0)
+            {
+                ds_grid_multiply_region(_glyph_grid, _i, __SCRIBBLE_GEN_GLYPH_X, _i, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_fit_scale);
+            }
+            
+            ++_i;
+        }
+        
+        var _i = 0;
+        repeat(_word_count)
+        {
+            _word_grid[# _i, __SCRIBBLE_GEN_WORD_WIDTH] += (1/_fit_scale - 1) * _word_grid[# _i, __SCRIBBLE_GEN_WORD_SPRITE_WIDTH];
+            ++_i;
+        }
+    }
     
     //Align the left-hand side of the word to the left-hand side of the line. This corrects visually unpleasant gaps and overlaps
     //TODO - Implement for R2L text
