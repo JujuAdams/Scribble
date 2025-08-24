@@ -170,6 +170,10 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "pin_top"           ] = 42;
         _command_tag_lookup_accelerator_map[? "pin_middle"        ] = 43;
         _command_tag_lookup_accelerator_map[? "pin_bottom"        ] = 44;
+        _command_tag_lookup_accelerator_map[? "ul"                ] = 45;
+        _command_tag_lookup_accelerator_map[? "/ul"               ] = 46;
+        _command_tag_lookup_accelerator_map[? "strike"            ] = 47;
+        _command_tag_lookup_accelerator_map[? "/strike"           ] = 48;
     }
     
     #endregion
@@ -451,7 +455,37 @@ function __scribble_gen_2_parser()
                             _glyph_prev_prev = _glyph_prev;
                             _glyph_prev = 0x00;
                         break;
-                    
+                        
+                        // [ul]
+                        case 45:
+                            var _underlineThickness = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 1;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_UNDERLINE;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _underlineThickness;
+                            ++_control_count;
+                        break;
+                        
+                        // [/ul]
+                        case 46:
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_UNDERLINE;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = 0;
+                            ++_control_count;
+                        break;
+                        
+                        // [strike]
+                        case 47:
+                            var _strikeThickness = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 1;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_STRIKE;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _strikeThickness;
+                            ++_control_count;
+                        break;
+                        
+                        // [/strike]
+                        case 48:
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_STRIKE;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = 0;
+                            ++_control_count;
+                        break;
+                        
                         #region Scale
                     
                         // [scale]
@@ -883,7 +917,7 @@ function __scribble_gen_2_parser()
                         // [region,]
                         case 29:
                             if (array_length(_tag_parameters) != 2) __scribble_error("[region] tags must contain a name e.g. [region,This is a region]");
-                        
+                            
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_REGION;
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _tag_parameters[1];
                             ++_control_count;

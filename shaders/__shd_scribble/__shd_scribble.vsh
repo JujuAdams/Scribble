@@ -1,9 +1,12 @@
-//   @jujuadams   v8.0.0   2021-12-15
+//   @jujuadams   v10.0.0   2025-08-24
 precision highp float;
 
 #define BLEND_SPRITES true
-#define ANIMATION_INDEX  in_Position.z
-#define REVEAL_INDEX     in_Normal.x
+
+#define ANIMATION_INDEX      in_Position.z
+#define REVEAL_INDEX         in_Normal.x
+#define PACKED_SPRITE_DATA   in_Normal.y
+#define PACKED_EFFECT_FLAGS  in_Normal.z
 
 const float CYCLE_TEXTURE_HEIGHT = 256.0;
 
@@ -63,8 +66,8 @@ const float PI = 3.14159265359;
 // Attributes, Varyings, and Uniforms
 
 
-attribute vec3  in_Position;     //{X, Y, Packed character & line index}
-attribute vec3  in_Normal;       //{unused, Sprite data, Bitpacked effect flags}
+attribute vec3  in_Position;     //{X, Y, Animation index}
+attribute vec3  in_Normal;       //{Reveal index, Sprite data, Bitpacked effect flags}
 attribute vec4  in_Colour;       //Colour
 attribute vec2  in_TextureCoord; //UVs
 attribute vec2  in_Colour2;      //{dX, dY}
@@ -348,7 +351,7 @@ float easeBounce(float time)
 
 void main()
 {
-    float flagValue = in_Normal.z;
+    float flagValue = PACKED_EFFECT_FLAGS;
     float edge;
     edge = step(256.0, flagValue); flagArray[8] = edge; flagValue -= 256.0*edge;
     edge = step(128.0, flagValue); flagArray[7] = edge; flagValue -= 128.0*edge;
@@ -416,7 +419,7 @@ void main()
         v_vColour *= u_vColourBlend;
     }
     
-    if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(in_Normal.y); //Use packed sprite data to filter out sprite frames that we don't want
+    if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(PACKED_SPRITE_DATA); //Use packed sprite data to filter out sprite frames that we don't want
     
     //Regions
     //FIXME - Tie regions to reveal index maybe?
