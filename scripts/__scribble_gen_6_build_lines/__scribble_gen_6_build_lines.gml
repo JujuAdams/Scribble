@@ -59,9 +59,13 @@ function __scribble_gen_6_build_lines()
         var _model_max_width       = (_wrap_apply? __model_max_width  : infinity);
         var _model_max_height      = (_wrap_apply? __model_max_height : infinity);
         var _line_reveal           = (__element.__revealType == SCRIBBLE_REVEAL_PER_LINE);
+        
+        var _spritesDontScale = __element.__spritesDontScale;
     }
     
     var _forced_break = true; //Start with a forced break because it's the first line!
+    
+    var _fit_scale = __fit_scale;
     
     var _fit_to_box_iterations = 0;
     var _lower_limit = undefined;
@@ -69,8 +73,8 @@ function __scribble_gen_6_build_lines()
     repeat(max(1, SCRIBBLE_FIT_TO_BOX_ITERATIONS))
     {
         var _line_max_y                 = 0;
-        var _simulated_model_max_width  = _model_max_width  / __fit_scale;
-        var _simulated_model_max_height = _model_max_height / __fit_scale;
+        var _simulated_model_max_width  = _model_max_width  / _fit_scale;
+        var _simulated_model_max_height = _model_max_height / _fit_scale;
         
         var _line_count = 0;
         var _word_broken = false;
@@ -105,6 +109,11 @@ function __scribble_gen_6_build_lines()
             {
                 var _word_width       = _word_grid[# _i, __SCRIBBLE_GEN_WORD_WIDTH      ];
                 var _word_start_glyph = _word_grid[# _i, __SCRIBBLE_GEN_WORD_GLYPH_START];
+                
+                if (_spritesDontScale)
+                {
+                    _word_width += (1 - _fit_scale) * _word_grid[# _i, __SCRIBBLE_GEN_WORD_SPRITE_WIDTH];
+                }
                 
                 //Find any horizontal alignment changes
                 var _control_delta = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
@@ -328,32 +337,34 @@ function __scribble_gen_6_build_lines()
         if ((_line_max_y < _simulated_model_max_height) && !_word_broken)
         {
             //The text is already small enough to fit (and none of the words have been split in the middle)
-            if (__fit_scale >= _wrap_max_scale) break;
-            var _lower_limit = __fit_scale;
+            if (_fit_scale >= _wrap_max_scale) break;
+            var _lower_limit = _fit_scale;
         }
         else
         {
-            var _upper_limit = __fit_scale;
+            var _upper_limit = _fit_scale;
         }
         
         if (_fit_to_box_iterations >= SCRIBBLE_FIT_TO_BOX_ITERATIONS-1)
         {
-            if (__fit_scale == _lower_limit) break;
-            __fit_scale = (_lower_limit == undefined)? _upper_limit : _lower_limit;
+            if (_fit_scale == _lower_limit) break;
+            _fit_scale = (_lower_limit == undefined)? _upper_limit : _lower_limit;
         }
         else if (_lower_limit == undefined)
         {
-            __fit_scale *= 0.5;
+            _fit_scale *= 0.5;
         }
         else if (_upper_limit == undefined)
         {
-            __fit_scale = min(_wrap_max_scale, 2*__fit_scale);
+            _fit_scale = min(_wrap_max_scale, 2*_fit_scale);
         }
         else
         {
-            __fit_scale = _lower_limit + 0.5*(_upper_limit - _lower_limit);
+            _fit_scale = _lower_limit + 0.5*(_upper_limit - _lower_limit);
         }
     }
+    
+    __fit_scale = _fit_scale;
     
     //Mark the final line as not needing justification
     _line_grid[# _line_count-1, __SCRIBBLE_GEN_LINE_DISABLE_JUSTIFY] = true;

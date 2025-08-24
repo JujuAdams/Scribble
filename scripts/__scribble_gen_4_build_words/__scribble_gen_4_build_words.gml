@@ -29,15 +29,17 @@
                                     }\
                                 }\
                                 ;\
-                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_GLYPH_END] = _word_glyph_end;\
-                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_WIDTH    ] = abs(_word_width);\
-                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_HEIGHT   ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT);\
+                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_GLYPH_END   ] = _word_glyph_end;\
+                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_WIDTH       ] = abs(_word_width);\
+                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_SPRITE_WIDTH] = _word_sprite_width;\
+                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_HEIGHT      ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT);\
                                 ;\
                                 _word_count++;
 
 
 #macro __SCRIBBLE_GEN_WORD_NEW  __SCRIBBLE_GEN_WORD_END;\
                                 _word_width = 0;\
+                                _word_sprite_width = 0;\
                                 _word_glyph_start = _i;\
                                 _word_bidi = _glyph_bidi;\
                                 __SCRIBBLE_GEN_WORD_START;
@@ -55,15 +57,19 @@ function __scribble_gen_4_build_words()
         var _glyph_count  = __glyph_count;
         var _overall_bidi = __overall_bidi;
         var _word_reveal  = (__element.__revealType == SCRIBBLE_REVEAL_PER_WORD);
+        
+        var _spritesDontScale = __element.__spritesDontScale;
     }
     
     var _wrap_per_char = _element.__wrap_per_char; //TODO - Optimize by checking outside the loop
     
-    var _word_count            = 0;
-    var _word_width            = 0;
-    var _word_glyph_start      = 0;
-    var _word_glyph_end        = undefined;
-    var _word_bidi             = _overall_bidi;
+    var _word_count        = 0;
+    var _word_width        = 0;
+    var _word_sprite_width = 0;
+    var _word_glyph_start  = 0;
+    var _word_glyph_end    = undefined;
+    var _word_bidi         = _overall_bidi;
+    
     var _glyph_prev_whitespace = (_word_bidi == __SCRIBBLE_BIDI_WHITESPACE)
     
     if (_glyph_count > 0)
@@ -120,6 +126,11 @@ function __scribble_gen_4_build_words()
                     else if (_glyph_bidi != _word_bidi)
                     {
                         __SCRIBBLE_GEN_WORD_NEW;
+                    }
+                    
+                    if (_spritesDontScale && (_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE] < 0))
+                    {
+                        _word_sprite_width += _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_SEPARATION];
                     }
                 break;
                 

@@ -23,6 +23,7 @@ function __scribble_class_shared_element(_string) constructor
     
     //We define this for all text elements because it gets used in the model key builder
     __revealType = SCRIBBLE_DEFAULT_REVEAL_TYPE;
+    __spritesDontScale = false;
     
     __preprocessorFunc = undefined;
     

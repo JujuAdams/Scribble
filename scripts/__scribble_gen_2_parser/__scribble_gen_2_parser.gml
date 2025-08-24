@@ -1,7 +1,7 @@
 // Feather disable all
 #macro __SCRIBBLE_PARSER_PUSH_SCALE  if (_state_scale != 1)\
                                      {\
-                                            ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_GEN_GLYPH_X, _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE, _state_scale);\ //Covers x, y, width, height, and separation
+                                         ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_GEN_GLYPH_X, _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE, _state_scale);\ //Covers x, y, width, height, and separation
                                      }\
                                      _state_scale_start_glyph = _glyph_count;
 
@@ -54,7 +54,10 @@
                                           if (SCRIBBLE_USE_KERNING)\
                                           {\
                                               var _kerning = _font_kerning_map[? ((_glyph_write & 0xFFFF) << 16) | (_glyph_prev & 0xFFFF)];\
-                                              if (_kerning != undefined) _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_SEPARATION] += _kerning*_glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_SCALE];\
+                                              if (_kerning != undefined)\
+                                              {\
+                                                  _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_SEPARATION] += _kerning*_glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_SCALE];\
+                                              }\
                                           }\
                                           ;\
                                           if (SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS)\
@@ -202,6 +205,8 @@ function __scribble_gen_2_parser()
         var _vbuff_pos_grid = __vbuff_pos_grid;
         var _element        = __element;
         var _line_height    = __line_height;
+        
+        var _spritesDontScale = __element.__spritesDontScale;
     }
     
     static _glyph_data_struct = __scribble_system().__glyph_data;
@@ -370,27 +375,32 @@ function __scribble_gen_2_parser()
                             //    - scale
                             //    - font
                             //But NOT alignment
-                        
+                            
                             __SCRIBBLE_PARSER_PUSH_SCALE;
-                        
+                            
                             if (_font_name != _starting_font)
                             {
                                 _font_name = _starting_font; //Starting font already remapped
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
-                        
+                            
                             _state_effect_flags = 0;
                             _state_scale        = _pre_scale;
                             _state_colour       = 0xFF000000 | _starting_colour;
-                        
+                            
                             //Add an effect flag control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = 0;
                             ++_control_count;
-                        
+                            
                             //Add a colour control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
+                            ++_control_count;
+                            
+                            //Add a cycle control
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_CYCLE;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = -1;
                             ++_control_count;
                         break;
                     
@@ -771,6 +781,11 @@ function __scribble_gen_2_parser()
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_effect_flags;
                             ++_control_count;
+                            
+                            //Add a cycle control
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_CYCLE;
+                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = -1;
+                            ++_control_count;
                         break;
                             
                         #endregion
@@ -903,7 +918,12 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V1      ] = 1;
                         
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
-                        
+                            
+                            if (_spritesDontScale && (_state_scale != 1))
+                            {
+                                ds_grid_multiply_region(_glyph_grid, _glyph_count, __SCRIBBLE_GEN_GLYPH_X, _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_state_scale);
+                            }
+                            
                             ++_glyph_count;
                             _glyph_prev_arabic_join_next = false;
                             _glyph_prev_prev = _glyph_prev;
@@ -1023,7 +1043,12 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V1      ] = _v1;
                             
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
-                        
+                            
+                            if (_spritesDontScale && (_state_scale != 1))
+                            {
+                                ds_grid_multiply_region(_glyph_grid, _glyph_count, __SCRIBBLE_GEN_GLYPH_X, _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_state_scale);
+                            }
+                            
                             ++_glyph_count;
                             _glyph_prev_arabic_join_next = false;
                             _glyph_prev_prev = _glyph_prev;
@@ -1199,7 +1224,12 @@ function __scribble_gen_2_parser()
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX  ] = _image_index;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED  ] = _image_speed;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SPRITE_ONCE  ] = _sprite_once;
-                                
+                                        
+                                        if (_spritesDontScale && (_state_scale != 1))
+                                        {
+                                            ds_grid_multiply_region(_glyph_grid, _glyph_count, __SCRIBBLE_GEN_GLYPH_X, _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_state_scale);
+                                        }
+                                        
                                         ++_glyph_count;
                                         _glyph_prev_arabic_join_next = false;
                                         _glyph_prev_prev = _glyph_prev;
