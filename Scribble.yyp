@@ -245,6 +245,7 @@
     {"id":{"name":"obj_test_stress_lots_of_text","path":"objects/obj_test_stress_lots_of_text/obj_test_stress_lots_of_text.yy",},},
     {"id":{"name":"obj_test_stress_multi","path":"objects/obj_test_stress_multi/obj_test_stress_multi.yy",},},
     {"id":{"name":"obj_test_stress_stashed","path":"objects/obj_test_stress_stashed/obj_test_stress_stashed.yy",},},
+    {"id":{"name":"obj_test_strikethrough","path":"objects/obj_test_strikethrough/obj_test_strikethrough.yy",},},
     {"id":{"name":"obj_test_style","path":"objects/obj_test_style/obj_test_style.yy",},},
     {"id":{"name":"obj_test_superfont","path":"objects/obj_test_superfont/obj_test_superfont.yy",},},
     {"id":{"name":"obj_test_surface","path":"objects/obj_test_surface/obj_test_surface.yy",},},

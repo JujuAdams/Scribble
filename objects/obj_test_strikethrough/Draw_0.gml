@@ -1,0 +1,2 @@
+var _string = "Sphinx of black quartz, hear my vow\nThe quick[/strike] brown fox [strike,3]jumped over the lazy dog.";
+scribble("[fa_center][fa_middle][fnt_noto_latin][strike,3][rainbow][wave]" + _string).wrap(room_width-100).draw(room_width div 2, room_height div 2);
