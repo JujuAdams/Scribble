@@ -1,4 +1,4 @@
-//   @jujuadams   v8.0.0   2020-03-16
+//   @jujuadams   v10.0.0   2025-08-24
 precision highp float;
 
 #define REACTIVE_SDF_RANGE true

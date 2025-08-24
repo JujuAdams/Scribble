@@ -53,8 +53,6 @@ const int EASE_METHOD_COUNT = 15;
 #define EASE_CUSTOM_2    13
 #define EASE_CUSTOM_3    14
 
-const float MAX_LINES = 1000.0; //Change __SCRIBBLE_MAX_LINES in scribble_init() if you change this value!
-
 const int WINDOW_COUNT = 3;
 
 const float PI = 3.14159265359;
