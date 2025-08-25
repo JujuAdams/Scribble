@@ -1,6 +1,6 @@
 {
   "$GMSprite":"",
-  "%Name":"__scribble_dot",
+  "%Name":"scribble_fallback_dot",
   "bboxMode":0,
   "bbox_bottom":0,
   "bbox_left":0,
@@ -21,19 +21,19 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"9dc781bc-aea9-42e0-ad97-2835e76fc4ec","blendMode":0,"displayName":"default","isLocked":false,"name":"9dc781bc-aea9-42e0-ad97-2835e76fc4ec","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"__scribble_dot",
+  "name":"scribble_fallback_dot",
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"Don't call these functions",
-    "path":"folders/Scribble/(System)/Don't call these functions.yy",
+    "name":"(System)",
+    "path":"folders/Scribble/(System).yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"",
-    "%Name":"__scribble_dot",
+    "%Name":"scribble_fallback_dot",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -57,7 +57,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"__scribble_dot",
+    "name":"scribble_fallback_dot",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -69,7 +69,7 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"16f4267b-6bb8-4d8f-a47a-c16693dce482","path":"sprites/__scribble_dot/__scribble_dot.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"16f4267b-6bb8-4d8f-a47a-c16693dce482","path":"sprites/scribble_fallback_dot/scribble_fallback_dot.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"9e5d45d4-44a1-480d-90d8-c0f765ce8036","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
@@ -80,6 +80,9 @@
   },
   "swatchColours":null,
   "swfPrecision":2.525,
+  "tags":[
+    "scribble",
+  ],
   "textureGroupId":{
     "name":"Default",
     "path":"texturegroups/Default",

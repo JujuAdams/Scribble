@@ -68,8 +68,8 @@ function __scribble_gen_10_write_vbuffs()
     static _effects_map     = __scribble_system().__effects_map;
     static _generator_state = __scribble_system().__generator_state;
     
-    static _scribbleDotUVs = sprite_get_uvs(__scribble_dot, 0);
-    static _scribbleDotMaterial = __scribble_sprite_get_material(__scribble_dot, 0);
+    static _scribbleDotUVs = sprite_get_uvs(scribble_fallback_dot, 0);
+    static _scribbleDotMaterial = __scribble_sprite_get_material(scribble_fallback_dot, 0);
     
     with(_generator_state)
     {

@@ -23,7 +23,7 @@ function __scribble_cycle_draw(_name)
             
             if (_arrayLength == 1)
             {
-                draw_sprite_stretched_ext(__scribble_dot, 0, 0, __index, SCRIBBLE_CYCLE_TEXTURE_WIDTH, 1, _array[0], 1);
+                draw_sprite_stretched_ext(scribble_fallback_dot, 0, 0, __index, SCRIBBLE_CYCLE_TEXTURE_WIDTH, 1, _array[0], 1);
             }
             else
             {
@@ -41,7 +41,7 @@ function __scribble_cycle_draw(_name)
                                 _indexA = floor(_indexA);
                             var _indexB = (1 + _indexA) mod _arrayLength;
                             
-                            draw_sprite_ext(__scribble_dot, 0,
+                            draw_sprite_ext(scribble_fallback_dot, 0,
                                             _x, __index,
                                             1, 1, 0,
                                             merge_color(_array[_indexA], _array[_indexB], _frac), 1);
@@ -60,7 +60,7 @@ function __scribble_cycle_draw(_name)
                                 _indexA = floor(_indexA);
                             var _indexB = (1 + _indexA) mod _arrayLength;
                             
-                            draw_sprite_ext(__scribble_dot, 0,
+                            draw_sprite_ext(scribble_fallback_dot, 0,
                                             _x, __index,
                                             1, 1, 0,
                                             __scribble_merge_color_oklab(_array[_indexA], _array[_indexB], _frac), 1);
@@ -73,7 +73,7 @@ function __scribble_cycle_draw(_name)
                     var _x = 0;
                     repeat(SCRIBBLE_CYCLE_TEXTURE_WIDTH)
                     {
-                        draw_sprite_ext(__scribble_dot, 0,
+                        draw_sprite_ext(scribble_fallback_dot, 0,
                                         _x, __index,
                                         1, 1, 0,
                                         _array[floor(_arrayLength * _x / SCRIBBLE_CYCLE_TEXTURE_WIDTH)], 1);

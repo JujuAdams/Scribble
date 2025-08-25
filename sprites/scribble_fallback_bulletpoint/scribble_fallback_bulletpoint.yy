@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"Don't call these functions",
-    "path":"folders/Scribble/(System)/Don't call these functions.yy",
+    "name":"(System)",
+    "path":"folders/Scribble/(System).yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -80,6 +80,9 @@
   },
   "swatchColours":null,
   "swfPrecision":2.525,
+  "tags":[
+    "scribble",
+  ],
   "textureGroupId":{
     "name":"Default",
     "path":"texturegroups/Default",

@@ -684,7 +684,7 @@ function __scribble_class_shared_element(_string) constructor
                 __region_glyph_end   = _region.end_glyph;
                 __region_colour      = _colour;
                 __region_blend       = _blend_amount;
-                return;
+                return self;
             }
             
             ++_i;
@@ -714,7 +714,7 @@ function __scribble_class_shared_element(_string) constructor
         return _model.__pages_array[__page].__region_array;
     }
     
-    static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = __scribble_dot, _image = 0, _color = c_white, _alpha = 1)
+    static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = scribble_fallback_dot, _image = 0, _color = c_white, _alpha = 1)
     {
         var _model = __get_model(true);
         if (!is_struct(_model)) return undefined;
@@ -750,11 +750,13 @@ function __scribble_class_shared_element(_string) constructor
                 matrix_set(matrix_world, _old_matrix);
                 shader_reset();
                 
-                return;
+                return self;
             }
             
             ++_i;
         }
+        
+        return self;
     }
     
     #endregion

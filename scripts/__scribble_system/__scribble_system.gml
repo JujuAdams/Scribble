@@ -26,6 +26,8 @@
 
 #macro __SCRIBBLE_GLYPH_PROPR_COUNT  17
 
+gml_pragma("MarkTagAsUsed", "scribble");
+
 
 
 if (SCRIBBLE_INITIALIZE_ON_BOOT)
