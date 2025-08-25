@@ -354,14 +354,17 @@ function __scribble_class_shared_element(_string) constructor
     }
     
     /// @param scale
-    static scale = function(_scale)
+    /// @param [spritesDontScale=false]
+    static scale = function(_scale, _spritesDontScale = false)
     {
-        if (__pre_scale != _scale)
+        if ((__pre_scale != _scale)
+        ||  (__spritesDontScale != _spritesDontScale))
         {
             __model_cache_name_dirty = true;
             __bbox_dirty             = true;
             
             __pre_scale = _scale;
+            __spritesDontScale = _spritesDontScale;
         }
         
         return self;
@@ -1482,6 +1485,7 @@ function __scribble_class_shared_element(_string) constructor
                 buffer_write(_buffer, buffer_text, string(__starting_halign        )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__starting_valign        )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__pre_scale              )); buffer_write(_buffer, buffer_u8, 0x3A);
+                buffer_write(_buffer, buffer_text, string(__spritesDontScale       )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__line_height            )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__line_spacing           )); buffer_write(_buffer, buffer_u8, 0x3A);
                 buffer_write(_buffer, buffer_text, string(__wrap_apply             )); buffer_write(_buffer, buffer_u8, 0x3A);
