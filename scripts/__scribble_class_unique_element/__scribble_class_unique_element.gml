@@ -382,6 +382,12 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
     
     static character_delay_add = function(_character, _delay)
     {
+        if (not __allow_glyph_data_getter)
+        {
+            __scribble_trace("Warning! `.character_delay_add()` automatically calling `.allow_glyph_data_getter()`");
+            allow_glyph_data_getter();
+        }
+        
         var _char_1 = _character;
         var _char_2 = 0;
         
