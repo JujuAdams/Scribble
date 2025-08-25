@@ -149,4 +149,14 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
         
         return self;
     }
+    
+    static page = function(_page)
+    {
+        return __set_page(_page);
+    }
+    
+    static in = function()
+    {
+        __scribble_error("Cannot use typist functions on cached Scribble text elements\nPlease refer to documentation and use `scribble_unique()` instead");
+    }
 }

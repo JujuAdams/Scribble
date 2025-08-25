@@ -913,6 +913,8 @@ function __scribble_class_shared_element(_string) constructor
     /// @param [typist]
     static get_bbox_revealed = function(_x, _y, _typist)
     {
+        //FIXME - Move to unique element?
+        
         //No typist set up, return the whole bounding box
         if ((_typist == undefined) && (__tw_reveal == undefined))
         {
@@ -941,7 +943,7 @@ function __scribble_class_shared_element(_string) constructor
         
         if (_typist != undefined)
         {
-            var _bbox = _model.__get_bbox_revealed(__page, 0, _typist.__window_array[_typist.__window_index], __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__get_bbox_revealed(__page, 0, _typist.__windowArray[_typist.__windowIndex], __padding_l, __padding_t, __padding_r, __padding_b);
         }
         else if (__tw_reveal != undefined)
         {
@@ -1006,7 +1008,7 @@ function __scribble_class_shared_element(_string) constructor
     #region Pages
     
     /// @param page
-    static page = function(_page)
+    static __set_page = function(_page)
     {
         var _old_page = __page;
         
