@@ -279,6 +279,7 @@
     {"id":{"name":"obj_test_typewriter_per_character","path":"objects/obj_test_typewriter_per_character/obj_test_typewriter_per_character.yy",},},
     {"id":{"name":"obj_test_typewriter_per_line","path":"objects/obj_test_typewriter_per_line/obj_test_typewriter_per_line.yy",},},
     {"id":{"name":"obj_test_typewriter_preskip","path":"objects/obj_test_typewriter_preskip/obj_test_typewriter_preskip.yy",},},
+    {"id":{"name":"obj_test_typewriter_set_position","path":"objects/obj_test_typewriter_set_position/obj_test_typewriter_set_position.yy",},},
     {"id":{"name":"obj_test_typewriter_skip_during_delay","path":"objects/obj_test_typewriter_skip_during_delay/obj_test_typewriter_skip_during_delay.yy",},},
     {"id":{"name":"obj_test_typewriter_skip_to_pause","path":"objects/obj_test_typewriter_skip_to_pause/obj_test_typewriter_skip_to_pause.yy",},},
     {"id":{"name":"obj_test_typewriter_sound_per_char","path":"objects/obj_test_typewriter_sound_per_char/obj_test_typewriter_sound_per_char.yy",},},
