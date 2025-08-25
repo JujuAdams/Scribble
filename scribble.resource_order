@@ -366,6 +366,7 @@
     {"name":"snd_sync_test","order":2,"path":"sounds/snd_sync_test/snd_sync_test.yy",},
     {"name":"__scribble_dot","order":7,"path":"sprites/__scribble_dot/__scribble_dot.yy",},
     {"name":"scribble_fallback_bulletpoint","order":6,"path":"sprites/scribble_fallback_bulletpoint/scribble_fallback_bulletpoint.yy",},
+    {"name":"spr_highlight_test","order":9,"path":"sprites/spr_highlight_test/spr_highlight_test.yy",},
     {"name":"spr_large_coin","order":2,"path":"sprites/spr_large_coin/spr_large_coin.yy",},
     {"name":"spr_long_sprite_test","order":1,"path":"sprites/spr_long_sprite_test/spr_long_sprite_test.yy",},
     {"name":"spr_mallangche","order":1,"path":"sprites/spr_mallangche/spr_mallangche.yy",},
