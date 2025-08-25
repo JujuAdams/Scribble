@@ -52,7 +52,7 @@ function __scribble_system(_calledFromInitialize = false)
     _system = {};
     with(_system)
     {
-        __scribble_trace("Welcome to Scribble Deluxe by Juju Adams! This is version " + SCRIBBLE_VERSION + ", " + SCRIBBLE_DATE);
+        __scribble_trace("Welcome to Scribble Deluxe by Juju Adams! This is version " + SCRIBBLE_VERSION + ", " + SCRIBBLE_DATE, " (GM version ", GM_runtime_version, ")");
         
         //Safety data structures. Theses exist at (hopefully) index 0 so that users can't accidentally
         //delete important parts of Scribble if they're sloppy with destroy functions.
@@ -82,7 +82,7 @@ function __scribble_system(_calledFromInitialize = false)
         var _fontInfo = font_get_info(asset_get_index("scribble_fallback_font"));
         if (_fontInfo[$ "sdfEnabled"] == undefined)
         {
-            __scribble_error("Versions of GameMaker without SDF font support are not supported (versions pre-2023.1, including LTS 2022)");
+            __scribble_error("Versions of GameMaker without SDF font support are not supported");
         }
         
         try
@@ -95,21 +95,16 @@ function __scribble_system(_calledFromInitialize = false)
         }
         catch(_error)
         {
-            __scribble_trace(_error);
-            __scribble_error("Versions earlier than GameMaker 2023.1 are not supported");
+            __scribble_error("Versions of GameMaker without time sources are not supported");
         }
         
-        __useHandleParse = false;
         try
         {
             handle_parse(string(__scribble_system));
-            __useHandleParse = true;
-            
-            __scribble_trace("Using handle_parse() where possible");
         }
         catch(_error)
         {
-            __scribble_trace("handle_parse() not available");
+            __scribble_error("Versions of GameMaker without handle_parse() are not supported");
         }
         
         __gmMightRemoveUnusedAssets = true;

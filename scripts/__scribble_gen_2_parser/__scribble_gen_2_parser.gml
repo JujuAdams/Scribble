@@ -182,7 +182,6 @@ function __scribble_gen_2_parser()
     #endregion
     
     static _system                = __scribble_system();
-    static _useHandleParse        = _system.__useHandleParse;
     static _cycle_data_map       = _system.__cycle_data_map;
     static _effects_map           = _system.__effects_map;
     static _effects_slash_map     = _system.__effects_slash_map;
@@ -878,14 +877,7 @@ function __scribble_gen_2_parser()
                     
                         // [surface]
                         case 28:
-                            if (_useHandleParse)
-                            {
-                                var _surface = handle_parse(_tag_parameters[1]);
-                            }
-                            else
-                            {
-                                var _surface = real(_tag_parameters[1]);
-                            }
+                            var _surface = handle_parse(_tag_parameters[1]);
                         
                             var _surface_w = surface_get_width(_surface);
                             var _surface_h = surface_get_height(_surface);
@@ -1143,7 +1135,7 @@ function __scribble_gen_2_parser()
                             else
                             {
                                 var _sprite_index = _external_sprite_map[? _tag_command_name] ?? asset_get_index(_tag_command_name); 
-                                if ((not sprite_exists(_sprite_index)) && _useHandleParse)
+                                if (not sprite_exists(_sprite_index))
                                 {
                                     _sprite_index = handle_parse(_tag_command_name);
                                 }
