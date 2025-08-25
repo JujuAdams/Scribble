@@ -1,2 +1,2 @@
-typist = scribble_typist();
-typist.in(0.06, 10);
+element = scribble_unique("[test]abcdefg[delay]hijklmnop");
+element.in(0.06, 1);
