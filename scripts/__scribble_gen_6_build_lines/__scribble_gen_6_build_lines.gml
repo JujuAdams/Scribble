@@ -61,7 +61,6 @@ function __scribble_gen_6_build_lines()
         var _line_reveal           = (__element.__revealType == SCRIBBLE_REVEAL_PER_LINE);
         
         var _glyph_count = __glyph_count;
-        var _spritesDontScale = __element.__spritesDontScale;
     }
     
     var _forced_break = true; //Start with a forced break because it's the first line!
@@ -110,11 +109,6 @@ function __scribble_gen_6_build_lines()
             {
                 var _word_width       = _word_grid[# _i, __SCRIBBLE_GEN_WORD_WIDTH      ];
                 var _word_start_glyph = _word_grid[# _i, __SCRIBBLE_GEN_WORD_GLYPH_START];
-                
-                if (_spritesDontScale)
-                {
-                    _word_width += (1/_fit_scale - 1) * _word_grid[# _i, __SCRIBBLE_GEN_WORD_SPRITE_WIDTH];
-                }
                 
                 //Find any horizontal alignment changes
                 var _control_delta = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
@@ -369,32 +363,6 @@ function __scribble_gen_6_build_lines()
     
     //Mark the final line as not needing justification
     _line_grid[# _line_count-1, __SCRIBBLE_GEN_LINE_DISABLE_JUSTIFY] = true;
-    
-    ///////
-    // Correct for unscaled sprites
-    ///////
-    
-    if (_spritesDontScale && (_fit_scale != 1))
-    {
-        var _i = 0;
-        repeat(_glyph_count)
-        {
-            var _unicode = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE];
-            if (_unicode < 0)
-            {
-                ds_grid_multiply_region(_glyph_grid, _i, __SCRIBBLE_GEN_GLYPH_X, _i, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_fit_scale);
-            }
-            
-            ++_i;
-        }
-        
-        var _i = 0;
-        repeat(_word_count)
-        {
-            _word_grid[# _i, __SCRIBBLE_GEN_WORD_WIDTH] += (1/_fit_scale - 1) * _word_grid[# _i, __SCRIBBLE_GEN_WORD_SPRITE_WIDTH];
-            ++_i;
-        }
-    }
     
     //Align the left-hand side of the word to the left-hand side of the line. This corrects visually unpleasant gaps and overlaps
     //TODO - Implement for R2L text

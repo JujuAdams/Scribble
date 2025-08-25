@@ -57,8 +57,6 @@ function __scribble_gen_4_build_words()
         var _glyph_count  = __glyph_count;
         var _overall_bidi = __overall_bidi;
         var _word_reveal  = (__element.__revealType == SCRIBBLE_REVEAL_PER_WORD);
-        
-        var _spritesDontScale = __element.__spritesDontScale;
     }
     
     var _wrap_per_char = _element.__wrap_per_char; //TODO - Optimize by checking outside the loop
@@ -126,11 +124,6 @@ function __scribble_gen_4_build_words()
                     else if (_glyph_bidi != _word_bidi)
                     {
                         __SCRIBBLE_GEN_WORD_NEW;
-                    }
-                    
-                    if (_spritesDontScale && (_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE] < 0))
-                    {
-                        _word_sprite_width += _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_SEPARATION];
                     }
                 break;
                 
