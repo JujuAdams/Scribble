@@ -404,6 +404,7 @@
     {"id":{"name":"scribble_font_set_remap","path":"scripts/scribble_font_set_remap/scribble_font_set_remap.yy",},},
     {"id":{"name":"scribble_font_set_style_family","path":"scripts/scribble_font_set_style_family/scribble_font_set_style_family.yy",},},
     {"id":{"name":"scribble_font_set_valign_offset","path":"scripts/scribble_font_set_valign_offset/scribble_font_set_valign_offset.yy",},},
+    {"id":{"name":"scribble_get_frame","path":"scripts/scribble_get_frame/scribble_get_frame.yy",},},
     {"id":{"name":"scribble_glyph_get","path":"scripts/scribble_glyph_get/scribble_glyph_get.yy",},},
     {"id":{"name":"scribble_glyph_set","path":"scripts/scribble_glyph_set/scribble_glyph_set.yy",},},
     {"id":{"name":"scribble_initialize","path":"scripts/scribble_initialize/scribble_initialize.yy",},},

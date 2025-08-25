@@ -332,6 +332,7 @@
     {"name":"scribble_font_set_remap","order":9,"path":"scripts/scribble_font_set_remap/scribble_font_set_remap.yy",},
     {"name":"scribble_font_set_style_family","order":6,"path":"scripts/scribble_font_set_style_family/scribble_font_set_style_family.yy",},
     {"name":"scribble_font_set_valign_offset","order":7,"path":"scripts/scribble_font_set_valign_offset/scribble_font_set_valign_offset.yy",},
+    {"name":"scribble_get_frame","order":13,"path":"scripts/scribble_get_frame/scribble_get_frame.yy",},
     {"name":"scribble_glyph_get","order":9,"path":"scripts/scribble_glyph_get/scribble_glyph_get.yy",},
     {"name":"scribble_glyph_set","order":8,"path":"scripts/scribble_glyph_set/scribble_glyph_set.yy",},
     {"name":"scribble_initialize","order":12,"path":"scripts/scribble_initialize/scribble_initialize.yy",},
