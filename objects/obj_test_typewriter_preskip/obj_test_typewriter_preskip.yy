@@ -10,8 +10,8 @@
   "name":"obj_test_typewriter_preskip",
   "overriddenProperties":[],
   "parent":{
-    "name":"Typewriter",
-    "path":"folders/Test Cases/Typewriter.yy",
+    "name":"Skip",
+    "path":"folders/Test Cases/Typewriter/Skip.yy",
   },
   "parentObjectId":null,
   "persistent":false,

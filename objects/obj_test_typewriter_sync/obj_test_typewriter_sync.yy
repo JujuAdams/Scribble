@@ -10,8 +10,8 @@
   "name":"obj_test_typewriter_sync",
   "overriddenProperties":[],
   "parent":{
-    "name":"Typewriter",
-    "path":"folders/Test Cases/Typewriter.yy",
+    "name":"Audio & Sync",
+    "path":"folders/Test Cases/Typewriter/Audio & Sync.yy",
   },
   "parentObjectId":null,
   "persistent":false,

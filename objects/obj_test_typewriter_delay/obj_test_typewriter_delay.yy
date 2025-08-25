@@ -9,8 +9,8 @@
   "name":"obj_test_typewriter_delay",
   "overriddenProperties":[],
   "parent":{
-    "name":"Typewriter",
-    "path":"folders/Test Cases/Typewriter.yy",
+    "name":"Delay",
+    "path":"folders/Test Cases/Typewriter/Delay.yy",
   },
   "parentObjectId":null,
   "persistent":false,
