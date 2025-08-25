@@ -182,3 +182,9 @@
 
 //Whether to try to fix font scaling due to the font texture being too big for the texture page.
 #macro SCRIBBLE_ATTEMPT_FONT_SCALING_FIX  true
+
+//Enables missing asset detection. This catches problems with GameMaker's asset stripping behaviour
+//which was added in GameMaker 2024.11. You may choose to set this macro to `false` if you have
+//ensured all assets that you are going to use with Scribble will not be stripped during compile.
+//For convenience, the "scribble" tag can be used to mark an asset as non-strippable.
+#macro SCRIBBLE_DETECT_MISSING_ASSETS  true

@@ -15,6 +15,7 @@
 #macro SCRIBBLE_DATE     "2025-08-21"
 
 #macro SCRIBBLE_NO_PREPROCESS  __scribble_no_preprocessing
+#macro SCRIBBLE_RUNNING_FROM_IDE  (GM_build_type == "run")
 
 #macro SCRIBBLE_RAINBOW_CYCLE         "rainbow"
 #macro SCRIBBLE_CYCLE_TEXTURE_WIDTH   256

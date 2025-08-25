@@ -1,8 +1,7 @@
 // Feather disable all
 
-#macro __SCRIBBLE_DEBUG             false
-#macro __SCRIBBLE_VERBOSE_GC        false
-#macro __SCRIBBLE_RUNNING_FROM_IDE  (GM_build_type == "run")
+#macro __SCRIBBLE_DEBUG       false
+#macro __SCRIBBLE_VERBOSE_GC  false
 
 #macro __SCRIBBLE_EASE_COUNT  15
 
@@ -66,7 +65,10 @@ function __scribble_system(_calledFromInitialize = false)
         }
         else
         {
-            __scribble_trace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
+            if (SCRIBBLE_RUNNING_FROM_IDE)
+            {
+                __scribble_trace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
+            }
         }
         
         if (not shader_is_compiled(__shd_scribble))
@@ -74,9 +76,12 @@ function __scribble_system(_calledFromInitialize = false)
             __scribble_error("Shader failed to compile. Please check your version of GameMaker is compatible\nPlease report this error if it persists");
         }
         
-        if (not font_exists(asset_get_index("scribble_fallback_font")))
+        if (SCRIBBLE_DETECT_MISSING_ASSETS)
         {
-            __scribble_error("Fallback font was not found. This may indicate that unused assets have been stripped from the project\nPlease untick \"Automatically remove unused assets when compiling\" in Game Options");
+            if (not sprite_exists(asset_get_index("__scribble_sacrificial_asset")))
+            {
+                __scribble_error("Some assets have been detected as missing.\nThis probably means GameMaker has stripped assets during compile.\n \nThere are two solutions available:\n1. Add the \"scribble\" tag to every asset (font, sprite, sound, etc.) you want to use in Scribble\n    then set `SCRIBBLE_DETECT_MISSING_ASSETS` to `false` to turn off this warning;\n \n2. Or untick \"Automatically remove unused assets when compiling\" in Game Options");
+            }
         }
         
         var _fontInfo = font_get_info(asset_get_index("scribble_fallback_font"));

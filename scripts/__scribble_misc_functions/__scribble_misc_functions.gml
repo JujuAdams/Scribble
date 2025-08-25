@@ -70,7 +70,7 @@ function __scribble_get_font_data(_name)
         
         if (__scribble_system().__gmMightRemoveUnusedAssets)
         {
-            _string += "\nThis may indicate that unused assets have been stripped from the project\nPlease untick \"Automatically remove unused assets when compiling\" in Game Options";
+            _string += "\nThis may mean GameMaker has stripped assets during compile.\n \nThere are two solutions available:\n1. Add the \"scribble\" tag to every asset (font, sprite, sound, etc.) you want to use in Scribble\n    then set `SCRIBBLE_DETECT_MISSING_ASSETS` to `false` to turn off this warning;\n \n2. or untick \"Automatically remove unused assets when compiling\" in Game Options";
         }
         
         __scribble_error(_string);
