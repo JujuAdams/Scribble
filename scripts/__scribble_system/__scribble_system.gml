@@ -144,9 +144,6 @@ function __scribble_system(_calledFromInitialize = false)
         
         __gmMightRemoveUnusedAssets = (__gmVersionMajor >= 2025) || ((__gmVersionMajor == 2024) && ((__gmVersionMinor >= 1100) || (__gmVersionMinor == 11)));
         
-        //Initialize colours on boot before they need to be used
-        __scribble_config_colours();
-        
         __defaultPreprocessorFunc = __scribble_no_preprocessing;
         
         //Main lookup for fonts
@@ -256,6 +253,16 @@ function __scribble_system(_calledFromInitialize = false)
         __scribble_add_tag("/CYCLE",  __SCRIBBLE_TAG_EFFECT_UNSET, 6, true);
         __scribble_add_tag("/JITTER", __SCRIBBLE_TAG_EFFECT_UNSET, 7, true);
         __scribble_add_tag("/SLANT",  __SCRIBBLE_TAG_EFFECT_UNSET, 8, true);
+        
+        var _colorStruct = __scribble_config_colours();
+        var _namesArray = variable_struct_get_names(_colorStruct);
+        var _i = 0;
+        repeat(array_length(_namesArray))
+        {
+            var _name = _namesArray[_i];
+            __scribble_add_tag(_name, __SCRIBBLE_TAG_COLOR, _colorStruct[$ _name], false);
+            ++_i;
+        }
         
         __cycle_surface = -1;
         __cycle_data_open_array = [];

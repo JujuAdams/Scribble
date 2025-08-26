@@ -188,7 +188,6 @@ function __scribble_gen_2_parser()
     static _external_sound_map    = _system.__external_sound_map;
     static _string_buffer         = _system.__buffer_a;
     static _other_string_buffer   = _system.__buffer_b;
-    static _colors_struct         = __scribble_config_colours();
     static _font_data_map         = _system.__font_data_map;
     static _generator_state       = _system.__generator_state;
     static _sprite_whitelist_map  = _system.__state.__sprite_whitelist_map;
@@ -1045,16 +1044,7 @@ function __scribble_gen_2_parser()
                         break;
                         
                         default: //TODO - Optimize
-                            if (variable_struct_exists(_colors_struct, _tag_command_name)) //Set a pre-defined colour
-                            {
-                                _state_colour = (_state_colour & 0xFF000000) | (_colors_struct[$ _tag_command_name] & 0x00FFFFFF);
-                            
-                                //Add a colour control
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
-                                ++_control_count;
-                            }
-                            else if (variable_struct_exists(_tagDict, _tag_command_name))
+                            if (variable_struct_exists(_tagDict, _tag_command_name))
                             {
                                 var _tagStruct = _tagDict[$ _tag_command_name];
                                 var _tagType = _tagStruct.__type;
@@ -1062,7 +1052,7 @@ function __scribble_gen_2_parser()
                                 
                                 if (_tagType == __SCRIBBLE_TAG_COLOR)
                                 {
-                                    _state_colour = (_state_colour & 0xFF000000) | (_tagData.__color & 0x00FFFFFF);
+                                    _state_colour = (_state_colour & 0xFF000000) | (_tagData & 0x00FFFFFF);
                                     
                                     //Add a colour control
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;

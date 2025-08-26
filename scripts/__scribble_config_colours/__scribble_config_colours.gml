@@ -8,7 +8,7 @@
 
 function __scribble_config_colours()
 {
-    static _colours = {
+    return {
         //Duplicate GM's native colour constants
         c_aqua:    c_aqua,
         c_black:   c_black,
@@ -40,6 +40,4 @@ function __scribble_config_colours()
         c_xanadu:     #738678,
         c_amaranth:   #e52b50,
     };
-    
-    return _colours;
 }

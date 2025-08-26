@@ -7,6 +7,15 @@
 
 function scribble_color_get(_name)
 {
-    static _colourDict = __scribble_config_colours();
-    return _colourDict[$ _name];
+    static _tagDict = __scribble_system().__tagDict;
+    
+    var _tagStruct = _tagDict[$ _name];
+    if (is_struct(_tagStruct) && (_tagStruct.__type == __SCRIBBLE_TAG_COLOR))
+    {
+        return _tagStruct.__data;
+    }
+    else
+    {
+        return undefined;
+    }
 }

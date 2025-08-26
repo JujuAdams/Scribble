@@ -17,30 +17,16 @@
 
 function scribble_color_set(_name, _colour)
 {
-    static _colourDict = __scribble_config_colours();
-    
     if (_colour == undefined)
     {
-        if (variable_struct_exists(_colourDict, _name))
-        {
-            variable_struct_remove(_colourDict, _name);
-            
-            //Ensure that any custom colours that are in text elements are updated
-            scribble_refresh_everything();
-        }
+        __scribble_remove_tag(_name);
+        return;
     }
-    else if (!is_numeric(_colour))
+    
+    if (not is_numeric(_colour))
     {
         __scribble_error("Colour values should be 24-bit BGR values");
     }
-    else
-    {
-        if (_colourDict[$ _name] != _colour)
-        {
-            _colourDict[$ _name] = _colour;
-            
-            //Ensure that any custom colours that are in text elements are updated
-            scribble_refresh_everything();
-        }
-    }
+    
+    __scribble_add_tag(_name, __SCRIBBLE_TAG_COLOR, _colour, false);
 }

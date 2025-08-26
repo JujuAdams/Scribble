@@ -248,17 +248,7 @@ function __scribble_class_shared_element(_string) constructor
     /// @param alpha
     static blend = function(_colour, _alpha)
     {
-        static _colors_struct = __scribble_config_colours();
-        
-        if (is_string(_colour))
-        {
-            _colour = _colors_struct[$ _colour];
-            if (_colour == undefined)
-            {
-                __scribble_error("Colour name \"", _colour, "\" not recognised");
-                exit;
-            }
-        }
+        _colour = __scribble_process_colour(_colour);
         
         if (_colour != undefined) __blend_colour = _colour & 0xFFFFFF;
         if (_alpha  != undefined) __blend_alpha  = _alpha;
@@ -270,20 +260,11 @@ function __scribble_class_shared_element(_string) constructor
     /// @param alpha
     static gradient = function(_colour, _alpha)
     {
-        static _colors_struct = __scribble_config_colours();
-        
-        if (is_string(_colour))
-        {
-            _colour = _colors_struct[$ _colour];
-            if (_colour == undefined)
-            {
-                __scribble_error("Colour name \"", _colour, "\" not recognised");
-                exit;
-            }
-        }
+        _colour = __scribble_process_colour(_colour);
         
         __gradient_colour = _colour & 0xFFFFFF;
         __gradient_alpha  = _alpha;
+        
         return self;
     }
     
@@ -296,20 +277,11 @@ function __scribble_class_shared_element(_string) constructor
     /// @param alpha
     static flash = function(_colour, _alpha)
     {
-        static _colors_struct = __scribble_config_colours();
-        
-        if (is_string(_colour))
-        {
-            _colour = _colors_struct[$ _colour];
-            if (_colour == undefined)
-            {
-                __scribble_error("Colour name \"", _colour, "\" not recognised");
-                exit;
-            }
-        }
+        _colour = __scribble_process_colour(_colour);
         
         __flash_colour = _colour & 0xFFFFFF;
         __flash_alpha  = _alpha;
+        
         return self;
     }
     

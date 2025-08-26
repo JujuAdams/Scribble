@@ -2,16 +2,17 @@
 
 function __scribble_process_colour(_value)
 {
-    static _colors_struct = __scribble_config_colours();
+    static _tagDict = __scribble_system().__tagDict;
     
     if (is_string(_value))
     {
-        if (not variable_struct_exists(_colors_struct, _value))
+        var _tagStruct = _tagDict[$ _value];
+        if not (is_struct(_tagStruct) && (_tagStruct.__type == __SCRIBBLE_TAG_COLOR))
         {
-            __scribble_error("Colour \"", _value, "\" not recognised. Please add it to __scribble_config_colours()");
+            __scribble_error("Colour \"", _value, "\" not recognised");
         }
         
-        return (_colors_struct[$ _value] & 0xFFFFFF);
+        return (_tagStruct.__data & 0xFFFFFF);
     }
     else
     {

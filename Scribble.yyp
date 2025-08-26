@@ -354,6 +354,7 @@
     {"id":{"name":"__scribble_play_sound","path":"scripts/__scribble_play_sound/__scribble_play_sound.yy",},},
     {"id":{"name":"__scribble_process_colour","path":"scripts/__scribble_process_colour/__scribble_process_colour.yy",},},
     {"id":{"name":"__scribble_random","path":"scripts/__scribble_random/__scribble_random.yy",},},
+    {"id":{"name":"__scribble_remove_tag","path":"scripts/__scribble_remove_tag/__scribble_remove_tag.yy",},},
     {"id":{"name":"__scribble_rgb_to_bgr","path":"scripts/__scribble_rgb_to_bgr/__scribble_rgb_to_bgr.yy",},},
     {"id":{"name":"__scribble_sprite_get_material","path":"scripts/__scribble_sprite_get_material/__scribble_sprite_get_material.yy",},},
     {"id":{"name":"__scribble_sprite_get_texture_index","path":"scripts/__scribble_sprite_get_texture_index/__scribble_sprite_get_texture_index.yy",},},
