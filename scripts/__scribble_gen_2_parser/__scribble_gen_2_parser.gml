@@ -1089,7 +1089,17 @@ function __scribble_gen_2_parser()
                                 }
                                 else if (_tagType == __SCRIBBLE_TAG_MACRO)
                                 {
-                                    var _macro_result = string(method_call(_tagData.__function, _tag_parameters, 1));
+                                    array_shift(_tag_parameters);
+                                    var _macro_result = string(method_call(_tagData.__function, _tag_parameters));
+                                    
+                                    if (_tagData.__dynamic)
+                                    {
+                                        array_push(__dynamicMacroArray, {
+                                            __function:   _tagData.__function,
+                                            __parameters: _tag_parameters,
+                                            __result:     _macro_result,
+                                        });
+                                    }
                                     
                                     //Figure out how much we need to copy and if we need to resize the target buffer
                                     var _copy_size = _buffer_length - buffer_tell(_string_buffer);

@@ -7,9 +7,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     static __scribble_state    = __scribble_system().__state;
     static __mcache_dict       = __scribble_system().__cache_state.__mcache_dict;
     static __mcache_name_array = __scribble_system().__cache_state.__mcache_name_array;
-    
-    //Record the start time so we can get a duration later
-    if (SCRIBBLE_VERBOSE) var _timer_total = get_timer();
+    static _generator_state    = __scribble_system().__generator_state;
     
     __cache_name = _model_cache_name;
     
@@ -33,37 +31,81 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __frozen     = undefined;
     __flushed    = false;
     
+    __element = _element; //TODO - Remove this
+    
     __allow_text_getter       = _element.__allow_text_getter;
     __allow_glyph_data_getter = _element.__allow_glyph_data_getter;
     __allow_line_data_getter  = _element.__allow_line_data_getter;
     
-    __pages      = 0;
-    __width      = 0;
-    __height     = 0;
-    __min_x      = 0;
-    __min_y      = 0;
-    __max_x      = 0;
-    __max_y      = 0;
-    __valign     = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
-    __fit_scale  = 1.0;
-    __wrapped    = false;
-    
-    __pad_bbox_l = false;
-    __pad_bbox_t = false;
-    __pad_bbox_r = false;
-    __pad_bbox_b = false;
-    
-    __has_r2l        = false;
-    __has_arabic     = false;
-    __has_thai       = false;
-    __has_hebrew     = false;
-    __has_devanagari = false;
-    __has_animation  = false;
-    __has_cycle      = false;
-    
-    __pages_array = []; //Stores each page of text
+    __build();
     
     
+    
+    static __build = function()
+    {
+        //Record the start time so we can get a duration later
+        if (SCRIBBLE_VERBOSE) var _timer_total = get_timer();
+        
+        __pages      = 0;
+        __width      = 0;
+        __height     = 0;
+        __min_x      = 0;
+        __min_y      = 0;
+        __max_x      = 0;
+        __max_y      = 0;
+        __valign     = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
+        __fit_scale  = 1.0;
+        __wrapped    = false;
+        
+        __pad_bbox_l = false;
+        __pad_bbox_t = false;
+        __pad_bbox_r = false;
+        __pad_bbox_b = false;
+        
+        __has_r2l        = false;
+        __has_arabic     = false;
+        __has_thai       = false;
+        __has_hebrew     = false;
+        __has_devanagari = false;
+        __has_animation  = false;
+        __has_cycle      = false;
+        
+        __pages_array = []; //Stores each page of text
+        __dynamicMacroArray = [];
+        
+        with(_generator_state)
+        {
+            __Reset();
+        
+            __element      = other.__element;
+            __overall_bidi = other.__element.__bidi_hint;
+        };
+        
+        __scribble_gen_1_model_limits_and_bezier_curves();
+        __scribble_gen_2_parser();
+        __scribble_gen_3_devanagari();
+        __scribble_gen_4_build_words();
+        __scribble_gen_5_finalize_bidi();
+        __scribble_gen_6_build_lines();
+        __scribble_gen_7_build_pages();
+        __scribble_gen_8_position_glyphs();
+        __scribble_gen_9_build_vbuff_grids();
+        __scribble_gen_10_write_vbuffs();
+        __scribble_gen_11_set_padding_flags();
+        __scribble_gen_12_dynamic_macros();
+        
+        if (SCRIBBLE_VERBOSE)
+        {
+            var _elapsed = (get_timer() - _timer_total)/1000;
+            __scribble_trace("__scribble_class_model() took ", _elapsed, "ms");
+        }
+    }
+    
+    static __rebuild = function()
+    {
+        __reset();
+        __build();
+    }
     
     static __submit = function(_page, _double_draw)
     {
@@ -324,32 +366,5 @@ function __scribble_class_model(_element, _model_cache_name) constructor
             __pages_array[_i].__finalize_vertex_buffers(_freeze);
             ++_i;
         }
-    }
-    
-    static _generator_state = __scribble_system().__generator_state;
-    with(_generator_state)
-    {
-        __Reset();
-        
-        __element      = _element;
-        __overall_bidi = _element.__bidi_hint;
-    };
-    
-    __scribble_gen_1_model_limits_and_bezier_curves();
-    __scribble_gen_2_parser();
-    __scribble_gen_3_devanagari();
-    __scribble_gen_4_build_words();
-    __scribble_gen_5_finalize_bidi();
-    __scribble_gen_6_build_lines();
-    __scribble_gen_7_build_pages();
-    __scribble_gen_8_position_glyphs();
-    __scribble_gen_9_build_vbuff_grids();
-    __scribble_gen_10_write_vbuffs();
-    __scribble_gen_11_set_padding_flags();
-    
-    if (SCRIBBLE_VERBOSE)
-    {
-        var _elapsed = (get_timer() - _timer_total)/1000;
-        __scribble_trace("__scribble_class_model() took ", _elapsed, "ms");
     }
 }
