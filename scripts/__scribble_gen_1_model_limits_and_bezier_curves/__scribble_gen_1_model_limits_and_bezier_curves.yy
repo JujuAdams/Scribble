@@ -6,7 +6,7 @@
   "name":"__scribble_gen_1_model_limits_and_bezier_curves",
   "parent":{
     "name":"Generator",
-    "path":"folders/Scribble/(System)/Don't call these functions/Generator.yy",
+    "path":"folders/Scribble/(System)/Don't call these functions!/Generator.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

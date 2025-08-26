@@ -1,8 +1,10 @@
 // Feather disable all
+
 /// @param name
 /// @param function
+/// @param [dynamic=false]
 
-function scribble_add_macro(_name, _function)
+function scribble_add_macro(_name, _function, _dynamic = false)
 {
     static _system                = __scribble_system();
     static _effects_map           = _system.__effects_map;
