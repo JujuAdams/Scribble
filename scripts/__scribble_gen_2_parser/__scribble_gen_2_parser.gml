@@ -184,8 +184,6 @@ function __scribble_gen_2_parser()
     static _system                = __scribble_system();
     static _cycle_data_map        = _system.__cycle_data_map;
     static _tagDict               = _system.__tagDict;
-    static _effects_map           = _system.__effects_map;
-    static _effects_slash_map     = _system.__effects_slash_map;
     static _external_sprite_map   = _system.__external_sprite_map;
     static _external_sound_map    = _system.__external_sound_map;
     static _string_buffer         = _system.__buffer_a;
@@ -749,7 +747,7 @@ function __scribble_gen_2_parser()
                                 __scribble_error("Cycle \"", _cycle_name, "\" not recognised");
                             }
                             
-                            _state_effect_flags = _state_effect_flags | (1 << _effects_map[? "cycle"]);
+                            _state_effect_flags = _state_effect_flags | (1 << _tagDict[$ "cycle"].__data);
                             
                             //Add an effect flag control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
@@ -773,7 +771,7 @@ function __scribble_gen_2_parser()
                         // [/rainbow]
                         // [/cycle]
                         case 23:
-                            _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_map[? "/cycle"]));
+                            _state_effect_flags = ~((~_state_effect_flags) | (1 << _tagDict[$ "/cycle"].__data));
                             
                             //Add an effect flag control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
@@ -1047,27 +1045,7 @@ function __scribble_gen_2_parser()
                         break;
                         
                         default: //TODO - Optimize
-                            if (ds_map_exists(_effects_map, _tag_command_name)) //Set an effect
-                            {
-                                _state_effect_flags = _state_effect_flags | (1 << _effects_map[? _tag_command_name]);
-                            
-                                //Add an effect flag control
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_effect_flags;
-                                ++_control_count;
-                            
-                                __has_animation = true;
-                            }
-                            else if (ds_map_exists(_effects_slash_map, _tag_command_name)) //Check if this is a effect name, but with a forward slash at the front
-                            {
-                                _state_effect_flags = ~((~_state_effect_flags) | (1 << _effects_slash_map[? _tag_command_name]));
-                            
-                                //Add an effect flag control
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_effect_flags;
-                                ++_control_count;
-                            }
-                            else if (variable_struct_exists(_colors_struct, _tag_command_name)) //Set a pre-defined colour
+                            if (variable_struct_exists(_colors_struct, _tag_command_name)) //Set a pre-defined colour
                             {
                                 _state_colour = (_state_colour & 0xFF000000) | (_colors_struct[$ _tag_command_name] & 0x00FFFFFF);
                             
@@ -1082,7 +1060,36 @@ function __scribble_gen_2_parser()
                                 var _tagType = _tagStruct.__type;
                                 var _tagData = _tagStruct.__data;
                                 
-                                if (_tagType == __SCRIBBLE_TAG_EVENT)
+                                if (_tagType == __SCRIBBLE_TAG_COLOR)
+                                {
+                                    _state_colour = (_state_colour & 0xFF000000) | (_tagData.__color & 0x00FFFFFF);
+                                    
+                                    //Add a colour control
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
+                                    ++_control_count;
+                                }
+                                else if (_tagType == __SCRIBBLE_TAG_EFFECT)
+                                {
+                                    _state_effect_flags = _state_effect_flags | (1 << _tagData);
+                                    
+                                    //Add an effect flag control
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_effect_flags;
+                                    ++_control_count;
+                                    
+                                    __has_animation = true;
+                                }
+                                else if (_tagType == __SCRIBBLE_TAG_EFFECT_UNSET)
+                                {
+                                    _state_effect_flags = ~((~_state_effect_flags) | (1 << _tagData));
+                                    
+                                    //Add an effect flag control
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_effect_flags;
+                                    ++_control_count;
+                                }
+                                else if (_tagType == __SCRIBBLE_TAG_EVENT)
                                 {
                                     array_delete(_tag_parameters, 0, 1);
                                     

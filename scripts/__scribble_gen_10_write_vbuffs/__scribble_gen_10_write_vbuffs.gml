@@ -65,8 +65,8 @@
 function __scribble_gen_10_write_vbuffs()
 {
     static _string_buffer   = __scribble_system().__buffer_a;
-    static _effects_map     = __scribble_system().__effects_map;
     static _generator_state = __scribble_system().__generator_state;
+    static _tagDict         = __scribble_system().__tagDict;
     
     static _scribbleDotUVs = sprite_get_uvs(scribble_fallback_dot, 0);
     static _scribbleDotMaterial = __scribble_sprite_get_material(scribble_fallback_dot, 0);
@@ -328,14 +328,14 @@ function __scribble_gen_10_write_vbuffs()
                     
                     var _old_glyph_effect_flags = _glyph_effect_flags;
                     
-                    if (!SCRIBBLE_COLORIZE_SPRITES)
+                    if (not SCRIBBLE_COLORIZE_SPRITES)
                     {
                         var _old_write_colour = _write_colour;
                         _write_colour = _glyph_colour | 0xFFFFFF; //Make sure we use the general glyph alpha
                         
                         _glyph_effect_flags = ~_glyph_effect_flags;
-                        _glyph_effect_flags |= (1 << _effects_map[? "rainbow"]);
-                        _glyph_effect_flags |= (1 << _effects_map[? "cycle"  ]);
+                        _glyph_effect_flags |= (1 << _tagDict[$ "rainbow"].__data);
+                        _glyph_effect_flags |= (1 << _tagDict[$ "cycle"  ].__data);
                         _glyph_effect_flags = ~_glyph_effect_flags;
                     }
                     
@@ -428,7 +428,7 @@ function __scribble_gen_10_write_vbuffs()
                         _write_colour = _write_colour | 0xFFFFFF;
                         
                         _glyph_effect_flags = ~_glyph_effect_flags;
-                        _glyph_effect_flags |= (1 << _effects_map[? "cycle"]);
+                        _glyph_effect_flags |= (1 << _tagDict[$ "cycle"].__data);
                         _glyph_effect_flags = ~_glyph_effect_flags;
                     }
                     

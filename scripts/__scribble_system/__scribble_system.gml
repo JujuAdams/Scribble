@@ -221,44 +221,41 @@ function __scribble_system(_calledFromInitialize = false)
         __scribble_add_tag("speed",  __SCRIBBLE_TAG_EVENT, undefined, true);
         __scribble_add_tag("/speed", __SCRIBBLE_TAG_EVENT, undefined, true);
         
-        //Add bindings for default effect names
-        //Effect index 0 is reserved for sprites
-        __effects_map       = ds_map_create();
-        __effects_slash_map = ds_map_create();
+        __scribble_add_tag("wave",   __SCRIBBLE_TAG_EFFECT, 1, true);
+        __scribble_add_tag("shake",  __SCRIBBLE_TAG_EFFECT, 2, true);
+        __scribble_add_tag("wobble", __SCRIBBLE_TAG_EFFECT, 3, true);
+        __scribble_add_tag("pulse",  __SCRIBBLE_TAG_EFFECT, 4, true);
+        __scribble_add_tag("wheel",  __SCRIBBLE_TAG_EFFECT, 5, true);
+        __scribble_add_tag("cycle",  __SCRIBBLE_TAG_EFFECT, 6, true);
+        __scribble_add_tag("jitter", __SCRIBBLE_TAG_EFFECT, 7, true);
+        __scribble_add_tag("slant",  __SCRIBBLE_TAG_EFFECT, 8, true);
         
-        __effects_map[?       "wave"    ] = 1;
-        __effects_map[?       "shake"   ] = 2;
-        __effects_map[?       "wobble"  ] = 3;
-        __effects_map[?       "pulse"   ] = 4;
-        __effects_map[?       "wheel"   ] = 5;
-        __effects_map[?       "cycle"   ] = 6;
-        __effects_map[?       "jitter"  ] = 7;
-        __effects_map[?       "slant"   ] = 8;
-        __effects_slash_map[? "/wave"   ] = 1;
-        __effects_slash_map[? "/shake"  ] = 2;
-        __effects_slash_map[? "/wobble" ] = 3;
-        __effects_slash_map[? "/pulse"  ] = 4;
-        __effects_slash_map[? "/wheel"  ] = 5;
-        __effects_slash_map[? "/cycle"  ] = 6;
-        __effects_slash_map[? "/jitter" ] = 7;
-        __effects_slash_map[? "/slant"  ] = 8;
+        __scribble_add_tag("WAVE",   __SCRIBBLE_TAG_EFFECT, 1, true);
+        __scribble_add_tag("SHAKE",  __SCRIBBLE_TAG_EFFECT, 2, true);
+        __scribble_add_tag("WOBBLE", __SCRIBBLE_TAG_EFFECT, 3, true);
+        __scribble_add_tag("PULSE",  __SCRIBBLE_TAG_EFFECT, 4, true);
+        __scribble_add_tag("WHEEL",  __SCRIBBLE_TAG_EFFECT, 5, true);
+        __scribble_add_tag("CYCLE",  __SCRIBBLE_TAG_EFFECT, 6, true);
+        __scribble_add_tag("JITTER", __SCRIBBLE_TAG_EFFECT, 7, true);
+        __scribble_add_tag("SLANT",  __SCRIBBLE_TAG_EFFECT, 8, true);
         
-        __effects_map[?       "WAVE"    ] = 1;
-        __effects_map[?       "SHAKE"   ] = 2;
-        __effects_map[?       "WOBBLE"  ] = 3;
-        __effects_map[?       "PULSE"   ] = 4;
-        __effects_map[?       "WHEEL"   ] = 5;
-        __effects_map[?       "CYCLE"   ] = 6;
-        __effects_map[?       "JITTER"  ] = 7;
-        __effects_map[?       "SLANT"   ] = 8;
-        __effects_slash_map[? "/WAVE"   ] = 1;
-        __effects_slash_map[? "/SHAKE"  ] = 2;
-        __effects_slash_map[? "/WOBBLE" ] = 3;
-        __effects_slash_map[? "/PULSE"  ] = 4;
-        __effects_slash_map[? "/WHEEL"  ] = 5;
-        __effects_slash_map[? "/CYCLE"  ] = 6;
-        __effects_slash_map[? "/JITTER" ] = 7;
-        __effects_slash_map[? "/SLANT"  ] = 8;
+        __scribble_add_tag("/wave",   __SCRIBBLE_TAG_EFFECT_UNSET, 1, true);
+        __scribble_add_tag("/shake",  __SCRIBBLE_TAG_EFFECT_UNSET, 2, true);
+        __scribble_add_tag("/wobble", __SCRIBBLE_TAG_EFFECT_UNSET, 3, true);
+        __scribble_add_tag("/pulse",  __SCRIBBLE_TAG_EFFECT_UNSET, 4, true);
+        __scribble_add_tag("/wheel",  __SCRIBBLE_TAG_EFFECT_UNSET, 5, true);
+        __scribble_add_tag("/cycle",  __SCRIBBLE_TAG_EFFECT_UNSET, 6, true);
+        __scribble_add_tag("/jitter", __SCRIBBLE_TAG_EFFECT_UNSET, 7, true);
+        __scribble_add_tag("/slant",  __SCRIBBLE_TAG_EFFECT_UNSET, 8, true);
+        
+        __scribble_add_tag("/WAVE",   __SCRIBBLE_TAG_EFFECT_UNSET, 1, true);
+        __scribble_add_tag("/SHAKE",  __SCRIBBLE_TAG_EFFECT_UNSET, 2, true);
+        __scribble_add_tag("/WOBBLE", __SCRIBBLE_TAG_EFFECT_UNSET, 3, true);
+        __scribble_add_tag("/PULSE",  __SCRIBBLE_TAG_EFFECT_UNSET, 4, true);
+        __scribble_add_tag("/WHEEL",  __SCRIBBLE_TAG_EFFECT_UNSET, 5, true);
+        __scribble_add_tag("/CYCLE",  __SCRIBBLE_TAG_EFFECT_UNSET, 6, true);
+        __scribble_add_tag("/JITTER", __SCRIBBLE_TAG_EFFECT_UNSET, 7, true);
+        __scribble_add_tag("/SLANT",  __SCRIBBLE_TAG_EFFECT_UNSET, 8, true);
         
         __cycle_surface = -1;
         __cycle_data_open_array = [];
