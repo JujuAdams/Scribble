@@ -151,6 +151,7 @@
     {"id":{"name":"obj_test_devangari_sprites","path":"objects/obj_test_devangari_sprites/obj_test_devangari_sprites.yy",},},
     {"id":{"name":"obj_test_disable_animation","path":"objects/obj_test_disable_animation/obj_test_disable_animation.yy",},},
     {"id":{"name":"obj_test_draw_text_scribble","path":"objects/obj_test_draw_text_scribble/obj_test_draw_text_scribble.yy",},},
+    {"id":{"name":"obj_test_dynamic_macros","path":"objects/obj_test_dynamic_macros/obj_test_dynamic_macros.yy",},},
     {"id":{"name":"obj_test_escaped_newlines","path":"objects/obj_test_escaped_newlines/obj_test_escaped_newlines.yy",},},
     {"id":{"name":"obj_test_external_font","path":"objects/obj_test_external_font/obj_test_external_font.yy",},},
     {"id":{"name":"obj_test_external_sprite","path":"objects/obj_test_external_sprite/obj_test_external_sprite.yy",},},

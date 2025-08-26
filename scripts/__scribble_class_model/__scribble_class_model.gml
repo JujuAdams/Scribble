@@ -32,6 +32,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __flushed    = false;
     
     __element = _element; //TODO - Remove this
+    //FIXME - Refresh elements that rely on this model
     
     __allow_text_getter       = _element.__allow_text_getter;
     __allow_glyph_data_getter = _element.__allow_glyph_data_getter;
