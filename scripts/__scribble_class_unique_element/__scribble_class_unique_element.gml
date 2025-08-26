@@ -569,7 +569,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
     
     static __ProcessEventStack = function(_functionScope, _revealCount, _skip)
     {
-        static _typewriterEventsMap = __scribble_system().__typewriter_events_map;
+        static _tagDict = __scribble_system().__tagDict;
         
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
         //We return <true> if there have been no pausing behaviours called i.e. [pause] and [delay]
@@ -661,10 +661,18 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
                     //FIXME - We should not be passing the reveal index to external functions (should be the character index)
                     
                     //Otherwise try to find a custom event
-                    var _function = _typewriterEventsMap[? _eventName];
-                    if (is_callable(_function))
+                    var _tagStruct = _tagDict[$ _eventName];
+                    if (is_struct(_tagStruct) && (_tagStruct.__type == __SCRIBBLE_TAG_EVENT))
                     {
-                        with(_functionScope) _function(self, _eventData, _eventPosition);
+                        var _function = _tagStruct.__data.__function;
+                        if (is_callable(_function))
+                        {
+                            with(_functionScope) _function(self, _eventData, _eventPosition);
+                        }
+                        else
+                        {
+                            __scribble_trace("Warning! Event [", _eventName, "] does not have a callable function attached");
+                        }
                     }
                     else
                     {

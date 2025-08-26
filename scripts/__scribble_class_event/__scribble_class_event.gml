@@ -6,5 +6,5 @@ function __scribble_class_event(_name, _data) constructor
     name         = _name;
     data         = _data;
     reveal_index = undefined;
-    //TODO - Readd character index
+    //TODO - Restore character index
 }

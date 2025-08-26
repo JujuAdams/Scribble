@@ -214,14 +214,12 @@ function __scribble_system(_calledFromInitialize = false)
         
         __tagDict = {};
         
-        //Lookup for typewrite events
-        //Pre-populated with native typewriter event types
-        __typewriter_events_map = ds_map_create();
-        __typewriter_events_map[? "pause" ] = undefined;
-        __typewriter_events_map[? "delay" ] = undefined;
-        __typewriter_events_map[? "sync"  ] = undefined;
-        __typewriter_events_map[? "speed" ] = undefined;
-        __typewriter_events_map[? "/speed"] = undefined;
+        //Pre-populated typist events
+        __scribble_add_tag("pause",  __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag("delay",  __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag("sync",   __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag("speed",  __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag("/speed", __SCRIBBLE_TAG_EVENT, undefined, true);
         
         //Add bindings for default effect names
         //Effect index 0 is reserved for sprites

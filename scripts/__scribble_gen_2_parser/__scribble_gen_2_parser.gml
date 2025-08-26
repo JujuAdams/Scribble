@@ -186,7 +186,6 @@ function __scribble_gen_2_parser()
     static _tagDict               = _system.__tagDict;
     static _effects_map           = _system.__effects_map;
     static _effects_slash_map     = _system.__effects_slash_map;
-    static _typewriter_events_map = _system.__typewriter_events_map;
     static _external_sprite_map   = _system.__external_sprite_map;
     static _external_sound_map    = _system.__external_sound_map;
     static _string_buffer         = _system.__buffer_a;
@@ -1077,21 +1076,21 @@ function __scribble_gen_2_parser()
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
                                 ++_control_count;
                             }
-                            else if (ds_map_exists(_typewriter_events_map, _tag_command_name)) //Events
-                            {
-                                array_delete(_tag_parameters, 0, 1);
-                            
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EVENT;
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = new __scribble_class_event(_tag_command_name, _tag_parameters);
-                                ++_control_count;
-                            }
                             else if (variable_struct_exists(_tagDict, _tag_command_name))
                             {
                                 var _tagStruct = _tagDict[$ _tag_command_name];
                                 var _tagType = _tagStruct.__type;
                                 var _tagData = _tagStruct.__data;
                                 
-                                if (_tagType == __SCRIBBLE_TAG_MACRO)
+                                if (_tagType == __SCRIBBLE_TAG_EVENT)
+                                {
+                                    array_delete(_tag_parameters, 0, 1);
+                                    
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EVENT;
+                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = new __scribble_class_event(_tag_command_name, _tag_parameters);
+                                    ++_control_count;
+                                }
+                                else if (_tagType == __SCRIBBLE_TAG_MACRO)
                                 {
                                     var _macro_result = string(method_call(_tagData.__function, _tag_parameters, 1));
                                     
