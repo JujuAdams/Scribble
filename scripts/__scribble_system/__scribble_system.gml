@@ -25,6 +25,12 @@
 
 #macro __SCRIBBLE_GLYPH_PROPR_COUNT  17
 
+#macro __SCRIBBLE_TAG_COLOR         0
+#macro __SCRIBBLE_TAG_EFFECT        1
+#macro __SCRIBBLE_TAG_EFFECT_UNSET  2
+#macro __SCRIBBLE_TAG_EVENT         3
+#macro __SCRIBBLE_TAG_MACRO         4
+
 gml_pragma("MarkTagAsUsed", "scribble");
 
 
@@ -206,8 +212,7 @@ function __scribble_system(_calledFromInitialize = false)
         __external_sprite_map = ds_map_create();
         __external_sound_map  = ds_map_create();
         
-        //Lookup for user-defined macros
-        __macros_map = ds_map_create();
+        __tagDict = {};
         
         //Lookup for typewrite events
         //Pre-populated with native typewriter event types

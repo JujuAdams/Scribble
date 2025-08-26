@@ -182,13 +182,13 @@ function __scribble_gen_2_parser()
     #endregion
     
     static _system                = __scribble_system();
-    static _cycle_data_map       = _system.__cycle_data_map;
+    static _cycle_data_map        = _system.__cycle_data_map;
+    static _tagDict               = _system.__tagDict;
     static _effects_map           = _system.__effects_map;
     static _effects_slash_map     = _system.__effects_slash_map;
     static _typewriter_events_map = _system.__typewriter_events_map;
     static _external_sprite_map   = _system.__external_sprite_map;
     static _external_sound_map    = _system.__external_sound_map;
-    static _macros_map            = _system.__macros_map;
     static _string_buffer         = _system.__buffer_a;
     static _other_string_buffer   = _system.__buffer_b;
     static _colors_struct         = __scribble_config_colours();
@@ -1085,47 +1085,53 @@ function __scribble_gen_2_parser()
                                 _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = new __scribble_class_event(_tag_command_name, _tag_parameters);
                                 ++_control_count;
                             }
-                            else if (ds_map_exists(_macros_map, _tag_command_name)) //Macros
+                            else if (variable_struct_exists(_tagDict, _tag_command_name))
                             {
-                                var _function = _macros_map[? _tag_command_name];
-                            
-                                var _macro_result = "";
-                                switch(_tag_parameter_count)
-                                {
-                                    case 1: _macro_result = _function(); break;
-                                    case 2: _macro_result = _function(_tag_parameters[1]); break;
-                                    case 3: _macro_result = _function(_tag_parameters[1], _tag_parameters[2]); break;
-                                    case 4: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3]); break;
-                                    case 5: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4]); break;
-                                    case 6: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5]); break;
-                                    case 7: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6]); break;
-                                    case 8: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6], _tag_parameters[7]); break;
-                                    case 9: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6], _tag_parameters[7], _tag_parameters[8]); break;
+                                var _tagStruct = _tagDict[$ _tag_command_name];
+                                var _tagType = _tagStruct.__type;
+                                var _tagData = _tagStruct.__data;
                                 
-                                    default:
-                                        __scribble_error("Macro argument count ", _tag_parameter_count, " unsupported");
-                                    break;
+                                if (_tagType == __SCRIBBLE_TAG_MACRO)
+                                {
+                                    var _macro_result = string(method_call(_tagData.__function, _tag_parameters, 1));
+                                    
+                                    //var _macro_result = "";
+                                    //switch(_tag_parameter_count)
+                                    //{
+                                    //    case 1: _macro_result = _function(); break;
+                                    //    case 2: _macro_result = _function(_tag_parameters[1]); break;
+                                    //    case 3: _macro_result = _function(_tag_parameters[1], _tag_parameters[2]); break;
+                                    //    case 4: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3]); break;
+                                    //    case 5: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4]); break;
+                                    //    case 6: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5]); break;
+                                    //    case 7: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6]); break;
+                                    //    case 8: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6], _tag_parameters[7]); break;
+                                    //    case 9: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6], _tag_parameters[7], _tag_parameters[8]); break;
+                                    //    
+                                    //    default:
+                                    //        __scribble_error("Macro argument count ", _tag_parameter_count, " unsupported");
+                                    //    break;
+                                    //}
+                                    //
+                                    //_macro_result = string(_macro_result);
+                                    
+                                    //Figure out how much we need to copy and if we need to resize the target buffer
+                                    var _copy_size = _buffer_length - buffer_tell(_string_buffer);
+                                    
+                                    _buffer_length = string_byte_length(_macro_result) + _copy_size;
+                                    if (_buffer_length > buffer_get_size(_other_string_buffer)) buffer_resize(_other_string_buffer, _buffer_length);
+                                    
+                                    //Write the new string to the other buffer, and then copy the remainder of the data in the old buffer
+                                    buffer_seek(_other_string_buffer, buffer_seek_start, 0);
+                                    buffer_write(_other_string_buffer, buffer_text, _macro_result);
+                                    buffer_copy(_string_buffer, buffer_tell(_string_buffer), _copy_size, _other_string_buffer, buffer_tell(_other_string_buffer));
+                                    buffer_seek(_other_string_buffer, buffer_seek_start, 0);
+                                    
+                                    //Swap the two buffers over
+                                    var _temp = _string_buffer;
+                                    _string_buffer = _other_string_buffer;
+                                    _other_string_buffer = _temp;
                                 }
-                            
-                                _macro_result = string(_macro_result);
-                            
-                                //Figure out how much we need to copy and if we need to resize the target buffer
-                                var _copy_size = _buffer_length - buffer_tell(_string_buffer);
-                            
-                                _buffer_length = string_byte_length(_macro_result) + _copy_size;
-                                if (_buffer_length > buffer_get_size(_other_string_buffer)) buffer_resize(_other_string_buffer, _buffer_length);
-                            
-                                //Write the new string to the other buffer, and then copy the remainder of the data in the old buffer
-                                buffer_seek(_other_string_buffer, buffer_seek_start, 0);
-                                buffer_write(_other_string_buffer, buffer_text, _macro_result);
-                                buffer_copy(_string_buffer, buffer_tell(_string_buffer), _copy_size, _other_string_buffer, buffer_tell(_other_string_buffer));
-                                buffer_seek(_other_string_buffer, buffer_seek_start, 0);
-                            
-                                //Swap the two buffers over
-                                var _temp = _string_buffer;
-                                _string_buffer = _other_string_buffer;
-                                _other_string_buffer = _temp;
-                            
                             }                        
                             else if (ds_map_exists(_font_data_map, _tag_command_name)) //Change font
                             {
