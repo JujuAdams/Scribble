@@ -1094,26 +1094,6 @@ function __scribble_gen_2_parser()
                                 {
                                     var _macro_result = string(method_call(_tagData.__function, _tag_parameters, 1));
                                     
-                                    //var _macro_result = "";
-                                    //switch(_tag_parameter_count)
-                                    //{
-                                    //    case 1: _macro_result = _function(); break;
-                                    //    case 2: _macro_result = _function(_tag_parameters[1]); break;
-                                    //    case 3: _macro_result = _function(_tag_parameters[1], _tag_parameters[2]); break;
-                                    //    case 4: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3]); break;
-                                    //    case 5: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4]); break;
-                                    //    case 6: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5]); break;
-                                    //    case 7: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6]); break;
-                                    //    case 8: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6], _tag_parameters[7]); break;
-                                    //    case 9: _macro_result = _function(_tag_parameters[1], _tag_parameters[2], _tag_parameters[3], _tag_parameters[4], _tag_parameters[5], _tag_parameters[6], _tag_parameters[7], _tag_parameters[8]); break;
-                                    //    
-                                    //    default:
-                                    //        __scribble_error("Macro argument count ", _tag_parameter_count, " unsupported");
-                                    //    break;
-                                    //}
-                                    //
-                                    //_macro_result = string(_macro_result);
-                                    
                                     //Figure out how much we need to copy and if we need to resize the target buffer
                                     var _copy_size = _buffer_length - buffer_tell(_string_buffer);
                                     
