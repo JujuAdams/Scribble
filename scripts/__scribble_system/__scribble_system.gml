@@ -3,7 +3,7 @@
 #macro __SCRIBBLE_DEBUG       false
 #macro __SCRIBBLE_VERBOSE_GC  false
 
-#macro __SCRIBBLE_EASE_COUNT  15
+#macro __SCRIBBLE_EASE_COUNT  12
 
 #macro __SCRIBBLE_FLAG_GRAPHIC      0
 #macro __SCRIBBLE_FLAG_ANIM_SPRITE  1

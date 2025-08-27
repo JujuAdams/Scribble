@@ -40,18 +40,19 @@ const int MAX_ANIM_FIELDS = 16;
 #define JITTER_SPEED      u_aDataFields[14]
 #define SLANT_GRADIENT    u_aDataFields[15]
 
-#define EASE_NONE         0
-#define EASE_LINEAR       1
-#define EASE_QUADRATIC    2
-#define EASE_CUBIC        3
-#define EASE_QUARTIC      4
-#define EASE_QUINTIC      5
-#define EASE_SINE         6
-#define EASE_EXPONENTIAL  7
-#define EASE_CIRCULAR     8
-#define EASE_BACK         9
-#define EASE_ELASTIC     10
-#define EASE_BOUNCE      11
+#define EASE_NONE           0
+#define EASE_LINEAR         1
+#define EASE_QUADRATIC      2
+#define EASE_CUBIC          3
+#define EASE_QUARTIC        4
+#define EASE_QUINTIC        5
+#define EASE_SINE           6
+#define EASE_EXPONENTIAL    7
+#define EASE_CIRCULAR       8
+#define EASE_BACK           9
+#define EASE_ELASTIC       10
+#define EASE_BOUNCE        11
+#define EASE_METHOD_COUNT  12
 
 const int WINDOW_COUNT = 3;
 
