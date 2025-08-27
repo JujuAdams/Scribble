@@ -251,7 +251,7 @@ function __scribble_class_shared_element(_string) constructor
         _colour = __scribble_process_colour(_colour);
         
         if (_colour != undefined) __blend_colour = _colour & 0xFFFFFF;
-        if (_alpha  != undefined) __blend_alpha  = _alpha;
+        if (_alpha  != undefined) __blend_alpha  = clamp(_alpha, 0, 1);
         
         return self;
     }
