@@ -17,7 +17,6 @@ function __scribble_class_shared_element(_string) constructor
     __model = undefined;
     
     __last_drawn = __scribble_state.__frames;
-    __freeze = false;
     
     
     
@@ -1211,9 +1210,11 @@ function __scribble_class_shared_element(_string) constructor
      /// @param freeze
     static build = function(_freeze)
     {
-        __freeze = _freeze;
-        
-        __get_model(true);
+        var _model = __get_model(true);
+        if (_freeze && is_struct(_model))
+        {
+            _model.__Freeze();
+        }
         
         if (SCRIBBLE_BUILD_RETURNS_SELF)
         {
@@ -1497,7 +1498,7 @@ function __scribble_class_shared_element(_string) constructor
             else if (_allow_create)
             {
                 //Create a new model if required
-                __model = new __scribble_class_model(self, __model_cache_name);
+                __model = new __scribble_class_model(__model_cache_name, self);
             }
             else
             {

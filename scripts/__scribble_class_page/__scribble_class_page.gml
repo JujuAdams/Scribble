@@ -47,7 +47,7 @@ function __scribble_class_page() constructor
         static _u_fSecondDraw         = shader_get_uniform(__shd_scribble, "u_fSecondDraw"        );
         static _u_fRenderType         = shader_get_uniform(__shd_scribble, "u_fRenderType"        );
         
-        if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __freeze();
+        if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __Freeze();
         
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
@@ -107,7 +107,7 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __freeze = function()
+    static __Freeze = function()
     {
         if (!__frozen)
         {
@@ -223,19 +223,17 @@ function __scribble_class_page() constructor
         return __glyph_grid;
     }
     
-    static __finalize_vertex_buffers = function(_freeze)
+    static __finalize_vertex_buffers = function()
     {
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
         {
             var _vbuff = __vertex_buffer_array[_i].__vertex_buffer;
             vertex_end(_vbuff);
-            if (_freeze) vertex_freeze(_vbuff);
-            
             ++_i;
         }
         
-        __frozen = _freeze;
+        __frozen = false;
     }
     
     static __flush = function()

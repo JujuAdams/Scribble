@@ -9,7 +9,6 @@ function __scribble_gen_9_build_vbuff_grids()
         var _glyph_grid     = __glyph_grid;
         var _vbuff_pos_grid = __vbuff_pos_grid;
         var _glyph_count    = __glyph_count;
-        var _element        = __element;
     }
     
     
@@ -25,7 +24,7 @@ function __scribble_gen_9_build_vbuff_grids()
     
     
     
-    if (_element.__visual_bboxes)
+    if (__visual_bboxes)
     {
         var _model_min_x =  infinity;
         var _model_min_y =  infinity;

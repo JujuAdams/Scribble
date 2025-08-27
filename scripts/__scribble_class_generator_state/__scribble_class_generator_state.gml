@@ -16,7 +16,6 @@ function __scribble_class_generator_state() constructor
     static __Reset = function()
     {
         //Model class
-        __element          = undefined;
         __glyph_count      = 0;
         __control_count    = 0;
         __word_count       = 0;

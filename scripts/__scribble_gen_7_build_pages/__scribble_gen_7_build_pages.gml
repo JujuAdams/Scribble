@@ -110,20 +110,19 @@ function __scribble_gen_7_build_pages()
         var _glyph_grid            = __glyph_grid;
         var _word_grid             = __word_grid;
         var _line_grid             = __line_grid;
-        var _element               = __element;
         var _model_max_height      = __model_max_height;
         var _line_count            = __line_count;
         var _line_height           = __line_height;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
-        var _randomize_animation   = __element.__randomize_animation;
-        var _line_data_getter      = __element.__allow_line_data_getter;
         var _line_data_array       = _line_data_getter? [] : undefined;
     }
     
     static _animation_randomize_array = [];
     
-    var _wrap_no_pages = _element.__wrap_no_pages;
+    var _randomize_animation = __randomize_animation;
+    var _line_data_getter    = __allow_line_data_getter;
+    var _wrap_no_pages       = __wrap_no_pages;
     
     var _simulated_model_height = _wrap_no_pages? infinity : (_model_max_height / __fit_scale);
     

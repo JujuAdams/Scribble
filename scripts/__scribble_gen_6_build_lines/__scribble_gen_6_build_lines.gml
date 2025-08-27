@@ -41,6 +41,13 @@
 function __scribble_gen_6_build_lines()
 {
     static _generator_state = __scribble_system().__generator_state;
+    
+    var _wrap_no_pages  = __wrap_no_pages;
+    var _wrap_max_scale = __wrap_max_scale;
+    var _wrap_apply     = __wrap_apply;
+    var _line_reveal    = (__revealType == SCRIBBLE_REVEAL_PER_LINE);
+    var _fit_scale      = __fit_scale;
+    
     with(_generator_state)
     {
         var _glyph_grid            = __glyph_grid;
@@ -48,24 +55,15 @@ function __scribble_gen_6_build_lines()
         var _line_grid             = __line_grid;
         var _control_grid          = __control_grid;
         var _temp_grid             = __temp_grid;
-        var _element               = __element;
         var _word_count            = __word_count;
         var _line_height           = __line_height;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
-        var _wrap_no_pages         = _element.__wrap_no_pages;
-        var _wrap_max_scale        = _element.__wrap_max_scale;
-        var _wrap_apply            = _element.__wrap_apply;
         var _model_max_width       = (_wrap_apply? __model_max_width  : infinity);
         var _model_max_height      = (_wrap_apply? __model_max_height : infinity);
-        var _line_reveal           = (__element.__revealType == SCRIBBLE_REVEAL_PER_LINE);
-        
-        var _glyph_count = __glyph_count;
     }
     
     var _forced_break = true; //Start with a forced break because it's the first line!
-    
-    var _fit_scale = __fit_scale;
     
     var _fit_to_box_iterations = 0;
     var _lower_limit = undefined;

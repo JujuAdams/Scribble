@@ -3,18 +3,16 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
 {
     static _generator_state = __scribble_system().__generator_state;
     
-    var _element = _generator_state.__element;
-    
-    var _model_max_width = _element.__wrap_max_width - (_element.__padding_l + _element.__padding_r);
+    var _model_max_width = __wrap_max_width - (__padding_l + __padding_r);
     if (_model_max_width < 0) _model_max_width = infinity;
     
-    var _model_max_height = _element.__wrap_max_height - (_element.__padding_t + _element.__padding_b);
+    var _model_max_height = __wrap_max_height - (__padding_t + __padding_b);
     if (_model_max_height < 0) _model_max_height = infinity;
     
     //TODO - Cache Bezier curves
     
     //Make a copy of the Bezier array
-    var _element_bezier_array = _element.__bezier_array;
+    var _element_bezier_array = __bezier_array;
     var _bezier_do = ((_element_bezier_array[0] != _element_bezier_array[4]) || (_element_bezier_array[1] != _element_bezier_array[5]));
     if (_bezier_do)
     {
@@ -64,9 +62,7 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
     }
     
     //Set up line height limits
-    var _element = _generator_state.__element;
-    
-    var _line_spacing_raw = _element.__line_spacing;
+    var _line_spacing_raw = __line_spacing;
     if (is_string(_line_spacing_raw))
     {
         var _length = string_length(_line_spacing_raw);
@@ -99,7 +95,7 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
         __model_max_width  = _model_max_width;
         __model_max_height = _model_max_height;
         
-        __line_height = _element.__line_height;
+        __line_height = other.__line_height;
         
         __line_spacing_add      = _line_spacing_add;
         __line_spacing_multiply = _line_spacing_multiply;

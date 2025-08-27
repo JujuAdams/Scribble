@@ -1,8 +1,9 @@
 // Feather disable all
-/// @param element
-/// @param modelCacheName
 
-function __scribble_class_model(_element, _model_cache_name) constructor
+/// @param modelCacheName
+/// @param element
+
+function __scribble_class_model(_model_cache_name, _element) constructor
 {
     static __scribble_state    = __scribble_system().__state;
     static __mcache_dict       = __scribble_system().__cache_state.__mcache_dict;
@@ -31,12 +32,43 @@ function __scribble_class_model(_element, _model_cache_name) constructor
     __frozen     = undefined;
     __flushed    = false;
     
-    __element = _element; //TODO - Remove this
     //FIXME - Refresh elements that rely on this model
+    
+    __text                = _element.__text;
+    __starting_font       = _element.__starting_font;
+    __starting_colour     = _element.__starting_colour;
+    __starting_halign     = _element.__starting_halign;
+    __starting_valign     = _element.__starting_valign;
+    __pre_scale           = _element.__pre_scale;
+    __spritesDontScale    = _element.__spritesDontScale;
+    __line_height         = _element.__line_height;
+    __line_spacing        = _element.__line_spacing;
+    
+    __wrap_apply      = _element.__wrap_apply;
+    __wrap_max_width  = _element.__wrap_max_width;
+    __wrap_max_height = _element.__wrap_max_height;
+    __wrap_per_char   = _element.__wrap_per_char;
+    __wrap_no_pages   = _element.__wrap_no_pages;
+    __wrap_max_scale  = _element.__wrap_max_scale;
+    
+    __bezier_array    = _element.__bezier_array;
+    
+    __bidi_hint           = _element.__bidi_hint;
+    __ignore_command_tags = _element.__ignore_command_tags;
+    __randomize_animation = _element.__randomize_animation;
+    
+    __padding_l       = _element.__padding_l;
+    __padding_t       = _element.__padding_t;
+    __padding_r       = _element.__padding_r;
+    __padding_b       = _element.__padding_b;
     
     __allow_text_getter       = _element.__allow_text_getter;
     __allow_glyph_data_getter = _element.__allow_glyph_data_getter;
     __allow_line_data_getter  = _element.__allow_line_data_getter;
+    
+    __visual_bboxes    = _element.__visual_bboxes;
+    __revealType       = _element.__revealType;
+    __preprocessorFunc = _element.__preprocessorFunc;
     
     __build();
     
@@ -77,9 +109,7 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         with(_generator_state)
         {
             __Reset();
-        
-            __element      = other.__element;
-            __overall_bidi = other.__element.__bidi_hint;
+            __overall_bidi = other.__bidi_hint;
         };
         
         __scribble_gen_1_model_limits_and_bezier_curves();
@@ -117,14 +147,14 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         __pages_array[_page].__submit((SCRIBBLE_ALWAYS_DOUBLE_DRAW || __has_arabic || __has_thai) && _double_draw);
     }
     
-    static __freeze = function()
+    static __Freeze = function()
     {
-        if (!__frozen)
+        if (not (__frozen ?? false))
         {
             var _i = 0;
             repeat(__pages)
             {
-                __pages_array[_i].__freeze();
+                __pages_array[_i].__Freeze();
                 ++_i;
             }
             
@@ -359,12 +389,12 @@ function __scribble_class_model(_element, _model_cache_name) constructor
         return _page_data;
     }
     
-    static __finalize_vertex_buffers = function(_freeze)
+    static __finalize_vertex_buffers = function()
     {
         var _i = 0;
         repeat(array_length(__pages_array))
         {
-            __pages_array[_i].__finalize_vertex_buffers(_freeze);
+            __pages_array[_i].__finalize_vertex_buffers();
             ++_i;
         }
     }

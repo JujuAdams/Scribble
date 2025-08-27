@@ -73,16 +73,16 @@ function __scribble_gen_10_write_vbuffs()
     
     with(_generator_state)
     {
-        var _vbuff_pos_grid    = __vbuff_pos_grid;
-        var _control_grid      = __control_grid;
-        var _glyph_grid        = __glyph_grid;
-        var _word_grid         = __word_grid;
-        var _line_grid         = __line_grid;
-        var _element           = __element;
-        var _glyph_count       = __glyph_count;
-        var _text_getter       = __element.__allow_text_getter;
-        var _glyph_data_getter = __element.__allow_glyph_data_getter;
+        var _vbuff_pos_grid = __vbuff_pos_grid;
+        var _control_grid   = __control_grid;
+        var _glyph_grid     = __glyph_grid;
+        var _word_grid      = __word_grid;
+        var _line_grid      = __line_grid;
+        var _glyph_count    = __glyph_count;
     }
+    
+    var _text_getter       = __allow_text_getter;
+    var _glyph_data_getter = __allow_glyph_data_getter;
     
     
     
@@ -539,5 +539,5 @@ function __scribble_gen_10_write_vbuffs()
     }
     
     //Ensure we've ended the vertex buffers we created
-    __finalize_vertex_buffers(_element.__freeze);
+    __finalize_vertex_buffers(_freeze);
 }

@@ -198,10 +198,8 @@ function __scribble_gen_2_parser()
         var _word_grid      = __word_grid;
         var _control_grid   = __control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
         var _vbuff_pos_grid = __vbuff_pos_grid;
-        var _element        = __element;
         var _line_height    = __line_height;
         
-        var _spritesDontScale = __element.__spritesDontScale;
     }
     
     static _glyph_data_struct = __scribble_system().__glyph_data;
@@ -224,21 +222,22 @@ function __scribble_gen_2_parser()
     static _thai_upper_map          = _glyph_data_struct.__thai_upper_map;
     
     //Cache element properties locally
-    var _element_text    = _element.__text;
-    var _starting_colour = _element.__starting_colour;
-    var _starting_halign = _element.__starting_halign;
-    var _starting_valign = _element.__starting_valign;
-    var _ignore_commands = _element.__ignore_command_tags;
-    var _pre_scale       = _element.__pre_scale;
+    var _spritesDontScale = __spritesDontScale;
+    var _element_text    = __text;
+    var _starting_colour = __starting_colour;
+    var _starting_halign = __starting_halign;
+    var _starting_valign = __starting_valign;
+    var _ignore_commands = __ignore_command_tags;
+    var _pre_scale       = __pre_scale;
     
-    var _starting_font = _element.__starting_font;
+    var _starting_font = __starting_font;
     if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
     
     _starting_font = scribble_font_get_remap(_starting_font);
     var _font_name = _starting_font;
     
     //Run the pre-processor
-    _element_text = ((_element.__preprocessorFunc ?? _system.__defaultPreprocessorFunc)(_element_text)) ?? _element_text;
+    _element_text = ((__preprocessorFunc ?? _system.__defaultPreprocessorFunc)(_element_text)) ?? _element_text;
     
     //Place our input string into a buffer for quicker reading
     buffer_seek(_string_buffer, buffer_seek_start, 0);
