@@ -15,24 +15,6 @@
 
 
 
-#macro __SCRIBBLE_PARSER_WRITE_NEWLINE  _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x0A;\ //ASCII line break (dec = 10)
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_ISOLATED;\
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;\
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;\
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = 0;\
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = _font_line_height;\
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;\
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;\
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;\
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;\
-                                        ;\
-                                        ++_glyph_count;\
-                                        _glyph_prev_arabic_join_next = false;\ //This glyph definitely doesn't join backwards
-                                        _glyph_prev_prev = _glyph_prev;\
-                                        _glyph_prev = 0x0A;
-
-
-
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  ;\//Pull info out of the font's data structures
                                       ;\//We floor this value to work around floating point issues on HTML5
                                       var _data_index = _font_glyphs_map[? floor(_glyph_write)];\
@@ -1298,7 +1280,19 @@ function __scribble_gen_2_parser()
                             //Add a newline character if the previous character wasn't also a newline
                             if ((_glyph_prev != 0x00) && (_glyph_prev != 0x0A))
                             {
-                                __SCRIBBLE_PARSER_WRITE_NEWLINE;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x0A; //ASCII line break (dec = 10)
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_ISOLATED;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = 0;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = _font_line_height;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                                
+                                _glyph_write = 0x0A;
+                                __SCRIBBLE_PARSER_WRITE_GLYPH
                             }
                             else
                             {
@@ -1360,7 +1354,19 @@ function __scribble_gen_2_parser()
             else if ((_glyph_ord == 0x0A) //If we've hit a newline (\n)
                  || (SCRIBBLE_HASH_NEWLINE && (_glyph_ord == 0x23))) //If we've hit a hash, and hash newlines are on
             {
-                __SCRIBBLE_PARSER_WRITE_NEWLINE;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x0A; //ASCII line break (dec = 10)
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_ISOLATED;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = _font_line_height;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                
+                _glyph_write = 0x0A;
+                __SCRIBBLE_PARSER_WRITE_GLYPH
             }
             else if (_glyph_ord == 0x09) //ASCII horizontal tab
             {
