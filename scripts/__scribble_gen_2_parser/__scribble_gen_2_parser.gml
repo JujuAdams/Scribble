@@ -16,7 +16,6 @@
 
 
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  ;\//Pull info out of the font's data structures
-                                      ;\//We floor this value to work around floating point issues on HTML5
                                       var _data_index = _font_glyphs_map[? _glyph_write];\
                                       ;\//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined)\
@@ -1489,7 +1488,7 @@ function __scribble_gen_2_parser()
                 var _glyph_write  = _glyph_ord;
                 var _glyph_joiner = _glyph_ord;
                 
-                if ((_glyph_write >= 0x0600) && (_glyph_write <= 0x06FF)) // Arabic Unicode block
+                if (SCRIBBLE_ALLOW_ARABIC && (_glyph_write >= 0x0600) && (_glyph_write <= 0x06FF)) // Arabic Unicode block
                 {
                     #region Arabic handling
                     
@@ -1589,7 +1588,7 @@ function __scribble_gen_2_parser()
                 }
                 else
                 {
-                    if ((_glyph_write >= 0x0900) && (_glyph_write <= 0x097F))
+                    if (SCRIBBLE_ALLOW_DEVANAGARI && (_glyph_write >= 0x0900) && (_glyph_write <= 0x097F))
                     {
                         //Devanagari is so complex it gets its own function
                         __has_devanagari = true;
@@ -1602,7 +1601,7 @@ function __scribble_gen_2_parser()
                     }
                     else
                     {
-                        if ((_glyph_write >= 0x0E00) && (_glyph_write <= 0x0E7F))
+                        if (SCRIBBLE_ALLOW_THAI && (_glyph_write >= 0x0E00) && (_glyph_write <= 0x0E7F))
                         {
                             #region C90 Thai handling
                             
@@ -1701,7 +1700,7 @@ function __scribble_gen_2_parser()
                         
                             #endregion
                         }
-                        else if ((_glyph_write >= 0x0590) && (_glyph_write <= 0x05FF))
+                        else if (SCRIBBLE_ALLOW_HEBREW && (_glyph_write >= 0x0590) && (_glyph_write <= 0x05FF))
                         {
                             //Hebrew handling is, mercifully, straight-forward beyond R2L directionality
                             __has_hebrew = true;

@@ -70,6 +70,15 @@
 #macro SCRIBBLE_FLOOR_DRAW_COORDINATES  false
 
 ///////
+// Language support
+///////
+
+#macro SCRIBBLE_ALLOW_ARABIC      false
+#macro SCRIBBLE_ALLOW_DEVANAGARI  false
+#macro SCRIBBLE_ALLOW_THAI        false
+#macro SCRIBBLE_ALLOW_HEBREW      false
+
+///////
 // Character Replacement
 ///////
 
