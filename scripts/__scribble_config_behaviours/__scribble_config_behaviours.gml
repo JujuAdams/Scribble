@@ -82,6 +82,10 @@
 //Character to use when another character is missing from a font.
 #macro SCRIBBLE_MISSING_CHARACTER  "?"
 
+//Whether to allow use of ligatures for fonts. Setting this macro to `true` confers a performance
+//penalty due to the additional look-ups that are required.
+#macro SCRIBBLE_ALLOW_LIGATURES  true
+
 //Whether to replace a grave accent (` U+0060, decimal=96) with a zero-width space for Thai text.
 //This makes life easier for localisation teams.
 #macro SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP  false

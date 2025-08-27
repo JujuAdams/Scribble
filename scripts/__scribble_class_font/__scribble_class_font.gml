@@ -34,6 +34,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     __glyph_data_grid = ds_grid_create(_glyph_count, __SCRIBBLE_GLYPH_PROPR_COUNT);
     __glyphs_map      = ds_map_create();
     __kerning_map     = ds_map_create();
+    __ligatureMap    = ds_map_create();
     
     __is_krutidev = false;
     __bilinear    = (__render_type == __SCRIBBLE_RENDER_SDF)? true : undefined;

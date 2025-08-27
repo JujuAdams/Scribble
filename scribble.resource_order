@@ -367,6 +367,8 @@
     {"name":"scribble_initialize","order":12,"path":"scripts/scribble_initialize/scribble_initialize.yy",},
     {"name":"scribble_is_text_element","order":5,"path":"scripts/scribble_is_text_element/scribble_is_text_element.yy",},
     {"name":"scribble_kerning_pair_get","order":1,"path":"scripts/scribble_kerning_pair_get/scribble_kerning_pair_get.yy",},
+    {"name":"scribble_ligature_get","order":15,"path":"scripts/scribble_ligature_get/scribble_ligature_get.yy",},
+    {"name":"scribble_ligature_set","order":14,"path":"scripts/scribble_ligature_set/scribble_ligature_set.yy",},
     {"name":"scribble_markdown_format","order":7,"path":"scripts/scribble_markdown_format/scribble_markdown_format.yy",},
     {"name":"scribble_markdown_set_styles","order":6,"path":"scripts/scribble_markdown_set_styles/scribble_markdown_set_styles.yy",},
     {"name":"scribble_refresh_everything","order":2,"path":"scripts/scribble_refresh_everything/scribble_refresh_everything.yy",},

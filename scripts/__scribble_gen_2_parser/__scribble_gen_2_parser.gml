@@ -9,7 +9,7 @@
 
 #macro __SCRIBBLE_PARSER_NEXT_GLYPH  ++_glyph_count;\
                                      _glyph_prev_arabic_join_next = false;\ //Presume we're not an Arabic joining character
-                                     _glyph_history = (_glyph_history << 16) | _glyph_write;\
+                                     if (SCRIBBLE_ALLOW_LIGATURES) _glyph_history = (_glyph_history | _glyph_write) << 16;\
                                      _glyph_prev_prev = _glyph_prev;\
                                      _glyph_prev = _glyph_write;
 
@@ -65,6 +65,7 @@
                                     var _font_kerning_map         = _font_data.__kerning_map;\
                                     var _font_halign_offset_array = _font_data.__halign_offset_array;\
                                     var _font_valign_offset_array = _font_data.__valign_offset_array;\
+                                    var _fontLigatureMap          = _font_data.__ligatureMap;\
                                     ;\
                                     var _state_halign_offset = _font_halign_offset_array[_state_halign];\
                                     var _state_valign_offset = _font_valign_offset_array[__valign ?? _starting_valign];\
@@ -183,22 +184,6 @@ function __scribble_gen_2_parser()
     static _glyph_data_struct = __scribble_system().__glyph_data;
     static _global_glyph_bidi_map = _glyph_data_struct.__bidi_map;
     
-    //Arabic look-up tables
-    static _arabic_join_next_map = _glyph_data_struct.__arabic_join_next_map;
-    static _arabic_join_prev_map = _glyph_data_struct.__arabic_join_prev_map;
-    static _arabic_isolated_map  = _glyph_data_struct.__arabic_isolated_map;
-    static _arabic_initial_map   = _glyph_data_struct.__arabic_initial_map;
-    static _arabic_medial_map    = _glyph_data_struct.__arabic_medial_map;
-    static _arabic_final_map     = _glyph_data_struct.__arabic_final_map;
-    
-    //Thai look-up tables
-    static _thai_base_map           = _glyph_data_struct.__thai_base_map;
-    static _thai_base_descender_map = _glyph_data_struct.__thai_base_descender_map;
-    static _thai_base_ascender_map  = _glyph_data_struct.__thai_base_ascender_map;
-    static _thai_top_map            = _glyph_data_struct.__thai_top_map;
-    static _thai_lower_map          = _glyph_data_struct.__thai_lower_map;
-    static _thai_upper_map          = _glyph_data_struct.__thai_upper_map;
-    
     //Cache element properties locally
     var _spritesDontScale = __spritesDontScale;
     var _element_text     = __text;
@@ -302,7 +287,7 @@ function __scribble_gen_2_parser()
             // If we haven't needed to process 2/3/4-byte UTF8 glyphs then check for \n replacement (if enabled)
             if ((_glyph_ord == 0x5C) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) == 0x6E)) //Backslash followed by "n"
             {
-                buffer_seek(_string_buffer, buffer_seek_relative, 1);
+                buffer_seek(_string_buffer, buffer_seek_relative, 1); //Skip the n
                 _glyph_ord = 0x0A;
             }
         }
@@ -1292,7 +1277,7 @@ function __scribble_gen_2_parser()
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                                 
                                 _glyph_write = 0x0A;
-                                __SCRIBBLE_PARSER_WRITE_GLYPH
+                                __SCRIBBLE_PARSER_NEXT_GLYPH
                             }
                             else
                             {
@@ -1366,7 +1351,7 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                 
                 _glyph_write = 0x0A;
-                __SCRIBBLE_PARSER_WRITE_GLYPH
+                __SCRIBBLE_PARSER_NEXT_GLYPH
             }
             else if (_glyph_ord == 0x09) //ASCII horizontal tab
             {
@@ -1508,6 +1493,14 @@ function __scribble_gen_2_parser()
                 {
                     #region Arabic handling
                     
+                    //Arabic look-up tables
+                    static _arabic_join_next_map = _glyph_data_struct.__arabic_join_next_map;
+                    static _arabic_join_prev_map = _glyph_data_struct.__arabic_join_prev_map;
+                    static _arabic_isolated_map  = _glyph_data_struct.__arabic_isolated_map;
+                    static _arabic_initial_map   = _glyph_data_struct.__arabic_initial_map;
+                    static _arabic_medial_map    = _glyph_data_struct.__arabic_medial_map;
+                    static _arabic_final_map     = _glyph_data_struct.__arabic_final_map;
+                    
                     __has_arabic = true;
                     
                     var _buffer_offset = buffer_tell(_string_buffer);
@@ -1578,7 +1571,7 @@ function __scribble_gen_2_parser()
                     __SCRIBBLE_PARSER_WRITE_GLYPH
                     
                     //If the glyph in the original source string wasn't tashkil then try to find if we can join to the next character
-                    if ((_glyph_ord < 0x064B) || (_glyph_ord > 0x0652))
+                    if ((_glyph_prev < 0x064B) || (_glyph_prev > 0x0652))
                     {
                         _glyph_prev_arabic_join_next = _arabic_join_next_map[? _glyph_joiner] ?? false;
                     }
@@ -1612,7 +1605,15 @@ function __scribble_gen_2_parser()
                         if ((_glyph_write >= 0x0E00) && (_glyph_write <= 0x0E7F))
                         {
                             #region C90 Thai handling
-                        
+                            
+                            //Thai look-up tables
+                            static _thai_base_map           = _glyph_data_struct.__thai_base_map;
+                            static _thai_base_descender_map = _glyph_data_struct.__thai_base_descender_map;
+                            static _thai_base_ascender_map  = _glyph_data_struct.__thai_base_ascender_map;
+                            static _thai_top_map            = _glyph_data_struct.__thai_top_map;
+                            static _thai_lower_map          = _glyph_data_struct.__thai_lower_map;
+                            static _thai_upper_map          = _glyph_data_struct.__thai_upper_map;
+                            
                             __has_thai = true;
                         
                             if (_thai_top_map[? _glyph_write] && (_glyph_count >= 1))
@@ -1706,7 +1707,15 @@ function __scribble_gen_2_parser()
                             __has_hebrew = true;
                         }
                         
-                        //TODO - Ligature transform here
+                        if (SCRIBBLE_ALLOW_LIGATURES)
+                        {
+                            var _ligature = _fontLigatureMap[? _glyph_history | _glyph_write];
+                            if (_ligature != undefined)
+                            {
+                                --_glyph_count;
+                                _glyph_write = _ligature;
+                            }
+                        }
                         
                         __SCRIBBLE_PARSER_WRITE_GLYPH
                     }

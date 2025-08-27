@@ -438,6 +438,8 @@
     {"id":{"name":"scribble_is_text_element","path":"scripts/scribble_is_text_element/scribble_is_text_element.yy",},},
     {"id":{"name":"scribble_kerning_pair_get","path":"scripts/scribble_kerning_pair_get/scribble_kerning_pair_get.yy",},},
     {"id":{"name":"scribble_kerning_pair_set","path":"scripts/scribble_kerning_pair_set/scribble_kerning_pair_set.yy",},},
+    {"id":{"name":"scribble_ligature_get","path":"scripts/scribble_ligature_get/scribble_ligature_get.yy",},},
+    {"id":{"name":"scribble_ligature_set","path":"scripts/scribble_ligature_set/scribble_ligature_set.yy",},},
     {"id":{"name":"scribble_markdown_format","path":"scripts/scribble_markdown_format/scribble_markdown_format.yy",},},
     {"id":{"name":"scribble_markdown_set_styles","path":"scripts/scribble_markdown_set_styles/scribble_markdown_set_styles.yy",},},
     {"id":{"name":"scribble_refresh_everything","path":"scripts/scribble_refresh_everything/scribble_refresh_everything.yy",},},
