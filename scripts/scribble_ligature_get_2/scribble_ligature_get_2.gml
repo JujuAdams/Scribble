@@ -9,6 +9,11 @@
 
 function scribble_ligature_get_2(_font, _firstChar, _secondChar)
 {
+    if (not SCRIBBLE_ALLOW_LIGATURES)
+    {
+        __scribble_trace("Warning! Ligature will not be applied if `SCRIBBLE_ALLOW_LIGATURES` is set to `false`");
+    }
+    
     var  _firstUnicode = is_real( _firstChar)?  _firstChar : ord( _firstChar);
     var _secondUnicode = is_real(_secondChar)? _secondChar : ord(_secondChar);
     

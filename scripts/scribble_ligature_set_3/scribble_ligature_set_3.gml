@@ -10,6 +10,11 @@
 
 function scribble_ligature_set_3(_font, _firstChar, _secondChar, _thirdChar, _replaceChar)
 {
+    if (not SCRIBBLE_ALLOW_LIGATURES)
+    {
+        __scribble_trace("Warning! Ligature will not be applied if `SCRIBBLE_ALLOW_LIGATURES` is set to `false`");
+    }
+    
     var   _firstUnicode = is_string(  _firstChar)? ord(  _firstChar) :   _firstChar;
     var  _secondUnicode = is_string( _secondChar)? ord( _secondChar) :  _secondChar;
     var   _thirdUnicode = is_string(  _thirdChar)? ord(  _thirdChar) :   _thirdChar;
