@@ -1338,6 +1338,8 @@ function __scribble_gen_2_parser()
             else if ((_glyph_ord == 0x0A) //If we've hit a newline (\n)
                  || (SCRIBBLE_HASH_NEWLINE && (_glyph_ord == 0x23))) //If we've hit a hash, and hash newlines are on
             {
+                //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
+                
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x0A; //ASCII line break (dec = 10)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_ISOLATED;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
@@ -1355,6 +1357,8 @@ function __scribble_gen_2_parser()
             else if (_glyph_ord == 0x09) //ASCII horizontal tab
             {
                 #region Add a tab glyph to our grid
+                
+                //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
                 
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x09; //ASCII horizontal tab (dec = 9, obviously)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_WHITESPACE;
@@ -1376,6 +1380,8 @@ function __scribble_gen_2_parser()
             {
                 #region Add a space glyph to our grid
                 
+                //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
+                
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x20; //ASCII space (dec = 32)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_WHITESPACE;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
@@ -1396,6 +1402,8 @@ function __scribble_gen_2_parser()
             {
                 #region Add a non-breaking space glyph to our grid
                 
+                //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
+                
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0xA0; //Non-breaking space (dec = 160)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
@@ -1415,6 +1423,8 @@ function __scribble_gen_2_parser()
             else if ((_glyph_ord == 0x200B) || (SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP && __has_thai && (_glyph_ord == 0x60))) //Zero-width space, or a Thai grave accent
             {
                 #region Add a zero-width space glyph to our grid
+                
+                //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
                 
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x200B;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_WHITESPACE;
