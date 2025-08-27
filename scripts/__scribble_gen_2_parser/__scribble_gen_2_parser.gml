@@ -194,8 +194,6 @@ function __scribble_gen_2_parser()
         var _word_grid      = __word_grid;
         var _control_grid   = __control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
         var _vbuff_pos_grid = __vbuff_pos_grid;
-        var _line_height    = __line_height;
-        
     }
     
     static _glyph_data_struct = __scribble_system().__glyph_data;
@@ -873,9 +871,9 @@ function __scribble_gen_2_parser()
                             var _surface_w = surface_get_width(_surface);
                             var _surface_h = surface_get_height(_surface);
                         
-                            if (SCRIBBLE_AUTOFIT_INLINE_SURFACES)
+                            if (SCRIBBLE_SHRINK_INLINE_SURFACES)
                             {
-                                var _scale = min(1, (_line_height+2)/_surface_h);
+                                var _scale = min(1, _font_line_height/_surface_h);
                                 _surface_w *= _scale;
                                 _surface_h *= _scale;
                             }
@@ -996,9 +994,9 @@ function __scribble_gen_2_parser()
                             var _u1 = (_tex_x+_tex_w)*_texture_tw;
                             var _v1 = (_tex_y+_tex_h)*_texture_th;
                             
-                            if (SCRIBBLE_AUTOFIT_INLINE_TEXTURES)
+                            if (SCRIBBLE_SHRINK_INLINE_TEXTURES)
                             {
-                                var _scale = min(1, (_line_height+2)/_tex_h);
+                                var _scale = min(1, _font_line_height/_tex_h);
                                 _tex_w *= _scale;
                                 _tex_h *= _scale;
                             }
@@ -1136,9 +1134,9 @@ function __scribble_gen_2_parser()
                                         var _sprite_w = sprite_get_width( _sprite_index);
                                         var _sprite_h = sprite_get_height(_sprite_index);
                                 
-                                        if (SCRIBBLE_AUTOFIT_INLINE_SPRITES)
+                                        if (SCRIBBLE_SHRINK_INLINE_SPRITES)
                                         {
-                                            var _scale = min(1, (_line_height+2)/_sprite_h);
+                                            var _scale = min(1, _font_line_height/_sprite_h);
                                             _sprite_w *= _scale;
                                             _sprite_h *= _scale;
                                         }

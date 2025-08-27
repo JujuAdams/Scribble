@@ -36,17 +36,14 @@
 //too). This will apply to all text elements and carries a performance penalty.
 #macro SCRIBBLE_FORCE_LINE_DATA_GETTER  false
 
-//Whether to automatically scale sprites to fit into the line of text. This is based on the font
-//height of the current font.
-#macro SCRIBBLE_AUTOFIT_INLINE_SPRITES  false
+//Whether to automatically shrink sprites to fit the height of the currently set font.
+#macro SCRIBBLE_SHRINK_INLINE_SPRITES  false
 
-//Whether to automatically scale surfaces to fit into the line of text. This is based on the font
-//height of the current font.
-#macro SCRIBBLE_AUTOFIT_INLINE_SURFACES  false
+//Whether to automatically shrink surfaces to fit the height of the currently set font.
+#macro SCRIBBLE_SHRINK_INLINE_SURFACES  false
 
-//Whether to automatically scale textures to fit into the line of text. This is based on the font
-//height of the current font.
-#macro SCRIBBLE_AUTOFIT_INLINE_TEXTURES  false  
+//Whether to automatically shrink textures to fit the height of the currently set font.
+#macro SCRIBBLE_SHRINK_INLINE_TEXTURES  false  
 
 //Whether to adjust the horizontal distance between glyphs depending on special per-font rules.
 #macro SCRIBBLE_USE_KERNING  true
