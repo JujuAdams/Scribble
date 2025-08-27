@@ -8,6 +8,8 @@
 
 
 #macro __SCRIBBLE_PARSER_NEXT_GLYPH  ++_glyph_count;\
+                                     _glyph_prev_arabic_join_next = false;\ //Presume we're not an Arabic joining character
+                                     _glyph_history = (_glyph_history << 16) | _glyph_write;\
                                      _glyph_prev_prev = _glyph_prev;\
                                      _glyph_prev = _glyph_write;
 
@@ -25,7 +27,7 @@
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;\
                                         ;\
                                         ++_glyph_count;\
-                                        _glyph_prev_arabic_join_next = false;\
+                                        _glyph_prev_arabic_join_next = false;\ //This glyph definitely doesn't join backwards
                                         _glyph_prev_prev = _glyph_prev;\
                                         _glyph_prev = 0x0A;
 
@@ -255,6 +257,7 @@ function __scribble_gen_2_parser()
     
     var _glyph_count                 = 0;
     var _glyph_ord                   = 0x0000;
+    var _glyph_history               = 0x0000;
     var _glyph_prev                  = 0x0000;
     var _glyph_prev_prev             = 0x0000;
     var _glyph_prev_arabic_join_next = false;
@@ -448,10 +451,8 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                             
-                            ++_glyph_count;
-                            _glyph_prev_arabic_join_next = false;
-                            _glyph_prev_prev = _glyph_prev;
-                            _glyph_prev = 0x00;
+                            _glyph_write = 0x0000;
+                            __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                         
                         // [ul]
@@ -639,11 +640,9 @@ function __scribble_gen_2_parser()
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = _font_space_width;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
-                            
-                                ++_glyph_count;
-                                _glyph_prev_arabic_join_next = false;
-                                _glyph_prev_prev = _glyph_prev;
-                                _glyph_prev = 0xA0;
+                                
+                                _glyph_write = 0xA0;
+                                __SCRIBBLE_PARSER_NEXT_GLYPH
                             }
                         break;
                     
@@ -663,11 +662,9 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
-                        
-                            ++_glyph_count;
-                            _glyph_prev_arabic_join_next = false;
-                            _glyph_prev_prev = _glyph_prev;
-                            _glyph_prev = 0x200B;
+                            
+                            _glyph_write = 0x200B;
+                            __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
                         #endregion
@@ -684,11 +681,9 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
-                        
-                            ++_glyph_count;
-                            _glyph_prev_arabic_join_next = false;
-                            _glyph_prev_prev = _glyph_prev;
-                            _glyph_prev = 0x200F;
+                            
+                            _glyph_write = 0x200F;
+                            __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
                         // [l2r]
@@ -703,11 +698,9 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
-                        
-                            ++_glyph_count;
-                            _glyph_prev_arabic_join_next = false;
-                            _glyph_prev_prev = _glyph_prev;
-                            _glyph_prev = 0x200E;
+                            
+                            _glyph_write = 0x200E;
+                            __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
                         #region Cycle
@@ -905,10 +898,8 @@ function __scribble_gen_2_parser()
                                 ds_grid_multiply_region(_glyph_grid, _glyph_count, __SCRIBBLE_GEN_GLYPH_X, _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_state_scale);
                             }
                             
-                            ++_glyph_count;
-                            _glyph_prev_arabic_join_next = false;
-                            _glyph_prev_prev = _glyph_prev;
-                            _glyph_prev = __SCRIBBLE_GLYPH_REPL_SURFACE;
+                            _glyph_write = 0x0000;
+                            __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
                         #endregion
@@ -1030,10 +1021,8 @@ function __scribble_gen_2_parser()
                                 ds_grid_multiply_region(_glyph_grid, _glyph_count, __SCRIBBLE_GEN_GLYPH_X, _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_state_scale);
                             }
                             
-                            ++_glyph_count;
-                            _glyph_prev_arabic_join_next = false;
-                            _glyph_prev_prev = _glyph_prev;
-                            _glyph_prev = __SCRIBBLE_GLYPH_REPL_TEXTURE;
+                            _glyph_write = 0x0000;
+                            __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                         
                         default: //TODO - Optimize
@@ -1207,10 +1196,8 @@ function __scribble_gen_2_parser()
                                             ds_grid_multiply_region(_glyph_grid, _glyph_count, __SCRIBBLE_GEN_GLYPH_X, _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_state_scale);
                                         }
                                         
-                                        ++_glyph_count;
-                                        _glyph_prev_arabic_join_next = false;
-                                        _glyph_prev_prev = _glyph_prev;
-                                        _glyph_prev = __SCRIBBLE_GLYPH_REPL_SPRITE;
+                                        _glyph_write = 0x0000;
+                                        __SCRIBBLE_PARSER_NEXT_GLYPH
                                     }
                             
                                     #endregion
@@ -1390,10 +1377,8 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                 
-                ++_glyph_count;
-                _glyph_prev_arabic_join_next = false;
-                _glyph_prev_prev = _glyph_prev;
-                _glyph_prev = 0x09;
+                _glyph_write = 0x09;
+                __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
@@ -1412,10 +1397,8 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                 
-                ++_glyph_count;
-                _glyph_prev_arabic_join_next = false;
-                _glyph_prev_prev = _glyph_prev;
-                _glyph_prev = 0x20;
+                _glyph_write = 0x20;
+                __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
@@ -1434,10 +1417,8 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                 
-                ++_glyph_count;
-                _glyph_prev_arabic_join_next = false;
-                _glyph_prev_prev = _glyph_prev;
-                _glyph_prev = 0xA0;
+                _glyph_write = 0x00A0;
+                __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
@@ -1456,10 +1437,8 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                 
-                ++_glyph_count;
-                _glyph_prev_arabic_join_next = false;
-                _glyph_prev_prev = _glyph_prev;
-                _glyph_prev = 0x200B;
+                _glyph_write = 0x200B;
+                __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
@@ -1588,15 +1567,15 @@ function __scribble_gen_2_parser()
                     // Update the glyph we're trying to write if we found a replacement
                     if (_new_glyph != undefined) _glyph_write = _new_glyph;
                     
-                    // If this glyph isn't tashkil then update the previous glyph state
-                    if ((_glyph_ord < 0x064B) || (_glyph_ord > 0x0652))
-                    {
-                        _glyph_prev_arabic_join_next = _arabic_join_next_map[? _glyph_joiner];
-                    }
-                    
                     #endregion
                     
                     __SCRIBBLE_PARSER_WRITE_GLYPH
+                    
+                    //If the glyph in the original source string wasn't tashkil then try to find if we can join to the next character
+                    if ((_glyph_ord < 0x064B) || (_glyph_ord > 0x0652))
+                    {
+                        _glyph_prev_arabic_join_next = _arabic_join_next_map[? _glyph_joiner] ?? false;
+                    }
                     
                     //Adjust height of shadda after lam
                     if ((_glyph_prev == 0x0651)
@@ -1611,9 +1590,6 @@ function __scribble_gen_2_parser()
                 }
                 else
                 {
-                    //Not an Arabic colour, this glyph definitely doesn't join backwards...
-                    _glyph_prev_arabic_join_next = false;
-                    
                     if ((_glyph_write >= 0x0900) && (_glyph_write <= 0x097F))
                     {
                         //Devanagari is so complex it gets its own function
