@@ -69,6 +69,8 @@ function __scribble_gen_8_position_glyphs()
             
             var _line_glyph_count = 1 + _line_glyph_end - _line_glyph_start;
             
+            
+            
             // _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH_Y] = _line_y + (_line_height - _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT]) div 2;
             ds_grid_set_grid_region(_temp_grid, _glyph_grid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, _line_glyph_end, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, 0, 0);
             ds_grid_multiply_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, -0.5);

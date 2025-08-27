@@ -16,6 +16,15 @@
 
 function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _outline, _l_pad, _t_pad, _r_pad, _b_pad, _separation, _smooth, _texture_size = 2048, _markAsRasterEffect = false)
 {
+    static _vertex_format = (function()
+    {
+            vertex_format_begin();
+            vertex_format_add_position();
+            vertex_format_add_color();
+            vertex_format_add_texcoord();
+            return vertex_format_end();
+    })();
+    
     if (!is_string(_source_font_name))
     {
         __scribble_error("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
@@ -64,9 +73,9 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, undefined, false, true,
                                                    _src_font_data.__underlineY + _t_pad + _b_pad,
                                                    _src_font_data.__strikeY    + _t_pad + _b_pad);
-    _new_font_data.__bilinear   = _smooth;
-    _new_font_data.__runtime    = true;
-    _new_font_data.__height     = _src_font_data.__height + _t_pad + _b_pad;
+    _new_font_data.__bilinear = _smooth;
+    _new_font_data.__runtime  = true;
+    _new_font_data.__height   = _src_font_data.__height + _t_pad + _b_pad;
     
     var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
     
@@ -102,12 +111,12 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             continue;
         }
         
-        var _width  = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH  ];
-        var _height = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT ];
-        var _u0     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0     ];
-        var _v0     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0     ];
-        var _u1     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1     ];
-        var _v1     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1     ];
+        var _width  = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH ];
+        var _height = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
+        var _u0     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0    ];
+        var _v0     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0    ];
+        var _u1     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1    ];
+        var _v1     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1    ];
         
         var _width_ext  = _width  + _outline + _l_pad + _r_pad;
         var _height_ext = _height + _outline + _t_pad + _b_pad;
@@ -133,16 +142,6 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         var _vbuff_data = _vbuff_data_map[? string(_texture)];
         if (_vbuff_data == undefined)
         {
-            static _vertex_format = undefined;
-            if (_vertex_format == undefined)
-            {
-                vertex_format_begin();
-                vertex_format_add_position(); //12 bytes
-                vertex_format_add_color();    // 4 bytes
-                vertex_format_add_texcoord(); // 8 bytes
-                _vertex_format = vertex_format_end();
-            }
-            
             //If we don't have a vertex buffer for this texture, create a new one and store a reference to it
             var _vbuff = vertex_create_buffer();
             vertex_begin(_vbuff, _vertex_format);

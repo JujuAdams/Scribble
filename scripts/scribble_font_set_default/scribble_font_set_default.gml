@@ -6,7 +6,7 @@
 function scribble_font_set_default(_font)
 {
     //Check if the default font parameter is the correct datatype
-    if (!is_string(_font))
+    if (not is_string(_font))
     {
         __scribble_error("The default font should be defined using its name as a string.\n(Input was an invalid datatype)");
         return undefined;
