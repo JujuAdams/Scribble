@@ -326,6 +326,12 @@ function __scribble_gen_10_write_vbuffs()
                     var _glyph_xscale = sprite_get_width( _sprite_index) / _glyph_width;
                     var _glyph_yscale = sprite_get_height(_sprite_index) / _glyph_height;
                     
+                    if (SCRIBBLE_ADD_SPRITE_ORIGINS)
+                    {
+                        _glyph_x += (_glyph_width  div 2) - _glyph_xscale*sprite_get_xoffset(_sprite_index);
+                        _glyph_y += (_glyph_height div 2) - _glyph_yscale*sprite_get_yoffset(_sprite_index);
+                    }
+                    
                     var _old_glyph_effect_flags = _glyph_effect_flags;
                     
                     if (not SCRIBBLE_COLORIZE_SPRITES)
@@ -340,45 +346,50 @@ function __scribble_gen_10_write_vbuffs()
                     
                     _glyph_effect_flags |= (1 << __SCRIBBLE_FLAG_GRAPHIC); //Set the graphic flag bit
                     
-                    if (SCRIBBLE_ADD_SPRITE_ORIGINS)
+                    if (_image_speed > 0)
                     {
-                        _glyph_x += (_glyph_width  div 2) - _glyph_xscale*sprite_get_xoffset(_sprite_index);
-                        _glyph_y += (_glyph_height div 2) - _glyph_yscale*sprite_get_yoffset(_sprite_index);
-                    }
-                    
-                    var _sprite_number = sprite_get_number(_sprite_index);
-                    if (_sprite_number > 127)
-                    {
-                        __scribble_trace("In-line sprites cannot have more than 127 frames (", sprite_get_name(_sprite_index), ")");
-                        _sprite_number = 127;
-                    }
-                    
-                    if (_image_speed >= 2)
-                    {
-                        __scribble_trace("Image speed cannot be more than 2.0 (" + string(_image_speed) + ")");
-                        _image_speed = 2;
-                    }
-                    
-                    if (_image_speed < 0)
-                    {
-                        __scribble_trace("Image speed cannot be less than 0.0 (" + string(_image_speed) + ")");
-                        _image_speed = 0;
-                    }
-                    
-                    var _glyph_sprite_data = 16384*floor(256*_image_speed) + 128*_sprite_number + _image_index;
-                    
-                    if (_sprite_once)
-                    {
-                        _glyph_sprite_data *= -1;
-                        var _increment = -1;
+                        _glyph_effect_flags |= (1 << __SCRIBBLE_FLAG_ANIM_SPRITE); //Set the animated sprite flag bit
+                        
+                        var _sprite_number = sprite_get_number(_sprite_index);
+                        if (_sprite_number > 127)
+                        {
+                            __scribble_trace("Animated sprites cannot have more than 127 frames (", sprite_get_name(_sprite_index), ")");
+                            _sprite_number = 127;
+                        }
+                        
+                        if (_image_speed >= 2)
+                        {
+                            __scribble_trace("Image speed cannot be more than 2.0 (" + string(_image_speed) + ")");
+                            _image_speed = 2;
+                        }
+                        
+                        var _glyph_sprite_data = 16384*floor(256*_image_speed) + 128*_sprite_number + _image_index;
+                        
+                        if (_sprite_once)
+                        {
+                            _glyph_sprite_data *= -1;
+                            var _increment = -1;
+                        }
+                        else
+                        {
+                            var _increment = 1;
+                        }
+                        
+                        var _count = _sprite_number;
                     }
                     else
                     {
-                        var _increment = 1;
+                        if (_image_speed < 0)
+                        {
+                            __scribble_trace("Image speed cannot be less than 0.0 (" + string(_image_speed) + ")");
+                        }
+                        
+                        var _increment = 0;
+                        var _count = 1;
                     }
                     
                     var _j = _image_index;
-                    repeat((_image_speed > 0)? _sprite_number : 1) //Only draw one image if we have an image speed of 0 since we're not animating
+                    repeat(_count)
                     {
                         var _material = __scribble_sprite_get_material(_sprite_index, _j);
                         
@@ -402,7 +413,7 @@ function __scribble_gen_10_write_vbuffs()
                         _glyph_sprite_data += _increment;
                     }
                     
-                    if (!SCRIBBLE_COLORIZE_SPRITES) _write_colour = _old_write_colour;
+                    if (not SCRIBBLE_COLORIZE_SPRITES) _write_colour = _old_write_colour;
                     _glyph_effect_flags = _old_glyph_effect_flags;
                     _glyph_sprite_data = 0; //Reset this because every other type of glyph doesn't use this
                     
