@@ -40,7 +40,6 @@ const int MAX_ANIM_FIELDS = 16;
 #define JITTER_SPEED      u_aDataFields[14]
 #define SLANT_GRADIENT    u_aDataFields[15]
 
-const int EASE_METHOD_COUNT = 15;
 #define EASE_NONE         0
 #define EASE_LINEAR       1
 #define EASE_QUADRATIC    2
@@ -53,9 +52,6 @@ const int EASE_METHOD_COUNT = 15;
 #define EASE_BACK         9
 #define EASE_ELASTIC     10
 #define EASE_BOUNCE      11
-#define EASE_CUSTOM_1    12
-#define EASE_CUSTOM_2    13
-#define EASE_CUSTOM_3    14
 
 const int WINDOW_COUNT = 3;
 
@@ -466,9 +462,6 @@ void main()
         else if (easeMethod == EASE_BACK       ) { time = 1.0 - easeBack(   1.0 - time); }
         else if (easeMethod == EASE_ELASTIC    ) { time = 1.0 - easeElastic(1.0 - time); }
         else if (easeMethod == EASE_BOUNCE     ) { time = 1.0 - easeBounce( 1.0 - time); }
-        else if (easeMethod == EASE_CUSTOM_1   ) { /*Custom ease slot 1*/ }
-        else if (easeMethod == EASE_CUSTOM_2   ) { /*Custom ease slot 2*/ }
-        else if (easeMethod == EASE_CUSTOM_3   ) { /*Custom ease slot 3*/ }
         
         pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
         pos = rotate(pos, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
