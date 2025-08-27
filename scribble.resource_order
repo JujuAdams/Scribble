@@ -121,6 +121,7 @@
     {"name":"obj_test_flush","order":5,"path":"objects/obj_test_flush/obj_test_flush.yy",},
     {"name":"obj_test_font_align_offset","order":7,"path":"objects/obj_test_font_align_offset/obj_test_font_align_offset.yy",},
     {"name":"obj_test_font_height","order":1,"path":"objects/obj_test_font_height/obj_test_font_height.yy",},
+    {"name":"obj_test_font_ligature","order":9,"path":"objects/obj_test_font_ligature/obj_test_font_ligature.yy",},
     {"name":"obj_test_font_outline_4dir","order":1,"path":"objects/obj_test_font_outline_4dir/obj_test_font_outline_4dir.yy",},
     {"name":"obj_test_font_outline_8dir_2px","order":3,"path":"objects/obj_test_font_outline_8dir_2px/obj_test_font_outline_8dir_2px.yy",},
     {"name":"obj_test_font_outline_8dir","order":2,"path":"objects/obj_test_font_outline_8dir/obj_test_font_outline_8dir.yy",},
