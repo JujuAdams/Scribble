@@ -552,5 +552,5 @@ function __scribble_gen_10_write_vbuffs()
     }
     
     //Ensure we've ended the vertex buffers we created
-    __finalize_vertex_buffers(_freeze);
+    __finalize_vertex_buffers();
 }
