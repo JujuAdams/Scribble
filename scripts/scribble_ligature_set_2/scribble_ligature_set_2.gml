@@ -7,7 +7,7 @@
 /// @param secondChar
 /// @param replaceChar
 
-function scribble_ligature_set(_font, _firstChar, _secondChar, _replaceChar)
+function scribble_ligature_set_2(_font, _firstChar, _secondChar, _replaceChar)
 {
     var   _firstUnicode = is_string(  _firstChar)? ord(  _firstChar) :   _firstChar;
     var  _secondUnicode = is_string( _secondChar)? ord( _secondChar) :  _secondChar;

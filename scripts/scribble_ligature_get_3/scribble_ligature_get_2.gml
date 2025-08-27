@@ -7,7 +7,7 @@
 /// @param firstChar
 /// @param secondChar
 
-function scribble_ligature_get(_font, _firstChar, _secondChar)
+function scribble_ligature_get_2(_font, _firstChar, _secondChar)
 {
     var  _firstUnicode = is_real( _firstChar)?  _firstChar : ord( _firstChar);
     var _secondUnicode = is_real(_secondChar)? _secondChar : ord(_secondChar);

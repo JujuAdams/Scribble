@@ -83,7 +83,8 @@
 #macro SCRIBBLE_MISSING_CHARACTER  "?"
 
 //Whether to allow use of ligatures for fonts. Setting this macro to `true` confers a performance
-//penalty due to the additional look-ups that are required.
+//penalty due to the additional look-ups that are required. Scribble supports two-character and
+//three-character ligatures.
 #macro SCRIBBLE_ALLOW_LIGATURES  true
 
 //Whether to replace a grave accent (` U+0060, decimal=96) with a zero-width space for Thai text.

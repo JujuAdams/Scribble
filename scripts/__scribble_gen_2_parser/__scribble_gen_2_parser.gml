@@ -9,7 +9,7 @@
 
 #macro __SCRIBBLE_PARSER_NEXT_GLYPH  ++_glyph_count;\
                                      _glyph_prev_arabic_join_next = false;\ //Presume we're not an Arabic joining character
-                                     if (SCRIBBLE_ALLOW_LIGATURES) _glyph_history = (_glyph_history | _glyph_write) << 16;\
+                                     if (SCRIBBLE_ALLOW_LIGATURES) _glyph_history = (_glyph_history | _glyph_ord) << 16;\
                                      _glyph_prev_prev = _glyph_prev;\
                                      _glyph_prev = _glyph_write;
 
@@ -17,7 +17,7 @@
 
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  ;\//Pull info out of the font's data structures
                                       ;\//We floor this value to work around floating point issues on HTML5
-                                      var _data_index = _font_glyphs_map[? floor(_glyph_write)];\
+                                      var _data_index = _font_glyphs_map[? _glyph_write];\
                                       ;\//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined)\
                                       {\
@@ -1709,11 +1709,20 @@ function __scribble_gen_2_parser()
                         
                         if (SCRIBBLE_ALLOW_LIGATURES)
                         {
-                            var _ligature = _fontLigatureMap[? _glyph_history | _glyph_write];
+                            var _ligature = _fontLigatureMap[? (_glyph_history & 0xFFFF_FFFF_0000) | _glyph_write];
                             if (_ligature != undefined)
                             {
-                                --_glyph_count;
+                                _glyph_count -= ds_map_exists(_fontLigatureMap, (_glyph_history & 0xFFFF_FFFF_0000) >> 16)? 1 : 2;
                                 _glyph_write = _ligature;
+                            }
+                            else
+                            {
+                                var _ligature = _fontLigatureMap[? (_glyph_history & 0xFFFF_0000) | _glyph_write];
+                                if (_ligature != undefined)
+                                {
+                                    --_glyph_count;
+                                    _glyph_write = _ligature;
+                                }
                             }
                         }
                         
