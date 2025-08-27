@@ -95,7 +95,7 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
         __model_max_width  = _model_max_width;
         __model_max_height = _model_max_height;
         
-        __line_height = other.__line_height;
+        __line_height = other.__element_line_height;
         
         __line_spacing_add      = _line_spacing_add;
         __line_spacing_multiply = _line_spacing_multiply;

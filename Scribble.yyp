@@ -334,6 +334,7 @@
     {"id":{"name":"__scribble_gen_11_set_padding_flags","path":"scripts/__scribble_gen_11_set_padding_flags/__scribble_gen_11_set_padding_flags.yy",},},
     {"id":{"name":"__scribble_gen_12_dynamic_macros","path":"scripts/__scribble_gen_12_dynamic_macros/__scribble_gen_12_dynamic_macros.yy",},},
     {"id":{"name":"__scribble_gen_2_parser","path":"scripts/__scribble_gen_2_parser/__scribble_gen_2_parser.yy",},},
+    {"id":{"name":"__scribble_gen_2b_post_parse","path":"scripts/__scribble_gen_2b_post_parse/__scribble_gen_2b_post_parse.yy",},},
     {"id":{"name":"__scribble_gen_3_devanagari","path":"scripts/__scribble_gen_3_devanagari/__scribble_gen_3_devanagari.yy",},},
     {"id":{"name":"__scribble_gen_4_build_words","path":"scripts/__scribble_gen_4_build_words/__scribble_gen_4_build_words.yy",},},
     {"id":{"name":"__scribble_gen_5_finalize_bidi","path":"scripts/__scribble_gen_5_finalize_bidi/__scribble_gen_5_finalize_bidi.yy",},},

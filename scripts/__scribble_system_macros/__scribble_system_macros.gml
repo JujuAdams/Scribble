@@ -37,7 +37,7 @@
 #macro __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT       6 // }
 #macro __SCRIBBLE_GEN_GLYPH_SEPARATION        7 // } This group of enum elements must not change order or be split
 #macro __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET       8 // } Be careful of ordering!
-#macro __SCRIBBLE_GEN_GLYPH_SCALE             9 // } scribble_font_bake_shader() relies on this
+#macro __SCRIBBLE_GEN_GLYPH_SCALE             9 // }
 #macro __SCRIBBLE_GEN_GLYPH_MATERIAL         10 // }
 #macro __SCRIBBLE_GEN_GLYPH_QUAD_U0          11 // }
 #macro __SCRIBBLE_GEN_GLYPH_QUAD_U1          12 // }

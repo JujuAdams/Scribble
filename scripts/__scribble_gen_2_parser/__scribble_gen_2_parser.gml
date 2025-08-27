@@ -94,10 +94,6 @@
                                     ;\
                                     var _font_space_width = _font_glyph_data_grid[# _space_data_index, __SCRIBBLE_GLYPH_PROPR_SEPARATION];\
                                     var _font_line_height = _font_data.__height;\
-                                    if ((_glyph_count <= 0) && (_line_height < 0))\
-                                    {\
-                                        _generator_state.__line_height = _font_line_height;\
-                                    }\
                                     ;\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_FONT;\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _font_name;\
@@ -223,12 +219,12 @@ function __scribble_gen_2_parser()
     
     //Cache element properties locally
     var _spritesDontScale = __spritesDontScale;
-    var _element_text    = __text;
-    var _starting_colour = __starting_colour;
-    var _starting_halign = __starting_halign;
-    var _starting_valign = __starting_valign;
-    var _ignore_commands = __ignore_command_tags;
-    var _pre_scale       = __pre_scale;
+    var _element_text     = __text;
+    var _starting_colour  = __starting_colour;
+    var _starting_halign  = __starting_halign;
+    var _starting_valign  = __starting_valign;
+    var _ignore_commands  = __ignore_command_tags;
+    var _pre_scale        = __pre_scale;
     
     var _starting_font = __starting_font;
     if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
@@ -1765,53 +1761,12 @@ function __scribble_gen_2_parser()
     if (__valign == undefined) __valign = _starting_valign;
     
     ///////
-    // Determine the overall bidi direction
-    ///////
-    
-    var _overall_bidi = _generator_state.__overall_bidi;
-    if ((_overall_bidi != __SCRIBBLE_BIDI_L2R) && (_overall_bidi != __SCRIBBLE_BIDI_R2L))
-    {
-        //Searching until we find a glyph with a well-defined direction
-        var _i = 0;
-        repeat(_glyph_count)
-        {
-            var _glyph_ord = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE];
-            if (_glyph_ord > 0)
-            {
-                var _bidi = _global_glyph_bidi_map[? _glyph_ord];
-                if ((_bidi == undefined) || (_bidi == __SCRIBBLE_BIDI_L2R))
-                {
-                    _overall_bidi = __SCRIBBLE_BIDI_L2R;
-                    break;
-                }
-                
-                //Group R2L and R2L_ARABIC under the same overall bidi direction
-                if (_bidi >= __SCRIBBLE_BIDI_R2L)
-                {
-                    _overall_bidi = __SCRIBBLE_BIDI_R2L;
-                    break;
-                }
-            }
-            
-            ++_i;
-        }
-        
-        // We didn't find a glyph with a direction, default to L2R
-        if ((_overall_bidi != __SCRIBBLE_BIDI_L2R) && (_overall_bidi != __SCRIBBLE_BIDI_R2L))
-        {
-            _overall_bidi = __SCRIBBLE_BIDI_L2R;
-        }
-        
-        _generator_state.__overall_bidi = _overall_bidi;
-    }
-    
-    ///////
     // Tidy up loose ends
     ///////
     
     //Create a null terminator so we correctly handle the last character in the string
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x00;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = _overall_bidi;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL; //Replaced in the next generator phase
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = 0;

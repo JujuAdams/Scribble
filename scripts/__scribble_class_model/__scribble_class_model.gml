@@ -41,7 +41,7 @@ function __scribble_class_model(_model_cache_name, _element) constructor
     __starting_valign     = _element.__starting_valign;
     __pre_scale           = _element.__pre_scale;
     __spritesDontScale    = _element.__spritesDontScale;
-    __line_height         = _element.__line_height;
+    __element_line_height = _element.__line_height;
     __line_spacing        = _element.__line_spacing;
     
     __wrap_apply      = _element.__wrap_apply;
@@ -114,6 +114,7 @@ function __scribble_class_model(_model_cache_name, _element) constructor
         
         __scribble_gen_1_model_limits_and_bezier_curves();
         __scribble_gen_2_parser();
+        __scribble_gen_2b_post_parse();
         __scribble_gen_3_devanagari();
         __scribble_gen_4_build_words();
         __scribble_gen_5_finalize_bidi();
