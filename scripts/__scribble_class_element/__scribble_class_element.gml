@@ -309,7 +309,7 @@ function __scribble_class_element(_string, _unique_id) constructor
         }
         
         if (_colour != undefined) __blend_colour = _colour & 0xFFFFFF;
-        if (_alpha  != undefined) __blend_alpha  = _alpha;
+        if (_alpha  != undefined) __blend_alpha  = clamp(_alpha, 0, 1);
         
         return self;
     }
