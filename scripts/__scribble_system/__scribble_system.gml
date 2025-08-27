@@ -5,6 +5,17 @@
 
 #macro __SCRIBBLE_EASE_COUNT  15
 
+#macro __SCRIBBLE_FLAG_GRAPHIC      0
+#macro __SCRIBBLE_FLAG_ANIM_SPRITE  1
+#macro __SCRIBBLE_FLAG_WAVE         2
+#macro __SCRIBBLE_FLAG_SHAKE        3
+#macro __SCRIBBLE_FLAG_WOBBLE       4
+#macro __SCRIBBLE_FLAG_PULSE        5
+#macro __SCRIBBLE_FLAG_WHEEL        6
+#macro __SCRIBBLE_FLAG_CYCLE        7
+#macro __SCRIBBLE_FLAG_JITTER       8
+#macro __SCRIBBLE_FLAG_SLANT        9
+
 #macro __SCRIBBLE_GLYPH_PROPR_CHARACTER      0
 #macro __SCRIBBLE_GLYPH_PROPR_UNICODE        1
 #macro __SCRIBBLE_GLYPH_PROPR_BIDI           2
@@ -218,41 +229,47 @@ function __scribble_system(_calledFromInitialize = false)
         __scribble_add_tag("speed",  __SCRIBBLE_TAG_EVENT, undefined, true);
         __scribble_add_tag("/speed", __SCRIBBLE_TAG_EVENT, undefined, true);
         
-        __scribble_add_tag("wave",   __SCRIBBLE_TAG_EFFECT, 1, true);
-        __scribble_add_tag("shake",  __SCRIBBLE_TAG_EFFECT, 2, true);
-        __scribble_add_tag("wobble", __SCRIBBLE_TAG_EFFECT, 3, true);
-        __scribble_add_tag("pulse",  __SCRIBBLE_TAG_EFFECT, 4, true);
-        __scribble_add_tag("wheel",  __SCRIBBLE_TAG_EFFECT, 5, true);
-        __scribble_add_tag("cycle",  __SCRIBBLE_TAG_EFFECT, 6, true);
-        __scribble_add_tag("jitter", __SCRIBBLE_TAG_EFFECT, 7, true);
-        __scribble_add_tag("slant",  __SCRIBBLE_TAG_EFFECT, 8, true);
+        __scribble_add_tag("PAUSE",  __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag("DELAY",  __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag("SYNC",   __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag("SPEED",  __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag("/SPEED", __SCRIBBLE_TAG_EVENT, undefined, true);
         
-        __scribble_add_tag("WAVE",   __SCRIBBLE_TAG_EFFECT, 1, true);
-        __scribble_add_tag("SHAKE",  __SCRIBBLE_TAG_EFFECT, 2, true);
-        __scribble_add_tag("WOBBLE", __SCRIBBLE_TAG_EFFECT, 3, true);
-        __scribble_add_tag("PULSE",  __SCRIBBLE_TAG_EFFECT, 4, true);
-        __scribble_add_tag("WHEEL",  __SCRIBBLE_TAG_EFFECT, 5, true);
-        __scribble_add_tag("CYCLE",  __SCRIBBLE_TAG_EFFECT, 6, true);
-        __scribble_add_tag("JITTER", __SCRIBBLE_TAG_EFFECT, 7, true);
-        __scribble_add_tag("SLANT",  __SCRIBBLE_TAG_EFFECT, 8, true);
+        __scribble_add_tag("wave",   __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WAVE,   true);
+        __scribble_add_tag("shake",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_SHAKE,  true);
+        __scribble_add_tag("wobble", __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WOBBLE, true);
+        __scribble_add_tag("pulse",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_PULSE,  true);
+        __scribble_add_tag("wheel",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WHEEL,  true);
+        __scribble_add_tag("cycle",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_CYCLE,  true);
+        __scribble_add_tag("jitter", __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_JITTER, true);
+        __scribble_add_tag("slant",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_SLANT,  true);
         
-        __scribble_add_tag("/wave",   __SCRIBBLE_TAG_EFFECT_UNSET, 1, true);
-        __scribble_add_tag("/shake",  __SCRIBBLE_TAG_EFFECT_UNSET, 2, true);
-        __scribble_add_tag("/wobble", __SCRIBBLE_TAG_EFFECT_UNSET, 3, true);
-        __scribble_add_tag("/pulse",  __SCRIBBLE_TAG_EFFECT_UNSET, 4, true);
-        __scribble_add_tag("/wheel",  __SCRIBBLE_TAG_EFFECT_UNSET, 5, true);
-        __scribble_add_tag("/cycle",  __SCRIBBLE_TAG_EFFECT_UNSET, 6, true);
-        __scribble_add_tag("/jitter", __SCRIBBLE_TAG_EFFECT_UNSET, 7, true);
-        __scribble_add_tag("/slant",  __SCRIBBLE_TAG_EFFECT_UNSET, 8, true);
+        __scribble_add_tag("WAVE",   __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WAVE,   true);
+        __scribble_add_tag("SHAKE",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_SHAKE,  true);
+        __scribble_add_tag("WOBBLE", __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WOBBLE, true);
+        __scribble_add_tag("PULSE",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_PULSE,  true);
+        __scribble_add_tag("WHEEL",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WHEEL,  true);
+        __scribble_add_tag("CYCLE",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_CYCLE,  true);
+        __scribble_add_tag("JITTER", __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_JITTER, true);
+        __scribble_add_tag("SLANT",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_SLANT,  true);
         
-        __scribble_add_tag("/WAVE",   __SCRIBBLE_TAG_EFFECT_UNSET, 1, true);
-        __scribble_add_tag("/SHAKE",  __SCRIBBLE_TAG_EFFECT_UNSET, 2, true);
-        __scribble_add_tag("/WOBBLE", __SCRIBBLE_TAG_EFFECT_UNSET, 3, true);
-        __scribble_add_tag("/PULSE",  __SCRIBBLE_TAG_EFFECT_UNSET, 4, true);
-        __scribble_add_tag("/WHEEL",  __SCRIBBLE_TAG_EFFECT_UNSET, 5, true);
-        __scribble_add_tag("/CYCLE",  __SCRIBBLE_TAG_EFFECT_UNSET, 6, true);
-        __scribble_add_tag("/JITTER", __SCRIBBLE_TAG_EFFECT_UNSET, 7, true);
-        __scribble_add_tag("/SLANT",  __SCRIBBLE_TAG_EFFECT_UNSET, 8, true);
+        __scribble_add_tag("/wave",   __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_WAVE,   true);
+        __scribble_add_tag("/shake",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_SHAKE,  true);
+        __scribble_add_tag("/wobble", __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_WOBBLE, true);
+        __scribble_add_tag("/pulse",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_PULSE,  true);
+        __scribble_add_tag("/wheel",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_WHEEL,  true);
+        __scribble_add_tag("/cycle",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_CYCLE,  true);
+        __scribble_add_tag("/jitter", __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_JITTER, true);
+        __scribble_add_tag("/slant",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_SLANT,  true);
+        
+        __scribble_add_tag("/WAVE",   __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_WAVE,   true);
+        __scribble_add_tag("/SHAKE",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_SHAKE,  true);
+        __scribble_add_tag("/WOBBLE", __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_WOBBLE, true);
+        __scribble_add_tag("/PULSE",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_PULSE,  true);
+        __scribble_add_tag("/WHEEL",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_WHEEL,  true);
+        __scribble_add_tag("/CYCLE",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_CYCLE,  true);
+        __scribble_add_tag("/JITTER", __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_JITTER, true);
+        __scribble_add_tag("/SLANT",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_SLANT,  true);
         
         var _colorStruct = __scribble_config_colours();
         var _namesArray = variable_struct_get_names(_colorStruct);

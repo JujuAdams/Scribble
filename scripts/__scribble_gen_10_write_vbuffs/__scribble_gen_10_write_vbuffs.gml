@@ -334,12 +334,11 @@ function __scribble_gen_10_write_vbuffs()
                         _write_colour = _glyph_colour | 0xFFFFFF; //Make sure we use the general glyph alpha
                         
                         _glyph_effect_flags = ~_glyph_effect_flags;
-                        _glyph_effect_flags |= (1 << _tagDict[$ "rainbow"].__data);
-                        _glyph_effect_flags |= (1 << _tagDict[$ "cycle"  ].__data);
+                        _glyph_effect_flags |= (1 << __SCRIBBLE_FLAG_CYCLE);
                         _glyph_effect_flags = ~_glyph_effect_flags;
                     }
                     
-                    if (_image_speed > 0) _glyph_effect_flags |= 0x01; //Set the sprite flag bit
+                    _glyph_effect_flags |= (1 << __SCRIBBLE_FLAG_GRAPHIC); //Set the graphic flag bit
                     
                     if (SCRIBBLE_ADD_SPRITE_ORIGINS)
                     {
@@ -420,25 +419,28 @@ function __scribble_gen_10_write_vbuffs()
                     
                     __SCRIBBLE_VBUFF_READ_GLYPH;
                     
-                    if (!SCRIBBLE_COLORIZE_SPRITES)
+                    var _old_glyph_effect_flags = _glyph_effect_flags;
+                    
+                    if (not SCRIBBLE_COLORIZE_SPRITES)
                     {
-                        var _old_write_colour       = _write_colour;
-                        var _old_glyph_effect_flags = _glyph_effect_flags;
-                        
+                        var _old_write_colour = _write_colour;
                         _write_colour = _write_colour | 0xFFFFFF;
                         
                         _glyph_effect_flags = ~_glyph_effect_flags;
-                        _glyph_effect_flags |= (1 << _tagDict[$ "cycle"].__data);
+                        _glyph_effect_flags |= (1 << __SCRIBBLE_FLAG_CYCLE);
                         _glyph_effect_flags = ~_glyph_effect_flags;
                     }
                     
+                    _glyph_effect_flags |= (1 << __SCRIBBLE_FLAG_GRAPHIC); //Set the graphic flag bit
+                    
                     __SCRIBBLE_VBUFF_WRITE_GLYPH;
                     
-                    if (!SCRIBBLE_COLORIZE_SPRITES)
+                    if (not SCRIBBLE_COLORIZE_SPRITES)
                     {
-                        _write_colour       = _old_write_colour;
-                        _glyph_effect_flags = _old_glyph_effect_flags;
+                        _write_colour = _old_write_colour;
                     }
+                    
+                    _glyph_effect_flags = _old_glyph_effect_flags;
                     
                     #endregion
                 }

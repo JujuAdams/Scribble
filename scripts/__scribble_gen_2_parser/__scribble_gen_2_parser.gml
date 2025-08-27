@@ -745,7 +745,7 @@ function __scribble_gen_2_parser()
                                 __scribble_error("Cycle \"", _cycle_name, "\" not recognised");
                             }
                             
-                            _state_effect_flags = _state_effect_flags | (1 << _tagDict[$ "cycle"].__data);
+                            _state_effect_flags = _state_effect_flags | (1 << __SCRIBBLE_FLAG_CYCLE);
                             
                             //Add an effect flag control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
@@ -769,7 +769,7 @@ function __scribble_gen_2_parser()
                         // [/rainbow]
                         // [/cycle]
                         case 23:
-                            _state_effect_flags = ~((~_state_effect_flags) | (1 << _tagDict[$ "/cycle"].__data));
+                            _state_effect_flags = ~((~_state_effect_flags) | (1 << __SCRIBBLE_FLAG_CYCLE));
                             
                             //Add an effect flag control
                             _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;

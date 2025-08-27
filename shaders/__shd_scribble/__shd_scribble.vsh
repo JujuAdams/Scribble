@@ -1,7 +1,7 @@
 //   @jujuadams   v10.0.0   2025-08-24
 precision highp float;
 
-#define BLEND_SPRITES true
+#define BLEND_GRAPHICS true
 
 #define ANIMATION_INDEX      in_Position.z
 #define REVEAL_INDEX         in_Normal.x
@@ -10,16 +10,17 @@ precision highp float;
 
 const float CYCLE_TEXTURE_HEIGHT = 256.0;
 
-const int MAX_EFFECTS = 9;
-#define SPRITE_FLAG  flagArray[0]
-#define WAVE_FLAG    flagArray[1]
-#define SHAKE_FLAG   flagArray[2]
-#define WOBBLE_FLAG  flagArray[3]
-#define PULSE_FLAG   flagArray[4]
-#define WHEEL_FLAG   flagArray[5]
-#define CYCLE_FLAG   flagArray[6]
-#define JITTER_FLAG  flagArray[7]
-#define SLANT_FLAG   flagArray[8]
+const int MAX_EFFECTS = 10;
+#define GRAPHIC_FLAG      flagArray[0]
+#define ANIM_SPRITE_FLAG  flagArray[1]
+#define WAVE_FLAG         flagArray[2]
+#define SHAKE_FLAG        flagArray[3]
+#define WOBBLE_FLAG       flagArray[4]
+#define PULSE_FLAG        flagArray[5]
+#define WHEEL_FLAG        flagArray[6]
+#define CYCLE_FLAG        flagArray[7]
+#define JITTER_FLAG       flagArray[8]
+#define SLANT_FLAG        flagArray[9]
 
 const int MAX_ANIM_FIELDS = 16;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
@@ -186,7 +187,7 @@ vec2 jitter(vec2 position, vec2 centre, float index)
     return scale(position, centre, mix(JITTER_MINIMUM, JITTER_MAXIMUM, delta));
 }
 
-float filterSprite(float spriteData)
+float filterAnimatedSprite(float spriteData)
 {
     bool once = (spriteData < 0.0);
     spriteData = abs(spriteData);
@@ -353,6 +354,7 @@ void main()
 {
     float flagValue = PACKED_EFFECT_FLAGS;
     float edge;
+    edge = step(512.0, flagValue); flagArray[9] = edge; flagValue -= 512.0*edge;
     edge = step(256.0, flagValue); flagArray[8] = edge; flagValue -= 256.0*edge;
     edge = step(128.0, flagValue); flagArray[7] = edge; flagValue -= 128.0*edge;
     edge = step( 64.0, flagValue); flagArray[6] = edge; flagValue -=  64.0*edge;
@@ -408,7 +410,7 @@ void main()
     //Apply the gradient effect
     if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
     
-    if (!BLEND_SPRITES && (SPRITE_FLAG > 0.5))
+    if (!BLEND_GRAPHICS && (GRAPHIC_FLAG > 0.5))
     {
         //If we're not RGB blending sprites and this *is* a sprite then only modify the alpha channel
         v_vColour.a *= u_vColourBlend.a;
@@ -419,7 +421,7 @@ void main()
         v_vColour *= u_vColourBlend;
     }
     
-    if (SPRITE_FLAG > 0.5) v_vColour.a *= filterSprite(PACKED_SPRITE_DATA); //Use packed sprite data to filter out sprite frames that we don't want
+    if (ANIM_SPRITE_FLAG > 0.5) v_vColour.a *= filterAnimatedSprite(PACKED_SPRITE_DATA); //Use packed sprite data to filter out sprite frames that we don't want
     
     //Regions
     //FIXME - Tie regions to reveal index maybe?
