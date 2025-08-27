@@ -3,7 +3,7 @@
 
 function scribble_super_create(_name)
 {
-    var _font_data = new __scribble_class_font(_name, 1, undefined, false, false);
+    var _font_data = new __scribble_class_font(_name, 1, undefined, false, false, 0, 0);
     _font_data.__runtime   = true;
     _font_data.__superfont = true;
 }

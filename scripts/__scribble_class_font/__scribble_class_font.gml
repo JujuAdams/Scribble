@@ -24,7 +24,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     //Whether the source texture is ready - loaded into RAM and fetched into VRAM
     __texels_valid = _texels_valid;
     
-    //
+    //Position of the underline/strike-through relative to the top of the line
     __underlineY = _underlineY; //*Not* the raw value. This value is changed by scribble_font_scale()
     __strikeY    = _strikeY;    //*Not* the raw value. This value is changed by scribble_font_scale()
     

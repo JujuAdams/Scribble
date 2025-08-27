@@ -43,8 +43,12 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
         ++_i;
     }
     
-    ds_grid_set_region(_target_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT,
-                       max(_target_font_data.__height, _source_font_data.__height));
+    //Choose maximal values
+    _target_font_data.__height     = max(_target_font_data.__height,     _source_font_data.__height);
+    _target_font_data.__underlineY = max(_target_font_data.__underlineY, _source_font_data.__underlineY);
+    _target_font_data.__strikeY    = max(_target_font_data.__strikeY,    _source_font_data.__strikeY);
+    
+    ds_grid_set_region(_target_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _target_font_data.__height);
 }
 
 function __scribble_prepare_super_work_array(_input_array)
