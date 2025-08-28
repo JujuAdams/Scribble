@@ -3,6 +3,10 @@
 #macro __SCRIBBLE_DEBUG       false
 #macro __SCRIBBLE_VERBOSE_GC  false
 
+#macro __SCRIBBLE_FONT_GLYPH_STRIDE    (6*4*4)
+#macro __SCRIBBLE_GEN_GLYPH_STRIDE     (6*4*7)
+#macro __SCRIBBLE_FORMAT_GLYPH_STRIDE  (6*4*11)
+
 #macro __SCRIBBLE_EASE_COUNT  12
 
 #macro __SCRIBBLE_FLAG_GRAPHIC      0

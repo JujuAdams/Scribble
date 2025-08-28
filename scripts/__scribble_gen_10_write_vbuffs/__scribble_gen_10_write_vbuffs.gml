@@ -1,4 +1,5 @@
 // Feather disable all
+
 #macro __SCRIBBLE_VBUFF_READ_GLYPH  var _quad_l = _vbuff_pos_grid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L];\
                                     var _quad_t = _vbuff_pos_grid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_T];\
                                     var _quad_r = _vbuff_pos_grid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R];\
@@ -10,8 +11,9 @@
                                     var _quad_u1  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U1];\
                                     var _quad_v1  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V1];\
                                     ;\
-                                    var _half_w = 0.5*_glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH ];\
-                                    var _half_h = 0.5*_glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT];
+                                    var _half_w    = 0.5*_glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH ];\
+                                    var _half_h    = 0.5*_glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT];\
+                                    var _dataIndex =     _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_INDEX ];
 
 
 
@@ -128,6 +130,7 @@ function __scribble_gen_10_write_vbuffs()
     
     var _fontUnderlineY = 0;
     var _fontStrikeY    = 0;
+    var _fontBuffer     = 0;
     
     var _func_region_pop = function(_page_data, _region_name, _region_start, _region_end)
     {
@@ -302,7 +305,21 @@ function __scribble_gen_10_write_vbuffs()
                     if ((_glyph_ord > 0x20) && (_glyph_ord != 0xA0) && (_glyph_ord != 0x200B))
                     {
                         __SCRIBBLE_VBUFF_READ_GLYPH;
-                        __SCRIBBLE_VBUFF_WRITE_GLYPH;
+                        //__SCRIBBLE_VBUFF_WRITE_GLYPH;
+                    
+                        if (_material != _material_prev) //Swap vertex buffer if the material has changed
+                        {
+                            _material_prev = _material;
+                            _vbuff = _page_data.__get_vertex_buffer(_material);
+                        }
+                        
+                        buffer_poke(_staticBuffer,  0, buffer_f32, _x);
+                        buffer_poke(_staticBuffer,  4, buffer_f32, _y);
+                        buffer_poke(_staticBuffer,  8, buffer_f32, _animation_index);
+                        buffer_poke(_staticBuffer, 12, buffer_f32, _reveal_index);
+                        
+                        buffer_copy_stride(_staticBuffer, 0, __SCRIBBLE_GEN_GLYPH_STRIDE, 0, 6, _buffer, _pos, __SCRIBBLE_FORMAT_GLYPH_STRIDE);
+                        buffer_copy_stride(_fontBuffer, __SCRIBBLE_FONT_GLYPH_STRIDE*_dataIndex, __SCRIBBLE_FONT_GLYPH_STRIDE, __SCRIBBLE_FONT_GLYPH_STRIDE/6, 6, _buffer, _pos + __SCRIBBLE_GEN_GLYPH_STRIDE, __SCRIBBLE_FORMAT_GLYPH_STRIDE);
                     }
                 }
                 else if (_glyph_ord == __SCRIBBLE_GLYPH_REPL_SPRITE)
@@ -314,14 +331,14 @@ function __scribble_gen_10_write_vbuffs()
                         buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
                     }
                     
-                    var _glyph_x         = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_X           ];
-                    var _glyph_y         = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_Y           ];
-                    var _glyph_width     = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH       ];
-                    var _glyph_height    = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT      ];
-                    var _sprite_index    = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX];
-                    var _image_index     = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX ];
-                    var _image_speed     = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED ];
-                    var _sprite_once     = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SPRITE_ONCE ];
+                    var _glyph_x      = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_X           ];
+                    var _glyph_y      = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_Y           ];
+                    var _glyph_width  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH       ];
+                    var _glyph_height = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT      ];
+                    var _sprite_index = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX];
+                    var _image_index  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX ];
+                    var _image_speed  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED ];
+                    var _sprite_once  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SPRITE_ONCE ];
                     
                     var _glyph_xscale = sprite_get_width( _sprite_index) / _glyph_width;
                     var _glyph_yscale = sprite_get_height(_sprite_index) / _glyph_height;

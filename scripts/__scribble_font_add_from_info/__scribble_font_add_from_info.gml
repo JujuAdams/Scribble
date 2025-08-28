@@ -35,6 +35,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         var _texture_index    = _font_info.texture;
         var _info_glyphs_dict = _font_info.glyphs;
         var _ascender_offset  = _font_info.ascenderOffset;
+        var _glyphBuffer      = _font_info.__glyphBuffer;
         
         var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
         var _size = array_length(_info_glyph_names);
@@ -248,6 +249,17 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
             //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texels_valid; //Set above in bulk
             
             _font_glyphs_map[? _unicode] = _i;
+            
+            var _halfW = 0.5*_w;
+            var _halfH = 0.5*_h;
+            
+            buffer_write(_glyphBuffer, buffer_f32, _u0); buffer_write(_glyphBuffer, buffer_f32, _v0); buffer_write(_glyphBuffer, buffer_f32, -_halfW);  buffer_write(_glyphBuffer, buffer_f32, -_halfH);
+            buffer_write(_glyphBuffer, buffer_f32, _u1); buffer_write(_glyphBuffer, buffer_f32, _v1); buffer_write(_glyphBuffer, buffer_f32,  _halfW);  buffer_write(_glyphBuffer, buffer_f32,  _halfH);
+            buffer_write(_glyphBuffer, buffer_f32, _u0); buffer_write(_glyphBuffer, buffer_f32, _v1); buffer_write(_glyphBuffer, buffer_f32, -_halfW);  buffer_write(_glyphBuffer, buffer_f32,  _halfH);
+            
+            buffer_write(_glyphBuffer, buffer_f32, _u1); buffer_write(_glyphBuffer, buffer_f32, _v1); buffer_write(_glyphBuffer, buffer_f32,  _halfW);  buffer_write(_glyphBuffer, buffer_f32,  _halfH);
+            buffer_write(_glyphBuffer, buffer_f32, _u0); buffer_write(_glyphBuffer, buffer_f32, _v0); buffer_write(_glyphBuffer, buffer_f32, -_halfW);  buffer_write(_glyphBuffer, buffer_f32, -_halfH);
+            buffer_write(_glyphBuffer, buffer_f32, _u1); buffer_write(_glyphBuffer, buffer_f32, _v0); buffer_write(_glyphBuffer, buffer_f32,  _halfW);  buffer_write(_glyphBuffer, buffer_f32, -_halfH);
             
             ++_i;
         }

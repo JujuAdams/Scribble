@@ -379,6 +379,7 @@ function __scribble_gen_3_devanagari()
             {
                 //Add this glyph to our grid by copying from the font's own glyph data grid
                 ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _i, __SCRIBBLE_GEN_GLYPH_UNICODE);
+                _font_glyph_data_grid[# _data_index, __SCRIBBLE_GEN_GLYPH_INDEX] = _data_index;
             }
         }
         
@@ -394,7 +395,9 @@ function __scribble_gen_3_devanagari()
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = (_glyph_count > 0)? _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] : 0; //Make sure we collect controls at the end of a string
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_INDEX        ] = _data_index;
     
     _generator_state.__glyph_count = _glyph_count+1;
     

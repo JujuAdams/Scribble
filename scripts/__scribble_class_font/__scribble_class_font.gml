@@ -34,7 +34,9 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     __glyph_data_grid = ds_grid_create(_glyph_count, __SCRIBBLE_GLYPH_PROPR_COUNT);
     __glyphs_map      = ds_map_create();
     __kerning_map     = ds_map_create();
-    __ligatureMap    = ds_map_create();
+    __ligatureMap     = ds_map_create();
+    
+    __glyphBuffer = buffer_create(__SCRIBBLE_FONT_GLYPH_STRIDE*_glyph_count, buffer_grow, 1);
     
     __is_krutidev = false;
     __bilinear    = (__render_type == __SCRIBBLE_RENDER_SDF)? true : undefined;
@@ -174,8 +176,11 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     {
         if (__SCRIBBLE_DEBUG) __scribble_trace("Destroying font \"", __name, "\"");
         
-        ds_map_destroy(__glyphs_map);
         ds_grid_destroy(__glyph_data_grid);
+        ds_map_destroy(__glyphs_map);
+        ds_map_destroy(__kerning_map);
+        ds_map_destroy(__ligatureMap);
+        buffer_delete(__glyphBuffer);
         
         ds_map_delete(_font_data_map, __name);
         

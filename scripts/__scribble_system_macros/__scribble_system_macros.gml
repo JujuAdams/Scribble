@@ -46,11 +46,12 @@
 #macro __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT    15 //
 #macro __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX  16 //
 #macro __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX     17 //
-#macro __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX     18 // }
-#macro __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX      19 // } Only used for sprites
-#macro __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED      20 // }
-#macro __SCRIBBLE_GEN_GLYPH_SPRITE_ONCE      21 // }
-#macro __SCRIBBLE_GEN_GLYPH_SIZE             22 //
+#macro __SCRIBBLE_GEN_GLYPH_INDEX            18 //
+#macro __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX     19 // }
+#macro __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX      20 // } Only used for sprites
+#macro __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED      21 // }
+#macro __SCRIBBLE_GEN_GLYPH_SPRITE_ONCE      22 // }
+#macro __SCRIBBLE_GEN_GLYPH_SIZE             23 //
 
 #macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_L  0
 #macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_T  1
