@@ -72,7 +72,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     __post_angle     = 0.0;
     
     __matrix_dirty   = true;
-    __matrix         = undefined;
+    __matrix         = matrix_build_identity();
     __matrix_inverse = undefined;
     __matrix_x       = undefined;
     __matrix_y       = undefined;
@@ -139,7 +139,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     
     __bbox_dirty       = true;
-    __bbox_matrix      = undefined;
+    __bbox_matrix      = matrix_build_identity();
     __bbox_raw_width   = 1;
     __bbox_raw_height  = 1;
     __bbox_aabb_left   = 0;
@@ -678,7 +678,12 @@ function __scribble_class_element(_string, _unique_id) constructor
         var _region_array = _page.__region_array;
         
         var _matrix = __update_matrix(_model, _element_x, _element_y);
-        if (__matrix_inverse == undefined) __matrix_inverse = __scribble_matrix_inverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
+        
+        if (__matrix_inverse == undefined)
+        {
+            __matrix_inverse = __scribble_matrix_inverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
+        }
+        
         var _vector = matrix_transform_vertex(__matrix_inverse, _pointer_x, _pointer_y, 0);
         var _x = _vector[0];
         var _y = _vector[1];
@@ -782,11 +787,18 @@ function __scribble_class_element(_string, _unique_id) constructor
         if (__bbox_dirty)
         {
             __bbox_dirty = false;
+            var _bbox_matrix = __bbox_matrix;
             
             var _model = __get_model(true);
             if (!is_struct(_model))
             {
-                __bbox_matrix      = matrix_build(-__origin_x, -__origin_y, 0,    0,0,0,    1,1,1);
+                _bbox_matrix[@  0] = 1;
+                _bbox_matrix[@  1] = 0;
+                _bbox_matrix[@  4] = 0;
+                _bbox_matrix[@  5] = 1;
+                _bbox_matrix[@ 12] = -__origin_x;
+                _bbox_matrix[@ 13] = -__origin_y;
+                
                 __bbox_aabb_left   = 0;
                 __bbox_aabb_top    = 0;
                 __bbox_aabb_right  = 0;
@@ -813,7 +825,12 @@ function __scribble_class_element(_string, _unique_id) constructor
             
             if ((_xscale == 1) && (_yscale == 1) && (__post_angle == 0))
             {
-                __bbox_matrix = matrix_build(-__origin_x, -__origin_y, 0,    0,0,0,    1,1,1);
+                _bbox_matrix[@  0] = 1;
+                _bbox_matrix[@  1] = 0;
+                _bbox_matrix[@  4] = 0;
+                _bbox_matrix[@  5] = 1;
+                _bbox_matrix[@ 12] = -__origin_x;
+                _bbox_matrix[@ 13] = -__origin_y;
                 
                 //Avoid using matrices if we can
                 __bbox_aabb_left   = -__origin_x + _bbox.left;
@@ -828,10 +845,19 @@ function __scribble_class_element(_string, _unique_id) constructor
             }
             else
             {
-                //TODO - Optimize this
-                __bbox_matrix = matrix_multiply(matrix_build(-__origin_x, -__origin_y, 0,    0, 0,       0,          1,       1, 1),
-                                matrix_multiply(matrix_build(          0,           0, 0,    0, 0,       0,    _xscale, _yscale, 1),
-                                                matrix_build(          0,           0, 0,    0, 0, __post_angle,          1,       1, 1)));
+                var  _sin = dsin(-__post_angle);
+                var  _cos = dcos(-__post_angle);
+                var _xSin = _xscale*_sin;
+                var _xCos = _xscale*_cos;
+                var _ySin = _yscale*_sin;
+                var _yCos = _yscale*_cos;
+                
+                _bbox_matrix[@  0] =  _xCos;
+                _bbox_matrix[@  1] =  _xSin;
+                _bbox_matrix[@  4] = -_ySin;
+                _bbox_matrix[@  5] =  _yCos;
+                _bbox_matrix[@ 12] = -(__origin_x*_xCos - __origin_y*_ySin);
+                _bbox_matrix[@ 13] = -(__origin_x*_xSin + __origin_y*_yCos);
                 
                 var _l = _bbox.left;
                 var _t = _bbox.top;
@@ -1883,34 +1909,34 @@ function __scribble_class_element(_string, _unique_id) constructor
             if (!_model.__pad_bbox_b) _y_offset -= __padding_b;
             
             //Build a matrix to transform the text...
+            var _matrix = __matrix;
+            
             if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
             {
-                //Faster than creating our own array
-                __matrix = matrix_build(_x_offset + _x, _y_offset + _y, __z,   0,0,0,   1,1,1);
+                _matrix[@  0] = 1;
+                _matrix[@  1] = 0;
+                _matrix[@  4] = 0;
+                _matrix[@  5] = 1;
+                _matrix[@ 12] = _x_offset + _x;
+                _matrix[@ 13] = _y_offset + _y;
+                _matrix[@ 14] = __z;
             }
             else
             {
-                //FIXME - Re-optimise
-                __matrix = matrix_multiply(matrix_build(_x_offset, _y_offset, 0,    0,0,0,          1,1,1),
-                           matrix_multiply(matrix_build(0,0,0,                      0,0,0,          _xscale, _yscale, 1),
-                           matrix_multiply(matrix_build(0,0,0,                      0,0,__post_angle,    1,1,1),
-                                           matrix_build(_x, _y, __z,                0,0,0,          1,1,1))));
+                var  _sin = dsin(-__post_angle);
+                var  _cos = dcos(-__post_angle);
+                var _xSin = _xscale*_sin;
+                var _xCos = _xscale*_cos;
+                var _ySin = _yscale*_sin;
+                var _yCos = _yscale*_cos;
                 
-                //var _sin = dsin(_angle);
-                //var _cos = dcos(_angle);
-                //
-                //var _m00 =  _xscale*_cos;
-                //var _m10 = -_yscale*_sin;
-                //var _m01 =  _xscale*_sin;
-                //var _m11 =  _yscale*_cos;
-                //
-                //var _m03 = _x_offset*_m00 + _y_offset*_m10 + _x;
-                //var _m13 = _x_offset*_m01 + _y_offset*_m11 + _y;
-                //
-                //__matrix = [_m00, _m10,   0, 0,
-                //            _m01, _m11,   0, 0,
-                //               0,    0,   1, 0,
-                //            _m03, _m13, __z, 1];
+                _matrix[@  0] =  _xCos;
+                _matrix[@  1] =  _xSin;
+                _matrix[@  4] = -_ySin;
+                _matrix[@  5] =  _yCos;
+                _matrix[@ 12] =  _x + (_x_offset*_xCos - _y_offset*_ySin);
+                _matrix[@ 13] =  _y + (_x_offset*_xSin + _y_offset*_yCos);
+                _matrix[@ 14] =  __z;
             }
         }
         
