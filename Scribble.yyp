@@ -270,6 +270,7 @@
     {"id":{"name":"obj_test_typewriter_external_sound_per_char","path":"objects/obj_test_typewriter_external_sound_per_char/obj_test_typewriter_external_sound_per_char.yy",},},
     {"id":{"name":"obj_test_typewriter_external_sound","path":"objects/obj_test_typewriter_external_sound/obj_test_typewriter_external_sound.yy",},},
     {"id":{"name":"obj_test_typewriter_gc","path":"objects/obj_test_typewriter_gc/obj_test_typewriter_gc.yy",},},
+    {"id":{"name":"obj_test_typewriter_get_glyph_data","path":"objects/obj_test_typewriter_get_glyph_data/obj_test_typewriter_get_glyph_data.yy",},},
     {"id":{"name":"obj_test_typewriter_get_position","path":"objects/obj_test_typewriter_get_position/obj_test_typewriter_get_position.yy",},},
     {"id":{"name":"obj_test_typewriter_get_state","path":"objects/obj_test_typewriter_get_state/obj_test_typewriter_get_state.yy",},},
     {"id":{"name":"obj_test_typewriter_ignore_delay","path":"objects/obj_test_typewriter_ignore_delay/obj_test_typewriter_ignore_delay.yy",},},

@@ -368,7 +368,7 @@ function __scribble_class_model(_model_cache_name, _element) constructor
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
         //N.B. Off by one since we consider the terminating null as a glyph for the purposes of typists
-        return __pages_array[_page].__glyph_count - 1;
+        return __pages_array[_page].__glyph_count-1;
     }
     
     static __get_glyph_data_grid = function(_page)

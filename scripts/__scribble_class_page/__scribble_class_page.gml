@@ -152,10 +152,21 @@ function __scribble_class_page() constructor
                 y_offset: __glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT_Y_OFFSET],
             };
         }
+        else if (_index >= __glyph_count-1)
+        {
+            _index = __glyph_count-2;
+            
+            return {
+                unicode:  0,
+                left:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT   ],
+                top:      __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__TOP     ],
+                right:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT   ],
+                bottom:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM  ],
+                y_offset: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__Y_OFFSET],
+            };
+        }
         else
         {
-            _index = min(_index, __glyph_count-1);
-            
             return {
                 unicode:  __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_UNICODE ],
                 left:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_LEFT    ],
