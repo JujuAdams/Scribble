@@ -38,6 +38,16 @@ Scribble was confirmed to work with [GMLive](https://yellowafterlife.itch.io/gam
 
 &nbsp;
 
+## Fonts on dynamic texture pages sometimes don't appear!
+
+Previous versions of Scribble had issues with all fonts in dynamic texture groups appearing as invisible even after loading the texture group. This is due to an upstream bug in GameMaker where unloaded texture pages will return invalid dimensions until their texture group has been loaded (and/or fetched). This then leads to glyph UVs being invalid which causes glyphs to appear invisible. Scribble 9.6 adds some glyph UV correction when caching a text model provided that dynamic texture groups for fonts have been loaded.
+
+!> Scribble cannot automatically fix text models that have been cached with invalid data because a dynamic texture group wasn't loaded at the time the text was cached. You must ensure that you're only caching text that relies on dynamic texture group fonts *after* that texture group was loaded.
+
+You can force all text models to refresh themselves with `scribble_refresh_everything()`. After calling this function, all text models will rebuild themselves, correcting any skewiff UV coordinates if they can. You will very likely want to use this after a related dynamic texture group has been loaded to ensure all text models are up to date.
+
+&nbsp;
+
 ## I can't use `font_add()` fonts with Scribble Deluxe but I can with Scribble Junior. What's that about?
 
 Scribble Junior is performing a sleight of hand to support `font_add()`. if you use a dynamic font with Scribble Junior then it turns off all of the optimisations and the library instead functions as a nice interface for what is ultimately GameMaker's native text drawing with some extra features. For other types of font, Scribble Junior makes vertex buffers and renders at maximum efficiency.
