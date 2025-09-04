@@ -577,6 +577,18 @@ Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwi
 
 &nbsp;
 
+## `.allow_text_getter()` *regenerator*
+
+**Returns:** The text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Enables use of `.get_text()`, see below. You do not need to call this method if `SCRIBBLE_FORCE_TEXT_GETTER` is set to `true`.
+
+&nbsp;
+
 ## `.get_text([page])`
 
 **Returns:** String, the parsed string for the given page
@@ -585,7 +597,21 @@ Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwi
 |--------|--------|-------------------------------------------------------------------------|
 |`[page]`|integer |Page to get the raw text from. If not specified, the current page is used|
 
+!> You must call `.allow_text_getter()` on the element before using this function, or you should set the config macro `SCRIBBLE_FORCE_TEXT_GETTER` to `true`.
+
 The string that is returned is the raw text that is drawn i.e. all command tags and events have been stripped out. Sprites and surfaces are represented by a single glyph with the Unicode value of `26` ([`0x001A` "substitute character"](https://unicode-table.com/en/001A/)).
+
+&nbsp;
+
+## `.allow_line_data_getter()` *regenerator*
+
+**Returns:** The text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Enables use of `.get_line_data()`, see below. You do not need to call this method if `SCRIBBLE_FORCE_LINE_DATA_GETTER` is set to `true`.
 
 &nbsp;
 
@@ -597,6 +623,8 @@ The string that is returned is the raw text that is drawn i.e. all command tags 
 |-----------|--------|---------------------------------------------------------------------------|
 |`lineIndex`|integer |Index of the line whose data will be returned                              |
 |`[page]`   |integer |Page to get the glyph data from. If not specified, the current page is used|
+
+!> You must call `.allow_line_data_getter()` on the element before using this function, or you should set the config macro `SCRIBBLE_FORCE_LINE_DATA_GETTER` to `true`.
 
 The struct that is returned has the following member variables:
 
@@ -611,6 +639,18 @@ The struct that is returned has the following member variables:
 
 &nbsp;
 
+## `.allow_glyph_data_getter()` *regenerator*
+
+**Returns:** The text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Enables use of `.get_glyph_data()`, see below. You do not need to call this method if `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` is set to `true`.
+
+&nbsp;
+
 ## `.get_glyph_data(glyphIndex, [page])`
 
 **Returns:** Struct, containing layout details for the glyph on the given page (see below)
@@ -620,7 +660,9 @@ The struct that is returned has the following member variables:
 |`glyphIndex`|integer |Index of the glyph whose data will be returned                             |
 |`[page]`    |integer |Page to get the glyph data from. If not specified, the current page is used|
 
-?> Unlike the typist `.get_position()` method, this method is 0-indexed. The first glyph has index 0.
+?> Unlike a typist's `.get_position()` method, this method is 0-indexed. The first glyph has index 0.
+
+!> You must call `.allow_glyph_data_getter()` on the element before using this function, or you should set the config macro `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`.
 
 The struct that is returned has the following member variables:
 
