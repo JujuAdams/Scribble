@@ -787,7 +787,27 @@ Convenience function.
 
 # Animation
 
-!> Most of the old animation methods have been moved to global scope. Please see the [Animation Properties](animation-properties) page for details.
+## `.set_animation_time(time)`
+
+**Returns**: The text element
+
+|Name  |Datatype|Purpose              |
+|------|--------|---------------------|
+|`time`|number  |Animation time to set|
+
+Scribble holds an animation time for each text element. This number is incremented every frame (see `.animation_speed()` below). By using this method, you can force the animation time to a particular value, for example to "copy" an animation state from one text element to another.
+
+&nbsp;
+
+## `.get_animation_time()`
+
+**Returns**: Number, the current animation time for the text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+&nbsp;
 
 ## `.animation_speed(speed)`
 
