@@ -620,6 +620,8 @@ The struct that is returned has the following member variables:
 |`glyphIndex`|integer |Index of the glyph whose data will be returned                             |
 |`[page]`    |integer |Page to get the glyph data from. If not specified, the current page is used|
 
+?> Unlike the typist `.get_position()` method, this method is 0-indexed. The first glyph has index 0.
+
 The struct that is returned has the following member variables:
 
 |Name      |Datatype|Purpose                                                       |
@@ -629,6 +631,7 @@ The struct that is returned has the following member variables:
 |`top`     |number  |Top y-position of the glyph, relative to the model's origin   |
 |`right`   |number  |Right x-position of the glyph, relative to the model's origin |
 |`bottom`  |number  |Bottom y-position of the glyph, relative to the model's origin|
+|`y_offset`|number  |Distance from the top of the line to the top of the glyph     |
 
 &nbsp;
 
