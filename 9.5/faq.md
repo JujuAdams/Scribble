@@ -40,11 +40,7 @@ Scribble was confirmed to work with [GMLive](https://yellowafterlife.itch.io/gam
 
 ## Fonts on dynamic texture pages sometimes don't appear!
 
-Previous versions of Scribble had issues with all fonts in dynamic texture groups appearing as invisible even after loading the texture group. This is due to an upstream bug in GameMaker where unloaded texture pages will return invalid dimensions until their texture group has been loaded (and/or fetched). This then leads to glyph UVs being invalid which causes glyphs to appear invisible. Scribble 9.6 adds some glyph UV correction when caching a text model provided that dynamic texture groups for fonts have been loaded.
-
-!> Scribble cannot automatically fix text models that have been cached with invalid data because a dynamic texture group wasn't loaded at the time the text was cached. You must ensure that you're only caching text that relies on dynamic texture group fonts *after* that texture group was loaded.
-
-You can force all text models to refresh themselves with `scribble_refresh_everything()`. After calling this function, all text models will rebuild themselves, correcting any skewiff UV coordinates if they can. You will very likely want to use this after a related dynamic texture group has been loaded to ensure all text models are up to date.
+This version of Scribble has issues with all fonts in dynamic texture groups appearing as invisible even after loading the texture group. This is due to an upstream bug in GameMaker where unloaded texture pages will return invalid dimensions until their texture group has been loaded (and/or fetched). This then leads to glyph UVs being invalid which causes glyphs to appear invisible. Please update to Scribble 9.6 (or newer).
 
 &nbsp;
 

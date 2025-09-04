@@ -577,6 +577,18 @@ Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwi
 
 &nbsp;
 
+## `.allow_text_getter()` *regenerator*
+
+**Returns:** The text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Enables use of `.get_text()`, see below. You do not need to call this method if `SCRIBBLE_FORCE_TEXT_GETTER` is set to `true`.
+
+&nbsp;
+
 ## `.get_text([page])`
 
 **Returns:** String, the parsed string for the given page
@@ -585,7 +597,57 @@ Will return `true` only if the [`.wrap()` feature](scribble-methods?id=wrapmaxwi
 |--------|--------|-------------------------------------------------------------------------|
 |`[page]`|integer |Page to get the raw text from. If not specified, the current page is used|
 
+!> You must call `.allow_text_getter()` on the element before using this function, or you should set the config macro `SCRIBBLE_FORCE_TEXT_GETTER` to `true`.
+
 The string that is returned is the raw text that is drawn i.e. all command tags and events have been stripped out. Sprites and surfaces are represented by a single glyph with the Unicode value of `26` ([`0x001A` "substitute character"](https://unicode-table.com/en/001A/)).
+
+&nbsp;
+
+## `.allow_line_data_getter()` *regenerator*
+
+**Returns:** The text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Enables use of `.get_line_data()`, see below. You do not need to call this method if `SCRIBBLE_FORCE_LINE_DATA_GETTER` is set to `true`.
+
+&nbsp;
+
+## `.get_line_data(lineIndex, [page])`
+
+**Returns:** Struct, containing layout details for the line on the given page (see below)
+
+|Name       |Datatype|Purpose                                                                    |
+|-----------|--------|---------------------------------------------------------------------------|
+|`lineIndex`|integer |Index of the line whose data will be returned                              |
+|`[page]`   |integer |Page to get the glyph data from. If not specified, the current page is used|
+
+!> You must call `.allow_line_data_getter()` on the element before using this function, or you should set the config macro `SCRIBBLE_FORCE_LINE_DATA_GETTER` to `true`.
+
+The struct that is returned has the following member variables:
+
+|Name          |Datatype|Purpose                                                         |
+|--------------|--------|----------------------------------------------------------------|
+|`y`           |number  |y-position of the top of the line relative to the model's origin|
+|`height`      |number  |Height of the line, in pixels                                   |
+|`forced_break`|boolean |Whether the line was created by a manual line break. This value will also be `true` for the first line (index 0) for a text element|
+|`glyph_start` |integer |Index of the first glyph on the line                            |
+|`glyph_end`   |integer |Index of the last glyph on the line                             |
+|`glyph_count` |integer |Number of the glyphs on the line                                |
+
+&nbsp;
+
+## `.allow_glyph_data_getter()` *regenerator*
+
+**Returns:** The text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+Enables use of `.get_glyph_data()`, see below. You do not need to call this method if `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` is set to `true`.
 
 &nbsp;
 
@@ -598,6 +660,10 @@ The string that is returned is the raw text that is drawn i.e. all command tags 
 |`glyphIndex`|integer |Index of the glyph whose data will be returned                             |
 |`[page]`    |integer |Page to get the glyph data from. If not specified, the current page is used|
 
+?> Unlike a typist's `.get_position()` method, this method is 0-indexed. The first glyph has index 0.
+
+!> You must call `.allow_glyph_data_getter()` on the element before using this function, or you should set the config macro `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`.
+
 The struct that is returned has the following member variables:
 
 |Name      |Datatype|Purpose                                                       |
@@ -607,6 +673,7 @@ The struct that is returned has the following member variables:
 |`top`     |number  |Top y-position of the glyph, relative to the model's origin   |
 |`right`   |number  |Right x-position of the glyph, relative to the model's origin |
 |`bottom`  |number  |Bottom y-position of the glyph, relative to the model's origin|
+|`y_offset`|number  |Distance from the top of the line to the top of the glyph     |
 
 &nbsp;
 
@@ -720,7 +787,27 @@ Convenience function.
 
 # Animation
 
-!> Most of the old animation methods have been moved to global scope. Please see the [Animation Properties](animation-properties) page for details.
+## `.set_animation_time(time)`
+
+**Returns**: The text element
+
+|Name  |Datatype|Purpose              |
+|------|--------|---------------------|
+|`time`|number  |Animation time to set|
+
+Scribble holds an animation time for each text element. This number is incremented every frame (see `.animation_speed()` below). By using this method, you can force the animation time to a particular value, for example to "copy" an animation state from one text element to another.
+
+&nbsp;
+
+## `.get_animation_time()`
+
+**Returns**: Number, the current animation time for the text element
+
+|Name|Datatype|Purpose|
+|----|--------|-------|
+|None|        |       |
+
+&nbsp;
 
 ## `.animation_speed(speed)`
 

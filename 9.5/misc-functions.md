@@ -310,15 +310,3 @@ Forces every Scribble text element to refresh their text model. This may be usef
 |None|        |       |
 
 Forces Scribble to re-set all shader uniforms the next time text is drawn. You should call this function if Scribble is exhibiting strange behaviour after another process takes control of the application e.g. after showing an ad on Android.
-
-&nbsp;
-
-## `scribble_is_text_element(value)`
-
-**Returns:** N/A (`undefined`)
-
-|Name|Datatype|Purpose|
-|----|--------|-------|
-|None|        |       |
-
-Initializes Scribble. You only need to call this function if the `SCRIBBLE_INITIALIZE_ON_BOOT` config macro has been set to `false`.
