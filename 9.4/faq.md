@@ -44,6 +44,12 @@ Yes! In fact, I encourage it. [Scribble Junior](https://github.com/JujuAdams/Scr
 
 &nbsp;
 
+## Fonts on dynamic texture pages sometimes don't appear!
+
+This version of Scribble has issues with all fonts in dynamic texture groups appearing as invisible even after loading the texture group. This is due to an upstream bug in GameMaker where unloaded texture pages will return invalid dimensions until their texture group has been loaded (and/or fetched). This then leads to glyph UVs being invalid which causes glyphs to appear invisible. Please update to Scribble 9.6 (or newer).
+
+&nbsp;
+
 ## How is Scribble Deluxe licensed? Can I use it for commercial projects?
 
 [Scribble is released under the MIT license](https://github.com/JujuAdams/Scribble/blob/master/LICENSE). This means you can use it for whatever purpose you want, including commercial projects. It'd mean a lot to me if you'd drop my name in your credits (Juju Adams) and/or say thanks, but you're under no obligation to do so.
