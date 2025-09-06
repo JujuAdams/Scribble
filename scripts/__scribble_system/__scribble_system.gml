@@ -46,7 +46,8 @@
 #macro __SCRIBBLE_TAG_EVENT         3
 #macro __SCRIBBLE_TAG_MACRO         4
 
-gml_pragma("MarkTagAsUsed", "scribble");
+//This causes a failure to compile in YYC in IDE v2024.11.0.179 / Runtime v2024.11.0.227
+//gml_pragma("MarkTagAsUsed", "scribble");
 
 
 
