@@ -390,12 +390,12 @@ function __scribble_class_model(_model_cache_name, _element) constructor
         return _page_data;
     }
     
-    static __FinalizeVertexBuffers = function()
+    static __finalize_vertex_buffers = function()
     {
         var _i = 0;
         repeat(array_length(__pages_array))
         {
-            __pages_array[_i].__FinalizeVertexBuffers();
+            __pages_array[_i].__finalize_vertex_buffers();
             ++_i;
         }
     }
