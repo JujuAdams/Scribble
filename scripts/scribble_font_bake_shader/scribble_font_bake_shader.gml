@@ -147,13 +147,13 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             vertex_begin(_vbuff, _vertex_format);
             
             _vbuff_data_map[? string(_texture)] = {
-                __vertex_buffer: _vbuff,
+                __vertexBuffer: _vbuff,
                 __texture: _texture,
             };
         }
         else
         {
-            var _vbuff = _vbuff_data.__vertex_buffer;
+            var _vbuff = _vbuff_data.__vertexBuffer;
         }
         
         var _l = _l_pad + _line_x;
@@ -194,7 +194,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     repeat(array_length(_vbuff_data_array))
     {
         var _vbuff_data = _vbuff_data_array[_i];
-        var _vbuff = _vbuff_data.__vertex_buffer;
+        var _vbuff = _vbuff_data.__vertexBuffer;
         
         vertex_end(_vbuff);
         vertex_submit(_vbuff, pr_trianglelist, _vbuff_data.__texture);

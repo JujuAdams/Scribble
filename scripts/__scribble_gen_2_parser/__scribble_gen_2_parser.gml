@@ -31,7 +31,7 @@
                                       else\
                                       {\
                                           ;\//Add this glyph to our grid by copying from the font's own glyph data grid
-                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE);\
+                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_MATERIAL, _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE);\
                                           _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;\
                                           _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_INDEX        ] = _data_index;\
                                           ;\
@@ -858,10 +858,6 @@ function __scribble_gen_2_parser()
                         
                             //TODO - Add a way to force a regeneration of every text element that contains a given surface
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_MATERIAL     ] = __scribble_surface_get_material(_surface);
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_U0      ] = 0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V0      ] = 0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_U1      ] = 1;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V1      ] = 1;
                         
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_INDEX        ] = -1;
@@ -978,14 +974,6 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                             
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_MATERIAL     ] = __scribble_texture_get_material(_tex_index);
-                            //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_U0      ] = 0;
-                            //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V0      ] = 0;
-                            //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_U1      ] = 1;
-                            //_glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V1      ] = 1;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_U0      ] = _u0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_U1      ] = _u1;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V0      ] = _v0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V1      ] = _v1;
                             
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_INDEX        ] = -1;

@@ -39,10 +39,6 @@
 #macro __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET       8 // } Be careful of ordering!
 #macro __SCRIBBLE_GEN_GLYPH_SCALE             9 // }
 #macro __SCRIBBLE_GEN_GLYPH_MATERIAL         10 // }
-#macro __SCRIBBLE_GEN_GLYPH_QUAD_U0          11 // }
-#macro __SCRIBBLE_GEN_GLYPH_QUAD_U1          12 // }
-#macro __SCRIBBLE_GEN_GLYPH_QUAD_V0          13 // }
-#macro __SCRIBBLE_GEN_GLYPH_QUAD_V1          14 // }
 #macro __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT    15 //
 #macro __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX  16 //
 #macro __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX     17 //

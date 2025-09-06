@@ -5,11 +5,8 @@
                                     var _quad_r = _vbuff_pos_grid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R];\
                                     var _quad_b = _vbuff_pos_grid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B];\
                                     ;\
+                                    var _scale    = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SCALE   ];\
                                     var _material = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_MATERIAL];\
-                                    var _quad_u0  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U0];\
-                                    var _quad_v0  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V0];\
-                                    var _quad_u1  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U1];\
-                                    var _quad_v1  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V1];\
                                     ;\
                                     var _half_w    = 0.5*_glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH ];\
                                     var _half_h    = 0.5*_glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT];\
@@ -20,7 +17,18 @@
 #macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_material != _material_prev)\ //Swap vertex buffer if the material has changed
                                      {\
                                          _material_prev = _material;\
-                                         _vbuff = _page_data.__get_vertex_buffer(_material);\
+                                         \
+                                         if (_vertexBufferStruct != undefined)\
+                                         {\
+                                             \ //Update the previous build buffer offset
+                                             _vertexBufferStruct.__buildBufferOffset = _buildBufferOffset;\
+                                         }\
+                                         \
+                                         \ //TODO - Can this be optimised if every glyph in a font is on the same texture page?
+                                         \
+                                         _vertexBufferStruct = _page_data.__GetVertexBufferStruct(_material);\
+                                         _buildBuffer        = _vertexBufferStruct.__buildBuffer;\
+                                         _buildBufferOffset  = _vertexBufferStruct.__buildBufferOffset;\
                                      }\
                                      if (_bezier_do)\
                                      {\
@@ -54,15 +62,29 @@
                                          _quad_t = _quad_cy;\
                                          _quad_b = _quad_cy;\
                                      }\
-                                     ;\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff,  _half_w,  _half_h);\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, -_half_w, -_half_h);\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_b, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff,  _half_w, -_half_h);\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_b, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, -_half_w, -_half_h);\
-                                     vertex_position_3d(_vbuff, _quad_l, _quad_t, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff,  _half_w,  _half_h);\
-                                     vertex_position_3d(_vbuff, _quad_r, _quad_t, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v0); vertex_float2(_vbuff, -_half_w,  _half_h);
-
-
+                                     \
+                                     \ // = in_Position
+                                     buffer_poke(_tempBuffer,  0, buffer_f32, _quad_l + _half_w);\
+                                     buffer_poke(_tempBuffer,  4, buffer_f32, _quad_t + _half_h);\
+                                     buffer_poke(_tempBuffer,  8, buffer_f32, _animation_index);\
+                                     \ // = in_Normal
+                                     buffer_poke(_tempBuffer, 12, buffer_f32, _reveal_index);\
+                                     buffer_poke(_tempBuffer, 16, buffer_f32, _glyph_sprite_data);\
+                                     buffer_poke(_tempBuffer, 20, buffer_f32, _glyph_effect_flags);\
+                                     buffer_poke(_tempBuffer, 24, buffer_f32, _scale);\
+                                     \ // = in_Colour
+                                     buffer_poke(_tempBuffer, 28, buffer_u32, _write_colour);\
+                                     \
+                                     \ //Copy shared data to every vertex for the quad
+                                     \ // = in_Position & in_Normal & in_Colour
+                                     buffer_copy_stride(_tempBuffer, 0, __SCRIBBLE_STRIDE_TEMP, 0, 6, _buildBuffer, _buildBufferOffset, __SCRIBBLE_STRIDE_BUILD);\
+                                     \
+                                     \ //Copy glyph data to every vertex for the quad
+                                     \ // = in_TextureCoord & in_Colour2
+                                     buffer_copy_stride(_fontBuffer, _dataIndex*6*__SCRIBBLE_STRIDE_FONT, __SCRIBBLE_STRIDE_FONT, __SCRIBBLE_STRIDE_FONT, 6, _buildBuffer, _buildBufferOffset + __SCRIBBLE_STRIDE_TEMP, __SCRIBBLE_STRIDE_BUILD);\
+                                     \
+                                     \ //Update the offset for the next glyph
+                                     _buildBufferOffset += 6*__SCRIBBLE_STRIDE_BUILD;
 
 function __scribble_gen_10_write_vbuffs()
 {
@@ -72,6 +94,8 @@ function __scribble_gen_10_write_vbuffs()
     
     static _scribbleDotUVs = sprite_get_uvs(scribble_fallback_dot, 0);
     static _scribbleDotMaterial = __scribble_sprite_get_material(scribble_fallback_dot, 0);
+    
+    static _tempBuffer = buffer_create(__SCRIBBLE_STRIDE_TEMP, buffer_fixed, 1);
     
     with(_generator_state)
     {
@@ -114,6 +138,10 @@ function __scribble_gen_10_write_vbuffs()
     {
         _bezier_do = false;
     }
+    
+    var _vertexBufferStruct = undefined;
+    var _buildBuffer        = undefined;
+    var _buildBufferOffset  = 0;
     
     var _glyph_colour       = 0xFFFFFFFF;
     var _glyph_cycle        = 0x00000000;
@@ -183,7 +211,6 @@ function __scribble_gen_10_write_vbuffs()
     {
         var _page_data        = __pages_array[_pageIndex];
         var _page_events_dict = _page_data.__events_dict;
-        var _vbuff            = undefined;
         var _material_prev    = undefined;
         var _animation_index  = 0;
         var _reveal_index     = 0;
@@ -192,7 +219,7 @@ function __scribble_gen_10_write_vbuffs()
         {
             with(_page_data)
             {
-                __ensure_glyph_grid();
+                __EnsureGlyphGrid();
                 ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH_UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH_UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT_UNICODE);
                 ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH_Y, __glyph_end, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GLYPH_LAYOUT_Y_OFFSET);
                 ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyph_start, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS_SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT);
@@ -276,6 +303,7 @@ function __scribble_gen_10_write_vbuffs()
                         
                         case __SCRIBBLE_GEN_CONTROL_TYPE_FONT:
                             var _fontData = __scribble_get_font_data(_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA]);
+                            var _fontBuffer     = _fontData.__glyphBuffer;
                             var _fontUnderlineY = floor(_fontData.__underlineY);
                             var _fontStrikeY    = floor(_fontData.__strikeY);
                         break;
@@ -305,21 +333,7 @@ function __scribble_gen_10_write_vbuffs()
                     if ((_glyph_ord > 0x20) && (_glyph_ord != 0xA0) && (_glyph_ord != 0x200B))
                     {
                         __SCRIBBLE_VBUFF_READ_GLYPH;
-                        //__SCRIBBLE_VBUFF_WRITE_GLYPH;
-                    
-                        if (_material != _material_prev) //Swap vertex buffer if the material has changed
-                        {
-                            _material_prev = _material;
-                            _vbuff = _page_data.__get_vertex_buffer(_material);
-                        }
-                        
-                        buffer_poke(_staticBuffer,  0, buffer_f32, _x);
-                        buffer_poke(_staticBuffer,  4, buffer_f32, _y);
-                        buffer_poke(_staticBuffer,  8, buffer_f32, _animation_index);
-                        buffer_poke(_staticBuffer, 12, buffer_f32, _reveal_index);
-                        
-                        buffer_copy_stride(_staticBuffer, 0, __SCRIBBLE_GEN_GLYPH_STRIDE, 0, 6, _buffer, _pos, __SCRIBBLE_FORMAT_GLYPH_STRIDE);
-                        buffer_copy_stride(_fontBuffer, __SCRIBBLE_FONT_GLYPH_STRIDE*_dataIndex, __SCRIBBLE_FONT_GLYPH_STRIDE, __SCRIBBLE_FONT_GLYPH_STRIDE/6, 6, _buffer, _pos + __SCRIBBLE_GEN_GLYPH_STRIDE, __SCRIBBLE_FORMAT_GLYPH_STRIDE);
+                        __SCRIBBLE_VBUFF_WRITE_GLYPH;
                     }
                 }
                 else if (_glyph_ord == __SCRIBBLE_GLYPH_REPL_SPRITE)
@@ -522,6 +536,12 @@ function __scribble_gen_10_write_vbuffs()
             ++_lineIndex;
         }
         
+        //Make sure the last build buffer has its offset updated
+        if (_vertexBufferStruct != undefined)
+        {
+            _vertexBufferStruct.__buildBufferOffset = _buildBufferOffset;
+        }
+        
         //If we have a hanging glyph in an open region then ensure we pop it onto the page we're leaving
         if (_region_name != undefined)
         {
@@ -569,5 +589,5 @@ function __scribble_gen_10_write_vbuffs()
     }
     
     //Ensure we've ended the vertex buffers we created
-    __finalize_vertex_buffers();
+    __FinalizeVertexBuffers();
 }

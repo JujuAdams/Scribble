@@ -3,9 +3,9 @@
 #macro __SCRIBBLE_DEBUG       false
 #macro __SCRIBBLE_VERBOSE_GC  false
 
-#macro __SCRIBBLE_FONT_GLYPH_STRIDE    (6*4*4)
-#macro __SCRIBBLE_GEN_GLYPH_STRIDE     (6*4*7)
-#macro __SCRIBBLE_FORMAT_GLYPH_STRIDE  (6*4*11)
+#macro __SCRIBBLE_STRIDE_FONT   (4*4)
+#macro __SCRIBBLE_STRIDE_TEMP   (4*8)
+#macro __SCRIBBLE_STRIDE_BUILD  (4*12)
 
 #macro __SCRIBBLE_EASE_COUNT  12
 
@@ -312,6 +312,14 @@ function __scribble_system(_calledFromInitialize = false)
             
             ++_i;
         }
+        
+        vertex_format_begin();
+        vertex_format_add_position_3d();                                   //12 bytes
+        vertex_format_add_custom(vertex_type_float4, vertex_usage_normal); //16 bytes
+        vertex_format_add_colour();                                        // 4 bytes
+        vertex_format_add_texcoord();                                      // 8 bytes
+        vertex_format_add_custom(vertex_type_float2, vertex_usage_color);  // 8 bytes
+        __glyphVertexFormat = vertex_format_end();                         //48 bytes per vertex
     }
     
     if (GM_build_type == "run")

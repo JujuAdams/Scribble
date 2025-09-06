@@ -2,11 +2,13 @@
 
 function __scribble_class_page() constructor
 {
-    static __scribble_state = __scribble_system().__state;
-    static __gc_vbuff_refs  = __scribble_system().__cache_state.__gc_vbuff_refs;
-    static __gc_vbuff_ids   = __scribble_system().__cache_state.__gc_vbuff_ids;
-    static __gc_grid_refs   = __scribble_system().__cache_state.__gc_grid_refs;
-    static __gc_grid_ids    = __scribble_system().__cache_state.__gc_grid_ids;
+    static __system            = __scribble_system();
+    static __glyphVertexFormat = __system.__glyphVertexFormat;
+    static __scribble_state    = __system.__state;
+    static __gc_vbuff_refs     = __system.__cache_state.__gc_vbuff_refs;
+    static __gc_vbuff_ids      = __system.__cache_state.__gc_vbuff_ids;
+    static __gc_grid_refs      = __system.__cache_state.__gc_grid_refs;
+    static __gc_grid_ids       = __system.__cache_state.__gc_grid_ids;
     
     __text = "";
     __glyph_grid = undefined;
@@ -33,8 +35,8 @@ function __scribble_class_page() constructor
     __max_x  = 0;
     __max_y  = 0;
     
-    __vertex_buffer_array = [];
-    __texture_to_vertex_buffer_dict = {};
+    __vertexBufferArray = [];
+    __textureToVertexBufferDict = {};
     
     __events_dict  = {};
     __region_array = [];
@@ -50,9 +52,9 @@ function __scribble_class_page() constructor
         if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __Freeze();
         
         var _i = 0;
-        repeat(array_length(__vertex_buffer_array))
+        repeat(array_length(__vertexBufferArray))
         {
-            var _data = __vertex_buffer_array[_i];
+            var _data = __vertexBufferArray[_i];
             var _material = _data.__material;
             
             var _bilinear = _material.__bilinear;
@@ -65,7 +67,7 @@ function __scribble_class_page() constructor
             if (_material.__render_type == __SCRIBBLE_RENDER_RASTER)
             {
                 shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_RASTER);
-                vertex_submit(_data.__vertex_buffer, pr_trianglelist, _material.__texture);
+                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
             }
             else if (_material.__render_type == __SCRIBBLE_RENDER_SDF)
             {
@@ -75,24 +77,24 @@ function __scribble_class_page() constructor
                 shader_set_uniform_f(_u_fSDFRange, (_material.__sdf_pxrange ?? 0));
                 shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + (_material.__sdf_thickness_offset ?? 0));
                 
-                vertex_submit(_data.__vertex_buffer, pr_trianglelist, _material.__texture);
+                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
                 
                 if (_double_draw)
                 {
                     shader_set_uniform_f(_u_fSecondDraw, 1);
-                    vertex_submit(_data.__vertex_buffer, pr_trianglelist, _material.__texture);
+                    vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
                     shader_set_uniform_f(_u_fSecondDraw, 0);
                 }
             }
             else if (_material.__render_type == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
             {
                 shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS);
-                vertex_submit(_data.__vertex_buffer, pr_trianglelist, _material.__texture);
+                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
                 
                 if (_double_draw)
                 {
                     shader_set_uniform_f(_u_fSecondDraw, 1);
-                    vertex_submit(_data.__vertex_buffer, pr_trianglelist, _material.__texture);
+                    vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
                     shader_set_uniform_f(_u_fSecondDraw, 0);
                 }
             }
@@ -117,9 +119,9 @@ function __scribble_class_page() constructor
             }
             
             var _i = 0;
-            repeat(array_length(__vertex_buffer_array))
+            repeat(array_length(__vertexBufferArray))
             {
-                vertex_freeze(__vertex_buffer_array[_i].__vertex_buffer);
+                vertex_freeze(__vertexBufferArray[_i].__vertexBuffer);
                 ++_i;
             }
             
@@ -158,11 +160,11 @@ function __scribble_class_page() constructor
             
             return {
                 unicode:  0,
-                left:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT   ],
-                top:      __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__TOP     ],
-                right:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT   ],
-                bottom:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM  ],
-                y_offset: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__Y_OFFSET],
+                left:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_RIGHT   ],
+                top:      __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_TOP     ],
+                right:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_RIGHT   ],
+                bottom:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM  ],
+                y_offset: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_Y_OFFSET],
             };
         }
         else
@@ -178,49 +180,32 @@ function __scribble_class_page() constructor
         }
     }
     
-    static __get_vertex_buffer = function(_material)
+    static __GetVertexBufferStruct = function(_material)
     {
         //TODO - Replace struct-based look-up with a ds_map
-        var _data = __texture_to_vertex_buffer_dict[$ _material.__key];
+        var _data = __textureToVertexBufferDict[$ _material.__key];
         if (_data != undefined)
         {
-            return _data.__vertex_buffer;
+            return _data.__buildBuffer;
         }
         
-        //TODO - Move this to `__scribble_system()`
-        static _vertex_format = undefined;
-        if (_vertex_format == undefined)
-        {
-            vertex_format_begin();
-            vertex_format_add_position_3d();                                  //12 bytes
-            vertex_format_add_normal();                                       //12 bytes
-            vertex_format_add_colour();                                       // 4 bytes
-            vertex_format_add_texcoord();                                     // 8 bytes
-            vertex_format_add_custom(vertex_type_float2, vertex_usage_color); // 8 bytes
-            _vertex_format = vertex_format_end();                             //44 bytes per vertex, 132 bytes per tri, 264 bytes per glyph
-        }
-        
-        var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version
-        vertex_begin(_vbuff, _vertex_format);
-        
-        if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding vertex buffer ", _vbuff, " to tracking");
-        array_push(__gc_vbuff_refs, weak_ref_create(self));
-        array_push(__gc_vbuff_ids, _vbuff);
-        
-        //TODO - Convert this data into just a material reference
+        //FIXME - Reuse this buffer instead of creating and destroying
+        var _buffer = buffer_create(1000*6*__SCRIBBLE_STRIDE_BUILD, buffer_grow, 1);
         
         var _data = {
-            __vertex_buffer: _vbuff,
-            __material:      _material,
+            __vertexBuffer:      undefined,
+            __buildBuffer:       _buffer,
+            __buildBufferOffset: 0,
+            __material:          _material,
         };
         
-        array_push(__vertex_buffer_array, _data);
-        __texture_to_vertex_buffer_dict[$ _material.__key] = _data;
+        array_push(__vertexBufferArray, _data);
+        __textureToVertexBufferDict[$ _material.__key] = _data;
         
-        return _vbuff;
+        return _data;
     }
     
-    static __ensure_glyph_grid = function()
+    static __EnsureGlyphGrid = function()
     {
         if (__glyph_grid == undefined)
         {
@@ -234,13 +219,27 @@ function __scribble_class_page() constructor
         return __glyph_grid;
     }
     
-    static __finalize_vertex_buffers = function()
+    static __FinalizeVertexBuffers = function()
     {
+        var _glyphVertexFormat = __glyphVertexFormat;
+        var _gc_vbuff_refs     = __gc_vbuff_refs;
+        var _gc_vbuff_ids      = __gc_vbuff_ids;
+        
         var _i = 0;
-        repeat(array_length(__vertex_buffer_array))
+        repeat(array_length(__vertexBufferArray))
         {
-            var _vbuff = __vertex_buffer_array[_i].__vertex_buffer;
-            vertex_end(_vbuff);
+            with(__vertexBufferArray[_i])
+            {
+                __vertexBuffer = vertex_create_buffer_from_buffer_ext(__buildBuffer, _glyphVertexFormat, 0, __buildBufferOffset / __SCRIBBLE_STRIDE_BUILD);
+                
+                if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding vertex buffer ", __vertexBuffer, " to tracking");
+                array_push(_gc_vbuff_refs, weak_ref_create(self));
+                array_push(_gc_vbuff_ids, __vertexBuffer);
+                
+                buffer_delete(__buildBuffer);
+                __buildBuffer = undefined;
+            }
+            
             ++_i;
         }
         
@@ -252,9 +251,9 @@ function __scribble_class_page() constructor
         //Don't forget to update scribble_flush_everything() if you change anything here!
         
         var _i = 0;
-        repeat(array_length(__vertex_buffer_array))
+        repeat(array_length(__vertexBufferArray))
         {
-            var _vbuff = __vertex_buffer_array[_i].__vertex_buffer;
+            var _vbuff = __vertexBufferArray[_i].__vertexBuffer;
             vertex_delete_buffer(_vbuff);
             
             var _index = __scribble_array_find_index(__gc_vbuff_ids, _vbuff);
@@ -268,8 +267,8 @@ function __scribble_class_page() constructor
             ++_i;
         }
         
-        __texture_to_vertex_buffer_dict = {};
-        array_resize(__vertex_buffer_array, 0);
+        __textureToVertexBufferDict = {};
+        array_resize(__vertexBufferArray, 0);
         
         if (__glyph_grid != undefined)
         {

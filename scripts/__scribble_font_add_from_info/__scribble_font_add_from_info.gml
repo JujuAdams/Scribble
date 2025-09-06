@@ -35,7 +35,6 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         var _texture_index    = _font_info.texture;
         var _info_glyphs_dict = _font_info.glyphs;
         var _ascender_offset  = _font_info.ascenderOffset;
-        var _glyphBuffer      = _font_info.__glyphBuffer;
         
         var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
         var _size = array_length(_info_glyph_names);
@@ -127,6 +126,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         
         var _font_data = new __scribble_class_font(_name, _size, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _from_bundle, _texels_valid, _underlineY, _strikeY);
         
+        var _fontGlyphBuffer      = _font_data.__glyphBuffer;
         var _font_glyphs_map      = _font_data.__glyphs_map;
         var _font_glyph_data_grid = _font_data.__glyph_data_grid;
         var _font_kerning_map     = _font_data.__kerning_map;
@@ -253,13 +253,14 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
             var _halfW = 0.5*_w;
             var _halfH = 0.5*_h;
             
-            buffer_write(_glyphBuffer, buffer_f32, _u0); buffer_write(_glyphBuffer, buffer_f32, _v0); buffer_write(_glyphBuffer, buffer_f32, -_halfW);  buffer_write(_glyphBuffer, buffer_f32, -_halfH);
-            buffer_write(_glyphBuffer, buffer_f32, _u1); buffer_write(_glyphBuffer, buffer_f32, _v1); buffer_write(_glyphBuffer, buffer_f32,  _halfW);  buffer_write(_glyphBuffer, buffer_f32,  _halfH);
-            buffer_write(_glyphBuffer, buffer_f32, _u0); buffer_write(_glyphBuffer, buffer_f32, _v1); buffer_write(_glyphBuffer, buffer_f32, -_halfW);  buffer_write(_glyphBuffer, buffer_f32,  _halfH);
+            // in_TextureCoord & in_Colour2
+            buffer_write(_fontGlyphBuffer, buffer_f32, _u0); buffer_write(_fontGlyphBuffer, buffer_f32, _v0); buffer_write(_fontGlyphBuffer, buffer_f32, -_halfW);  buffer_write(_fontGlyphBuffer, buffer_f32, -_halfH);
+            buffer_write(_fontGlyphBuffer, buffer_f32, _u1); buffer_write(_fontGlyphBuffer, buffer_f32, _v1); buffer_write(_fontGlyphBuffer, buffer_f32,  _halfW);  buffer_write(_fontGlyphBuffer, buffer_f32,  _halfH);
+            buffer_write(_fontGlyphBuffer, buffer_f32, _u0); buffer_write(_fontGlyphBuffer, buffer_f32, _v1); buffer_write(_fontGlyphBuffer, buffer_f32, -_halfW);  buffer_write(_fontGlyphBuffer, buffer_f32,  _halfH);
             
-            buffer_write(_glyphBuffer, buffer_f32, _u1); buffer_write(_glyphBuffer, buffer_f32, _v1); buffer_write(_glyphBuffer, buffer_f32,  _halfW);  buffer_write(_glyphBuffer, buffer_f32,  _halfH);
-            buffer_write(_glyphBuffer, buffer_f32, _u0); buffer_write(_glyphBuffer, buffer_f32, _v0); buffer_write(_glyphBuffer, buffer_f32, -_halfW);  buffer_write(_glyphBuffer, buffer_f32, -_halfH);
-            buffer_write(_glyphBuffer, buffer_f32, _u1); buffer_write(_glyphBuffer, buffer_f32, _v0); buffer_write(_glyphBuffer, buffer_f32,  _halfW);  buffer_write(_glyphBuffer, buffer_f32, -_halfH);
+            buffer_write(_fontGlyphBuffer, buffer_f32, _u1); buffer_write(_fontGlyphBuffer, buffer_f32, _v1); buffer_write(_fontGlyphBuffer, buffer_f32,  _halfW);  buffer_write(_fontGlyphBuffer, buffer_f32,  _halfH);
+            buffer_write(_fontGlyphBuffer, buffer_f32, _u0); buffer_write(_fontGlyphBuffer, buffer_f32, _v0); buffer_write(_fontGlyphBuffer, buffer_f32, -_halfW);  buffer_write(_fontGlyphBuffer, buffer_f32, -_halfH);
+            buffer_write(_fontGlyphBuffer, buffer_f32, _u1); buffer_write(_fontGlyphBuffer, buffer_f32, _v0); buffer_write(_fontGlyphBuffer, buffer_f32,  _halfW);  buffer_write(_fontGlyphBuffer, buffer_f32, -_halfH);
             
             ++_i;
         }

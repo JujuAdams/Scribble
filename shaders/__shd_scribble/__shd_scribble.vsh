@@ -65,7 +65,7 @@ const float PI = 3.14159265359;
 
 
 attribute vec3 in_Position;     //{X, Y, Animation index}
-attribute vec3 in_Normal;       //{Reveal index, Sprite data, Bitpacked effect flags}
+attribute vec4 in_Normal;       //{Reveal index, Sprite data, Bitpacked effect flags, scale}
 attribute vec4 in_Colour;       //Colour
 attribute vec2 in_TextureCoord; //UVs
 attribute vec2 in_Colour2;      //{dX, dY}
@@ -364,28 +364,21 @@ void main()
     
     
     
-    //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
-    vec2 pos = in_Position.xy;
+    vec2 centre = in_Position.xy;
+    vec2 pos    = centre + in_Normal.w*in_Colour2;
     
     
-    
-    //Unpack the glyph centre
-    vec2 centre;
     
     //If we have a valid Bezier curve, apply it
     if ((u_aBezier[2].x != 0.0) || (u_aBezier[2].y != 0.0))
     {
-        centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+        centre = bezier(pos.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         
-        vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+        vec2 orientation = bezierDerivative(pos.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         pos = rotate_by_vector(centre - in_Colour2, centre, normalize(orientation));
         
         vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
-        pos += in_Position.y*perpendicular;
-    }
-    else
-    {
-        centre = pos + in_Colour2;
+        pos += pos.y*perpendicular;
     }
     
     pos += u_vSkew*centre.yx;
@@ -405,7 +398,7 @@ void main()
     }
     
     //Apply the gradient effect
-    if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
+    if (centre.y > 0.0) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
     
     if (!BLEND_GRAPHICS && (GRAPHIC_FLAG > 0.5))
     {
