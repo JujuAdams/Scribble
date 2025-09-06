@@ -61,7 +61,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     
     
     
-    static __CopyTo = function(_target, _copy_styles)
+    static __copy_to = function(_target, _copy_styles)
     {
         var _names = variable_struct_get_names(self);
         var _i = 0;
@@ -87,7 +87,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
         }
     }
     
-    static __Clear = function()
+    static __clear = function()
     {
         if (!__superfont) __scribble_error("Cannot clear non-superfont fonts");
         
@@ -97,7 +97,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
         __texels_valid = false;
     }
     
-    static __EnsureMaterialTexturesFetched = function()
+    static __ensure_material_textures_fetched = function()
     {
         //N.B. This is an expensive function! Use sparingly
         
@@ -120,7 +120,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
         }
     }
     
-    static __EnsureTexelData = function()
+    static __ensure_texel_data = function()
     {
         if (__texels_valid) return;
         
@@ -172,7 +172,7 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
         }
     }
     
-    static __Destroy = function()
+    static __destroy = function()
     {
         if (__SCRIBBLE_DEBUG) __scribble_trace("Destroying font \"", __name, "\"");
         
