@@ -43,6 +43,7 @@ function GlyphData()
         var _map = bidiMap;
         _map[? __SCRIBBLE_GLYPH_REPL_SPRITE ] = BIDI.SYMBOL;
         _map[? __SCRIBBLE_GLYPH_REPL_SURFACE] = BIDI.SYMBOL;
+        _map[? __SCRIBBLE_GLYPH_REPL_TEXTURE] = BIDI.SYMBOL;
         for(var _i = 0x0000; _i <= 0x0009; _i++) _map[? _i] = BIDI.SYMBOL;
         _map[? 0x000A] = BIDI.ISOLATED;
         _map[? 0x000B] = BIDI.SYMBOL;
