@@ -63,8 +63,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         return undefined;
     }
     
-    _src_font_data.__ensure_material_textures_fetched();
-    _src_font_data.__ensure_texel_data();
+    _src_font_data.__EnsureMaterialTexturesFetched();
+    _src_font_data.__EnsureTexelData();
     
     var _src_glyph_grid = _src_font_data.__glyph_data_grid;
     var _glyph_count = ds_grid_width(_src_glyph_grid);
@@ -80,7 +80,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
     
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
-    _src_font_data.__copy_to(_new_font_data, false);
+    _src_font_data.__CopyTo(_new_font_data, false);
     
     if (_markAsRasterEffect) _new_font_data.__render_type = __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS;
     

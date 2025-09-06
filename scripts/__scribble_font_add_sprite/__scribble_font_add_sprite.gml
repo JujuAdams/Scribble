@@ -27,7 +27,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     if (ds_map_exists(_font_data_map, _sprite_name))
     {
         __scribble_trace("Warning! A spritefont for \"", _sprite_name, "\" has already been added. Destroying the old spritefont and creating a new one");
-        _font_data_map[? _sprite_name].__destroy();
+        _font_data_map[? _sprite_name].__Destroy();
     }
     
     var _is_krutidev = __scribble_asset_is_krutidev(_sprite, asset_sprite);

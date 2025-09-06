@@ -57,7 +57,7 @@
 
 
 #macro __SCRIBBLE_PARSER_SET_FONT   var _font_data = __scribble_get_font_data(_font_name);\
-                                    _font_data.__ensure_texel_data();\
+                                    _font_data.__EnsureTexelData();\
                                     if (_font_data.__is_krutidev) __has_devanagari = true;\
                                     ;\
                                     var _font_glyph_data_grid     = _font_data.__glyph_data_grid;\

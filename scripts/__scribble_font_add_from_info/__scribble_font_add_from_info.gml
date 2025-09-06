@@ -15,7 +15,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
     if (ds_map_exists(_font_data_map, _name))
     {
         __scribble_trace("Warning! A font for \"", _name, "\" has already been added. Destroying the old font and creating a new one");
-        _font_data_map[? _name].__destroy();
+        _font_data_map[? _name].__Destroy();
     }
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", _name, "\" as standard font");

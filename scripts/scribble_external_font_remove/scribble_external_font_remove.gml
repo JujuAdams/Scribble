@@ -25,6 +25,6 @@ function scribble_external_font_remove(_font_name)
         return;
     }
     
-    _font_data.__destroy();
+    _font_data.__Destroy();
     scribble_refresh_everything();
 }
