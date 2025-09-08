@@ -274,6 +274,7 @@
     {"id":{"name":"obj_test_typewriter_get_position","path":"objects/obj_test_typewriter_get_position/obj_test_typewriter_get_position.yy",},},
     {"id":{"name":"obj_test_typewriter_get_state","path":"objects/obj_test_typewriter_get_state/obj_test_typewriter_get_state.yy",},},
     {"id":{"name":"obj_test_typewriter_ignore_delay","path":"objects/obj_test_typewriter_ignore_delay/obj_test_typewriter_ignore_delay.yy",},},
+    {"id":{"name":"obj_test_typewriter_in_reverse","path":"objects/obj_test_typewriter_in_reverse/obj_test_typewriter_in_reverse.yy",},},
     {"id":{"name":"obj_test_typewriter_inline_sound_per_char","path":"objects/obj_test_typewriter_inline_sound_per_char/obj_test_typewriter_inline_sound_per_char.yy",},},
     {"id":{"name":"obj_test_typewriter_manual_arabic","path":"objects/obj_test_typewriter_manual_arabic/obj_test_typewriter_manual_arabic.yy",},},
     {"id":{"name":"obj_test_typewriter_manual","path":"objects/obj_test_typewriter_manual/obj_test_typewriter_manual.yy",},},
