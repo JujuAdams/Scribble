@@ -158,11 +158,11 @@ function __scribble_class_page() constructor
             
             return {
                 unicode:  0,
-                left:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT   ],
-                top:      __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__TOP     ],
-                right:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__RIGHT   ],
-                bottom:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__BOTTOM  ],
-                y_offset: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT.__Y_OFFSET],
+                left:     __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_RIGHT   ],
+                top:      __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_TOP     ],
+                right:    __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_RIGHT   ],
+                bottom:   __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM  ],
+                y_offset: __glyph_grid[# _index, __SCRIBBLE_GLYPH_LAYOUT_Y_OFFSET],
             };
         }
         else
