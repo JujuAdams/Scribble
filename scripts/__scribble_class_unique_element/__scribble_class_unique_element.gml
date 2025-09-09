@@ -172,7 +172,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
         __prevTickFrame = -infinity;
         
         __typistHeadArray      = array_create(__SCRIBBLE_HEAD_COUNT, 0);
-        __typistHeadLimitArray = array_create(__SCRIBBLE_HEAD_COUNT, __SCRIBBLE_VERY_BIG);
+        __typistHeadLimitArray = [__SCRIBBLE_VERY_BIG, 0, 0]; //Must match `__SCRIBBLE_HEAD_COUNT`
         
         __typistManualPause    = false;
         __typistDelayPause     = false;
@@ -572,9 +572,6 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
         //Copy the current position for the typist into the middle head
         __typistHeadArray[@      1] = _pos;
         __typistHeadLimitArray[@ 1] = ceil(_pos);
-        
-        //Reset the top head
-        __typistHeadArray[@ 0] = ceil(_pos) - __typistSmoothness;
     }
     
     static __ProcessEventStack = function(_functionScope, _revealCount, _skip)
@@ -617,7 +614,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
                     {
                         if (not __typistDelayPause)
                         {
-                            __StartNewHead(_revealCount);
+                            __StartNewHead(__prevRevealIndex-1);
                         }
                         
                         var _duration = (array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
@@ -634,7 +631,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
                     {
                         if (not __typistDelayPause)
                         {
-                            __StartNewHead(_revealCount);
+                            __StartNewHead(__prevRevealIndex-1);
                         }
                         
                         __syncPaused   = true;
@@ -804,7 +801,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
         
         //Find the model from the last element
         var _model = __get_model(true);
-        if (!is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return undefined;
         
         var _glyphDataGetter = _model.__allow_glyph_data_getter;
         var _perCharacter = (__revealType == SCRIBBLE_REVEAL_PER_CHAR);
@@ -818,6 +815,8 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
         //Find the leading edge
         var _revealPos = _typistHeadArray[0];
         __typistHeadLimitArray[@ 0] = _pageRevealCount;
+        
+        var _canMove = true;
         
         if (not __typistIn)
         {
@@ -859,8 +858,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
             }
             else
             {
-                var _canMove = true;
-                var _moved   = false;
+                var _moved = false;
                 
                 ///////
                 // Handle pausing
@@ -960,12 +958,12 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
                                     
                                         if (_delay > 0)
                                         {
-                                            array_push(__eventStack, new __scribble_class_event("delay", [_delay]));
+                                            array_push(__eventStack, new __scribble_class_event(__SCRIBBLE_DELAY_COMMAND_TAG, [_delay]));
                                         }
                                     }
                                 }
                             }
-                        
+                            
                             //Move to the next reveal
                             __prevRevealIndex++;
                             _moved = true;
@@ -1027,7 +1025,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
             else
             {
                 // N.B. Must match `__SCRIBBLE_HEAD_COUNT`
-                _typistHeadArray[@ 0] += _delta;
+                if (_canMove) _typistHeadArray[@ 0] += _delta;
                 _typistHeadArray[@ 1] += _delta;
                 _typistHeadArray[@ 2] += _delta;
             }
