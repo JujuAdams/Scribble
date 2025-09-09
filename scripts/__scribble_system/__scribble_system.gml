@@ -4,6 +4,7 @@
 #macro __SCRIBBLE_VERBOSE_GC  false
 
 #macro __SCRIBBLE_EASE_COUNT  12
+#macro __SCRIBBLE_VERY_BIG    999999
 
 #macro __SCRIBBLE_FLAG_GRAPHIC      0
 #macro __SCRIBBLE_FLAG_ANIM_SPRITE  1
@@ -224,17 +225,11 @@ function __scribble_system(_calledFromInitialize = false)
         __tagDict = {};
         
         //Pre-populated typist events
-        __scribble_add_tag("pause",  __SCRIBBLE_TAG_EVENT, undefined, true);
-        __scribble_add_tag("delay",  __SCRIBBLE_TAG_EVENT, undefined, true);
-        __scribble_add_tag("sync",   __SCRIBBLE_TAG_EVENT, undefined, true);
-        __scribble_add_tag("speed",  __SCRIBBLE_TAG_EVENT, undefined, true);
-        __scribble_add_tag("/speed", __SCRIBBLE_TAG_EVENT, undefined, true);
-        
-        __scribble_add_tag("PAUSE",  __SCRIBBLE_TAG_EVENT, undefined, true);
-        __scribble_add_tag("DELAY",  __SCRIBBLE_TAG_EVENT, undefined, true);
-        __scribble_add_tag("SYNC",   __SCRIBBLE_TAG_EVENT, undefined, true);
-        __scribble_add_tag("SPEED",  __SCRIBBLE_TAG_EVENT, undefined, true);
-        __scribble_add_tag("/SPEED", __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag(__SCRIBBLE_PAUSE_COMMAND_TAG,   __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag(__SCRIBBLE_DELAY_COMMAND_TAG,   __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag(__SCRIBBLE_SYNC_COMMAND_TAG,    __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag(__SCRIBBLE_SPEED_COMMAND_TAG,   __SCRIBBLE_TAG_EVENT, undefined, true);
+        __scribble_add_tag(__SCRIBBLE_UNSPEED_COMMAND_TAG, __SCRIBBLE_TAG_EVENT, undefined, true);
         
         __scribble_add_tag("wave",   __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WAVE,   true);
         __scribble_add_tag("shake",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_SHAKE,  true);

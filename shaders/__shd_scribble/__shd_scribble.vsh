@@ -54,8 +54,6 @@ const int MAX_ANIM_FIELDS = 16;
 #define EASE_BOUNCE        11
 #define EASE_METHOD_COUNT  12
 
-const int WINDOW_COUNT = 3;
-
 const float PI = 3.14159265359;
 
 
@@ -73,25 +71,25 @@ attribute vec2 in_Colour2;      //{dX, dY}
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 varying vec2 v_vCycle;
+                                              
+uniform vec4  u_vColourBlend;                  //4
+uniform vec4  u_vGradient;                     //4
+uniform vec2  u_vSkew;                         //2
+uniform vec2  u_vRegionActive;                 //2
+uniform vec4  u_vRegionColour;                 //4
+uniform float u_fTime;                         //1
+uniform float u_aDataFields[MAX_ANIM_FIELDS];  //21
+uniform vec2  u_aBezier[3];                    //6
 
-uniform vec4  u_vColourBlend;                           //4
-uniform vec4  u_vGradient;                              //4
-uniform vec2  u_vSkew;                                  //2
-uniform vec2  u_vRegionActive;                          //2
-uniform vec4  u_vRegionColour;                          //4
-uniform float u_fTime;                                  //1
-uniform float u_aDataFields[MAX_ANIM_FIELDS];           //21
-uniform vec2  u_aBezier[3];                             //6
-
-uniform int   u_iTypewriterUseLines;                    //1
-uniform int   u_iTypewriterMethod;                      //1
-uniform int   u_iTypewriterCharMax;                     //1
-uniform float u_fTypewriterWindowArray[2*WINDOW_COUNT]; //6
-uniform float u_fTypewriterSmoothness;                  //1
-uniform vec2  u_vTypewriterStartPos;                    //2
-uniform vec2  u_vTypewriterStartScale;                  //2
-uniform float u_fTypewriterStartRotation;               //1
-uniform float u_fTypewriterAlphaDuration;               //1
+uniform int   u_iTypewriterUseLines;       //1
+uniform int   u_iTypewriterMethod;         //1
+uniform vec3  u_fTypewriterHeadArray;      //3 - Presuming head count of 3
+uniform vec3  u_fTypewriterHeadLimitArray; //3 - Presuming head count of 3
+uniform float u_fTypewriterSmoothness;     //1
+uniform vec2  u_vTypewriterStartPos;       //2
+uniform vec2  u_vTypewriterStartScale;     //2
+uniform float u_fTypewriterStartRotation;  //1
+uniform float u_fTypewriterAlphaDuration;  //1
 
 float flagArray[MAX_EFFECTS];
 
@@ -215,35 +213,11 @@ vec3 hsv2rgb(vec3 c)
 }
 
 //Fade effect for typewriter etc.
-float fade(float windowArray[2*WINDOW_COUNT], float smoothness, float index, bool invert)
+float FadeIn(vec3 headVector, vec3 limitVector, float smoothness, float index, bool invert)
 {
-    float result = 0.0;
-    float f      = 1.0;
-    float head   = 0.0;
-    float tail   = 0.0;
-    
-    for(int i = 0; i < 2*WINDOW_COUNT; i += 2)
-    {
-        head = windowArray[i  ];
-        tail = windowArray[i+1];
-        
-        if (u_fTypewriterSmoothness > 0.0)
-        {
-            f = 1.0 - min(max((index - tail) / smoothness, 0.0), 1.0);
-        }
-        else
-        {
-            f = 1.0;
-        }
-        
-        f *= step(index, head);
-        
-        result = max(f, result);
-    }
-    
-    if (invert) result = 1.0 - result;
-    
-    return result;
+    vec3 resultVector = step(vec3(index), limitVector)*(1.0 - clamp((vec3(index) - (headVector - smoothness)) / max(0.00001, smoothness), 0.0, 1.0));
+    float result = max(max(resultVector.x, resultVector.y), resultVector.z);
+    return invert? (1.0 - result) : result;
 }
 
 vec2 bezier(float t, vec2 p1, vec2 p2, vec2 p3)
@@ -421,7 +395,6 @@ void main()
     if (ANIM_SPRITE_FLAG > 0.5) v_vColour.a *= filterAnimatedSprite(PACKED_SPRITE_DATA); //Use packed sprite data to filter out sprite frames that we don't want
     
     //Regions
-    //FIXME - Tie regions to reveal index maybe?
     if ((REVEAL_INDEX >= u_vRegionActive.x) && (REVEAL_INDEX <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
     
     
@@ -440,19 +413,9 @@ void main()
     
     if (easeMethod > EASE_NONE)
     {
-        float fadeIndex = REVEAL_INDEX + 1.0;
-        if (u_iTypewriterCharMax > 0) fadeIndex = float(u_iTypewriterCharMax) - fadeIndex;
+        float time = FadeIn(u_fTypewriterHeadArray, u_fTypewriterHeadLimitArray, u_fTypewriterSmoothness, REVEAL_INDEX + 1.0, fadeOut);
+        v_vColour.a *= clamp(time / max(0.00001, u_fTypewriterAlphaDuration), 0.0, 1.0); //Use linear time for alpha
         
-        float time = fade(u_fTypewriterWindowArray, u_fTypewriterSmoothness, fadeIndex, fadeOut);
-        
-        if (u_fTypewriterAlphaDuration == 0.0)
-        {
-            if (time <= 0.0) v_vColour.a = 0.0;
-        }
-        else
-        {
-            v_vColour.a *= clamp(time / u_fTypewriterAlphaDuration, 0.0, 1.0);
-        }
              if (easeMethod == EASE_QUADRATIC  ) { time = 1.0 - easeQuad(   1.0 - time); }
         else if (easeMethod == EASE_CUBIC      ) { time = 1.0 - easeCubic(  1.0 - time); }
         else if (easeMethod == EASE_QUARTIC    ) { time = 1.0 - easeQuart(  1.0 - time); }

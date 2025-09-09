@@ -86,7 +86,7 @@ function __scribble_class_shared_element(_string) constructor
     __bezier_using = false;
     
     __tw_reveal              = undefined;
-    __tw_reveal_window_array = array_create(2*__SCRIBBLE_WINDOW_COUNT, 0.0);
+    __tw_reveal_window_array = array_create(2*__SCRIBBLE_HEAD_COUNT, 0.0);
     
     __animation_time  = 0;
     __animation_speed = 1;
@@ -1549,15 +1549,15 @@ function __scribble_class_shared_element(_string) constructor
         static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
         static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
         
-        static _u_iTypewriterMethod        = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"       );
-        static _u_iTypewriterCharMax       = shader_get_uniform(__shd_scribble, "u_iTypewriterCharMax"      );
-        static _u_fTypewriterWindowArray   = shader_get_uniform(__shd_scribble, "u_fTypewriterWindowArray"  );
-        static _u_fTypewriterSmoothness    = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"   );
-        static _u_vTypewriterStartPos      = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"     );
-        static _u_vTypewriterStartScale    = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"   );
-        static _u_fTypewriterStartRotation = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation");
-        static _u_fTypewriterAlphaDuration = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration");
-    
+        static _u_iTypewriterMethod         = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"        );
+        static _u_fTypewriterHeadArray      = shader_get_uniform(__shd_scribble, "u_fTypewriterHeadArray"     );
+        static _u_fTypewriterHeadLimitArray = shader_get_uniform(__shd_scribble, "u_fTypewriterHeadLimitArray");
+        static _u_fTypewriterSmoothness     = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"    );
+        static _u_vTypewriterStartPos       = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"      );
+        static _u_vTypewriterStartScale     = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"    );
+        static _u_fTypewriterStartRotation  = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation" );
+        static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration" );
+        
         static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
         static _u_vOutlineColour           = shader_get_uniform(__shd_scribble, "u_vOutlineColour"          );
@@ -1655,14 +1655,14 @@ function __scribble_class_shared_element(_string) constructor
         
         if (__tw_reveal != undefined)
         {
-            shader_set_uniform_i(_u_iTypewriterMethod,            SCRIBBLE_EASE_LINEAR);
-            shader_set_uniform_i(_u_iTypewriterCharMax,           0);
-            shader_set_uniform_f(_u_fTypewriterSmoothness,        0);
-            shader_set_uniform_f(_u_vTypewriterStartPos,          0, 0);
-            shader_set_uniform_f(_u_vTypewriterStartScale,        1, 1);
-            shader_set_uniform_f(_u_fTypewriterStartRotation,     0);
-            shader_set_uniform_f(_u_fTypewriterAlphaDuration,     1.0);
-            shader_set_uniform_f_array(_u_fTypewriterWindowArray, __tw_reveal_window_array);
+            shader_set_uniform_i(_u_iTypewriterMethod,               SCRIBBLE_EASE_LINEAR);
+            shader_set_uniform_f(_u_fTypewriterSmoothness,           0);
+            shader_set_uniform_f(_u_vTypewriterStartPos,             0, 0);
+            shader_set_uniform_f(_u_vTypewriterStartScale,           1, 1);
+            shader_set_uniform_f(_u_fTypewriterStartRotation,        0);
+            shader_set_uniform_f(_u_fTypewriterAlphaDuration,        1.0);
+            shader_set_uniform_f_array(_u_fTypewriterHeadArray,      __tw_reveal_window_array);
+            shader_set_uniform_f_array(_u_fTypewriterHeadLimitArray, __tw_reveal_window_array);
         }
         else
         {
