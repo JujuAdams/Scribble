@@ -52,16 +52,6 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
         shader_reset();
         
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
-        
-        if (SCRIBBLE_DRAW_RETURNS_SELF)
-        {
-            return self;
-        }
-        else
-        {
-            static _null = new __scribble_class_null_element();
-            return _null;
-        }
     }
     
     static flush = function()

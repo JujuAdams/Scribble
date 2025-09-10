@@ -1242,16 +1242,6 @@ function __scribble_class_shared_element(_string) constructor
         {
             _model.__Freeze();
         }
-        
-        if (SCRIBBLE_BUILD_RETURNS_SELF)
-        {
-            return self;
-        }
-        else
-        {
-            static _null = new __scribble_class_null_element();
-            return _null;
-        }
     }
     
     static refresh = function()
