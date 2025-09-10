@@ -6,6 +6,10 @@
 //Whether to use colourization for sprites. This includes [rainbow] and [cycle].
 #macro SCRIBBLE_COLORIZE_SPRITES  true
 
+//Whether to floor draw coordinates passed to the `.draw()` method. This will not affect the draw
+//coordinates of glyphs themselves.
+#macro SCRIBBLE_FLOOR_DRAW_COORDINATES  false
+
 //Whether to use sprite origins. Setting this to <false> will vertically centre sprites on the line
 //of text.
 #macro SCRIBBLE_ADD_SPRITE_ORIGINS  false
@@ -54,17 +58,13 @@
 
 //Whether to allow use of `scribble_font_set_*align_offset()`. Set this macro to false for a slight
 //performance improvement.
-#macro SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS  true
+#macro SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS  false
 
 //Whether to require explicit whitelisting of sprites (via `scribble_whitelist_sprite()`).
 #macro SCRIBBLE_USE_SPRITE_WHITELIST  false
 
 //Whether to require explicit whitelisting of sounds (via `scribble_whitelist_sound()`).
 #macro SCRIBBLE_USE_SOUND_WHITELIST  false
-
-//Whether to floor draw coordinates passed to the `.draw()` method. This will not affect the draw
-//coordinates of glyphs themselves.
-#macro SCRIBBLE_FLOOR_DRAW_COORDINATES  false
 
 ///////
 // Language support
