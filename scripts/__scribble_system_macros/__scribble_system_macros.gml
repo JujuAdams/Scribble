@@ -116,9 +116,7 @@
 #macro __SCRIBBLE_PIN_TOP              3
 #macro __SCRIBBLE_PIN_MIDDLE           4
 #macro __SCRIBBLE_PIN_BOTTOM           5
-#macro __SCRIBBLE_HEAD_COUNT         3
-#macro __SCRIBBLE_GC_STEP_SIZE         3
-#macro __SCRIBBLE_CACHE_TIMEOUT        10 //How long to wait (in frames) before the text element cache automatically cleans up unused data
+#macro __SCRIBBLE_HEAD_COUNT           3
 
 #macro __SCRIBBLE_PAUSE_COMMAND_TAG                  "pause"
 #macro __SCRIBBLE_DELAY_COMMAND_TAG                  "delay"
@@ -129,4 +127,51 @@
 #macro __SCRIBBLE_TYPIST_SOUND_COMMAND_TAG           "__scribble_typist_sound__"
 #macro __SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG  "__scribble_typist_sound_per_char__"
 
-#macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This probably won't work for any other value
+#macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This won't work for any other value
+
+#macro __SCRIBBLE_DEBUG       false
+#macro __SCRIBBLE_VERBOSE_GC  false
+
+#macro __SCRIBBLE_EASE_COUNT  12
+#macro __SCRIBBLE_VERY_BIG    999999
+
+#macro __SCRIBBLE_FLAG_GRAPHIC      0
+#macro __SCRIBBLE_FLAG_ANIM_SPRITE  1
+#macro __SCRIBBLE_FLAG_WAVE         2
+#macro __SCRIBBLE_FLAG_SHAKE        3
+#macro __SCRIBBLE_FLAG_WOBBLE       4
+#macro __SCRIBBLE_FLAG_PULSE        5
+#macro __SCRIBBLE_FLAG_WHEEL        6
+#macro __SCRIBBLE_FLAG_CYCLE        7
+#macro __SCRIBBLE_FLAG_JITTER       8
+#macro __SCRIBBLE_FLAG_SLANT        9
+
+#macro __SCRIBBLE_GLYPH_PROPR_CHARACTER      0
+#macro __SCRIBBLE_GLYPH_PROPR_UNICODE        1
+#macro __SCRIBBLE_GLYPH_PROPR_BIDI           2
+#macro __SCRIBBLE_GLYPH_PROPR_X_OFFSET       3
+#macro __SCRIBBLE_GLYPH_PROPR_Y_OFFSET       4
+#macro __SCRIBBLE_GLYPH_PROPR_WIDTH          5
+#macro __SCRIBBLE_GLYPH_PROPR_HEIGHT         6
+#macro __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT    7
+#macro __SCRIBBLE_GLYPH_PROPR_SEPARATION     8
+#macro __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET    9
+#macro __SCRIBBLE_GLYPH_PROPR_FONT_SCALE    10
+#macro __SCRIBBLE_GLYPH_PROPR_MATERIAL      11
+#macro __SCRIBBLE_GLYPH_PROPR_U0            12
+#macro __SCRIBBLE_GLYPH_PROPR_U1            13
+#macro __SCRIBBLE_GLYPH_PROPR_V0            14
+#macro __SCRIBBLE_GLYPH_PROPR_V1            15
+#macro __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID  16
+
+#macro __SCRIBBLE_GLYPH_PROPR_COUNT  17
+
+#macro __SCRIBBLE_TAG_COLOR         0
+#macro __SCRIBBLE_TAG_EFFECT        1
+#macro __SCRIBBLE_TAG_EFFECT_UNSET  2
+#macro __SCRIBBLE_TAG_EVENT         3
+#macro __SCRIBBLE_TAG_MACRO         4
+
+#macro __SCRIBBLE_ELEMENT_SELFCHECK_MIN  1.0 //in seconds
+#macro __SCRIBBLE_ELEMENT_SELFCHECK_MAX  2.0 //in seconds
+#macro __SCRIBBLE_CACHE_TIMEOUT          10

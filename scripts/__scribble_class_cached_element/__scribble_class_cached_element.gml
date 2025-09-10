@@ -13,18 +13,7 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
         __cacheName = ((_uniqueID == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_uniqueID) + ":")) + _text;
         __flushed   = false;
         __model     = undefined;
-        
-        __AddToCache();
-        
-        __gcTimeSource = time_source_create(time_source_global, random_range(0.5, 2), time_source_units_seconds,
-                                            function()
-                                            {
-                                                if (not weak_ref_alive(self))
-                                                {
-                                                    __Flush();
-                                                }
-                                            }, [], -1);
-        time_source_start(__gcTimeSource);
+        __inCache   = false;
         
         
         
@@ -41,11 +30,11 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
                 __model = undefined;
             }
             
-            //Remove reference from cache
-            ds_map_delete(__scribble_system().__elementCacheMap, __cacheName);
-            
-            //Set as flushed
+            __RemoveFromCache();
             __flushed = true;
+            
+            time_source_stop(__gcTimeSource);
+            time_source_destroy(__gcTimeSource);
         }
         
         __Refresh = function()
@@ -62,7 +51,7 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
             return __model;
         }
         
-        __Overwrite = function()
+        __Overwrite = function(_textChanged)
         {
             var _text     = ref.__text;
             var _uniqueID = ref.__uniqueID;
@@ -70,31 +59,69 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
             var _newCacheName = ((_uniqueID == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_uniqueID) + ":")) + _text;
             if (__cacheName != _newCacheName)
             {
-                __Flush();
+                if (_textChanged)
+                {
+                    //If the text has changed then immediately dump the model
+                    __Flush();
+                    __flushed = false;
+                }
+                else
+                {
+                    //Otherwise we only changed the cache name and don't need to regenerate the model
+                    __RemoveFromCache();
+                }
                 
-                __flushed = false;
                 __cacheName = _newCacheName;
-                
                 __AddToCache();
-                ref.__modelDirty = true;
             }
         }
         
         __AddToCache = function()
         {
-            //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-            var _elementCacheMap = __scribble_system().__elementCacheMap;
+            static _elementCacheMap = __scribble_system().__elementCacheMap;
             
-            var _weak = _elementCacheMap[? __cacheName];
-            if ((_weak != undefined) && weak_ref_alive(_weak) && (not _weak.__flushed))
+            if ((not __inCache) && (not __flushed) && (not ds_map_exists(_elementCacheMap, __cacheName)))
             {
-                __scribble_trace("Warning! Flushing element \"", __cacheName, "\" due to cache name collision");
-                _weak.__Flush();
+                __inCache = true;
+                _elementCacheMap[? __cacheName] = ref; //Strong reference
+            }
+        }
+        
+        __RemoveFromCache = function()
+        {
+            static _elementCacheMap = _system.__elementCacheMap;
+            
+            if (weak_ref_alive(self) && (_elementCacheMap[? __cacheName] == ref))
+            {
+                ds_map_delete(_elementCacheMap, __cacheName);
             }
             
-            //Add this text element to the global cache
-            _elementCacheMap[? __cacheName] = self;
+            __inCache = false;
         }
+        
+        
+        
+        __AddToCache();
+        array_push(__scribble_system().__elementWeakArray, self);
+        
+        __gcTimeSource = time_source_create(time_source_global, __scribble_random_range(__SCRIBBLE_ELEMENT_SELFCHECK_MIN, __SCRIBBLE_ELEMENT_SELFCHECK_MAX), time_source_units_seconds,
+                                            function()
+                                            {
+                                                static _system = __scribble_system();
+                                                
+                                                if (not weak_ref_alive(self))
+                                                {
+                                                    __Flush();
+                                                }
+                                                else
+                                                {
+                                                    if (_system.__frames - ref.__lastDrawn > __SCRIBBLE_CACHE_TIMEOUT)
+                                                    {
+                                                        __RemoveFromCache();
+                                                    }
+                                                }
+                                            }, [], -1);
+        time_source_start(__gcTimeSource);
     }
     
     
@@ -112,16 +139,17 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
         
         //Get our model, and create one if needed
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return undefined;
         
         //If enough time has elapsed since we drew this element then update our animation time
-        if (__last_drawn < __scribble_state.__frames)
+        if (__lastDrawn < _system.__frames)
         {
             __animation_time += __animation_speed*_system.__tickSize;
             if (SCRIBBLE_SAFELY_WRAP_TIME) __animation_time = __animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
-        __last_drawn = __scribble_state.__frames;
+        __lastDrawn = _system.__frames;
+        __weakRef.__AddToCache();
         
         shader_set(__shd_scribble);
         __SetStandardUniforms();
@@ -148,10 +176,15 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
     /// @param [uniqueID]
     static overwrite = function(_text, _uniqueID = __uniqueID)
     {
-        __text     = _text;
-        __uniqueID = _uniqueID;
+        var _textChanged = (__text != _text);
+        if (_textChanged)
+        {
+            __text = _text;
+            __modelDirty = true;
+        }
         
-        __weakRef.__Overwrite();
+        __uniqueID = _uniqueID;
+        __weakRef.__Overwrite(_textChanged);
         
         return self;
     }

@@ -10,16 +10,6 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         __flushed = false;
         __model   = undefined;
         
-        __gcTimeSource = time_source_create(time_source_global, random_range(0.5, 2), time_source_units_seconds,
-                                            function()
-                                            {
-                                                if (not weak_ref_alive(self))
-                                                {
-                                                    __Flush();
-                                                }
-                                            }, [], -1);
-        time_source_start(__gcTimeSource);
-        
         
         
         __Flush = function()
@@ -37,6 +27,9 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
             
             //Set as flushed
             __flushed = true;
+            
+            time_source_stop(__gcTimeSource);
+            time_source_destroy(__gcTimeSource);
         }
         
         __Refresh = function()
@@ -52,6 +45,20 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
             __model = new __scribble_class_model(ref);
             return __model;
         }
+        
+        
+        
+        array_push(__scribble_system().__elementWeakArray, self);
+        
+        __gcTimeSource = time_source_create(time_source_global, __scribble_random_range(__SCRIBBLE_ELEMENT_SELFCHECK_MIN, __SCRIBBLE_ELEMENT_SELFCHECK_MAX), time_source_units_seconds,
+                                            function()
+                                            {
+                                                if (not weak_ref_alive(self))
+                                                {
+                                                    __Flush();
+                                                }
+                                            }, [], -1);
+        time_source_start(__gcTimeSource);
     }
     
     
@@ -71,13 +78,13 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         if (!is_struct(_model)) return undefined;
         
         //If enough time has elapsed since we drew this element then update our animation time
-        if (__last_drawn < __scribble_state.__frames)
+        if (__lastDrawn < _system.__frames)
         {
             __animation_time += __animation_speed*_system.__tickSize;
             if (SCRIBBLE_SAFELY_WRAP_TIME) __animation_time = __animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
-        __last_drawn = __scribble_state.__frames;
+        __lastDrawn = _system.__frames;
         
         shader_set(__shd_scribble);
         __SetStandardUniforms();
@@ -825,8 +832,8 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         }
         
         //Don't move the typist if it's been less than a frame since we were last updated
-        if (__scribble_state.__frames <= __prevTickFrame) return undefined;
-        __prevTickFrame = __scribble_state.__frames;
+        if (_system.__frames <= __prevTickFrame) return undefined;
+        __prevTickFrame = _system.__frames;
         
         return __TypistMove(_inFunctionScope, __typistSpeed*__typistInlineSpeed*_system.__tickSize);
     }

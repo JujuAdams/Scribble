@@ -4,16 +4,14 @@
 
 function __scribble_class_model(_element) constructor
 {
-    static __scribble_state = __scribble_system().__state;
     static _generator_state = __scribble_system().__generator_state;
     
     
     
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching model \"", __cacheName, "\"");
     
-    __last_drawn = __scribble_state.__frames;
-    __frozen     = undefined;
-    __flushed    = false;
+    __frozen  = undefined;
+    __flushed = false;
     
     //FIXME - Refresh elements that rely on this model
     
@@ -125,8 +123,6 @@ function __scribble_class_model(_element) constructor
     static __submit = function(_page, _double_draw)
     {
         if (__flushed) return;
-        
-        __last_drawn = __scribble_state.__frames;
         
         __pages_array[_page].__submit((SCRIBBLE_ALWAYS_DOUBLE_DRAW || __has_arabic || __has_thai) && _double_draw);
     }

@@ -5,7 +5,6 @@
 function __scribble_class_element_parent(_text) constructor
 {
     static _system = __scribble_system();
-    static __scribble_state = __scribble_system().__state;
     
     
     
@@ -15,8 +14,7 @@ function __scribble_class_element_parent(_text) constructor
     
     __modelDirty = true;
     __model = undefined;
-    
-    __last_drawn = __scribble_state.__frames;
+    __lastDrawn = _system.__frames;
     
     
     
@@ -26,7 +24,7 @@ function __scribble_class_element_parent(_text) constructor
     
     __preprocessorFunc = undefined;
     
-    __starting_font   = __scribble_state.__default_font;
+    __starting_font   = _system.__state.__default_font;
     __starting_colour = __scribble_process_colour(SCRIBBLE_DEFAULT_COLOR);
     __starting_halign = SCRIBBLE_DEFAULT_HALIGN;
     __starting_valign = SCRIBBLE_DEFAULT_VALIGN;
@@ -1215,7 +1213,7 @@ function __scribble_class_element_parent(_text) constructor
     
     static refresh = function()
     {
-        __modelDirty        = true;
+        __modelDirty         = true;
         __matrix_dirty       = true;
         __bbox_dirty         = true;
         __scale_to_box_dirty = true;

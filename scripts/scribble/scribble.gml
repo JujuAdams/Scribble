@@ -8,21 +8,6 @@
 
 function scribble(_string, _uniqueID = undefined)
 {
-    if (is_struct(_string) && (is_instanceof(_string, __scribble_class_cached_element) || is_instanceof(_string, __scribble_class_unique_element)))
-    {
-        __scribble_error("`scribble()` should not be used to access/draw text elements\nPlease instead call the `.draw()` method on a text element e.g. `scribble(\"text\").draw(x, y);`");
-        return;
-    }
-    
     static _elementCacheMap = __scribble_system().__elementCacheMap;
-    
-    var _weak = _elementCacheMap[? ((_uniqueID == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_uniqueID) + ":")) + string(_string)];
-    if ((_weak == undefined) || (not weak_ref_alive(_weak)) || _weak.__flushed)
-    {
-        return new __scribble_class_cached_element(string(_string), _uniqueID);
-    }
-    else
-    {
-        return _weak.ref;
-    }
+    return _elementCacheMap[? ((_uniqueID == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_uniqueID) + ":")) + string(_string)] ?? new __scribble_class_cached_element(string(_string), _uniqueID);
 }

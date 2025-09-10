@@ -2,16 +2,12 @@
 
 function __scribble_class_page() constructor
 {
-    static __scribble_state = __scribble_system().__state;
-    static __gc_vbuff_refs  = __scribble_system().__cache_state.__gc_vbuff_refs;
-    static __gc_vbuff_ids   = __scribble_system().__cache_state.__gc_vbuff_ids;
-    static __gc_grid_refs   = __scribble_system().__cache_state.__gc_grid_refs;
-    static __gc_grid_ids    = __scribble_system().__cache_state.__gc_grid_ids;
+    static _system = __scribble_system();
     
     __text = "";
     __glyph_grid = undefined;
     
-    __created_frame = __scribble_state.__frames;
+    __created_frame = _system.__frames;
     __frozen = undefined;
     
     __reveal_count = 0;
@@ -47,7 +43,7 @@ function __scribble_class_page() constructor
         static _u_fSecondDraw         = shader_get_uniform(__shd_scribble, "u_fSecondDraw"        );
         static _u_fRenderType         = shader_get_uniform(__shd_scribble, "u_fRenderType"        );
         
-        if (SCRIBBLE_INCREMENTAL_FREEZE && !__frozen && (__created_frame < __scribble_state.__frames)) __Freeze();
+        if (SCRIBBLE_INCREMENTAL_FREEZE && (not __frozen) && (__created_frame < _system.__frames)) __Freeze();
         
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
@@ -73,7 +69,7 @@ function __scribble_class_page() constructor
                 shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_SDF);
                 shader_set_uniform_f(_u_vTexel, _material.__texel_width, _material.__texel_height);
                 shader_set_uniform_f(_u_fSDFRange, (_material.__sdf_pxrange ?? 0));
-                shader_set_uniform_f(_u_fSDFThicknessOffset, __scribble_state.__sdf_thickness_offset + (_material.__sdf_thickness_offset ?? 0));
+                shader_set_uniform_f(_u_fSDFThicknessOffset, _system.__state.__sdf_thickness_offset + (_material.__sdf_thickness_offset ?? 0));
                 
                 vertex_submit(_data.__vertex_buffer, pr_trianglelist, _material.__texture);
                 
@@ -203,10 +199,6 @@ function __scribble_class_page() constructor
         var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version
         vertex_begin(_vbuff, _vertex_format);
         
-        if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding vertex buffer ", _vbuff, " to tracking");
-        array_push(__gc_vbuff_refs, weak_ref_create(self));
-        array_push(__gc_vbuff_ids, _vbuff);
-        
         //TODO - Convert this data into just a material reference
         
         var _data = {
@@ -225,10 +217,6 @@ function __scribble_class_page() constructor
         if (__glyph_grid == undefined)
         {
             __glyph_grid = ds_grid_create(__glyph_count, __SCRIBBLE_GLYPH_LAYOUT_SIZE);
-            
-            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Adding glyph grid ", __glyph_grid, " to tracking");
-            array_push(__gc_grid_refs, weak_ref_create(self));
-            array_push(__gc_grid_ids, __glyph_grid);
         }
         
         return __glyph_grid;
@@ -249,38 +237,18 @@ function __scribble_class_page() constructor
     
     static __Flush = function()
     {
-        //Don't forget to update scribble_flush_everything() if you change anything here!
-        
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))
         {
-            var _vbuff = __vertex_buffer_array[_i].__vertex_buffer;
-            vertex_delete_buffer(_vbuff);
-            
-            var _index = __scribble_array_find_index(__gc_vbuff_ids, _vbuff);
-            if (_index >= 0)
-            {
-                if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Manually removing vertex buffer ", _vbuff, " from tracking");
-                array_delete(__gc_vbuff_refs, _index, 1);
-                array_delete(__gc_vbuff_ids,  _index, 1);
-            }
-            
+            vertex_delete_buffer(__vertex_buffer_array[_i].__vertex_buffer);
             ++_i;
         }
         
-        __texture_to_vertex_buffer_dict = {};
         array_resize(__vertex_buffer_array, 0);
+        __texture_to_vertex_buffer_dict = {};
         
         if (__glyph_grid != undefined)
         {
-            var _index = __scribble_array_find_index(__gc_grid_ids, __glyph_grid);
-            if (_index >= 0)
-            {
-                if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Manually removing glyph grid ", __glyph_grid, " from tracking");
-                array_delete(__gc_grid_refs, _index, 1);
-                array_delete(__gc_grid_ids,  _index, 1);
-            }
-            
             ds_grid_destroy(__glyph_grid);
             __glyph_grid = undefined;
         }

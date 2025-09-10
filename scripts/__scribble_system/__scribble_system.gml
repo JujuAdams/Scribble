@@ -1,48 +1,5 @@
 // Feather disable all
 
-#macro __SCRIBBLE_DEBUG       false
-#macro __SCRIBBLE_VERBOSE_GC  false
-
-#macro __SCRIBBLE_EASE_COUNT  12
-#macro __SCRIBBLE_VERY_BIG    999999
-
-#macro __SCRIBBLE_FLAG_GRAPHIC      0
-#macro __SCRIBBLE_FLAG_ANIM_SPRITE  1
-#macro __SCRIBBLE_FLAG_WAVE         2
-#macro __SCRIBBLE_FLAG_SHAKE        3
-#macro __SCRIBBLE_FLAG_WOBBLE       4
-#macro __SCRIBBLE_FLAG_PULSE        5
-#macro __SCRIBBLE_FLAG_WHEEL        6
-#macro __SCRIBBLE_FLAG_CYCLE        7
-#macro __SCRIBBLE_FLAG_JITTER       8
-#macro __SCRIBBLE_FLAG_SLANT        9
-
-#macro __SCRIBBLE_GLYPH_PROPR_CHARACTER      0
-#macro __SCRIBBLE_GLYPH_PROPR_UNICODE        1
-#macro __SCRIBBLE_GLYPH_PROPR_BIDI           2
-#macro __SCRIBBLE_GLYPH_PROPR_X_OFFSET       3
-#macro __SCRIBBLE_GLYPH_PROPR_Y_OFFSET       4
-#macro __SCRIBBLE_GLYPH_PROPR_WIDTH          5
-#macro __SCRIBBLE_GLYPH_PROPR_HEIGHT         6
-#macro __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT    7
-#macro __SCRIBBLE_GLYPH_PROPR_SEPARATION     8
-#macro __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET    9
-#macro __SCRIBBLE_GLYPH_PROPR_FONT_SCALE    10
-#macro __SCRIBBLE_GLYPH_PROPR_MATERIAL      11
-#macro __SCRIBBLE_GLYPH_PROPR_U0            12
-#macro __SCRIBBLE_GLYPH_PROPR_U1            13
-#macro __SCRIBBLE_GLYPH_PROPR_V0            14
-#macro __SCRIBBLE_GLYPH_PROPR_V1            15
-#macro __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID  16
-
-#macro __SCRIBBLE_GLYPH_PROPR_COUNT  17
-
-#macro __SCRIBBLE_TAG_COLOR         0
-#macro __SCRIBBLE_TAG_EFFECT        1
-#macro __SCRIBBLE_TAG_EFFECT_UNSET  2
-#macro __SCRIBBLE_TAG_EVENT         3
-#macro __SCRIBBLE_TAG_MACRO         4
-
 //This causes a failure to compile in YYC in IDE v2024.11.0.179 / Runtime v2024.11.0.227
 //gml_pragma("MarkTagAsUsed", "scribble");
 
@@ -111,7 +68,47 @@ function __scribble_system(_calledFromInitialize = false)
         
         try
         {
-            time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, method(self, __scribble_tick), [], -1));
+            time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
+            {
+                if (__userTickSize == undefined)
+                {
+                    __tickSize = clamp(delta_time / 16667, 1/5, 5);
+                }
+                
+                __frames++;
+                
+                static _elementIndex = 0;
+                var _elementWeakArray = __elementWeakArray;
+                
+                var _elementCount = array_length(_elementWeakArray);
+                repeat(ceil(sqrt(_elementCount)))
+                {
+                    //Safety catch
+                    if (array_length(_elementWeakArray) <= 0)
+                    {
+                        break;
+                    }
+                    
+                    _elementIndex = (_elementIndex + 1) mod array_length(_elementWeakArray);
+                    if (not weak_ref_alive(_elementWeakArray[_elementIndex]))
+                    {
+                        array_delete(_elementWeakArray, _elementIndex, 1);
+                    }
+                }
+                
+                //If there's been a change in os_is_paused() state then force a refresh of shader uniforms
+                static _osIsPaused = undefined;
+                if (os_is_paused() != _osIsPaused)
+                {
+                    _osIsPaused = os_is_paused();
+                    
+                    with(__state)
+                    {
+                        __shader_anim_desync            = true;
+                        __shader_anim_desync_to_default = true;
+                    }
+                }
+            }, [], -1));
         }
         catch(_error)
         {
@@ -170,13 +167,12 @@ function __scribble_system(_calledFromInitialize = false)
         //Contains animation parameters. See scribble_anim_reset()
         __anim_properties = array_create(__SCRIBBLE_ANIM_SIZE, undefined);
         
+        __frames = 0;
         __userTickSize = undefined;
         __tickSize = 1;
         
         //Contains global state information that is shared between various features
         __state = {
-            __frames: 0,
-            
             __default_font: "scribble_fallback_font",
             
             __shader_anim_desync:            false,
@@ -193,18 +189,8 @@ function __scribble_system(_calledFromInitialize = false)
         };
         
         __elementWeakArray = [];
-        __elementCacheMap  = ds_map_create();
+        __elementCacheMap  = ds_map_create(); //Contains strong references
         
-        //Contains state information for the Scribble cache
-        __cache_state = {
-            __gc_vbuff_refs: [],
-            __gc_vbuff_ids:  [],
-            
-            __gc_grid_refs: [],
-            __gc_grid_ids:  [],
-        };
-        
-        //
         __generator_state = new __scribble_class_generator_state();
         
         //Contains Unicode data, necessary for extended language support
