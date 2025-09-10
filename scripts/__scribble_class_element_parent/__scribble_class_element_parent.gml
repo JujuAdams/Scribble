@@ -86,9 +86,6 @@ function __scribble_class_element_parent(_string) constructor
     __bezier_array = array_create(6, 0.0);
     __bezier_using = false;
     
-    __tw_reveal              = undefined;
-    __tw_reveal_window_array = array_create(2*__SCRIBBLE_HEAD_COUNT, 0.0);
-    
     __animation_time  = 0;
     __animation_speed = 1;
     
@@ -908,13 +905,11 @@ function __scribble_class_element_parent(_string) constructor
     
     /// @param x
     /// @param y
-    /// @param [typist]
-    static get_bbox_revealed = function(_x, _y, _typist)
+    /// @param [revealIndex]
+    static get_bbox_revealed = function(_x, _y, _revealIndex = undefined)
     {
-        //FIXME - Move to unique element?
-        
-        //No typist set up, return the whole bounding box
-        if ((_typist == undefined) && (__tw_reveal == undefined))
+        //Default to the entire bounding box
+        if ((_revealIndex == undefined) && (not is_instanceof(self, __scribble_class_unique_element)))
         {
             return get_bbox(_x, _y);
         }
@@ -941,7 +936,7 @@ function __scribble_class_element_parent(_string) constructor
         
         if (_typist != undefined)
         {
-            var _bbox = _model.__get_bbox_revealed(__page, 0, _typist.__windowArray[_typist.__windowIndex], __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__get_bbox_revealed(__page, 0, _revealIndex ?? __typistHeadArray[0], __padding_l, __padding_t, __padding_r, __padding_b);
         }
         else if (__tw_reveal != undefined)
         {
@@ -1118,28 +1113,6 @@ function __scribble_class_element_parent(_string) constructor
     
     
     
-    #region Typewriter
-    
-    static reveal = function(_character)
-    {
-        if (__tw_reveal != _character)
-        {
-            __tw_reveal = _character;
-            __tw_reveal_window_array[@ 0] = _character;
-        }
-        
-        return self;
-    }
-    
-    static get_reveal = function()
-    {
-        return __tw_reveal;
-    }
-    
-    #endregion
-    
-    
-    
     #region Animation
     
     static animation_tick_speed = function()
@@ -1161,7 +1134,6 @@ function __scribble_class_element_parent(_string) constructor
     static animation_speed = function(_speed)
     {
         __animation_speed = _speed;
-        
         return self;
     }
     
@@ -1526,7 +1498,7 @@ function __scribble_class_element_parent(_string) constructor
         return __model;
     }
     
-    static __set_standard_uniforms = function(_typist, _function_scope)
+    static __set_standard_uniforms = function(_revealIndex)
     {
         static _u_sCycle = shader_get_sampler_index(__shd_scribble, "u_sCycle");
         
@@ -1553,6 +1525,8 @@ function __scribble_class_element_parent(_string) constructor
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
         static _u_vOutlineColour           = shader_get_uniform(__shd_scribble, "u_vOutlineColour"          );
         static _u_fOutlineThickness        = shader_get_uniform(__shd_scribble, "u_fOutlineThickness"       );
+        
+        static _revealHeadArray = array_create(3, 0);
         
         static _scribble_state        = __scribble_system().__state;
         static _anim_properties_array = __scribble_system().__anim_properties;
@@ -1644,16 +1618,18 @@ function __scribble_class_element_parent(_string) constructor
             shader_set_uniform_f_array(_u_aBezier, _null_array);
         }
         
-        if (__tw_reveal != undefined)
+        if (_revealIndex != undefined)
         {
+            _revealHeadArray[@ 0] = _revealIndex;
+            
             shader_set_uniform_i(_u_iTypewriterMethod,               SCRIBBLE_EASE_LINEAR);
             shader_set_uniform_f(_u_fTypewriterSmoothness,           0);
             shader_set_uniform_f(_u_vTypewriterStartPos,             0, 0);
             shader_set_uniform_f(_u_vTypewriterStartScale,           1, 1);
             shader_set_uniform_f(_u_fTypewriterStartRotation,        0);
             shader_set_uniform_f(_u_fTypewriterAlphaDuration,        1.0);
-            shader_set_uniform_f_array(_u_fTypewriterHeadArray,      __tw_reveal_window_array);
-            shader_set_uniform_f_array(_u_fTypewriterHeadLimitArray, __tw_reveal_window_array);
+            shader_set_uniform_f_array(_u_fTypewriterHeadArray,      _revealHeadArray);
+            shader_set_uniform_f_array(_u_fTypewriterHeadLimitArray, _revealHeadArray);
         }
         else
         {

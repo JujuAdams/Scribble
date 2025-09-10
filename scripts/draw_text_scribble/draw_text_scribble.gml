@@ -31,10 +31,10 @@ function draw_text_scribble(_x, _y, _string, _reveal = undefined)
         _font = _scribble_state.__default_font;
     }
     
-    var _element = scribble(_string, "__draw_text_scribble__")
+    scribble(_string, "__draw_text_scribble__")
     .align(draw_get_halign(), draw_get_valign())
     .starting_format(_font, c_white)
-    .blend(draw_get_color(), draw_get_alpha());
-    if (_reveal != undefined) _element.reveal(_reveal);
-    _element.draw(_x, _y);
+    .blend(draw_get_color(), draw_get_alpha())
+    .reveal_type(SCRIBBLE_REVEAL_PER_CHAR)
+    .draw(_x, _y, _reveal);
 }

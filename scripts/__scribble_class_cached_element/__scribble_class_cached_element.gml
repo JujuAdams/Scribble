@@ -35,14 +35,9 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
     
     /// @param x
     /// @param y
-    /// @param [typist_UNUSED]
-    static draw = function(_x, _y, _typist_UNUSED = undefined)
+    /// @param [revealIndex]
+    static draw = function(_x, _y, _revealIndex = undefined)
     {
-        if (_typist_UNUSED != undefined)
-        {
-            __scribble_error("Typists have been removed in favour of `scribble_unique()`. Please refer to documentation");
-        }
-        
         if (SCRIBBLE_FLOOR_DRAW_COORDINATES)
         {
             _x = floor(_x);
@@ -63,7 +58,7 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
         __last_drawn = __scribble_state.__frames;
         
         shader_set(__shd_scribble);
-        __set_standard_uniforms();
+        __set_standard_uniforms(_revealIndex);
         
         //...aaaand set the matrix
         var _old_matrix = matrix_get(matrix_world);

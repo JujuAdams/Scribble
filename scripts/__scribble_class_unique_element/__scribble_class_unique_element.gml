@@ -6,14 +6,8 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
 {
     /// @param x
     /// @param y
-    /// @param [typist_UNUSED]
-    static draw = function(_x, _y, _typist_UNUSED = undefined)
+    static draw = function(_x, _y)
     {
-        if (_typist_UNUSED != undefined)
-        {
-            __scribble_error("Typists have been removed in favour of `scribble_unique()`. Please refer to documentation");
-        }
-        
         if (SCRIBBLE_FLOOR_DRAW_COORDINATES)
         {
             _x = floor(_x);
@@ -34,7 +28,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         __last_drawn = __scribble_state.__frames;
         
         shader_set(__shd_scribble);
-        __set_standard_uniforms();
+        __set_standard_uniforms(undefined);
         
         __TypistUpdateFromDraw(other);
         __SetTypistShaderUniforms();
