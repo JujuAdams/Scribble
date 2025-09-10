@@ -106,10 +106,10 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
     }
     
     
-
+    
+    __typistAnim       = SCRIBBLE_TYPIST_ANIM_NONE;
     __typistSpeed      = 1;
     __typistSmoothness = 0;
-    __typistIn         = undefined;
     __typistBackwards  = false;
     
     __typistSkip           = false;
@@ -183,15 +183,18 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
     /// @param smoothness
     static in = function(_speed, _smoothness)
     {
-        var _old_in = __typistIn;
+        var _oldAnim = __typistAnim;
         
-        __typistIn         = true;
+        __typistAnim       = SCRIBBLE_TYPIST_ANIM_APPEAR;
         __typistBackwards  = false;
         __typistSpeed      = _speed;
         __typistSmoothness = _smoothness;
         __typistSkip       = false;
         
-        if ((_old_in == undefined) || !_old_in) reset();
+        if (_oldAnim != SCRIBBLE_TYPIST_ANIM_APPEAR)
+        {
+            reset();
+        }
         
         return self;
     }
@@ -201,22 +204,25 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
     /// @param [backwards=false]
     static out = function(_speed, _smoothness, _backwards = false)
     {
-        var _old_in = __typistIn;
+        var _oldAnim = __typistAnim;
         
-        __typistIn         = false;
+        __typistAnim       = SCRIBBLE_TYPIST_ANIM_DISAPPEAR;
         __typistBackwards  = _backwards;
         __typistSpeed      = _speed;
         __typistSmoothness = _smoothness;
         __typistSkip       = false;
         
-        if ((_old_in == undefined) || _old_in) reset();
+        if (_oldAnim != SCRIBBLE_TYPIST_ANIM_DISAPPEAR)
+        {
+            reset();
+        }
         
         return self;
     }
     
     static stop = function()
     {
-        __typistIn = undefined;
+        __typistAnim = SCRIBBLE_TYPIST_ANIM_NONE;
         
         return self;
     }
@@ -445,10 +451,10 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
     static get_state = function()
     {
         if (__typistEventRevealIndex == undefined) return 0.0;
-        if (__typistIn == undefined) return 1.0;
+        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE) return 1.0;
         
         var _model = __get_model(true);
-        if (!is_struct(_model)) return 2.0; //If there's no model then report that the element is totally faded out
+        if (not is_struct(_model)) return 2.0; //If there's no model then report that the element is totally faded out
         
         var _pages_array = _model.__get_page_array();
         if (array_length(_pages_array) <= __page) return 1.0;
@@ -459,7 +465,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
         
         var _t = clamp(__typistHeadArray[0] / (_max + __typistSmoothness), 0, 1);
         
-        if (__typistIn)
+        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_APPEAR)
         {
             if (__typistDelayPause || (array_length(__eventStack) > 0))
             {
@@ -489,7 +495,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
     
     static get_position = function()
     {
-        if (__typistIn == undefined) return 0;
+        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE) return 0;
         return __typistHeadArray[0];
     }
     
@@ -608,7 +614,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
                     {
                         if (not __typistDelayPause)
                         {
-                            __StartNewHead(__typistEventRevealIndex-1);
+                            __StartNewHead(__typistEventRevealIndex);
                         }
                         
                         var _duration = (array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
@@ -625,7 +631,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
                     {
                         if (not __typistDelayPause)
                         {
-                            __StartNewHead(__typistEventRevealIndex-1);
+                            __StartNewHead(__typistEventRevealIndex);
                         }
                         
                         __syncPaused   = true;
@@ -776,16 +782,16 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
     
     static __TypistMove = function(_inFunctionScope, _delta)
     {
-        //If __typistIn hasn't been set yet (.in() / .out() haven't been set) then just nope out
-        if (__typistIn == undefined) return undefined;
+        //If __typistAnim hasn't been set yet (.in() / .out() haven't been set) then just nope out
+        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE) return;
         
         //Find the model from the last element
         var _model = __get_model(true);
-        if (not is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return;
         
         //Get page data
         var _pages_array = _model.__get_page_array();
-        if (array_length(_pages_array) == 0) return undefined;
+        if (array_length(_pages_array) == 0) return;
         var _pageData = _pages_array[__page];
         var _pageRevealCount = _pageData.__reveal_count;
         
@@ -810,7 +816,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
         
         __typistHeadLimitArray[@ 0] = _pageRevealCount; //TODO - Can we move this elsewhere?
         
-        if (not __typistIn)
+        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_DISAPPEAR)
         {
             ///////
             // Type out
@@ -918,13 +924,42 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
                     
                     if (_remaining > 0)
                     {
-                        while(_remaining > 0)
+                        repeat(ceil(_remaining))
                         {
                             //Scan for events one character at a time
                             _eventRevealIndex += min(1, _remaining);
                             _remaining -= 1;
                             
-                            //Only scan for new events if we've moved onto a new reveal
+                            // CatDog
+                            // Reveal index is 0-indexed. If C is partially visible, the reveal index is greater than 0
+                            // 
+                            // Cat[event]Dog
+                            // Index 3. We expect [event] to execute immediately before D is animated
+                            // 
+                            // CatDog[event]
+                            // Index 6. We expect [event] to execute immediately before an imaginery null character, placed after g, is animated
+                            // 
+                            // [event]Cat
+                            // Stored at index 0. We expected [event] to execute immediately upon drawing the text
+                            //
+                            // Cat. Dog
+                            // We expect the delay to be applied before the space at reveal index 4
+                            // 
+                            // Cat Dog.
+                            // We do not expect a delay because the . is the last character
+                            // 
+                            // Cat.[/page]
+                            // We do not expect a delay because the . is the last character
+                            // 
+                            // Cat Dog.[event]
+                            // We expect the delay to be applied before the space at reveal index 8 because there is a subsequent event
+                            // 
+                            // Cat.[event]Dog.
+                            // We expect the event to execute after the character delay and before D appears
+                            // 
+                            // Cat.[pause][/page]
+                            // FIXME - figure out what's meant to happen here
+                            
                             if (floor(_eventRevealIndex) > __typistEventRevealIndex)
                             {
                                 ++__typistEventRevealIndex;
@@ -947,7 +982,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
                                         var _glyph_ord = _pageData.__glyph_grid[# __typistEventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
                                         var _delay = __characterDelayDict[$ _glyph_ord] ?? 0;
                                         
-                                        if (__typistEventRevealIndex > 1)
+                                        if (__typistEventRevealIndex >= 2)
                                         {
                                             _glyph_ord = (_glyph_ord << 32) | _pageData.__glyph_grid[# __typistEventRevealIndex-2, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
                                             var _double_char_delay = __characterDelayDict[$ _glyph_ord];
@@ -1033,21 +1068,21 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
         static _u_fTypewriterStartRotation  = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation" );
         static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration" );
         
-        //If __typistIn hasn't been set yet (.in() / .out() haven't been set) then just nope out
-        if (__typistIn == undefined)
+        //If __typistAnim hasn't been set yet (.in() / .out() haven't been set) then just nope out
+        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE)
         {
             shader_set_uniform_i(_u_iTypewriterMethod, SCRIBBLE_EASE_NONE);
-            return undefined;
+            return;
         }
         
         var _method = __easeMethod;
-        if (not __typistIn) _method += __SCRIBBLE_EASE_COUNT;
+        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_DISAPPEAR) _method += __SCRIBBLE_EASE_COUNT;
         
         var _reveal_max = 0;
         if (__typistBackwards)
         {
             var _model = __get_model(true);
-            if (!is_struct(_model)) return undefined;
+            if (not is_struct(_model)) return;
             
             var _pages_array = _model.__get_page_array();
             if (array_length(_pages_array) > __page)
