@@ -58,7 +58,8 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
         __last_drawn = __scribble_state.__frames;
         
         shader_set(__shd_scribble);
-        __set_standard_uniforms(_revealIndex);
+        __SetStandardUniforms();
+        __SetRevealUniforms(_revealIndex);
         
         //...aaaand set the matrix
         var _old_matrix = matrix_get(matrix_world);

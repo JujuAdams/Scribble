@@ -1498,7 +1498,7 @@ function __scribble_class_element_parent(_string) constructor
         return __model;
     }
     
-    static __set_standard_uniforms = function(_revealIndex)
+    static __SetStandardUniforms = function()
     {
         static _u_sCycle = shader_get_sampler_index(__shd_scribble, "u_sCycle");
         
@@ -1512,21 +1512,10 @@ function __scribble_class_element_parent(_string) constructor
         static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
         static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
         
-        static _u_iTypewriterMethod         = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"        );
-        static _u_fTypewriterHeadArray      = shader_get_uniform(__shd_scribble, "u_fTypewriterHeadArray"     );
-        static _u_fTypewriterHeadLimitArray = shader_get_uniform(__shd_scribble, "u_fTypewriterHeadLimitArray");
-        static _u_fTypewriterSmoothness     = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"    );
-        static _u_vTypewriterStartPos       = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"      );
-        static _u_vTypewriterStartScale     = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"    );
-        static _u_fTypewriterStartRotation  = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation" );
-        static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration" );
-        
         static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
         static _u_vOutlineColour           = shader_get_uniform(__shd_scribble, "u_vOutlineColour"          );
         static _u_fOutlineThickness        = shader_get_uniform(__shd_scribble, "u_fOutlineThickness"       );
-        
-        static _revealHeadArray = array_create(3, 0);
         
         static _scribble_state        = __scribble_system().__state;
         static _anim_properties_array = __scribble_system().__anim_properties;
@@ -1618,6 +1607,33 @@ function __scribble_class_element_parent(_string) constructor
             shader_set_uniform_f_array(_u_aBezier, _null_array);
         }
         
+        shader_set_uniform_f(_u_vShadowOffsetAndSoftness, __sdf_shadow_xoffset, __sdf_shadow_yoffset, __sdf_shadow_softness);
+        
+        shader_set_uniform_f(_u_vShadowColour, colour_get_red(  __sdf_shadow_colour)/255,
+                                               colour_get_green(__sdf_shadow_colour)/255,
+                                               colour_get_blue( __sdf_shadow_colour)/255,
+                                               __sdf_shadow_alpha);
+        
+        shader_set_uniform_f(_u_vOutlineColour,colour_get_red(  __sdf_outline_colour)/255,
+                                               colour_get_green(__sdf_outline_colour)/255,
+                                               colour_get_blue( __sdf_outline_colour)/255);
+        
+        shader_set_uniform_f(_u_fOutlineThickness, __sdf_outline_thickness);
+    }
+    
+    static __SetRevealUniforms = function(_revealIndex)
+    {
+        static _u_iTypewriterMethod         = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"        );
+        static _u_fTypewriterHeadArray      = shader_get_uniform(__shd_scribble, "u_fTypewriterHeadArray"     );
+        static _u_fTypewriterHeadLimitArray = shader_get_uniform(__shd_scribble, "u_fTypewriterHeadLimitArray");
+        static _u_fTypewriterSmoothness     = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"    );
+        static _u_vTypewriterStartPos       = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"      );
+        static _u_vTypewriterStartScale     = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"    );
+        static _u_fTypewriterStartRotation  = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation" );
+        static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration" );
+        
+        static _revealHeadArray = array_create(3, 0);
+        
         if (_revealIndex != undefined)
         {
             _revealHeadArray[@ 0] = _revealIndex;
@@ -1635,19 +1651,6 @@ function __scribble_class_element_parent(_string) constructor
         {
             shader_set_uniform_i(_u_iTypewriterMethod, SCRIBBLE_EASE_NONE);
         }
-        
-        shader_set_uniform_f(_u_vShadowOffsetAndSoftness, __sdf_shadow_xoffset, __sdf_shadow_yoffset, __sdf_shadow_softness);
-        
-        shader_set_uniform_f(_u_vShadowColour, colour_get_red(  __sdf_shadow_colour)/255,
-                                               colour_get_green(__sdf_shadow_colour)/255,
-                                               colour_get_blue( __sdf_shadow_colour)/255,
-                                               __sdf_shadow_alpha);
-        
-        shader_set_uniform_f(_u_vOutlineColour,colour_get_red(  __sdf_outline_colour)/255,
-                                               colour_get_green(__sdf_outline_colour)/255,
-                                               colour_get_blue( __sdf_outline_colour)/255);
-        
-        shader_set_uniform_f(_u_fOutlineThickness, __sdf_outline_thickness);
     }
     
     static __update_scale_to_box_scale = function()

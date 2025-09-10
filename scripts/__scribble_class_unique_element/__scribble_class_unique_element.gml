@@ -28,7 +28,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         __last_drawn = __scribble_state.__frames;
         
         shader_set(__shd_scribble);
-        __set_standard_uniforms(undefined);
+        __SetStandardUniforms();
         
         __TypistUpdateFromDraw(other);
         __SetTypistShaderUniforms();
@@ -207,7 +207,6 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     static stop = function()
     {
         __typistAnim = SCRIBBLE_TYPIST_ANIM_NONE;
-        
         return self;
     }
     
@@ -233,6 +232,8 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     
     static set_position = function(_value)
     {
+        _value = max(0, _value);
+        
         if (_value >= __typistHeadLimitArray[0])
         {
             //Must match `__SCRIBBLE_HEAD_COUNT`
@@ -246,8 +247,8 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         else
         {
             //Must match `__SCRIBBLE_HEAD_COUNT`
-            __typistHeadArray[@ 0] = _value - __typistSmoothness;
-            __typistHeadArray[@ 1] = _value;
+            __typistHeadArray[@ 0] = _value;
+            __typistHeadArray[@ 1] = _value + __typistSmoothness;
             __typistHeadArray[@ 2] = 0;
             
             __typistHeadLimitArray[@ 1] = _value;
@@ -447,20 +448,22 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         return __ignoreDelay;
     }
     
-    static get_state = function()
+    static get_reveal_count = function()
     {
-        if (__typistEventRevealIndex == undefined) return 0.0;
-        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE) return 1.0;
-        
         var _model = __get_model(true);
-        if (not is_struct(_model)) return 2.0; //If there's no model then report that the element is totally faded out
+        if (not is_struct(_model)) return 0;
         
         var _pages_array = _model.__get_page_array();
-        if (array_length(_pages_array) <= __page) return 1.0;
+        if (array_length(_pages_array) <= __page) return 0;
         var _pageData = _pages_array[__page];
         
-        var _max = _pageData.__reveal_count;
-        if (_max <= 0) return 1.0;
+        return _pageData.__reveal_count;
+    }
+    
+    static get_state = function()
+    {
+        var _max = get_reveal_count();
+        if (_max <= 0) return 2; //If we get an invalid
         
         var _t = clamp(__typistHeadArray[0] / (_max + __typistSmoothness), 0, 1);
         
@@ -494,7 +497,6 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     
     static get_position = function()
     {
-        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE) return 0;
         return __typistHeadArray[0];
     }
     
@@ -1069,7 +1071,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         //If __typistAnim hasn't been set yet (.in() / .out() haven't been set) then just nope out
         if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE)
         {
-            shader_set_uniform_i(_u_iTypewriterMethod, SCRIBBLE_EASE_NONE);
+            __SetRevealUniforms((__typistHeadArray[0] < __SCRIBBLE_VERY_BIG)? __typistHeadArray[0] : undefined);
             return;
         }
         
