@@ -1,15 +1,15 @@
 // Feather disable all
 
-/// @param string
+/// @param text
 
-function __scribble_class_element_parent(_string) constructor
+function __scribble_class_element_parent(_text) constructor
 {
     static _system = __scribble_system();
     static __scribble_state = __scribble_system().__state;
     
     
     
-    __text = _string;
+    __text = _text;
     
     __flushed = false;
     
@@ -1376,7 +1376,7 @@ function __scribble_class_element_parent(_string) constructor
     }
     
     /// @param string
-    static overwrite = function(_text, _unique_id = undefined)
+    static overwrite = function(_text, _uniqueID = undefined)
     {
         //Unimplemented
     }
@@ -1416,31 +1416,20 @@ function __scribble_class_element_parent(_string) constructor
     
     #region Private Methods
     
-    static __EnsureModel = function(_allowCreate = true)
+    static __EnsureModel = function()
     {
-        if (__flushed || (__text == ""))
+        if (__modelDirty)
         {
-            __model = undefined;
-        }
-        else if (__modelDirty)
-        {
-            if (is_struct(__model))
-            {
-                __model.__Flush();
-                __model = undefined;
-            }
-            
+            __modelDirty         = false;
             __bbox_dirty         = true;
             __scale_to_box_dirty = true; //The dimensions of the text element might change as a result of a model change
             
-            if (_allowCreate)
-            {
-                __modelDirty = false;
-                __model = new __scribble_class_model(self);
-            }
+            return __weakRef.__Refresh();
         }
-        
-        return __model;
+        else
+        {
+            return __weakRef.__model;
+        }
     }
     
     static __SetStandardUniforms = function()
@@ -1475,7 +1464,7 @@ function __scribble_class_element_parent(_string) constructor
             return _array;
         })();
         
-        if (__model.__has_cycle)
+        if (__EnsureModel().__has_cycle)
         {
             var _texture = surface_get_texture(__scribble_ensure_cycle_surface());
             texture_set_stage(_u_sCycle, _texture);

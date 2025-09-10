@@ -3,16 +3,16 @@ function scribble_refresh_everything()
 {
     if (__SCRIBBLE_DEBUG) __scribble_trace("Refreshing everything");
     
-    with(__scribble_system().__cache_state)
+    with(__scribble_system())
     {
-        var _array = __ecache_weak_array;
+        var _array = __elementWeakArray;
         var _i = 0;
         repeat(array_length(_array))
         {
-            var _weak_ref = _array[_i];
-            if (weak_ref_alive(_weak_ref))
+            var _weakRef = _array[_i];
+            if (weak_ref_alive(_weakRef))
             {
-                _weak_ref.ref.refresh();
+                _weakRef.ref.refresh();
                 ++_i;
             }
             else

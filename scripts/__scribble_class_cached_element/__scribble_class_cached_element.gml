@@ -1,35 +1,101 @@
 // Feather disable all
 
-/// @param string
+/// @param text
 /// @param uniqueID
 
-function __scribble_class_cached_element(_string, _unique_id) : __scribble_class_element_parent(_string) constructor
+function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_element_parent(_text) constructor
 {
-    static __ecache_array      = __scribble_system().__cache_state.__ecache_array;
-    static __ecache_dict       = __scribble_system().__cache_state.__ecache_dict;
-    static __ecache_weak_array = __scribble_system().__cache_state.__ecache_weak_array;
-    static __ecache_name_array = __scribble_system().__cache_state.__ecache_name_array;
+    __uniqueID = _uniqueID;
     
-    
-    
-    __unique_id  = _unique_id;
-    __cache_name = ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_unique_id) + ":")) + _string;
-    
-    if (__SCRIBBLE_DEBUG) __scribble_trace("Caching element \"" + __cache_name + "\"");
-    
-    //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-    var _weak = __ecache_dict[$ __cache_name];
-    if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
+    __weakRef = weak_ref_create(self);
+    with(__weakRef)
     {
-        __scribble_trace("Warning! Flushing element \"", __cache_name, "\" due to cache name collision");
-        _weak.ref.flush();
+        __cacheName = ((_uniqueID == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_uniqueID) + ":")) + _text;
+        __flushed   = false;
+        __model     = undefined;
+        
+        __AddToCache();
+        
+        __gcTimeSource = time_source_create(time_source_global, random_range(0.5, 2), time_source_units_seconds,
+                                            function()
+                                            {
+                                                if (not weak_ref_alive(self))
+                                                {
+                                                    __Flush();
+                                                }
+                                            }, [], -1);
+        time_source_start(__gcTimeSource);
+        
+        
+        
+        __Flush = function()
+        {
+            if (__flushed) return;
+            
+            if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(__cacheName) + "\"");
+            
+            //Get rid of our model
+            if (is_struct(__model))
+            {
+                __model.__Flush();
+                __model = undefined;
+            }
+            
+            //Remove reference from cache
+            ds_map_delete(__scribble_system().__elementCacheMap, __cacheName);
+            
+            //Set as flushed
+            __flushed = true;
+        }
+        
+        __Refresh = function()
+        {
+            if (__flushed) return undefined;
+            
+            //Get rid of the existing model
+            if (is_struct(__model))
+            {
+                __model.__Flush();
+            }
+            
+            __model = new __scribble_class_model(ref);
+            return __model;
+        }
+        
+        __Overwrite = function()
+        {
+            var _text     = ref.__text;
+            var _uniqueID = ref.__uniqueID;
+            
+            var _newCacheName = ((_uniqueID == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_uniqueID) + ":")) + _text;
+            if (__cacheName != _newCacheName)
+            {
+                __Flush();
+                
+                __flushed = false;
+                __cacheName = _newCacheName;
+                
+                __AddToCache();
+                ref.__modelDirty = true;
+            }
+        }
+        
+        __AddToCache = function()
+        {
+            //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
+            var _elementCacheMap = __scribble_system().__elementCacheMap;
+            
+            var _weak = _elementCacheMap[? __cacheName];
+            if ((_weak != undefined) && weak_ref_alive(_weak) && (not _weak.__flushed))
+            {
+                __scribble_trace("Warning! Flushing element \"", __cacheName, "\" due to cache name collision");
+                _weak.__Flush();
+            }
+            
+            //Add this text element to the global cache
+            _elementCacheMap[? __cacheName] = self;
+        }
     }
-    
-    //Add this text element to the global cache
-    __ecache_dict[$ __cache_name] = weak_ref_create(self);
-    array_push(__ecache_array, self);
-    array_push(__ecache_weak_array, weak_ref_create(self));
-    array_push(__ecache_name_array, __cache_name);
     
     
     
@@ -62,7 +128,7 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
         __SetRevealUniforms(_revealIndex);
         
         //...aaaand set the matrix
-        var _old_matrix = matrix_get(matrix_world);
+        var _old_matrix = matrix_get(matrix_world); //FIXME - Use a matrix stack here?
         var _matrix = matrix_multiply(__update_matrix(_model, _x, _y), _old_matrix);
         matrix_set(matrix_world, _matrix);
         
@@ -76,68 +142,16 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
     }
     
-    static flush = function()
-    {
-        //Don't forget to update scribble_flush_everything() if you change anything here!
-        
-        if (__flushed) return undefined;
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(__cache_name) + "\"");
-        
-        //Get rid of our model
-        if (is_struct(__model))
-        {
-            __model.__Flush();
-        }
-        
-        //Remove reference from cache
-        variable_struct_remove(__ecache_dict, __cache_name);
-        
-        var _array = __ecache_array;
-        var _i = 0;
-        repeat(array_length(_array))
-        {
-            if (_array[_i] == self)
-            {
-                array_delete(_array, _i, 1);
-            }
-            else
-            {
-                ++_i;
-            }
-        }
-        
-        //Set as flushed
-        __flushed = true;
-    }
+    flush = __weakRef.__Flush;
     
     /// @param string
     /// @param [uniqueID]
-    static overwrite = function(_text, _unique_id = __unique_id)
+    static overwrite = function(_text, _uniqueID = __uniqueID)
     {
-        __text      = _text;
-        __unique_id = _unique_id;
+        __text     = _text;
+        __uniqueID = _uniqueID;
         
-        var _new_cache_name = ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_unique_id) + ":")) + __text;
-        if (__cache_name != _new_cache_name)
-        {
-            flush();
-            __flushed = false;
-            
-            __modelDirty = true;
-            __cache_name = _new_cache_name;
-            
-            var _weak = __ecache_dict[$ __cache_name];
-            if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
-            {
-                __scribble_trace("Warning! Flushing element \"", __cache_name, "\" due to cache name collision (try choosing a different unique ID)");
-                _weak.ref.flush();
-            }
-            
-            //Add this text element to the global cache
-            __ecache_dict[$ __cache_name] = weak_ref_create(self);
-            array_push(__ecache_array, self);
-            array_push(__ecache_name_array, __cache_name);
-        }
+        __weakRef.__Overwrite();
         
         return self;
     }

@@ -192,13 +192,11 @@ function __scribble_system(_calledFromInitialize = false)
             __sound_whitelist_map:  ds_map_create(),
         };
         
+        __elementWeakArray = [];
+        __elementCacheMap  = ds_map_create();
+        
         //Contains state information for the Scribble cache
         __cache_state = {
-            __ecache_dict:       {},
-            __ecache_array:      [],
-            __ecache_weak_array: [],
-            __ecache_name_array: [],
-            
             __gc_vbuff_refs: [],
             __gc_vbuff_ids:  [],
             

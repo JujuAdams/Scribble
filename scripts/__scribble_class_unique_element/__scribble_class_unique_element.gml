@@ -4,6 +4,58 @@
 
 function __scribble_class_unique_element(_string) : __scribble_class_element_parent(_string) constructor
 {
+    __weakRef = weak_ref_create(self);
+    with(__weakRef)
+    {
+        __flushed = false;
+        __model   = undefined;
+        
+        __gcTimeSource = time_source_create(time_source_global, random_range(0.5, 2), time_source_units_seconds,
+                                            function()
+                                            {
+                                                if (not weak_ref_alive(self))
+                                                {
+                                                    __Flush();
+                                                }
+                                            }, [], -1);
+        time_source_start(__gcTimeSource);
+        
+        
+        
+        __Flush = function()
+        {
+            if (__flushed) return;
+            
+            if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(__cacheName) + "\"");
+            
+            //Get rid of our model
+            if (is_struct(__model))
+            {
+                __model.__Flush();
+                __model = undefined;
+            }
+            
+            //Set as flushed
+            __flushed = true;
+        }
+        
+        __Refresh = function()
+        {
+            if (__flushed) return undefined;
+            
+            //Get rid of the existing model
+            if (is_struct(__model))
+            {
+                __model.__Flush();
+            }
+            
+            __model = new __scribble_class_model(ref);
+            return __model;
+        }
+    }
+    
+    
+    
     /// @param x
     /// @param y
     static draw = function(_x, _y)
@@ -48,27 +100,10 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
     }
     
-    static flush = function()
-    {
-        //Don't forget to update scribble_flush_everything() if you change anything here!
-        
-        if (__flushed) return undefined;
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing unique element ", string(ptr(self)));
-        
-        //Get rid of our model
-        if (is_struct(__model))
-        {
-            __model.__Flush();
-            __model = undefined;
-        }
-        
-        //Set as flushed
-        __flushed = true;
-    }
+    flush = __weakRef.__Flush;
     
     /// @param string
-    /// @param [uniqueID_UNUSED]
-    static overwrite = function(_text, _unique_id_UNUSED)
+    static overwrite = function(_text)
     {
         if (__text != _text)
         {

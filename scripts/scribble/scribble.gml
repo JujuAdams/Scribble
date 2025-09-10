@@ -6,7 +6,7 @@
 /// @param {String}  string      The string to parse and, eventually, draw
 /// @param {Any}     [uniqueID]  A unique identifier that can be used to distinguish this occurrence of the input string from other occurrences. Only necessary when you might be drawing the same string at the same time with different animation states
 
-function scribble(_string, _unique_id = undefined)
+function scribble(_string, _uniqueID = undefined)
 {
     if (is_struct(_string) && (is_instanceof(_string, __scribble_class_cached_element) || is_instanceof(_string, __scribble_class_unique_element)))
     {
@@ -14,12 +14,12 @@ function scribble(_string, _unique_id = undefined)
         return;
     }
     
-    static _ecache_dict = __scribble_system().__cache_state.__ecache_dict;
+    static _elementCacheMap = __scribble_system().__elementCacheMap;
     
-    var _weak = _ecache_dict[$ ((_unique_id == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_unique_id) + ":")) + string(_string)];
-    if ((_weak == undefined) || !weak_ref_alive(_weak) || _weak.ref.__flushed)
+    var _weak = _elementCacheMap[? ((_uniqueID == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_uniqueID) + ":")) + string(_string)];
+    if ((_weak == undefined) || (not weak_ref_alive(_weak)) || _weak.__flushed)
     {
-        return new __scribble_class_cached_element(string(_string), _unique_id);
+        return new __scribble_class_cached_element(string(_string), _uniqueID);
     }
     else
     {

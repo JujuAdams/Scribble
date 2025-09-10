@@ -10,16 +10,6 @@ function scribble_flush_everything()
     
     with(__scribble_system().__cache_state)
     {
-        //Flush elements
-        var _i = 0;
-        repeat(array_length(__ecache_array))
-        {
-            __ecache_array[_i].flush();
-            ++_i;
-        }
-        
-        
-        
         //Destroy all vertex buffers
         var _i = 0;
         repeat(array_length(__gc_vbuff_ids))
@@ -46,17 +36,23 @@ function scribble_flush_everything()
         if (__SCRIBBLE_DEBUG) __scribble_trace("Clearing glyph grid cache");
         array_resize(__gc_grid_refs, 0);
         array_resize(__gc_grid_ids,  0);
-        
-        
-        
-        var _names_array = variable_struct_get_names(__ecache_dict);
+    }
+    
+    with(__scribble_system())
+    {
+        var _array = __elementWeakArray;
         var _i = 0;
-        repeat(array_length(_names_array))
+        repeat(array_length(_array))
         {
-            variable_struct_remove(__ecache_dict, _names_array[_i]);
+            var _weakRef = _array[_i];
+            if (weak_ref_alive(_weakRef))
+            {
+                _weakRef.__Flush();
+            }
+            
             ++_i;
         }
-        array_resize(__ecache_name_array, 0);
-        array_resize(__ecache_array, 0);
+        
+        array_resize(_array, 0);
     }
 }

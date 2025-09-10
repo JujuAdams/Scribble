@@ -9,7 +9,7 @@ function __scribble_class_model(_element) constructor
     
     
     
-    if (__SCRIBBLE_DEBUG) __scribble_trace("Caching model \"", __cache_name, "\"");
+    if (__SCRIBBLE_DEBUG) __scribble_trace("Caching model \"", __cacheName, "\"");
     
     __last_drawn = __scribble_state.__frames;
     __frozen     = undefined;
@@ -124,7 +124,7 @@ function __scribble_class_model(_element) constructor
     
     static __submit = function(_page, _double_draw)
     {
-        if (__flushed) return undefined;
+        if (__flushed) return;
         
         __last_drawn = __scribble_state.__frames;
         
@@ -148,18 +148,16 @@ function __scribble_class_model(_element) constructor
     
     static __Flush = function()
     {
-        if (__flushed) return undefined;
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing model \"" + string(__cache_name) + "\"");
+        if (__flushed) return;
+        if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing model \"" + string(__cacheName) + "\"");
         
         __reset();
-        
-        //Set as __flushed
         __flushed = true;
     }
     
     static __reset = function()
     {
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Resetting model \"" + string(__cache_name) + "\"");
+        if (__SCRIBBLE_DEBUG) __scribble_trace("Resetting model \"" + string(__cacheName) + "\"");
         
         //Flush our pages
         var _i = 0;
