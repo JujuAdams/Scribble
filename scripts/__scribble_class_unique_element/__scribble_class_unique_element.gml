@@ -2,7 +2,7 @@
 
 /// @param string
 
-function __scribble_class_unique_element(_string) : __scribble_class_shared_element(_string) constructor
+function __scribble_class_unique_element(_string) : __scribble_class_element_parent(_string) constructor
 {
     /// @param x
     /// @param y
