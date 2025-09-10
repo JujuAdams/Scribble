@@ -966,8 +966,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
                                 if (_useGlyphData && (not __ignoreDelay) && __characterDelay) //Don't check character delay until we're on the first visible character (index=1)
                                 {
                                     //Always delay the last character if we find events to execute at the end of the page
-                                    if ((_foundEventsCount > 0)
-                                    ||  (__typistEventRevealIndex < (SCRIBBLE_DELAY_LAST_CHARACTER? _pageRevealCount : (_pageRevealCount-1))))
+                                    if ((__typistEventRevealIndex < _pageRevealCount-1) || (_foundEventsCount > 0))
                                     {
                                         var _glyph_ord = _pageData.__glyph_grid[# __typistEventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
                                         var _delay = __characterDelayDict[$ _glyph_ord] ?? 0;

@@ -43,17 +43,14 @@
 #macro SCRIBBLE_SHRINK_INLINE_SURFACES  false
 
 //Whether to automatically shrink textures to fit the height of the currently set font.
-#macro SCRIBBLE_SHRINK_INLINE_TEXTURES  false  
+#macro SCRIBBLE_SHRINK_INLINE_TEXTURES  false
 
 //Whether to adjust the horizontal distance between glyphs depending on special per-font rules.
 #macro SCRIBBLE_USE_KERNING  true
 
 //Bilinear filtering state to force for inline sprite (and surfaces too). Set to `undefined` to use
-//the current global bilinear filtering state.
+//the global bilinear filtering state at the time the text element is drawn.
 #macro SCRIBBLE_SPRITE_BILINEAR_FILTERING  undefined
-
-//Whether the last character in a string should trigger a per-character delay.
-#macro SCRIBBLE_DELAY_LAST_CHARACTER  false
 
 //Whether to allow use of `scribble_font_set_*align_offset()`. Set this macro to false for a slight
 //performance improvement.
