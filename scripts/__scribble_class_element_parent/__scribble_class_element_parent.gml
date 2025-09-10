@@ -915,7 +915,7 @@ function __scribble_class_element_parent(_string) constructor
         }
         
         var _model = __get_model(true);
-        if (!is_struct(_model))
+        if (not is_struct(_model))
         {
             //No extant model, return an empty bounding box
             return {
