@@ -1,11 +1,11 @@
 if (keyboard_check_pressed(vk_space))
 {
-    if (typist.get_paused())
+    if (element.get_paused())
     {
-        typist.unpause();    
+        element.unpause();    
     }
     else
     {
-        typist.skip_to_pause();    
+        element.skip_to_pause();    
     }
 }
