@@ -45,7 +45,7 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
         }
         
         //Get our model, and create one if needed
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         
         //If enough time has elapsed since we drew this element then update our animation time
@@ -83,6 +83,12 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
         if (__flushed) return undefined;
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(__cache_name) + "\"");
         
+        //Get rid of our model
+        if (is_struct(__model))
+        {
+            __model.__Flush();
+        }
+        
         //Remove reference from cache
         variable_struct_remove(__ecache_dict, __cache_name);
         
@@ -100,7 +106,7 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
             }
         }
         
-        //Set as __flushed
+        //Set as flushed
         __flushed = true;
     }
     
@@ -117,7 +123,7 @@ function __scribble_class_cached_element(_string, _unique_id) : __scribble_class
             flush();
             __flushed = false;
             
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __cache_name = _new_cache_name;
             
             var _weak = __ecache_dict[$ __cache_name];

@@ -1,32 +1,15 @@
 // Feather disable all
 
-/// @param modelCacheName
 /// @param element
 
-function __scribble_class_model(_model_cache_name, _element) constructor
+function __scribble_class_model(_element) constructor
 {
-    static __scribble_state    = __scribble_system().__state;
-    static __mcache_dict       = __scribble_system().__cache_state.__mcache_dict;
-    static __mcache_name_array = __scribble_system().__cache_state.__mcache_name_array;
-    static _generator_state    = __scribble_system().__generator_state;
-    
-    __cache_name = _model_cache_name;
+    static __scribble_state = __scribble_system().__state;
+    static _generator_state = __scribble_system().__generator_state;
     
     
     
     if (__SCRIBBLE_DEBUG) __scribble_trace("Caching model \"", __cache_name, "\"");
-    
-    //Defensive programming to prevent memory leaks when accidentally rebuilding a model for a given cache name
-    var _weak = __mcache_dict[$ __cache_name];
-    if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
-    {
-        __scribble_trace("Warning! Rebuilding model \"", __cache_name, "\"");
-        _weak.ref.__flush();
-    }
-    
-    //Add this model to the global cache
-    __mcache_dict[$ __cache_name] = weak_ref_create(self);
-    array_push(__mcache_name_array, __cache_name);
     
     __last_drawn = __scribble_state.__frames;
     __frozen     = undefined;
@@ -51,16 +34,16 @@ function __scribble_class_model(_model_cache_name, _element) constructor
     __wrap_no_pages   = _element.__wrap_no_pages;
     __wrap_max_scale  = _element.__wrap_max_scale;
     
-    __bezier_array    = _element.__bezier_array;
+    __bezier_array = _element.__bezier_array;
     
     __bidi_hint           = _element.__bidi_hint;
     __ignore_command_tags = _element.__ignore_command_tags;
     __randomize_animation = _element.__randomize_animation;
     
-    __padding_l       = _element.__padding_l;
-    __padding_t       = _element.__padding_t;
-    __padding_r       = _element.__padding_r;
-    __padding_b       = _element.__padding_b;
+    __padding_l = _element.__padding_l;
+    __padding_t = _element.__padding_t;
+    __padding_r = _element.__padding_r;
+    __padding_b = _element.__padding_b;
     
     __allow_text_getter       = _element.__allow_text_getter;
     __allow_glyph_data_getter = _element.__allow_glyph_data_getter;
@@ -163,17 +146,12 @@ function __scribble_class_model(_model_cache_name, _element) constructor
         }
     }
     
-    static __flush = function()
+    static __Flush = function()
     {
-        //Don't forget to update scribble_flush_everything() if you change anything here!
-        
         if (__flushed) return undefined;
         if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing model \"" + string(__cache_name) + "\"");
         
         __reset();
-        
-        //Remove reference from cache
-        variable_struct_remove(__mcache_dict, __cache_name);
         
         //Set as __flushed
         __flushed = true;
@@ -187,7 +165,7 @@ function __scribble_class_model(_model_cache_name, _element) constructor
         var _i = 0;
         repeat(__pages)
         {
-            __pages_array[_i].__flush();
+            __pages_array[_i].__Flush();
             ++_i;
         }
         

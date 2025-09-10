@@ -13,10 +13,6 @@ function __scribble_tick()
     static _ecache_weak_array = _cache_state.__ecache_weak_array;
     static _ecache_name_array = _cache_state.__ecache_name_array;
     
-    static _mcache_name_index = 0;
-    static _mcache_dict       = _cache_state.__mcache_dict;
-    static _mcache_name_array = _cache_state.__mcache_name_array;
-        
     static _vbuff_index   = 0;
     static _gc_vbuff_refs = _cache_state.__gc_vbuff_refs;
     static _gc_vbuff_ids  = _cache_state.__gc_vbuff_ids;
@@ -124,38 +120,6 @@ function __scribble_tick()
             if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Removing element \"", _name, "\" from cache");
             variable_struct_remove(_ecache_dict, _name);
             array_delete(_ecache_name_array, _ecache_name_index, 1);
-        }
-    }
-    
-    #endregion
-    
-    
-    
-    #region Check through text models to clean anything up
-    
-    var _size = array_length(_mcache_name_array);
-    _mcache_name_index = min(_mcache_name_index, _size);
-    
-    repeat(max(__SCRIBBLE_GC_STEP_SIZE, ceil(sqrt(_size)))) //Choose a step size that scales with the size of the cache, but doesn't get too big
-    {
-        _mcache_name_index--;
-        if (_mcache_name_index < 0)
-        {
-            _mcache_name_index += array_length(_mcache_name_array);
-            if (_mcache_name_index < 0)
-            {
-                _mcache_name_index = 0;
-                break;
-            }
-        }
-        
-        var _name = _mcache_name_array[_mcache_name_index];
-        var _weak = _mcache_dict[$ _name];
-        if ((_weak == undefined) || !weak_ref_alive(_weak))
-        {
-            if (__SCRIBBLE_VERBOSE_GC) __scribble_trace("Removing model \"", _name, "\" from cache");
-            variable_struct_remove(_mcache_dict, _name);
-            array_delete(_mcache_name_array, _mcache_name_index, 1);
         }
     }
     

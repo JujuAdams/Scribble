@@ -13,8 +13,7 @@ function __scribble_class_element_parent(_string) constructor
     
     __flushed = false;
     
-    __model_cache_name_dirty = true;
-    __model_cache_name = undefined;
+    __modelDirty = true;
     __model = undefined;
     
     __last_drawn = __scribble_state.__frames;
@@ -115,8 +114,6 @@ function __scribble_class_element_parent(_string) constructor
     
     
     
-    
-    
     __bbox_dirty       = true;
     __bbox_matrix      = matrix_build_identity();
     __bbox_raw_width   = 1;
@@ -173,7 +170,7 @@ function __scribble_class_element_parent(_string) constructor
         
         if (_font_name != __starting_font)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __starting_font = _font_name;
         }
         
@@ -188,7 +185,7 @@ function __scribble_class_element_parent(_string) constructor
             var _colour = __scribble_process_colour(_in_colour);
             if ((_colour != undefined) && (_colour >= 0) && (_colour != __starting_colour))
             {
-                __model_cache_name_dirty = true;
+                __modelDirty = true;
                 __starting_colour = _colour & 0xFFFFFF;
             }
         }
@@ -224,7 +221,7 @@ function __scribble_class_element_parent(_string) constructor
         
         if (_halign != __starting_halign)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __bbox_dirty             = true;
             
             __starting_halign = _halign;
@@ -232,7 +229,7 @@ function __scribble_class_element_parent(_string) constructor
         
         if (_valign != __starting_valign)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __bbox_dirty             = true;
             
             __starting_valign = _valign;
@@ -329,7 +326,7 @@ function __scribble_class_element_parent(_string) constructor
         if ((__pre_scale != _scale)
         ||  (__spritesDontScale != _spritesDontScale))
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __bbox_dirty             = true;
             
             __pre_scale = _scale;
@@ -378,7 +375,7 @@ function __scribble_class_element_parent(_string) constructor
         ||  __wrap_no_pages
         ||  (__wrap_max_scale != 1))
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
             
@@ -406,7 +403,7 @@ function __scribble_class_element_parent(_string) constructor
         ||  !__wrap_no_pages
         ||  (_wrap_max_scale  != __wrap_max_scale))
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __matrix_dirty           = true; //By changing the .fit_to_box() properties we'll very likely change the __fit_scale variable used to shape text in the world matrix
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
@@ -431,7 +428,7 @@ function __scribble_class_element_parent(_string) constructor
         ||  __wrap_no_pages
         ||  (__wrap_max_scale != 1))
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
             
@@ -451,7 +448,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         if (_height != __line_height)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __line_height = _height;
         }
         
@@ -463,7 +460,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         if (_spacing != __line_spacing)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __line_spacing = _spacing;
         }
         
@@ -478,7 +475,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         if ((_l != __padding_l) || (_t != __padding_t) || (_r != __padding_r) || (_b != __padding_b))
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __matrix_dirty           = true;
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
@@ -497,7 +494,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         if (__visual_bboxes != _state)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __matrix_dirty           = true;
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
@@ -552,7 +549,7 @@ function __scribble_class_element_parent(_string) constructor
         
         if (!array_equals(__bezier_array, _bezier_array))
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __bezier_array = _bezier_array;
             __bezier_using = true;
         }
@@ -573,7 +570,7 @@ function __scribble_class_element_parent(_string) constructor
         
         if (__bidi_hint != _new_bidi_hint)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __bidi_hint = _new_bidi_hint;
         }
         
@@ -588,7 +585,7 @@ function __scribble_class_element_parent(_string) constructor
     
     static region_detect = function(_element_x, _element_y, _pointer_x, _pointer_y)
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         
         var _page         = _model.__pages_array[__page];
@@ -644,7 +641,7 @@ function __scribble_class_element_parent(_string) constructor
             return;
         }
         
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         
         var _page         = _model.__pages_array[__page];
@@ -685,7 +682,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         static _emptyArray = [];
         
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return _emptyArray;
         
         return _model.__pages_array[__page].__region_array;
@@ -693,7 +690,7 @@ function __scribble_class_element_parent(_string) constructor
     
     static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = scribble_fallback_dot, _image = 0, _color = c_white, _alpha = 1)
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         
         var _page         = _model.__pages_array[__page];
@@ -751,7 +748,7 @@ function __scribble_class_element_parent(_string) constructor
             __bbox_dirty = false;
             var _bbox_matrix = __bbox_matrix;
             
-            var _model = __get_model(true);
+            var _model = __EnsureModel();
             if (!is_struct(_model))
             {
                 _bbox_matrix[@  0] = 1;
@@ -914,7 +911,7 @@ function __scribble_class_element_parent(_string) constructor
             return get_bbox(_x, _y);
         }
         
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (not is_struct(_model))
         {
             //No extant model, return an empty bounding box
@@ -1005,7 +1002,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         var _old_page = __page;
         
-        var _model = __get_model(false);
+        var _model = __EnsureModel();
         if (is_struct(_model))
         {
             if (_page < 0)
@@ -1045,7 +1042,7 @@ function __scribble_class_element_parent(_string) constructor
     
     static get_page_count = function()
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return 0;
         return _model.__get_page_count();
     }
@@ -1063,7 +1060,7 @@ function __scribble_class_element_parent(_string) constructor
     
     static get_wrapped = function()
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return false;
         return _model.__get_wrapped();
     }
@@ -1071,7 +1068,7 @@ function __scribble_class_element_parent(_string) constructor
     /// @param [page]
     static get_text = function(_page = __page)
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return "";
         return _model.__get_text(_page);
     }
@@ -1079,7 +1076,7 @@ function __scribble_class_element_parent(_string) constructor
     /// @param [page]
     static get_line_data = function(_index, _page = __page)
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         return _model.__get_line_data(_index, _page);
     }
@@ -1088,7 +1085,7 @@ function __scribble_class_element_parent(_string) constructor
     /// @param [page]
     static get_glyph_data = function(_index, _page = __page)
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         return _model.__get_glyph_data(_index, _page);
     }
@@ -1096,7 +1093,7 @@ function __scribble_class_element_parent(_string) constructor
     /// @param [page]
     static get_glyph_count = function(_page = __page)
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return 0;
         return _model.__get_glyph_count(_page);
     }
@@ -1104,7 +1101,7 @@ function __scribble_class_element_parent(_string) constructor
     /// @param [page]
     static get_line_count = function(_page = __page)
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return 0;
         return _model.__get_line_count(_page);
     }
@@ -1144,7 +1141,7 @@ function __scribble_class_element_parent(_string) constructor
     
     static is_animated = function()
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return false;
         
         return _model.__has_animation;
@@ -1209,7 +1206,7 @@ function __scribble_class_element_parent(_string) constructor
      /// @param freeze
     static build = function(_freeze)
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (_freeze && is_struct(_model))
         {
             _model.__Freeze();
@@ -1218,25 +1215,19 @@ function __scribble_class_element_parent(_string) constructor
     
     static refresh = function()
     {
-        var _model = __get_model(false);
-        if (_model != undefined)
-        {
-            _model.__flush();
-            
-            __model_cache_name_dirty = true;
-            __matrix_dirty           = true;
-            __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
-            
-            __get_model(true);
-        }
+        __modelDirty        = true;
+        __matrix_dirty       = true;
+        __bbox_dirty         = true;
+        __scale_to_box_dirty = true;
+        
+        __EnsureModel();
         
         return self;
     }
     
     static flush = function()
     {
-        //Unimplemented
+        //Unimplemented. Please see child constructors
     }
     
     #endregion
@@ -1254,7 +1245,7 @@ function __scribble_class_element_parent(_string) constructor
                 __scribble_error("Preprocessor functions must be stored in scripts in global scope");
             }
             
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __preprocessorFunc = _function;
         }
         
@@ -1265,7 +1256,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         static _empty_array = [];
         
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (not is_struct(_model)) return _empty_array;
         
         var _page = _model.__pages_array[_page_index];
@@ -1321,7 +1312,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         if (__ignore_command_tags != _state)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __ignore_command_tags = _state;
         }
         
@@ -1332,7 +1323,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         if (__randomize_animation != _state)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __randomize_animation = _state;
         }
         
@@ -1343,7 +1334,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         if (not __allow_text_getter)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __allow_text_getter = true;
         }
         
@@ -1354,7 +1345,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         if (not __allow_glyph_data_getter)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __allow_glyph_data_getter = true;
         }
         
@@ -1365,7 +1356,7 @@ function __scribble_class_element_parent(_string) constructor
     {
         if (not __allow_line_data_getter)
         {
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
             __allow_line_data_getter = true;
         }
         
@@ -1425,73 +1416,27 @@ function __scribble_class_element_parent(_string) constructor
     
     #region Private Methods
     
-    static __get_model = function(_allow_create)
+    static __EnsureModel = function(_allowCreate = true)
     {
-        static _mcache_dict = __scribble_system().__cache_state.__mcache_dict;
-        
         if (__flushed || (__text == ""))
         {
             __model = undefined;
         }
-        else
+        else if (__modelDirty)
         {
-            if (__model_cache_name_dirty)
+            if (is_struct(__model))
             {
-                __model_cache_name_dirty = false;
-                __bbox_dirty             = true;
-                __scale_to_box_dirty     = true; //The dimensions of the text element might change as a result of a model change
-                
-                static _buffer = __scribble_system().__buffer_a;
-                buffer_seek(_buffer, buffer_seek_start, 0);
-                buffer_write(_buffer, buffer_text, string(__text                   )); buffer_write(_buffer, buffer_u8, 0x3A); //colon
-                buffer_write(_buffer, buffer_text, string(__starting_font          )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__starting_colour        )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__starting_halign        )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__starting_valign        )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__pre_scale              )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__spritesDontScale       )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__line_height            )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__line_spacing           )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_apply             )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_max_width  - (__padding_l + __padding_r))); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_max_height - (__padding_t + __padding_b))); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_per_char          )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_no_pages          )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__wrap_max_scale         )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[0]        )); buffer_write(_buffer, buffer_u8, 0x2C); //comma
-                buffer_write(_buffer, buffer_text, string(__bezier_array[1]        )); buffer_write(_buffer, buffer_u8, 0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[2]        )); buffer_write(_buffer, buffer_u8, 0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[3]        )); buffer_write(_buffer, buffer_u8, 0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[4]        )); buffer_write(_buffer, buffer_u8, 0x2C);
-                buffer_write(_buffer, buffer_text, string(__bezier_array[5]        )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__bidi_hint              )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__ignore_command_tags    )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__randomize_animation    )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__allow_text_getter      )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__allow_glyph_data_getter)); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__allow_line_data_getter )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__visual_bboxes          )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(__revealType             )); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_text, string(ptr(__preprocessorFunc ?? pointer_null))); buffer_write(_buffer, buffer_u8, 0x3A);
-                buffer_write(_buffer, buffer_u8, 0x00);
-                buffer_seek(_buffer, buffer_seek_start, 0);
-                
-                __model_cache_name = buffer_read(_buffer, buffer_string);
+                __model.__Flush();
+                __model = undefined;
             }
             
-            var _weak = _mcache_dict[$ __model_cache_name];
-            if ((_weak != undefined) && weak_ref_alive(_weak) && !_weak.ref.__flushed)
+            __bbox_dirty         = true;
+            __scale_to_box_dirty = true; //The dimensions of the text element might change as a result of a model change
+            
+            if (_allowCreate)
             {
-                __model = _weak.ref;
-            }
-            else if (_allow_create)
-            {
-                //Create a new model if required
-                __model = new __scribble_class_model(__model_cache_name, self);
-            }
-            else
-            {
-                __model = undefined;
+                __modelDirty = false;
+                __model = new __scribble_class_model(self);
             }
         }
         
@@ -1658,7 +1603,7 @@ function __scribble_class_element_parent(_string) constructor
         if (!__scale_to_box_dirty) return;
         __scale_to_box_dirty = false;
         
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         
         var _xscale = 1.0;

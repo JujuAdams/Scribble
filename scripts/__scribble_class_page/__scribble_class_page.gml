@@ -247,7 +247,7 @@ function __scribble_class_page() constructor
         __frozen = false;
     }
     
-    static __flush = function()
+    static __Flush = function()
     {
         //Don't forget to update scribble_flush_everything() if you change anything here!
         

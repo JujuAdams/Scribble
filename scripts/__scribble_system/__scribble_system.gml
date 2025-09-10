@@ -194,9 +194,6 @@ function __scribble_system(_calledFromInitialize = false)
         
         //Contains state information for the Scribble cache
         __cache_state = {
-            __mcache_dict:       {},
-            __mcache_name_array: [],
-            
             __ecache_dict:       {},
             __ecache_array:      [],
             __ecache_weak_array: [],

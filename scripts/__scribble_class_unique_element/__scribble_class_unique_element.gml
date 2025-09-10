@@ -15,7 +15,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         }
         
         //Get our model, and create one if needed
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         
         //If enough time has elapsed since we drew this element then update our animation time
@@ -50,6 +50,19 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     
     static flush = function()
     {
+        //Don't forget to update scribble_flush_everything() if you change anything here!
+        
+        if (__flushed) return undefined;
+        if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing unique element ", string(ptr(self)));
+        
+        //Get rid of our model
+        if (is_struct(__model))
+        {
+            __model.__Flush();
+            __model = undefined;
+        }
+        
+        //Set as flushed
         __flushed = true;
     }
     
@@ -60,7 +73,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         if (__text != _text)
         {
             __text = _text;
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
         }
         
         return self;
@@ -75,6 +88,8 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
             if (_carrySkip) __typistSkip = true;
         }
         
+        //FIXME - Set typist head here
+        
         return __set_page(_page);
     }
     
@@ -83,7 +98,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         if (__revealType != _state)
         {
             __revealType = _state;
-            __model_cache_name_dirty = true;
+            __modelDirty = true;
         }
         
         return self;
@@ -450,7 +465,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     
     static get_reveal_count = function()
     {
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (not is_struct(_model)) return 0;
         
         var _pages_array = _model.__get_page_array();
@@ -787,7 +802,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE) return;
         
         //Find the model from the last element
-        var _model = __get_model(true);
+        var _model = __EnsureModel();
         if (not is_struct(_model)) return;
         
         //Get page data
@@ -1081,7 +1096,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         var _reveal_max = 0;
         if (__typistBackwards)
         {
-            var _model = __get_model(true);
+            var _model = __EnsureModel();
             if (not is_struct(_model)) return;
             
             var _pages_array = _model.__get_page_array();
