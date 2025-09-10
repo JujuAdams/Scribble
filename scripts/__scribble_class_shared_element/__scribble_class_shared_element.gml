@@ -4,6 +4,7 @@
 
 function __scribble_class_shared_element(_string) constructor
 {
+    static _system = __scribble_system();
     static __scribble_state = __scribble_system().__state;
     
     

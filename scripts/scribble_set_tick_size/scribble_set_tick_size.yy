@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scribble_set_tick_size",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scribble_set_tick_size",
+  "parent":{
+    "name":"Miscellaneous",
+    "path":"folders/Scribble/Miscellaneous.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

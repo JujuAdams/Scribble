@@ -111,11 +111,7 @@ function __scribble_system(_calledFromInitialize = false)
         
         try
         {
-            time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
-            {
-                //We use an anonymous function here because directly calling __scribble_tick() fails on HTML5
-                __scribble_tick();
-            }, [], -1));
+            time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, method(self, __scribble_tick), [], -1));
         }
         catch(_error)
         {
@@ -173,6 +169,9 @@ function __scribble_system(_calledFromInitialize = false)
         
         //Contains animation parameters. See scribble_anim_reset()
         __anim_properties = array_create(__SCRIBBLE_ANIM_SIZE, undefined);
+        
+        __userTickSize = undefined;
+        __tickSize = 1;
         
         //Contains global state information that is shared between various features
         __state = {

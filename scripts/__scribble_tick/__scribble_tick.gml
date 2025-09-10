@@ -25,8 +25,14 @@ function __scribble_tick()
     static _gc_grid_refs = _cache_state.__gc_grid_refs;
     static _gc_grid_ids  = _cache_state.__gc_grid_ids;
     
+    if (__userTickSize == undefined)
+    {
+        __tickSize = clamp(delta_time / 16667, 1/5, 5);
+    }
+    
     _scribble_state.__frames++;
     var _frames = _scribble_state.__frames;
+    
     
     
     

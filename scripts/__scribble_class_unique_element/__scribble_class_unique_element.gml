@@ -27,7 +27,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
         //If enough time has elapsed since we drew this element then update our animation time
         if (__last_drawn < __scribble_state.__frames)
         {
-            __animation_time += __animation_speed*SCRIBBLE_TICK_SIZE;
+            __animation_time += __animation_speed*_system.__tickSize;
             if (SCRIBBLE_SAFELY_WRAP_TIME) __animation_time = __animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
@@ -777,7 +777,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_shared_elem
         if (__scribble_state.__frames <= __prevTickFrame) return undefined;
         __prevTickFrame = __scribble_state.__frames;
         
-        return __TypistMove(_inFunctionScope, __typistSpeed*__typistInlineSpeed*SCRIBBLE_TICK_SIZE);
+        return __TypistMove(_inFunctionScope, __typistSpeed*__typistInlineSpeed*_system.__tickSize);
     }
     
     static __TypistMove = function(_inFunctionScope, _delta)
