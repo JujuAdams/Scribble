@@ -239,10 +239,25 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     
     static set_position = function(_value)
     {
-        var _delta = _value - __windowArray[@ __windowIndex];
-        if (_delta > 0)
+        if (_value >= __typistHeadLimitArray[0])
         {
-            __TypistMove(other, _delta);
+            //Must match `__SCRIBBLE_HEAD_COUNT`
+            __typistHeadArray[@ 0] = _value + __typistSmoothness;
+            __typistHeadArray[@ 1] = 0;
+            __typistHeadArray[@ 2] = 0;
+            
+            __typistHeadLimitArray[@ 1] = 0;
+            __typistHeadLimitArray[@ 2] = 0;
+        }
+        else
+        {
+            //Must match `__SCRIBBLE_HEAD_COUNT`
+            __typistHeadArray[@ 0] = _value - __typistSmoothness;
+            __typistHeadArray[@ 1] = _value;
+            __typistHeadArray[@ 2] = 0;
+            
+            __typistHeadLimitArray[@ 1] = _value;
+            __typistHeadLimitArray[@ 2] = 0;
         }
         
         return self;
