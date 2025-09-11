@@ -89,7 +89,7 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
         
         __RemoveFromCache = function()
         {
-            static _elementCacheMap = _system.__elementCacheMap;
+            static _elementCacheMap = __scribble_system().__elementCacheMap;
             
             if (weak_ref_alive(self) && (_elementCacheMap[? __cacheName] == ref))
             {
