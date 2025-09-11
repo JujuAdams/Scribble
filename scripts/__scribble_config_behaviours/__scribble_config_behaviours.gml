@@ -56,10 +56,6 @@
 //the global bilinear filtering state at the time the text element is drawn.
 #macro SCRIBBLE_SPRITE_BILINEAR_FILTERING  undefined
 
-//Whether to allow use of `scribble_font_set_*align_offset()`. Set this macro to false for a slight
-//performance improvement.
-#macro SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS  false
-
 //Whether to require explicit whitelisting of sprites (via `scribble_whitelist_sprite()`).
 #macro SCRIBBLE_USE_SPRITE_WHITELIST  false
 

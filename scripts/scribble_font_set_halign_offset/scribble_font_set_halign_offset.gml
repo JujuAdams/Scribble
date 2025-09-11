@@ -6,11 +6,6 @@
 
 function scribble_font_set_halign_offset(_font, _halign, _offset)
 {
-    if (not SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS)
-    {
-        __scribble_error("Please set SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS to <true> to use this feature");
-    }
-    
     if (_halign == "pin_left"  ) _halign = __SCRIBBLE_PIN_LEFT;
     if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
     if (_halign == "pin_center") _halign = __SCRIBBLE_PIN_CENTRE;

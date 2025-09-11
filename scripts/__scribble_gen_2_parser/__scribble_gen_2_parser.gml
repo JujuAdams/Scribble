@@ -1,6 +1,21 @@
 // Feather disable all
+
+#macro __SCRIBBLE_PARSER_POP_ALIGNMENT_OFFSET  if (_glyph_count > _stateAlignOffsetStart)\
+                                               {\
+                                                   if (_stateHAlignOffset != 0)\
+                                                   {\
+                                                       ds_grid_add_region(_glyph_grid, _stateAlignOffsetStart, __SCRIBBLE_GEN_GLYPH_X, _glyph_count-1, __SCRIBBLE_GEN_GLYPH_X, _stateHAlignOffset);\
+                                                   }\
+                                                   if (_stateHAlignOffset != 0)\
+                                                   {\
+                                                       ds_grid_add_region(_glyph_grid, _stateAlignOffsetStart, __SCRIBBLE_GEN_GLYPH_Y, _glyph_count-1, __SCRIBBLE_GEN_GLYPH_Y, _stateVAlignOffset);\
+                                                   }\
+                                                   _stateAlignOffsetStart = _glyph_count;\
+                                               }
+
 #macro __SCRIBBLE_PARSER_PUSH_SCALE  if (_state_scale != 1)\
                                      {\
+                                         __SCRIBBLE_PARSER_POP_ALIGNMENT_OFFSET\
                                          ds_grid_multiply_region(_glyph_grid, _state_scale_start_glyph, __SCRIBBLE_GEN_GLYPH_X, _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE, _state_scale);\ //Covers x, y, width, height, and separation
                                      }\
                                      _state_scale_start_glyph = _glyph_count;
@@ -36,18 +51,11 @@
                                           }\
                                       }\
                                       ;\
-                                      if (SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS)\
-                                      {\
-                                          ;\//TODO - Move this to when setting halign / font
-                                          _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X] += _state_halign_offset;\
-                                          _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y] += _state_valign_offset;\
-                                      }\
-                                      ;\
                                       __SCRIBBLE_PARSER_NEXT_GLYPH
 
-
-
-#macro __SCRIBBLE_PARSER_SET_FONT   var _font_data = __scribble_get_font_data(_font_name);\
+#macro __SCRIBBLE_PARSER_SET_FONT   __SCRIBBLE_PARSER_POP_ALIGNMENT_OFFSET\
+                                    ;\
+                                    var _font_data = __scribble_get_font_data(_font_name);\
                                     _font_data.__ensure_texel_data();\
                                     if (_font_data.__superfont) _font_data.__EnsureAdditionalCharacters();\
                                     if (_font_data.__is_krutidev) __has_devanagari = true;\
@@ -59,10 +67,10 @@
                                     var _font_valign_offset_array = _font_data.__valign_offset_array;\
                                     var _fontLigatureMap          = _font_data.__ligatureMap;\
                                     ;\
-                                    var _state_halign_offset = _font_halign_offset_array[_state_halign];\
-                                    var _state_valign_offset = _font_valign_offset_array[__valign ?? _starting_valign];\
+                                    var _stateHAlignOffset = _font_halign_offset_array[_state_halign];\
+                                    var _stateVAlignOffset = _font_valign_offset_array[__valign ?? _starting_valign];\
                                     ;\
-                                    var _space_data_index = _font_glyphs_map[? 32];\
+                                    var _space_data_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];\
                                     if (_space_data_index == undefined)\
                                     {\
                                         __scribble_error("The space character is missing from font definition for \"", _font_name, "\"");\
@@ -235,8 +243,9 @@ function __scribble_gen_2_parser()
     var _state_scale             = _pre_scale;
     var _state_scale_start_glyph = 0;
     
-    var _state_halign_offset = 0;
-    var _state_valign_offset = 0;
+    var _stateHAlignOffset     = 0;
+    var _stateVAlignOffset     = 0;
+    var _stateAlignOffsetStart = 0;
     
     var _offset_data_array = []; // start glyph, dX, dY
     
@@ -837,8 +846,8 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = __SCRIBBLE_GLYPH_REPL_SURFACE;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
                         
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = _state_halign_offset;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = _state_valign_offset;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = _stateHAlignOffset;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = _stateVAlignOffset;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = _surface_w;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = _surface_h;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _surface_h;
@@ -957,8 +966,8 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = __SCRIBBLE_GLYPH_REPL_TEXTURE;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
                             
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = _state_halign_offset;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = _state_valign_offset;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = _stateHAlignOffset;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = _stateVAlignOffset;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = _tex_w;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = _tex_h;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _tex_h;
@@ -1147,8 +1156,8 @@ function __scribble_gen_2_parser()
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = __SCRIBBLE_GLYPH_REPL_SPRITE;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
                                 
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = _state_halign_offset;
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = _state_valign_offset;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = _stateHAlignOffset;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = _stateVAlignOffset;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = _sprite_w;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = _sprite_h;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _sprite_h;
@@ -1259,7 +1268,7 @@ function __scribble_gen_2_parser()
                     {
                         _state_halign = _new_halign;
                         _new_halign = undefined;
-                        _state_halign_offset = _font_halign_offset_array[_state_halign];
+                        _stateHAlignOffset = _font_halign_offset_array[_state_halign];
                     
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_HALIGN;
                         _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_halign;
@@ -1304,7 +1313,7 @@ function __scribble_gen_2_parser()
                         }
                     
                         _new_valign = undefined;
-                        _state_valign_offset = _font_valign_offset_array[__valign];
+                        _stateVAlignOffset = _font_valign_offset_array[__valign];
                     }
                 }
             }
@@ -1752,8 +1761,6 @@ function __scribble_gen_2_parser()
         }
     }
     
-    __SCRIBBLE_PARSER_PUSH_SCALE;
-    
     //Resolve hanging offsets
     if (_glyph_count > 0)
     {
@@ -1767,6 +1774,8 @@ function __scribble_gen_2_parser()
             ds_grid_add_region(_glyph_grid, _offset_start, __SCRIBBLE_GEN_GLYPH_Y, _glyph_count-1, __SCRIBBLE_GEN_GLYPH_Y, _offset_dy);
         }
     }
+    
+    __SCRIBBLE_PARSER_PUSH_SCALE; //Also pops alignment offset
     
     //Resolve sections
     if ((_sectionCount > 0) && (_glyph_count > _sectionCount))

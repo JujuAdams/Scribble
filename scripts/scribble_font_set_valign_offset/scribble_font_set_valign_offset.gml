@@ -6,11 +6,6 @@
 
 function scribble_font_set_valign_offset(_font, _valign, _offset)
 {
-    if (not SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS)
-    {
-        __scribble_error("Please set SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS to <true> to use this feature");
-    }
-    
     if (_valign == "pin_top"   ) _valign = __SCRIBBLE_PIN_TOP;
     if (_valign == "pin_middle") _valign = __SCRIBBLE_PIN_MIDDLE;
     if (_valign == "pin_bottom") _valign = __SCRIBBLE_PIN_BOTTOM;
