@@ -170,6 +170,15 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
         }
     }
     
+    static __EnsureAdditionalCharacters = function()
+    {
+        if (not ds_map_exists(__glyphs_map, ord(SCRIBBLE_MISSING_CHARACTER)))
+        {
+            __scribble_trace("Couldn't find \"missing character\" glyph data, character code ", ord(SCRIBBLE_MISSING_CHARACTER), " (", SCRIBBLE_MISSING_CHARACTER, ") in font \"", __name, "\"");
+            __glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)] = __glyphs_map[? SCRIBBLE_UNICODE_ZWSP];
+        }
+    }
+    
     static __destroy = function()
     {
         if (__SCRIBBLE_DEBUG) __scribble_trace("Destroying font \"", __name, "\"");

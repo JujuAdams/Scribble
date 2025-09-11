@@ -23,40 +23,33 @@
                                           __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");\
                                           _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
                                       }\
-                                      if (_data_index == undefined)\
+                                      ;\//Add this glyph to our grid by copying from the font's own glyph data grid
+                                      ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE);\
+                                      _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;\
+                                      ;\
+                                      if (SCRIBBLE_USE_KERNING)\
                                       {\
-                                          ;\//This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
-                                          __scribble_trace("Couldn't find \"missing character\" glyph data, character code " + string(ord(SCRIBBLE_MISSING_CHARACTER)) + " (" + string(SCRIBBLE_MISSING_CHARACTER) + ") in font \"" + string(_font_name) + "\"");\
+                                          var _kerning = _font_kerning_map[? ((_glyph_write & 0xFFFF) << 16) | (_glyph_prev & 0xFFFF)];\
+                                          if (_kerning != undefined)\
+                                          {\
+                                              _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_SEPARATION] += _kerning*_glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_SCALE];\
+                                          }\
                                       }\
-                                      else\
+                                      ;\
+                                      if (SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS)\
                                       {\
-                                          ;\//Add this glyph to our grid by copying from the font's own glyph data grid
-                                          ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE);\
-                                          _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;\
-                                          ;\
-                                          if (SCRIBBLE_USE_KERNING)\
-                                          {\
-                                              var _kerning = _font_kerning_map[? ((_glyph_write & 0xFFFF) << 16) | (_glyph_prev & 0xFFFF)];\
-                                              if (_kerning != undefined)\
-                                              {\
-                                                  _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_SEPARATION] += _kerning*_glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_SCALE];\
-                                              }\
-                                          }\
-                                          ;\
-                                          if (SCRIBBLE_USE_FONT_ALIGNMENT_OFFSETS)\
-                                          {\
-                                              ;\//TODO - Move this to when setting halign / font
-                                              _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X] += _state_halign_offset;\
-                                              _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y] += _state_valign_offset;\
-                                          }\
-                                          ;\
-                                          __SCRIBBLE_PARSER_NEXT_GLYPH\
-                                      }
+                                          ;\//TODO - Move this to when setting halign / font
+                                          _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X] += _state_halign_offset;\
+                                          _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y] += _state_valign_offset;\
+                                      }\
+                                      ;\
+                                      __SCRIBBLE_PARSER_NEXT_GLYPH
 
 
 
 #macro __SCRIBBLE_PARSER_SET_FONT   var _font_data = __scribble_get_font_data(_font_name);\
                                     _font_data.__ensure_texel_data();\
+                                    if (_font_data.__superfont) _font_data.__EnsureAdditionalCharacters();\
                                     if (_font_data.__is_krutidev) __has_devanagari = true;\
                                     ;\
                                     var _font_glyph_data_grid     = _font_data.__glyph_data_grid;\

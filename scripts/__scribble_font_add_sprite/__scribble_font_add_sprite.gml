@@ -214,6 +214,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     
     var _space_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];
     _font_data.__height = _font_glyph_data_grid[# _space_index, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
+    _font_data.__EnsureAdditionalCharacters();
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"", _sprite_name, "\" as a spritefont");
     

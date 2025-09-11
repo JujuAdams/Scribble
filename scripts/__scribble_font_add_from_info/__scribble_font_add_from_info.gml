@@ -259,6 +259,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         }
         
         _font_data.__height = _line_height + _sdf_height_offset;
+        _font_data.__EnsureAdditionalCharacters();
         
         //Check to see if this texture has been resized during compile
         var _GM_scaling = _font_info.size / _font_glyph_data_grid[# _space_index, __SCRIBBLE_GLYPH_PROPR_HEIGHT];

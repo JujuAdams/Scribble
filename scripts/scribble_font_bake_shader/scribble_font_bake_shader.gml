@@ -262,4 +262,6 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
     //All texels are automatically valid
     ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, true);
+    
+    _new_font_data.__EnsureAdditionalCharacters();
 }
