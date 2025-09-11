@@ -9,12 +9,12 @@
                                 if (_word_bidi == __SCRIBBLE_BIDI_R2L_ARABIC)\ //Arabic visually groups glyphs together into words
                                 {\
                                     ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_X, abs(_word_width));\
-                                    ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _word_glyph_start);\
+                                    ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _word_glyph_end, _gridRegionWriteMax, _word_glyph_start);\
                                     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_BIDI] = __SCRIBBLE_BIDI_R2L;\ //For the purposes for further text layout, force this bidi to generic R2L
                                 }\
                                 else if (_word_bidi == __SCRIBBLE_BIDI_L2R_DEVANAGARI)\ //Devanagari also visually groups glyphs together into words
                                 {\
-                                    ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _word_glyph_start);\
+                                    ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _word_glyph_end, _gridRegionWriteMax, _word_glyph_start);\
                                 }\
                                 else\
                                 {\
@@ -52,11 +52,15 @@ function __scribble_gen_4_build_words()
         var _glyph_grid   = __glyph_grid;
         var _word_grid    = __word_grid;
         var _glyph_count  = __glyph_count;
+        var _sectionCount = __sectionCount;
         var _overall_bidi = __overall_bidi;
     }
     
-    var _word_reveal  = (__revealType == SCRIBBLE_REVEAL_PER_WORD);
+    var _char_reveal  = (__revealType == SCRIBBLE_REVEAL_PER_CHAR) && (_sectionCount <= 0);
+    var _word_reveal  = (__revealType == SCRIBBLE_REVEAL_PER_WORD) && (_sectionCount <= 0);
     var _wrap_per_char = __wrap_per_char; //TODO - Optimize by checking outside the loop
+    
+    var _gridRegionWriteMax = _char_reveal? __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX : __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX;
     
     var _word_count        = 0;
     var _word_width        = 0;
@@ -76,7 +80,11 @@ function __scribble_gen_4_build_words()
         {
             _word_width += _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_SEPARATION];
             _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX] = 0;
-            _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX   ] = 0;
+            
+            if (_char_reveal || _word_reveal)
+            {
+                _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX] = 0;
+            }
         }
         else
         {
@@ -189,7 +197,7 @@ function __scribble_gen_4_build_words()
             {
                 _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
                 _word_width += _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_SEPARATION];
-                ds_grid_set_region(_glyph_grid, _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _i, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _i);
+                ds_grid_set_region(_glyph_grid, _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _i, _gridRegionWriteMax, _i);
             }
             else // __SCRIBBLE_BIDI_R2L or __SCRIBBLE_BIDI_R2L_ARABIC
             {
@@ -199,7 +207,7 @@ function __scribble_gen_4_build_words()
                 //Only Arabic groups visually glyphs together into words. Other R2L (e.g. Hebrew) doesn't so we can assign animation indexes here
                 if (_word_bidi == __SCRIBBLE_BIDI_R2L)
                 {
-                    ds_grid_set_region(_glyph_grid, _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _i, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _i);
+                    ds_grid_set_region(_glyph_grid, _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _i, _gridRegionWriteMax, _i);
                 }
             }
             

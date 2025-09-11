@@ -45,7 +45,6 @@ function __scribble_gen_6_build_lines()
     var _wrap_no_pages  = __wrap_no_pages;
     var _wrap_max_scale = __wrap_max_scale;
     var _wrap_apply     = __wrap_apply;
-    var _line_reveal    = (__revealType == SCRIBBLE_REVEAL_PER_LINE);
     var _fit_scale      = __fit_scale;
     
     with(_generator_state)
@@ -56,12 +55,15 @@ function __scribble_gen_6_build_lines()
         var _control_grid          = __control_grid;
         var _temp_grid             = __temp_grid;
         var _word_count            = __word_count;
+        var _sectionCount          = __sectionCount;
         var _line_height           = __line_height;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
         var _model_max_width       = (_wrap_apply? __model_max_width  : infinity);
         var _model_max_height      = (_wrap_apply? __model_max_height : infinity);
     }
+    
+    var _line_reveal = (__revealType == SCRIBBLE_REVEAL_PER_LINE) && (_sectionCount <= 0);
     
     var _forced_break = true; //Start with a forced break because it's the first line!
     

@@ -157,6 +157,7 @@ function __scribble_gen_2_parser()
         _command_tag_lookup_accelerator_map[? "/ul"               ] = 46;
         _command_tag_lookup_accelerator_map[? "strike"            ] = 47;
         _command_tag_lookup_accelerator_map[? "/strike"           ] = 48;
+        _command_tag_lookup_accelerator_map[? "/section"          ] = 49;
     }
     
     #endregion
@@ -230,6 +231,8 @@ function __scribble_gen_2_parser()
     
     var _control_count = 0;
     var _skip_write    = false;
+    var _sectionStart  = 0;
+    var _sectionCount  = 0;
     
     var _state_effect_flags         = 0;
     var _state_colour               = 0xFF000000 | _starting_colour; //Uses all four bytes
@@ -989,6 +992,16 @@ function __scribble_gen_2_parser()
                             
                             _glyph_write = 0x0000;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
+                        break;
+                        
+                        case 49: // [/section]
+                            if (_glyph_count > 0)
+                            {
+                                ds_grid_set_region(_glyph_grid, _sectionStart, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _glyph_count-1, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _sectionCount);
+                            }
+                            
+                            _sectionStart = _glyph_count;
+                            _sectionCount++;
                         break;
                         
                         default: //TODO - Optimize
@@ -1762,6 +1775,12 @@ function __scribble_gen_2_parser()
         }
     }
     
+    //Resolve sections
+    if ((_sectionCount > 0) && (_glyph_count > _sectionCount))
+    {
+        ds_grid_set_region(_glyph_grid, _sectionStart, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _glyph_count-1, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _sectionCount);
+    }
+    
     if (__has_arabic || __has_hebrew) __has_r2l = true;
     
     //Set our vertical alignment if it hasn't been overrided
@@ -1782,10 +1801,12 @@ function __scribble_gen_2_parser()
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count; //Make sure we collect controls at the end of a string
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX ] = _sectionCount;
     
     with(_generator_state)
     {
         __glyph_count   = _glyph_count+1;
         __control_count = _control_count;
+        __sectionCount  = _sectionCount;
     }
 }

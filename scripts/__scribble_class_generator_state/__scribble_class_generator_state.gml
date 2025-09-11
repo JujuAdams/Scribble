@@ -18,6 +18,7 @@ function __scribble_class_generator_state() constructor
         //Model class
         __glyph_count      = 0;
         __control_count    = 0;
+        __sectionCount     = 0; // [/section] tags. Optional feature
         __word_count       = 0;
         __line_count       = 0;
         __model_max_width  = 0;
@@ -35,9 +36,5 @@ function __scribble_class_generator_state() constructor
         __line_height           = 0;
         __line_spacing_add      = 0;
         __line_spacing_multiply = 0;
-        
-        __overall_bidi  = __SCRIBBLE_BIDI_L2R;
-        __glyph_count   = 0;
-        __control_count = 0;
     }
 }
