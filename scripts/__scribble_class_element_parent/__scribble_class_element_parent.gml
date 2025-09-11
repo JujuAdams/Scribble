@@ -38,6 +38,7 @@ function __scribble_class_element_parent(_text) constructor
     __flash_alpha     = 0.0;
     
     __randomize_animation = false;
+    __newline_delay       = 0; //Only relevant for unique text elements but needs to be available regardless
     
     __allow_text_getter       = SCRIBBLE_FORCE_TEXT_GETTER;
     __allow_glyph_data_getter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;

@@ -897,7 +897,7 @@ function __scribble_gen_2_parser()
                     
                         #region Typist .sound() and .sound_per_char() equivalents
                     
-                        case 32:
+                        case 32: // [typistSound]
                             if (array_length(_tag_parameters) != 5)
                             {
                                 __scribble_error("[typistSound] tags must use the same number of arguments as .sound()");
@@ -910,7 +910,7 @@ function __scribble_gen_2_parser()
                             }
                         break;
                     
-                        case 33:
+                        case 33: // [typistSoundPerChar]
                             if ((array_length(_tag_parameters) != 4) && (array_length(_tag_parameters) != 5))
                             {
                                 __scribble_error("[typistSoundPerChar] tags must use the same number of arguments as .sound_per_char()");

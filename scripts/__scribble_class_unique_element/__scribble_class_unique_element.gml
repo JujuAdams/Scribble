@@ -491,6 +491,12 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         return self;
     }
     
+    static newline_delay = function(_delay)
+    {
+        __newline_delay = max(0, _delay);
+        return self;
+    }
+    
     static dynamic_positioning = function(_smooth = undefined)
     {
         __typistDynamicPositioning       = true;
@@ -573,6 +579,11 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     static get_execution_scope = function()
     {
         return __functionScope;
+    }
+    
+    static get_newline_delay = function()
+    {
+        return __newline_delay;
     }
     
     #endregion

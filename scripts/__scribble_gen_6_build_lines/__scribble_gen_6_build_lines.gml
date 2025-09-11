@@ -54,8 +54,10 @@ function __scribble_gen_6_build_lines()
         var _line_grid             = __line_grid;
         var _control_grid          = __control_grid;
         var _temp_grid             = __temp_grid;
+        var _glyph_count           = __glyph_count;
         var _word_count            = __word_count;
         var _sectionCount          = __sectionCount;
+        var _controlCount          = __control_count;
         var _line_height           = __line_height;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
@@ -418,12 +420,40 @@ function __scribble_gen_6_build_lines()
         }
     }
     
+    if (__newline_delay > 0)
+    {
+        var _line = 0;
+        repeat(_line_count-1)
+        {
+            var _line_end_word       = _line_grid[# _line, __SCRIBBLE_GEN_LINE_WORD_END];
+            var _line_end_glyph      = _word_grid[# _line_end_word, __SCRIBBLE_GEN_WORD_GLYPH_END];
+            var _lineEndControlCount = _glyph_grid[# _line_end_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT];
+            
+            if (_lineEndControlCount <= _controlCount-1)
+            {
+                ds_grid_set_grid_region(_temp_grid, _control_grid, _lineEndControlCount, __SCRIBBLE_GEN_CONTROL_TYPE, _controlCount-1, __SCRIBBLE_GEN_CONTROL_DATA, 0, 0);
+                ds_grid_set_grid_region(_control_grid, _temp_grid, 0, __SCRIBBLE_GEN_CONTROL_TYPE, _controlCount - _lineEndControlCount, __SCRIBBLE_GEN_CONTROL_DATA, _lineEndControlCount+1, 0);
+            }
+            
+            _control_grid[# _lineEndControlCount, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EVENT;
+            _control_grid[# _lineEndControlCount, __SCRIBBLE_GEN_CONTROL_DATA] = new __scribble_class_event(__SCRIBBLE_DELAY_COMMAND_TAG, [__newline_delay]);
+            
+            var _line_start_word  = _line_grid[# _line+1, __SCRIBBLE_GEN_LINE_WORD_START];
+            var _line_start_glyph = _word_grid[# _line_start_word, __SCRIBBLE_GEN_WORD_GLYPH_START];
+            ds_grid_add_region(_glyph_grid, _line_start_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, 1);
+            
+            ++_controlCount;
+            ++_line;
+        }
+    }
+    
     __width = ds_grid_get_max(_line_grid, 0, __SCRIBBLE_GEN_LINE_WIDTH, _line_count - 1, __SCRIBBLE_GEN_LINE_WIDTH);
     
     with(_generator_state)
     {
-        __word_count = _word_count;
-        __line_count = _line_count;
+        __word_count    = _word_count;
+        __line_count    = _line_count;
+        __control_count = _controlCount;
     }
 }
 

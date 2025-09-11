@@ -37,6 +37,7 @@ function __scribble_class_model(_element) constructor
     __bidi_hint           = _element.__bidi_hint;
     __ignore_command_tags = _element.__ignore_command_tags;
     __randomize_animation = _element.__randomize_animation;
+    __newline_delay       = _element.__newline_delay;
     
     __padding_l = _element.__padding_l;
     __padding_t = _element.__padding_t;
