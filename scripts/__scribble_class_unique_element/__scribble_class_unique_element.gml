@@ -153,9 +153,11 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     __typistSmoothness = 0;
     __typistBackwards  = false;
     
-    __typistSkip           = false;
-    __typistSkipPaused     = false;
-    __typistDrawnSinceSkip = false;
+    __typistSkip               = false;
+    __typistSkipPaused         = false;
+    __typistDrawnSinceSkip     = false;
+    __typistDynamicPositioning = false;
+    __typistDynamicPositioningSmooth = false;
     
     __soundTagGain = 1;
     
@@ -485,6 +487,17 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     {
         __characterDelay = false;
         __characterDelayDict = {};
+        
+        return self;
+    }
+    
+    static dynamic_positioning = function(_smooth = undefined)
+    {
+        __typistDynamicPositioning       = true;
+        __typistDynamicPositioningSmooth = _smooth;
+        
+        allow_line_data_getter();
+        allow_glyph_data_getter();
         
         return self;
     }
@@ -1124,6 +1137,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         static _u_vTypewriterStartScale     = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"    );
         static _u_fTypewriterStartRotation  = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation" );
         static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration" );
+        static _u_vTypewriterOffsetRange    = shader_get_uniform(__shd_scribble, "u_vTypewriterOffsetRange"   );
         
         //If __typistAnim hasn't been set yet (.in() / .out() haven't been set) then just nope out
         if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE)
@@ -1135,22 +1149,9 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         var _method = __easeMethod;
         if (__typistAnim == SCRIBBLE_TYPIST_ANIM_DISAPPEAR) _method += __SCRIBBLE_EASE_COUNT;
         
-        var _reveal_max = 0;
         if (__typistBackwards)
         {
-            var _model = __EnsureModel();
-            if (not is_struct(_model)) return;
-            
-            var _pages_array = _model.__get_page_array();
-            if (array_length(_pages_array) > __page)
-            {
-                var _pageData = _pages_array[__page];
-                _reveal_max = _pageData.__reveal_count;
-            }
-            else
-            {
-                __scribble_trace("Warning! Typist page ", __page, " exceeds text element page count (", array_length(_pages_array), ")");
-            }
+            //FIXME - Reimplement
         }
         
         shader_set_uniform_i(_u_iTypewriterMethod,               _method);
@@ -1161,6 +1162,100 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         shader_set_uniform_f(_u_fTypewriterAlphaDuration,        __easeAlphaDuration);
         shader_set_uniform_f_array(_u_fTypewriterHeadArray,      __typistHeadArray);
         shader_set_uniform_f_array(_u_fTypewriterHeadLimitArray, __typistHeadLimitArray);
+        
+        if (__typistDynamicPositioning)
+        {
+            var _model = __EnsureModel();
+            if (not is_struct(_model)) return;
+            
+            var _pages_array = _model.__get_page_array();
+            if (__page >= array_length(_pages_array))
+            {
+                shader_set_uniform_f(_u_vTypewriterOffsetRange, 0, 0, 0);
+            }
+            else
+            {
+                var _pageData = _pages_array[__page];
+                
+                var _headPos      = __typistHeadArray[0];
+                var _headPosFloor = floor(_headPos);
+                
+                if (not (__typistDynamicPositioningSmooth ?? (__typistSmoothness > 0)))
+                {
+                    _headPos = _headPosFloor;
+                }
+                
+                if ((_headPosFloor <= 0) || (_headPosFloor >= _pageData.__reveal_count))
+                {
+                    shader_set_uniform_f(_u_vTypewriterOffsetRange, 0, 0, 0);
+                }
+                else
+                {
+                    if (__revealType != SCRIBBLE_REVEAL_PER_CHAR)
+                    {
+                        __scribble_error("Must use `SCRIBBLE_REVEAL_PER_CHAR` with dynamic positioning");
+                    }
+                    
+                    var _lineDataArray = _pageData.__line_data_array;
+                    var _i = 0;
+                    repeat(array_length(_lineDataArray))
+                    {
+                        var _lineData = _lineDataArray[_i];
+                        if (_lineData.glyph_end >= _headPosFloor)
+                        {
+                            break;
+                        }
+                        
+                        ++_i;
+                    }
+                    
+                    var _halign = _lineData.halign;
+                    
+                    if ((_halign == fa_left) || (_halign == __SCRIBBLE_FA_JUSTIFY) || (_halign == __SCRIBBLE_PIN_LEFT))
+                    {
+                        shader_set_uniform_f(_u_vTypewriterOffsetRange, 0, 0, 0);
+                    }
+                    else
+                    {
+                        if ((_halign == fa_center) || (_halign == __SCRIBBLE_PIN_CENTRE))
+                        {
+                            var _glyphDataStart = get_glyph_data(_lineData.glyph_start);
+                            var _glyphDataA     = get_glyph_data(_headPosFloor-1);
+                            var _glyphDataB     = get_glyph_data(min(_lineData.glyph_end, _headPosFloor+1)-1);
+                            var _offsetA = -0.5*(_glyphDataStart.left + _glyphDataA.right);
+                            var _offsetB = -0.5*(_glyphDataStart.left + _glyphDataB.right);
+                            var _offset = lerp(_offsetA, _offsetB, frac(_headPos));
+                            
+                            if (_halign == __SCRIBBLE_PIN_CENTRE)
+                            {
+                                _offset += 0.5*get_width();
+                            }
+                        }
+                        else if ((_halign == fa_right) || (_halign == __SCRIBBLE_PIN_RIGHT))
+                        {
+                            var _glyphDataA = get_glyph_data(_headPosFloor-1);
+                            var _glyphDataB = get_glyph_data(min(_lineData.glyph_end, _headPosFloor+1)-1);
+                            var _offset = -lerp(_glyphDataA.right, _glyphDataB.right, frac(_headPos));
+                            
+                            if (_halign == __SCRIBBLE_PIN_RIGHT)
+                            {
+                                _offset += get_width();
+                            }
+                        }
+                        else
+                        {
+                            var _offset = 0;
+                        }
+                        
+                        shader_set_uniform_f(_u_vTypewriterOffsetRange, _offset, _lineData.glyph_start, _headPosFloor);
+                    }
+                }
+            }
+        }
+        else
+        {
+            shader_set_uniform_f(_u_vTypewriterOffsetRange, 0, 0, 0);
+        }
     }
     
     #endregion

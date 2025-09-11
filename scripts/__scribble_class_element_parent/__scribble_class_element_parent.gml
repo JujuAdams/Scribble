@@ -1563,6 +1563,7 @@ function __scribble_class_element_parent(_text) constructor
         static _u_vTypewriterStartScale     = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"    );
         static _u_fTypewriterStartRotation  = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation" );
         static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration" );
+        static _u_vTypewriterOffsetRange    = shader_get_uniform(__shd_scribble, "u_vTypewriterOffsetRange"   );
         
         static _revealHeadArray = array_create(3, 0);
         
@@ -1576,6 +1577,7 @@ function __scribble_class_element_parent(_text) constructor
             shader_set_uniform_f(_u_vTypewriterStartScale,           1, 1);
             shader_set_uniform_f(_u_fTypewriterStartRotation,        0);
             shader_set_uniform_f(_u_fTypewriterAlphaDuration,        1.0);
+            shader_set_uniform_f(_u_vTypewriterOffsetRange,          0, 0, 0);
             shader_set_uniform_f_array(_u_fTypewriterHeadArray,      _revealHeadArray);
             shader_set_uniform_f_array(_u_fTypewriterHeadLimitArray, _revealHeadArray);
         }

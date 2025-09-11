@@ -90,6 +90,7 @@ uniform vec2  u_vTypewriterStartPos;       //2
 uniform vec2  u_vTypewriterStartScale;     //2
 uniform float u_fTypewriterStartRotation;  //1
 uniform float u_fTypewriterAlphaDuration;  //1
+uniform vec3  u_vTypewriterOffsetRange;    //3 - x-offset, start reveal index, end reveal index
 
 float flagArray[MAX_EFFECTS];
 
@@ -340,6 +341,7 @@ void main()
     
     //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
     vec2 pos = in_Position.xy;
+    pos.x += step(u_vTypewriterOffsetRange.y, REVEAL_INDEX)*step(REVEAL_INDEX, u_vTypewriterOffsetRange.z)*u_vTypewriterOffsetRange.x;
     
     
     
