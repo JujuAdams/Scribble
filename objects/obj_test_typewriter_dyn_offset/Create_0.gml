@@ -1,0 +1,5 @@
+element = scribble_unique("Here's some text that dynamically repositions as it is typed in!")
+.wrap(150)
+.dynamic_positioning()
+.align(fa_center)
+.in(0.1, 0)

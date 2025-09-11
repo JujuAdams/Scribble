@@ -1,0 +1,1 @@
+element.draw(room_width/2, 10);
