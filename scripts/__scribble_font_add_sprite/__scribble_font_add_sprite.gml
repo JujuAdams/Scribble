@@ -85,7 +85,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         
         var _uvs = sprite_get_uvs(_sprite, _image);
         
-        if (_unicode == 32)
+        if (_unicode == SCRIBBLE_UNICODE_SPACE)
         {
             if (_proportional)
             {
@@ -212,7 +212,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         ++_i;
     }
     
-    var _space_index = _font_glyphs_map[? 0x20];
+    var _space_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];
     _font_data.__height = _font_glyph_data_grid[# _space_index, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"", _sprite_name, "\" as a spritefont");

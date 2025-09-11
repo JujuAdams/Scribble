@@ -386,7 +386,7 @@ function __scribble_gen_3_devanagari()
     }
     
     //Create a null terminator so we correctly handle the last character in the string
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x00; //ASCII line break (dec = 10)
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x00;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_ISOLATED;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;

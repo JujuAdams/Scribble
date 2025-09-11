@@ -252,7 +252,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
             ++_i;
         }
         
-        var _space_index = _font_glyphs_map[? 0x20];
+        var _space_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];
         if (_line_height == undefined)
         {
             _line_height = _font_glyph_data_grid[# _space_index, __SCRIBBLE_GLYPH_PROPR_HEIGHT];

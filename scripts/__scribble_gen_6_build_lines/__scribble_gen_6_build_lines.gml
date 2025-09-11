@@ -278,7 +278,7 @@ function __scribble_gen_6_build_lines()
                 {
                     // Check for \n line break characters or nulls (manual page breaks) stored at the start of words
                     var _glyph_start_ord = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH_UNICODE];
-                    if (_glyph_start_ord == 0x0A) //Newline
+                    if (_glyph_start_ord == SCRIBBLE_UNICODE_NEWLINE) //Newline
                     {
                         //Linebreak after this word
                         var _line_word_end = _i;

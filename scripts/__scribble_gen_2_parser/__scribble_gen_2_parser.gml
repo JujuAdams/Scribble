@@ -205,7 +205,7 @@ function __scribble_gen_2_parser()
     //Place our input string into a buffer for quicker reading
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     buffer_write(_string_buffer, buffer_string, _element_text);
-    buffer_write(_string_buffer, buffer_u64, 0x0); //Add some extra null characters to avoid errors where we're reading outside the buffer
+    buffer_write(_string_buffer, buffer_u64, 0x00); //Add some extra null characters to avoid errors where we're reading outside the buffer
     var _buffer_length = buffer_tell(_string_buffer);
     buffer_seek(_string_buffer, buffer_seek_start, 0);
     
@@ -290,7 +290,7 @@ function __scribble_gen_2_parser()
             if ((_glyph_ord == 0x5C) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) == 0x6E)) //Backslash followed by "n"
             {
                 buffer_seek(_string_buffer, buffer_seek_relative, 1); //Skip the n
-                _glyph_ord = 0x0A;
+                _glyph_ord = SCRIBBLE_UNICODE_NEWLINE;
             }
         }
         
@@ -599,7 +599,7 @@ function __scribble_gen_2_parser()
                         case 21:
                             repeat((array_length(_tag_parameters) == 2)? real(_tag_parameters[1]) : 1)
                             {
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0xA0; //Non-breaking space (dec = 160)
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = SCRIBBLE_UNICODE_NBSP;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
@@ -610,7 +610,7 @@ function __scribble_gen_2_parser()
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                                 
-                                _glyph_write = 0xA0;
+                                _glyph_write = SCRIBBLE_UNICODE_NBSP;
                                 __SCRIBBLE_PARSER_NEXT_GLYPH
                             }
                         break;
@@ -621,7 +621,7 @@ function __scribble_gen_2_parser()
                     
                         // [zwsp]
                         case 31:
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x200B;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = SCRIBBLE_UNICODE_ZWSP;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_WHITESPACE;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
@@ -632,7 +632,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                             
-                            _glyph_write = 0x200B;
+                            _glyph_write = SCRIBBLE_UNICODE_ZWSP;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
@@ -640,7 +640,7 @@ function __scribble_gen_2_parser()
                     
                         // [r2l]
                         case 34:
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x200F;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = SCRIBBLE_UNICODE_R2L;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_R2L;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
@@ -651,13 +651,13 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                             
-                            _glyph_write = 0x200F;
+                            _glyph_write = SCRIBBLE_UNICODE_R2L;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
                         // [l2r]
                         case 35:
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x200E;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = SCRIBBLE_UNICODE_L2R;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_L2R;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
@@ -668,7 +668,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                             
-                            _glyph_write = 0x200E;
+                            _glyph_write = SCRIBBLE_UNICODE_L2R;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
@@ -1275,9 +1275,9 @@ function __scribble_gen_2_parser()
                         if (_glyph_count > 0)
                         {
                             //Add a newline character if the previous character wasn't also a newline
-                            if ((_glyph_prev != 0x00) && (_glyph_prev != 0x0A))
+                            if ((_glyph_prev != 0x00) && (_glyph_prev != SCRIBBLE_UNICODE_NEWLINE))
                             {
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x0A; //ASCII line break (dec = 10)
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = SCRIBBLE_UNICODE_NEWLINE;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_ISOLATED;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
@@ -1288,7 +1288,7 @@ function __scribble_gen_2_parser()
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                                 
-                                _glyph_write = 0x0A;
+                                _glyph_write = SCRIBBLE_UNICODE_NEWLINE;
                                 __SCRIBBLE_PARSER_NEXT_GLYPH
                             }
                             else
@@ -1348,12 +1348,12 @@ function __scribble_gen_2_parser()
                     _tag_parameters      = [];
                 }
             }
-            else if ((_glyph_ord == 0x0A) //If we've hit a newline (\n)
+            else if ((_glyph_ord == SCRIBBLE_UNICODE_NEWLINE) //If we've hit a newline (\n)
                  || (SCRIBBLE_HASH_NEWLINE && (_glyph_ord == 0x23))) //If we've hit a hash, and hash newlines are on
             {
                 //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
                 
-                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x0A; //ASCII line break (dec = 10)
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = SCRIBBLE_UNICODE_NEWLINE; //ASCII line break (dec = 10)
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_ISOLATED;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
@@ -1364,16 +1364,16 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                 
-                _glyph_write = 0x0A;
+                _glyph_write = SCRIBBLE_UNICODE_NEWLINE;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
             }
-            else if (_glyph_ord == 0x09) //ASCII horizontal tab
+            else if (_glyph_ord == SCRIBBLE_UNICODE_TAB) //ASCII horizontal tab
             {
                 #region Add a tab glyph to our grid
                 
                 //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
                 
-                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x09; //ASCII horizontal tab (dec = 9, obviously)
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = SCRIBBLE_UNICODE_TAB;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_WHITESPACE;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
@@ -1384,18 +1384,18 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                 
-                _glyph_write = 0x09;
+                _glyph_write = SCRIBBLE_UNICODE_TAB;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
-            else if (_glyph_ord == 0x20) //ASCII space
+            else if (_glyph_ord == SCRIBBLE_UNICODE_SPACE) //ASCII space
             {
                 #region Add a space glyph to our grid
                 
                 //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
                 
-                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x20; //ASCII space (dec = 32)
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = SCRIBBLE_UNICODE_SPACE;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_WHITESPACE;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
@@ -1406,18 +1406,18 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                 
-                _glyph_write = 0x20;
+                _glyph_write = SCRIBBLE_UNICODE_SPACE;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
-            else if (_glyph_ord == 0xA0)
+            else if (_glyph_ord == SCRIBBLE_UNICODE_NBSP)
             {
                 #region Add a non-breaking space glyph to our grid
                 
                 //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
                 
-                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0xA0; //Non-breaking space (dec = 160)
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = SCRIBBLE_UNICODE_NBSP;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
@@ -1428,18 +1428,18 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                 
-                _glyph_write = 0x00A0;
+                _glyph_write = SCRIBBLE_UNICODE_NBSP;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
-            else if ((_glyph_ord == 0x200B) || (SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP && __has_thai && (_glyph_ord == 0x60))) //Zero-width space, or a Thai grave accent
+            else if ((_glyph_ord == SCRIBBLE_UNICODE_ZWSP) || (SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP && __has_thai && (_glyph_ord == 0x60))) //Zero-width space, or a Thai grave accent
             {
                 #region Add a zero-width space glyph to our grid
                 
                 //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
                 
-                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x200B;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = SCRIBBLE_UNICODE_ZWSP;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_WHITESPACE;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
@@ -1450,12 +1450,12 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                 
-                _glyph_write = 0x200B;
+                _glyph_write = SCRIBBLE_UNICODE_ZWSP;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
-            else if (SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS && (_glyph_ord == 0x2026)) //Replace ellipsis … with three full stops (periods)
+            else if (SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS && (_glyph_ord == SCRIBBLE_UNICODE_ELLIPSIS))
             {
                 //Figure out how much we need to copy and if we need to resize the target buffer
                 var _copy_size = _buffer_length - buffer_tell(_string_buffer);
@@ -1474,35 +1474,35 @@ function __scribble_gen_2_parser()
                 _string_buffer = _other_string_buffer;
                 _other_string_buffer = _temp;
             }
-            else if (_glyph_ord > 0x20) //Only write glyphs that aren't system control characters
+            else if (_glyph_ord > SCRIBBLE_UNICODE_SPACE) //Only write glyphs that aren't system control characters
             {
                 if (SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS)
                 { 
-                    if ((_glyph_ord == 0x2013)  //En dash –
-                    ||  (_glyph_ord == 0x2014)  //Em dash —
-                    ||  (_glyph_ord == 0x2015)) //Horizontal bar ―
+                    if ((_glyph_ord == SCRIBBLE_UNICODE_EN_DASH)
+                    ||  (_glyph_ord == SCRIBBLE_UNICODE_EM_DASH)
+                    ||  (_glyph_ord == SCRIBBLE_UNICODE_BAR)) //Horizontal bar ―
                     {
                         //Replace with hyphen -
-                        _glyph_ord = 0x002D;
+                        _glyph_ord = SCRIBBLE_UNICODE_HYPHEN;
                     }
-                    else if ((_glyph_ord == 0x2018)  //Start single quote ‘
-                         ||  (_glyph_ord == 0x2019)) //End single quote ’
+                    else if ((_glyph_ord == SCRIBBLE_UNICODE_QUOTE_ST)  //Start single quote ‘
+                         ||  (_glyph_ord == SCRIBBLE_UNICODE_QUOTE_END)) //End single quote ’
                     {
                         //Replace with single quote '
-                        _glyph_ord = 0x0027;
+                        _glyph_ord = SCRIBBLE_UNICODE_APOSTROPHE;
                     }
-                    else if ((_glyph_ord == 0x201C)  //Start double quote “
-                         ||  (_glyph_ord == 0x201D)  //End double quote ”
-                         ||  (_glyph_ord == 0x201E)  //Low double quote „
-                         ||  (_glyph_ord == 0x201F)) //High double quote ‟
+                    else if ((_glyph_ord == SCRIBBLE_UNICODE_DQUOTE_ST)
+                         ||  (_glyph_ord == SCRIBBLE_UNICODE_DQUOTE_END)
+                         ||  (_glyph_ord == SCRIBBLE_UNICODE_DQUOTE_LOW)
+                         ||  (_glyph_ord == SCRIBBLE_UNICODE_DQUOTE_HI))
                     {
                         //Replace with double quote "
-                        _glyph_ord = 0x0022;
+                        _glyph_ord = SCRIBBLE_UNICODE_DQUOTE;
                     }
-                    else if (_glyph_ord == 0x037E) //Greek question mark ;
+                    else if (_glyph_ord == SCRIBBLE_UNICODE_GREEK_QMARK) //Greek question mark ;
                     {
                         //Replace with semicolon
-                        _glyph_ord = 0x003B;
+                        _glyph_ord = SCRIBBLE_UNICODE_SEMICOLON;
                     }
                 }
                 

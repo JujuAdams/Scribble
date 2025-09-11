@@ -299,7 +299,7 @@ function __scribble_gen_10_write_vbuffs()
                         __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
                     }
                     
-                    if ((_glyph_ord > 0x20) && (_glyph_ord != 0xA0) && (_glyph_ord != 0x200B))
+                    if ((_glyph_ord > SCRIBBLE_UNICODE_SPACE) && (_glyph_ord != SCRIBBLE_UNICODE_NBSP) && (_glyph_ord != SCRIBBLE_UNICODE_ZWSP))
                     {
                         __SCRIBBLE_VBUFF_READ_GLYPH;
                         __SCRIBBLE_VBUFF_WRITE_GLYPH;
@@ -311,7 +311,7 @@ function __scribble_gen_10_write_vbuffs()
                     
                     if (_text_getter)
                     {
-                        buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
+                        buffer_write(_string_buffer, buffer_u8, SCRIBBLE_UNICODE_SUB);
                     }
                     
                     var _glyph_x         = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_X           ];
@@ -425,7 +425,7 @@ function __scribble_gen_10_write_vbuffs()
                     
                     if (_text_getter)
                     {
-                        buffer_write(_string_buffer, buffer_u8, 0x1A); //Unicode/ASCII "substitute character"
+                        buffer_write(_string_buffer, buffer_u8, SCRIBBLE_UNICODE_SUB);
                     }
                     
                     __SCRIBBLE_VBUFF_READ_GLYPH;
