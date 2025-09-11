@@ -123,9 +123,7 @@ function __scribble_class_model(_element) constructor
     
     static __submit = function(_page, _double_draw)
     {
-        if (__flushed) return;
-        
-        __pages_array[_page].__submit((SCRIBBLE_ALWAYS_DOUBLE_DRAW || __has_arabic || __has_thai) && _double_draw);
+        __pages_array[_page].__submit(_double_draw && (SCRIBBLE_ALWAYS_DOUBLE_DRAW || __has_arabic || __has_thai));
     }
     
     static __Freeze = function()

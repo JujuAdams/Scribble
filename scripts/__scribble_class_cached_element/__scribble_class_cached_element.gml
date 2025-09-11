@@ -155,17 +155,13 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
         __SetStandardUniforms();
         __SetRevealUniforms(_revealIndex);
         
-        //...aaaand set the matrix
-        var _old_matrix = matrix_get(matrix_world); //FIXME - Use a matrix stack here?
-        var _matrix = matrix_multiply(__update_matrix(_model, _x, _y), _old_matrix);
-        matrix_set(matrix_world, _matrix);
-        
-        //Submit the model
+        matrix_stack_push(__update_matrix(_model, _x, _y));
+        matrix_set(matrix_world, matrix_stack_top());
         _model.__submit(__page, (__sdf_outline_thickness > 0) || (__sdf_shadow_alpha > 0));
         
-        //Make sure we reset the world matrix
-        matrix_set(matrix_world, _old_matrix);
         shader_reset();
+        matrix_stack_pop();
+        matrix_set(matrix_world, matrix_stack_top());
         
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
     }
