@@ -263,6 +263,7 @@
     {"id":{"name":"obj_test_transform","path":"objects/obj_test_transform/obj_test_transform.yy",},},
     {"id":{"name":"obj_test_typewriter_custom","path":"objects/obj_test_typewriter_custom/obj_test_typewriter_custom.yy",},},
     {"id":{"name":"obj_test_typewriter_default_delay","path":"objects/obj_test_typewriter_default_delay/obj_test_typewriter_default_delay.yy",},},
+    {"id":{"name":"obj_test_typewriter_delay_newline","path":"objects/obj_test_typewriter_delay_newline/obj_test_typewriter_delay_newline.yy",},},
     {"id":{"name":"obj_test_typewriter_delay_per_character","path":"objects/obj_test_typewriter_delay_per_character/obj_test_typewriter_delay_per_character.yy",},},
     {"id":{"name":"obj_test_typewriter_delay_plus_sound_per_char","path":"objects/obj_test_typewriter_delay_plus_sound_per_char/obj_test_typewriter_delay_plus_sound_per_char.yy",},},
     {"id":{"name":"obj_test_typewriter_delay_plus_sound","path":"objects/obj_test_typewriter_delay_plus_sound/obj_test_typewriter_delay_plus_sound.yy",},},
