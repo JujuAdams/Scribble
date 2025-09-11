@@ -70,6 +70,7 @@
                                         var _glyph_end   = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE_WORD_END  ], __SCRIBBLE_GEN_WORD_GLYPH_END  ] - _page_data.__glyph_start;\
                                         array_push(_line_data_array, new __scribble_class_line(_line_grid[# _i, __SCRIBBLE_GEN_LINE_Y],\
                                                                                                _line_height,\
+                                                                                               _line_grid[# _i, __SCRIBBLE_GEN_LINE_HALIGN],\
                                                                                                _line_grid[# _i, __SCRIBBLE_GEN_LINE_FORCED_BREAK],\
                                                                                                _glyph_start, _glyph_end));\
                                         ++_i;\
