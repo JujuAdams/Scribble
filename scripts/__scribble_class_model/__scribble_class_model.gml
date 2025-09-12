@@ -358,7 +358,7 @@ function __scribble_class_model(_element) constructor
         
         var _page_data = new __scribble_class_page(self);
         _page_data.__line_start  = _line_start
-        _page_data.__glyph_start = _generator_state.__word_grid[# _generator_state.__line_grid[# _line_start, __SCRIBBLE_GEN_LINE_WORD_START], __SCRIBBLE_GEN_WORD_GLYPH_START];
+        _page_data.__glyph_start = _generator_state.__word_grid[# _generator_state.__line_array[_line_start].__wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
         
         array_push(__pages_array, _page_data);
         __pages++;

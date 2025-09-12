@@ -5,14 +5,14 @@ function __scribble_gen_8_position_glyphs()
     static _generator_state = __scribble_system().__generator_state;
     with(_generator_state)
     {
-        var _glyph_grid      = __glyph_grid;
-        var _word_grid       = __word_grid;
-        var _stretch_grid    = __stretch_grid;
-        var _line_grid       = __line_grid;
-        var _temp_grid       = __temp_grid;
-        var _overall_bidi    = __overall_bidi;
+        var _glyph_grid    = __glyph_grid;
+        var _word_grid     = __word_grid;
+        var _line_array    = __line_array;
+        var _stretch_grid  = __stretch_grid;
+        var _temp_grid     = __temp_grid;
+        var _overall_bidi  = __overall_bidi;
         var _modelMaxWidth = __modelMaxWidth;
-        var _line_height     = __line_height;
+        var _line_height   = __line_height;
     }
     
     ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
@@ -52,13 +52,15 @@ function __scribble_gen_8_position_glyphs()
         var _j = _page_start_line;
         repeat(1 + _page_end_line - _page_start_line)
         {
-            var _line_x               = _line_grid[# _j, __SCRIBBLE_GEN_LINE_X              ];
-            var _line_y               = _line_grid[# _j, __SCRIBBLE_GEN_LINE_Y              ];
-            var _line_word_start      = _line_grid[# _j, __SCRIBBLE_GEN_LINE_WORD_START     ];
-            var _line_word_end        = _line_grid[# _j, __SCRIBBLE_GEN_LINE_WORD_END       ];
-            var _line_width           = _line_grid[# _j, __SCRIBBLE_GEN_LINE_WIDTH          ];
-            var _line_halign          = _line_grid[# _j, __SCRIBBLE_GEN_LINE_HALIGN         ];
-            var _line_disable_justify = _line_grid[# _j, __SCRIBBLE_GEN_LINE_DISABLE_JUSTIFY];
+            var _lineStruct = _line_array[_j];
+            
+            var _line_x               = _lineStruct.__x;
+            var _line_y               = _lineStruct.__y;
+            var _line_word_start      = _lineStruct.__wordStart;
+            var _line_word_end        = _lineStruct.__wordEnd;
+            var _line_width           = _lineStruct.__width;
+            var _line_halign          = _lineStruct.__hAlign;
+            var _line_disable_justify = _lineStruct.__disableJustify;
             
             var _line_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_GLYPH_START];
             var _line_glyph_end   = _word_grid[# _line_word_end,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];

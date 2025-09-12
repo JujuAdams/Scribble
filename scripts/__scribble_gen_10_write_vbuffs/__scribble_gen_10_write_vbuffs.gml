@@ -77,7 +77,7 @@ function __scribble_gen_10_write_vbuffs()
         var _control_grid   = __control_grid;
         var _glyph_grid     = __glyph_grid;
         var _word_grid      = __word_grid;
-        var _line_grid      = __line_grid;
+        var _line_array     = __line_array;
         var _glyph_count    = __glyph_count;
     }
     
@@ -138,7 +138,7 @@ function __scribble_gen_10_write_vbuffs()
         var _region_bbox_array = [];
         
         var _vbuff_pos_grid = _generator_state.__vbuff_pos_grid;
-        var _line_grid      = _generator_state.__line_grid;
+        var _line_array     = _generator_state.__line_array;
         var _word_grid      = _generator_state.__word_grid;
         
         var _line = 0;
@@ -147,7 +147,7 @@ function __scribble_gen_10_write_vbuffs()
         
         while(_region_end >= _region_bbox_start)
         {
-            _region_bbox_end = min(_region_end, _word_grid[# _line_grid[# _line, __SCRIBBLE_GEN_LINE_WORD_END], __SCRIBBLE_GEN_WORD_GLYPH_END]);
+            _region_bbox_end = min(_region_end, _word_grid[# _line_array[_line].__wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END]);
             
             if (_region_bbox_start <= _region_bbox_end)
             {
@@ -204,10 +204,11 @@ function __scribble_gen_10_write_vbuffs()
         var _lineIndex = _page_data.__line_start;
         repeat(_page_data.__line_count)
         {
-            var _lineY = _line_grid[# _lineIndex, __SCRIBBLE_GEN_LINE_Y];
+            var _lineStruct = _line_array[_lineIndex];
+            var _lineY = _lineStruct.__y;
             
-            var _glyphStart = _word_grid[# _line_grid[# _lineIndex, __SCRIBBLE_GEN_LINE_WORD_START], __SCRIBBLE_GEN_WORD_GLYPH_START];
-            var _glyphEnd   = _word_grid[# _line_grid[# _lineIndex, __SCRIBBLE_GEN_LINE_WORD_END  ], __SCRIBBLE_GEN_WORD_GLYPH_END  ];
+            var _glyphStart = _word_grid[# _lineStruct.__wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
+            var _glyphEnd   = _word_grid[# _lineStruct.__wordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];
             
             var _glyphIndex = _glyphStart;
             repeat(1 + _glyphEnd - _glyphStart)

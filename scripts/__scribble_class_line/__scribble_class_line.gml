@@ -1,19 +1,22 @@
 // Feather disable all
 
-/// @param y
-/// @param height
+/// @param x
+/// @param wordStart
 /// @param hAlign
-/// @param forceBreak
-/// @param glyphStart
-/// @param glyphEnd
+/// @param forcedBreak
 
-function __scribble_class_line(_y, _height, _hAlign, _forced_break, _glyph_start, _glyph_end) constructor
+function __scribble_class_line(_x, _wordStart, _hAlign, _forcedBreak) constructor
 {
-    y            = _y;
-    height       = _height;
-    halign       = _hAlign;
-    forced_break = _forced_break;
-    glyph_start  = _glyph_start;
-    glyph_end    = _glyph_end;
-    glyph_count  = 1 + _glyph_end - _glyph_start;
+    __x = _x;
+    __y = 0;
+    
+    __width = 0;
+    
+    __wordStart = _wordStart;
+    __wordEnd   = undefined;
+    
+    __hAlign = _hAlign;
+    __disableJustify = false;
+    __startsManualPage = false;
+    __forceBreak = _forcedBreak;
 }

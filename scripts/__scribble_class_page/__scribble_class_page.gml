@@ -48,19 +48,28 @@ function __scribble_class_page(_model) constructor
         {
             var _glyph_grid     = __glyph_grid;
             var _word_grid      = __word_grid;
-            var _line_grid      = __line_grid;
+            var _line_array     = __line_array;
             var _modelMaxHeight = __modelMaxHeight;
             var _line_height    = __line_height;
         }
         
-        var _line_max_y = _line_grid[# _page_end_line, __SCRIBBLE_GEN_LINE_Y] + _line_height;
-            
         __line_end    = _page_end_line;
         __line_count  = 1 + __line_end - __line_start;
-        __glyph_end   = _word_grid[# _line_grid[# __line_end, __SCRIBBLE_GEN_LINE_WORD_END], __SCRIBBLE_GEN_WORD_GLYPH_END];
+        __glyph_end   = _word_grid[# _line_array[__line_end].__wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END];
         __glyph_count = 1 + __glyph_end - __glyph_start;
-        __width       = ds_grid_get_max(_line_grid, __line_start, __SCRIBBLE_GEN_LINE_WIDTH, __line_end, __SCRIBBLE_GEN_LINE_WIDTH);
-        __height      = _line_max_y;
+        
+        var _pageWidth = 0;
+        var _i = __line_start;
+        repeat(__line_count)
+        {
+            _pageWidth = max(_pageWidth, _line_array[_i].__width);
+            ++_i;
+        }
+        
+        __width = _pageWidth;
+        
+        var _line_max_y = _line_array[_page_end_line].__y + _line_height;
+        __height = _line_max_y;
             
         //Correct page position for vertical alignment
         var _valign = __model.__valign;
@@ -107,8 +116,16 @@ function __scribble_class_page(_model) constructor
             __max_y = _line_max_y;
         }
             
-            //Correct line positions for vertical alignment
-        if (__min_y != 0) ds_grid_add_region(_line_grid, __line_start, __SCRIBBLE_GEN_LINE_Y, __line_end, __SCRIBBLE_GEN_LINE_Y, __min_y);
+        //Correct line positions for vertical alignment
+        if (__min_y != 0)
+        {
+            var _i = __line_start;
+            repeat(__line_count)
+            {
+                _line_array[_i].__y += __min_y;
+                ++_i;
+            }
+        }
             
         // Set up the character indexes for the page, relative to the character index of the first glyph on the page
         var _page_reveal_start = _glyph_grid[# __glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX];
@@ -124,13 +141,18 @@ function __scribble_class_page(_model) constructor
             var _line = __line_start;
             repeat(__line_count)
             {
-                var _glyph_start = _word_grid[# _line_grid[# _line, __SCRIBBLE_GEN_LINE_WORD_START], __SCRIBBLE_GEN_WORD_GLYPH_START] - __glyph_start;
-                var _glyph_end   = _word_grid[# _line_grid[# _line, __SCRIBBLE_GEN_LINE_WORD_END  ], __SCRIBBLE_GEN_WORD_GLYPH_END  ] - __glyph_start;
-                __line_data_array[@ _line] = new __scribble_class_line(_line_grid[# _line, __SCRIBBLE_GEN_LINE_Y],
-                                                                       _line_height,
-                                                                       _line_grid[# _line, __SCRIBBLE_GEN_LINE_HALIGN],
-                                                                       _line_grid[# _line, __SCRIBBLE_GEN_LINE_FORCED_BREAK],
-                                                                       _glyph_start, _glyph_end);
+                var _lineStruct = _line_array[_line];
+                
+                var _glyph_start = _word_grid[# _lineStruct.__wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START] - __glyph_start;
+                var _glyph_end   = _word_grid[# _lineStruct.__wordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ] - __glyph_start;
+                
+                //FIXME - Maybe we can expose the created lines?
+                //        N.B. Not all lines will necessarily make it onto a page if there's trimming
+                __line_data_array[@ _line] = new __scribble_class_external_line(_lineStruct.__y,
+                                                                                _line_height,
+                                                                                _lineStruct.__hAlign,
+                                                                                _lineStruct.__forceBreak,
+                                                                                _glyph_start, _glyph_end);
                 ++_line;
             }
         }
@@ -138,13 +160,16 @@ function __scribble_class_page(_model) constructor
         if (__model.__randomize_animation)
         {
             array_resize(_animation_randomize_array, __reveal_count);
+            
             var _line = 0;
             repeat(__reveal_count)
             {
                 _animation_randomize_array[@ _line] = _line;
                 ++_line;
             }
-            array_sort(_animation_randomize_array, function() { return choose(-1, 1); });
+            
+            array_sort(_animation_randomize_array, function() { return choose(-1, 1); }); //FIXME - Swap this out for a PRNG
+            
             var _glyph_start = __glyph_start;
             var _line = 0;
             repeat(__reveal_count)
@@ -163,7 +188,10 @@ function __scribble_class_page(_model) constructor
         static _u_fSecondDraw         = shader_get_uniform(__shd_scribble, "u_fSecondDraw"        );
         static _u_fRenderType         = shader_get_uniform(__shd_scribble, "u_fRenderType"        );
         
-        if (SCRIBBLE_INCREMENTAL_FREEZE && (not __frozen) && (__created_frame < _system.__frames)) __Freeze();
+        if (SCRIBBLE_INCREMENTAL_FREEZE && (not __frozen) && (__created_frame < _system.__frames))
+        {
+            __Freeze();
+        }
         
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))

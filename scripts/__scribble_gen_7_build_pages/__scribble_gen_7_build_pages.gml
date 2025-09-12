@@ -6,12 +6,11 @@ function __scribble_gen_7_build_pages()
     
     with(_generator_state)
     {
-        var _line_grid             = __line_grid;
         var _modelMaxHeight        = __modelMaxHeight;
-        var _line_count            = __line_count;
         var _line_height           = __line_height;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
+        var _line_array            = __line_array;
     }
     
     var _trimText = (__layoutType == SCRIBBLE_LAYOUT_TRIM);
@@ -22,11 +21,19 @@ function __scribble_gen_7_build_pages()
     var _page_data = __AddPage(0);
     var _firstLine = true;
     var _line_y = 0;
+    var _width = 0;
     
     var _line = 0;
-    repeat(_line_count)
+    repeat(array_length(_line_array))
     {
-        var _starts_manual_page = _line_grid[# _line, __SCRIBBLE_GEN_LINE_STARTS_MANUAL_PAGE];
+        var _lineStruct = _line_array[_line];
+        
+        if (not _skippingLines)
+        {
+            _width = max(_width, _lineStruct.__width);
+        }
+        
+        var _starts_manual_page = _lineStruct.__startsManualPage;
         var _overflow = _line_y + _line_height >= _simulated_model_height;
         
         if (_starts_manual_page || (_overflow && (not _firstLine) && (not _skippingLines)))
@@ -37,7 +44,7 @@ function __scribble_gen_7_build_pages()
             }
             
             _firstLine = true;
-            _line_grid[# _line, __SCRIBBLE_GEN_LINE_Y] = 0;
+            _lineStruct.__y = 0;
             _line_y = _line_spacing_add + _line_height*_line_spacing_multiply;
             
             if (_starts_manual_page)
@@ -57,7 +64,7 @@ function __scribble_gen_7_build_pages()
         else
         {
             _firstLine = false;
-            _line_grid[# _line, __SCRIBBLE_GEN_LINE_Y] = _line_y;
+            _lineStruct.__y = _line_y;
             _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
         }
         
@@ -68,4 +75,7 @@ function __scribble_gen_7_build_pages()
     {
         _page_data.__Finalize(_line-1);
     }
+    
+    //We refine this in the next phase
+    __width = _width;
 }
