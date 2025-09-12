@@ -43,7 +43,7 @@ function __scribble_gen_6_build_lines()
     static _generator_state = __scribble_system().__generator_state;
     
     var _wrap_no_pages  = __wrap_no_pages;
-    var _wrap_max_scale = __wrap_max_scale;
+    var _wrap_max_scale = __layoutMaxScale;
     var _wrap_apply     = __wrap_apply;
     var _fit_scale      = __fit_scale;
     

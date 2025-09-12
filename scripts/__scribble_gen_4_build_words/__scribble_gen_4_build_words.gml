@@ -58,7 +58,7 @@ function __scribble_gen_4_build_words()
     
     var _char_reveal  = (__revealType == SCRIBBLE_REVEAL_PER_CHAR) && (_sectionCount <= 0);
     var _word_reveal  = (__revealType == SCRIBBLE_REVEAL_PER_WORD) && (_sectionCount <= 0);
-    var _wrap_per_char = __wrap_per_char; //TODO - Optimize by checking outside the loop
+    var _wrap_per_char = __layoutForcePerChar; //TODO - Optimize by checking outside the loop
     
     var _gridRegionWriteMax = _char_reveal? __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX : __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX;
     

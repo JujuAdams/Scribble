@@ -12,5 +12,5 @@ function string_height_scribble(_string)
     var _font = draw_get_font();
     _font = !font_exists(_font)? _scribble_state.__default_font : font_get_name(_font);
     
-    return scribble(_string).starting_format(_font, c_white).get_height();
+    return scribble(_string, "__draw_text_scribble__").font(_font).get_height();
 }

@@ -59,12 +59,12 @@ function __scribble_class_element_parent(_text) constructor
     __matrix_x       = undefined;
     __matrix_y       = undefined;
     
-    __wrap_apply      = false;
-    __wrap_max_width  = -1;
-    __wrap_max_height = -1;
-    __wrap_per_char   = false;
-    __wrap_no_pages   = false;
-    __wrap_max_scale  = 1;
+    __layoutType         = SCRIBBLE_LAYOUT_NONE;
+    __layoutMaxWidth     = infinity;
+    __layoutMaxHeight    = infinity;
+    __layoutForcePerChar = false;
+    __wrap_no_pages      = false;
+    __layoutMaxScale     = 1;
     
     __scale_to_box_dirty    = true;
     __scale_to_box_width    = 0;
@@ -195,16 +195,6 @@ function __scribble_class_element_parent(_text) constructor
     /// @param colour
     static colour = color;
     
-    //TODO - DEPRECATED, remove in v11
-    /// @param fontName
-    /// @param colour
-    static starting_format = function(_font_name, _in_colour)
-    {
-        font(_font_name);
-        color(_in_colour);
-        return self;
-    }
-    
     /// @param halign
     /// @param valign
     static align = function(_halign = __starting_halign, _valign = __starting_valign)
@@ -284,6 +274,90 @@ function __scribble_class_element_parent(_text) constructor
     
     #region Layout
     
+    static max_size = function(_width = __layoutMaxWidth, _height = __layoutMaxHeight)
+    {
+        _width  = max(0, _width);
+        _height = max(0, _height);
+        
+        if ((_width != __layoutMaxWidth) || (_height != __layoutMaxHeight))
+        {
+            __layoutMaxWidth  = _width;
+            __layoutMaxHeight = _height;
+            
+            if (_layout == SCRIBBLE_LAYOUT_SCALE)
+            {
+                __scale_to_box_dirty = true;
+            }
+            else
+            {
+                __modelDirty = true;
+            }
+        }
+    }
+    
+    static get_max_width = function()
+    {
+        return __layoutMaxWidth;
+    }
+    
+    static get_max_height = function()
+    {
+        return __layoutMaxHeight;
+    }
+    
+    static layout = function(_layout, _forcePerChar = false, _maxScale = 1)
+    {
+        if ((_layout != __layout) || (_forcePerChar != __layoutForcePerChar))
+        {
+            __layoutType = _layout;
+            __layoutForcePerChar = _forcePerChar;
+            
+            __modelDirty = true;
+        }
+        
+        if (_maxScale != __layoutMaxScale)
+        {
+            __layoutMaxScale = _maxScale;
+            
+            if ((_layout == SCRIBBLE_LAYOUT_SCALE) || (_layout == SCRIBBLE_LAYOUT_FIT))
+            {
+                __modelDirty = true;
+            }
+        }
+    }
+    
+    static get_layout = function()
+    {
+        return __layoutType;
+    }
+    
+    static layout_trim_string = function(_trimString)
+    {
+        _trimString = string(_trimString);
+        
+        if (_trimString != __layoutTrimString)
+        {
+            __layoutTrimString = _trimString;
+            
+            if ((__layoutType == SCRIBBLE_LAYOUT_TRIM) || (__layoutType == SCRIBBLE_LAYOUT_PAGINATE))
+            {
+                //This value is only used for a couple layout styles
+                __modelDirty = true;
+            }
+        }
+    }
+    
+    static get_layout_trim_string = function()
+    {
+        return __layoutTrimString;
+    }
+    
+    #endregion
+    
+    
+    
+    #region Positioning
+    
     /// @param xOffset
     /// @param yOffset
     static origin = function(_x, _y)
@@ -339,105 +413,6 @@ function __scribble_class_element_parent(_text) constructor
     {
         __skew_x = _skew_x;
         __skew_y = _skew_y;
-        
-        return self;
-    }
-    
-    /// @param maxWidth
-    /// @param maxHeight
-    /// @param [maximise=false]
-    static scale_to_box = function(_max_width, _max_height, _maximise = false)
-    {
-        _max_width  = ((_max_width  == undefined) || (_max_width  < 0))? 0 : _max_width;
-        _max_height = ((_max_height == undefined) || (_max_height < 0))? 0 : _max_height;
-        
-        if ((_max_width != __scale_to_box_width) || (_max_height != __scale_to_box_height) || (_maximise != __scale_to_box_maximise))
-        {
-            __scale_to_box_width    = _max_width;
-            __scale_to_box_height   = _max_height;
-            __scale_to_box_maximise = _maximise;
-            __scale_to_box_dirty    = true;
-        }
-        
-        return self;
-    }
-    
-    /// @param maxWidth
-    /// @param [maxHeight=-1]
-    /// @param [characterWrap=false]
-    static wrap = function(_wrap_max_width, _wrap_max_height = -1, _wrap_per_char = false)
-    {
-        if (!__wrap_apply
-        ||  (_wrap_max_width  != __wrap_max_width)
-        ||  (_wrap_max_height != __wrap_max_height)
-        ||  (_wrap_per_char   != __wrap_per_char)
-        ||  __wrap_no_pages
-        ||  (__wrap_max_scale != 1))
-        {
-            __modelDirty = true;
-            __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
-            
-            __wrap_apply      = ((_wrap_max_width >= 0) && !is_infinity(_wrap_max_width)); //Turn off wrapping logic if we have an invalid width
-            __wrap_max_width  = _wrap_max_width;
-            __wrap_max_height = _wrap_max_height;
-            __wrap_per_char   = _wrap_per_char;
-            __wrap_no_pages   = false;
-            __wrap_max_scale  = 1;
-        }
-        
-        return self;
-    }
-    
-    /// @param maxWidth
-    /// @param maxHeight
-    /// @param [characterWrap=false]
-    /// @param [maxScale=1]
-    static fit_to_box = function(_wrap_max_width, _wrap_max_height, _wrap_per_char = false, _wrap_max_scale = 1)
-    {
-        if (!__wrap_apply
-        ||  (_wrap_max_width  != __wrap_max_width)
-        ||  (_wrap_max_height != __wrap_max_height)
-        ||  (_wrap_per_char   != __wrap_per_char)
-        ||  !__wrap_no_pages
-        ||  (_wrap_max_scale  != __wrap_max_scale))
-        {
-            __modelDirty = true;
-            __matrix_dirty           = true; //By changing the .fit_to_box() properties we'll very likely change the __fit_scale variable used to shape text in the world matrix
-            __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
-            
-            __wrap_apply      = ((_wrap_max_width >= 0) && !is_infinity(_wrap_max_width)); //Turn off wrapping logic if we have an invalid width
-            __wrap_max_width  = _wrap_max_width;
-            __wrap_max_height = _wrap_max_height;
-            __wrap_per_char   = _wrap_per_char;
-            __wrap_no_pages   = true;
-            __wrap_max_scale  = _wrap_max_scale;
-        }
-        
-        return self;
-    }
-    
-    static pin_guide = function(_width, _height = -1)
-    {
-        if (__wrap_apply
-        ||  (__wrap_max_width != _width)
-        ||  (__wrap_max_height != _height)
-        ||  __wrap_per_char
-        ||  __wrap_no_pages
-        ||  (__wrap_max_scale != 1))
-        {
-            __modelDirty = true;
-            __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
-            
-            __wrap_apply      = false; //Turn off wrapping entirely
-            __wrap_max_width  = _width;
-            __wrap_max_height = _height;
-            __wrap_per_char   = false;
-            __wrap_no_pages   = false;
-            __wrap_max_scale  = 1;
-        }
         
         return self;
     }
@@ -1390,19 +1365,19 @@ function __scribble_class_element_parent(_text) constructor
         switch(__starting_halign)
         {
             case fa_left:                             break;
-            case fa_center: _x -= __wrap_max_width/2; break;
-            case fa_right:  _x -= __wrap_max_width;   break;
+            case fa_center: _x -= __layoutMaxWidth/2; break;
+            case fa_right:  _x -= __layoutMaxWidth;   break;
         }
         
         switch(__starting_valign)
         {
             case fa_top:                               break;
-            case fa_middle: _y -= __wrap_max_height/2; break;
-            case fa_bottom: _y -= __wrap_max_height;   break;
+            case fa_middle: _y -= __layoutMaxHeight/2; break;
+            case fa_bottom: _y -= __layoutMaxHeight;   break;
         }
         
-        draw_rectangle(_x, _y, _x + __wrap_max_width, _y + __wrap_max_height, true);
-        draw_rectangle(_x+1, _y+1, _x-1 + __wrap_max_width, _y-1 + __wrap_max_height, true);
+        draw_rectangle(_x, _y, _x + __layoutMaxWidth, _y + __layoutMaxHeight, true);
+        draw_rectangle(_x+1, _y+1, _x-1 + __layoutMaxWidth, _y-1 + __layoutMaxHeight, true);
         
         draw_set_colour(_oldColour);
         

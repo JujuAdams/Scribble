@@ -25,12 +25,12 @@ function __scribble_class_model(_element) constructor
     __element_line_height = _element.__line_height;
     __line_spacing        = _element.__line_spacing;
     
-    __wrap_apply      = _element.__wrap_apply;
-    __wrap_max_width  = _element.__wrap_max_width;
-    __wrap_max_height = _element.__wrap_max_height;
-    __wrap_per_char   = _element.__wrap_per_char;
-    __wrap_no_pages   = _element.__wrap_no_pages;
-    __wrap_max_scale  = _element.__wrap_max_scale;
+    __layoutType         = _element.__layoutType;
+    __layoutMaxWidth     = _element.__layoutMaxWidth;
+    __layoutMaxHeight    = _element.__layoutMaxHeight;
+    __layoutForcePerChar = _element.__layoutForcePerChar;
+    __wrap_no_pages      = _element.__wrap_no_pages;
+    __layoutMaxScale     = _element.__layoutMaxScale;
     
     __bezier_array = _element.__bezier_array;
     

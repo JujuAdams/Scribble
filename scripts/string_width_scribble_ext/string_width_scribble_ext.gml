@@ -13,5 +13,5 @@ function string_width_scribble_ext(_string, _width)
     var _font = draw_get_font();
     _font = !font_exists(_font)? _scribble_state.__default_font : font_get_name(_font);
     
-    return scribble(_string).starting_format(_font, c_white).wrap(_width).get_width();
+    return scribble(_string, "__draw_text_ext_scribble__").font(_font).max_size(_width).layout(SCRIBBLE_LAYOUT_WRAP).get_width();
 }

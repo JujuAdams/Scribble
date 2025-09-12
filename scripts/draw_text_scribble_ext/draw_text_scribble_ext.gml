@@ -32,11 +32,11 @@ function draw_text_scribble_ext(_x, _y, _string, _width, _reveal = undefined)
         _font = _scribble_state.__default_font;
     }
     
-    scribble(_string, "__draw_text_scribble__")
+    scribble(_string, "__draw_text_ext_scribble__")
     .align(draw_get_halign(), draw_get_valign())
-    .starting_format(_font, c_white)
+    .font(_font)
     .blend(draw_get_color(), draw_get_alpha())
-    .wrap(_width)
+    .layout(SCRIBBLE_LAYOUT_WRAP)
     .reveal_type(SCRIBBLE_REVEAL_PER_CHAR)
     .draw(_x, _y, _reveal);
 }

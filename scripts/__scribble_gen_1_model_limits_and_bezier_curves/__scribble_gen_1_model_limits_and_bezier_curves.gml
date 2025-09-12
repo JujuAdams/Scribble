@@ -3,10 +3,10 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
 {
     static _generator_state = __scribble_system().__generator_state;
     
-    var _model_max_width = __wrap_max_width - (__padding_l + __padding_r);
+    var _model_max_width = __layoutMaxWidth - (__padding_l + __padding_r);
     if (_model_max_width < 0) _model_max_width = infinity;
     
-    var _model_max_height = __wrap_max_height - (__padding_t + __padding_b);
+    var _model_max_height = __layoutMaxHeight - (__padding_t + __padding_b);
     if (_model_max_height < 0) _model_max_height = infinity;
     
     //TODO - Cache Bezier curves
